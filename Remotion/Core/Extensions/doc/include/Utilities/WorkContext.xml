@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<WorkContext>
+  <Class>
+    <remarks>
+      <para>
+        Exceptions contain a stack trace of the time the exception was thrown, so it is easy to identify the code that 
+        caused the exception. However, there is no information as to which data this code was processing, or which 
+        iteration
+        of a certain loop caused a problem. For programs that process large amount of data and fail for specific data, 
+        it 
+        can be tedious to find the state or data that caused an error. 
+      <para></para>
+        WorkContexts provide an easy way to specify which data is currently being processed. In an exception handling 
+        block,
+        the current context stack can be used to get diagnostic information about the state of the application when the
+        exception occured. 
+      </para>
+    </remarks>
+    <example>
+      The following example demonstrates the use of WorkContexts to provide information about the data that is currently
+       being
+      processed. Note the <c>using</c> statement and the call to <see cref="WorkContext.Done"/>. 
+      <code><![CDATA[
+void f (string[] document)
+{
+  try
+  {
+    for (int i = 0; i < document.Lenght; ++i)
+    {
+      using (WorkContext ctxLine = WorkContext.EnterNew ("Processing line {0}: \"{1}\".", i, line[i]))
+      {
+        Console.WriteLine (line[i].Trim()); // this causes a NullReferenceException if line[i] is a null reference
+        ctxLine.Done();
+      }
+    }
+}
+catch (Exception e)
+{
+  Console.WriteLine ("Error \"{0}\" occured during:\n{1}", e.Message, WorkContext.Stack);
+}
+      ]]></code>
+    </example>
+  </Class>
+  <Enter>
+    <Method>
+      <remarks>
+        Instead of creating a new <see cref="WorkContext"/> and entering it using this method, you can use the 
+        <see langword="static"/> method <see cref="EnterNew"/>. Using <see cref="Enter"/> makes sense if the call is 
+        conditional, especially if you use the methods <see cref="EnterIfDebug"/> or <see cref="EnterIfTrace"/>.
+      </remarks>
+    </Method>
+    <Signature_Text>
+      <param name="text">The description of the context.</param>
+    </Signature_Text>
+    <Signature_Format_Args>
+      <param name="format">A string containing zero or more format items for the description of the context.</param>
+      <param name="args">An array containing zero or more objects to format.</param>
+    </Signature_Format_Args>
+  </Enter>
+  <EnableTracing>
+    <remarks>
+      The default value is <see langword="false"/>. You can change this value in your code, or use the 
+      "Remotion.WorkContext.EnableTracing" 
+      appSettings key in your application's configuration file to set it to <see langword="true"/>.
+    </remarks>
+    <example>
+      <code><![CDATA[
+<configuration>
+  <appSettings>
+    <add key="Remotion.WorkContext.EnableTracing" value="true" />
+  </appSettings>
+</configuration>
+      ]]></code>
+    </example>
+  </EnableTracing>
+</WorkContext>

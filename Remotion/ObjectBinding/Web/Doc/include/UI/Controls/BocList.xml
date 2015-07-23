@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<BocList>
+  <Class>
+    <remarks>
+    
+      <h4 class="dtH4">Supported Data Types</h4>
+      <para>
+        The control's <see cref="Value"/> can be assigned an <see cref="IList"/> of 
+        <see cref="IBusinessObject"/> instances as well as <see langword="null"/>. 
+      </para><para>
+        The control's <see cref="Property"/> supports the <see cref="IBusinessObjectReferenceProperty"/>.
+      </para>
+     
+      <h4 class="dtH4">General Usage Notes</h4>      
+      <para>
+        Place an <see cref="HtmlHeadContents"/> control on every <b>ASPX</b> page displaying the 
+        <b>BocBooleanValue</b>.
+      </para><para>
+        Provide the external resources for this control. See <see cref="T:Remotion.Web.ResourceUrlResolver"/> 
+        for details on this subject.
+      </para><para>
+        See the <see cref="CreateValidators"/> method for the validators provided by this control.        
+      </para><para>
+        If the <see cref="BusinessObjectBoundWebControl.PropertyIdentifier"/> property is not set, the 
+        control is unbound. The <see cref="Value"/> property must be accessed programmatically to display the 
+        current value.
+      </para><para>
+        The <see cref="BusinessObjectBoundWebControl.DataSource"/> must be set in order to evaluate the
+        <see cref="BusinessObjectPropertyPath"/> of a column. If you do not wish to use databinding 
+        (e.g. for a page with a search result), use the <see cref="BusinessObjectReferenceSearchDataSourceControl"/> 
+        as the control's <see cref="BusinessObjectBoundWebControl.DataSource"/>.
+      </para><para>
+        The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocList</c>.
+      </para><para>
+        The control does not support auto-postback for the selected value. Auto-postback is only used for commands
+        and the drop down list displaying the <see cref="AvailableViews"/>.
+      </para><para>
+        The control's <b>Enabled</b> flag is not fully supported by the <b>BocList</b>.
+      </para><para>
+        If the <see cref="ShowEmptyListReadOnlyMode"/> and <see cref="ShowEmptyListEditMode"/> flags are set to 
+        <see langword="false"/> the list's header row is hidden for an empty list.
+      </para>
+ 
+      <h4 class="dtH4">Defining the Columns</h4>  
+      <para>
+        Using the <see cref="FixedColumns"/> property it is possible to define the columns displayed by the 
+        <b>BocList</b>. In case you wish to display all properties as provided by the class, you can use
+        the <see cref="ShowAllProperties"/> flag to automatically render a column for each property.
+      </para><para>
+        The following table lists the available column types.
+      </para>
+      <list type="table">
+        <listheader>
+          <term>Column Type</term>
+          <description>Description</description>
+        </listheader>
+        <item>
+          <term> <see cref="BocSimpleColumnDefinition"/> </term>
+          <description>
+            <para>
+              Used to display a single value accessed through a <see cref="BusinessObjectPropertyPath"/>. 
+              This column supports inline editing of the value as well as a <see cref="BocListItemCommand"/> 
+              accessible through the rendered value.
+            </para><para>
+              You can register an event handler for the command click event with the <see cref="ListItemCommandClick"/> 
+              event source.
+            </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="BocCompoundColumnDefinition"/> </term>
+          <description>
+            <para>
+              Used to display a list of values concatenated by usie of a format string. Each value is accessed through 
+              its own <see cref="BusinessObjectPropertyPath"/>. This column supports a <see cref="BocListItemCommand"/> 
+              accessible through the rendered value string.
+            </para><para>
+              You can register an event handler for the command click event with the <see cref="ListItemCommandClick"/> 
+              event source.
+            </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="BocCommandColumnDefinition"/> </term>
+          <description>
+            <para>
+              Used to display a <see cref="BocListItemCommand"/> accessible through a static text and/or an icon.
+            </para><para>
+              You can register an event handler for the command click event with the <see cref="ListItemCommandClick"/> 
+              event source.
+            </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="BocRowEditModeColumnDefinition"/> </term>
+          <description>
+            <para>
+              Used to display predefined commands for switching a row into editing mode and back to read-only mode.
+            </para><para>
+              See the <see href="#RowEditMode">Inline Editing</see> section for details.
+            </para>
+            </description>
+        </item>
+        <item>
+          <term> <see cref="BocCustomColumnDefinition"/> </term>
+          <description>
+            <para>
+              Used to provide a custom rendering and event handling method for the cell or to render a control in the
+              cell.
+            </para><para>
+              If the column is used to render custom <b>HTML</b> code, it can be used to display a list of commands, 
+              a command that depends on the state of the <see cref="IBusinessObject"/> rendered in this row 
+              or to format the value in a way not supported by the simple or compound columns.
+            </para><para>
+              If the column is used to render a control, it can display any control. The only limitation is the
+              usability of the rendered page.
+            </para><para>
+              You can register an event handler for the command click event with the <see cref="CustomCellClick"/> 
+              event source.
+            </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="BocDropDownMenuColumnDefinition"/> </term>
+          <description>
+            <para>
+              Used to display a <see cref="DropDownMenu"/> in each row.
+            </para><para>
+              See the <see href="#RowMenus">Row Menus</see> section for details.
+            </para>
+            </description>
+        </item>
+      </list>
+      <para>
+        If the <see cref="EnableIcon"/> flag is <see langword="true"/>, the <b>BocList</b> displays an icon for each 
+        row's <see cref="IBusinessObject"/> in front of the first <see cref="BocSimpleColumnDefinition"/> or 
+        <see cref="BocCommandColumnDefinition"/>. This icon is gotten through the 
+        <see cref="IBusinessObjectWebUIService.GetIcon">IBusinessObjectWebUIService.GetIcon</see> method. The service
+        is accessed through the <see cref="IBusinessObjectClass"/> of the row's object.
+      </para>
+      <note type="inheritinfo">
+        You can access and modify the list of columns before it is used by the <b>BocList</b> by overriding the
+        <see cref="GetColumns"/> method. The list of columns contains the columns defined by the 
+        <see cref="FixedColumns"/> collection, the current view and the automatically generated columns if the 
+        <see cref="ShowAllProperties"/> flag is set.
+      </note>
+      
+      <h4 class="dtH4">Additional Views</h4>      
+      <para>
+        Using the <see cref="AvailableViews"/> property it is possible to provide different views 
+        for the <b>BocList</b>. Each <see cref="BocListView"/> consists of zero or more columns.
+      </para><para>
+        The views can be switched by a drop down box displayed to the right of the list of values. The drop down box
+        can be hidden using the <see cref="ShowAvailableViewsList"/> flag. The drop down box is also hidden 
+        automatically if only a single view is available or the list is empty and the 
+        <see cref="ShowEmptyListReadOnlyMode"/> and <see cref="ShowEmptyListEditMode"/> flags are set to 
+        <see langword="false"/>. Use the <see cref="AvailableViewsListTitle"/> property to provide a custom label for 
+        drop down box.        
+      </para><para>
+        The currently selected view can be changed programmatically by using the 
+        <see cref="SelectedView"/> property. If this property is assigned before the 
+        <b>Process Postback Data</b> phase of the page life cycle and the selected view is also changed on the client, 
+        the view selected on the client side will take precendence. If the property is assigned during the 
+        <b>Postback Event Handling</b> or <b>PreRender</b> phase of the page life cycle, or if the client side value 
+        is not changed, the programmatically assigned value will be used.
+      </para> 
+      
+      <h4 class="dtH4">Paging</h4>
+      <para>
+        It is possible to provide each <b>BocList</b> with a maximum <see cref="PageSize"/>. If the number of rows 
+        exceeds the page size, it is possible to page through the values one page at a time or move to the first or 
+        last page.
+      </para><para>
+        By setting the <see cref="AlwaysShowPageInfo"/> flag to <see langword="false"/>, the current page information
+        and the paging buttons are only rendered if more than one page is available.
+      </para>
+
+      <h4 class="dtH4">Options Menu and List Menu</h4>
+      <para>
+        The <b>BocList</b> supports both a drop down menu whose menu items are only visible while the menu is open,
+        and an in-place (list) menu whose menu items are always visible. Use the <see cref="OptionsMenuItems"/> and
+        the <see cref="ListMenuItems"/> properties to define the <see cref="BocMenuItem"/> objects available in the 
+        respective menus.
+      </para><para>
+        The menus are displayed to the right of the list of values. They can be hidden individually using the
+        <see cref="ShowOptionsMenu"/> and <see cref="ShowListMenu"/> properties. The menus are also hidden 
+        automatically in case they do not provide a menu item or the list is empty and the 
+        <see cref="ShowMenuForEmptyListReadOnlyMode"/> and <see cref="ShowMenuForEmptyListEditMode"/> flags are set to
+        <see langword="false"/>.
+      </para><para>
+        By using the <see cref="HiddenMenuItems"/> property, it is possible to hide individual menu items based on
+        their ID. If an ID is seperated by dots, it is possible to specify the ID by entering only the last part of 
+        the ID.
+      </para><para>
+        You can register an event handler for the click event with the <see cref="MenuItemClick"/> event source.
+      </para><para>
+        The following properties allow additonal customization of the options and list menus and the menu section in
+        general:
+        <see cref="MenuBlockItemOffset"/>, <see cref="MenuBlockWidth"/>, <see cref="MenuBlockOffset"/>, 
+        <see cref="OptionsTitle"/>, and <see cref="ListMenuLineBreaks"/>.
+      </para>
+      <note type="inheritinfo">
+        Override the <see cref="InitializeMenusItems"/> method to modify the list of menu items and the 
+        <see cref="PreRenderMenuItems"/> method to change the menu items' properties (such as their visibility).
+        It is required that the list of menu items remains constant accross the page's life cycles. Only the 
+        properties may be modified.
+      </note>
+      
+      <h4 class="dtH4"><a name="RowMenus">Row Menus</a></h4><!-- HTML Help requires separate anchor tag for target -->   
+      <para>
+        The <b>BocList</b> provides an infrastructure for displaying a <see cref="DropDownMenu"/> in each row. This
+        allows for the creation of row spefic and therefor object specific menu items. Because of the extensive
+        integration into the <b>BocList</b>, this feature is only available when inheriting from the <b>BocList</b>.
+      </para><para>
+        In order to use the row menus, the <see cref="RowMenuDisplay"/> must be set to 
+        <see cref="!:RowMenuDisplay.Automatic"/> or <see cref="!:RowMenuDisplay.Manual"/>. In automatic mode, the 
+        <b>BocList</b> will automatically create a menu column. In manual mode, the application
+        developer must add a <see cref="BocDropDownMenuColumnDefinition"/> to the collection of 
+        <see cref="FixedColumns"/> or override the <see cref="GetColumns"/> method and provide the 
+        <see cref="BocDropDownMenuColumnDefinition"/> programmatically.
+      </para><para>
+        Override the <see cref="InitializeRowMenuItems"/> method to populate the list of menu items and the 
+        <see cref="PreRenderRowMenuItems"/> method to change the menu items' properties (such as their visibility).
+        It is required that the list of menu items remains constant for a menu item accross the page's life cycles. 
+        Only the properties may be modified.
+      </para><para>
+        Override the <see cref="OnRowMenuItemEventCommandClick"/> method to handle the click events of the menu items.
+      </para><para>
+        In order to prevent the rendering of the menu in a specific row, simply provide no menu items for this row
+        in the <see cref="InitializeRowMenuItems"/> method.
+      </para>
+            
+      <h4 class="dtH4">Sorting</h4>
+      <para>
+        The <b>BocList</b>'s rows can be sorted by one or more of its columns. Use the <see cref="EnableSorting"/> flag 
+        to enable interactive sorting and the <see cref="EnableMultipleSorting"/> flag to enable sorting by multiple columns.
+        If sorted by multiple columns, the <b>BocList</b> displays the sorting order next to the sorting buttons of the 
+        individual columns. You can hide this index by setting the <see cref="ShowSortingOrder"/> flag to 
+        <see langword="false"/>.
+      </para><para>
+        If the columns used for sorting include a column from the current view, changing the view will remove the 
+        column from the sorting keys.
+      </para><para>
+        The sorting order can also be defined programmatically using the <see cref="SetSortingOrder"/> method. If the 
+        sorting order is set before the <b>Process Postback Data</b> phase of a postback, the postback will override 
+        the programmatic settings.
+      </para>
+         
+      <h4 class="dtH4">Row Selection and Row Index</h4>
+      <para>
+        The <b>BocList</b> supports selecting a subset of the currently displayed rows. The selection mode can be set
+        by using the <see cref="Selection"/> property. You can use the mouse in combination with the control key to 
+        select multiple rows or deselect them individually.
+      </para><para>
+        The selected rows or objects can be queried using the <see cref="GetSelectedRows"/> and 
+        <see cref="GetSelectedBusinessObjects"/> methods. A new selection can be made through the 
+        <see cref="SetSelectedRows"/> and <see cref="SetSelectedBusinessObjects"/> methods. 
+      </para><para>
+        By setting the <see cref="Index"/> property to <see cref="RowIndex.InitialOrder"/> or 
+        <see cref="RowIndex.SortedOrder"/>, an index is displayed as first column. If selection is also enabled, the index
+        acts as label for the selection check-boxes or radio-buttons.
+      </para>
+      
+      <h4 class="dtH4"><a name="RowEditMode">Row Edit Mode (Inline Editing)</a></h4><!-- HTML Help requires separate anchor tag for target -->   
+      <para>
+        Through the use of inline editing it is possible to modify the business objects in the individual rows, 
+        one row at a time. Inline editing is supported for columns of the <see cref="BocSimpleColumnDefinition"/> type
+        with a univalent <see cref="BusinessObjectPropertyPath"/>. During row edit mode the <b>BocList</b> 
+        disables paging, row selection, reordering the list, all the menus and the commands rendered for the columns.
+        <note>
+          If you use a <see cref="BocCustomColumnDefinition"/>, you must take care of disabling any commands
+          in this column.
+        </note>
+      </para><para>
+        Aside from provding a <see cref="BocRowEditModeColumnDefinition"/> for automatic management of the inline 
+        editing, you can also use the <see cref="SwitchRowIntoEditMode"/> and <see cref="EndRowEditMode"/> methods
+        to start and end the row edit mode.
+      </para><para>
+        You can query the row row currently being edited through the <see cref="GetEditedRow"/> method. Use the
+        <see cref="IsRowEditModeActive"/> flag to determine whether the <b>BocList</b> is currently in row edit mode.
+      </para><para>
+        If you must validate the row being edited, you can call the <see cref="ValidateEditableRows"/> method. If
+        you use the <b>BocList</b> inside a <see cref="FormGridManager"/>, the row edit mode validators are 
+        integrated into the form grid validation. The validators are also validated if you execute the 
+        <see cref="EndRowEditMode"/> method or click <b>Save</b> in the row edit mode column.
+      </para><para>
+        You can register for the before and after save and change events using the <see cref="EditableRowChangesSaving"/>,
+        <see cref="EditableRowChangesSaved"/>, <see cref="EditableRowChangesCanceling"/>, and 
+        <see cref="EditableRowChangesCanceled"/> event sources.
+      </para><para>
+        You can  add a new business object to the list of values, and start editing immediatly by calling
+        <see cref="AddAndEditRow"/>. When a business object is added in this way, canceling inline editing will once
+        again remove the business object from the list. It is the responsibility of the caller to handle the disposing
+        of the discarded business object, for instance by registering for the <see cref="EditableRowChangesCanceled"/>
+        event.
+      </para><para>
+        The following properties allow additonal customization of the details editing mode:
+        <see cref="ShowEditModeRequiredMarkers"/>, <see cref="ShowEditModeValidationMarkers"/>,
+        <see cref="DisableEditModeValidationMessages"/>, and <see cref="EnableEditModeValidator"/>.
+      </para>
+      <note>
+        If you need to control the creation of the details editing mode controls, you can set the 
+        <see cref="EditModeControlFactory"/> and <see cref="EditModeControlFactory"/> properties either during 
+        initialization of derived list, or during the init phase of the page.
+      </note>
+
+      <h4 class="dtH4">Localization Support</h4>
+      <para>
+        The resources required by this control are defined by the <see cref="BocList.ResourceIdentifier"/> 
+        enum. See the <b>ResourceIdentifier</b>'s documentation for details on localization.
+      </para><para>
+        The control supports resource dispatching to its properties through the 
+        <see cref="Remotion.Web.UI.Globalization.ResourceDispatcher"/>.
+        Use the following resource identifiers for dispatching strings to the <b>BocList</b>
+        or use the <b>global resource identifier</b> syntax for setting the resource identifier in the propery.
+      </para>
+      <list type="table">
+        <listheader>
+          <term>Property</term>
+          <description>Resource Identifier</description>
+        </listheader>
+        <item>
+          <term> <see cref="AvailableViewsListTitle"/> </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:AvailableViewsListTitle </para>
+            <para> e.g. auto:MyBocList:AvailableViewsListTitle </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="ErrorMessage"/> </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:ErrorMessage </para>
+            <para> e.g. auto:MyBocList:ErrorMessage </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="EmptyListMessage"/> </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:EmptyListMessage </para>
+            <para> e.g. auto:MyBocList:EmptyListMessage </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="FixedColumns"/>[x].ColumnTitle </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:ColumnTitle </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyItem:ColumnTitle </para>
+            <para> Applies to all columns. </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="FixedColumns"/>[x].Text </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:Text </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyItem:Text </para>
+            <para> Applies to columns of type <see cref="BocCommandColumnDefinition"/>. </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="FixedColumns"/>[x].CancelText </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:CancelText </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyItem:CancelText </para>
+            <para> Applies to columns of type <see cref="BocRowEditModeColumnDefinition"/>. </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="FixedColumns"/>[x].EditText </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:EditText </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyItem:EditText </para>
+            <para> Applies to columns of type <see cref="BocRowEditModeColumnDefinition"/>. </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="FixedColumns"/>[x].SaveText </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:SaveText </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyItem:SaveText </para>
+            <para> Applies to columns of type <see cref="BocRowEditModeColumnDefinition"/>. </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="FixedColumns"/>[x].MenuTitleText </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:MenuTitleText </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyItem:MenuTitleText </para>
+            <para> Applies to columns of type <see cref="BocDropDownMenuColumnDefinition"/>. </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="IndexColumnTitle"/> </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:IndexColumnTitle </para>
+            <para> e.g. auto:MyBocList:IndexColumnTitle </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="ListMenuItems"/>[x].Text </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:ListMenuItems:&lt;Menu Item ID&gt;:Text </para>
+            <para> e.g. auto:MyBocList:ListMenuItems:MyItem:Text </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="OptionsTitle"/> </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:OptionsTitle </para>
+            <para> e.g. auto:MyBocList:OptionsTitle </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="OptionsMenuItems"/>[x].Text </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:OptionsMenuItems:&lt;Menu Item ID&gt;:Text </para>
+            <para> e.g. auto:MyBocList:OptionsMenuItems:MyItem:Text </para>
+          </description>
+        </item>
+      </list>
+      
+    </remarks>
+  </Class>
+  <LoadValue>
+    <param name="interim"> Specifies whether this is the initial loading or an interim loading. </param>
+    <remarks>
+      <para>
+        Loads the <see cref="Value"/> from the <see cref="BusinessObjectBoundWebControl.DataSource"/>. 
+      </para><para>
+        Requires a <see cref="Property"/>, and a <see cref="BusinessObjectBoundWebControl.DataSource"/>.
+        If the <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see> is not set, the <see cref="Value"/> will
+        still be loaded but set to <see langword="null"/>.
+      </para><para>
+        Invoking <see cref="LoadValue"/> with <paramref name="interim"/> <see langword="false"/> will cause the
+        <see cref="BocList"/> to abort the edit details mode and discard any changes.
+      </para><para>
+        <see cref="IsDirty"/> will be <see langword="false"/> after invoking <see cref="LoadValue"/> with 
+        <paramref name="interim"/> <see langword="false"/>. If <paramref name="interim"/> is <see langword="true"/> 
+        and a row is currently being edited, the state of <see cref="IsDirty"/> will also depend on whether the 
+        edited row is dirty.
+      </para>
+    </remarks>
+    <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
+  </LoadValue>
+  <LoadUnboundValue>
+    <remarks>
+      <para>
+        Invoking <see cref="LoadValue"/> with <paramref name="interim"/> <see langword="false"/> will cause the
+        <see cref="BocList"/> to abort the edit details mode and discard any changes.
+      </para><para>
+        <see cref="IsDirty"/> will be <see langword="false"/> after invoking <see cref="LoadUnboundValue"/> with 
+        <paramref name="interim"/> <see langword="false"/>. If <paramref name="interim"/> is <see langword="true"/> 
+        and a row is currently being edited, the state of <see cref="IsDirty"/> will also depend on whether the 
+        edited row is dirty.
+      </para>
+    </remarks>
+  </LoadUnboundValue>
+  <SaveValue>
+    <param name="interim"> Specifies whether this is the final saving or an interim saving. </param>
+    <returns><see langword="true"/> if the value was saved into the <see cref="BusinessObjectBoundWebControl.DataSource"/>.<see cref="IBusinessObjectDataSource.BusinessObject"/>.</returns>
+    <remarks>
+      <para>
+        Saves the <see cref="Value"/> into the <see cref="BusinessObjectBoundWebControl.DataSource"/> if the control's
+        <see cref="BusinessObjectBoundEditableWebControl.IsReadOnly"/> property evaluates <see langword="false"/>. 
+      </para><para>
+        Requires a <see cref="Property"/> and a <see cref="BusinessObjectBoundWebControl.DataSource"/>.
+        If the <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see> is not set, the <see cref="Value"/> will
+        not be saved.
+      </para><para>
+        Invoking <see cref="SaveValue"/> with <paramref name="interim"/> <see langword="false"/> will cause the
+        <see cref="BocList"/> to end the edit details mode and save any changes made to the row.
+      </para><para>
+        <see cref="IsDirty"/> will be <see langword="false"/> after invoking <see cref="SaveValue"/> with 
+        <paramref name="interim"/> <see langword="false"/>. If <paramref name="interim"/> is <see langword="true"/> 
+        and a row is currently being edited, the state of <see cref="IsDirty"/> will also depend on whether the 
+        edited row is dirty.
+      </para>
+    </remarks>
+    <seealso cref="IBusinessObjectBoundEditableControl.SaveValue">IBusinessObjectBoundEditableControl.SaveValue</seealso>
+  </SaveValue>
+  <OnListItemCommandClick>
+    <param name="column"> 
+      The <see cref="BocCommandEnabledColumnDefinition"/> whose command was clicked. 
+    </param>
+    <param name="listIndex">
+      An index that indtifies the <see cref="IBusinessObject"/> with which the clicked command is associated.
+    </param>
+    <param name="businessObject">
+      The <see cref="IBusinessObject"/> with which the clicked command is associated.
+    </param>
+  </OnListItemCommandClick>
+  <OnMenuItemEventCommandClick>
+    <param name="menuItem"> 
+      The <see cref="WebMenuItem"/> whose command was clicked. 
+    </param>
+  </OnMenuItemEventCommandClick>
+  <OnMenuItemWxeFunctionCommandClick>
+    <param name="menuItem"> 
+      The <see cref="WebMenuItem"/> whose command was clicked. 
+    </param>
+  </OnMenuItemWxeFunctionCommandClick>
+  <OnRowMenuItemEventCommandClick>
+    <param name="menuItem"> 
+      The <see cref="WebMenuItem"/> whose command was clicked. 
+    </param>
+    <param name="businessObject"> 
+      The <see cref="IBusinessObject"/> of the row in which the command was clicked. 
+    </param>
+    <param name="listIndex"> 
+      The index of the row in which the command was clicked or -1 if the <paramref name="businessObject"/> is no longer part of the list.
+    </param>
+  </OnRowMenuItemEventCommandClick>
+  <OnRowMenuItemWxeFunctionCommandClick>
+    <param name="menuItem"> 
+      The <see cref="WebMenuItem"/> whose command was clicked. 
+    </param>
+    <param name="businessObject"> 
+      The <see cref="IBusinessObject"/> of the row in which the command was clicked. 
+    </param>
+    <param name="listIndex">
+      The index of the row in which the command was clicked or -1 if the <paramref name="businessObject"/> is no longer part of the list.
+    </param>
+  </OnRowMenuItemWxeFunctionCommandClick>
+</BocList>
+

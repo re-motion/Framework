@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ !
+ ! See the NOTICE file distributed with this work for additional information
+ ! regarding copyright ownership.  rubicon licenses this file to you under 
+ ! the Apache License, Version 2.0 (the "License"); you may not use this 
+ ! file except in compliance with the License.  You may obtain a copy of the 
+ ! License at
+ !
+ !   http://www.apache.org/licenses/LICENSE-2.0
+ !
+ ! Unless required by applicable law or agreed to in writing, software 
+ ! distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+ ! WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the 
+ ! License for the specific language governing permissions and limitations
+ ! under the License.
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="CleanFolders" />
+  <Target Name="CleanProjects" />
+  <Target Name="PrepareVersion" DependsOnTargets="CheckVersionIsFourPartVersion" />
+
+  <Target Name="Before_RestoreBackupFiles" BeforeTargets="RestoreBackupFiles">
+    <ItemGroup>
+      <_modifiedItemsToExclude Remove="@(_modifiedItemsToExclude)"/>
+      <_modifiedItemsToExclude Include="@(ModifiedFiles)" Condition="'%(Extension)' == '.nuspec'">
+        <Backup>%(Backup)</Backup>
+        <Backup2>%(Backup).bak2</Backup2>
+      </_modifiedItemsToExclude>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_modifiedItemsOnFirstRun Remove="@(_modifiedItemsOnFirstRun)"/>
+      <_modifiedItemsOnFirstRun Include="@(_modifiedItemsToExclude)" Condition="!Exists(%(Backup2))">
+        <Backup>%(Backup)</Backup>
+        <Backup2>%(Backup2)</Backup2>
+      </_modifiedItemsOnFirstRun>
+      <_modifiedItemsOnFirstRun>
+        <BackupLine>%(Identity)|%(Backup2)|%(Backup)</BackupLine>
+      </_modifiedItemsOnFirstRun>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ModifiedFiles Remove="@(_modifiedItemsToExclude)"/>
+    </ItemGroup>
+
+    <Move SourceFiles="%(_modifiedItemsOnFirstRun.Backup)"
+          DestinationFiles="%(_modifiedItemsOnFirstRun.Backup2)" />
+
+    <ItemGroup>
+      <_createdItemsToExclude Remove="@(_createdItemsToExclude)"/>
+      <_createdItemsToExclude Include="@(CreatedFiles)" Condition="'%(Extension)' == '.nuspec'"/>
+      <CreatedFiles Remove="@(_createdItemsToExclude)"/>
+    </ItemGroup>
+
+    <MakeDir Directories="$(TempDirectory)" />
+    <WriteLinesToFile File="$(TempDirectory)ModifiedFiles.txt" Lines="%(_modifiedItemsOnFirstRun.BackupLine)" Overwrite="false"/>
+    <WriteLinesToFile File="$(TempDirectory)CreatedFiles.txt" Lines="@(_createdItemsToExclude)" Overwrite="false"/>
+
+    <Message Text="Done removing nuspec-files from list of created files, ConfigurationID=$(ConfigurationID)" Importance="High"/>
+  </Target>
+
+  <PropertyGroup>
+    <VersionPattern><![CDATA[^(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)$]]></VersionPattern>
+  </PropertyGroup>
+
+  <Target Name="CheckVersion" DependsOnTargets="CheckVersionIsFourPartVersion">
+    <Error Text="The property 'Version' is not set." Condition="'$(Version)' == ''" />
+  </Target>
+
+  <Target Name="CheckVersionIsFourPartVersion" Condition="'$(Version)' != ''">
+    <Error Text="The property 'VersionPattern' is not set." Condition="'$(VersionPattern)' == ''" />
+
+    <Error Text="Only versions with a 4-part pattern are allowed. Version='$(Version)'" 
+           Condition="'$( [System.Text.RegularExpressions.Regex]::IsMatch ( $(Version), $(VersionPattern) ) )' == 'False'" />
+  </Target>
+
+  <Target Name="PrepareAssemblyVersion" DependsOnTargets="CheckVersionIsFourPartVersion" Condition="$(Version) != ''">
+    <Error Text="The property 'VersionPattern' is not set." Condition="'$(VersionPattern)' == ''" />
+
+    <PropertyGroup>
+      <AssemblyVersion>$(Version)</AssemblyVersion>
+    </PropertyGroup>
+    
+    <Message Text="Done preparing AssemblyVersion '$(AssemblyVersion)'" Importance="High"/>
+  </Target>
+
+  <Target Name="PrepareAssemblyFileVersion" DependsOnTargets="CheckVersionIsFourPartVersion" Condition="$(Version) != ''">
+    <Error Text="The property 'VersionPattern' is not set." Condition="'$(VersionPattern)' == ''" />
+
+    <PropertyGroup>
+      <AssemblyFileVersion>$(Version)</AssemblyFileVersion>
+    </PropertyGroup>
+
+    <Message Text="Done preparing AssemblyFileVersion '$(AssemblyFileVersion)'" Importance="High"/>
+  </Target>
+
+  <Target Name="PrepareAssemblyInformationalVersion" DependsOnTargets="CheckVersionIsFourPartVersion" Condition="$(Version) != ''">
+    <Error Text="The property 'ConfigurationID' is not set." Condition="'$(ConfigurationID)' == ''" />
+
+    <PropertyGroup>
+      <AssemblyInformationalVersion>$(Version)+$(ConfigurationID)</AssemblyInformationalVersion>
+      <AssemblyInformationalVersion Condition="'$(AdditionalBuildMetadata)' != ''">$(AssemblyInformationalVersion).$(AdditionalBuildMetadata)</AssemblyInformationalVersion>
+    </PropertyGroup>
+
+    <Message Text="Done preparing AssemblyInformationalVersion '$(AssemblyInformationalVersion)'" Importance="High"/>
+  </Target>
+
+  <Target Name="PrepareAssemblyNuGetVersion" DependsOnTargets="CheckVersionIsFourPartVersion" Condition="$(Version) != ''">
+
+    <PropertyGroup>
+      <_versionMajor>$([System.Version]::Parse ($(Version)).Major)</_versionMajor>
+      <_versionMinor>$([System.Version]::Parse ($(Version)).Minor)</_versionMinor>
+      <_versionBuild>$([System.Version]::Parse ($(Version)).Build)</_versionBuild>
+      <_versionRevision>$([System.Version]::Parse ($(Version)).Revision)</_versionRevision>
+
+      <!-- 10000 indicates a full build. See also 'SetVersionFullBuild' in 'Server.VersionNumbers.targets'.-->
+      <_versionRevision Condition="'$(_versionRevision)' == '10000'"></_versionRevision>
+    </PropertyGroup>
+
+    <MSBuild.ExtensionPack.Framework.TextString TaskAction="PadLeft" OldString="$(_versionRevision)" String1="0" Count="4" Condition="'$(_versionRevision)' != ''"> 
+      <Output PropertyName="_versionRevision" TaskParameter="NewString"/> 
+    </MSBuild.ExtensionPack.Framework.TextString>
+
+    <PropertyGroup>
+      <AssemblyNuGetVersion>$(_versionMajor).$(_versionMinor).$(_versionBuild)</AssemblyNuGetVersion>
+      <AssemblyNuGetVersion Condition="'$(NuGetVersionSuffix)' != ''">$(AssemblyNuGetVersion)-$(NuGetVersionSuffix)$(_versionRevision)</AssemblyNuGetVersion>
+    </PropertyGroup>
+
+    <Message Text="Done preparing AssemblyNuGetVersion '$(AssemblyNuGetVersion)'" Importance="High"/>
+  </Target>
+
+  <Target Name="Before_PrepareBuildProperties" BeforeTargets="PrepareBuildProperties">
+    <Error Text="The property 'ProjectID' is not set." Condition="'$(ProjectID)' == ''" />
+
+    <PropertyGroup>
+      <TempDirectory>$(TempDirectory)$(ProjectID)\</TempDirectory>
+      <OutputDirectory>$(OutputDirectory)$(ProjectID)\</OutputDirectory>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="Before_CheckDependDBProperties" BeforeTargets="CheckDependDBProperties">
+    <PropertyGroup>
+      <DependDBNuGetSources>$(DependDBNuGetSources.Replace( '#OutputDirectory#' , $(OutputDirectory) ))</DependDBNuGetSources>
+      <DependDBNuGetSources>$(DependDBNuGetSources.Replace( '#ConfigurationID#' , $(ConfigurationID) ))</DependDBNuGetSources>
+    </PropertyGroup>
+  </Target>
+  
+  <Target Name="After_BuildReleaseProjects" AfterTargets="BuildReleaseProjects">
+    <Error Text="The property 'ProjectID' is not set." Condition="'$(ProjectID)' == ''" />
+    <Error Text="The property '_timeTaken' is not set." Condition="'$(_timeTaken)' == ''" />
+
+    <Message Text="##teamcity[buildStatisticValue key='Duration.BuildReleaseProjects.$(ProjectID).$(ConfigurationID)' value='$(_timeTaken)']"
+             Condition="'$(TEAMCITY_VERSION)' != ''" />
+  </Target>
+
+  <Target Name="After_BuildTestProjects" AfterTargets="BuildTestProjects">
+    <Error Text="The property 'ProjectID' is not set." Condition="'$(ProjectID)' == ''" />
+    <Error Text="The property '_timeTaken' is not set." Condition="'$(_timeTaken)' == ''" />
+
+    <Message Text="##teamcity[buildStatisticValue key='Duration.BuildTestProjects.$(ProjectID).$(ConfigurationID)' value='$(_timeTaken)']"
+             Condition="'$(TEAMCITY_VERSION)' != ''" />
+  </Target>
+
+  <Target Name="After_RunTests" AfterTargets="RunTests">
+    <Error Text="The property 'ProjectID' is not set." Condition="'$(ProjectID)' == ''" />
+    <Error Text="The property '_timeTaken' is not set." Condition="'$(_timeTaken)' == ''" />
+
+    <Message Text="##teamcity[buildStatisticValue key='Duration.RunTests.$(ProjectID).$(ConfigurationID)' value='$(_timeTaken)']"
+             Condition="'$(TEAMCITY_VERSION)' != ''" />
+  </Target>
+
+</Project>

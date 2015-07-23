@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<IBusinessObjectDataSourceControl>
+  <Class>
+    <remarks>
+      It is usually sufficient to use the <see langword="abstract"/> default implementation 
+      (<see cref="BusinessObjectDataSourceControl"/>) as base for creating a new 
+      <b>IBusinessObjectDataSourceControl</b>.
+    </remarks>
+    <example>
+      <b>LoadValues Pattern</b>
+      This pattern assumes that you do not change the business object after the form is loaded for the first time.
+      In case you do change the business object, you can no longer use IsPostback as the interim flag.
+      <code escaped="true" lang="C#">
+publci class EditForm : Page
+{
+  protected IBusinessObjectDataSourceControl CurrentObject;
+  
+  // OnLoad event handler for Page
+  private void Page_Load (object sender, EventArgs a)
+  {
+    // The business object displayed by this form.
+    IBusinessObject businessObject;
+    CurrentObject.BusinessObject = businessObject;
+    
+    bool interim = IsPostback;
+    CurrentObject.LoadValues (interim);
+  }
+}
+      </code>
+    </example>
+    <example>
+      <b>SaveValues Pattern</b>
+      This pattern assumes that you do not modify the contents of the controls bound to the datasource 
+      for the remainder of the current page life cycle once the save button has been clicked.
+      <code escaped="true" lang="C#">
+public class EditForm : Page
+{
+  private bool isCurrentObjectSaved = false;
+  protected IBusinessObjectDataSourceControl CurrentObject;
+  protected Button SaveButton;
+  
+  // OnClick event handler for SaveButton
+  private void SaveButton_Click (object sender, EventArgs a)
+  {
+    bool isValid = DoValidation();
+    if (isValid)
+    {
+      bool interim = false;
+      CurrentObject.SaveValues (interim);    
+      isCurrentObjectSaved = true;
+    }
+  }
+  
+  private bool DoValidation()
+  {
+    bool isValid;
+    // Your validation logic here
+    return isValid;
+  }
+  
+  // OnUnload event handler for Page
+  private void Page_Unload (object sender, EventArgs a)
+  {
+    if (! isCurrentObjectSaved)
+    {
+      bool interim = true;
+      CurrentObject.SaveValues (interim);
+    }
+  }
+}
+      </code>
+    </example>
+  </Class>
+</IBusinessObjectDataSourceControl>
+

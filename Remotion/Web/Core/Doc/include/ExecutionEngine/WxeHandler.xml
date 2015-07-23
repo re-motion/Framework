@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<WxeHandler>
+  <Class>
+    <remarks>
+      <para>
+        The <see cref="IHttpHandler"/> uses an <b>ashx</b> file to map the request (which is directed toward the 
+        respecive file) to an actual implementation of the interface. In case of the <b>WxeHandler</b>, such a file is 
+        provided in the form of <b>WxeHandler.ashx</b>.
+      </para><para>
+        The request may also contain a list of arguments. For the initial call, these are usually provided in the
+        form of a query string. Please refer to the <see cref="Parameters"/> type for a list 
+        of parameters interpreted by the <b>WxeHandler</b>. In addition to these parameters, additional parameters 
+        may be provided as required by the invoked <see cref="WxeFunction"/>.
+      </para>     
+    </remarks>
+    <example>
+      An example for calling the function <b>MyNamespace.MyFunction</b> in the Assembly <b>MyAssembly</b> for an
+      application located on <b>localhost</b>. The function also has one parameter: <b>ReadOnly</b>.
+      <code>
+        http://localhost/WxeHandler.ashx?WxeFunctionType=MyNamespace.MyFunction,MyAssembly&amp;ReadOnly=True
+      </code>
+    </example>
+  </Class>
+  <CheckTimeoutConfiguration>
+    <param name="context"> 
+      The current <see cref="HttpContext"/>. Must not be <see langword="null"/>. 
+    </param>
+    <exception cref="WxeException"> 
+      Thrown if the timeouts are not valid. 
+    </exception>
+    <remarks> 
+      For the timeouts to be valid, the <see cref="ExecutionEngineConfiguration.RefreshInterval"/> 
+      must be less than both the <see cref="ExecutionEngineConfiguration.FunctionTimeout"/> and the 
+      <see cref="HttpSessionState.Timeout"/>.
+    </remarks>
+  </CheckTimeoutConfiguration>
+  <GetType>
+    <param name="context"> 
+      The <see cref="HttpContext"/> of the request. Must not be <see langword="null"/>. 
+    </param>
+    <returns> 
+      The <see cref="Type"/> identified by the <paramref name="context"/>' information. 
+    </returns>
+  </GetType>
+  <GetTypeByPath>
+    <param name="absolutePath"> 
+      The absolute path of the <see cref="Type"/> to get. Must start with a '/'.
+    </param>
+    <returns> 
+      The <see cref="Type"/> mapped to the <paramref name="absolutePath"/>. 
+    </returns>
+    <exception cref="WxeException"> 
+      Thrown if the <paramref name="absolutePath"/> could not be mapped to a function type. 
+    </exception>
+  </GetTypeByPath>
+  <GetTypeByTypeName>
+    <param name="typeName">
+      The name of the <see cref="Type"/> to get. Must not be <see langword="null"/> or emtpy. 
+    </param>
+    <returns> 
+      The <see cref="Type"/> specified by the <paramref name="typeName"/>. 
+    </returns>
+    <exception cref="WxeException"> 
+      Thrown if the <paramref name="typeName"/> is invalid.
+    </exception>
+  </GetTypeByTypeName>
+  <CreateNewFunctionState>
+    <param name="context">
+      The current <see cref="HttpContext"/>. Must not be <see langword="null"/>. 
+    </param>
+    <param name="type">
+      The type of the <see cref="WxeFunction"/> to create. Must not be <see langword="null"/>.
+    </param>
+    <returns> 
+      A <see cref="WxeFunctionState"/> object containing the newly created <see cref="WxeFunction"/>. 
+    </returns>
+  </CreateNewFunctionState>
+  <ResumeExistingFunctionState>
+    <param name="context"> 
+      The current <see cref="HttpContext"/>. Must not be <see langword="null"/>. 
+    </param>
+    <param name="functionToken"> 
+      The unique identifier of the <see cref="WxeFunction"/> instance to resume. 
+      Must not be <see langword="null"/> or emtpy.  
+    </param>
+    <returns> 
+      A <see cref="WxeFunctionState"/> object containing the resumed <see cref="WxeFunction"/>
+      or <see langword="null"/> if it was a background request or the function has been aborted.
+    </returns>  
+    <exception cref="WxeException"> 
+      Thrown if the <see cref="WxeFunctionState.Function"/> is missing in the <see cref="WxeFunctionState"/> 
+      designated by the <paramref name="functionToken"/>. 
+    </exception>
+    <exception cref="WxeTimeoutException"> 
+      Thrown if the session or the <see cref="WxeFunctionState"/> designated by <paramref name="functionToken"/> 
+      has timed out. 
+    </exception>
+    <exception cref="InvalidOperationException"> 
+      Thrown if the <see cref="WxeFunctionState"/> designated by the <paramref name="functionToken"/> is aborted. 
+    </exception>
+  </ResumeExistingFunctionState>
+  <ProcessFunctionState>
+    <param name="context"> 
+      The current <see cref="HttpContext"/>. Must not be <see langword="null"/>. 
+    </param>
+    <param name="functionState"> 
+      The current <see cref="WxeFunctionState"/>. Must not be <see langword="null"/>. 
+    </param>
+    <param name="isNewFunction">
+      <see langword="true"/> if the <paramref name="functionState"/>'s <see cref="WxeFunctionState.Function"/> is
+      a new function, i.e. the request contained a <see cref="Parameters.WxeFunctionType"/> parameter.
+    </param>
+    <remark>
+      If the <paramref name="functionState"/>'s <see cref="WxeFunctionState.Function"/> defines a
+      <see cref="WxeFunction.ReturnUrl"/>, the execution stops with this method.
+    </remark>
+  </ProcessFunctionState>
+  <ExecuteFunctionState>
+    <param name="context"> 
+      The current <see cref="HttpContext"/>. Must not be <see langword="null"/>. 
+    </param>
+    <param name="functionState"> 
+      The current <see cref="WxeFunctionState"/>. Must not be <see langword="null"/> or aborted. 
+    </param>
+    <param name="isNewFunction">
+      <see langword="true"/> if the <paramref name="functionState"/>'s <see cref="WxeFunctionState.Function"/> is
+      a new function, i.e. the request contained a <see cref="Parameters.WxeFunctionType"/> parameter.
+    </param>
+  </ExecuteFunctionState>
+  <ExecuteFunction>
+    <param name="function"> 
+      The <see cref="WxeFunction"/> to be executed. Must not be <see langword="null"/> or aborted. 
+    </param>
+    <param name="context"> 
+      The <see cref="WxeContext"/> to be passed to the function. Must not be <see langword="null"/>. 
+    </param>
+    <param name="isNew">
+      <para>
+        <see langword="true"/> if the <paramref name="function"/> is a new function, 
+        i.e. the request contained a <see cref="Parameters.WxeFunctionType"/> parameter.
+      </para><para>
+        This parameter is not evaluated by the default implementation.
+      </para>
+    </param>
+    <remarks>
+      Appends a <see cref="WxeUserCancelException"/> to the exception types being caught during execution.
+    </remarks>
+  </ExecuteFunction>
+  <ProcessReturnUrl>
+    <param name="context"> 
+      The current <see cref="HttpContext"/>. Must not be <see langword="null"/>. 
+    </param>
+    <param name="returnUrl"> 
+      The return URL. Must not be <see langword="null"/> or empty. 
+    </param>
+    <remarks> 
+      The <see cref="HttpResponse.End"/> method is called after redirecting the client.
+    </remarks>
+  </ProcessReturnUrl>
+  <CleanUpFunctionState>
+    <param name="functionState"> 
+      The current <see cref="WxeFunctionState"/>. Must not be <see langword="null"/>. 
+    </param>
+    <remarks>
+      Aborts the <paramref name="functionState"/> if <see cref="WxeFunctionState.IsCleanUpEnabled"/> is set and
+      the <see cref="WxeFunctionState.Function"/> is the root function.
+    </remarks>
+  </CleanUpFunctionState>
+</WxeHandler>

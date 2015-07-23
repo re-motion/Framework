@@ -1,0 +1,103 @@
+/* Style applied to the WebTreeView. */
+
+/* Applied to the node itself */
+span.treeViewNode
+{
+}
+
+ul.treeViewRoot
+{
+  margin: 0;  
+  padding: 0;
+  list-style: none;
+}
+
+/* Applied to the top level node's children area if the expandre is hidden for the top level nodes. */
+ul.treeViewTopLevelNodeChildren
+{
+  margin: 0;  
+  padding: 0;
+  list-style: none;
+}
+
+/* Applied to the node's children area. */
+ul.treeViewNodeChildren
+{
+  background-image: url(../Image/TreeViewI.gif);
+  background-repeat: repeat-y;  
+  margin: 0;  
+  padding: 0 0 0 19px;
+  list-style: none;
+}
+
+/* Applied to the node's children area if the nodes should not be connected by lines. */
+ul.treeViewNodeChildrenNoLines
+{
+  margin: 0;  
+  padding: 0 0 0 19px;
+  list-style: none;
+}
+
+span.treeViewNode a
+{
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+span.treeViewNode img
+{
+  vertical-align: bottom;
+}
+
+span.treeViewNode span
+{
+  display: inline-block;
+}
+
+/* Applied to the node's head. */
+span.treeViewNodeHead
+{
+}
+
+/* Applied to the node's head if it is the selected node. */
+span.treeViewNodeHeadSelected
+{
+  background-color: Highlight;
+  color: HighlightText;
+}
+
+span.treeViewNodeHead a
+{
+  padding: 2px;
+}
+
+span.treeViewNodeHeadSelected a
+{
+  color: HighlightText;
+  padding: 2px;
+}
+
+span.treeViewNodeHead a:hover
+{
+  color: Blue;
+  padding: 1px;
+  border-width: 1px;
+  border-color: #005588;
+  border-style: solid;
+  background-color: #fee197;	
+}
+
+span.treeViewNodeHeadSelected a:hover
+{
+  color: Blue;
+  padding: 1px;
+  border-width: 1px;
+  border-color: #005588;
+  border-style: solid;
+  background-color: #fee197;	
+}
+
+span.treeViewNode ul
+{
+  right: auto;
+}

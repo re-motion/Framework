@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<WxePageExtensions>
+  <ExecuteFunction>
+    <param name="page">The <see cref="IWxePage"/> on which the function will be executed. Must not be <see langword="null"/>.</param>
+    <param name="function"> The WXE function to be executed. Must not be <see langword="null"/>. </param>  
+    <param name="createPermaUrl"> 
+      <see langword="true"/> to redirect the client to a URL that can be used as a perma-URL. 
+      Defaults to <see langword="false"/>.
+    </param>
+    <param name="useParentPermaUrl">
+      <see langword="true"/> to add the parent function's perma-URL. Defaults to <see langword="false"/>.
+    </param>
+    <param name="permaUrlParameters">
+      Provides the list of arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
+      which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
+    </param>
+  </ExecuteFunction>
+  <ExecuteFunctionNoRepost>
+    <param name="page">The <see cref="IWxePage"/> on which the function will be executed. Must not be <see langword="null"/>.</param>
+    <param name="function"> The WXE function to be executed. Must not be <see langword="null"/>. </param>  
+    <param name="sender"> 
+      The control that caused the event (i.e. the <b>sender</b> argument of the event handler).
+      Valid senders implement either <see cref="IPostBackEventHandler"/> or <see cref="IPostBackDataHandler"/>
+    </param>
+    <param name="usesEventTarget"> <see langword="true"/> to  use the <b>__EVENTTARGET</b> field. </param>
+    <param name="createPermaUrl"> 
+      <see langword="true"/> to redirect the client to a URL that can be used as a perma-URL. 
+      Defaults to <see langword="false"/>.
+    </param>
+    <param name="useParentPermaUrl">
+      <see langword="true"/> to add the parent function's perma-URL. Defaults to <see langword="false"/>.
+    </param>
+    <param name="permaUrlParameters">
+      Provides the list of arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
+      which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
+    </param>
+  </ExecuteFunctionNoRepost>
+  <ExecuteFunctionExternal>
+    <param name="page">The <see cref="IWxePage"/> on which the function will be executed. Must not be <see langword="null"/>.</param>
+    <param name="function"> The WXE function to be executed. Must not be <see langword="null"/>. </param>  
+    <param name="target">
+      The HTML frame/window name that will be used to execute the function. Must not be <see langword="null"/> or empty.
+    </param>
+    <param name="features"> The features argument that is passed to the javascript function <b>window.open()</b>. </param>
+    <param name="sender"> 
+      The control that caused the event (i.e. the <b>sender</b> argument of the event handler).
+      Valid senders implement either <see cref="IPostBackEventHandler"/> or <see cref="IPostBackDataHandler"/>
+    </param>
+    <param name="returningPostback"> <see langword="true"/> if the call should be returned to the current window. </param>
+    <param name="createPermaUrl"> 
+      <see langword="true"/> to redirect the client to a URL that can be used as a perma-URL. 
+      Defaults to <see langword="false"/>.
+    </param>
+    <param name="useParentPermaUrl">
+      <see langword="true"/> to add the executing function's perma-URL. Defaults to <see langword="false"/>.
+    </param>
+    <param name="urlParameters">
+      Provides the list of arguments for the URL's query string. Defaults to <see langword="null"/>, 
+      which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
+    </param>
+    <param name="returnToCaller">
+      <see langword="true"/> to return to the executing function.
+      Defaults to <see langword="true"/>.
+    </param>
+    <param name="callerUrlParameters">
+      Provides the list of arguments for the return URL's query string. Defaults to <see langword="null"/>, 
+      which indicates that the executing page's current parameters should be used for the query string.
+      Provide an emtpy <see cref="NameValueCollection"/> if your function does not support perma-urls.
+    </param>
+  </ExecuteFunctionExternal>
+</WxePageExtensions>

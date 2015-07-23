@@ -1,0 +1,6 @@
+ID,ClassID,Index,AccessControlListID,AccessControlListIDClassID
+b5ed3a2a-3d5d-41c8-af08-1fbb72c4d0e2,StateCombination,0,e2463c8f-80ac-4dea-8a88-d0625f52bc23,StatefulAccessControlList
+a2f3c9fe-9c1a-449b-ae0c-26c62f0b94fe,StateCombination,1,ee0dc67d-a413-4906-ac64-8be169f29b23,StatefulAccessControlList
+c5e37c80-4eaf-4604-a5c0-7cef39bbb93b,StateCombination,0,c5a532de-0a5a-4bfb-8480-344507e539d5,StatefulAccessControlList
+b91e4314-6cef-4210-81f5-aefb25f97098,StateCombination,0,b0c2671b-5299-4654-a894-a5992c42662d,StatefulAccessControlList
+{9226E3CC-1931-4650-9857-6CD11E81DE8D},StateCombination,0,{813F0892-F620-4435-A6EA-58210CBE4583},StatefulAccessControlList

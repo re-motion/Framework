@@ -1,0 +1,24 @@
+/*  Style applied to the BocDateTimeValue's layout table.  */
+div.bocDateTimeValue table
+{
+  border-collapse: collapse;
+  border-style: none;
+}
+
+/*  Style applied to the BocDateTimeValue's layout table's cells.  */
+div.bocDateTimeValue td
+{
+  padding: 0px;  
+}
+
+.bocDateTimeValue
+{
+}
+
+.bocDateTimeValue.readOnly
+{
+}
+
+.bocDateTimeValue.disabled
+{
+}

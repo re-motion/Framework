@@ -1,0 +1,113 @@
+// This file is part of re-strict (www.re-motion.org)
+// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+// 
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License version 3.0 
+// as published by the Free Software Foundation.
+// 
+// This program is distributed in the hope that it will be useful, 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+// GNU Affero General Public License for more details.
+// 
+// You should have received a copy of the GNU Affero General Public License
+// along with this program; if not, see http://www.gnu.org/licenses.
+// 
+// Additional permissions are listed in the file re-motion_exceptions.txt.
+// 
+using System;
+using System.Security.Principal;
+using System.Web;
+using System.Web.SessionState;
+using Remotion.Data.DomainObjects;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
+using SecurityManagerUser = Remotion.SecurityManager.Domain.OrganizationalStructure.User;
+
+namespace Remotion.SecurityManager.Clients.Web.Classes
+{
+  public class SecurityManagerHttpApplication : HttpApplication
+  {
+    private static readonly string s_principalKey = typeof (SecurityManagerHttpApplication).AssemblyQualifiedName + "_Principal";
+    private ISecurityManagerPrincipalFactory _securityManagerPrincipalFactory;
+
+    public SecurityManagerHttpApplication ()
+    {
+    }
+
+    public ISecurityManagerPrincipalFactory SecurityManagerPrincipalFactory
+    {
+      get { return _securityManagerPrincipalFactory; }
+      set { _securityManagerPrincipalFactory = ArgumentUtility.CheckNotNull ("value", value); }
+    }
+
+    public void SetCurrentPrincipal (ISecurityManagerPrincipal securityManagerPrincipal)
+    {
+      ArgumentUtility.CheckNotNull ("securityManagerPrincipal", securityManagerPrincipal);
+
+      SecurityManagerPrincipal.Current = securityManagerPrincipal;
+      SavePrincipalToSession (securityManagerPrincipal);
+    }
+
+    protected ISecurityManagerPrincipal LoadPrincipalFromSession ()
+    {
+      return (ISecurityManagerPrincipal) Session[s_principalKey] ?? SecurityManagerPrincipal.Null;
+    }
+
+    protected void SavePrincipalToSession (ISecurityManagerPrincipal principal)
+    {
+      ArgumentUtility.CheckNotNull ("principal", principal);
+
+      Session[s_principalKey] = principal;
+    }
+
+    protected bool HasSessionState
+    {
+      get { return Context.Handler is IRequiresSessionState; }
+    }
+
+    public override void Init ()
+    {
+      base.Init();
+
+      if (SecurityManagerPrincipalFactory == null)
+        SecurityManagerPrincipalFactory = SafeServiceLocator.Current.GetInstance<ISecurityManagerPrincipalFactory>();
+
+      PostAcquireRequestState += SecurityManagerHttpApplication_PostAcquireRequestState;
+    }
+
+    private void SecurityManagerHttpApplication_PostAcquireRequestState (object sender, EventArgs e)
+    {
+      if (HasSessionState)
+      {
+        ISecurityManagerPrincipal principal;
+        if (Session.IsNewSession)
+          principal = GetSecurityManagerPrincipalByUserName (Context.User);
+        else
+          principal = LoadPrincipalFromSession();
+
+        SetCurrentPrincipal (principal);
+      }
+    }
+
+    private ISecurityManagerPrincipal GetSecurityManagerPrincipalByUserName (IPrincipal principal)
+    {
+      if (!principal.Identity.IsAuthenticated)
+        return SecurityManagerPrincipal.Null;
+
+      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
+      {
+        using (SecurityFreeSection.Activate())
+        {
+          var user = SecurityManagerUser.FindByUserName (principal.Identity.Name);
+          if (user == null)
+            return SecurityManagerPrincipal.Null;
+          else
+            return SecurityManagerPrincipalFactory.Create (user.Tenant.GetHandle(), user.GetHandle(), null);
+        }
+      }
+    }
+  }
+}

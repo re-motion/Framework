@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>http://opensource.org/licenses/LGPL-2.1</licenseUrl>
+    <projectUrl>http://www.re-motion.org</projectUrl>
+    <description>$description$</description>
+    <copyright>$copyright$</copyright>
+    <tags>$tags$ $extraTags$</tags>
+  </metadata>
+  <files>
+    <!-- The wildcard is required to support using a referenced nuspec-file for building the nuget package 
+         and a local nuspec-file for supplying the dependency information in downstream projects. 
+         The NuGet commandline tool tries to evaluate the file inclusion list also for referenced projects, 
+         but does not supply the referenced project as the base directory. 
+         Note: This also makes the pdb-file optional for the nuget-package. This is acceptable. -->
+    <file src="bin\$configuration$\$id$.pdb*" target="lib\net45" />
+    <file src="bin\$configuration$\**\$id$.resources.dll" target="lib\net45" />
+    <file src="FacetManifest.xml*" />
+    <file src="$documentationFile$" target="doc" />
+    <!-- By using a wildcard, the file-inclusion does not fail if no schema folder exists. -->
+    <file src="Schemas*\*.xsd" target="schema" />
+    <file src="Res\**\*" target="res" />
+    <file src="UI\**\*.as?x;UI\**\*.master" target="res/UI" />
+    <file src="UrlMapping.xml*" target="res" />
+    <file src="$NuSpecFolder$Web.targets" target="build\$id$.targets" />
+    <file src="$NuSpecFolder$Install.ps1" target="tools" />
+    <file src="$NuSpecFolder$Uninstall.ps1" target="tools" />
+  </files>
+</package>

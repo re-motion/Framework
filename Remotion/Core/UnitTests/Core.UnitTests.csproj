@@ -1,0 +1,643 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C216DEC9-8820-4298-B10F-FB4131466B69}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Remotion.UnitTests</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.UnitTests</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG;</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>0067</NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>0067</NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Reflection\Core.Reflection.csproj">
+      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
+      <Name>Core.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tools\Core.Tools.csproj">
+      <Project>{18269689-DC0F-4975-879B-A6ACBA0FA596}</Project>
+      <Name>Core.Tools</Name>
+    </ProjectReference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.0.1.526, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>4.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
+      <Project>{b719a305-0493-4c72-88fe-9a2fc6964578}</Project>
+      <Name>Development.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Development\RhinoMocks\Development.RhinoMocks.csproj">
+      <Project>{2177143e-345f-4faa-9958-1ae2b5eed242}</Project>
+      <Name>Development.RhinoMocks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.Core.csproj">
+      <Name>Core.Core</Name>
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\EnumerableExtensionsTest.cs">
+      <Link>SharedSource\FunctionalProgramming\EnumerableExtensionsTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\EnumerableUtilityTest.cs">
+      <Link>SharedSource\FunctionalProgramming\EnumerableUtilityTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\MaybeTest.cs">
+      <Link>SharedSource\FunctionalProgramming\MaybeTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\TestDomain\Element.cs">
+      <Link>SharedSource\FunctionalProgramming\TestDomain\Element.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\TestDomain\FakeElementEqualityComparer.cs">
+      <Link>SharedSource\FunctionalProgramming\TestDomain\FakeElementEqualityComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\TestDomain\RecursiveItem.cs">
+      <Link>SharedSource\FunctionalProgramming\TestDomain\RecursiveItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotEmpty.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotEmpty.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotNull.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotNull.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotNullAndType.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotNullAndType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotNullAndTypeIsAssignableFrom.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotNullAndTypeIsAssignableFrom.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotNullOrEmpty.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotNullOrEmpty.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotNullOrEmptyOrItemsNull.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotNullOrEmptyOrItemsNull.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotNullOrItemsNull.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotNullOrItemsNull.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckType.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckType2.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckType2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckTypeIsAssignableFrom.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckTypeIsAssignableFrom.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckTypeObsolete.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckTypeObsolete.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\AssertionTest.cs">
+      <Link>SharedSource\Utilities\AssertionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\AttributeUtilityTests\AttributeUsageTest.cs">
+      <Link>SharedSource\Utilities\AttributeUtilityTest\AttributeUsageTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\EqualityUtilityTest.cs">
+      <Link>SharedSource\Utilities\EqualityUtilityTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\FileUtilityTest.cs">
+      <Link>SharedSource\Utilities\FileUtilityTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTest.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\ClassWithFields.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\ClassWithFields.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\ClassWithMethods.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\ClassWithMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\ClassWithProperties.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\ClassWithProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithFields.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithFields.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithMethods.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithProperties.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\FakeMemberInfo.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\FakeMemberInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\GenericClassWithMethods.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\GenericClassWithMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoFromExpressionUtilityTest.cs">
+      <Link>SharedSource\Utilities\MemberInfoFromExpressionUtilityTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\NullableTypeUtilityTest.cs">
+      <Link>SharedSource\Utilities\NullableTypeUtilityTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ReferenceEqualityComparerTest.cs">
+      <Link>SharedSource\Utilities\ReferenceEqualityComparerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="Collections\EnumerableExtensions.cs" />
+    <Compile Include="PermanentGuidAttributeTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\ContextAwareTypeDiscoveryUtilityTest.cs" />
+    <Compile Include="Reflection\TypeResolution\DefaultTypeResolutionServiceTest.cs" />
+    <Compile Include="Xml\XmlSerializationUtilityTests\TestDomain\SampleTypeWithoutXmlAttributes.cs" />
+    <Compile Include="Xml\XmlSerializationUtilityTests\TestDomain\SampleTypeWithXmlRoot.cs" />
+    <Compile Include="Xml\XmlSerializationUtilityTests\TestDomain\SampleTypeWithXmlRootAndXmlType.cs" />
+    <Compile Include="Xml\XmlSerializationUtilityTests\TestDomain\SampleTypeWithXmlRootWithoutNamespace.cs" />
+    <Compile Include="Xml\XmlSerializationUtilityTests\TestDomain\SampleTypeWithXmlType.cs" />
+    <Compile Include="Xml\XmlSerializationUtilityTests\TestDomain\SampleTypeWithXmlTypeWithoutNamespace.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\DelaySignAssembly\DelaySignClass.cs" />
+    <Compile Include="Collections\CacheFactoryTest.cs" />
+    <Compile Include="Collections\LockingCacheInvalidationTokenTest.cs" />
+    <Compile Include="Collections\CacheInvalidationTokenTest.cs" />
+    <Compile Include="Collections\CollectionExtensionsTest.cs" />
+    <Compile Include="Collections\CompoundValueEqualityComparerTest.cs" />
+    <Compile Include="Collections\ComponentwiseEqualsAndHashcodeWrapperTest.cs" />
+    <Compile Include="Collections\DataStoreFactoryTest.cs" />
+    <Compile Include="Collections\DictionaryExtensionsTest.cs" />
+    <Compile Include="Collections\ExpiringDataStoreFactoryTest.cs" />
+    <Compile Include="Collections\ExpiringDataStoreTest.cs" />
+    <Compile Include="Collections\ImmutableSingletonTest.cs" />
+    <Compile Include="Collections\InvalidationTokenBasedCacheDecoratorTest.cs" />
+    <Compile Include="Collections\LazyLockingCachingAdapterTest.cs" />
+    <Compile Include="Collections\LazyLockingDataStoreAdapterTest.cs" />
+    <Compile Include="Collections\ListAdapterTest.cs" />
+    <Compile Include="Collections\ReadOnlyCollectionDecoratorTest.cs" />
+    <Compile Include="Collections\TimeSpanBasedExpirationPolicyTest.cs" />
+    <Compile Include="Configuration\ServiceLocation\FakeServiceLocatorProvider.cs" />
+    <Compile Include="Configuration\ServiceLocation\ServiceLocationConfigurationTest.cs" />
+    <Compile Include="Configuration\TypeDiscovery\IntegrationTests\SpecificRootAssemblies\SpecificRootAssembliesAreNotSubjectToApplicationFilterTest.cs" />
+    <Compile Include="Context\ISafeContextStorageProviderTest.cs" />
+    <Compile Include="Context\SafeContextIntegrationTest.cs" />
+    <Compile Include="Context\SafeContextTest.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByNameRootAssemblyElementCollectionTest.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByFileRootAssemblyElementCollectionTest.cs" />
+    <Compile Include="Configuration\TypeDiscovery\FakeRootAssemblyFinder.cs" />
+    <Compile Include="Configuration\TypeDiscovery\FakeTypeDiscoveryService.cs" />
+    <Compile Include="Configuration\TypeDiscovery\RootAssembliesElementTest.cs" />
+    <Compile Include="Configuration\TypeDiscovery\TypeDiscoveryConfigurationTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\DebugTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\ErrorTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\FatalTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\InfoTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\WarningTest.cs" />
+    <Compile Include="Logging\LogExtensionsTests\BaseTest.cs" />
+    <Compile Include="Logging\LogExtensionsTests\LogTest.cs" />
+    <Compile Include="Reflection\CodeGeneration\TestDomain\ClassWithConstrainedGenericMethod.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Reflection\CodeGeneration\TestDomain\GenericClassWithGenericMethod.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Reflection\MethodInfoExtensionsTests\FindDeclaringProperty.cs" />
+    <Compile Include="Reflection\TestDomain\MethodInfoExtensions\ClassWithDifferentMethods.cs" />
+    <Compile Include="Reflection\TestDomain\MethodInfoExtensions\ClassWithReferenceType.cs" />
+    <Compile Include="Reflection\TestDomain\MethodInfoExtensions\DerivedClassWithDifferentMethods.cs" />
+    <Compile Include="Reflection\TestDomain\MethodInfoExtensions\DerivedClassWithReferenceType.cs" />
+    <Compile Include="Reflection\TestDomain\MethodInfoExtensions\DerivedOfDerivedClassWithDifferentMethods.cs" />
+    <Compile Include="Reflection\TestDomain\MethodInfoExtensions\IInterfaceWithReferenceType.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\AssemblyCompilerBuildOutputManager.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\AssemblyFinding\TestAssemblies\AssemblyFinderTest\RemotionCoreReferencingAssembly\AssemblyInfo.cs" />
+    <Compile Include="Context\SafeContextSingletonTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\BaseTypeCacheTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\BaseTypeCacheTestDomain\Cat.cs" />
+    <Compile Include="Reflection\TypeDiscovery\BaseTypeCacheTestDomain\Dog.cs" />
+    <Compile Include="Reflection\TypeDiscovery\BaseTypeCacheTestDomain\IHamster.cs" />
+    <Compile Include="Reflection\TypeDiscovery\BaseTypeCacheTestDomain\ILongHairedBreed.cs" />
+    <Compile Include="Reflection\TypeDiscovery\BaseTypeCacheTestDomain\IInterfaceForValueType.cs" />
+    <Compile Include="Reflection\TypeDiscovery\BaseTypeCacheTestDomain\MaineCoon.cs" />
+    <Compile Include="Reflection\TypeDiscovery\BaseTypeCacheTestDomain\Pet.cs" />
+    <Compile Include="Reflection\TypeDiscovery\BaseTypeCacheTestDomain\Ragdoll.cs" />
+    <Compile Include="Reflection\TypeDiscovery\BaseTypeCacheTestDomain\Siberian.cs" />
+    <Compile Include="Reflection\TypeDiscovery\BaseTypeCacheTestDomain\ValueTypeWithInterface.cs" />
+    <Compile Include="ServiceLocation\BootstrapServiceConfigurationTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorProviderTest.cs" />
+    <Compile Include="ServiceLocation\ServiceConfigurationRegistryExtensionsTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\GenericService_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\ServiceProvider_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\Muliple_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\ConstructorInjection_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\Single_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\Errors_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\Decorator_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\Compound_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestBase.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\ITestGeneric.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\InstanceService.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\ITestType.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\MultipleService.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\ParameterizedService.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\SingleService.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\SingletonService.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\TestCompound.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\TestDecorator.cs" />
+    <Compile Include="ServiceLocation\IMemberInformationNameResolverTest.cs" />
+    <Compile Include="ServiceLocation\ServiceImplementationInfoTest.cs" />
+    <Compile Include="ServiceLocation\TestDomain\IInterfaceWithIndirectActivationExceptionForCollectionParameter.cs" />
+    <Compile Include="ServiceLocation\TestDomain\IInterfaceWithIndirectActivationException.cs" />
+    <Compile Include="ServiceLocation\TestDomain\IInterfaceWithoutImplementation.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestCompoundMixedRegistrationTypes.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\ITestCompoundWithErrors.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestStackedDecorators.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestDecoratedCompound.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestDecoratorRegistration.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\ITestDecoratorWithErrors.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestCompoundRegistration.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestConcreteImplementationAttributeWithUnresolvableImplementationType.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestMixedRegistrationTypes.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestMultipleImplementationsForRegistrationTypeSingle.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestMultipleConcreteImplementationAttributesType.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestMultipleRegistrationsType.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestOpenGenericService.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestRegistrationTypeSingleTypeThrowingExceptionInCtor.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestRegistrationTypeSingle.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestRegistrationTypeMultiple.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestImplementationForAttributeType.cs" />
+    <Compile Include="ServiceLocation\TestDomain\StubService.cs" />
+    <Compile Include="ServiceLocation\TypeNameTemplateResolverTest.cs" />
+    <Compile Include="Logging\ILogManagerTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\IsEnabledTest.cs" />
+    <Compile Include="Logging\LogExtensionsTest.cs" />
+    <Compile Include="Reflection\CodeGeneration\TestMethodReferencingAttribute.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\CachingAssemblyFinderDecoratorTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FixedRootAssemblyFinderTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\NamedRootAssemblyFinderTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\RootAssemblyTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\LoadAllAssemblyLoaderFilterTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\DerivedMarkerAttribute.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\ApplicationAssemblyLoaderFilterTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\CompositeRootAssemblyFinderTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FilePatternRootAssemblyFinderTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\RegexAssemblyLoaderFilterTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\SearchPathRootAssemblyFinderTest.cs" />
+    <Compile Include="ServiceLocation\ActivationPerformanceTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceConfigurationDiscoveryServiceTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\SafeServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\ServiceConfigurationEntryTest.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestConcreteImplementationAttributeTypeWithInvalidImplementation.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestConstructorInjectionWithOneParameter.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestConstructorInjectionWithOneParameterWithInstanceLifetime.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestConstructorInjectionWithOneParameterWithSingletonLifetime.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestConstructorInjectionWithThreeParameters.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestInstanceConcreteImplementationAttributeType.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestSingletonConcreteImplementationAttributeType.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\ITestTypeWithErrors.cs" />
+    <Compile Include="ServiceLocation\TestDomain\TestConcreteImplementationAttributeType.cs" />
+    <Compile Include="ServiceLocation\TestDomain\TestConstructorInjectionForServiceWithoutConcreteImplementationAttribute.cs" />
+    <Compile Include="Reflection\MethodResolverTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromEventInfoTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromMethodInfoTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromMemberInfoTestBase.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\PerformanceTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\BaseWithInheritedNonMultipleAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\DerivedShadowingNonMultipleAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\NotInheritedAttribute.cs" />
+    <Compile Include="Utilities\CompoundComparerTest.cs" />
+    <Compile Include="Utilities\CompoundTypeConverterFactoryTest.cs" />
+    <Compile Include="Utilities\DefaultConverterTest.cs" />
+    <Compile Include="Utilities\DelegateBasedComparerTest.cs" />
+    <Compile Include="Utilities\DelegateBasedEqualityComparerTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\AssemblyFinderTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\FilteringAssemblyLoaderTest.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\FileLoadExceptionConsoleApplication\Program.cs" />
+    <Compile Include="Reflection\CodeGeneration\MethodReferencingAttributeTest.cs" />
+    <Compile Include="Collections\LockingDataStoreDecoratorTest.cs" />
+    <Compile Include="Collections\SimpleDataStoreTest.cs" />
+    <Compile Include="Context\CallContextStorageProviderTest.cs" />
+    <Compile Include="Collections\LockingCacheDecoratorTest.cs" />
+    <Compile Include="Collections\AutoInitDictionaryTest.cs" />
+    <Compile Include="Configuration\ConstructorException.cs" />
+    <Compile Include="Configuration\ThrowingFakeProvider.cs" />
+    <Compile Include="Configuration\ExtendedProviderBaseTest.cs" />
+    <Compile Include="Configuration\FakeWellKnownProvider.cs" />
+    <Compile Include="Configuration\IFakeProvider.cs" />
+    <Compile Include="Configuration\DerivedSampleType.cs" />
+    <Compile Include="Configuration\FakeProvider.cs" />
+    <Compile Include="Configuration\ProviderHelperBaseTest.cs" />
+    <Compile Include="Configuration\StubExtendedConfigurationSection.cs" />
+    <Compile Include="Configuration\StubExtendedProvider.cs" />
+    <Compile Include="Configuration\StubProviderHelper.cs" />
+    <Compile Include="Configuration\TypeElement2Test.cs" />
+    <Compile Include="Configuration\FakeOtherProvider.cs" />
+    <Compile Include="Configuration\FakeProviderBase.cs" />
+    <Compile Include="Configuration\SampleType.cs" />
+    <Compile Include="Configuration\TypeElementTest.cs" />
+    <Compile Include="Design\DesignModeHelperBaseTest.cs" />
+    <Compile Include="Design\StubDesignModeHelper.cs" />
+    <Compile Include="DoubleCheckedLockingContainerTest.cs" />
+    <Compile Include="Logging\Log4NetLogManagerTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\BaseTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\ConvertTest.cs" />
+    <Compile Include="Logging\LogExtensionsTests\DebugTest.cs" />
+    <Compile Include="Logging\LogExtensionsTests\ErrorTest.cs" />
+    <Compile Include="Logging\LogExtensionsTests\FatalTest.cs" />
+    <Compile Include="Logging\LogExtensionsTests\InfoTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\LogTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\LogToEventLogTest.cs" />
+    <Compile Include="Logging\LogExtensionsTests\WarningTest.cs" />
+    <Compile Include="Logging\Log4NetTraceListenerTest.cs" />
+    <Compile Include="Logging\LogManagerTest.cs" />
+    <Compile Include="Logging\SampleType.cs" />
+    <EmbeddedResource Include="Utilities\TestData\WriteEmbeddedStringResourceToFileTestData.txt" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\CacheTest.cs" />
+    <Compile Include="Collections\NullCacheTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AttributeAssemblyLoaderFilterTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\AssemblyFinderIntegrationTest.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedExeAssembly\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\UnmarkedAssembly\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\UnmarkedInMemoryAssembly\AssemblyInfo.cs" />
+    <Compile Include="Reflection\TypeDiscovery\MarkerAttribute.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\SecondInMemoryAssembly\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedAssembly\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedAssemblyWithDerivedAttribute\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedAssemblyWithDerivedAttributeInOtherDirectory\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\FirstInMemoryAssembly\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedReferencedAssembly\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedAssembly\SampleType.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedReferencedAssembly\ReferencedSampleType.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedAssemblyInRelativeSearchPath\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedExeAssemblyInRelativeSearchPath\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedAssemblyInDynamicDirectory\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedExeAssemblyInDynamicDirectory\AssemblyInfo.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinderTypeDiscoveryServiceTest.cs" />
+    <Compile Include="Reflection\ContextAwareTypeUtilityTest.cs" />
+    <Compile Include="Reflection\InheritanceHierarchyFilterTest.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedAssemblyWithOtherFileNameInRelativeSearchPath\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\NonApplicationMarkedAssembly\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\NonApplicationMarkedAssembly\SampleType.cs" />
+    <Compile Include="Utilities\AdvancedEnumConverterTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckEnums.cs" />
+    <Compile Include="Utilities\ArrayUtilityTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\AttributeUtilityTests\AttributeWithMetadataTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\IsDefined_WithSuppressTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromType_WithSuppressTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesWithMetadataTest.cs" />
+    <Compile Include="Utilities\AdvancedEnumConverterTest_Flags.cs" />
+    <Compile Include="Utilities\CultureScopeTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\BaseInheritedAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\BaseClassWithAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\BaseWithAttributesForSuppressed.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\ClassWithNonInheritedAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\ClassWithoutAttributes.cs" />
+    <Compile Include="Utilities\CustomAttributeUtilityTestDomain\ComplexAttributeTarget.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromTypeTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\BaseNonInheritedAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\InheritedNotMultipleAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\DerivedDerivedDerivedSuppressed.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\DerivedDerivedWithAttributesForSuppressed.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\DerivedNonInheritedAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\DerivedClassWithAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\DerivedInheritedAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\DerivedWithAttributesAndSuppressed.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\NotInheritedNotMultipleAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\ImplicitUsageAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\IsDefinedFromPropertyInfoTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\MultipleAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\DerivedSampleClass.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributeFromPropertyInfoTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromPropertyInfoTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\ICustomAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\InheritedAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\SampleClass.cs" />
+    <Compile Include="Utilities\CustomAttributeUtilityTestDomain\AttributeWithFieldParams.cs" />
+    <Compile Include="Utilities\CustomAttributeUtilityTestDomain\AttributeWithPropertyAndFieldParams.cs" />
+    <Compile Include="Utilities\CustomAttributeUtilityTestDomain\AttributeWithPropertyParams.cs" />
+    <Compile Include="Utilities\BidirectionalStringConverterTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\CustomAttributeUtilityTestDomain\ComplexAttribute.cs" />
+    <Compile Include="Utilities\AttributeBasedTypeConverterFactoryTest.cs" />
+    <Compile Include="Utilities\EnumTypeConverterFactoryTest.cs" />
+    <Compile Include="Utilities\EnumUtilityTests\UInt16Enum.cs" />
+    <Compile Include="Utilities\EnumUtilityTests\UInt32Enum.cs" />
+    <Compile Include="Utilities\EnumUtilityTests\UInt64Enum.cs" />
+    <Compile Include="Utilities\EnumUtilityTests\ByteEnum.cs" />
+    <Compile Include="Utilities\EnumUtilityTests\Int64Enum.cs" />
+    <Compile Include="Utilities\EnumUtilityTests\SByteEnum.cs" />
+    <Compile Include="Utilities\EnumUtilityTests\Int16Enum.cs" />
+    <Compile Include="Utilities\EnumUtilityTests\Int32Enum.cs" />
+    <Compile Include="Utilities\EnumUtilityTests\Common.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\FileUtilityTest.cs" />
+    <Compile Include="Utilities\InvertedComparerDecoratorTest.cs" />
+    <Compile Include="Utilities\ITypeConversionProviderTest.cs" />
+    <Compile Include="Utilities\ITypeConverterFactoryTest.cs" />
+    <Compile Include="Utilities\NameValueCollectionUtilityTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\NullComparerTest.cs" />
+    <Compile Include="Utilities\NullValueConverterTest.cs" />
+    <Compile Include="Reflection\TypeExtensionsTests\CanAscribe_WithGenericClass.cs" />
+    <Compile Include="Reflection\TypeExtensionsTests\CanAscribe_WithGenericInterface.cs" />
+    <Compile Include="Reflection\TypeExtensionsTests\CanAscribe_WithNonGenericClass.cs" />
+    <Compile Include="Reflection\TypeExtensionsTests\CanAscribe_WithNonGenericInterface.cs" />
+    <Compile Include="Reflection\PropertyInfoExtensionsTests\GetBaseDefinition.cs" />
+    <Compile Include="Reflection\PropertyInfoExtensionsTests\IsOriginalDeclaration.cs" />
+    <Compile Include="Reflection\MethodInfoExtensionsTests\GetOriginalDeclaringType.cs" />
+    <Compile Include="Reflection\TestDomain\PropertyInfoExtensions\ClassWithDifferentProperties.cs" />
+    <Compile Include="Reflection\TestDomain\PropertyInfoExtensions\DerivedClosedGenericClassWithDifferentProperties.cs" />
+    <Compile Include="Reflection\TestDomain\PropertyInfoExtensions\DerivedOfDerivedClassWithDifferentProperties.cs" />
+    <Compile Include="Reflection\TestDomain\PropertyInfoExtensions\GenericClassWithDifferentProperties.cs" />
+    <Compile Include="Reflection\TestDomain\PropertyInfoExtensions\DerivedOpenGenericClassWithDifferentProperties.cs" />
+    <Compile Include="Reflection\TestDomain\PropertyInfoExtensions\DerivedClassWithDifferentProperties.cs" />
+    <Compile Include="Reflection\TypeExtensionsTests\GetAscribedGenericArguments_WithGenericClass.cs" />
+    <Compile Include="Reflection\TypeExtensionsTests\GetAscribedGenericArguments_WithGenericInterface.cs" />
+    <Compile Include="Reflection\TypeExtensionsTests\GetAscribedGenericArguments_WithNonGenericClass.cs" />
+    <Compile Include="Reflection\TypeExtensionsTests\GetAscribedGenericArguments_WithNonGenericInterface.cs" />
+    <Compile Include="Reflection\PropertyInfoExtensionsTests\GetOriginalDeclaringType.cs" />
+    <Compile Include="Reflection\PropertyInfoExtensionsTests\GuessIsExplicitInterfaceProperty.cs" />
+    <Compile Include="Reflection\TypeExtensionsTests\SampleTypes.cs" />
+    <Compile Include="Utilities\StopwatchScopeTest.cs" />
+    <Compile Include="Utilities\StubStringUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\StringUtilityTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\CustomAttributeUtilityTestDomain\TestAttributeApplicationWithCtorArgumentsAndNamedFields.cs" />
+    <Compile Include="Utilities\CustomAttributeUtilityTestDomain\TestAttributeApplicationWithCtorArgumentsAndNamedProperties.cs" />
+    <Compile Include="Utilities\CustomAttributeUtilityTestDomain\TestAttributeApplicationWithCtorArgumentsNamedPropertiesAndNamedFields.cs" />
+    <Compile Include="Utilities\TypeConversionProviderTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\TypeNameConverterTest.cs" />
+    <Compile Include="Utilities\TypeUtilityTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\UtcNowProviderTest.cs" />
+    <Compile Include="Xml\SampleClass.cs" />
+    <Compile Include="Xml\SchemaLoaderBaseMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Xml\SchemaLoaderBaseTest.cs" />
+    <Compile Include="Xml\XmlSerializationUtilityTests\DeserializeUsingSchema.cs" />
+    <Compile Include="Xml\XmlSerializationUtilityTests\GetNamespaceTest.cs" />
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\DelaySignAssembly\PublicKey.snk" />
+    <None Include="..\..\Remotion LGPL.licenseheader">
+      <Link>Remotion LGPL.licenseheader</Link>
+    </None>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\FileLoadExceptionConsoleApplication\app.config" />
+    <None Include="packages.config" />
+    <None Include="Xml\SampleClass.xsx">
+      <DependentUpon>SampleClass.xsd</DependentUpon>
+    </None>
+    <EmbeddedResource Include="Xml\SampleClass.xsd">
+      <SubType>
+      </SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Xml\SchemaLoaderBaseMock.xsd">
+      <SubType>
+      </SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="AfterBuild">
+    <Delete Files="@(TestAssembly->'$(MSBuildProjectDirectory)\$(OutputPath)\%(Directory)')" />
+    <Copy SourceFiles="@(TestAssembly->'%(Fullpath)')" DestinationFiles="@(TestAssembly->'$(MSBuildProjectDirectory)\$(OutputPath)\%(Identity)')" />
+  </Target>
+</Project>

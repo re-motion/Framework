@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:c="http://www.re-motion.org/web/configuration" 
+    elementFormDefault="qualified" 
+    attributeFormDefault="unqualified" 
+    targetNamespace="http://www.re-motion.org/web/configuration">
+  <xs:element name="remotion.web">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="executionEngine" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="functionTimeout" type="xs:int" default="20" />
+            <xs:attribute name="enableSessionManagement" type="xs:boolean" default="true" />
+            <xs:attribute name="refreshInterval" type="xs:int" default="10" />
+            <xs:attribute name="urlMappingFile" type="xs:string" default="" />
+            <xs:attribute name="maximumUrlLength" type="xs:int" default="1024" />
+            <xs:attribute name="defaultWxeHandler" type="xs:string" default="" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="wcag" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="conformanceLevel" type="c:WcagLevel" default="Undefined" />
+            <xs:attribute name="debugging" type="c:WcagDebugMode" default="Disabled" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="resources" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="root" type="xs:string" default="res" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="smartNavigation" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="enableScrolling" type="xs:boolean" default="true" />
+            <xs:attribute name="enableFocusing" type="xs:boolean" default="true" />
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="WcagLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Undefined" />
+      <xs:enumeration value="A" />
+      <xs:enumeration value="DoubleA" />
+      <xs:enumeration value="TripleA" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="WcagDebugMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Disabled" />
+      <xs:enumeration value="Logging" />
+      <xs:enumeration value="Exception" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

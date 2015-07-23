@@ -1,0 +1,40 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Layout.master.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Layout" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head runat="server">
+    <title>ObjectBinding.Web.Development.WebTesting.TestSite</title>
+    <style type="text/css">
+      div.container
+      {
+        margin-top: 1em;
+        padding: 0 1em 1em;
+        border: 1px dotted black;
+      }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+  </head>
+  <body>
+    <form id="form1" runat="server">
+      <asp:ScriptManager ID="ScriptManager" EnablePartialRendering="true" AsyncPostBackTimeout="3600" runat="server" />
+      <div class="container">
+        <h3>Test control:</h3>
+        <asp:ContentPlaceHolder ID="body" runat="server">
+        </asp:ContentPlaceHolder>
+      </div>
+      <div class="container">
+        <h3>Test output:</h3>
+        <asp:UpdatePanel ID="MainUpdatePanel" UpdateMode="Always" runat="server">
+          <ContentTemplate>
+            <asp:ContentPlaceHolder ID="testOutput" runat="server">
+            </asp:ContentPlaceHolder>
+          </ContentTemplate>
+        </asp:UpdatePanel>
+      </div>
+      <div class="container">
+        <h3>Need to refresh?</h3>
+        <asp:HyperLink ID="RefreshButton" runat="server">Click here to Refresh page</asp:HyperLink>
+      </div>
+    </form>
+  </body>
+</html>

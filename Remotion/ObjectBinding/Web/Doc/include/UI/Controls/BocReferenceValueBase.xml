@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<BocReferenceValueBase>
+  <LoadPostData>
+    <remarks>
+      <para>
+        Sets the new value and the <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> flag if the value
+        has changed.
+      </para>
+      <para>
+        Evaluates the value of the <see cref="DropDownList"/>.
+      </para>
+      <note type="inheritinfo">
+        Overrive this method to change the way of detecting a changed value when read from the
+        <paramref name="postCollection"/>.
+      </note>
+    </remarks>
+    <param name="postDataKey"> The key identifier for this control. </param>
+    <param name="postCollection"> The collection of all incoming name values.  </param>
+    <returns>
+      <see langword="true"/> if the server control's state changes as a result of the post back;
+      otherwise <see langword="false"/>.
+    </returns>
+  </LoadPostData>
+  <Value>
+    <value>
+      The <see cref="IBusinessObjectWithIdentity"/> currently displayed
+      or <see langword="null"/> if no item / the null item is selected.
+    </value>
+    <remarks>
+      <para>
+        Only the <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the value is cached between postbacks.
+        In order to return a value, the control requires the <see cref="Property"/> to be set.
+        The <see cref="Property"/>'s <see cref="IBusinessObjectReferenceProperty.ReferenceClass"/> is then used to get
+        the <see cref="IBusinessObjectWithIdentity"/> for the cached <b>ID</b>. If it is not possible to assign a <see cref="Property"/>,
+        you can use <see cref="BocReferenceValueBase.BusinessObjectUniqueIdentifier"/> to get the <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the current object.
+      </para>
+      <para>
+        The dirty state is set when the value is set.
+      </para>
+    </remarks>
+  </Value>
+  <InitializeMenusItems>
+    <remarks>
+      <para>
+        Use this method to modify the list of menu items.
+      </para>
+      <note type="inheritinfo">
+        It is required that the list of menu items remains constant accross the page's life cycles. Only the properties
+        may be modified.
+      </note>
+    </remarks>
+  </InitializeMenusItems>
+  <PreRenderMenusItems>
+    <remarks>
+      Use this method to change the menu items' properties (such as their visibility).
+    </remarks>
+  </PreRenderMenusItems>
+
+</BocReferenceValueBase>

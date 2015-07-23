@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<Person xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" FirstName="John" LastName="Doe" DateOfBirth="2008-04-04T12:00:00" Height="179" Gender="Male" MarriageStatus="Married" DateOfDeath="2070-01-01">
+  <Income>2000</Income>
+  <PartnerID>00000000-0000-0000-0000-000000000009</PartnerID>
+  <ChildIDs>c8ace752-55f6-4074-8890-130276ea6cd1</ChildIDs>
+  <ChildIDs>011ace7d-5149-4117-8ace-dd33d80b8f96</ChildIDs>
+  <ChildIDs>9e713934-1226-4669-880e-c07c22cdab19</ChildIDs>
+  <ChildIDs>88ca0bf3-2a08-4d93-bee7-0454052a922d</ChildIDs>
+  <ChildIDs>a97d84b0-c1c9-4580-a6c1-1fed1ee8c041</ChildIDs>
+  <ChildIDs>19214979-d614-4afa-b074-7b05fe37ea65</ChildIDs>
+  <JobIDs>89dc8cd2-30e0-4bb3-92a0-4587f32492f5</JobIDs>
+  <JobIDs>0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98</JobIDs>
+  <Deceased>false</Deceased>
+  <CV>&lt;Test 1&gt;</CV>
+  <CV>Test 2</CV>
+  <CV>Test 3</CV>
+</Person>

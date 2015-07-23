@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<xs:schema id="SchemaLoaderBaseTestSchema" 
+                  targetNamespace="http://www.re-motion.org/Core/Test/Xml/SchemaLoaderBaseMock"
+                  elementFormDefault="qualified"
+                  attributeFormDefault="unqualified"
+                  xmlns="http://www.re-motion.org/Core/Test/Xml/SchemaLoaderBaseMock"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+</xs:schema>

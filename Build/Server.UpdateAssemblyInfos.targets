@@ -1,0 +1,25 @@
+﻿<?xml version="1.0"  encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="UpdateAssemblyInfosForTag">
+    <Error Text="The property 'BuildProperties' is not set." Condition="'$(BuildProperties)' == ''" />
+
+    <MSBuild Projects="@(ProjectsBuildServer)"
+             Targets="CreateAdditionalBuildMetadata;UpdateAssemblyInfos"
+             Properties="$(BuildProperties);ConfigurationID=Debug;"
+             BuildInParallel="false" />
+
+  </Target>
+
+  <Target Name="UpdateAssemblyInfosForLocalBuild">
+    <Error Text="The property 'LocalVersion' is not set." Condition="'$(LocalVersion)' == ''" />
+    <Error Text="The property 'BuildProperties' is not set." Condition="'$(BuildProperties)' == ''" />
+
+    <MSBuild Projects="@(ProjectsBuildServer)"
+             Targets="UpdateAssemblyInfosLocalBuild"
+             Properties="$(BuildProperties);Version=$(LocalVersion);"
+             BuildInParallel="false" />
+
+  </Target>
+
+</Project>

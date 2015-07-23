@@ -1,0 +1,31 @@
+﻿table 
+{
+  background-color: white;
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  table-layout: auto;
+  border-collapse: collapse;
+  border-spacing: 10px;
+  empty-cells: show;
+  caption-side: top;
+  font-family: Arial, Helvetica, sans-serif;
+  vertical-align: text-top;
+  text-align: left;
+}
+
+th, td
+{
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  table-layout: auto;
+  border-collapse: collapse;
+  border-spacing: 1px;
+  padding: 5px;
+} 
+
+th
+{
+   background-color: #CCCCCC;
+}    

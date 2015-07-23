@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<ExecutionEngineConfiguration>
+
+  <Class>
+    <remarks> 
+      See the <see cref="WebConfiguration"/> for details on registering the <c>remotion.web</c> configuration section.
+    </remarks>
+    <seealso cref="WebConfiguration"/>
+    <example>
+      Setting the <c>executionEngine</c> entry's values in the <c>remotion.web</c> configuration section.
+      <code>
+<![CDATA[
+<remotion.web xmlns="http://www.re-motion.org/web/configuration"> 
+  <executionEngine 
+      defaultWxeHandler="~/WxeHandler.ashx"
+      enableSessionManagement="true" 
+      functionTimeout="20" 
+      refreshInterval="10" 
+      urlMappingFile="C:\ProjectDirectory\UrlMapping.xml"
+  />
+  <!-- Other configuration section entries. -->
+</remotion.web>
+]]></code>
+      <note>
+        The values used for the <see cref="DefaultWxeHandler">defaultWxeHandler</see> and 
+        <see cref="UrlMappingFile">urlMappingFile</see> do not correspond to the default settings, which is 
+        undefined <see cref="String.Empty">String.Empty</see>).
+      </note>
+    </example>
+  </Class>
+  
+  <EnableSessionManagement>
+    <value>
+      <see langword="true"/> to enable session management. Defaults to <see langword="true"/>.
+    </value>
+    <remarks> 
+      Session management relies on javascript and is fully supported by browsers other than 
+      <list type="bullet">
+        <item> Internet Explorer 5.01+</item>
+        <item> Firefox 0.9+</item>
+        <item> Mozila 1.7+</item>
+      </list>
+      Other browsers present no confirmation dialog upon leaving the page.
+    </remarks>
+  </EnableSessionManagement>
+  
+  <RefreshIntervall>
+    <value> 
+      The timeout in mintues. Use zero to disable refreshing. Defaults to 10 minutes. Must not be a negative number.
+    </value>
+    <remarks> 
+      The value must be less than both the <see cref="FunctionTimeout"/> and the 
+      <see cref="System.Web.SessionState.HttpSessionState.Timeout"/>.
+    </remarks>
+  </RefreshIntervall>
+  
+</ExecutionEngineConfiguration>

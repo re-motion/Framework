@@ -1,0 +1,44 @@
+<%-- This file is part of re-strict (www.re-motion.org)
+ % Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ % 
+ % This program is free software; you can redistribute it and/or modify
+ % it under the terms of the GNU Affero General Public License version 3.0 
+ % as published by the Free Software Foundation.
+ % 
+ % This program is distributed in the hope that it will be useful, 
+ % but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ % GNU Affero General Public License for more details.
+ % 
+ % You should have received a copy of the GNU Affero General Public License
+ % along with this program; if not, see http://www.gnu.org/licenses.
+ % 
+ % Additional permissions are listed in the file re-motion_exceptions.txt.
+--%>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SecurityManagerMasterPage.Master.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerMasterPage" %>
+<%@ Register TagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
+<%@ Register TagPrefix="securityManager" Src="SecurityManagerNavigationTabs.ascx" TagName="NavigationTabs" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head" runat="server">
+</head>
+<body>
+  <form id="ThisForm" runat="server">
+  <asp:ScriptManager runat="server" />
+  <remotion:SingleView ID="SingleView" runat="server">
+    <TopControls>
+      <asp:ContentPlaceHolder ID="HeaderControlsPlaceHolder" runat="server">
+        <securityManager:NavigationTabs ID="SecurityManagerNavigationTabs" runat="server" />
+      </asp:ContentPlaceHolder>
+      <asp:ContentPlaceHolder ID="TopControlsPlaceHolder" runat="server" />
+    </TopControls>
+    <View>
+      <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server" />
+    </View>
+    <BottomControls>
+      <asp:ContentPlaceHolder ID="BottomControlsPlaceHolder" runat="server" />
+    </BottomControls>
+  </remotion:SingleView>
+  </form>
+</body>
+</html>

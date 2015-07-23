@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<xs:schema id="SecurityMetadataLocalization" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:sml="http://www.re-motion.org/Security/Metadata/Localization/1.0" 
+    targetNamespace="http://www.re-motion.org/Security/Metadata/Localization/1.0"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified" 
+    xml:lang="en">
+
+  <xs:element name="localizedNames">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="localizedName" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="sml:requiredStringType">
+                <xs:attribute name="ref" use="required" type="sml:requiredStringType" />
+                <xs:attribute name="comment" use="optional" type="sml:requiredStringType" />
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+
+      <xs:attribute name="culture" use="required" type="xs:string" />
+      <xs:attribute name="version" use="optional" type="sml:requiredStringType" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="requiredStringType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:whiteSpace value="collapse" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

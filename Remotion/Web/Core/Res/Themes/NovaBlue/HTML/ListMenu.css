@@ -1,0 +1,42 @@
+﻿/* Style applied to the ListMenu. */
+
+td.listMenuRow
+{
+  font-size: 80%;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+span.listMenuItem
+{
+  margin-right: 10pt;
+}
+
+span.listMenuItem a
+{
+  color: #083779;
+  padding: 2px;
+}
+
+span.listMenuItem a:hover
+{
+  color: #083779;
+  padding: 1px;
+  border-width: 1px;
+  background-color: #e6f0ff;
+  border: solid 1px #083779;
+}
+
+span.listMenuItemDisabled
+{
+  margin-right: 10pt;
+}
+
+span.listMenuItemDisabled a
+{
+  padding: 2px;
+  color: gray;
+  cursor: default;
+}

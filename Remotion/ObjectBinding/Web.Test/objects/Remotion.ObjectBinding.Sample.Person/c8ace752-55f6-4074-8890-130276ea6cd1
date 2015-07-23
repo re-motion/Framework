@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Person xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" FirstName="A" LastName="B" DateOfBirth="1990-04-13T00:00:00+02:00" Height="160" Gender="Male" MarriageStatus="Single" DateOfDeath="0001-01-01">
+  <Income>1000.95</Income>
+  <PartnerID>00000000-0000-0000-0000-00000000000a</PartnerID>
+  <ChildIDs>eb94bfdb-1140-46f8-971f-e4b41dae13b8</ChildIDs>
+  <Deceased>true</Deceased>
+  <CV>First Item</CV>
+  <CV>Second Item</CV>
+  <CV>Third Item</CV>
+  <CV>Fourth Item</CV>
+  <CV>Fifth Item</CV>
+</Person>

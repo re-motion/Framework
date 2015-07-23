@@ -1,0 +1,41 @@
+﻿td.listMenuRow
+{
+  font-size: 80%;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+span.listMenuItem
+{
+  margin-right: 10pt;
+}
+
+span.listMenuItem a
+{
+  color: Blue;
+  padding: 2px;
+}
+
+span.listMenuItem a:hover
+{
+  color: Blue;
+	padding: 1px;
+	border-width: 1px;
+	border-color: #005588;
+	border-style: solid;
+	background-color: #fee197;	
+}
+
+span.listMenuItemDisabled
+{
+  margin-right: 10pt;
+}
+
+span.listMenuItemDisabled a
+{
+  padding: 2px;
+  color: gray;
+	cursor: default;
+}

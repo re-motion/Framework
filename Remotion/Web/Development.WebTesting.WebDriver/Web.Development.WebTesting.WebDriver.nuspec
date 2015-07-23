@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>http://opensource.org/licenses/BSD-3-Clause</licenseUrl>
+    <projectUrl>http://www.re-motion.org</projectUrl>
+    <description>This package contains the binaries for ChromeDriver and IEDriverServer as distributed via 'https://www.nuget.org/packages/WebDriver.ChromeDriver.win32/' and 'https://www.nuget.org/packages/WebDriver.IEDriverServer.win32/' respectively.</description>
+    <copyright>$copyright$</copyright>
+    <tags>$tags$ $extraTags$</tags>
+  </metadata>
+  <files>
+    <file src="FacetManifest.xml" />
+    <file src="bin\$configuration$\ChromeDriver.exe" target="_files" />
+    <file src="bin\$configuration$\IEDriverServer.exe" target="_files" />
+  </files>
+</package>

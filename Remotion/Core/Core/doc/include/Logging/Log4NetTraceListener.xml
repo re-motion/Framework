@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<Log4NetTraceListener>
+  <Class>
+  </Class>
+  <Constructor>
+    <param name="name">
+      The name of the <see cref="Log4NetTraceListener"/>.
+    </param>
+  </Constructor>
+  <Convert>
+    <param name="eventType">The <see cref="TraceEventType"/> to be converted.</param>
+  </Convert>
+  <Trace>
+    <param name="eventCache">A <see cref="TraceEventCache"/> object that contains the current process ID, thread ID, and stack trace information.</param>
+    <param name="source">A name used to identify the output, typically the name of the application that generated the trace event.</param>
+    <param name="eventType">One of the <see cref="TraceEventType"/> values specifying the type of event that has caused the trace.</param>
+    <param name="id">A numeric identifier for the event.</param>
+    <param name="message">A message to write.</param>
+    <remarks>The <paramref name="eventCache"/> parameter is not logged, since <b>log4net</b> features can provide the same information.
+      As such <see cref="TraceListener.TraceOutputOptions"/> is not relevant, too. 
+      When using a <see cref="TraceFilter"/>, <paramref name="eventCache"/> can be used the normal way. 
+    </remarks>
+  </Trace>
+  <TraceEvent>
+    <param name="format">A format string that contains zero or more format items, which correspond to objects in the args array.</param>
+    <param name="args">An object array containing zero or more objects to format.</param>
+  </TraceEvent>
+  <TraceData_Object>
+    <param name="data">The trace data to emit.</param>
+  </TraceData_Object>
+  <TraceData_Array>
+    <param name="data">An array of objects to emit as data.</param>
+  </TraceData_Array>
+  <TraceTransfer>
+    <param name="relatedActivityId">A <see cref="Guid"/> object identifying a related activity.</param>
+  </TraceTransfer>
+
+</Log4NetTraceListener>
+  

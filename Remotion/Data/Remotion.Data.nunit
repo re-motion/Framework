@@ -1,0 +1,10 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Default" />
+  <Config name="Default" binpathtype="Auto">
+    <assembly path="DomainObjects.UnitTests\bin\Debug\Remotion.Data.DomainObjects.UnitTests.dll" />
+    <assembly path="DomainObjects.RdbmsTools.UnitTests\bin\Debug\Remotion.Data.DomainObjects.RdbmsTools.UnitTests.dll" />
+    <assembly path="DomainObjects.Legacy.UnitTests\bin\Debug\Remotion.Data.DomainObjects.Legacy.UnitTests.dll" />
+    <assembly path="DomainObjects.Legacy.ObjectBinding.UnitTests\bin\Debug\Remotion.Data.DomainObjects.Legacy.ObjectBinding.UnitTests.dll" />
+    <assembly path="DomainObjects.Legacy.CodeGenerator.UnitTests\bin\Debug\Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.dll" />
+  </Config>
+</NUnitProject>

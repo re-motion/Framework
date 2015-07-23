@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<urlMapping
+    application="WxeTest"
+    xmlns="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
+  <add id="TestTabbedForm" type="OBWTest::TestTabbedFormWxeFunction" resource="TestTabbedForm.wxe"/>
+  <add id="ViewPersonDetails" type="OBWTest::ViewPersonDetailsWxeFunction" resource="ViewPersonDetails.wxe"/>
+  <add id="ViewPersons" type="OBWTest::ViewPersonsWxeFunction" resource="ViewPersons.wxe"/>
+  <add id="IndividualControlTest" type="OBWTest::IndividualControlTests.TestFunction" resource="IndividualControlTest.wxe"/>
+  <add id="ViewLayoutTest" type="OBWTest::ViewLayoutTests.TestFunction" resource="ViewLayoutTest.wxe"/>
+  <add id="ControlLayoutTest" type="OBWTest::ControlLayoutTests.TestFunction" resource="ControlLayoutTest.wxe"/>
+  <add id="ReferenceDataSourceTest" type="OBWTest::ReferenceDataSourceTestFunction" resource="ReferenceDataSourceTest.wxe"/>
+
+</urlMapping>

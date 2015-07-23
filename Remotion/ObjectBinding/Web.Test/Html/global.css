@@ -1,0 +1,25 @@
+.bocBooleanValue.readOnly,
+.bocCheckboxValue.readOnly,
+.bocDateTimeValue.readOnly,
+.bocEnumValue.readOnly,
+.bocMultilineTextValue.readOnly,
+.bocAutoCompleteReferenceValue.readOnly,
+.bocReferenceValue.readOnly,
+.bocTextValue.readOnly
+{
+}
+
+td.formGridControlsCell
+{
+}
+
+td.formGridTitleCell .bocTextValue.readOnly
+{
+  width: auto;
+}
+
+tr.bocListDataRow.test
+{
+  font-weight: bold;
+  font-style: italic;
+}

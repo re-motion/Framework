@@ -1,0 +1,43 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="StandardMode.master.cs"
+  Inherits="OBWTest.StandardMode" %>
+<%@ Import Namespace="System" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <title runat="server" />
+  <remotion:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
+  <asp:ContentPlaceHolder ID="head" runat="server">
+  </asp:ContentPlaceHolder>
+  <style type="text/css">
+    html
+    {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    body
+    {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    form
+    {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <form id="form1" runat="server">
+  <div style="height: 100%">
+    <asp:ContentPlaceHolder ID="body" runat="server">
+    </asp:ContentPlaceHolder>
+  </div>
+  </form>
+</body>
+</html>

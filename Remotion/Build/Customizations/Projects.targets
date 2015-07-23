@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <TestingSetupBuildFileForDatabase>$(SolutionDirectory)Build\TestingSetupForDatabase.targets</TestingSetupBuildFileForDatabase>
+    <TestingSetupBuildFileForBrowser>$(SolutionDirectory)Build\TestingSetupForBrowser.targets</TestingSetupBuildFileForBrowser>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\SharedSource\UnitTests\SharedSource.UnitTests.csproj"/>
+
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Core\Core.Core.csproj">
+      <CreateNuGetPackageWithSymbolServerSupport>True</CreateNuGetPackageWithSymbolServerSupport>
+      <CreateDocumentationFile>True</CreateDocumentationFile>
+    </ReleaseProjectFiles>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Extensions\Core.Extensions.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection\Core.Reflection.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration\Core.Reflection.CodeGeneration.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj">
+      <CreateNuGetPackageWithSymbolServerSupport>True</CreateNuGetPackageWithSymbolServerSupport>
+    </ReleaseProjectFiles>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Tools\Core.Tools.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\UnitTests\Core.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\ExtensibleEnums.UnitTests\Core.ExtensibleEnums.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Extensions.UnitTests\Core.Extensions.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.UnitTests\Core.Reflection.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration.UnitTests\Core.Reflection.CodeGeneration.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration.TypePipe.UnitTests\Core.Reflection.CodeGeneration.TypePipe.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Tools.UnitTests\Core.Tools.UnitTests.csproj"/>
+
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\CodeDom\Development.CodeDom.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Core\Development.Core.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Data\Development.Data.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Mixins\Development.Mixins.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Web\Development.Web.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Development\UnitTests\Development.UnitTests.csproj"/>
+
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\Core\Mixins.Core.csproj">
+      <CreateNuGetPackageWithSymbolServerSupport>True</CreateNuGetPackageWithSymbolServerSupport>
+    </ReleaseProjectFiles>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\MixerTools\Mixins.MixerTools.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\UnitTests\Mixins.UnitTests.csproj"/>
+
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\Core\Globalization.Core.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\ExtensibleEnums\Globalization.ExtensibleEnums.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\Mixins\Globalization.Mixins.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\UnitTests\Globalization.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\ExtensibleEnums.UnitTests\Globalization.ExtensibleEnums.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\Mixins.UnitTests\Globalization.Mixins.UnitTests.csproj"/>
+
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\Core\Validation.Core.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\Globalization\Validation.Globalization.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\Mixins\Validation.Mixins.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\UnitTests\Validation.UnitTests.csproj"/>
+    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\IntegrationTests\Validation.IntegrationTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\Globalization.UnitTests\Validation.Globalization.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\Mixins.UnitTests\Validation.Mixins.UnitTests.csproj"/>
+    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\Mixins.IntegrationTests\Validation.Mixins.IntegrationTests.csproj"/>
+
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Data\Core\Data.Core.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects\Data.DomainObjects.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.RdbmsTools\Data.DomainObjects.RdbmsTools.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Security\Data.DomainObjects.Security.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.UberProfIntegration\Data.DomainObjects.UberProfIntegration.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Validation\Data.DomainObjects.Validation.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.UnitTests\Data.DomainObjects.UnitTests.csproj">
+      <IsDatabaseTest>True</IsDatabaseTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForDatabase)</TestingSetupBuildFile>
+    </UnitTestProjectFiles>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.ObjectBinding.UnitTests\Data.DomainObjects.ObjectBinding.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.ObjectBinding.IntegrationTests\Data.DomainObjects.ObjectBinding.IntegrationTests.csproj">
+      <IsDatabaseTest>True</IsDatabaseTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForDatabase)</TestingSetupBuildFile>
+    </UnitTestProjectFiles>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.RdbmsTools.UnitTests\Data.DomainObjects.RdbmsTools.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Security.UnitTests\Data.DomainObjects.Security.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.UberProfIntegration.UnitTests\Data.DomainObjects.UberProfIntegration.UnitTests.csproj">
+      <IsDatabaseTest>True</IsDatabaseTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForDatabase)</TestingSetupBuildFile>
+    </UnitTestProjectFiles>
+    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Web.IntegrationTests\Data.DomainObjects.Web.IntegrationTests.csproj">
+      <IsDatabaseTest>True</IsDatabaseTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForDatabase)</TestingSetupBuildFile>
+    </IntegrationTestProjectFiles>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Validation.UnitTests\Data.DomainObjects.Validation.UnitTests.csproj"/>
+    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Validation.IntegrationTests\Data.DomainObjects.Validation.IntegrationTests.csproj"/>
+
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Security\ObjectBinding.Security.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web\ObjectBinding.Web.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Contract.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting\ObjectBinding.Web.Development.WebTesting.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Legacy\ObjectBinding.Web.Legacy.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Preview\ObjectBinding.Web.Preview.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\UnitTests\ObjectBinding.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Security.UnitTests\ObjectBinding.Security.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Legacy.UnitTests\ObjectBinding.Web.Legacy.UnitTests.csproj"/>
+    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj">
+      <IsWebTest>True</IsWebTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
+    </IntegrationTestProjectFiles>
+
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\Core\Security.Core.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\Metadata.Extractor\Security.Metadata.Extractor.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\MSBuild.Tasks\Security.MSBuild.Tasks.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Security\UnitTests\Security.UnitTests.csproj"/>
+
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Contract.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Core\Web.Core.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting\Web.Development.WebTesting.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.WebDriver\Web.Development.WebTesting.WebDriver.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\ExecutionEngine.CodeGenerator\Web.ExecutionEngine.CodeGenerator.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Legacy\Web.Legacy.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Security\Web.Security.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\UnitTests\Web.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Legacy.UnitTests\Web.Legacy.UnitTests.csproj"/>
+    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj">
+      <IsWebTest>True</IsWebTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
+    </IntegrationTestProjectFiles>
+
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\Core\Scripting.Core.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\UnitTests\Scripting.UnitTests.csproj"/>
+
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Integration\Domain\Integration.Domain.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Integration\Web\Integration.Web.csproj"/>
+  </ItemGroup>
+</Project>

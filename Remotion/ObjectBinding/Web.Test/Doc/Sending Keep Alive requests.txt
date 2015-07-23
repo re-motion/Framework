@@ -1,0 +1,16 @@
+<script language="javascript">
+  var _keepAliveLocation = 'WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormKeepAliveWxeFunction,OBWTest';
+  var active = window.setInterval('KeepAlive()', 180000);
+  
+  function KeepAlive()
+  {
+    try 
+    {
+      var image = new Image();
+      image.src = _keepAliveLocation;
+    }
+    catch (e)
+    {
+    }
+  }
+</script>

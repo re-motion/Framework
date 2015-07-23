@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ !
+ ! The re-motion Core Framework is free software; you can redistribute it
+ ! and/or modify it under the terms of the GNU Lesser General Public License
+ ! as published by the Free Software Foundation; either version 2.1 of the
+ ! License, or (at your option) any later version.
+ !
+ ! re-motion is distributed in the hope that it will be useful,
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ ! GNU Lesser General Public License for more details.
+ !
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<doc>
+  <assembly>
+    <name>_SharedItems_</name>
+  </assembly>
+  <members>
+    <member name="N:Remotion.Data.DomainObjects.Infrastructure">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.Infrastructure</B> namespace contains classes implementing the DomainObjects framework.
+    </para>
+    <para>
+      Types or interfaces in this namespace are not intended to be used directly from an application.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.ObjectBinding">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.ObjectBinding</B> namespace contains classes and interfaces for 2-way data binding of user controls to domain objects.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.ObjectBinding.Design">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.ObjectBinding.Design</B> namespace contains classes for design time support for 2-way data binding of user controls to domain objects.
+    </para>
+    <para>
+      Types or interfaces in this namespace are not intended to be used directly from an application.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes</B> namespace contains classes that provide meta information about properties needed for 2-way data binding of user controls to domain objects.
+    </para>
+    <para>
+      Types or interfaces in this namespace are not intended to be used directly from an application.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.ObjectBinding.Web">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.ObjectBinding.Web</B> namespace contains web controls to be used for binding user controls to domain objects in an ASP.NET environment.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.ObjectBinding.Web.Design">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.ObjectBinding.Web.Design</B> namespace contains classes for design time support for controls in the <B>Remotion.Data.DomainObjects.ObjectBinding.Web</B> namespace.
+    </para>
+    <para>
+      Types or interfaces in this namespace are not intended to be used directly from an application.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.ConfigurationLoader">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.ConfigurationLoader</B> namespace contains classes to be used for loading the configuration of the DomainObjects framework.
+    </para>
+    <para>
+      Types or interfaces in this namespace are not intended to be used directly from an application.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.DataManagement">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.DataManagement</B> namespace contains interfaces and classes for managing relations between <b>DomainObject</b>s in the DomainObjects framework.
+    </para>
+    <para>
+      Types or interfaces in this namespace are not intended to be used directly from an application.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.Mapping">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.Mapping</B> namespace contains interfaces and classes to describe the domain model of the DomainObjects framework.
+    </para>
+    <para>
+      Types or interfaces in this namespace are not intended to be used directly from an application.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.Persistence">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.Persistence</B> namespace contains interfaces and classes to persist domain objects.
+    </para>
+    <para>
+      Types or interfaces in this namespace are not intended to be used directly from an application.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.Persistence.Configuration">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.Persistence.Configuration</B> namespace contains classes to describe the storage providers used for 
+      persisting <b>DomainObject</b>s.
+    </para>
+    <para>
+      Types or interfaces in this namespace are not intended to be used directly from an application.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.Persistence.Rdbms">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.Persistence.Rdbms</B> namespace contains classes to persist domain objects to relational databases.
+    </para>
+    <para>
+      Types or interfaces in this namespace are not intended to be used directly from an application.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.Queries">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.Queries</B> namespace contains classes to execute queries against the <b>StorageProvider</b>s.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.Queries.Configuration">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.Queries.Configuration</B> namespace contains classes to describe the pre-defined queries from the configuration file.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects</B> namespace and its sub namespaces contain interfaces and classes to be used 
+      for building domain models that are persisted by the DomainObjects framework.
+    </para>
+
+    <para>
+      In the following, an overview is provided on the starting points for working with the <b>Remotion.Data.DomainObjects</b> namespace.
+    </para>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="25%" />
+        <col width="75%" />
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><see cref="T:Remotion.Data.DomainObjects.ClientTransaction" /></td>
+          <td>
+            Represents an in-memory transaction.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.Data.DomainObjects.DomainObject" /></td>
+          <td>
+            Base class for all objects that are persisted by the framework.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.Data.DomainObjects.DomainObjectCollection" /></td>
+          <td>
+            Represents a collection of DomainObjects.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.Data.DomainObjects.Queries.QueryManager" /></td>
+          <td>
+            Provides methods to execute queries within a ClientTransaction.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <para>
+      The following list shows namespaces that provide implementations of Remotion technologies for the DomainObjects framework.
+    </para>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="25%" />
+        <col width="75%" />
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th>Namespace</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><see cref="N:Remotion.Data.DomainObjects.ObjectBinding" /></td>
+          <td>
+            An implementation of <see cref="N:Remotion.ObjectBinding" /> interfaces for the DomainObjects framework.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="N:Remotion.Data.DomainObjects.Security" /></td>
+          <td>
+            An implementation of <see cref="N:Remotion.Security" /> classes for the DomainObjects framework.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </summary>
+    </member>
+    <member name="N:Remotion.Data.DomainObjects.DomainImplementation">
+      <summary>
+    <para>
+      The <B>Remotion.Data.DomainObjects.DomainImplementation</B> namespace and its sub namespaces contain advanced functionality and services
+      that assist in building domains based on re-store.
+    </para>
+
+    <div class="tablediv">
+      <table class="dtTABLE" cellspacing="0">
+        <colgroup>
+          <col width="25%" />
+          <col width="75%" />
+        </colgroup>
+        <thead>
+          <tr valign="top">
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <see cref="T:Remotion.Data.DomainObjects.DomainImplementation.LifetimeService" />
+            </td>
+            <td>
+              Provides methods to create, get, and delete domain objects.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <see cref="T:Remotion.Data.DomainObjects.DomainImplementation.UnloadService" />
+            </td>
+            <td>
+              Provides methods to unload the data stored for domain objects from memory.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </summary>
+    </member>
+  </members>
+</doc>

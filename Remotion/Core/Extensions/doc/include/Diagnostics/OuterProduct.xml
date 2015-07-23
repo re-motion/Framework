@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<OuterProduct>
+  <ClassExample1>
+    <example>
+      Produce a list containing all outer prodcut permutations (Note the use of <c>ProcessingState.GetDimensionIndicesCopy()</c> in the Processor):
+      <code>
+        <![CDATA[
+// Implement an OuterProduct-processor to collect the resulting permutations in a list:
+public class OuterProductPermutations : OuterProduct.ProcessorBase
+{
+  public readonly List<int[]> outerProductPermutations = new List<int[]> (); // To keep sample concise
+  public override bool DoBeforeLoop ()
+  {
+    // We are only interested in retrieving all outer product permutations, so we only work in the innermost loop
+    if (ProcessingState.IsInnermostLoop)
+    {
+     // Retrieve the current permutation and store it in the processor's list
+     outerProductPermutations.Add (ProcessingState.GetDimensionIndicesCopy() );
+    }
+    return true;
+  }
+}   
+
+// Use the OuterProduct-processor to produce a List<int[]> of all permuations and write them to the console: 
+public void CreateOuterProductPermutationsList ()
+{
+  var dimensionArray = new int[] { 2, 3, 2 }; //  2-tuple x 3-tuple x 2-tuple 
+  var outerProduct = new OuterProduct (dimensionArray);
+  var processor = new OuterProductPermutations ();
+  outerProduct.ProcessOuterProduct (processor);
+  var result = processor.outerProductPermutations;
+  foreach (var ints in result)
+  {
+    System.Console.Write ("(");
+    foreach (var i in ints)
+    {
+      System.Console.Write (i + " ");
+    }
+    System.Console.Write (") ");
+  }
+}
+
+Console output:
+(0 0 0 ) (0 0 1 ) (0 1 0 ) (0 1 1 ) (0 2 0 ) (0 2 1 ) (1 0 0 ) (1 0 1 ) (1 1 0 ) (1 1 1 ) (1 2 0 ) (1 2 1 )      
+        
+        ]]>
+      </code>
+    </example>
+  </ClassExample1>
+
+  <ClassExample2>
+    <example>
+      Produce pretty print string representations of rectangular arrays of arbitrary dimensions:
+      <code>
+        <![CDATA[
+// Implement a simple OuterProduct-processor to create a pretty-print string of a rectangular array 
+// (deriving from OuterProduct.ProcessorBase is convenient, but we could also instead  
+// implement OuterProduct.IProcessor on any class):
+public class RectangularArrayToString : OuterProduct.ProcessorBase
+{
+  protected Array _rectangularArray;
+  public readonly StringBuilder _result = new StringBuilder (); // To keep sample concise
+
+  public RectangularArrayToString (Array rectangularArray) { _rectangularArray = rectangularArray; }
+
+  public override bool DoBeforeLoop ()
+  {
+    if (ProcessingState.IsInnermostLoop)
+    {
+      _result.Append (ProcessingState.IsFirstLoopElement ? "" : ",");
+      _result.Append (_rectangularArray.GetValue (ProcessingState.DimensionIndices).ToString ());
+    }
+    else
+    {
+      _result.Append (ProcessingState.IsFirstLoopElement ? "" : ",");
+      _result.Append ("{");
+    }
+    return true;
+  }
+
+  public override bool DoAfterLoop ()
+  {
+    if (!ProcessingState.IsInnermostLoop)
+    {
+      _result.Append ("}");
+    }
+    return true;
+  }
+}  
+
+// Use RectangularArrayToString to produce string representations of rectangular arrays of arbitrary dimensions: 
+public void RectangularArraysToString ()
+{
+  Array rectangularArray1D = new string[] { "A1", "A2", "A3" };
+  Array rectangularArray2D = new string[,] { { "A1", "A2", "A3" }, { "B1", "B2", "B3" }, { "C1", "C2", "C3" } };
+  Array rectangularArray3D = new string[,,] { { { "A1", "A2" }, { "B1", "B2" } }, { { "C1", "C2" }, { "D1", "D2" } } };
+  var arrays = new List<Array> () { rectangularArray1D, rectangularArray2D, rectangularArray3D };
+  foreach (var array in arrays)
+  {
+    var outerProduct = new OuterProduct (array);
+    var processor = new RectangularArrayToString (array);
+    outerProduct.ProcessOuterProduct (processor);
+    System.Console.WriteLine (processor._result.ToString ());
+  }
+}
+
+Console output:
+A1,A2,A3
+{A1,A2,A3},{B1,B2,B3},{C1,C2,C3}
+{{A1,A2},{B1,B2}},{{C1,C2},{D1,D2}}
+
+        ]]>
+      </code>
+    </example>
+  </ClassExample2>  
+  
+</OuterProduct>

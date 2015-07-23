@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.DomainBase" Collapsed="true">
+    <Position X="5.75" Y="2.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAACAAAAAAAAEAAACAAAAAAAIAAAU=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\DomainBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Client" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="AbstractClassesWithoutDerivations" />
+      <Property Name="HistoryEntries" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.AbstractClassWithoutDerivations" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\AbstractClassWithoutDerivations.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DomainBase" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.Address" Collapsed="true">
+    <Position X="1.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAIAAAACAAAAAIAAAAAQAIAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\Address.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Person" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns">
+    <Position X="7.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAEAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\BaseClassWithInvalidRelationClassIDColumns.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Client" />
+      <Property Name="DomainBase" />
+      <Property Name="DomainBaseWithInvalidClassIDValue" />
+      <Property Name="DomainBaseWithInvalidClassIDNullValue" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.ClassWithUnidirectionalRelation" Collapsed="true">
+    <Position X="3" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\ClassWithUnidirectionalRelation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DomainBase" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.Client" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAUAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\Client.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="AssignedObjects" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.Customer" Collapsed="true">
+    <Position X="4.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEAAAAAgAAAIAAAAAAAAAAAAAAAAAAAQABAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\Customer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Region" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Orders" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.DerivedClassWithInvalidRelationClassIDColumns" Collapsed="true">
+    <Position X="7.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\DerivedClassWithInvalidRelationClassIDColumns.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.HistoryEntry" Collapsed="true">
+    <Position X="2.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAIAAAAAAAAAAAAEEAAAAAQAAACAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\HistoryEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.Order" Collapsed="true">
+    <Position X="1.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAEAAAAAAAAAIAAAAEAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\Order.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Customer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.OrganizationalUnit" Collapsed="true">
+    <Position X="6.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\OrganizationalUnit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.Person" Collapsed="true">
+    <Position X="4.5" Y="4.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAICAAAAAAAAAAAAAQAAACQAAAAAAAAAg=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\Person.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Address" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.Region" Collapsed="true">
+    <Position X="4.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAIAAAAAAAAAQAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\Region.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Customers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

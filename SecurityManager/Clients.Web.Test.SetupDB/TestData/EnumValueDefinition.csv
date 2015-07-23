@@ -1,0 +1,15 @@
+ID,ClassID,MetadataItemID,Index,Name,Value,StatePropertyID,StatePropertyIDClassID
+{62c715b9-7231-4aa9-82a5-236655a0c90d},AccessTypeDefinition,{203b7478-96f1-4bf1-b4ea-5bdd1206252c},0,"Find|Remotion.Security.GeneralAccessTypes, Remotion.Security",5,,
+{8aa5c812-02f0-482f-bf17-4f06d359668e},StateDefinition,{00000000-0000-0000-0000-000000000000},1,"Classified|Remotion.SecurityManager.Clients.Web.Test.Domain.Confidentiality, Remotion.SecurityManager.Clients.Web.Test",1,{1929df7a-ae89-417e-ab90-4459b6a090a3},StatePropertyDefinition
+{d58b8270-7b71-4d99-84da-a7419704d2df},AccessTypeDefinition,{305fbb40-75c8-423a-84b2-b26ea9e7cae7},1,"Delete|Remotion.Security.GeneralAccessTypes, Remotion.Security",3,,
+{bedfb5f2-f88b-4493-9ca4-b430d24fd827},StateDefinition,{00000000-0000-0000-0000-000000000000},2,"Secret|Remotion.SecurityManager.Clients.Web.Test.Domain.Confidentiality, Remotion.SecurityManager.Clients.Web.Test",2,{1929df7a-ae89-417e-ab90-4459b6a090a3},StatePropertyDefinition
+{c441b704-c521-47c7-894e-c4c9f754577a},AccessTypeDefinition,{67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6},2,"Search|Remotion.Security.GeneralAccessTypes, Remotion.Security",4,,
+{0a2be60a-46fa-4899-93e5-d42fbd0e89df},AccessTypeDefinition,{1d6d25bc-4e85-43ab-a42d-fb5a829c30d5},3,"Create|Remotion.Security.GeneralAccessTypes, Remotion.Security",0,,
+{c71bc5a5-3217-4550-94fb-dd123faa69dc},StateDefinition,{00000000-0000-0000-0000-000000000000},0,"Normal|Remotion.SecurityManager.Clients.Web.Test.Domain.Confidentiality, Remotion.SecurityManager.Clients.Web.Test",0,{1929df7a-ae89-417e-ab90-4459b6a090a3},StatePropertyDefinition
+{0904b027-0979-4851-80e4-e3ba82c9e1e5},AccessTypeDefinition,{11186122-6de0-4194-b434-9979230c41fd},4,"Edit|Remotion.Security.GeneralAccessTypes, Remotion.Security",2,,
+{737a3810-39d4-4ee3-b8a3-fb5b13daa154},AccessTypeDefinition,{62dfcd92-a480-4d57-95f1-28c0f5996b3a},5,"Read|Remotion.Security.GeneralAccessTypes, Remotion.Security",1,,
+{22D70637-7BFB-485d-827A-7C5A48B30E80},AbstractRoleDefinition,{448355F7-FD2F-41b0-9871-EE3075A4FF73},0,"Creator|Remotion.SecurityManager.Clients.Web.Test.Domain.DomainAbstractRoles, Remotion.SecurityManager.Clients.Web.Test",0,,
+{846DC100-8971-4B9C-9414-7601CF3802F3},AccessTypeDefinition,{0348BE71-CFAF-4184-A3BF-C621B2611A29},0,"AssignRole|Remotion.SecurityManager.Domain.SecurityManagerAccessTypes, Remotion.SecurityManager",0,,
+{8BC317FE-6B0C-454A-991C-C7F0694AC9B7},StateDefinition,{00000000-0000-0000-0000-000000000000},0,"Disabled|Remotion.SecurityManager.Domain.OrganizationalStructure.Delegation, Remotion.SecurityManager",0,{3D6D99CA-5F6C-4BB3-AEFF-345271DB82F8},StatePropertyDefinition
+{0D685471-D618-4314-9509-5FA3C5B68652},StateDefinition,{00000000-0000-0000-0000-000000000000},1,"Enabled|Remotion.SecurityManager.Domain.OrganizationalStructure.Delegation, Remotion.SecurityManager",1,{3D6D99CA-5F6C-4BB3-AEFF-345271DB82F8},StatePropertyDefinition
+{720C02C0-D06C-47a4-9F0A-B6811BE32BCF},AccessTypeDefinition,{4564E3BD-7E1D-4afc-9715-9C698B46A037},1,"AssignSubstitute|Remotion.SecurityManager.Domain.SecurityManagerAccessTypes, Remotion.SecurityManager",1,,

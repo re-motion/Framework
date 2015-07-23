@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ !
+ ! The re-motion Core Framework is free software; you can redistribute it
+ ! and/or modify it under the terms of the GNU Lesser General Public License
+ ! as published by the Free Software Foundation; either version 2.1 of the
+ ! License, or (at your option) any later version.
+ !
+ ! re-motion is distributed in the hope that it will be useful,
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ ! GNU Lesser General Public License for more details.
+ !
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<doc>
+  <assembly>
+    <name>_SharedItems_</name>
+  </assembly>
+  <members>
+    <member name="N:Remotion.ObjectBinding">
+      <summary>
+    <para>
+      The <B>Remotion.ObjectBinding</B> namespace contains interfaces for implementing a business object model with a 
+      generic data definition and data access layer.
+    </para><para>
+      The data definition layer consists of the <see cref="T:Remotion.ObjectBinding.IBusinessObjectClass" />
+      and the <see cref="T:Remotion.ObjectBinding.IBusinessObjectProperty" /> interface. These interfaces are used to 
+      determine which the fields are exposed by an <see cref="T:Remotion.ObjectBinding.IBusinessObject" /> instance.
+    </para><para>
+      While it is possible to simply program read and write access against the business object's get and set method,
+      business object data binding is the true advantage gained by providing an object model with these interfaces.
+    </para><para>
+      The business object data binding connects an <see cref="T:Remotion.ObjectBinding.IBusinessObject" /> with an
+      <see cref="T:Remotion.ObjectBinding.IBusinessObjectBoundControl" />. If the control also implements
+      <see cref="T:Remotion.ObjectBinding.IBusinessObjectBoundEditableControl" />, this connection is two way, 
+      allowing both read and write access to the bound object.
+    </para>
+
+    <h3 class="dtH3">ObjectBinding, Mixins, and the Visual Studio Designer</h3>
+    <para>
+      <B>Remotion.ObjectBinding</B> is designed to work together with types mixed via <see cref="N:Remotion.Mixins"/>.
+      Its standard implementation of the object binding interfaces is supplied by a mixin that is configured via 
+      <see cref="Remotion.ObjectBinding.BindableObjectAttribute" /> and <see cref="Remotion.ObjectBinding.BindableObjectWithIdentityAttribute" />.
+      That standard implementation also supports binding of properties added by other mixins.
+    </para>
+    <para>
+      For the Visual Studio Designer, <B>Remotion.ObjectBinding</B> provides designer support for picking bindable types and for selecting bound
+      properties and property paths. Due to a weakness in the way the designer loads types and assemblies at design time, the mixins applied
+      to a target class in the built source code and the mixins applied to the same class in the designer might get out of sync.
+    </para>
+    <para>
+      In such a case, the designer will either not show certain types or properties, although they are clearly marked as bindable and added by
+      mixins in the source code; or it will display error messages about a certain class or property not being bindable, although it obviously is
+      in the source code. Sometimes, simply refreshing the designer can resolve that issue, but sometimes the issue can only be resolved by
+      restarting Visual Studio.
+    </para>
+    
+    <h3 class="dtH3">The Business Object Model</h3>
+    <h4 class="dtH4">Introduction</h4>
+    <para>
+      When implementing an object model using the CLS types, the object model is defined at compile time. 
+      This is an advantage that is missing when interfacing with a highly dynamic system such as Fabasoft Components.
+      The <b>Remotion.Coonet</b> framework provides the functionality required to access a Fabasoft Components domain 
+      using <b>Business Object Binding</b>.
+    </para><para>
+      If the object model is defined at compile time but has to be accessed by a generic data access layer, this is 
+      also a use case for <b>Business Object Binding</b>. Generic data access is required when data binding is involved, 
+      for instance to use the web controls provided by the 
+      <see cref="N:Remotion.ObjectBinding.Web"/> namespace.
+    </para><para>
+      In addition to these obvious problems, an application often requires a greater set of meta data than the CLS 
+      types can provide by themselves. For instance, a CLS property can only provide its data type and the implicit 
+      information as to whether it can be <see langword="null" />.
+    </para>
+    
+    <h4 class="dtH4">The Remotion Business Object Model</h4>
+    <para>  
+      In order to provide both a dynamic object model and all the meta data required by an application, the 
+      <b>Remotion.ObjectBinding</b> namespace provides a number of interfaces to represent a <b>Class</b>, a
+      <b>Property</b>, and an <b>Object</b>.
+    </para><para>
+      The <see cref="T:Remotion.ObjectBinding.IBusinessObjectClass" /> interface provides the properties available by
+      an object of this class's type. It also provides services for accessing class specific meta data.
+    </para><para>
+      The <see cref="T:Remotion.ObjectBinding.IBusinessObjectProperty" /> interface and its specializations for
+      individual data types provide meta data about the fields contained in an <b>IBusinessObjectClass</b>. This meta 
+      data includes information on whether the field is read-only, accessible, and contains a scalar value or a list of 
+      values. For a complete description please refer to the documentation for the 
+      <see cref="T:Remotion.ObjectBinding.IBusinessObjectProperty" /> type.
+    </para><para>
+      The <see cref="T:Remotion.ObjectBinding.IBusinessObject" /> interface represents an instance of a specific 
+      <b>IBusinessObjectClass</b>. A business object knows its class and therfor the list <b>IBusinessObjectProperty</b> 
+      available to get and set the business object's state.
+    </para>
+    
+    <h3 class="dtH3">The Data Binding Process</h3>
+    <h4 class="dtH4">Setting Up the Data Binding</h4>
+    <para>
+      In order to bind a business object to a control, an 
+      <see cref="T:Remotion.ObjectBinding.IBusinessObjectDataSource" /> is required. When configuring the data binding 
+      during design-time, the data source must be provided with an 
+      <see cref="T:Remotion.ObjectBinding.IBusinessObjectClass" /> using a property custom to the individual 
+      implementation of the data source. With the help of the business object class, it is possible to configure 
+      the control's data binding inside the Visual Studio .NET Designer.
+    </para><para>
+      After the data source has been configured, each <see cref="T:Remotion.ObjectBinding.IBusinessObjectBoundControl" />
+      must be provided with this data source. This is done by setting the control's
+      <see cref="P:Remotion.ObjectBinding.IBusinessObjectBoundControl.DataSource" /> property. 
+    </para><para>      
+      Once the control's data source has been defined, the 
+      <see cref="T:Remotion.ObjectBinding.IBusinessObjectProperty" /> can be configured for each control. The 
+      <see cref="P:Remotion.ObjectBinding.IBusinessObjectBoundControl.Property" /> member is used to determine which 
+      field of the business object will be displayed and possibly edited with this control.
+    </para>
+    
+    <h4 class="dtH4">Setting the Business Object</h4>
+    <para>
+      During run-time, the data source's 
+      <see cref="P:Remotion.ObjectBinding.IBusinessObjectDataSource.BusinessObject" /> 
+      property is assigned an <see cref="T:Remotion.ObjectBinding.IBusinessObject" />. 
+    </para>
+    
+    <h4 class="dtH4">Loading the Business Object's Values</h4>
+    <para>
+      In the next step, the controls are loaded with the business object's values by calling the data source's 
+      <see cref="M:Remotion.ObjectBinding.IBusinessObjectDataSource.LoadValues(System.Boolean)" /> method with the 
+      <b>interim</b> parameter set <see langword="false" />. 
+      <note>
+        See the remarks section of the 
+        <see cref="M:Remotion.ObjectBinding.IBusinessObjectDataSource.LoadValues(System.Boolean)" /> documentation for 
+        further details on <b>interim</b>.        
+      </note>
+      <note type="caution">
+        For a web application's subsequent page loads, the <b>interim</b> parameter must be set <see langword="true" />. 
+      </note>
+      When the data source's <b>LoadValues</b> method is executed, it loops through all controls bound to this 
+      data source, calling each individual control's
+      <see cref="M:Remotion.ObjectBinding.IBusinessObjectBoundControl.LoadValue(System.Boolean)" /> method in the process.
+      <b>LoadValue</b> then uses the <see cref="P:Remotion.ObjectBinding.IBusinessObjectBoundControl.Property" /> 
+      configured earlier to get the value to be displayed from the <see cref="T:Remotion.ObjectBinding.IBusinessObject" /> 
+      connected to its data source.
+      <note type="caution">
+        The actual loading behavior depends on the value of the <b>interim</b> parameter passed during the 
+        call of <b>LoadValues</b> and passed through to the <b>LoadValue</b> method.
+      </note>
+      <note>
+        Please refer to the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
+        documentation for an example of the <b>LoadValues Pattern</b>.
+      </note>
+    </para>
+    
+    <h4 class="dtH4">Saving the Business Object's Values</h4>
+    <para>
+      To save the values back into the business object connected to the data source, call its 
+      <see cref="M:Remotion.ObjectBinding.IBusinessObjectDataSource.SaveValues(System.Boolean)" /> method with the 
+      <b>interim</b> parameter set <see langword="false" />.
+      <note>
+        See the remarks section of the 
+        <see cref="M:Remotion.ObjectBinding.IBusinessObjectDataSource.SaveValues(System.Boolean)" /> documentation for 
+        further details on <b>interim</b>.        
+      </note>
+      When the data source's <b>SaveValues</b> method is exeucted, it loops through all controls bound to this 
+      data source, calling the <b>SaveValue</b> method for each
+      <see cref="T:Remotion.ObjectBinding.IBusinessObjectBoundEditableControl" /> found in the collection.
+      <b>SaveValue</b> then uses the <see cref="P:Remotion.ObjectBinding.IBusinessObjectBoundControl.Property" /> 
+      configured earlier to write the control's current value back into the 
+      <see cref="T:Remotion.ObjectBinding.IBusinessObject" /> connected to its data source. 
+      <note>
+        It is important to ensure that all the controls' values are valid before executing <b>SaveValues</b>. 
+        The reason for this is that an attempt to write invalid data back into the business object could result in 
+        any number of invalid data exceptions thrown by the <see cref="T:Remotion.ObjectBinding.IBusinessObject" />
+        implementation
+      </note>
+      <note>
+        Please refer to the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
+        documentation for an example of the <b>SaveValues Pattern</b>.
+      </note>
+    </para>
+    
+    <h3 class="dtH3">Implementing a New Business Object Model</h3>
+    <h4 class="dtH4">Implementing the Object Model</h4>
+    <para>
+      To extend your object model with the business object interfaces, you have to create an implementation of the
+      following interfaces: 
+    </para><para>      
+      <see cref="T:Remotion.ObjectBinding.IBusinessObject" />, which provides a way of getting and setting the
+      values of the object's fields. The business object is also capable of returning its type, the 
+      <see cref="T:Remotion.ObjectBinding.IBusinessObjectClass" />. If your object model provides an identity 
+      (e.g. a GUID) for the business objects, it is recommended to extend your business object implementation with 
+      the <see cref="T:Remotion.ObjectBinding.IBusinessObjectWithIdentity" /> interface. 
+    </para><para>      
+      <see cref="T:Remotion.ObjectBinding.IBusinessObjectClass" />, which provides a list of the properties 
+      exposed by a business object. If you implement <see cref="T:Remotion.ObjectBinding.IBusinessObjectWithIdentity" />
+      you must also implement the <see cref="T:Remotion.ObjectBinding.IBusinessObjectClassWithIdentity" /> interface, 
+      which allows you to retrieve a business object by using its 
+      <see cref="P:Remotion.ObjectBinding.IBusinessObjectWithIdentity.UniqueIdentifier" />.
+    </para><para>
+      <see cref="T:Remotion.ObjectBinding.IBusinessObjectProperty" />, which acts as a base for all data type specific
+      property implementations. The following table contains a list of the business object property interfaces 
+      available for exposing fields in your business object.
+    </para>
+    <div class="tablediv">
+      <table class="dtTABLE" cellspacing="0">
+        <colgroup>
+          <col width="25%" />
+          <col width="75%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Property Interface</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><see cref="T:Remotion.ObjectBinding.IBusinessObjectBooleanProperty" /></td>
+            <td>
+              The <b>IBusinessObjectBooleanProperty</b> interface is used for accessing <see cref="Boolean" /> values.
+            </td>
+          </tr>
+          <tr>
+            <td><see cref="T:Remotion.ObjectBinding.IBusinessObjectDateProperty" /></td>
+            <td>
+              The <b>IBusinessObjectDateProperty</b> interface is used for accessing <see cref="DateTime" /> values 
+              whose time component will be ignored and potentially not persisted.             
+            </td>
+          </tr>
+          <tr>
+            <td><see cref="T:Remotion.ObjectBinding.IBusinessObjectDateTimeProperty" /></td>
+            <td>
+              The <b>IBusinessObjectDateTimeProperty</b> interface is used for accessing <see cref="DateTime" /> values.
+            </td>
+          </tr>
+          <tr>
+            <td><see cref="T:Remotion.ObjectBinding.IBusinessObjectDoubleProperty" /></td>
+            <td>
+              The <b>IBusinessObjectDoubleProperty</b> interface is used for accessing <see cref="Double" /> values.
+            </td>
+          </tr>
+          <tr>
+            <td><see cref="T:Remotion.ObjectBinding.IBusinessObjectEnumerationProperty" /></td>
+            <td>
+              The <b>IBusinessObjectEnumerationProperty</b> interface is used for accessing the values of an 
+              enumeration. 
+            </td>
+          </tr>
+          <tr>
+            <td><see cref="T:Remotion.ObjectBinding.IBusinessObjectInt32Property" /></td>
+            <td>
+              The <b>IBusinessObjectInt32Property</b> interface is used for accessing <see cref="Int32" /> values.
+            </td>
+          </tr>
+          <tr>
+            <td><see cref="T:Remotion.ObjectBinding.IBusinessObjectNumericProperty" /></td>
+            <td>
+              The <b>IBusinessObjectNumericProperty</b> interface provides additional meta data for numeric values.
+              It is used as a base for the specific numeric data type interfaces (integer, double).
+            </td>
+          </tr>
+          <tr>
+            <td><see cref="T:Remotion.ObjectBinding.IBusinessObjectReferenceProperty" /></td>
+            <td>
+              The <b>IBusinessObjectReferenceProperty</b> interface is used for accessing references to other 
+              <see cref="IBusinessObject" /> instances.
+            </td>
+          </tr>
+          <tr>
+            <td><see cref="T:Remotion.ObjectBinding.IBusinessObjectStringProperty" /></td>
+            <td>
+              The <b>IBusinessObjectStringProperty</b> provides additional meta data for <see cref="String" /> values.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4 class="dtH4">Implementing the Data Source</h4>
+    <para>
+      Implement <see cref="T:Remotion.ObjectBinding.IBusinessObjectDataSource" /> to provide the 
+      business object controls with a data source custom fit to your object model. Also implement
+      <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" /> if you intend to
+      use your business objects inside a web application.
+    </para>
+    <h4 class="dtH4">Implementing the Supporting Interfaces</h4>
+    <para>
+      Implement <see cref="T:Remotion.ObjectBinding.IBusinessObjectProvider" /> and optionally 
+      <see cref="T:Remotion.ObjectBinding.Web.IBusinessObjectWebUIService" /> if you are able to provide 
+      icons for the business objects to the web application. 
+    </para>
+  </summary>
+    </member>
+  </members>
+</doc>

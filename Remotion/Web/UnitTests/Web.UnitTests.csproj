@@ -1,0 +1,517 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Remotion.Web.UnitTests</AssemblyName>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.Web.UnitTests</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks, Version=2.8.7.11026, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>4.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web">
+      <Name>system.web</Name>
+    </Reference>
+    <Reference Include="System.Web.Abstractions">
+      <RequiredTargetFramework>4.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.XML" />
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Name>Core.Core</Name>
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\Core\Data.Core.csproj">
+      <Project>{70273934-12F1-49AF-975A-303BAEFE1CAE}</Project>
+      <Name>Data.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
+      <Name>Development.Core</Name>
+      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Development\Web\Development.Web.csproj">
+      <Project>{44924ED6-8C12-416D-972F-F1F10417E7EF}</Project>
+      <Name>Development.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
+      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
+      <Name>Globalization.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contract.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj">
+      <Project>{B119DB72-9073-401B-8EC9-C8885A2D4800}</Project>
+      <Name>Web.Contracts.DiagnosticMetadata</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Web.Core.csproj">
+      <Name>Web.Core</Name>
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Security\Web.Security.csproj">
+      <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
+      <Name>Web.Security</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="Core\Compilation\IControlBuilderCodeProcessorTest.cs" />
+    <Compile Include="Core\Compilation\DefaultControlBuilderCodeProcessorTest.cs" />
+    <Compile Include="Core\Context\HttpContextStorageProviderTest.cs" />
+    <Compile Include="Core\Context\ISafeContextStorageProviderTest.cs" />
+    <Compile Include="Core\Context\SafeContextWebIntegrationTest.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestBaseFunctionWithParameters.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestDerivedFunctionWithParameters.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestFunctionWithDuplicateParameterIndices.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestFunctionWithOverriddenParameter.cs" />
+    <Compile Include="Core\ExecutionEngine\WxePageTests\InfrastructureExceptionHandling_WxePageTest.cs" />
+    <Compile Include="Core\ExecutionEngine\FakeHttpSessionStateBase.cs" />
+    <Compile Include="Core\Infrastructure\IBuildManagerTest.cs" />
+    <Compile Include="Core\Infrastructure\IHttpContextProviderTest.cs" />
+    <Compile Include="Core\Infrastructure\IInfrastructureResourceUrlFactoryTest.cs" />
+    <Compile Include="Core\Infrastructure\NonHostedBuildManagerTest.cs" />
+    <Compile Include="Core\IResourceUrlFactoryTest.cs" />
+    <Compile Include="Core\Resources\IResourcePathBuilderTest.cs" />
+    <Compile Include="Core\Resources\ResourcePathBuilderTest.cs" />
+    <Compile Include="Core\Resources\ResourceUrlFactoryTest.cs" />
+    <Compile Include="Core\Resources\TestableResourcePathBuilder.cs" />
+    <Compile Include="Core\Security\Domain\HandleInheritingAttribute.cs" />
+    <Compile Include="Core\Security\Domain\DerivedHandleWithAttribute.cs" />
+    <Compile Include="Core\Security\Domain\Handle.cs" />
+    <Compile Include="Core\Security\Domain\IHandle.cs" />
+    <Compile Include="Core\Security\Domain\TestHandleAttribute.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\IWxeSecurityAdapterTest.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\TestFunctionWithHandleParameter.cs" />
+    <Compile Include="Core\Security\IPrincipalProviderTest.cs" />
+    <Compile Include="Core\Security\UI\IWebSecurityAdapterTest.cs" />
+    <Compile Include="Core\Services\IconProxyTest.cs" />
+    <Compile Include="Core\Services\WebServiceFactoryTests\CreateWebService.cs" />
+    <Compile Include="Core\Services\WebServiceFactoryTests\CreateScriptService.cs" />
+    <Compile Include="Core\Services\WebServiceFactoryTests\CreateJsonService.cs" />
+    <Compile Include="Core\Resources\ThemedResourceUrlTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\ChildTransactionStrategyTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\ChildTransactionExecutionListenerTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\CreateChildIfParentTransactionModeTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\NullTransactionStrategyTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\RootTransactionStrategyTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\ScopedTransactionStrategyTests\Common.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\ScopedTransactionStrategyTests\EnsureCompatibility.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\ScopedTransactionStrategyTests\Reset.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\ScopedTransactionStrategyTests\OnExecutionFail.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\ScopedTransactionStrategyTests\OnExecutionPause.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\ScopedTransactionStrategyTests\OnExecutionPlay.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\ScopedTransactionStrategyTests\OnExecutionStop.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\ScopedTransactionStrategyTests\ScopedTransactionStrategyTestBase.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\CreateRootTransactionModeTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\NullExecutionListenerTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\NoneTransactionModeTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\NoneTransactionStrategyTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\RootTransactionExecutionListenerTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\SecurityExecutionListenerTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxeVariablesContainerTest.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestFunction2.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestTransactionFactory.cs" />
+    <Compile Include="Core\ExecutionEngine\WxeContextFactory.cs" />
+    <Compile Include="Core\ExecutionEngine\WxeFunctionTests\Execute.cs" />
+    <Compile Include="Core\ExecutionEngine\WxeTransactionModeTest.cs" />
+    <Compile Include="Core\Resources\ResourceUrlTest.cs" />
+    <Compile Include="Core\UI\Controls\CommandInfoTest.cs" />
+    <Compile Include="Core\UI\Controls\CommandTests\CommonCommandTest.cs" />
+    <Compile Include="Core\UI\Controls\DatePickerButtonImplementation\Rendering\IDatePickerButtonRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\DatePickerButtonImplementation\Rendering\IDatePickerPageRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\DropDownMenuImplementation\Rendering\IDropDownMenuRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\Hotkey\NoneHotkeyFormatterTest.cs" />
+    <Compile Include="Core\UI\Controls\Hotkey\HotkeyFormatterBaseTest.cs" />
+    <Compile Include="Core\UI\Controls\Hotkey\HotkeyParserTest.cs" />
+    <Compile Include="Core\UI\Controls\Hotkey\IHotkeyFormatterTest.cs" />
+    <Compile Include="Core\UI\Controls\Hotkey\TextWithHotkeyTest.cs" />
+    <Compile Include="Core\UI\Controls\Hotkey\UnderscoreHotkeyFormatterTest.cs" />
+    <Compile Include="Core\UI\Controls\IClientScriptBehaviorTest.cs" />
+    <Compile Include="Core\UI\Controls\ListMenuImplementation\Rendering\IListMenuRendererTest.cs" />
+    <Compile Include="Core\SetUpFixture.cs" />
+    <Compile Include="Core\UI\Controls\Rendering\RenderingFeaturesTest.cs" />
+    <Compile Include="Core\UI\Controls\SingleViewImplementation\Rendering\ISingleViewRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\StubStyleSheetElement.cs" />
+    <Compile Include="Core\UI\Controls\StyleSheetBlockTest.cs" />
+    <Compile Include="Core\UI\Controls\StyleSheetImportRuleTest.cs" />
+    <Compile Include="Core\UI\Controls\JavaScriptIncludeTest.cs" />
+    <Compile Include="Core\UI\Controls\TabbedMenuImplementation\Rendering\IMenuTabRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\TabbedMenuImplementation\Rendering\ITabbedMenuRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\TabbedMultiViewImplementation\Rendering\ITabbedMultiViewRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\TitleTagTest.cs" />
+    <Compile Include="Core\UI\Controls\WebButtonImplementation\IWebButtonRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\WebButtonTests\WebButtonDiagnosticMetadataTest.cs" />
+    <Compile Include="Core\UI\Controls\WebTabStripImplementation\Rendering\IWebTabRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\WebTabStripImplementation\Rendering\IWebTabStripRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\WebTabStripImplementation\Rendering\WebTabRendererAdapterArrayBuilderTest.cs" />
+    <Compile Include="Core\UI\Controls\WebTabStripImplementation\Rendering\WebTabRendererAdapterTest.cs" />
+    <Compile Include="Core\UI\Controls\WebTreeViewImplementation\IWebTreeViewRendererTest.cs" />
+    <Compile Include="Core\UI\HtmlHeadAppenderTest.cs" />
+    <Compile Include="Core\UI\SmartPageImplementation\SmartPageAsyncPostBackErrorHandlerTest.cs" />
+    <Compile Include="Core\Utilities\ControlHelperTest.cs" />
+    <Compile Include="Core\Utilities\IInternalControlMemberCallerTest.cs" />
+    <Compile Include="Core\Utilities\IScriptUtilityTest.cs" />
+    <Compile Include="Core\Utilities\RenderUtilityTest.cs" />
+    <Compile Include="Core\Utilities\VirtualPathUtilityTests.cs" />
+    <Compile Include="Core\Services\WebServiceUtilityTests\CheckJsonService.cs" />
+    <Compile Include="Core\Services\WebServiceUtilityTests\CheckScriptService.cs" />
+    <Compile Include="Core\Services\WebServiceUtilityTests\CheckWebService.cs" />
+    <Compile Include="Core\UI\Controls\ControlReplacing\StateClearingStrategyTest.cs" />
+    <Compile Include="Core\UI\Controls\ControlReplacing\IAddedControl.cs" />
+    <Compile Include="Core\UI\Controls\ControlReplacing\StateReplacingStrategyTest.cs" />
+    <Compile Include="Core\UI\Controls\ControlReplacing\StateLoadingStrategyTest.cs" />
+    <Compile Include="Core\UI\Controls\ControlReplacing\TestBase.cs" />
+    <Compile Include="Core\UI\Controls\IconInfoTest.cs" />
+    <Compile Include="Core\UI\Controls\DatePickerButtonImplementation\Rendering\DatePickerButtonRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\DropDownMenuImplementation\Rendering\DropDownMenuRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\HtmlHelper.cs" />
+    <Compile Include="Core\UI\Controls\ListMenuImplementation\Rendering\ListMenuRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\RendererTestBase.cs" />
+    <Compile Include="Core\UI\Controls\SingleViewImplementation\Rendering\SingleViewRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\TabbedMenuImplementation\Rendering\TabbedMenuRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\WebTabStripImplementation\Rendering\WebTabStripRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\TabbedMultiViewImplementation\Rendering\TabbedMultiViewRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\TabbedMultiViewImplementation\TabbedMultiViewMock.cs" />
+    <Compile Include="Core\UI\Controls\WebTabStripImplementation\WebTabStripMock.cs" />
+    <Compile Include="Core\UI\Controls\ReplaceableControlMock.cs" />
+    <Compile Include="Core\UI\Controls\RequestMode.cs" />
+    <Compile Include="Core\UI\Controls\TestPageHolder.cs" />
+    <Compile Include="Core\Utilities\HtmlUtilityTest.cs" />
+    <Compile Include="Core\Utilities\InternalControlMemberCallerTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\ResourceObjectWithVarRefTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\ResourceObjectTest.cs" />
+    <Compile Include="Core\UI\Controls\ControlReplacing\ControlReplacerTest.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\CommitException.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\OtherTestFunction.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\ReleaseException.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\RollbackException.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\SetCurrentException.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\SetPreviousCurrentException.cs" />
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestTransactionScope.cs" />
+    <Compile Include="Core\ExecutionEngine\WxeFunctionStateManagerTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxePageStepExecutionStates\ExecuteExternalByRedirect\PostProcessingSubFunctionTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxePageStepExecutionStates\ExecuteExternalByRedirect\PreparingRedirectToSubFunctionStateTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxePageStepExecutionStates\ExecuteExternalByRedirect\PreProcessingSubFunctionStateTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxePageStepExecutionStates\ExecuteExternalByRedirect\RedirectingToSubFunctionStateTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxePageStepExecutionStates\Execute\PreProcessingSubFunctionStateTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxePageStepExecutionStates\Execute\ExecutingSubFunctionWithoutPermaUrlStateTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxePageStepExecutionStates\Execute\PreparingRedirectToSubFunctionStateTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxePageStepExecutionStates\Execute\ReturningFromSubFunctionStateTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxePageStepExecutionStates\Execute\ExecutingSubFunctionWithPermaUrlStateTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxePageStepExecutionStates\Execute\RedirectingToSubFunctionStateTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxePageStepExecutionStates\Execute\PostProcessingSubFunctionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxeRepostOptionsTest.cs" />
+    <Compile Include="Core\ExecutionEngine\Infrastructure\WxePageStepExecutionStates\TestBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxePageStepIntegrationTests\ExecuteFunctionExternalByRedirect.cs" />
+    <Compile Include="Core\ExecutionEngine\WxePageStepIntegrationTests\ExecuteFunction.cs" />
+    <Compile Include="Core\ExecutionEngine\WxePageStepIntegrationTests\Execute_Self.cs" />
+    <Compile Include="Core\ExecutionEngine\WxePageStepTest.cs" />
+    <Compile Include="Core\ExecutionEngine\WxePageStepIntegrationTests\TestBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestFunctionWithInvalidSteps.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestFunctionWithNesting.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestFunctionWithNonSerializableParameters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestFunctionWithSerializableParameters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestStep.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\TestFunctions\TestTransaction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\UrlMapping\UrlMappedFunctions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\UrlMapping\UrlMappingConfigurationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\UrlMapping\UrlMappingSchemaTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxeContextTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxeFunctionTests\Security.cs" />
+    <Compile Include="Core\ExecutionEngine\WxeFunctionStateMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxeFunctionTests\WxeFunctionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxeHandlerMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxeHandlerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxeMethodStepTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxePageTests\AbortHandling_WxePageTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxeParameterConverterMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxeParameterConverterTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxeParameterDeclarationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxeStepTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExecutionEngine\WxeTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\Security\Domain\DerivedSecurableObject.cs" />
+    <Compile Include="Core\Security\Domain\MethodNameEnum.cs" />
+    <Compile Include="Core\Security\Domain\NestedMethodNameEnum.cs" />
+    <Compile Include="Core\Security\Domain\OtherSecurableObject.cs" />
+    <Compile Include="Core\Security\Domain\SecurableObject.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\TestFunctionWithoutParameters.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\TestFunctionWithoutPermissions.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\TestFunctionWithPermissionsFromConstructor.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\TestFunctionWithPermissionsFromInstanceMethod.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\TestFunctionWithPermissionsFromStaticMethod.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\TestFunctionWithThisObject.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\TestFunctionWithThisObjectAsSecondParameter.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\WxeDemandCreatePermissionAttributeTest.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTest.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestForGetSecurableObject.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestForGetTypeOfSecurableObject.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\WxeDemandTargetMethodPermissionAttributeTest.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\WxeDemandTargetStaticMethodPermissionAttributeTest.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\WxeSecurityAdapterTestWithoutPermissionAttribute.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\WxeSecurityAdapterTestWithPermissionsFromConstructor.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\WxeSecurityAdapterTestWithPermissionsFromInstanceMethod.cs" />
+    <Compile Include="Core\Security\ExecutionEngine\WxeSecurityAdapterTestWithPermissionsFromStaticMethod.cs" />
+    <Compile Include="Core\Security\HttpContextPrincipalProviderTest.cs" />
+    <Compile Include="Core\Security\UI\DemandTargetMethodPermissionAttributeTest.cs" />
+    <Compile Include="Core\Security\UI\DemandTargetWxeFunctionPermissionAttributeTest.cs" />
+    <Compile Include="Core\Security\UI\WebSecurityAdapterTests\PermissionFromSecurableObjectTest.cs" />
+    <Compile Include="Core\Security\UI\WebSecurityAdapterTests\PermissionFromWxeFunctionTest.cs" />
+    <Compile Include="Core\Security\UI\WebSecurityAdapterTests\WebPermissionProviderTestHelper.cs" />
+    <Compile Include="Core\UI\Controls\CommandTests\BaseTest.cs" />
+    <Compile Include="Core\UI\Controls\CommandTests\CommandTestHelper.cs" />
+    <Compile Include="Core\UI\Controls\CommandTests\WxeFunctionCommandTest.cs" />
+    <Compile Include="Core\UI\Controls\CommandTests\EventCommandTest.cs" />
+    <Compile Include="Core\UI\Controls\CommandTests\NoneCommandTest.cs" />
+    <Compile Include="Core\UI\Controls\CommandTests\HrefCommandTest.cs" />
+    <Compile Include="Core\UI\Controls\EmailAddressValidatorMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\UI\Controls\EmailAddressValidatorTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\UI\Controls\LazyContainerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\UI\Controls\MenuTabTests\BaseTest.cs" />
+    <Compile Include="Core\UI\Controls\MenuTabTests\MainMenuTabTest.cs" />
+    <Compile Include="Core\UI\Controls\MenuTabTests\SecurityTestWithVisible.cs" />
+    <Compile Include="Core\UI\Controls\MenuTabTests\SecurityTestWithEnabled.cs" />
+    <Compile Include="Core\UI\Controls\MenuTabTests\WcagTest.cs" />
+    <Compile Include="Core\UI\Controls\NavigationCommandTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\UI\Controls\NumericValidatorTests\Common.cs" />
+    <Compile Include="Core\UI\Controls\NumericValidatorTests\ValidateWithSingle.cs" />
+    <Compile Include="Core\UI\Controls\NumericValidatorTests\ValidateWithInt64.cs" />
+    <Compile Include="Core\UI\Controls\NumericValidatorTests\ValidateWithByte.cs" />
+    <Compile Include="Core\UI\Controls\NumericValidatorTests\ValidateWithInt16.cs" />
+    <Compile Include="Core\UI\Controls\NumericValidatorTests\ValidateWithDecimal.cs" />
+    <Compile Include="Core\UI\Controls\NumericValidatorTests\ValidateWithDouble.cs" />
+    <Compile Include="Core\UI\Controls\NumericValidatorTests\NumericValidatorMock.cs" />
+    <Compile Include="Core\UI\Controls\NumericValidatorTests\TestBase.cs" />
+    <Compile Include="Core\UI\Controls\NumericValidatorTests\ValidateWithInt32.cs" />
+    <Compile Include="Core\UI\Controls\TabbedMenuMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\UI\Controls\TabbedMenuTest.cs" />
+    <Compile Include="Core\UI\Controls\WebButtonTests\BaseTest.cs" />
+    <Compile Include="Core\UI\Controls\WebButtonTests\SecurityTestWithEnabled.cs" />
+    <Compile Include="Core\UI\Controls\WebButtonTests\SecurityTestWithVisible.cs" />
+    <Compile Include="Core\UI\Controls\WebButtonTests\WcagTest.cs" />
+    <Compile Include="Core\UI\Controls\WebButtonTests\WebButtonMock.cs" />
+    <Compile Include="Core\UI\Controls\WebControlTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\UI\Controls\WebMenuItemTests\BaseTest.cs" />
+    <Compile Include="Core\UI\Controls\WebMenuItemTests\SecurityTestWithEnabled.cs" />
+    <Compile Include="Core\UI\Controls\WebMenuItemTests\SecurityTestWithVisible.cs" />
+    <Compile Include="Core\UI\Controls\WebTabCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\UI\Design\WebDesignModeHelperTest.cs" />
+    <Compile Include="PairConstraint.cs" />
+    <Compile Include="Core\Utilities\UrlUtilityTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WxeDelegateStep.cs" />
+    <None Include="..\..\Remotion LGPL.licenseheader">
+      <Link>Remotion LGPL.licenseheader</Link>
+    </None>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <Content Include="Res\UrlMapping.xml" />
+    <Content Include="Res\UrlMappingWithEmptyFunctionType.xml" />
+    <Content Include="Res\UrlMappingWithEmptyPath.xml" />
+    <Content Include="Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml" />
+    <Content Include="Res\UrlMappingWithMissingFunctionType.xml" />
+    <Content Include="Res\UrlMappingWithMissingPath.xml" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Design\" />
+    <Folder Include="Core\UI\Controls\Hotkey\TextWithHotkeyTests\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>del Res /q/s
+mkdir Res
+copy "$(ProjectDir)Res\*.xml" "$(TargetDir)Res\*.xml"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

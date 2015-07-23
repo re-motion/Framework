@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ !
+ ! See the NOTICE file distributed with this work for additional information
+ ! regarding copyright ownership.  rubicon licenses this file to you under 
+ ! the Apache License, Version 2.0 (the "License"); you may not use this 
+ ! file except in compliance with the License.  You may obtain a copy of the 
+ ! License at
+ !
+ !   http://www.apache.org/licenses/LICENSE-2.0
+ !
+ ! Unless required by applicable law or agreed to in writing, software 
+ ! distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+ ! WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the 
+ ! License for the specific language governing permissions and limitations
+ ! under the License.
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <ExtensionTasksPath>$(MSBuildExtensionPackPath)</ExtensionTasksPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionPackPath)MSBuild.ExtensionPack.tasks" />
+
+  <Target Name="SetupTestConfiguration">
+    <Error Text="The property 'LogDirectory' is not set." Condition="'$(LogDirectory)' == ''" />
+    <Error Text="The property 'Platform' is not set." Condition="'$(Platform)' == ''" />
+    <Error Text="The property 'AppConfigFile' is not set." Condition="'$(AppConfigFile)' == ''" />
+    <Error Text="The property 'Browser' is not set." Condition="'$(Browser)' == ''" />
+
+    <Message Text="Selected Browser: '$(Browser)'" />
+
+    <PropertyGroup>
+      <_variantName>$(Browser)_$(_platform)_$(ConfigurationID)</_variantName>
+      <_logsDirectory>$(LogDirectory)WebTesting\$(_variantName)\</_logsDirectory>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <_appConfigAttributes Remove="@(_appConfigAttributes)"/>
+      <_appConfigAttributes Include="/configuration/remotion.webTesting">
+        <Key>browser</Key>
+        <Value>$(Browser)</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/remotion.webTesting">
+        <Key>logsDirectory</Key>
+        <Value>$(_logsDirectory)</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/remotion.webTesting">
+        <Key>screenshotDirectory</Key>
+        <Value>$(_logsDirectory)</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/remotion.webTesting">
+        <Key>closeBrowserWindowsOnSetUpAndTearDown</Key>
+        <Value>true</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/log4net/appender[@name='FileAppender']/file">
+        <Key>value</Key>
+        <Value>$(_logsDirectory)WebTestingFramework.log</Value>
+      </_appConfigAttributes>
+    </ItemGroup>
+
+    <MSBuild.ExtensionPack.Xml.XmlFile TaskAction="UpdateAttribute"
+                                       File="$(AppConfigFile)"
+                                       XPath="%(_appConfigAttributes.Identity)"
+                                       Key="%(_appConfigAttributes.Key)"
+                                       Value="%(_appConfigAttributes.Value)"/>
+  </Target>
+
+</Project>

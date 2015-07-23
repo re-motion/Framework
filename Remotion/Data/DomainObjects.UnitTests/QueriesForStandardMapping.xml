@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<queries 
+    xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/1.0 ..\..\DomainObjects\Schemas\Queries.xsd">
+
+  <query id="QueryWithoutParameter" type="scalar">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>select 42</statement>
+  </query>
+
+  <query id="OrderNoSumByCustomerNameQuery" type="scalar">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>
+      select sum([OrderNo])
+      from [Order] inner join [Company] on [CustomerID] = [Company].[ID]
+      where [Company].[Name] = @customerName;
+    </statement>
+  </query>
+
+  <query id="OrderNoSumForMultipleCustomers" type="scalar">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>
+      select sum([OrderNo])
+      from [Order] inner join [Company] on [CustomerID] = [Company].[ID]
+      where [Company].[Name] in ({companyNames});
+    </statement>
+  </query>
+
+  <query id="BulkUpdateQuery" type="scalar">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>
+      update [Order] set [DeliveryDate] = '2006/01/01' where [CustomerID] = @customerID;
+      select @@ROWCOUNT;
+    </statement>
+  </query>
+
+  <query id="OrderQuery" type="collection">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>select [Order].* from [Order] where [CustomerID] = @customerID order by [OrderNo] asc;</statement>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
+  </query>
+
+  <query id="OrderByOfficialQuery" type="collection">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>select [Order].* from [Order] where [OfficialID] = @officialID order by [OrderNo] asc;</statement>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
+  </query>
+
+  <query id="CustomerTypeQuery" type="collection">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>select * from [Company] where [CustomerType] = @customerType order by [Name] asc;</statement>
+  </query>
+
+  <query id="QueryWithDuplicates" type="collection">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>SELECT [Order].* FROM [OrderItem] INNER JOIN [Order] ON [OrderItem].[OrderID] = [Order].[ID] WHERE [Order].[OrderNo] = 1;</statement>
+  </query>
+
+  <query id="QueryWithSpecificCollectionType" type="collection">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>select * from [Order];</statement>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests::TestDomain.SpecificOrderCollection</collectionType>
+  </query>
+
+  <query id="QueryWithAllDataTypes" type="collection">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <!-- SQL statement with invalid XML character value. -->
+    <statement>
+       <![CDATA[
+        set ANSI_NULLS OFF;
+        select * from TableWithAllDataTypes where 
+          [Boolean] = @boolean and
+          [Byte] = @byte and
+          [Date] = @date and
+          [DateTime] = @dateTime and
+          [Decimal] = @decimal and
+          [Double] > @doubleLowerBound and [Double] < @doubleUpperBound and
+          [Enum] = @enum and
+          [ExtensibleEnum] = @extensibleEnum and
+          [Guid] = @guid and
+          [Int16] = @int16 and
+          [Int32] = @int32 and
+          [Int64] = @int64 and
+          [Single] > @singleLowerBound and [Single] < @singleUpperBound and
+          [String] = @string and
+          [StringWithoutMaxLength] = @stringWithoutMaxLength and -- TODO
+          [Binary] = @binary and -- TODO
+          -- Note: StringWithoutMaxLength cannot be used here, because it is of type 'text'.
+          -- Note: Binary cannot be used here, because it is of type 'image'.
+          [NaBoolean] = @naBoolean and
+          [NaByte] = @naByte and
+          [NaDate] = @naDate and
+          [NaDateTime] = @naDateTime and
+          [NaDecimal] = @naDecimal and
+          [NaDouble] > @naDoubleLowerBound and [NaDouble] < @naDoubleUpperBound and
+          [NaEnum] = @naEnum and
+          [NaFlags] = @naFlags and -- TODO
+          [NaGuid] = @naGuid and
+          [NaInt16] = @naInt16 and
+          [NaInt32] = @naInt32 and
+          [NaInt64] = @naInt64 and
+          [NaSingle] > @naSingleLowerBound and [NaSingle] < @naSingleUpperBound and
+          [StringWithNullValue] = @stringWithNullValue and
+          [ExtensibleEnumWithNullValue] = @extensibleEnumWithNullValue and
+          [NaBooleanWithNullValue] = @naBooleanWithNullValue and 
+          [NaByteWithNullValue] = @naByteWithNullValue and 
+          [NaDateWithNullValue] = @naDateWithNullValue and
+          [NaDateTimeWithNullValue] = @naDateTimeWithNullValue and
+          [NaDecimalWithNullValue] = @naDecimalWithNullValue and 	        
+          [NaDoubleWithNullValue] = @naDoubleWithNullValue and
+          [NaEnumWithNullValue] = @naEnumWithNullValue and
+          [NaFlagsWithNullValue] = @naFlagsWithNullValue and -- TODO
+          [NaGuidWithNullValue] = @naGuidWithNullValue and
+          [NaInt16WithNullValue] = @naInt16WithNullValue and
+          [NaInt32WithNullValue] = @naInt32WithNullValue and
+          [NaInt64WithNullValue] = @naInt64WithNullValue and
+          [NaSingleWithNullValue] = @naSingleWithNullValue and
+          [NullableBinary] = @nullableBinaryWithNullValue; -- TODO 
+      ]]>      
+    </statement>
+  </query>
+
+  <query id="StoredProcedureQuery" type="collection">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>rpf_testSPQuery</statement>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
+  </query>
+
+  <query id="StoredProcedureQueryWithParameter" type="collection">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>exec rpf_testSPQueryWithParameter @customerID</statement>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
+  </query>
+
+  <query id="FakeQuery" type="collection">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>SELECT "Dummy"</statement>
+    <collectionType>Remotion.Data.DomainObjects::DomainObjectCollection</collectionType>
+  </query>
+
+  <query id="CustomQuery" type="custom">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>SELECT String, Int16, Boolean, Enum, ExtensibleEnum  FROM [TableWithAllDataTypes]</statement>
+  </query>
+
+  <query id="OrderQueryWithDomainObjectCollectionType" type="collection">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>select * from [Order];</statement>
+    <collectionType>Remotion.Data.DomainObjects::DomainObjectCollection</collectionType>
+  </query>
+
+</queries>

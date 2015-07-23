@@ -1,0 +1,41 @@
+td.cell
+{
+  border: solid 1px paleturquoise;
+}
+
+.bocBooleanValue,
+.bocCheckBox,
+.bocDateTimeValue,
+.bocEnumValue,
+.bocMultilineTextValue,
+.bocTextValue
+{
+  background-color: antiquewhite;
+}
+
+.right,
+.right .common
+{
+  text-align: right;
+}
+
+.block
+{
+  display: block;
+}
+
+.label
+{
+  background-color: lavender;
+}
+
+.bocBooleanValue.right .label,
+.bocCheckBox.right .label
+{
+  width: 50%;
+}
+
+.readOnly
+{
+  border: solid 1px blue;
+}

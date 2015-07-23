@@ -1,0 +1,102 @@
+﻿<?xml version="1.0"  encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <SvnToolPath>$(ToolsPath)Subversion\</SvnToolPath>
+    <MSBuildCommunityTasksPath>$(ToolsPath)MSBuildCommunityTasks\</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+
+  <UsingTask AssemblyFile="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.XmlUpdate" />
+
+  <Target Name="SetVersionCiAndNightlyBuild" DependsOnTargets="CheckVersion">
+    <Error Text="The property 'build_number' is not set." Condition="'$(build_number)' == ''" />
+    <Error Text="The property 'build_number' must be less then '10000' but is set to '$(build_number)'." Condition="$(build_number) &gt; 9999" />
+
+    <PropertyGroup>
+      <!--Only used for Release Notes. Currently, no Release Notes are being generated. -->
+      <JiraVersion>$(Version)</JiraVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <Version-Major>$([System.Version]::Parse ($(Version)).Major)</Version-Major>
+      <Version-Minor>$([System.Version]::Parse ($(Version)).Minor)</Version-Minor>
+      <Version-Build>$([System.Version]::Parse ($(Version)).Build)</Version-Build>
+      <Version-Revision>$(build_number)</Version-Revision>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <Version>$(Version-Major).$(Version-Minor).$(Version-Build).$(Version-Revision)</Version>
+    </PropertyGroup>
+
+    <Message Text="##teamcity[buildNumber '$(Version)']" />
+  </Target>
+  
+  <Target Name="SetVersionFullBuild" DependsOnTargets="CheckVersion">
+    <PropertyGroup>
+      <!--Only used for Release Notes. Currently, no Release Notes are being generated. -->
+      <JiraVersion>$(Version)</JiraVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <Version-Major>$([System.Version]::Parse ($(Version)).Major)</Version-Major>
+      <Version-Minor>$([System.Version]::Parse ($(Version)).Minor)</Version-Minor>
+      <Version-Build>$([System.Version]::Parse ($(Version)).Build)</Version-Build>
+
+      <!-- Used also in 'Shared.Overrides.targets' during 'PrepareAssemblyNuGetVersion'. -->
+      <Version-Revision>10000</Version-Revision>
+
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <Version>$(Version-Major).$(Version-Minor).$(Version-Build).$(Version-Revision)</Version>
+      <NuGetVersionSuffix>$(FullBuild_NuGetVersionSuffix)</NuGetVersionSuffix>
+    </PropertyGroup>
+
+    <Message Text="##teamcity[buildNumber '$(Version)']" />
+  </Target>
+
+  <Target Name="CheckVersion">
+    <Error Text="The property 'Version' is not set." Condition="'$(Version)' == ''" />
+
+    <Error Text="Only 4-part version numbers are supported." Condition="$([System.Version]::Parse ($(Version)).Major) == -1" />
+    <Error Text="Only 4-part version numbers are supported." Condition="$([System.Version]::Parse ($(Version)).Minor) == -1" />
+    <Error Text="Only 4-part version numbers are supported." Condition="$([System.Version]::Parse ($(Version)).Build) == -1" />
+    <Error Text="Only 4-part version numbers are supported." Condition="$([System.Version]::Parse ($(Version)).Revision) == -1" />
+
+  </Target>
+
+  <Target Name="CreateLocalBuildVersion" DependsOnTargets="CheckVersion">
+
+    <PropertyGroup>
+      <_versionMajor>$([System.Version]::Parse ($(Version)).Major)</_versionMajor>
+      <_versionMinor>$([System.Version]::Parse ($(Version)).Minor)</_versionMinor>
+      <_versionBuild>$([System.Version]::Parse ($(Version)).Build)</_versionBuild>
+      <_versionRevision>20000</_versionRevision>
+      <LocalVersion>$(_versionMajor).$(_versionMinor).$(_versionBuild).$(_versionRevision)</LocalVersion>
+    </PropertyGroup>
+
+  </Target>
+
+  <Target Name="UpdateVersionPropertyForTag">
+    <Error Text="The property 'Version' is not set." Condition="'$(Version)' == ''" />
+
+    <MSBuild.Community.Tasks.XmlUpdate
+        Prefix="n"
+        Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+        XmlFileName="Local.Version.props"
+        XPath="/n:Project/n:PropertyGroup/n:Version"
+        Value="$(Version)" />
+  </Target>
+
+  <Target Name="UpdateVersionPropertyForLocalBuild">
+    <Error Text="The property 'LocalVersion' is not set." Condition="'$(LocalVersion)' == ''" />
+
+    <MSBuild.Community.Tasks.XmlUpdate
+        Prefix="n"
+        Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+        XmlFileName="Local.Version.props"
+        XPath="/n:Project/n:PropertyGroup/n:Version"
+        Value="$(LocalVersion)" />
+  </Target>
+
+</Project>

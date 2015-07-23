@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:c="http://www.re-motion.org/Data/DomainObjects/Configuration/2.1"
+    xmlns:vs="http://schemas.microsoft.com/Visual-Studio-Intellisense" 
+    targetNamespace="http://www.re-motion.org/Data/DomainObjects/Configuration/2.1"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified">
+  
+	<xs:element name="remotion.data.domainObjects">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="storage">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="providerDefinitions" type="c:ProviderCollection" minOccurs="0"/>
+              <xs:element name="groups" type="c:StorageGroupCollection" minOccurs="0" />
+						</xs:all>
+						<xs:attribute name="defaultProviderDefinition" type="c:ProviderDefinitionSelection" use="optional"/>
+					</xs:complexType>
+          <xs:unique name="uniqueProviderDefinitions">
+            <xs:selector xpath="c:providerDefinitions/c:add"/>
+            <xs:field xpath="@name"/>
+          </xs:unique>
+          <xs:unique name="uniqueGroups">
+            <xs:selector xpath="c:groups/c:add"/>
+            <xs:field xpath="@type"/>
+          </xs:unique>
+        </xs:element>
+        <xs:element name="mapping" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="loader" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="type" type="c:DotNetType" default="None" />
+                </xs:complexType>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="query" minOccurs="0" maxOccurs="1" >
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="queryFiles" type="c:QueryFileCollection"  minOccurs="0" maxOccurs="1" />
+            </xs:all>
+          </xs:complexType>
+          <xs:unique name="uniqueNames">
+            <xs:selector xpath="c:queryFiles/c:add"/>
+            <xs:field xpath="@filename"/>
+          </xs:unique>      
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+	</xs:element>
+  
+  <xs:simpleType name="ProviderDefinitionSelection">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="SqlProvider" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="c:RequiredStringType" />
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:complexType name="ProviderCollection">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="add">
+        <xs:complexType>
+          <xs:attribute name="name" type="xs:string" use="required" />
+          <xs:attribute name="type" type="c:DotNetType" use="required" />
+          <xs:attribute name="factoryType" type="c:DotNetType" use="required" />
+          <xs:attribute name="connectionString" type="xs:string" use="optional" />
+          <xs:anyAttribute processContents="skip" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="remove">
+        <xs:complexType>
+          <xs:attribute name="name" type="xs:string" use="required" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="clear">
+        <xs:complexType />
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="StorageGroupCollection">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="add">
+        <xs:complexType>
+          <xs:attribute name="type" type="c:DotNetType" use="required"/>
+          <xs:attribute name="provider" type="c:RequiredStringType" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="remove">
+        <xs:complexType>
+          <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="clear">
+        <xs:complexType>
+          <!--tag is empty-->
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:complexType name="QueryFileCollection">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="add">
+        <xs:complexType>
+          <xs:attribute name="filename" type="c:RequiredStringType" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="remove">
+        <xs:complexType>
+          <xs:attribute name="filename" type="c:RequiredStringType" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="clear">
+        <xs:complexType>
+          <!--tag is empty-->
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:simpleType name="RequiredStringType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:whiteSpace value="collapse" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="DotNetType">
+    <xs:restriction base="c:RequiredStringType">
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*),\s?([\p{L}\d]+\.)*([\p{L}\d]+)">
+        <xs:annotation>
+          <xs:documentation>
+            Class, Assembly; Namespace.Class, Assembly; Namespace.Namespace.Class, Assembly;
+            Class+Class, Assembly; Namespace.Class+Class, Assembly; Namespace.Namespace.Class+Class, Assembly
+            Class,Assembly; Namespace.Class,Assembly; Namespace.Namespace.Class,Assembly;
+            Class+Class,Assembly; Namespace.Class+Class,Assembly; Namespace.Namespace.Class+Class,Assembly
+          </xs:documentation>
+        </xs:annotation>
+      </xs:pattern>
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*)">
+        <xs:annotation>
+          <xs:documentation>
+            Class; Namespace.Class; Namespace.Namespace.Class;
+            Class+Class; Namespace.Class+Class; Namespace.Namespace.Class+Class
+          </xs:documentation>
+        </xs:annotation>
+      </xs:pattern>
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*::)(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*)">
+        <xs:annotation>
+          <xs:documentation>
+            Namespace::Class; Namespace.Namespace::Class;
+            Namespace::Class+Class; Namespace::Namespace.Class+Class
+          </xs:documentation>
+        </xs:annotation>
+      </xs:pattern>
+    </xs:restriction>
+  </xs:simpleType>  
+  
+</xs:schema>

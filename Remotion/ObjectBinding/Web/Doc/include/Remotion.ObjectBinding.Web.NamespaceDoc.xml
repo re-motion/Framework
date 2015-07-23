@@ -1,0 +1,621 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ !
+ ! The re-motion Core Framework is free software; you can redistribute it
+ ! and/or modify it under the terms of the GNU Lesser General Public License
+ ! as published by the Free Software Foundation; either version 2.1 of the
+ ! License, or (at your option) any later version.
+ !
+ ! re-motion is distributed in the hope that it will be useful,
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ ! GNU Lesser General Public License for more details.
+ !
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<doc>
+  <assembly>
+    <name>_SharedItems_</name>
+  </assembly>
+  <members>
+    <member name="N:Remotion.ObjectBinding.Web">
+      <summary>
+    <para>
+      The <b>Remotion.ObjectBinding.Web</b> namespace and its sub namespaces contain interfaces, classes,
+      and web controls to be used for displaying and editing business objects in an ASP.NET environment.
+    </para><para>
+      In the following, an overview is provided on the starting points for working with the 
+      <b>Remotion.ObjectBinding.Web</b> namespace.
+    </para>
+    <h3 class="dtH3">Business Object Bound Controls</h3>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="25%" />
+        <col width="75%" />
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue" /></td>
+          <td>
+            Use this control for displaying and editing the value of an 
+            <see cref="T:Remotion.ObjectBinding.IBusinessObjectBooleanProperty" />
+            or a (nullable) <see cref="T:System.Boolean" /> value using a tri-state check-box.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox" /></td>
+          <td>
+            Use this control for displaying and editing the value of an 
+            <see cref="T:Remotion.ObjectBinding.IBusinessObjectBooleanProperty" />,
+            or a (nullable) <see cref="T:System.Boolean" /> value using a regular check-box.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue" /></td>
+          <td>
+            Use this control for displaying and editing the value of an 
+            <see cref="T:Remotion.ObjectBinding.IBusinessObjectDateProperty" />, 
+            an <see cref="T:Remotion.ObjectBinding.IBusinessObjectDateTimeProperty" />,
+            or a (nullable) <see cref="T:System.DateTime" /> value.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue" /></td>
+          <td>
+            Use this control for displaying and editing the value of an 
+            <see cref="T:Remotion.ObjectBinding.IBusinessObjectEnumerationProperty" />,
+            or a (nullable) <see cref="T:System.Enum" /> value.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocList" /></td>
+          <td>
+            <para>
+              Use this control for displaying the value of an <see cref="T:Remotion.ObjectBinding.IBusinessObjectReferenceProperty" /> 
+              having <see cref="P:Remotion.ObjectBinding.IBusinessObjectProperty.IsList" /> set <see langword="true" /> 
+              or an <see cref="T:System.Collections.IList" /> of <see cref="T:Remotion.ObjectBinding.IBusinessObject" /> objects.
+            </para><para>
+              The <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocList" /> supports editing the the values the 
+              individual rows, attatching hyperlinks, events, or an 
+              <see cref="T:Remotion.Web.ExecutionEngine.WxeFunction" /> to the cells or the entire list.
+            </para> 
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocLiteral" />
+          </td>
+          <td>
+            <para>
+            Use this control for displaying the value of an <see cref="T:Remotion.ObjectBinding.IBusinessObjectStringProperty" /> 
+            or an arbitrary <see cref="T:System.String" /> value.
+            </para><para>
+            The value is not HTML encoded during rendering. Therefor, the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocLiteral" /> control 
+            should only be used when the intention is to display HTML stored in the domain layer and the source of the HTML can be trusted.
+            </para>
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue" /></td>
+          <td>
+            Use this control for displaying and editing the value of an 
+            <see cref="T:Remotion.ObjectBinding.IBusinessObjectStringProperty" /> 
+            having <see cref="P:Remotion.ObjectBinding.IBusinessObjectProperty.IsList" /> set <see langword="true" /> 
+            or a <see cref="T:System.String" /> array.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue" /></td>
+          <td>
+            <para>
+              Use this control for displaying and editing the value of an 
+              <see cref="T:Remotion.ObjectBinding.IBusinessObjectReferenceProperty" /> referencing a type that implements
+              <see cref="T:Remotion.ObjectBinding.IBusinessObjectClassWithIdentity" /> 
+              or a value of type <see cref="T:Remotion.ObjectBinding.IBusinessObjectWithIdentity" />.
+            </para>
+            <para>
+              The value is picked using a text-box with auto-completion behavior.
+            </para><para>
+              The <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue" /> supports attaching hyperlinks, 
+              events, or an <see cref="T:Remotion.Web.ExecutionEngine.WxeFunction" /> to the currently selected value
+              or the control itself.
+            </para> 
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue" />
+          </td>
+          <td>
+            <para>
+              Use this control for displaying and editing the value of an
+              <see cref="T:Remotion.ObjectBinding.IBusinessObjectReferenceProperty" /> referencing a type that implements
+              <see cref="T:Remotion.ObjectBinding.IBusinessObjectClassWithIdentity" />
+              or a value of type <see cref="T:Remotion.ObjectBinding.IBusinessObjectWithIdentity" />.
+            </para>
+            <para>
+              The value is picked using a drop-down list.
+            </para>
+            <para>
+              The <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue" /> supports attaching hyperlinks,
+              events, or an <see cref="T:Remotion.Web.ExecutionEngine.WxeFunction" /> to the currently selected value
+              or the control itself.
+            </para>
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocTextValue" /></td>
+          <td>
+            Use this control for displaying and editing the value of an 
+            <see cref="T:Remotion.ObjectBinding.IBusinessObjectStringProperty" />,
+            an <see cref="T:Remotion.ObjectBinding.IBusinessObjectNumericProperty" />, 
+            an <see cref="T:Remotion.ObjectBinding.IBusinessObjectDateProperty" />,
+            or an <see cref="T:Remotion.ObjectBinding.IBusinessObjectDateTimeProperty" /> when used with data binding.
+            It can also be assigned a <see cref="T:System.String" />, an <see cref="T:System.Int32" />, 
+            a <see cref="T:System.Double" />, or a <see cref="T:System.DateTime" /> and <see langword="null" />.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocTreeView" /></td>
+          <td>
+            Use this control for displaying a hierarchy of 
+            <see cref="T:Remotion.ObjectBinding.IBusinessObjectWithIdentity" /> 
+            and <see cref="T:Remotion.ObjectBinding.IBusinessObjectReferenceProperty" /> objects.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    
+    <h3 class="dtH3">Business Object Data Source Controls</h3>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="25%" />
+        <col width="75%" />
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" /></td>
+          <td>
+            <para>
+              Use an invisible control inherited from this interface for binding an 
+              <see cref="T:Remotion.ObjectBinding.IBusinessObject" /> 
+              to an <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectBoundWebControl" /> on your page.
+            </para><para>
+              Each business object model, consisting of implementations for 
+              <see cref="T:Remotion.ObjectBinding.IBusinessObject" />, 
+              <see cref="T:Remotion.ObjectBinding.IBusinessObjectProperty" /> and 
+              <see cref="T:Remotion.ObjectBinding.IBusinessObjectClass" /> must also provide a matching implementation of
+              <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />. 
+              The <see langword="abstract" /> class 
+              <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BusinessObjectDataSourceControl" /> provides a default 
+              implementation from which to inherit from.
+            </para>
+            <para>
+              <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BusinessObjectDataSourceControl" /> is an 
+              <see langword="abstract" /> default implementation.
+            </para>
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceDataSourceControl" /></td>
+          <td>
+            Use this invisible control for cascading business objects on a web page, i.e. displaying or editing the 
+            property value of an <see cref="T:Remotion.ObjectBinding.IBusinessObject" /> pointed to by the primary 
+            business object's <see cref="T:Remotion.ObjectBinding.IBusinessObjectReferenceProperty" />.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceSearchDataSourceControl" /></td>
+          <td>
+            Use this invisible control to provide an otherwise unbound 
+            <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocList" /> with an 
+            <see cref="T:Remotion.ObjectBinding.IBusinessObjectClass" />. This is required for selecting which properties
+            to display.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <note>
+      Please refer to the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
+      documentation for an examples of the <b>LoadValues</b> and the <b>SaveValues</b> patterns.
+    </note>
+    
+    <h3 class="dtH3">Miscellaneos Classes and Controls</h3>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="25%" />
+        <col width="75%" />
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.IBusinessObjectWebUIService" /></td>
+          <td>
+            This interface provides a way of querying the business object model for an icon to be used
+            when displaying the current business object.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.DataEditUserControl" /></td>
+          <td>
+            Use this control if you want to have central page and only switch between user controls. The page can than 
+            implement the business object management, binding the current object to the respective user control's 
+            data source.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    For information on the browser compatibility of the controls, see the 
+    <see cref="N:Remotion.ObjectBinding.Web.UI.Controls">Remotion.ObjectBinding.Web.UI.Controls</see> namespace.
+  </summary>
+    </member>
+    <member name="N:Remotion.ObjectBinding.Web.UI.Controls">
+      <summary>
+    The <b>Remotion.ObjectBinding.Web.UI.Controls</b> namespace provides object bindable controls implementing 
+    <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectBoundWebControl" />. 
+    To allow integration with the <see cref="T:Remotion.Web.UI.Controls.FormGridManager" />, the controls also implement 
+    <see cref="T:Remotion.Web.UI.ISmartControl" />. By providing automation for both, object binding and rendering, the 
+    bound web controls provide a maximum of usability with a minimum of coding effort.
+    
+    <h3 class="dtH3">Browser Compatibility Chart: Transitional Quirks Mode</h3>
+    Please note, this chart only refers to quirks mode rendering using the <b>Remotion.ObjectBinding.Web.Legacy</b> assembly.
+    In standards mode, all main-stream browsers starting with Internet Explorer 7, Firefox 3.5, Chrome 4, and Safari 4 
+    are supported with the complete feature set. Opera 10 (and later) does not support context menus and may also exhibit slight quirks in the layout.
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="28%" />
+        <col width="8%" />
+        <col width="8%" />
+        <col width="8%" />
+        <col width="8%" />
+        <col width="8%" />
+        <col width="8%" />
+        <col width="8%" />
+        <col width="8%" />
+        <col width="8%" />
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th rowspan="2" style="vertical-align:top; text-align:center;">Control</th>
+          <th colspan="3" style="text-align:center;">Internet Explorer</th>
+          <th style="text-align:center;">Firefox</th>
+          <th colspan="2" style="text-align:center;">Mozilla</th>
+          <th colspan="2" style="text-align:center;">Netscape</th>
+          <th style="text-align:center;">Opera</th>
+        </tr>
+        <tr valign="top">
+          <th style="text-align:center;">5.0.1</th><!-- Internet Explorer 5.0.1 -->
+          <th style="text-align:center;">5.5</th><!-- Internet Explorer 5.5 -->
+          <th style="text-align:center;">6.0 SP1</th><!-- Internet Explorer 6.0 SP1 -->
+          <th style="text-align:center;">1.0</th><!-- Firefox 1.0 -->
+          <th style="text-align:center;">1.0</th><!-- Mozilla 1.0 -->
+          <th style="text-align:center;">1.7.5</th><!-- Mozilla 1.7.5. -->
+          <th style="text-align:center;">6.0</th><!-- Netscape 6.0 -->
+          <th style="text-align:center;">7.2</th><!-- Netscape 7.2 -->
+          <th style="text-align:center;">7.5.4</th><!-- Opera 7.5.4 -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue" /></td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">3)</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">3)</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">3)</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">3)</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">3)</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox" /></td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">X</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">3)</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue" /></td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">2)</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">2)</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">2)</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">2)</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">2) 3)</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue" /></td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">X</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocList" /></td>
+          <td style="text-align:center;">1)</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">1)</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">1)</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">1)</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">1)</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">1)</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td>
+            <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocLiteral" />
+          </td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">X</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">X</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue" /></td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">X</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td>
+            <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue" />
+          </td>
+          <td style="text-align:center;">1)</td>
+          <!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td>
+          <!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td>
+          <!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">1) 3)</td>
+          <!-- Firefox 1.0 -->
+          <td style="text-align:center;">1) 3)</td>
+          <!-- Mozilla 1.0 -->
+          <td style="text-align:center;">1) 3)</td>
+          <!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">1) 3)</td>
+          <!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td>
+          <!-- Netscape 7.2 -->
+          <td style="text-align:center;">1) 3)</td>
+          <!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue" /></td>
+          <td style="text-align:center;">-</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">-</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">-</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">-</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">-</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">-</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">-</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">-</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocTextValue" /></td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">X</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocTreeView" /></td>
+          <td style="text-align:center;">3)</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">X</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="10">
+            X Fully compatible.<br />
+            - Not compatible.<br />
+            ? Compatibility not tested.<br />
+            1) Menus not supported.<br />
+            2) Date Picker not supported.<br />
+            3) Layout damaged but usable.<br />
+            4) Layout not usable.<br />
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+    <para>
+      Add the following setting to the <c>browserCaps</c> section in the <c>machine.config</c>, 
+      or its copy in the <c>web.config</c>: <c>tagwriter=System.Web.UI.HtmlTextWriter</c>. This will cause ASP.NET to
+      always render HTML 4.0 valid code, instead of falling back to HTML 3.2 compatible tags for browsers other than
+      Microsoft Internet Explorer 5.01. Otherwise, the Business Object Controls might cause an exception during 
+      rendering due the use of non-numeric CSS values (i.e. <c>auto</c> for <c>width</c>).
+    </para>
+    <para>
+      Firefox 1.0, Mozilla 1.0, Mozilla 1.7.5 all use Mozilla 5.0 as base and differ only in the build number of the 
+      Gecko rendering engine.
+    </para>
+    <h3 class="dtH3">Standards Conformance Chart</h3>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="28%" />
+        <col width="18%" />
+        <col width="18%" />
+        <col width="18%" />
+        <col width="18%" />
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th rowspan="2" style="vertical-align:top; text-align:center;">Control</th>
+          <th rowspan="2" style="vertical-align:top; text-align:center;">HTML 4.01 Conformance</th>
+          <th rowspan="2" style="vertical-align:top; text-align:center;">XHTML 1.0 Conformance</th>
+          <th colspan="2" style="text-align:center;">WAI WCAG 1.0 Conformance Level</th>
+        </tr>
+        <tr valign="top">
+          <th style="text-align:center;">Default Settings</th>
+          <th style="text-align:center;">Possible</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Double-A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocList" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocLiteral" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Double-A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocTextValue" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Double-A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocTreeView" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="10">
+            X Fully conform.<br />
+            - Not conform.<br />
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+    <para>
+      See the <see cref="N:Remotion.Web.UI"/> namespace documentation for details 
+      on enforcing WAI conformance.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.ObjectBinding.Web.UI.Design">
+      <summary>
+    The <b>Remotion.ObjectBinding.Web.UI.Design</b> namespace provides classes required for Visual Studio .net Designer
+    support.
+  </summary>
+    </member>
+  </members>
+</doc>

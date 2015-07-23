@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<TypesafeInvoker>
+  <Class>
+    <remarks>
+      <para>
+        In order to call a specific method or constructor using reflection, you often have to provide a list of argument types. However, manually
+        specifying this list is tedious and error-prone. Consider the following example (assuming Window is derived from Control):
+      </para><code>
+<![CDATA[
+void SampleMethod (int i, string s, object o);
+void SampleMethod (int i, string s, Control c);
+void SampleMethod (int i, string s, Window w);
+ 
+int integer; string str; Control ctrl;
+MethodInfo method = type.GetMethod ("SampleMethod", new Type[] { typeof(int), typeof(string), typeof(Control) });
+method.Invoke (new object[] { integer, str, ctrl });
+]]>
+      </code><para>
+        A common workaround is to accept an array of values and determine the types from those values via GetType(), like Activator.CreateInstance()
+        does. In fact, this is just what IFuncInvoker.Invoke (object[]) does.
+      </para><para>
+        The problem with this type of overload is that the types are determined at runtime. In the previous example, different methods would be called
+        depending on the runtime value of ctrl. If ctrl is null, the first overload would be called (because the runtime type of null can only be resolved
+        to object). If ctrl is a Window, the third overload would be called. In any other case, the second overload would be called. This is usually
+        not what programmers would expect.
+      </para><para>
+        If ctrl is of a type for which no explicit overload exists, the overload for type object is called (overload no. 1). If there is no overload for
+        the object type, the call usually results in an exception.
+      </para><para>
+        InvokeWith uses generic methods to pass the compile-time type information to the invoke method.
+      </para><code>
+invoker.CallMethod (obj, "SampleMethod").With (integer, str, ctrl);
+      </code><para>
+        would always call the second overload of SampleMethod, because the variable ctrl has the static type Control. The previous line is the same as
+        the more explicit
+      </para><code>
+invoker.CallMethod (obj, "SampleMethod").With&lt;int,string,Control&gt; (integer, str, ctrl);
+      </code><para>
+        The following table gives an overview on which overloads would be selected given a value of ctrl:
+      </para><code>
+<![CDATA[
+Value of ctrl         Dynamic (get types from object[])   IFuncInvoker.With<A1,A2,A3>
+---------------------------------------------------------------------------------------------
+null                  SampleMethod (int, string, object)  SampleMethod (int, string, Control)
+new Control()         SampleMethod (int, string, Control) SampleMethod (int, string, Control)
+new Window()          SampleMethod (int, string, Window)  SampleMethod (int, string, Control)
+new SpecialControl()  no match                            SampleMethod (int, string, Control)
+]]>
+      </code><para>
+        To use InvokeWith, create a method that returns an instance of a subclass of InvokeWith. Pass your method's parameters to this instance and
+        do the actual processing in your override of Invoke(). Refer to <see ref="TypesafeActivator"/> for an example implementation of a method
+        using InvokeWith.
+      </para>
+    </remarks>
+    <typeparam name="T"> Return type of YourMethod(...).With(...)</typeparam>
+  </Class>  
+</TypesafeInvoker>

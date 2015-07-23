@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.re-motion.org/web/wxefunctiongenerator" elementFormDefault="qualified" targetNamespace="http://www.re-motion.org/web/wxefunctiongenerator" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="WxeFunction" nillable="true" type="tns:FunctionDeclaration" />
+  <xs:complexType name="FunctionDeclaration">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Parameter" type="tns:ParameterDeclaration" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ReturnValue" type="tns:ReturnValue" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Variable" type="tns:VariableDeclaration" />
+    </xs:sequence>
+    <xs:attribute name="codeBehindType" type="xs:string" use="optional" />
+		<xs:attribute name="markupFile" type="xs:string" use="optional" />
+    <xs:attribute name="functionName" type="xs:string" use="optional" />
+    <xs:attribute name="functionBaseType" type="xs:string" use="optional" />
+    <xs:attribute name="mode" use="optional" default="AutoDetect">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="AutoDetect"/>
+          <xs:enumeration value="Page"/>
+          <xs:enumeration value="UserControl"/>
+        </xs:restriction>        
+      </xs:simpleType>     
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="ParameterDeclaration">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:VariableDeclaration">
+				<xs:attribute name="required" type="xs:boolean" use="optional" />
+				<xs:attribute name="direction" type="tns:WxeParameterDirection" use="optional" />
+				<!-- <xs:attribute name="returnValue" type="xs:boolean" default="false" /> -->
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ReturnValue">
+    <xs:attribute name="name" type="xs:string" use="optional" />
+    <xs:attribute name="type" type="xs:string" use="required" />
+  </xs:complexType>
+  <xs:complexType name="VariableDeclaration">
+    <xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="type" type="xs:string" use="required" />
+  </xs:complexType>
+  <xs:simpleType name="WxeParameterDirection">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="In" />
+      <xs:enumeration value="Out" />
+      <xs:enumeration value="InOut" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

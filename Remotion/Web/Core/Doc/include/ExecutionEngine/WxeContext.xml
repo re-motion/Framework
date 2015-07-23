@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<WxeContext>
+  <Class>
+  </Class>
+  <ExecuteFunctionExternal>
+    <param name="page"> The <see cref="Page"/>. </param>
+    <param name="function"> The WXE function to be executed. Must not be <see langword="null"/>. </param>  
+    <param name="target">
+      The HTML frame/window name that will be used to execute the function. Must not be <see langword="null"/> or 
+      empty.
+    </param>
+    <param name="features"> 
+      The features argument that is passed to the javascript function <b>window.open()</b>. 
+    </param>
+    <param name="createPermaUrl">
+      <see langword="true"/> to redirect the client to a URL that can be used as a perma-URL. 
+      Defaults to <see langword="false"/>.
+    </param>
+    <param name="urlParameters">
+      Provides the list of arguments for the URL's query string. Defaults to <see langword="null"/>, 
+      which indicates that the only <paramref name="function"/>'s current parameters should be used for the 
+      query string.
+    </param>
+    <param name="returnToCaller">
+      <see langword="true"/> to return to the calling page (i.e. the <see cref="Page.Request"/>'s 
+      <see cref="HttpRequest.RawUrl"/> after the <paramref name="function"/> has completed.
+    </param>
+  </ExecuteFunctionExternal>
+  <GetPermanentUrl>
+    <param name="httpContext"> 
+      The <see cref="HttpContextBase"/> used for resolving the path. Must not be <see langword="null"/>. 
+    </param>
+    <param name="functionType"> 
+      The type of the <see cref="WxeFunction"/> for which to create the permanent URL. 
+      Must be derived from <see cref="WxeFunction"/>. Must not be <see langword="null"/>. 
+    </param>
+    <param name="urlParameters">
+      The <see cref="StringDictionary"/> containing the url parameters used for the query string. 
+      Must not be <see langword="null"/>. 
+    </param>
+    <param name="useParentPermanentUrl">
+       <see langword="true"/> to add the executing function's perma-URL. Defaults to <see langword="false"/>.
+    </param>
+    <param name="fallbackOnCurrentUrl"> 
+      If <see langword="true"/>, the method uses the <see cref="Uri.AbsolutePath"/> of the 
+      <paramref name="httpContext"/>'s <see cref="System.Web.HttpContext.Request"/> as a fallback if no mapping for the
+      <paramref name="functionType"/> has been defined, and the 
+      <see cref="Remotion.Web.Configuration.ExecutionEngineConfiguration.DefaultWxeHandler"/> is not set. 
+      Otherwise, a <see cref="WxeException"/> is thrown.
+    </param>
+  </GetPermanentUrl>
+</WxeContext>

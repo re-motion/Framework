@@ -1,0 +1,253 @@
+@import url("TabStrip.css");
+
+/* Opera Bugfix*/
+table
+{
+}
+
+table.tabbedMultiView
+{
+  width: 100%;
+  height: 100%;
+  table-layout: fixed;
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Non-IE Browsers hack \*/
+html > body table.tabbedMultiView
+{
+  height: 98%;
+}
+/* End Non-IE Browsers hack\*/
+
+/* Applied to the tabbed multi view's view.*/
+td.tabbedMultiViewActiveView
+{
+  padding: 0;
+  vertical-align: top;
+  height: 100%;
+  border-left: solid 1px #005588;
+  border-right: solid 1px #005588;
+  border-bottom: solid 1px #005588;
+}
+
+div.tabbedMultiViewActiveView
+{
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+div.tabbedMultiViewActiveView div.body
+{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+div.tabbedMultiViewActiveView div.content
+{
+  padding: 0.2em;
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+}
+
+div.tabbedMultiViewActiveView *.left, 
+div.tabbedMultiViewActiveView *.top, 
+div.tabbedMultiViewActiveView *.right, 
+div.tabbedMultiViewActiveView *.bottom,
+div.tabbedMultiViewActiveView *.topLeft, 
+div.tabbedMultiViewActiveView *.bottomLeft, 
+div.tabbedMultiViewActiveView *.topRight, 
+div.tabbedMultiViewActiveView *.bottomRight
+{
+  display: none;
+}
+
+/* Non-IE Browsers hack \*/
+html > body div.tabbedMultiViewActiveView
+{
+  width: inherit;
+}
+/* End Non-IE Browsers hack\*/
+
+
+/* Applied to the top section of the multi view. Height cannot be provided in percent. */
+td.tabbedMultiViewTopControls
+{
+  padding: 0;
+  height: 0%;
+}
+
+div.tabbedMultiViewTopControls div.content
+{
+  padding-bottom: 1em;
+}
+
+div.tabbedMultiViewTopControls *.left,
+div.tabbedMultiViewTopControls *.top, 
+div.tabbedMultiViewTopControls *.right, 
+div.tabbedMultiViewTopControls *.bottom,
+div.tabbedMultiViewTopControls *.topLeft, 
+div.tabbedMultiViewTopControls *.topRight,
+div.tabbedMultiViewTopControls *.bottomLeft, 
+div.tabbedMultiViewTopControls *.bottomRight
+{
+  display: none;
+}
+
+/* Applied to the bottom section of the multi view. Height cannot be provided in percent. */
+td.tabbedMultiViewBottomControls
+{
+  padding: 0;
+  height: 0%;
+}
+
+div.tabbedMultiViewBottomControls div.content
+{
+  padding-top: 1em;
+}
+
+div.tabbedMultiViewBottomControls *.left,
+div.tabbedMultiViewBottomControls *.top, 
+div.tabbedMultiViewBottomControls *.right, 
+div.tabbedMultiViewBottomControls *.bottom,
+div.tabbedMultiViewBottomControls *.topLeft, 
+div.tabbedMultiViewBottomControls *.topRight,
+div.tabbedMultiViewBottomControls *.bottomLeft, 
+div.tabbedMultiViewBottomControls *.bottomRight
+{
+  display: none;
+}
+
+/* Tab Strip */
+td.tabbedMultiViewTabStrip
+{
+  padding: 0;
+  height: 0%;
+}
+
+div.tabbedMultiViewTabStrip
+{
+  width: 100%;
+}
+
+div.tabbedMultiViewTabStrip div.tabStripTabsPane
+{
+  border-bottom: solid 1px #005588;
+}
+
+div.tabbedMultiViewTabStrip div.tabStripTabsPane ul
+{
+  display: inline; /* IE-only value */
+  margin-bottom: -1px; /* Moves the UL into the surrounding DIV. */
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabWrapper
+{
+  padding-top: 0.3em;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSeparator
+{
+  width: 1em; /* Value must also be set in the Non-IE browsers section as left-margin of the tab. */
+  border-bottom: solid 1px #005588;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab
+{
+  border: solid 1px #005588;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab a
+{
+  border: none;
+  background-color: #e1ecfc;
+  color: Blue;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab a:hover
+{
+  background-color: #fee197;
+  color: Blue;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSelected
+{
+  border: solid 1px #005588;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a
+{
+  border: none;
+  background-color: White;
+  color: Blue;
+}
+
+/* Bottom tab border */
+div.tabbedMultiViewTabStrip a span.bottom
+{
+  position: absolute;
+  display: block;
+  font-size: 0.5%;
+  left: 0px;
+  bottom: -1px;
+  height: 1px;
+  width: 100%;
+}
+
+/* Bottom tab border */
+div.tabbedMultiViewTabStrip span.tabStripTab a span.bottom
+{
+  border-bottom: solid 1px #005588;
+}
+
+/* Bottom tab border selected */
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a span.bottom
+{
+  border-bottom: solid 1px White;
+}
+
+/* Content area of the tab */
+div.tabbedMultiViewTabStrip a span.anchorBody
+{
+  padding-top: 0.1em; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
+  padding-bottom: 0.1em; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+}
+
+/* Non-IE Browsers hack \*/
+html > body div.tabbedMultiViewTabStrip div.tabStripTabsPane ul
+{
+  display: block; /* Correction for Non-IE browsers. */
+}
+
+html > body div.tabbedMultiViewTabStrip span.tabStripTab, 
+html > body div.tabbedMultiViewTabStrip span.tabStripTabSelected
+{
+  margin-left: 1em; /* Provides room for the separator. */
+}
+
+html > body div.tabbedMultiViewTabStrip span.tabStripTabWrapper
+{
+  margin-bottom: -4px; /* The border-width and padding */
+}
+
+html > body div.tabbedMultiViewTabStrip span.tabStripTabSeparator span
+{
+  margin-bottom: 1px; /* The width of the top-border of the tabs. */
+  padding-top: 0.1em; /* The padding used for the anchorBody span. */
+  padding-bottom: 0.1em; /* The padding used for the anchorBody span. */
+}
+
+html > body div.tabbedMultiViewTabStrip span.tabStripTab span.anchorBody, 
+html > body div.tabbedMultiViewTabStrip span.tabStripTabSelected span.anchorBody, 
+html > body div.tabbedMultiViewTabStrip span.tabStripTabSeparator span
+{
+  height: 1.4em;
+}
+/* End Non-IE Browsers hack\*/
