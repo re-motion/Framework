@@ -44,9 +44,8 @@
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Coypu, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Coypu.2.7.0\lib\net40\Coypu.dll</HintPath>
+    <Reference Include="Coypu">
+      <HintPath>..\..\..\packages\Coypu.2.9.1\lib\net40\Coypu.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -54,13 +53,13 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="WebDriver, Version=2.44.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Selenium.WebDriver.2.44.0\lib\net40\WebDriver.dll</HintPath>
+    <Reference Include="System.Drawing" />
+    <Reference Include="WebDriver">
+      <HintPath>..\..\..\packages\Selenium.WebDriver.2.46.0\lib\net40\WebDriver.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="WebDriver.Support, Version=2.44.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Selenium.Support.2.44.0\lib\net40\WebDriver.Support.dll</HintPath>
+    <Reference Include="WebDriver.Support">
+      <HintPath>..\..\..\packages\Selenium.Support.2.46.0\lib\net40\WebDriver.Support.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

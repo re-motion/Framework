@@ -14,8 +14,8 @@
     <tags>$tags$ $extraTags$</tags>
     <dependencies>
       <!-- These dependencies must be specified since for some odd reason, NuGet pack does not add the dependency. -->
-      <dependency id="Selenium.Support" version="2.44.0" />
-      <dependency id="Selenium.WebDriver" version="2.44.0" />
+      <dependency id="Selenium.Support" version="2.46.0" />
+      <dependency id="Selenium.WebDriver" version="2.46.0" />
     </dependencies>
   </metadata>
   <files>
