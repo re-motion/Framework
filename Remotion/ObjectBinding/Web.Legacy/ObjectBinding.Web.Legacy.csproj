@@ -149,10 +149,6 @@
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Name>Web.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Web\Legacy\Web.Legacy.csproj">
-      <Project>{DD30FC13-485F-425D-8FA0-0CE8998B925D}</Project>
-      <Name>Web.Legacy</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Core\ObjectBinding.Core.csproj">
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
       <Name>ObjectBinding.Core</Name>

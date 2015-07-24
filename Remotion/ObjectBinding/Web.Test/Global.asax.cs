@@ -19,7 +19,6 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Logging;
 using Remotion.ObjectBinding;
@@ -27,16 +26,7 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain;
 using Remotion.ObjectBinding.Web;
-using Remotion.ObjectBinding.Web.Legacy;
-using Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Rendering;
-using Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocTextValueImplementation.Rendering;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
-using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering;
-using Remotion.ServiceLocation;
-using Remotion.Utilities;
-using Remotion.Web;
 using Remotion.Web.Configuration;
-using Remotion.Web.Legacy;
 
 namespace OBWTest
 {
@@ -62,7 +52,6 @@ namespace OBWTest
     protected void Application_Start (Object sender, EventArgs e)
     {
       LogManager.Initialize();
-      PreferQuirksModeRendering = false;
 
       string objectPath = Server.MapPath ("~/objects");
       if (!Directory.Exists (objectPath))
@@ -78,20 +67,6 @@ namespace OBWTest
 
       BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService (new ReferenceDataSourceTestDefaultValueService());
       BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService (new ReferenceDataSourceTestDeleteObjectService());
-
-      if (PreferQuirksModeRendering)
-      {
-        DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
-        foreach (var entry in LegacyServiceConfigurationService.GetConfiguration())
-          defaultServiceLocator.Register (entry);
-        foreach (var entry in BocLegacyServiceConfigurationService.GetConfiguration())
-          defaultServiceLocator.Register (entry);
-
-        ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
-
-        Assertion.IsTrue (SafeServiceLocator.Current.GetInstance<IBocListRenderer>() is BocListQuirksModeRenderer);
-        Assertion.IsTrue (SafeServiceLocator.Current.GetInstance<IBocTextValueRenderer>() is BocTextValueQuirksModeRenderer);
-      }
 
       _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
           new[]

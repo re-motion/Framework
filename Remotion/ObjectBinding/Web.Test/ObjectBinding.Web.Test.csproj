@@ -182,10 +182,6 @@
       <Project>{B34D9485-39D7-4F73-805C-39A65059001E}</Project>
       <Name>Validation.Mixins</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Web\Legacy\Web.Legacy.csproj">
-      <Project>{DD30FC13-485F-425D-8FA0-0CE8998B925D}</Project>
-      <Name>Web.Legacy</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Core\ObjectBinding.Core.csproj">
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
       <Name>ObjectBinding.Core</Name>
@@ -193,10 +189,6 @@
     <ProjectReference Include="..\Sample\ObjectBinding.Sample.csproj">
       <Project>{5F1B88F7-FAFB-45C2-A357-333245870A6B}</Project>
       <Name>ObjectBinding.Sample</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Web.Legacy\ObjectBinding.Web.Legacy.csproj">
-      <Project>{38BAE576-C67B-471D-82C6-91B0BB6F14DA}</Project>
-      <Name>ObjectBinding.Web.Legacy</Name>
     </ProjectReference>
     <ProjectReference Include="..\Web.Validation\ObjectBinding.Web.Validation.csproj">
       <Project>{1abecbff-e3bc-4d02-af23-52094cee41de}</Project>
