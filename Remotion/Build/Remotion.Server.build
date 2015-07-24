@@ -52,7 +52,7 @@
       <Platforms>x86</Platforms>
       <DatabaseSystems>SqlServer2008R2</DatabaseSystems>
       <!--<Browsers>Chrome</Browsers>-->
-      <Browsers>Chrome</Browsers>
+      <Browsers></Browsers>
       <TestCategoriesToExclude></TestCategoriesToExclude>
     </PropertyGroup>
   </Target>
