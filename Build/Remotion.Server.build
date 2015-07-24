@@ -19,7 +19,7 @@
 
     <SolutionBuildFile>$(SolutionDirectory)build\Remotion.build</SolutionBuildFile>
 
-    <ReleaseType>DEV</ReleaseType>
+    <ReleaseType>RTM</ReleaseType>
     <NuGetVersionSuffix>pre</NuGetVersionSuffix>
 
     <SecureNetworkShare></SecureNetworkShare>
