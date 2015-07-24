@@ -63,14 +63,6 @@ namespace OBWTest
     {
       LogManager.Initialize();
       PreferQuirksModeRendering = false;
-      bool useClassicBlueTheme = false;
-
-      if (useClassicBlueTheme)
-      {
-        DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
-        defaultServiceLocator.Register (typeof (ResourceTheme), typeof (ResourceTheme.ClassicBlue), LifetimeKind.Singleton);
-        ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
-      }
 
       string objectPath = Server.MapPath ("~/objects");
       if (!Directory.Exists (objectPath))

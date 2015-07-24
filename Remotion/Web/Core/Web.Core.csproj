@@ -819,13 +819,9 @@
     </None>
     <None Include="Res\HTML\jquery-1.6.4.js" />
     <None Include="Res\HTML\jquery.iFrameShim.js" />
-    <None Include="Res\Themes\ClassicBlue\HTML\DatePicker.css" />
     <None Include="Res\HTML\DatePicker.js" />
-    <None Include="Res\Themes\ClassicBlue\HTML\ExecutionEngine.css" />
     <None Include="Res\HTML\ExecutionEngine.js" />
-    <None Include="Res\Themes\ClassicBlue\HTML\ListMenu.css" />
     <None Include="Res\HTML\ListMenu.js" />
-    <None Include="Res\Themes\ClassicBlue\HTML\FormGrid.css" />
     <None Include="Res\Themes\NovaBlue\HTML\DatePicker.css" />
     <None Include="Res\Themes\NovaBlue\HTML\DropDownMenu.css" />
     <None Include="Res\Themes\NovaBlue\HTML\ExecutionEngine.css" />
@@ -841,48 +837,12 @@
     <None Include="Res\Themes\NovaBlue\HTML\TreeView.css" />
     <None Include="Res\Themes\NovaBlue\HTML\WebButton.css" />
     <None Include="Res\HTML\SmartNavigation.js" />
-    <None Include="Res\Themes\ClassicBlue\HTML\SmartPage.css" />
     <None Include="Res\HTML\SmartPage.js" />
-    <None Include="Res\Themes\ClassicBlue\HTML\DropDownMenu.css" />
     <None Include="Res\HTML\DropDownMenu.js" />
-    <None Include="Res\Themes\ClassicBlue\HTML\SingleView.css" />
-    <None Include="Res\Themes\ClassicBlue\HTML\Style.css" />
-    <None Include="Res\Themes\ClassicBlue\HTML\StyleUtility.js" />
-    <None Include="Res\Themes\ClassicBlue\HTML\TabbedMultiView.css" />
-    <None Include="Res\Themes\ClassicBlue\HTML\TabStrip.css" />
     <None Include="Res\HTML\ViewLayout.js" />
-    <None Include="Res\Themes\ClassicBlue\HTML\WebButton.css" />
     <None Include="Res\HTML\WebButton.js" />
-    <None Include="Res\Themes\ClassicBlue\HTML\TabbedMenu.css" />
-    <None Include="Res\Themes\ClassicBlue\HTML\TreeView.css" />
     <None Include="Res\HTML\Utilities.js" />
-    <None Include="Res\Themes\ClassicBlue\Image\DropDownMenuArrow_disabled.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\DatePicker.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\DropDownMenuArrow.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\DropDownMenuItemIconPane.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\DropDownMenuSeparator.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\Help.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\RequiredField.gif" />
     <None Include="Res\Image\Spacer.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TabbedMainMenuTabTopLeftCorner.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TabbedMainMenuTabTopRightCorner.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewF.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewFMinus.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewFPlus.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewI.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewL.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewLMinus.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewLPlus.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewMinus.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewPlus.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewR.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewRMinus.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewRPlus.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewT.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewTMinus.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewTPlus.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\TreeViewWhite.gif" />
-    <None Include="Res\Themes\ClassicBlue\Image\ValidationError.gif" />
     <None Include="Res\Themes\NovaBlue\Image\CornerBackgroundBlueTransparentNoBorder.gif" />
     <None Include="Res\Themes\NovaBlue\Image\CornerBackgroundWhiteTransparentBlackBorder.gif" />
     <None Include="Res\Themes\NovaBlue\Image\CornerBackgroundWhiteTransparentBlueBorder.gif" />
@@ -919,9 +879,6 @@
     <None Include="Res\Themes\NovaBlue\Image\ValidationError.gif" />
     <None Include="Res\Themes\NovaBlue\Image\WebButtonBackground.gif" />
     <None Include="Res\Themes\NovaBlue\Image\WebButtonBackgroundHover.gif" />
-    <None Include="Res\Themes\ClassicBlue\UI\DatePickerForm.aspx">
-      <SubType>ASPXCodeBehind</SubType>
-    </None>
     <None Include="Res\Themes\NovaBlue\UI\DatePickerForm.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </None>

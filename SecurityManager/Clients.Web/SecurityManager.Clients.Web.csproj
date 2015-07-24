@@ -73,7 +73,6 @@
       <Link>TemplateSharedForWeb.nuspec</Link>
     </None>
     <None Include="FacetManifest.xml" />
-    <None Include="res\Themes\ClassicBlue\Image\ApplyButton.gif" />
     <None Include="res\Themes\Legacy\Image\ApplyButton.gif" />
     <None Include="res\Themes\NovaBlue\Image\ApplyButton.gif" />
     <None Include="Web.config" />
@@ -88,18 +87,6 @@
     </None>
     <None Include="Global.asax" />
     <None Include="res\Html\EditPermissionsForm.js" />
-    <None Include="res\Themes\ClassicBlue\Image\CancelButton.gif" />
-    <None Include="res\Themes\ClassicBlue\Image\Collapse.gif" />
-    <None Include="res\Themes\ClassicBlue\Image\DeleteItem.gif" />
-    <None Include="res\Themes\ClassicBlue\Image\EditItem.gif" />
-    <None Include="res\Themes\ClassicBlue\Image\Expand.gif" />
-    <None Include="res\Themes\ClassicBlue\Image\HierarchyThis.gif" />
-    <None Include="res\Themes\ClassicBlue\Image\HierarchyThisAndChildren.gif" />
-    <None Include="res\Themes\ClassicBlue\Image\HierarchyThisAndParent.gif" />
-    <None Include="res\Themes\ClassicBlue\Image\HierarchyThisAndParentAndChildren.gif" />
-    <None Include="res\Themes\ClassicBlue\Image\PermissionDenied.gif" />
-    <None Include="res\Themes\ClassicBlue\Image\PermissionGranted.gif" />
-    <None Include="res\Themes\ClassicBlue\Image\PermissionUndefined.gif" />
     <None Include="res\Themes\Legacy\Html\Style.css" />
     <None Include="res\Themes\Legacy\Image\CancelButton.gif" />
     <None Include="res\Themes\Legacy\Image\Collapse.gif" />
@@ -169,7 +156,6 @@
     <None Include="UrlMapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="res\Themes\ClassicBlue\Html\Style.css" />
     <None Include="UI\OrganizationalStructure\EditGroupControl.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>

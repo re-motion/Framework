@@ -30,14 +30,6 @@ namespace Remotion.Web
       }
     }
 
-    public class ClassicBlue : ResourceTheme
-    {
-      public ClassicBlue ()
-        : base ("ClassicBlue")
-      {
-      }
-    }
-
     private readonly string _name;
 
     public ResourceTheme (string name)
