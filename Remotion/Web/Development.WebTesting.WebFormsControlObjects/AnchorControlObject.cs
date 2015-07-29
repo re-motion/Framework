@@ -83,6 +83,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     private bool TargetsCurrentPage (string href)
     {
       // Note: unfortunately, Selenium sometimes reports wrong href contents, therefore we have to check for the window location as well.
+      // See https://code.google.com/p/selenium/issues/detail?id=1824 for why GetAttribute("href") returns an absolute URL.
       var windowLocation = Context.RootScope.Location.ToString();
       return href.Equals ("#") || href.Equals (windowLocation) || href.Equals (windowLocation + "#");
     }
