@@ -40,19 +40,4 @@
     </PropertyGroup>
   </Target>
 
-  <Target Name="After_BuildReleaseProjects" AfterTargets="BuildReleaseProjects">
-    <Message Text="##teamcity[buildStatisticValue key='Duration.BuildReleaseProjects.$(ProjectID).$(ConfigurationID)' value='$(_timeTaken)']"
-             Condition="'$(TEAMCITY_VERSION)' != ''" />
-  </Target>
-
-  <Target Name="After_BuildTestProjects" AfterTargets="BuildTestProjects">
-    <Message Text="##teamcity[buildStatisticValue key='Duration.BuildTestProjects.$(ProjectID).$(ConfigurationID)' value='$(_timeTaken)']"
-             Condition="'$(TEAMCITY_VERSION)' != ''" />
-  </Target>
-
-  <Target Name="After_RunTests" AfterTargets="RunTests">
-    <Message Text="##teamcity[buildStatisticValue key='Duration.RunTests.$(ProjectID).$(ConfigurationID)' value='$(_timeTaken)']"
-             Condition="'$(TEAMCITY_VERSION)' != ''" />
-  </Target>
-
 </Project>
