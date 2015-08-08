@@ -242,7 +242,7 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Web\Contract.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj">
+    <ProjectReference Include="..\..\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj">
       <Project>{B119DB72-9073-401B-8EC9-C8885A2D4800}</Project>
       <Name>Web.Contracts.DiagnosticMetadata</Name>
     </ProjectReference>
@@ -254,7 +254,7 @@
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
       <Name>ObjectBinding.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Web.Contract.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj">
+    <ProjectReference Include="..\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj">
       <Project>{AD7D0683-130E-4064-8EB7-D9981DCB22BC}</Project>
       <Name>ObjectBinding.Web.Contracts.DiagnosticMetadata</Name>
     </ProjectReference>
