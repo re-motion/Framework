@@ -230,7 +230,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Contract.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj">
+    <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj">
       <Project>{B119DB72-9073-401B-8EC9-C8885A2D4800}</Project>
       <Name>Web.Contracts.DiagnosticMetadata</Name>
     </ProjectReference>

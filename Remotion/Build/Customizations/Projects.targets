@@ -90,7 +90,7 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Security\ObjectBinding.Security.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web\ObjectBinding.Web.csproj"/>
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Contract.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting\ObjectBinding.Web.Development.WebTesting.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Preview\ObjectBinding.Web.Preview.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\UnitTests\ObjectBinding.UnitTests.csproj"/>
@@ -106,7 +106,7 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\MSBuild.Tasks\Security.MSBuild.Tasks.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Security\UnitTests\Security.UnitTests.csproj"/>
 
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Contract.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Core\Web.Core.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting\Web.Development.WebTesting.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj"/>
