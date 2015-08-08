@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   {
     [Test]
     [TestCase ("! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' ° ^ # @ < > | A Z a z 0 1 8 9")]
-    [TestCase ("! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' ° ^ # @ < > | A Z a z 0 1 8 9! \" § $ % & / ( ) =  ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    [TestCase ("! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' ° ^ # @ < > | A Z a z 0 1 8 9! \" § $ % & / ( ) =  ? ² ³ { [ ] } \\ + * ~ ' ° ^ # @ < > | A Z a z 0 1 8 9")]
     public void TestCoypuElementScopeFillInWithAndSendKeysExtensions_FillWithAndWait (string input)
     {
       var home = Start();
