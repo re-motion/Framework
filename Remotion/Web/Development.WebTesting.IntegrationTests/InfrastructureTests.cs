@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       textBox.FillWith (input, FinishInput.WithTab);
 
-      //Assert.That (home.Scope.FindId ("wxePostBackSequenceNumberField").Value, Is.EqualTo ("3"));
+      Assert.That (home.Scope.FindId ("wxePostBackSequenceNumberField").Value, Is.EqualTo ("3"));
       Assert.That (textBox.GetText(), Is.EqualTo (input));
     }
 
