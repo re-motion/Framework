@@ -51,8 +51,7 @@
     <PropertyGroup>
       <Platforms>x86</Platforms>
       <DatabaseSystems>SqlServer2008R2</DatabaseSystems>
-      <!--<Browsers>Chrome</Browsers>-->
-      <Browsers></Browsers>
+      <Browsers>Chrome</Browsers>
       <TestCategoriesToExclude></TestCategoriesToExclude>
     </PropertyGroup>
   </Target>
@@ -61,8 +60,7 @@
     <PropertyGroup>
       <Platforms>x86+x64</Platforms>
       <DatabaseSystems>SqlServer2005+SqlServer2008+SqlServer2008R2+SqlServer2012+SqlServer2014</DatabaseSystems>
-      <!--<Browsers>Chrome+InternetExplorer</Browsers>-->
-      <Browsers>InternetExplorer</Browsers>
+      <Browsers>Chrome+InternetExplorer</Browsers>
       <TestCategoriesToExclude></TestCategoriesToExclude>
     </PropertyGroup>
   </Target>
