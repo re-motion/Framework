@@ -109,6 +109,32 @@
     <td></td>
     <td>
       <testsite:TestBocListWithRowMenuItems
+        ID="JobList_WithRadioButtons"
+        ReadOnly="False"
+        DataSourceControl="CurrentObject"
+        PropertyIdentifier="Jobs"
+        
+        Selection="SingleRadioButton"
+        ShowAllProperties="True"
+        
+        Width="100%"
+        Height="10em"
+        runat="server">
+        <ListMenuItems>
+          <remotion:BocMenuItem ItemID="ListMenuCmd1" Text="LM cmd">
+            <PersistedCommand>
+              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
+            </PersistedCommand>
+          </remotion:BocMenuItem>
+        </ListMenuItems>
+      </testsite:TestBocListWithRowMenuItems>
+    </td>
+    <td>&nbsp; (selction via radio buttons)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <testsite:TestBocListWithRowMenuItems
         ID="JobList_ReadOnly"
         ReadOnly="True"
         DataSourceControl="CurrentObject"
