@@ -27,6 +27,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
       NormalCurrentValueLabel.Text = value;
     }
 
+    public void SetCurrentValueNormalAndUnitialized (string value)
+    {
+      NormalAndUnitializedCurrentValueLabel.Text = value;
+    }
+
     public void SetCurrentValueTriState (string value)
     {
       TriStateCurrentValueLabel.Text = value;

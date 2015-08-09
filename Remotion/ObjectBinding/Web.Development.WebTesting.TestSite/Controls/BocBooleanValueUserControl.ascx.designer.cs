@@ -49,6 +49,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField_Normal;
         
         /// <summary>
+        /// DeceasedField_NormalAndUnitialized control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField_NormalAndUnitialized;
+        
+        /// <summary>
         /// DeceasedField_ReadOnly control.
         /// </summary>
         /// <remarks>

@@ -27,6 +27,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
       get { return CurrentObject; }
     }
 
+    public override void LoadValues (bool interim)
+    {
+      base.LoadValues (interim);
+      if (!interim)
+        DeceasedField_NormalAndUnitialized.LoadUnboundValue (null, false);
+    }
+
     protected override void OnPreRender (EventArgs e)
     {
       base.OnPreRender (e);
@@ -36,6 +43,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
     private void SetTestOutput ()
     {
       TestOutput.SetCurrentValueNormal (DeceasedField_Normal.Value.ToString());
+      TestOutput.SetCurrentValueNormalAndUnitialized (DeceasedField_NormalAndUnitialized.Value.ToString());
       TestOutput.SetCurrentValueNoAutoPostBack (DeceasedField_NoAutoPostBack.Value.ToString());
       TestOutput.SetCurrentValueTriState (DeceasedField_TriState.Value.ToString());
     }

@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocBooleanValue = home.GetBooleanValue().ByIndex (2);
+      var bocBooleanValue = home.GetBooleanValue().ByIndex (3);
       Assert.That (bocBooleanValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DeceasedField_ReadOnly"));
     }
 
@@ -155,7 +155,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestSetTo ()
+    public void TestSetTo_WithRequiredValue ()
     {
       var home = Start();
 
@@ -177,7 +177,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestSetToTriState ()
+    public void TestSetTo_WithNullableValue ()
     {
       var home = Start();
 
@@ -191,6 +191,40 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       bocBooleanValue.SetTo (true);
       Assert.That (home.Scope.FindIdEndingWith ("TriStateCurrentValueLabel").Text, Is.EqualTo ("True"));
+    }
+
+    [Test]
+    public void TestSetTo_True_WithRequiredValueAndUnitialized ()
+    {
+      var home = Start();
+
+      var bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_NormalAndUnitialized");
+
+      bocBooleanValue.SetTo (true);
+      Assert.That (home.Scope.FindIdEndingWith ("NormalAndUnitializedCurrentValueLabel").Text, Is.EqualTo ("True"));
+
+      bocBooleanValue.SetTo (false);
+      Assert.That (home.Scope.FindIdEndingWith ("NormalAndUnitializedCurrentValueLabel").Text, Is.EqualTo ("False"));
+
+      bocBooleanValue.SetTo (true);
+      Assert.That (home.Scope.FindIdEndingWith ("NormalAndUnitializedCurrentValueLabel").Text, Is.EqualTo ("True"));
+    }
+
+    [Test]
+    public void TestSetTo_False_WithRequiredValueAndUnitialized ()
+    {
+      var home = Start();
+
+      var bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_NormalAndUnitialized");
+
+      bocBooleanValue.SetTo (false);
+      Assert.That (home.Scope.FindIdEndingWith ("NormalAndUnitializedCurrentValueLabel").Text, Is.EqualTo ("False"));
+
+      bocBooleanValue.SetTo (true);
+      Assert.That (home.Scope.FindIdEndingWith ("NormalAndUnitializedCurrentValueLabel").Text, Is.EqualTo ("True"));
+
+      bocBooleanValue.SetTo (false);
+      Assert.That (home.Scope.FindIdEndingWith ("NormalAndUnitializedCurrentValueLabel").Text, Is.EqualTo ("False"));
     }
 
     private WxePageObject Start ()
