@@ -19,6 +19,7 @@
   <tr><td>Selected indices (normal):</td><td colspan="4"><asp:Label ID="SelectedIndicesLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>
   <tr><td>Selected view (normal):</td><td colspan="4"><asp:Label ID="SelectedViewLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>
   <tr><td>Edit mode (normal):</td><td colspan="4"><asp:Label ID="EditModeLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>
+  <tr><td>Selected index (radio button):</td><td colspan="4"><asp:Label ID="SelectedIndexForRadioButtonLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>
   <tr>
     <td>Action performed:</td>
     <td><asp:Label ID="ActionPerformedSenderLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td>

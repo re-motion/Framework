@@ -40,6 +40,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         protected global::System.Web.UI.WebControls.Label EditModeLabel;
         
         /// <summary>
+        /// SelectedIndexForRadioButtonLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label SelectedIndexForRadioButtonLabel;
+        
+        /// <summary>
         /// ActionPerformedSenderLabel control.
         /// </summary>
         /// <remarks>

@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.GetList().ByIndex (2);
+      var bocList = home.GetList().ByIndex (3);
       Assert.That (bocList.Scope.Id, Is.EqualTo ("body_DataEditControl_JobList_ReadOnly"));
     }
 
@@ -393,7 +393,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestRowSelectAndDeselect ()
+    public void TestRowSelectAndDeselectForCheckBox ()
     {
       var home = Start();
 
@@ -411,6 +411,27 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       row.Deselect();
       row.GetCell (4).ExecuteCommand();
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("NoneSelected"));
+    }
+
+    [Test]
+    public void TestRowSelectAndDeselectForRadioButton ()
+    {
+      var home = Start();
+
+      var bocList = home.GetList().ByLocalID ("JobList_WithRadioButtons");
+      var row = bocList.GetRow (2);
+
+      row.Select();
+      bocList.GetListMenu().SelectItem ("ListMenuCmd1");
+      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo ("1"));
+
+      row.Select();
+      bocList.GetListMenu().SelectItem ("ListMenuCmd1");
+      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo ("1"));
+
+      row.Deselect();
+      bocList.GetListMenu().SelectItem ("ListMenuCmd1");
+      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo ("NoneSelected"));
     }
 
     [Test]

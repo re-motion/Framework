@@ -30,6 +30,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
       EditModeLabel.Text = bocList.IsRowEditModeActive.ToString();
     }
 
+    public void SetInfoForRadioButtonBocList (BocList bocList)
+    {
+      SelectedIndexForRadioButtonLabel.Text = GetSelectedRowIndicesAsString (bocList);
+    }
+
     private string GetSelectedRowIndicesAsString (BocList bocList)
     {
       var selectedRows = string.Join (", ", bocList.GetSelectedRows());

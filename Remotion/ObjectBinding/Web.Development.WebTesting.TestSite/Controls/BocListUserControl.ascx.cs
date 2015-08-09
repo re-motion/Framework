@@ -121,6 +121,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
     private void SetTestOutput ()
     {
       TestOutput.SetInfoForNormalBocList (JobList_Normal);
+      TestOutput.SetInfoForRadioButtonBocList (JobList_WithRadioButtons);
     }
 
     private BocListUserControlTestOutput TestOutput

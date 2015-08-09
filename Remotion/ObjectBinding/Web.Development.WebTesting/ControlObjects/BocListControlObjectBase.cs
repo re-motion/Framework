@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       public int GetZeroBasedAbsoluteRowIndexOfFirstRow ()
       {
-        return int.Parse (_bocList.GetRow (1).Scope.FindCss ("input[type='checkbox']").Id.Split ('_').Last());
+        return int.Parse (_bocList.GetRow (1).Scope.FindCss ("input[type='checkbox'], input[type='radio']").Id.Split ('_').Last());
       }
     }
 
