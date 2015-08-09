@@ -24,6 +24,7 @@ using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.SecurityManager.Clients.Web.Test
 {
@@ -38,6 +39,7 @@ namespace Remotion.SecurityManager.Clients.Web.Test
       //defaultServiceLocator.Register (typeof (Remotion.Data.DomainObjects.IClientTransactionExtensionFactory), typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory), LifetimeKind.Singleton);
       //defaultServiceLocator.Register (typeof (Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory), typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory), LifetimeKind.Singleton);
       //defaultServiceLocator.RegisterMultiple<IOrganizationalStructureEditControlFormGridRowProvider<EditUserControl>> (() => new EditUserControlFormGridRowProvider());
+      defaultServiceLocator.Register (typeof (IRenderingFeatures), typeof (WithDiagnosticMetadataRenderingFeatures), LifetimeKind.Singleton);
 
       ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
 

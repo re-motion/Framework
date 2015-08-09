@@ -85,11 +85,11 @@
     <td>
       <remotion:BocList ID="SubstitutedByList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="SubstitutedBy" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
         <FixedColumns>
-          <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="SubstitutingUser" Width="30%" />
-          <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="SubstitutedRole" Width="30%" />
-          <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="BeginDate" Width="15%" />
-          <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="EndDate" Width="15%" />
-          <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="IsEnabled" Width="10%" />
+          <remotion:BocSimpleColumnDefinition ItemID="SubstitutingUser" PropertyPathIdentifier="SubstitutingUser" Width="30%" />
+          <remotion:BocSimpleColumnDefinition ItemID="SubstitutedRole" PropertyPathIdentifier="SubstitutedRole" Width="30%" />
+          <remotion:BocSimpleColumnDefinition ItemID="BeginDate" PropertyPathIdentifier="BeginDate" Width="15%" />
+          <remotion:BocSimpleColumnDefinition ItemID="EndDate" PropertyPathIdentifier="EndDate" Width="15%" />
+          <remotion:BocSimpleColumnDefinition ItemID="IsEnabled" PropertyPathIdentifier="IsEnabled" Width="10%" />
         </FixedColumns>
       </remotion:BocList>
     </td>

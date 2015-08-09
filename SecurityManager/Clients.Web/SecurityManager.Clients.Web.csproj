@@ -175,7 +175,9 @@
     <None Include="UI\OrganizationalStructure\UserListControl.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
-    <None Include="UI\OrganizationalStructure\UserListForm.aspx" />
+    <None Include="UI\OrganizationalStructure\UserListForm.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </None>
     <None Include="UI\SecurityManagerNavigationTabs.ascx" />
     <None Include="WxeHandler.ashx" />
   </ItemGroup>
