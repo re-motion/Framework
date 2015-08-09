@@ -34,7 +34,7 @@
         <td>
           <remotion:BocList ID="GroupList" runat="server" DataSourceControl="CurrentObject" OnListItemCommandClick="GroupList_ListItemCommandClick" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
             <FixedColumns>
-              <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
+              <remotion:BocSimpleColumnDefinition ItemID="DisplayName" PropertyPathIdentifier="DisplayName">
                 <PersistedCommand>
                   <remotion:BocListItemCommand Type="Event" />
                 </PersistedCommand>
