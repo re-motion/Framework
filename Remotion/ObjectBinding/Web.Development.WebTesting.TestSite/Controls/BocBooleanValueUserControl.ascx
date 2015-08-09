@@ -40,6 +40,25 @@
   <tr>
     <td></td>
     <td>
+      <remotion:BocBooleanValue ID="DeceasedField_NormalAndUnitialized"
+                                DataSourceControl="CurrentObject"
+                                FalseDescription="Is_So_False"
+                                NullDescription="Is_So_Null"
+                                PropertyIdentifier="Deceased"
+                                TrueDescription="Is_So_True"
+
+                                AutoPostBack="true"
+                                Enabled="true"
+                                ReadOnly="false"
+                                Required="true"
+
+                                runat="server"/>
+    </td>
+    <td>(normal, initial value = null)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
       <remotion:BocBooleanValue ID="DeceasedField_ReadOnly"
                                 DataSourceControl="CurrentObject"
                                 FalseDescription="Is_So_False"

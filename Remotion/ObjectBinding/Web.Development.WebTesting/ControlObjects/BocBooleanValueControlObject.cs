@@ -58,17 +58,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public UnspecifiedPageObject SetTo (bool? newState, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
-      if (!IsTriState() && !newState.HasValue)
+      var isTriState = IsTriState();
+      if (!isTriState && !newState.HasValue)
         throw new ArgumentException ("Must not be null for non-tri-state BocBooleanValue controls.", "newState");
 
-      if (GetState() == newState)
+      var currentState = GetState();
+      if (currentState == newState)
         return UnspecifiedPage();
 
-      if (!IsTriState())
-        return Click (1, actionOptions);
+      int numberOfClicks;
+      if (isTriState)
+      {
+        var states = new bool?[] { false, null, true, false, null };
+        numberOfClicks = Array.LastIndexOf (states, newState) - Array.IndexOf (states, currentState);
+      }
+      else if (currentState == null && newState == true)
+      {
+        numberOfClicks = 2;
+      }
+      else
+      {
+        numberOfClicks = 1;
+      }
 
-      var states = new bool?[] { false, null, true, false, null };
-      var numberOfClicks = Array.LastIndexOf (states, newState) - Array.IndexOf (states, GetState());
       return Click (numberOfClicks, actionOptions);
     }
 
