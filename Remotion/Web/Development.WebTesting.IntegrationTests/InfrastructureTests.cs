@@ -25,14 +25,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public class InfrastructureTests : IntegrationTest
   {
-    [Ignore ("TODO RM-6459: Chrome Bug")]
     [Test]
-    [TestCase ("! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
-    [TestCase ("! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9! \" § $ % & / ( ) =  ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
-    //[TestCase("°")] // Todo RM-6337: Fails in Chrome with de_AT keyboard, see https://code.google.com/p/chromedriver/issues/detail?id=932
-    //[TestCase("^")] // Todo RM-6337: Fails in IE with de_AT keyboard, see http://stackoverflow.com/questions/26357191/
-    public void TestCoypuElementScopeFillInWithAndSendKeysExtensions_FillWithAndWait (string input)
+    [TestCase (null, "New Input")]
+    [TestCase ("TODO RM-6459: Chrome Bug", "^   ! \" § $ % & / ( ) = ? ²   { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    [TestCase ("TODO RM-6459: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    [TestCase ("TODO RM-6459: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9 ^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    public void TestCoypuElementScopeFillInWithAndSendKeysExtensions_FillWithAndWait (string ignore, string input)
     {
+      if (ignore != null)
+        Assert.Ignore (ignore);
+
       var home = Start();
 
       var textBox = home.GetTextBox().ByLocalID ("MyTextBox");
