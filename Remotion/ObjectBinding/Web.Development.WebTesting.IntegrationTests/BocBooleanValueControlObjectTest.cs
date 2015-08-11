@@ -16,8 +16,10 @@
 // 
 
 using System;
+using System.Threading;
 using Coypu;
 using NUnit.Framework;
+using OpenQA.Selenium.Chrome;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;

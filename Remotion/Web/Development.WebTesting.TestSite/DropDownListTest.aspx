@@ -34,4 +34,14 @@
       </Items>
     </asp:DropDownList>
   </div>
+  <div id="scope">
+    <h3>DropDownList3 (no auto-postback)</h3>
+    <asp:DropDownList ID="MyDropDownList3" AutoPostBack="false" Enabled="true" runat="server">
+      <Items>
+        <asp:ListItem Text="Item1" Value="Item1Value"/>
+        <asp:ListItem Text="Item2" Value="Item2Value"/>
+        <asp:ListItem Text="Item3" Value="Item3Value"/>
+      </Items>
+    </asp:DropDownList>
+  </div>
 </asp:Content>

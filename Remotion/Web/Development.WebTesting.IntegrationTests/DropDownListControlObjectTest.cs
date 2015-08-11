@@ -140,6 +140,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Item1|Item1Value"));
     }
 
+    [Test]
+    public void TestClickItem_NoPostback ()
+    {
+      var home = Start();
+
+      var dropDownList = home.GetDropDownList().ByLocalID ("MyDropDownList3");
+
+      dropDownList.SelectOption ("Item3Value", Opt.ContinueImmediately());
+      Assert.That (dropDownList.GetSelectedOption().ItemID, Is.EqualTo ("Item3Value"));
+
+      dropDownList.SelectOption().WithIndex (2, Opt.ContinueImmediately());
+      Assert.That (dropDownList.GetSelectedOption().ItemID, Is.EqualTo ("Item2Value"));
+
+      dropDownList.SelectOption().WithDisplayText ("Item1", Opt.ContinueImmediately());
+      Assert.That (dropDownList.GetSelectedOption().ItemID, Is.EqualTo ("Item1Value"));
+    }
+
     private WxePageObject Start ()
     {
       return Start<WxePageObject> ("DropDownListTest.wxe");
