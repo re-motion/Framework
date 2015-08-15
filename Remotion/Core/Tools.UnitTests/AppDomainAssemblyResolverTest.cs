@@ -104,11 +104,7 @@ namespace Remotion.Tools.UnitTests
     {
       var resolver = CreateResolver();
 
-      ExactTypeConstraint constraint;
-      if (FrameworkVersionDetector.IsVersionSupported (FrameworkVersion.Net_4_6))
-        constraint = Throws.Exception.TypeOf<SerializationException>();
-      else
-        constraint = Throws.Exception.TypeOf<FileNotFoundException>();
+      ExactTypeConstraint constraint = Throws.Exception.TypeOf<FileNotFoundException>().Or.TypeOf<SerializationException>();
       Assert.That (() => _appDomain.DoCallBack (delegate { }), constraint); // Serialized type should not be available in the other AppDomain
 
       resolver.Register (_appDomain);
