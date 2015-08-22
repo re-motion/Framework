@@ -444,6 +444,9 @@
     <Compile Include="Xml\XmlSerializationUtility.cs">
       <SubType>Code</SubType>
     </Compile>
+    <None Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ReSharperAnnotations Apache-2.0.licenseheader">
+      <Link>SharedSource\ResharperAnnotations\ReSharperAnnotations Apache-2.0.licenseheader</Link>
+    </None>
     <None Include="..\..\..\SharedSource\SharedSource Apache-2.0.licenseheader">
       <Link>SharedSource\SharedSource Apache-2.0.licenseheader</Link>
     </None>

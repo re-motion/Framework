@@ -15,7 +15,6 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 
-
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="BocBooleanValueUserControl.ascx.cs" Inherits="OBWTest.IndividualControlTests.BocBooleanValueUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 
 <table id=FormGrid runat="server">

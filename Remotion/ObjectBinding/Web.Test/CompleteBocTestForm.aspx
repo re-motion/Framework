@@ -15,7 +15,6 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 
-
 <%@ Page language="c#" Codebehind="CompleteBocTestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.CompleteBocForm" MasterPageFile="~/StandardMode.Master" %>
 <asp:Content ContentPlaceHolderID="head" runat="server">
 <h1>CompleteBocTest: Form, No UserControl</h1>
