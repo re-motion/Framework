@@ -1955,6 +1955,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Resources\Empty.licenseheader" />
     <None Include="TestDomain\TableInheritance\AbstractClassWithHierarchy.cd" />
     <None Include="TestDomain\TableInheritance\TestDomain.cd" />
     <None Include="TestDomain\TableInheritance\FileSystem.cd" />
