@@ -164,6 +164,7 @@
     </Compile>
     <Compile Include="DoublePostBackHandling\SmartForm.aspx.cs">
       <DependentUpon>SmartForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DoublePostBackHandling\SmartForm.aspx.designer.cs">
       <DependentUpon>SmartForm.aspx</DependentUpon>

@@ -34,7 +34,8 @@ namespace Remotion.Web.Test.DoublePostBackHandling
       counter++;
       CounterTextBox.Text = counter.ToString();
 
-      Thread.Sleep (200);
+      if (IsPostBack)
+        Thread.Sleep (500);
     }
 
     protected void AsyncTextBox_OnTextChanged (object sender, EventArgs e)
