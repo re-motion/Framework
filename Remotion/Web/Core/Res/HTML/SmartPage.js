@@ -322,33 +322,11 @@ function SmartPage_Context(
 
     this.Restore();
 
-    if (this.IsSubmitting() && _submitState.NextSubmitState != null && _submitState.NextSubmitState.Submitter != null)
-    {
-      var nextSubmitState = _submitState.NextSubmitState;
-      _submitState = null;
-      var nextSubmitterID = nextSubmitState.Submitter.id;
-      var submitter = document.getElementById (nextSubmitterID);
-      if (submitter != null)
-      {
-        if (IsJavaScriptAnchor (submitter))
-        {
-          var javascript = submitter.href.substring('javascript:'.length);
-          eval (javascript);
-        }
-        else
-        {
-          $(submitter).trigger ("click");
-        }
-      }
-    }
-    else
-    {
-      this.ClearIsSubmitting (isAsynchronous);
-      _isSubmittingBeforeUnload = false;
-      this.HideStatusMessage();
+    this.ClearIsSubmitting (isAsynchronous);
+    _isSubmittingBeforeUnload = false;
+    this.HideStatusMessage();
 
-      ExecuteEventHandlers (_eventHandlers['onload'], _hasSubmitted, _isCached, isAsynchronous);
-    }
+    ExecuteEventHandlers(_eventHandlers['onload'], _hasSubmitted, _isCached, isAsynchronous);
   };
 
   // Determines whether the page was loaded from cache.
@@ -471,11 +449,7 @@ function SmartPage_Context(
         _theForm.__EVENTTARGET.value = eventTarget;
         _theForm.__EVENTARGUMENT.value = eventArgument;
 
-        var submitState = this.SetIsSubmitting(false);
-        // Abort the postback if there is already a postback in progress
-        if (submitState.NextSubmitState !== null)
-          return;
-
+        this.SetIsSubmitting(false);
         _isSubmittingBeforeUnload = true;
 
         this.Backup();
@@ -524,9 +498,9 @@ function SmartPage_Context(
         else
         {
           var continueRequest = this.CheckFormState();
-          var submitState = this.SetIsSubmitting(true);
-          if (continueRequest && submitState.NextSubmitState === null)
+          if (continueRequest)
           {
+            this.SetIsSubmitting(true);
             _isSubmittingBeforeUnload = true;
 
             this.Backup();
@@ -549,17 +523,9 @@ function SmartPage_Context(
       }
 
       var continueRequest = this.CheckFormState();
-      if (this.IsSubmitting() && continueRequest)
+      if (continueRequest)
       {
-        // This Code path is taken for synchronous requests that are not triggered via form-submit
-        // and a postback is already in progress. In this case, the previous post state should be cleared.
-        _theForm.__EVENTTARGET.value = '';
-        _theForm.__EVENTARGUMENT.value = '';
-      }
-
-      var submitState = this.SetIsSubmitting(false);
-      if (continueRequest && submitState.NextSubmitState === null)
-      {
+        this.SetIsSubmitting(false);
         _isSubmittingBeforeUnload = true;
 
         this.Backup();
@@ -636,19 +602,18 @@ function SmartPage_Context(
     }
 
     if (!continueRequest)
+    {
       return false;
-
-    if (!this.IsSubmitting())
+    }
+    else if (this.IsSubmitting())
+    {
+      this.ShowStatusIsSubmittingMessage();
+      return false;
+    }
+    else
+    {
       return true;
-
-    var isAsyncAutoPostback = _submitState.IsAsynchronous && _submitState.IsAutoPostback;
-    var isTriggeredByCurrentSubmitter = _submitState.Submitter === GetActiveElement();
-    var hasQueuedSubmit = _submitState.NextSubmitState != null;
-    if (!hasQueuedSubmit && isAsyncAutoPostback && !isTriggeredByCurrentSubmitter)
-      return true;
-
-    this.ShowStatusIsSubmittingMessage();
-    return false;
+    }
   };
 
   // Event handler for Window.OnScroll.
@@ -916,7 +881,7 @@ function SmartPage_Context(
     var tagName = element.tagName.toLowerCase();
     if (tagName == 'a'
         && TypeUtility.IsDefined(element.href) && element.href != null
-        && element.href.substring(0, 'javascript:'.length).toLowerCase() == 'javascript:')
+        && element.href.substring(0, 11).toLowerCase() == 'javascript:')
     {
       return true;
     }
@@ -986,10 +951,6 @@ function SmartPage_Context(
     return Array.contains(_synchronousPostBackCommands, postBackSettings.asyncTarget + '|' + _theForm.__EVENTARGUMENT.value);
   };
 
-  //TODO RM-5618: Pass eventarget, eventargument into the method. 
-  //              Set focus on submitter element on next page load
-  //              Use eventtarget and eventargument to raise __doPostback event on next page load
-  //              Otherwise, execute click on submitter element
   this.SetIsSubmitting = function (isAsynchronous)
   {
     var submitterElement = GetSubmitterOrActiveElement();
@@ -1000,37 +961,10 @@ function SmartPage_Context(
 
     $('html').addClass('SmartPageBusy');
 
-    var isAutoPostback = false;
-    if (submitterElement != null)
-    {
-      var tagName = submitterElement.tagName.toLowerCase();
-      if (tagName === 'input')
-      {
-        var type = submitterElement.type.toLowerCase();
-        isAutoPostback = type !== 'submit' && type !== 'button';
-      }
-      else if (tagName === 'textarea')
-      {
-        isAutoPostback = true;
-      }
-      else if (tagName === 'select')
-      {
-        isAutoPostback = true;
-      }
-    }
-
-    var submitState = {
-      IsAsynchronous: isAsynchronous,
-      IsAutoPostback: isAutoPostback,
-      Submitter : submitterElement,
-      NextSubmitState : null
+    _submitState = {
+      IsAsynchronous : isAsynchronous,
+      Submitter : submitterElement
     };
-    if (_submitState == null)
-      _submitState = submitState;
-    else
-      _submitState.NextSubmitState = submitState;
-
-    return _submitState;
   };
 
   this.ClearIsSubmitting = function (isAsynchronous)
