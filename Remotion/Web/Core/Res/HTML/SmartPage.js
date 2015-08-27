@@ -322,7 +322,7 @@ function SmartPage_Context(
 
     this.Restore();
 
-    if (this.IsSubmitting() && _submitState.NextSubmitState != null)
+    if (this.IsSubmitting() && _submitState.NextSubmitState != null && _submitState.NextSubmitState.Submitter != null)
     {
       var nextSubmitState = _submitState.NextSubmitState;
       _submitState = null;
@@ -636,19 +636,19 @@ function SmartPage_Context(
     }
 
     if (!continueRequest)
-    {
       return false;
-    }
-    else if (this.IsSubmitting()
-             && (!_submitState.IsAsynchronous || _submitState.Submitter === GetActiveElement()))
-    {
-      this.ShowStatusIsSubmittingMessage();
-      return false;
-    }
-    else
-    {
+
+    if (!this.IsSubmitting())
       return true;
-    }
+
+    var isAsyncAutoPostback = _submitState.IsAsynchronous && _submitState.IsAutoPostback;
+    var isTriggeredByCurrentSubmitter = _submitState.Submitter === GetActiveElement();
+    var hasQueuedSubmit = _submitState.NextSubmitState != null;
+    if (!hasQueuedSubmit && isAsyncAutoPostback && !isTriggeredByCurrentSubmitter)
+      return true;
+
+    this.ShowStatusIsSubmittingMessage();
+    return false;
   };
 
   // Event handler for Window.OnScroll.
@@ -1000,8 +1000,28 @@ function SmartPage_Context(
 
     $('html').addClass('SmartPageBusy');
 
+    var isAutoPostback = false;
+    if (submitterElement != null)
+    {
+      var tagName = submitterElement.tagName.toLowerCase();
+      if (tagName === 'input')
+      {
+        var type = submitterElement.type.toLowerCase();
+        isAutoPostback = type !== 'submit' && type !== 'button';
+      }
+      else if (tagName === 'textarea')
+      {
+        isAutoPostback = true;
+      }
+      else if (tagName === 'select')
+      {
+        isAutoPostback = true;
+      }
+    }
+
     var submitState = {
-      IsAsynchronous : isAsynchronous,
+      IsAsynchronous: isAsynchronous,
+      IsAutoPostback: isAutoPostback,
       Submitter : submitterElement,
       NextSubmitState : null
     };
