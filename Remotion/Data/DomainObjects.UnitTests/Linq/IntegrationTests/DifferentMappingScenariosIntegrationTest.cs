@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [SetUp]
     public override void SetUp ()
     {
-      base.SetUp ();
-      
+      base.SetUp();
+
       _concreteObjectIDs = new TableInheritanceDomainObjectIDs (Configuration);
     }
 
@@ -42,8 +42,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void ConcreteObjects_PropertyAccessInBaseClass_SingleTableInheritance ()
     {
       var customer = (from c in QueryFactory.CreateLinqQuery<Customer>()
-                   where c.Name == "Kunde 3"
-                   select c);
+        where c.Name == "Kunde 3"
+        select c);
 
       CheckQueryResult (customer, DomainObjectIDs.Customer3);
     }
@@ -51,11 +51,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void ConcreteObjects_PropertyAccessInSameClass_SingleTableInheritance ()
     {
-// ReSharper disable RedundantNameQualifier
-      var customer = (from c in QueryFactory.CreateLinqQuery<Customer> ()
-                      where c.Type == Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.CustomerType.Standard
-                      select c);
-// ReSharper restore RedundantNameQualifier
+      // ReSharper disable RedundantNameQualifier
+      var customer = (from c in QueryFactory.CreateLinqQuery<Customer>()
+        where c.Type == Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.CustomerType.Standard
+        select c);
+      // ReSharper restore RedundantNameQualifier
 
       CheckQueryResult (customer, DomainObjectIDs.Customer1);
     }
@@ -63,20 +63,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void ConcreteObjects_MemberAccessInSameClass_SingleTableInheritance ()
     {
-      var orders = (from c in QueryFactory.CreateLinqQuery<Customer> ()
-                      from o in c.Orders
-                      where c.Name=="Kunde 3"
-                      select o);
-      
+      var orders = (from c in QueryFactory.CreateLinqQuery<Customer>()
+        from o in c.Orders
+        where c.Name == "Kunde 3"
+        select o);
+
       CheckQueryResult (orders, DomainObjectIDs.Order3);
     }
 
     [Test]
     public void ConcreteObjects_MemberAccessInBaseClass_SingleTableInheritance ()
     {
-      var customers = (from c in QueryFactory.CreateLinqQuery<Customer> ()
-                    where c.IndustrialSector.ID == DomainObjectIDs.IndustrialSector2
-                    select c);
+      var customers = (from c in QueryFactory.CreateLinqQuery<Customer>()
+        where c.IndustrialSector.ID == DomainObjectIDs.IndustrialSector2
+        select c);
 
       CheckQueryResult (customers, DomainObjectIDs.Customer3, DomainObjectIDs.Customer2);
     }
@@ -84,9 +84,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void BaseObjects_PropertyAccessInSameClass_SingleTableInheritance ()
     {
-      var company = (from c in QueryFactory.CreateLinqQuery<Company> ()
-                     where c.Name == "Firma 2"
-                     select c);
+      var company = (from c in QueryFactory.CreateLinqQuery<Company>()
+        where c.Name == "Firma 2"
+        select c);
 
       CheckQueryResult (company, DomainObjectIDs.Company2);
     }
@@ -94,9 +94,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void BaseObjects_MemberAccessInSameClass_SingleTableInheritance ()
     {
-      var company = (from c in QueryFactory.CreateLinqQuery<Company> ()
-                     where c.IndustrialSector.ID == DomainObjectIDs.IndustrialSector2 && c.Name=="Firma 2"
-                     select c);
+      var company = (from c in QueryFactory.CreateLinqQuery<Company>()
+        where c.IndustrialSector.ID == DomainObjectIDs.IndustrialSector2 && c.Name == "Firma 2"
+        select c);
 
       CheckQueryResult (company, DomainObjectIDs.Company2);
     }
@@ -104,9 +104,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void ConcreteObjects_PropertyAccessInBaseClass_ConcreteTableInheritance ()
     {
-      var fsi = (from f in QueryFactory.CreateLinqQuery<TIFile> ()
-                     where f.Name == "Datei im Root"
-                     select f);
+      var fsi = (from f in QueryFactory.CreateLinqQuery<TIFile>()
+        where f.Name == "Datei im Root"
+        select f);
 
       CheckQueryResult (fsi, _concreteObjectIDs.FileRoot);
     }
@@ -114,9 +114,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void ConcreteObjects_PropertyAccessInSameClass_ConcreteTableInheritance ()
     {
-      var fsi = (from f in QueryFactory.CreateLinqQuery<TIFile> ()
-                 where f.Size == 512
-                 select f);
+      var fsi = (from f in QueryFactory.CreateLinqQuery<TIFile>()
+        where f.Size == 512
+        select f);
 
       CheckQueryResult (fsi, _concreteObjectIDs.File1);
     }
@@ -124,9 +124,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void ConcreteObjects_MemberAccessInBaseClass_ConcreteTableInheritance ()
     {
-      var fsi = (from f in QueryFactory.CreateLinqQuery<TIFile> ()
-                 where f.ParentFolder.ID == _concreteObjectIDs.FolderRoot
-                 select f);
+      var fsi = (from f in QueryFactory.CreateLinqQuery<TIFile>()
+        where f.ParentFolder.ID == _concreteObjectIDs.FolderRoot
+        select f);
 
       CheckQueryResult (fsi, _concreteObjectIDs.FileRoot);
     }
@@ -134,9 +134,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void BaseObjects_PropertyAccessInSameClass_ConcreteTableInheritance ()
     {
-      var fsi = (from f in QueryFactory.CreateLinqQuery<TIFileSystemItem> ()
-                 where f.Name == "Datei im Root"
-                 select f);
+      var fsi = (from f in QueryFactory.CreateLinqQuery<TIFileSystemItem>()
+        where f.Name == "Datei im Root"
+        select f);
 
       CheckQueryResult (fsi, _concreteObjectIDs.FileRoot);
     }
@@ -144,9 +144,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void BaseObjects_MemberAccessInSameClass_ConcreteTableInheritance ()
     {
-      var fsi = (from f in QueryFactory.CreateLinqQuery<TIFileSystemItem> ()
-                 where f.ParentFolder.ID == _concreteObjectIDs.FolderRoot
-                 select f);
+      var fsi = (from f in QueryFactory.CreateLinqQuery<TIFileSystemItem>()
+        where f.ParentFolder.ID == _concreteObjectIDs.FolderRoot
+        select f);
 
       CheckQueryResult (fsi, _concreteObjectIDs.FileRoot, _concreteObjectIDs.Folder1);
     }
@@ -154,9 +154,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void ConcreteObjects_PropertyAccessInSameClass_ClassAboveInheritanceHierarchy ()
     {
-      var storageClass = (from f in QueryFactory.CreateLinqQuery<StorageGroupClass> ()
-                 where f.StorageGroupClassIdentifier == "StorageGroupName1"
-                 select f);
+      var storageClass = (from f in QueryFactory.CreateLinqQuery<StorageGroupClass>()
+        where f.StorageGroupClassIdentifier == "StorageGroupName1"
+        select f);
 
       CheckQueryResult (storageClass, DomainObjectIDs.StorageGroupClass1);
     }
@@ -164,9 +164,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void ConcreteObjects_PropertyAccessInBaseClass_ClassAboveInheritanceHierarchy ()
     {
-      var storageClass = (from f in QueryFactory.CreateLinqQuery<StorageGroupClass> ()
-                          where f.AboveInheritanceIdentifier == "AboveInheritanceName1"
-                          select f);
+      var storageClass = (from f in QueryFactory.CreateLinqQuery<StorageGroupClass>()
+        where f.AboveInheritanceIdentifier == "AboveInheritanceName1"
+        select f);
 
       CheckQueryResult (storageClass, DomainObjectIDs.StorageGroupClass1);
     }
@@ -181,10 +181,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       CheckQueryResult (query2);
 
       var countWithPropertyAccess = (from db in QueryFactory.CreateLinqQuery<TIDomainBase>()
-                                     where db.AbstractClassesWithoutDerivations.Count() == 0
-                                     select db).Count();
+        where db.AbstractClassesWithoutDerivations.Count() == 0
+        select db).Count();
       var countWithoutPropertyAccess = QueryFactory.CreateLinqQuery<TIDomainBase>().Count();
       Assert.That (countWithPropertyAccess, Is.EqualTo (countWithoutPropertyAccess).And.GreaterThan (0));
+    }
+
+    //TODO RM-6485: Test name
+    [Test]
+    public void TableInheritance_MemberJoinViaBaseClass ()
+    {
+      var query = from c in QueryFactory.CreateLinqQuery<TIClient>()
+        from domainBase in c.AssignedObjects
+        where domainBase.CreatedAt == new DateTime (2006, 01, 03)
+        select domainBase;
+
+      var domainObjectIDs = new TableInheritanceDomainObjectIDs (Configuration);
+      CheckQueryResult (query, domainObjectIDs.Person);
+    }
+
+    //TODO RM-6485: Test name
+    [Test]
+    public void Query_WithView ()
+    {
+      var domainBases =
+          from d in QueryFactory.CreateLinqQuery<TIDomainBase>()
+          select d;
+
+      Assert.That (domainBases.ToArray(), Is.Not.Empty);
     }
   }
 }
