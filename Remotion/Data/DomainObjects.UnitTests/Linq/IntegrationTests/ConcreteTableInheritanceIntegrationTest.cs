@@ -20,13 +20,12 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Data.DomainObjects.UnitTests.TestDomain.InheritanceRootSample;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
 {
   [TestFixture]
-  public class DifferentMappingScenariosIntegrationTest : IntegrationTestBase
+  public class ConcreteTableInheritanceIntegrationTest : IntegrationTestBase
   {
     private TableInheritanceDomainObjectIDs _concreteObjectIDs;
 
@@ -222,7 +221,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void ConcreteObjects_PropertyAccessInBaseClass_ConcreteTableInheritance ()
+    public void ConcreteObjects_PropertyAccessInBaseClass ()
     {
       var fsi = (from f in QueryFactory.CreateLinqQuery<TIFile>()
         where f.Name == "Datei im Root"
@@ -232,7 +231,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void ConcreteObjects_PropertyAccessInBaseClassViaRelation_ConcreteTableInheritance ()
+    public void ConcreteObjects_PropertyAccessInBaseClassViaRelation ()
     {
       var fsi = (from f in QueryFactory.CreateLinqQuery<TIFile>()
         where f.ParentFolder.Name == "Root"
@@ -242,7 +241,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void ConcreteObjects_PropertyAccessInSameClass_ConcreteTableInheritance ()
+    public void ConcreteObjects_PropertyAccessInBaseClassViaCollection ()
+    {
+      var query = from c in QueryFactory.CreateLinqQuery<TIClient>()
+        from domainBase in c.AssignedObjects
+        where domainBase.CreatedAt == new DateTime (2006, 01, 03)
+        select domainBase;
+
+      CheckQueryResult (query, _concreteObjectIDs.Person);
+    }
+
+    [Test]
+    public void ConcreteObjects_PropertyAccessInSameClass ()
     {
       var fsi = (from f in QueryFactory.CreateLinqQuery<TIFile>()
         where f.Size == 512
@@ -252,7 +262,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void ConcreteObjects_MemberAccessInBaseClass_ConcreteTableInheritance ()
+    public void ConcreteObjects_MemberAccessInBaseClass ()
     {
       var fsi = (from f in QueryFactory.CreateLinqQuery<TIFile>()
         where f.ParentFolder.ID == _concreteObjectIDs.FolderRoot
@@ -262,7 +272,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void ConcreteObjects_OfType_SelectingBaseType_ConcreteTableInheritance ()
+    public void ConcreteObjects_OfType_SelectingBaseType ()
     {
       var query = QueryFactory.CreateLinqQuery<TIPerson>().OfType<TIDomainBase>();
 
@@ -276,7 +286,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void ConcreteObjects_OfType_SelectingSameType_ConcreteTableInheritance ()
+    public void ConcreteObjects_OfType_SelectingSameType ()
     {
       var query = QueryFactory.CreateLinqQuery<TICustomer>().OfType<TICustomer>();
 
@@ -288,7 +298,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException))]
-    public void ConcreteObject_OfType_UnrelatedType_ThrowsInvalidOperation_ConcreteTableInheritance ()
+    public void ConcreteObject_OfType_UnrelatedType_ThrowsInvalidOperation ()
     {
       var query = QueryFactory.CreateLinqQuery<TICustomer>().OfType<TIFile>();
 
@@ -296,7 +306,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void ConcreteObjects_Is_SelectingBaseType_ConcreteTableInheritance ()
+    public void ConcreteObjects_Is_SelectingBaseType ()
     {
       // ReSharper disable once IsExpressionAlwaysTrue
       var query = QueryFactory.CreateLinqQuery<TIPerson>().Where (b=> b is TIDomainBase);
@@ -311,7 +321,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void ConcreteObjects_Is_SelectingSameType_ConcreteTableInheritance ()
+    public void ConcreteObjects_Is_SelectingSameType ()
     {
       // ReSharper disable once IsExpressionAlwaysTrue
       var query = QueryFactory.CreateLinqQuery<TICustomer>().Where (b=> b is TICustomer);
@@ -323,7 +333,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void BaseObjects_PropertyAccessInSameClass_ConcreteTableInheritance ()
+    public void BaseObjects_PropertyAccessInSameClass ()
     {
       var fsi = (from f in QueryFactory.CreateLinqQuery<TIFileSystemItem>()
         where f.Name == "Datei im Root"
@@ -333,7 +343,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void BaseObjects_MemberAccessInSameClass_ConcreteTableInheritance ()
+    public void BaseObjects_MemberAccessInSameClass ()
     {
       var fsi = (from f in QueryFactory.CreateLinqQuery<TIFileSystemItem>()
         where f.ParentFolder.ID == _concreteObjectIDs.FolderRoot
@@ -343,7 +353,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void BaseObjects_OfType_SelectingDerivedType_ConcreteTableInheritance ()
+    public void BaseObjects_OfType_SelectingDerivedType ()
     {
       var personIDs = new[]
                        {
@@ -360,7 +370,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void BaseObjects_Is_SelectingDerivedType_ConcreteTableInheritance ()
+    public void BaseObjects_Is_SelectingDerivedType ()
     {
       var personIDs = new[]
                        {
@@ -374,66 +384,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           query,
           _concreteObjectIDs.Person,
           _concreteObjectIDs.Customer);
-    }
-
-    [Test]
-    public void ConcreteObjects_PropertyAccessInSameClass_ClassAboveInheritanceHierarchy ()
-    {
-      var storageClass = (from f in QueryFactory.CreateLinqQuery<StorageGroupClass>()
-        where f.StorageGroupClassIdentifier == "StorageGroupName1"
-        select f);
-
-      CheckQueryResult (storageClass, DomainObjectIDs.StorageGroupClass1);
-    }
-
-    [Test]
-    public void ConcreteObjects_PropertyAccessInBaseClass_ClassAboveInheritanceHierarchy ()
-    {
-      var storageClass = (from f in QueryFactory.CreateLinqQuery<StorageGroupClass>()
-        where f.AboveInheritanceIdentifier == "AboveInheritanceName1"
-        select f);
-
-      CheckQueryResult (storageClass, DomainObjectIDs.StorageGroupClass1);
-    }
-
-    [Test]
-    public void AccessingEntity_WithoutAnyTables ()
-    {
-      var query1 = QueryFactory.CreateLinqQuery<AbstractClassWithoutDerivations>();
-      CheckQueryResult (query1);
-
-      var query2 = QueryFactory.CreateLinqQuery<AbstractClassWithoutDerivations>().Where (x => x.DomainBase != null);
-      CheckQueryResult (query2);
-
-      var countWithPropertyAccess = (from db in QueryFactory.CreateLinqQuery<TIDomainBase>()
-        where db.AbstractClassesWithoutDerivations.Count() == 0
-        select db).Count();
-      var countWithoutPropertyAccess = QueryFactory.CreateLinqQuery<TIDomainBase>().Count();
-      Assert.That (countWithPropertyAccess, Is.EqualTo (countWithoutPropertyAccess).And.GreaterThan (0));
-    }
-
-    //TODO RM-6485: Test name
-    [Test]
-    public void TableInheritance_MemberJoinViaBaseClass ()
-    {
-      var query = from c in QueryFactory.CreateLinqQuery<TIClient>()
-        from domainBase in c.AssignedObjects
-        where domainBase.CreatedAt == new DateTime (2006, 01, 03)
-        select domainBase;
-
-      var domainObjectIDs = new TableInheritanceDomainObjectIDs (Configuration);
-      CheckQueryResult (query, domainObjectIDs.Person);
-    }
-
-    //TODO RM-6485: Test name
-    [Test]
-    public void Query_WithView ()
-    {
-      var domainBases =
-          from d in QueryFactory.CreateLinqQuery<TIDomainBase>()
-          select d;
-
-      Assert.That (domainBases.ToArray(), Is.Not.Empty);
     }
   }
 }

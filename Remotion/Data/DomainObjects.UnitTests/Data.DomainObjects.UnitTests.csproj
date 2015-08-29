@@ -266,6 +266,7 @@
     <Compile Include="IntegrationTests\Transaction\ReadOnlyTransactions\RelationReadEventsTest.cs" />
     <Compile Include="Linq\ExtendedSqlGeneratingOuterSelectExpressionVisitorTest.cs" />
     <Compile Include="Linq\ExtendedSqlGenerationStageTest.cs" />
+    <Compile Include="Linq\IntegrationTests\SingleTableInheritanceIntegrationTest.cs" />
     <Compile Include="Linq\IntegrationTests\ObjectIDIntegrationTest.cs" />
     <Compile Include="Linq\IntegrationTests\ScalarResultIntegrationTest.cs" />
     <Compile Include="Linq\IntegrationTests\UpcastIntegrationTest.cs">
@@ -1199,7 +1200,7 @@
     <Compile Include="LinqPropertyRedirectionAttributeTest.cs" />
     <Compile Include="Linq\DomainObjectQueryableTest.cs" />
     <Compile Include="Linq\DomainObjectQueryExecutorTest.cs" />
-    <Compile Include="Linq\IntegrationTests\DifferentMappingScenariosIntegrationTest.cs" />
+    <Compile Include="Linq\IntegrationTests\ConcreteTableInheritanceIntegrationTest.cs" />
     <Compile Include="Linq\IntegrationTests\MixinAddedPropertyIntegrationTest.cs" />
     <Compile Include="Linq\IntegrationTests\PropertyRedirectionIntegrationTest.cs" />
     <Compile Include="Linq\MappingResolverTest.cs" />
