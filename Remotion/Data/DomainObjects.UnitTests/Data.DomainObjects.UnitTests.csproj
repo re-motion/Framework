@@ -267,7 +267,7 @@
     <Compile Include="Linq\ExtendedSqlGeneratingOuterSelectExpressionVisitorTest.cs" />
     <Compile Include="Linq\ExtendedSqlGenerationStageTest.cs" />
     <Compile Include="Linq\IntegrationTests\ObjectIDIntegrationTest.cs" />
-    <Compile Include="Linq\IntegrationTests\SingleTableInheritanceIntegrationTest.cs" />
+    <Compile Include="Linq\IntegrationTests\ScalarResultIntegrationTest.cs" />
     <Compile Include="Linq\IntegrationTests\UpcastIntegrationTest.cs">
       <SubType>Code</SubType>
     </Compile>

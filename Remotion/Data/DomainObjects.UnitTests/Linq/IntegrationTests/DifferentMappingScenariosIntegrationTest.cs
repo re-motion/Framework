@@ -82,6 +82,73 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
+    public void ConcreteObjects_OfType_SelectingBaseType_SingleTableInheritance ()
+    {
+      var query = QueryFactory.CreateLinqQuery<Customer>().OfType<Company>();
+
+      CheckQueryResult (
+          query,
+          DomainObjectIDs.Customer1,
+          DomainObjectIDs.Customer2,
+          DomainObjectIDs.Customer3,
+          DomainObjectIDs.Customer4,
+          DomainObjectIDs.Customer5);
+    }
+
+    [Test]
+    public void ConcreteObjects_OfType_SelectingSameType_SingleTableInheritance ()
+    {
+      var query = QueryFactory.CreateLinqQuery<Customer>().OfType<Customer>();
+
+      CheckQueryResult (
+          query,
+          DomainObjectIDs.Customer1,
+          DomainObjectIDs.Customer2,
+          DomainObjectIDs.Customer3,
+          DomainObjectIDs.Customer4,
+          DomainObjectIDs.Customer5);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException))]
+    public void ConcreteObject_OfType_UnrelatedType_ThrowsInvalidOperation_SingleTableInheritance ()
+    {
+      var query = QueryFactory.CreateLinqQuery<Company>().OfType<Order>();
+
+      CheckQueryResult (query);
+    }
+
+    [Test]
+    public void ConcreteObjects_Is_SelectingBaseType_SingleTableInheritance ()
+    {
+      // ReSharper disable once IsExpressionAlwaysTrue
+      var query = QueryFactory.CreateLinqQuery<Customer>().Where (c=> c is Company);
+
+      CheckQueryResult (
+          query,
+          DomainObjectIDs.Customer1,
+          DomainObjectIDs.Customer2,
+          DomainObjectIDs.Customer3,
+          DomainObjectIDs.Customer4,
+          DomainObjectIDs.Customer5);
+    }
+
+    [Test]
+    public void ConcreteObjects_Is_SelectingSameType_SingleTableInheritance ()
+    {
+      // ReSharper disable once IsExpressionAlwaysTrue
+      var query = QueryFactory.CreateLinqQuery<Customer>().Where (c=> c is Customer);
+
+      CheckQueryResult (
+          query,
+          DomainObjectIDs.Customer1,
+          DomainObjectIDs.Customer2,
+          DomainObjectIDs.Customer3,
+          DomainObjectIDs.Customer4,
+          DomainObjectIDs.Customer5);
+    }
+
+    [Test]
     public void BaseObjects_PropertyAccessInSameClass_SingleTableInheritance ()
     {
       var company = (from c in QueryFactory.CreateLinqQuery<Company>()
@@ -89,6 +156,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         select c);
 
       CheckQueryResult (company, DomainObjectIDs.Company2);
+    }
+
+    [Test]
+    public void BaseObjects_PropertyAccessInSameClassViaRelation_SingleTableInheritance ()
+    {
+      var order = (from o in QueryFactory.CreateLinqQuery<Order>()
+        where o.Customer.Name == "Kunde 4"
+        select o);
+
+      CheckQueryResult (
+          order,
+          DomainObjectIDs.Order4,
+          DomainObjectIDs.Order5);
     }
 
     [Test]
@@ -102,10 +182,60 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
+    public void BaseObjects_OfType_SelectingDerivedType_SingleTableInheritance ()
+    {
+      var partnerIDs = new[]
+                       {
+                           (Guid) DomainObjectIDs.Partner1.Value,
+                           (Guid) DomainObjectIDs.Distributor1.Value,
+                           (Guid) DomainObjectIDs.Supplier1.Value,
+                           (Guid) DomainObjectIDs.Company1.Value,
+                           (Guid) DomainObjectIDs.Customer1.Value
+                       };
+      var query = QueryFactory.CreateLinqQuery<Company>().OfType<Partner>().Where (p => partnerIDs.Contains ((Guid) p.ID.Value));
+
+      CheckQueryResult (
+          query,
+          DomainObjectIDs.Partner1,
+          DomainObjectIDs.Distributor1,
+          DomainObjectIDs.Supplier1);
+    }
+
+    [Test]
+    public void BaseObjects_Is_SelectingDerivedType_SingleTableInheritance ()
+    {
+      var partnerIDs = new[]
+                       {
+                           (Guid) DomainObjectIDs.Partner1.Value,
+                           (Guid) DomainObjectIDs.Distributor1.Value,
+                           (Guid) DomainObjectIDs.Supplier1.Value,
+                           (Guid) DomainObjectIDs.Company1.Value,
+                           (Guid) DomainObjectIDs.Customer1.Value
+                       };
+      var query = QueryFactory.CreateLinqQuery<Company>().Where (c => c is Partner).Where (p => partnerIDs.Contains ((Guid) p.ID.Value));
+
+      CheckQueryResult (
+          query,
+          DomainObjectIDs.Partner1,
+          DomainObjectIDs.Distributor1,
+          DomainObjectIDs.Supplier1);
+    }
+
+    [Test]
     public void ConcreteObjects_PropertyAccessInBaseClass_ConcreteTableInheritance ()
     {
       var fsi = (from f in QueryFactory.CreateLinqQuery<TIFile>()
         where f.Name == "Datei im Root"
+        select f);
+
+      CheckQueryResult (fsi, _concreteObjectIDs.FileRoot);
+    }
+
+    [Test]
+    public void ConcreteObjects_PropertyAccessInBaseClassViaRelation_ConcreteTableInheritance ()
+    {
+      var fsi = (from f in QueryFactory.CreateLinqQuery<TIFile>()
+        where f.ParentFolder.Name == "Root"
         select f);
 
       CheckQueryResult (fsi, _concreteObjectIDs.FileRoot);
@@ -132,6 +262,67 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
+    public void ConcreteObjects_OfType_SelectingBaseType_ConcreteTableInheritance ()
+    {
+      var query = QueryFactory.CreateLinqQuery<TIPerson>().OfType<TIDomainBase>();
+
+      CheckQueryResult (
+          query,
+          _concreteObjectIDs.Person,
+          _concreteObjectIDs.Person2,
+          _concreteObjectIDs.PersonForUnidirectionalRelationTest,
+          _concreteObjectIDs.Customer,
+          _concreteObjectIDs.Customer2);
+    }
+
+    [Test]
+    public void ConcreteObjects_OfType_SelectingSameType_ConcreteTableInheritance ()
+    {
+      var query = QueryFactory.CreateLinqQuery<TICustomer>().OfType<TICustomer>();
+
+      CheckQueryResult (
+          query,
+          _concreteObjectIDs.Customer,
+          _concreteObjectIDs.Customer2);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException))]
+    public void ConcreteObject_OfType_UnrelatedType_ThrowsInvalidOperation_ConcreteTableInheritance ()
+    {
+      var query = QueryFactory.CreateLinqQuery<TICustomer>().OfType<TIFile>();
+
+      CheckQueryResult (query);
+    }
+
+    [Test]
+    public void ConcreteObjects_Is_SelectingBaseType_ConcreteTableInheritance ()
+    {
+      // ReSharper disable once IsExpressionAlwaysTrue
+      var query = QueryFactory.CreateLinqQuery<TIPerson>().Where (b=> b is TIDomainBase);
+
+      CheckQueryResult (
+          query,
+          _concreteObjectIDs.Person,
+          _concreteObjectIDs.Person2,
+          _concreteObjectIDs.PersonForUnidirectionalRelationTest,
+          _concreteObjectIDs.Customer,
+          _concreteObjectIDs.Customer2);
+    }
+
+    [Test]
+    public void ConcreteObjects_Is_SelectingSameType_ConcreteTableInheritance ()
+    {
+      // ReSharper disable once IsExpressionAlwaysTrue
+      var query = QueryFactory.CreateLinqQuery<TICustomer>().Where (b=> b is TICustomer);
+
+      CheckQueryResult (
+          query,
+          _concreteObjectIDs.Customer,
+          _concreteObjectIDs.Customer2);
+    }
+
+    [Test]
     public void BaseObjects_PropertyAccessInSameClass_ConcreteTableInheritance ()
     {
       var fsi = (from f in QueryFactory.CreateLinqQuery<TIFileSystemItem>()
@@ -149,6 +340,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         select f);
 
       CheckQueryResult (fsi, _concreteObjectIDs.FileRoot, _concreteObjectIDs.Folder1);
+    }
+
+    [Test]
+    public void BaseObjects_OfType_SelectingDerivedType_ConcreteTableInheritance ()
+    {
+      var personIDs = new[]
+                       {
+                           (Guid) _concreteObjectIDs.Person.Value,
+                           (Guid) _concreteObjectIDs.Customer.Value,
+                           (Guid) _concreteObjectIDs.OrganizationalUnit.Value
+                       };
+      var query = QueryFactory.CreateLinqQuery<TIDomainBase>().OfType<TIPerson>().Where (p => personIDs.Contains ((Guid) p.ID.Value));
+
+      CheckQueryResult (
+          query,
+          _concreteObjectIDs.Person,
+          _concreteObjectIDs.Customer);
+    }
+
+    [Test]
+    public void BaseObjects_Is_SelectingDerivedType_ConcreteTableInheritance ()
+    {
+      var personIDs = new[]
+                       {
+                           (Guid) _concreteObjectIDs.Person.Value,
+                           (Guid) _concreteObjectIDs.Customer.Value,
+                           (Guid) _concreteObjectIDs.OrganizationalUnit.Value
+                       };
+      var query = QueryFactory.CreateLinqQuery<TIDomainBase>().Where (b => b is TIPerson).Where (p => personIDs.Contains ((Guid) p.ID.Value));
+
+      CheckQueryResult (
+          query,
+          _concreteObjectIDs.Person,
+          _concreteObjectIDs.Customer);
     }
 
     [Test]
