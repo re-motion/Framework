@@ -66,7 +66,7 @@ namespace Remotion.Web.Test.DoublePostBackHandling
 
     protected override void OnPreRender (EventArgs e)
     {
-      AbortedQueuedSubmit = AbortedQueuedSubmitCheckBox.Checked;
+      AbortQueuedSubmit = AbortedQueuedSubmitCheckBox.Checked;
       base.OnPreRender (e);
     }
   }

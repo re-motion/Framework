@@ -237,7 +237,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private bool _isDirty;
   private ShowAbortConfirmation _showAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
   private bool? _enableStatusIsSubmittingMessage;
-  private bool? _abortedQueuedSubmit;
+  private bool? _abortQueuedSubmit;
   private bool? _enableSmartScrolling;
   private bool? _enableSmartFocusing;
   private readonly SmartPageClientScriptManager _clientScriptManager;
@@ -431,10 +431,10 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
       "The flag that determines whether to continue or abort a queued submit upon completion of the postback. Undefined is interpreted as false.")]
   [Category ("Behavior")]
   [DefaultValue (null)]
-  public bool? AbortedQueuedSubmit
+  public bool? AbortQueuedSubmit
   {
-    get { return _abortedQueuedSubmit; }
-    set { _abortedQueuedSubmit = value; }
+    get { return _abortQueuedSubmit; }
+    set { _abortQueuedSubmit = value; }
   }
 
   /// <summary> 
@@ -442,7 +442,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </summary>
   protected virtual bool IsQueuedSubmitToBeAborted
   {
-    get { return _abortedQueuedSubmit == true; }
+    get { return _abortQueuedSubmit ?? false; }
   }
 
   /// <summary> Gets the value returned by <see cref="IsQueuedSubmitToBeAborted"/>. </summary>
