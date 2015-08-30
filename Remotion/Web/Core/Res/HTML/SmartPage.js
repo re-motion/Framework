@@ -322,26 +322,44 @@ function SmartPage_Context(
 
     this.Restore();
 
+    var isSubmitting = false;
     if (this.IsSubmitting() && _submitState.NextSubmitState != null && _submitState.NextSubmitState.Submitter != null)
     {
       var nextSubmitState = _submitState.NextSubmitState;
       _submitState = null;
-      var nextSubmitterID = nextSubmitState.Submitter.id;
-      var submitter = document.getElementById (nextSubmitterID);
-      if (submitter != null)
+      if (!StringUtility.IsNullOrEmpty(nextSubmitState.EventTarget))
       {
-        if (IsJavaScriptAnchor (submitter))
+        isSubmitting = true;
+        setTimeout (function() { window.__doPostBack(nextSubmitState.EventTarget, nextSubmitState.EventArgument); }, 0);
+      }
+      else
+      {
+        var nextSubmitterID = nextSubmitState.Submitter.id;
+        var submitterElement = document.getElementById(nextSubmitterID);
+        if (submitterElement != null)
         {
-          var javascript = submitter.href.substring('javascript:'.length);
-          eval (javascript);
-        }
-        else
-        {
-          $(submitter).trigger ("click");
+          var isButton = false;
+          var tagName = submitterElement.tagName.toLowerCase();
+          if (tagName === 'input')
+          {
+            var type = submitterElement.type.toLowerCase();
+            isButton = type === 'submit' || type === 'button';
+          }
+          else if (tagName === 'button')
+          {
+            isButton = true;
+          }
+
+          if (isButton)
+          {
+            isSubmitting = true;
+            setTimeout (function () { $ (submitterElement).trigger ("click"); }, 0);
+          }
         }
       }
     }
-    else
+
+    if (!isSubmitting)
     {
       this.ClearIsSubmitting (isAsynchronous);
       _isSubmittingBeforeUnload = false;
@@ -471,7 +489,7 @@ function SmartPage_Context(
         _theForm.__EVENTTARGET.value = eventTarget;
         _theForm.__EVENTARGUMENT.value = eventArgument;
 
-        var submitState = this.SetIsSubmitting(false);
+        var submitState = this.SetIsSubmitting(false, eventTarget, eventArgument);
         // Abort the postback if there is already a postback in progress
         if (submitState.NextSubmitState !== null)
           return;
@@ -518,19 +536,21 @@ function SmartPage_Context(
       {
         if (IsSynchronousPostBackRequired(postBackSettings))
         {
-          this.DoPostBack(_theForm.__EVENTTARGET.value, _theForm.__EVENTARGUMENT.value);
+          this.DoPostBack(postBackSettings.asyncTarget, _theForm.__EVENTARGUMENT.value);
           return false;
         }
         else
         {
+          var eventTarget = postBackSettings.asyncTarget === _theForm.__EVENTTARGET.value ? _theForm.__EVENTTARGET.value : '';
+          var eventArgument = eventTarget !== '' ? _theForm.__EVENTARGUMENT.value : '';
           var continueRequest = this.CheckFormState();
-          var submitState = this.SetIsSubmitting(true);
+          var submitState = this.SetIsSubmitting(true, eventTarget, eventArgument);
           if (continueRequest && submitState.NextSubmitState === null)
           {
             _isSubmittingBeforeUnload = true;
 
             this.Backup();
-            ExecuteEventHandlers(_eventHandlers['onpostback'], _theForm.__EVENTTARGET.value, _theForm.__EVENTARGUMENT.value);
+            ExecuteEventHandlers(_eventHandlers['onpostback'], eventTarget, eventArgument);
             return true;
           }
           else
@@ -557,7 +577,7 @@ function SmartPage_Context(
         _theForm.__EVENTARGUMENT.value = '';
       }
 
-      var submitState = this.SetIsSubmitting(false);
+      var submitState = this.SetIsSubmitting(false, null, null);
       if (continueRequest && submitState.NextSubmitState === null)
       {
         _isSubmittingBeforeUnload = true;
@@ -986,11 +1006,7 @@ function SmartPage_Context(
     return Array.contains(_synchronousPostBackCommands, postBackSettings.asyncTarget + '|' + _theForm.__EVENTARGUMENT.value);
   };
 
-  //TODO RM-5618: Pass eventarget, eventargument into the method. 
-  //              Set focus on submitter element on next page load
-  //              Use eventtarget and eventargument to raise __doPostback event on next page load
-  //              Otherwise, execute click on submitter element
-  this.SetIsSubmitting = function (isAsynchronous)
+  this.SetIsSubmitting = function (isAsynchronous, eventTarget, eventArgument)
   {
     var submitterElement = GetSubmitterOrActiveElement();
     if (submitterElement != null)
@@ -1022,7 +1038,9 @@ function SmartPage_Context(
     var submitState = {
       IsAsynchronous: isAsynchronous,
       IsAutoPostback: isAutoPostback,
-      Submitter : submitterElement,
+      Submitter: submitterElement,
+      EventTarget: eventTarget,
+      EventArgument: eventArgument,
       NextSubmitState : null
     };
     if (_submitState == null)
