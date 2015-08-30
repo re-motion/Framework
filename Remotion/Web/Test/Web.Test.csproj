@@ -155,6 +155,20 @@
     <Compile Include="DefaultButtonTest.aspx.designer.cs">
       <DependentUpon>DefaultButtonTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DoublePostBackHandling\AspNetForm.aspx.cs">
+      <DependentUpon>AspNetForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DoublePostBackHandling\AspNetForm.aspx.designer.cs">
+      <DependentUpon>AspNetForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DoublePostBackHandling\SmartForm.aspx.cs">
+      <DependentUpon>SmartForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DoublePostBackHandling\SmartForm.aspx.designer.cs">
+      <DependentUpon>SmartForm.aspx</DependentUpon>
+    </Compile>
     <Compile Include="DropDownMenu.aspx.cs">
       <DependentUpon>DropDownMenu.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -437,6 +451,9 @@
     </Compile>
     <Compile Include="Rendering\WebButtonWithDisabledCssStyleSupport.cs" />
     <Content Include="DefaultButtonTest.aspx" />
+    <Content Include="DoublePostBackHandling\AspNetForm.aspx" />
+    <Content Include="DoublePostBackHandling\Default.html" />
+    <Content Include="DoublePostBackHandling\SmartForm.aspx" />
     <Content Include="ErrorHandling\ErrorForm.aspx" />
     <Content Include="ErrorHandling\TestForm.aspx" />
     <Content Include="ExecutionEngine\ExceptionHandling\InvalidMarkupForm.aspx" />

@@ -287,6 +287,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       string abortMessage = GetAbortMessage();
       string statusIsSubmittingMessage = GetStatusIsSubmittingMessage();
+      string abortQueuedSubmit = _page.IsQueuedSubmitToBeAborted ? "true" : "false";
 
       string checkFormStateFunction = "null";
       if (! string.IsNullOrEmpty (_checkFormStateFunction))
@@ -351,6 +352,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       initScript.AppendLine ("  }");
       initScript.AppendLine();
 
+      initScript.Append ("  SmartPage_Context.Instance.set_AbortQueuedSubmit (").Append (abortQueuedSubmit).AppendLine (");");
       initScript.Append ("  SmartPage_Context.Instance.set_EventHandlers (").Append (eventHandlersArray).AppendLine (");");
       initScript.Append ("  SmartPage_Context.Instance.set_TrackedIDs (").Append (trackedControlsArray).AppendLine (");");
       initScript.Append ("  SmartPage_Context.Instance.set_SynchronousPostBackCommands (").Append (synchronousPostBackCommandsArray).AppendLine (");");

@@ -78,6 +78,9 @@
       </para><para>
         During such an event, the <see cref="SmartPage"/> displays the message defined in the 
         <see cref="StatusIsSubmittingMessage"/> property (or it's default message if the property is not set).
+      </para><para>
+        If a second postback is trigged during an asynchronous ASP.NET auto-postback, the postback is queued and processed 
+        after the page has been refreshed. This behavior can be controlled via the <see cref="AbortQueuedSubmit"/> flag.
       </para>
       
       <h4 class="dtH4">Smart Navigation (specified in <see cref="ISmartNavigablePage"/>)</h4>
