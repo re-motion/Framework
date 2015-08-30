@@ -59,6 +59,7 @@ function SmartPage_Context(
   // The message displayed when the user attempts to submit while a submit is already in progress.
   // null to disable the message.
   var _statusIsSubmittingMessage = statusIsSubmittingMessage;
+  var _abortQueuedSubmit = false;
 
   var _isAborting = false;
   var _isCached = false;
@@ -128,6 +129,12 @@ function SmartPage_Context(
     _smartFocusFieldID = smartFocusFieldID;
 
     AttachPageLevelEventHandlers();
+  };
+
+  this.set_AbortQueuedSubmit = function (value)
+  {
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean('value', value);
+    _abortQueuedSubmit = value;
   };
 
   this.set_EventHandlers = function (eventHandlers)
@@ -322,11 +329,51 @@ function SmartPage_Context(
 
     this.Restore();
 
-    this.ClearIsSubmitting (isAsynchronous);
-    _isSubmittingBeforeUnload = false;
-    this.HideStatusMessage();
+    var isSubmitting = false;
+    if (this.IsSubmitting() && _submitState.NextSubmitState != null && _submitState.NextSubmitState.Submitter != null && !_abortQueuedSubmit)
+    {
+      var nextSubmitState = _submitState.NextSubmitState;
+      _submitState = null;
+      if (!StringUtility.IsNullOrEmpty(nextSubmitState.EventTarget))
+      {
+        isSubmitting = true;
+        setTimeout (function() { window.__doPostBack(nextSubmitState.EventTarget, nextSubmitState.EventArgument); }, 0);
+      }
+      else
+      {
+        var nextSubmitterID = nextSubmitState.Submitter.id;
+        var submitterElement = document.getElementById(nextSubmitterID);
+        if (submitterElement != null)
+        {
+          var isButton = false;
+          var tagName = submitterElement.tagName.toLowerCase();
+          if (tagName === 'input')
+          {
+            var type = submitterElement.type.toLowerCase();
+            isButton = type === 'submit' || type === 'button';
+          }
+          else if (tagName === 'button')
+          {
+            isButton = true;
+          }
 
-    ExecuteEventHandlers(_eventHandlers['onload'], _hasSubmitted, _isCached, isAsynchronous);
+          if (isButton)
+          {
+            isSubmitting = true;
+            setTimeout (function () { $ (submitterElement).trigger ("click"); }, 0);
+          }
+        }
+      }
+    }
+
+    if (!isSubmitting)
+    {
+      this.ClearIsSubmitting (isAsynchronous);
+      _isSubmittingBeforeUnload = false;
+      this.HideStatusMessage();
+
+      ExecuteEventHandlers (_eventHandlers['onload'], _hasSubmitted, _isCached, isAsynchronous);
+    }
   };
 
   // Determines whether the page was loaded from cache.
@@ -449,7 +496,11 @@ function SmartPage_Context(
         _theForm.__EVENTTARGET.value = eventTarget;
         _theForm.__EVENTARGUMENT.value = eventArgument;
 
-        this.SetIsSubmitting(false);
+        var submitState = this.SetIsSubmitting(false, eventTarget, eventArgument);
+        // Abort the postback if there is already a postback in progress
+        if (submitState.NextSubmitState !== null)
+          return;
+
         _isSubmittingBeforeUnload = true;
 
         this.Backup();
@@ -492,19 +543,21 @@ function SmartPage_Context(
       {
         if (IsSynchronousPostBackRequired(postBackSettings))
         {
-          this.DoPostBack(_theForm.__EVENTTARGET.value, _theForm.__EVENTARGUMENT.value);
+          this.DoPostBack(postBackSettings.asyncTarget, _theForm.__EVENTARGUMENT.value);
           return false;
         }
         else
         {
+          var eventTarget = postBackSettings.asyncTarget === _theForm.__EVENTTARGET.value ? postBackSettings.asyncTarget : '';
+          var eventArgument = eventTarget !== '' ? _theForm.__EVENTARGUMENT.value : '';
           var continueRequest = this.CheckFormState();
-          if (continueRequest)
+          var submitState = this.SetIsSubmitting(true, eventTarget, eventArgument);
+          if (continueRequest && submitState.NextSubmitState === null)
           {
-            this.SetIsSubmitting(true);
             _isSubmittingBeforeUnload = true;
 
             this.Backup();
-            ExecuteEventHandlers(_eventHandlers['onpostback'], _theForm.__EVENTTARGET.value, _theForm.__EVENTARGUMENT.value);
+            ExecuteEventHandlers(_eventHandlers['onpostback'], eventTarget, eventArgument);
             return true;
           }
           else
@@ -523,9 +576,17 @@ function SmartPage_Context(
       }
 
       var continueRequest = this.CheckFormState();
-      if (continueRequest)
+      if (this.IsSubmitting() && continueRequest)
       {
-        this.SetIsSubmitting(false);
+        // This Code path is taken for synchronous requests that are not triggered via form-submit
+        // and a postback is already in progress. In this case, the previous post state should be cleared.
+        _theForm.__EVENTTARGET.value = '';
+        _theForm.__EVENTARGUMENT.value = '';
+      }
+
+      var submitState = this.SetIsSubmitting(false, '', '');
+      if (continueRequest && submitState.NextSubmitState === null)
+      {
         _isSubmittingBeforeUnload = true;
 
         this.Backup();
@@ -602,18 +663,19 @@ function SmartPage_Context(
     }
 
     if (!continueRequest)
-    {
       return false;
-    }
-    else if (this.IsSubmitting())
-    {
-      this.ShowStatusIsSubmittingMessage();
-      return false;
-    }
-    else
-    {
+
+    if (!this.IsSubmitting())
       return true;
-    }
+
+    var isAsyncAutoPostback = _submitState.IsAsynchronous && _submitState.IsAutoPostback;
+    var isTriggeredByCurrentSubmitter = _submitState.Submitter === GetActiveElement();
+    var hasQueuedSubmit = _submitState.NextSubmitState != null;
+    if (!hasQueuedSubmit && isAsyncAutoPostback && !isTriggeredByCurrentSubmitter)
+      return true;
+
+    this.ShowStatusIsSubmittingMessage();
+    return false;
   };
 
   // Event handler for Window.OnScroll.
@@ -881,7 +943,7 @@ function SmartPage_Context(
     var tagName = element.tagName.toLowerCase();
     if (tagName == 'a'
         && TypeUtility.IsDefined(element.href) && element.href != null
-        && element.href.substring(0, 11).toLowerCase() == 'javascript:')
+        && element.href.substring(0, 'javascript:'.length).toLowerCase() == 'javascript:')
     {
       return true;
     }
@@ -951,7 +1013,7 @@ function SmartPage_Context(
     return Array.contains(_synchronousPostBackCommands, postBackSettings.asyncTarget + '|' + _theForm.__EVENTARGUMENT.value);
   };
 
-  this.SetIsSubmitting = function (isAsynchronous)
+  this.SetIsSubmitting = function (isAsynchronous, eventTarget, eventArgument)
   {
     var submitterElement = GetSubmitterOrActiveElement();
     if (submitterElement != null)
@@ -961,10 +1023,39 @@ function SmartPage_Context(
 
     $('html').addClass('SmartPageBusy');
 
-    _submitState = {
-      IsAsynchronous : isAsynchronous,
-      Submitter : submitterElement
+    var isAutoPostback = false;
+    if (submitterElement != null)
+    {
+      var tagName = submitterElement.tagName.toLowerCase();
+      if (tagName === 'input')
+      {
+        var type = submitterElement.type.toLowerCase();
+        isAutoPostback = type !== 'submit' && type !== 'button';
+      }
+      else if (tagName === 'textarea')
+      {
+        isAutoPostback = true;
+      }
+      else if (tagName === 'select')
+      {
+        isAutoPostback = true;
+      }
+    }
+
+    var submitState = {
+      IsAsynchronous: isAsynchronous,
+      IsAutoPostback: isAutoPostback,
+      Submitter: submitterElement,
+      EventTarget: eventTarget,
+      EventArgument: eventArgument,
+      NextSubmitState : null
     };
+    if (_submitState == null)
+      _submitState = submitState;
+    else
+      _submitState.NextSubmitState = submitState;
+
+    return _submitState;
   };
 
   this.ClearIsSubmitting = function (isAsynchronous)

@@ -813,7 +813,9 @@
     <None Include="Doc\include\UI\Controls\WebTabStrip.xml" />
     <None Include="Doc\include\UI\Controls\WebTreeView.xml" />
     <None Include="Doc\include\UI\ISmartPage.xml" />
-    <None Include="Doc\include\UI\SmartPage.xml" />
+    <None Include="Doc\include\UI\SmartPage.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Doc\include\Utilities\UrlUtility.xml">
       <SubType>Designer</SubType>
     </None>

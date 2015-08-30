@@ -80,6 +80,9 @@
         <a href="ExceptionHandlingTest.wxe">Test for propagtion of exceptions thrown on WXE Pages</a>
       </p>
       <p>
+        <a href="DoublePostBackHandling/Default.html">Test for double postback handling</a>
+      </p>
+      <p>
         Current functions: <asp:Label runat="server" ID="CurrentFunctionCountLabel" Text="###"/>
       </p>
       <asp:Button id="ResetSessionButton" runat="server" Text="Reset Session" OnClick="ResetSessionButton_Click"></asp:Button>
