@@ -541,7 +541,7 @@ function SmartPage_Context(
         }
         else
         {
-          var eventTarget = postBackSettings.asyncTarget === _theForm.__EVENTTARGET.value ? _theForm.__EVENTTARGET.value : '';
+          var eventTarget = postBackSettings.asyncTarget === _theForm.__EVENTTARGET.value ? postBackSettings.asyncTarget : '';
           var eventArgument = eventTarget !== '' ? _theForm.__EVENTARGUMENT.value : '';
           var continueRequest = this.CheckFormState();
           var submitState = this.SetIsSubmitting(true, eventTarget, eventArgument);
@@ -577,7 +577,7 @@ function SmartPage_Context(
         _theForm.__EVENTARGUMENT.value = '';
       }
 
-      var submitState = this.SetIsSubmitting(false, null, null);
+      var submitState = this.SetIsSubmitting(false, '', '');
       if (continueRequest && submitState.NextSubmitState === null)
       {
         _isSubmittingBeforeUnload = true;
