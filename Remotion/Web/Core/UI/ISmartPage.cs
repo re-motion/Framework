@@ -96,6 +96,11 @@ namespace Remotion.Web.UI
     /// </summary>
     bool IsStatusIsSubmittingMessageEnabled { get; }
 
+    /// <summary>
+    ///   Gets a flag whether a queued submit should be executed or aborted upon completion of the postback.
+    /// </summary>
+    bool IsQueuedSubmitToBeAborted { get; }
+
     /// <summary> 
     ///   Registers Java Script functions to be executed when the respective <paramref name="pageEvent"/> is raised.
     /// </summary>

@@ -46,6 +46,7 @@
           </div>
         </ContentTemplate>
       </asp:UpdatePanel>
+      <asp:CheckBox runat="server" id="AbortedQueuedSubmitCheckBox"/> <asp:Label runat="server" AssociatedControlID="AbortedQueuedSubmitCheckBox">Abort queued submit</asp:Label>
     </div>
     </form>
 </body>

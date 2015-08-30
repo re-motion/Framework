@@ -59,6 +59,7 @@ function SmartPage_Context(
   // The message displayed when the user attempts to submit while a submit is already in progress.
   // null to disable the message.
   var _statusIsSubmittingMessage = statusIsSubmittingMessage;
+  var _abortQueuedSubmit = false;
 
   var _isAborting = false;
   var _isCached = false;
@@ -128,6 +129,12 @@ function SmartPage_Context(
     _smartFocusFieldID = smartFocusFieldID;
 
     AttachPageLevelEventHandlers();
+  };
+
+  this.set_AbortQueuedSubmit = function (value)
+  {
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean('value', value);
+    _abortQueuedSubmit = value;
   };
 
   this.set_EventHandlers = function (eventHandlers)
@@ -323,7 +330,7 @@ function SmartPage_Context(
     this.Restore();
 
     var isSubmitting = false;
-    if (this.IsSubmitting() && _submitState.NextSubmitState != null && _submitState.NextSubmitState.Submitter != null)
+    if (this.IsSubmitting() && _submitState.NextSubmitState != null && _submitState.NextSubmitState.Submitter != null && !_abortQueuedSubmit)
     {
       var nextSubmitState = _submitState.NextSubmitState;
       _submitState = null;

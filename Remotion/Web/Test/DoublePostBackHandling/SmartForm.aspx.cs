@@ -14,13 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using Remotion.Web.UI;
 
 namespace Remotion.Web.Test.DoublePostBackHandling
@@ -66,5 +62,12 @@ namespace Remotion.Web.Test.DoublePostBackHandling
     protected void SyncLinkButton_OnClick (object sender, EventArgs e)
     {
       StatusLabel.Text = CounterTextBox.Text + " Sync Link<br/>" + StatusLabel.Text;
-    }  }
+    }
+
+    protected override void OnPreRender (EventArgs e)
+    {
+      AbortedQueuedSubmit = AbortedQueuedSubmitCheckBox.Checked;
+      base.OnPreRender (e);
+    }
+  }
 }
