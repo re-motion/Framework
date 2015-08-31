@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes;
@@ -44,15 +45,17 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       AllowedField.Value = allowed;
     }
 
-    protected override void OnPreRender (EventArgs e)
+    protected override void Render (HtmlTextWriter writer)
     {
+      // Text is not needed before rendering phase. 
+      // By moving the evaluation into the Render-method, UpdatePanel-postbacks will not cause a hit for unaffected rows.
       var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
       string accessTypeName = ((Permission)CurrentObject.BusinessObject).AccessType.DisplayName;
       AllowedField.TrueDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionGrantedText), accessTypeName);
       AllowedField.FalseDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionDeniedText), accessTypeName);
       AllowedField.NullDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionUndefinedText), accessTypeName);
 
-      base.OnPreRender (e);
+      base.Render (writer);
     }
   }
 }
