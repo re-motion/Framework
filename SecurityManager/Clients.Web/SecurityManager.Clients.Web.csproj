@@ -106,9 +106,6 @@
     <None Include="UI\AccessControl\EditStatelessAccessControlListControl.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
-    <None Include="UI\AccessControl\EditPermissionControl.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </None>
     <None Include="UI\AccessControl\EditAccessControlEntryControl.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
@@ -245,13 +242,6 @@
     </Compile>
     <Compile Include="UI\AccessControl\EditStatelessAccessControlListControl.ascx.designer.cs">
       <DependentUpon>EditStatelessAccessControlListControl.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\AccessControl\EditPermissionControl.ascx.cs">
-      <DependentUpon>EditPermissionControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\AccessControl\EditPermissionControl.ascx.designer.cs">
-      <DependentUpon>EditPermissionControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="UI\AccessControl\EditAccessControlEntryControl.ascx.cs">
       <DependentUpon>EditAccessControlEntryControl.ascx</DependentUpon>

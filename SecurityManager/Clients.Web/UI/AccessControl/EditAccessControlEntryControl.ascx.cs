@@ -18,7 +18,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Security;
@@ -50,6 +52,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       AllPermissionsMenu_ClearAllPermissions_Text,
       AllPermissionsMenu_DenyAllPermissions_Text,
       AllPermissionsMenu_GrantAllPermissions_Text,
+      PermissionDeniedText,
+      PermissionGrantedText,
+      PermissionUndefinedText,
     }
 
     // types
@@ -60,7 +65,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     // member fields
 
-    private readonly List<EditPermissionControl> _editPermissionControls = new List<EditPermissionControl>();
+    private readonly List<Tuple<Permission, PermissionBooleanValue>> _permissionControls = new List<Tuple<Permission, PermissionBooleanValue>>();
     private const string c_grantAllMenuItemID = "GrantAllPermissions";
     private const string c_denyAllMenuItemID = "DenyAllPermissions";
     private const string c_clearAllMenuItemID = "ClearAllPermissions";
@@ -218,10 +223,17 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private bool SavePermissions (bool interim)
     {
-      bool hasSaved = true;
-      foreach (EditPermissionControl control in _editPermissionControls)
-        hasSaved &= control.SaveValues (interim);
-      return hasSaved;
+      if (interim)
+        return false;
+
+      foreach (var tuple in _permissionControls)
+      {
+        var permission = tuple.Item1;
+        var control = tuple.Item2;
+        permission.Allowed = control.Value;
+        control.IsDirty = false;
+      }
+      return true;
    }
 
     public override bool Validate ()
@@ -349,39 +361,40 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     private void LoadPermissions (bool interim)
     {
       CreateEditPermissionControls (CurrentAccessControlEntry.GetPermissions());
-      foreach (var control in _editPermissionControls)
-        control.LoadValues (interim);
+      foreach (var tuple in _permissionControls)
+      {
+        var permission = tuple.Item1;
+        var control = tuple.Item2;
+        control.LoadUnboundValue (permission.Allowed, interim);
+      }
     }
 
     private void CreateEditPermissionControls (IList<Permission> permissions)
     {
       PermissionsPlaceHolder.Controls.Clear();
-      _editPermissionControls.Clear();
+      _permissionControls.Clear();
 
       for (int i = 0; i < permissions.Count; i++)
       {
         var permission = permissions[i];
 
-        var control = (EditPermissionControl) LoadControl ("EditPermissionControl.ascx");
+        // Control needs to be created inline instead of as DataEditUserControl to optimize performance.
+        var control = new PermissionBooleanValue();
         control.ID = "P_" + i;
-        control.BusinessObject = permission;
+        control.ShowDescription = false;
+        control.Width = Unit.Pixel (16);
 
         var td = new HtmlGenericControl ("td");
         td.Attributes.Add ("class", "permissionCell");
         PermissionsPlaceHolder.Controls.Add (td);
         td.Controls.Add (control);
 
-        _editPermissionControls.Add (control);
+        _permissionControls.Add (Tuple.Create (permission, control));
       }
     }
-
     private bool ValidatePermissions ()
     {
-      bool isValid = true;
-      foreach (var control in _editPermissionControls)
-        isValid &= control.Validate();
-
-      return isValid;
+      return true;
     }
 
     private void AllPermisionsMenu_EventCommandClick (object sender, WebMenuItemClickEventArgs e)
@@ -402,8 +415,11 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
           throw new InvalidOperationException (string.Format ("The menu item '{0}' is not defined.", e.Item.ItemID));
       }
 
-      foreach (var control in _editPermissionControls)
-        control.SetPermissionValue (isAllowed);
+      foreach (var tuple in _permissionControls)
+      {
+        var control = tuple.Item2;
+        control.Value = isAllowed;
+      }
     }
 
     protected void ToggleAccessControlEntryButton_Click (object sender, EventArgs e)
@@ -419,6 +435,24 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
         IsCollapsed = true;
       }
 
+    }
+    
+    protected override void Render (HtmlTextWriter writer)
+    {
+      // Text is not needed before rendering phase. 
+      // By moving the evaluation into the Render-method, UpdatePanel-postbacks will not cause a hit for unaffected rows.
+      foreach (var tuple in _permissionControls)
+      {
+        var permission = tuple.Item1;
+        var control = tuple.Item2;
+        var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
+        string accessTypeName = permission.AccessType.DisplayName;
+        control.TrueDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionGrantedText), accessTypeName);
+        control.FalseDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionDeniedText), accessTypeName);
+        control.NullDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionUndefinedText), accessTypeName);
+      }
+
+      base.Render (writer);
     }
 
     private IResourceUrl GetIconUrl (string url)
