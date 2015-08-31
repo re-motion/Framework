@@ -152,7 +152,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       SpecificUserField.NullItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificUserFieldRequiredFieldErrorMessage);
 
       SpecificGroupField.InvalidItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificGroupFieldInvalidItemErrorMessage);
-      SpecificUserField.InvalidItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificUserFieldRequiredFieldErrorMessage);
+      SpecificUserField.InvalidItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificUserFieldInvalidItemErrorMessage);
 
       base.OnPreRender (e);
 
