@@ -174,7 +174,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
             (writer, control) => collapsedRenderer.RenderAbstractRole (writer, new ControlWrapper (control)));
       }
 
-      DetailsCell.Attributes.Add ("colspan", (4 + CurrentAccessControlEntry.AccessControlList.Class.AccessTypes.Count + 3).ToString());
+      DetailsCell.Attributes.Add ("colspan", (4 + _permissionControls.Count + 3).ToString());
 
       DeleteAccessControlEntryButton.Icon = new IconInfo (GetIconUrl ("DeleteItem.gif").GetUrl());
 
@@ -192,6 +192,24 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
         ToggleAccessControlEntryButton.Icon.AlternateText = resourceManager.GetString (ResourceIdentifier.CollapseAccessControlEntryButtonText);
         DetailsView.Visible = true;
       }
+    }
+
+    protected override void Render (HtmlTextWriter writer)
+    {
+      // Text is not needed before rendering phase. 
+      // By moving the evaluation into the Render-method, UpdatePanel-postbacks will not cause a hit for unaffected rows.
+      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
+      foreach (var tuple in _permissionControls)
+      {
+        var permission = tuple.Item1;
+        var control = tuple.Item2;
+        string accessTypeName = permission.AccessType.DisplayName;
+        control.TrueDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionGrantedText), accessTypeName);
+        control.FalseDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionDeniedText), accessTypeName);
+        control.NullDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionUndefinedText), accessTypeName);
+      }
+
+      base.Render (writer);
     }
 
     public override void LoadValues (bool interim)
@@ -435,24 +453,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
         IsCollapsed = true;
       }
 
-    }
-    
-    protected override void Render (HtmlTextWriter writer)
-    {
-      // Text is not needed before rendering phase. 
-      // By moving the evaluation into the Render-method, UpdatePanel-postbacks will not cause a hit for unaffected rows.
-      foreach (var tuple in _permissionControls)
-      {
-        var permission = tuple.Item1;
-        var control = tuple.Item2;
-        var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
-        string accessTypeName = permission.AccessType.DisplayName;
-        control.TrueDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionGrantedText), accessTypeName);
-        control.FalseDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionDeniedText), accessTypeName);
-        control.NullDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionUndefinedText), accessTypeName);
-      }
-
-      base.Render (writer);
     }
 
     private IResourceUrl GetIconUrl (string url)
