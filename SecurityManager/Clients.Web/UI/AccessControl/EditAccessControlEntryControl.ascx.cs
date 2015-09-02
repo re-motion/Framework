@@ -398,7 +398,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
         // Control needs to be created inline instead of as DataEditUserControl to optimize performance.
         var control = new PermissionBooleanValue();
-        control.ID = "P_" + i;
+        control.ID = "P_" + i + "_AllowedField";
         control.ShowDescription = false;
         control.Width = Unit.Pixel (16);
 
