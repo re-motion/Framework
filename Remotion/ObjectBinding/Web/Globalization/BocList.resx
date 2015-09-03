@@ -165,4 +165,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowMenuTitle" xml:space="preserve">
     <value>Options</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
+    <value>Errors have been found in at least one row.</value>
+  </data>
 </root>
