@@ -22,10 +22,10 @@ using Remotion.Utilities;
 namespace Remotion.Web.UI.Controls
 {
   /// <summary>
-  /// Groups all arguments required for rendering a <see cref="IStyledControl"/>.
+  /// Groups all arguments required for rendering a <see cref="IControl"/>.
   /// </summary>
   public abstract class RenderingContext<TControl>
-      where TControl : IStyledControl
+      where TControl : IControl
   {
     private readonly HttpContextBase _httpContext;
     private readonly HtmlTextWriter _writer;
