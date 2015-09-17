@@ -37,6 +37,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       get { return CreateObjectID (typeof (TICustomer), new Guid ("{623016F9-B525-4CAE-A2BD-D4A6155B2F33}")); }
     }
 
+    public ObjectID Customer2
+    {
+      get { return CreateObjectID (typeof (TICustomer), new Guid ("{3C8854E7-16C6-4783-93B2-8C303A881761}")); }
+    }
+
     public ObjectID Client
     {
       get { return CreateObjectID (typeof (TIClient), new Guid ("{F7AD91EF-AC75-4fe3-A427-E40312B12917}")); }
@@ -55,6 +60,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     public ObjectID Person
     {
       get { return CreateObjectID (typeof (TIPerson), new Guid ("{21E9BEA1-3026-430a-A01E-E9B6A39928A8}")); }
+    }
+
+    public ObjectID Person2
+    {
+      get { return CreateObjectID (typeof (TIPerson), new Guid ("{B969AFCB-2CDA-45FF-8490-EB52A86D5464}")); }
     }
 
     public ObjectID PersonForUnidirectionalRelationTest

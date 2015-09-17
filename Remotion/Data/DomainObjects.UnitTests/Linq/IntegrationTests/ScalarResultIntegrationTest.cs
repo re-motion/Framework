@@ -23,17 +23,22 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
 {
   [TestFixture]
-  public class ImplicitJoinIntegrationTest : IntegrationTestBase
+  public class ScalarResultIntegrationTest : IntegrationTestBase
   {
     [Test]
-    public void QueryWithMemberFromClause_WithJoin ()
+    public void Sum_WithEmptyResultSet_AndAggregatedValueIsNotNullableProperty_ThrowsNotSupportedException ()
     {
-      var query =
-          from ot in QueryFactory.CreateLinqQuery<OrderTicket> ()
-          from oi in ot.Order.OrderItems
-          where ot.Order.OrderNumber == 1
-          select oi;
-      CheckQueryResult (query, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
+      Assert.That (
+          () => (from o in QueryFactory.CreateLinqQuery<Order>() where o.OrderNumber == -1 select o).Sum (o => o.OrderNumber),
+          Throws.Exception.TypeOf<NotSupportedException>().And.Message.EqualTo ("Null cannot be converted to type 'System.Int32'."));
+    }
+
+    [Test]
+    public void Sum_WithEmptyResultSet_AndAggregatedValueIsNotNullablePropertyButCastToNullable_ReturnsNull ()
+    {
+      Assert.That (
+          () => (from o in QueryFactory.CreateLinqQuery<Order>() where o.OrderNumber == -1 select o).Sum (o => (int?) o.OrderNumber),
+          Is.Null);
     }
   }
 }

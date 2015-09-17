@@ -266,10 +266,12 @@
     <Compile Include="IntegrationTests\Transaction\ReadOnlyTransactions\RelationReadEventsTest.cs" />
     <Compile Include="Linq\ExtendedSqlGeneratingOuterSelectExpressionVisitorTest.cs" />
     <Compile Include="Linq\ExtendedSqlGenerationStageTest.cs" />
+    <Compile Include="Linq\IntegrationTests\SingleTableInheritanceIntegrationTest.cs" />
+    <Compile Include="Linq\IntegrationTests\ObjectIDIntegrationTest.cs" />
+    <Compile Include="Linq\IntegrationTests\ScalarResultIntegrationTest.cs" />
     <Compile Include="Linq\IntegrationTests\UpcastIntegrationTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Linq\IntegrationTests\UnionConcatIntegrationTest.cs" />
     <Compile Include="Linq\TestDomain\Success\EagerFetching\BaseClass.cs" />
     <Compile Include="Linq\TestDomain\Success\EagerFetching\DerivedClass1.cs" />
     <Compile Include="Linq\TestDomain\Success\EagerFetching\DerivedClass2.cs" />
@@ -406,7 +408,6 @@
     <Compile Include="Linq\ExecutableQueries\CustomSequenceQueryAdapterTest.cs" />
     <Compile Include="Linq\ExecutableQueries\DomainObjectSequenceQueryAdapterTest.cs" />
     <Compile Include="Linq\IntegrationTests\CustomProjectionIntegrationTest.cs" />
-    <Compile Include="Linq\IntegrationTests\GroupByIntegrationTest.cs" />
     <Compile Include="Linq\ExecutableQueries\QueryAdapterBaseTest.cs" />
     <Compile Include="Linq\QueryResultRowAdapterTest.cs" />
     <Compile Include="Linq\ExecutableQueries\ScalarQueryAdapterTest.cs" />
@@ -767,7 +768,6 @@
     <Compile Include="IntegrationTests\Relations\BigRelationsTest.cs" />
     <Compile Include="IntegrationTests\Synchronization\CollectionRelationInconsistenciesTest.cs" />
     <Compile Include="LinqCastMethodAttributeTest.cs" />
-    <Compile Include="Linq\IntegrationTests\MethodCallsIntegrationTest.cs" />
     <Compile Include="Linq\StorageSpecificExpressionResolverTest.cs" />
     <Compile Include="Mapping\AnonymousRelationEndPointDefinitionTest.cs" />
     <Compile Include="Mapping\ClassDefinitionChecker.cs" />
@@ -1200,8 +1200,7 @@
     <Compile Include="LinqPropertyRedirectionAttributeTest.cs" />
     <Compile Include="Linq\DomainObjectQueryableTest.cs" />
     <Compile Include="Linq\DomainObjectQueryExecutorTest.cs" />
-    <Compile Include="Linq\IntegrationTests\DifferentMappingScenariosIntegrationTest.cs" />
-    <Compile Include="Linq\IntegrationTests\ExplicitJoinsIntegrationTest.cs" />
+    <Compile Include="Linq\IntegrationTests\ConcreteTableInheritanceIntegrationTest.cs" />
     <Compile Include="Linq\IntegrationTests\MixinAddedPropertyIntegrationTest.cs" />
     <Compile Include="Linq\IntegrationTests\PropertyRedirectionIntegrationTest.cs" />
     <Compile Include="Linq\MappingResolverTest.cs" />
@@ -1272,14 +1271,7 @@
     <Compile Include="IntegrationTests\Unload\UnloadDataTest.cs" />
     <Compile Include="Linq\ExpressionHelper.cs" />
     <Compile Include="Linq\IntegrationTests\EagerFetchingIntegrationTest.cs" />
-    <Compile Include="Linq\IntegrationTests\ImplicitJoinIntegrationTest.cs" />
-    <Compile Include="Linq\IntegrationTests\LetIntegrationTest.cs" />
-    <Compile Include="Linq\IntegrationTests\MultiFromIntegrationTest.cs" />
-    <Compile Include="Linq\IntegrationTests\OrderByIntegrationTest.cs" />
-    <Compile Include="Linq\IntegrationTests\ResultOperatorIntegrationTest.cs" />
-    <Compile Include="Linq\IntegrationTests\SelectIntegrationTest.cs" />
-    <Compile Include="Linq\IntegrationTests\SubQueryIntegrationTest.cs" />
-    <Compile Include="Linq\IntegrationTests\WhereIntegrationTest.cs" />
+    <Compile Include="Linq\IntegrationTests\RelationIntegrationTest.cs" />
     <Compile Include="Linq\TestDomain\Student.cs" />
     <Compile Include="Persistence\Rdbms\DbCommandBuilders\DbCommandBuilderTest.cs" />
     <Compile Include="Persistence\Rdbms\DbCommandBuilders\TestableDbCommandBuilder.cs" />

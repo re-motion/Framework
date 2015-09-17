@@ -165,6 +165,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           result,
           Is.EqualTo (new[] { new { BooleanProperty = false, NaBooleanProperty = (bool?) true, NaBooleanWithNullValueProperty = (bool?) null } }));
     }
-
   }
 }
