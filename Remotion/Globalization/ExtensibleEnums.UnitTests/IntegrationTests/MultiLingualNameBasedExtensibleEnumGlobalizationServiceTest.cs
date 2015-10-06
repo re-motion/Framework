@@ -16,21 +16,21 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Globalization.ExtensibleEnums.Implementation;
 using Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization.ExtensibleEnums.UnitTests.IntegrationTests
 {
   [TestFixture]
-  public class LocalizedNameBasedExtensibleEnumGlobalizationServiceIntegrationTest
+  public class MultiLingualNameBasedExtensibleEnumGlobalizationServiceTest
   {
     [Test]
     public void TryGetExtensibleEnumValueDisplayName_IntegrationTest ()
     {
       string resourceValue;
 
-      var service = SafeServiceLocator.Current.GetInstance<IExtensibleEnumGlobalizationService>();
+      var service = GetGlobalizationService();
 
       using (new CultureScope ("it-IT", "en-US"))
       {
@@ -61,6 +61,11 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.IntegrationTests
         Assert.That (service.GetExtensibleEnumValueDisplayNameOrDefault (Color.Values.DarkBlue()), Is.Null);
         Assert.That (service.ContainsExtensibleEnumValueDisplayName (Color.Values.DarkBlue()), Is.False);
       }
+    }
+
+    private MultiLingualNameBasedExtensibleEnumGlobalizationService GetGlobalizationService ()
+    {
+      return new MultiLingualNameBasedExtensibleEnumGlobalizationService();
     }
   }
 }

@@ -18,6 +18,7 @@
 using System;
 using System.Resources;
 using NUnit.Framework;
+using Remotion.Globalization.Implementation;
 using Remotion.Globalization.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -30,7 +31,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void TryGetTypeDisplayName ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       string resourceValue;
       Assert.That (
@@ -71,7 +72,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void GetTypeDisplayName ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       Assert.That (
           service.GetTypeDisplayName (
@@ -101,7 +102,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void ContainsTypeDisplayName ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       Assert.That (
           service.ContainsTypeDisplayName (
@@ -131,7 +132,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void TryGetPropertyDisplayName ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       string resourceValue;
       Assert.That (
@@ -180,7 +181,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void GetPropertyDisplayName ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       Assert.That (
           service.GetPropertyDisplayName (
@@ -216,7 +217,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void ContainsPropertyDisplayName ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       Assert.That (
           service.ContainsPropertyDisplayName (
@@ -247,6 +248,13 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
               PropertyInfoAdapter.Create (typeof (ClassWithProperties).GetProperty ("PropertyWithLongIdentifier")),
               TypeAdapter.Create (typeof (ClassWithMissingResources))),
           Throws.TypeOf<MissingManifestResourceException>());
+    }
+
+    private ResourceManagerBasedMemberInformationGlobalizationService GetGlobalizationService ()
+    {
+      return new ResourceManagerBasedMemberInformationGlobalizationService (
+          SafeServiceLocator.Current.GetInstance<IGlobalizationService>(),
+          SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>());
     }
   }
 }

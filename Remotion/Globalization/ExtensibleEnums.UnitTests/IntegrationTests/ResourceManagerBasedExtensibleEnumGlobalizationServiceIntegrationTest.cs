@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Globalization.ExtensibleEnums.Implementation;
 using Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain;
 using Remotion.ServiceLocation;
 
@@ -30,7 +31,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.IntegrationTests
     {
       string resourceValue;
 
-      var service = SafeServiceLocator.Current.GetInstance<IExtensibleEnumGlobalizationService> ();
+      var service = GetGlobalizationService();
 
       Assert.That (service.TryGetExtensibleEnumValueDisplayName (Color.Values.Red (), out resourceValue), Is.True);
       Assert.That (resourceValue, Is.EqualTo ("Rot"));
@@ -60,6 +61,11 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.IntegrationTests
       Assert.That (service.GetExtensibleEnumValueDisplayName (Color.Values.LightBlue ()), Is.EqualTo ("LightBlue"));
       Assert.That (service.GetExtensibleEnumValueDisplayNameOrDefault (Color.Values.LightBlue ()), Is.Null);
       Assert.That (service.ContainsExtensibleEnumValueDisplayName (Color.Values.LightBlue ()), Is.False);
+    }
+
+    private ResourceManagerBasedExtensibleEnumGlobalizationService GetGlobalizationService ()
+    {
+      return new ResourceManagerBasedExtensibleEnumGlobalizationService (SafeServiceLocator.Current.GetInstance<IGlobalizationService>());
     }
   }
 }

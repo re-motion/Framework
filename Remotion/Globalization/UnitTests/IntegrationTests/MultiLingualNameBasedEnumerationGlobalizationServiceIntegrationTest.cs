@@ -17,8 +17,8 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
+using Remotion.Globalization.Implementation;
 using Remotion.Globalization.UnitTests.TestDomain;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization.UnitTests.IntegrationTests
@@ -29,7 +29,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void TryGetEnumerationValueDisplayName_IntegrationTest ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>();
+      var service = GetGlobalizationService();
       string resourceValue;
 
       using (new CultureScope (CultureInfo.InvariantCulture, CultureInfo.InvariantCulture))
@@ -75,7 +75,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void TryGetEnumerationValueDisplayName_EnumDescriptionIntegrationTest ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService> ();
+      var service = GetGlobalizationService();
       string resourceValue;
 
       Assert.That (service.TryGetEnumerationValueDisplayName (EnumWithDescription.Value1, out resourceValue), Is.True);
@@ -99,6 +99,11 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       Assert.That (service.GetEnumerationValueDisplayName ((EnumWithDescription) 100), Is.EqualTo ("100"));
       Assert.That (service.GetEnumerationValueDisplayNameOrDefault ((EnumWithDescription) 100), Is.Null);
       Assert.That (service.ContainsEnumerationValueDisplayName ((EnumWithDescription) 100), Is.False);
+    }
+
+    private MultiLingualNameBasedEnumerationGlobalizationService GetGlobalizationService ()
+    {
+      return new MultiLingualNameBasedEnumerationGlobalizationService();
     }
   }
 }

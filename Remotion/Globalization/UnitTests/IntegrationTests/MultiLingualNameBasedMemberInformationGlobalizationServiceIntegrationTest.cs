@@ -17,9 +17,9 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Globalization.Implementation;
 using Remotion.Globalization.UnitTests.TestDomain;
 using Remotion.Reflection;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization.UnitTests.IntegrationTests
@@ -30,7 +30,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void TryGetTypeDisplayName ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       using (new CultureScope ("it", "de-AT"))
       {
@@ -203,7 +203,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void GetTypeDisplayName ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       using (new CultureScope ("it", "de-AT"))
       {
@@ -227,7 +227,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void ContainsTypeDisplayName ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       using (new CultureScope ("it", "de-AT"))
       {
@@ -250,7 +250,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void TryGetPropertyDisplayName ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       using (new CultureScope ("it", "de-AT"))
       {
@@ -317,7 +317,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void TryGetPropertyDisplayName_WithPropertiesDeclaredInAssemblyWithDifferentNeutralLanguage ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
       var enUSassembly = TestAssemblies.EnUS;
       var enUSType = enUSassembly.Value.GetType ("DerivedClassWithMultiLingualNameAttributeAndDifferentNeutralLanguage");
       var declaredProperty = enUSType.GetProperty ("PropertyWithMultiLingualNameAttributeOnDerivedClass");
@@ -381,7 +381,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void TryGetPropertyDisplayName_WithMultiLingualNameAttributeAppliedToOverride_ThrowsInvalidOperationException ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       string resourceValue;
       Assert.That (
@@ -398,7 +398,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void GetPropertyDisplayName ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       using (new CultureScope ("it", "de-AT"))
       {
@@ -422,7 +422,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void ContainsPropertyDisplayName ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+      var service = GetGlobalizationService();
 
       using (new CultureScope ("it", "de-AT"))
       {
@@ -441,6 +441,11 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
                 TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes))),
             Is.False);
       }
+    }
+
+    private MultiLingualNameBasedMemberInformationGlobalizationService GetGlobalizationService ()
+    {
+      return new MultiLingualNameBasedMemberInformationGlobalizationService();
     }
   }
 }
