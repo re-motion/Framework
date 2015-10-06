@@ -68,7 +68,7 @@ namespace Remotion.Web.UI.Controls
     /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
     [ResourceIdentifiers]
     [MultiLingualResources ("Remotion.Web.Globalization.FormGridManager")]
-    protected enum ResourceIdentifier
+    public enum ResourceIdentifier
     {
       /// <summary>The alternate text for the required icon.</summary>
       RequiredFieldAlternateText,

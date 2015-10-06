@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [ResourceIdentifiers]
     [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocEnumValue")]
-    protected enum ResourceIdentifier
+    public enum ResourceIdentifier
     {
       /// <summary> The text rendered for the null item in the list. </summary>
       UndefinedItemText,

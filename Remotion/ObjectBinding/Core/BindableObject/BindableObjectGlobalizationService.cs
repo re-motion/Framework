@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.BindableObject
   {
     [ResourceIdentifiers]
     [MultiLingualResources ("Remotion.ObjectBinding.Globalization.BindableObjectGlobalizationService")]
-    private enum ResourceIdentifier
+    public enum ResourceIdentifier
     {
       True,
       False

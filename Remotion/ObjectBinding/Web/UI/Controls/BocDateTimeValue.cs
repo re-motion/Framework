@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [ResourceIdentifiers]
     [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocDateTimeValue")]
-    protected internal enum ResourceIdentifier
+    public enum ResourceIdentifier
     {
       /// <summary> The validation error message displayed when both the date and the time component missing. </summary>
       MissingDateAndTimeErrorMessage,

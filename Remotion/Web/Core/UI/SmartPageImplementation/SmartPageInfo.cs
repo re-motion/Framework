@@ -44,7 +44,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </remarks>
     [ResourceIdentifiers]
     [MultiLingualResources ("Remotion.Web.Globalization.SmartPageInfo")]
-    protected enum ResourceIdentifier
+    public enum ResourceIdentifier
     {
       /// <summary> Displayed when the user attempts to leave the page. </summary>
       AbortMessage,

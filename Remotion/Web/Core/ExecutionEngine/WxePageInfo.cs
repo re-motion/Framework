@@ -43,7 +43,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </remarks>
     [ResourceIdentifiers]
     [MultiLingualResources ("Remotion.Web.Globalization.WxePageInfo")]
-    protected enum ResourceIdentifier
+    public enum ResourceIdentifier
     {
       /// <summary> Displayed when the user attempts to submit while the page is already aborting. </summary>
       StatusIsAbortingMessage,
