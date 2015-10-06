@@ -22,6 +22,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Resources;
+using System.Threading;
 using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Utilities;
@@ -65,7 +66,7 @@ namespace Remotion.Globalization.Implementation
     // member fields
 
     private readonly ResourceManager _resourceManager;
-
+    private readonly Lazy<IReadOnlyCollection<CultureInfo>> _availableCultures; 
     private readonly LockingCacheDecorator<Tuple<CultureInfo, string>, NameValueCollection> _cachedResourceSet =
         CacheFactory.CreateWithLocking<Tuple<CultureInfo, string>, NameValueCollection>();
 
@@ -81,6 +82,7 @@ namespace Remotion.Globalization.Implementation
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       _resourceManager = resourceManager;
+      _availableCultures = new Lazy<IReadOnlyCollection<CultureInfo>> (GetAvailableCultures, LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
     // methods and properties
@@ -170,6 +172,25 @@ namespace Remotion.Globalization.Implementation
       return false;
     }
 
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailableStrings (string id)
+    {
+      // Loop through all entries in the resource managers
+      // Copy the resources into a collection
+      var result = new Dictionary<CultureInfo, string>();
+      foreach (CultureInfo culture in _availableCultures.Value)
+      {
+        var resourceSet = GetResourceSet (culture);
+        if (resourceSet != null)
+        {
+          var value = resourceSet.GetString (id);
+          if (value != null)
+            result.Add (culture, value);
+        }
+      }
+
+      return result;
+    }
+
     /// <summary>
     ///   Returns the culture hierarchy, starting with the most specialized culture.
     /// </summary>
@@ -202,6 +223,16 @@ namespace Remotion.Globalization.Implementation
     bool INullObject.IsNull
     {
       get { return false; }
+    }
+
+    private ResourceSet GetResourceSet (CultureInfo culture)
+    {
+      return _resourceManager.GetResourceSet (culture, true, false);
+    }
+
+    private IReadOnlyCollection<CultureInfo> GetAvailableCultures ()
+    {
+      return CultureInfo.GetCultures (CultureTypes.AllCultures).Where (culture => GetResourceSet (culture) != null).ToArray();
     }
   }
 }
