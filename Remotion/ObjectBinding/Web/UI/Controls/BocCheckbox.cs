@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [ResourceIdentifiers]
     [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocCheckBox")]
-    protected enum ResourceIdentifier
+    public enum ResourceIdentifier
     {
       /// <summary> The descripton rendered next the check box when it is checked. </summary>
       TrueDescription,

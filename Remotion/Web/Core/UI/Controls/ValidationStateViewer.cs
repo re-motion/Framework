@@ -44,7 +44,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Remotion.Web.Globalization.ValidationStateViewer")]
-  protected enum ResourceIdentifier
+  public enum ResourceIdentifier
   {
     /// <summary>The summary message displayed if validation errors where found. </summary>
     NoticeText

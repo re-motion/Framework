@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [ResourceIdentifiers]
     [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocMultilineTextValue")]
-    protected enum ResourceIdentifier
+    public enum ResourceIdentifier
     {
       /// <summary> The validation error message displayed when no text is entered but input is required. </summary>
       RequiredValidationMessage,
