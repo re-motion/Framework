@@ -163,7 +163,9 @@
     <EmbeddedResource Include="TestDomain\Resources\Four.resx" />
     <EmbeddedResource Include="TestDomain\Resources\Two.resx" />
     <EmbeddedResource Include="TestDomain\Resources\One.resx" />
-    <EmbeddedResource Include="TestDomain\Resources\EnumWithResourcesAndAttribute.resx" />
+    <EmbeddedResource Include="TestDomain\Resources\EnumWithResourcesAndAttribute.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestDomain\Resources\EnumWithResources.de-AT.resx" />
     <EmbeddedResource Include="TestDomain\Resources\EnumWithResources.resx" />
   </ItemGroup>
