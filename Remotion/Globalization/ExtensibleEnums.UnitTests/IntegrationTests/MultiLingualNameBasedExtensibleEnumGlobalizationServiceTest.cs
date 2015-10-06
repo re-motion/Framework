@@ -63,6 +63,16 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.IntegrationTests
       }
     }
 
+    [Test]
+    public void GetAvailablePropertyDisplayNames ()
+    {
+      var service = GetGlobalizationService();
+
+      var result = service.GetAvailableEnumDisplayNames (Color.Values.DarkRed ());
+
+      Assert.That (result.Values, Is.EquivalentTo (new [] { "The en-US Dark Red", "The Invariant Dark Red" }));
+    }
+
     private MultiLingualNameBasedExtensibleEnumGlobalizationService GetGlobalizationService ()
     {
       return new MultiLingualNameBasedExtensibleEnumGlobalizationService();

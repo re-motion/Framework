@@ -250,6 +250,30 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
           Throws.TypeOf<MissingManifestResourceException>());
     }
 
+    [Test]
+    public void GetAvailablePropertyDisplayNames ()
+    {
+      var service = GetGlobalizationService();
+
+      var result = service.GetAvailablePropertyDisplayNames (
+          PropertyInfoAdapter.Create (typeof (ClassWithMultiLingualNameAttribute).GetProperty ("PropertyWithMultiLingualNameAttribute")),
+          TypeAdapter.Create (typeof (ClassWithResources)));
+
+      Assert.That (result.Values, Is.EquivalentTo (new [] { "Resource-based Property ID" }));
+    }
+
+    [Test]
+    public void GetAvailableTypeDisplayNames ()
+    {
+      var service = GetGlobalizationService();
+
+      var result = service.GetAvailableTypeDisplayNames (
+          TypeAdapter.Create (typeof (ClassWithMultiLingualNameAttribute)),
+          TypeAdapter.Create (typeof (ClassWithResources)));
+
+      Assert.That (result.Values, Is.EquivalentTo (new[] { "Resource-based Type ID" }));
+    }
+
     private ResourceManagerBasedMemberInformationGlobalizationService GetGlobalizationService ()
     {
       return new ResourceManagerBasedMemberInformationGlobalizationService (

@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Remotion.ExtensibleEnums;
 using Remotion.ServiceLocation;
@@ -62,6 +63,24 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
 
       result = null;
       return false;
+    }
+
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (IExtensibleEnum value)
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+
+      Dictionary<CultureInfo, string> result = new Dictionary<CultureInfo, string> ();
+
+      foreach (var service in _extensibleEnumGlobalizationServices)
+      {
+        foreach (var localization in service.GetAvailableEnumDisplayNames (value))
+        {
+          if (!result.ContainsKey (localization.Key))
+            result.Add (localization.Key, localization.Value);
+        }
+      }
+
+      return result;
     }
   }
 }

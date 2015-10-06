@@ -15,7 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using NUnit.Framework;
+using Remotion.Collections;
 using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Rhino.Mocks;
@@ -189,6 +193,57 @@ namespace Remotion.Globalization.UnitTests.Implementation
       Assert.That (value, Is.Null);
 
       _mockRepository.VerifyAll();
+    }
+
+    [Test]
+    public void GetAvailablePropertyDisplayNames_ReturnsResultInRightOverriddenOrder ()
+    {
+      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
+      var typeInformationForResourceResolutionStub = MockRepository.GenerateStub<ITypeInformation>();
+
+      var dictionary1 = new Dictionary<CultureInfo, string>();
+      dictionary1.Add (new CultureInfo ("de-AT"), "AT_Wert1");
+
+      var dictionary2 = new Dictionary<CultureInfo, string>();
+      dictionary2.Add (new CultureInfo ("de-AT"), "AT_Wert2");
+
+      var dictionary3 = new Dictionary<CultureInfo, string>();
+      dictionary3.Add (new CultureInfo ("de-DE"), "DE_Wert1");
+      dictionary3.Add (new CultureInfo ("en-US"), "EN_Wert1");
+      dictionary3.Add (new CultureInfo ("de-AT"), "AT_Wert3");
+
+      var expected = new List<KeyValuePair<CultureInfo, string>>();
+      expected.Add (new KeyValuePair<CultureInfo, string> (new CultureInfo ("de-AT"), "AT_Wert1"));
+      expected.Add (new KeyValuePair<CultureInfo, string> (new CultureInfo ("de-DE"), "DE_Wert1"));
+      expected.Add (new KeyValuePair<CultureInfo, string> (new CultureInfo ("en-US"), "EN_Wert1"));
+
+      List<KeyValuePair<CultureInfo, string>> result;
+      using (_mockRepository.Ordered())
+      {
+
+        var innerService1 = MockRepository.GenerateMock<IMemberInformationGlobalizationService>();
+        var innerService2 = MockRepository.GenerateMock<IMemberInformationGlobalizationService>();
+        var innerService3 = MockRepository.GenerateMock<IMemberInformationGlobalizationService>();
+        var service = new CompoundMemberInformationGlobalizationService (new[] { innerService1, innerService2, innerService3 });
+
+        innerService1.Expect (s => s.GetAvailablePropertyDisplayNames (propertyInformationStub, typeInformationForResourceResolutionStub))
+            .Return (dictionary1);
+        innerService2.Expect (s => s.GetAvailablePropertyDisplayNames (propertyInformationStub, typeInformationForResourceResolutionStub))
+            .Return (dictionary2.AsReadOnly());
+        innerService3.Expect (s => s.GetAvailablePropertyDisplayNames (propertyInformationStub, typeInformationForResourceResolutionStub))
+            .Return (dictionary3.AsReadOnly());
+
+        result = service.GetAvailablePropertyDisplayNames (propertyInformationStub, typeInformationForResourceResolutionStub).ToList();
+
+        innerService1.AssertWasCalled (s => s.GetAvailablePropertyDisplayNames (propertyInformationStub, typeInformationForResourceResolutionStub));
+        innerService2.AssertWasCalled (s => s.GetAvailablePropertyDisplayNames (propertyInformationStub, typeInformationForResourceResolutionStub));
+        innerService3.AssertWasCalled (s => s.GetAvailablePropertyDisplayNames (propertyInformationStub, typeInformationForResourceResolutionStub));
+      }
+
+      Assert.That (expected.Count, Is.EqualTo (result.Count));
+      Assert.That (expected[0], Is.EqualTo (result[0]));
+      Assert.That (expected[1], Is.EqualTo (result[1]));
+      Assert.That (expected[2], Is.EqualTo (result[2]));
     }
   }
 }

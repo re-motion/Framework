@@ -16,8 +16,8 @@
 // 
 
 using System;
-using System.Reflection;
-using Remotion.Collections;
+using System.Collections.Generic;
+using System.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -54,6 +54,13 @@ namespace Remotion.Globalization.Implementation
 
       var resourceManager = _globalizationService.GetResourceManager (value.GetType());
       return resourceManager.TryGetString (_memberInformationNameResolver.GetEnumName (value), out result);
+    }
+
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (Enum value)
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      var resourceManager = _globalizationService.GetResourceManager (value.GetType());
+      return resourceManager.GetAvailableStrings (_memberInformationNameResolver.GetEnumName (value));
     }
   }
 }

@@ -16,6 +16,9 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -85,6 +88,41 @@ namespace Remotion.Globalization.Implementation
           "property:");
 
       return result != null;
+    }
+
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailablePropertyDisplayNames (IPropertyInformation propertyInformation, ITypeInformation typeInformationForResourceResolution)
+    {
+      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+
+      var prefix = "property:";
+      var shortName = prefix + propertyInformation.Name;
+      var longName = prefix + _memberInformationNameResolver.GetPropertyName (propertyInformation);
+
+      var resourceManager = _globalizationService.GetResourceManager (typeInformationForResourceResolution);
+      var result = resourceManager.GetAvailableStrings (longName);
+      if (!result.Any())
+        result = resourceManager.GetAvailableStrings (shortName);
+
+      return result;
+    }
+
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailableTypeDisplayNames (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution)
+    {
+      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+
+      var prefix = "type:";
+      var shortName = prefix + typeInformation.Name;
+      var longName = prefix + _memberInformationNameResolver.GetTypeName (typeInformation);
+
+      var resourceManager = _globalizationService.GetResourceManager (typeInformationForResourceResolution);
+
+      var result = resourceManager.GetAvailableStrings (longName);
+      if (!result.Any ())
+        result = resourceManager.GetAvailableStrings (shortName);
+
+      return result;
     }
 
     private string GetStringOrDefault (ITypeInformation typeInformation, string shortMemberName, string longMemberName, string resourcePrefix)
