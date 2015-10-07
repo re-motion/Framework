@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using NUnit.Framework;
 using Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain;
 using Remotion.ServiceLocation;
@@ -61,6 +63,28 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.IntegrationTests
             Is.False);
         Assert.That (resourceValue, Is.Null);
       }
+    }
+
+    [Test]
+    public void GetAvailableEnumDisplayNames ()
+    {
+      var service = SafeServiceLocator.Current.GetInstance<IExtensibleEnumGlobalizationService>();
+
+      Assert.That (
+          service.GetAvailableEnumDisplayNames (Color.Values.MixedRed()).Values,
+          Is.EquivalentTo (new[] { "Resource Red" }));
+
+      Assert.That (
+          service.GetAvailableEnumDisplayNames (Color.Values.LightRed()).Values,
+          Is.EquivalentTo (new[] { "Hellrot" }));
+
+      Assert.That (
+          service.GetAvailableEnumDisplayNames (Color.Values.DarkRed()).Values,
+          Is.EquivalentTo (new[] { "The Invariant Dark Red", "The en-US Dark Red" }));
+
+      Assert.That (
+          service.GetAvailableEnumDisplayNames (Color.Values.DarkBlue()).Values,
+          Is.Empty);
     }
   }
 }

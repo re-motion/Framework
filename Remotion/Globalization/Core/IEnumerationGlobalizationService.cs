@@ -16,6 +16,8 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using JetBrains.Annotations;
 using Remotion.Globalization.Implementation;
 
@@ -39,5 +41,14 @@ namespace Remotion.Globalization
     /// </param>
     /// <returns><see langword="true" /> if a resource could be found.</returns>
     bool TryGetEnumerationValueDisplayName ([NotNull] Enum value, [CanBeNull] out string result);
+
+    /// <summary>
+    ///   Returns all human-readable enumeration names of the spefified reflection object.
+    /// </summary>
+    /// <param name="value">
+    ///   The <see cref="Enum"/> that defines the name for the resource lookup. Must not be <see langword="null" />.
+    /// </param>
+    [NotNull]
+    IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames ([NotNull] Enum value);
   }
 }

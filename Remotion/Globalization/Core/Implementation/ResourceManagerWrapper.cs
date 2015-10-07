@@ -47,25 +47,10 @@ namespace Remotion.Globalization.Implementation
 
     private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerWrapper));
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="resourceManagers">
-    ///   The <see cref="System.Resources.ResourceManager"/> array to be wrapped.
-    ///   The <paramref name="resourceManagers"/> must not be emtpy and no instance may be <see langname="null"/>.
-    /// </param>
-    /// <returns></returns>
-    public static ResourceManagerSet CreateWrapperSet (IEnumerable<ResourceManager> resourceManagers)
-    {
-      ArgumentUtility.CheckNotNull ("resourceManagers", resourceManagers);
-      
-      return new ResourceManagerSet (resourceManagers.Select (rm => (IResourceManager) new ResourceManagerWrapper (rm)));
-    }
-
     // member fields
 
     private readonly ResourceManager _resourceManager;
-
+    private readonly IReadOnlyCollection<CultureInfo> _availableCultures; 
     private readonly LockingCacheDecorator<Tuple<CultureInfo, string>, NameValueCollection> _cachedResourceSet =
         CacheFactory.CreateWithLocking<Tuple<CultureInfo, string>, NameValueCollection>();
 
@@ -81,6 +66,11 @@ namespace Remotion.Globalization.Implementation
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       _resourceManager = resourceManager;
+
+      // We need to load the cultures before any access to the resource manager happens because
+      // if a culture has no resources the resource manager creates a fallback resource set for this culture.
+      // This would be a problem for GetAvailableStrings() because we do not want to return fallback values.
+      _availableCultures = GetAvailableCultures();
     }
 
     // methods and properties
@@ -135,7 +125,7 @@ namespace Remotion.Globalization.Implementation
             for (int i = 0; i < cultureHierarchy.Length; i++)
             {
               CultureInfo culture = cultureHierarchy[i];
-              ResourceSet resourceSet = _resourceManager.GetResourceSet (culture, true, false);
+              ResourceSet resourceSet = GetResourceSet (culture);
               if (resourceSet != null)
               {
                 foreach (DictionaryEntry entry in resourceSet)
@@ -171,6 +161,29 @@ namespace Remotion.Globalization.Implementation
     }
 
     /// <summary>
+    /// Gets all loclalizations for the given <paramref name="id"/> without fallback values.
+    /// </summary>
+    /// <param name="id">The id for which the localizations should be retrned.</param>
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailableStrings (string id)
+    {
+      // Loop through all entries in the resource managers
+      // Copy the resources into a collection
+      var result = new Dictionary<CultureInfo, string>();
+      foreach (CultureInfo culture in _availableCultures)
+      {
+        var resourceSet = GetResourceSet (culture);
+        if (resourceSet != null)
+        {
+          var value = resourceSet.GetString (id);
+          if (value != null)
+            result.Add (culture, value);
+        }
+      }
+
+      return result;
+    }
+
+    /// <summary>
     ///   Returns the culture hierarchy, starting with the most specialized culture.
     /// </summary>
     /// <param name="mostSpecialized">
@@ -202,6 +215,16 @@ namespace Remotion.Globalization.Implementation
     bool INullObject.IsNull
     {
       get { return false; }
+    }
+
+    private ResourceSet GetResourceSet (CultureInfo culture)
+    {
+      return _resourceManager.GetResourceSet (culture, true, false);
+    }
+
+    private IReadOnlyCollection<CultureInfo> GetAvailableCultures ()
+    {
+      return CultureInfo.GetCultures (CultureTypes.AllCultures).Where (culture => GetResourceSet (culture) != null).ToArray();
     }
   }
 }

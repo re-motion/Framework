@@ -18,7 +18,9 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
+using Remotion.Globalization.Implementation;
 using Remotion.Globalization.UnitTests.TestDomain;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -30,7 +32,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void TryGetEnumerationValueDisplayName_IntegrationTest ()
     {
-      var service = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>();
+      var service = GetGlobalizationService();
       string resourceValue;
 
       using (new CultureScope (CultureInfo.InvariantCulture, CultureInfo.InvariantCulture))
@@ -83,6 +85,23 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         Assert.That (service.GetEnumerationValueDisplayNameOrDefault ((EnumWithResources) 100), Is.Null);
         Assert.That (service.ContainsEnumerationValueDisplayName ((EnumWithResources) 100), Is.False);
       }
+    }
+
+    [Test]
+    public void GetAvailableEnumDisplayNames ()
+    {
+      var service = GetGlobalizationService();
+
+      var result = service.GetAvailableEnumDisplayNames (EnumWithResources.Value1);
+
+      Assert.That (result.Values, Is.EquivalentTo (new [] { "Value 1", "Wert 1" }));
+    }
+
+    private ResourceManagerBasedEnumerationGlobalizationService GetGlobalizationService ()
+    {
+      return new ResourceManagerBasedEnumerationGlobalizationService (
+          SafeServiceLocator.Current.GetInstance<IGlobalizationService>(),
+          SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>());
     }
   }
 }

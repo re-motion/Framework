@@ -67,6 +67,7 @@
     <Compile Include="Implementation\MultiLingualNameBasedMemberInformationGlobalizationServiceTests\TryGetPropertyDisplayName_MLNBMIGST.cs" />
     <Compile Include="Implementation\MultiLingualNameBasedMemberInformationGlobalizationServiceTests\TryGetTypeDisplayName_MLNBMIGST.cs" />
     <Compile Include="Implementation\ResourceAttributeBasedResourceManagerFactoryTest.cs" />
+    <Compile Include="Implementation\ResourceManagerWrapperTest.cs" />
     <Compile Include="IntegrationTests\ResourceManagerResolverIntegrationTest.cs" />
     <Compile Include="IntegrationTests\CompoundEnumerationGlobalizationServiceIntegrationTest.cs" />
     <Compile Include="IntegrationTests\CompoundMemberInformationGlobalizationServiceIntegrationTest.cs" />
@@ -157,6 +158,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.de-AT.resx" />
     <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.resx" />
     <EmbeddedResource Include="TestDomain\Resources\Five.resx" />
     <EmbeddedResource Include="TestDomain\Resources\Three.resx" />

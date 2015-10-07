@@ -16,6 +16,8 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using JetBrains.Annotations;
 using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
@@ -66,5 +68,31 @@ namespace Remotion.Globalization
         [NotNull] IPropertyInformation propertyInformation,
         [NotNull] ITypeInformation typeInformationForResourceResolution,
         out string result);
+
+    /// <summary>
+    /// Returns all human-readable localized representations of the <paramref name="propertyInformation"/>.
+    /// </summary>
+    /// <param name="propertyInformation">
+    ///   The <see cref="IPropertyInformation"/> that defines the property name for the resource lookup. Must not be <see langword="null" />.
+    /// </param>
+    /// <param name="typeInformationForResourceResolution">
+    ///   The <see cref="ITypeInformation"/> that should be used for the resource resolution. Must not be <see langword="null" />.
+    /// </param>
+    IReadOnlyDictionary<CultureInfo, string> GetAvailablePropertyDisplayNames (
+        [NotNull] IPropertyInformation propertyInformation,
+        [NotNull] ITypeInformation typeInformationForResourceResolution);
+
+    /// <summary>
+    ///   Returns all human-readable type names of the specified reflection object.
+    /// </summary>
+    /// <param name="typeInformation">
+    ///   The <see cref="ITypeInformation"/> that defines the type name for the resource lookup. Must not be <see langword="null" />.
+    /// </param>
+    /// <param name="typeInformationForResourceResolution">
+    ///   The <see cref="ITypeInformation"/> that should be used for the resource resolution. Must not be <see langword="null" />.
+    /// </param>
+    IReadOnlyDictionary<CultureInfo, string> GetAvailableTypeDisplayNames (
+        [NotNull] ITypeInformation typeInformation,
+        [NotNull] ITypeInformation typeInformationForResourceResolution);
   }
 }

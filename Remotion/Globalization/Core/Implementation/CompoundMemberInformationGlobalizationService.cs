@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -81,6 +82,46 @@ namespace Remotion.Globalization.Implementation
 
       result = null;
       return false;
+    }
+
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailablePropertyDisplayNames (
+        IPropertyInformation propertyInformation,
+        ITypeInformation typeInformationForResourceResolution)
+    {
+      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+
+      var result = new Dictionary<CultureInfo, string>();
+      foreach (var service in _memberInformationGlobalizationServices)
+      {
+        foreach (var localization in service.GetAvailablePropertyDisplayNames (propertyInformation, typeInformationForResourceResolution))
+        {
+          if (!result.ContainsKey (localization.Key))
+            result.Add (localization.Key, localization.Value);
+        }
+      }
+
+      return result;
+    }
+
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailableTypeDisplayNames (
+        ITypeInformation typeInformation,
+        ITypeInformation typeInformationForResourceResolution)
+    {
+      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+
+      var result = new Dictionary<CultureInfo, string>();
+      foreach (var service in _memberInformationGlobalizationServices)
+      {
+        foreach (var localization in service.GetAvailableTypeDisplayNames (typeInformation, typeInformationForResourceResolution))
+        {
+          if (!result.ContainsKey (localization.Key))
+            result.Add (localization.Key, localization.Value);
+        }
+      }
+
+      return result;
     }
   }
 }

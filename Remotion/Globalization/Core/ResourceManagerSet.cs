@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using Remotion.Logging;
 using Remotion.Utilities;
@@ -146,6 +147,22 @@ namespace Remotion.Globalization
     public string Name
     {
       get { return _name; }
+    }
+
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailableStrings (string id)
+    {
+      Dictionary<CultureInfo, string> result = new Dictionary<CultureInfo, string>();
+
+      foreach (var resourceManager in _resourceManagers)
+      {
+        foreach(var localization in resourceManager.GetAvailableStrings (id))
+        {
+          if (!result.ContainsKey (localization.Key))
+            result.Add (localization.Key, localization.Value);
+        }
+      }
+     
+      return result;
     }
 
     bool INullObject.IsNull
