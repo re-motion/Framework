@@ -64,7 +64,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.IntegrationTests
     }
 
     [Test]
-    public void GetAvailablePropertyDisplayNames ()
+    public void GetAvailableEnumDisplayNames ()
     {
       var service = GetGlobalizationService();
 

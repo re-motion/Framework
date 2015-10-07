@@ -35,8 +35,8 @@ namespace Remotion.Globalization.Implementation
   {
     public const int Position = 19;
 
-    private readonly LockingCacheDecorator<Tuple<Assembly, string>, ResourceManager> _resourceManagersCache =
-        CacheFactory.CreateWithLocking<Tuple<Assembly, string>, ResourceManager>();
+    private readonly LockingCacheDecorator<Tuple<Assembly, string>, ResourceManagerWrapper> _resourceManagersCache =
+        CacheFactory.CreateWithLocking<Tuple<Assembly, string>, ResourceManagerWrapper>();
 
     public ResourceAttributeBasedResourceManagerFactory ()
     {
@@ -49,17 +49,17 @@ namespace Remotion.Globalization.Implementation
       var resourceAttributes = AttributeUtility.GetCustomAttributes<IResourcesAttribute> (type, false);
       var assembly = type.Assembly;
       var resourceManagers = resourceAttributes.Select (resourcesAttribute => GetResourceManagerFromCache (assembly, resourcesAttribute));
-      return ResourceManagerWrapper.CreateWrapperSet (resourceManagers);
+      return new ResourceManagerSet (resourceManagers);
     }
 
-    private ResourceManager GetResourceManagerFromCache (Assembly assembly, IResourcesAttribute resourcesAttribute)
+    private ResourceManagerWrapper GetResourceManagerFromCache (Assembly assembly, IResourcesAttribute resourcesAttribute)
     {
       return _resourceManagersCache.GetOrCreateValue (
           Tuple.Create (resourcesAttribute.ResourceAssembly ?? assembly, resourcesAttribute.BaseName),
           GetResourceManager);
     }
 
-    private ResourceManager GetResourceManager (Tuple<Assembly, string> key)
+    private ResourceManagerWrapper GetResourceManager (Tuple<Assembly, string> key)
     {
       var resourceManager = new ResourceManager (key.Item2, key.Item1);
       var neutralSet = resourceManager.GetResourceSet (CultureInfo.InvariantCulture, true, false);
@@ -71,7 +71,7 @@ namespace Remotion.Globalization.Implementation
                 key.Item1.GetName().Name,
                 key.Item2));
       }
-      return resourceManager;
+      return new ResourceManagerWrapper (resourceManager);
     }
   }
 }

@@ -102,7 +102,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     }
 
     [Test]
-    public void GetAvailablePropertyDisplayNames ()
+    public void GetAvailableEnumDisplayNames ()
     {
       var service = GetGlobalizationService();
 
