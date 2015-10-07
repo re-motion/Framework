@@ -87,6 +87,16 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       }
     }
 
+    [Test]
+    public void GetAvailableEnumDisplayNames ()
+    {
+      var service = GetGlobalizationService();
+
+      var result = service.GetAvailableEnumDisplayNames (EnumWithResources.Value1);
+
+      Assert.That (result.Values, Is.EquivalentTo (new [] { "Value 1", "Wert 1" }));
+    }
+
     private ResourceManagerBasedEnumerationGlobalizationService GetGlobalizationService ()
     {
       return new ResourceManagerBasedEnumerationGlobalizationService (

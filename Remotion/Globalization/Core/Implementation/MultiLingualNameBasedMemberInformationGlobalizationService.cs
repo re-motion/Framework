@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
@@ -135,6 +136,22 @@ namespace Remotion.Globalization.Implementation
       ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
       return _localizedNameForPropertyInformationProvider.TryGetLocalizedNameForCurrentUICulture (propertyInformation, out result);
+    }
+
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailablePropertyDisplayNames (IPropertyInformation propertyInformation, ITypeInformation typeInformationForResourceResolution)
+    {
+      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+
+      return _localizedNameForPropertyInformationProvider.GetLocalizedNames (propertyInformation);
+    }
+
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailableTypeDisplayNames (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution)
+    {
+      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+
+      return _localizedNameForTypeInformationProvider.GetLocalizedNames (typeInformation);
     }
   }
 }

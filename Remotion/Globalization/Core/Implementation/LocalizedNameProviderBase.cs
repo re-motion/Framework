@@ -90,18 +90,25 @@ namespace Remotion.Globalization.Implementation
           string.Format ("{0} has no localization defined for the invariant culture.", GetContextForExceptionMessage (reflectionObject)));
     }
 
+    public IReadOnlyDictionary<CultureInfo, string> GetLocalizedNames (TReflectionObject reflectionObject)
+    {
+      ArgumentUtility.CheckNotNull ("reflectionObject", reflectionObject);
+
+      return GetLocalizedNamesFromCache (reflectionObject);
+    }
+
     private IReadOnlyDictionary<CultureInfo, string> GetLocalizedNamesFromCache (TReflectionObject reflectionObject)
     {
       var lazyAttributes = _localizedTypeNamesForTypeInformation.GetOrAdd (
           reflectionObject,
           new Lazy<IReadOnlyDictionary<CultureInfo, string>> (
-              () => GetLocalizedNames (reflectionObject),
+              () => GetLocalizedNamesInternal (reflectionObject),
               LazyThreadSafetyMode.ExecutionAndPublication));
 
       return lazyAttributes.Value;
     }
 
-    private IReadOnlyDictionary<CultureInfo, string> GetLocalizedNames (TReflectionObject reflectionObject)
+    private IReadOnlyDictionary<CultureInfo, string> GetLocalizedNamesInternal (TReflectionObject reflectionObject)
     {
       var attributes = GetLocalizedNamesForReflectionObject (reflectionObject);
 

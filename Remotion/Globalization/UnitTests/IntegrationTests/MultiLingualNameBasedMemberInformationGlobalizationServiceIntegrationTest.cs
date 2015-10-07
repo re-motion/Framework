@@ -443,6 +443,30 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       }
     }
 
+    [Test]
+    public void GetAvailablePropertyDisplayNames ()
+    {
+      var service = GetGlobalizationService();
+
+      var result = service.GetAvailablePropertyDisplayNames (
+          PropertyInfoAdapter.Create (typeof (ClassWithMultiLingualNameAttribute).GetProperty ("PropertyWithMultiLingualNameAttribute")),
+          TypeAdapter.Create (typeof (ClassWithResources)));
+
+      Assert.That (result.Values, Is.EquivalentTo (new [] { "de Property Name", "Invariant Property Name", "de-AT Property Name" }));
+    }
+
+    [Test]
+    public void GetAvailableTypeDisplayNames ()
+    {
+      var service = GetGlobalizationService();
+
+      var result = service.GetAvailableTypeDisplayNames (
+          TypeAdapter.Create (typeof (ClassWithMultiLingualNameAttribute)),
+          TypeAdapter.Create (typeof (ClassWithResources)));
+
+      Assert.That (result.Values, Is.EquivalentTo (new[] { "de Type Name", "Invariant Type Name", "en Type Name", "de-AT Type Name" }));
+    }
+
     private MultiLingualNameBasedMemberInformationGlobalizationService GetGlobalizationService ()
     {
       return new MultiLingualNameBasedMemberInformationGlobalizationService();

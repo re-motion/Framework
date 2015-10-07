@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Remotion.ServiceLocation;
@@ -72,6 +73,13 @@ namespace Remotion.Globalization.Implementation
       ArgumentUtility.CheckNotNull ("value", value);
 
       return _localizedNameForEnumerationProvider.TryGetLocalizedNameForCurrentUICulture (value, out result);
+    }
+
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (Enum value)
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+
+      return _localizedNameForEnumerationProvider.GetLocalizedNames (value);
     }
   }
 }

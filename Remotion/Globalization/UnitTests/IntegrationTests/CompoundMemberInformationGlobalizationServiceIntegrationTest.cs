@@ -61,5 +61,29 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         Assert.That (resourceValue, Is.EqualTo ("Resource-based Property ID"));
       }
     }
+
+    [Test]
+    public void GetAvailablePropertyDisplayNames ()
+    {
+      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+
+      var result = service.GetAvailablePropertyDisplayNames (
+          PropertyInfoAdapter.Create (typeof (ClassWithMultiLingualNameAttribute).GetProperty ("PropertyWithMultiLingualNameAttribute")),
+          TypeAdapter.Create (typeof (ClassWithResources)));
+
+      Assert.That (result.Values, Is.EquivalentTo (new [] { "Resource-based Property ID", "de-AT Property Name", "de Property Name" }));
+    }
+
+    [Test]
+    public void GetAvailableTypeDisplayNames ()
+    {
+      var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+
+      var result = service.GetAvailableTypeDisplayNames (
+          TypeAdapter.Create (typeof (ClassWithMultiLingualNameAttribute)),
+          TypeAdapter.Create (typeof (ClassWithResources)));
+
+      Assert.That (result.Values, Is.EquivalentTo (new[] { "Resource-based Type ID", "en Type Name", "de-AT Type Name", "de Type Name" }));
+    }
   }
 }

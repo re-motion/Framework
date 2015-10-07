@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 
 namespace Remotion.Globalization
 {
@@ -46,6 +48,11 @@ namespace Remotion.Globalization
     public string Name
     {
       get { return "Remotion.Globalization.NullResourceManager"; }
+    }
+
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailableStrings (string id)
+    {
+      return new Dictionary<CultureInfo, string>();
     }
 
     public bool IsNull

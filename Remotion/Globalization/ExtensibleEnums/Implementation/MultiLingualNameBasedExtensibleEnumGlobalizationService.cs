@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using Remotion.ExtensibleEnums;
 using Remotion.FunctionalProgramming;
@@ -70,13 +71,28 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
+      var definingMethod = GetDefiningMethodForExtensibleEnumValue(value);
+
+      return _localizedNameForEnumerationProvider.TryGetLocalizedNameForCurrentUICulture (definingMethod, out result);
+    }
+
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (IExtensibleEnum value)
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+
+      var definingMethod = GetDefiningMethodForExtensibleEnumValue(value);
+
+      return _localizedNameForEnumerationProvider.GetLocalizedNames (definingMethod);
+    }
+
+    private MethodInfo GetDefiningMethodForExtensibleEnumValue (IExtensibleEnum value)
+    {
       var extensibleEnumInfo = value.GetValueInfo();
       Assertion.IsNotNull (extensibleEnumInfo, "No value info found for extensible enum '{0}'.", value.ID);
 
       var definingMethod = extensibleEnumInfo.DefiningMethod;
       Assertion.IsNotNull (definingMethod, "No defining method found for extensible enum '{0}'.", value.ID);
-
-      return _localizedNameForEnumerationProvider.TryGetLocalizedNameForCurrentUICulture (definingMethod, out result);
+      return definingMethod;
     }
   }
 }

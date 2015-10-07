@@ -101,6 +101,16 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       Assert.That (service.ContainsEnumerationValueDisplayName ((EnumWithDescription) 100), Is.False);
     }
 
+    [Test]
+    public void GetAvailableEnumDisplayNames ()
+    {
+      var service = GetGlobalizationService();
+
+      var result = service.GetAvailableEnumDisplayNames (EnumWithMultiLingualNameAttribute.ValueWithLocalizedName);
+
+      Assert.That (result.Values, Is.EquivalentTo (new [] { "The en-US Name", "The Invariant Name" }));
+    }
+
     private MultiLingualNameBasedEnumerationGlobalizationService GetGlobalizationService ()
     {
       return new MultiLingualNameBasedEnumerationGlobalizationService();

@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using JetBrains.Annotations;
 
 namespace Remotion.Globalization
@@ -40,5 +42,11 @@ namespace Remotion.Globalization
 
     /// <summary>Returns the name of the resource manager.</summary>
     string Name { get; }
+
+    /// <summary>
+    /// Returns all string resources of the specified string resource.
+    /// </summary>
+    /// <param name="id">The ID of the resource to get. Must not be <see langword="null" />.</param>
+    IReadOnlyDictionary<CultureInfo, string> GetAvailableStrings ([NotNull] string id);
   }
 }

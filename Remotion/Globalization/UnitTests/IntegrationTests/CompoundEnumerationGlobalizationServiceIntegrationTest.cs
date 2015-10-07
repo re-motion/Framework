@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Globalization.UnitTests.TestDomain;
 using Remotion.ServiceLocation;
@@ -29,7 +30,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     public void TryGetTypeDisplayName ()
     {
       var service = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>();
-
+      
       string resourceValue;
       Assert.That (
           service.TryGetEnumerationValueDisplayName (
@@ -59,5 +60,27 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
           Is.False);
       Assert.That (resourceValue, Is.Null);
     }
+
+    [Test]
+    public void GetAvailableEnumDisplayNames ()
+    {
+      var service = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>();
+
+      var result = service.GetAvailableEnumDisplayNames (EnumWithResourcesAndAttribute.ValueWithAttribute).ToList();
+      Assert.That (result.Count, Is.EqualTo (1));
+      Assert.That (result[0].Value, Is.EqualTo ("Attribute"));
+
+      result = service.GetAvailableEnumDisplayNames (EnumWithResourcesAndAttribute.ValueWithResource).ToList();
+      Assert.That (result.Count, Is.EqualTo (1));
+      Assert.That (result[0].Value, Is.EqualTo ("Resource"));
+    
+      result = service.GetAvailableEnumDisplayNames (EnumWithResourcesAndAttribute.ValueWithResourceAndAttribute).ToList();
+      Assert.That (result.Count, Is.EqualTo (1));
+      Assert.That (result[0].Value, Is.EqualTo ("Resource"));
+
+      result = service.GetAvailableEnumDisplayNames (EnumWithResourcesAndAttribute.ValueWithoutResourceOrAttribute).ToList();
+      Assert.That (result.Any(), Is.False);
+    }
+
   }
 }

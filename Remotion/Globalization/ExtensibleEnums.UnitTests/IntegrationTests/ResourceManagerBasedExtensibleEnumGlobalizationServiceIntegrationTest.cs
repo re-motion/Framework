@@ -63,6 +63,16 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.IntegrationTests
       Assert.That (service.ContainsExtensibleEnumValueDisplayName (Color.Values.LightBlue ()), Is.False);
     }
 
+    [Test]
+    public void GetAvailableEnumDisplayNames ()
+    {
+      var service = GetGlobalizationService();
+
+      var result = service.GetAvailableEnumDisplayNames (Color.Values.Red ());
+
+      Assert.That (result.Values, Is.EquivalentTo (new [] { "Rot" }));
+    }
+
     private ResourceManagerBasedExtensibleEnumGlobalizationService GetGlobalizationService ()
     {
       return new ResourceManagerBasedExtensibleEnumGlobalizationService (SafeServiceLocator.Current.GetInstance<IGlobalizationService>());
