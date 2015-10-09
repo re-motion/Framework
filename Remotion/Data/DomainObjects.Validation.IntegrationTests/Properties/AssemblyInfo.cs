@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using System.Resources;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -24,5 +25,6 @@ using System.Reflection;
 //
 
 [assembly: AssemblyTitle("Integration Tests for Remotion DomainObjects Validation")]
+[assembly: NeutralResourcesLanguage ("en")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]

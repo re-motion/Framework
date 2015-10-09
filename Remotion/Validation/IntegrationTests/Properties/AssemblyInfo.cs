@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using System.Resources;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -23,5 +24,6 @@ using System.Reflection;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle ("Remotion Validation Library Integration Tests")]
+[assembly: NeutralResourcesLanguage ("en")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]
