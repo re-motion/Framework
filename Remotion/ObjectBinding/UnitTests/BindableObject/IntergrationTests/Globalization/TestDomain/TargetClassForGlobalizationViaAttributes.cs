@@ -28,22 +28,22 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
     {
     }
 
-    [MultiLingualName ("Property1 display name from TargetClassForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("Property1 display name from TargetClassForGlobalizationViaAttributes", "en")]
     public string Property1 { get; set; }
 
-    [MultiLingualName ("Property2 display name from TargetClassForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("Property2 display name from TargetClassForGlobalizationViaAttributes", "en")]
     public string Property2 { get; set; }
 
-    [MultiLingualName ("ImplicitImplementedProperty display name from TargetClassForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("ImplicitImplementedProperty display name from TargetClassForGlobalizationViaAttributes", "en")]
     public string ImplicitImplementedProperty { get; set; }
 
-    [MultiLingualName ("ExplicitImplementedProperty display name from TargetClassForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("ExplicitImplementedProperty display name from TargetClassForGlobalizationViaAttributes", "en")]
     string ITargetClassForGlobalizationViaAttributes.ExplicitImplementedProperty { get; set; }
 
-    [MultiLingualName ("PropertyForOverrideTarget display name from TargetClassForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("PropertyForOverrideTarget display name from TargetClassForGlobalizationViaAttributes", "en")]
     public virtual string PropertyForOverrideTarget { get; set; }
 
-    [MultiLingualName ("ImplicitImplementedPropertyForOverrideTarget display name from TargetClassForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("ImplicitImplementedPropertyForOverrideTarget display name from TargetClassForGlobalizationViaAttributes", "en")]
     public virtual string ImplicitImplementedPropertyForOverrideTarget { get; set; }
   }
 }

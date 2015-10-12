@@ -17,6 +17,7 @@
 
 using System;
 using System.Reflection;
+using System.Resources;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -44,3 +45,4 @@ using System.Reflection;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]
+[assembly: NeutralResourcesLanguage ("en")]

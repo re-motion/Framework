@@ -29,16 +29,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
       string ImplicitImplementedPropertyForOverrideTarget { get; set; }
     }
 
-    [MultiLingualName ("MixedProperty1 display name from MixinForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("MixedProperty1 display name from MixinForGlobalizationViaAttributes", "en")]
     public string MixedProperty1 { get; set; }
 
-    [MultiLingualName ("MixedProperty2 display name from MixinForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("MixedProperty2 display name from MixinForGlobalizationViaAttributes", "en")]
     public string MixedProperty2 { get; set; }
 
-    [MultiLingualName ("MixedExplicitProperty display name from MixinForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("MixedExplicitProperty display name from MixinForGlobalizationViaAttributes", "en")]
     string IMixinForGlobalizationViaAttributes.MixedExplicitProperty { get; set; }
 
-    [MultiLingualName ("PropertyForOverrideMixin display name from MixinForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("PropertyForOverrideMixin display name from MixinForGlobalizationViaAttributes", "en")]
     public virtual string PropertyForOverrideMixin { get; set; }
 
     [OverrideTarget]

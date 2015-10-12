@@ -22,10 +22,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
 {
   public class DerivedMixinForGlobalizationViaAttributes : MixinForGlobalizationViaAttributes, IDerivedMixinForGlobalizationViaAttributes
   {
-    [MultiLingualName ("MixedProperty3 display name from DerivedMixinForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("MixedProperty3 display name from DerivedMixinForGlobalizationViaAttributes", "en")]
     public string MixedProperty3 { get; set; }
 
-    [MultiLingualName ("MixedProperty4 display name from DerivedMixinForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("MixedProperty4 display name from DerivedMixinForGlobalizationViaAttributes", "en")]
     public string MixedProperty4 { get; set; }
   }
 }

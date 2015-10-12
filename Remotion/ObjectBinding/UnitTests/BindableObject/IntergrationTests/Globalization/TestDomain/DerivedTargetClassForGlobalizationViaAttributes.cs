@@ -27,10 +27,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
     {
     }
 
-    [MultiLingualName ("Property3 display name from DerivedTargetClassForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("Property3 display name from DerivedTargetClassForGlobalizationViaAttributes", "en")]
     public string Property3 { get; set; }
 
-    [MultiLingualName ("Property4 display name from DerivedTargetClassForGlobalizationViaAttributes", "")]
+    [MultiLingualName ("Property4 display name from DerivedTargetClassForGlobalizationViaAttributes", "en")]
     public string Property4 { get; set; }
   }
 }
