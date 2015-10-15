@@ -16,6 +16,9 @@
 // 
 using System;
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
