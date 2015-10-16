@@ -121,6 +121,6 @@
     <value>Unsaved data will be lost if you continue.</value>
   </data>
   <data name="Remotion.Web.UI.SmartPageImplementation.SmartPageInfo.StatusIsSubmittingMessage" xml:space="preserve">
-    <value>&lt;p&gt;This page is being reloaded.&lt;\/p&gt;&lt;p&gt;Please wait until the transmission has completed.&lt;\/p&gt;</value>
+    <value>&lt;p&gt;This page is being reloaded.&lt;/p&gt;&lt;p&gt;Please wait until the transmission has completed.&lt;/p&gt;</value>
   </data>
 </root>
