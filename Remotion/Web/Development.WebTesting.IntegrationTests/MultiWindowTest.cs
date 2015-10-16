@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Runtime.CompilerServices;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
@@ -76,6 +77,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [Explicit ("RM-6508 - Broken with Chrome 46")]
     public void TestMultiWindowActions ()
     {
       var home = Start();
