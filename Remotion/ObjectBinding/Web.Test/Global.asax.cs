@@ -19,6 +19,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Web;
+using Microsoft.Practices.ServiceLocation;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Logging;
 using Remotion.ObjectBinding;
@@ -26,6 +27,8 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain;
 using Remotion.ObjectBinding.Web;
+using Remotion.ServiceLocation;
+using Remotion.Web;
 using Remotion.Web.Configuration;
 
 namespace OBWTest
@@ -51,6 +54,10 @@ namespace OBWTest
 
     protected void Application_Start (Object sender, EventArgs e)
     {
+      var defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle<ResourceTheme> (()=> new ResourceTheme.NovaGray());
+      ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
+
       LogManager.Initialize();
 
       string objectPath = Server.MapPath ("~/objects");
