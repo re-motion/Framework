@@ -121,6 +121,6 @@
     <value>Wenn Sie fortfahren gehen nicht gespeicherte Daten verloren.</value>
   </data>
   <data name="Remotion.Web.UI.SmartPageImplementation.SmartPageInfo.StatusIsSubmittingMessage" xml:space="preserve">
-    <value>&lt;p&gt;Die Seite wird gerade neu geladen.&lt;\/p&gt;&lt;p&gt;Bitte warten Sie mit weiteren Eingaben bis die &amp;Uuml;bertragung abgeschlossen ist.&lt;\/p&gt;</value>
+    <value>&lt;p&gt;Die Seite wird gerade neu geladen.&lt;/p&gt;&lt;p&gt;Bitte warten Sie mit weiteren Eingaben bis die &amp;Uuml;bertragung abgeschlossen ist.&lt;/p&gt;</value>
   </data>
 </root>
