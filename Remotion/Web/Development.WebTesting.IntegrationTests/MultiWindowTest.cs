@@ -77,7 +77,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    [Explicit ("RM-6508 - Broken with Chrome 46")]
     public void TestMultiWindowActions ()
     {
       var home = Start();
