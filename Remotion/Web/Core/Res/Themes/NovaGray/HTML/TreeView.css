@@ -57,14 +57,13 @@ ul.treeViewNodeChildrenNoLines
 /* Applied to the node's head. */
 span.treeViewNodeHead
 {
-  vertical-align: middle;
 }
 
 /* Applied to the node's head if it is the selected node. */
 span.treeViewNodeHeadSelected
 {
   background-color: #4C69DE;
-  color: #fff;
+  color: White;
 }
 
 span.treeViewNodeHead a
@@ -75,7 +74,7 @@ span.treeViewNodeHead a
 
 span.treeViewNodeHeadSelected a
 {
-  color: #fff;
+  color: White;
   padding: 2px;
 }
 

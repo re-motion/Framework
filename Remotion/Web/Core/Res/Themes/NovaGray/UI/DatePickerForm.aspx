@@ -15,7 +15,7 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 <%@ Page Language="c#" AutoEventWireup="false" Inherits="Remotion.Web.UI.Controls.DatePickerPage"
-  EnableSessionState="True" %>
+  EnableSessionState="False" %>
 
 <%@ Register TagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

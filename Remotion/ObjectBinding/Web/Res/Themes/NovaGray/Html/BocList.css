@@ -166,7 +166,7 @@ table.bocListTable,
 div.bocListFakeTableHead table
 {
   width: 100%;
-  /*border-collapse: collapse;*/
+  border-collapse: collapse;
   border-style: none;
 }
 
@@ -331,7 +331,7 @@ td.bocListDataCell div span.DropDownMenuSelect a.DropDownMenuLabel:hover
 {
   padding: 0;
   border: none;
-  color: #000;
+  color: Black;
   background-color: Transparent;
 }
 
