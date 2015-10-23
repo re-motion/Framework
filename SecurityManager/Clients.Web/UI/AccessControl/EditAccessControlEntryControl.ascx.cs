@@ -27,6 +27,7 @@ using Remotion.Security;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Clients.Web.Classes.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
@@ -192,10 +193,15 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
         ToggleAccessControlEntryButton.Icon.AlternateText = resourceManager.GetString (ResourceIdentifier.CollapseAccessControlEntryButtonText);
         DetailsView.Visible = true;
       }
+
+      PermissionsPlaceHolder.SetRenderMethodDelegate (RenderPermissions);
     }
 
-    protected override void Render (HtmlTextWriter writer)
+    private void RenderPermissions (HtmlTextWriter writer, Control container)
     {
+      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull ("container", container);
+
       // Text is not needed before rendering phase. 
       // By moving the evaluation into the Render-method, UpdatePanel-postbacks will not cause a hit for unaffected rows.
       var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
@@ -209,7 +215,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
         control.NullDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionUndefinedText), accessTypeName);
       }
 
-      base.Render (writer);
+      container.SetRenderMethodDelegate (null);
+      container.RenderControl (writer);
     }
 
     public override void LoadValues (bool interim)
