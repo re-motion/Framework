@@ -33,7 +33,7 @@
     <Message Text="Selected Browser: '$(Browser)'" />
 
     <PropertyGroup>
-      <_variantName>$(Browser)_$(_platform)_$(ConfigurationID)</_variantName>
+      <_variantName>$(Browser)_$(Platform)_$(ConfigurationID)</_variantName>
       <_logsDirectory>$(LogDirectory)WebTesting\$(_variantName)\</_logsDirectory>
     </PropertyGroup>
     

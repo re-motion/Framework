@@ -3,8 +3,8 @@
 td.listMenuRow
 {
   font-size: 80%;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   vertical-align: middle;
   white-space: nowrap;
 }
@@ -39,4 +39,28 @@ span.listMenuItemDisabled a
   padding: 2px;
   color: gray;
   cursor: default;
+}
+
+span.listMenuItem a,
+span.listMenuItemDisabled a
+{
+  display: inline-block;
+}
+
+span.listMenuItem a img,
+span.listMenuItemDisabled a img
+{
+  vertical-align: middle;
+}
+
+span.listMenuItem a span,
+span.listMenuItemDisabled a span
+{
+  vertical-align: middle;
+}
+
+span.listMenuItem a img + span,
+span.listMenuItemDisabled a img + span
+{
+  padding-left: 0.25em;
 }

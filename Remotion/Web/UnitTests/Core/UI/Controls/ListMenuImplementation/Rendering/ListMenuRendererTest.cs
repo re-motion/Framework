@@ -221,7 +221,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     private void AssertText (int itemIndex, XmlNode parent, WebMenuItem item, int nodeIndex)
     {
       XmlNode a = GetAssertedItemLink (parent, itemIndex, nodeIndex, item.ItemID, item.Text);
-      a.AssertTextNode (item.Text, 0);
+      var span = a.GetAssertedChildElement ("span", 0);
+      span.AssertTextNode (item.Text, 0);
     }
 
     private void AssertIconAndText (int itemIndex, XmlNode td, WebMenuItem item, int nodeIndex)
@@ -229,7 +230,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       XmlNode a = GetAssertedItemLink (td, itemIndex, nodeIndex, item.ItemID, item.Text);
       AssertIcon (a);
 
-      a.AssertTextNode (HtmlHelper.WhiteSpace + item.Text, 1);
+      var span = a.GetAssertedChildElement ("span", 1);
+      span.AssertTextNode (item.Text, 0);
     }
 
     private void AssertIcon (XmlNode parent)
