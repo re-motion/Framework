@@ -170,11 +170,15 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       if (showIcon && menuItem.Icon.HasRenderingInformation)
       {
         menuItem.Icon.Render (renderingContext.Writer, renderingContext.Control);
-        if (showText)
-          renderingContext.Writer.Write (c_whiteSpace);
       }
+
       if (showText)
+      {
+        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
         renderingContext.Writer.Write (menuItem.Text); // Do not HTML encode.
+        renderingContext.Writer.RenderEndTag();
+      }
+
       command.RenderEnd (renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
     }
