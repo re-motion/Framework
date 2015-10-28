@@ -148,6 +148,38 @@ namespace Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests
       Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (typeof (ClassWithDifferentProperties).GetProperty ("Item", new[] { typeof (int) })));
     }
 
+    [Test]
+    public void GetBaseDefinition_ForOverriddenPropertyOnDerivedClassWithMissingSetter ()
+    {
+      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties> ("Object1");
+
+      Assert.That (propertyInfo.GetBaseDefinition (), Is.SameAs (GetPropertyInfo<ClassWithDifferentProperties> ("Object1")));
+    }
+
+    [Test]
+    public void GetBaseDefinition_ForOverriddenPropertyOnDerivedClassWithMissingGetter ()
+    {
+      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties> ("Object2");
+
+      Assert.That (propertyInfo.GetBaseDefinition (), Is.SameAs (GetPropertyInfo<ClassWithDifferentProperties> ("Object2")));
+    }
+
+    [Test]
+    public void GetBaseDefinition_ForOverriddenIndexedPropertyOnDerivedClassWithMissingSetter ()
+    {
+      PropertyInfo propertyInfo = typeof (DerivedClassWithDifferentProperties).GetProperty ("Item", new[] { typeof (object) });
+
+      Assert.That (propertyInfo.GetBaseDefinition (), Is.SameAs (typeof (ClassWithDifferentProperties).GetProperty ("Item", new[] { typeof (object) })));
+    }
+
+    [Test]
+    public void GetBaseDefinition_ForOverriddenIndexedPropertyOnDerivedClassWithMissingGetter ()
+    {
+      PropertyInfo propertyInfo = typeof (DerivedOfDerivedClassWithDifferentProperties).GetProperty ("Item", new[] { typeof (object) });
+
+      Assert.That (propertyInfo.GetBaseDefinition (), Is.SameAs (typeof (ClassWithDifferentProperties).GetProperty ("Item", new[] { typeof (object) })));
+    }
+
     private PropertyInfo GetPropertyInfo<T> (string property)
     {
       return GetPropertyInfo (typeof (T), property);
