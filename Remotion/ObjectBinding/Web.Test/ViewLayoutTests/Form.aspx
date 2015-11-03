@@ -27,30 +27,30 @@
       </TopControls>
       
       <View>
-    
-        <div style="position: absolute; left:0; width: 33%; top: 0; height: 100%;">
+      <div style="height: 100%; background-color: darkgrey">
+        <div style="position: absolute; left:0; width: 33.4%; top: 0; height: 100%; background-color: red">
           <remotion:SingleView ID="InnerSingleView" runat="server">
             <TopControls>
-            <div style="background: yellow">
+            <div style="background: orange">
             Top Controls
             </div>
             </TopControls>
             
             <View>
-            <div style="background: yellow">
+            <div style="background: goldenrod; height: 100%">
             View
             </div>
             </View>
             
             <BottomControls>
-            <div style="background: yellow">
+            <div style="background: orange">
             Bottom Controls
             </div>
            </BottomControls>
           </remotion:SingleView>
         </div>
         
-        <div style="position: absolute; right:0; width: 66%; top: 0; height: 100%;">
+        <div style="position: absolute; right:0; width: 66.4%; top: 0; height: 100%; background-color: red">
           <remotion:TabbedMultiView ID="InnerMultiView" runat="server">
             <TopControls>
             <div style="background: cyan">
@@ -60,7 +60,7 @@
             
             <Views>
               <remotion:TabView Title="First Tab">
-                <div style="background: cyan">
+                <div style="background: lightskyblue; height: 100%">
                 View
                 </div>
               </remotion:TabView>
@@ -73,7 +73,7 @@
            </BottomControls>
           </remotion:TabbedMultiView>
         </div>
-
+      </div>
       </View>
       
       <BottomControls>
