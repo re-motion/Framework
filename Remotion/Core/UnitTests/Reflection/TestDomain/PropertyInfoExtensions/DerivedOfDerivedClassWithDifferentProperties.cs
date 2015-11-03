@@ -16,6 +16,7 @@
 // 
 
 using System;
+using Remotion.Development.UnitTesting;
 
 namespace Remotion.UnitTests.Reflection.TestDomain.PropertyInfoExtensions
 {
@@ -39,6 +40,11 @@ namespace Remotion.UnitTests.Reflection.TestDomain.PropertyInfoExtensions
     {
       get { return 0; }
       set { }
+    }
+
+    public override int this [object p]
+    {
+      set { Dev.Null = value; }
     }
   }
 }

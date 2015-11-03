@@ -29,5 +29,13 @@ namespace Remotion.UnitTests.Reflection.TestDomain.PropertyInfoExtensions
 
     public abstract string OtherString { get; set; }
     public new abstract string String { get; set; }
+
+    public override object Object1 { get { return 1; } }
+    public override object Object2 { set { } }
+
+    public override int this [object p]
+    {
+      get { return 2; }
+    }
   }
 }

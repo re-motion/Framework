@@ -134,7 +134,8 @@ namespace Remotion.Web.UnitTests.Core.Resources
 
       Assert.That (
           builder.BuildAbsolutePath (GetType().Assembly, "part"),
-          Is.StringStarting ("/_%20_%C3%84_%c3%a4_/resourceRoot"));
+          Is.StringStarting ("/_%20_%C3%84_%c3%a4_/resourceRoot"),
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
     [Test]
@@ -144,7 +145,8 @@ namespace Remotion.Web.UnitTests.Core.Resources
 
       Assert.That (
           builder.BuildAbsolutePath (GetType().Assembly, "part"),
-          Is.StringStarting ("/_%20_%C3%84_%c3%a4_/resourceRoot"));
+          Is.StringStarting ("/_%20_%C3%84_%c3%a4_/resourceRoot"),
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
     [Test]
@@ -154,7 +156,8 @@ namespace Remotion.Web.UnitTests.Core.Resources
 
       Assert.That (
           builder.BuildAbsolutePath (GetType().Assembly, "part"),
-          Is.StringStarting ("/_%20_%C3%84_%c3%a4_/resourceRoot"));
+          Is.StringStarting ("/_%20_%C3%84_%c3%a4_/resourceRoot"),
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
     [Test]
@@ -164,7 +167,8 @@ namespace Remotion.Web.UnitTests.Core.Resources
 
       Assert.That (
           builder.BuildAbsolutePath (GetType().Assembly, "part"),
-          Is.StringStarting ("/_%20_%C3%84_%c3%a4_/resourceRoot"));
+          Is.StringStarting ("/_%20_%C3%84_%c3%a4_/resourceRoot"),
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
     [Test]

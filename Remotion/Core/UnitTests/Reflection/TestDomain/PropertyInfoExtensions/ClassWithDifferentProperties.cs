@@ -31,9 +31,27 @@ namespace Remotion.UnitTests.Reflection.TestDomain.PropertyInfoExtensions
     public abstract int this [int p] { get; set; }
     public abstract int this [string p] { get; set; }
 
+    public virtual int this [object p]
+    {
+      get { return 1; }
+      set { Dev.Null = value; }
+    }
+
     public virtual string String
     {
       get { return ""; }
+      set { Dev.Null = value; }
+    }
+
+    public virtual object Object1
+    {
+      get { return new object(); }
+      set { Dev.Null = value; }
+    }
+
+    public virtual object Object2
+    {
+      get { return new object (); }
       set { Dev.Null = value; }
     }
   }

@@ -61,7 +61,7 @@ namespace Remotion.Reflection
       var baseDefinition = Enumerable.Where (originalDeclaringType
               .GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly), p => p.Name == propertyInfo.Name)
           .Where (p => p.GetIndexParameters().Length == propertyInfo.GetIndexParameters().Length)
-          .Where (p => p.GetAccessors (true).All (a => accessorBaseDefinitions.Contains (a, MemberInfoEqualityComparer<MethodInfo>.Instance)))
+          .Where (p => p.GetAccessors (true).Any (a => accessorBaseDefinitions.Contains (a, MemberInfoEqualityComparer<MethodInfo>.Instance)))
           .SingleOrDefault (
               () => new AmbiguousMatchException (
                   String.Format (
