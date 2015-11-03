@@ -9,7 +9,7 @@ div.tabbedMultiView
   position: relative;
   margin: 0;
   padding: 0;
-  background-color: #4C69DE;
+  background-color: white;
 }
 
 div.tabbedMultiView > div.wrapper

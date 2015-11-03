@@ -7,7 +7,7 @@ div.singleView
   position: relative;
   margin: 0;
   padding: 0;
-  background-color: #EFEFF0;
+  background-color: white;
 }
 
 div.singleView > div.wrapper
