@@ -66,6 +66,12 @@ span.treeViewNodeHeadSelected
   color: HighlightText;
 }
 
+span.treeViewNodeHead,
+span.treeViewNodeHeadSelected
+{
+  vertical-align: middle;
+}
+
 span.treeViewNodeHead a
 {
   padding: 2px;
