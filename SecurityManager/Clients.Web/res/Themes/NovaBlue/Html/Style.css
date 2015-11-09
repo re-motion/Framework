@@ -125,9 +125,12 @@ td.accessControlEntriesButtons
 {
   text-align: right;
   vertical-align: top;
+  padding-right: 1em;
 }
 
-body.msie td.accessControlEntriesButtons
+body.msie7 td.accessControlEntriesButtons,
+body.msie8 td.accessControlEntriesButtons,
+body.msie9 td.accessControlEntriesButtons
 {
   padding-right: 0.66em;
 }
@@ -139,18 +142,19 @@ table.accessControlEntriesTable
   width: 100%;
 }
 
-/* body.mozilla is needed for IE11 native mode, but does not hurt in Mozilla Firefox */
+body table.accessControlEntriesTable
+{
+  width: calc(100% - 1em);
+}
+
 body.msie7 table.accessControlEntriesTable,
 body.msie8 table.accessControlEntriesTable,
-body.msie table.accessControlEntriesTable,
-body.mozilla table.accessControlEntriesTable
+body.msie9 table.accessControlEntriesTable
 {
   width: auto;
 }
 
-/* body.mozilla is needed for IE11 native mode, but does not hurt in Mozilla Firefox */
-body.msie table.accessControlEntriesTable,
-body.mozilla table.accessControlEntriesTable
+body.msie9 table.accessControlEntriesTable
 {
   margin-right: 0.66em;
 }
@@ -242,6 +246,7 @@ table.accessControlEntriesTable td.buttonCell
 table.accessControlEntryExpanded
 {
   background-color: White;
+  width: 100%
 }
 
 table.accessControlEntryExpanded td.formGridTopDataRow
