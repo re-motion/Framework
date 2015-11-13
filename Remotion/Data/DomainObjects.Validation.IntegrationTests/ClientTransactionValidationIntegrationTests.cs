@@ -65,9 +65,9 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
               Throws.TypeOf<DomainObjectFluentValidationException>().And.Message.Matches (
                   "One or more DomainObject contain inconsistent data:\r\n\r\n"
                   + "Object '.*':\r\n"
-                  + " -- 'LocalizedNumber' must be between 3 and 8 characters. You entered 2 characters.\r\n\r\n"
+                  + " -- Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Order.Number: 'LocalizedNumber' must be between 3 and 8 characters. You entered 2 characters.\r\n\r\n"
                   + "Object '.*':\r\n"
-                  + " -- 'LocalizedTitle' should not be equal to 'Chef1'."));
+                  + " -- Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.ICustomerIntroduced.Title: 'LocalizedTitle' should not be equal to 'Chef1'."));
         }
       }
     }
