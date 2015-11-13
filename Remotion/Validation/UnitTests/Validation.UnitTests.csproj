@@ -91,6 +91,7 @@
     <Compile Include="Implementation\DefaultLogContextTest.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatterTest.cs" />
     <Compile Include="Implementation\FluentValidationValidatorFormatterDecoratorTest.cs" />
+    <Compile Include="Implementation\ValidatorBuilderSerializationDecoratorTest.cs" />
     <Compile Include="Merging\DefaultPropertyValidatorExtractorTest.cs" />
     <Compile Include="Implementation\LoadFilteredValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\LogContextInfoTest.cs" />

@@ -81,6 +81,7 @@
     <Compile Include="Implementation\IValidatedTypeResolver.cs" />
     <Compile Include="Implementation\IValidatorFormatter.cs" />
     <Compile Include="Implementation\TypedValidatorDecorator.cs" />
+    <Compile Include="Implementation\ValidatorBuilderSerializationDecorator.cs" />
     <Compile Include="IValidatorBuilder.cs" />
     <Compile Include="IValidatorBuilder1.cs" />
     <Compile Include="Merging\PropertyValidatorExtractor.cs" />

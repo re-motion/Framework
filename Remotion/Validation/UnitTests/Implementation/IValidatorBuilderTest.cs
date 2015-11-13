@@ -30,22 +30,24 @@ namespace Remotion.Validation.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create ();
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IValidatorBuilder> ();
+      var factory = _serviceLocator.GetInstance<IValidatorBuilder>();
 
-      Assert.That (factory, Is.TypeOf (typeof (FluentValidatorBuilder)));
+      Assert.That (factory, Is.Not.Null);
+      Assert.That (factory, Is.TypeOf (typeof (ValidatorBuilderSerializationDecorator)));
+      Assert.That (((ValidatorBuilderSerializationDecorator) factory).InnerValidatorBuilder, Is.TypeOf (typeof (FluentValidatorBuilder)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<ICollectorValidator> ();
-      var factory2 = _serviceLocator.GetInstance<ICollectorValidator> ();
+      var factory1 = _serviceLocator.GetInstance<ICollectorValidator>();
+      var factory2 = _serviceLocator.GetInstance<ICollectorValidator>();
 
       Assert.That (factory1, Is.SameAs (factory2));
     }
