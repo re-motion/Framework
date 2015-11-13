@@ -76,6 +76,7 @@
     <Compile Include="DomainObjectAttributesBasedValidationPropertyRuleReflectorTests\DomainObjectMixin_DOABCPRRTest.cs" />
     <Compile Include="DomainObjectAttributesBasedValidationCollectorProviderTest.cs" />
     <Compile Include="DomainObjectAttributesBasedValidationPropertyRuleReflectorTests\DomainObject_DOABCPRRTest.cs" />
+    <Compile Include="DomainObjectFluentValidationExceptionTest.cs" />
     <Compile Include="IClientTransactionExtensionFactoryTest.cs" />
     <Compile Include="IValidationCollectorProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,6 +100,9 @@
     </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
+    </None>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

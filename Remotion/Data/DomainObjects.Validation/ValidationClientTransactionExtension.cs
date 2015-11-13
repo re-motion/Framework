@@ -21,7 +21,9 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using FluentValidation;
 using FluentValidation.Results;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Utilities;
 using Remotion.Validation;
@@ -58,32 +60,34 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public override void CommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
     {
-      //TODO RM-5906: add culture unit test
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull ("committedData", committedData);
+
+      var validatorCache = new Cache<Type, IValidator>();
+
+      List<ValidationResult> invariantCultureInvalidValidationResults;
       using (new CultureScope (CultureInfo.InvariantCulture, CultureInfo.InvariantCulture))
       {
-        var invalidValidationResults = new List<ValidationResult>();
-        foreach (var item in committedData)
-        {
-          if (item.DomainObjectState == StateType.Deleted)
-            continue;
-
-          Assertion.IsTrue (
-              item.DomainObjectState != StateType.NotLoadedYet && item.DomainObjectState != StateType.Invalid,
-              "No unloaded or invalid objects get this far.");
-
-          var validator = _validatorBuilder.BuildValidator (item.DomainObject.GetPublicDomainObjectType());
-          var validationResult = validator.Validate (item.DomainObject);
-
-          foreach (var validationFailure in validationResult.Errors.Where (vr => vr.GetValidatedInstance () == null))
-            validationFailure.SetValidatedInstance (item.DomainObject);
-
-          if (!validationResult.IsValid)
-            invalidValidationResults.Add (validationResult);
-        }
-
-        if (invalidValidationResults.Any())
-          throw new DomainObjectFluentValidationException (BuildErrorMesage (invalidValidationResults.SelectMany (vr => vr.Errors)));
+        invariantCultureInvalidValidationResults = Validate (committedData, validatorCache);
       }
+
+      if (!invariantCultureInvalidValidationResults.Any())
+        return;
+
+      var invalidDomainObjects =
+          invariantCultureInvalidValidationResults.SelectMany (vr => vr.Errors)
+              .Select (err => err.GetValidatedInstance())
+              .Distinct()
+              .Cast<DomainObject>();
+
+      var objectsToRevalidate = committedData.Where (cd => invalidDomainObjects.Contains (cd.DomainObject)).ToList().AsReadOnly();
+      var localizedInvalidValidationResults = Validate (objectsToRevalidate, validatorCache);
+      var invariantErrorMessage = BuildErrorMesage (invariantCultureInvalidValidationResults.SelectMany (vr => vr.Errors));
+
+      throw new DomainObjectFluentValidationException (
+          invalidDomainObjects,
+          localizedInvalidValidationResults.SelectMany (e => e.Errors),
+          invariantErrorMessage);
     }
 
     private static string BuildErrorMesage (IEnumerable<ValidationFailure> errors)
@@ -97,7 +101,7 @@ namespace Remotion.Data.DomainObjects.Validation
         errorMessage.AppendLine (
             string.Join (
                 "\r\n",
-                errorByValidatedObject.Select (t => " -- " + t.ErrorMessage)));
+                errorByValidatedObject.Select (t => " -- " + t.PropertyName + ": " + t.ErrorMessage)));
         errorMessage.AppendLine ();
       }
       return errorMessage.ToString ();
@@ -109,6 +113,36 @@ namespace Remotion.Data.DomainObjects.Validation
       if (domainObject != null)
         return string.Format ("Object '{0}' with ID '{1}':", domainObject.ID.ClassID, domainObject.ID.Value);
       return string.Format ("Validation error on object of Type '{0}':", validatedInstance.GetType ().FullName);
+    }
+
+    private List<ValidationResult> Validate (ReadOnlyCollection<PersistableData> domainObjectsToValidate, Cache<Type, IValidator> validatorCache)
+    {
+      ArgumentUtility.CheckNotNull ("domainObjectsToValidate", domainObjectsToValidate);
+
+      var invalidValidationResults = new List<ValidationResult> ();
+
+      foreach (var item in domainObjectsToValidate)
+      {
+        if (item.DomainObjectState == StateType.Deleted)
+          continue;
+
+        Assertion.IsTrue (
+            item.DomainObjectState != StateType.NotLoadedYet && item.DomainObjectState != StateType.Invalid,
+            "No unloaded or invalid objects get this far.");
+
+        var validator = validatorCache.GetOrCreateValue (
+            item.DomainObject.GetPublicDomainObjectType(),
+            type => _validatorBuilder.BuildValidator (type));
+        
+        var validationResult = validator.Validate (item.DomainObject);
+
+        foreach (var validationFailure in validationResult.Errors.Where (vr => vr.GetValidatedInstance () == null))
+          validationFailure.SetValidatedInstance (item.DomainObject);
+
+        if (!validationResult.IsValid)
+          invalidValidationResults.Add (validationResult);
+      }
+      return invalidValidationResults;
     }
   }
 }
