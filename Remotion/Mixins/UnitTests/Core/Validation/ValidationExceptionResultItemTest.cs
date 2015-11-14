@@ -24,6 +24,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
   [TestFixture]
   public class ValidationExceptionResultItemTest
   {
+    [Test]
     public void Serialization ()
     {
       var item = new ValidationExceptionResultItem ("special rule", new Exception ("Test"));
