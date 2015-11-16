@@ -38,17 +38,21 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     }
 
     private readonly BindableObjectGlobalizationService _bindableObjectGlobalizationService;
+    private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
 
     protected BindableDomainObjectMetadataFactory ()
-      : this (SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>())
+      : this (SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+              SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>())
     {
     }
 
-    public BindableDomainObjectMetadataFactory (BindableObjectGlobalizationService bindableObjectGlobalizationService)
+    public BindableDomainObjectMetadataFactory (BindableObjectGlobalizationService bindableObjectGlobalizationService, IDomainModelConstraintProvider domainModelConstraintProvider)
     {
       ArgumentUtility.CheckNotNull ("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
-
+      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
+      
       _bindableObjectGlobalizationService = bindableObjectGlobalizationService;
+      _domainModelConstraintProvider = domainModelConstraintProvider;
     }
 
     public virtual IClassReflector CreateClassReflector (Type targetType, BindableObjectProvider businessObjectProvider)
@@ -75,7 +79,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       return BindableDomainObjectPropertyReflector.Create (
           propertyInfo,
           businessObjectProvider,
-          new DomainModelConstraintProvider(),
+          _domainModelConstraintProvider,
           new BindableDomainObjectDefaultValueStrategy());
     }
   }

@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using FluentValidation.Validators;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 
@@ -56,26 +57,34 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _binaryProperty = typeof (TypeWithDomainObjectAttributes).GetProperty ("BinaryProperty");
       _collectionProperty = typeof (TypeWithDomainObjectAttributes).GetProperty ("CollectionProperty");
 
+      var domainModelConstraintProvider = new DomainModelConstraintProvider();
+
       _propertyWithoutAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _propertyWithoutAttribute,
-          _propertyWithoutAttribute);
+          _propertyWithoutAttribute,
+          domainModelConstraintProvider);
       _propertyWithMandatoryAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _propertyWithMandatoryAttribute,
-          _propertyWithMandatoryAttribute);
+          _propertyWithMandatoryAttribute,
+          domainModelConstraintProvider);
       _propertyWithNullableStringPropertyAttributeReflector =
           new DomainObjectAttributesBasedValidationPropertyRuleReflector (
               _propertyWithNullableStringPropertyAttribute,
-              _propertyWithNullableStringPropertyAttribute);
+              _propertyWithNullableStringPropertyAttribute,
+              domainModelConstraintProvider);
       _propertyWithMandatoryStringPropertyAttributeReflector =
           new DomainObjectAttributesBasedValidationPropertyRuleReflector (
               _propertyWithMandatoryStringPropertyAttribute,
-              _propertyWithMandatoryStringPropertyAttribute);
+              _propertyWithMandatoryStringPropertyAttribute,
+              domainModelConstraintProvider);
       _binaryPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _binaryProperty,
-          _binaryProperty);
+          _binaryProperty,
+          domainModelConstraintProvider);
       _collectionPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _collectionProperty,
-          _collectionProperty); 
+          _collectionProperty,
+          domainModelConstraintProvider); 
     }
 
     [Test]
