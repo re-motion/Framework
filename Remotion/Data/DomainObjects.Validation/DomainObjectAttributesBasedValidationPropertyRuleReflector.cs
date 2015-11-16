@@ -52,7 +52,10 @@ namespace Remotion.Data.DomainObjects.Validation
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
     private readonly IPropertyInformation _implementationPropertyInformation;
 
-    public DomainObjectAttributesBasedValidationPropertyRuleReflector (PropertyInfo interfaceProperty, PropertyInfo implementationProperty, IDomainModelConstraintProvider domainModelConstraintProvider)
+    public DomainObjectAttributesBasedValidationPropertyRuleReflector (
+        PropertyInfo interfaceProperty,
+        PropertyInfo implementationProperty,
+        IDomainModelConstraintProvider domainModelConstraintProvider)
     {
       ArgumentUtility.CheckNotNull ("interfaceProperty", interfaceProperty);
       ArgumentUtility.CheckNotNull ("implementationProperty", implementationProperty);
@@ -134,7 +137,8 @@ namespace Remotion.Data.DomainObjects.Validation
         yield return new LengthValidator (0, maxLength.Value);
       }
 
-      if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation) && typeof (IEnumerable).IsAssignableFrom (_implementationProperty.PropertyType)
+      if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation) 
+          && typeof (IEnumerable).IsAssignableFrom (_implementationProperty.PropertyType)
           && !ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
       {
         yield return new NotEmptyValidator (GetDefaultValue (_implementationProperty.PropertyType));
@@ -146,7 +150,7 @@ namespace Remotion.Data.DomainObjects.Validation
       if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation))
       {
         yield return new NotNullValidator();
-        if(ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
+        if (ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
           yield return new NotEmptyValidator (GetDefaultValue (_implementationProperty.PropertyType));
       }
     }

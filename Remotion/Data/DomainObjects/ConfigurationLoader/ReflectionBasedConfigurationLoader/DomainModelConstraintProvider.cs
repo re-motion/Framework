@@ -25,11 +25,13 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   /// The <see cref="DomainModelConstraintProvider"/> is the default implementation of <see cref="IDomainModelConstraintProvider"/>.
   /// It uses the mapping attributes to resolve the constraints.
   /// </summary>
-  [ImplementationFor(typeof(IDomainModelConstraintProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  /// <threadsafety static="true" instance="true" />
+  [ImplementationFor (typeof (IDomainModelConstraintProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class DomainModelConstraintProvider : IDomainModelConstraintProvider
   {
     public DomainModelConstraintProvider ()
-    {}
+    {
+    }
 
     public bool IsNullable (IPropertyInformation propertyInfo)
     {

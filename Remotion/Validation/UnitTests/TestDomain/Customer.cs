@@ -38,6 +38,8 @@ namespace Remotion.Validation.UnitTests.TestDomain
 
     public virtual ICollection<Address> ShippingAddresses { get; set; }
 
+    public string NonVirtualString { get; set; }
+
     public string Dummy ()
     {
       return "Dummy";
