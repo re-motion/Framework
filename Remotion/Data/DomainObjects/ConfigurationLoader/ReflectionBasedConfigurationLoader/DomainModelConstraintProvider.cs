@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -24,8 +25,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   /// The <see cref="DomainModelConstraintProvider"/> is the default implementation of <see cref="IDomainModelConstraintProvider"/>.
   /// It uses the mapping attributes to resolve the constraints.
   /// </summary>
+  /// <threadsafety static="true" instance="true" />
+  [ImplementationFor (typeof (IDomainModelConstraintProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class DomainModelConstraintProvider : IDomainModelConstraintProvider
   {
+    public DomainModelConstraintProvider ()
+    {
+    }
+
     public bool IsNullable (IPropertyInformation propertyInfo)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);

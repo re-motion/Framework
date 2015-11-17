@@ -147,6 +147,7 @@
     <Compile Include="TestDomain\IPerson.cs" />
     <Compile Include="TestDomain\Person.cs" />
     <Compile Include="TestDomain\SpecialCustomer1.cs" />
+    <Compile Include="TestDomain\SpecialCustomer2.cs" />
     <Compile Include="TestDomain\ValidationRules\MaxLengthMetaValidationRule.cs" />
     <Compile Include="TestDomain\ValidationRules\MaxValidatorCountRule.cs" />
     <Compile Include="TestHelpers\TypeUtility.cs" />

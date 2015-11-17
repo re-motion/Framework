@@ -215,6 +215,7 @@
     <Compile Include="DataManagement\SerializableFakes\SerializableLoadedObjectDataProviderFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableLoadedObjectDataRegistrationAgentFake.cs" />
     <Compile Include="IClientTransactionExtensionFactoryTest.cs" />
+    <Compile Include="IDomainModelConstraintProviderTest.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionExtensionFactoryTest.cs" />
     <Compile Include="Infrastructure\DomainObjectHandleAttributeTest.cs" />
     <Compile Include="Infrastructure\HierarchyManagement\ClientTransactionHierarchyTest.cs" />

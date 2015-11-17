@@ -22,7 +22,6 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
 {
   public class AddressValidationCollector1 : ComponentValidationCollector<Address>
   {
-
     public AddressValidationCollector1 ()
     {
       When (
@@ -40,7 +39,8 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
       Unless (
           a => a.Country == "Brunei",
           () => AddRule (a => a.PostalCode).NotNull());
-    }
 
+      AddRule (a => a.Street).Length (0, 25);
+    }
   }
 }

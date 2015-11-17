@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
             new ClassIDProvider(),
             SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
             new PropertyMetadataReflector(),
-            new DomainModelConstraintProvider(),
+            SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider> (),
             CreateDomainObjectCreator())
     {
     }

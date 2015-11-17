@@ -74,12 +74,14 @@
     <Compile Include="TestDomain\ComponentA\OrderItem.cs" />
     <Compile Include="TestDomain\ComponentA\Person.cs" />
     <Compile Include="TestDomain\ComponentA\Product.cs" />
+    <Compile Include="TestDomain\ComponentA\SpecialAddress.cs" />
     <Compile Include="TestDomain\ComponentA\ValidationCollectors\AddressValidationCollector1.cs" />
     <Compile Include="TestDomain\ComponentA\ValidationCollectors\CustomerValidationCollector1.cs" />
     <Compile Include="TestDomain\ComponentA\ValidationCollectors\EmployeeValidationCollector1.cs" />
     <Compile Include="TestDomain\ComponentA\ValidationCollectors\IPersonValidationCollector1.cs" />
     <Compile Include="TestDomain\ComponentA\ValidationCollectors\OrderValidationCollector1.cs" />
     <Compile Include="TestDomain\ComponentA\ValidationCollectors\PersonValidationCollector1.cs" />
+    <Compile Include="TestDomain\ComponentA\ValidationCollectors\SpecialAddressValidationCollector1.cs" />
     <Compile Include="TestDomain\ComponentB\SpecialCustomer1.cs" />
     <Compile Include="TestDomain\ComponentB\SpecialCustomer2.cs" />
     <Compile Include="TestDomain\ComponentB\ValidationCollectors\CustomerValidationCollector2.cs" />

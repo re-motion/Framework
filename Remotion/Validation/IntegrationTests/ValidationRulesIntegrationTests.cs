@@ -16,11 +16,11 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.IntegrationTests.TestDomain.ComponentA;
 using Remotion.Validation.IntegrationTests.TestDomain.ComponentB;
-using Remotion.Validation.MetaValidation;
 
 namespace Remotion.Validation.IntegrationTests
 {
@@ -54,7 +54,7 @@ namespace Remotion.Validation.IntegrationTests
       var address6 = new Address { Country = "Tschiputi" };
 
       var validator = ValidationBuilder.BuildValidator<Address>();
-
+    
       var result1 = validator.Validate (address1);
       Assert.That (result1.IsValid, Is.True);
 
@@ -78,6 +78,32 @@ namespace Remotion.Validation.IntegrationTests
       Assert.That (result6.IsValid, Is.False);
       Assert.That (result6.Errors.Count, Is.EqualTo (1));
       Assert.That (result6.Errors[0].ErrorMessage, Is.EqualTo ("'PostalCode' must not be empty."));
+    }
+
+    [Test]
+    public void BuildSpecialAddressValidator ()
+    {
+      // SpecialAddress defines Street property new so there should be no validation on Street length
+      // SpecialAddress overrides PostalCode so all validators of Address.PostalCode and SpecialAddress.PostalCode should be applied
+      var address1 = new SpecialAddress { City = "12345678901", Street = "123456789012345678901234567890", PostalCode = "1234" };
+      var address2 = new SpecialAddress { Street = "1234567890123456789012345", PostalCode = "1337", SpecialAddressIntroducedProperty = "Value"};
+      var address3 = new SpecialAddress { Street = "1234567890123456789012345", SpecialAddressIntroducedProperty = "Value" };
+
+      var validator = ValidationBuilder.BuildValidator<SpecialAddress> ();
+
+      var result1 = validator.Validate (address1);
+      Assert.That (result1.IsValid, Is.False);
+      Assert.That (result1.Errors.Count, Is.EqualTo (2));
+      Assert.That (result1.Errors.Select (e => e.ErrorMessage),
+      Is.EqualTo (new[] { "'SpecialAddressIntroducedProperty' must not be empty.", "'PostalCode' is not in the correct format."}));
+
+      var result2 = validator.Validate (address2);
+      Assert.That (result2.IsValid, Is.True);
+
+      var result3 = validator.Validate (address3);
+      Assert.That (result3.IsValid, Is.False);
+      Assert.That (result3.Errors.Count, Is.EqualTo (1));
+      Assert.That (result3.Errors[0].ErrorMessage, Is.EqualTo ("'PostalCode' must not be empty."));
     }
 
     [Test]

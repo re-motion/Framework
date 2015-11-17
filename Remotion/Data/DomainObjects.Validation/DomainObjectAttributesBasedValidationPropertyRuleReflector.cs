@@ -25,7 +25,7 @@ using FluentValidation.Validators;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Mixins;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Utilities.ReSharperAnnotations;
 using Remotion.Validation.Implementation;
@@ -35,9 +35,8 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
-  // TODO RM-5906: Refactor to ask the mapping directly: ClassDefintion.ResolveProperty() ?? ClassDefintion.ResolveRelationEndPoint()
   /// <summary>
-  /// Create <see cref="IPropertyValidator"/>s based on the <see cref="ILengthConstrainedPropertyAttribute"/> and the <see cref="INullablePropertyAttribute"/>.
+  /// Create <see cref="IPropertyValidator"/>s based on the <see cref="IDomainModelConstraintProvider.GetMaxLength"/> and the <see cref="IDomainModelConstraintProvider.IsNullable"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
   public class DomainObjectAttributesBasedValidationPropertyRuleReflector : IAttributesBasedValidationPropertyRuleReflector
@@ -50,11 +49,18 @@ namespace Remotion.Data.DomainObjects.Validation
 
     private readonly PropertyInfo _interfaceProperty;
     private readonly PropertyInfo _implementationProperty;
+    private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
+    private readonly IPropertyInformation _implementationPropertyInformation;
 
-    public DomainObjectAttributesBasedValidationPropertyRuleReflector (PropertyInfo interfaceProperty, PropertyInfo implementationProperty)
+    public DomainObjectAttributesBasedValidationPropertyRuleReflector (
+        PropertyInfo interfaceProperty,
+        PropertyInfo implementationProperty,
+        IDomainModelConstraintProvider domainModelConstraintProvider)
     {
       ArgumentUtility.CheckNotNull ("interfaceProperty", interfaceProperty);
       ArgumentUtility.CheckNotNull ("implementationProperty", implementationProperty);
+      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
+      
       if (Mixins.Utilities.ReflectionUtility.IsMixinType (implementationProperty.DeclaringType) && !interfaceProperty.DeclaringType.IsInterface)
       {
         throw new ArgumentException (
@@ -67,6 +73,8 @@ namespace Remotion.Data.DomainObjects.Validation
 
       _interfaceProperty = interfaceProperty;
       _implementationProperty = implementationProperty;
+      _domainModelConstraintProvider = domainModelConstraintProvider;
+      _implementationPropertyInformation = PropertyInfoAdapter.Create (_implementationProperty);
     }
 
     public PropertyInfo ValidatedProperty
@@ -123,15 +131,14 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public IEnumerable<IPropertyValidator> GetAddingPropertyValidators ()
     {
-      var lengthConstraintAttribute = AttributeUtility.GetCustomAttribute<ILengthConstrainedPropertyAttribute> (_implementationProperty, false);
-      if (lengthConstraintAttribute != null)
+      var maxLength = _domainModelConstraintProvider.GetMaxLength (_implementationPropertyInformation);
+      if (maxLength.HasValue)
       {
-        if (lengthConstraintAttribute.MaximumLength.HasValue)
-          yield return new LengthValidator (0, lengthConstraintAttribute.MaximumLength.Value);
+        yield return new LengthValidator (0, maxLength.Value);
       }
 
-      var nullableAttribute = AttributeUtility.GetCustomAttribute<INullablePropertyAttribute> (_implementationProperty, false);
-      if (nullableAttribute != null && !nullableAttribute.IsNullable && typeof (IEnumerable).IsAssignableFrom (_implementationProperty.PropertyType)
+      if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation) 
+          && typeof (IEnumerable).IsAssignableFrom (_implementationProperty.PropertyType)
           && !ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
       {
         yield return new NotEmptyValidator (GetDefaultValue (_implementationProperty.PropertyType));
@@ -140,11 +147,10 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public IEnumerable<IPropertyValidator> GetHardConstraintPropertyValidators ()
     {
-      var nullableAttribute = AttributeUtility.GetCustomAttribute<INullablePropertyAttribute> (_implementationProperty, false);
-      if (nullableAttribute != null && !nullableAttribute.IsNullable)
+      if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation))
       {
         yield return new NotNullValidator();
-        if(ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
+        if (ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
           yield return new NotEmptyValidator (GetDefaultValue (_implementationProperty.PropertyType));
       }
     }
@@ -156,9 +162,9 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public IEnumerable<IMetaValidationRule> GetMetaValidationRules ()
     {
-      var lengthConstraintAttribute = AttributeUtility.GetCustomAttribute<ILengthConstrainedPropertyAttribute> (_implementationProperty, false);
-      if (lengthConstraintAttribute != null && lengthConstraintAttribute.MaximumLength.HasValue)
-        yield return new RemotionMaxLengthMetaValidationRule (_implementationProperty, lengthConstraintAttribute.MaximumLength.Value);
+      var maxLength = _domainModelConstraintProvider.GetMaxLength (_implementationPropertyInformation);
+      if (maxLength.HasValue)
+        yield return new RemotionMaxLengthMetaValidationRule (_implementationProperty, maxLength.Value);
     }
 
     private object GetDefaultValue (Type type)

@@ -18,6 +18,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
 using Remotion.Mixins;
 
@@ -31,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _provider = new DomainObjectAttributesBasedValidationCollectorProvider();
+      _provider = new DomainObjectAttributesBasedValidationCollectorProvider(new DomainModelConstraintProvider());
     }
 
     [Test]
