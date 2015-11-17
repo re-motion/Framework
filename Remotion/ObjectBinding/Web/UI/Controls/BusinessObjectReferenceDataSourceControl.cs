@@ -21,6 +21,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Web.UI.Controls;
 
@@ -38,7 +39,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class BusinessObjectReferenceDataSourceControl :
       BusinessObjectBoundEditableWebControl,
       IBusinessObjectDataSourceControl,
-      IBusinessObjectReferenceDataSource
+      IBusinessObjectReferenceDataSource,
+      IControlWithResourceManager
   {
     private class InternalBusinessObjectReferenceDataSource : BusinessObjectReferenceDataSourceBase
     {
@@ -387,6 +389,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _internalDataSource.Unregister (control);
 
       base.OnUnload (e);
+    }
+
+    public IResourceManager GetResourceManager ()
+    {
+      return GetResourceManager (typeof (BusinessObjectReferenceDataSourceControl));
     }
   }
 }

@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// <summary>
   /// Exposes properties relevant to rendering controls that implement <see cref="IBocReferenceValue"/> or <see cref="IBocAutoCompleteReferenceValue"/>.
   /// </summary>
-  public interface IBocReferenceValueBase : IBusinessObjectBoundEditableWebControl, IBocRenderableControl
+  public interface IBocReferenceValueBase : IBusinessObjectBoundEditableWebControl, IBocRenderableControl, IControlWithResourceManager
   {
     bool? HasValueEmbeddedInsideOptionsMenu { get; }
     bool HasOptionsMenu { get; }
@@ -57,7 +57,5 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     string NullValueString { get; }
     string BusinessObjectUniqueIdentifier { get; }
-
-    IResourceManager GetResourceManager ();
   }
 }

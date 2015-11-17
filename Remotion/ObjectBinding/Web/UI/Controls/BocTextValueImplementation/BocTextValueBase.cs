@@ -283,7 +283,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     }
 
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
-    protected abstract IResourceManager GetResourceManager ();
+    public abstract IResourceManager GetResourceManager ();
 
     string IBocTextValueBase.GetValueName ()
     {

@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Web.UI.WebControls;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 {
-  public interface IBocBooleanValueBase : IBusinessObjectBoundEditableWebControl, IBocRenderableControl
+  public interface IBocBooleanValueBase : IBusinessObjectBoundEditableWebControl, IBocRenderableControl, IControlWithResourceManager
   {
     /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="true"/>. </summary>
     /// <value> 

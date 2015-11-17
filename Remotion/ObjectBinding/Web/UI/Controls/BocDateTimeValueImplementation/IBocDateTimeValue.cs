@@ -16,11 +16,12 @@
 // 
 using System;
 using System.Web.UI.WebControls;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation
 {
-  public interface IBocDateTimeValue : IBusinessObjectBoundEditableWebControl, IBocRenderableControl
+  public interface IBocDateTimeValue : IBusinessObjectBoundEditableWebControl, IBocRenderableControl, IControlWithResourceManager
   {
     new DateTime? Value { get; }
 

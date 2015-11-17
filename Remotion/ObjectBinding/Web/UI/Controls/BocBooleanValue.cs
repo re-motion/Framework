@@ -25,6 +25,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
 using Remotion.Utilities;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -408,12 +409,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
-    protected virtual IResourceManager GetResourceManager ()
+    public override IResourceManager GetResourceManager ()
     {
       return GetResourceManager (typeof (ResourceIdentifier));
     }
 
-    IResourceManager IBocBooleanValue.GetResourceManager ()
+    IResourceManager IControlWithResourceManager.GetResourceManager ()
     {
       return GetResourceManager ();
     }

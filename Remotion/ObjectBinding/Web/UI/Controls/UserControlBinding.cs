@@ -20,13 +20,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.Globalization;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary>
   /// Control that allows a User Control to be bound to a business object data source and property.
   /// </summary>
-  public class UserControlBinding : BusinessObjectBoundEditableWebControl
+  public class UserControlBinding : BusinessObjectBoundEditableWebControl, IControlWithResourceManager
   {
     private string _userControlPath = string.Empty;
     private IDataEditControl _userControl;
@@ -189,6 +191,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override Type[] SupportedPropertyInterfaces
     {
       get { return new Type[] { typeof (IBusinessObjectReferenceProperty) }; }
+    }
+
+    public IResourceManager GetResourceManager ()
+    {
+      return GetResourceManager (typeof (UserControlBinding));
     }
   }
 }

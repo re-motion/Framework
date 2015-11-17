@@ -28,6 +28,7 @@ using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Infrastructure;
@@ -877,11 +878,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       base.LoadResources (resourceManager, globalizationService);
 
-      var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
-      if (!string.IsNullOrEmpty (key))
-        NullItemErrorMessage = resourceManager.GetString (key);
+      //var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
+      //if (!string.IsNullOrEmpty (key))
+      //  NullItemErrorMessage = resourceManager.GetString (key);
   
-      key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle);
+      var key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle);
       if (! string.IsNullOrEmpty (key))
         OptionsTitle = resourceManager.GetString (key);
 
@@ -1068,7 +1069,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return c_nullIdentifier; }
     }
 
-    IResourceManager IBocReferenceValueBase.GetResourceManager ()
+    IResourceManager IControlWithResourceManager.GetResourceManager ()
     {
       return GetResourceManager();
     }

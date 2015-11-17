@@ -16,13 +16,17 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -188,7 +192,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       base.LoadResources (resourceManager, globalizationService);
 
-      var key = ResourceManagerUtility.GetGlobalResourceKey (Select);
+      var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
+      if (!string.IsNullOrEmpty (key))
+        NullItemErrorMessage = resourceManager.GetString (key);
+
+      key = ResourceManagerUtility.GetGlobalResourceKey (Select);
       if (! string.IsNullOrEmpty (key))
         Select = resourceManager.GetString (key);
     }

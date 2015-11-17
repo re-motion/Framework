@@ -1483,7 +1483,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return GetResourceManager (typeof (ResourceIdentifier));
     }
 
-    IResourceManager IBocList.GetResourceManager ()
+    IResourceManager IControlWithResourceManager.GetResourceManager ()
     {
       return GetResourceManager();
     }

@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,21 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Web.UI.WebControls;
-using Remotion.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation
+using System;
+using Remotion.Globalization;
+
+namespace Remotion.Web.UI.Controls
 {
-  public interface IBocEnumValue : IBusinessObjectBoundEditableWebControl, IBocRenderableControl, IControlWithResourceManager
+  public interface IControlWithResourceManager
   {
-    IEnumerationValueInfo EnumerationValueInfo { get; }
-    Style CommonStyle { get; }
-    Style LabelStyle { get; }
-    ListControlStyle ListControlStyle { get; }
-    string NullIdentifier { get; }
-    IEnumerationValueInfo[] GetEnabledValues();
-    string GetNullItemText ();
-    string GetValueName ();
+    /// <summary>
+    /// Gets the <see cref="IResourceManager"/> for the current control instance.
+    /// </summary>
+    IResourceManager GetResourceManager ();
   }
 }

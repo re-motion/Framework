@@ -31,7 +31,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
   public interface IBocList
       : IBusinessObjectBoundEditableWebControl,
         IBocRenderableControl,
-        IBocMenuItemContainer
+        IBocMenuItemContainer,
+        IControlWithResourceManager
+
   {
     new bool IsReadOnly { get; }
 
@@ -159,7 +161,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     string GetListItemCommandArgument (int columnIndex, BocListRow row);
     string GetRowEditCommandArgument (BocListRow row, BocList.RowEditModeCommand command);
-    IResourceManager GetResourceManager ();
     BocListRowRenderingContext[] GetRowsToRender ();
     void OnDataRowRendering (BocListDataRowRenderEventArgs args);
 
