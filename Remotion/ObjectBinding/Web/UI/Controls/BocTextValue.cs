@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -80,9 +81,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string _format;
     private string _text = string.Empty;
     private string _errorMessage;
-    private RequiredFieldValidator _requiredFieldValidator;
-    private LengthValidator _lengthValidator;
-    private BaseValidator _typeValidator;
+    private ReadOnlyCollection<BaseValidator> _validators;
 
     public BocTextValue ()
     {
@@ -428,12 +427,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        if (_requiredFieldValidator != null)
-          _requiredFieldValidator.ErrorMessage = _errorMessage;
-        if (_lengthValidator != null)
-          _lengthValidator.ErrorMessage = _errorMessage;
-        if (_typeValidator != null)
-          _typeValidator.ErrorMessage = _errorMessage;
+
+        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
+        UpdateValidtaorErrorMessages<LengthValidator> (_errorMessage);
+
+        UpdateValidtaorErrorMessages<DateTimeValidator> (_errorMessage);
+        UpdateValidtaorErrorMessages<CompareValidator> (_errorMessage);
+        UpdateValidtaorErrorMessages<NumericValidator> (_errorMessage);
       }
     }
 
@@ -556,32 +556,32 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocTextValueValidatorFactory>();
-      var validators = validatorFactory.CreateValidators (this,isReadOnly).ToList();
+      _validators = validatorFactory.CreateValidators (this,isReadOnly).ToList().AsReadOnly();
 
-      _requiredFieldValidator = validators.OfType<RequiredFieldValidator>().FirstOrDefault();
-      _lengthValidator = validators.OfType<LengthValidator>().FirstOrDefault();
-
-      _typeValidator = validators.OfType<DateTimeValidator>().FirstOrDefault();
-      if (_typeValidator == null)
-        _typeValidator = validators.OfType<CompareValidator>().FirstOrDefault();
-      if (_typeValidator == null)
-        _typeValidator = validators.OfType<NumericValidator>().FirstOrDefault();
-      
       OverrideValidatorErrorMessages();
 
-      return validators;
+      return _validators;
     }
 
     private void OverrideValidatorErrorMessages()
     {
-      if (!string.IsNullOrEmpty (_errorMessage) && _requiredFieldValidator != null)
-        _requiredFieldValidator.ErrorMessage = _errorMessage;
 
-      if (!string.IsNullOrEmpty (_errorMessage) && _lengthValidator != null)
-        _lengthValidator.ErrorMessage = _errorMessage;
+      if (string.IsNullOrEmpty (_errorMessage))
+        return;
 
-      if (!string.IsNullOrEmpty (_errorMessage) && _typeValidator != null)
-        _typeValidator.ErrorMessage = _errorMessage;
+      UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
+      UpdateValidtaorErrorMessages<LengthValidator> (_errorMessage);
+
+      UpdateValidtaorErrorMessages<DateTimeValidator> (_errorMessage);
+      UpdateValidtaorErrorMessages<CompareValidator> (_errorMessage);
+      UpdateValidtaorErrorMessages<NumericValidator> (_errorMessage);
+    }
+
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    {
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
     }
 
     /// <summary> The <see cref="BocTextValue"/> supports only scalar properties. </summary>

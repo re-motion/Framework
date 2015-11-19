@@ -16,10 +16,17 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Web.UI.WebControls;
+using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Configuration;
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
+using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -516,6 +523,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void GetTextValueName ()
     {
       Assert.That (((IBocBooleanValue)_bocBooleanValue).GetDisplayValueName (), Is.EqualTo ("NamingContainer_BocBooleanValue_DisplayValue"));
+    }
+
+    [Test]
+    public void CreateValidators_UsesValidatorFactory ()
+    {
+      var control = new BocBooleanValue();
+      var serviceLocatorMock = MockRepository.GenerateMock<IServiceLocator>();
+      var factoryMock = MockRepository.GenerateMock<IBocBooleanValueValidatorFactory>();
+      serviceLocatorMock.Expect (m => m.GetInstance<IBocBooleanValueValidatorFactory>()).Return (factoryMock);
+      factoryMock.Expect (f => f.CreateValidators (control, false)).Return (new List<BaseValidator>());
+
+      using (new ServiceLocatorScope (serviceLocatorMock))
+      {
+        control.CreateValidators();
+      }
+
+      factoryMock.VerifyAllExpectations();
+      serviceLocatorMock.VerifyAllExpectations();
     }
   }
 }

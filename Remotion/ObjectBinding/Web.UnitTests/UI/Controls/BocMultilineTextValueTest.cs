@@ -16,10 +16,17 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Web.UI.WebControls;
+using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Configuration;
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
+using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -105,7 +112,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       string[] actual = _bocMultilineTextValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (((IBocTextValueBase)_bocMultilineTextValue).GetValueName()));
+      Assert.That (actual[0], Is.EqualTo (((IBocTextValueBase) _bocMultilineTextValue).GetValueName()));
     }
 
     [Test]
@@ -335,6 +342,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       Assert.That (result, Is.True);
       Assert.That (_businessObject.StringArray, Is.EqualTo (new[] { "Foo", "Bar" }));
       Assert.That (_bocMultilineTextValue.IsDirty, Is.False);
+    }
+
+    [Test]
+    public void CreateValidators_UsesValidatorFactory ()
+    {
+      var control = new BocMultilineTextValue();
+      var serviceLocatorMock = MockRepository.GenerateMock<IServiceLocator>();
+      var factoryMock = MockRepository.GenerateMock<IBocMultilineTextValueValidatorFactory>();
+      serviceLocatorMock.Expect (m => m.GetInstance<IBocMultilineTextValueValidatorFactory>()).Return (factoryMock);
+      factoryMock.Expect (f => f.CreateValidators (control, false)).Return (new List<BaseValidator>());
+
+      using (new ServiceLocatorScope (serviceLocatorMock))
+      {
+        control.CreateValidators();
+      }
+
+      factoryMock.VerifyAllExpectations();
+      serviceLocatorMock.VerifyAllExpectations();
     }
   }
 }

@@ -16,8 +16,15 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Web.UI.WebControls;
+using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
+using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -202,7 +209,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void LoadValueAndInterimFalseWithDataSourceNull ()
     {
-      TypeWithReference[] value = new[] { TypeWithReference.Create (), TypeWithReference.Create () };
+      TypeWithReference[] value = new[] { TypeWithReference.Create(), TypeWithReference.Create() };
       _bocList.DataSource = null;
       _bocList.Property = _propertyReferenceList;
       _bocList.Value = value;
@@ -216,7 +223,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void LoadValueAndInterimFalseWithPropertyNull ()
     {
-      TypeWithReference[] value = new[] { TypeWithReference.Create (), TypeWithReference.Create () };
+      TypeWithReference[] value = new[] { TypeWithReference.Create(), TypeWithReference.Create() };
       _bocList.DataSource = _dataSource;
       _bocList.Property = null;
       _bocList.Value = value;
@@ -233,7 +240,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _dataSource.BusinessObject = null;
       _bocList.DataSource = _dataSource;
       _bocList.Property = _propertyReferenceList;
-      _bocList.Value = new[] { TypeWithReference.Create (), TypeWithReference.Create () };
+      _bocList.Value = new[] { TypeWithReference.Create(), TypeWithReference.Create() };
       _bocList.IsDirty = true;
 
       _bocList.LoadValue (false);
@@ -247,7 +254,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _dataSource.BusinessObject = null;
       _bocList.DataSource = _dataSource;
       _bocList.Property = _propertyReferenceList;
-      _bocList.Value = new[] { TypeWithReference.Create (), TypeWithReference.Create () };
+      _bocList.Value = new[] { TypeWithReference.Create(), TypeWithReference.Create() };
       _bocList.IsDirty = true;
 
       _bocList.LoadValue (true);
@@ -454,6 +461,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var result = _bocList.SaveValue (false);
       Assert.That (result, Is.True);
       Assert.That (_bocList.IsListEditModeActive, Is.False);
+    }
+
+    [Test]
+    public void CreateValidators_UsesValidatorFactory ()
+    {
+      var control = new BocList();
+      var serviceLocatorMock = MockRepository.GenerateMock<IServiceLocator>();
+      var factoryMock = MockRepository.GenerateMock<IBocListValidatorFactory>();
+      serviceLocatorMock.Expect (m => m.GetInstance<IBocListValidatorFactory>()).Return (factoryMock);
+      factoryMock.Expect (f => f.CreateValidators (control, false)).Return (new List<BaseValidator>());
+
+      using (new ServiceLocatorScope (serviceLocatorMock))
+      {
+        control.CreateValidators();
+      }
+
+      factoryMock.VerifyAllExpectations();
+      serviceLocatorMock.VerifyAllExpectations();
     }
   }
 }

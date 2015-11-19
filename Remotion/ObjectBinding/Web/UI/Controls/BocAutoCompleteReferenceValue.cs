@@ -14,8 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
@@ -59,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private const string c_hiddenFieldIDPostfix = "_KeyValue";
 
     // types
-    
+
     /// <summary> A list of control specific resources. </summary>
     /// <remarks> 
     ///   Resources will be accessed using 
@@ -72,8 +74,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       /// <summary> Label displayed in the OptionsMenu. </summary>
       OptionsTitle,
+
       /// <summary> The validation error message displayed when the null item is selected. </summary>
       NullItemErrorMessage,
+
       /// <summary> The validation error message displayed when the display name does not identify a valid item. </summary>
       InvalidItemErrorMessage,
     }
@@ -105,10 +109,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private int _dropDownDisplayDelay = 1000;
     private int _dropDownRefreshDelay = 2000;
     private int _selectionUpdateDelay = 200;
-    private BocAutoCompleteReferenceValueInvalidDisplayNameValidator _invalidDisplayNameValidator;
     private SearchAvailableObjectWebServiceContext _searchServiceContextFromPreviousLifeCycle;
-    private RequiredFieldValidator _requiredFieldValidator;
+
     private string _nullItemErrorMessage;
+    private ReadOnlyCollection<BaseValidator> _validators;
     // construction and disposing
 
     public BocAutoCompleteReferenceValue ()
@@ -133,8 +137,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _nullItemErrorMessage = value;
-        if (_requiredFieldValidator != null)
-          _requiredFieldValidator.ErrorMessage = _nullItemErrorMessage;
+
+        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_nullItemErrorMessage);
       }
     }
 
@@ -233,10 +237,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      EvaluateWaiConformity ();
+      EvaluateWaiConformity();
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render (CreateRenderingContext (writer));
     }
 
     [Obsolete ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)", true)]
@@ -260,30 +264,33 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory> ();
-      var validators = validatorFactory.CreateValidators (this, isReadOnly).ToList ();
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory>();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList ().AsReadOnly ();
 
-      _invalidDisplayNameValidator = validators.OfType<BocAutoCompleteReferenceValueInvalidDisplayNameValidator> ().FirstOrDefault ();
-      _requiredFieldValidator = validators.OfType<RequiredFieldValidator> ().FirstOrDefault ();
+      OverrideValidatorErrorMessages();
 
-      OverrideValidatorErrorMessages ();
-
-      return validators;
+      return _validators;
     }
 
-
-    private void OverrideValidatorErrorMessages()
+    private void OverrideValidatorErrorMessages ()
     {
-      if (!string.IsNullOrEmpty (InvalidItemErrorMessage) && _invalidDisplayNameValidator != null)
-        _invalidDisplayNameValidator.ErrorMessage = InvalidItemErrorMessage;
+      if (!string.IsNullOrEmpty (InvalidItemErrorMessage))
+        UpdateValidtaorErrorMessages<BocAutoCompleteReferenceValueInvalidDisplayNameValidator> (InvalidItemErrorMessage);
 
-      if (!string.IsNullOrEmpty (NullItemErrorMessage) && _requiredFieldValidator != null)
-        _requiredFieldValidator.ErrorMessage = NullItemErrorMessage;
+      if (!string.IsNullOrEmpty (NullItemErrorMessage))
+        UpdateValidtaorErrorMessages<RequiredFieldValidator> (NullItemErrorMessage);
+    }
+
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    {
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
     }
 
     protected virtual IBocAutoCompleteReferenceValueRenderer CreateRenderer ()
     {
-      return ServiceLocator.GetInstance<IBocAutoCompleteReferenceValueRenderer> ();
+      return ServiceLocator.GetInstance<IBocAutoCompleteReferenceValueRenderer>();
     }
 
     protected virtual BocAutoCompleteReferenceValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
@@ -418,7 +425,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (InternalValue == null)
         _value = null;
-          //  Only reload if value is outdated
+      //  Only reload if value is outdated
       else if (_value == null || _value.UniqueIdentifier != InternalValue)
       {
         var businessObjectClass = GetBusinessObjectClass();
@@ -494,7 +501,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _textBoxStyle; }
     }
-    
+
     /// <summary> Gets or sets the validation error message displayed when the entered text does not identify an item. </summary>
     /// <value> 
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
@@ -509,8 +516,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _invalidItemErrorMessage = value;
-        if (_invalidDisplayNameValidator != null)
-          _invalidDisplayNameValidator.ErrorMessage = _invalidItemErrorMessage;
+        UpdateValidtaorErrorMessages<BocAutoCompleteReferenceValueInvalidDisplayNameValidator>(_invalidItemErrorMessage);
       }
     }
 
@@ -619,9 +625,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [Category ("AutoComplete")]
     [DefaultValue ("")]
-    [Description ("A Javascript regular expression the user input must match in order for the search to performed when manually opening the drop-down-list. "
-                  + "If the expression is empty, the ValidSearchStringRegex is used. "
-                  + "If the fallback is also empty the control defaults to always openng the drop-down list.")]
+    [Description (
+        "A Javascript regular expression the user input must match in order for the search to performed when manually opening the drop-down-list. "
+        + "If the expression is empty, the ValidSearchStringRegex is used. "
+        + "If the fallback is also empty the control defaults to always openng the drop-down list.")]
     public string ValidSearchStringForDropDownRegex
     {
       get { return _validSearchStringForDropDownRegex; }
@@ -645,7 +652,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </summary>
     [Category ("AutoComplete")]
     [DefaultValue (false)]
-    [Description ("If the flag is set and the current input represents a valid value, manually opening the drop-down-list will use an empty search string when retrieving the list of values.")]
+    [Description (
+        "If the flag is set and the current input represents a valid value, manually opening the drop-down-list will use an empty search string when retrieving the list of values."
+        )]
     public bool IgnoreSearchStringForDropDownUponValidInput
     {
       get { return _ignoreSearchStringForDropDownUponValidInput; }
@@ -660,7 +669,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return null;
 
         EnsureDisplayNameRefreshed();
-        return string.Format ("{0}\n{1}", InternalValue, InternalDisplayName); 
+        return string.Format ("{0}\n{1}", InternalValue, InternalDisplayName);
       }
     }
 

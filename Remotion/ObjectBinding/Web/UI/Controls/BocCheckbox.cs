@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -75,6 +76,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly Style _labelStyle;
 
     private bool? _showDescription;
+    private ReadOnlyCollection<BaseValidator> _validators;
 
     // construction and disposing
 
@@ -397,7 +399,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocCheckBoxValidatorFactory>();
-      return validatorFactory.CreateValidators (this, isReadOnly).ToList();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      return _validators;
     }
 
     /// <summary> Gets the evaluated value for the <see cref="ShowDescription"/> property. </summary>

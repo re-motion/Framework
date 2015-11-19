@@ -198,6 +198,7 @@
     <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\IBocMultilineTextValueRendererTest.cs" />
     <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\IBocTextValueRendererTest.cs" />
     <Compile Include="UI\Controls\BocTextValueTests\AllDataTypes.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\BocTextValueTest.cs" />
     <Compile Include="UI\Controls\BocTextValueTests\Common.cs" />
     <Compile Include="UI\Controls\BocTextValueTests\Validation\BocMultilineTextValueValidatorFactoryTest.cs" />
     <Compile Include="UI\Controls\BocTextValueTests\Validation\BocTextValueValidatorFactoryTest.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="UI\Controls\BocTreeViewTest.cs" />
     <Compile Include="UI\Controls\BusinessObjectBoundEditableWebControlTests\SaveValueToDomainModel.cs" />
     <Compile Include="UI\Controls\BusinessObjectBoundEditableWebControlTests\TestDomain\TestableBusinessObjectBoundEditableWebControl.cs" />
+    <Compile Include="UI\Controls\BusinessObjectReferenceDataSourceControlTests\BusinessObjectReferenceDataSourceControlTest.cs" />
     <Compile Include="UI\Controls\BusinessObjectReferenceDataSourceControlTests\Validate.cs" />
     <Compile Include="UI\Controls\HtmlHelper.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Validation\IBocAutoCompleteReferenceValueValidatorFactoryTest.cs" />
@@ -218,6 +220,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\Controls\StubInfrastructureResourceUrlFactory.cs" />
+    <Compile Include="UI\Controls\UserControlBindingTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

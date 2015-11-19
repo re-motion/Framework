@@ -14,9 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
@@ -51,6 +53,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
     private const string c_designModeEmptyLabelContents = "##";
+
     private const string c_dropDownListIDPostfix = "_Value";
 
     // types
@@ -67,6 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       /// <summary> Label displayed in the OptionsMenu. </summary>
       OptionsTitle,
+
       /// <summary> The validation error message displayed when the null item is selected. </summary>
       NullItemErrorMessage,
     }
@@ -91,8 +95,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private string _select = String.Empty;
     private bool? _enableSelectStatement;
-    private RequiredFieldValidator _requiredFieldValidator;
     private string _nullItemErrorMessage;
+    private ReadOnlyCollection<BaseValidator> _validators;
     // construction and disposing
 
     public BocReferenceValue ()
@@ -118,8 +122,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _nullItemErrorMessage = value;
-        if (_requiredFieldValidator != null)
-          _requiredFieldValidator.ErrorMessage = _nullItemErrorMessage;
+        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_nullItemErrorMessage);
       }
     }
 
@@ -135,7 +138,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual IBocReferenceValueRenderer CreateRenderer ()
     {
-      return ServiceLocator.GetInstance<IBocReferenceValueRenderer> ();
+      return ServiceLocator.GetInstance<IBocReferenceValueRenderer>();
     }
 
     protected virtual BocReferenceValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
@@ -160,7 +163,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       base.OnLoad (e);
 
-      if (! ControlExistedInPreviousRequest)
+      if (!ControlExistedInPreviousRequest)
         EnsureBusinessObjectListPopulated();
     }
 
@@ -198,7 +201,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _displayName = selectedItem.Text;
       }
 
-      if (! IsReadOnly && Enabled)
+      if (!IsReadOnly && Enabled)
         OnSelectionChanged();
     }
 
@@ -207,7 +210,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
+
       if (IsDesignMode)
         return;
 
@@ -218,7 +221,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         NullItemErrorMessage = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (Select);
-      if (! string.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         Select = resourceManager.GetString (key);
     }
 
@@ -254,30 +257,37 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocReferenceValueValidatorFactory> ();
-      var validators = validatorFactory.CreateValidators (this, isReadOnly).ToList ();
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocReferenceValueValidatorFactory>();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
 
-      _requiredFieldValidator = validators.OfType<RequiredFieldValidator> ().FirstOrDefault ();
+      OverrideValidatorErrorMessages();
 
-      OverrideValidatorErrorMessages ();
-
-      return validators;
+      return _validators;
     }
 
-    private void OverrideValidatorErrorMessages()
+    private void OverrideValidatorErrorMessages ()
     {
-      if (!string.IsNullOrEmpty (NullItemErrorMessage) && _requiredFieldValidator != null)
-        _requiredFieldValidator.ErrorMessage = NullItemErrorMessage;
+      if (string.IsNullOrEmpty (NullItemErrorMessage))
+        return;
+      
+      UpdateValidtaorErrorMessages<RequiredFieldValidator> (NullItemErrorMessage);
+    }
+
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    {
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      EvaluateWaiConformity ();
+      EvaluateWaiConformity();
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render (CreateRenderingContext (writer));
     }
 
     protected override void LoadControlState (object savedState)
@@ -448,7 +458,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     protected void PopulateBusinessObjectList ()
     {
-      if (! IsSelectStatementEnabled)
+      if (!IsSelectStatementEnabled)
         return;
 
       if (Property == null)
@@ -512,10 +522,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (InternalValue == null)
         _value = null;
-          //  Only reload if value is outdated
+      //  Only reload if value is outdated
       else if (_value == null || _value.UniqueIdentifier != InternalValue)
       {
-        var businessObjectClass = GetBusinessObjectClass ();
+        var businessObjectClass = GetBusinessObjectClass();
         if (businessObjectClass != null)
           _value = businessObjectClass.GetObject (InternalValue);
       }

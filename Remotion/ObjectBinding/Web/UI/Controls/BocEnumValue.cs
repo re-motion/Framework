@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
@@ -85,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string _undefinedItemText = string.Empty;
 
     private string _errorMessage;
-    private RequiredFieldValidator _requiredFieldValidator;
+    private ReadOnlyCollection<BaseValidator> _validators;
 
     // construction and disposing
 
@@ -208,18 +209,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocEnumValueValidatorFactory>();
-      var validators = validatorFactory.CreateValidators (this,isReadOnly).ToList();
+      _validators = validatorFactory.CreateValidators (this,isReadOnly).ToList().AsReadOnly();
 
-      _requiredFieldValidator = validators.OfType<RequiredFieldValidator>().FirstOrDefault();
       OverrideValidatorErrorMessages();
 
-      return validators;
+      return _validators;
     }
 
     private void OverrideValidatorErrorMessages()
     {
-      if (!string.IsNullOrEmpty (_errorMessage) && _requiredFieldValidator != null)
-         _requiredFieldValidator.ErrorMessage = _errorMessage;
+      if (!string.IsNullOrEmpty (_errorMessage))
+        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
+    }
+
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    {
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
     }
 
     /// <summary> 
@@ -506,8 +513,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        if (_requiredFieldValidator != null)
-          _requiredFieldValidator.ErrorMessage = _errorMessage;
+        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
       }
     }
 

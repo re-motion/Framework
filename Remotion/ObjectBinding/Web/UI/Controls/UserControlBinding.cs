@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
@@ -34,6 +35,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string _userControlPath = string.Empty;
     private IDataEditControl _userControl;
     private BusinessObjectReferenceDataSourceControl _referenceDataSource;
+    private ReadOnlyCollection<BaseValidator> _validators;
 
     public string UserControlPath
     {
@@ -172,7 +174,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = SafeServiceLocator.Current.GetInstance<IUserControlBindingValidatorFactory>();
-      return validatorFactory.CreateValidators (this, isReadOnly);
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      return _validators;
     }
 
     public override void RegisterValidator (BaseValidator validator)

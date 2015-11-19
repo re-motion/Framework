@@ -94,6 +94,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     #endregion
 
     private readonly InternalBusinessObjectReferenceDataSource _internalDataSource;
+    private ReadOnlyCollection<BaseValidator> _validators;
 
     /// <summary>
     ///   <see cref="BusinessObjectReferenceDataSourceControl"/> supports properties of type
@@ -370,7 +371,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = SafeServiceLocator.Current.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
-      return validatorFactory.CreateValidators (this, isReadOnly);
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      return _validators;
     }
 
     /// <summary>

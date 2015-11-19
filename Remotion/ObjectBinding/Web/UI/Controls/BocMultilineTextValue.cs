@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
@@ -62,9 +63,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectStringProperty) };
 
     private string[] _text = null;
-    private RequiredFieldValidator _requiredFieldValidator;
-    private LengthValidator _lengthValidator;
     private string _errorMessage;
+    private ReadOnlyCollection<BaseValidator> _validators;
 
     // construction and disposing
 
@@ -225,10 +225,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        if (_requiredFieldValidator != null)
-          _requiredFieldValidator.ErrorMessage = _errorMessage;
-        if (_lengthValidator != null)
-          _lengthValidator.ErrorMessage = _errorMessage;
+       
+        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
+        UpdateValidtaorErrorMessages<LengthValidator> (_errorMessage);
       }
     }
 
@@ -360,23 +359,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocMultilineTextValueValidatorFactory>();
-      var validators = validatorFactory.CreateValidators (this, isReadOnly).ToList();
-
-      _requiredFieldValidator = validators.OfType<RequiredFieldValidator>().FirstOrDefault();
-      _lengthValidator = validators.OfType<LengthValidator>().FirstOrDefault();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
 
       OverrideValidatorErrorMessages();
 
-      return validators;
+      return _validators;
     }
 
-    private void OverrideValidatorErrorMessages()
+    private void OverrideValidatorErrorMessages ()
     {
-      if (!string.IsNullOrEmpty (_errorMessage) && _requiredFieldValidator != null)
-        _requiredFieldValidator.ErrorMessage = _errorMessage;
+      if (string.IsNullOrEmpty (_errorMessage))
+        return;
 
-      if (!string.IsNullOrEmpty (_errorMessage) && _lengthValidator != null)
-        _lengthValidator.ErrorMessage = _errorMessage;
+      UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
+      UpdateValidtaorErrorMessages<LengthValidator> (_errorMessage);
+    }
+
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    {
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
     }
 
     /// <summary>

@@ -16,13 +16,20 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Web.UI.WebControls;
+using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web.UI.Controls;
+using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -506,6 +513,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void GetValueName ()
     {
       Assert.That (((IBocReferenceValue)_bocReferenceValue).GetValueName(), Is.EqualTo ("NamingContainer_BocReferenceValue_Value"));
+    }
+
+    [Test]
+    public void CreateValidators_UsesValidatorFactory ()
+    {
+      var control = new BocReferenceValue();
+      var serviceLocatorMock = MockRepository.GenerateMock<IServiceLocator>();
+      var factoryMock = MockRepository.GenerateMock<IBocReferenceValueValidatorFactory>();
+      serviceLocatorMock.Expect (m => m.GetInstance<IBocReferenceValueValidatorFactory>()).Return (factoryMock);
+      factoryMock.Expect (f => f.CreateValidators (control, false)).Return (new List<BaseValidator>());
+
+      using (new ServiceLocatorScope (serviceLocatorMock))
+      {
+        control.CreateValidators();
+      }
+
+      factoryMock.VerifyAllExpectations();
+      serviceLocatorMock.VerifyAllExpectations();
     }
   }
 }

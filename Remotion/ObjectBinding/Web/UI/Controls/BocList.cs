@@ -317,7 +317,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private ScalarLoadPostDataTarget _currentPagePostBackTarget;
 
     private readonly IRenderingFeatures _renderingFeatures;
-    private EditModeValidator _editModeValidator;
+    private ReadOnlyCollection<BaseValidator> _validators;
     // construction and disposing
 
     public BocList ()
@@ -908,14 +908,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocListValidatorFactory>();
-      var validators = validatorFactory.CreateValidators (this, isReadOnly).ToList();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
 
-      _editModeValidator = validators.OfType<EditModeValidator>().FirstOrDefault();
-      
-      if (!string.IsNullOrEmpty (ErrorMessage) && _editModeValidator != null)
-        _editModeValidator.ErrorMessage = ErrorMessage;
+      if (!string.IsNullOrEmpty (ErrorMessage))
+        UpdateValidtaorErrorMessages<EditModeValidator> (ErrorMessage);
 
-      return validators;
+      return _validators;
+    }
+
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    {
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
     }
 
     /// <summary> Checks whether the control conforms to the required WAI level. </summary>
@@ -2629,7 +2634,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private EditModeValidator GetEditModeValidator ()
     {
-      return _editModeValidator;
+      return _validators.GetValidator<EditModeValidator>();
     }
 
     private void SetFocusImplementation (IFocusableControl control)
@@ -3481,8 +3486,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        if (_editModeValidator != null)
-          _editModeValidator.ErrorMessage = value;
+        UpdateValidtaorErrorMessages<EditModeValidator> (_errorMessage);
       }
     }
 

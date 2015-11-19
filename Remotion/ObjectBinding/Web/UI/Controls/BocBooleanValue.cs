@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -84,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _showDescription = true;
 
     private string _errorMessage;
-    private CompareValidator _requiredFieldValidator;
+    private ReadOnlyCollection<BaseValidator> _validators;
 
     // construction and disposing
 
@@ -136,18 +137,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocBooleanValueValidatorFactory> ();
-      var validators = validatorFactory.CreateValidators (this, isReadOnly).ToList ();
-      
-      _requiredFieldValidator = validators.OfType<CompareValidator> ().FirstOrDefault ();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList ().AsReadOnly();
+
       OverrideValidatorErrorMessages();
 
-      return validators;
+      return _validators;
     }
 
     private void OverrideValidatorErrorMessages()
     {
-      if (!string.IsNullOrEmpty (_errorMessage) && _requiredFieldValidator != null)
-        _requiredFieldValidator.ErrorMessage = _errorMessage;
+      if (!string.IsNullOrEmpty (_errorMessage) )
+        UpdateValidtaorErrorMessages<CompareValidator> (_errorMessage);
+    }
+
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    {
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -232,8 +239,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        if (_requiredFieldValidator != null)
-          _requiredFieldValidator.ErrorMessage = _errorMessage;
+        UpdateValidtaorErrorMessages<CompareValidator> (_errorMessage);
       }
     }
 
