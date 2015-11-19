@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
@@ -28,7 +27,6 @@ using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Design;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Infrastructure;
@@ -78,8 +76,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private readonly Style _commonStyle;
     private readonly Style _labelStyle;
-    private string _nullItemErrorMessage;
-    private RequiredFieldValidator _requiredFieldValidator;
     private string _optionsTitle;
     private bool _showOptionsMenu = true;
     private Unit _optionsMenuWidth = Unit.Empty;
@@ -225,25 +221,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     public SingleControlItemCollection PersistedCommand
     {
       get { return _command; }
-    }
-
-    /// <summary> Gets or sets the validation error message displayed when the value is not set but the control is required. </summary>
-    /// <value> 
-    ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
-    ///   In case of the default value, the text is read from the resources for this control.
-    /// </value>
-    [Description ("Validation message displayed if the value is not set but the control is required.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
-    public string NullItemErrorMessage
-    {
-      get { return _nullItemErrorMessage; }
-      set
-      {
-        _nullItemErrorMessage = value;
-        if (_requiredFieldValidator != null)
-          _requiredFieldValidator.ErrorMessage = _nullItemErrorMessage;
-      }
     }
 
     /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
@@ -908,45 +885,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     protected new BaseValidator[] CreateValidators ()
     {
       throw new NotImplementedException ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)");
-    }
-
-    /// <summary>
-    /// If applicable, validators for non-empty, maximum length and input format are created.
-    /// </summary>
-    /// <param name="isReadOnly">
-    /// This flag is initialized with the value of <see cref="BusinessObjectBoundEditableWebControl.IsReadOnly"/>. 
-    /// Implemantations should consider whether they require a validator also when the control is rendered as read-only.
-    /// </param>
-    /// <returns>An enumeration of all applicable validators.</returns>
-    /// <remarks>
-    ///   Generates a <see cref="RequiredFieldValidator"/> checking that the selected item is not the null-item if the
-    ///   control is in edit mode and input is required.
-    /// </remarks>
-    /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
-    protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
-    {
-      _requiredFieldValidator = null;
-
-      if (isReadOnly)
-        yield break;
-
-      if (IsRequired)
-      {
-        _requiredFieldValidator = CreateRequiredFieldValidator();
-        yield return _requiredFieldValidator;
-      }
-    }
-
-    private RequiredFieldValidator CreateRequiredFieldValidator ()
-    {
-      var requiredFieldValidator = new RequiredFieldValidator();
-      requiredFieldValidator.ID = ID + "_ValidatorNotNullItem";
-      requiredFieldValidator.ControlToValidate = ID;
-      if (string.IsNullOrEmpty (NullItemErrorMessage))
-        requiredFieldValidator.ErrorMessage = GetNullItemErrorMessage();
-      else
-        requiredFieldValidator.ErrorMessage = NullItemErrorMessage;
-      return requiredFieldValidator;
     }
 
     protected virtual void PreRenderOptionsMenu ()

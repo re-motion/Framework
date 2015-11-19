@@ -18,15 +18,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 
@@ -133,30 +135,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      _requiredFieldValidator = null;
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocBooleanValueValidatorFactory> ();
+      var validators = validatorFactory.CreateValidators (this, isReadOnly).ToList ();
+      
+      _requiredFieldValidator = validators.OfType<CompareValidator> ().FirstOrDefault ();
+      OverrideValidatorErrorMessages();
 
-      if (isReadOnly)
-        yield break;
-
-      if (IsRequired)
-      {
-        _requiredFieldValidator = CreateRequiredFieldValidator();
-        yield return _requiredFieldValidator;
-      }
+      return validators;
     }
 
-    private CompareValidator CreateRequiredFieldValidator ()
+    private void OverrideValidatorErrorMessages()
     {
-      CompareValidator notNullItemValidator = new CompareValidator();
-      notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
-      notNullItemValidator.ControlToValidate = ID;
-      notNullItemValidator.ValueToCompare = c_nullString;
-      notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-      if (string.IsNullOrEmpty (_errorMessage))
-        notNullItemValidator.ErrorMessage = GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
-      else
-        notNullItemValidator.ErrorMessage = _errorMessage;
-      return notNullItemValidator;
+      if (!string.IsNullOrEmpty (_errorMessage) && _requiredFieldValidator != null)
+        _requiredFieldValidator.ErrorMessage = _errorMessage;
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)

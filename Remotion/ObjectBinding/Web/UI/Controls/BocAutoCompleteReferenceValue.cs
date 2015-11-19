@@ -23,7 +23,6 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.Design;
 using System.Web.UI.WebControls;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
@@ -108,7 +107,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private int _selectionUpdateDelay = 200;
     private BocAutoCompleteReferenceValueInvalidDisplayNameValidator _invalidDisplayNameValidator;
     private SearchAvailableObjectWebServiceContext _searchServiceContextFromPreviousLifeCycle;
-
+    private RequiredFieldValidator _requiredFieldValidator;
+    private string _nullItemErrorMessage;
     // construction and disposing
 
     public BocAutoCompleteReferenceValue ()
@@ -118,6 +118,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     // methods and properties
+
+    /// <summary> Gets or sets the validation error message displayed when the value is not set but the control is required. </summary>
+    /// <value> 
+    ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
+    ///   In case of the default value, the text is read from the resources for this control.
+    /// </value>
+    [Description ("Validation message displayed if the value is not set but the control is required.")]
+    [Category ("Validator")]
+    [DefaultValue ("")]
+    public string NullItemErrorMessage
+    {
+      get { return _nullItemErrorMessage; }
+      set
+      {
+        _nullItemErrorMessage = value;
+        if (_requiredFieldValidator != null)
+          _requiredFieldValidator.ErrorMessage = _nullItemErrorMessage;
+      }
+    }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
@@ -241,26 +260,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      _invalidDisplayNameValidator = null;
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory> ();
+      var validators = validatorFactory.CreateValidators (this, isReadOnly).ToList ();
 
-      var baseValidators = base.CreateValidators (isReadOnly);
-      if (isReadOnly)
-        return baseValidators;
+      _invalidDisplayNameValidator = validators.OfType<BocAutoCompleteReferenceValueInvalidDisplayNameValidator> ().FirstOrDefault ();
+      _requiredFieldValidator = validators.OfType<RequiredFieldValidator> ().FirstOrDefault ();
 
-      _invalidDisplayNameValidator = CreateInvalidDisplayNameValidator();
-      return baseValidators.Concat (_invalidDisplayNameValidator);
+      OverrideValidatorErrorMessages ();
+
+      return validators;
     }
 
-    private BocAutoCompleteReferenceValueInvalidDisplayNameValidator CreateInvalidDisplayNameValidator ()
+
+    private void OverrideValidatorErrorMessages()
     {
-      var invalidDisplayNameValidator = new BocAutoCompleteReferenceValueInvalidDisplayNameValidator();
-      invalidDisplayNameValidator.ID = ID + "_ValidatorValidDisplayName";
-      invalidDisplayNameValidator.ControlToValidate = ID;
-      if (string.IsNullOrEmpty (InvalidItemErrorMessage))
-        invalidDisplayNameValidator.ErrorMessage = GetResourceManager().GetString (ResourceIdentifier.InvalidItemErrorMessage);
-      else
-        invalidDisplayNameValidator.ErrorMessage = InvalidItemErrorMessage;
-      return invalidDisplayNameValidator;
+      if (!string.IsNullOrEmpty (InvalidItemErrorMessage) && _invalidDisplayNameValidator != null)
+        _invalidDisplayNameValidator.ErrorMessage = InvalidItemErrorMessage;
+
+      if (!string.IsNullOrEmpty (NullItemErrorMessage) && _requiredFieldValidator != null)
+        _requiredFieldValidator.ErrorMessage = NullItemErrorMessage;
     }
 
     protected virtual IBocAutoCompleteReferenceValueRenderer CreateRenderer ()
@@ -372,6 +390,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IResourceManager GetResourceManager ()
     {
       return GetResourceManager (typeof (ResourceIdentifier));
+    }
+
+    protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
+    {
+      base.LoadResources (resourceManager, globalizationService);
+
+      var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
+      if (!string.IsNullOrEmpty (key))
+        NullItemErrorMessage = resourceManager.GetString (key);
     }
 
     protected override string GetLabelText ()

@@ -24,6 +24,8 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
@@ -394,7 +396,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      return Enumerable.Empty<BaseValidator>();
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocCheckBoxValidatorFactory>();
+      return validatorFactory.CreateValidators (this, isReadOnly).ToList();
     }
 
     /// <summary> Gets the evaluated value for the <see cref="ShowDescription"/> property. </summary>

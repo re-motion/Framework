@@ -1,0 +1,38 @@
+﻿using System;
+using NUnit.Framework;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
+using Remotion.ServiceLocation;
+
+namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Validation
+{
+  public class IBocTextValueValidatorFactoryTest
+  {
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _serviceLocator = DefaultServiceLocator.Create();
+    }
+
+    [Test]
+    public void GetInstance_Once ()
+    {
+      var instance = _serviceLocator.GetInstance<IBocTextValueValidatorFactory>();
+
+      Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocTextValue>>());
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var instance1 = _serviceLocator.GetInstance<IBocTextValueValidatorFactory>();
+      var instance2 = _serviceLocator.GetInstance<IBocTextValueValidatorFactory>();
+
+      Assert.That (instance1, Is.InstanceOf<CompoundValidatorFactory<IBocTextValue>>());
+      Assert.That (instance1, Is.SameAs (instance2));
+    }
+  }
+}

@@ -117,7 +117,7 @@
           <description>Resource Identifier</description>
         </listheader>
         <item>
-          <term> <see cref="BocReferenceValueBase.NullItemErrorMessage"/> </term>
+          <term> <see cref="BocReferenceValue.NullItemErrorMessage"/> </term>
           <description>
             <para> &lt;BocReferenceValue Resource ID&gt;:NullItemErrorMessage </para>
             <para> e.g. auto:MyBocReferenceValue:NullItemErrorMessage </para>

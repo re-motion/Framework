@@ -21,6 +21,7 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ServiceLocation;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -170,7 +171,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <inheritdoc />
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      return Enumerable.Empty<BaseValidator>();
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IUserControlBindingValidatorFactory>();
+      return validatorFactory.CreateValidators (this, isReadOnly);
     }
 
     public override void RegisterValidator (BaseValidator validator)

@@ -91,7 +91,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private string _select = String.Empty;
     private bool? _enableSelectStatement;
-
+    private RequiredFieldValidator _requiredFieldValidator;
+    private string _nullItemErrorMessage;
     // construction and disposing
 
     public BocReferenceValue ()
@@ -101,6 +102,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     // methods and properties
+
+
+    /// <summary> Gets or sets the validation error message displayed when the value is not set but the control is required. </summary>
+    /// <value> 
+    ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
+    ///   In case of the default value, the text is read from the resources for this control.
+    /// </value>
+    [Description ("Validation message displayed if the value is not set but the control is required.")]
+    [Category ("Validator")]
+    [DefaultValue ("")]
+    public string NullItemErrorMessage
+    {
+      get { return _nullItemErrorMessage; }
+      set
+      {
+        _nullItemErrorMessage = value;
+        if (_requiredFieldValidator != null)
+          _requiredFieldValidator.ErrorMessage = _nullItemErrorMessage;
+      }
+    }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
@@ -216,6 +237,37 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (DropDownListStyle.AutoPostBack == true)
           WcagHelper.Instance.HandleWarning (1, this, "DropDownListStyle.AutoPostBack");
       }
+    }
+
+    /// <summary>
+    /// A validator for the display name is created.
+    /// </summary>
+    /// <param name="isReadOnly">
+    /// This flag is initialized with the value of <see cref="BusinessObjectBoundEditableWebControl.IsReadOnly"/>. 
+    /// Implemantations should consider whether they require a validator also when the control is rendered as read-only.
+    /// </param>
+    /// <returns>An enumeration of all applicable validators.</returns>
+    /// <remarks>
+    ///   Generates a <see cref="BocAutoCompleteReferenceValueInvalidDisplayNameValidator"/> checking that the display name can be resolved 
+    /// to a valid object reference.
+    /// </remarks>
+    /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
+    protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
+    {
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocReferenceValueValidatorFactory> ();
+      var validators = validatorFactory.CreateValidators (this, isReadOnly).ToList ();
+
+      _requiredFieldValidator = validators.OfType<RequiredFieldValidator> ().FirstOrDefault ();
+
+      OverrideValidatorErrorMessages ();
+
+      return validators;
+    }
+
+    private void OverrideValidatorErrorMessages()
+    {
+      if (!string.IsNullOrEmpty (NullItemErrorMessage) && _requiredFieldValidator != null)
+        _requiredFieldValidator.ErrorMessage = NullItemErrorMessage;
     }
 
     protected override void Render (HtmlTextWriter writer)

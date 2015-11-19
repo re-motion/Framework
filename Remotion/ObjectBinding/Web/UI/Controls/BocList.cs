@@ -33,6 +33,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -906,7 +907,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      return _editModeController.CreateValidators (isReadOnly, GetResourceManager());
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocListValidatorFactory>();
+      return validatorFactory.CreateValidators (this, isReadOnly);
     }
 
     /// <summary> Checks whether the control conforms to the required WAI level. </summary>

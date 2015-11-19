@@ -18,11 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -410,33 +413,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      _dateTimeValidator = null;
-      if (isReadOnly)
-        yield break;
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocDateTimeValueValidatorFactory>();
+      var validators = validatorFactory.CreateValidators (this, isReadOnly).ToList();
 
-      _dateTimeValidator = CreateDateTimeValidator();
-      yield return _dateTimeValidator;
+      _dateTimeValidator = validators.OfType<BocDateTimeValueValidator>().FirstOrDefault();
+      OverrideValidatorErrorMessages();
+
+      return validators;
     }
 
-    private BocDateTimeValueValidator CreateDateTimeValidator ()
+    private void OverrideValidatorErrorMessages()
     {
-      BocDateTimeValueValidator dateTimeValueValidator = new BocDateTimeValueValidator();
-      dateTimeValueValidator.ID = ID + "_ValidatorDateTime";
-      dateTimeValueValidator.ControlToValidate = ID;
-      if (string.IsNullOrEmpty (_errorMessage))
-      {
-        IResourceManager resourceManager = GetResourceManager();
-        dateTimeValueValidator.MissingDateAndTimeErrorMessage = resourceManager.GetString (ResourceIdentifier.MissingDateAndTimeErrorMessage);
-        dateTimeValueValidator.MissingDateOrTimeErrorMessage = resourceManager.GetString (ResourceIdentifier.MissingDateOrTimeErrorMessage);
-        dateTimeValueValidator.MissingDateErrorMessage = resourceManager.GetString (ResourceIdentifier.MissingDateErrorMessage);
-        dateTimeValueValidator.MissingTimeErrorMessage = resourceManager.GetString (ResourceIdentifier.MissingTimeErrorMessage);
-        dateTimeValueValidator.InvalidDateAndTimeErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidDateAndTimeErrorMessage);
-        dateTimeValueValidator.InvalidDateErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidDateErrorMessage);
-        dateTimeValueValidator.InvalidTimeErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidTimeErrorMessage);
-      }
-      else
-        dateTimeValueValidator.ErrorMessage = _errorMessage;
-      return dateTimeValueValidator;
+      if (!string.IsNullOrEmpty (_errorMessage) && _dateTimeValidator != null)
+        _dateTimeValidator.ErrorMessage = _errorMessage;
     }
 
     /// <summary> Handles refreshing the bound control. </summary>

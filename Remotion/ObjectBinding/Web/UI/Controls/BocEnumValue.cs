@@ -25,6 +25,8 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -205,31 +207,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      _requiredFieldValidator = null;
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocEnumValueValidatorFactory>();
+      var validators = validatorFactory.CreateValidators (this,isReadOnly).ToList();
 
-      if (isReadOnly)
-        yield break;
+      _requiredFieldValidator = validators.OfType<RequiredFieldValidator>().FirstOrDefault();
+      OverrideValidatorErrorMessages();
 
-      if (IsRequired)
-      {
-        _requiredFieldValidator = CreateRequiredFieldValidator();
-        yield return _requiredFieldValidator;
-      }
-
-      //  No validation that only enabled enum values get selected and saved.
-      //  This behaviour is for compatibility
+      return validators;
     }
 
-    private RequiredFieldValidator CreateRequiredFieldValidator ()
+    private void OverrideValidatorErrorMessages()
     {
-      RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
-      requiredValidator.ID = ID + "_ValidatorRequried";
-      requiredValidator.ControlToValidate = TargetControl.ID;
-      if (string.IsNullOrEmpty (_errorMessage))
-        requiredValidator.ErrorMessage = GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
-      else
-        requiredValidator.ErrorMessage = _errorMessage;
-      return requiredValidator;
+      if (!string.IsNullOrEmpty (_errorMessage) && _requiredFieldValidator != null)
+         _requiredFieldValidator.ErrorMessage = _errorMessage;
     }
 
     /// <summary> 
