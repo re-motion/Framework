@@ -22,7 +22,6 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
-using Remotion.Globalization;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -59,7 +58,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     private bool _isEditModeRestored;
 
     private readonly List<EditableRow> _rows = new List<EditableRow>();
-    private EditModeValidator _editModeValidator;
 
     // construction and disposing
 
@@ -518,6 +516,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       get { return _editMode == EditMode.ListEditMode; }
     }
 
+    public bool EnableEditModeValidator
+    {
+      get { return _editModeHost.EnableEditModeValidator; }
+    }
+
     public BocListRow GetEditedRow()
     {
       if (!IsRowEditModeActive)
@@ -540,39 +543,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
 
       return editedRow;
-    }
-
-    public IEnumerable<BaseValidator> CreateValidators (bool isReadOnly, IResourceManager resourceManager)
-    {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-
-      _editModeValidator = null;
-
-      if (isReadOnly)
-        yield break;
-
-      if ((IsListEditModeActive || IsRowEditModeActive) && _editModeHost.EnableEditModeValidator)
-      {
-        _editModeValidator = CreateEditModeValidator (resourceManager);
-        yield return _editModeValidator;
-      }
-    }
-
-    private EditModeValidator CreateEditModeValidator (IResourceManager resourceManager)
-    {
-      EditModeValidator editModeValidator = new EditModeValidator (this);
-      editModeValidator.ID = ID + "_ValidatorEditMode";
-      editModeValidator.ControlToValidate = _editModeHost.ID;
-      if (string.IsNullOrEmpty (_editModeHost.ErrorMessage))
-      {
-        if (IsRowEditModeActive)
-          editModeValidator.ErrorMessage = resourceManager.GetString (UI.Controls.BocList.ResourceIdentifier.RowEditModeErrorMessage);
-        else if (IsListEditModeActive)
-          editModeValidator.ErrorMessage = resourceManager.GetString (UI.Controls.BocList.ResourceIdentifier.ListEditModeErrorMessage);
-      }
-      else
-        editModeValidator.ErrorMessage = _editModeHost.ErrorMessage;
-      return editModeValidator;
     }
 
     /// <remarks>
@@ -612,17 +582,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
 
       return isValid;
-    }
-
-    public void UpdateValidationErrorMessage (string value)
-    {
-      if (_editModeValidator != null)
-        _editModeValidator.ErrorMessage = value;
-    }
-
-    public EditModeValidator GetEditModeValidator ()
-    {
-      return _editModeValidator;
     }
 
     public void RenderTitleCellMarkers (HtmlTextWriter writer, BocColumnDefinition column, int columnIndex)

@@ -51,19 +51,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
 
     private IBocMultilineTextValue GetControl (bool isRequired)
     {
-      var bocTextValueMock = MockRepository.GenerateMock<IBocMultilineTextValue>();
-      bocTextValueMock.Expect (c => c.IsRequired).Return (isRequired);
-      bocTextValueMock.Expect (c => c.TextBoxStyle).Return (new TextBoxStyle());
+      var controlMock = MockRepository.GenerateMock<IBocMultilineTextValue>();
+      controlMock.Expect (c => c.IsRequired).Return (isRequired);
+      controlMock.Expect (c => c.TextBoxStyle).Return (new TextBoxStyle());
 
       var resourceManagerMock = MockRepository.GenerateMock<IResourceManager>();
       resourceManagerMock.Expect (r => r.TryGetString (Arg<string>.Is.Anything, out Arg<string>.Out ("MockValue").Dummy))
-          .IgnoreArguments()
           .Return (true);
 
-      bocTextValueMock.Expect (c => c.GetResourceManager()).Return (resourceManagerMock);
-      bocTextValueMock.Expect (c => c.TargetControl).Return (new Control() { ID = "ID" });
+      controlMock.Expect (c => c.GetResourceManager()).Return (resourceManagerMock);
+      controlMock.Expect (c => c.TargetControl).Return (new Control() { ID = "ID" });
 
-      return bocTextValueMock;
+      return controlMock;
     }
   }
 }

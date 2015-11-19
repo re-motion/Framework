@@ -317,7 +317,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private ScalarLoadPostDataTarget _currentPagePostBackTarget;
 
     private readonly IRenderingFeatures _renderingFeatures;
-
+    private EditModeValidator _editModeValidator;
     // construction and disposing
 
     public BocList ()
@@ -908,7 +908,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocListValidatorFactory>();
-      return validatorFactory.CreateValidators (this, isReadOnly);
+      var validators = validatorFactory.CreateValidators (this, isReadOnly).ToList();
+
+      _editModeValidator = validators.OfType<EditModeValidator>().FirstOrDefault();
+      
+      if (!string.IsNullOrEmpty (ErrorMessage) && _editModeValidator != null)
+        _editModeValidator.ErrorMessage = ErrorMessage;
+
+      return validators;
     }
 
     /// <summary> Checks whether the control conforms to the required WAI level. </summary>
@@ -2622,7 +2629,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private EditModeValidator GetEditModeValidator ()
     {
-      return _editModeController.GetEditModeValidator();
+      return _editModeValidator;
     }
 
     private void SetFocusImplementation (IFocusableControl control)
@@ -3474,7 +3481,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        _editModeController.UpdateValidationErrorMessage (_errorMessage);
+        if (_editModeValidator != null)
+          _editModeValidator.ErrorMessage = value;
       }
     }
 

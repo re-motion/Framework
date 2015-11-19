@@ -710,59 +710,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    public void CreateValidators_WithIsReadOnlyFalse ()
-    {
-      IResourceManager resourceManager = NullResourceManager.Instance;
-
-      Invoker.InitRecursive();
-      Controller.SwitchListIntoEditMode (Columns);
-
-      Assert.That (Controller.IsListEditModeActive, Is.True);
-
-      BaseValidator[] validators = Controller.CreateValidators (false, resourceManager).ToArray();
-
-      Assert.That (validators, Is.Not.Null);
-      Assert.That (validators.Length, Is.EqualTo (1));
-      Assert.IsInstanceOf (typeof (EditModeValidator), validators[0]);
-      Assert.That (validators[0].ControlToValidate, Is.EqualTo (EditModeHost.ID));
-      Assert.That (validators[0].ErrorMessage, Is.EqualTo (resourceManager.GetString (BocList.ResourceIdentifier.ListEditModeErrorMessage)));
-    }
-
-    [Test]
-    public void CreateValidatorsWithErrorMessageFromOwnerControl ()
-    {
-      Invoker.InitRecursive();
-      Controller.SwitchListIntoEditMode (Columns);
-      EditModeHost.ErrorMessage = "Foo Bar";
-
-      Assert.That (Controller.IsListEditModeActive, Is.True);
-
-      BaseValidator[] validators = Controller.CreateValidators (false, NullResourceManager.Instance).ToArray();
-
-      Assert.That (validators, Is.Not.Null);
-      Assert.That (validators.Length, Is.EqualTo (1));
-      Assert.IsInstanceOf (typeof (EditModeValidator), validators[0]);
-      Assert.That (validators[0].ControlToValidate, Is.EqualTo (EditModeHost.ID));
-      Assert.That (validators[0].ErrorMessage, Is.EqualTo ("Foo Bar"));
-    }
-
-    [Test]
-    public void CreateValidators_WithIsReadOnlyTrue ()
-    {
-      IResourceManager resourceManager = NullResourceManager.Instance;
-
-      Invoker.InitRecursive();
-      Controller.SwitchListIntoEditMode (Columns);
-
-      Assert.That (Controller.IsListEditModeActive, Is.True);
-
-      BaseValidator[] validators = Controller.CreateValidators (true, resourceManager).ToArray();
-
-      Assert.That (validators, Is.Empty);
-    }
-
-
-    [Test]
     public void ValidateWithValidValues ()
     {
       Invoker.InitRecursive();

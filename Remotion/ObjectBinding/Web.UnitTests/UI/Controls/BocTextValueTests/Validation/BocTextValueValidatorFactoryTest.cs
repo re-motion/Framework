@@ -94,16 +94,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     [TestCase (false, false, new[] { typeof (NumericValidator) }, Description = "Not Required/Not ReadOnly")]
     public void CreateValidators_NumericProperty (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
-      ValidateNumericValue (BocTextValueType.Byte, isRequired, isReadonly, expectedValidatorTypes);
-      ValidateNumericValue (BocTextValueType.Int16, isRequired, isReadonly, expectedValidatorTypes);
-      ValidateNumericValue (BocTextValueType.Int32, isRequired, isReadonly, expectedValidatorTypes);
-      ValidateNumericValue (BocTextValueType.Int64, isRequired, isReadonly, expectedValidatorTypes);
-      ValidateNumericValue (BocTextValueType.Decimal, isRequired, isReadonly, expectedValidatorTypes);
-      ValidateNumericValue (BocTextValueType.Double, isRequired, isReadonly, expectedValidatorTypes);
-      ValidateNumericValue (BocTextValueType.Single, isRequired, isReadonly, expectedValidatorTypes);
+      CheckNumericValueValidators (BocTextValueType.Byte, isRequired, isReadonly, expectedValidatorTypes);
+      CheckNumericValueValidators (BocTextValueType.Int16, isRequired, isReadonly, expectedValidatorTypes);
+      CheckNumericValueValidators (BocTextValueType.Int32, isRequired, isReadonly, expectedValidatorTypes);
+      CheckNumericValueValidators (BocTextValueType.Int64, isRequired, isReadonly, expectedValidatorTypes);
+      CheckNumericValueValidators (BocTextValueType.Decimal, isRequired, isReadonly, expectedValidatorTypes);
+      CheckNumericValueValidators (BocTextValueType.Double, isRequired, isReadonly, expectedValidatorTypes);
+      CheckNumericValueValidators (BocTextValueType.Single, isRequired, isReadonly, expectedValidatorTypes);
     }
 
-    private void ValidateNumericValue (BocTextValueType type, bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
+    private void CheckNumericValueValidators (BocTextValueType type, bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControl (isRequired, type);
       var validators = _validatorFactory.CreateValidators (control, isReadonly).ToList();
@@ -113,20 +113,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
 
     private IBocTextValue GetControl (bool isRequired, BocTextValueType valueType)
     {
-      var bocTextValueMock = MockRepository.GenerateMock<IBocTextValue>();
-      bocTextValueMock.Expect (c => c.ActualValueType).Return (valueType);
-      bocTextValueMock.Expect (c => c.IsRequired).Return (isRequired);
-      bocTextValueMock.Expect (c => c.TextBoxStyle).Return (new TextBoxStyle());
+      var controlMock = MockRepository.GenerateMock<IBocTextValue>();
+      controlMock.Expect (c => c.ActualValueType).Return (valueType);
+      controlMock.Expect (c => c.IsRequired).Return (isRequired);
+      controlMock.Expect (c => c.TextBoxStyle).Return (new TextBoxStyle());
 
       var resourceManagerMock = MockRepository.GenerateMock<IResourceManager>();
       resourceManagerMock.Expect (r => r.TryGetString (Arg<string>.Is.Anything, out Arg<string>.Out ("MockValue").Dummy))
-          .IgnoreArguments()
           .Return (true);
 
-      bocTextValueMock.Expect (c => c.GetResourceManager()).Return (resourceManagerMock);
-      bocTextValueMock.Expect (c => c.TargetControl).Return (new Control() { ID = "ID" });
+      controlMock.Expect (c => c.GetResourceManager()).Return (resourceManagerMock);
+      controlMock.Expect (c => c.TargetControl).Return (new Control() { ID = "ID" });
 
-      return bocTextValueMock;
+      return controlMock;
     }
   }
 }

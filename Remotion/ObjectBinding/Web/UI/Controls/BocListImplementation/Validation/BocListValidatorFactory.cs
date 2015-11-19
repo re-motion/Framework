@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using Remotion.Globalization;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
@@ -10,7 +12,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
     {
       ArgumentUtility.CheckNotNull ("control", control);
 
-      return control.EditModeController.CreateValidators (isReadOnly, control.GetResourceManager());
+      if (isReadOnly)
+        yield break;
+
+      if ((control.EditModeController.IsListEditModeActive || control.EditModeController.IsRowEditModeActive) && control.EditModeController.EnableEditModeValidator)
+       yield return CreateEditModeValidator (control, control.GetResourceManager());
+    }
+
+    private EditModeValidator CreateEditModeValidator (IBocList control, IResourceManager resourceManager)
+    {
+      EditModeValidator editModeValidator = new EditModeValidator (control.EditModeController);
+      editModeValidator.ID = control.ID + "_ValidatorEditMode";
+      editModeValidator.ControlToValidate = control.ID;
+      if (control.EditModeController.IsRowEditModeActive)
+        editModeValidator.ErrorMessage = resourceManager.GetString (BocList.ResourceIdentifier.RowEditModeErrorMessage);
+      else if (control.EditModeController.IsListEditModeActive)
+        editModeValidator.ErrorMessage = resourceManager.GetString (BocList.ResourceIdentifier.ListEditModeErrorMessage);
+
+      return editModeValidator;
     }
   }
 }
