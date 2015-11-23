@@ -6,9 +6,11 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation
 {
-  [ImplementationFor (typeof (IBocReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor (typeof (IBocReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocReferenceValueValidatorFactory: IBocReferenceValueValidatorFactory
   {
+    public const int Position = 0;
+
     public IEnumerable<BaseValidator> CreateValidators (IBocReferenceValue control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull ("control", control);

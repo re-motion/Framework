@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
@@ -24,6 +25,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       var instance = _serviceLocator.GetInstance<IBocDateTimeValueValidatorFactory>();
 
       Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocDateTimeValue>>());
+
+      var factories = ((CompoundValidatorFactory<IBocDateTimeValue>) instance).VlidatorFactories;
+      Assert.That (factories.Select (f => f.GetType()), Has.Member (typeof (BocDateTimeValueValidatorFactory)));
+      Assert.That (factories.Count, Is.EqualTo (1));
     }
 
     [Test]

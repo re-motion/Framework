@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
@@ -24,6 +25,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var instance = _serviceLocator.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory>();
 
       Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocAutoCompleteReferenceValue>>());
+
+      var factories = ((CompoundValidatorFactory<IBocAutoCompleteReferenceValue>) instance).VlidatorFactories;
+      Assert.That (factories.Select (f => f.GetType()), Has.Member (typeof (BocAutoCompleteReferenceValueValidatorFactory)));
+      Assert.That (factories.Count, Is.EqualTo (1));
     }
 
     [Test]

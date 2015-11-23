@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -24,6 +25,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var instance = _serviceLocator.GetInstance<IBocListValidatorFactory>();
 
       Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocList>>());
+
+      var factories = ((CompoundValidatorFactory<IBocList>) instance).VlidatorFactories;
+      Assert.That (factories.Select (f => f.GetType()), Has.Member (typeof (BocListValidatorFactory)));
+      Assert.That (factories.Count, Is.EqualTo (1));
     }
 
     [Test]

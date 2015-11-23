@@ -43,15 +43,16 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
       var validators =
           EnumerableUtility.SelectRecursiveDepthFirst (
               namingContainer,
-              child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer)))
+              child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer) ))
               .OfType<IBocValidator>();
 
       var unhandledFailures = failures;
       var referenceDataSourceValidators = new List<BocReferenceDataSourceValidator>();
+      
+      var controlsWithValidBinding = dataSourceControl.GetBoundControlsWithValidBinding().Cast<Control>();
+      var validatorsMatchingToControls = controlsWithValidBinding.Join (validators, c => c.ID, v => ((BaseValidator) v).ControlToValidate, (c, v) => v);
 
-      // ReSharper disable LoopCanBeConvertedToQuery
-      foreach (var validator in validators)
-      // ReSharper restore LoopCanBeConvertedToQuery
+      foreach (var validator in validatorsMatchingToControls)
       {
         if (validator is BocReferenceDataSourceValidator)
           referenceDataSourceValidators.Add ((BocReferenceDataSourceValidator) validator);
@@ -59,9 +60,8 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
           unhandledFailures = validator.ApplyValidationFailures (unhandledFailures);
       }
 
-      // ReSharper disable LoopCanBeConvertedToQuery
+      // ReSharper disable once LoopCanBeConvertedToQuery
       foreach (var validator in referenceDataSourceValidators)
-          // ReSharper restore LoopCanBeConvertedToQuery
       {
         unhandledFailures = validator.ApplyValidationFailures (unhandledFailures);
       }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
@@ -24,6 +25,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
       var instance = _serviceLocator.GetInstance<IBocMultilineTextValueValidatorFactory>();
 
       Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocMultilineTextValue>>());
+
+      var factories = ((CompoundValidatorFactory<IBocMultilineTextValue>) instance).VlidatorFactories;
+      Assert.That (factories.Select (f => f.GetType()), Has.Member (typeof (BocMultilineTextValueValidatorFactory)));
+      Assert.That (factories.Count, Is.EqualTo (1));
     }
 
     [Test]

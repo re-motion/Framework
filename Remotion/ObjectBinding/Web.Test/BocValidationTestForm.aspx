@@ -25,14 +25,12 @@
                 <td></td>  
                 <td>
                     <remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject"></remotion:boctextvalue>
-                    <remotion:BocValidator ID="FirstNameFieldValidator" ControlToValidate="FirstNameField" runat="server"></remotion:BocValidator>
                 </td>
               </tr>
               <tr>
                 <td></td>  
                 <td>
                     <remotion:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject"></remotion:boctextvalue>
-                    <remotion:BocValidator ID="LastNameFieldValidator" ControlToValidate="LastNameField" runat="server"></remotion:BocValidator>
                 </td>
               </tr>
               <tr>
@@ -90,7 +88,6 @@
             <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
             <remotion:BocDataSourceValidator ID="DataSourceValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BocDataSourceValidator>
             <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></remotion:BusinessObjectReferenceDataSourceControl>
-            <remotion:BocReferenceDataSourceValidator ID="ReferenceDataSourceValidatorForDataSourceBehavior" ControlToValidate="PartnerDataSource" runat="server"></remotion:BocReferenceDataSourceValidator>
         </p>
         <p><asp:button id=SaveButton runat="server" Text="Save" Width="80px"></asp:button><asp:button id=PostBackButton runat="server" Text="Post Back"></asp:button></p>
  </asp:Content>

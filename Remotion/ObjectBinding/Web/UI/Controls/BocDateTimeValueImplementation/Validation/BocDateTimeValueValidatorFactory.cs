@@ -6,9 +6,11 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation
 {
-  [ImplementationFor(typeof(IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocDateTimeValueValidatorFactory : IBocDateTimeValueValidatorFactory
   {
+    public const int Position = 0;
+
     public IEnumerable<BaseValidator> CreateValidators (IBocDateTimeValue control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull ("control", control);

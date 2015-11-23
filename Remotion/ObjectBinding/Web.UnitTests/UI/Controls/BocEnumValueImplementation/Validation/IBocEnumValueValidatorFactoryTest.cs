@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
@@ -24,6 +25,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       var instance = _serviceLocator.GetInstance<IBocEnumValueValidatorFactory>();
 
       Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocEnumValue>>());
+
+      var factories = ((CompoundValidatorFactory<IBocEnumValue>) instance).VlidatorFactories;
+      Assert.That (factories.Select (f => f.GetType()), Has.Member (typeof (BocEnumValueValidatorFactory)));
+      Assert.That (factories.Count, Is.EqualTo (1));
     }
 
     [Test]

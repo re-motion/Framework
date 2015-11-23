@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 
     private string GetShortPropertyName (ValidationFailure failure)
     {
-      return failure.PropertyName.Split ('c').Last();
+      return failure.PropertyName.Split ('.').Last();
     }
 
     protected override bool EvaluateIsValid ()

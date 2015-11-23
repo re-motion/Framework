@@ -71,6 +71,7 @@ namespace OBWTest
         person.Height = 179;
         person.Income = 2000;
 
+       
         //partner = person.Partner = Person.CreateObject();
         //partner.FirstName = "Sepp";
         //partner.LastName = "Forcher";

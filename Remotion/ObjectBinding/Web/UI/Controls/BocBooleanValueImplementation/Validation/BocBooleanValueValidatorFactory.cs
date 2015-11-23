@@ -7,9 +7,11 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation
 {
-  [ImplementationFor (typeof (IBocBooleanValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor (typeof (IBocBooleanValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocBooleanValueValidatorFactory : IBocBooleanValueValidatorFactory
   {
+    public const int Position = 0;
+
     private const string c_nullString = "null";
 
     public IEnumerable<BaseValidator> CreateValidators (IBocBooleanValue control, bool isReadOnly)

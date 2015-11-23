@@ -10,9 +10,11 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation
 {
-  [ImplementationFor(typeof(IBocTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IBocTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocTextValueValidatorFactory : IBocTextValueValidatorFactory
   {
+    public const int Position = 0;
+
     public IEnumerable<BaseValidator> CreateValidators (IBocTextValue control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull ("control", control);

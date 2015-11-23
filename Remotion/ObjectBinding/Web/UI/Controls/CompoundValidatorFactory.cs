@@ -10,6 +10,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     private readonly IReadOnlyCollection<IBocValidatorFactory<T>> _innerFactories;
 
+    public IReadOnlyCollection<IBocValidatorFactory<T>> VlidatorFactories
+    {
+      get { return _innerFactories; }
+    }
+
     public CompoundValidatorFactory (IEnumerable<IBocValidatorFactory<T>> innerFactories)
     {
       ArgumentUtility.CheckNotNull ("innerFactories", innerFactories);

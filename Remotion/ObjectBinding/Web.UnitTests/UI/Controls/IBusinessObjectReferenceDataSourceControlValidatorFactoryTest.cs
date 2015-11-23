@@ -22,6 +22,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var instance = _serviceLocator.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
 
       Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>>());
+
+      var factories = ((CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>) instance).VlidatorFactories;
+      Assert.That (factories.Count, Is.EqualTo (0));
     }
 
     [Test]

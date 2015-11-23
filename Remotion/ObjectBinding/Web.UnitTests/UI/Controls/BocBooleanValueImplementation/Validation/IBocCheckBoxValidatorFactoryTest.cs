@@ -24,6 +24,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       var instance = _serviceLocator.GetInstance<IBocCheckBoxValidatorFactory>();
 
       Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocCheckBox>>());
+
+      var factories = ((CompoundValidatorFactory<IBocCheckBox>) instance).VlidatorFactories;
+      Assert.That (factories.Count, Is.EqualTo (0));
     }
 
     [Test]

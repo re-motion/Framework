@@ -98,6 +98,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj">
+      <Project>{d057d6f3-2015-4eb0-b6bd-77be8ed1571a}</Project>
+      <Name>Validation.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj">
       <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
       <Name>ObjectBinding.Web</Name>
@@ -142,8 +146,12 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="UI\Controls\BocDataSourceValidator.cs" />
+    <Compile Include="UI\Controls\BocListValidator.cs" />
     <Compile Include="UI\Controls\BocReferenceDataSourceValidator.cs" />
     <Compile Include="UI\Controls\BocValidator.cs" />
+    <Compile Include="UI\Controls\Factories\BocListValidatorValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Factories\BocReferenceDataSourceValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Factories\BocValidatorFactory.cs" />
     <Compile Include="UI\Controls\IBocValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

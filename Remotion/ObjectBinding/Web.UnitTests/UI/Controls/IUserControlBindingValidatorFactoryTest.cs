@@ -22,6 +22,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var instance = _serviceLocator.GetInstance<IUserControlBindingValidatorFactory>();
 
       Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<UserControlBinding>>());
+
+      var factories = ((CompoundValidatorFactory<UserControlBinding>) instance).VlidatorFactories;
+      Assert.That (factories.Count, Is.EqualTo (0));
     }
 
     [Test]
