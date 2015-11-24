@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Collections;
@@ -29,7 +30,7 @@ using Remotion.Utilities;
 using Remotion.Validation;
 using Remotion.Web.UI.Controls;
 
-namespace OBWTest
+namespace OBWTest.Validation
 {
   public class BocValidationTestForm
       : SingleBocTestWxeBasePage,
@@ -56,31 +57,16 @@ namespace OBWTest
     protected BocList ListField;
     protected HtmlTable FormGrid;
     protected HtmlHeadContents HtmlHeadContents;
+    protected UserControlBinding UserControlPartnerBinding;
 
     protected void Page_Load (object sender, EventArgs e)
     {
-      Guid personID = new Guid (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-      Person person = Person.CreateObject(); // Person.GetObject (personID);
-      //Person partner;
-      if (person == null)
-      {
-        person = Person.CreateObject (personID);
-        person.FirstName = "Hugo";
-        person.LastName = "Meier";
-        person.DateOfBirth = new DateTime (1959, 4, 15);
-        person.Height = 179;
-        person.Income = 2000;
+    }
 
-       
-        //partner = person.Partner = Person.CreateObject();
-        //partner.FirstName = "Sepp";
-        //partner.LastName = "Forcher";
-      }
-      //else
-      //  partner = person.Partner;
-
-      CurrentObject.BusinessObject = (IBusinessObject) person;
-
+    protected override void OnLoad (EventArgs e)
+    {
+      base.OnLoad (e);
+      CurrentObject.BusinessObject = (IBusinessObject) ((BocValidationTestWxeFunction)CurrentFunction).Person;
       CurrentObject.LoadValues (IsPostBack);
 
       if (!IsPostBack)
@@ -117,20 +103,23 @@ namespace OBWTest
 
     private void SaveButton_Click (object sender, EventArgs e)
     {
-      bool isValid = FormGridManager.Validate();
+      bool isValid = CurrentObject.Validate ();
+
       if (isValid)
       {
         CurrentObject.SaveValues (false);
         var person = (Person) CurrentObject.BusinessObject;
-
         var validationResult = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person);
-        if (validationResult.IsValid)
+        var validationResultPartner = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Partner);
+        var errors = validationResult.Errors.Concat (validationResultPartner.Errors);
+
+        if (validationResult.IsValid && validationResultPartner.IsValid)
         {
           person.SaveObject ();
         }
         else
         {
-          DataSourceValidator.ApplyValidationFailures (validationResult.Errors);
+          DataSourceValidator.ApplyValidationFailures (errors);
           DataSourceValidator.Validate();
         }
       }
@@ -146,6 +135,11 @@ namespace OBWTest
       return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
     }
 
+    public override void Validate ()
+    {
+      base.Validate();
+      FormGridManager.Validate();
+    }
 
     public IValidatorBuilder ValidationBuilder
     {

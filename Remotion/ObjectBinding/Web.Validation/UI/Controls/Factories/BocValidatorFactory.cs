@@ -24,7 +24,6 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
   [ImplementationFor (typeof (IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocDateTimeValueValidatorFactory)]
   [ImplementationFor (typeof (IBocEnumValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocEnumValueValidatorFactory)]
   [ImplementationFor (typeof (IBocMultilineTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocMultilineTextValueValidatorFactory)]
-  [ImplementationFor (typeof (IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_UserControlBindingValidatorFactory)]
   public class BocValidatorFactory
       : IBocTextValueValidatorFactory,
         IBocReferenceValueValidatorFactory,
@@ -33,8 +32,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
         IBocCheckBoxValidatorFactory,
         IBocDateTimeValueValidatorFactory,
         IBocEnumValueValidatorFactory,
-        IBocMultilineTextValueValidatorFactory,
-        IUserControlBindingValidatorFactory
+        IBocMultilineTextValueValidatorFactory
   {
     public const int Position_BocTextValueValidatorFactory = BocTextValueValidatorFactory.Position + 1;
     public const int Position_BocReferenceValueValidatorFactory = BocReferenceValueValidatorFactory.Position + 1;
@@ -44,7 +42,6 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
     public const int Position_BocDateTimeValueValidatorFactory = BocDateTimeValueValidatorFactory.Position + 1;
     public const int Position_BocEnumValueValidatorFactory = BocEnumValueValidatorFactory.Position + 1;
     public const int Position_BocMultilineTextValueValidatorFactory = BocMultilineTextValueValidatorFactory.Position + 1;
-    public const int Position_UserControlBindingValidatorFactory = 0;
 
     public IEnumerable<BaseValidator> CreateValidators (IBocTextValue control, bool isReadOnly)
     {
@@ -82,11 +79,6 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
     }
 
     public IEnumerable<BaseValidator> CreateValidators (IBocMultilineTextValue control, bool isReadOnly)
-    {
-      return CreateBocValidator (control.ID, isReadOnly);
-    }
-
-    public IEnumerable<BaseValidator> CreateValidators (UserControlBinding control, bool isReadOnly)
     {
       return CreateBocValidator (control.ID, isReadOnly);
     }

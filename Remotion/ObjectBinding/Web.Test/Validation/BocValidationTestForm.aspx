@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BocValidationTestForm.aspx.cs" Inherits="OBWTest.BocValidationTestForm" MasterPageFile="~/StandardMode.Master" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BocValidationTestForm.aspx.cs" Inherits="OBWTest.Validation.BocValidationTestForm" MasterPageFile="~/StandardMode.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <h1>BocValidationTest</h1>
 </asp:Content>
@@ -30,12 +30,20 @@
               <tr>
                 <td></td>  
                 <td>
-                    <remotion:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject"></remotion:boctextvalue>
+                    <remotion:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" Required="False" datasourcecontrol="CurrentObject"></remotion:boctextvalue>
                 </td>
               </tr>
               <tr>
                 <td></td>
                 <td><remotion:BocTextValue id="ParterLastNameField" runat="server" DataSourceControl="PartnerDataSource" propertyidentifier="LastName" width="100%"><textboxstyle textmode="SingleLine"></TextBoxStyle></remotion:BocTextValue></td>
+                </tr>
+              <tr>
+                <td>Partner1</td>
+                <td><remotion:BocTextValue id="BocTextValue1" Required="True" runat="server" DataSourceControl="PartnerDataSource1" propertyidentifier="LastName" width="100%"><textboxstyle textmode="SingleLine"></TextBoxStyle></remotion:BocTextValue></td>
+                </tr>
+              <tr>
+                <td>Partner2</td>
+                <td><remotion:BocTextValue id="BocTextValue2" runat="server" DataSourceControl="PartnerDataSource2" propertyidentifier="LastName" width="100%"><textboxstyle textmode="SingleLine"></TextBoxStyle></remotion:BocTextValue></td>
                 </tr>
               <tr>
                 <td></td>
@@ -82,12 +90,20 @@
             </PersistedCommand>
             </remotion:BocSimpleColumnDefinition>
             </FixedColumns></remotion:boclist></td></tr>
+              <tr><td></td>
+                <td>
+                    <remotion:UserControlBinding ID="UserControlPartnerBinding" runat="server" UserControlPath="TestUserControl.ascx" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" />
+                </td>
+              </tr>
          </table>
         <p>
             <remotion:formgridmanager id=FormGridManager runat="server"  visible="true"></remotion:formgridmanager>
             <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
             <remotion:BocDataSourceValidator ID="DataSourceValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BocDataSourceValidator>
-            <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></remotion:BusinessObjectReferenceDataSourceControl>
+            <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource"  runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></remotion:BusinessObjectReferenceDataSourceControl>
+            <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource1" runat="server" PropertyIdentifier="Partner" DataSourceControl="PartnerDataSource"></remotion:BusinessObjectReferenceDataSourceControl>
+            <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource2" runat="server" PropertyIdentifier="Partner" DataSourceControl="PartnerDataSource1"></remotion:BusinessObjectReferenceDataSourceControl>
+          
         </p>
         <p><asp:button id=SaveButton runat="server" Text="Save" Width="80px"></asp:button><asp:button id=PostBackButton runat="server" Text="Post Back"></asp:button></p>
  </asp:Content>

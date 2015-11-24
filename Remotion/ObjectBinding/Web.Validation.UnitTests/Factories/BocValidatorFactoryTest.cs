@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
     [TestCase (typeof (IBocDateTimeValueValidatorFactory), typeof (CompoundValidatorFactory<IBocDateTimeValue>), new[] { typeof (BocDateTimeValueValidatorFactory), typeof (BocValidatorFactory) })]
     [TestCase (typeof (IBocEnumValueValidatorFactory), typeof (CompoundValidatorFactory<IBocEnumValue>), new[] { typeof (BocEnumValueValidatorFactory), typeof (BocValidatorFactory) })]
     [TestCase (typeof (IBocMultilineTextValueValidatorFactory), typeof (CompoundValidatorFactory<IBocMultilineTextValue>), new[] { typeof (BocMultilineTextValueValidatorFactory), typeof (BocValidatorFactory) })]
-    [TestCase (typeof (IUserControlBindingValidatorFactory), typeof (CompoundValidatorFactory<UserControlBinding>), new[] { typeof (BocValidatorFactory) })]
+    //[TestCase (typeof (IUserControlBindingValidatorFactory), typeof (CompoundValidatorFactory<UserControlBinding>), new[] { typeof (BocValidatorFactory) })]
     public void GetInstance_Once (Type serviceType, Type targetType, Type[] expectedInnerFactoryTypesOrdered)
     {
       var instance = _serviceLocator.GetInstance (serviceType);
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
     [TestCase (typeof (IBocDateTimeValueValidatorFactory), typeof (CompoundValidatorFactory<IBocDateTimeValue>))]
     [TestCase (typeof (IBocEnumValueValidatorFactory), typeof (CompoundValidatorFactory<IBocEnumValue>))]
     [TestCase (typeof (IBocMultilineTextValueValidatorFactory), typeof (CompoundValidatorFactory<IBocMultilineTextValue>))]
-    [TestCase (typeof (IUserControlBindingValidatorFactory), typeof (CompoundValidatorFactory<UserControlBinding>))]
+   // [TestCase (typeof (IUserControlBindingValidatorFactory), typeof (CompoundValidatorFactory<UserControlBinding>))]
     public void GetInstance_Twice_ReturnsSameInstance (Type serviceType, Type targetType)
     {
       var instance1 = _serviceLocator.GetInstance (serviceType);

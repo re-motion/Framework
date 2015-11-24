@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
     [Test]
     [TestCase (true)]
     [TestCase (false)]
-    public void CreateValidators_IBocAutoCompleteReferenceValue (bool isReadOnly)
+    public void CreateValidators (bool isReadOnly)
     {
       var mock = MockRepository.GenerateMock<IBocList>();
       mock.Expect (m => m.ID).Return ("ID");

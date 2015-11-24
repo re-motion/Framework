@@ -51,7 +51,7 @@ href="WxeHandler.ashx?WxeFunctionType=OBWTest.Design.DesignTestFunction,OBWTest"
 <a href="ControlLayoutTest.wxe?WxeReturnToSelf=True&TabbedMenuSelection=ViewLayoutTests">ControlLayoutTest.wxe</a></p>
 <p>Tests for reference data sources<br />
 <a href="ReferenceDataSourceTest.wxe?WxeReturnToSelf=True">ReferenceDataSourceTest.wxe</a></p>
-<p>BOC-validation tests<br /><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.BocValidationTestWxeFunction,OBWTest" >WxeHandler.ashx?WxeFunctionType=OBWTest.BocValidationTestWxeFunction,OBWTest</A></p>
+<p>BOC-validation tests<br /><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.Validation.BocValidationTestWxeFunction,OBWTest" >WxeHandler.ashx?WxeFunctionType=OBWTest.Validation.BocValidationTestWxeFunction,OBWTest</A></p>
 </form>
   </body>
 </html>

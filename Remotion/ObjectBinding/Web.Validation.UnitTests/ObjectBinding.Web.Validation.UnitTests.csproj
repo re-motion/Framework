@@ -61,6 +61,7 @@
     <Compile Include="Factories\BocListValidatorValidatorFactoryTest.cs" />
     <Compile Include="Factories\BocValidatorFactoryTest.cs" />
     <Compile Include="Factories\BocReferenceDataSourceValidatorFactoryTest.cs" />
+    <Compile Include="Factories\UserControlBindingValidatorValidatorFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

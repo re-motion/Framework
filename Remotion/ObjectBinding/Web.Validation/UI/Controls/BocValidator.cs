@@ -21,6 +21,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using FluentValidation.Results;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Validation.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
@@ -54,13 +55,32 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
     {
       if (!bocControl.HasValidBinding)
         return false;
-      //if (failure.GetValidatedInstance != bocControl.DataSource.BusinessObject)
-      // return false;
-      if (failure.PropertyName == bocControl.PropertyIdentifier)
+      
+      var validatedInstance = failure.GetValidatedInstance ();
+      var businessObject = bocControl.DataSource != null ? bocControl.DataSource.BusinessObject : null;
+
+      if (validatedInstance != null && businessObject != null
+          && validatedInstance != businessObject)
+        return false;
+
+      bool isMatchingProperty = failure.PropertyName == bocControl.Property.Identifier;
+      if (!isMatchingProperty)
+        isMatchingProperty = GetShortPropertyName (failure) == bocControl.Property.Identifier;
+
+      bool isMatchinInstance = validatedInstance == null || validatedInstance == businessObject;
+
+      if (isMatchingProperty && isMatchinInstance)
         return true;
-      if (GetShortPropertyName (failure) == bocControl.PropertyIdentifier)
-        return true;
+
       return false;
+
+      ////if (failure.GetValidatedInstance != bocControl.DataSource.BusinessObject)
+      //// return false;
+      //if (failure.PropertyName == bocControl.PropertyIdentifier)
+      //  return true;
+      //if (GetShortPropertyName (failure) == bocControl.PropertyIdentifier)
+      //  return true;
+      //return false;
     }
 
     private string GetShortPropertyName (ValidationFailure failure)

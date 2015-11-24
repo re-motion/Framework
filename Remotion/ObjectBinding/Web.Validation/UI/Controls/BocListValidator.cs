@@ -36,7 +36,26 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 
     private bool IsMatchingControl (ValidationFailure failure, BocList bocControl)
     {
+      if (!bocControl.HasValidBinding)
+        return false;
+
       var validatedInstance = failure.GetValidatedInstance();
+      var businessObject = bocControl.DataSource != null ? bocControl.DataSource.BusinessObject : null;
+
+      if (validatedInstance != null && businessObject != null
+          && validatedInstance != businessObject)
+        return false;
+
+      bool isMatchingProperty = failure.PropertyName == bocControl.Property.Identifier;
+      if (!isMatchingProperty)
+        isMatchingProperty = GetShortPropertyName (failure) == bocControl.Property.Identifier;
+
+      bool isMatchinInstance = validatedInstance == null || validatedInstance == businessObject;
+
+      if (isMatchingProperty && isMatchinInstance)
+        return true;
+
+      return false;
       //bocControl.DataSource != null;
       //bocControl.Property != null;
 
@@ -45,11 +64,11 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 
       //bool isObject = bocControl.DataSource.BusinessObject == validatedInstance;
 
-      if (failure.PropertyName == bocControl.PropertyIdentifier)
-        return true;
-      if (GetShortPropertyName (failure) == bocControl.PropertyIdentifier)
-        return true;
-      return false;
+      //if (failure.PropertyName == bocControl.PropertyIdentifier)
+      //  return true;
+      //if (GetShortPropertyName (failure) == bocControl.PropertyIdentifier)
+      //  return true;
+      //return false;
     }
 
     private string GetShortPropertyName (ValidationFailure failure)
