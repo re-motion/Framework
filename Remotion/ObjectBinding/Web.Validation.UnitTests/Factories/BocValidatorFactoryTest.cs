@@ -182,19 +182,6 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       CheckValidators (isReadOnly, validators);
     }
 
-    [Test]
-    [TestCase (true)]
-    [TestCase (false)]
-    public void CreateValidators_UserControlBinding (bool isReadOnly)
-    {
-      var mock = MockRepository.GenerateMock<UserControlBinding>();
-      mock.Expect (m => m.ID).Return ("ID");
-
-      var factory = new BocValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly);
-      CheckValidators (isReadOnly, validators);
-    }
-
     private void CheckValidators (bool isReadOnly, IEnumerable<BaseValidator> validators)
     {
       if (isReadOnly)

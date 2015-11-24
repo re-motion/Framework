@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 {
@@ -13,6 +14,8 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 
     public IEnumerable<BaseValidator> CreateValidators (BusinessObjectReferenceDataSourceControl control, bool isReadOnly)
     {
+      ArgumentUtility.CheckNotNull ("control", control);
+
       if (isReadOnly)
         yield break;
 

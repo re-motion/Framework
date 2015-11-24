@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using FluentValidation.Results;
 using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
 using Remotion.Validation.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
@@ -16,6 +17,8 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 
     public IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
     {
+      ArgumentUtility.CheckNotNull ("failures", failures);
+
       var control = NamingContainer.FindControl (ControlToValidate);
       var userControlBinding = control as UserControlBinding;
       if (userControlBinding == null)

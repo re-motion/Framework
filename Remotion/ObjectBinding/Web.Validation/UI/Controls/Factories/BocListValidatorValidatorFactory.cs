@@ -4,6 +4,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 {
@@ -13,6 +14,8 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
     public const int Position = BocListValidatorFactory.Position + 1;
     public IEnumerable<BaseValidator> CreateValidators (IBocList control, bool isReadOnly)
     {
+      ArgumentUtility.CheckNotNull ("control", control);
+
       if (isReadOnly)
         yield break;
 
