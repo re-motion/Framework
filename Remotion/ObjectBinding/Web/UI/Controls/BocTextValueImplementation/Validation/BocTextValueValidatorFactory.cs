@@ -1,4 +1,21 @@
-﻿using System;
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+// 
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
+// 
+// re-motion is distributed in the hope that it will be useful, 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
+// 
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI.WebControls;
@@ -10,10 +27,15 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation
 {
-  [ImplementationFor(typeof(IBocTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
+  [ImplementationFor (typeof (IBocTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple,
+      Position = Position)]
   public class BocTextValueValidatorFactory : IBocTextValueValidatorFactory
   {
     public const int Position = 0;
+
+    public BocTextValueValidatorFactory ()
+    {
+    }
 
     public IEnumerable<BaseValidator> CreateValidators (IBocTextValue control, bool isReadOnly)
     {
@@ -37,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
 
     private RequiredFieldValidator CreateRequiredFieldValidator (IBocTextValue control, IResourceManager resourceManager)
     {
-      RequiredFieldValidator requiredValidator = new RequiredFieldValidator ();
+      RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
       requiredValidator.ID = control.ID + "_ValidatorRequired";
       requiredValidator.ControlToValidate = control.TargetControl.ID;
       requiredValidator.ErrorMessage = resourceManager.GetString (BocTextValue.ResourceIdentifier.RequiredErrorMessage);
@@ -49,11 +71,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       var maxLength = control.TextBoxStyle.MaxLength;
       Assertion.IsTrue (maxLength.HasValue);
 
-      LengthValidator lengthValidator = new LengthValidator ();
+      LengthValidator lengthValidator = new LengthValidator();
       lengthValidator.ID = control.ID + "_ValidatorMaxLength";
       lengthValidator.ControlToValidate = control.TargetControl.ID;
       lengthValidator.MaximumLength = maxLength.Value;
-      lengthValidator.ErrorMessage = string.Format (resourceManager.GetString (BocTextValue.ResourceIdentifier.MaxLengthValidationMessage), maxLength.Value);
+      lengthValidator.ErrorMessage = string.Format (
+          resourceManager.GetString (BocTextValue.ResourceIdentifier.MaxLengthValidationMessage),
+          maxLength.Value);
       return lengthValidator;
     }
 
@@ -80,16 +104,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         case BocTextValueType.Single:
           return CreateTypeIsNumericValidator (control, valueType, resourceManager);
         default:
-          {
-            throw new InvalidOperationException (
-                "BocTextValue '" + control.ID + "': Cannot convert " + valueType + " to type " + typeof (ValidationDataType).FullName + ".");
-          }
+        {
+          throw new InvalidOperationException (
+              "BocTextValue '" + control.ID + "': Cannot convert " + valueType + " to type " + typeof (ValidationDataType).FullName + ".");
+        }
       }
     }
 
     private DateTimeValidator CreateTypeIsDateTimeValidator (IBocTextValue control, IResourceManager resourceManager)
     {
-      DateTimeValidator typeValidator = new DateTimeValidator ();
+      DateTimeValidator typeValidator = new DateTimeValidator();
       typeValidator.ID = control.ID + "_ValidatorType";
       typeValidator.ControlToValidate = control.TargetControl.ID;
       typeValidator.ErrorMessage = resourceManager.GetString (BocTextValue.ResourceIdentifier.InvalidDateAndTimeErrorMessage);
@@ -98,7 +122,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
 
     private CompareValidator CreateTypeIsDateValidator (IBocTextValue control, IResourceManager resourceManager)
     {
-      CompareValidator typeValidator = new CompareValidator ();
+      CompareValidator typeValidator = new CompareValidator();
       typeValidator.ID = control.ID + "_ValidatorType";
       typeValidator.ControlToValidate = control.TargetControl.ID;
       typeValidator.Operator = ValidationCompareOperator.DataTypeCheck;
@@ -109,7 +133,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
 
     private NumericValidator CreateTypeIsNumericValidator (IBocTextValue control, BocTextValueType valueType, IResourceManager resourceManager)
     {
-      NumericValidator typeValidator = new NumericValidator ();
+      NumericValidator typeValidator = new NumericValidator();
       typeValidator.ID = control.ID + "_ValidatorType";
       typeValidator.ControlToValidate = control.TargetControl.ID;
       if (control.Property != null)

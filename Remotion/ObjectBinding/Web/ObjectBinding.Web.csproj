@@ -271,7 +271,7 @@
     <Compile Include="UI\Controls\BocTreeViewImplementation\Rendering\BocTreeViewRenderer.cs" />
     <Compile Include="UI\Controls\BocTreeViewImplementation\Rendering\BocTreeViewRenderingContext.cs" />
     <Compile Include="UI\Controls\BocTreeViewImplementation\Rendering\IBocTreeViewRenderer.cs" />
-    <Compile Include="UI\Controls\CompoundBocAutoCompleteReferenceValueValidatorFactory.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Validation\CompoundBocAutoCompleteReferenceValueValidatorFactory.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\CompoundBocBooleanValueValidatorFactory.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Validation\CompoundBocDateTimeValueValidatorFactory.cs" />
     <Compile Include="UI\Controls\BocEnumValueImplementation\Validation\CompoundBocEnumValueValidatorFactory.cs" />

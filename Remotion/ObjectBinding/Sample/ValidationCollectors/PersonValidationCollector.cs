@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using FluentValidation;
 using Remotion.Validation;
 
@@ -24,10 +25,10 @@ namespace Remotion.ObjectBinding.Sample.ValidationCollectors
   {
     public PersonValidationCollector ()
     {
-      AddRule (p => p.LastName).NotNull();
-      AddRule (p => p.LastName).NotEmpty ();
+      AddRule (p => p.LastName).Length (0, 25);
+      AddRule (p => p.LastName).NotEmpty();
 
-      AddRule (p => p.Partner).NotNull ();
+      AddRule (p => p.Partner).NotNull();
     }
   }
 }

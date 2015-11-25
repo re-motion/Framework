@@ -61,6 +61,18 @@
     <Compile Include="Factories\BocListValidatorValidatorFactoryTest.cs" />
     <Compile Include="Factories\BocValidatorFactoryTest.cs" />
     <Compile Include="Factories\BocReferenceDataSourceValidatorFactoryTest.cs" />
+    <Compile Include="Factories\Filtering\FilteringBocAutoCompleteReferenceValueValidatorFactoryDecoratorTest.cs" />
+    <Compile Include="Factories\Filtering\FilteringBocBooleanValueValidatorFactoryDecoratorTest.cs" />
+    <Compile Include="Factories\Filtering\FilteringBocCheckBoxValidatorFactoryDecoratorTest.cs" />
+    <Compile Include="Factories\Filtering\FilteringBocDateTimeValueValidatorFactoryDecoratorTest.cs" />
+    <Compile Include="Factories\Filtering\FilteringBocEnumValueValidatorFactoryDecoratorTest.cs" />
+    <Compile Include="Factories\Filtering\FilteringBocListValidatorFactoryDecoratorTest.cs" />
+    <Compile Include="Factories\Filtering\FilteringBocMultilineTextValueValidatorFactoryDecoratorTest.cs" />
+    <Compile Include="Factories\Filtering\FilteringBocReferenceValueValidatorFactoryDecoratorTest.cs" />
+    <Compile Include="Factories\Filtering\FilteringBocTextValueValidatorFactoryDecoratorTest.cs" />
+    <Compile Include="Factories\Filtering\FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecoratorTest.cs" />
+    <Compile Include="Factories\Filtering\FilteringUserControlBindingValidatorFactoryDecoratorTest.cs" />
+    <Compile Include="Factories\Filtering\FilteringValidatorFactoryDecoraterBaseTest.cs" />
     <Compile Include="Factories\UserControlBindingValidatorValidatorFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -77,6 +89,10 @@
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
       <Project>{2aa369ec-a4e7-4d75-9101-efa90e902625}</Project>
       <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
+      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
+      <Name>Globalization.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>

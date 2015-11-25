@@ -30,7 +30,7 @@
               <tr>
                 <td></td>  
                 <td>
-                    <remotion:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" Required="False" datasourcecontrol="CurrentObject"></remotion:boctextvalue>
+                    <remotion:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" Required="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue>
                 </td>
               </tr>
               <tr>

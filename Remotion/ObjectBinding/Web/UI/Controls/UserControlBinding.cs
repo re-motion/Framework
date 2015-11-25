@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void RegisterValidator (BaseValidator validator)
     {
-      throw new NotSupportedException();
+      // NOP
     }
 
     public override void PrepareValidation ()

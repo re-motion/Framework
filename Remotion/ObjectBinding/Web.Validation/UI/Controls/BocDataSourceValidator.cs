@@ -29,8 +29,10 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
   public class BocDataSourceValidator : BaseValidator, IBocValidator
   {
-    private List<ValidationFailure> _unhandledFailures = new List<ValidationFailure>();
-    
+    public BocDataSourceValidator ()
+    {
+    }
+
     public IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
     {
       ArgumentUtility.CheckNotNull ("failures", failures);
@@ -68,18 +70,14 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
       {
         unhandledFailures = validator.ApplyValidationFailures (unhandledFailures);
       }
-
-      _unhandledFailures = unhandledFailures.ToList();
-      ErrorMessage = string.Join ("\r\n", _unhandledFailures.Select (f => f.ErrorMessage));
-
-      if (_unhandledFailures.Any())
-        Validate();
-      return _unhandledFailures;
+      
+      return unhandledFailures.ToList();
     }
 
     protected override bool EvaluateIsValid ()
     {
-      return !_unhandledFailures.Any();
+      // This validator is never invalid because it just dispatches the errors.
+      return true;
     }
 
     protected override bool ControlPropertiesValid ()

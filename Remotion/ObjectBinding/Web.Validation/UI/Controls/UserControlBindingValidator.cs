@@ -1,4 +1,20 @@
-﻿using System;
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+// 
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
+// 
+// re-motion is distributed in the hope that it will be useful, 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
+// 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
@@ -7,13 +23,14 @@ using FluentValidation.Results;
 using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
-using Remotion.Validation.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
   public class UserControlBindingValidator: BaseValidator, IBocValidator
   {
-    private List<ValidationFailure> _unhandledFailures = new List<ValidationFailure> ();
+    public UserControlBindingValidator ()
+    {
+    }
 
     public IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
     {
@@ -23,8 +40,6 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
       var userControlBinding = control as UserControlBinding;
       if (userControlBinding == null)
         throw new InvalidOperationException ("UserControlBindingValidator may only be applied to controls of type UserControlBinding");
-      
-      userControlBinding.Validate();
 
       var namingContainer = userControlBinding.UserControl.DataSource.NamingContainer;
       var validator =
@@ -35,68 +50,20 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
               .SingleOrDefault (
                   c => c.ControlToValidate == userControlBinding.UserControl.DataSource.ID,
                   () => new InvalidOperationException ("Only zero or one BocDataSourceValidator is allowed per UserControlBinding."));
-      
-      _unhandledFailures.Clear();
+
+      List<ValidationFailure> unhandledFailures;
       if (validator != null)
-      {
-        _unhandledFailures = validator.ApplyValidationFailures (failures).ToList();
-      }
+        unhandledFailures = validator.ApplyValidationFailures (failures).ToList();
       else
-      {
-        _unhandledFailures = failures.ToList();
-      }
-      ErrorMessage = string.Join ("\r\n", _unhandledFailures.Select (f => f.ErrorMessage));
+        unhandledFailures = failures.ToList();
 
-      if (_unhandledFailures.Any ())
-        Validate ();
-      return _unhandledFailures;
-    }
-
-    private bool IsMatchingControl (ValidationFailure failure, UserControlBinding userControlBinding)
-    {
-      if (!userControlBinding.HasValidBinding)
-        return false;
-
-      var validatedInstance = failure.GetValidatedInstance();
-      var businessObject = userControlBinding.DataSource != null ? userControlBinding.DataSource.BusinessObject : null;
-
-      if (validatedInstance != null && businessObject != null
-          && validatedInstance != businessObject)
-        return false;
-
-      bool isMatchingProperty = failure.PropertyName == userControlBinding.Property.Identifier;
-      if (!isMatchingProperty)
-        isMatchingProperty = GetShortPropertyName (failure) == userControlBinding.Property.Identifier;
-
-      bool isMatchinInstance = validatedInstance == null || validatedInstance == businessObject;
-
-      if (isMatchingProperty && isMatchinInstance)
-        return true;
-
-      return false;
-      //bocControl.DataSource != null;
-      //bocControl.Property != null;
-
-      
-      //bocControl.Property.Identifier == failure.PropertyName;
-
-      //bool isObject = bocControl.DataSource.BusinessObject == validatedInstance;
-
-      //if (failure.PropertyName == bocControl.PropertyIdentifier)
-      //  return true;
-      //if (GetShortPropertyName (failure) == bocControl.PropertyIdentifier)
-      //  return true;
-      //return false;
-    }
-
-    private string GetShortPropertyName (ValidationFailure failure)
-    {
-      return failure.PropertyName.Split ('.').Last ();
+      return unhandledFailures;
     }
 
     protected override bool EvaluateIsValid ()
     {
-      return !_unhandledFailures.Any ();
+      // This validator is never invalid because it just dispatches the errors.
+      return true;
     }
 
     protected override bool ControlPropertiesValid ()

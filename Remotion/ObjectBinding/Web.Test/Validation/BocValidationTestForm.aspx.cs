@@ -20,6 +20,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Collections;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
@@ -80,6 +81,7 @@ namespace OBWTest.Validation
 
     protected override void OnInit (EventArgs e)
     {
+      // SwitchingValidatorFactoryState.Instance.UseFilteringFactory = true;
       //
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
       //
@@ -103,11 +105,11 @@ namespace OBWTest.Validation
 
     private void SaveButton_Click (object sender, EventArgs e)
     {
-      bool isValid = CurrentObject.Validate ();
-
-      if (isValid)
+      
+      PrepareValidation ();
+      //FormGridManager.Validate ();
+      if (CurrentObject.SaveValues (false))
       {
-        CurrentObject.SaveValues (false);
         var person = (Person) CurrentObject.BusinessObject;
         var validationResult = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person);
         var validationResultPartner = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Partner);
@@ -123,6 +125,7 @@ namespace OBWTest.Validation
           DataSourceValidator.Validate();
         }
       }
+
     }
 
     public virtual StringCollection GetHiddenRows (HtmlTable table)
@@ -133,12 +136,6 @@ namespace OBWTest.Validation
     public virtual FormGridRowInfoCollection GetAdditionalRows (HtmlTable table)
     {
       return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
-    }
-
-    public override void Validate ()
-    {
-      base.Validate();
-      FormGridManager.Validate();
     }
 
     public IValidatorBuilder ValidationBuilder

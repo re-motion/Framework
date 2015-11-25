@@ -30,6 +30,10 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
   {
     private List<ValidationFailure> _validationFailures = new List<ValidationFailure> ();
 
+    public BocValidator ()
+    {
+    }
+
     public IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
     {
       ArgumentUtility.CheckNotNull ("failures", failures);
