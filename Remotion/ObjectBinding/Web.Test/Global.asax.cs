@@ -17,6 +17,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Web;
 using Microsoft.Practices.ServiceLocation;
@@ -29,6 +30,7 @@ using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain;
 using Remotion.ObjectBinding.Web;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
@@ -113,7 +115,7 @@ namespace OBWTest
           SwitchingValidatorFactoryState.Instance,
           new FilteringBocAutoCompleteReferenceValueValidatorFactoryDecorator (
               compoundBocAutoCompleteReferenceValueValidatorFactory),
-          compoundBocAutoCompleteReferenceValueValidatorFactory);
+          new BocAutoCompleteReferenceValueValidatorFactory());
       defaultServiceLocator.RegisterSingle<IBocAutoCompleteReferenceValueValidatorFactory> (() => bocAutoCompleteReferenceValueValidatorFactory);
 
       var compoundBocBooleanValueValidatorFactory = new CompoundBocBooleanValueValidatorFactory (
@@ -121,8 +123,8 @@ namespace OBWTest
       var bocBooleanValueValidatorFactory = new SwitchingBocBooleanValueValidatorFactoryDecorator (
           SwitchingValidatorFactoryState.Instance,
           new FilteringBocBooleanValueValidatorFactoryDecorator (
-              compoundBocBooleanValueValidatorFactory),
-          compoundBocBooleanValueValidatorFactory);
+              compoundBocBooleanValueValidatorFactory), // Fluent
+          new BocBooleanValueValidatorFactory ()); // Not Fluent
       defaultServiceLocator.RegisterSingle<IBocBooleanValueValidatorFactory> (() => bocBooleanValueValidatorFactory);
 
       var compoundBocCheckBoxValidatorFactory = new CompoundBocCheckBoxValidatorFactory (
@@ -131,7 +133,7 @@ namespace OBWTest
           SwitchingValidatorFactoryState.Instance,
           new FilteringBocCheckBoxValidatorFactoryDecorator (
               compoundBocCheckBoxValidatorFactory),
-          compoundBocCheckBoxValidatorFactory);
+          new CompoundValidatorFactory<IBocCheckBox>(Enumerable.Empty<IBocValidatorFactory<IBocCheckBox>>()));
       defaultServiceLocator.RegisterSingle<IBocCheckBoxValidatorFactory> (() => bocCheckBoxValidatorFactory);
 
       var compoundBocDateTimeValueValidatorFactory = new CompoundBocDateTimeValueValidatorFactory (
@@ -140,7 +142,7 @@ namespace OBWTest
           SwitchingValidatorFactoryState.Instance,
           new FilteringBocDateTimeValueValidatorFactoryDecorator (
               compoundBocDateTimeValueValidatorFactory),
-          compoundBocDateTimeValueValidatorFactory);
+          new BocDateTimeValueValidatorFactory ());
       defaultServiceLocator.RegisterSingle<IBocDateTimeValueValidatorFactory> (() => bocDateTimeValueValidatorFactory);
 
       var compoundBocEnumValueValidatorFactory = new CompoundBocEnumValueValidatorFactory (
@@ -149,7 +151,7 @@ namespace OBWTest
           SwitchingValidatorFactoryState.Instance,
           new FilteringBocEnumValueValidatorFactoryDecorator (
               compoundBocEnumValueValidatorFactory),
-          compoundBocEnumValueValidatorFactory);
+          new BocEnumValueValidatorFactory ());
       defaultServiceLocator.RegisterSingle<IBocEnumValueValidatorFactory> (() => bocEnumValueValidatorFactory);
 
       var compoundBocListValidatorFactory = new CompoundBocListValidatorFactory (
@@ -158,7 +160,7 @@ namespace OBWTest
           SwitchingValidatorFactoryState.Instance,
           new FilteringBocListValidatorFactoryDecorator (
               compoundBocListValidatorFactory),
-          compoundBocListValidatorFactory);
+          new BocListValidatorFactory ());
       defaultServiceLocator.RegisterSingle<IBocListValidatorFactory> (() => bocListValidatorFactory);
 
       var compoundBocMultilineTextValueValidatorFactory = new CompoundBocMultilineTextValueValidatorFactory (
@@ -167,7 +169,7 @@ namespace OBWTest
           SwitchingValidatorFactoryState.Instance,
           new FilteringBocMultilineTextValueValidatorFactoryDecorator (
               compoundBocMultilineTextValueValidatorFactory),
-          compoundBocMultilineTextValueValidatorFactory);
+          new BocMultilineTextValueValidatorFactory ());
       defaultServiceLocator.RegisterSingle<IBocMultilineTextValueValidatorFactory> (() => bocMultilineTextValueValidatorFactory);
 
       var compoundBocReferenceValueValidatorFactory = new CompoundBocReferenceValueValidatorFactory (
@@ -176,7 +178,7 @@ namespace OBWTest
           SwitchingValidatorFactoryState.Instance,
           new FilteringBocReferenceValueValidatorFactoryDecorator (
               compoundBocReferenceValueValidatorFactory),
-          compoundBocReferenceValueValidatorFactory);
+          new BocReferenceValueValidatorFactory ());
       defaultServiceLocator.RegisterSingle<IBocReferenceValueValidatorFactory> (() => bocReferenceValueValidatorFactory);
 
       var compoundBocTextValueValidatorFactory = new CompoundBocTextValueValidatorFactory (
@@ -185,7 +187,7 @@ namespace OBWTest
           SwitchingValidatorFactoryState.Instance,
           new FilteringBocTextValueValidatorFactoryDecorator (
               compoundBocTextValueValidatorFactory),
-          compoundBocTextValueValidatorFactory);
+          new BocTextValueValidatorFactory ());
       defaultServiceLocator.RegisterSingle<IBocTextValueValidatorFactory> (() => bocTextValueValidatorFactory);
 
       var compoundBusinessObjectReferenceDataSourceControlValidatorFactory = new CompoundBusinessObjectReferenceDataSourceControlValidatorFactory (
@@ -194,7 +196,7 @@ namespace OBWTest
           SwitchingValidatorFactoryState.Instance,
           new FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator (
               compoundBusinessObjectReferenceDataSourceControlValidatorFactory),
-          compoundBusinessObjectReferenceDataSourceControlValidatorFactory);
+          new CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl> (Enumerable.Empty<IBocValidatorFactory<BusinessObjectReferenceDataSourceControl>> ()));
       defaultServiceLocator.RegisterSingle<IBusinessObjectReferenceDataSourceControlValidatorFactory> (
           () => businessObjectReferenceDataSourceControlValidatorFactory);
 
@@ -204,7 +206,7 @@ namespace OBWTest
           SwitchingValidatorFactoryState.Instance,
           new FilteringUserControlBindingValidatorFactoryDecorator (
               compoundUserControlBindingValidatorFactory),
-          compoundUserControlBindingValidatorFactory);
+          new CompoundValidatorFactory<UserControlBinding>(Enumerable.Empty<IBocValidatorFactory<UserControlBinding>>()));
       defaultServiceLocator.RegisterSingle<IUserControlBindingValidatorFactory> (() => userControlBindingValidatorFactory);
     }
 

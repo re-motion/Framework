@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
 {
@@ -27,6 +30,20 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
     public FilteringBocMultilineTextValueValidatorFactoryDecorator (IBocValidatorFactory<IBocMultilineTextValue> innerFactory)
         : base (innerFactory)
     {
+    }
+
+    public override bool UseValidator (IBocMultilineTextValue control, BaseValidator validator)
+    {
+      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull ("validator", validator);
+
+      if (validator is RequiredFieldValidator)
+        return false;
+
+      if (validator is LengthValidator)
+        return false;
+
+      return true;
     }
   }
 }

@@ -81,7 +81,7 @@ namespace OBWTest.Validation
 
     protected override void OnInit (EventArgs e)
     {
-      // SwitchingValidatorFactoryState.Instance.UseFilteringFactory = true;
+      // SwitchingValidatorFactoryState.Instance.UseFluentValidatorFactory = true;
       //
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
       //

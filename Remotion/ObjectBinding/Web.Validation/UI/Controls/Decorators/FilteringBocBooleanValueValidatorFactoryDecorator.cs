@@ -14,10 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
+using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
 {
@@ -27,6 +30,14 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
     public FilteringBocBooleanValueValidatorFactoryDecorator (IBocValidatorFactory<IBocBooleanValue> innerFactory)
         : base (innerFactory)
     {
+    }
+
+    public override bool UseValidator (IBocBooleanValue control, BaseValidator validator)
+    {
+      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull ("validator", validator);
+
+      return true;
     }
   }
 }

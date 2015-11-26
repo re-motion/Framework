@@ -14,21 +14,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
 {
-  public class FilteringValidatorFactoryDecorator<T> : IBocValidatorFactory<T> where T : IBusinessObjectBoundEditableWebControl
+  public abstract class FilteringValidatorFactoryDecorator<T> : IBocValidatorFactory<T>
+      where T : IBusinessObjectBoundEditableWebControl
   {
     private readonly IBocValidatorFactory<T> _innerFactory;
 
-    public FilteringValidatorFactoryDecorator (IBocValidatorFactory<T> innerFactory)
+    protected FilteringValidatorFactoryDecorator (IBocValidatorFactory<T> innerFactory)
     {
       ArgumentUtility.CheckNotNull ("innerFactory", innerFactory);
 
@@ -40,15 +41,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
       ArgumentUtility.CheckNotNull ("control", control);
 
       var validators = _innerFactory.CreateValidators (control, isReadOnly);
-      return validators.Where (UseValidator);
+      return validators.Where (v => UseValidator (control, v));
     }
 
-    public virtual bool UseValidator (BaseValidator validator)
-    {
-      if (validator is RequiredFieldValidator || validator is LengthValidator)
-        return false;
-
-      return true;
-    }
+    public abstract bool UseValidator (T control, BaseValidator validator);
   }
 }
