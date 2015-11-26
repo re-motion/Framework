@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
   [ImplementationFor (typeof (IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class UserControlBindingValidatorValidatorFactory : IUserControlBindingValidatorFactory
   {
-    public const int Position = 1;
+    public const int Position = UserControlBindingValidatorFactory.Position + 1;
 
     public UserControlBindingValidatorValidatorFactory ()
     {

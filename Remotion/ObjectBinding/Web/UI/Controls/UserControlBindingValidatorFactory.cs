@@ -14,41 +14,34 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
-  [ImplementationFor (typeof (IBocListValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
-  public class BocListValidatorValidatorFactory : IBocListValidatorFactory
+  [ImplementationFor (typeof (IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple,
+      Position = Position)]
+  public class UserControlBindingValidatorFactory : IUserControlBindingValidatorFactory
   {
-    public const int Position = BocListValidatorFactory.Position + 1;
+    public const int Position = 0;
 
-    public BocListValidatorValidatorFactory ()
-    {
-    }
-
-    public IEnumerable<BaseValidator> CreateValidators (IBocList control, bool isReadOnly)
+    public IEnumerable<BaseValidator> CreateValidators (UserControlBinding control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull ("control", control);
 
-      if (isReadOnly)
-        yield break;
-
-      yield return CreateBocListValidator (control);
+      yield return CreateUserControlBindingValidator (control);
     }
 
-    private BaseValidator CreateBocListValidator (IBocList control)
+    private BaseValidator CreateUserControlBindingValidator (UserControlBinding control)
     {
-      var bocValidator = new BocListValidator();
-      bocValidator.ControlToValidate = control.ID;
-      bocValidator.ID = control.ID + "_BocListValidator";
-      return bocValidator;
+      var userControlBindingValidator = new UserControlBindingValidator();
+      userControlBindingValidator.ID = control.ID + "_UserControlBindingValidator";
+      userControlBindingValidator.ControlToValidate = control.ID;
+      return userControlBindingValidator;
     }
   }
 }

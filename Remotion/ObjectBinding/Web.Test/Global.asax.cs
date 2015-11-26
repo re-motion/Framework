@@ -201,12 +201,12 @@ namespace OBWTest
           () => businessObjectReferenceDataSourceControlValidatorFactory);
 
       var compoundUserControlBindingValidatorFactory = new CompoundUserControlBindingValidatorFactory (
-          new IUserControlBindingValidatorFactory[] { new UserControlBindingValidatorValidatorFactory() });
+          new IUserControlBindingValidatorFactory[] { new UserControlBindingValidatorFactory(), new UserControlBindingValidatorValidatorFactory() });
       var userControlBindingValidatorFactory = new SwitchingUserControlBindingValidatorFactoryDecorator (
           SwitchingValidatorFactoryState.Instance,
           new FilteringUserControlBindingValidatorFactoryDecorator (
               compoundUserControlBindingValidatorFactory),
-          new CompoundValidatorFactory<UserControlBinding>(Enumerable.Empty<IBocValidatorFactory<UserControlBinding>>()));
+          new UserControlBindingValidatorFactory ());
       defaultServiceLocator.RegisterSingle<IUserControlBindingValidatorFactory> (() => userControlBindingValidatorFactory);
     }
 

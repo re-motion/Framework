@@ -178,19 +178,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return _validators;
     }
 
-    public override void RegisterValidator (BaseValidator validator)
-    {
-      // NOP
-    }
-
     public override void PrepareValidation ()
     {
       _userControl.PrepareValidation();
-    }
-
-    public override bool Validate ()
-    {
-      return _userControl.Validate();
     }
 
     protected override Type[] SupportedPropertyInterfaces

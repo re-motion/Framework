@@ -476,6 +476,8 @@
     <Compile Include="UI\Controls\UserControlBinding.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\UserControlBindingValidator.cs" />
+    <Compile Include="UI\Controls\UserControlBindingValidatorFactory.cs" />
     <Compile Include="UI\Design\BocColumnDefinitionCollectionEditor.cs">
       <SubType>Code</SubType>
     </Compile>
