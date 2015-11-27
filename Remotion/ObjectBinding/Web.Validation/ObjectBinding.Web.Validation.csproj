@@ -145,6 +145,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="UI\Controls\BocBaseValidator.cs" />
     <Compile Include="UI\Controls\BocDataSourceValidator.cs" />
     <Compile Include="UI\Controls\BocListValidator.cs" />
     <Compile Include="UI\Controls\BocReferenceDataSourceValidator.cs" />

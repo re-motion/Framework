@@ -18,28 +18,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.UI.WebControls;
 using FluentValidation.Results;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
-using Remotion.Validation.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
-  public class BocValidator : BaseValidator, IBocValidator
+  public class BocValidator : BocBaseValidator
   {
-    private List<ValidationFailure> _validationFailures = new List<ValidationFailure> ();
+    private List<ValidationFailure> _validationFailures = new List<ValidationFailure>();
 
     public BocValidator ()
     {
     }
 
-    public IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
+    public override IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
     {
       ArgumentUtility.CheckNotNull ("failures", failures);
 
-      var control = NamingContainer.FindControl (ControlToValidate);
-      var bocControl = control as BusinessObjectBoundEditableWebControl;
+      var bocControl = GetControlToValidate<BusinessObjectBoundEditableWebControl>();
       if (bocControl == null)
         throw new InvalidOperationException ("BocValidator may only be applied to controls of type BusinessObjectBoundEditableWebControl");
 
@@ -58,46 +55,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
       ErrorMessage = string.Join ("\r\n", _validationFailures.Select (f => f.ErrorMessage));
     }
 
-    private bool IsMatchingControl (ValidationFailure failure, BusinessObjectBoundEditableWebControl bocControl)
-    {
-      if (!bocControl.HasValidBinding)
-        return false;
-      
-      var validatedInstance = failure.GetValidatedInstance ();
-      var businessObject = bocControl.DataSource != null ? bocControl.DataSource.BusinessObject : null;
-
-      if (validatedInstance != null && businessObject != null
-          && validatedInstance != businessObject)
-        return false;
-
-      bool isMatchingProperty = failure.PropertyName == bocControl.Property.Identifier;
-      if (!isMatchingProperty)
-        isMatchingProperty = GetShortPropertyName (failure) == bocControl.Property.Identifier;
-
-      bool isMatchinInstance = validatedInstance == null || validatedInstance == businessObject;
-
-      if (isMatchingProperty && isMatchinInstance)
-        return true;
-
-      return false;
-
-      ////if (failure.GetValidatedInstance != bocControl.DataSource.BusinessObject)
-      //// return false;
-      //if (failure.PropertyName == bocControl.PropertyIdentifier)
-      //  return true;
-      //if (GetShortPropertyName (failure) == bocControl.PropertyIdentifier)
-      //  return true;
-      //return false;
-    }
-
-    private string GetShortPropertyName (ValidationFailure failure)
-    {
-      return failure.PropertyName.Split ('.').Last();
-    }
-
     protected override bool EvaluateIsValid ()
     {
-      return !_validationFailures.Any ();
+      return !_validationFailures.Any();
     }
   }
 }
