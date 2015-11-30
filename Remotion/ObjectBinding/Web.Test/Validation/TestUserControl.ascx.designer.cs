@@ -49,13 +49,13 @@ namespace OBWTest.Validation {
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue ParterLastNameField;
         
         /// <summary>
-        /// DataSourceValidator control.
+        /// DataSourceValidationFailureDisptachingValidator control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Validation.UI.Controls.BocDataSourceValidator DataSourceValidator;
+        protected global::Remotion.ObjectBinding.Web.Validation.UI.Controls.BocDataSourceValidationFailureDisptachingValidator DataSourceValidationFailureDisptachingValidator;
         
         /// <summary>
         /// FormGridManager1 control.

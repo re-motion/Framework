@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Globalization;
 using Remotion.Web.UI;
 
@@ -26,6 +27,7 @@ public class SingleBocTestWxeBasePage: TestWxeBasePage
 {
   protected override void OnInit(EventArgs e)
   {
+    SwitchingValidatorFactoryState.Instance.UseFluentValidatorFactory = false;
     base.OnInit (e);
     this.EnableAbort = true;
     this.ShowAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;

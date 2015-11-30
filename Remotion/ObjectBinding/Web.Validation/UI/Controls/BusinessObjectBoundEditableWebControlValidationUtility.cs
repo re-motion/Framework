@@ -16,10 +16,7 @@
 // 
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using FluentValidation.Results;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
@@ -27,14 +24,12 @@ using Remotion.Validation.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
-  public abstract class BocBaseValidator : BaseValidator, IBocValidator
+  public static class BusinessObjectBoundEditableWebControlValidationUtility
   {
-    public abstract IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures);
-
-    protected bool IsMatchingControl (ValidationFailure failure, BusinessObjectBoundEditableWebControl bocControl)
+    public static bool IsMatchingControl (BusinessObjectBoundEditableWebControl bocControl, ValidationFailure failure)
     {
-      ArgumentUtility.CheckNotNull ("failure", failure);
       ArgumentUtility.CheckNotNull ("bocControl", bocControl);
+      ArgumentUtility.CheckNotNull ("failure", failure);
 
       if (!bocControl.HasValidBinding)
         return false;
@@ -58,15 +53,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
       return false;
     }
 
-    private string GetShortPropertyName (ValidationFailure failure)
+    private static string GetShortPropertyName (ValidationFailure failure)
     {
       return failure.PropertyName.Split ('.').Last();
-    }
-
-    protected TExpectedControlType GetControlToValidate<TExpectedControlType> () where TExpectedControlType : Control
-    {
-      var control = NamingContainer.FindControl (ControlToValidate);
-      return control as TExpectedControlType;
     }
   }
 }

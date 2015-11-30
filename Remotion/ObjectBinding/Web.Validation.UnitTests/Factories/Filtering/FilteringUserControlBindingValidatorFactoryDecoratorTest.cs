@@ -17,7 +17,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
     {
       var compoundFactory =
           new CompoundUserControlBindingValidatorFactory (
-              new IUserControlBindingValidatorFactory[] { new UserControlBindingValidatorValidatorFactory() });
+              new IUserControlBindingValidatorFactory[] { new FluentValidationUserControlBindingValidatorFactory() });
       var factory = new FilteringUserControlBindingValidatorFactoryDecorator (compoundFactory);
 
       var control = MockRepository.GenerateMock<UserControlBinding>();

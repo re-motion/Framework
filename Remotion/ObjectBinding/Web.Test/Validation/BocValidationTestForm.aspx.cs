@@ -16,10 +16,12 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using FluentValidation.Results;
 using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Collections;
 using Remotion.ObjectBinding;
@@ -45,7 +47,7 @@ namespace OBWTest.Validation
     protected Button PostBackButton;
     protected Button SaveButton;
     protected BindableObjectDataSourceControl CurrentObject;
-    protected BocDataSourceValidator DataSourceValidator;
+    protected BocDataSourceValidationFailureDisptachingValidator DataSourceValidationFailureDisptachingValidator;
     protected FormGridManager FormGridManager;
     protected BocTextValue LastNameField;
     protected BocTextValue FirstNameField;
@@ -56,37 +58,44 @@ namespace OBWTest.Validation
     protected BocReferenceValue ReferenceField;
     protected BocBooleanValue BooleanField;
     protected BocList ListField;
+    protected BocList BocListRowEdit;
+    protected BocList GridBocList;
     protected HtmlTable FormGrid;
     protected HtmlHeadContents HtmlHeadContents;
     protected UserControlBinding UserControlPartnerBinding;
 
     protected void Page_Load (object sender, EventArgs e)
     {
+      
     }
 
     protected override void OnLoad (EventArgs e)
     {
+
       base.OnLoad (e);
       CurrentObject.BusinessObject = (IBusinessObject) ((BocValidationTestWxeFunction)CurrentFunction).Person;
       CurrentObject.LoadValues (IsPostBack);
-
+      
+      
       if (!IsPostBack)
       {
+        GridBocList.SwitchListIntoEditMode ();
         IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert (
             XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)),
             typeof (IBusinessObjectWithIdentity));
         ReferenceField.SetBusinessObjectList (objects);
       }
+      
     }
 
     protected override void OnInit (EventArgs e)
     {
-      SwitchingValidatorFactoryState.Instance.UseFluentValidatorFactory = true;
       //
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
       //
       InitializeComponent();
       base.OnInit (e);
+      SwitchingValidatorFactoryState.Instance.UseFluentValidatorFactory = true;
     }
 
     #region Web Form Designer generated code
@@ -113,16 +122,27 @@ namespace OBWTest.Validation
         var person = (Person) CurrentObject.BusinessObject;
         var validationResult = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person);
         var validationResultPartner = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Partner);
-        var errors = validationResult.Errors.Concat (validationResultPartner.Errors);
+        
+        var jobValidator = ValidationBuilder.BuildValidator (typeof (Job));
+        bool areJobsValid = true;
+        List<ValidationFailure> jobFailures = new List<ValidationFailure>();
+        foreach (var job in person.Jobs)
+        {
+          var result = jobValidator.Validate (job);
+          areJobsValid &= result.IsValid;
+          jobFailures.AddRange (result.Errors);
+        }
+        
+        var errors = validationResult.Errors.Concat (validationResultPartner.Errors).Concat (jobFailures);
 
-        if (validationResult.IsValid && validationResultPartner.IsValid)
+        if (validationResult.IsValid && validationResultPartner.IsValid && areJobsValid)
         {
           person.SaveObject ();
         }
         else
         {
-          DataSourceValidator.ApplyValidationFailures (errors);
-          DataSourceValidator.Validate();
+          DataSourceValidationFailureDisptachingValidator.DispatchValidationFailures (errors);
+          DataSourceValidationFailureDisptachingValidator.Validate();
         }
       }
 

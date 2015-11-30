@@ -18,7 +18,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
     {
       var compoundFactory =
           new CompoundBocAutoCompleteReferenceValueValidatorFactory (
-              new IBocAutoCompleteReferenceValueValidatorFactory[] { new BocAutoCompleteReferenceValueValidatorFactory(), new BocValidatorFactory() });
+              new IBocAutoCompleteReferenceValueValidatorFactory[] { new BocAutoCompleteReferenceValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
       var factory = new FilteringBocAutoCompleteReferenceValueValidatorFactoryDecorator (compoundFactory);
 
       var control = MockRepository.GenerateMock<IBocAutoCompleteReferenceValue>();
@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
       var validators = factory.CreateValidators (control, false);
       Assert.That (
           validators.Select (v => v.GetType()),
-          Is.EquivalentTo (new[] { typeof (BocValidator), typeof (BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }));
+          Is.EquivalentTo (new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }));
     }
   }
 }

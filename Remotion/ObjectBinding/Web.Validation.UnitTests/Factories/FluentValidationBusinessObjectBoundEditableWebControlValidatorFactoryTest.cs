@@ -24,7 +24,7 @@ using Rhino.Mocks;
 namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
 {
   [TestFixture]
-  public class BocValidatorFactoryTest
+  public class FluentValidationBusinessObjectBoundEditableWebControlValidatorFactoryTest
   {
 
     private DefaultServiceLocator _serviceLocator;
@@ -36,15 +36,15 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
     }
 
     [Test]
-    [TestCase (typeof (IBocTextValueValidatorFactory), typeof (CompoundValidatorFactory<IBocTextValue>), new[] { typeof (BocTextValueValidatorFactory), typeof (BocValidatorFactory) })]
-    [TestCase (typeof (IBocReferenceValueValidatorFactory), typeof (CompoundValidatorFactory<IBocReferenceValue>), new[] { typeof (BocReferenceValueValidatorFactory), typeof (BocValidatorFactory) })]
-    [TestCase (typeof (IBocAutoCompleteReferenceValueValidatorFactory), typeof (CompoundValidatorFactory<IBocAutoCompleteReferenceValue>), new[] { typeof (BocAutoCompleteReferenceValueValidatorFactory), typeof (BocValidatorFactory) })]
-    [TestCase (typeof (IBocBooleanValueValidatorFactory), typeof (CompoundValidatorFactory<IBocBooleanValue>), new[] { typeof (BocBooleanValueValidatorFactory), typeof (BocValidatorFactory) })]
-    [TestCase (typeof (IBocCheckBoxValidatorFactory), typeof (CompoundValidatorFactory<IBocCheckBox>), new[] { typeof (BocValidatorFactory) })]
-    [TestCase (typeof (IBocDateTimeValueValidatorFactory), typeof (CompoundValidatorFactory<IBocDateTimeValue>), new[] { typeof (BocDateTimeValueValidatorFactory), typeof (BocValidatorFactory) })]
-    [TestCase (typeof (IBocEnumValueValidatorFactory), typeof (CompoundValidatorFactory<IBocEnumValue>), new[] { typeof (BocEnumValueValidatorFactory), typeof (BocValidatorFactory) })]
-    [TestCase (typeof (IBocMultilineTextValueValidatorFactory), typeof (CompoundValidatorFactory<IBocMultilineTextValue>), new[] { typeof (BocMultilineTextValueValidatorFactory), typeof (BocValidatorFactory) })]
-    //[TestCase (typeof (IUserControlBindingValidatorFactory), typeof (CompoundValidatorFactory<UserControlBinding>), new[] { typeof (BocValidatorFactory) })]
+    [TestCase (typeof (IBocTextValueValidatorFactory), typeof (CompoundValidatorFactory<IBocTextValue>), new[] { typeof (BocTextValueValidatorFactory), typeof (FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase (typeof (IBocReferenceValueValidatorFactory), typeof (CompoundValidatorFactory<IBocReferenceValue>), new[] { typeof (BocReferenceValueValidatorFactory), typeof (FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase (typeof (IBocAutoCompleteReferenceValueValidatorFactory), typeof (CompoundValidatorFactory<IBocAutoCompleteReferenceValue>), new[] { typeof (BocAutoCompleteReferenceValueValidatorFactory), typeof (FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase (typeof (IBocBooleanValueValidatorFactory), typeof (CompoundValidatorFactory<IBocBooleanValue>), new[] { typeof (BocBooleanValueValidatorFactory), typeof (FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase (typeof (IBocCheckBoxValidatorFactory), typeof (CompoundValidatorFactory<IBocCheckBox>), new[] { typeof (FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase (typeof (IBocDateTimeValueValidatorFactory), typeof (CompoundValidatorFactory<IBocDateTimeValue>), new[] { typeof (BocDateTimeValueValidatorFactory), typeof (FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase (typeof (IBocEnumValueValidatorFactory), typeof (CompoundValidatorFactory<IBocEnumValue>), new[] { typeof (BocEnumValueValidatorFactory), typeof (FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase (typeof (IBocMultilineTextValueValidatorFactory), typeof (CompoundValidatorFactory<IBocMultilineTextValue>), new[] { typeof (BocMultilineTextValueValidatorFactory), typeof (FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    //[TestCase (typeof (IUserControlBindingValidatorFactory), typeof (CompoundValidatorFactory<UserControlBinding>), new[] { typeof (FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
     public void GetInstance_Once (Type serviceType, Type targetType, Type[] expectedInnerFactoryTypesOrdered)
     {
       var instance = _serviceLocator.GetInstance (serviceType);
@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       var mock = MockRepository.GenerateMock<IBocTextValue>();
       mock.Expect (m => m.ID).Return ("ID");
 
-      var factory = new BocValidatorFactory();
+      var factory = new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators (mock, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       var mock = MockRepository.GenerateMock<IBocReferenceValue>();
       mock.Expect (m => m.ID).Return ("ID");
 
-      var factory = new BocValidatorFactory();
+      var factory = new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators (mock, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       var mock = MockRepository.GenerateMock<IBocAutoCompleteReferenceValue>();
       mock.Expect (m => m.ID).Return ("ID");
 
-      var factory = new BocValidatorFactory();
+      var factory = new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators (mock, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       var mock = MockRepository.GenerateMock<IBocBooleanValue>();
       mock.Expect (m => m.ID).Return ("ID");
 
-      var factory = new BocValidatorFactory();
+      var factory = new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators (mock, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
@@ -138,7 +138,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       var mock = MockRepository.GenerateMock<IBocCheckBox>();
       mock.Expect (m => m.ID).Return ("ID");
 
-      var factory = new BocValidatorFactory();
+      var factory = new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators (mock, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
@@ -151,7 +151,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       var mock = MockRepository.GenerateMock<IBocDateTimeValue>();
       mock.Expect (m => m.ID).Return ("ID");
 
-      var factory = new BocValidatorFactory();
+      var factory = new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators (mock, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
@@ -164,7 +164,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       var mock = MockRepository.GenerateMock<IBocEnumValue>();
       mock.Expect (m => m.ID).Return ("ID");
 
-      var factory = new BocValidatorFactory();
+      var factory = new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators (mock, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
@@ -177,7 +177,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       var mock = MockRepository.GenerateMock<IBocMultilineTextValue>();
       mock.Expect (m => m.ID).Return ("ID");
 
-      var factory = new BocValidatorFactory();
+      var factory = new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators (mock, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
@@ -187,7 +187,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       if (isReadOnly)
         Assert.That (validators, Is.Empty);
       else
-        Assert.That (validators.Select (v => v.GetType ()), Is.EquivalentTo (new[] { typeof (BocValidator) }));
+        Assert.That (validators.Select (v => v.GetType ()), Is.EquivalentTo (new[] { typeof (BusinessObjectBoundEditableWebControlValidator) }));
     }
   }
 }

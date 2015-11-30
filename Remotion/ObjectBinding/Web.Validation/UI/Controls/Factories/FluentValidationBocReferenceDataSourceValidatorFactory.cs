@@ -24,11 +24,11 @@ using Remotion.Utilities;
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 {
   [ImplementationFor (typeof (IBusinessObjectReferenceDataSourceControlValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
-  public class BocReferenceDataSourceValidatorFactory : IBusinessObjectReferenceDataSourceControlValidatorFactory
+  public class FluentValidationBocReferenceDataSourceValidatorFactory : IBusinessObjectReferenceDataSourceControlValidatorFactory
   {
     public const int Position = 0;
 
-    public BocReferenceDataSourceValidatorFactory ()
+    public FluentValidationBocReferenceDataSourceValidatorFactory ()
     {
     }
 
@@ -42,9 +42,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
       yield return CreateBocReferenceDataSourceValidator (control);
     }
 
-    private BocReferenceDataSourceValidator CreateBocReferenceDataSourceValidator (BusinessObjectReferenceDataSourceControl control)
+    private BocReferenceDataSourceValidationFailureDisptachingValidator CreateBocReferenceDataSourceValidator (BusinessObjectReferenceDataSourceControl control)
     {
-      var bocValidator = new BocReferenceDataSourceValidator();
+      var bocValidator = new BocReferenceDataSourceValidationFailureDisptachingValidator();
       bocValidator.ControlToValidate = control.ID;
       bocValidator.ID = control.ID + "_BocReferenceDataSourceValidator";
       return bocValidator;

@@ -15,14 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-using System;
-using System.Collections.Generic;
-using FluentValidation.Results;
+using FluentValidation;
+using Remotion.Validation;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
+namespace Remotion.ObjectBinding.Sample.ValidationCollectors
 {
-  public interface IBocValidator
+  public class JobValidationCollector : ComponentValidationCollector<Job>
   {
-    IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures);
+    public JobValidationCollector ()
+    {
+      AddRule (p => p.Title).Length (0, 10);
+
+    }
   }
 }

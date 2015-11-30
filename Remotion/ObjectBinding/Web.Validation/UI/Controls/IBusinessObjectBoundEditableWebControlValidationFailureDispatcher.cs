@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,29 +16,13 @@
 // 
 
 using System;
-using OBWTest.ValidatorFactoryDecorators;
-using Remotion.Web.UI;
+using System.Collections.Generic;
+using FluentValidation.Results;
 
-namespace OBWTest.Design
+namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
-  public class DesignTestWxeBasePage : TestWxeBasePage
+  public interface IBusinessObjectBoundEditableWebControlValidationFailureDispatcher
   {
-    protected override bool IsAbortEnabled
-    {
-      get { return false; }
-    }
-
-
-    protected override void OnPreRender (EventArgs e)
-    {
-      base.OnPreRender (e);
-      HtmlHeadAppender.Current.RegisterStylesheetLink ("design", "Html/Design.css");
-    }
-
-    protected override void OnInit (EventArgs e)
-    {
-      SwitchingValidatorFactoryState.Instance.UseFluentValidatorFactory = false;
-      base.OnInit (e);
-    }
+    IEnumerable<ValidationFailure> DispatchValidationFailures (IEnumerable<ValidationFailure> failures);
   }
 }

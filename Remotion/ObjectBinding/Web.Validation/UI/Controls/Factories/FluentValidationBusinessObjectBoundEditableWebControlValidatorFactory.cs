@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
   [ImplementationFor (typeof (IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocDateTimeValueValidatorFactory)]
   [ImplementationFor (typeof (IBocEnumValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocEnumValueValidatorFactory)]
   [ImplementationFor (typeof (IBocMultilineTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocMultilineTextValueValidatorFactory)]
-  public class BocValidatorFactory
+  public class FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory
       : IBocTextValueValidatorFactory,
         IBocReferenceValueValidatorFactory,
         IBocAutoCompleteReferenceValueValidatorFactory,
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
     public const int Position_BocEnumValueValidatorFactory = BocEnumValueValidatorFactory.Position + 1;
     public const int Position_BocMultilineTextValueValidatorFactory = BocMultilineTextValueValidatorFactory.Position + 1;
 
-    public BocValidatorFactory ()
+    public FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory ()
     {
     }
 
@@ -119,12 +119,12 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
       return CreateBocValidator (control.ID, isReadOnly);
     }
 
-    private IEnumerable<BocValidator> CreateBocValidator (string id, bool isReadonly)
+    private IEnumerable<BusinessObjectBoundEditableWebControlValidator> CreateBocValidator (string id, bool isReadonly)
     {
       if (isReadonly)
         yield break;
 
-      var bocValidator = new BocValidator();
+      var bocValidator = new BusinessObjectBoundEditableWebControlValidator();
       bocValidator.ControlToValidate = id;
       bocValidator.ID = id + "_BocValidator";
       yield return bocValidator;

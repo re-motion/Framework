@@ -10,7 +10,7 @@ using Rhino.Mocks;
 namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
 {
   [TestFixture]
-  public class BocReferenceDataSourceValidatorFactoryTest
+  public class FluentValidationBocReferenceDataSourceValidatorFactoryTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
 
       var factories =
           ((CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>) instance).VlidatorFactories.Select (f => f.GetType()).ToList();
-      Assert.That (factories, Has.Member (typeof (BocReferenceDataSourceValidatorFactory)));
+      Assert.That (factories, Has.Member (typeof (FluentValidationBocReferenceDataSourceValidatorFactory)));
       Assert.That (factories.Count, Is.EqualTo (1));
     }
 
@@ -51,13 +51,13 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       var mock = MockRepository.GenerateMock<BusinessObjectReferenceDataSourceControl>();
       mock.Expect (m => m.ID).Return ("ID");
 
-      var factory = new BocReferenceDataSourceValidatorFactory();
+      var factory = new FluentValidationBocReferenceDataSourceValidatorFactory();
       var validators = factory.CreateValidators (mock, isReadOnly);
 
       if (isReadOnly)
         Assert.That (validators, Is.Empty);
       else
-        Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (new[] { typeof (BocReferenceDataSourceValidator) }));
+        Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (new[] { typeof (BocReferenceDataSourceValidationFailureDisptachingValidator) }));
     }
   }
 }

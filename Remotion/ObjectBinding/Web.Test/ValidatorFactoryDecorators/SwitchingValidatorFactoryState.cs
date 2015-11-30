@@ -14,10 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
+using System.Web;
+using Remotion.Context;
+
 namespace OBWTest.ValidatorFactoryDecorators
 {
   public class SwitchingValidatorFactoryState
   {
+    //private static readonly SafeContextSingleton<SwitchingValidatorFactoryState> s_instance =
+    //    new SafeContextSingleton<SwitchingValidatorFactoryState> (
+    //        "SwitchingValidatorFactoryState_Instance",
+    //        () => new SwitchingValidatorFactoryState());
+
     private static SwitchingValidatorFactoryState _instance;
     public static SwitchingValidatorFactoryState Instance
     {
@@ -25,5 +35,10 @@ namespace OBWTest.ValidatorFactoryDecorators
     }
 
     public bool UseFluentValidatorFactory { get; set; }
+
+    public SwitchingValidatorFactoryState ()
+    {
+      
+    }
   }
 }

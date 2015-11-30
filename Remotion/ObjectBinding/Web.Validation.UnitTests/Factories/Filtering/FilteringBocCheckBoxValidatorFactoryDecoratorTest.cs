@@ -18,7 +18,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
     {
       var compoundFactory =
           new CompoundBocCheckBoxValidatorFactory (
-              new IBocCheckBoxValidatorFactory[] { new BocValidatorFactory() });
+              new IBocCheckBoxValidatorFactory[] { new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
       var factory = new FilteringBocCheckBoxValidatorFactoryDecorator (compoundFactory);
 
       var control = MockRepository.GenerateMock<IBocCheckBox>();
@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
       var validators = factory.CreateValidators (control, false);
       Assert.That (
           validators.Select (v => v.GetType()),
-          Is.EquivalentTo (new[] { typeof (BocValidator) }));
+          Is.EquivalentTo (new[] { typeof (BusinessObjectBoundEditableWebControlValidator) }));
     }
   }
 }

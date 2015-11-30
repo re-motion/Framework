@@ -18,13 +18,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using FluentValidation.Results;
+using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
-  public class BocListValidator : BocBaseValidator
+  public sealed class BocListValidator : BaseValidator, IBusinessObjectBoundEditableWebControlValidationFailureDispatcher
   {
     private List<ValidationFailure> _validationFailures = new List<ValidationFailure>();
 
@@ -32,18 +35,26 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
     {
     }
 
-    public override IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
+    public IEnumerable<ValidationFailure> DispatchValidationFailures (IEnumerable<ValidationFailure> failures)
     {
       ArgumentUtility.CheckNotNull ("failures", failures);
 
-      var bocListControl = GetControlToValidate<BocList>();
+      var bocListControl = GetControlToValidate();
       if (bocListControl == null)
         throw new InvalidOperationException ("BocListValidator may only be applied to controls of type BocList");
 
+    //  var namingContainer = bocListControl.NamingContainer;
+      var validator =
+          EnumerableUtility.SelectRecursiveDepthFirst (
+              bocListControl as Control,
+              child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer)))
+              .OfType<IBusinessObjectBoundEditableWebControlValidationFailureDispatcher> ();
+
+      
       _validationFailures = new List<ValidationFailure>();
       foreach (var failure in failures)
       {
-        if (IsMatchingControl (failure, bocListControl))
+        if (BusinessObjectBoundEditableWebControlValidationUtility.IsMatchingControl (bocListControl, failure))
           _validationFailures.Add (failure);
         else
           yield return failure;
@@ -59,6 +70,12 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
     protected override bool EvaluateIsValid ()
     {
       return !_validationFailures.Any();
+    }
+
+    private BocList GetControlToValidate()
+    {
+      var control = NamingContainer.FindControl (ControlToValidate);
+      return control as BocList;
     }
 
     protected override bool ControlPropertiesValid ()

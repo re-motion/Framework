@@ -19,7 +19,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
     {
       var compoundFactory =
           new CompoundBocDateTimeValueValidatorFactory (
-              new IBocDateTimeValueValidatorFactory[] { new BocDateTimeValueValidatorFactory(), new BocValidatorFactory() });
+              new IBocDateTimeValueValidatorFactory[] { new BocDateTimeValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
       var factory = new FilteringBocDateTimeValueValidatorFactoryDecorator (compoundFactory);
 
       var control = MockRepository.GenerateMock<IBocDateTimeValue>();
@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
       var validators = factory.CreateValidators (control, false);
       Assert.That (
           validators.Select (v => v.GetType()),
-          Is.EquivalentTo (new[] { typeof (BocValidator), typeof (BocDateTimeValueValidator) }));
+          Is.EquivalentTo (new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocDateTimeValueValidator) }));
     }
   }
 }

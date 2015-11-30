@@ -17,6 +17,19 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BocValidationTestForm.aspx.cs" Inherits="OBWTest.Validation.BocValidationTestForm" MasterPageFile="~/StandardMode.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <h1>BocValidationTest</h1>
+  
+  <style type="text/css">
+    html
+    {
+
+      overflow: auto !important;
+    }
+    body
+    {
+
+      overflow: auto !important;
+    }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
             <table id=FormGrid runat="server">
@@ -77,19 +90,73 @@
                 <td></td>
                 <td></td></tr>
               <tr>
-                <td colSpan=2><remotion:boclist id=ListField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Jobs" showsortingorder="True" alwaysshowpageinfo="True">
-            <fixedcolumns>
-            <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Title">
-            <persistedcommand>
-            <remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
-            </PersistedCommand>
-            </remotion:BocSimpleColumnDefinition>
-            <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="StartDate">
-            <persistedcommand>
-            <remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
-            </PersistedCommand>
-            </remotion:BocSimpleColumnDefinition>
-            </FixedColumns></remotion:boclist></td></tr>
+                <td colSpan=2>
+                  <remotion:boclist id=ListField runat="server"  datasourcecontrol="CurrentObject" propertyidentifier="Jobs" showsortingorder="True" alwaysshowpageinfo="True">
+                    <FixedColumns>
+                      <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Title">
+                          <PersistedCommand>
+                            <remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
+                          </PersistedCommand>
+                      </remotion:BocSimpleColumnDefinition>
+                      <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="StartDate">
+                        <PersistedCommand>
+                          <remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
+                        </PersistedCommand>
+                      </remotion:BocSimpleColumnDefinition>
+                    </FixedColumns>
+                  </remotion:boclist>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td></tr>
+              
+              <tr>
+                <td colSpan="2">
+                  <remotion:boclist id="BocListRowEdit" runat="server" ShowAllProperties="True" datasourcecontrol="CurrentObject" propertyidentifier="Jobs" showsortingorder="True" alwaysshowpageinfo="True">
+                    <FixedColumns>
+                     <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></remotion:BocRowEditModeColumnDefinition>
+                      <%--<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Title">
+                          <PersistedCommand>
+                            <remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
+                          </PersistedCommand>
+                      </remotion:BocSimpleColumnDefinition>
+                      <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="StartDate">
+                        <PersistedCommand>
+                          <remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
+                        </PersistedCommand>
+                      </remotion:BocSimpleColumnDefinition>--%>
+                    </FixedColumns>
+                    
+                  </remotion:boclist>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td></tr>
+              <tr>
+                <td colSpan="2">
+                  <remotion:boclist id="GridBocList" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Jobs" showsortingorder="True" alwaysshowpageinfo="True">
+                    <FixedColumns>
+                      <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Title">
+                          <PersistedCommand>
+                            <remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
+                          </PersistedCommand>
+                      </remotion:BocSimpleColumnDefinition>
+                      <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="StartDate">
+                        <PersistedCommand>
+                          <remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
+                        </PersistedCommand>
+                      </remotion:BocSimpleColumnDefinition>
+                    </FixedColumns>
+                  </remotion:boclist>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  &nbsp;
+                </td>
+              </tr>
               <tr><td></td>
                 <td>
                     <remotion:UserControlBinding ID="UserControlPartnerBinding" runat="server" UserControlPath="TestUserControl.ascx" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" />
@@ -99,11 +166,14 @@
         <p>
             <remotion:formgridmanager id=FormGridManager runat="server"  visible="true"></remotion:formgridmanager>
             <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
-            <remotion:BocDataSourceValidator ID="DataSourceValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BocDataSourceValidator>
+            <remotion:BocDataSourceValidationFailureDisptachingValidator ID="DataSourceValidationFailureDisptachingValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BocDataSourceValidationFailureDisptachingValidator>
             <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource"  runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></remotion:BusinessObjectReferenceDataSourceControl>
             <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource1" runat="server" PropertyIdentifier="Partner" DataSourceControl="PartnerDataSource"></remotion:BusinessObjectReferenceDataSourceControl>
             <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource2" runat="server" PropertyIdentifier="Partner" DataSourceControl="PartnerDataSource1"></remotion:BusinessObjectReferenceDataSourceControl>
           
         </p>
-        <p><asp:button id=SaveButton runat="server" Text="Save" Width="80px"></asp:button><asp:button id=PostBackButton runat="server" Text="Post Back"></asp:button></p>
+        <p>
+          <asp:button id=SaveButton runat="server" Text="Save" Width="80px"></asp:button>
+          <asp:button id=PostBackButton runat="server" Text="Post Back"></asp:button>
+        </p>
  </asp:Content>

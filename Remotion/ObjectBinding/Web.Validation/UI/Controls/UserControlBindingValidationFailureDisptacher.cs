@@ -26,34 +26,34 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
-  public class UserControlBindingValidator: BaseValidator, IBocValidator
+  public sealed class UserControlBindingValidationFailureDisptacher : BaseValidator, IBusinessObjectBoundEditableWebControlValidationFailureDispatcher
   {
-    public UserControlBindingValidator ()
+    public UserControlBindingValidationFailureDisptacher ()
     {
     }
 
-    public IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
+    public IEnumerable<ValidationFailure> DispatchValidationFailures (IEnumerable<ValidationFailure> failures)
     {
       ArgumentUtility.CheckNotNull ("failures", failures);
 
       var control = NamingContainer.FindControl (ControlToValidate);
       var userControlBinding = control as UserControlBinding;
       if (userControlBinding == null)
-        throw new InvalidOperationException ("UserControlBindingValidator may only be applied to controls of type UserControlBinding");
+        throw new InvalidOperationException ("UserControlBindingValidationFailureDisptacher may only be applied to controls of type UserControlBinding");
 
       var namingContainer = userControlBinding.UserControl.DataSource.NamingContainer;
       var validator =
           EnumerableUtility.SelectRecursiveDepthFirst (
               namingContainer,
               child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer)))
-              .OfType<BocDataSourceValidator>()
+              .OfType<BocDataSourceValidationFailureDisptachingValidator>()
               .SingleOrDefault (
                   c => c.ControlToValidate == userControlBinding.UserControl.DataSource.ID,
-                  () => new InvalidOperationException ("Only zero or one BocDataSourceValidator is allowed per UserControlBinding."));
+                  () => new InvalidOperationException ("Only zero or one BocDataSourceValidationFailureDisptachingValidator is allowed per UserControlBinding."));
 
       List<ValidationFailure> unhandledFailures;
       if (validator != null)
-        unhandledFailures = validator.ApplyValidationFailures (failures).ToList();
+        unhandledFailures = validator.DispatchValidationFailures (failures).ToList();
       else
         unhandledFailures = failures.ToList();
 

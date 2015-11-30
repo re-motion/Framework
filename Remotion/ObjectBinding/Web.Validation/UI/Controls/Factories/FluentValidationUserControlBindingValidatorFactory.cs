@@ -17,23 +17,23 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 {
-  [ImplementationFor (typeof (IBocListValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
-  public class BocListValidatorValidatorFactory : IBocListValidatorFactory
-  {
-    public const int Position = BocListValidatorFactory.Position + 1;
 
-    public BocListValidatorValidatorFactory ()
+  [ImplementationFor (typeof (IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
+  public class FluentValidationUserControlBindingValidatorFactory : IUserControlBindingValidatorFactory
+  {
+    public const int Position = UserControlBindingValidatorFactory.Position + 1;
+
+    public FluentValidationUserControlBindingValidatorFactory ()
     {
     }
 
-    public IEnumerable<BaseValidator> CreateValidators (IBocList control, bool isReadOnly)
+    public IEnumerable<BaseValidator> CreateValidators (UserControlBinding control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull ("control", control);
 
@@ -43,9 +43,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
       yield return CreateBocListValidator (control);
     }
 
-    private BaseValidator CreateBocListValidator (IBocList control)
+    private BaseValidator CreateBocListValidator (UserControlBinding control)
     {
-      var bocValidator = new BocListValidator();
+      var bocValidator = new UserControlBindingValidationFailureDisptacher();
       bocValidator.ControlToValidate = control.ID;
       bocValidator.ID = control.ID + "_BocListValidator";
       return bocValidator;

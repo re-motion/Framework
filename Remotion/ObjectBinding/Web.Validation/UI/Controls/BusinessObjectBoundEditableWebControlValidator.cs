@@ -18,32 +18,36 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI.WebControls;
 using FluentValidation.Results;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
-  public class BocValidator : BocBaseValidator
+  public sealed class BusinessObjectBoundEditableWebControlValidator : BaseValidator, IBusinessObjectBoundEditableWebControlValidationFailureDispatcher
   {
     private List<ValidationFailure> _validationFailures = new List<ValidationFailure>();
 
-    public BocValidator ()
+    public BusinessObjectBoundEditableWebControlValidator ()
     {
     }
 
-    public override IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
+    public IEnumerable<ValidationFailure> DispatchValidationFailures (IEnumerable<ValidationFailure> failures)
     {
       ArgumentUtility.CheckNotNull ("failures", failures);
 
-      var bocControl = GetControlToValidate<BusinessObjectBoundEditableWebControl>();
+      var bocControl = GetControlToValidate();
       if (bocControl == null)
-        throw new InvalidOperationException ("BocValidator may only be applied to controls of type BusinessObjectBoundEditableWebControl");
+      {
+        throw new InvalidOperationException (
+            "BusinessObjectBoundEditableWebControlValidator may only be applied to controls of type BusinessObjectBoundEditableWebControl");
+      }
 
       _validationFailures = new List<ValidationFailure>();
       foreach (var failure in failures)
       {
-        if (IsMatchingControl (failure, bocControl))
+        if (BusinessObjectBoundEditableWebControlValidationUtility.IsMatchingControl (bocControl, failure))
           _validationFailures.Add (failure);
         else
           yield return failure;
@@ -58,6 +62,12 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
     protected override bool EvaluateIsValid ()
     {
       return !_validationFailures.Any();
+    }
+
+    private BusinessObjectBoundEditableWebControl GetControlToValidate ()
+    {
+      var control = NamingContainer.FindControl (ControlToValidate);
+      return control as BusinessObjectBoundEditableWebControl;
     }
   }
 }

@@ -17,7 +17,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
     {
       var compoundFactory =
           new CompoundBusinessObjectReferenceDataSourceControlValidatorFactory (
-              new IBusinessObjectReferenceDataSourceControlValidatorFactory[] { new BocReferenceDataSourceValidatorFactory() });
+              new IBusinessObjectReferenceDataSourceControlValidatorFactory[] { new FluentValidationBocReferenceDataSourceValidatorFactory() });
       var factory = new FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator (compoundFactory);
 
       var control = MockRepository.GenerateMock<BusinessObjectReferenceDataSourceControl>();
@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
       var validators = factory.CreateValidators (control, false);
       Assert.That (
           validators.Select (v => v.GetType()),
-          Is.EquivalentTo (new[] { typeof (BocReferenceDataSourceValidator) }));
+          Is.EquivalentTo (new[] { typeof (BocReferenceDataSourceValidationFailureDisptachingValidator) }));
     }
   }
 }

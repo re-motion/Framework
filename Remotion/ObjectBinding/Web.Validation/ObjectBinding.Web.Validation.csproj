@@ -145,11 +145,11 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="UI\Controls\BocBaseValidator.cs" />
-    <Compile Include="UI\Controls\BocDataSourceValidator.cs" />
+    <Compile Include="UI\Controls\BusinessObjectBoundEditableWebControlValidationUtility.cs" />
+    <Compile Include="UI\Controls\BocDataSourceValidationFailureDisptachingValidator.cs" />
     <Compile Include="UI\Controls\BocListValidator.cs" />
-    <Compile Include="UI\Controls\BocReferenceDataSourceValidator.cs" />
-    <Compile Include="UI\Controls\BocValidator.cs" />
+    <Compile Include="UI\Controls\BocReferenceDataSourceValidationFailureDisptachingValidator.cs" />
+    <Compile Include="UI\Controls\BusinessObjectBoundEditableWebControlValidator.cs" />
     <Compile Include="UI\Controls\Decorators\FilteringBocAutoCompleteReferenceValueValidatorFactoryDecorator.cs" />
     <Compile Include="UI\Controls\Decorators\FilteringBocBooleanValueValidatorFactoryDecorator.cs" />
     <Compile Include="UI\Controls\Decorators\FilteringBocCheckBoxValidatorFactoryDecorator.cs" />
@@ -162,15 +162,15 @@
     <Compile Include="UI\Controls\Decorators\FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator.cs" />
     <Compile Include="UI\Controls\Decorators\FilteringUserControlBindingValidatorFactoryDecorator.cs" />
     <Compile Include="UI\Controls\Decorators\FilteringValidatorFactoryDecorator.cs" />
-    <Compile Include="UI\Controls\Factories\BocListValidatorValidatorFactory.cs" />
-    <Compile Include="UI\Controls\Factories\BocReferenceDataSourceValidatorFactory.cs" />
-    <Compile Include="UI\Controls\Factories\BocValidatorFactory.cs" />
-    <Compile Include="UI\Controls\Factories\UserControlBindingValidatorValidatorFactory.cs" />
-    <Compile Include="UI\Controls\IBocValidator.cs" />
+    <Compile Include="UI\Controls\Factories\FluentValidationBocListValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Factories\FluentValidationBocReferenceDataSourceValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Factories\FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Factories\FluentValidationUserControlBindingValidatorFactory.cs" />
+    <Compile Include="UI\Controls\IBusinessObjectBoundEditableWebControlValidationFailureDispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Controls\UserControlBindingValidator.cs" />
+    <Compile Include="UI\Controls\UserControlBindingValidationFailureDisptacher.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

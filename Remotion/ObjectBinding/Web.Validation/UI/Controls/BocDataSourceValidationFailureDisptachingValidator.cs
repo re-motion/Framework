@@ -27,20 +27,20 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
-  public class BocDataSourceValidator : BaseValidator, IBocValidator
+  public sealed class BocDataSourceValidationFailureDisptachingValidator : BaseValidator, IBusinessObjectBoundEditableWebControlValidationFailureDispatcher
   {
-    public BocDataSourceValidator ()
+    public BocDataSourceValidationFailureDisptachingValidator ()
     {
     }
 
-    public IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
+    public IEnumerable<ValidationFailure> DispatchValidationFailures (IEnumerable<ValidationFailure> failures)
     {
       ArgumentUtility.CheckNotNull ("failures", failures);
 
       var control = NamingContainer.FindControl (ControlToValidate);
       var dataSourceControl = control as BindableObjectDataSourceControl;
       if (dataSourceControl == null)
-        throw new InvalidOperationException ("BocDataSourceValidator may only be applied to controls of type BindableObjectDataSourceControl.");
+        throw new InvalidOperationException ("BocDataSourceValidationFailureDisptachingValidator may only be applied to controls of type BindableObjectDataSourceControl.");
 
       // Can only find Validation errors for controls located within the same NamingContainer as the DataSource.
       // This applies also to ReferenceDataSources. 
@@ -49,26 +49,26 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
           EnumerableUtility.SelectRecursiveDepthFirst (
               namingContainer,
               child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer) ))
-              .OfType<IBocValidator>();
+              .OfType<IBusinessObjectBoundEditableWebControlValidationFailureDispatcher>();
 
       var unhandledFailures = failures;
-      var referenceDataSourceValidators = new List<BocReferenceDataSourceValidator>();
+      var referenceDataSourceValidators = new List<BocReferenceDataSourceValidationFailureDisptachingValidator>();
       
       var controlsWithValidBinding = dataSourceControl.GetBoundControlsWithValidBinding().Cast<Control>();
       var validatorsMatchingToControls = controlsWithValidBinding.Join (validators, c => c.ID, v => ((BaseValidator) v).ControlToValidate, (c, v) => v);
 
       foreach (var validator in validatorsMatchingToControls)
       {
-        if (validator is BocReferenceDataSourceValidator)
-          referenceDataSourceValidators.Add ((BocReferenceDataSourceValidator) validator);
+        if (validator is BocReferenceDataSourceValidationFailureDisptachingValidator)
+          referenceDataSourceValidators.Add ((BocReferenceDataSourceValidationFailureDisptachingValidator) validator);
         else
-          unhandledFailures = validator.ApplyValidationFailures (unhandledFailures);
+          unhandledFailures = validator.DispatchValidationFailures (unhandledFailures);
       }
 
       // ReSharper disable once LoopCanBeConvertedToQuery
       foreach (var validator in referenceDataSourceValidators)
       {
-        unhandledFailures = validator.ApplyValidationFailures (unhandledFailures);
+        unhandledFailures = validator.DispatchValidationFailures (unhandledFailures);
       }
       
       return unhandledFailures.ToList();

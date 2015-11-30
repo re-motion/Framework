@@ -18,35 +18,38 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI.WebControls;
 using FluentValidation.Results;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
-  public class BocReferenceDataSourceValidator : BocBaseValidator
+  public sealed class BocReferenceDataSourceValidationFailureDisptachingValidator
+      : BaseValidator, IBusinessObjectBoundEditableWebControlValidationFailureDispatcher
   {
     private List<ValidationFailure> _validationFailures = new List<ValidationFailure>();
 
-    public BocReferenceDataSourceValidator ()
+    public BocReferenceDataSourceValidationFailureDisptachingValidator ()
     {
     }
 
-    public override IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
+    public IEnumerable<ValidationFailure> DispatchValidationFailures (IEnumerable<ValidationFailure> failures)
     {
+      // TODO Should only dispatch
       ArgumentUtility.CheckNotNull ("failures", failures);
 
-      var bocControl = GetControlToValidate<BusinessObjectReferenceDataSourceControl>();
+      var bocControl = GetControlToValidate();
       if (bocControl == null)
       {
         throw new InvalidOperationException (
-            "BocReferenceDataSourceValidator may only be applied to controls of type BusinessObjectReferenceDataSourceControl");
+            "BocReferenceDataSourceValidationFailureDisptachingValidator may only be applied to controls of type BusinessObjectReferenceDataSourceControl");
       }
 
       _validationFailures = new List<ValidationFailure>();
       foreach (var failure in failures)
       {
-        if (IsMatchingControl (failure, bocControl))
+        if (BusinessObjectBoundEditableWebControlValidationUtility.IsMatchingControl (bocControl, failure))
           _validationFailures.Add (failure);
         else
           yield return failure;
@@ -61,6 +64,12 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
     protected override bool EvaluateIsValid ()
     {
       return !_validationFailures.Any();
+    }
+
+    private BusinessObjectReferenceDataSourceControl GetControlToValidate ()
+    {
+      var control = NamingContainer.FindControl (ControlToValidate);
+      return control as BusinessObjectReferenceDataSourceControl;
     }
 
     protected override bool ControlPropertiesValid ()
