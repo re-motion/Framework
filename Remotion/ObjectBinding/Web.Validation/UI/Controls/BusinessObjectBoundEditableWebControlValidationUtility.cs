@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
   public static class BusinessObjectBoundEditableWebControlValidationUtility
   {
-    public static bool IsMatchingControl (BusinessObjectBoundEditableWebControl bocControl, ValidationFailure failure)
+    public static bool IsMatchingControl (IBusinessObjectBoundEditableWebControl bocControl, ValidationFailure failure)
     {
       ArgumentUtility.CheckNotNull ("bocControl", bocControl);
       ArgumentUtility.CheckNotNull ("failure", failure);

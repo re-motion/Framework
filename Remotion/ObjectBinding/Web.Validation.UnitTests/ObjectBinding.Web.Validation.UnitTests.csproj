@@ -40,6 +40,9 @@
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -58,6 +61,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="BusinessObjectBoundEditableWebControlValidationUtilityTest.cs" />
     <Compile Include="Factories\FluentValidationBocListValidatorFactoryTest.cs" />
     <Compile Include="Factories\FluentValidationBusinessObjectBoundEditableWebControlValidatorFactoryTest.cs" />
     <Compile Include="Factories\FluentValidationBocReferenceDataSourceValidatorFactoryTest.cs" />
