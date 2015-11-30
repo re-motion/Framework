@@ -122,7 +122,8 @@ namespace OBWTest.Validation
         var person = (Person) CurrentObject.BusinessObject;
         var validationResult = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person);
         var validationResultPartner = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Partner);
-        
+        var validationResultFahter = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Father);
+
         var jobValidator = ValidationBuilder.BuildValidator (typeof (Job));
         bool areJobsValid = true;
         List<ValidationFailure> jobFailures = new List<ValidationFailure>();
@@ -132,10 +133,10 @@ namespace OBWTest.Validation
           areJobsValid &= result.IsValid;
           jobFailures.AddRange (result.Errors);
         }
-        
-        var errors = validationResult.Errors.Concat (validationResultPartner.Errors).Concat (jobFailures);
 
-        if (validationResult.IsValid && validationResultPartner.IsValid && areJobsValid)
+        var errors = validationResult.Errors.Concat (validationResultPartner.Errors).Concat (jobFailures).Concat (validationResultFahter.Errors);
+
+        if (validationResult.IsValid && validationResultPartner.IsValid && areJobsValid && validationResultFahter.IsValid)
         {
           person.SaveObject ();
         }

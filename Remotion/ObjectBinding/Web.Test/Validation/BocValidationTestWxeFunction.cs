@@ -105,6 +105,10 @@ namespace OBWTest.Validation
       partner.Partner.Partner = Person.CreateObject (Guid.NewGuid());
       partner.Partner.Partner.LastName = "Partner2";
 
+      person.Father = Person.CreateObject (Guid.NewGuid());
+      person.Father.FirstName = "Father FirstName";
+      person.Father.LastName = "Fahter LastName";
+      
       _person = person;
     }
 

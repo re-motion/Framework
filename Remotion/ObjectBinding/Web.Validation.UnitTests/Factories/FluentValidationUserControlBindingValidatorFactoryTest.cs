@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.Validation.UI.Controls;
 using Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories;
 using Remotion.ServiceLocation;
 using Rhino.Mocks;
@@ -28,7 +29,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
 
       var factories = ((CompoundValidatorFactory<UserControlBinding>) instance).VlidatorFactories.Select (f => f.GetType()).ToList();
       Assert.That (factories, Has.Member (typeof (FluentValidationUserControlBindingValidatorFactory)));
-      Assert.That (factories.Count, Is.EqualTo (1));
+      Assert.That (factories, Has.Member (typeof (UserControlBindingValidatorFactory)));
+      Assert.That (factories.IndexOf (typeof (UserControlBindingValidatorFactory)), Is.LessThan (factories.IndexOf (typeof (FluentValidationUserControlBindingValidatorFactory))));
+      Assert.That (factories.Count, Is.EqualTo (2));
     }
 
     [Test]
@@ -55,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       if (isReadOnly)
         Assert.That (validators, Is.Empty);
       else
-        Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (new[] { typeof (UserControlBindingValidator) }));
+        Assert.That (validators.Select (v => v.GetType ()), Is.EquivalentTo (new[] { typeof (UserControlBindingValidationFailureDisptacher) }));
     }
   }
 }

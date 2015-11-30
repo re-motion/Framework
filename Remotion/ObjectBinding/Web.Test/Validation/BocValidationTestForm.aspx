@@ -48,15 +48,24 @@
               </tr>
               <tr>
                 <td></td>
-                <td><remotion:BocTextValue id="ParterLastNameField" runat="server" DataSourceControl="PartnerDataSource" propertyidentifier="LastName" width="100%"><textboxstyle textmode="SingleLine"></TextBoxStyle></remotion:BocTextValue></td>
+                <td>
+                  <remotion:BocTextValue id="ParterLastNameField" runat="server" DataSourceControl="PartnerDataSource" propertyidentifier="LastName" width="100%"><textboxstyle textmode="SingleLine"></TextBoxStyle></remotion:BocTextValue>
+                  <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource"  runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></remotion:BusinessObjectReferenceDataSourceControl>
+                </td>
                 </tr>
               <tr>
                 <td>Partner1</td>
-                <td><remotion:BocTextValue id="BocTextValue1" Required="True" runat="server" DataSourceControl="PartnerDataSource1" propertyidentifier="LastName" width="100%"><textboxstyle textmode="SingleLine"></TextBoxStyle></remotion:BocTextValue></td>
+                <td>
+                  <remotion:BocTextValue id="BocTextValue1" Required="True" runat="server" DataSourceControl="PartnerDataSource1" propertyidentifier="LastName" width="100%"><textboxstyle textmode="SingleLine"></TextBoxStyle></remotion:BocTextValue>
+                   <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource1" runat="server" PropertyIdentifier="Partner" DataSourceControl="PartnerDataSource"></remotion:BusinessObjectReferenceDataSourceControl>
+                </td>
                 </tr>
               <tr>
                 <td>Partner2</td>
-                <td><remotion:BocTextValue id="BocTextValue2" runat="server" DataSourceControl="PartnerDataSource2" propertyidentifier="LastName" width="100%"><textboxstyle textmode="SingleLine"></TextBoxStyle></remotion:BocTextValue></td>
+                <td>
+                  <remotion:BocTextValue id="BocTextValue2" runat="server" DataSourceControl="PartnerDataSource2" propertyidentifier="LastName" width="100%"><textboxstyle textmode="SingleLine"></TextBoxStyle></remotion:BocTextValue>
+                  <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource2" runat="server" PropertyIdentifier="Partner" DataSourceControl="PartnerDataSource1"></remotion:BusinessObjectReferenceDataSourceControl>
+                </td>
                 </tr>
               <tr>
                 <td></td>
@@ -159,7 +168,7 @@
               </tr>
               <tr><td></td>
                 <td>
-                    <remotion:UserControlBinding ID="UserControlPartnerBinding" runat="server" UserControlPath="TestUserControl.ascx" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" />
+                    <remotion:UserControlBinding ID="UserControlPartnerBinding" runat="server" UserControlPath="TestUserControl.ascx" DataSourceControl="CurrentObject" PropertyIdentifier="Father" />
                 </td>
               </tr>
          </table>
@@ -167,10 +176,8 @@
             <remotion:formgridmanager id=FormGridManager runat="server"  visible="true"></remotion:formgridmanager>
             <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
             <remotion:BocDataSourceValidationFailureDisptachingValidator ID="DataSourceValidationFailureDisptachingValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BocDataSourceValidationFailureDisptachingValidator>
-            <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource"  runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></remotion:BusinessObjectReferenceDataSourceControl>
-            <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource1" runat="server" PropertyIdentifier="Partner" DataSourceControl="PartnerDataSource"></remotion:BusinessObjectReferenceDataSourceControl>
-            <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource2" runat="server" PropertyIdentifier="Partner" DataSourceControl="PartnerDataSource1"></remotion:BusinessObjectReferenceDataSourceControl>
-          
+            
+           
         </p>
         <p>
           <asp:button id=SaveButton runat="server" Text="Save" Width="80px"></asp:button>

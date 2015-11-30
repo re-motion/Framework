@@ -18,8 +18,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using FluentValidation.Results;
+using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 
@@ -28,15 +30,12 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
   public sealed class BocReferenceDataSourceValidationFailureDisptachingValidator
       : BaseValidator, IBusinessObjectBoundEditableWebControlValidationFailureDispatcher
   {
-    private List<ValidationFailure> _validationFailures = new List<ValidationFailure>();
-
     public BocReferenceDataSourceValidationFailureDisptachingValidator ()
     {
     }
 
     public IEnumerable<ValidationFailure> DispatchValidationFailures (IEnumerable<ValidationFailure> failures)
     {
-      // TODO Should only dispatch
       ArgumentUtility.CheckNotNull ("failures", failures);
 
       var bocControl = GetControlToValidate();
@@ -46,24 +45,28 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
             "BocReferenceDataSourceValidationFailureDisptachingValidator may only be applied to controls of type BusinessObjectReferenceDataSourceControl");
       }
 
-      _validationFailures = new List<ValidationFailure>();
-      foreach (var failure in failures)
-      {
-        if (BusinessObjectBoundEditableWebControlValidationUtility.IsMatchingControl (bocControl, failure))
-          _validationFailures.Add (failure);
-        else
-          yield return failure;
-      }
+      var namingContainer = bocControl.NamingContainer;
+      var validators =
+          EnumerableUtility.SelectRecursiveDepthFirst (
+              namingContainer,
+              child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer)))
+              .OfType<IBusinessObjectBoundEditableWebControlValidationFailureDispatcher>();
 
-      if (_validationFailures.Any())
-        Validate();
+      var controlsWithValidBinding = bocControl.GetBoundControlsWithValidBinding().Cast<Control>();
+      var validatorsMatchingToControls = controlsWithValidBinding.Join (
+          validators,
+          c => c.ID,
+          v => ((BaseValidator) v).ControlToValidate,
+          (c, v) => v)
+          .Where (c => c != this); // Prevent from finding and dispatching to himself
 
-      ErrorMessage = string.Join ("\r\n", _validationFailures.Select (f => f.ErrorMessage));
+      return validatorsMatchingToControls.Aggregate (failures, (f, v) => v.DispatchValidationFailures (f)).ToList();
     }
 
     protected override bool EvaluateIsValid ()
     {
-      return !_validationFailures.Any();
+      // This validator is never invalid because it just dispatches the errors.
+      return true;
     }
 
     private BusinessObjectReferenceDataSourceControl GetControlToValidate ()

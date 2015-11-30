@@ -93,9 +93,11 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting\ObjectBinding.Web.Development.WebTesting.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Preview\ObjectBinding.Web.Preview.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Validation\ObjectBinding.Web.Validation.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\UnitTests\ObjectBinding.UnitTests.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Security.UnitTests\ObjectBinding.Security.UnitTests.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Validation.UnitTests\ObjectBinding.Web.Validation.UnitTests.csproj"/>
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj">
       <IsWebTest>True</IsWebTest>
       <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
