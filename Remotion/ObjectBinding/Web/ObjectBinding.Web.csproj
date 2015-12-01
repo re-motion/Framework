@@ -207,6 +207,8 @@
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\CompoundBocCheckBoxValidatorFactory.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\IBocBooleanValueValidatorFactory.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\IBocCheckBoxValidatorFactory.cs" />
+    <Compile Include="UI\Controls\BocDateTimeFormatValidator.cs" />
+    <Compile Include="UI\Controls\BocDateTimeRequiredValidator.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\IDateTimeFormatter.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\BocDateTimeValueRenderingContext.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\IBocDateTimeValueRenderer.cs" />
@@ -303,7 +305,7 @@
     <Compile Include="UI\Controls\BocDateTimeValue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Controls\BocDateTimeValueValidator.cs">
+    <Compile Include="UI\Controls\BocDateTimeValueValidatorBase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Controls\BocDropDownMenu.cs">
@@ -543,7 +545,9 @@
     <None Include="Doc\include\UI\Controls\BocBooleanValue.xml" />
     <None Include="Doc\include\UI\Controls\BocCheckBox.xml" />
     <None Include="Doc\include\UI\Controls\BocDateTimeValue.xml" />
-    <None Include="Doc\include\UI\Controls\BocDateTimeValueValidator.xml" />
+    <None Include="Doc\include\UI\Controls\BocDateTimeValueValidatorBase.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Doc\include\UI\Controls\BocDropDownMenu.xml" />
     <None Include="Doc\include\UI\Controls\BocEnumValue.xml" />
     <None Include="Doc\include\UI\Controls\BocList.xml" />

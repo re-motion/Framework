@@ -417,7 +417,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Implemantations should consider whether they require a validator also when the control is rendered as read-only.
     /// </param>
     /// <remarks> 
-    ///   Generates a <see cref="BocDateTimeValueValidator"/> if the control is in edit mode.
+    ///   Generates a <see cref="BocDateTimeValueValidatorBase"/> if the control is in edit mode.
     /// </remarks>
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
@@ -433,7 +433,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private void OverrideValidatorErrorMessages ()
     {
       if (!string.IsNullOrEmpty (_errorMessage))
-        UpdateValidtaorErrorMessages<BocDateTimeValueValidator> (_errorMessage);
+        UpdateValidtaorErrorMessages<BocDateTimeValueValidatorBase> (_errorMessage);
     }
 
     private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
@@ -982,7 +982,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        UpdateValidtaorErrorMessages<BocDateTimeValueValidator> (_errorMessage);
+        UpdateValidtaorErrorMessages<BocDateTimeValueValidatorBase> (_errorMessage);
       }
     }
 

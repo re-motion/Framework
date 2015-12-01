@@ -184,7 +184,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       using (new CultureScope ("de-AT"))
       {
-        // ValidDate + " " + ValidTime would be a valid date but is entered in date field -> invalid
         var bocDateTimeValue = CreateBocDateTimeValue ("01.01.10000", ValidTime, false, valueType);
         var validators = CreateValidator (bocDateTimeValue);
 
@@ -289,23 +288,28 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
     private List<BaseValidator> CreateValidator (BusinessObjectBoundEditableWebControl bocDateTimeValue)
     {
-      var validator = MockRepository.GeneratePartialMock<BocDateTimeValueValidator>();
-      validator.ID = "Validator";
-      validator.ControlToValidate = "Control";
-
       var namingContainer = MockRepository.GenerateMock<Control>();
       namingContainer.Expect (c => c.FindControl ("Control")).Return (bocDateTimeValue).Repeat.Any();
-      validator.Stub (c => c.NamingContainer).Return (namingContainer);
 
-      validator.MissingDateAndTimeErrorMessage = MissingDateAndTimeErrorMessage;
-      validator.MissingDateOrTimeErrorMessage = MissingDateOrTimeErrorMessage;
-      validator.MissingDateErrorMessage = MissingDateErrorMessage;
-      validator.MissingTimeErrorMessage = MissingTimeErrorMessage;
-      validator.InvalidDateAndTimeErrorMessage = InvalidDateAndTimeErrorMessage;
-      validator.InvalidDateErrorMessage = InvalidDateErrorMessage;
-      validator.InvalidTimeErrorMessage = InvalidTimeErrorMessage;
+      var requiredValidator = MockRepository.GeneratePartialMock<BocDateTimeRequiredValidator>();
+      requiredValidator.Stub (c => c.NamingContainer).Return (namingContainer);
+      requiredValidator.ID = "RequiredValidator";
+      requiredValidator.ControlToValidate = "Control";
+      requiredValidator.MissingDateAndTimeErrorMessage = MissingDateAndTimeErrorMessage;
+      requiredValidator.MissingDateOrTimeErrorMessage = MissingDateOrTimeErrorMessage;
+      requiredValidator.MissingDateErrorMessage = MissingDateErrorMessage;
+      requiredValidator.MissingTimeErrorMessage = MissingTimeErrorMessage;
 
-      return new List<BaseValidator>() { validator };
+
+      var formatValidator = MockRepository.GeneratePartialMock<BocDateTimeFormatValidator>();
+      formatValidator.Stub (c => c.NamingContainer).Return (namingContainer);
+      formatValidator.ID = "FormatValidator";
+      formatValidator.ControlToValidate = "Control";
+      formatValidator.InvalidDateAndTimeErrorMessage = InvalidDateAndTimeErrorMessage;
+      formatValidator.InvalidDateErrorMessage = InvalidDateErrorMessage;
+      formatValidator.InvalidTimeErrorMessage = InvalidTimeErrorMessage;
+
+      return new List<BaseValidator>() { requiredValidator, formatValidator };
     }
   }
 }
