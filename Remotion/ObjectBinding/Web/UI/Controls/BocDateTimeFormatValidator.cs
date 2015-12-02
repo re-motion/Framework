@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Since a time-offset of 0:0 will not falsify the result, this is acceptable.
     ///   Prevented by setting the MaxLength attribute of the input field.
     /// </remarks>
-    private bool EvaluateIsValidDate (BocDateTimeValue control)
+    protected virtual bool EvaluateIsValidDate (BocDateTimeValue control)
     {
       bool isValidDateRequired = control.ActualValueType == BocDateTimeValueType.Undefined
                                  || control.ActualValueType == BocDateTimeValueType.DateTime
@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Validates time values in the current culture. </summary>
     /// <remarks> Does not detect an included date of 01.01.0001. </remarks>
-    private bool EvaluateIsValidTime (BocDateTimeValue control)
+    protected virtual bool EvaluateIsValidTime (BocDateTimeValue control)
     {
       bool isValidTimeRequired = control.ActualValueType == BocDateTimeValueType.Undefined
                                  || control.ActualValueType == BocDateTimeValueType.DateTime;
