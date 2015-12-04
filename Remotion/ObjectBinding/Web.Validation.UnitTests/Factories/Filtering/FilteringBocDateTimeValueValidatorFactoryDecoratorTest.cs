@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Linq;
 using NUnit.Framework;
@@ -31,7 +32,11 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
   public class FilteringBocDateTimeValueValidatorFactoryDecoratorTest : FilteringValidatorFactoryDecoraterBaseTest
   {
     [Test]
-    public void CreateValidators ()
+    [TestCase (true, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocDateTimeRequiredValidator), typeof (BocDateTimeFormatValidator) })]
+    [TestCase (true, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocDateTimeFormatValidator) })]
+    [TestCase (false, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocDateTimeFormatValidator) })]
+    [TestCase (false, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocDateTimeFormatValidator) })]
+    public void CreateValidators (bool required, bool isValueType, Type[] expectedValidatorTypes)
     {
       var compoundFactory =
           new CompoundBocDateTimeValueValidatorFactory (
@@ -41,14 +46,14 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
 
       var control = MockRepository.GenerateMock<IBocDateTimeValue>();
       control.Expect (c => c.IsRequired).Return (true);
+      control.Expect (c => c.Property).Return (GetPropertyStub (required, isValueType));
       SetResourceManagerMock (control);
 
       var validators = factory.CreateValidators (control, false);
       Assert.That (
           validators.Select (v => v.GetType()),
           Is.EquivalentTo (
-              new[]
-              { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocDateTimeRequiredValidator), typeof (BocDateTimeFormatValidator) }));
+              expectedValidatorTypes));
     }
   }
 }

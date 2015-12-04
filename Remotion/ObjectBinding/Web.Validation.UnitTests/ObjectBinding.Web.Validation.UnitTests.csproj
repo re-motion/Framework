@@ -79,6 +79,8 @@
     <Compile Include="Factories\Filtering\FilteringValidatorFactoryDecoraterBaseTest.cs" />
     <Compile Include="Factories\FluentValidationUserControlBindingValidatorFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestDomain\ClassWithValueType.cs" />
+    <Compile Include="TestDomain\TestEnum.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">
@@ -90,6 +92,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\TypePipe\Core\TypePipe.Core.csproj">
+      <Project>{98E7F7AA-12B2-4A6B-8922-52C8E53B378E}</Project>
+      <Name>TypePipe.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
       <Project>{2aa369ec-a4e7-4d75-9101-efa90e902625}</Project>
       <Name>Core.Core</Name>
@@ -97,6 +103,10 @@
     <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
       <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
       <Name>Globalization.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
+      <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
+      <Name>Mixins.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>

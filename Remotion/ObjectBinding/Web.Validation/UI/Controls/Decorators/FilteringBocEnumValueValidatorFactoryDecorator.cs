@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Reflection;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
@@ -36,7 +37,11 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNull ("validator", validator);
 
-      if (validator is RequiredFieldValidator)
+      bool isValueType = control.Property.PropertyType.IsValueType;
+      bool isPropertyRequired = control.Property.IsRequired;
+      bool allowRequiredFieldValidatorToBeRemoved = !isValueType || !isPropertyRequired;
+
+      if (validator is RequiredFieldValidator && allowRequiredFieldValidatorToBeRemoved)
         return false;
 
       return true;

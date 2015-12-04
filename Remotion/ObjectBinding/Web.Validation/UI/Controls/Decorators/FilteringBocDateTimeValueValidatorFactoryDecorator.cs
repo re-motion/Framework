@@ -37,6 +37,13 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNull ("validator", validator);
 
+      bool isValueType = control.Property.PropertyType.IsValueType;
+      bool isPropertyRequired = control.Property.IsRequired;
+      bool allowRequiredFieldValidatorToBeRemoved = !isValueType || !isPropertyRequired;
+
+      if (validator is BocDateTimeRequiredValidator && allowRequiredFieldValidatorToBeRemoved)
+        return false;
+
       return true;
     }
   }

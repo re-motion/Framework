@@ -121,7 +121,10 @@ namespace OBWTest.Validation
       {
         var person = (Person) CurrentObject.BusinessObject;
         var validationResult = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person);
-        var validationResultPartner = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Partner);
+        ValidationResult validationResultPartner = new ValidationResult();
+        
+        if (person.Partner != null)
+          validationResultPartner = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Partner);
         var validationResultFahter = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Father);
 
         var jobValidator = ValidationBuilder.BuildValidator (typeof (Job));
