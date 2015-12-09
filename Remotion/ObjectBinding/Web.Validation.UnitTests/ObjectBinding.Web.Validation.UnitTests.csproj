@@ -79,8 +79,6 @@
     <Compile Include="Factories\Filtering\FilteringValidatorFactoryDecoraterBaseTest.cs" />
     <Compile Include="Factories\FluentValidationUserControlBindingValidatorFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestDomain\ClassWithValueType.cs" />
-    <Compile Include="TestDomain\TestEnum.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">
