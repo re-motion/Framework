@@ -22,8 +22,8 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.Validation.UI.Controls;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators;
 using Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories;
+using Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators;
 using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering

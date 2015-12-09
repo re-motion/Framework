@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -22,7 +23,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validati
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
+namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators
 {
   /// <summary>
   /// Implements <see cref="IBocMultilineTextValueValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.

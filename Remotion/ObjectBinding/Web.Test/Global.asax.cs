@@ -37,8 +37,8 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validati
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators;
 using Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories;
+using Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators;
 using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.Configuration;

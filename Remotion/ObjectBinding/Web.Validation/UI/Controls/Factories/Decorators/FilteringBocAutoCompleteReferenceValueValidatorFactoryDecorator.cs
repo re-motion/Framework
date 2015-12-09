@@ -18,26 +18,26 @@
 using System;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
+namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators
 {
   /// <summary>
-  /// Implements <see cref="IBocDateTimeValueValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
+  /// Implements <see cref="IBocAutoCompleteReferenceValueValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
   /// This allows fluent validation to validate the business object in a domain context.
   /// </summary>
-  /// <seealso cref="IBocDateTimeValueValidatorFactory"/>
-  public class FilteringBocDateTimeValueValidatorFactoryDecorator
-      : FilteringValidatorFactoryDecorator<IBocDateTimeValue>, IBocDateTimeValueValidatorFactory
+  /// <seealso cref="IBocAutoCompleteReferenceValueValidatorFactory"/>
+  public class FilteringBocAutoCompleteReferenceValueValidatorFactoryDecorator
+      : FilteringValidatorFactoryDecorator<IBocAutoCompleteReferenceValue>, IBocAutoCompleteReferenceValueValidatorFactory
   {
-    public FilteringBocDateTimeValueValidatorFactoryDecorator (IBocValidatorFactory<IBocDateTimeValue> innerFactory)
+    public FilteringBocAutoCompleteReferenceValueValidatorFactoryDecorator (IBocValidatorFactory<IBocAutoCompleteReferenceValue> innerFactory)
         : base (innerFactory)
     {
     }
 
-    public override bool UseValidator (IBocDateTimeValue control, BaseValidator validator)
+    public override bool UseValidator (IBocAutoCompleteReferenceValue control, BaseValidator validator)
     {
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNull ("validator", validator);
@@ -45,8 +45,8 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
       bool isValueType = control.Property.PropertyType.IsValueType;
       bool isPropertyRequired = control.Property.IsRequired;
       bool shouldRequiredFieldValidatorBeRemoved = !isValueType || !isPropertyRequired;
-
-      if (validator is BocDateTimeRequiredValidator && shouldRequiredFieldValidatorBeRemoved)
+      
+      if (validator is RequiredFieldValidator && shouldRequiredFieldValidatorBeRemoved)
         return false;
 
       return true;

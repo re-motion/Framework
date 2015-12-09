@@ -18,35 +18,28 @@
 using System;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
+namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators
 {
   /// <summary>
-  /// Implements <see cref="IBocEnumValueValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
+  /// Implements <see cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
   /// This allows fluent validation to validate the business object in a domain context.
   /// </summary>
-  /// <seealso cref="IBocEnumValueValidatorFactory"/>
-  public class FilteringBocEnumValueValidatorFactoryDecorator : FilteringValidatorFactoryDecorator<IBocEnumValue>, IBocEnumValueValidatorFactory
+  /// <seealso cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/>
+  public class FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator
+      : FilteringValidatorFactoryDecorator<BusinessObjectReferenceDataSourceControl>, IBusinessObjectReferenceDataSourceControlValidatorFactory
   {
-    public FilteringBocEnumValueValidatorFactoryDecorator (IBocValidatorFactory<IBocEnumValue> innerFactory)
+    public FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator (
+        IBocValidatorFactory<BusinessObjectReferenceDataSourceControl> innerFactory)
         : base (innerFactory)
     {
     }
 
-    public override bool UseValidator (IBocEnumValue control, BaseValidator validator)
+    public override bool UseValidator (BusinessObjectReferenceDataSourceControl control, BaseValidator validator)
     {
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNull ("validator", validator);
-
-      bool isValueType = control.Property.PropertyType.IsValueType;
-      bool isPropertyRequired = control.Property.IsRequired;
-      bool shouldRequiredFieldValidatorBeRemoved = !isValueType || !isPropertyRequired;
-
-      if (validator is RequiredFieldValidator && shouldRequiredFieldValidatorBeRemoved)
-        return false;
 
       return true;
     }

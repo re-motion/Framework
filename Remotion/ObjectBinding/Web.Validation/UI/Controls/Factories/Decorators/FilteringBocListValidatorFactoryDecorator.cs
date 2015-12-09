@@ -16,39 +16,32 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
+namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators
 {
   /// <summary>
-  /// Implements <see cref="IBocValidatorFactory{T}"/> inteface and removes all validators not required when writing the value back into the control.
+  /// Implements <see cref="IBocListValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
   /// This allows fluent validation to validate the business object in a domain context.
   /// </summary>
-  /// <seealso cref="IBocValidatorFactory{T}"/>
-  public abstract class FilteringValidatorFactoryDecorator<T> : IBocValidatorFactory<T>
-      where T : IBusinessObjectBoundEditableWebControl
+  /// <seealso cref="IBocListValidatorFactory"/>
+  public class FilteringBocListValidatorFactoryDecorator : FilteringValidatorFactoryDecorator<IBocList>, IBocListValidatorFactory
   {
-    private readonly IBocValidatorFactory<T> _innerFactory;
-
-    protected FilteringValidatorFactoryDecorator (IBocValidatorFactory<T> innerFactory)
+    public FilteringBocListValidatorFactoryDecorator (IBocValidatorFactory<IBocList> innerFactory)
+        : base (innerFactory)
     {
-      ArgumentUtility.CheckNotNull ("innerFactory", innerFactory);
-
-      _innerFactory = innerFactory;
     }
 
-    public IEnumerable<BaseValidator> CreateValidators (T control, bool isReadOnly)
+    public override bool UseValidator (IBocList control, BaseValidator validator)
     {
       ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull ("validator", validator);
 
-      var validators = _innerFactory.CreateValidators (control, isReadOnly);
-      return validators.Where (v => UseValidator (control, v));
+      return true;
     }
-
-    public abstract bool UseValidator (T control, BaseValidator validator);
   }
 }

@@ -18,25 +18,25 @@
 using System;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
+namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators
 {
   /// <summary>
-  /// Implements <see cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
+  /// Implements <see cref="IBocCheckBoxValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
   /// This allows fluent validation to validate the business object in a domain context.
   /// </summary>
-  /// <seealso cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/>
-  public class FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator
-      : FilteringValidatorFactoryDecorator<BusinessObjectReferenceDataSourceControl>, IBusinessObjectReferenceDataSourceControlValidatorFactory
+  /// <seealso cref="IBocCheckBoxValidatorFactory"/>
+  public class FilteringBocCheckBoxValidatorFactoryDecorator : FilteringValidatorFactoryDecorator<IBocCheckBox>, IBocCheckBoxValidatorFactory
   {
-    public FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator (
-        IBocValidatorFactory<BusinessObjectReferenceDataSourceControl> innerFactory)
+    public FilteringBocCheckBoxValidatorFactoryDecorator (IBocValidatorFactory<IBocCheckBox> innerFactory)
         : base (innerFactory)
     {
     }
 
-    public override bool UseValidator (BusinessObjectReferenceDataSourceControl control, BaseValidator validator)
+    public override bool UseValidator (IBocCheckBox control, BaseValidator validator)
     {
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNull ("validator", validator);

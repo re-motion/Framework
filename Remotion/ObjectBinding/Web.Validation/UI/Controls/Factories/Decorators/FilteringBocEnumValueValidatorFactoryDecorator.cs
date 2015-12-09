@@ -18,26 +18,25 @@
 using System;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
+namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators
 {
   /// <summary>
-  /// Implements <see cref="IBocReferenceValueValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
+  /// Implements <see cref="IBocEnumValueValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
   /// This allows fluent validation to validate the business object in a domain context.
   /// </summary>
-  /// <seealso cref="IBocReferenceValueValidatorFactory"/>
-  public class FilteringBocReferenceValueValidatorFactoryDecorator
-      : FilteringValidatorFactoryDecorator<IBocReferenceValue>, IBocReferenceValueValidatorFactory
+  /// <seealso cref="IBocEnumValueValidatorFactory"/>
+  public class FilteringBocEnumValueValidatorFactoryDecorator : FilteringValidatorFactoryDecorator<IBocEnumValue>, IBocEnumValueValidatorFactory
   {
-    public FilteringBocReferenceValueValidatorFactoryDecorator (IBocValidatorFactory<IBocReferenceValue> innerFactory)
+    public FilteringBocEnumValueValidatorFactoryDecorator (IBocValidatorFactory<IBocEnumValue> innerFactory)
         : base (innerFactory)
     {
     }
 
-    public override bool UseValidator (IBocReferenceValue control, BaseValidator validator)
+    public override bool UseValidator (IBocEnumValue control, BaseValidator validator)
     {
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNull ("validator", validator);

@@ -18,27 +18,39 @@
 using System;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
 using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
+namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators
 {
   /// <summary>
-  /// Implements <see cref="IUserControlBindingValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
+  /// Implements <see cref="IBocTextValueValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
   /// This allows fluent validation to validate the business object in a domain context.
   /// </summary>
-  /// <seealso cref="IUserControlBindingValidatorFactory"/>
-  public class FilteringUserControlBindingValidatorFactoryDecorator
-      : FilteringValidatorFactoryDecorator<UserControlBinding>, IUserControlBindingValidatorFactory
+  /// <seealso cref="IBocTextValueValidatorFactory"/>
+  public class FilteringBocTextValueValidatorFactoryDecorator : FilteringValidatorFactoryDecorator<IBocTextValue>, IBocTextValueValidatorFactory
   {
-    public FilteringUserControlBindingValidatorFactoryDecorator (IBocValidatorFactory<UserControlBinding> innerFactory)
+    public FilteringBocTextValueValidatorFactoryDecorator (IBocValidatorFactory<IBocTextValue> innerFactory)
         : base (innerFactory)
     {
     }
 
-    public override bool UseValidator (UserControlBinding control, BaseValidator validator)
+    public override bool UseValidator (IBocTextValue control, BaseValidator validator)
     {
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNull ("validator", validator);
+
+      bool isValueType = control.Property.PropertyType.IsValueType;
+      bool isPropertyRequired = control.Property.IsRequired;
+      bool shouldRequiredFieldValidatorBeRemoved = !isValueType || !isPropertyRequired;
+
+      if (validator is RequiredFieldValidator && shouldRequiredFieldValidatorBeRemoved)
+        return false;
+
+      if (validator is LengthValidator)
+        return false;
 
       return true;
     }

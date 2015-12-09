@@ -4,8 +4,8 @@ using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.Validation.UI.Controls;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators;
 using Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories;
+using Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators;
 using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering

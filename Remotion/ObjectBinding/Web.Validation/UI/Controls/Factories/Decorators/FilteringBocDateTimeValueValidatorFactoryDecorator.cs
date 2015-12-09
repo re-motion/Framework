@@ -18,26 +18,26 @@
 using System;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
+namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators
 {
   /// <summary>
-  /// Implements <see cref="IBocBooleanValueValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
+  /// Implements <see cref="IBocDateTimeValueValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
   /// This allows fluent validation to validate the business object in a domain context.
   /// </summary>
-  /// <seealso cref="IBocBooleanValueValidatorFactory"/>
-  public class FilteringBocBooleanValueValidatorFactoryDecorator
-      : FilteringValidatorFactoryDecorator<IBocBooleanValue>, IBocBooleanValueValidatorFactory
+  /// <seealso cref="IBocDateTimeValueValidatorFactory"/>
+  public class FilteringBocDateTimeValueValidatorFactoryDecorator
+      : FilteringValidatorFactoryDecorator<IBocDateTimeValue>, IBocDateTimeValueValidatorFactory
   {
-    public FilteringBocBooleanValueValidatorFactoryDecorator (IBocValidatorFactory<IBocBooleanValue> innerFactory)
+    public FilteringBocDateTimeValueValidatorFactoryDecorator (IBocValidatorFactory<IBocDateTimeValue> innerFactory)
         : base (innerFactory)
     {
     }
 
-    public override bool UseValidator (IBocBooleanValue control, BaseValidator validator)
+    public override bool UseValidator (IBocDateTimeValue control, BaseValidator validator)
     {
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNull ("validator", validator);
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
       bool isPropertyRequired = control.Property.IsRequired;
       bool shouldRequiredFieldValidatorBeRemoved = !isValueType || !isPropertyRequired;
 
-      if (validator is RequiredFieldValidator && shouldRequiredFieldValidatorBeRemoved)
+      if (validator is BocDateTimeRequiredValidator && shouldRequiredFieldValidatorBeRemoved)
         return false;
 
       return true;
