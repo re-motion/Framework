@@ -16,6 +16,13 @@
 // 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation
 {
+  /// <summary>
+  /// Defines a factory for validators used to validate a <see cref="IBocAutoCompleteReferenceValue"/>.
+  /// </summary>
+  /// <seealso cref="BocAutoCompleteReferenceValueValidatorFactory"/>
+  /// <seealso cref="CompoundBocAutoCompleteReferenceValueValidatorFactory"/>
+  /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory"/>
+  /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators.FilteringBocAutoCompleteReferenceValueValidatorFactoryDecorator"/>
   public interface IBocAutoCompleteReferenceValueValidatorFactory : IBocValidatorFactory<IBocAutoCompleteReferenceValue>
   {
      

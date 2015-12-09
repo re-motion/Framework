@@ -16,6 +16,13 @@
 // 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation
 {
+  /// <summary>
+  /// Defines a factory for validators used to validate a <see cref="IBocDateTimeValue"/>.
+  /// </summary>
+  /// <seealso cref="BocDateTimeValueValidatorFactory"/>
+  /// <seealso cref="CompoundBocDateTimeValueValidatorFactory"/>
+  /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory"/>
+  /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators.FilteringBocDateTimeValueValidatorFactoryDecorator"/>
   public interface IBocDateTimeValueValidatorFactory : IBocValidatorFactory<IBocDateTimeValue>
   {
   }

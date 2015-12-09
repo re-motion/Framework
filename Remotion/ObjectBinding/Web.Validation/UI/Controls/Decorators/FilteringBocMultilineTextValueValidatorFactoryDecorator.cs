@@ -24,6 +24,11 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
 {
+  /// <summary>
+  /// Implements <see cref="IBocMultilineTextValueValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
+  /// This allows fluent validation to validate the business object in a domain context.
+  /// </summary>
+  /// <seealso cref="IBocMultilineTextValueValidatorFactory"/>
   public class FilteringBocMultilineTextValueValidatorFactoryDecorator
       : FilteringValidatorFactoryDecorator<IBocMultilineTextValue>, IBocMultilineTextValueValidatorFactory
   {
@@ -39,9 +44,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
 
       bool isValueType = control.Property.PropertyType.IsValueType;
       bool isPropertyRequired = control.Property.IsRequired;
-      bool allowRequiredFieldValidatorToBeRemoved = !isValueType || !isPropertyRequired;
+      bool shouldRequiredFieldValidatorBeRemoved = !isValueType || !isPropertyRequired;
 
-      if (validator is RequiredFieldValidator && allowRequiredFieldValidatorToBeRemoved)
+      if (validator is RequiredFieldValidator && shouldRequiredFieldValidatorBeRemoved)
         return false;
 
       if (validator is LengthValidator)

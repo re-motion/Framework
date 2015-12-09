@@ -22,10 +22,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
 using Remotion.Utilities;
 using Rhino.Mocks;
 
-namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
+namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImplementation.Validation
 {
   [TestFixture]
   public class BocDateTimeValueValidatorTest

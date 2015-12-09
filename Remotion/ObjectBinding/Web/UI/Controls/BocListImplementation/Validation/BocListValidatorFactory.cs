@@ -23,6 +23,10 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
 {
+  /// <summary>
+  /// Implements the <see cref="IBocListValidatorFactory"/> inteface and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
+  /// </summary>
+  /// <seealso cref="IBocListValidatorFactory"/>
   [ImplementationFor (typeof (IBocListValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocListValidatorFactory : IBocListValidatorFactory
   {

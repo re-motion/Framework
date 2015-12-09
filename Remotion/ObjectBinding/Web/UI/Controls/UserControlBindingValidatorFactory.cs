@@ -23,6 +23,10 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
+  /// <summary>
+  /// Implements the <see cref="IUserControlBindingValidatorFactory"/> inteface and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
+  /// </summary>
+  /// <seealso cref="IUserControlBindingValidatorFactory"/>
   [ImplementationFor (typeof (IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple,
       Position = Position)]
   public class UserControlBindingValidatorFactory : IUserControlBindingValidatorFactory

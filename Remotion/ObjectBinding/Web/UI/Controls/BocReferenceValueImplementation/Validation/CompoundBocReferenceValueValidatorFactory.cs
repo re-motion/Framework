@@ -20,6 +20,11 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation
 {
+  /// <summary>
+  /// Implements the <see cref="IBocReferenceValueValidatorFactory"/> inteface and compounds all registered <see cref="IBocReferenceValueValidatorFactory"/>.
+  /// </summary>
+  /// <seealso cref="IBocReferenceValueValidatorFactory"/>
+  /// <seealso cref="CompoundValidatorFactory{T}"/>
   [ImplementationFor (typeof (IBocReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBocReferenceValueValidatorFactory : CompoundValidatorFactory<IBocReferenceValue>, IBocReferenceValueValidatorFactory
   {

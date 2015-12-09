@@ -21,7 +21,7 @@ using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation
 {
   public class BocDateTimeFormatValidator : BocDateTimeValueValidatorBase
   {
@@ -143,19 +143,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         case ValidationError.InvalidDateAndTime:
         {
           if (!string.IsNullOrEmpty (InvalidDateAndTimeErrorMessage))
-            base.ErrorMessage = InvalidDateAndTimeErrorMessage;
+            ErrorMessage = InvalidDateAndTimeErrorMessage;
           break;
         }
         case ValidationError.InvalidDate:
         {
           if (!string.IsNullOrEmpty (InvalidDateErrorMessage))
-            base.ErrorMessage = InvalidDateErrorMessage;
+            ErrorMessage = InvalidDateErrorMessage;
           break;
         }
         case ValidationError.InvalidTime:
         {
           if (!string.IsNullOrEmpty (InvalidTimeErrorMessage))
-            base.ErrorMessage = InvalidTimeErrorMessage;
+            ErrorMessage = InvalidTimeErrorMessage;
           break;
         }
         default:
@@ -175,7 +175,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         _invalidDateErrorMessage = value;
         if (_error == ValidationError.InvalidDate)
-          base.ErrorMessage = value;
+          ErrorMessage = value;
       }
     }
 
@@ -189,7 +189,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         _invalidTimeErrorMessage = value;
         if (_error == ValidationError.InvalidTime)
-          base.ErrorMessage = value;
+          ErrorMessage = value;
       }
     }
 
@@ -203,7 +203,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         _invalidDateAndTimeErrorMessage = value;
         if (_error == ValidationError.InvalidDateAndTime)
-          base.ErrorMessage = value;
+          ErrorMessage = value;
       }
     }
 

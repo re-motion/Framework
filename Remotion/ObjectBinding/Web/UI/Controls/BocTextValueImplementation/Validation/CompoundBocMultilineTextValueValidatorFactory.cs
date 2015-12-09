@@ -19,6 +19,11 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation
 {
+  /// <summary>
+  /// Implements the <see cref="IBocMultilineTextValueValidatorFactory"/> inteface and compounds all registered <see cref="IBocMultilineTextValueValidatorFactory"/>.
+  /// </summary>
+  /// <seealso cref="IBocMultilineTextValueValidatorFactory"/>
+  /// <seealso cref="CompoundValidatorFactory{T}"/>
   [ImplementationFor (typeof (IBocMultilineTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBocMultilineTextValueValidatorFactory : CompoundValidatorFactory<IBocMultilineTextValue>, IBocMultilineTextValueValidatorFactory
   {

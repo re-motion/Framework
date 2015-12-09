@@ -16,6 +16,13 @@
 // 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
 {
+  /// <summary>
+  /// Defines a factory for validators used to validate a <see cref="IBocList"/>.
+  /// </summary>
+  /// <seealso cref="BocListValidatorFactory"/>
+  /// <seealso cref="CompoundBocListValidatorFactory"/>
+  /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.FluentValidationBocListValidatorFactory"/>
+  /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators.FilteringBocListValidatorFactoryDecorator"/>
   public interface IBocListValidatorFactory : IBocValidatorFactory<IBocList>
   {
      

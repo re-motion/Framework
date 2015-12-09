@@ -19,6 +19,11 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
 {
+  /// <summary>
+  /// Implements the <see cref="IBocListValidatorFactory"/> inteface and compounds all registered <see cref="IBocListValidatorFactory"/>.
+  /// </summary>
+  /// <seealso cref="IBocListValidatorFactory"/>
+  /// <seealso cref="CompoundValidatorFactory{T}"/>
   [ImplementationFor(typeof(IBocListValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBocListValidatorFactory : CompoundValidatorFactory<IBocList>, IBocListValidatorFactory
   {

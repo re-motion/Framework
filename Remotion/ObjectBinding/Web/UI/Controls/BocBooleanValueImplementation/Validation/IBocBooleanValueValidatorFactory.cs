@@ -16,6 +16,13 @@
 // 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation
 {
+  /// <summary>
+  /// Defines a factory for validators used to validate a <see cref="IBocBooleanValue"/>.
+  /// </summary>
+  /// <seealso cref="BocBooleanValueValidatorFactory"/>
+  /// <seealso cref="CompoundBocBooleanValueValidatorFactory"/>
+  /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory"/>
+  /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators.FilteringBocBooleanValueValidatorFactoryDecorator"/>
   public interface IBocBooleanValueValidatorFactory : IBocValidatorFactory<IBocBooleanValue>
   {
      

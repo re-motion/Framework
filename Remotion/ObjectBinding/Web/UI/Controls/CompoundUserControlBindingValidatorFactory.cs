@@ -19,6 +19,11 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
+  /// <summary>
+  /// Implements the <see cref="IUserControlBindingValidatorFactory"/> inteface and compounds all registered <see cref="IUserControlBindingValidatorFactory"/>.
+  /// </summary>
+  /// <seealso cref="IUserControlBindingValidatorFactory"/>
+  /// <seealso cref="CompoundValidatorFactory{T}"/>
   [ImplementationFor (typeof (IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundUserControlBindingValidatorFactory : CompoundValidatorFactory<UserControlBinding>, IUserControlBindingValidatorFactory
   {

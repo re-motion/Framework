@@ -22,6 +22,10 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
+  /// <summary>
+  /// Implements the <see cref="IBocValidatorFactory{T}"/> inteface and compounds all registered <see cref="IBocValidatorFactory{T}"/>.
+  /// </summary>
+  /// <seealso cref="IBocValidatorFactory{T}"/>
   public class CompoundValidatorFactory<T> : IBocValidatorFactory<T> where T : IBusinessObjectBoundEditableWebControl
   {
     private readonly IReadOnlyCollection<IBocValidatorFactory<T>> _innerFactories;

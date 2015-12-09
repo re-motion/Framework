@@ -17,13 +17,18 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using FluentValidation.Results;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 {
-
+  /// <summary>
+  /// Implements various <see cref="IUserControlBindingValidatorFactory"/> intefaces and creates validators 
+  /// that can apply the fluent validation <see cref="ValidationFailure"/> results to the respective control.
+  /// </summary>
+  /// <seealso cref="IUserControlBindingValidatorFactory"/>
   [ImplementationFor (typeof (IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class FluentValidationUserControlBindingValidatorFactory : IUserControlBindingValidatorFactory
   {

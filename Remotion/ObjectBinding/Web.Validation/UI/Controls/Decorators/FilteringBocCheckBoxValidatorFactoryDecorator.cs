@@ -24,6 +24,11 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
 {
+  /// <summary>
+  /// Implements <see cref="IBocCheckBoxValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
+  /// This allows fluent validation to validate the business object in a domain context.
+  /// </summary>
+  /// <seealso cref="IBocCheckBoxValidatorFactory"/>
   public class FilteringBocCheckBoxValidatorFactoryDecorator : FilteringValidatorFactoryDecorator<IBocCheckBox>, IBocCheckBoxValidatorFactory
   {
     public FilteringBocCheckBoxValidatorFactoryDecorator (IBocValidatorFactory<IBocCheckBox> innerFactory)

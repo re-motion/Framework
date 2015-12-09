@@ -20,6 +20,11 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation
 {
+  /// <summary>
+  /// Implements the <see cref="IBocBooleanValueValidatorFactory"/> inteface and compounds all registered <see cref="IBocBooleanValueValidatorFactory"/>.
+  /// </summary>
+  /// <seealso cref="IBocBooleanValueValidatorFactory"/>
+  /// <seealso cref="CompoundValidatorFactory{T}"/>
   [ImplementationFor (typeof (IBocBooleanValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBocBooleanValueValidatorFactory : CompoundValidatorFactory<IBocBooleanValue>, IBocBooleanValueValidatorFactory
   {

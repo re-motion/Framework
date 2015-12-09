@@ -19,6 +19,11 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation
 {
+  /// <summary>
+  /// Implements the <see cref="IBocCheckBoxValidatorFactory"/> inteface and compounds all registered <see cref="IBocCheckBoxValidatorFactory"/>.
+  /// </summary>
+  /// <seealso cref="IBocCheckBoxValidatorFactory"/>
+  /// <seealso cref="CompoundValidatorFactory{T}"/>
   [ImplementationFor (typeof (IBocCheckBoxValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBocCheckBoxValidatorFactory : CompoundValidatorFactory<IBocCheckBox>, IBocCheckBoxValidatorFactory
   {

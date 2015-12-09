@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using FluentValidation.Results;
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
@@ -32,6 +34,18 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 {
+  /// <summary>
+  /// Implements various <see cref="IBocValidatorFactory{T}"/> intefaces and creates validators 
+  /// that can apply the fluent validation <see cref="ValidationFailure"/> results to the respective control.
+  /// </summary>
+  /// <seealso cref="IBocTextValueValidatorFactory"/>
+  /// <seealso cref="IBocReferenceValueValidatorFactory"/>
+  /// <seealso cref="IBocAutoCompleteReferenceValueValidatorFactory"/>
+  /// <seealso cref="IBocBooleanValueValidatorFactory"/>
+  /// <seealso cref="IBocCheckBoxValidatorFactory"/>
+  /// <seealso cref="IBocDateTimeValueValidatorFactory"/>
+  /// <seealso cref="IBocEnumValueValidatorFactory"/>
+  /// <seealso cref="IBocMultilineTextValueValidatorFactory"/>
   [ImplementationFor (typeof (IBocReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocReferenceValueValidatorFactory)]
   [ImplementationFor (typeof (IBocAutoCompleteReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocAutoCompleteReferenceValueValidatorFactory)]
   [ImplementationFor (typeof (IBocTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocTextValueValidatorFactory)]

@@ -24,6 +24,11 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
 {
+  /// <summary>
+  /// Implements <see cref="IBocReferenceValueValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
+  /// This allows fluent validation to validate the business object in a domain context.
+  /// </summary>
+  /// <seealso cref="IBocReferenceValueValidatorFactory"/>
   public class FilteringBocReferenceValueValidatorFactoryDecorator
       : FilteringValidatorFactoryDecorator<IBocReferenceValue>, IBocReferenceValueValidatorFactory
   {
@@ -39,9 +44,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
 
       bool isValueType = control.Property.PropertyType.IsValueType;
       bool isPropertyRequired = control.Property.IsRequired;
-      bool allowRequiredFieldValidatorToBeRemoved = !isValueType || !isPropertyRequired;
+      bool shouldRequiredFieldValidatorBeRemoved = !isValueType || !isPropertyRequired;
 
-      if (validator is RequiredFieldValidator && allowRequiredFieldValidatorToBeRemoved)
+      if (validator is RequiredFieldValidator && shouldRequiredFieldValidatorBeRemoved)
         return false;
 
       return true;

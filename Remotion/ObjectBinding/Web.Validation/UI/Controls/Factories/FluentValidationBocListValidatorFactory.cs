@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using FluentValidation.Results;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ServiceLocation;
@@ -24,6 +25,11 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 {
+  /// <summary>
+  /// Implements various <see cref="IBocListValidatorFactory"/> intefaces and creates validators 
+  /// that can apply the fluent validation <see cref="ValidationFailure"/> results to the respective control.
+  /// </summary>
+  /// <seealso cref="IBocListValidatorFactory"/>
   [ImplementationFor (typeof (IBocListValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class FluentValidationBocListValidatorFactory : IBocListValidatorFactory
   {

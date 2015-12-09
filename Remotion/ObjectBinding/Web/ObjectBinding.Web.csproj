@@ -207,8 +207,8 @@
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\CompoundBocCheckBoxValidatorFactory.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\IBocBooleanValueValidatorFactory.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\IBocCheckBoxValidatorFactory.cs" />
-    <Compile Include="UI\Controls\BocDateTimeFormatValidator.cs" />
-    <Compile Include="UI\Controls\BocDateTimeRequiredValidator.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\Validation\BocDateTimeFormatValidator.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\Validation\BocDateTimeRequiredValidator.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\IDateTimeFormatter.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\BocDateTimeValueRenderingContext.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\IBocDateTimeValueRenderer.cs" />

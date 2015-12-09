@@ -19,7 +19,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation
 {
   public class BocDateTimeRequiredValidator : BocDateTimeValueValidatorBase
   {
@@ -122,25 +122,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         case ValidationError.MissingDateAndTime:
         {
           if (!string.IsNullOrEmpty (MissingDateAndTimeErrorMessage))
-            base.ErrorMessage = MissingDateAndTimeErrorMessage;
+            ErrorMessage = MissingDateAndTimeErrorMessage;
           break;
         }
         case ValidationError.MissingDateOrTime:
         {
           if (!string.IsNullOrEmpty (MissingDateOrTimeErrorMessage))
-            base.ErrorMessage = MissingDateOrTimeErrorMessage;
+            ErrorMessage = MissingDateOrTimeErrorMessage;
           break;
         }
         case ValidationError.MissingDate:
         {
           if (!string.IsNullOrEmpty (MissingDateErrorMessage))
-            base.ErrorMessage = MissingDateErrorMessage;
+            ErrorMessage = MissingDateErrorMessage;
           break;
         }
         case ValidationError.MissingTime:
         {
           if (!string.IsNullOrEmpty (MissingTimeErrorMessage))
-            base.ErrorMessage = MissingTimeErrorMessage;
+            ErrorMessage = MissingTimeErrorMessage;
           break;
         }
         default:
@@ -160,7 +160,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         _missingDateErrorMessage = value;
         if (_error == ValidationError.MissingDate)
-          base.ErrorMessage = value;
+          ErrorMessage = value;
       }
     }
 
@@ -174,7 +174,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         _missingTimeErrorMessage = value;
         if (_error == ValidationError.MissingTime)
-          base.ErrorMessage = value;
+          ErrorMessage = value;
       }
     }
 
@@ -188,7 +188,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         _missingDateAndTimeErrorMessage = value;
         if (_error == ValidationError.MissingDateAndTime)
-          base.ErrorMessage = value;
+          ErrorMessage = value;
       }
     }
 
@@ -202,7 +202,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         _missingDateOrTimeErrorMessage = value;
         if (_error == ValidationError.MissingDateOrTime)
-          base.ErrorMessage = value;
+          ErrorMessage = value;
       }
     }
 

@@ -20,6 +20,11 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation
 {
+  /// <summary>
+  /// Implements the <see cref="IBocDateTimeValueValidatorFactory"/> inteface and compounds all registered <see cref="IBocDateTimeValueValidatorFactory"/>.
+  /// </summary>
+  /// <seealso cref="IBocDateTimeValueValidatorFactory"/>
+  /// <seealso cref="CompoundValidatorFactory{T}"/>
   [ImplementationFor (typeof (IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBocDateTimeValueValidatorFactory : CompoundValidatorFactory<IBocDateTimeValue>, IBocDateTimeValueValidatorFactory
   {

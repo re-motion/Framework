@@ -27,8 +27,11 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation
 {
-  [ImplementationFor (typeof (IBocTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple,
-      Position = Position)]
+  /// <summary>
+  /// Implements the <see cref="IBocTextValueValidatorFactory"/> inteface and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
+  /// </summary>
+  /// <seealso cref="IBocTextValueValidatorFactory"/>
+  [ImplementationFor (typeof (IBocTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocTextValueValidatorFactory : IBocTextValueValidatorFactory
   {
     public const int Position = 0;

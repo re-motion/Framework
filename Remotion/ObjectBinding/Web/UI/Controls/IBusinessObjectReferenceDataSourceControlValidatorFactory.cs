@@ -16,6 +16,12 @@
 // 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
+  /// <summary>
+  /// Defines a factory for validators used to validate a <see cref="BusinessObjectReferenceDataSourceControl"/>.
+  /// </summary>
+  /// <seealso cref="CompoundBusinessObjectReferenceDataSourceControlValidatorFactory"/>
+  /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.FluentValidationBocReferenceDataSourceValidatorFactory"/>
+  /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators.FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator"/>
   public interface IBusinessObjectReferenceDataSourceControlValidatorFactory : IBocValidatorFactory<BusinessObjectReferenceDataSourceControl>
   {
      

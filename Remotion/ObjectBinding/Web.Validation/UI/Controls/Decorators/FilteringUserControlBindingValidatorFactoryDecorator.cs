@@ -22,6 +22,11 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
 {
+  /// <summary>
+  /// Implements <see cref="IUserControlBindingValidatorFactory"/> inteface and removes all validators not required when writing the value back into the control.
+  /// This allows fluent validation to validate the business object in a domain context.
+  /// </summary>
+  /// <seealso cref="IUserControlBindingValidatorFactory"/>
   public class FilteringUserControlBindingValidatorFactoryDecorator
       : FilteringValidatorFactoryDecorator<UserControlBinding>, IUserControlBindingValidatorFactory
   {

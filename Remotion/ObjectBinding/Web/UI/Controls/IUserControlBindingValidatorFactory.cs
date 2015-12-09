@@ -16,6 +16,13 @@
 // 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
+  /// <summary>
+  /// Defines a factory for validators used to validate a <see cref="UserControlBinding"/>.
+  /// </summary>
+  /// <seealso cref="UserControlBindingValidatorFactory"/>
+  /// <seealso cref="CompoundUserControlBindingValidatorFactory"/>
+  /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.FluentValidationUserControlBindingValidatorFactory"/>
+  /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators.FilteringUserControlBindingValidatorFactoryDecorator"/>
   public interface IUserControlBindingValidatorFactory : IBocValidatorFactory<UserControlBinding>
   {
      

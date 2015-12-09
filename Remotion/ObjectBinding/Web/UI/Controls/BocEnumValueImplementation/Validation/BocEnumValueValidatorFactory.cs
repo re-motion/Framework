@@ -23,6 +23,10 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation
 {
+  /// <summary>
+  /// Implements the <see cref="IBocEnumValueValidatorFactory"/> inteface and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
+  /// </summary>
+  /// <seealso cref="IBocEnumValueValidatorFactory"/>
   [ImplementationFor (typeof (IBocEnumValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocEnumValueValidatorFactory : IBocEnumValueValidatorFactory
   {

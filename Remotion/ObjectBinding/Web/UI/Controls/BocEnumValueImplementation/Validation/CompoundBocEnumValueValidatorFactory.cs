@@ -20,6 +20,11 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation
 {
+  /// <summary>
+  /// Implements the <see cref="IBocEnumValueValidatorFactory"/> inteface and compounds all registered <see cref="IBocEnumValueValidatorFactory"/>.
+  /// </summary>
+  /// <seealso cref="IBocEnumValueValidatorFactory"/>
+  /// <seealso cref="CompoundValidatorFactory{T}"/>
   [ImplementationFor (typeof (IBocEnumValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBocEnumValueValidatorFactory : CompoundValidatorFactory<IBocEnumValue>, IBocEnumValueValidatorFactory
   {
