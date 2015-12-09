@@ -173,7 +173,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <inheritdoc />
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      var validatorFactory = SafeServiceLocator.Current.GetInstance<IUserControlBindingValidatorFactory>();
+      var validatorFactory = ServiceLocator.GetInstance<IUserControlBindingValidatorFactory>();
       _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
       return _validators;
     }

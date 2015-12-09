@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public BocTreeView ()
     {
       _treeView = new WebTreeView (this);
-      _renderingFeatures = SafeServiceLocator.Current.GetInstance<IRenderingFeatures>();
+      _renderingFeatures = ServiceLocator.GetInstance<IRenderingFeatures>();
     }
 
     // methods and properties

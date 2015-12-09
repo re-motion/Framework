@@ -398,7 +398,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocCheckBoxValidatorFactory>();
+      var validatorFactory = ServiceLocator.GetInstance<IBocCheckBoxValidatorFactory>();
       _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
       return _validators;
     }

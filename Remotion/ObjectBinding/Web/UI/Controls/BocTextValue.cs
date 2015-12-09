@@ -555,7 +555,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocTextValueValidatorFactory>();
+      var validatorFactory = ServiceLocator.GetInstance<IBocTextValueValidatorFactory>();
       _validators = validatorFactory.CreateValidators (this,isReadOnly).ToList().AsReadOnly();
 
       OverrideValidatorErrorMessages();
