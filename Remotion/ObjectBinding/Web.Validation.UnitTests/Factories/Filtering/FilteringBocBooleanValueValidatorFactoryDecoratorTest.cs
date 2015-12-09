@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
   public class FilteringBocBooleanValueValidatorFactoryDecoratorTest : FilteringValidatorFactoryDecoraterBaseTest
   {
     [Test]
-    [TestCase (true, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (CompareValidator) })]
+    [TestCase (true, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (RequiredFieldValidator) })]
     [TestCase (true, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidator) })]
     [TestCase (false, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidator) })]
     [TestCase (false, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidator) })]

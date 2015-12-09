@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit a tri-state value (true, false, and undefined). </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/Class/*' />
-  [ValidationProperty ("ValidationValue")]
+  [ValidationProperty ("Value")]
   [DefaultEvent ("SelectionChanged")]
   [ToolboxItemFilter ("System.Web.UI")]
   public class BocBooleanValue : BocBooleanValueBase, IBocBooleanValue
@@ -273,20 +273,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override string FocusID
     {
       get { return IsReadOnly ? null : GetDisplayValueName (); }
-    }
-
-    /// <summary> Gets the string representation of this control's <see cref="BocBooleanValueBase.Value"/>. </summary>
-    /// <remarks> 
-    ///   <para>
-    ///     Values can be <c>True</c>, <c>False</c>, and <c>null</c>. 
-    ///   </para><para>
-    ///     This property is used for validation.
-    ///   </para>
-    /// </remarks>
-    [Browsable (false)]
-    public string ValidationValue
-    {
-      get { return Value.HasValue ? Value.Value.ToString () : c_nullString; }
     }
 
     /// <summary>

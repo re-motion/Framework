@@ -32,8 +32,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.V
   {
     public const int Position = 0;
 
-    private const string c_nullString = "null";
-
     public BocBooleanValueValidatorFactory ()
     {
     }
@@ -49,17 +47,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.V
       yield return CreateRequiredFieldValidator (control, resourceManager);
     }
 
-
-    private CompareValidator CreateRequiredFieldValidator (IBocBooleanValue control, IResourceManager resourceManager)
+    private RequiredFieldValidator CreateRequiredFieldValidator (IBocBooleanValue control, IResourceManager resourceManager)
     {
-      var notNullItemValidator = new CompareValidator ();
-      notNullItemValidator.ID = control.ID + "_ValidatorNotNullItem";
-      notNullItemValidator.ControlToValidate = control.ID;
-      notNullItemValidator.ValueToCompare = c_nullString;
-      notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-      notNullItemValidator.ErrorMessage = resourceManager.GetString (BocBooleanValue.ResourceIdentifier.NullItemValidationMessage);
-      
-      return notNullItemValidator;
+      var requiredFieldValidator = new RequiredFieldValidator ();
+      requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
+      requiredFieldValidator.ControlToValidate = control.ID;
+      requiredFieldValidator.ErrorMessage = resourceManager.GetString (BocBooleanValue.ResourceIdentifier.NullItemValidationMessage);
+      return requiredFieldValidator;
     }
   }
 }

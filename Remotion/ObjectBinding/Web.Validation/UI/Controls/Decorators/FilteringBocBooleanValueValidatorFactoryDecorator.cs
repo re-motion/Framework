@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Decorators
       bool isPropertyRequired = control.Property.IsRequired;
       bool shouldRequiredFieldValidatorBeRemoved = !isValueType || !isPropertyRequired;
 
-      if (validator is CompareValidator && shouldRequiredFieldValidatorBeRemoved)
+      if (validator is RequiredFieldValidator && shouldRequiredFieldValidatorBeRemoved)
         return false;
 
       return true;
