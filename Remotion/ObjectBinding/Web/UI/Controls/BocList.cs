@@ -33,6 +33,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -316,7 +317,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private ScalarLoadPostDataTarget _currentPagePostBackTarget;
 
     private readonly IRenderingFeatures _renderingFeatures;
-
+    private ReadOnlyCollection<BaseValidator> _validators;
     // construction and disposing
 
     public BocList ()
@@ -906,7 +907,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      return _editModeController.CreateValidators (isReadOnly, GetResourceManager());
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocListValidatorFactory>();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+
+      if (!string.IsNullOrEmpty (ErrorMessage))
+        UpdateValidtaorErrorMessages<EditModeValidator> (ErrorMessage);
+
+      return _validators;
+    }
+
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    {
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
     }
 
     /// <summary> Checks whether the control conforms to the required WAI level. </summary>
@@ -1483,7 +1497,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return GetResourceManager (typeof (ResourceIdentifier));
     }
 
-    IResourceManager IBocList.GetResourceManager ()
+    IResourceManager IControlWithResourceManager.GetResourceManager ()
     {
       return GetResourceManager();
     }
@@ -2620,7 +2634,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private EditModeValidator GetEditModeValidator ()
     {
-      return _editModeController.GetEditModeValidator();
+      return _validators.GetValidator<EditModeValidator>();
     }
 
     private void SetFocusImplementation (IFocusableControl control)
@@ -3472,7 +3486,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        _editModeController.UpdateValidationErrorMessage (_errorMessage);
+        UpdateValidtaorErrorMessages<EditModeValidator> (_errorMessage);
       }
     }
 

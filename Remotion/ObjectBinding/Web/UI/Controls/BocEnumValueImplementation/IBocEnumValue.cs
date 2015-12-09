@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Web.UI.WebControls;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation
 {
-  public interface IBocEnumValue : IBusinessObjectBoundEditableWebControl, IBocRenderableControl
+  public interface IBocEnumValue : IBusinessObjectBoundEditableWebControl, IBocRenderableControl, IControlWithResourceManager
   {
     IEnumerationValueInfo EnumerationValueInfo { get; }
     Style CommonStyle { get; }

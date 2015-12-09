@@ -21,7 +21,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.ServiceLocation;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -38,7 +40,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class BusinessObjectReferenceDataSourceControl :
       BusinessObjectBoundEditableWebControl,
       IBusinessObjectDataSourceControl,
-      IBusinessObjectReferenceDataSource
+      IBusinessObjectReferenceDataSource,
+      IControlWithResourceManager
   {
     private class InternalBusinessObjectReferenceDataSource : BusinessObjectReferenceDataSourceBase
     {
@@ -91,6 +94,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     #endregion
 
     private readonly InternalBusinessObjectReferenceDataSource _internalDataSource;
+    private ReadOnlyCollection<BaseValidator> _validators;
 
     /// <summary>
     ///   <see cref="BusinessObjectReferenceDataSourceControl"/> supports properties of type
@@ -366,7 +370,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <inheritdoc />
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      return Enumerable.Empty<BaseValidator>();
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      return _validators;
     }
 
     /// <summary>
@@ -387,6 +393,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _internalDataSource.Unregister (control);
 
       base.OnUnload (e);
+    }
+
+    public IResourceManager GetResourceManager ()
+    {
+      return GetResourceManager (typeof (BusinessObjectReferenceDataSourceControl));
     }
   }
 }

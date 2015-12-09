@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
@@ -25,6 +26,8 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -83,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string _undefinedItemText = string.Empty;
 
     private string _errorMessage;
-    private RequiredFieldValidator _requiredFieldValidator;
+    private ReadOnlyCollection<BaseValidator> _validators;
 
     // construction and disposing
 
@@ -205,31 +208,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      _requiredFieldValidator = null;
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocEnumValueValidatorFactory>();
+      _validators = validatorFactory.CreateValidators (this,isReadOnly).ToList().AsReadOnly();
 
-      if (isReadOnly)
-        yield break;
+      OverrideValidatorErrorMessages();
 
-      if (IsRequired)
-      {
-        _requiredFieldValidator = CreateRequiredFieldValidator();
-        yield return _requiredFieldValidator;
-      }
-
-      //  No validation that only enabled enum values get selected and saved.
-      //  This behaviour is for compatibility
+      return _validators;
     }
 
-    private RequiredFieldValidator CreateRequiredFieldValidator ()
+    private void OverrideValidatorErrorMessages()
     {
-      RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
-      requiredValidator.ID = ID + "_ValidatorRequried";
-      requiredValidator.ControlToValidate = TargetControl.ID;
-      if (string.IsNullOrEmpty (_errorMessage))
-        requiredValidator.ErrorMessage = GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
-      else
-        requiredValidator.ErrorMessage = _errorMessage;
-      return requiredValidator;
+      if (!string.IsNullOrEmpty (_errorMessage))
+        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
+    }
+
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    {
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
     }
 
     /// <summary> 
@@ -516,8 +513,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        if (_requiredFieldValidator != null)
-          _requiredFieldValidator.ErrorMessage = _errorMessage;
+        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
       }
     }
 
@@ -636,7 +632,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
-    protected virtual IResourceManager GetResourceManager ()
+    public IResourceManager GetResourceManager ()
     {
       return GetResourceManager (typeof (ResourceIdentifier));
     }

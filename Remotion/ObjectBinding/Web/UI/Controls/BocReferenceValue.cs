@@ -14,15 +14,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -47,6 +53,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
     private const string c_designModeEmptyLabelContents = "##";
+
     private const string c_dropDownListIDPostfix = "_Value";
 
     // types
@@ -63,6 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       /// <summary> Label displayed in the OptionsMenu. </summary>
       OptionsTitle,
+
       /// <summary> The validation error message displayed when the null item is selected. </summary>
       NullItemErrorMessage,
     }
@@ -87,7 +95,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private string _select = String.Empty;
     private bool? _enableSelectStatement;
-
+    private string _nullItemErrorMessage;
+    private ReadOnlyCollection<BaseValidator> _validators;
     // construction and disposing
 
     public BocReferenceValue ()
@@ -97,6 +106,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     // methods and properties
+
+
+    /// <summary> Gets or sets the validation error message displayed when the value is not set but the control is required. </summary>
+    /// <value> 
+    ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
+    ///   In case of the default value, the text is read from the resources for this control.
+    /// </value>
+    [Description ("Validation message displayed if the value is not set but the control is required.")]
+    [Category ("Validator")]
+    [DefaultValue ("")]
+    public string NullItemErrorMessage
+    {
+      get { return _nullItemErrorMessage; }
+      set
+      {
+        _nullItemErrorMessage = value;
+        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_nullItemErrorMessage);
+      }
+    }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
@@ -110,7 +138,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual IBocReferenceValueRenderer CreateRenderer ()
     {
-      return ServiceLocator.GetInstance<IBocReferenceValueRenderer> ();
+      return ServiceLocator.GetInstance<IBocReferenceValueRenderer>();
     }
 
     protected virtual BocReferenceValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
@@ -135,7 +163,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       base.OnLoad (e);
 
-      if (! ControlExistedInPreviousRequest)
+      if (!ControlExistedInPreviousRequest)
         EnsureBusinessObjectListPopulated();
     }
 
@@ -173,7 +201,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _displayName = selectedItem.Text;
       }
 
-      if (! IsReadOnly && Enabled)
+      if (!IsReadOnly && Enabled)
         OnSelectionChanged();
     }
 
@@ -182,14 +210,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
+
       if (IsDesignMode)
         return;
 
       base.LoadResources (resourceManager, globalizationService);
 
-      var key = ResourceManagerUtility.GetGlobalResourceKey (Select);
-      if (! string.IsNullOrEmpty (key))
+      var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
+      if (!string.IsNullOrEmpty (key))
+        NullItemErrorMessage = resourceManager.GetString (key);
+
+      key = ResourceManagerUtility.GetGlobalResourceKey (Select);
+      if (!string.IsNullOrEmpty (key))
         Select = resourceManager.GetString (key);
     }
 
@@ -210,14 +242,52 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
+    /// <summary>
+    /// A validator for the display name is created.
+    /// </summary>
+    /// <param name="isReadOnly">
+    /// This flag is initialized with the value of <see cref="BusinessObjectBoundEditableWebControl.IsReadOnly"/>. 
+    /// Implemantations should consider whether they require a validator also when the control is rendered as read-only.
+    /// </param>
+    /// <returns>An enumeration of all applicable validators.</returns>
+    /// <remarks>
+    ///   Generates a <see cref="BocAutoCompleteReferenceValueInvalidDisplayNameValidator"/> checking that the display name can be resolved 
+    /// to a valid object reference.
+    /// </remarks>
+    /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
+    protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
+    {
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocReferenceValueValidatorFactory>();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+
+      OverrideValidatorErrorMessages();
+
+      return _validators;
+    }
+
+    private void OverrideValidatorErrorMessages ()
+    {
+      if (string.IsNullOrEmpty (NullItemErrorMessage))
+        return;
+      
+      UpdateValidtaorErrorMessages<RequiredFieldValidator> (NullItemErrorMessage);
+    }
+
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    {
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
+    }
+
     protected override void Render (HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      EvaluateWaiConformity ();
+      EvaluateWaiConformity();
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render (CreateRenderingContext (writer));
     }
 
     protected override void LoadControlState (object savedState)
@@ -388,7 +458,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     protected void PopulateBusinessObjectList ()
     {
-      if (! IsSelectStatementEnabled)
+      if (!IsSelectStatementEnabled)
         return;
 
       if (Property == null)
@@ -452,10 +522,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (InternalValue == null)
         _value = null;
-          //  Only reload if value is outdated
+      //  Only reload if value is outdated
       else if (_value == null || _value.UniqueIdentifier != InternalValue)
       {
-        var businessObjectClass = GetBusinessObjectClass ();
+        var businessObjectClass = GetBusinessObjectClass();
         if (businessObjectClass != null)
           _value = businessObjectClass.GetObject (InternalValue);
       }

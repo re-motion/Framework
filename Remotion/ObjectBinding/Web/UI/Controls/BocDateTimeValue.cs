@@ -14,15 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -54,18 +59,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       /// <summary> The validation error message displayed when both the date and the time component missing. </summary>
       MissingDateAndTimeErrorMessage,
+
       /// <summary> The validation error message displayed when the date or the time component missing. </summary>
       MissingDateOrTimeErrorMessage,
+
       /// <summary> The validation error message displayed when the date component is missing. </summary>
       MissingDateErrorMessage,
+
       /// <summary> The validation error message displayed when the time component is missing. </summary>
       MissingTimeErrorMessage,
+
       /// <summary> The validation error message displayed when both the date and the time component invalid. </summary>
       InvalidDateAndTimeErrorMessage,
+
       /// <summary> The validation error message displayed when the date component is invalid. </summary>
       InvalidDateErrorMessage,
+
       /// <summary> The validation error message displayed when the time component is invalid. </summary>
       InvalidTimeErrorMessage,
+
       /// <summary> The alternate text displayed for the date picker button. </summary>
       DataPickerButtonAlternateText
     }
@@ -100,7 +112,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _enableClientScript = true;
 
     private string _errorMessage;
-    private BocDateTimeValueValidator _dateTimeValidator;
+    private ReadOnlyCollection<BaseValidator> _validators;
     private const string c_dateTextBoxIDPostfix = "_DateValue";
     private const string c_timeTextBoxIDPostfix = "_TimeValue";
 
@@ -192,7 +204,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         InternalTimeValue = StringUtility.EmptyToNull (newTimeValue);
 
         //  Reset the seconds if the control does not display seconds and the time was changed
-        if (! ShowSeconds
+        if (!ShowSeconds
             && _savedDateTimeValue.HasValue)
         {
           TimeSpan seconds = new TimeSpan (0, 0, _savedDateTimeValue.Value.Second);
@@ -207,7 +219,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Called when the state of the control has changed between postbacks. </summary>
     protected virtual void RaisePostDataChangedEvent ()
     {
-      if (! IsReadOnly && Enabled)
+      if (!IsReadOnly && Enabled)
         OnDateTimeChanged();
     }
 
@@ -260,12 +272,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("writer", writer);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render (CreateRenderingContext (writer));
     }
 
     protected virtual IBocDateTimeValueRenderer CreateRenderer ()
     {
-      return ServiceLocator.GetInstance<IBocDateTimeValueRenderer> ();
+      return ServiceLocator.GetInstance<IBocDateTimeValueRenderer>();
     }
 
     protected virtual BocDateTimeValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
@@ -353,7 +365,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (interim)
         return false;
-      
+
       bool isValid = Validate();
       if (!isValid)
         return false;
@@ -373,7 +385,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
-    protected virtual IResourceManager GetResourceManager ()
+    public IResourceManager GetResourceManager ()
     {
       return GetResourceManager (typeof (ResourceIdentifier));
     }
@@ -383,13 +395,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
+
       if (IsDesignMode)
         return;
       base.LoadResources (resourceManager, globalizationService);
 
       string key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
-      if (! string.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetString (key);
     }
 
@@ -405,38 +417,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Implemantations should consider whether they require a validator also when the control is rendered as read-only.
     /// </param>
     /// <remarks> 
-    ///   Generates a <see cref="BocDateTimeValueValidator"/> if the control is in edit mode.
+    ///   Generates a <see cref="BocDateTimeValueValidatorBase"/> if the control is in edit mode.
     /// </remarks>
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      _dateTimeValidator = null;
-      if (isReadOnly)
-        yield break;
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocDateTimeValueValidatorFactory>();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
 
-      _dateTimeValidator = CreateDateTimeValidator();
-      yield return _dateTimeValidator;
+      OverrideValidatorErrorMessages();
+
+      return _validators;
     }
 
-    private BocDateTimeValueValidator CreateDateTimeValidator ()
+    private void OverrideValidatorErrorMessages ()
     {
-      BocDateTimeValueValidator dateTimeValueValidator = new BocDateTimeValueValidator();
-      dateTimeValueValidator.ID = ID + "_ValidatorDateTime";
-      dateTimeValueValidator.ControlToValidate = ID;
-      if (string.IsNullOrEmpty (_errorMessage))
-      {
-        IResourceManager resourceManager = GetResourceManager();
-        dateTimeValueValidator.MissingDateAndTimeErrorMessage = resourceManager.GetString (ResourceIdentifier.MissingDateAndTimeErrorMessage);
-        dateTimeValueValidator.MissingDateOrTimeErrorMessage = resourceManager.GetString (ResourceIdentifier.MissingDateOrTimeErrorMessage);
-        dateTimeValueValidator.MissingDateErrorMessage = resourceManager.GetString (ResourceIdentifier.MissingDateErrorMessage);
-        dateTimeValueValidator.MissingTimeErrorMessage = resourceManager.GetString (ResourceIdentifier.MissingTimeErrorMessage);
-        dateTimeValueValidator.InvalidDateAndTimeErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidDateAndTimeErrorMessage);
-        dateTimeValueValidator.InvalidDateErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidDateErrorMessage);
-        dateTimeValueValidator.InvalidTimeErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidTimeErrorMessage);
-      }
-      else
-        dateTimeValueValidator.ErrorMessage = _errorMessage;
-      return dateTimeValueValidator;
+      if (!string.IsNullOrEmpty (_errorMessage))
+        UpdateValidtaorErrorMessages<BocDateTimeValueValidatorBase> (_errorMessage);
+    }
+
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    {
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
     }
 
     /// <summary> Handles refreshing the bound control. </summary>
@@ -490,10 +494,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public new DateTime? Value
     {
-      get
-      {
-        return GetValue();
-      }
+      get { return GetValue(); }
       set
       {
         IsDirty = true;
@@ -501,7 +502,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-        /// <summary>
+    /// <summary>
     /// Gets the value from the backing field.
     /// </summary>
     protected DateTime? GetValue ()
@@ -542,8 +543,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         try
         {
-          if (! IsDesignMode
-              || ! string.IsNullOrEmpty (InternalTimeValue))
+          if (!IsDesignMode
+              || !string.IsNullOrEmpty (InternalTimeValue))
             dateTimeValue = dateTimeValue.Add (DateTime.Parse (InternalTimeValue).TimeOfDay);
         }
         catch (FormatException)
@@ -557,12 +558,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         }
 
         //  Restore the seconds if the control does not display them.
-        if (! ShowSeconds
+        if (!ShowSeconds
             && _savedDateTimeValue.HasValue)
           dateTimeValue = dateTimeValue.AddSeconds (_savedDateTimeValue.Value.Second);
       }
       else if (ActualValueType == BocDateTimeValueType.Date
-                && _savedDateTimeValue.HasValue)
+               && _savedDateTimeValue.HasValue)
       {
         //  Restore the time if the control is displayed in date mode.
         dateTimeValue = dateTimeValue.Add (_savedDateTimeValue.Value.TimeOfDay);
@@ -607,7 +608,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         catch (InvalidCastException e)
         {
           throw new ArgumentException (
-              "Expected type '" + _actualValueType + "', but was '" + value.GetType().FullName + "'.", "value", e);
+              "Expected type '" + _actualValueType + "', but was '" + value.GetType().FullName + "'.",
+              "value",
+              e);
         }
       }
       else
@@ -688,7 +691,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundWebControl.SupportsPropertyMultiplicity"/>
     protected override bool SupportsPropertyMultiplicity (bool isList)
     {
-      return ! isList;
+      return !isList;
     }
 
     /// <summary>
@@ -979,8 +982,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        if (_dateTimeValidator != null)
-          _dateTimeValidator.ErrorMessage = _errorMessage;
+        UpdateValidtaorErrorMessages<BocDateTimeValueValidatorBase> (_errorMessage);
       }
     }
 
@@ -1015,8 +1017,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     /// <summary> No formatting applied. </summary>
     Undefined,
+
     /// <summary> The value is displayed as a date and time value. </summary>
     DateTime,
+
     /// <summary> Only the date component is displayed. </summary>
     Date
   }

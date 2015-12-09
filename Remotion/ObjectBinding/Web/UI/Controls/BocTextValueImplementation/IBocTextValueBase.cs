@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Web.UI.WebControls;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 {
-  public interface IBocTextValueBase : IBusinessObjectBoundEditableWebControl, IBocRenderableControl
+  public interface IBocTextValueBase : IBusinessObjectBoundEditableWebControl, IBocRenderableControl, IControlWithResourceManager
   {
     /// <summary>
     ///   Gets the style that you want to apply to the <see cref="TextBox"/> (edit mode) 

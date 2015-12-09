@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
@@ -47,6 +48,7 @@ namespace OBWTest
 
     protected override void OnInit(EventArgs e)
     {
+      SwitchingValidatorFactoryState.Instance.UseFluentValidatorFactory = false;
       RegisterEventHandlers();
       base.OnInit (e);
     }

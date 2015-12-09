@@ -98,6 +98,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj">
+      <Project>{d057d6f3-2015-4eb0-b6bd-77be8ed1571a}</Project>
+      <Name>Validation.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj">
       <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
       <Name>ObjectBinding.Web</Name>
@@ -141,13 +145,32 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="UI\Controls\BocDataSourceValidator.cs" />
-    <Compile Include="UI\Controls\BocReferenceDataSourceValidator.cs" />
-    <Compile Include="UI\Controls\BocValidator.cs" />
-    <Compile Include="UI\Controls\IBocValidator.cs" />
+    <Compile Include="UI\Controls\BusinessObjectBoundEditableWebControlValidationUtility.cs" />
+    <Compile Include="UI\Controls\BocDataSourceValidationFailureDisptachingValidator.cs" />
+    <Compile Include="UI\Controls\BocListValidator.cs" />
+    <Compile Include="UI\Controls\BocReferenceDataSourceValidationFailureDisptachingValidator.cs" />
+    <Compile Include="UI\Controls\BusinessObjectBoundEditableWebControlValidator.cs" />
+    <Compile Include="UI\Controls\Factories\Decorators\FilteringBocAutoCompleteReferenceValueValidatorFactoryDecorator.cs" />
+    <Compile Include="UI\Controls\Factories\Decorators\FilteringBocBooleanValueValidatorFactoryDecorator.cs" />
+    <Compile Include="UI\Controls\Factories\Decorators\FilteringBocCheckBoxValidatorFactoryDecorator.cs" />
+    <Compile Include="UI\Controls\Factories\Decorators\FilteringBocDateTimeValueValidatorFactoryDecorator.cs" />
+    <Compile Include="UI\Controls\Factories\Decorators\FilteringBocEnumValueValidatorFactoryDecorator.cs" />
+    <Compile Include="UI\Controls\Factories\Decorators\FilteringBocListValidatorFactoryDecorator.cs" />
+    <Compile Include="UI\Controls\Factories\Decorators\FilteringBocMultilineTextValueValidatorFactoryDecorator.cs" />
+    <Compile Include="UI\Controls\Factories\Decorators\FilteringBocReferenceValueValidatorFactoryDecorator.cs" />
+    <Compile Include="UI\Controls\Factories\Decorators\FilteringBocTextValueValidatorFactoryDecorator.cs" />
+    <Compile Include="UI\Controls\Factories\Decorators\FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator.cs" />
+    <Compile Include="UI\Controls\Factories\Decorators\FilteringUserControlBindingValidatorFactoryDecorator.cs" />
+    <Compile Include="UI\Controls\Factories\Decorators\FilteringValidatorFactoryDecorator.cs" />
+    <Compile Include="UI\Controls\Factories\FluentValidationBocListValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Factories\FluentValidationBocReferenceDataSourceValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Factories\FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Factories\FluentValidationUserControlBindingValidatorFactory.cs" />
+    <Compile Include="UI\Controls\IBusinessObjectBoundEditableWebControlValidationFailureDispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\UserControlBindingValidationFailureDisptacher.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
@@ -23,6 +24,8 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -60,9 +63,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectStringProperty) };
 
     private string[] _text = null;
-    private RequiredFieldValidator _requiredFieldValidator;
-    private LengthValidator _lengthValidator;
     private string _errorMessage;
+    private ReadOnlyCollection<BaseValidator> _validators;
 
     // construction and disposing
 
@@ -223,10 +225,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        if (_requiredFieldValidator != null)
-          _requiredFieldValidator.ErrorMessage = _errorMessage;
-        if (_lengthValidator != null)
-          _lengthValidator.ErrorMessage = _errorMessage;
+       
+        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
+        UpdateValidtaorErrorMessages<LengthValidator> (_errorMessage);
       }
     }
 
@@ -309,7 +310,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
-    protected override IResourceManager GetResourceManager ()
+    public override IResourceManager GetResourceManager ()
     {
       return GetResourceManager (typeof (ResourceIdentifier));
     }
@@ -357,53 +358,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      var resourceManager = GetResourceManager();
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocMultilineTextValueValidatorFactory>();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
 
-      _requiredFieldValidator = null;
-      _lengthValidator = null;
+      OverrideValidatorErrorMessages();
 
-      if (isReadOnly)
-        yield break;
-
-      if (IsRequired)
-      {
-        _requiredFieldValidator = CreateRequiredFieldValidator (resourceManager);
-        yield return _requiredFieldValidator;
-      }
-
-      if (TextBoxStyle.MaxLength.HasValue)
-      {
-        _lengthValidator = CreateLengthValidator (resourceManager);
-        yield return _lengthValidator;
-      }
+      return _validators;
     }
 
-    private RequiredFieldValidator CreateRequiredFieldValidator (IResourceManager resourceManager)
+    private void OverrideValidatorErrorMessages ()
     {
-      RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
-      requiredValidator.ID = ID + "_ValidatorRequired";
-      requiredValidator.ControlToValidate = TargetControl.ID;
-      if (string.IsNullOrEmpty (ErrorMessage))
-        requiredValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.RequiredValidationMessage);
-      else
-        requiredValidator.ErrorMessage = ErrorMessage;
-      return requiredValidator;
+      if (string.IsNullOrEmpty (_errorMessage))
+        return;
+
+      UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
+      UpdateValidtaorErrorMessages<LengthValidator> (_errorMessage);
     }
 
-    private LengthValidator CreateLengthValidator (IResourceManager resourceManager)
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
     {
-      var maxLength = TextBoxStyle.MaxLength;
-      Assertion.IsTrue (maxLength.HasValue);
-
-      LengthValidator lengthValidator = new LengthValidator();
-      lengthValidator.ID = ID + "_ValidatorMaxLength";
-      lengthValidator.ControlToValidate = TargetControl.ID;
-      lengthValidator.MaximumLength = maxLength.Value;
-      if (string.IsNullOrEmpty (ErrorMessage))
-        lengthValidator.ErrorMessage = string.Format (resourceManager.GetString (ResourceIdentifier.MaxLengthValidationMessage), maxLength.Value);
-      else
-        lengthValidator.ErrorMessage = ErrorMessage;
-      return lengthValidator;
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
     }
 
     /// <summary>

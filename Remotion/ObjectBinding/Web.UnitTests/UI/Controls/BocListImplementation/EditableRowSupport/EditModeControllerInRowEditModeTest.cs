@@ -736,62 +736,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Controller.RemoveRow (Values[2]);
     }
 
-  
-    [Test]
-    public void CreateValidators_IsReadOnlyFalse ()
-    {
-      IResourceManager resourceManager = (IResourceManager) NullResourceManager.Instance;
-
-      Invoker.InitRecursive();
-      Controller.SwitchRowIntoEditMode (2, Columns);
-
-      Assert.That (Controller.IsRowEditModeActive, Is.True);
-      Assert.That (Controller.GetEditedRow().Index, Is.EqualTo (2));
-
-      BaseValidator[] validators = Controller.CreateValidators (false, resourceManager).ToArray();
-
-      Assert.That (validators, Is.Not.Null);
-      Assert.That (validators.Length, Is.EqualTo (1));
-      Assert.IsInstanceOf (typeof (EditModeValidator), validators[0]);
-      Assert.That (validators[0].ControlToValidate, Is.EqualTo (EditModeHost.ID));
-      Assert.That (validators[0].ErrorMessage, Is.EqualTo (resourceManager.GetString (BocList.ResourceIdentifier.RowEditModeErrorMessage)));
-    }
-
-    [Test]
-    public void CreateValidatorsWithErrorMessageFromOwnerControl ()
-    {
-      Invoker.InitRecursive();
-      Controller.SwitchRowIntoEditMode (2, Columns);
-      EditModeHost.ErrorMessage = "Foo Bar";
-
-      Assert.That (Controller.IsRowEditModeActive, Is.True);
-      Assert.That (Controller.GetEditedRow().Index, Is.EqualTo (2));
-
-      BaseValidator[] validators = Controller.CreateValidators (false, NullResourceManager.Instance).ToArray();
-
-      Assert.That (validators, Is.Not.Null);
-      Assert.That (validators.Length, Is.EqualTo (1));
-      Assert.IsInstanceOf (typeof (EditModeValidator), validators[0]);
-      Assert.That (validators[0].ControlToValidate, Is.EqualTo (EditModeHost.ID));
-      Assert.That (validators[0].ErrorMessage, Is.EqualTo ("Foo Bar"));
-    }
-
-    [Test]
-    public void CreateValidatorsWithIsReadOnlyTrue ()
-    {
-      IResourceManager resourceManager = (IResourceManager) NullResourceManager.Instance;
-
-      Invoker.InitRecursive();
-      Controller.SwitchRowIntoEditMode (2, Columns);
-
-      Assert.That (Controller.IsRowEditModeActive, Is.True);
-      Assert.That (Controller.GetEditedRow().Index, Is.EqualTo (2));
-
-      BaseValidator[] validators = Controller.CreateValidators (true, resourceManager).ToArray();
-
-      Assert.That (validators, Is.Empty);
-    }
-
     [Test]
     public void ValidateWithValidValues ()
     {

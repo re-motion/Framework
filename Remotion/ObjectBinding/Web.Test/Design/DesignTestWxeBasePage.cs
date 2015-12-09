@@ -14,26 +14,31 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
+using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Web.UI;
 
 namespace OBWTest.Design
 {
-
-public class DesignTestWxeBasePage: TestWxeBasePage
-{
-  protected override bool IsAbortEnabled
+  public class DesignTestWxeBasePage : TestWxeBasePage
   {
-    get { return false; }
+    protected override bool IsAbortEnabled
+    {
+      get { return false; }
+    }
+
+
+    protected override void OnPreRender (EventArgs e)
+    {
+      base.OnPreRender (e);
+      HtmlHeadAppender.Current.RegisterStylesheetLink ("design", "Html/Design.css");
+    }
+
+    protected override void OnInit (EventArgs e)
+    {
+      SwitchingValidatorFactoryState.Instance.UseFluentValidatorFactory = false;
+      base.OnInit (e);
+    }
   }
-
-
-  protected override void OnPreRender(EventArgs e)
-  {
-    base.OnPreRender (e);
-    HtmlHeadAppender.Current.RegisterStylesheetLink ("design", "Html/Design.css");
-  }
-
-}
-
 }

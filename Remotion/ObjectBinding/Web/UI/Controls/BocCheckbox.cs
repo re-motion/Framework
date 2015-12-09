@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -24,6 +25,8 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
@@ -73,6 +76,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly Style _labelStyle;
 
     private bool? _showDescription;
+    private ReadOnlyCollection<BaseValidator> _validators;
 
     // construction and disposing
 
@@ -196,7 +200,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
-    protected virtual IResourceManager GetResourceManager ()
+    public override IResourceManager GetResourceManager ()
     {
       return GetResourceManager (typeof (ResourceIdentifier));
     }
@@ -394,7 +398,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      return Enumerable.Empty<BaseValidator>();
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocCheckBoxValidatorFactory>();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      return _validators;
     }
 
     /// <summary> Gets the evaluated value for the <see cref="ShowDescription"/> property. </summary>

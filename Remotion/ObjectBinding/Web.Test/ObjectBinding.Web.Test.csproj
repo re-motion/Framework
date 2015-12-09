@@ -206,7 +206,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BocValidationTestForm.aspx.cs">
+    <Compile Include="Validation\BocValidationTestForm.aspx.cs">
       <DependentUpon>BocValidationTestForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -218,7 +218,7 @@
       <DependentUpon>Form.aspx</DependentUpon>
     </Compile>
     <Compile Include="ControlLayoutTests\TestFunction.cs" />
-    <Compile Include="BocValidationTestWxeFunction.cs" />
+    <Compile Include="Validation\BocValidationTestWxeFunction.cs" />
     <Compile Include="IndividualControlTests\BocAutoCompleteReferenceValueUserControl.ascx.cs">
       <DependentUpon>BocAutoCompleteReferenceValueUserControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -463,6 +463,26 @@
       <DependentUpon>NavigationTabs.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Validation\TestUserControl.ascx.cs">
+      <DependentUpon>TestUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Validation\TestUserControl.ascx.designer.cs">
+      <DependentUpon>TestUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ValidatorFactoryDecorators\SwitchingBocAutoCompleteReferenceValueValidatorFactoryDecorator.cs" />
+    <Compile Include="ValidatorFactoryDecorators\SwitchingBocBooleanValueValidatorFactoryDecorator.cs" />
+    <Compile Include="ValidatorFactoryDecorators\SwitchingBocCheckBoxValidatorFactoryDecorator.cs" />
+    <Compile Include="ValidatorFactoryDecorators\SwitchingBocDateTimeValueValidatorFactoryDecorator.cs" />
+    <Compile Include="ValidatorFactoryDecorators\SwitchingBocEnumValueValidatorFactoryDecorator.cs" />
+    <Compile Include="ValidatorFactoryDecorators\SwitchingBocListValidatorFactoryDecorator.cs" />
+    <Compile Include="ValidatorFactoryDecorators\SwitchingBocMultilineTextValueValidatorFactoryDecorator.cs" />
+    <Compile Include="ValidatorFactoryDecorators\SwitchingBocReferenceValueValidatorFactoryDecorator.cs" />
+    <Compile Include="ValidatorFactoryDecorators\SwitchingBocTextValueValidatorFactoryDecorator.cs" />
+    <Compile Include="ValidatorFactoryDecorators\SwitchingBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator.cs" />
+    <Compile Include="ValidatorFactoryDecorators\SwitchingUserControlBindingValidatorFactoryDecorator.cs" />
+    <Compile Include="ValidatorFactoryDecorators\SwitchingValidatorFactoryDecorator.cs" />
+    <Compile Include="ValidatorFactoryDecorators\SwitchingValidatorFactoryState.cs" />
     <Compile Include="ViewLayoutTests\Form.aspx.cs">
       <DependentUpon>Form.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -477,7 +497,7 @@
     <Compile Include="ViewPersonsWxeFunction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Content Include="BocValidationTestForm.aspx" />
+    <Content Include="Validation\BocValidationTestForm.aspx" />
     <Content Include="ClientForm.aspx">
       <SubType>Form</SubType>
     </Content>
@@ -596,6 +616,7 @@
     <Content Include="UrlMapping.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Validation\TestUserControl.ascx" />
     <Content Include="ViewLayoutTests\Form.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -74,6 +74,9 @@
     <Compile Include="StubDataSource.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\Validation\BocDateTimeValueValidatorTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Validation\BocListValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Validation\BocAutoCompleteReferenceValueValidatorFactoryTest.cs" />
     <Compile Include="UI\Controls\AlwaysInvalidValidator.cs" />
     <Compile Include="UI\Controls\BocAutoCompleteReferenceValueMock.cs" />
     <Compile Include="UI\Controls\BocAutoCompleteReferenceValueTest.cs" />
@@ -82,6 +85,9 @@
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocBooleanValueRendererTest.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocBooleanValueResourceSetFactoryTest.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocCheckBoxRendererFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\BocBooleanValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\IBocBooleanValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\IBocCheckBoxValidatorFactoryTest.cs" />
     <Compile Include="UI\Controls\BocBooleanValueMock.cs" />
     <Compile Include="UI\Controls\BocBooleanValueTest.cs" />
     <Compile Include="UI\Controls\BocCheckBoxMock.cs" />
@@ -93,12 +99,16 @@
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\BocDateTimeValueRendererTest.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\IBocDateTimeValueRendererTest.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\TestableBocDateTimeValueRenderer.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\Validation\BocDateTimeValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\Validation\IBocDateTimeValueValidatorFactoryTest.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueMock.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueTest.cs" />
     <Compile Include="UI\Controls\BocDropDownMenuMock.cs" />
     <Compile Include="UI\Controls\BocDropDownMenuTest.cs" />
     <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTest.cs" />
     <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\IBocEnumValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Validation\BocEnumValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Validation\IBocEnumValueValidatorFactoryTest.cs" />
     <Compile Include="UI\Controls\BocEnumValueMock.cs" />
     <Compile Include="UI\Controls\BocEnumValueTest.cs" />
     <Compile Include="UI\Controls\BocListImplementation\BocListRowTest.cs" />
@@ -156,6 +166,7 @@
     <Compile Include="UI\Controls\BocListImplementation\Rendering\StubValueColumnDefinition.cs" />
     <Compile Include="UI\Controls\BocListImplementation\Sorting\BusinessObjectPropertyPathBasedComparerTest.cs" />
     <Compile Include="UI\Controls\BocListImplementation\UniqueIdentifierBasedRowIDProviderTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Validation\IBocListValidatorFactoryTest.cs" />
     <Compile Include="UI\Controls\BocListManageRowsInListEditModeTest.cs" />
     <Compile Include="UI\Controls\BocListManageRowsInUnboundListTest.cs" />
     <Compile Include="UI\Controls\BocListMock.cs" />
@@ -174,6 +185,8 @@
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\StubTextBox.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\TestableBocAutoCompleteReferenceValueRenderer.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\TestableBocReferenceValueRenderer.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Validation\BocReferenceValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Validation\IBocReferenceValueValidatorFactoryTest.cs" />
     <Compile Include="UI\Controls\BocReferenceValueMock.cs" />
     <Compile Include="UI\Controls\BocReferenceValueTest.cs" />
     <Compile Include="UI\Controls\BocRendererBaseTest.cs" />
@@ -186,19 +199,30 @@
     <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\IBocMultilineTextValueRendererTest.cs" />
     <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\IBocTextValueRendererTest.cs" />
     <Compile Include="UI\Controls\BocTextValueTests\AllDataTypes.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\BocTextValueTest.cs" />
     <Compile Include="UI\Controls\BocTextValueTests\Common.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\Validation\BocMultilineTextValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\Validation\BocTextValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\Validation\IBocMultilineTextValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\Validation\IBocTextValueValidatorFactoryTest.cs" />
     <Compile Include="UI\Controls\BocTreeViewMock.cs" />
     <Compile Include="UI\Controls\BocTreeViewTest.cs" />
     <Compile Include="UI\Controls\BusinessObjectBoundEditableWebControlTests\SaveValueToDomainModel.cs" />
     <Compile Include="UI\Controls\BusinessObjectBoundEditableWebControlTests\TestDomain\TestableBusinessObjectBoundEditableWebControl.cs" />
+    <Compile Include="UI\Controls\BusinessObjectReferenceDataSourceControlTests\BusinessObjectReferenceDataSourceControlTest.cs" />
     <Compile Include="UI\Controls\BusinessObjectReferenceDataSourceControlTests\Validate.cs" />
     <Compile Include="UI\Controls\HtmlHelper.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Validation\IBocAutoCompleteReferenceValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\IBusinessObjectReferenceDataSourceControlValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\IUserControlBindingValidatorFactoryTest.cs" />
     <Compile Include="UI\Controls\ReflectionBusinessObjectWebUIService.cs" />
     <Compile Include="UI\Controls\RendererTestBase.cs" />
     <Compile Include="UI\Controls\StubDataSource.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\Controls\StubInfrastructureResourceUrlFactory.cs" />
+    <Compile Include="UI\Controls\UserControlBindingTest.cs" />
+    <Compile Include="UI\Controls\UserControlBindingValidatorFactoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

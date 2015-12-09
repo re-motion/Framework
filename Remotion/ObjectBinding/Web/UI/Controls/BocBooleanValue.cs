@@ -16,16 +16,20 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls.Rendering;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 
@@ -33,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit a tri-state value (true, false, and undefined). </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/Class/*' />
-  [ValidationProperty ("ValidationValue")]
+  [ValidationProperty ("Value")]
   [DefaultEvent ("SelectionChanged")]
   [ToolboxItemFilter ("System.Web.UI")]
   public class BocBooleanValue : BocBooleanValueBase, IBocBooleanValue
@@ -81,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _showDescription = true;
 
     private string _errorMessage;
-    private CompareValidator _requiredFieldValidator;
+    private ReadOnlyCollection<BaseValidator> _validators;
 
     // construction and disposing
 
@@ -132,30 +136,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      _requiredFieldValidator = null;
+      var validatorFactory = SafeServiceLocator.Current.GetInstance<IBocBooleanValueValidatorFactory> ();
+      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList ().AsReadOnly();
 
-      if (isReadOnly)
-        yield break;
+      OverrideValidatorErrorMessages();
 
-      if (IsRequired)
-      {
-        _requiredFieldValidator = CreateRequiredFieldValidator();
-        yield return _requiredFieldValidator;
-      }
+      return _validators;
     }
 
-    private CompareValidator CreateRequiredFieldValidator ()
+    private void OverrideValidatorErrorMessages()
     {
-      CompareValidator notNullItemValidator = new CompareValidator();
-      notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
-      notNullItemValidator.ControlToValidate = ID;
-      notNullItemValidator.ValueToCompare = c_nullString;
-      notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-      if (string.IsNullOrEmpty (_errorMessage))
-        notNullItemValidator.ErrorMessage = GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
-      else
-        notNullItemValidator.ErrorMessage = _errorMessage;
-      return notNullItemValidator;
+      if (!string.IsNullOrEmpty (_errorMessage) )
+        UpdateValidtaorErrorMessages<CompareValidator> (_errorMessage);
+    }
+
+    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    {
+      var validator = _validators.GetValidator<T>();
+      if (validator != null)
+        validator.ErrorMessage = errorMessage;
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -240,8 +239,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        if (_requiredFieldValidator != null)
-          _requiredFieldValidator.ErrorMessage = _errorMessage;
+        UpdateValidtaorErrorMessages<CompareValidator> (_errorMessage);
       }
     }
 
@@ -275,20 +273,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override string FocusID
     {
       get { return IsReadOnly ? null : GetDisplayValueName (); }
-    }
-
-    /// <summary> Gets the string representation of this control's <see cref="BocBooleanValueBase.Value"/>. </summary>
-    /// <remarks> 
-    ///   <para>
-    ///     Values can be <c>True</c>, <c>False</c>, and <c>null</c>. 
-    ///   </para><para>
-    ///     This property is used for validation.
-    ///   </para>
-    /// </remarks>
-    [Browsable (false)]
-    public string ValidationValue
-    {
-      get { return Value.HasValue ? Value.Value.ToString () : c_nullString; }
     }
 
     /// <summary>
@@ -408,12 +392,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
-    protected virtual IResourceManager GetResourceManager ()
+    public override IResourceManager GetResourceManager ()
     {
       return GetResourceManager (typeof (ResourceIdentifier));
     }
 
-    IResourceManager IBocBooleanValue.GetResourceManager ()
+    IResourceManager IControlWithResourceManager.GetResourceManager ()
     {
       return GetResourceManager ();
     }

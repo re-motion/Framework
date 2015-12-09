@@ -53,6 +53,7 @@ namespace Remotion.ObjectBinding.Sample
     private Guid _partnerID;
     private Guid[] _childIDs;
     private Guid[] _jobIDs;
+    private Guid _fatherID;
 
     protected Person ()
     {
@@ -122,6 +123,20 @@ namespace Remotion.ObjectBinding.Sample
     {
       get { return (_partnerID != Guid.Empty) ? Person.GetObject (_partnerID) : null; }
       set { _partnerID = (value != null) ? value.ID : Guid.Empty; }
+    }
+
+    [XmlElement]
+    [ObjectBinding (Visible = false)]
+    public Guid FatherID
+    {
+      get { return _fatherID; }
+      set { _fatherID = value; }
+    }
+
+    public Person Father
+    {
+      get { return (_fatherID != Guid.Empty) ? Person.GetObject (_fatherID) : null; }
+      set { _fatherID = (value != null) ? value.ID : Guid.Empty; }
     }
 
     [XmlElement]
