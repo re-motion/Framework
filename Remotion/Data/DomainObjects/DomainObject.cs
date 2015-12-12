@@ -408,6 +408,19 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
+    /// GetType might return a <see cref="Type"/> object for a generated class, which is usually not what is expected.
+    /// <see cref="DomainObject.GetPublicDomainObjectType"/> can be used to get the Type object of the original underlying domain object type. If
+    /// the <see cref="Type"/> object for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.
+    /// </summary>
+    [Obsolete ("GetType might return a Type object for a generated class, which is usually not what is expected. "
+               + "DomainObject.GetPublicDomainObjectType can be used to get the Type object of the original underlying domain object type. If the Type object"
+               + "for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.", true)]
+    public new Type GetType ()
+    {
+      throw new InvalidOperationException ("DomainObject.GetType should not be used.");
+    }
+
+    /// <summary>
     /// Returns the public type representation of this domain object, i.e. the type object visible to mappings, database, etc.
     /// </summary>
     /// <returns>The public type representation of this domain object.</returns>
