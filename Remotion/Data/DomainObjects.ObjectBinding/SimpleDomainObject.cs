@@ -87,24 +87,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       return DomainObject.NewObject<TDomainObject> (constructorParameters);
     }
 
-    [Obsolete ("This method has been removed. Use id.GetObject<DomainObjectClass>() instead. (1.13.184.0)", true)]
-    public static TDomainObject GetObject (ObjectID id)
-    {
-      throw new NotImplementedException();
-    }
-
-    [Obsolete ("This method has been removed. Use id.GetObject<DomainObjectClass>() instead. (1.13.184.0)", true)]
-    public static TDomainObject GetObject (ObjectID id, bool includeDeleted)
-    {
-      throw new NotImplementedException ();
-    }
-
-    [Obsolete ("This method has been removed. Use id.TryGetObject<DomainObjectClass>() instead. (1.13.184.0)", true)]
-    public static TDomainObject TryGetObject (ObjectID id)
-    {
-      throw new NotImplementedException ();
-    }
-
     protected SimpleDomainObject ()
     {
     }

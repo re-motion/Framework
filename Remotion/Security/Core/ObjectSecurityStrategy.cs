@@ -35,25 +35,6 @@ namespace Remotion.Security
   [Serializable]
   public sealed class ObjectSecurityStrategy : IObjectSecurityStrategy
   {
-    #region Obsolete
-
-    [Obsolete ("Use CacheInvalidationToken.Invalidate() instead. (Version 1.15.20.0)", true)]
-    public void InvalidateLocalCache ()
-    {
-      throw new NotImplementedException ("Use CacheInvalidationToken.Invalidate() instead. (Version 1.15.20.0)");
-    }
-
-    [Obsolete (
-        "Use new ObjectSecurityStrategy (securityContextFactory, NullAccessTypeFilter.Null, new CacheInvalidationToken()) instead. (Version 1.15.20.0)",
-        true)]
-    private ObjectSecurityStrategy (ISecurityContextFactory securityContextFactory)
-    {
-      throw new NotImplementedException (
-          "Use new ObjectSecurityStrategy (securityContextFactory, NullAccessTypeFilter.Null, new CacheInvalidationToken()) instead. (Version 1.15.20.0)");
-    }
-
-    #endregion
-
     /// <summary>
     /// Instantiates <see cref="ObjectSecurityStrategy"/> with a cache based on the <paramref name="invalidationToken"/>.
     /// </summary>

@@ -890,7 +890,7 @@ Example for a row with labels and the controls in adjecent row.
       <param name="value">
         The new value of the element at index.
       </param>
-      <exception cref="ArgumentTypeException">
+      <exception cref="ArgumentException">
         Thrown if value is not of type <see cref="FormGridRow"/>.
       </exception>
       <exception cref="ArgumentNullException">

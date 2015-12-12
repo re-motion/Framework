@@ -32,29 +32,12 @@ namespace Remotion.Utilities
   {
     private readonly IDataStore<Type, TypeConverter> _typeConverters = DataStoreFactory.CreateWithLocking<Type, TypeConverter>();
 
-    /// <summary> Creates a new instace of the <see cref="TypeConversionProvider"/> type. </summary>
-    /// <returns> An instance of the <see cref="TypeConversionProvider"/> type. </returns>
-    [Obsolete ("Use SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>() instead if the global instance suffices, otherwise create a new instance via the constructor. (Version 1.15.8.0)", true)]
-    public static TypeConversionProvider Create ()
-    {
-      throw new NotSupportedException (
-          "Use SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>() instead if the global instance suffices, otherwise create a new instance via the constructor.");
-    }
-
     /// <summary> Gets the current <see cref="TypeConversionProvider"/>. </summary>
     /// <value> An instance of the <see cref="TypeConversionProvider"/> type. </value>
     [Obsolete ("Use SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>() instead. (Version 1.15.8.0)")]
     public static ITypeConversionProvider Current
     {
       get { return SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(); }
-    }
-
-    /// <summary> Sets the current <see cref="TypeConversionProvider"/>. </summary>
-    /// <param name="provider"> A <see cref="TypeConversionProvider"/>. Must not be <see langword="null"/>. </param>
-    [Obsolete ("Configure the current ITypeConversionProvider via the application's IoC container instead. (Version 1.15.8.0)", true)]
-    public static void SetCurrent (TypeConversionProvider provider)
-    {
-      throw new NotSupportedException ("Configure the current TypeConversionProvider via the application's IoC container instead.");
     }
 
     private readonly ITypeConverterFactory _typeConverterFactory;

@@ -72,17 +72,5 @@ namespace Remotion.Data.DomainObjects
 
       return null;
     }
-
-    [Obsolete ("This API has been renamed to ExecuteInScope. (1.13.188.0)", true)]
-    public static T Execute<T> (this ClientTransaction clientTransaction, Func<T> func)
-    {
-      throw new NotImplementedException ();
-    }
-
-    [Obsolete ("This API has been renamed to ExecuteInScope. (1.13.188.0)", true )]
-    public static void Execute (this ClientTransaction clientTransaction, Action action)
-    {
-      throw new NotImplementedException();
-    }
   }
 }

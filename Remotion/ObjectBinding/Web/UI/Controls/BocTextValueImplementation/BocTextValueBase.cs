@@ -15,10 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
@@ -27,7 +25,6 @@ using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
@@ -299,22 +296,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
       return ClientID + c_textboxIDPostfix;
     }
 
-    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
-    public string GetTextBoxClientID ()
-    {
-      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
-    }
-
-    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
-    public string GetTextBoxUniqueID ()
-    {
-      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
-    }
-
-    [Obsolete ("Use CreateValidatorsImplementation() instead. (Version 1.15.21)", true)]
+    [Obsolete ("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("Use CreateValidatorsImplementation() instead. (Version 1.15.21)");
+      throw new NotImplementedException ("For DependDB only.");
     }
 
     protected abstract string ControlType { get; }

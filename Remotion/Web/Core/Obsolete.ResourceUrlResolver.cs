@@ -17,7 +17,6 @@
 
 using System;
 using System.Reflection;
-using System.Web;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.ServiceLocation;
@@ -31,22 +30,6 @@ namespace Remotion.Web
   [Obsolete ("Use IResourceUrlFactory instead. (Version 1.13.198)")]
   public static class ResourceUrlResolver
   {
-    /// <summary>
-    ///   Returns the physical URL of a resource item.
-    /// </summary>
-    /// <param name="control"> 
-    ///   The current <see cref="Control"/>. Currently, this parameter is only used to detect design time.
-    /// </param>
-    /// <param name="context"> The current <see cref="HttpContext"/>. </param>
-    /// <param name="definingType"> The type that this resource item is associated with. </param>
-    /// <param name="resourceType"> The resource type (image, static html, etc.) </param>
-    /// <param name="relativeUrl"> The relative URL of the item. </param>
-    [Obsolete ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)", true)]
-    public static string GetResourceUrl (IControl control, HttpContextBase context, Type definingType, ResourceType resourceType, string relativeUrl)
-    {
-      throw new NotImplementedException("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)");
-    }
-
     /// <summary>
     ///   Returns the physical URL of a resource item.
     /// </summary>
@@ -81,25 +64,6 @@ namespace Remotion.Web
       return factory.CreateResourceUrl (definingType, resourceType, relativeUrl).GetUrl();
     }
 
-    /// <summary>
-    ///   Returns the physical URL of a resource item.
-    /// </summary>
-    /// <seealso cref="IResourceUrlResolver"/>.
-    /// <param name="control"> 
-    ///   The current <see cref="Control"/>. This parameter is only used to detect design time.
-    /// </param>
-    /// <param name="definingType"> 
-    ///   The type that this resource item is associated with. Must not be <see langword="null"/>.
-    /// </param>
-    /// <param name="resourceType"> The resource type (image, static html, etc.) Must not be <see langword="null"/>. </param>
-    /// <param name="theme">The <see cref="ResourceTheme"/> to which the resource belongs.</param>
-    /// <param name="relativeUrl"> The resource file name. Must not be <see langword="null"/> or empty.</param>
-    [Obsolete ("Use IResourceUrlFactory.CreateThemedResourceUrl(...) instead. (Version 1.13.197)", true)]
-    public static string GetResourceUrl (IControl control, Type definingType, ResourceType resourceType, ResourceTheme theme, string relativeUrl)
-    {
-      throw new NotImplementedException("Use IResourceUrlFactory.CreateThemedResourceUrl(...) instead. (Version 1.13.197)");
-    }
-
     /// <summary> Returns the root folder for all resources belonging to the <paramref name="assembly"/>. </summary>
     /// <param name="isDesignMode"> <see langword="true"/> if the application is in design mode. </param>
     /// <param name="assembly">The <paramref name="assembly"/> for which a ressource is being resolved.</param>
@@ -114,18 +78,6 @@ namespace Remotion.Web
 
       var builder = SafeServiceLocator.Current.GetInstance<IResourcePathBuilder>();
       return builder.BuildAbsolutePath (assembly);
-    }
-
-    /// <summary> Returns the root folder for all resources. </summary>
-    /// <param name="isDesignMode"> <see langword="true"/> if the application is in design mode. </param>
-    /// <returns> 
-    ///   The folder where the resources are expected to be. Ends on a slash unless the root folder is an 
-    ///   empty string.
-    /// </returns>
-    [Obsolete ("Use Control.ResolveClientUrl(\"~/\") instead. (Version 1.13.198)", true)]
-    public static string GetRoot (bool isDesignMode)
-    {
-      throw new NotImplementedException ("Use Control.ResolveClientUrl(\"~/\") instead. (Version 1.13.198)");
     }
   }
 }

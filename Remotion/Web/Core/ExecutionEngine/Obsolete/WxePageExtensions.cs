@@ -122,13 +122,6 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       Execute (page, function, arguments);
     }
 
-    [Obsolete("ExecuteFunctionExternal for redirects requires a sender to be specified. (1.13.180)", true)]
-    public static void ExecuteFunctionExternal (
-        this IWxePage page, WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
-    {
-      throw new NotSupportedException("ExecuteFunctionExternal for redirects requires a sender to be specified. (1.13.180)");
-    }
-
     /// <summary> 
     ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
     ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the new function.
@@ -138,19 +131,6 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
         this IWxePage page, WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
     {
       ExecuteFunctionExternal (page, function, sender, createPermaUrl, useParentPermaUrl, urlParameters, true, null);
-    }
-
-    [Obsolete ("ExecuteFunctionExternal for redirects requires a sender to be specified. (1.13.180)", true)]
-    public static void ExecuteFunctionExternal (
-        this IWxePage page,
-        WxeFunction function,
-        bool createPermaUrl,
-        bool useParentPermaUrl,
-        NameValueCollection urlParameters,
-        bool returnToCaller,
-        NameValueCollection callerUrlParameters)
-    {
-      throw new NotSupportedException ("ExecuteFunctionExternal for redirects requires a sender to be specified. (1.13.180)");
     }
 
     /// <summary> 

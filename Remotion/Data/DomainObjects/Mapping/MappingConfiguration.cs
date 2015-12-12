@@ -31,22 +31,6 @@ namespace Remotion.Data.DomainObjects.Mapping
 {
   public class MappingConfiguration : IMappingConfiguration
   {
-    #region Obsolete
-
-    [Obsolete ("Use MappingConfiguration.GetClassDefinition (...) or MappingConfiguration.GetTypeDefinition (...) instead. (Version 1.13.105)", true)]
-    public CommonCollection ClassDefinitions
-    {
-      get { throw new NotSupportedException ("Use MappingConfiguration.GetClassDefinition (...) or MappingConfiguration.GetTypeDefinition (...) instead."); }
-    }
-
-    [Obsolete ("This method is no longer supported. Access the RelationDefinition by first getting the ClassDefinition, retrieving the RelationDefintionEndPoint and finally the RelationDefintion. (Version 1.13.105)", true)]
-    public CommonCollection RelationDefinitions
-    {
-      get { throw new NotSupportedException ("This method is no longer supported. Access the RelationDefinition by first getting the ClassDefinition, retrieving the RelationDefintionEndPoint and finally the RelationDefintion."); }
-    }
-
-    #endregion
-
     private static readonly ILog s_log = LogManager.GetLogger (typeof (MappingConfiguration));
 
     private static readonly DoubleCheckedLockingContainer<IMappingConfiguration> s_mappingConfiguration =

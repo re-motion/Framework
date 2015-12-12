@@ -27,7 +27,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -405,10 +404,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         ErrorMessage = resourceManager.GetString (key);
     }
 
-    [Obsolete ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)", true)]
-    protected new BaseValidator[] CreateValidators ()
+    [Obsolete ("For DependDB only.", true)]
+    private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)");
+      throw new NotImplementedException ("For DependDB only.");
     }
 
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
@@ -904,18 +903,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected string GetTimeValueName ()
     {
       return ClientID + c_timeTextBoxIDPostfix;
-    }
-
-    [Obsolete ("Use GetDateValueName instead. (1.13.206)", true)]
-    public string GetDateTextboxClientID ()
-    {
-      throw new NotImplementedException ("Use GetDateValueName instead. (1.13.206)");
-    }
-
-    [Obsolete ("Use GetTimeValueName instead. (1.13.206)", true)]
-    public string GetTimeTextboxClientID ()
-    {
-      throw new NotImplementedException ("Use GetTimeValueName instead. (1.13.206)");
     }
 
     string IBocDateTimeValue.GetDatePickerText ()

@@ -16,7 +16,6 @@
 // 
 
 using System;
-using System.Linq.Expressions;
 using System.Reflection;
 using Remotion.Reflection;
 
@@ -26,18 +25,6 @@ namespace Remotion.Utilities
   [Obsolete ("Use TypeExtensions, PropertyInfoExtensions, and MethodInfoExtensions instead. (Version 1.15.17.0)")]
   public static class ReflectionUtility
   {
-    [Obsolete ("This method has been replaced by AttributeUtilities.GetCustomAttriubte. (Version 1.9.2)", true)]
-    public static object GetSingleAttribute (MemberInfo member, Type attributeType, bool inherit, bool throwExceptionIfNotPresent)
-    {
-      throw new NotImplementedException ("Obsolete. Use AttributeUtilities.GetCustomAttriubte instead.");
-    }
-
-    [Obsolete ("This method has been replaced by MemberInfoFromExpressionUtility.GetMember. (Version 1.13.148)", true)]
-    public static MemberInfo GetMemberFromExpression<TSourceObject, TResult> (Expression<Func<TSourceObject, TResult>> memberAccessExpression)
-    {
-      throw new NotImplementedException ("Obsolete. Use MemberInfoFromExpressionUtility.GetMember instead.");
-    }
-
     /// <summary>
     /// Evaluates whether the <paramref name="type"/> can be ascribed to the <paramref name="ascribeeType"/>.
     /// </summary>

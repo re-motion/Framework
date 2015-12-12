@@ -164,34 +164,6 @@ namespace Remotion.Web.ExecutionEngine.CodeGenerator
     }
 
     /// <summary>
-    /// add Return (outPar1, outPar2, ...) method 
-    /// </summary>
-    [Obsolete ("removed (unneccessary, possibly confusing)", true)]
-    private void GenerateWxePageReturnMethodWithOutParameters ()
-    {
-      //CodeMemberMethod returnParametersMethod = new CodeMemberMethod ();
-      //foreach (WxePageParameterAttribute parameterDeclaration in GetPageParameterAttributesOrdered (type))
-      //{
-      //  if (parameterDeclaration.Direction != WxeParameterDirection.In)
-      //  {
-      //    returnParametersMethod.Parameters.Add (new CodeParameterDeclarationExpression (
-      //        new CodeTypeReference (parameterDeclaration.Type),
-      //        parameterDeclaration.Name));
-      //    returnParametersMethod.Statements.Add (new CodeAssignStatement (
-      //        new CodePropertyReferenceExpression (new CodeThisReferenceExpression (), parameterDeclaration.Name),
-      //        new CodeArgumentReferenceExpression (parameterDeclaration.Name)));
-      //  }
-      //}
-      //if (returnParametersMethod.Parameters.Count > 0)
-      //{
-      //  partialPageClass.Members.Add (returnParametersMethod);
-      //  returnParametersMethod.Name = "Return";
-      //  returnParametersMethod.Attributes = MemberAttributes.Family | MemberAttributes.Final;
-      //  returnParametersMethod.Statements.Add (executeNextStep);
-      //}
-    }
-
-    /// <summary>
     /// &lt;returnType&gt; Call (IWxePage page, IWxeCallArguments arguments, &lt;type&gt; [ref|out] param1, &lt;type&gt; [ref|out] param2, ...)
     /// </summary>
     protected abstract CodeMemberMethod GenerateWxeTemplateControlCallMethod (FunctionDeclaration functionDeclaration, CodeTypeDeclaration partialTemplateControlClass, CodeTypeDeclaration functionClass);
@@ -356,24 +328,6 @@ namespace Remotion.Web.ExecutionEngine.CodeGenerator
       if (IsWxeFunctionType (_functionDeclaration.FunctionBaseType))
         defaultCtor.BaseConstructorArgs.Add (new CodeObjectCreateExpression (new CodeTypeReference (typeof (NoneTransactionMode))));
       defaultCtor.BaseConstructorArgs.Add (new CodeArrayCreateExpression (new CodeTypeReference (typeof (object[])), 0));
-    }
-
-    /// <summary>
-    /// ctor (params object[] args): base (args) {}
-    /// </summary>
-    [Obsolete ("replace by (VarRef<type1> arg1, VarRef<type2> arg2, ...)", true)]
-    private void GenerateWxeFunctionConstructorWithParamsArray ()
-    {
-      // replace by (VarRef<type1> arg1, VarRef<type2> arg2, ...)
-      //CodeConstructor untypedCtor = new CodeConstructor ();
-      //functionClass.Members.Add (untypedCtor);
-      //untypedCtor.Attributes = MemberAttributes.Public;
-      //CodeParameterDeclarationExpression untypedParameters = new CodeParameterDeclarationExpression (
-      //    new CodeTypeReference (typeof (object[])),
-      //    "args");
-      //untypedParameters.CustomAttributes.Add (new CodeAttributeDeclaration ("System.ParamArrayAttribute"));
-      //untypedCtor.Parameters.Add (untypedParameters);
-      //untypedCtor.BaseConstructorArgs.Add (new CodeArgumentReferenceExpression ("args"));
     }
 
     /// <summary>

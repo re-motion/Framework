@@ -188,13 +188,6 @@ namespace Remotion.Data.DomainObjects
       get { return ClientTransactionScope.ActiveScope == this; }
     }
 
-    [Obsolete ("This property is obsolete. Manually enlist objects in transactions instead. (1.13.41)", true)]
-    public bool AutoEnlistDomainObjects
-    {
-      get { throw new NotImplementedException(); }
-      set { throw new NotImplementedException(); }
-    }
-
     /// <summary>
     /// Resets <see cref="CurrentTransaction"/> to the value it had before this scope was instantiated and performs the
     /// <see cref="AutoRollbackBehavior"/>. This method is ignored when executed more than once.

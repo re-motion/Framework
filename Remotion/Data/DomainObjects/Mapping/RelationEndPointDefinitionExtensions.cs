@@ -37,14 +37,6 @@ namespace Remotion.Data.DomainObjects.Mapping
       return oppositeEndPointDefinition;
     }
 
-    [Obsolete (
-        "This method has been removed because GetOppositeEndPointDefinition cannot return null. Use GetOppositeEndPointDefinition instead. (1.13.176)", 
-        true)]
-    public static IRelationEndPointDefinition GetMandatoryOppositeEndPointDefinition (this IRelationEndPointDefinition relationEndPointDefinition)
-    {
-      throw new NotImplementedException();
-    }
-
     [JetBrains.Annotations.NotNull]
     public static ClassDefinition GetOppositeClassDefinition (this IRelationEndPointDefinition relationEndPointDefinition)
     {

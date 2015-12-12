@@ -19,7 +19,6 @@ using System.Collections.Concurrent;
 using System.ComponentModel.Design;
 using JetBrains.Annotations;
 using Remotion.Reflection;
-using Remotion.Reflection.TypeDiscovery;
 
 namespace Remotion.Utilities
 {
@@ -30,19 +29,6 @@ namespace Remotion.Utilities
   public static partial class TypeUtility
   {
     #region Obsolete
-
-    /// <summary>
-    ///   Loads a type, optionally using an abbreviated type name as defined in <see cref="ParseAbbreviatedTypeName"/>.
-    /// </summary>
-    [Obsolete (
-        "GetType is now designer-aware, and the designer does not support case-insensitive type lookup. If type lookup with case insensitivity "
-        + "is required, use Type.GetType. To use abbreviated type names for the lookup, use ParseAbbreviatedTypeName.", true)]
-    [CanBeNull]
-    public static Type GetType ([NotNull]string name, bool throwOnError, bool ignoreCase)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      return TypeResolutionService.GetType (ParseAbbreviatedTypeName (name), throwOnError, ignoreCase);
-    }
 
     [Obsolete ("Use GetType (string, bool) instead. (Version 1.15.30.0)")]
     public static Type GetDesignModeType ([NotNull]string name, bool throwOnError)

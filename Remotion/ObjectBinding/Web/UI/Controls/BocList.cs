@@ -35,7 +35,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Design;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -75,12 +74,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected BocListRow[] EnsureGotIndexedRowsSorted()
     {
       return EnsureSortedBocListRowsGot().ToArray();
-    }
-
-    [Obsolete("Use EnsureSortedBocListRowsGot instead. (Version 1.13.52)", true)]
-    protected BocListRow[] GetIndexedRows(bool sorted)
-    {
-      throw new NotSupportedException ("Use EnsureSortedBocListRowsGot instead. (Version 1.13.52)");
     }
 
     #endregion
@@ -890,10 +883,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       remove { Events.RemoveHandler (s_sortingOrderChangedEvent, value); }
     }
 
-    [Obsolete ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)", true)]
-    protected new BaseValidator[] CreateValidators ()
+    [Obsolete ("For DependDB only.", true)]
+    private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)");
+      throw new NotImplementedException ("For DependDB only.");
     }
 
     /// <summary>

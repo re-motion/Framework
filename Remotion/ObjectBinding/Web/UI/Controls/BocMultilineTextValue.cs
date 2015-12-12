@@ -25,7 +25,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -331,10 +330,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         ErrorMessage = resourceManager.GetString (key);
     }
 
-    [Obsolete ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)", true)]
-    protected IEnumerable<BaseValidator> GetValidators ()
+    [Obsolete ("For DependDB only.", true)]
+    private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)");
+      throw new NotImplementedException ("For DependDB only.");
     }
 
     /// <summary>

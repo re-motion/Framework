@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 
@@ -34,16 +33,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   [BindableDomainObjectProvider]
   public class BindableDomainObjectMixin : BindableObjectMixinBase<IDomainObject>, IBusinessObjectWithIdentity
   {
-    [Obsolete ("Use IDomainObject instead. (Version 1.25.23.0)", true)]
-    public interface IDomainObject : DomainObjects.IDomainObject
-    {
-      new Type GetPublicDomainObjectType ();
-      new ObjectID ID { get; }
-      [Obsolete ("Use new PropertyIndexer (domainObject) instead. (Version 1.25.23.0)", true)]
-      PropertyIndexer Properties { get; }
-      StateType State { get; }
-    }
-
     public BindableDomainObjectMixin ()
     {
     }

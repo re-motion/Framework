@@ -153,17 +153,6 @@ namespace Remotion.Data.DomainObjects.Mapping
       return relationEndPointDefinition.GetOppositeEndPointDefinition();
     }
 
-    [Obsolete (
-        "This method is obsolete because it can lead to inefficient code. Use 'GetMandatoryEndPointDefinition (propertyName).GetOppositeEndPointDefinition()' "
-        + "instead. If you already have an IRelationEndPointDefinition, just use 'endPointDefinition.GetOppositeEndPointDefinition()'. (1.13.176)")]
-    public IRelationEndPointDefinition GetMandatoryOppositeEndPointDefinition (string propertyName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-
-      IRelationEndPointDefinition relationEndPointDefinition = GetMandatoryRelationEndPointDefinition (propertyName);
-      return relationEndPointDefinition.GetMandatoryOppositeEndPointDefinition();
-    }
-
     public PropertyDefinitionCollection GetPropertyDefinitions ()
     {
       return _cachedPropertyDefinitions.Value;
@@ -585,18 +574,6 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
 
       return Expression.Lambda<Func<ObjectID, IDomainObjectHandle<DomainObject>>> (body, objectIDParameter).Compile ();
-    }
-
-    [Obsolete ("This method has been removed. Use the StorageEntityDefinition property instead. (1.13.118)")]
-    public string GetEntityName ()
-    {
-      throw new NotImplementedException();
-    }
-
-    [Obsolete ("This method has been removed. Use the StorageEntityDefinition property instead. (1.13.118)")]
-    public string[] GetAllConcreteEntityNames ()
-    {
-      throw new NotImplementedException ();
     }
   }
 }

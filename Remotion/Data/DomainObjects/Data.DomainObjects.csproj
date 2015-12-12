@@ -578,7 +578,6 @@
     <Compile Include="DataManagement\RelationEndPoints\RealObjectEndPoint.cs" />
     <Compile Include="DataManagement\StateValueSet.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualObjectEndPoint.cs" />
-    <Compile Include="DomainImplementation\RepositoryAccessor.cs" />
     <Compile Include="DomainObjectCollection.EventRaiser.cs" />
     <Compile Include="DataManagement\RelationEndPoints\ICollectionEndPointChangeDetectionStrategy.cs" />
     <Compile Include="DomainObjectCollection.IList.cs" />
@@ -710,7 +709,6 @@
     <Compile Include="Infrastructure\DomainObjectTransactionContext.cs" />
     <Compile Include="FullGraphTraversalStrategy.cs" />
     <Compile Include="IDomainObjectTransactionContext.cs" />
-    <Compile Include="Infrastructure\BindingClientTransaction.cs" />
     <Compile Include="Infrastructure\ClientTransactionWrapper.cs" />
     <Compile Include="Infrastructure\DomainObjectTransactionContextIndexer.cs" />
     <Compile Include="Infrastructure\DomainObjectCheckUtility.cs" />
@@ -730,7 +728,6 @@
     <Compile Include="Mapping\RelationEndPointDefinitionExtensions.cs" />
     <Compile Include="Mapping\RelationKindType.cs" />
     <Compile Include="Mapping\SerializableMappingObject.cs" />
-    <Compile Include="Persistence\BulkLoadException.cs" />
     <Compile Include="RelationChangedEventArgs.cs" />
     <Compile Include="RelationChangingEventArgs.cs" />
     <Compile Include="SubTransactionCreatedEventArgs.cs" />
@@ -859,9 +856,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataManagement\DataContainerMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DataManagement\DataManagementException.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataManagement\DataManager.cs">
@@ -1068,9 +1062,6 @@
     <Compile Include="Validation\PropertyValueTooLongException.cs" />
     <Compile Include="Validation\StringPropertyMaxLengthValidator.cs" />
     <Compile Include="ValueChangeEventArgs.cs" />
-    <Compile Include="Obsolete\ValueTooLongException.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <None Include="..\..\Build\NuSpec\TemplateShared.nuspec">
       <Link>TemplateShared.nuspec</Link>
     </None>

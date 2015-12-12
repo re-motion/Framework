@@ -195,12 +195,5 @@ namespace Remotion.Mixins
 
       return Validator.Validate (definitions);
     }
-
-    [Obsolete ("This feature has been removed. Use an IOC container to resolve interfaces into implementations. (1.13.106)", true)]
-    public ClassContext ResolveComposedInterface (Type interfaceType)
-    {
-      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
-      throw new NotImplementedException ("This feature has been removed. Use an IOC container to resolve interfaces into implementations.");
-    }
   }
 }

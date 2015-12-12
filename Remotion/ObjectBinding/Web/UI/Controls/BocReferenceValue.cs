@@ -28,7 +28,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Design;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -180,12 +179,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected string GetValueName ()
     {
       return ClientID + c_dropDownListIDPostfix;
-    }
-
-    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
-    public string DropDownListClientID
-    {
-      get { throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)"); }
     }
 
     /// <summary> Called when the state of the control has changed between postbacks. </summary>

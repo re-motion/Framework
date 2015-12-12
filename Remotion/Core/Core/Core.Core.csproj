@@ -251,7 +251,6 @@
     <Compile Include="FunctionalProgramming\EnumerableUtility.Partial.cs" />
     <Compile Include="FunctionalProgramming\Maybe.Partial.cs" />
     <Compile Include="IHandleAttribute.cs" />
-    <Compile Include="Obsolete\Collections\CacheInvalidationToken.cs" />
     <Compile Include="Obsolete\Reflection\TypeDiscovery\ContextAwareTypeDiscoveryUtility.cs" />
     <Compile Include="Reflection\MethodInfoExtensions.cs" />
     <Compile Include="Reflection\MethodResolver.cs" />
@@ -265,7 +264,6 @@
     <Compile Include="Reflection\TypeResolution\DefaultTypeResolutionService.cs" />
     <Compile Include="Reflection\TypeExtensions.cs" />
     <Compile Include="ServiceLocation\BootstrapServiceConfiguration.cs" />
-    <Compile Include="ServiceLocation\ConcreteImplementationAttribute.obsolete.cs" />
     <Compile Include="ServiceLocation\DefaultServiceLocator.Registration.cs" />
     <Compile Include="ServiceLocation\ServiceConfigurationRegistryExtensions.cs" />
     <Compile Include="ServiceLocation\ImplementationForAttribute.cs" />
@@ -292,7 +290,6 @@
     <Compile Include="SharedSource\ResharperAnnotations\AssertionConditionType.cs" />
     <Compile Include="SharedSource\ResharperAnnotations\ImplicitUseKindFlags.cs" />
     <Compile Include="SharedSource\ResharperAnnotations\ImplicitUseTargetFlags.cs" />
-    <Compile Include="Utilities\AssertionException.cs" />
     <Compile Include="Utilities\Assertion.Partial.cs" />
     <Compile Include="Utilities\AttributeBasedTypeConverterFactory.cs" />
     <Compile Include="Utilities\CompoundTypeConverterFactory.cs" />
@@ -306,11 +303,6 @@
     <Compile Include="Utilities\ReferenceEqualityComparer.Partial.cs" />
     <Compile Include="Utilities\ReSharperAnnotations\PartialDeclarations.cs" />
     <Compile Include="SuppressAttributesAttribute.cs" />
-    <Compile Include="Obsolete\Utilities\ArgumentEmptyException.cs" />
-    <Compile Include="Obsolete\Utilities\ArgumentItemDuplicateException.cs" />
-    <Compile Include="Obsolete\Utilities\ArgumentItemNullException.cs" />
-    <Compile Include="Obsolete\Utilities\ArgumentItemTypeException.cs" />
-    <Compile Include="Obsolete\Utilities\ArgumentTypeException.cs" />
     <Compile Include="Utilities\ArgumentUtility.Partial.cs" />
     <Compile Include="Utilities\AttributeRetrieval\EventCustomAttributeRetriever.cs" />
     <Compile Include="Utilities\CompoundComparer.cs" />
@@ -477,7 +469,9 @@
   <ItemGroup>
     <None Include="FacetManifest.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Obsolete\Collections\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

@@ -85,14 +85,4 @@ namespace Remotion.Data
     /// <exception cref="NotSupportedException">At least one of the given objects is not compatible with this transaction (and cannot be made so).</exception>
     void EnsureCompatibility (IEnumerable objects);
   }
-
-  public static class ObsoleteMethods
-  {
-    [Obsolete ("This method has been removed. To reset the transaction of a WxeFunction, use WxeFunction.Transaction.Reset. "
-        + "To reset another ClientTransaction, discard the old transaction and create a new one. (1.13.182.0)", true)]
-    public static void Reset (this ITransaction transaction)
-    {
-      throw new NotImplementedException();
-    }
-  }
 }

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
 {
@@ -26,7 +25,7 @@ namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
   {
     void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender);
 
-    [Obsolete ("The Render method is not supported in version 1.13.83.", true)]
+    [Obsolete ("The Render method is not supported at this time.", true)]
     void Render (WebTreeViewRenderingContext renderingContext);
   }
 }

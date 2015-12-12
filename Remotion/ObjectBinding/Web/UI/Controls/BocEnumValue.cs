@@ -27,7 +27,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -190,10 +189,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return false;
     }
 
-    [Obsolete ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)", true)]
-    protected new BaseValidator[] CreateValidators ()
+    [Obsolete ("For DependDB only.", true)]
+    private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)");
+      throw new NotImplementedException ("For DependDB only.");
     }
 
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
@@ -265,12 +264,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected string GetValueName ()
     {
       return ClientID + c_listControlIDPostfix;
-    }
-
-    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
-    public string GetListControlClientID ()
-    {
-      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
     }
 
     /// <summary> This event is fired when the selection is changed between postbacks. </summary>

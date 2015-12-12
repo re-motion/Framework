@@ -272,12 +272,6 @@
     <Compile Include="MixinTypeUtility.cs" />
     <Compile Include="NonIntroducedAttribute.cs" />
     <Compile Include="ObjectFactory.cs" />
-    <Compile Include="Obsolete\Globalization\IResourceManager.cs" />
-    <Compile Include="Obsolete\Globalization\MixedMultiLingualResources.cs" />
-    <Compile Include="Obsolete\Singleton\DefaultInstanceCreator.cs" />
-    <Compile Include="Obsolete\Singleton\IInstanceCreator.cs" />
-    <Compile Include="Obsolete\Singleton\ServiceLocatorInstanceCreator.cs" />
-    <Compile Include="Obsolete\Singleton\ThreadSafeSingletonBase.cs" />
     <Compile Include="OverrideMixinAttribute.cs" />
     <Compile Include="OverrideTargetAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -358,7 +352,10 @@
       <Name>TypePipe.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Obsolete\Globalization\" />
+    <Folder Include="Obsolete\Singleton\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="FacetManifest.xml" />
   </ItemGroup>

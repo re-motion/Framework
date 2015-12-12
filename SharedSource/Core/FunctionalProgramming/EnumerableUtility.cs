@@ -16,7 +16,6 @@
 // 
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Utilities;
@@ -46,54 +45,6 @@ namespace Remotion.FunctionalProgramming
         foreach (T item in sources[i])
           yield return item;
       }
-    }
-
-    [Obsolete ("This method is obsolete with LINQ, use source.Select (selector) instead. (1.13.42)", true)]
-    public static IEnumerable<TResult> Select<TSource, TResult> (IEnumerable<TSource> source, Func<TSource, TResult> selector)
-    {
-      throw new NotImplementedException ();
-    }
-
-    [Obsolete ("This method is obsolete with LINQ, use source.Select (selector).ToArray() instead. (1.13.42)", true)]
-    public static TResult[] SelectToArray<TSource, TResult> (IEnumerable<TSource> source, Func<TSource, TResult> selector)
-    {
-      throw new NotImplementedException ();
-    }
-
-    [Obsolete ("This method is obsolete with LINQ, use source.Where (predicate) instead. (1.13.42)", true)]
-    public static IEnumerable<TSource> Where<TSource> (IEnumerable<TSource> source, Func<TSource, bool> predicate)
-    {
-      throw new NotImplementedException ();
-    }
-
-    [Obsolete ("This method is obsolete with LINQ, use Combine (sources).ToArray() instead. (1.13.42)", true)]
-    public static T[] CombineToArray<T> (params IEnumerable<T>[] sources)
-    {
-      throw new NotImplementedException ();
-    }
-
-    [Obsolete ("This method is obsolete with LINQ, use source.ToList() instead. (1.13.42)", true)]
-    public static IList<T> ToList<T> (IEnumerable<T> source)
-    {
-      throw new NotImplementedException ();
-    }
-
-    [Obsolete ("This method is obsolete with LINQ, use source.ToList() instead. (1.13.42)", true)]
-    public static T[] ToArray<T> (IEnumerable<T> source)
-    {
-      throw new NotImplementedException ();
-    }
-
-    [Obsolete ("This method is obsolete with LINQ, use sourceEnumerable.Cast<T>() instead. (1.13.42)", true)]
-    public static IEnumerable<T> Cast<T> (IEnumerable sourceEnumerable)
-    {
-      throw new NotImplementedException ();
-    }
-
-    [Obsolete ("This method is obsolete with LINQ, use source.FirstOrDefault() instead. (1.13.42)", true)]
-    public static T FirstOrDefault<T> (IEnumerable<T> source)
-    {
-      throw new NotImplementedException ();
     }
 
     /// <summary>

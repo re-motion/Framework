@@ -64,7 +64,6 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Collections\SetBasedCacheKeyTest.cs" />
-    <Compile Include="Collections\SetTest.cs" />
     <Compile Include="Diagnostics\BugReportTest.cs" />
     <Compile Include="Diagnostics\ByteValueTest.cs" />
     <Compile Include="Diagnostics\MemoryUsageInfoTest.cs" />

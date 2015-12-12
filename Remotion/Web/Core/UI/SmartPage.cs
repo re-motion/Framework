@@ -19,7 +19,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -271,14 +270,6 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     else
       return Request.QueryString;
   }
-
-  [Obsolete ("Use Page.Form instead. (1.15.5)", true)]
-  protected virtual HtmlForm HtmlForm
-  {
-    get { throw new NotSupportedException ("Use Page.Form instead. (1.15.5"); }
-    set { throw new NotSupportedException ("Use Page.Form instead. (1.15.5"); }
-  }
-
 
   /// <summary>
   ///   Call this method before validating when using <see cref="Remotion.Web.UI.Controls.FormGridManager"/> 

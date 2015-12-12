@@ -75,16 +75,6 @@ namespace Remotion.Globalization
       _name = _resourceManagers.Any() ? string.Join (", ", _resourceManagers.Select (rm=> rm.Name)) : "Empty ResourceManagerSet";
     }
 
-    /// <summary>
-    ///   Creates a <see cref="ResourceManagerSet"/> from a sequence of <see cref="IResourceManager"/>s.
-    /// </summary>
-    /// <param name="resourceManagers"> The resource managers, starting with the least specific. </param>
-    [Obsolete ("Use ResourceManagerSet.Create or the sequence-based constructor instead. NOTE: The order of the ResourceMangers is now reversed; the most significant ResourceManager should be added first. (Version 1.13.211)", true)]
-    public ResourceManagerSet (params IResourceManager[] resourceManagers)
-    {
-      throw new InvalidOperationException ("Use ResourceManagerSet.Create instead. (Version 1.13.211)");
-    }
-
     public ReadOnlyCollection<IResourceManager> ResourceManagers
     {
       get { return new ReadOnlyCollection<IResourceManager> (_resourceManagers); }

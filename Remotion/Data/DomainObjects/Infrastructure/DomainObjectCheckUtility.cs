@@ -86,11 +86,5 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         throw new ClientTransactionsDifferException (message);
       }
     }
-
-    [Obsolete ("This method has been removed. Use DomainObject.DefaultTransactionContext.ClientTransaction instead. (1.13.41)", true)]
-    public static ClientTransaction GetNonNullClientTransaction (DomainObject domainObject)
-    {
-      throw new NotImplementedException();
-    }
   }
 }

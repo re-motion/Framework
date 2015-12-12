@@ -258,23 +258,5 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
 
       clientTransaction.Delete (objectToBeDeleted);
     }
-
-    [Obsolete ("This method is now obsolete, use the overload taking a ClientTransaction instead. (1.13.42)", true)]
-    public static DomainObject NewObject (Type domainObjectType, ParamList constructorParameters)
-    {
-      return NewObject (ClientTransaction.Current, domainObjectType, constructorParameters);
-    }
-
-    [Obsolete ("This method is now obsolete, use the overload taking a ClientTransaction instead. (1.13.42)", true)]
-    public static DomainObject GetObject (ObjectID objectID, bool includeDeleted)
-    {
-      return GetObject (ClientTransactionScope.CurrentTransaction, objectID, includeDeleted);
-    }
-
-    [Obsolete ("This method is now obsolete, use the overload taking a ClientTransaction instead. (1.13.42)", true)]
-    public static void DeleteObject (DomainObject objectToBeDeleted)
-    {
-      DeleteObject (objectToBeDeleted.DefaultTransactionContext.ClientTransaction, objectToBeDeleted);
-    }
   }
 }

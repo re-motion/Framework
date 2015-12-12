@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -616,7 +615,7 @@ public class ClientTransaction
   /// because they are registered on the instance itself, not in the context of a transaction. However, the event handlers defined on
   /// <see cref="DomainObjectCollection"/> properties of the <see cref="DomainObject"/> are not shared, because each collection instance is unique
   /// to one transaction. To avoid having to manually re-register all such event handlers in all transactions after calling
-  /// <see cref="EnlistDomainObject"/>, this method copies all collection event handlers from a source transaction to this transaction.
+  /// <b>EnlistDomainObject</b>, this method copies all collection event handlers from a source transaction to this transaction.
   /// </remarks>
   /// <exception cref="ObjectsNotFoundException">The <paramref name="domainObject"/> could not be found in either the current transaction or the
   /// <paramref name="sourceTransaction"/>.</exception>
@@ -624,7 +623,7 @@ public class ClientTransaction
   /// <paramref name="sourceTransaction"/>.</exception>
   [Obsolete (
       "This API will be removed in a future version of re-store. To have identical event handlers between DomainObjectCollection, factorize "
-      + "the event registration code and apply it to all DomainObjectCollections involved. (1.13.172, RM-2072)", false)]
+      + "the event registration code and apply it to all DomainObjectCollections involved. (1.13.172, RM-2072)")]
   public void CopyCollectionEventHandlers (DomainObject domainObject, ClientTransaction sourceTransaction)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -656,7 +655,7 @@ public class ClientTransaction
   /// <param name="sourceTransaction">The transaction to copy the event handlers from.</param>
   [Obsolete (
       "This API will be removed in a future version of re-store. To have identical event handlers between ClientTransactions, factorize "
-      + "the event registration code and apply it to all ClientTransactions involved. (1.13.172, RM-2072)", false)]
+      + "the event registration code and apply it to all ClientTransactions involved. (1.13.172, RM-2072)")]
   public void CopyTransactionEventHandlers (ClientTransaction sourceTransaction)
   {
     ArgumentUtility.CheckNotNull ("sourceTransaction", sourceTransaction);
@@ -1209,103 +1208,6 @@ public class ClientTransaction
     //   null result) when the originating object doesn't exist.
     DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
     return domainObject;
-  }
-
-  // ReSharper disable UnusedParameter.Global
-  [Obsolete ("This method has been removed. Please implement the desired behavior yourself, using GetEnlistedDomainObjects(), EnlistDomainObject(), "
-             + "and CopyCollectionEventHandlers(). (1.13.41)", false)]
-  public void EnlistSameDomainObjects (ClientTransaction sourceTransaction, bool copyCollectionEventHandlers)
-  {
-    throw new NotImplementedException ();
-  }
-
-  [Obsolete ("This method is now obsolete, use GetObject (ObjectID, bool) instead. (1.13.42)", true)]
-  protected internal virtual DomainObject GetObject (ObjectID id)
-  {
-    throw new NotImplementedException ();
-  }
-
-  [Obsolete ("This method is now obsolete, use DataManager.HasRelationChanged instead. (1.13.62)", true)]
-  protected internal virtual bool HasRelationChanged (DomainObject domainObject)
-  {
-    throw new NotImplementedException ();
-  }
-
-  [Obsolete ("This method has been moved, use DataManager.GetDataContainerWitLazyLoad instead. (1.13.62)", true)]
-  protected internal DataContainer GetDataContainer (DomainObject domainObject)
-  {
-    throw new NotImplementedException();
-  }
-
-  [Obsolete ("This method has been obsoleted. To intercept the loading of objects, replace the IObjectLoader of the transaction when its created.", true)]
-  protected virtual DomainObject LoadObject (ObjectID id)
-  {
-    throw new NotImplementedException ();
-  }
-
-  [Obsolete ("This method has been obsoleted. To intercept the loading of objects, replace the IObjectLoader of the transaction when its created.", true)]
-  protected virtual DomainObject[] LoadObjects (IList<ObjectID> idsToBeLoaded, bool throwOnNotFound)
-  {
-    throw new NotImplementedException ();
-  }
-
-  [Obsolete ("This method has been obsoleted. To intercept the loading of objects, replace the IObjectLoader of the transaction when its created.", true)]
-  protected internal virtual DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
-  {
-    throw new NotImplementedException ();
-  }
-
-  [Obsolete ("This method has been obsoleted. To intercept the loading of objects, replace the IObjectLoader of the transaction when its created.", true)]
-  protected internal virtual DomainObject[] LoadRelatedObjects (RelationEndPointID relationEndPointID)
-  {
-    throw new NotImplementedException ();
-  }
-
-  [Obsolete (
-    "This member has been removed. Use ClientTransaction.CreateRootTransaction and CreateSubTransaction instead. (1.13.138, 1.13.182.0)",
-    true)]
-  public ClientTransaction CreateEmptyTransactionOfSameType ([UsedImplicitly]bool copyInvalidObjectInformation)
-  {
-    throw new NotImplementedException ();
-  }
-
-  [Obsolete (
-    "Enlisting DomainObjects in multiple transactions is no longer supported. Get a new DomainObject reference for each transaction hierarchy. "
-    + "(1.13.187)",
-    true)]
-  public bool EnlistDomainObject (DomainObject domainObject)
-  {
-    throw new NotImplementedException ();
-  }
-
-  [Obsolete (
-      "Enlisting DomainObjects in multiple transactions is no longer supported. Get a new DomainObject reference for each transaction hierarchy. "
-      + "(1.13.187)",
-      true)]
-  public void EnlistDomainObjects (IEnumerable<DomainObject> domainObjects)
-  {
-    throw new NotImplementedException ();
-  }
-
-  [Obsolete (
-      "Enlisting DomainObjects in multiple transactions is no longer supported. Get a new DomainObject reference for each transaction hierarchy. "
-      + "(1.13.187)",
-      true)]
-  public void EnlistDomainObjects (params DomainObject[] domainObjects)
-  {
-    throw new NotImplementedException ();
-  }
-
-  [Obsolete ("This property was renamed to IsWriteable. (1.13.188)", true)]
-  public bool IsActive 
-  {
-    get { throw new NotImplementedException(); }
-  }
-
-  [Obsolete ("This API is obsolete, all ClientTransactions now bind their DomainObjects. Use CreateRootTransaction instead. (1.13.189.0)", true)]
-  public static ClientTransaction CreateBindingTransaction ()
-  {
-    throw new NotImplementedException ();
   }
   // ReSharper restore UnusedParameter.Global
 }

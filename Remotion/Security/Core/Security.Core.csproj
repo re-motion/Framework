@@ -98,7 +98,6 @@
     <Compile Include="EnumWrapper.cs" />
     <Compile Include="IFunctionalSecurityStrategy.cs" />
     <Compile Include="Metadata\CachingPermissionProviderDecorator.cs" />
-    <Compile Include="Obsolete\IObjectSecurityAdapter.cs" />
     <Compile Include="IObjectSecurityStrategy.cs" />
     <Compile Include="IPrincipalProvider.cs" />
     <Compile Include="ISecurableObject.cs" />
@@ -119,8 +118,6 @@
     <Compile Include="GeneralAccessTypes.cs" />
     <Compile Include="DemandMethodPermissionAttribute.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
-    <Compile Include="DemandPropertyReadPermissionAttribute.cs" />
-    <Compile Include="DemandPropertyWritePermissionAttribute.cs" />
     <Compile Include="FunctionalSecurityStrategy.cs" />
     <Compile Include="Metadata\AccessTypeReflector.cs" />
     <Compile Include="Metadata\AssemblyReflector.cs" />
@@ -153,14 +150,11 @@
     <Compile Include="Metadata\StatePropertyReflector.cs" />
     <Compile Include="NullPrincipalProvider.cs" />
     <Compile Include="InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator.cs" />
-    <Compile Include="Obsolete\ThreadLocalReEntrancyGuaredObjectSecurityStrategyDecorator.cs" />
     <Compile Include="ObjectSecurityStrategy.cs" />
     <Compile Include="PermissionDeniedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityClient.cs" />
     <Compile Include="SecurityContext.cs" />
-    <Compile Include="SecurityException.cs" />
-    <Compile Include="Obsolete\ObjectSecurityAdapter.cs" />
     <Compile Include="SecurityFreeSection.cs" />
     <Compile Include="SecurityPrincipal.cs" />
     <Compile Include="SecurityPrincipalRole.cs" />
@@ -191,6 +185,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FacetManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Obsolete\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

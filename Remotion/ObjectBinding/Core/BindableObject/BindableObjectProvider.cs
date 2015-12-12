@@ -28,22 +28,6 @@ namespace Remotion.ObjectBinding.BindableObject
   /// </summary>
   public class BindableObjectProvider : BusinessObjectProvider
   {
-    #region Obsolete
-
-    [Obsolete ("Use BusinessObjectProvider.GetProvider instead. (Version 1.9.1.0)", true)]
-    public static BindableObjectProvider Current
-    {
-      get { throw new NotImplementedException ("Obsolete. Use BusinessObjectProvider.GetProvider instead. (Version 1.9.1.0)"); }
-    }
-
-    [Obsolete ("Use BusinessObjectProvider.SetProvider instead. (Version 1.9.1.0)", true)]
-    public static void SetCurrent (BindableObjectProvider provider)
-    {
-      throw new NotImplementedException ("Obsolete. Use BusinessObjectProvider.GetProvider instead. (Version 1.9.1.0)");
-    }
-
-    #endregion
-
     private static readonly LockingCacheDecorator<Type, Type> s_providerAttributeTypeCache = CacheFactory.CreateWithLocking<Type, Type>();
 
     /// <summary>

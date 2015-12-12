@@ -256,12 +256,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected abstract IEnumerable<BaseValidator> CreateValidators (bool isReadOnly);
 
-    [Obsolete ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.23)", true)]
-    protected IEnumerable<BaseValidator>  CreateValidatorsImplementation ()
-    {
-      throw new NotImplementedException ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.23)");
-    }
-
     /// <summary> Registers a validator that references this control. </summary>
     /// <remarks> 
     ///   <para>

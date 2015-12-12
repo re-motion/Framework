@@ -89,12 +89,6 @@ namespace Remotion.Web.Utilities
       ScriptManager.RegisterStartupScript (control, typeof (Page), key, javascript, true);
     }
 
-    [Obsolete ("Use ScriptUtility.Instance.RegisterElementForBorderSpans", true)]
-    public static void RegisterElementForBorderSpans ()
-    {
-      throw new NotImplementedException ("Use ScriptUtility.Instance.RegisterElementForBorderSpans");
-    }
-
     /// <summary>
     /// Gets a flag that informs the caller if the <paramref name="control"/> will be part of the rendered output. This method only works during the
     /// Render cycle.

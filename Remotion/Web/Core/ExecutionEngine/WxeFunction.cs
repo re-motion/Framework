@@ -15,8 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Specialized;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -29,132 +27,12 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine
 {
-  #region Obsoletes
-
-  [Obsolete ("Use Remotion.Web.ExecutionEngine.WxeFunction instead. (Version 1.11.7)", true)]
-  public abstract class WxeScopedTransactedFunction<TTransaction, TScope, TTransactionScopeManager>
-  {
-    private WxeScopedTransactedFunction ()
-    {
-      throw new NotImplementedException ("Use Remotion.Web.ExecutionEngine.WxeFunctions instead. (Version 1.11.7)");
-    }
-  }
-
-  #endregion
-
   /// <summary>
   /// The new <see cref="WxeFunction"/>. Will replace the <see cref="WxeFunction"/> type once implemtation is completed.
   /// </summary>
   [Serializable]
   public abstract class WxeFunction : WxeStepList, IWxeFunctionExecutionContext
   {
-    #region Obsoletes
-
-    [Obsolete ("Use Remotion.Web.ExecutionEngine.Infrastructure.WxeVariablesContainer.GetParameterDeclarations instead. (Version 1.11.5)", true)]
-    public static WxeParameterDeclaration[] GetParameterDeclarations (Type type)
-    {
-      throw new NotImplementedException ("Use WxeVariablesContainer.GetParameterDeclarations instead. (Version 1.11.5)");
-    }
-
-    [Obsolete ("Use Remotion.Web.ExecutionEngine.Infrastructure.WxeVariablesContainer.ParseActualParameters instead. (Version 1.11.5)", true)]
-    public static object[] ParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string actualParameters, CultureInfo culture)
-    {
-      throw new NotImplementedException ("Use WxeVariablesContainer.ParseActualParameters instead. (Version 1.11.5)");
-    }
-
-    [Obsolete ("Use Remotion.Web.ExecutionEngine.Infrastructure.WxeVariablesContainer.SerializeParametersForQueryString instead. (Version 1.11.5)", true)]
-    public static NameValueCollection SerializeParametersForQueryString (WxeParameterDeclaration[] parameterDeclarations, object[] parameterValues)
-    {
-      throw new NotImplementedException ("Use WxeVariablesContainer.SerializeParametersForQueryString instead. (Version 1.11.5)");
-    }
-
-    [Obsolete ("Use VariablesContainer.ParameterDeclarations instead. (Version 1.11.5)", true)]
-    public WxeParameterDeclaration[] ParameterDeclarations
-    {
-      get { throw new NotImplementedException ("Use VariablesContainer.ParameterDeclarations instead. (Version 1.11.5)"); }
-    }
-
-    [Obsolete ("Use VariablesContainer.GetParameterDeclarations instead. (Version 1.11.5)", true)]
-    public void InitializeParameters (NameValueCollection parameters)
-    {
-      throw new NotImplementedException ("Use VariablesContainer.InitializeParameters instead. (Version 1.11.5)");
-    }
-
-    [Obsolete ("Use VariablesContainer.InitializeParameters instead. (Version 1.11.5)", true)]
-    public void InitializeParameters (string parameterString, bool delayInitialization)
-    {
-      throw new NotImplementedException ("Use VariablesContainer.InitializeParameters instead. (Version 1.11.5)");
-    }
-
-    [Obsolete ("Use VariablesContainer.InitializeParameters instead. (Version 1.11.5)", true)]
-    public void InitializeParameters (string parameterString, NameObjectCollection additionalParameters)
-    {
-      throw new NotImplementedException ("Use VariablesContainer.InitializeParameters instead. (Version 1.11.5)");
-    }
-
-    [Obsolete ("Use VariablesContainer.SerializeParametersForQueryString instead. (Version 1.11.5)", true)]
-    public NameValueCollection SerializeParametersForQueryString ()
-    {
-      throw new NotImplementedException ("Use VariablesContainer.SerializeParametersForQueryString instead. (Version 1.11.5)");
-    }
-
-    [Obsolete ("Use ExceptionHandler.CatchExceptions instead. (Version 1.11.7)", true)]
-    public bool CatchExceptions
-    {
-      get { throw new NotImplementedException ("Use ExceptionHandler.CatchExceptions instead. (Version 1.11.7)"); }
-      set { throw new NotImplementedException ("Use ExceptionHandler.CatchExceptions instead. (Version 1.11.7)"); }
-    }
-
-    [Obsolete ("Use ExceptionHandler.SetCatchExceptionTypes instead. (Version 1.11.7)", true)]
-    public void SetCatchExceptionTypes (params Type[] exceptionTypes)
-    {
-      throw new NotImplementedException ("Use ExceptionHandler.SetCatchExceptionTypes instead. (Version 1.11.7)");
-    }
-
-    [Obsolete ("Use ExceptionHandler.AppendCatchExceptionTypes instead. (Version 1.11.7)", true)]
-    public void AppendCatchExceptionTypes (params Type[] exceptionTypes)
-    {
-      throw new NotImplementedException ("Use ExceptionHandler.AppendCatchExceptionTypes instead. (Version 1.11.7)");
-    }
-
-    [Obsolete ("Use ExceptionHandler.GetCatchExceptionTypes instead. (Version 1.11.7)", true)]
-    public Type[] GetCatchExceptionTypes ()
-    {
-      throw new NotImplementedException ("Use ExceptionHandler.GetCatchExceptionTypes instead. (Version 1.11.7)");
-    }
-
-    [Obsolete ("Use ExceptionHandler.Exception instead. (Version 1.11.7)", true)]
-    public Exception Exception
-    {
-      get { throw new NotImplementedException ("Use ExceptionHandler.Exception instead. (Version 1.11.7)"); }
-    }
-
-    [Obsolete ("Supply a custom ITransactionFactory to the WxeTransactionMode. (Version 1.11.7)", true)]
-    protected object CreateRootTransaction ()
-    {
-      throw new NotImplementedException ("Supply a custom ITransactionFactory to the WxeTransactionMode. (Version 1.11.7)");
-    }
-
-    [Obsolete ("Supply a custom ITransactionFactory to the WxeTransactionMode. (Version 1.11.7)", true)]
-    protected void OnTransactionCreated (object transaction)
-    {
-      throw new NotImplementedException ("Use ExceptionHandler.GetCatchExceptionTypes instead. (Version 1.11.7)");
-    }
-
-    [Obsolete ("Suppy an auto-commiting WxeTransactionMode to the constructor instead. (Version 1.11.7)", true)]
-    protected virtual bool AutoCommit
-    {
-      get { throw new NotImplementedException ("Suppy an auto-commiting WxeTransactionMode to the constructor instead. (Version 1.11.7)"); }
-    }
-
-    [Obsolete ("Use Transaction.Reset() instead. (Version 1.11.7)", true)]
-    public void ResetTransaction ()
-    {
-      throw new NotImplementedException ("Use Transaction.Reset() instead. (Version 1.11.7)");
-    }
-
-    #endregion
-
     public static bool HasAccess (Type functionType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("functionType", functionType, typeof (WxeFunction));

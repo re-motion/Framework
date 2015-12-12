@@ -49,7 +49,5 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="DomainObjectExtensions.EnsureDataAvailable"/> is called for the <see cref="IDomainObject"/>.
     /// </summary>
     NotLoadedYet = 5,
-    [Obsolete ("This state is now called Invalid. (1.13.60)", true)]
-    Discarded = 4
   }
 }

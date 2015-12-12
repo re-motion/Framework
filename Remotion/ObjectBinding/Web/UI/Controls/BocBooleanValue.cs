@@ -118,10 +118,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return new BocBooleanValueRenderingContext (Context, writer, this);
     }
 
-    [Obsolete ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)", true)]
-    protected new BaseValidator[] CreateValidators ()
+    [Obsolete ("For DependDB only.", true)]
+    private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)");
+      throw new NotImplementedException ("For DependDB only.");
     }
 
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>

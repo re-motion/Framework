@@ -701,15 +701,5 @@ namespace Remotion.Data.DomainObjects.DataManagement
     }
 
     #endregion Serialization
-
-    #region Obsolete
-    [Obsolete ("This method is obsolete. Use Clone (ObjectID id) instead. (1.13.39)", true)]
-// ReSharper disable UnusedParameter.Global
-    public static DataContainer CreateAndCopyState (ObjectID id, DataContainer stateSource)
-// ReSharper restore UnusedParameter.Global
-    {
-      throw new NotImplementedException ();
-    }
-    #endregion
   }
 }

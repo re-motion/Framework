@@ -25,40 +25,6 @@ namespace Remotion.Security.Configuration
   /// <threadsafety static="true" instance="true" />
   public class SecurityConfiguration : ExtendedConfigurationSection
   {
-    #region Obsolete
-
-    [Obsolete ("Use the application's IoC container to retrieve the configured ISecurityProvier implementation. (Version 1.15.20.0)", true)]
-    public ISecurityProvider SecurityProvider
-    {
-      get
-      {
-        throw new NotImplementedException (
-            "Use the application's IoC container to retrieve the configured ISecurityProvier implementation. (Version 1.15.20.0)");
-      }
-      set
-      {
-        throw new NotImplementedException (
-            "Use the application's IoC container to configure the ISecurityProvier implementation. (Version 1.15.20.0)");
-      }
-    }
-
-    [Obsolete ("Use the application's IoC container to retrieve the configured IPrincipalProvider implementation. (Version 1.15.20.0)", true)]
-    public IPrincipalProvider PrincipalProvider
-    {
-      get
-      {
-        throw new NotImplementedException (
-            "Use the application's IoC container to retrieve the configured IPrincipalProvider implementation. (Version 1.15.20.0)");
-      }
-      set
-      {
-        throw new NotImplementedException (
-            "Use the application's IoC container to configure the IPrincipalProvider implementation. (Version 1.15.20.0)");
-      }
-    }
-
-    #endregion
-
     private static readonly Lazy<SecurityConfiguration> s_current;
 
     static SecurityConfiguration ()

@@ -68,12 +68,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return GetBoundControlsWithValidBinding().ToArray(); }
     }
 
-    [Obsolete ("The GetDataSource() method is now obsolete. Use the InnerDataSource property instead. (Version 1.13.119)", true)]
-    protected IBusinessObjectDataSource GetDataSource ()
-    {
-      throw new NotSupportedException ("The GetDataSource() method is now obsolete. Use the InnerDataSource property instead. (Version 1.13.119)");
-    }
-
     #endregion
 
     /// <summary>

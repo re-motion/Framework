@@ -568,7 +568,7 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     /// <param name="comparison">The comparison.</param>
     [Obsolete ("This member is meant exclusively for the implementation of indexed DomainObjectCollections. It will be removed when re-store " 
-        + "implements a base class for indexed DomainObjectCollections. Don't use this API for any other use case. (1.13.130)", false)]
+        + "implements a base class for indexed DomainObjectCollections. Don't use this API for any other use case. (1.13.130)")]
     protected void Sort (Comparison<DomainObject> comparison)
     {
       ArgumentUtility.CheckNotNull ("comparison", comparison);

@@ -167,7 +167,6 @@
     <Compile Include="BindableObject\BindableObjectGlobalizationService.cs" />
     <Compile Include="BindableObject\BindableObjectMixin.cs" />
     <Compile Include="BindableObject\BindableObjectMixinBase.cs" />
-    <Compile Include="BindableObject\BindableObjectMixinIntroducedPropertyInformation.cs" />
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
     <Compile Include="BindableObject\BindableObjectProviderAttribute.cs" />
     <Compile Include="BindableObject\BindableObjectWithIdentityBaseImplementation.cs" />

@@ -27,16 +27,4 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     void Rollback ();
     void EnsureCompatibility (IEnumerable objects);
   }
-
-  public static class ITransactionStrategyObsoleteMethods
-  {
-    [Obsolete (
-        "The method ITransactionStrategy.Reset has been removed. Functions can still call reset via the protected TransactionStrategy member. "
-        + "When exposing or calling the Reset functionality, functions should clean up their variables before delegating to "
-        + "TransactionStrategy.Reset. (1.13.195.0)", true)]
-    public static void Reset (this ITransactionStrategy transactionStrategy)
-    {
-      throw new NotImplementedException();
-    }
-  }
 }

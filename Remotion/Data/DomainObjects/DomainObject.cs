@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 
@@ -98,27 +97,6 @@ namespace Remotion.Data.DomainObjects
       ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
 
       return (T) LifetimeService.NewObject (ClientTransactionScope.CurrentTransaction, typeof (T), constructorParameters);
-    }
-
-    [Obsolete ("This method has been removed. Domain users: Use id.GetObject<DomainObjectClass>() instead. "
-               + "Domain implementers: Use LifetimeService.GetObject instead. (1.13.184.0)", true)]
-    protected static T GetObject<T> (ObjectID id) where T : DomainObject
-    {
-      throw new NotImplementedException();
-    }
-
-    [Obsolete ("This method has been removed. Domain users: Use id.GetObject<DomainObjectClass>() instead. "
-               + "Domain implementers: Use LifetimeService.GetObject instead. (1.13.184.0)", true)]
-    protected static T GetObject<T> (ObjectID id, bool includeDeleted) where T : DomainObject
-    {
-      throw new NotImplementedException();
-    }
-
-    [Obsolete ("This method has been removed. Domain users: Use id.GetObject<DomainObjectClass>() instead. "
-               + "Domain implementers: Use LifetimeService.GetObject instead. (1.13.184.0)", true)]
-    protected static T TryGetObject<T> (ObjectID id) where T : DomainObject
-    {
-      throw new NotImplementedException();
     }
 
     #endregion
@@ -430,19 +408,6 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// GetType might return a <see cref="Type"/> object for a generated class, which is usually not what is expected.
-    /// <see cref="DomainObject.GetPublicDomainObjectType"/> can be used to get the Type object of the original underlying domain object type. If
-    /// the <see cref="Type"/> object for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.
-    /// </summary>
-    [Obsolete ("GetType might return a Type object for a generated class, which is usually not what is expected. "
-               + "DomainObject.GetPublicDomainObjectType can be used to get the Type object of the original underlying domain object type. If the Type object"
-               + "for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.", true)]
-    public new Type GetType ()
-    {
-      throw new InvalidOperationException ("DomainObject.GetType should not be used.");
-    }
-
-    /// <summary>
     /// Returns the public type representation of this domain object, i.e. the type object visible to mappings, database, etc.
     /// </summary>
     /// <returns>The public type representation of this domain object.</returns>
@@ -744,31 +709,6 @@ namespace Remotion.Data.DomainObjects
     {
       if (_isReferenceInitializeEventExecuting)
         throw new InvalidOperationException ("While the OnReferenceInitializing event is executing, this member cannot be used.");
-    }
-
-    [Obsolete ("This method has been replaced by RegisterForCommit. (1.13.181.0)", true)]
-    public void MarkAsChanged ()
-    {
-      throw new NotImplementedException();
-    }
-
-    [Obsolete ("This API is obsolete, all ClientTransactions now bind their DomainObjects. Use the RootTransaction property instead. (1.13.189.0)",
-        true)]
-    public ClientTransaction GetBindingTransaction ()
-    {
-      throw new NotImplementedException();
-    }
-
-    [Obsolete ("This API is obsolete, all ClientTransactions now bind their DomainObjects. (1.13.189.0)", true)]
-    public bool HasBindingTransaction
-    {
-      get { throw new NotImplementedException(); }
-    }
-
-    [Obsolete ("This state is now called Invalid. (1.13.60)", true)]
-    public bool IsDiscarded
-    {
-      get { throw new NotImplementedException(); }
     }
 
     /// <summary>

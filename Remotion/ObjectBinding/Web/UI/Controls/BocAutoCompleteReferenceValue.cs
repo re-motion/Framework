@@ -31,7 +31,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Design;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -243,10 +242,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       renderer.Render (CreateRenderingContext (writer));
     }
 
-    [Obsolete ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)", true)]
-    protected new BaseValidator[] CreateValidators ()
+    [Obsolete ("For DependDB only.", true)]
+    private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("Use CreateValidators(bool isReadOnly) instead. (Version 1.15.22)");
+      throw new NotImplementedException ("For DependDB only.");
     }
 
     /// <summary>
@@ -691,24 +690,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected string GetKeyValueName ()
     {
       return ClientID + c_hiddenFieldIDPostfix;
-    }
-
-    [Obsolete ("Use GetTextValueName() instead. (1.13.206)", true)]
-    public string TextBoxUniqueID
-    {
-      get { throw new NotImplementedException ("Use GetTextValueName() instead. (1.13.206)"); }
-    }
-
-    [Obsolete ("Use GetTextValueName() instead. (1.13.206)", true)]
-    public string TextBoxClientID
-    {
-      get { throw new NotImplementedException ("Use GetTextValueName() instead. (1.13.206)"); }
-    }
-
-    [Obsolete ("Use GetKeyValueName() instead. (1.13.206)", true)]
-    public string HiddenFieldClientID
-    {
-      get { throw new NotImplementedException ("Use GetKeyValueName() instead. (1.13.206)"); }
     }
 
     protected override sealed string GetNullItemErrorMessage ()

@@ -142,28 +142,5 @@ namespace Remotion.Data.DomainObjects
     {
       return ArrayUtility.Convert (this);
     }
-
-    [Obsolete ("This constructor has been removed. Use the constructor taking IEnumerable<T> (or Clone) to copy a collection, use AsReadOnly to "
-    + "get a read-only version of a collection.", true)]
-    public ObjectList (ObjectList<T> collection, bool isCollectionReadOnly)
-      : base (collection, isCollectionReadOnly)
-    {
-    }
-
-    [Obsolete ("This constructor has been removed. Use the constructor taking IEnumerable<T> (or Clone) to copy a collection, use AsReadOnly to "
-        + "get a read-only version of a collection.", true)]
-    public ObjectList (IEnumerable<T> collection, bool isCollectionReadOnly)
-      : base (collection.Cast<DomainObject> (), typeof (T), isCollectionReadOnly)
-    {
-    }
-
-    [Obsolete (
-    "This method has been removed. Use AsReadOnlyCollection (extension method defined on DomainObjectCollectionExtensions) to create a read-only "
-    + "wrapper for a DomainObjectCollection. For a more featured wrapper, create a ReadOnlyDomainObjectCollectionAdapter. To create a new "
-    + "read-only DomainObjectCollection with a copy of the original collection's data, use Clone (true). (1.13.48)", true)]
-    public new ObjectList<T> AsReadOnly ()
-    {
-      throw new NotImplementedException ();
-    }
   }
 }

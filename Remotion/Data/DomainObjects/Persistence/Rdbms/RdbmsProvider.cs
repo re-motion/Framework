@@ -490,17 +490,5 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         yield return dataContainer;
       }
     }
-
-    [Obsolete ("This method has been superseded by MultiObjectLoadCommand. Use that instead. (1.13.112)", true)]
-    protected internal virtual DataContainer[] LoadDataContainers (IDbCommandBuilder commandBuilder, bool allowNulls)
-    {
-      throw new NotImplementedException();
-    }
-
-    [Obsolete ("This method has been superseded by MultiDataContainerSaveCommand. Use that instead. (1.13.113)", true)]
-    protected void Save (DbCommandBuilder commandBuilder, ObjectID id)
-    {
-      throw new NotImplementedException();
-    }
   }
 }

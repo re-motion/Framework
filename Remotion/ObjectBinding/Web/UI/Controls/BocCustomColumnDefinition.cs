@@ -298,16 +298,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </remarks>
   public abstract class BocCustomColumnDefinitionCell
   {
-    #region Obsoletes
-
-    [Obsolete ("Use OnPreRender (BocCustomCellPreRenderArguments) instead. (1.13.216)", true)]
-    protected virtual void OnPreRender (BocCustomCellArguments arguments)
-    {
-      throw new NotSupportedException("Use OnPreRender (BocCustomCellPreRenderArguments) instead. (1.13.216)");
-    }
-
-    #endregion
-
     private BocCustomCellArguments _arguments;
 
     /// <summary> Get the javascript code that invokes <see cref="OnClick"/> when called. </summary>

@@ -75,7 +75,6 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="DomainObjectSecurityStrategy.obsolete.cs" />
     <Compile Include="DomainObjectSecurityStrategyDecorator.cs" />
     <Compile Include="IDomainObjectSecurityContextFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

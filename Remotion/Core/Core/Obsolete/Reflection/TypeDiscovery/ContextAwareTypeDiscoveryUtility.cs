@@ -31,18 +31,5 @@ namespace Remotion.Reflection.TypeDiscovery
     {
       return ContextAwareTypeUtility.GetTypeDiscoveryService();
     }
-
-    [Obsolete ("Use Remotion.Reflection.ContextAwareTypeUtility.GetTypeDiscoveryService() instead. (Version 1.15.30.0)", true)]
-    public static ITypeDiscoveryService DefaultNonDesignModeService
-    {
-      get
-      {
-        throw new NotSupportedException ("Use Remotion.Reflection.ContextAwareTypeUtility.GetTypeDiscoveryService() instead. (Version 1.15.30.0)");
-      }
-      set
-      {
-        throw new NotSupportedException ("Use Remotion.Reflection.ContextAwareTypeUtility.GetTypeDiscoveryService() instead. (Version 1.15.30.0)");
-      }
-    }
   }
 }

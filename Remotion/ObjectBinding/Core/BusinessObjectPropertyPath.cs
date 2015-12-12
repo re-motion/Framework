@@ -82,20 +82,6 @@ namespace Remotion.ObjectBinding
       return result.GetString (format);
     }
 
-    /// <summary> Sets the value of this property path for the specified object. </summary>
-    /// <param name="propertyPath">The property path for which to set the value.</param>
-    /// <param name="obj">
-    ///   The object that has the first property in the path. Must not be <see langword="null"/>. 
-    /// </param>
-    /// <param name="value"> The value to be assiged to the property. </param>
-    /// <remarks> <b>SetValue</b> is not implemented in the current version. </remarks>
-    /// <exception cref="NotImplementedException"> This method is not implemented. </exception>
-    [Obsolete ("SetValue was never supported. (1.13.178.0)", true)]
-    public static void SetValue (this IBusinessObjectPropertyPath propertyPath, IBusinessObject obj, object value)
-    {
-      throw new NotImplementedException();
-    }
-
     /// <summary> Gets the <see cref="IBusinessObject"/> that is used to retrieve the value of the property path. </summary>
     /// <param name="propertyPath">The property path for which to retrieve the business object.</param>
     /// <param name="obj"> The object that has the first property in the path. Must not be <see langword="null"/>. </param>

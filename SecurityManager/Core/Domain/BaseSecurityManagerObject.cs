@@ -16,7 +16,6 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.ObjectBinding;
 
 namespace Remotion.SecurityManager.Domain
@@ -24,12 +23,6 @@ namespace Remotion.SecurityManager.Domain
   [Serializable]
   public abstract class BaseSecurityManagerObject : BindableDomainObject
   {
-    [Obsolete ("This method has been removed. Use objectID.GetObject<BaseSecurityManagerObject>() instead. (1.13.184.0)", true)]
-    public static BaseSecurityManagerObject GetObject (ObjectID id)
-    {
-      throw new NotImplementedException();
-    }
-
     protected BaseSecurityManagerObject ()
     {
     }

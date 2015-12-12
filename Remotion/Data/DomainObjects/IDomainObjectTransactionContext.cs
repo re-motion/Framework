@@ -46,9 +46,6 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the associated transaction.</exception>
     bool IsInvalid { get; }
 
-    [Obsolete ("This state is now called Invalid. (1.13.60)", true)]
-    bool IsDiscarded { get; }
-
     /// <summary>
     /// Gets the timestamp used for optimistic locking when the object is committed to the database.
     /// </summary>
@@ -126,14 +123,5 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the associated transaction.</exception>
     bool TryEnsureDataAvailable ();
-
-    [Obsolete ("This method has been removed. Use ClientTransaction.ExecuteInScope instead. (1.13.189.0)", true)]
-    T Execute<T> (Func<DomainObject, ClientTransaction, T> func);
-
-    [Obsolete ("This method has been removed. Use ClientTransaction.ExecuteInScope instead. (1.13.189.0)", true)]
-    void Execute (Action<DomainObject, ClientTransaction> action);
-
-    [Obsolete ("This method has been replaced by RegisterForCommit. (1.13.181.0)", true)]
-    void MarkAsChanged ();
   }
 }

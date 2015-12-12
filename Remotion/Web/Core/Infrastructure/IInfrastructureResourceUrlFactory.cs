@@ -16,8 +16,6 @@
 // 
 
 using System;
-using Remotion.ServiceLocation;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.Infrastructure
 {
@@ -25,26 +23,8 @@ namespace Remotion.Web.Infrastructure
   /// Defines a method for resolving resource urls for the current <see cref="ResourceTheme"/>.
   /// The <see cref="IInfrastructureResourceUrlFactory"/> is only intended for use with controls located in <b>Remotion.Web</b> that do not have their own renderers.
   /// </summary>
- public interface IInfrastructureResourceUrlFactory
+  public interface IInfrastructureResourceUrlFactory
   {
     IResourceUrl CreateThemedResourceUrl (ResourceType resourceType, string relativeUrl);
   }
-
-  #region Obsolete interfaces
-
-  [Obsolete ("Use IInfrastructureResourceUrlFactory instead. (Version 1.13.197)",  true)]
-  public interface IThemedResourceUrlResolverFactory
-  {
-    [Obsolete ("Retrieve an instance of type IInfrastructureResourceUrlFactory instead via the IoC container. (Version 1.13.197)", true)]
-    IThemedResourceUrlResolver CreateResourceUrlResolver ();
-  }
-
-  [Obsolete ("Use IInfrastructureResourceUrlFactory instead. (Version 1.13.197)",  true)]
-  public interface IThemedResourceUrlResolver
-  {
-    [Obsolete ("Use IInfrastructureResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)",  true)]
-    string GetResourceUrl (IControl control, ResourceType resourceType, string relativeUrl);
-  }
-
-  #endregion
 }

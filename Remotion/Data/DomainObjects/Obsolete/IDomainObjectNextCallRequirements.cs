@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure;
 
 // ReSharper disable once CheckNamespace
 
@@ -28,7 +27,5 @@ namespace Remotion.Data.DomainObjects
   [Obsolete ("No specific base-interface is needed. (Version 1.15.23.0)")]
   public interface IDomainObjectNextCallRequirements
   {
-    [Obsolete ("Use DomainObjectMixin<TDomainObject,TNextCallRequirements>.Properties instead. (Version 1.15.23.0)", true)]
-    PropertyIndexer Properties { get; }
   }
 }

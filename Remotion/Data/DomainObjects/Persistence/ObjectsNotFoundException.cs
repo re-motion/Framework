@@ -60,12 +60,6 @@ namespace Remotion.Data.DomainObjects.Persistence
       _ids = (ObjectID[]) info.GetValue ("_ids", typeof (ObjectID[]));
     }
 
-    [Obsolete ("This property is obsolete. Use IDs instead. (1.13.131)", true)]
-    public ObjectID ID
-    {
-      get { throw new NotImplementedException(); }
-    }
-
     public ReadOnlyCollection<ObjectID> IDs
     {
       get { return Array.AsReadOnly (_ids); }
