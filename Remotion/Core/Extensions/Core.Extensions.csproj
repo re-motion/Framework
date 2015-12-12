@@ -122,7 +122,6 @@
     <Compile Include="Reflection\TypesafeActivator.cs" />
     <Compile Include="StandardDelegates.cs" />
     <Compile Include="Text\IdentifierGenerator.cs" />
-    <Compile Include="Text\SeparatedStringBuilder.cs" />
     <Compile Include="Text\StringExtensions\StringExtensions.cs" />
     <Compile Include="Utilities\ActionUtility.cs" />
     <Compile Include="Utilities\DelegateBasedDisposable.cs" />

@@ -108,14 +108,6 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       return count;
     }
 
-    [Obsolete ("Use 'ExecuteBatchFile' instead.")]
-    public int ExecuteBatch (string sqlFileName, bool useTransaction)
-    {
-      ArgumentUtility.CheckNotNull ("sqlFileName", sqlFileName);
-
-      return ExecuteBatchFile (sqlFileName, useTransaction);
-    }
-
     protected virtual IDbConnection CreateConnection ()
     {
       return new SqlConnection (_connectionString);

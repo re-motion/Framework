@@ -27,51 +27,6 @@ namespace Remotion.Globalization.UnitTests.Obsolete
   [Obsolete]
   public class EnumDescriptionTest
   {
-    [Test]
-    public void TestGetDescriptionForEnumWithDescriptions ()
-    {
-      using (new CultureScope (CultureInfo.InvariantCulture, CultureInfo.InvariantCulture))
-      {
-        // try twice to test caching
-        for (int i = 0; i < 2; ++i)
-        {
-          Assert.That (EnumDescription.GetDescription (EnumWithDescription.Value1), Is.EqualTo ("Value I"));
-          Assert.That (EnumDescription.GetDescription (EnumWithDescription.Value2), Is.EqualTo ("Value II"));
-          Assert.That (EnumDescription.GetDescription (EnumWithDescription.ValueWithoutDescription), Is.EqualTo ("ValueWithoutDescription"));
-          Assert.That (EnumDescription.GetDescription ((EnumWithDescription) 100), Is.EqualTo ("100"));
-        }
-      }
-    }
-
-    [Test]
-    public void TestGetAvailableValuesForEnumWithDescriptions ()
-    {
-      using (new CultureScope (CultureInfo.InvariantCulture, CultureInfo.InvariantCulture))
-      {
-        // try twice to test caching
-        for (int i = 0; i < 2; ++i)
-        {
-          EnumValue[] enumValuesInvariant = EnumDescription.GetAllValues (typeof (EnumWithDescription));
-          Assert.That (enumValuesInvariant.Length, Is.EqualTo (3));
-          Assert.That (enumValuesInvariant[0].Value, Is.EqualTo (EnumWithDescription.Value1));
-          Assert.That (enumValuesInvariant[0].Description, Is.EqualTo ("Value I"));
-          Assert.That (enumValuesInvariant[1].Value, Is.EqualTo (EnumWithDescription.Value2));
-          Assert.That (enumValuesInvariant[1].Description, Is.EqualTo ("Value II"));
-          Assert.That (enumValuesInvariant[2].Value, Is.EqualTo (EnumWithDescription.ValueWithoutDescription));
-          Assert.That (enumValuesInvariant[2].Description, Is.EqualTo ("ValueWithoutDescription"));
-
-          CultureInfo culture = new CultureInfo ("en-US");
-          EnumValue[] enumValuesSpecific = EnumDescription.GetAllValues (typeof (EnumWithDescription), culture);
-          Assert.That (enumValuesSpecific.Length, Is.EqualTo (3));
-          Assert.That (enumValuesSpecific[0].Value, Is.EqualTo (EnumWithDescription.Value1));
-          Assert.That (enumValuesSpecific[0].Description, Is.EqualTo ("Value I"));
-          Assert.That (enumValuesSpecific[1].Value, Is.EqualTo (EnumWithDescription.Value2));
-          Assert.That (enumValuesSpecific[1].Description, Is.EqualTo ("Value II"));
-          Assert.That (enumValuesSpecific[2].Value, Is.EqualTo (EnumWithDescription.ValueWithoutDescription));
-          Assert.That (enumValuesSpecific[2].Description, Is.EqualTo ("ValueWithoutDescription"));
-        }
-      }
-    }
 
     [Test]
     public void TestGetDescriptionForEnumFromResource ()

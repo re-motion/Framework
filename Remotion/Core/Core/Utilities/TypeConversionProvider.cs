@@ -32,14 +32,6 @@ namespace Remotion.Utilities
   {
     private readonly IDataStore<Type, TypeConverter> _typeConverters = DataStoreFactory.CreateWithLocking<Type, TypeConverter>();
 
-    /// <summary> Gets the current <see cref="TypeConversionProvider"/>. </summary>
-    /// <value> An instance of the <see cref="TypeConversionProvider"/> type. </value>
-    [Obsolete ("Use SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>() instead. (Version 1.15.8.0)")]
-    public static ITypeConversionProvider Current
-    {
-      get { return SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(); }
-    }
-
     private readonly ITypeConverterFactory _typeConverterFactory;
     private readonly Dictionary<Type, TypeConverter> _additionalTypeConverters = new Dictionary<Type, TypeConverter>();
     private readonly BidirectionalStringConverter _stringConverter = new BidirectionalStringConverter();

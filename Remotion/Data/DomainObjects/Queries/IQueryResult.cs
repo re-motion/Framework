@@ -55,6 +55,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </returns>
     [Obsolete ("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
     bool ContainsDuplicates ();
+
     /// <summary>
     /// Determines whether result set contains <see langword="null"/> values.
     /// </summary>

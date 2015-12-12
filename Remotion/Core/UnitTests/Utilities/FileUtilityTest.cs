@@ -26,17 +26,6 @@ namespace Remotion.UnitTests.Utilities
   public partial class FileUtilityTest
   {
     [Test]
-    [Obsolete]
-    public void CopyStream ()
-    {
-      byte[] buffer = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-      MemoryStream outputStream = new MemoryStream();
-
-      FileUtility.CopyStream (new MemoryStream (buffer), outputStream);
-      Assert.That (outputStream.ToArray(), Is.EqualTo (new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }));
-    }
-
-    [Test]
     public void WriteEmbeddedStringResourceToFileTest ()
     {
       string testFileName = "FileUtilityTest_WriteEmbeddedStringResourceToFileTest.txt";

@@ -23,10 +23,10 @@ using System.ComponentModel.Design;
 namespace Remotion.Reflection.TypeDiscovery
 {
   /// <threadsafety static="true" instance="false"/>
-  [Obsolete ("Use Remotion.Reflection.ContextAwareTypeUtility instead. (Version 1.15.30.0)")]
+  [Obsolete ("Use Remotion.Reflection.ContextAwareTypeUtility instead. (Version 1.15.30.0)", true)]
   public static class ContextAwareTypeDiscoveryUtility
   {
-    [Obsolete ("Use Remotion.Reflection.ContextAwareTypeUtility.GetTypeDiscoveryService() instead. (Version 1.15.30.0)")]
+    [Obsolete ("Use Remotion.Reflection.ContextAwareTypeUtility.GetTypeDiscoveryService() instead. (Version 1.15.30.0)", true)]
     public static ITypeDiscoveryService GetTypeDiscoveryService ()
     {
       return ContextAwareTypeUtility.GetTypeDiscoveryService();

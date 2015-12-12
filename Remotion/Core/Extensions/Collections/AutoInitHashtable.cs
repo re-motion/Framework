@@ -75,7 +75,7 @@ namespace Remotion.Collections
     }
 
     #pragma warning disable 809 // C# 3.0: specifying obsolete for overridden methods causes a warning, but this is intended here.
-    [Obsolete ("Explicitly adding or setting keys or values is not supported.")]
+    [Obsolete ("Explicitly adding or setting keys or values is not supported.", true)]
     public override void Add (object key, object value)
     {
       throw new NotSupportedException();

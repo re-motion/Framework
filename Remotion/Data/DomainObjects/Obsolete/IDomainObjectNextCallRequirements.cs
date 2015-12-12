@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects
   /// Describes the minimum base call requirements that <see cref="DomainObjectMixin{TDomainObject,TNextCallRequirements}"/> has to its target
   /// objects.
   /// </summary>
-  [Obsolete ("No specific base-interface is needed. (Version 1.15.23.0)")]
+  [Obsolete ("No specific base-interface is needed. (Version 1.15.23.0)", true)]
   public interface IDomainObjectNextCallRequirements
   {
   }

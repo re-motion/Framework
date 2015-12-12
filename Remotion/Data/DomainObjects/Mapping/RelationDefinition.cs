@@ -117,30 +117,6 @@ namespace Remotion.Data.DomainObjects.Mapping
       return GetOppositeEndPointDefinition (matchingEndPointDefinition);
     }
 
-    [Obsolete (
-        "This method is obsolete because it can lead to inefficient code. Use 'endPointDefinition.GetOppositeEndPointDefinition().ClassDefinition' "
-        + "instead. (1.13.176)")]
-    public ClassDefinition GetOppositeClassDefinition (IRelationEndPointDefinition endPointDefinition)
-    {
-      ArgumentUtility.CheckNotNull ("endPointDefinition", endPointDefinition);
-      return GetOppositeClassDefinition (endPointDefinition.ClassDefinition.ID, endPointDefinition.PropertyName);
-    }
-
-    [Obsolete (
-        "This method is obsolete because it can lead to inefficient code. Use "
-        + "'GetEndPointDefinition (classID, propertyName).GetOppositeEndPointDefinition().ClassDefinition' instead. If you already have an "
-        + "IRelationEndPointDefinition, just use 'endPointDefinition.GetOppositeEndPointDefinition().ClassDefinition'. (1.13.176)")]
-    public ClassDefinition GetOppositeClassDefinition (string classID, string propertyName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
-
-      IRelationEndPointDefinition oppositeEndPointDefinition = GetOppositeEndPointDefinition (classID, propertyName);
-      if (oppositeEndPointDefinition == null)
-        return null;
-
-      return oppositeEndPointDefinition.ClassDefinition;
-    }
-
     public bool IsEndPoint (string classID, string propertyName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);

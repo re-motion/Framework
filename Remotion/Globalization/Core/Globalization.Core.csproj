@@ -71,8 +71,6 @@
     <Compile Include="Implementation\ResourceAttributeBasedResourceManagerFactory.cs" />
     <Compile Include="MultiLingualNameAttribute.cs" />
     <Compile Include="Obsolete\EnumDescription.cs" />
-    <Compile Include="Obsolete\EnumDescriptionAttribute.cs" />
-    <Compile Include="Obsolete\EnumDescriptionResourceAttribute.cs" />
     <Compile Include="Obsolete\EnumValue.cs" />
     <Compile Include="GlobalizationServiceExtensions.cs" />
     <Compile Include="IEnumerationGlobalizationService.cs" />

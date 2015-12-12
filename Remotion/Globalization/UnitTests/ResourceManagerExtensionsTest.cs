@@ -104,7 +104,7 @@ namespace Remotion.Globalization.UnitTests
     [Test]
     public void GetString_EnumOverload_ResourceExists ()
     {
-      var enumValue = EnumWithDescription.Value1;
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
       var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
 
       _resourceManagerMock
@@ -120,7 +120,7 @@ namespace Remotion.Globalization.UnitTests
     [Test]
     public void GetString_EnumOverload_ResourceDoesNotExist ()
     {
-      var enumValue = EnumWithDescription.Value1;
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
       var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
 
       _resourceManagerMock
@@ -136,7 +136,7 @@ namespace Remotion.Globalization.UnitTests
     [Test]
     public void GetStringOrDefault_EnumOverload_ResourceExists ()
     {
-      var enumValue = EnumWithDescription.Value1;
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
       var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
 
       _resourceManagerMock
@@ -152,7 +152,7 @@ namespace Remotion.Globalization.UnitTests
     [Test]
     public void GetStringOrDefault_EnumOverload_ResourceDoesNotExist ()
     {
-      var enumValue = EnumWithDescription.Value1;
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
       var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
 
       _resourceManagerMock
@@ -194,7 +194,7 @@ namespace Remotion.Globalization.UnitTests
     [Test]
     public void ContainsString_EnumOverload_ResourceExists ()
     {
-      var enumValue = EnumWithDescription.Value1;
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
       var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
 
       _resourceManagerMock
@@ -210,7 +210,7 @@ namespace Remotion.Globalization.UnitTests
     [Test]
     public void ContainsString_EnumOverload_ResourceDoesNotExist ()
     {
-      var enumValue = EnumWithDescription.Value1;
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
       var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
 
       _resourceManagerMock

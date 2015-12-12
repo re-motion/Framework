@@ -28,7 +28,7 @@
       
     </td>
     <td>
-      <remotion:bocreferencevalue id=ReferenceField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Partner" NullItemErrorMessage="Fehler"></remotion:bocreferencevalue>
+      <remotion:bocreferencevalue id="ReferenceField" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Partner" NullItemErrorMessage="Fehler"></remotion:bocreferencevalue>
     </td>
   </tr>
 </table>

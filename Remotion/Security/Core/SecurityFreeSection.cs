@@ -67,7 +67,7 @@ namespace Remotion.Security
         }
       }
 
-      [Obsolete ("Use Dispose() instead. (Version 1.15.21.0)")]
+      [Obsolete ("Use Dispose() instead. (Version 1.15.21.0)", true)]
       public void Leave ()
       {
         Dispose();
@@ -138,7 +138,7 @@ namespace Remotion.Security
     /// Enters a new <see cref="SecurityFreeSection"/> <see cref="Scope"/>. 
     /// The <see cref="Scope"/> should always be used via a using-block, or if that is not possible, disposed inside a finally-block.
     /// </summary>
-    [Obsolete ("Use Activate() instead. (Version 1.15.26.0)")]
+    [Obsolete ("Use Activate() instead. (Version 1.15.26.0)", true)]
     public static Scope Create ()
     {
       return Activate();

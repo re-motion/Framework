@@ -95,22 +95,6 @@ namespace Remotion.ObjectBinding.BindableObject
       return Properties[propertyIdentifier];
     }
 
-    /// <summary>
-    ///   Returns a flag that indicates whether the <paramref name="propertyIdentifier"/> is valid.
-    /// </summary>
-    /// <param name="propertyIdentifier">The name of the property.</param>
-    /// <returns>
-    ///   <see langword="true" /> if a property with the <paramref name="propertyIdentifier"/> exists, otherwise <see langword="false" />.
-    /// </returns>
-    [Obsolete (
-        "Use GetPropertyDefinition (string) instead. If the call returns null, the property does not exist on the BindableObjectClass. (1.13.177.0)")]
-    public bool HasPropertyDefinition (string propertyIdentifier)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
-
-      return Properties.Contains (propertyIdentifier);
-    }
-
     /// <summary> 
     ///   Returns the <see cref="IBusinessObjectProperty"/> instances defined for this business object class.
     /// </summary>

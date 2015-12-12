@@ -58,7 +58,7 @@ namespace Remotion.Web.UI.Controls
     #pragma warning disable 809 // C# 3.0: specifying obsolete for overridden methods causes a warning, but this is intended here.
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    [Obsolete ("Use LazyControls instead")]
+    [Obsolete ("Use LazyControls instead", true)]
     public override ControlCollection Controls
     {
       get

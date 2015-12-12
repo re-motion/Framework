@@ -304,7 +304,6 @@
     <Compile Include="Mapping\IMappingConfiguration.cs" />
     <Compile Include="Mapping\MappingConfigurationValidationHelper.cs" />
     <Compile Include="DomainObjectHandleExtensions.cs" />
-    <Compile Include="Obsolete\ParamList.cs" />
     <Compile Include="Persistence\Model\IPersistenceModelValidatorFactory.cs" />
     <Compile Include="Persistence\Rdbms\DataReaders\QueryResultRow.cs" />
     <Compile Include="Persistence\Rdbms\DataReaders\QueryResultRowReader.cs" />

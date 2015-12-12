@@ -376,7 +376,6 @@
     <Compile Include="ServiceLocation\TestDomain\ITestRegistrationTypeMultiple.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestImplementationForAttributeType.cs" />
     <Compile Include="ServiceLocation\TestDomain\StubService.cs" />
-    <Compile Include="ServiceLocation\TypeNameTemplateResolverTest.cs" />
     <Compile Include="Logging\ILogManagerTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\IsEnabledTest.cs" />
     <Compile Include="Logging\LogExtensionsTest.cs" />

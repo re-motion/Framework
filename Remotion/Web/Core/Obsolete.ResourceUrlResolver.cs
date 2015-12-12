@@ -53,7 +53,7 @@ namespace Remotion.Web
     /// </param>
     /// <param name="resourceType"> The resource type (image, static html, etc.) Must not be <see langword="null"/>. </param>
     /// <param name="relativeUrl"> The resource file name. Must not be <see langword="null"/> or empty.</param>
-    [Obsolete ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)")]
+    [Obsolete ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)", true)]
     public static string GetResourceUrl ([CanBeNull] IControl control, Type definingType, ResourceType resourceType, string relativeUrl)
     {
       ArgumentUtility.CheckNotNull ("definingType", definingType);
@@ -71,7 +71,7 @@ namespace Remotion.Web
     ///   The folder where the resources are expected to be for the <paramref name="assembly"/>. 
     ///   Always ends on a slash.
     /// </returns>
-    [Obsolete ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)")]
+    [Obsolete ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)", true)]
     public static string GetAssemblyRoot (bool isDesignMode, Assembly assembly)
     {
       ArgumentUtility.CheckNotNull ("assembly", assembly);

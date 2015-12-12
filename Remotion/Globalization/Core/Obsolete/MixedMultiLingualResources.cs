@@ -39,7 +39,7 @@ namespace Remotion.Mixins.Globalization
   /// </list>
   /// Both possibilities have a certain inconsistency, and none is perfect, so the class leaves it to the user to decide.
   /// </remarks>
-  public class MixedMultiLingualResources
+  public static class MixedMultiLingualResources
   {
     public interface IImplementation
     {
@@ -60,22 +60,10 @@ namespace Remotion.Mixins.Globalization
     /// <param name="includeHierarchy">If set to true, <see cref="MultiLingualResourcesAttribute"/> applied to base classes and mixins will be
     /// included in the resource manager; otherwise, only the <paramref name="objectType"/> is searched for such attributes.</param>
     /// <returns>An instance of <see cref="IResourceManager"/> for <paramref name="objectType"/>.</returns>
-    [Obsolete ("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectType). Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)")]
+    [Obsolete ("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectType). Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)", true)]
     public static IResourceManager GetResourceManager (Type objectType, bool includeHierarchy)
     {
       return s_implementation.Value.GetResourceManager (objectType, includeHierarchy);
-    }
-
-    /// <summary>
-    ///   Returns an instance of <see cref="IResourceManager"/> for the resource container specified in the class declaration of the type
-    ///   that does not include resource managers for base classes and mixins.
-    /// </summary>
-    /// <param name="objectType">The type to return an <see cref="IResourceManager"/> for.</param>
-    /// <returns>An instance of <see cref="IResourceManager"/> for <paramref name="objectType"/>.</returns>
-    [Obsolete ("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectType). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)")]
-    public static IResourceManager GetResourceManager (Type objectType)
-    {
-      return s_implementation.Value.GetResourceManager (objectType);
     }
 
     /// <summary>
@@ -86,7 +74,7 @@ namespace Remotion.Mixins.Globalization
     /// </param>
     /// <param name="name"> The ID of the resource. </param>
     /// <returns> The found string resource or an empty string. </returns>
-    [Obsolete ("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).GetString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)")]
+    [Obsolete ("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).GetString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)", true)]
     public static string GetResourceText (Type objectTypeToGetResourceFor, string name)
     {
       return s_implementation.Value.GetResourceText (objectTypeToGetResourceFor, name);
@@ -100,23 +88,10 @@ namespace Remotion.Mixins.Globalization
     /// </param>
     /// <param name="name"> The ID of the resource. </param>
     /// <returns> <see langword="true"/> if the resource can be found. </returns>
-    [Obsolete ("Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).ContainsString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)")]
+    [Obsolete ("Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).ContainsString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)", true)]
     public static bool ExistsResourceText (Type objectTypeToGetResourceFor, string name)
     {
       return s_implementation.Value.ExistsResourceText (objectTypeToGetResourceFor, name);
-    }
-
-    /// <summary>
-    ///   Checks for the existence of a resource set for the specified type.
-    /// </summary>
-    /// <param name="objectTypeToGetResourceFor">
-    ///   The <see cref="Type"/> for which to check for the resource set.
-    /// </param>
-    /// <returns> <see langword="true"/> if the resource set can be found. </returns>
-    [Obsolete ("Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).IsNull. Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)")]
-    public static bool ExistsResource (Type objectTypeToGetResourceFor)
-    {
-      return s_implementation.Value.ExistsResource (objectTypeToGetResourceFor);
     }
   }
 }

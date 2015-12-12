@@ -21,7 +21,7 @@ using Remotion.Utilities;
 // ReSharper disable once CheckNamespace
 namespace Remotion.Globalization
 {
-  [Obsolete ("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)")]
+  [Obsolete ("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)", true)]
   public struct EnumValue
   {
     public readonly Enum Value;

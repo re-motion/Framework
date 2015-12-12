@@ -35,24 +35,6 @@ namespace Remotion.ObjectBinding
   /// <seealso cref="IBusinessObjectDataSource"/>
   public abstract class BusinessObjectDataSource : Component, IBusinessObjectDataSource
   {
-    #region Obsoletes
-
-    /// <summary>
-    ///   Gets the <see cref="IBusinessObjectBoundControl"/> objects bound to this <see cref="IBusinessObjectDataSource"/>
-    ///   that have a valid binding according to the <see cref="IBusinessObjectBoundControl.HasValidBinding"/> property.
-    /// </summary>
-    /// <returns> 
-    ///   An array of <see cref="IBusinessObjectBoundControl"/> objects where the <see cref="IBusinessObjectBoundControl.HasValidBinding"/> property 
-    ///   evaluates <see langword="true"/>. 
-    /// </returns>
-    [Obsolete ("The BoundControls property is now obsolete. Use GetBoundControlsWithValidBinding() instead. (Version 1.13.119)")]
-    public IBusinessObjectBoundControl[] BoundControls
-    {
-      get { return GetBoundControlsWithValidBinding().ToArray(); }
-    }
-
-    #endregion
-
     private readonly List<IBusinessObjectBoundControl> _boundControls = new List<IBusinessObjectBoundControl>();
 
     /// <summary>

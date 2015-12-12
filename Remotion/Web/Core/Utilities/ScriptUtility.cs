@@ -15,10 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
 using System.Text;
-using System.Web.UI;
-using Remotion.FunctionalProgramming;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -32,89 +29,6 @@ namespace Remotion.Web.Utilities
   public class ScriptUtility : IScriptUtility
   {
     private readonly IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;
-
-    #region Obsolete
-
-    /// <summary>
-    ///   Used to register a client javascript script to be rendered  at the beginning of the HTML page.
-    ///   The script is automatically surrounded by &lt;script&gt; tags.
-    /// </summary>
-    /// <param name="control"> 
-    ///   The <see cref="Control"/> which the script file will be registered. Must not be <see langword="null"/>.
-    /// </param>
-    /// <param name="key"> 
-    ///   The key identifying the registered script file. Must not be <see langword="null"/> or empty.
-    /// </param>
-    /// <param name="javascript"> 
-    ///   The client script that will be registered. Must not be <see langword="null"/> or empty. 
-    /// </param>
-    /// <seealso cref="Page.RegisterClientScriptBlock"/>
-    [Obsolete ("Use IPage.ClientScript.RegisterClientScriptBlock (IControl, Type, string, string) instead.")]
-    public static void RegisterClientScriptBlock (Control control, string key, string javascript)
-    {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNull ("key", key);
-      ArgumentUtility.CheckNotNull ("javascript", javascript);
-
-      if (!string.IsNullOrEmpty (javascript))
-        javascript += "\r\n";
-
-      ScriptManager.RegisterClientScriptBlock (control, typeof (Page), key, javascript, true);
-    }
-
-    /// <summary>
-    ///   Used to register a client javascript script to be rendered at the end of the HTML page. 
-    ///   The script is automatically surrounded by &lt;script&gt; tags.
-    /// </summary>
-    /// <param name="control"> 
-    ///   The <see cref="Control"/> for which the script file will be registered. Must not be <see langword="null"/>.
-    /// </param>
-    /// <param name="key"> 
-    ///   The key identifying the registered script block. Must not be <see langword="null"/> or empty.
-    /// </param>
-    /// <param name="javascript"> 
-    ///   The client script that will be registered. Must not be <see langword="null"/> or empty. 
-    /// </param>
-    /// <seealso cref="ScriptManager.RegisterStartupScript(System.Web.UI.Control,System.Type,string,string,bool)"/>
-    [Obsolete ("Use IPage.ClientScript.RegisterStartupScriptBlock (IControl, Type, string, string) instead.")]
-    public static void RegisterStartupScriptBlock (Control control, string key, string javascript)
-    {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNull ("key", key);
-      ArgumentUtility.CheckNotNull ("javascript", javascript);
-
-      if (!string.IsNullOrEmpty (javascript))
-        javascript += "\r\n";
-
-      ScriptManager.RegisterStartupScript (control, typeof (Page), key, javascript, true);
-    }
-
-    /// <summary>
-    /// Gets a flag that informs the caller if the <paramref name="control"/> will be part of the rendered output. This method only works during the
-    /// Render cycle.
-    /// </summary>
-    [Obsolete ("The various methods for registering scripts now accept controls instead of the page, thus allowing filtering of the output by the surrounding UpdatePanel.")]
-    public static bool IsPartOfRenderedOutput (Control control)
-    {
-      ArgumentUtility.CheckNotNull ("control", control);
-
-      var scriptManager = ScriptManager.GetCurrent (control.Page);
-      if (scriptManager != null && scriptManager.IsInAsyncPostBack)
-      {
-        bool isInsidePartialRenderingUpdatePanel = control.CreateSequence (c => c.Parent)
-            .Where (c => c is UpdatePanel && ((UpdatePanel) c).IsInPartialRendering)
-            .Cast<UpdatePanel> ()
-            .Any ();
-
-        return isInsidePartialRenderingUpdatePanel;
-      }
-      else
-      {
-        return true;
-      }
-    }
-
-    #endregion
 
     public static IScriptUtility Instance
     {

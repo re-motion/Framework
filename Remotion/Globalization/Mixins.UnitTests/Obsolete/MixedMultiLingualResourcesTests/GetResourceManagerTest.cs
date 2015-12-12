@@ -74,15 +74,6 @@ namespace Remotion.Globalization.Mixins.UnitTests.Obsolete.MixedMultiLingualReso
     }
 
     [Test]
-    public void AttributesOnBaseAndClass_InheritedDefault ()
-    {
-      ResourceManagerSet resourceManager =
-          (ResourceManagerSet) MixedMultiLingualResources.GetResourceManager (typeof (InheritedClassWithMultiLingualResourcesAttributes));
-
-      Assert.That (resourceManager.ResourceManagers.Select (rm => rm.Name), Is.EqualTo (new[] { NamedResources.OnInherited }));
-    }
-
-    [Test]
     public void AttributesOnBaseAndClass_InheritedFalse ()
     {
       ResourceManagerSet resourceManager =

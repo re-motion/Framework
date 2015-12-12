@@ -24,7 +24,7 @@ namespace Remotion.Globalization
 /// <summary>
 ///   Represents errors that occur during resource handling.
 /// </summary>
-[Obsolete("This Exception is no longer in use outside of the MultiLingualResources and MixedMultiLingualResources types.")]
+[Obsolete("This Exception is no longer in use outside of the MultiLingualResources and MixedMultiLingualResources types.", true)]
 [Serializable]
 public class ResourceException: Exception
 {

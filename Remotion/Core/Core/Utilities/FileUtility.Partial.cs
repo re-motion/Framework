@@ -24,21 +24,6 @@ namespace Remotion.Utilities
   public static partial class FileUtility
   {
     /// <summary>
-    /// Copies the complete content of one stream into another.
-    /// </summary>
-    /// <param name="input">The input stream.</param>
-    /// <param name="output">The output stream.</param>
-    [Obsolete ("Use input.CopyTo (output) instead. (Version 1.15.7.0)")]
-    public static void CopyStream (Stream input, Stream output)
-    {
-      ArgumentUtility.CheckNotNull ("input", input);
-      ArgumentUtility.CheckNotNull ("output", output);
-
-      input.CopyTo (output);
-    }
-
-
-    /// <summary>
     /// Writes a string resource embedded in an assemby into a file with the passed filename.
     /// </summary>
     /// <param name="typeWhoseNamespaceTheStringResourceResidesIn"><see cref="Type"/> in whose assembly and namespace the string resource is located.</param>

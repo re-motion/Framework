@@ -116,7 +116,6 @@
     <Compile Include="NullSecurityClient.cs" />
     <Compile Include="NullSecurityProvider.cs" />
     <Compile Include="GeneralAccessTypes.cs" />
-    <Compile Include="DemandMethodPermissionAttribute.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
     <Compile Include="FunctionalSecurityStrategy.cs" />
     <Compile Include="Metadata\AccessTypeReflector.cs" />

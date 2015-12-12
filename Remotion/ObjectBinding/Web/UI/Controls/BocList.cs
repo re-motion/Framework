@@ -68,16 +68,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       IPostBackDataHandler,
       IResourceDispatchTarget
   {
-    #region Obsoletes
-
-    [Obsolete("Use EnsureSortedBocListRowsGot instead. (Version 1.13.52)")]
-    protected BocListRow[] EnsureGotIndexedRowsSorted()
-    {
-      return EnsureSortedBocListRowsGot().ToArray();
-    }
-
-    #endregion
-
     //  constants
     private const string c_currentPageControlName = "_Boc_CurrentPage";
     private const string c_availableViewsListIDSuffix = "_Boc_AvailableViewsList";

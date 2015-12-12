@@ -28,18 +28,6 @@ namespace Remotion.Utilities
   /// <threadsafety static="true" instance="false"/>
   public static partial class TypeUtility
   {
-    #region Obsolete
-
-    [Obsolete ("Use GetType (string, bool) instead. (Version 1.15.30.0)")]
-    public static Type GetDesignModeType ([NotNull]string name, bool throwOnError)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-
-      return TypeResolutionService.GetType (ParseAbbreviatedTypeName (name), throwOnError);
-    }
-
-    #endregion
-
     private static readonly ConcurrentDictionary<string, string> s_fullTypeNames = new ConcurrentDictionary<string, string> ();
     private static readonly ConcurrentDictionary<Type, string> s_partialAssemblyQualifiedNameCache = new ConcurrentDictionary<Type, string>();
 

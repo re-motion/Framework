@@ -50,13 +50,6 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [Obsolete]
-    public void TestCurrent ()
-    {
-      Assert.That (TypeConversionProvider.Current, Is.SameAs (SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>()));
-    }
-
-    [Test]
     public void CanConvert_FromInt32_ToInt32 ()
     {
       Assert.That (_provider.CanConvert (_int32, _int32), Is.True);

@@ -19,7 +19,6 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using System.Web;
-using System.Web.UI;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Utilities
@@ -29,127 +28,6 @@ namespace Remotion.Web.Utilities
   /// </summary>
   public static class UrlUtility
   {
-    #region Obsoletes
-
-    /// <summary>
-    /// Makes a relative URL absolute.
-    /// </summary>
-    /// <param name="page">The requesting page.</param>
-    /// <param name="relativeUrl">The relative URL.</param>
-    /// <param name="includeServer"><see langword="true"/> to include the server part. Defaults to <see langword="false"/>.</param>
-    /// <returns>The absolute URL.</returns>
-    [Obsolete ("Use UrlUtility.GetAbsoluteUrlWithProtocolAndHostName (HttpContextBase, string) if you passed true for the includeServer parameter. "
-        + "Otherwise, use Page.ResolveClientUrl (string). (Version 1.13.68)")]
-    public static string GetAbsoluteUrl (Page page, string relativeUrl, bool includeServer)
-    {
-      if (relativeUrl.StartsWith ("http"))
-        return relativeUrl;
-
-      string pathPart = page.ResolveUrl (relativeUrl);
-      if (includeServer)
-      {
-        string serverPart = page.Request.Url.GetLeftPart (UriPartial.Authority);
-        return serverPart + pathPart;
-      }
-      else
-        return pathPart;
-    }
-
-    /// <summary>
-    /// Makes a relative URL absolute.
-    /// </summary>
-    /// <param name="page">The requesting page.</param>
-    /// <param name="relativeUrl">The relative URL.</param>
-    /// <returns>The absolute URL.</returns>
-    [Obsolete ("Use Page.ResolveClientUrl (string). (Version 1.13.68)")]
-    public static string GetAbsoluteUrl (Page page, string relativeUrl)
-    {
-      return GetAbsoluteUrl (page, relativeUrl, false);
-    }
-
-    /// <summary>
-    /// Returns an absolute URL from a relative URL and removes the protocol part (e.g. "http://")
-    /// </summary>
-    /// <param name="page">The requesting page.</param>
-    /// <param name="relativeUrl">The relative URL.</param>
-    /// <returns>The absolute URL without the protocol part.</returns>
-    [Obsolete ("If you have access to an instance of type System.Web.UI.Control, use the Control.ResolveClientUrl method. "
-        + "Otherwise, use UrlUtility.GetAbsoluteUrl (HttpContextBase, string). (Version 1.13.68)")]
-    public static string GetAbsoluteUrlWithoutProtocol (Page page, string relativeUrl)
-    {
-      string absoluteUrl = GetAbsoluteUrl (page, relativeUrl, false);
-
-      absoluteUrl = absoluteUrl.Replace ("https://", string.Empty);
-      absoluteUrl = absoluteUrl.Replace ("http://", string.Empty);
-
-      return absoluteUrl;
-    }
-
-    [Obsolete ("Use page.Request.Url.AbsolutePath. (Version 1.13.68)")]
-    public static string GetAbsolutePageUrl (Page page)
-    {
-      return GetAbsoluteUrl (page, Path.GetFileName (page.Request.Url.AbsolutePath), false);
-    }
-
-    /// <summary> Makes a relative URL absolute. </summary>
-    /// <param name="context"> The <see cref="HttpContextBase"/> to be used. Must not be <see langword="null"/>. </param>
-    /// <param name="relativeUrl"> The relative URL. Must not be <see langword="null"/> or empty. Must be rooted or absolute. </param>
-    /// <param name="includeServer"><see langword="true"/> to include the server part. Defaults to <see langword="false"/>.</param>
-    /// <returns> The absolute URL. </returns>
-    [Obsolete ("Use UrlUtility.GetAbsoluteUrlWithProtocolAndHostName (HttpContextBase, string) if you passed true for the includeServer parameter. "
-        + "Otherwise, use GetAbsoluteUrl (HttpContextBase, string). (Version 1.13.68)")]
-    public static string GetAbsoluteUrl (HttpContextBase context, string relativeUrl, bool includeServer)
-    {
-      if (includeServer)
-        return GetAbsoluteUrlWithProtocolAndHostname (context, relativeUrl);
-      else
-        return GetAbsoluteUrl (context, relativeUrl);
-    }
-
-    /// <summary> Makes a relative URL absolute. </summary>
-    /// <param name="context"> The <see cref="HttpContext"/>. </param>
-    /// <param name="relativeUrl"> The relative URL. Must not be <see langword="null"/>. Must be rooted or absolute. </param>
-    /// <returns> The absolute URL. </returns>
-    [Obsolete ("Use UrlUtility.GetAbsoluteUrl (HttpContextBase, string), "
-        +"wrapping the context parameter into an instance of type HttpContextWrapper. (Version 1.13.68)")]
-    public static string GetAbsoluteUrl (HttpContext context, string relativeUrl)
-    {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("relativeUrl", relativeUrl);
-
-      return GetAbsoluteUrl (new HttpContextWrapper (context), relativeUrl);
-    }
-
-    /// <summary> Resolves a URL. </summary>
-    /// <param name="url"> The URL. Must not be <see langword="null"/> or empty.</param>
-    /// <returns> The resolved URL. </returns>
-    [Obsolete ("If you have access to an instance of type System.Web.UI.Control, use the Control.ResolveClientUrl method. "
-        + "Otherwise, use UrlUtility.GetAbsoluteUrl (HttpContextBase, string). (Version 1.13.68)")]
-    public static string ResolveUrl (string url)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("url", url);
-      if (HttpContext.Current == null)
-        return url;
-      else
-        return ResolveUrl (new HttpContextWrapper (HttpContext.Current), url);
-    }
-
-    /// <summary> Resolves a URL. </summary>
-    /// <param name="context"> The <see cref="HttpContextBase"/> to be used. Must not be <see langword="null"/>. </param>
-    /// <param name="url"> The URL. Must not be <see langword="null"/> or empty.</param>
-    /// <returns> The resolved URL. </returns>
-    [Obsolete ("If you have access to an instance of type System.Web.UI.Control, use the Control.ResolveClientUrl method. "
-        + "Otherwise, use UrlUtility.GetAbsoluteUrl (HttpContextBase, string). (Version 1.13.68)")]
-    public static string ResolveUrl (HttpContextBase context, string url)
-    {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("url", url);
-
-      return GetAbsoluteUrl (context, url);
-    }
-    
-    #endregion
-
     /// <summary> Makes a relative URL absolute and prepends the name of the server used by the request. </summary>
     /// <param name="context"> The <see cref="HttpContextBase"/> to be used for retrieving the protocol and hostname. Must not be <see langword="null"/>. </param>
     /// <param name="virtualPath"> The virtual path. Must not be <see langword="null"/>. Must be rooted or absolute. </param>

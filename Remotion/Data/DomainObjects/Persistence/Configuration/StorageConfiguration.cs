@@ -24,12 +24,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
   public class StorageConfiguration: ExtendedConfigurationSection
   {
-    [Obsolete ("Use DefaultStorageProviderDefinition instead. (Version 1.11.14.0")]
-    public StorageProviderDefinition StorageProviderDefinition
-    {
-      get { return DefaultStorageProviderDefinition; }
-    }
-
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
     private readonly StorageProviderDefinitionHelper _defaultStorageProviderDefinitionHelper;
     private readonly List<ProviderHelperBase> _providerHelpers = new List<ProviderHelperBase>();

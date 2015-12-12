@@ -148,30 +148,8 @@ namespace Remotion.Data.DomainObjects
       return types;
     }
 
-    /// <summary>
-    /// Returns the reflection based property identifier for a given property member.
-    /// </summary>
-    /// <param name="propertyInfo">The property whose identifier should be returned. Must not be <see langword="null" />.</param>
-    /// <returns>The property identifier for the given property.</returns>
-    /// <remarks>
-    /// Currently, the identifier is defined to be the full name of the property's declaring type, suffixed with a dot (".") and the
-    /// property's name (e.g. MyNamespace.MyType.MyProperty). However, this might change in the future, so this API should be used whenever the
-    /// identifier must be retrieved programmatically.
-    /// </remarks>
-    [Obsolete ("Use MappingConfiguration.NameResolver.GetPropertyName.")]
-    public static string GetPropertyName (PropertyInfo propertyInfo)
-    {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-
-      Type originalDeclaringType = PropertyInfoExtensions.GetOriginalDeclaringType (propertyInfo);
-      if (originalDeclaringType.IsGenericType)
-        return GetPropertyName (originalDeclaringType.GetGenericTypeDefinition(), propertyInfo.Name);
-      else
-        return GetPropertyName (originalDeclaringType, propertyInfo.Name);
-    }
-
     /// <summary>Returns the property name scoped for a specific <paramref name="originalDeclaringType"/>.</summary>
-    [Obsolete ("Use MappingConfiguration.NameResolver.GetPropertyName.")]
+    [Obsolete ("Use MappingConfiguration.Current.NameResolver.GetPropertyName(...).", true)]
     public static string GetPropertyName (Type originalDeclaringType, string propertyName)
     {
       ArgumentUtility.CheckNotNull ("type", originalDeclaringType);

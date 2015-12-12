@@ -68,18 +68,6 @@ namespace Remotion.Globalization.UnitTests.Obsolete
     }
 
     [Test]
-    public void GetResourceManagerWithoutInheritance_WithTypeDefiningAndInheritingMultipleResources_ReturnsResourceManagersInOrderOfDefinition ()
-    {
-      var resourceManager = MultiLingualResources.GetResourceManager (typeof (DerivedClassWithMultiLingualResourcesAttributes));
-
-      Assert.That (resourceManager, Is.InstanceOf<ResourceManagerSet>());
-      var resourceManagerSet = (ResourceManagerSet) resourceManager;
-      Assert.That (
-          resourceManagerSet.ResourceManagers.Select (rm => rm.Name),
-          Is.EquivalentTo (new[] { NamedResources.Four, NamedResources.Five }));
-    }
-
-    [Test]
     public void GetResourceManager_WithTypeDefiningAndInheritingMultipleResources_AndDoNotGetInheritedResources_ReturnsResourceManagersInOrderOfDefinition ()
     {
       var resourceManager = MultiLingualResources.GetResourceManager (typeof (DerivedClassWithMultiLingualResourcesAttributes), false);

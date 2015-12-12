@@ -45,17 +45,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [Obsolete]
-    public void GetPropertyName ()
-    {
-      PropertyInfo propertyInfo = typeof (DerivedClassWithDifferentProperties).GetProperty ("Int32");
-
-      Assert.That (
-          ReflectionUtility.GetPropertyName (propertyInfo),
-          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithDifferentProperties.Int32"));
-    }
-
-    [Test]
     public void GetAssemblyPath ()
     {
       Assert.That (

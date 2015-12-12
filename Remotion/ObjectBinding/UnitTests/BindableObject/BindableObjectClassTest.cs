@@ -261,45 +261,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [Obsolete]
-    public void HasPropertyDefinition ()
-    {
-      var classReflector = new ClassReflector (
-          typeof (ClassWithAllDataTypes),
-          _bindableObjectProvider,
-          BindableObjectMetadataFactory.Create(),
-          _bindableObjectGlobalizationService);
-      BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
-
-      Assert.That (bindableObjectClass.HasPropertyDefinition ("String"), Is.True);
-      Assert.That (bindableObjectClass.HasPropertyDefinition ("Invalid"), Is.False);
-    }
-
-    [Test]
-    [Obsolete]
-    public void HasPropertyDefinition_ForMixedProperty ()
-    {
-      var classReflector = new ClassReflector (
-          typeof (ClassWithMixedProperty),
-          _bindableObjectProvider,
-          BindableObjectMetadataFactory.Create(),
-          _bindableObjectGlobalizationService);
-      BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
-
-      Assert.That (bindableObjectClass.HasPropertyDefinition ("MixedProperty"), Is.True);
-    }
-
-    [Test]
-    [Obsolete]
-    public void HasPropertyDefinition_FromOverriddenPropertiesProperty ()
-    {
-      StubBindableObjectClass bindableObjectClass = CreateStubBindableObjectClass(CreateStubProperty());
-
-      Assert.That (bindableObjectClass.HasPropertyDefinition ("Scalar"), Is.True);
-      Assert.That (bindableObjectClass.HasPropertyDefinition ("Invalid"), Is.False);
-    }
-
-    [Test]
     public void Initialize ()
     {
       var bindableObjectClass = new BindableObjectClass (

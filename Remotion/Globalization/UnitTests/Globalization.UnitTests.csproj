@@ -103,7 +103,6 @@
     <TestAssembly Include="TestDomain\TestAssemblies\EnUS\DerivedClassWithMultiLingualNameAttributeAndDifferentNeutralLanguage.cs" />
     <Compile Include="TestDomain\DerivedInterfaceWithoutOwnMultiLingualNameAttribute.cs" />
     <Compile Include="TestDomain\DerivedInterfaceWithOwnMultiLingualNameAttribute.cs" />
-    <Compile Include="TestDomain\EnumWithDescription.cs" />
     <Compile Include="TestDomain\EnumWithMultiLingualNameAttribute.cs" />
     <Compile Include="TestDomain\EnumWithResources.cs" />
     <Compile Include="TestDomain\DerivedClassWithMultiLingualResourcesAttributes.cs" />

@@ -37,7 +37,7 @@ namespace Remotion.Globalization
       new DoubleCheckedLockingContainer<IEnumerationGlobalizationService> (() => SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>());
 
     [NotNull]
-    [Obsolete("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. (Version 1.13.223.0)")]
+    [Obsolete("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. (Version 1.13.223.0)", true)]
     public static EnumValue[] GetAllValues ([NotNull] Type enumType)
     {
       ArgumentUtility.CheckNotNull ("enumType", enumType);
@@ -48,7 +48,7 @@ namespace Remotion.Globalization
     }
 
     [NotNull]
-    [Obsolete("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)")]
+    [Obsolete("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)", true)]
     public static EnumValue[] GetAllValues ([NotNull] Type enumType, [CanBeNull] CultureInfo culture)
     {
       ArgumentUtility.CheckNotNull ("enumType", enumType);
@@ -60,7 +60,7 @@ namespace Remotion.Globalization
     }
 
     [NotNull]
-    [Obsolete("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...). (Version 1.13.223.0)")]
+    [Obsolete("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...). (Version 1.13.223.0)", true)]
     public static string GetDescription ([NotNull] Enum value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
@@ -69,7 +69,7 @@ namespace Remotion.Globalization
     }
 
     [NotNull]
-    [Obsolete("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...).  Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)")]
+    [Obsolete("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...).  Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)", true)]
     public static string GetDescription ([NotNull] Enum value, [CanBeNull] CultureInfo culture)
     {
       ArgumentUtility.CheckNotNull ("value", value);

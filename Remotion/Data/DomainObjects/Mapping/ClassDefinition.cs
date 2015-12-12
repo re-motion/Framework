@@ -139,20 +139,6 @@ namespace Remotion.Data.DomainObjects.Mapping
       return MyPropertyDefinitions.Contains (propertyDefinition);
     }
 
-    [Obsolete (
-        "This method is obsolete because it can lead to inefficient code. Use 'GetEndPointDefinition (propertyName).GetOppositeEndPointDefinition()' "
-        + "instead. If you already have an IRelationEndPointDefinition, just use 'endPointDefinition.GetOppositeEndPointDefinition()'. (1.13.176)")]
-    public IRelationEndPointDefinition GetOppositeEndPointDefinition (string propertyName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-
-      IRelationEndPointDefinition relationEndPointDefinition = GetRelationEndPointDefinition (propertyName);
-      if (relationEndPointDefinition == null)
-        return null;
-
-      return relationEndPointDefinition.GetOppositeEndPointDefinition();
-    }
-
     public PropertyDefinitionCollection GetPropertyDefinitions ()
     {
       return _cachedPropertyDefinitions.Value;
@@ -161,37 +147,6 @@ namespace Remotion.Data.DomainObjects.Mapping
     public RelationEndPointDefinitionCollection GetRelationEndPointDefinitions ()
     {
       return _cachedRelationEndPointDefinitions.Value;
-    }
-
-    [Obsolete (
-        "This method is obsolete because it can lead to inefficient code. Use "
-        + "'GetEndPointDefinition (propertyName).GetOppositeEndPointDefinition().ClassDefinition' instead. If you already have an "
-        + "IRelationEndPointDefinition, just use 'endPointDefinition.GetOppositeEndPointDefinition().ClassDefinition'. (1.13.176)")]
-    public ClassDefinition GetOppositeClassDefinition (string propertyName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-
-      var endPointDefinition = GetRelationEndPointDefinition (propertyName);
-      if (endPointDefinition == null)
-        return null;
-
-      return endPointDefinition.GetOppositeClassDefinition();
-    }
-
-    [Obsolete (
-        "This method is obsolete because it can lead to inefficient code. Use "
-        + "'GetEndPointDefinition (propertyName).GetMandatoryOppositeEndPointDefinition().ClassDefinition' instead. If you already have an "
-        + "IRelationEndPointDefinition, just use 'endPointDefinition.GetOppositeEndPointDefinition().ClassDefinition'. (1.13.176)")]
-    public ClassDefinition GetMandatoryOppositeClassDefinition (string propertyName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-
-      ClassDefinition oppositeClassDefinition = GetOppositeClassDefinition (propertyName);
-
-      if (oppositeClassDefinition == null)
-        throw CreateMappingException ("No relation found for class '{0}' and property '{1}'.", ID, propertyName);
-
-      return oppositeClassDefinition;
     }
 
     public IRelationEndPointDefinition GetRelationEndPointDefinition (string propertyName)

@@ -639,25 +639,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [Obsolete ("TODO 2072 - Remove")]
-    public void CopyCollectionEventHandlers ()
-    {
-      var order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
-      
-      bool orderItemAdded = false;
-      _transaction.ExecuteInScope (() => order.OrderItems.Added += delegate { orderItemAdded = true; });
-
-      var otherTransaction = ClientTransaction.CreateRootTransaction ();
-      Assert.That (orderItemAdded, Is.False);
-
-      var orderInOtherTransaction = order.GetHandle().GetObject (otherTransaction);
-      otherTransaction.CopyCollectionEventHandlers (order, _transaction);
-
-      otherTransaction.ExecuteInScope (() => orderInOtherTransaction.OrderItems.Add (OrderItem.NewObject ()));
-      Assert.That (orderItemAdded, Is.True);
-    }
-
-    [Test]
     public void CreateSubTransaction_WithDefaultFactory ()
     {
       Assert.That (_transaction.IsWriteable, Is.True);

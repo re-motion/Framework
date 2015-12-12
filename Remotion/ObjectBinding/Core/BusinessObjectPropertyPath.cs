@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding
     /// <param name="objectClass"> The <see cref="IBusinessObjectClass"/> containing the first property in the path. Must no be <see langword="null"/>. </param>
     /// <param name="propertyPathIdentifier"> A string with a valid property path syntax. Must no be <see langword="null"/> or empty. </param>
     /// <returns> An object implementing <see cref="IBusinessObjectPropertyPath"/>. </returns>
-    [Obsolete ("Use CreateStatic to create a statically parsed property path. (1.13.177.0)")]
+    [Obsolete ("Use CreateStatic to create a statically parsed property path. (1.13.177.0)", true)]
     public static IBusinessObjectPropertyPath Parse (IBusinessObjectClass objectClass, string propertyPathIdentifier)
     {
       return CreateStatic (objectClass, propertyPathIdentifier);
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding
     /// <exception cref="InvalidOperationException"> 
     ///   Thrown if any but the last property in the path is <see langword="null"/>, or is not a single-value reference property. 
     /// </exception>
-    [Obsolete ("Use GetResult(...).GetValue(...) to retrieve the property path's value. (1.13.178.0)")]
+    [Obsolete ("Use GetResult(...).GetValue(...) to retrieve the property path's value. (1.13.178.0)", true)]
     public static object GetValue (
         this IBusinessObjectPropertyPath propertyPath, IBusinessObject obj, bool throwExceptionIfNotReachable, bool getFirstListEntry)
     {
@@ -65,59 +65,6 @@ namespace Remotion.ObjectBinding
           throwExceptionIfNotReachable ? UnreachableValueBehavior.FailForUnreachableValue : UnreachableValueBehavior.ReturnNullForUnreachableValue,
           getFirstListEntry ? ListValueBehavior.GetResultForFirstListEntry : ListValueBehavior.FailForListProperties);
       return result.GetValue();
-    }
-
-    /// <summary> Gets the string representation of the value of this property path for the specified object. </summary>
-    /// <param name="propertyPath">The property path for which to retrieve the string value.</param>
-    /// <param name="obj"> The object that has the first property in the path. Must not be <see langword="null"/>. </param>
-    /// <param name="format"> The format string passed to <see cref="IBusinessObject.GetPropertyString">IBusinessObject.GetPropertyString</see>. </param>
-    [Obsolete ("Use GetResult(...).GetString(...) to retrieve the property path's string value. (1.13.178.0)")]
-    public static string GetString (this IBusinessObjectPropertyPath propertyPath, IBusinessObject obj, string format)
-    {
-      ArgumentUtility.CheckNotNull ("format", format);
-      var result = propertyPath.GetResult (
-          obj,
-          UnreachableValueBehavior.ReturnNullForUnreachableValue,
-          ListValueBehavior.GetResultForFirstListEntry);
-      return result.GetString (format);
-    }
-
-    /// <summary> Gets the <see cref="IBusinessObject"/> that is used to retrieve the value of the property path. </summary>
-    /// <param name="propertyPath">The property path for which to retrieve the business object.</param>
-    /// <param name="obj"> The object that has the first property in the path. Must not be <see langword="null"/>. </param>
-    /// <param name="throwExceptionIfNotReachable"> 
-    ///   If <see langword="true"/>, an <see cref="InvalidOperationException"/> is thrown if the <see cref="IBusinessObject"/> cannot be reached 
-    ///   because one of the properties in the path is <see langword="null"/>. If <see langword="false"/>, <see langword="null"/> is returned instead. 
-    /// </param>
-    /// <param name="getFirstListEntry">
-    ///   If <see langword="true"/>, the first value of each list property is processed.
-    ///   If <see langword="false"/>, evaluation of list properties causes an <see cref="InvalidOperationException"/>.
-    /// </param>
-    /// <exception cref="InvalidOperationException"> 
-    ///   Thrown if any but the last property in the path is <see langword="null"/>, or is not a single-value reference property. 
-    /// </exception>
-    [Obsolete ("Use GetResult(...).GetString(...) to retrieve the property path's string value. (1.13.178.0)")]
-    public static IBusinessObject GetBusinessObject (
-        this IBusinessObjectPropertyPath propertyPath, IBusinessObject obj, bool throwExceptionIfNotReachable, bool getFirstListEntry)
-    {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
-      var result = propertyPath.GetResult (
-          obj,
-          throwExceptionIfNotReachable ? UnreachableValueBehavior.FailForUnreachableValue : UnreachableValueBehavior.ReturnNullForUnreachableValue,
-          getFirstListEntry ? ListValueBehavior.GetResultForFirstListEntry : ListValueBehavior.FailForListProperties);
-      return result.ResultObject;
-    }
-
-    /// <summary>Creates a <see cref="IBusinessObjectPropertyPath"/> from the passed <see cref="IBusinessObjectProperty"/> list.</summary>
-    /// <param name="provider">The business object provider.</param>
-    /// <param name="properties"> An array of <see cref="IBusinessObjectProperty"/> instances. </param>
-    /// <returns> A new instance of the <see cref="IBusinessObjectPropertyPath"/> type. </returns>
-    [Obsolete ("Use BusinessObjectPropertyPath.CreateStatic(...) to create a property path from the list of properties. (1.13.178.0)")]
-    public static IBusinessObjectPropertyPath CreatePropertyPath (this IBusinessObjectProvider provider, IBusinessObjectProperty[] properties)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("properties", properties);
-
-      return StaticBusinessObjectPropertyPath.Create (properties);
     }
 
     #endregion
