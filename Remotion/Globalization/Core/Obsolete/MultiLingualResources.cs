@@ -16,9 +16,6 @@
 // 
 
 using System;
-using Remotion.Globalization.Implementation;
-using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.Globalization
@@ -28,47 +25,6 @@ namespace Remotion.Globalization
   /// </summary>
   public static class MultiLingualResources
   {
-    private static readonly DoubleCheckedLockingContainer<IResourceManagerResolver> s_resolver =
-        new DoubleCheckedLockingContainer<IResourceManagerResolver> (() => SafeServiceLocator.Current.GetInstance<IResourceManagerResolver>());
-
-    /// <summary>
-    ///   Returns an instance of <see cref="IResourceManager"/> for the resource container specified
-    ///   in the class declaration of the type.
-    /// </summary>
-    /// <remarks>
-    ///   <see cref="ResourceManagerWrapper"/>s are cached after their first initalization.
-    /// </remarks>
-    /// <param name="objectType">
-    ///   The type for which the resource manager is wanted.
-    /// </param>
-    /// <param name="includeHierarchy">
-    ///   Include the resource managers for the base types.
-    /// </param>
-    /// <returns>
-    ///   The <see cref="ResourceManagerWrapper"/> containing the type's resource containers.
-    /// </returns>
-    [Obsolete ("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectType). (Version 1.13.223.0)", true)]
-    public static IResourceManager GetResourceManager (Type objectType, bool includeHierarchy)
-    {
-      ArgumentUtility.CheckNotNull ("objectType", objectType);
-      ArgumentUtility.CheckNotNull ("includeHierarchy", includeHierarchy);
-
-      var result = s_resolver.Value.Resolve (objectType);
-
-      if (includeHierarchy)
-      {
-        if (result.IsNull)
-          throw new ResourceException (string.Format ("Type {0} and its base classes do not define a resource attribute.", objectType.FullName));
-        return result.ResourceManager;
-      }
-
-      if (result.IsNull)
-        throw new ResourceException (string.Format ("Type {0} and its base classes do not define a resource attribute.", objectType.FullName));
-      if (result.DefinedResourceManager.IsNull) // we already know there is a resource defined on a base-type so no additional checks are required.
-        return GetResourceManager (objectType.BaseType, false);
-      return result.DefinedResourceManager;
-    }
-
     /// <summary>
     ///   Loads a string resource for the specified type, identified by ID.
     /// </summary>
@@ -80,14 +36,7 @@ namespace Remotion.Globalization
     [Obsolete ("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).GetString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)", true)]
     public static string GetResourceText (Type objectTypeToGetResourceFor, string name)
     {
-      ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
-      ArgumentUtility.CheckNotNull ("name", name);
-
-      var resourceManager = GetResourceManager (objectTypeToGetResourceFor, false);
-      var text = resourceManager.GetString (name);
-      if (text == name)
-        return String.Empty;
-      return text;
+      throw new NotSupportedException ("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).GetString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)");
     }
 
     /// <summary>
@@ -101,19 +50,7 @@ namespace Remotion.Globalization
     [Obsolete ("Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).ContainsString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)", true)]
     public static bool ExistsResourceText (Type objectTypeToGetResourceFor, string name)
     {
-      ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
-      ArgumentUtility.CheckNotNull ("name", name);
-
-      try
-      {
-        var resourceManager = GetResourceManager (objectTypeToGetResourceFor, false);
-        string text = resourceManager.GetString (name);
-        return (text != name);
-      }
-      catch
-      {
-        return false;
-      }
+      throw new NotSupportedException ("Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).ContainsString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)");
     }
   }
 }

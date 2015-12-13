@@ -152,10 +152,7 @@ namespace Remotion.Data.DomainObjects
     [Obsolete ("Use MappingConfiguration.Current.NameResolver.GetPropertyName(...).", true)]
     public static string GetPropertyName (Type originalDeclaringType, string propertyName)
     {
-      ArgumentUtility.CheckNotNull ("type", originalDeclaringType);
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-
-      return originalDeclaringType.FullName + "." + propertyName;
+      throw new NotSupportedException ("Use MappingConfiguration.Current.NameResolver.GetPropertyName(...).");
     }
 
     /// <summary>

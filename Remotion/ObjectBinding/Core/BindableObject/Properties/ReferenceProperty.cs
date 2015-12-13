@@ -177,7 +177,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <seealso cref="IDefaultValueService"/>
     /// <seealso cref="CreateDefaultValue"/>
     /// <seealso cref="IsDefaultValue"/>
-    [Obsolete ("The default value feature is not supported. (Version 1.13.142)", true)]
+    [Obsolete ("The default value feature is not supported. (Version 1.13.142)")]
     public bool SupportsDefaultValue
     {
       get

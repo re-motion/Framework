@@ -145,7 +145,6 @@
     <Compile Include="BusinessObjectPropertyPaths\TestDomain\TypeOne.cs" />
     <Compile Include="BusinessObjectPropertyPaths\TestDomain\TypeThree.cs" />
     <Compile Include="BusinessObjectPropertyPaths\TestDomain\TypeTwo.cs" />
-    <Compile Include="BusinessObjectPropertyPathTest.cs" />
     <Compile Include="BindableObject\IntergrationTests\Globalization\Resources\TargetClassForGlobalizationViaResources.Designer.cs">
       <DependentUpon>TargetClassForGlobalizationViaResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>

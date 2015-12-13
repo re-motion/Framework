@@ -29,7 +29,7 @@ namespace Remotion.Reflection.TypeDiscovery
     [Obsolete ("Use Remotion.Reflection.ContextAwareTypeUtility.GetTypeDiscoveryService() instead. (Version 1.15.30.0)", true)]
     public static ITypeDiscoveryService GetTypeDiscoveryService ()
     {
-      return ContextAwareTypeUtility.GetTypeDiscoveryService();
+      throw new NotSupportedException ("Use Remotion.Reflection.ContextAwareTypeUtility.GetTypeDiscoveryService() instead. (Version 1.15.30.0)");
     }
   }
 }

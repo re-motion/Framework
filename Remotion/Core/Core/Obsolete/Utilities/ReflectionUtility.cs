@@ -17,7 +17,6 @@
 
 using System;
 using System.Reflection;
-using Remotion.Reflection;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
@@ -37,10 +36,7 @@ namespace Remotion.Utilities
     [Obsolete ("Use Remotion.Reflection.TypeExtensions.CanAscribeTo (type, ascribeeType) instead. (Version 1.15.17.0)", true)]
     public static bool CanAscribe (Type type, Type ascribeeType)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("ascribeeType", ascribeeType);
-
-      return type.CanAscribeTo (ascribeeType);
+      throw new NotSupportedException ("Use Remotion.Reflection.TypeExtensions.CanAscribeTo (type, ascribeeType) instead. (Version 1.15.17.0)");
     }
 
     /// <summary>
@@ -61,10 +57,7 @@ namespace Remotion.Utilities
     [Obsolete ("Use Remotion.Reflection.TypeExtensions.GetAscribedGenericArguments (type, ascribeeType) instead. (Version 1.15.17.0)", true)]
     public static Type[] GetAscribedGenericArguments (Type type, Type ascribeeType)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("ascribeeType", ascribeeType);
-
-      return type.GetAscribedGenericArguments (ascribeeType);
+      throw new NotSupportedException ("Use Remotion.Reflection.TypeExtensions.GetAscribedGenericArguments (type, ascribeeType) instead. (Version 1.15.17.0)");
     }
   }
 }

@@ -89,29 +89,6 @@ namespace Remotion.Security.UnitTests
     }
 
     [Test]
-    [Obsolete]
-    public void Create ()
-    {
-      using (SecurityFreeSection.Create())
-      {
-        Assert.That (SecurityFreeSection.IsActive, Is.True);
-      }
-    }
-
-    [Test]
-    [Obsolete]
-    public void Leave ()
-    {
-      Assert.That (SecurityFreeSection.IsActive, Is.False);
-      var scope = SecurityFreeSection.Activate();
-
-      Assert.That (SecurityFreeSection.IsActive, Is.True);
-
-      scope.Leave ();
-      Assert.That (SecurityFreeSection.IsActive, Is.False);
-    }
-
-    [Test]
     public void Activate_IsActive_Dispose_NotIsActive_Activate_IsActive ()
     {
       Assert.That (SecurityFreeSection.IsActive, Is.False);

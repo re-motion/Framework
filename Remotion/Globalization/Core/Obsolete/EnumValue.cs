@@ -16,7 +16,6 @@
 // 
 
 using System;
-using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.Globalization
@@ -28,17 +27,16 @@ namespace Remotion.Globalization
 
     public readonly string Description;
 
+    [Obsolete ("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)", true)]
     public long NumericValue
     {
-      get { return Convert.ToInt64 (Value); }
+      get { throw new NotSupportedException ("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)"); }
     }
 
+    [Obsolete ("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)", true)]
     public EnumValue (Enum value, string description)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("description", description);
-
-      Value = value;
-      Description = description;
+      throw new NotSupportedException ("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)");
     }
   }
 }

@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {
@@ -34,9 +33,7 @@ namespace Remotion.ObjectBinding
     [Obsolete ("Use IBusinessObjectProperty.IsAccessible (IBusinessObject) instead. (Version 1.15.20.0)", true)]
     public static bool IsAccessible (this IBusinessObjectProperty property, [CanBeNull] IBusinessObjectClass objectClass, [CanBeNull] IBusinessObject obj)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-
-      return property.IsAccessible (obj);
+      throw new NotSupportedException ("Use IBusinessObjectProperty.IsAccessible (IBusinessObject) instead. (Version 1.15.20.0)");
     }
   }
 }

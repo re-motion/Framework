@@ -17,10 +17,7 @@
 
 using System;
 using System.Globalization;
-using System.Linq;
 using JetBrains.Annotations;
-using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.Globalization
@@ -33,51 +30,32 @@ namespace Remotion.Globalization
   /// </remarks>
   public static class EnumDescription
   {
-    private static readonly DoubleCheckedLockingContainer<IEnumerationGlobalizationService> s_globalizationService =
-      new DoubleCheckedLockingContainer<IEnumerationGlobalizationService> (() => SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>());
-
     [NotNull]
-    [Obsolete("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. (Version 1.13.223.0)", true)]
+    [Obsolete ("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. (Version 1.13.223.0)", true)]
     public static EnumValue[] GetAllValues ([NotNull] Type enumType)
     {
-      ArgumentUtility.CheckNotNull ("enumType", enumType);
-
-      return Enum.GetValues (enumType).Cast<Enum>()
-          .Select (e => new EnumValue (e, s_globalizationService.Value.GetEnumerationValueDisplayName (e)))
-          .ToArray();
+      throw new NotSupportedException ("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. (Version 1.13.223.0)");
     }
 
     [NotNull]
-    [Obsolete("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)", true)]
+    [Obsolete ("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)", true)]
     public static EnumValue[] GetAllValues ([NotNull] Type enumType, [CanBeNull] CultureInfo culture)
     {
-      ArgumentUtility.CheckNotNull ("enumType", enumType);
-
-      using (new CultureScope (CultureInfo.CurrentCulture, culture ?? CultureInfo.CurrentUICulture))
-      {
-        return GetAllValues (enumType);
-      }
+      throw new NotSupportedException ("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)");
     }
 
     [NotNull]
-    [Obsolete("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...). (Version 1.13.223.0)", true)]
+    [Obsolete ("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...). (Version 1.13.223.0)", true)]
     public static string GetDescription ([NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-
-      return s_globalizationService.Value.GetEnumerationValueDisplayName (value);
+      throw new NotSupportedException ("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...). (Version 1.13.223.0)");
     }
 
     [NotNull]
-    [Obsolete("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...).  Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)", true)]
+    [Obsolete ("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...).  Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)", true)]
     public static string GetDescription ([NotNull] Enum value, [CanBeNull] CultureInfo culture)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-
-      using (new CultureScope (CultureInfo.CurrentCulture, culture ?? CultureInfo.CurrentUICulture))
-      {
-        return GetDescription (value);
-      }
+      throw new NotSupportedException ("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...).  Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)");
     }
   }
 }

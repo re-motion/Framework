@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding
     [Obsolete ("Use CreateStatic to create a statically parsed property path. (1.13.177.0)", true)]
     public static IBusinessObjectPropertyPath Parse (IBusinessObjectClass objectClass, string propertyPathIdentifier)
     {
-      return CreateStatic (objectClass, propertyPathIdentifier);
+      throw new NotSupportedException ("Use CreateStatic to create a statically parsed property path. (1.13.177.0)");
     }
 
     /// <summary> Gets the value of this property path for the specified object. </summary>
@@ -59,12 +59,7 @@ namespace Remotion.ObjectBinding
     public static object GetValue (
         this IBusinessObjectPropertyPath propertyPath, IBusinessObject obj, bool throwExceptionIfNotReachable, bool getFirstListEntry)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
-      var result = propertyPath.GetResult (
-          obj,
-          throwExceptionIfNotReachable ? UnreachableValueBehavior.FailForUnreachableValue : UnreachableValueBehavior.ReturnNullForUnreachableValue,
-          getFirstListEntry ? ListValueBehavior.GetResultForFirstListEntry : ListValueBehavior.FailForListProperties);
-      return result.GetValue();
+      throw new NotSupportedException ("Use GetResult(...).GetValue(...) to retrieve the property path's value. (1.13.178.0)");
     }
 
     #endregion

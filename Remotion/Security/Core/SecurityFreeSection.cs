@@ -70,7 +70,7 @@ namespace Remotion.Security
       [Obsolete ("Use Dispose() instead. (Version 1.15.21.0)", true)]
       public void Leave ()
       {
-        Dispose();
+        throw new NotSupportedException ("Use Dispose() instead. (Version 1.15.21.0)");
       }
     }
 
@@ -141,7 +141,7 @@ namespace Remotion.Security
     [Obsolete ("Use Activate() instead. (Version 1.15.26.0)", true)]
     public static Scope Create ()
     {
-      return Activate();
+      throw new NotSupportedException ("Use Activate() instead. (Version 1.15.26.0)");
     }
 
     public static bool IsActive

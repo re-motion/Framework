@@ -19,15 +19,12 @@ using System;
 using System.Reflection;
 using System.Web.UI;
 using JetBrains.Annotations;
-using Remotion.ServiceLocation;
-using Remotion.Utilities;
-using Remotion.Web.Resources;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web
 {
   /// <summary> Utility methods for URL resolving. </summary>
-  [Obsolete ("Use IResourceUrlFactory instead. (Version 1.13.198)")]
+  [Obsolete ("Use IResourceUrlFactory instead. (Version 1.13.198)", true)]
   public static class ResourceUrlResolver
   {
     /// <summary>
@@ -56,12 +53,7 @@ namespace Remotion.Web
     [Obsolete ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)", true)]
     public static string GetResourceUrl ([CanBeNull] IControl control, Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull ("definingType", definingType);
-      ArgumentUtility.CheckNotNull ("resourceType", resourceType);
-      ArgumentUtility.CheckNotNull ("relativeUrl", relativeUrl);
-
-      var factory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
-      return factory.CreateResourceUrl (definingType, resourceType, relativeUrl).GetUrl();
+      throw new NotSupportedException ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)");
     }
 
     /// <summary> Returns the root folder for all resources belonging to the <paramref name="assembly"/>. </summary>
@@ -74,10 +66,7 @@ namespace Remotion.Web
     [Obsolete ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)", true)]
     public static string GetAssemblyRoot (bool isDesignMode, Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
-
-      var builder = SafeServiceLocator.Current.GetInstance<IResourcePathBuilder>();
-      return builder.BuildAbsolutePath (assembly);
+      throw new NotSupportedException ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)");
     }
   }
 }
