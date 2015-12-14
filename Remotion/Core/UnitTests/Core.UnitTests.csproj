@@ -257,6 +257,7 @@
     </Compile>
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="PermanentGuidAttributeTest.cs" />
+    <Compile Include="Reflection\TypeDiscovery\ContextAwareTypeDiscoveryUtilityTest.cs" />
     <Compile Include="Reflection\TypeResolution\DefaultTypeResolutionServiceTest.cs" />
     <Compile Include="Xml\XmlSerializationUtilityTests\TestDomain\SampleTypeWithoutXmlAttributes.cs" />
     <Compile Include="Xml\XmlSerializationUtilityTests\TestDomain\SampleTypeWithXmlRoot.cs" />

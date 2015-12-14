@@ -16,21 +16,20 @@
 // 
 
 using System;
-using System.ComponentModel.Design;
+using NUnit.Framework;
+using Remotion.Reflection;
+using Remotion.Reflection.TypeDiscovery;
 
-// ReSharper disable once CheckNamespace
-
-namespace Remotion.Reflection.TypeDiscovery
+namespace Remotion.UnitTests.Reflection.TypeDiscovery
 {
-  /// <threadsafety static="true" instance="false"/>
-  [Obsolete ("Use Remotion.Reflection.ContextAwareTypeUtility instead. (Version 1.15.30.0)", true)]
-  public static class ContextAwareTypeDiscoveryUtility
+  [Obsolete]
+  [TestFixture]
+  public class ContextAwareTypeDiscoveryUtilityTest
   {
-    [Obsolete ("Use Remotion.Reflection.ContextAwareTypeUtility.GetTypeDiscoveryService() instead. (Version 1.15.30.0)", true)]
-    public static ITypeDiscoveryService GetTypeDiscoveryService ()
+    [Test]
+    public void GetTypeDiscoverySerivce ()
     {
-      // NOTE: This method must remain until Mixin XRef has been updated to use ContextAwareTypeUtility.GetTypeDiscoveryService() instead.
-      return ContextAwareTypeUtility.GetTypeDiscoveryService();
+      Assert.That (ContextAwareTypeDiscoveryUtility.GetTypeDiscoveryService(), Is.SameAs (ContextAwareTypeUtility.GetTypeDiscoveryService()));
     }
   }
 }
