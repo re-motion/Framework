@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using Remotion.Reflection;
 
@@ -55,6 +56,16 @@ namespace Remotion.Extensions.UnitTests.Reflection
       public void NoOp (out int i)
       {
         i = 1;
+      }
+
+      private void PrivateNoOp (int i)
+      {
+      }
+
+      private int PrivateProperty
+      {
+        get { return -1; }
+        set { }
       }
     }
 
@@ -131,6 +142,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
       Assert.That (MethodCaller.CallFunc<string> ("Say").With (c, "Hi"), Is.EqualTo ("Hi C from C"));
       Assert.That (MethodCaller.CallFunc<string> ("Say").With (c_as_b, "Hi"), Is.EqualTo ("Hi C from B"));
       Assert.That (MethodCaller.CallFunc<string> ("Say").With (c_as_a, "Hi"), Is.EqualTo ("Hi C from B"));
+      Assert.That (MethodCaller.CallFunc<int> ("get_PrivateProperty", BindingFlags.NonPublic | BindingFlags.Instance).With (foo), Is.EqualTo (-1));
     }
     
     [Test]
@@ -139,6 +151,8 @@ namespace Remotion.Extensions.UnitTests.Reflection
       A foo = new A ("foo");
       MethodCaller.CallAction ("NoOp").With (foo);
       MethodCaller.CallAction ("NoOp").With (foo, 0);
+      MethodCaller.CallAction ("PrivateNoOp", BindingFlags.NonPublic | BindingFlags.Instance).With (foo, 0);
+      MethodCaller.CallAction ("set_PrivateProperty", BindingFlags.NonPublic | BindingFlags.Instance).With (foo, 0);
       int i;
       NoOpOutInt noop = MethodCaller.CallAction ("NoOp").GetDelegate<NoOpOutInt>();
       noop (foo, out i);
