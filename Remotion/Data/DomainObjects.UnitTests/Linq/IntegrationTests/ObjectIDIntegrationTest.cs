@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -179,6 +180,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
+    public void QueryWithContainsInWhere_OnCollection_WithObjectIDValues ()
+    {
+      var possibleItems = new[] { DomainObjectIDs.Order1.Value, DomainObjectIDs.Order3.Value };
+      var orders =
+          from o in QueryFactory.CreateLinqQuery<Order> ()
+          where possibleItems.Contains (o.ID.Value)
+          select o;
+
+      CheckQueryResult (orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3);
+    }
+
+    [Test]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
       "There was an error preparing or resolving query "
       + "'from Order o in DomainObjectQueryable<Order> where {value(Remotion.Data.DomainObjects.ObjectID[]) => Contains([o].ID)} select [o]' for "
@@ -192,6 +205,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       var orders =
           from o in QueryFactory.CreateLinqQuery<Order> ()
           where possibleItems.Contains (o.ID)
+          select o;
+
+      CheckQueryResult (orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3);
+    }
+
+    [Test]
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
+      "There was an error preparing or resolving query "
+      + "'from Order o in DomainObjectQueryable<Order> where {value(Remotion.Data.DomainObjects.DomainObject[]) => Contains([o])} select [o]' for "
+      + "SQL generation. The SQL 'IN' operator (originally probably a call to a 'Contains' method) requires a single value, so the following "
+      + "expression cannot be translated to SQL: "
+      + "'[t0].[ID] IN (ENTITY(Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid),ENTITY(Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid))'.")]
+    public void QueryWithContainsInWhere_OnCollection_WithObjects_ThrowsNotSupportedException ()
+    {
+      var possibleItems = new[]
+                          {
+                              LifetimeService.GetObjectReference (ClientTransaction.Current, DomainObjectIDs.Order1),
+                              LifetimeService.GetObjectReference (ClientTransaction.Current, DomainObjectIDs.Order3)
+                          };
+      var orders =
+          from o in QueryFactory.CreateLinqQuery<Order> ()
+          where possibleItems.Contains (o)
           select o;
 
       CheckQueryResult (orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3);
