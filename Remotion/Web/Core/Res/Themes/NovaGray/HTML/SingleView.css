@@ -38,8 +38,8 @@ div.singleViewView > div.contentBorder
 {
   position: relative;
   background-color: white;
-  margin : 0 0.5em;
-  padding: 0.25em;
+  margin : 0;
+  padding: 0.5em;
   overflow: auto;
   height: 60%;
 }

@@ -17,9 +17,9 @@ div.tabbedMultiView > div.wrapper
   position: absolute;
   background-color: white;
   top: 0;
-  bottom: 0.5em;
-  left: 0.5em;
-  right: 0.5em;
+  bottom: 0;
+  left: 0;
+  right: 0;
   width: auto;
   height: auto;
 }
@@ -40,8 +40,8 @@ div.tabbedMultiViewActiveView > div.contentBorder
 {
   position: relative;
   background-color: white;
-  margin: 0 0.5em; 
-  padding: 0.25em;
+  margin: 0; 
+  padding: 0.5em;
   overflow: auto;
   height: 60%;
 }
@@ -105,10 +105,7 @@ div.tabbedMultiViewTabStrip
   right: 0;
   padding: 0;
   background-color: White;
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 0.5em;
-  margin-right: 0.5em;
+  margin: 0;
 }
 
 body.mozilla div.tabbedMultiViewTabStrip 
@@ -116,15 +113,9 @@ body.mozilla div.tabbedMultiViewTabStrip
   margin-top: 0.1em;
 }
 
-div.tabbedMultiViewTabStrip div.tabStripTabsPane
-{
-  border-bottom: solid 1px #717073;
-}
-
 div.tabbedMultiViewTabStrip div.tabStripTabsPane ul
 {
   display: block;
-  margin-bottom: -1px; /* Moves the UL into the surrounding DIV. */
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTabWrapper
@@ -133,21 +124,10 @@ div.tabbedMultiViewTabStrip span.tabStripTabWrapper
   position: relative;
 }
 
-body.msie7 div.tabbedMultiViewTabStrip span.tabStripTabWrapper,
-body.opera div.tabbedMultiViewTabStrip span.tabStripTabWrapper
-{
-  margin-bottom: -1px;
-}
-
 div.tabbedMultiViewTabStrip span.tabStripTabSeparator
 {
-  width: 0.6em;
+  width: 0.5em;
   border-bottom: solid 1px #717073;
-}
-
-body.msie7 div.tabbedMultiViewTabStrip span.tabStripTabSeparator
-{
-  padding-bottom: 1px;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTab
@@ -165,11 +145,6 @@ div.tabbedMultiViewTabStrip span.tabStripTab a
   background-repeat: repeat-x;
 }
 
-body.msie7 div.tabbedMultiViewTabStrip span.tabStripTab a
-{
-  padding-bottom: 1px;
-}
-
 div.tabbedMultiViewTabStrip span.tabStripTab a:hover
 {
   background-image: url(../Image/TabbedMultiViewTabBackgroundHover.gif);
@@ -179,15 +154,8 @@ div.tabbedMultiViewTabStrip span.tabStripTab a:hover
 
 div.tabbedMultiViewTabStrip span.tabStripTabSelected
 {
-  border-left: solid 1px #334078;
-  border-top: solid 1px #334078;
-  border-right: solid 1px #334078;
-  border-bottom: solid 1px #4c69de;
-}
-
-body.msie7 div.tabbedMultiViewTabStrip span.tabStripTabSelected
-{
-  border-bottom: solid 1px White;
+  border: solid 1px #334078;
+  border-bottom: solid 1px #717073;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTabSelected a
@@ -195,12 +163,6 @@ div.tabbedMultiViewTabStrip span.tabStripTabSelected a
   border: none;
   background-color: #4C69DE;
   color: white;
-}
-
-body.msie7 div.tabbedMultiViewTabStrip span.tabStripTabSelected a
-{
-  margin-bottom: -1px;
-  padding-bottom: 1px;
 }
 
 /* Content area of the tab */
