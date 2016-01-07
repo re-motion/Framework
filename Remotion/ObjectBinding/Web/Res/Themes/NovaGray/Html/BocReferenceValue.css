@@ -193,10 +193,10 @@ span.bocReferenceValue span.optionsMenu
   display: inline-block;
   right: 0;
   top: 0;
-  width: 6em; /* Define width of span.optionsMenu */
+  width: 6.75em; /* Define width of span.optionsMenu */
 }
 
 span.bocReferenceValue span.content.separateOptionsMenu
 {
-  right: 6.25em; /* width of span.optionsMenu + desired space between */
+  right: 7em; /* width of span.optionsMenu + desired space between */
 }

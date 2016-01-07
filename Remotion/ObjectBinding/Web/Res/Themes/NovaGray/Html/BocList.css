@@ -340,8 +340,9 @@ td.bocListDataCell div span.DropDownMenuSelect a.DropDownMenuButton:hover
 {
   padding: 0;
   border: none;
+  border-left: solid 1px #A9A9A9;
+  background-color: Transparent;
 }
-
 
 td.bocListDataCell span.DropDownMenuSelect.disabled a.DropDownMenuLabel,
 td.bocListDataCell span.DropDownMenuSelect.disabled a.DropDownMenuLabel:hover
@@ -358,7 +359,7 @@ td.bocListDataCell span.DropDownMenuSelect.disabled a.DropDownMenuButton:hover
   padding: 0px;
   border: none;
   border-left: solid 1px Gray;
-  background-color: #EFEFF0;
+  background-color: Transparent;
 }
 
 td.bocListDataCell span.bocDateValue a,

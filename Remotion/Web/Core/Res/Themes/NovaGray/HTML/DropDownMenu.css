@@ -75,8 +75,25 @@ span.DropDownMenuSelect a.DropDownMenuButton
   top: 0px;
   bottom: 0;
   right: 0px;
-  border-left: solid 1px #a9a9a9;
+  border-left: solid 1px #A9A9A9;
   margin-right: 0;
+}
+
+span.DropDownMenuSelect
+{
+  background-image: url(../Image/DropDownMenuSelectBackground.gif);
+  background-position: center top;
+  background-repeat: repeat-x;
+}
+
+span.DropDownMenuSelect:hover
+{
+  background-image: url(../Image/DropDownMenuSelectBackgroundHover.gif);
+}
+
+span.DropDownMenuSelect.disabled:hover
+{
+  background-image: url(../Image/DropDownMenuSelectBackground.gif);
 }
 
 span.DropDownMenuSelect a.DropDownMenuButton:first-child
@@ -88,7 +105,7 @@ span.DropDownMenuSelect a.DropDownMenuButton:first-child
 span.DropDownMenuSelect.disabled a.DropDownMenuButton
 {
   cursor: default;
-  border-left: solid 1px Gray;
+  border-left: solid 1px #A9A9A9;
 }
 
 /*
@@ -104,6 +121,7 @@ span.DropDownMenuSelect a.DropDownMenuButton img
   width: 16px;
   background-position: center;
   background-image: url('../Image/DropDownMenuButton.gif');
+  background-repeat: no-repeat;
 }
 
 span.DropDownMenuSelect.disabled a.DropDownMenuButton img
@@ -135,7 +153,7 @@ div.DropDownMenuOptions
 ul.DropDownMenuOptions
 {
   font-size: 80%;
-  border: solid 1px #a9a9a9;
+  border: solid 1px #A9A9A9;
   left: 0;
   right: 0;
   margin: 0;
