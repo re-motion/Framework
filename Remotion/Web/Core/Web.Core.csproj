@@ -939,6 +939,8 @@
     <Content Include="Res\Themes\NovaGray\Image\DatePicker.gif" />
     <Content Include="Res\Themes\NovaGray\Image\DropDownMenuButton.gif" />
     <Content Include="Res\Themes\NovaGray\Image\DropDownMenuItemIconPane.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\DropDownMenuSelectBackground.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\DropDownMenuSelectBackgroundHover.gif" />
     <Content Include="Res\Themes\NovaGray\Image\DropDownMenuSeparator.gif" />
     <Content Include="Res\Themes\NovaGray\Image\Help.gif" />
     <Content Include="Res\Themes\NovaGray\Image\RequiredField.gif" />
