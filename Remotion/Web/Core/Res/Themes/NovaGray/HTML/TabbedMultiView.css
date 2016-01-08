@@ -155,9 +155,8 @@ div.tabbedMultiViewTabStrip span.tabStripTab a
 
 div.tabbedMultiViewTabStrip span.tabStripTab a:hover
 {
-  background-image: url(../Image/TabbedMultiViewTabBackgroundHover.gif);
-  background-repeat: repeat-x;
-  background-position: bottom;
+  background-image: none;
+  background-color: #EAEEFE;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTabSelected

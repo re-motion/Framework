@@ -20,17 +20,24 @@ button.webButton::-moz-focus-inner
   border: 0;
 }
 
-button.webButton.mouseDown span.buttonBody
+button.webButton:hover span.buttonBody
 {
-  background-image: url(../Image/WebButtonBackgroundHover.gif);
-  background-color: #FCFEFC;
+  background-image: url(../Image/ButtonBackgroundHover.gif);
+  background-color: #DCF8FF;
+  border: solid 1px #3C7FB1;
+}
+
+button.webButton:active span.buttonBody
+{
+  background-image: url(../Image/ButtonBackgroundActive.gif);
+  background-color: #C4E0FC;
 }
 
 button.webButton span.buttonBody
 {
   border: solid 1px #717073;
   font-weight: bold;
-  background-image: url(../Image/WebButtonBackground.gif);
+  background-image: url(../Image/ButtonBackground.gif);
   background-color: #ECEEEC;
   background-position: center top;
   background-repeat: repeat-x;
@@ -47,17 +54,4 @@ button.webButton span.buttonBody
   padding-bottom: 2px;
   padding-left: 1px;
   padding-right: 1px;
-}
-
-button.webButton:hover span.buttonBody
-{
-  border: solid 1px #3C7FB1;
-}
-
-button.webButton.mouseDown span.buttonBody
-{
-  padding-top: 3px;
-  padding-bottom: 1px;
-  padding-left: 2px;
-  padding-right: 0px;
 }

@@ -81,7 +81,7 @@ span.DropDownMenuSelect a.DropDownMenuButton
 
 span.DropDownMenuSelect
 {
-  background-image: url(../Image/DropDownMenuSelectBackground.gif);
+  background-image: url(../Image/ButtonBackground.gif);
   background-color: #ECEEEC;
   background-position: center top;
   background-repeat: repeat-x;
@@ -89,20 +89,27 @@ span.DropDownMenuSelect
 
 span.DropDownMenuSelect:hover
 {
-  background-image: url(../Image/DropDownMenuSelectBackgroundHover.gif);
-  background-color: #FCFEFC;
+  background-image: url(../Image/ButtonBackgroundHover.gif);
+  background-color: #DCF8FF;
   border: solid 1px #3C7FB1;
 }
 
-span.DropDownMenuSelect:hover a.DropDownMenuButton
+span.DropDownMenuSelect:active
+{
+  background-image: url(../Image/ButtonBackgroundActive.gif);
+  background-color: #C4E0FC;
+}
+
+span.DropDownMenuSelect a.DropDownMenuButton:hover
 {
   border-left: solid 1px #3C7FB1;
 }
 
 span.DropDownMenuSelect.disabled:hover
 {
-  background-image: url(../Image/DropDownMenuSelectBackground.gif);
+  background-image: url(../Image/ButtonBackground.gif);
   background-color: #ECEEEC;
+  border: solid 1px Gray;
 }
 
 span.DropDownMenuSelect a.DropDownMenuButton:first-child
