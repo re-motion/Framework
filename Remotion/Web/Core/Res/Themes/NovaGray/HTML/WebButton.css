@@ -23,6 +23,7 @@ button.webButton::-moz-focus-inner
 button.webButton.mouseDown span.buttonBody
 {
   background-image: url(../Image/WebButtonBackgroundHover.gif);
+  background-color: #FCFEFC;
 }
 
 button.webButton span.buttonBody
@@ -30,6 +31,7 @@ button.webButton span.buttonBody
   border: solid 1px #717073;
   font-weight: bold;
   background-image: url(../Image/WebButtonBackground.gif);
+  background-color: #ECEEEC;
   background-position: center top;
   background-repeat: repeat-x;
   
