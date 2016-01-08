@@ -50,7 +50,6 @@ div.tabbedMainMenu div.tabStripTabsPane
 div.tabbedMainMenu span.tabStripTabWrapper
 {
   padding-top: 0.3em;
-  padding-right: 1px;
   margin-bottom: -1px;
 }
 
@@ -64,7 +63,7 @@ div.tabbedMainMenu span.tabStripTab
   padding-bottom: 0;
   border-top: 1px solid #717073;
   border-right: 1px solid #717073;
-  border-bottom: none;
+  border-bottom: 1px solid #717073;
   border-left: none;
 }
 
@@ -96,7 +95,6 @@ div.tabbedMainMenu span.tabStripTabSelected
   padding-bottom: 0;
   border-top: 1px solid #717073;
   border-right: 1px solid #717073;
-  border-left: 1px solid #717073;
   border-bottom: 1px solid #fff;
 }
 
@@ -135,13 +133,6 @@ div.tabbedMainMenu li span.anchorBody
   padding-bottom: 0.3em;
   padding-left: 0.6em;
   padding-right: 0.6em;
-}
-
-body.mozilla  div.tabbedMainMenu span.tabStripTabWrapper,
-body.webkit   div.tabbedMainMenu span.tabStripTabWrapper,
-body.opera    div.tabbedMainMenu span.tabStripTabWrapper
-{
-  margin-bottom: 0px; /* Removes an offset between the main menu and the sub menu */
 }
 
 div.tabbedMainMenu div.clearingPane
