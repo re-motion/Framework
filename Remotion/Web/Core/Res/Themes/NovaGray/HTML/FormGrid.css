@@ -79,7 +79,7 @@ td.formGridValidationMessagesCell
 /*  Style applied to the cells in the first row after the title row  */
 td.formGridTopDataRow
 {
-  border-top: solid 1px #c8c8c8;
+  border-top: solid 1px #717073;
 }
 
 /*  Style applied to the validation messages, additiv to formGridValidationMessagesCell  */

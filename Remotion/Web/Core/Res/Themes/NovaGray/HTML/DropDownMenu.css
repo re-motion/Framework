@@ -21,7 +21,7 @@ span.DropDownMenuSelect
 {
   display: block;
   position: relative;
-  border: solid 1px #A9A9A9;
+  border: solid 1px #717073;
   text-align: left;
   vertical-align: top;
   white-space: nowrap;
@@ -75,7 +75,7 @@ span.DropDownMenuSelect a.DropDownMenuButton
   top: 0px;
   bottom: 0;
   right: 0px;
-  border-left: solid 1px #A9A9A9;
+  border-left: solid 1px #717073;
   margin-right: 0;
 }
 
@@ -105,7 +105,7 @@ span.DropDownMenuSelect a.DropDownMenuButton:first-child
 span.DropDownMenuSelect.disabled a.DropDownMenuButton
 {
   cursor: default;
-  border-left: solid 1px #A9A9A9;
+  border-left: solid 1px #717073;
 }
 
 /*
@@ -153,7 +153,7 @@ div.DropDownMenuOptions
 ul.DropDownMenuOptions
 {
   font-size: 80%;
-  border: solid 1px #A9A9A9;
+  border: solid 1px #717073;
   left: 0;
   right: 0;
   margin: 0;

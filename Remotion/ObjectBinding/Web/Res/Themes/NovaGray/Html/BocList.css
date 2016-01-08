@@ -241,7 +241,7 @@ td.bocListDataCell
   border-top: none;
   border-right: none;
   border-left: none;
-  border-bottom: 1px solid Black;
+  border-bottom: 1px solid #c8c8c8;
 
   cursor: default;
 }
@@ -340,7 +340,7 @@ td.bocListDataCell div span.DropDownMenuSelect a.DropDownMenuButton:hover
 {
   padding: 0;
   border: none;
-  border-left: solid 1px #A9A9A9;
+  border-left: solid 1px #717073;
   background-color: Transparent;
 }
 
