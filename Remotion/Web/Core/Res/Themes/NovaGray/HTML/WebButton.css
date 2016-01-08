@@ -27,9 +27,8 @@ button.webButton.mouseDown span.buttonBody
 
 button.webButton span.buttonBody
 {
-  border: solid 1px black;
+  border: solid 1px #717073;
   font-weight: bold;
-  background-color: #DDDDDD;
   background-image: url(../Image/WebButtonBackground.gif);
   background-position: center top;
   background-repeat: repeat-x;
