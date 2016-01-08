@@ -135,6 +135,14 @@ div.tabbedMultiViewTabStrip span.tabStripTab
   border: solid 1px #717073;
 }
 
+div.tabbedMultiViewTabStrip span.tabStripTab:hover
+{
+  border-top-color: #334078;
+  border-left-color: #334078;
+  border-right-color: #334078;
+  background-color: #EAEEFE;
+}
+
 div.tabbedMultiViewTabStrip span.tabStripTab a
 {
   border: none;

@@ -49,6 +49,11 @@ button.webButton span.buttonBody
   padding-right: 1px;
 }
 
+button.webButton:hover span.buttonBody
+{
+  border: solid 1px #3C7FB1;
+}
+
 button.webButton.mouseDown span.buttonBody
 {
   padding-top: 3px;

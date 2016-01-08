@@ -91,6 +91,12 @@ span.DropDownMenuSelect:hover
 {
   background-image: url(../Image/DropDownMenuSelectBackgroundHover.gif);
   background-color: #FCFEFC;
+  border: solid 1px #3C7FB1;
+}
+
+span.DropDownMenuSelect:hover a.DropDownMenuButton
+{
+  border-left: solid 1px #3C7FB1;
 }
 
 span.DropDownMenuSelect.disabled:hover
