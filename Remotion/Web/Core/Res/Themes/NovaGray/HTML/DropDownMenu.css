@@ -79,6 +79,11 @@ span.DropDownMenuSelect a.DropDownMenuButton
   margin-right: 0;
 }
 
+span.DropDownMenuSelect a.DropDownMenuButton
+{
+  border-left-color: Gray;
+}
+
 span.DropDownMenuSelect
 {
   background-image: url(../Image/ButtonBackground.gif);
@@ -135,14 +140,14 @@ span.DropDownMenuSelect a.DropDownMenuButton img
 {
   height: 100%;
   width: 16px;
-  background-position: center;
+  background-position: 0 center;
   background-image: url('../Image/DropDownMenuButton.gif');
   background-repeat: no-repeat;
 }
 
 span.DropDownMenuSelect.disabled a.DropDownMenuButton img
 {
-  /*background-position: -16px center;*/
+  background-position: -16px center;
   filter: none;
   opacity: 1;
 }
