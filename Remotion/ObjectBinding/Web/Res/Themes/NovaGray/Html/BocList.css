@@ -77,6 +77,7 @@ div.bocListTableBlock
 /* Style applied to the list-area (table and navigation block) of the BocList if there is a menu block. */
 div.bocListTableBlock.hasMenuBlock
 {
+  border-right: 1px solid #c8c8c8;
 }
 
 /*  use JS to apply hasWidth and hasHeight depending on bocList-element on runtime */
