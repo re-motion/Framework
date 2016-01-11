@@ -102,6 +102,7 @@ div.bocListTableContainer
   display: block;
   width: auto;
   height: auto;
+  background-color: #EFEFF0;
 }
 
 div.bocList.hasDimensions div.bocListTableBlock div.bocListTableContainer
@@ -129,6 +130,7 @@ div.bocListTableScrollContainer
   overflow-x: auto;
   overflow-y: hidden;
   margin: auto; /* IE9 bug fix, otherwise, the height would keep growing */
+  background-color: White;
 }
 
 div.bocList.hasDimensions div.bocListTableScrollContainer
@@ -192,7 +194,6 @@ th.bocListTitleCell
   border-right: none;
   border-left: none;
   border-bottom: 1px solid #717073;
-  background-color: white;
   white-space: nowrap;
 }
 
