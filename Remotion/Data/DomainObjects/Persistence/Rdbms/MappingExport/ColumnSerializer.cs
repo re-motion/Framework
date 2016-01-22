@@ -53,6 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     protected virtual DbType GetStorageDbType (IStorageTypeInformation storageTypeInformation)
     {
+      // Primitive workaround to avoid breaking change to IStorageTypeInformation interface.
       var decoratedStorageTypeInformation = storageTypeInformation as SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator;
       if (decoratedStorageTypeInformation != null)
         return GetStorageDbType (decoratedStorageTypeInformation.InnerStorageTypeInformation);
