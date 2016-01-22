@@ -138,16 +138,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         }
         else
         {
-          var isStringAndValueDoesNotExceedParameterSize = convertedValue is string && ((string) convertedValue).Length <= parameterSize;
-          var isCharArrayAndValueDoesNotExceedParameterSize = convertedValue is char[] && ((char[]) convertedValue).Length <= parameterSize;
-          var isByteArrayAndValueDoesNotExceedParameterSize = convertedValue is byte[] && ((byte[]) convertedValue).Length <= parameterSize;
+          var isStringAndValueExceedsParameterSize = convertedValue is string && ((string) convertedValue).Length > parameterSize;
+          var isCharArrayAndValueExceedsParameterSize = convertedValue is char[] && ((char[]) convertedValue).Length > parameterSize;
+          var isByteArrayAndValueExceedsParameterSize = convertedValue is byte[] && ((byte[]) convertedValue).Length > parameterSize;
 
-          if (isStringAndValueDoesNotExceedParameterSize
-              || isCharArrayAndValueDoesNotExceedParameterSize
-              || isByteArrayAndValueDoesNotExceedParameterSize)
-          {
+          if (! (isStringAndValueExceedsParameterSize || isCharArrayAndValueExceedsParameterSize || isByteArrayAndValueExceedsParameterSize))
             parameter.Size = parameterSize;
-          }
         }
       }
 

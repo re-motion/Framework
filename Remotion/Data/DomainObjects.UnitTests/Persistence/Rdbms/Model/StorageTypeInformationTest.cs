@@ -245,7 +245,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    public void CreateDataParameter_NullResult ()
+    public void CreateDataParameter_WithNullResult ()
     {
       var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
       var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();
@@ -268,7 +268,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    public void CreateDataParameter_NullInput ()
+    public void CreateDataParameter_WithNullResult_AndParameterSize_SetsSize ()
+    {
+      var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
+      var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();
+
+      var storageTypeInformation = new StorageTypeInformation (
+          typeof (byte[]),
+          "test",
+          DbType.Binary,
+          false,
+          5,
+          typeof (byte[]),
+          _typeConverterStub);
+
+
+      _typeConverterStub.Stub (stub => stub.ConvertTo ("value", storageTypeInformation.StorageType)).Return (null);
+
+      commandMock.Expect (mock => mock.CreateParameter ()).Return (dataParameterMock);
+      commandMock.Replay ();
+
+      dataParameterMock.Expect (mock => mock.DbType = storageTypeInformation.StorageDbType);
+      dataParameterMock.Expect (mock => mock.Value = DBNull.Value);
+      dataParameterMock.Expect (mock => mock.Size = storageTypeInformation.StorageTypeLength.Value);
+      dataParameterMock.Replay ();
+
+      var result = storageTypeInformation.CreateDataParameter (commandMock, "value");
+
+      commandMock.VerifyAllExpectations ();
+      dataParameterMock.VerifyAllExpectations ();
+
+      Assert.That (result, Is.SameAs (dataParameterMock));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithNullInput ()
     {
       var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
       var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();
