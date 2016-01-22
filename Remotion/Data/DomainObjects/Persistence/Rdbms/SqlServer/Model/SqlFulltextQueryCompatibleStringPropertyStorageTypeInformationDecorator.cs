@@ -69,16 +69,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
       get { return _innerStorageTypeInformation.IsStorageTypeNullable; }
     }
 
-    public DbType StorageDbType
-    {
-      get { return _innerStorageTypeInformation.StorageDbType; }
-    }
-
-    public int? StorageTypeLength
-    {
-      get { return _innerStorageTypeInformation.StorageTypeLength; }
-    }
-
     public Type DotNetType
     {
       get { return _innerStorageTypeInformation.DotNetType; }

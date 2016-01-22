@@ -17,9 +17,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
@@ -44,8 +47,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
               new XElement (
                   Constants.Namespace + "column",
                   new XAttribute ("name", columnDefinition.Name),
-                  new XAttribute ("dbType", columnDefinition.StorageTypeInfo.StorageDbType)
+                  new XAttribute ("dbType", GetStorageDbType(columnDefinition.StorageTypeInfo))
                   ));
+    }
+
+    protected virtual DbType GetStorageDbType (IStorageTypeInformation storageTypeInformation)
+    {
+      var decoratedStorageTypeInformation = storageTypeInformation as SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator;
+      if (decoratedStorageTypeInformation != null)
+        return GetStorageDbType (decoratedStorageTypeInformation.InnerStorageTypeInformation);
+
+      return ((StorageTypeInformation) storageTypeInformation).StorageDbType;
     }
   }
 }

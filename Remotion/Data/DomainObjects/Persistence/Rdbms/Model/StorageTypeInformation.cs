@@ -93,7 +93,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       get { return _storageTypeName; }
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Gets the <see cref="DbType"/> value corresponding to the storage type.
+    /// </summary>
+    /// <value>The <see cref="DbType"/> of the storage type.</value>
     public DbType StorageDbType
     {
       get { return _storageDbType; }
@@ -105,7 +108,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       get { return _isStorageTypeNullable; }
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Gets the length of the storage type as used by the underlying database.
+    /// </summary>
+    /// <value>
+    /// The length of the storage type. <see langword="null" /> is used if the storage type does not specify an explicit length, 
+    /// <b>-1</b> typically represents the <b>max</b> value.
+    /// </value>
     public int? StorageTypeLength
     {
       get { return _storageTypeLength; }

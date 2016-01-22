@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     [CanBeNull]
     private StorageTypeInformation GetStorageTypeForNullableValueType (Type nullableValueType, Type underlyingType, int? maxLength, bool isNullableInDatabase)
     {
-      var underlyingStorageInformation = GetStorageType (underlyingType, maxLength, false);
+      var underlyingStorageInformation = (StorageTypeInformation) GetStorageType (underlyingType, maxLength, false);
       if (underlyingStorageInformation == null)
         return null;
 
@@ -218,7 +218,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     [CanBeNull]
     private StorageTypeInformation GetStorageTypeForEnumType (Type enumType, int? maxLength, bool isNullableInDatabase)
     {
-      var underlyingStorageInformation = GetStorageType (Enum.GetUnderlyingType (enumType), maxLength, isNullableInDatabase);
+      var underlyingStorageInformation = (StorageTypeInformation) GetStorageType (Enum.GetUnderlyingType (enumType), maxLength, isNullableInDatabase);
       if (underlyingStorageInformation == null)
         return null;
 

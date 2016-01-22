@@ -53,9 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
 
       Assert.That (storageTypeInformation.StorageType, Is.EqualTo (innerStorageTypeInformation.StorageType));
       Assert.That (storageTypeInformation.StorageTypeName, Is.EqualTo (innerStorageTypeInformation.StorageTypeName));
-      Assert.That (storageTypeInformation.StorageDbType, Is.EqualTo (innerStorageTypeInformation.StorageDbType));
       Assert.That (storageTypeInformation.IsStorageTypeNullable, Is.EqualTo (innerStorageTypeInformation.IsStorageTypeNullable));
-      Assert.That (storageTypeInformation.StorageTypeLength, Is.EqualTo (innerStorageTypeInformation.StorageTypeLength));
       Assert.That (storageTypeInformation.DotNetType, Is.EqualTo (innerStorageTypeInformation.DotNetType));
     }
 
