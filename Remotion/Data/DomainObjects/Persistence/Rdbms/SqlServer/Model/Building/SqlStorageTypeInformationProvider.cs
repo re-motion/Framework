@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     }
 
     [CanBeNull]
-    private IStorageTypeInformation GetStorageType (Type dotNetType, int? maxLength, bool isNullableInDatabase)
+    private StorageTypeInformation GetStorageType (Type dotNetType, int? maxLength, bool isNullableInDatabase)
     {
       var underlyingTypeOfNullable = Nullable.GetUnderlyingType (dotNetType);
       if (underlyingTypeOfNullable != null)
