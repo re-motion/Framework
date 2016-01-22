@@ -39,6 +39,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     private readonly string _storageTypeName;
     private readonly DbType _storageDbType;
     private readonly bool _isStorageTypeNullable;
+    private readonly int? _storageTypeLength;
     private readonly Type _dotNetType;
     private readonly TypeConverter _dotNetTypeConverter;
 
@@ -57,6 +58,29 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       _dotNetTypeConverter = dotNetTypeConverter;
     }
 
+    public StorageTypeInformation (
+        Type storageType,
+        string storageTypeName,
+        DbType storageDbType,
+        bool isStorageTypeNullable,
+        int? storageTypeLength,
+        Type dotNetType,
+        TypeConverter dotNetTypeConverter)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("storageTypeName", storageTypeName);
+      ArgumentUtility.CheckNotNull ("storageType", storageType);
+      ArgumentUtility.CheckNotNull ("dotNetType", dotNetType);
+      ArgumentUtility.CheckNotNull ("dotNetTypeConverter", dotNetTypeConverter);
+
+      _storageType = storageType;
+      _storageTypeName = storageTypeName;
+      _storageDbType = storageDbType;
+      _isStorageTypeNullable = isStorageTypeNullable;
+      _storageTypeLength = storageTypeLength;
+      _dotNetType = dotNetType;
+      _dotNetTypeConverter = dotNetTypeConverter;
+    }
+
     /// <inheritdoc />
     public Type StorageType
     {
@@ -69,18 +93,22 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       get { return _storageTypeName; }
     }
 
-    /// <summary>
-    /// Gets the <see cref="DbType"/> value corresponding to the storage type.
-    /// </summary>
-    /// <value>The <see cref="DbType"/> of the storage type.</value>
+    /// <inheritdoc />
     public DbType StorageDbType
     {
       get { return _storageDbType; }
     }
 
+    /// <inheritdoc />
     public bool IsStorageTypeNullable
     {
       get { return _isStorageTypeNullable; }
+    }
+
+    /// <inheritdoc />
+    public int? StorageTypeLength
+    {
+      get { return _storageTypeLength; }
     }
 
     /// <inheritdoc />
@@ -110,11 +138,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       ArgumentUtility.CheckNotNull ("command", command);
 
-      var convertedValue = ConvertToStorageType(value);
+      var convertedValue = ConvertToStorageType (value);
 
-      var parameter = command.CreateParameter ();
+      var parameter = command.CreateParameter();
       parameter.Value = convertedValue;
       parameter.DbType = StorageDbType;
+      if (StorageTypeLength.HasValue)
+        parameter.Size = StorageTypeLength.Value;
+
       return parameter;
     }
 
@@ -147,21 +178,24 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       var castStorageTypes =
           equivalentStorageTypes.Select (
               equivalentInfo =>
-              StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
-                  this,
-                  equivalentInfo,
-                  "equivalentStorageTypes",
-                  info => Tuple.Create<string, object> ("storage type", info.StorageType),
-                  info => Tuple.Create<string, object> ("storage type name", info.StorageTypeName),
-                  info => Tuple.Create<string, object> ("storage DbType", info.StorageDbType),
-                  info => Tuple.Create<string, object> (".NET type", info.DotNetType),
-                  info => Tuple.Create<string, object> (".NET type converter type", info.DotNetTypeConverter.GetType())));
+                  StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
+                      this,
+                      equivalentInfo,
+                      "equivalentStorageTypes",
+                      info => Tuple.Create<string, object> ("storage type", info.StorageType),
+                      info => Tuple.Create<string, object> ("storage type name", info.StorageTypeName),
+                      info => Tuple.Create<string, object> ("storage DbType", info.StorageDbType),
+                      info => Tuple.Create<string, object> ("storage type length", info.StorageTypeLength),
+                      info => Tuple.Create<string, object> (".NET type", info.DotNetType),
+                      info => Tuple.Create<string, object> (".NET type converter type", info.DotNetTypeConverter.GetType())))
+              .ToArray();
 
       return new StorageTypeInformation (
           _storageType,
           _storageTypeName,
           _storageDbType,
-          castStorageTypes.Any (x => x._isStorageTypeNullable) || _isStorageTypeNullable,
+          _isStorageTypeNullable || castStorageTypes.Any (x => x._isStorageTypeNullable),
+          _storageTypeLength,
           _dotNetType,
           _dotNetTypeConverter);
     }

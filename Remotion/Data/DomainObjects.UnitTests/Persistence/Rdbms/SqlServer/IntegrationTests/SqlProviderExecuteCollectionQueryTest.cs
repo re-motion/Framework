@@ -123,6 +123,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
+    public void ExecuteCollectionQuery_WithLargeString ()
+    {
+      var queryParameterCollection = new QueryParameterCollection ();
+      queryParameterCollection.Add ("@parameter", new string ('c', 4001));
+      var query = QueryFactory.CreateCollectionQuery (
+          "test",
+          Provider.StorageProviderDefinition,
+          "SELECT NULL AS [ID], NULL As [ClassID] FROM [TableWithAllDataTypes] WHERE LEN (@parameter) > 0",
+          queryParameterCollection,
+          typeof (DomainObjectCollection));
+
+      var orderContainers = Provider.ExecuteCollectionQuery (query);
+      Assert.That (orderContainers, Is.EqualTo (new DataContainer[] { null, null }));
+    }
+
+    [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Expected query type is 'Collection', but was 'Scalar'.\r\nParameter name: query")]
     public void ScalarQuery ()
     {

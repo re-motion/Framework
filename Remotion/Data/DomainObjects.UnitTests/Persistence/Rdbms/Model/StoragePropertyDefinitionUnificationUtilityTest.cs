@@ -40,6 +40,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
+    public void CheckAndConvertEquivalentProperty_WithNullValues_ReturnsTypedActualValue ()
+    {
+      var expected = Tuple.Create<int?> (null);
+      object actual = Tuple.Create<int?> (null);
+
+      var result = StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
+          expected, 
+          actual, 
+          "param", 
+          item => Tuple.Create<string, object> ("Item1", item.Item1));
+
+      Assert.That (VariableTypeInferrer.GetVariableType (result), Is.SameAs (typeof (Tuple<int?>)));
+      Assert.That (result, Is.EqualTo (actual));
+    }
+
+    [Test]
     public void CheckAndConvertEquivalentProperty_ThrowsOnIncompatibleType ()
     {
       var expected = new DateTime (2013, 04, 10);
@@ -70,6 +86,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
               item => Tuple.Create<string, object> ("Year", item.Year)),
           Throws.ArgumentException.With.Message.EqualTo (
               "Only equivalent properties can be combined, but this property has Year '2013', and the given property has Year '2014'.\r\n"
+              + "Parameter name: param"));
+    }
+
+    [Test]
+    public void CheckAndConvertEquivalentProperty_WithNullvalueInExpected_ThrowsOnPropertyMismatch_AndSubstitutesTextForNull ()
+    {
+      var expected = Tuple.Create<int?> (null);
+      object actual = Tuple.Create<int?> (5);
+
+      Assert.That (
+          () => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
+              expected,
+              actual,
+              "param",
+              item => Tuple.Create<string, object> ("Item1", item.Item1)),
+          Throws.ArgumentException.With.Message.EqualTo (
+              "Only equivalent properties can be combined, but this property has Item1 'null', and the given property has Item1 '5'.\r\n"
+              + "Parameter name: param"));
+    }
+
+    [Test]
+    public void CheckAndConvertEquivalentProperty_WithNullvalueInActual_ThrowsOnPropertyMismatch_AndSubstitutesTextForNull ()
+    {
+      var expected = Tuple.Create<int?> (5);
+      object actual = Tuple.Create<int?> (null);
+
+      Assert.That (
+          () => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
+              expected,
+              actual,
+              "param",
+              item => Tuple.Create<string, object> ("Item1", item.Item1)),
+          Throws.ArgumentException.With.Message.EqualTo (
+              "Only equivalent properties can be combined, but this property has Item1 '5', and the given property has Item1 'null'.\r\n"
               + "Parameter name: param"));
     }
   }
