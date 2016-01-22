@@ -36,7 +36,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
         RdbmsProviderDefinition storageProviderDefinition,
         Func<RdbmsProviderDefinition, IPersistenceExtension, IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>, RdbmsProvider> ctorCall = null)
     {
-      var storageTypeInformationProvider = new SqlStorageTypeInformationProvider();
+      var storageTypeInformationProvider =
+          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (new SqlStorageTypeInformationProvider());
       var dbCommandBuilderFactory = new SqlDbCommandBuilderFactory (new SqlDialect());
       var storageNameProvider = new ReflectionBasedStorageNameProvider ();
       var rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider ();

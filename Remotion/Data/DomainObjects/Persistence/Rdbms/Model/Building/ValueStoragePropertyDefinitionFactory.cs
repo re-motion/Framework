@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
@@ -36,6 +38,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       ArgumentUtility.CheckNotNull ("storageTypeInformationProvider", storageTypeInformationProvider);
       ArgumentUtility.CheckNotNull ("storageNameProvider", storageNameProvider);
 
+      if (storageTypeInformationProvider is SqlStorageTypeInformationProvider)
+        Debugger.Break();
       _storageTypeInformationProvider = storageTypeInformationProvider;
       _storageNameProvider = storageNameProvider;
     }
