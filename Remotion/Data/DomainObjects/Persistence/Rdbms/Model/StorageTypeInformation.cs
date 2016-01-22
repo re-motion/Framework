@@ -132,18 +132,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       if (StorageTypeLength.HasValue)
       {
         var parameterSize = StorageTypeLength.Value;
-        parameter.Size = parameterSize;
-
-        if (parameterSize != SqlStorageTypeInformationProvider.StorageTypeLengthRepresentingMax)
+        if (parameterSize == SqlStorageTypeInformationProvider.StorageTypeLengthRepresentingMax)
         {
-          var isStringAndValueLongerThanParameterSize = convertedValue is string && ((string) convertedValue).Length > parameterSize;
-          var isCharArrayAndValueLongerThanParameterSize = convertedValue is char[] && ((char[]) convertedValue).Length > parameterSize;
-          var isByteArrayAndValueLongerThanParameterSize = convertedValue is byte[] && ((byte[]) convertedValue).Length > parameterSize;
+          parameter.Size = parameterSize;
+        }
+        else
+        {
+          var isStringAndValueDoesNotExceedParameterSize = convertedValue is string && ((string) convertedValue).Length <= parameterSize;
+          var isCharArrayAndValueDoesNotExceedParameterSize = convertedValue is char[] && ((char[]) convertedValue).Length <= parameterSize;
+          var isByteArrayAndValueDoesNotExceedParameterSize = convertedValue is byte[] && ((byte[]) convertedValue).Length <= parameterSize;
 
-          if (isStringAndValueLongerThanParameterSize || isCharArrayAndValueLongerThanParameterSize || isByteArrayAndValueLongerThanParameterSize)
+          if (isStringAndValueDoesNotExceedParameterSize
+              || isCharArrayAndValueDoesNotExceedParameterSize
+              || isByteArrayAndValueDoesNotExceedParameterSize)
           {
-            // The parameter value would be truncated if the value's length exceeds the parameter's size. Therefore, set the parameter's size to the MAX value.
-            parameter.Size = SqlStorageTypeInformationProvider.StorageTypeLengthRepresentingMax;
+            parameter.Size = parameterSize;
           }
         }
       }

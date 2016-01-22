@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    public void CreateDataParameter_WithStringValueExceedingFixedSize_IncreasesSizeToMax ()
+    public void CreateDataParameter_WithStringValueExceedingFixedSize_DoesNotInitializeSize ()
     {
       var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
       var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       dataParameterMock.Expect (mock => mock.DbType = storageTypeInformation.StorageDbType);
       dataParameterMock.Expect (mock => mock.Value = "converted value");
-      dataParameterMock.Stub (mock => mock.Size).PropertyBehavior();
+      dataParameterMock.Expect (mock => mock.Size = 0).IgnoreArguments().Repeat.Never();
       dataParameterMock.Replay();
 
       var result = storageTypeInformation.CreateDataParameter (commandMock, "value");
@@ -174,11 +174,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       dataParameterMock.VerifyAllExpectations();
 
       Assert.That (result, Is.SameAs (dataParameterMock));
-      Assert.That (dataParameterMock.Size, Is.EqualTo (-1));
     }
 
     [Test]
-    public void CreateDataParameter_WithCharArrayValueExceedingFixedSize_IncreasesSizeToMax ()
+    public void CreateDataParameter_WithCharArrayValueExceedingFixedSize_DoesNotInitializeSize ()
     {
       var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
       var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();
@@ -200,7 +199,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       dataParameterMock.Expect (mock => mock.DbType = storageTypeInformation.StorageDbType);
       dataParameterMock.Expect (mock => mock.Value = convertedValue);
-      dataParameterMock.Stub (mock => mock.Size).PropertyBehavior();
+      dataParameterMock.Expect (mock => mock.Size = 0).IgnoreArguments().Repeat.Never();
       dataParameterMock.Replay();
 
       var result = storageTypeInformation.CreateDataParameter (commandMock, "value");
@@ -209,11 +208,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       dataParameterMock.VerifyAllExpectations();
 
       Assert.That (result, Is.SameAs (dataParameterMock));
-      Assert.That (dataParameterMock.Size, Is.EqualTo (-1));
     }
 
     [Test]
-    public void CreateDataParameter_WithByteArrayValueExceedingFixedSize_IncreasesSizeToMax ()
+    public void CreateDataParameter_WithByteArrayValueExceedingFixedSize_DoesNotInitializeSize ()
     {
       var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
       var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();
@@ -235,7 +233,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       dataParameterMock.Expect (mock => mock.DbType = storageTypeInformation.StorageDbType);
       dataParameterMock.Expect (mock => mock.Value = convertedValue);
-      dataParameterMock.Stub (mock => mock.Size).PropertyBehavior();
+      dataParameterMock.Expect (mock => mock.Size = 0).IgnoreArguments().Repeat.Never();
       dataParameterMock.Replay();
 
       var result = storageTypeInformation.CreateDataParameter (commandMock, "value");
@@ -244,7 +242,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       dataParameterMock.VerifyAllExpectations();
 
       Assert.That (result, Is.SameAs (dataParameterMock));
-      Assert.That (dataParameterMock.Size, Is.EqualTo (-1));
     }
 
     [Test]
