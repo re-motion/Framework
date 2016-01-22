@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [TestCase (new object[] { null }, TestName = "CreateDataParameter_WithoutSize_DoesNotSetSizeOnParameter.")]
     [TestCase (-1, TestName = "CreateDataParameter_WithNegativeSize_SetsSizeOnParameter.")]
     [TestCase (0, TestName = "CreateDataParameter_WithSizeZero_SetsSizeOnParameter.")]
-    [TestCase (10, TestName = "CreateDataParameter_WithPositiveSize_SetsSizeOnParameter.")]
+    [TestCase (1, TestName = "CreateDataParameter_WithPositiveSize_SetsSizeOnParameter.")]
     public void CreateDataParameter (int? storageTypeSize)
     {
       var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
@@ -122,13 +122,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           typeof (int),
           _typeConverterStub);
 
-      _typeConverterStub.Stub (stub => stub.ConvertTo ("value", storageTypeInformation.StorageType)).Return ("converted value");
+      _typeConverterStub.Stub (stub => stub.ConvertTo ("value", storageTypeInformation.StorageType)).Return ("");
 
       commandMock.Expect (mock => mock.CreateParameter()).Return (dataParameterMock);
       commandMock.Replay();
 
       dataParameterMock.Expect (mock => mock.DbType = storageTypeInformation.StorageDbType);
-      dataParameterMock.Expect (mock => mock.Value = "converted value");
+      dataParameterMock.Expect (mock => mock.Value = "");
       if (storageTypeSize.HasValue)
         dataParameterMock.Expect (mock => mock.Size = storageTypeSize.Value);
       else
@@ -144,7 +144,108 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    public void CreateDataParameter_NullResult ()
+    public void CreateDataParameter_WithStringValueExceedingFixedSize_DoesNotInitializeSize ()
+    {
+      var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
+      var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();
+
+      var storageTypeInformation = new StorageTypeInformation (
+          typeof (string),
+          "test",
+          DbType.String,
+          false,
+          5,
+          typeof (string),
+          _typeConverterStub);
+
+      _typeConverterStub.Stub (stub => stub.ConvertTo ("value", storageTypeInformation.StorageType)).Return ("converted value");
+
+      commandMock.Expect (mock => mock.CreateParameter()).Return (dataParameterMock);
+      commandMock.Replay();
+
+      dataParameterMock.Expect (mock => mock.DbType = storageTypeInformation.StorageDbType);
+      dataParameterMock.Expect (mock => mock.Value = "converted value");
+      dataParameterMock.Expect (mock => mock.Size = 0).IgnoreArguments().Repeat.Never();
+      dataParameterMock.Replay();
+
+      var result = storageTypeInformation.CreateDataParameter (commandMock, "value");
+
+      commandMock.VerifyAllExpectations();
+      dataParameterMock.VerifyAllExpectations();
+
+      Assert.That (result, Is.SameAs (dataParameterMock));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithCharArrayValueExceedingFixedSize_DoesNotInitializeSize ()
+    {
+      var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
+      var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();
+
+      var storageTypeInformation = new StorageTypeInformation (
+          typeof (char[]),
+          "test",
+          DbType.AnsiString,
+          false,
+          5,
+          typeof (char[]),
+          _typeConverterStub);
+
+      var convertedValue = new char[10];
+      _typeConverterStub.Stub (stub => stub.ConvertTo ("value", storageTypeInformation.StorageType)).Return (convertedValue);
+
+      commandMock.Expect (mock => mock.CreateParameter()).Return (dataParameterMock);
+      commandMock.Replay();
+
+      dataParameterMock.Expect (mock => mock.DbType = storageTypeInformation.StorageDbType);
+      dataParameterMock.Expect (mock => mock.Value = convertedValue);
+      dataParameterMock.Expect (mock => mock.Size = 0).IgnoreArguments().Repeat.Never();
+      dataParameterMock.Replay();
+
+      var result = storageTypeInformation.CreateDataParameter (commandMock, "value");
+
+      commandMock.VerifyAllExpectations();
+      dataParameterMock.VerifyAllExpectations();
+
+      Assert.That (result, Is.SameAs (dataParameterMock));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithByteArrayValueExceedingFixedSize_DoesNotInitializeSize ()
+    {
+      var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
+      var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();
+
+      var storageTypeInformation = new StorageTypeInformation (
+          typeof (byte[]),
+          "test",
+          DbType.Binary,
+          false,
+          5,
+          typeof (byte[]),
+          _typeConverterStub);
+
+      var convertedValue = new byte[10];
+      _typeConverterStub.Stub (stub => stub.ConvertTo ("value", storageTypeInformation.StorageType)).Return (convertedValue);
+
+      commandMock.Expect (mock => mock.CreateParameter()).Return (dataParameterMock);
+      commandMock.Replay();
+
+      dataParameterMock.Expect (mock => mock.DbType = storageTypeInformation.StorageDbType);
+      dataParameterMock.Expect (mock => mock.Value = convertedValue);
+      dataParameterMock.Expect (mock => mock.Size = 0).IgnoreArguments().Repeat.Never();
+      dataParameterMock.Replay();
+
+      var result = storageTypeInformation.CreateDataParameter (commandMock, "value");
+
+      commandMock.VerifyAllExpectations();
+      dataParameterMock.VerifyAllExpectations();
+
+      Assert.That (result, Is.SameAs (dataParameterMock));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithNullResult ()
     {
       var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
       var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();
@@ -167,7 +268,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    public void CreateDataParameter_NullInput ()
+    public void CreateDataParameter_WithNullResult_AndParameterSize_SetsSize ()
+    {
+      var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
+      var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();
+
+      var storageTypeInformation = new StorageTypeInformation (
+          typeof (byte[]),
+          "test",
+          DbType.Binary,
+          false,
+          5,
+          typeof (byte[]),
+          _typeConverterStub);
+
+
+      _typeConverterStub.Stub (stub => stub.ConvertTo ("value", storageTypeInformation.StorageType)).Return (null);
+
+      commandMock.Expect (mock => mock.CreateParameter ()).Return (dataParameterMock);
+      commandMock.Replay ();
+
+      dataParameterMock.Expect (mock => mock.DbType = storageTypeInformation.StorageDbType);
+      dataParameterMock.Expect (mock => mock.Value = DBNull.Value);
+      dataParameterMock.Expect (mock => mock.Size = storageTypeInformation.StorageTypeLength.Value);
+      dataParameterMock.Replay ();
+
+      var result = storageTypeInformation.CreateDataParameter (commandMock, "value");
+
+      commandMock.VerifyAllExpectations ();
+      dataParameterMock.VerifyAllExpectations ();
+
+      Assert.That (result, Is.SameAs (dataParameterMock));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithNullInput ()
     {
       var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
       var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();

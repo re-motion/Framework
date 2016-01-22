@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
@@ -42,21 +43,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     private readonly int? _storageTypeLength;
     private readonly Type _dotNetType;
     private readonly TypeConverter _dotNetTypeConverter;
-
-    public StorageTypeInformation (Type storageType, string storageTypeName, DbType storageDbType, bool isStorageTypeNullable, Type dotNetType, TypeConverter dotNetTypeConverter)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("storageTypeName", storageTypeName);
-      ArgumentUtility.CheckNotNull ("storageType", storageType);
-      ArgumentUtility.CheckNotNull ("dotNetType", dotNetType);
-      ArgumentUtility.CheckNotNull ("dotNetTypeConverter", dotNetTypeConverter);
-
-      _storageType = storageType;
-      _storageTypeName = storageTypeName;
-      _storageDbType = storageDbType;
-      _isStorageTypeNullable = isStorageTypeNullable;
-      _dotNetType = dotNetType;
-      _dotNetTypeConverter = dotNetTypeConverter;
-    }
 
     public StorageTypeInformation (
         Type storageType,
@@ -153,7 +139,22 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       parameter.Value = convertedValue;
       parameter.DbType = StorageDbType;
       if (StorageTypeLength.HasValue)
-        parameter.Size = StorageTypeLength.Value;
+      {
+        var parameterSize = StorageTypeLength.Value;
+        if (parameterSize == SqlStorageTypeInformationProvider.StorageTypeLengthRepresentingMax)
+        {
+          parameter.Size = parameterSize;
+        }
+        else
+        {
+          var isStringAndValueExceedsParameterSize = convertedValue is string && ((string) convertedValue).Length > parameterSize;
+          var isCharArrayAndValueExceedsParameterSize = convertedValue is char[] && ((char[]) convertedValue).Length > parameterSize;
+          var isByteArrayAndValueExceedsParameterSize = convertedValue is byte[] && ((byte[]) convertedValue).Length > parameterSize;
+
+          if (! (isStringAndValueExceedsParameterSize || isCharArrayAndValueExceedsParameterSize || isByteArrayAndValueExceedsParameterSize))
+            parameter.Size = parameterSize;
+        }
+      }
 
       return parameter;
     }
