@@ -328,6 +328,8 @@
     <Compile Include="Persistence\Rdbms\Model\Building\RelationStoragePropertyDefinitionFactory.cs" />
     <Compile Include="Persistence\Rdbms\Model\Building\ValueStoragePropertyDefinitionFactory.cs" />
     <Compile Include="Persistence\Rdbms\Model\StoragePropertyDefinitionUnificationUtility.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Model\Building\SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Model\SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator.cs" />
     <Compile Include="Persistence\StorageProviderCommands\SingleDataContainerAssociateWithIDCommand.cs" />
     <Compile Include="Queries\EagerFetching\EagerFetcher.cs" />
     <Compile Include="Queries\ILinqProviderComponentFactory.cs" />

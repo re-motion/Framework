@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005
     {
       ArgumentUtility.CheckNotNull ("rdmsStorageProviderDefinition", rdmsStorageProviderDefinition);
 
-      return new SqlStorageTypeInformationProvider();
+      return new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (new SqlStorageTypeInformationProvider());
     }
 
     public virtual IStorageNameProvider CreateStorageNameProvider (RdbmsProviderDefinition storageProviderDefiniton)

@@ -45,17 +45,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     private static void CheckEqual<T> (string checkedItem, T expected, T actual, string paramName)
     {
       if (!Equals (actual, expected))
-        throw CreateExceptionForNonEquivalentProperties (checkedItem, expected.ToString (), actual.ToString (), paramName);
+        throw CreateExceptionForNonEquivalentProperties (checkedItem, expected, actual, paramName);
     }
 
-    private static ArgumentException CreateExceptionForNonEquivalentProperties (string mismatchingItem, string expected, string actual, string paramName)
+    private static ArgumentException CreateExceptionForNonEquivalentProperties (string mismatchingItem, object expected, object actual, string paramName)
     {
       var message =
-          String.Format (
+          string.Format (
               "Only equivalent properties can be combined, but this property has {0} '{1}', and the given property has {0} '{2}'.",
               mismatchingItem,
-              expected,
-              actual);
+              expected ?? "null",
+              actual ?? "null");
       return new ArgumentException (message, paramName);
     }
   }

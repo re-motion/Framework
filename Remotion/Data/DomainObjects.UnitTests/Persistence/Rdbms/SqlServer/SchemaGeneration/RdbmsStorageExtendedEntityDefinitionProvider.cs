@@ -79,28 +79,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
               typeof (Guid),
               new ColumnDefinition (
                   "ID",
-                  new StorageTypeInformation (typeof (Guid), "uniqueidentifier", DbType.Guid, false, typeof (Guid), new GuidConverter()),
+                  new StorageTypeInformation (typeof (Guid), "uniqueidentifier", DbType.Guid, false, null, typeof (Guid), new GuidConverter()),
                   true));
       var storageProperty2 =
           new SimpleStoragePropertyDefinition (
               typeof (string),
               new ColumnDefinition (
                   "FirstName",
-                  new StorageTypeInformation (typeof (string), "varchar(100)", DbType.String, false, typeof (string), new StringConverter ()),
+                  new StorageTypeInformation (typeof (string), "varchar(100)", DbType.String, false, 100, typeof (string), new StringConverter ()),
                   false));
       var storageProperty3 =
           new SimpleStoragePropertyDefinition (
               typeof (string),
               new ColumnDefinition (
                   "LastName",
-                  new StorageTypeInformation (typeof (string), "varchar(100)", DbType.String, false, typeof (string), new StringConverter ()),
+                  new StorageTypeInformation (typeof (string), "varchar(100)", DbType.String, false, 100, typeof (string), new StringConverter ()),
                   false));
       var storageProperty4 =
           new SimpleStoragePropertyDefinition (
               typeof (string),
               new ColumnDefinition (
                   "XmlColumn1",
-                  new StorageTypeInformation (typeof (string), "xml", DbType.Xml, false, typeof (string), new StringConverter ()),
+                  new StorageTypeInformation (typeof (string), "xml", DbType.Xml, false, null, typeof (string), new StringConverter ()),
                   false));
 
       var tableName = new EntityNameDefinition (null, "IndexTestTable");
@@ -187,11 +187,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
       var column1 = new ColumnDefinition (
           "ID",
-          new StorageTypeInformation (typeof (Guid), "uniqueidentifier", DbType.Guid, false, typeof (Guid), new GuidConverter ()),
+          new StorageTypeInformation (typeof (Guid), "uniqueidentifier", DbType.Guid, false, null, typeof (Guid), new GuidConverter ()),
           true);
       var column2 = new ColumnDefinition (
           "Name",
-          new StorageTypeInformation (typeof (string), "varchar(100)", DbType.String, false, typeof (string), new StringConverter ()),
+          new StorageTypeInformation (typeof (string), "varchar(100)", DbType.String, false, 100, typeof (string), new StringConverter ()),
           false);
 
       var property1 = new SimpleStoragePropertyDefinition (typeof (Guid), column1);
@@ -219,15 +219,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       var idColumn = new ColumnDefinition (
           "ObjectID",
-          new StorageTypeInformation (typeof (Int32), "integer", DbType.Int32, false, typeof (int), new Int32Converter ()),
+          new StorageTypeInformation (typeof (Int32), "integer", DbType.Int32, false, null, typeof (int), new Int32Converter ()),
           true);
       var classIDColumn = new ColumnDefinition (
           "ClassID",
-          new StorageTypeInformation (typeof (string), "varchar", DbType.String, false, typeof (string), new StringConverter ()),
+          new StorageTypeInformation (typeof (string), "varchar", DbType.String, false, -1, typeof (string), new StringConverter ()),
           false);
       var timestampColumn = new ColumnDefinition (
           "Timestamp",
-          new StorageTypeInformation (typeof (DateTime), "datetime", DbType.DateTime, true, typeof (DateTime), new DateTimeConverter()),
+          new StorageTypeInformation (typeof (DateTime), "datetime", DbType.DateTime, true, null, typeof (DateTime), new DateTimeConverter()),
           false);
 
       var objectIDProperty = new ObjectIDStoragePropertyDefinition (

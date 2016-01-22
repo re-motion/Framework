@@ -316,6 +316,8 @@
     <Compile Include="Persistence\Rdbms\SchemaGenerationTestDomain\MixinAddedTwiceWithDifferentNullability\LayerSupertype.cs" />
     <Compile Include="Persistence\Rdbms\SchemaGenerationTestDomain\MixinAddedTwiceWithDifferentNullability\PersistentMixinAddedTwice.cs" />
     <Compile Include="Persistence\Rdbms\SchemaGenerationTestDomain\MixinAddedTwiceWithDifferentNullability\TargetClassWithDBTable.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Model\Building\SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecoratorTest.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Model\SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecoratorTest.cs" />
     <Compile Include="Serialization\FlattenedSerializableWithoutCtorStub.cs" />
     <Compile Include="DomainObjectHandleConverterTest.cs" />
     <Compile Include="Infrastructure\TypePipe\ImplementingAccessorInterceptorBaseTest.cs" />

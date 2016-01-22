@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Database;
@@ -65,6 +66,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
                  where c.Name.SqlContainsFulltext ("Fischer")
                  select c;
       CheckQueryResult (ceos, DomainObjectIDs.Ceo4);
+    }
+
+    [Test]
+    public void QueryWithContainsFullText_WithParamterLongerThanUpperLimit_ThrowsRdbmsProviderException ()
+    {
+      var searchCondition = new string ('a', 4001);
+      var ceos = from c in QueryFactory.CreateLinqQuery<Ceo>()
+                 where c.Name.SqlContainsFulltext (searchCondition)
+                 select c;
+
+      Assert.That (
+          () => ceos.ToArray(),
+          Throws.TypeOf<RdbmsProviderException>()
+              .With.Message.EndsWith ("The argument type \"nvarchar(max)\" is invalid for argument 2 of \"CONTAINS\"."));
     }
 
     private void WaitForIndices ()

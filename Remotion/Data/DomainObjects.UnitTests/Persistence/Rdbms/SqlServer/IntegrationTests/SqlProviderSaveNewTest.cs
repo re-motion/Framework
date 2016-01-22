@@ -314,6 +314,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
+    public void SaveLongString ()
+    {
+      DataContainer dataContainer = CreateNewDataContainer (typeof (ClassWithAllDataTypes));
+      ObjectID newID = dataContainer.ID;
+      var stringValue = new string ('b', 4001);
+
+      SetDefaultValues (dataContainer);
+      var propertyDefinition = GetPropertyDefinition (typeof (ClassWithAllDataTypes), "StringPropertyWithoutMaxLength");
+      dataContainer.SetValue (propertyDefinition, stringValue);
+
+      Provider.Save (new[] { dataContainer });
+
+      DataContainer reloadedDataContainer = ReloadDataContainer (newID);
+      Assert.That (reloadedDataContainer.GetValue (propertyDefinition), Is.EqualTo (stringValue));
+    }
+
+    [Test]
     public void SaveEmpty ()
     {
       Provider.Save (new DataContainer[0]);

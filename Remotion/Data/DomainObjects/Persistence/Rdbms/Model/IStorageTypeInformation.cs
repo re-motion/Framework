@@ -57,6 +57,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     Type DotNetType { get; }
 
     /// <summary>
+    /// Gets the <see cref="DbType"/> value corresponding to the storage type.
+    /// </summary>
+    /// <value>The <see cref="DbType"/> of the storage type.</value>
+    DbType StorageDbType { get; }
+
+    /// <summary>
+    /// Gets the length of the storage type as used by the underlying database.
+    /// </summary>
+    /// <value>
+    /// The length of the storage type. <see langword="null" /> is used if the storage type does not specify an explicit length, 
+    /// <b>-1</b> typically represents the <b>max</b> value.
+    /// </value>
+    int? StorageTypeLength { get; }
+
+    /// <summary>
     /// Creates an <see cref="IDbDataParameter"/> for the given <paramref name="value"/> and <see cref="IDbCommand"/>.
     /// </summary>
     /// <param name="command">The command to create the <see cref="IDbDataParameter"/> with.</param>

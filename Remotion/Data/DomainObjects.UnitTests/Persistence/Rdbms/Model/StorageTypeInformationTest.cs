@@ -35,17 +35,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void SetUp ()
     {
       _typeConverterStub = MockRepository.GenerateStub<TypeConverter>();
-      _storageTypeInformation = new StorageTypeInformation (typeof(bool), "test", DbType.Boolean, false, typeof (int), _typeConverterStub);
+      _storageTypeInformation = new StorageTypeInformation (typeof (bool), "test", DbType.Boolean, false, null, typeof (int), _typeConverterStub);
     }
 
     [Test]
-    public void Initialization ()
+    [TestCase (DbType.Boolean, false, null, TestName = "Initialization_WithDbTypeIsNullable.")]
+    [TestCase (DbType.Boolean, true, null, TestName = "Initialization_WithDbTypeIsNotNullable.")]
+    [TestCase (DbType.String, false, 5, TestName = "Initialization_WithDbTypeHasSize.")]
+    public void Initialization (DbType storageDbType, bool storageTypeNullable, int? storageTypeLength)
     {
-      Assert.That (_storageTypeInformation.StorageType, Is.EqualTo (typeof (bool)));
-      Assert.That (_storageTypeInformation.StorageTypeName, Is.EqualTo ("test"));
-      Assert.That (_storageTypeInformation.StorageDbType, Is.EqualTo (DbType.Boolean));
-      Assert.That (_storageTypeInformation.DotNetType, Is.EqualTo (typeof (int)));
-      Assert.That (_storageTypeInformation.DotNetTypeConverter, Is.SameAs (_typeConverterStub));
+      var storageTypeInformation = new StorageTypeInformation (
+          typeof (bool),
+          "test",
+          storageDbType,
+          storageTypeNullable,
+          storageTypeLength,
+          typeof (int),
+          _typeConverterStub);
+
+      Assert.That (storageTypeInformation.StorageType, Is.EqualTo (typeof (bool)));
+      Assert.That (storageTypeInformation.StorageTypeName, Is.EqualTo ("test"));
+      Assert.That (storageTypeInformation.StorageDbType, Is.EqualTo (storageDbType));
+      Assert.That (storageTypeInformation.IsStorageTypeNullable, Is.EqualTo (storageTypeNullable));
+      Assert.That (storageTypeInformation.StorageTypeLength, Is.EqualTo (storageTypeLength));
+      Assert.That (storageTypeInformation.DotNetType, Is.EqualTo (typeof (int)));
+      Assert.That (storageTypeInformation.DotNetTypeConverter, Is.SameAs (_typeConverterStub));
     }
 
     [Test]
@@ -88,22 +102,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       Assert.That (result, Is.EqualTo ("converted null value"));
     }
 
+    [CLSCompliant (false)]
     [Test]
-    public void CreateDataParameter ()
+    [TestCase (new object[] { null }, TestName = "CreateDataParameter_WithoutSize_DoesNotSetSizeOnParameter.")]
+    [TestCase (-1, TestName = "CreateDataParameter_WithNegativeSize_SetsSizeOnParameter.")]
+    [TestCase (0, TestName = "CreateDataParameter_WithSizeZero_SetsSizeOnParameter.")]
+    [TestCase (10, TestName = "CreateDataParameter_WithPositiveSize_SetsSizeOnParameter.")]
+    public void CreateDataParameter (int? storageTypeSize)
     {
       var commandMock = MockRepository.GenerateStrictMock<IDbCommand> ();
       var dataParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter> ();
 
-      _typeConverterStub.Stub (stub => stub.ConvertTo ("value", _storageTypeInformation.StorageType)).Return ("converted value");
+      var storageTypeInformation = new StorageTypeInformation (
+          typeof (bool),
+          "test",
+          DbType.Boolean,
+          false,
+          storageTypeSize,
+          typeof (int),
+          _typeConverterStub);
+
+      _typeConverterStub.Stub (stub => stub.ConvertTo ("value", storageTypeInformation.StorageType)).Return ("converted value");
 
       commandMock.Expect (mock => mock.CreateParameter()).Return (dataParameterMock);
       commandMock.Replay();
 
-      dataParameterMock.Expect (mock => mock.DbType = _storageTypeInformation.StorageDbType);
+      dataParameterMock.Expect (mock => mock.DbType = storageTypeInformation.StorageDbType);
       dataParameterMock.Expect (mock => mock.Value = "converted value");
+      if (storageTypeSize.HasValue)
+        dataParameterMock.Expect (mock => mock.Size = storageTypeSize.Value);
+      else
+        dataParameterMock.Expect (mock => mock.Size = 0).IgnoreArguments().Repeat.Never();
       dataParameterMock.Replay();
 
-      var result = _storageTypeInformation.CreateDataParameter (commandMock, "value");
+      var result = storageTypeInformation.CreateDataParameter (commandMock, "value");
 
       commandMock.VerifyAllExpectations();
       dataParameterMock.VerifyAllExpectations();
@@ -190,9 +222,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyForEquivalentProperties_CombinesStorageTypes_AllNonNullable_CombinedIsAlsoNonNullable ()
     {
-      var typeInfo1 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, typeof (int), new DefaultConverter (typeof (string)));
-      var typeInfo2 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, typeof (int), new DefaultConverter (typeof (string)));
-      var typeInfo3 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, typeof (int), new DefaultConverter (typeof (string)));
+      var typeInfo1 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, 5, typeof (int), new DefaultConverter (typeof (string)));
+      var typeInfo2 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, 5, typeof (int), new DefaultConverter (typeof (string)));
+      var typeInfo3 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, 5, typeof (int), new DefaultConverter (typeof (string)));
 
       var result = typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2, typeInfo3 });
 
@@ -201,6 +233,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       Assert.That (((StorageTypeInformation) result).StorageTypeName, Is.EqualTo ("X"));
       Assert.That (((StorageTypeInformation) result).StorageDbType, Is.EqualTo (DbType.Int32));
       Assert.That (((StorageTypeInformation) result).IsStorageTypeNullable, Is.False);
+      Assert.That (((StorageTypeInformation) result).StorageTypeLength, Is.EqualTo (5));
       Assert.That (((StorageTypeInformation) result).DotNetType, Is.SameAs (typeof (int)));
       Assert.That (((StorageTypeInformation) result).DotNetTypeConverter, Is.SameAs (typeInfo1.DotNetTypeConverter));
     }
@@ -208,9 +241,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyForEquivalentProperties_CombinesStorageTypes_SomeNullable_CombinedIsNullable ()
     {
-      var typeInfo1 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, typeof (int), new DefaultConverter (typeof (string)));
-      var typeInfo2 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, typeof (int), new DefaultConverter (typeof (string)));
-      var typeInfo3 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, true, typeof (int), new DefaultConverter (typeof (string)));
+      var typeInfo1 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, 6, typeof (int), new DefaultConverter (typeof (string)));
+      var typeInfo2 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, 6, typeof (int), new DefaultConverter (typeof (string)));
+      var typeInfo3 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, true, 6, typeof (int), new DefaultConverter (typeof (string)));
 
       var result = typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2, typeInfo3 });
 
@@ -221,9 +254,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyForEquivalentProperties_CombinesStorageTypes_FirstNullable_CombinedIsNullable ()
     {
-      var typeInfo1 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, true, typeof (int), new DefaultConverter (typeof (string)));
-      var typeInfo2 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, typeof (int), new DefaultConverter (typeof (string)));
-      var typeInfo3 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, typeof (int), new DefaultConverter (typeof (string)));
+      var typeInfo1 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, true, 6, typeof (int), new DefaultConverter (typeof (string)));
+      var typeInfo2 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, 6, typeof (int), new DefaultConverter (typeof (string)));
+      var typeInfo3 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, false, 6, typeof (int), new DefaultConverter (typeof (string)));
 
       var result = typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2, typeInfo3 });
 
@@ -245,8 +278,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyForEquivalentProperties_ThrowsForDifferentStorageType ()
     {
-      var typeInfo1 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, true, typeof (string), new DefaultConverter (typeof (string)));
-      var typeInfo2 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, typeof (string), new DefaultConverter (typeof (string)));
+      var typeInfo1 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, true, null, typeof (string), new DefaultConverter (typeof (string)));
+      var typeInfo2 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, null, typeof (string), new DefaultConverter (typeof (string)));
       Assert.That (
           () => typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2 }),
           Throws.ArgumentException.With.Message.EqualTo (
@@ -257,8 +290,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyForEquivalentProperties_ThrowsForDifferentStorageDbType ()
     {
-      var typeInfo1 = new StorageTypeInformation (typeof (int), "X", DbType.String, true, typeof (string), new DefaultConverter (typeof (string)));
-      var typeInfo2 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, typeof (string), new DefaultConverter (typeof (string)));
+      var typeInfo1 = new StorageTypeInformation (typeof (int), "X", DbType.String, true, null, typeof (string), new DefaultConverter (typeof (string)));
+      var typeInfo2 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, null, typeof (string), new DefaultConverter (typeof (string)));
       Assert.That (
           () => typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2 }),
           Throws.ArgumentException.With.Message.EqualTo (
@@ -267,10 +300,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
+    public void UnifyForEquivalentProperties_ThrowsForDifferentStorageTypeLength ()
+    {
+      var typeInfo1 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, true, null, typeof (string), new DefaultConverter (typeof (string)));
+      var typeInfo2 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, true, 0, typeof (string), new DefaultConverter (typeof (string)));
+      Assert.That (
+          () => typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2 }),
+          Throws.ArgumentException.With.Message.EqualTo (
+              "Only equivalent properties can be combined, but this property has storage type length 'null', and the given property has "
+              + "storage type length '0'.\r\nParameter name: equivalentStorageTypes"));
+    }
+
+    [Test]
     public void UnifyForEquivalentProperties_ThrowsForDifferentDotNetType ()
     {
-      var typeInfo1 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, typeof (string), new DefaultConverter (typeof (string)));
-      var typeInfo2 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, typeof (int), new DefaultConverter (typeof (string)));
+      var typeInfo1 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, null, typeof (string), new DefaultConverter (typeof (string)));
+      var typeInfo2 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, null, typeof (int), new DefaultConverter (typeof (string)));
       Assert.That (
           () => typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2 }),
           Throws.ArgumentException.With.Message.EqualTo (
@@ -282,8 +327,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyForEquivalentProperties_ThrowsForDifferentConverterType ()
     {
-      var typeInfo1 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, typeof (string), new DefaultConverter (typeof (string)));
-      var typeInfo2 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, typeof (string), new AdvancedEnumConverter (typeof (DbType)));
+      var typeInfo1 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, null, typeof (string), new DefaultConverter (typeof (string)));
+      var typeInfo2 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, null, typeof (string), new AdvancedEnumConverter (typeof (DbType)));
       Assert.That (
           () => typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2 }),
           Throws.ArgumentException.With.Message.EqualTo (
@@ -304,6 +349,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       }
 
       public bool IsStorageTypeNullable
+      {
+        get { throw new NotImplementedException(); }
+      }
+
+      public DbType StorageDbType
+      {
+        get { throw new NotImplementedException(); }
+      }
+
+      public int? StorageTypeLength
       {
         get { throw new NotImplementedException(); }
       }

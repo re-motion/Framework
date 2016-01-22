@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
@@ -44,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
               new XElement (
                   Constants.Namespace + "column",
                   new XAttribute ("name", columnDefinition.Name),
-                  new XAttribute ("dbType", ((StorageTypeInformation) columnDefinition.StorageTypeInfo).StorageDbType)
+                  new XAttribute ("dbType", columnDefinition.StorageTypeInfo.StorageDbType)
                   ));
     }
   }
