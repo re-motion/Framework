@@ -28,8 +28,8 @@
 
 *.tabStripTab a
 {
-  border: solid 1px #334078;
-  background-color: #e1ecfc;
+  border: solid 1px #7CB2E6;
+  background-color: #E5F0FC;
   color: Blue;
   text-decoration: none;
   cursor: default;
@@ -37,14 +37,14 @@
 
 *.tabStripTab a:hover
 {
-  background-color: #EAEEFE;
+  background-color: #E5F0FC;
   cursor: pointer;
   cursor: hand;
 }
 
 *.tabStripTabSelected a
 {
-  border: solid 1px #334078;
+  border: solid 1px #7CB2E6;
   background-color: White;
   color: Blue;
   text-decoration: none;

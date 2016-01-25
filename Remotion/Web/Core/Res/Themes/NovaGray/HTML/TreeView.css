@@ -62,8 +62,8 @@ span.treeViewNodeHead
 /* Applied to the node's head if it is the selected node. */
 span.treeViewNodeHeadSelected
 {
-  background-color: #4C69DE;
-  color: White;
+  background-color: #C5E0FC;
+  color: Black;
 }
 
 span.treeViewNodeHead,
@@ -80,28 +80,24 @@ span.treeViewNodeHead a
 
 span.treeViewNodeHeadSelected a
 {
-  color: White;
+  color: Black;
   padding: 2px;
 }
 
 span.treeViewNodeHead a:hover
 {
-  color: #334078;
+  color: #09457E;
   padding: 1px;
-  border-width: 1px;
-  border-color: #334078;
-  border-style: solid;
-  background-color: #EAEEFE;
+  border: 1px solid #7CB2E6;
+  background-color: #E5F0FC;
 }
 
 span.treeViewNodeHeadSelected a:hover
 {
-  color: #334078;
+  color: #09457E;
   padding: 1px;
-  border-width: 1px;
-  border-color: #334078;
-  border-style: solid;
-  background-color: #EAEEFE;
+  border: 1px solid #7CB2E6;
+  background-color: #E5F0FC;
 }
 
 span.treeViewNode ul

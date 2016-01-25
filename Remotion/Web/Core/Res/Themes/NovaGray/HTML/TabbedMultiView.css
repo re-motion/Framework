@@ -127,27 +127,27 @@ div.tabbedMultiViewTabStrip span.tabStripTabWrapper
 div.tabbedMultiViewTabStrip span.tabStripTabSeparator
 {
   width: 0.5em;
-  border-bottom: solid 1px #717073;
+  border-bottom: solid 1px #AAAAAA;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTab
 {
-  border: solid 1px #717073;
+  border: solid 1px #AAAAAA;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTab:hover
 {
-  border-top-color: #334078;
-  border-left-color: #334078;
-  border-right-color: #334078;
-  background-color: #EAEEFE;
+  border-top-color: #7CB2E6;
+  border-left-color: #7CB2E6;
+  border-right-color: #7CB2E6;
+  background-color: #E5F0FC;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTab a
 {
   border: none;
   background-color: transparent;
-  color: #334078;
+  color: Black;
   background-image: url(../Image/TabbedMultiViewTabBackground.gif);
   background-position: center top;
   background-repeat: repeat-x;
@@ -156,20 +156,20 @@ div.tabbedMultiViewTabStrip span.tabStripTab a
 div.tabbedMultiViewTabStrip span.tabStripTab a:hover
 {
   background-image: none;
-  background-color: #EAEEFE;
+  background-color: #E5F0FC;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTabSelected
 {
-  border: solid 1px #334078;
-  border-bottom: solid 1px #717073;
+  border: solid 1px #569CE0;
+  border-bottom: solid 1px #AAAAAA;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTabSelected a
 {
   border: none;
-  background-color: #4C69DE;
-  color: white;
+  background-color: #C5E0FC;
+  color: Black;
 }
 
 /* Content area of the tab */

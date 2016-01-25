@@ -37,12 +37,12 @@ span.bocAutoCompleteReferenceValueButton
   top: 0px;
   right: 0px;
   bottom: 0px;
-  border: solid 1px #717073;
+  border: solid 1px #AAAAAA;
 }
 
 span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueButton
 {
-  border: solid 1px Gray;
+  border: 1px solid Gray;
 }
 
 span.bocAutoCompleteReferenceValue span.embeddedOptionsMenu span.bocAutoCompleteReferenceValueButton
@@ -53,7 +53,7 @@ span.bocAutoCompleteReferenceValue span.embeddedOptionsMenu span.bocAutoComplete
 
 span.bocAutoCompleteReferenceValueButton:hover
 {
-  border: 1px solid #334078;
+  border: 1px solid #7CB2E6;
 }
 
 span.bocAutoCompleteReferenceValueButton img
@@ -72,7 +72,7 @@ span.bocAutoCompleteReferenceValueButton img
 
 span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueButton img
 {
-  background-position: -15px center; /*-1px for border*/
+  background-position: -15px center;
   background-color: #EFEFF0;
   filter: none;
   -moz-opacity: 1;
@@ -81,14 +81,14 @@ span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueBu
 
 span.bocAutoCompleteReferenceValueButton img:hover
 {
-  background-position: -30px center; /*-1px for border*/
-  background-color: #EAEEFE;
+  background-position: -30px center;
+  background-color: #DEECFC;
 }
 
 span.bocAutoCompleteReferenceValueButton img:active
 {
-  background-position: -45px center; /*-1px for border*/
-  background-color: #DFE5FB;
+  background-position: -45px center;
+  background-color: #C5E0FC;
 }
 
 body.msie7 span.bocAutoCompleteReferenceValueButton img
@@ -108,7 +108,7 @@ span.bocAutoCompleteReferenceValue a.command
 
 span.bocAutoCompleteReferenceValue a[href].command
 {
-  color: #334078;
+  color: #09457E;
   cursor: default;
 }
 
@@ -131,11 +131,8 @@ span.bocAutoCompleteReferenceValue span.body a.command
 
 span.bocAutoCompleteReferenceValue a[href].command:hover
 {
-  display: inline-block;
-  border-color: #334078;
-  border-width: 1px;
-  border-style: solid;
-  background-color: #EAEEFE;
+  border: 1px solid #7CB2E6;
+  background-color: #E5F0FC;
   padding: 0;
 }
 

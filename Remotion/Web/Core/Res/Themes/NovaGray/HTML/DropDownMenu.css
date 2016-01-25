@@ -3,8 +3,6 @@
 span.DropDownMenuContainer 
 {
   display: block;
-  color: #334078;
-  background-color: White;
   position: relative;
   font-family: sans-serif;
   width: 100%;
@@ -21,7 +19,7 @@ span.DropDownMenuSelect
 {
   display: block;
   position: relative;
-  border: solid 1px #717073;
+  border: solid 1px #AAAAAA;
   text-align: left;
   vertical-align: top;
   white-space: nowrap;
@@ -39,7 +37,7 @@ td.buttonCell span.DropDownMenuSelect
 span.DropDownMenuSelect.disabled
 {
   cursor: default;
-  border-color: Gray;
+  border: 1px solid Gray;
 }
 
 span.DropDownMenuSelect span
@@ -57,7 +55,7 @@ span.DropDownMenuSelect a.DropDownMenuLabel
   margin-left: 4px;
   border-style: none;
   background-color: Transparent;
-  color: buttontext;
+  color: Black;
   font-weight: bold;
   height: 1.2em !important;
 }
@@ -75,13 +73,23 @@ span.DropDownMenuSelect a.DropDownMenuButton
   top: 0px;
   bottom: 0;
   right: 0px;
-  border-left: solid 1px #717073;
+  border-left: solid 1px #AAAAAA;
   margin-right: 0;
 }
 
 span.DropDownMenuSelect a.DropDownMenuButton
 {
-  border-left-color: #717073;
+  border-left: 1px solid #AAAAAA;
+}
+
+span.DropDownMenuSelect:hover a.DropDownMenuButton
+{
+  border-left: solid 1px #7CB2E6;
+}
+
+span.DropDownMenuSelect:active a.DropDownMenuButton
+{
+  border-left: 1px solid #569CE0;
 }
 
 span.DropDownMenuSelect
@@ -95,19 +103,15 @@ span.DropDownMenuSelect
 span.DropDownMenuSelect:hover
 {
   background-image: url(../Image/ButtonBackgroundHover.gif);
-  background-color: #EAEEFE;
-  border: solid 1px #334078;
+  background-color: #DEECFC;
+  border: 1px solid #7CB2E6;
 }
 
 span.DropDownMenuSelect:active
 {
   background-image: url(../Image/ButtonBackgroundActive.gif);
-  background-color: #DFE5FB;
-}
-
-span.DropDownMenuSelect a.DropDownMenuButton:hover
-{
-  border-left: solid 1px #334078;
+  background-color: #C5E0FC;
+  border: 1px solid #569CE0;
 }
 
 span.DropDownMenuSelect.disabled:hover
@@ -174,7 +178,7 @@ div.DropDownMenuOptions
 ul.DropDownMenuOptions
 {
   font-size: 80%;
-  border: solid 1px #717073;
+  border: solid 1px #AAAAAA;
   left: 0;
   right: 0;
   margin: 0;
@@ -188,8 +192,8 @@ ul.DropDownMenuOptions
 
 ul.DropDownMenuOptions li.selected a
 {
-  background-color: #EAEEFE;
-  border: solid 1px #334078;
+  background-color: #E5F0FC;
+  border: solid 1px #7CB2E6;
   padding: 0px 2px 2px 2px;
 }
 
@@ -200,13 +204,13 @@ ul.DropDownMenuOptions li a
   margin: 1px;
   padding: 1px 3px 3px 1px;
   white-space: nowrap;
-  color: #334078;
+  color: #09457E;
 }
 
 ul.DropDownMenuOptions li a:hover
 {
-  background-color: #EAEEFE;
-  border: solid 1px #334078;
+  background-color: #E5F0FC;
+  border: solid 1px #7CB2E6;
   padding: 0px 2px 2px 0px;
 }
 

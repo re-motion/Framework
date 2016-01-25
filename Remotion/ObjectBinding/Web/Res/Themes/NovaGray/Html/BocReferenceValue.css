@@ -45,7 +45,7 @@ span.bocReferenceValue a.command
 
 span.bocReferenceValue a[href].command
 {
-  color: #334078;
+  color: #09457E;
   cursor: default;
 }
 
@@ -68,11 +68,8 @@ span.bocReferenceValue span.body a.command
 
 span.bocReferenceValue a[href].command:hover
 {
-  display: inline-block;
-  border-color: #334078;
-  border-width: 1px;
-  border-style: solid;
-  background-color: #EAEEFE;
+  border: 1px solid #7CB2E6;
+  background-color: #E5F0FC;
   padding: 0;
 }
 

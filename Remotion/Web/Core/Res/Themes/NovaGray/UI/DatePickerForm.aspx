@@ -27,14 +27,14 @@
 <body>
   <form id="Form" method="post" runat="server">
   <asp:Calendar ID="Calendar" runat="server" Height="16em" Width="14em" Font-Size="100%" BackColor="White"
-    DayNameFormat="FirstLetter" ForeColor="Black" BorderColor="#083779" CellPadding="4">
+    DayNameFormat="FirstLetter" ForeColor="Black" BorderColor="#569CE0" CellPadding="4">
     <TodayDayStyle ForeColor="Black" BackColor="#c8c8c8"></TodayDayStyle>
     <SelectorStyle BackColor="#c8c8c8"></SelectorStyle>
-    <NextPrevStyle ForeColor="White" VerticalAlign="Bottom"></NextPrevStyle>
+    <NextPrevStyle ForeColor="Black" VerticalAlign="Bottom"></NextPrevStyle>
     <DayHeaderStyle Font-Bold="True" BackColor="#c8c8c8"></DayHeaderStyle>
-    <SelectedDayStyle Font-Bold="True" ForeColor="White" BackColor="#4C69DE"></SelectedDayStyle>
-    <TitleStyle ForeColor="White" Font-Bold="True" BorderColor="Black" BackColor="#4C69DE"></TitleStyle>
-    <WeekendDayStyle BackColor="#EAEEFE"></WeekendDayStyle>
+    <SelectedDayStyle Font-Bold="True" Font-Underline="True" ForeColor="Black" BackColor="#C5E0FC"></SelectedDayStyle>
+    <TitleStyle ForeColor="Black" Font-Bold="True" BorderColor="Black" BackColor="#C5E0FC"></TitleStyle>
+    <WeekendDayStyle BackColor="#DEECFC"></WeekendDayStyle>
     <OtherMonthDayStyle ForeColor="Gray"></OtherMonthDayStyle>
   </asp:Calendar>
   </form>

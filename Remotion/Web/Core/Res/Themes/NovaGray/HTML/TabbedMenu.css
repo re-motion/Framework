@@ -20,7 +20,7 @@ td.tabbedSubMenuCell
 {
   background-color: White;
   padding: 0.3em;
-  border-bottom: solid 1px #717073;
+  border-bottom: solid 1px #AAAAAA;
 }
 
 td.tabbedSubMenuCell ul
@@ -38,13 +38,13 @@ td.tabbedMenuStatusCell
   color: Black;
   text-align: right;
   white-space: nowrap;
-  border-bottom: solid 1px #717073;
+  border-bottom: solid 1px #AAAAAA;
 }
 
 /* Main Menu Tabstrip */
 div.tabbedMainMenu div.tabStripTabsPane
 {
-  border-bottom: solid 1px #717073;
+  border-bottom: solid 1px #AAAAAA;
 }
 
 div.tabbedMainMenu span.tabStripTabWrapper
@@ -61,9 +61,9 @@ div.tabbedMainMenu span.tabStripTabSeparator
 div.tabbedMainMenu span.tabStripTab
 {
   padding-bottom: 0;
-  border-top: 1px solid #717073;
-  border-right: 1px solid #717073;
-  border-bottom: 1px solid #717073;
+  border-top: 1px solid #AAAAAA;
+  border-right: 1px solid #AAAAAA;
+  border-bottom: 1px solid #AAAAAA;
   border-left: none;
 }
 
@@ -93,8 +93,8 @@ div.tabbedMainMenu span.tabStripTab a:hover
 div.tabbedMainMenu span.tabStripTabSelected
 {
   padding-bottom: 0;
-  border-top: 1px solid #717073;
-  border-right: 1px solid #717073;
+  border-top: 1px solid #AAAAAA;
+  border-right: 1px solid #AAAAAA;
   border-bottom: 1px solid #fff;
 }
 
@@ -119,7 +119,7 @@ div.tabbedMainMenu span.tabStripTabSelected a:hover
 div.tabbedMainMenu span.tabStripTab.disabled a,
 div.tabbedMainMenu span.tabStripTab.disabled a:hover
 {
-  color: #717073;
+  color: #AAAAAA;
   background-color: #efefef;
   background-image: none;
   text-decoration: none;
@@ -163,7 +163,7 @@ div.tabbedSubMenu span.tabStripTabSeparator
 div.tabbedSubMenu span.tabStripTab,
 div.tabbedSubMenu span.tabStripTabSelected
 {
-  border-right: solid 1px #717073;
+  border-right: solid 1px #AAAAAA;
 
   padding-top: 0.1em;
   padding-bottom: 0.1em;
@@ -199,7 +199,7 @@ div.tabbedSubMenu span.tabStripTabSelected a
 div.tabbedSubMenu span.tabStripTab.disabled a,
 div.tabbedSubMenu span.tabStripTab.disabled a:hover
 {
-  color: #717073;
+  color: #AAAAAA;
   background-color: White;
   cursor: default;
 }

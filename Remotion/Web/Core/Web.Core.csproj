@@ -962,7 +962,9 @@
     <Content Include="Res\Themes\NovaGray\Image\TreeViewTPlus.gif" />
     <Content Include="Res\Themes\NovaGray\Image\TreeViewWhite.gif" />
     <Content Include="Res\Themes\NovaGray\Image\ValidationError.gif" />
-    <Content Include="Res\Themes\NovaGray\UI\DatePickerForm.aspx" />
+    <Content Include="Res\Themes\NovaGray\UI\DatePickerForm.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
