@@ -645,6 +645,7 @@
     <Content Include="Res\Themes\NovaGray\Image\MovePrevious.gif" />
     <Content Include="Res\Themes\NovaGray\Image\MovePreviousInactive.gif" />
     <Content Include="Res\Themes\NovaGray\Image\ReferenceValueErrorIndicator.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\RequiredField.gif" />
     <Content Include="Res\Themes\NovaGray\Image\SortAscending.gif" />
     <Content Include="Res\Themes\NovaGray\Image\SortDescending.gif" />
   </ItemGroup>

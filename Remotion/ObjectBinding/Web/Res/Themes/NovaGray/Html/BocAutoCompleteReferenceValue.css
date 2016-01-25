@@ -53,26 +53,26 @@ span.bocAutoCompleteReferenceValue span.embeddedOptionsMenu span.bocAutoComplete
 
 span.bocAutoCompleteReferenceValueButton:hover
 {
-  border: 1px solid #3C7FB1;
+  border: 1px solid #334078;
 }
 
 span.bocAutoCompleteReferenceValueButton img
 {
   height: 100%;
   width: 15px;
-  border: solid 1px white;
+  border: none;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background-image: url('../Image/AutoCompleteReferenceValueDropDownButtonFace.gif');
-  background-position: -1px center; /*-1px for border*/
+  background-position: 0 center; /*-1px for border*/
   background-repeat: no-repeat;
-  background-color: #F1F1F1;
+  background-color: #EAEEFE;
 }
 
 span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueButton img
 {
-  background-position: -16px center; /*-1px for border*/
+  background-position: -15px center; /*-1px for border*/
   background-color: #EFEFF0;
   filter: none;
   -moz-opacity: 1;
@@ -81,14 +81,14 @@ span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueBu
 
 span.bocAutoCompleteReferenceValueButton img:hover
 {
-  background-position: -31px center; /*-1px for border*/
-  background-color: #DCF8FF;
+  background-position: -30px center; /*-1px for border*/
+  background-color: #EAEEFE;
 }
 
 span.bocAutoCompleteReferenceValueButton img:active
 {
-  background-position: -46px center; /*-1px for border*/
-  background-color: #C4E0FC;
+  background-position: -45px center; /*-1px for border*/
+  background-color: #DFE5FB;
 }
 
 body.msie7 span.bocAutoCompleteReferenceValueButton img

@@ -23,14 +23,14 @@ button.webButton::-moz-focus-inner
 button.webButton:hover span.buttonBody
 {
   background-image: url(../Image/ButtonBackgroundHover.gif);
-  background-color: #DCF8FF;
-  border: solid 1px #3C7FB1;
+  background-color: #EAEEFE;
+  border: solid 1px #334078;
 }
 
 button.webButton:active span.buttonBody
 {
   background-image: url(../Image/ButtonBackgroundActive.gif);
-  background-color: #C4E0FC;
+  background-color: #DFE5FB;
 }
 
 button.webButton span.buttonBody
