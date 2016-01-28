@@ -20,6 +20,7 @@ using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -31,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
   [TestFixture]
   public class SqlStorageTypeInformationProviderTest
   {
-    private SqlStorageTypeInformationProvider _storageTypeInformationProvider;
+    private IStorageTypeInformationProvider _storageTypeInformationProvider;
 
     // We explicitly want an _int_ enum
     // ReSharper disable EnumUnderlyingTypeIsInt

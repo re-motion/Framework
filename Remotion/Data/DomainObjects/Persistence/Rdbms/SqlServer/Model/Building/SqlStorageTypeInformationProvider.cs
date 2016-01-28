@@ -38,7 +38,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     {
     }
 
-    public virtual IStorageTypeInformation GetStorageTypeForID (bool isStorageTypeNullable)
+    IStorageTypeInformation IStorageTypeInformationProvider.GetStorageTypeForID (bool isStorageTypeNullable)
+    {
+      return GetStorageTypeForID (isStorageTypeNullable);
+    }
+
+    protected virtual StorageTypeInformation GetStorageTypeForID (bool isStorageTypeNullable)
     {
       // storageType Type and dotNetType Type should always be a nullable dotNet types. 
       // Otherwise, special logic is needed to ensure that the ID-types are compatible when performing a LiNQ join.
@@ -53,7 +58,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
           new DefaultConverter (typeof (Guid?)));
     }
 
-    public virtual IStorageTypeInformation GetStorageTypeForSerializedObjectID (bool isStorageTypeNullable)
+    IStorageTypeInformation IStorageTypeInformationProvider.GetStorageTypeForSerializedObjectID (bool isStorageTypeNullable)
+    {
+      return GetStorageTypeForSerializedObjectID (isStorageTypeNullable);
+    }
+
+    protected virtual StorageTypeInformation GetStorageTypeForSerializedObjectID (bool isStorageTypeNullable)
     {
       return new StorageTypeInformation (
           typeof (string), 
@@ -65,7 +75,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
           new DefaultConverter (typeof (string)));
     }
 
-    public virtual IStorageTypeInformation GetStorageTypeForClassID (bool isStorageTypeNullable)
+    IStorageTypeInformation IStorageTypeInformationProvider.GetStorageTypeForClassID (bool isStorageTypeNullable)
+    {
+      return GetStorageTypeForClassID (isStorageTypeNullable);
+    }
+
+    protected virtual StorageTypeInformation GetStorageTypeForClassID (bool isStorageTypeNullable)
     {
       return new StorageTypeInformation (
           typeof (string),
@@ -77,7 +92,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
           new DefaultConverter (typeof (string)));
     }
 
-    public virtual IStorageTypeInformation GetStorageTypeForTimestamp (bool isStorageTypeNullable)
+    IStorageTypeInformation IStorageTypeInformationProvider.GetStorageTypeForTimestamp (bool isStorageTypeNullable)
+    {
+      return GetStorageTypeForTimestamp (isStorageTypeNullable);
+    }
+
+    protected virtual StorageTypeInformation GetStorageTypeForTimestamp (bool isStorageTypeNullable)
     {
       return new StorageTypeInformation (
           typeof (byte[]),
@@ -89,9 +109,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
           new DefaultConverter (typeof (byte[])));
     }
 
-    /// <inheritdoc/>
+    IStorageTypeInformation IStorageTypeInformationProvider.GetStorageType (PropertyDefinition propertyDefinition, bool forceNullable)
+    {
+      return GetStorageType (propertyDefinition, forceNullable);
+    }
+
+    /// <inheritdoc cref="IStorageTypeInformationProvider.GetStorageType(Remotion.Data.DomainObjects.Mapping.PropertyDefinition,bool)"/>
     /// <remarks>If overridden in a derived class, <see cref="GetStorageType (Type)"/> must also be overridden based on the same semantics.</remarks>
-    public virtual IStorageTypeInformation GetStorageType (PropertyDefinition propertyDefinition, bool forceNullable)
+    protected virtual StorageTypeInformation GetStorageType (PropertyDefinition propertyDefinition, bool forceNullable)
     {
       ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
 
@@ -103,11 +128,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       return storageType;
     }
 
-    /// <inheritdoc/>
+    IStorageTypeInformation IStorageTypeInformationProvider.GetStorageType (Type type)
+    {
+      return GetStorageType (type);
+    }
+
+    /// <inheritdoc cref="IStorageTypeInformationProvider.GetStorageType(System.Type)"/>
     /// <remarks>
     /// If overridden in a derived class, <see cref="GetStorageType (PropertyDefinition, bool)"/> must also be overridden based on the same semantics.
     /// </remarks>
-    public virtual IStorageTypeInformation GetStorageType (Type type)
+    protected virtual StorageTypeInformation GetStorageType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
