@@ -296,12 +296,15 @@ label.bocListContent
 }
 
 /*  Style applied to the anchor tags in BocList's data rows.  */
-tr.bocListDataRow td.bocListDataCell > a
+tr.bocListDataRow td.bocListDataCell a
 {
   display: inline-block;
   padding: 1px;
   border: 1px solid transparent;
+}
 
+tr.bocListDataRow td.bocListDataCell > a
+{
   /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
   position: relative;
 }
@@ -335,8 +338,9 @@ tr.bocListDataRow td.bocListDataCell > a::before
   right: 0;
   top: 0;
   bottom: 0;
+  /* IE 9 Selection fix*/
+  background-color: rgba(0,0,0,0);
 }
-
 
 /*  Style applied to the disabled anchor tags during hovering in BocList's data rows.  */
 tr.bocListDataRow td.bocListDataCell a.disabled:hover,
