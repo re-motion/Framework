@@ -77,7 +77,7 @@ div.bocListTableBlock
 /* Style applied to the list-area (table and navigation block) of the BocList if there is a menu block. */
 div.bocListTableBlock.hasMenuBlock
 {
-  border-right: 1px solid #c8c8c8;
+  border-right: 1px solid #AAAAAA;
 }
 
 /*  use JS to apply hasWidth and hasHeight depending on bocList-element on runtime */
@@ -232,6 +232,13 @@ th.bocListTitleCell a:hover
   background-color: #E5F0FC;
 }
 
+th.bocListTitleCell a:active
+{
+  color: #09457E;
+  border: solid 1px #569CE0;
+  background-color: #C5E0FC;
+}
+
 /*  Style applied to the cells in the BocList's odd and even data rows. */
 td.bocListDataCell
 {
@@ -241,7 +248,7 @@ td.bocListDataCell
   border-top: none;
   border-right: none;
   border-left: none;
-  border-bottom: 1px solid #c8c8c8;
+  border-bottom: 1px solid #C8C8C8;
 
   cursor: default;
 }
@@ -259,7 +266,7 @@ tr.bocListDataRow.odd td.bocListDataCell
 
 tr.bocListDataRow.even td.bocListDataCell
 {
-  background-color: #f4f4f4;
+  background-color: #F0F0F0;
 }
 
 /*  Style applied to the cells in the BocList's selected odd and even data rows. */
@@ -289,11 +296,14 @@ label.bocListContent
 }
 
 /*  Style applied to the anchor tags in BocList's data rows.  */
-tr.bocListDataRow td.bocListDataCell a
+tr.bocListDataRow td.bocListDataCell > a
 {
   display: inline-block;
   padding: 1px;
   border: 1px solid transparent;
+
+  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+  position: relative;
 }
 
 /*  Style applied to the anchor tags in BocList's selected data rows.  */
@@ -309,8 +319,28 @@ tr.bocListDataRow td.bocListDataCell a:hover
   background-color: #E5F0FC;
 }
 
+tr.bocListDataRow td.bocListDataCell a:active
+{
+  color: #09457E;
+  border: solid 1px #569CE0;
+  background-color: #C5E0FC;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+tr.bocListDataRow td.bocListDataCell > a::before
+{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+
 /*  Style applied to the disabled anchor tags during hovering in BocList's data rows.  */
-tr.bocListDataRow td.bocListDataCell a.disabled:hover
+tr.bocListDataRow td.bocListDataCell a.disabled:hover,
+tr.bocListDataRow td.bocListDataCell a.disabled:active
 {
   color: Gray;
   border: 1px solid transparent;

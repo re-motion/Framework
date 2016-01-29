@@ -95,7 +95,7 @@ span.DropDownMenuSelect:active a.DropDownMenuButton
 span.DropDownMenuSelect
 {
   background-image: url(../Image/ButtonBackground.gif);
-  background-color: #ECEEEC;
+  background-color: #E6E5E7;
   background-position: center top;
   background-repeat: repeat-x;
 }
@@ -190,13 +190,6 @@ ul.DropDownMenuOptions
   background-position: top left;
 }
 
-ul.DropDownMenuOptions li.selected a
-{
-  background-color: #E5F0FC;
-  border: solid 1px #7CB2E6;
-  padding: 0px 2px 2px 2px;
-}
-
 ul.DropDownMenuOptions li a
 {
   text-decoration: none;
@@ -205,13 +198,38 @@ ul.DropDownMenuOptions li a
   padding: 1px 3px 3px 1px;
   white-space: nowrap;
   color: #09457E;
+
+  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+  position: relative;
 }
 
+ul.DropDownMenuOptions li.selected a,
 ul.DropDownMenuOptions li a:hover
 {
-  background-color: #E5F0FC;
+  color: #09457E;
   border: solid 1px #7CB2E6;
-  padding: 0px 2px 2px 0px;
+  background-color: #E5F0FC;
+  padding: 0 2px 2px 0;
+}
+
+ul.DropDownMenuOptions li.selected a:active,
+ul.DropDownMenuOptions li a:active
+{
+  color: #09457E;
+  border: solid 1px #569CE0;
+  background-color: #C5E0FC;
+  padding: 0 2px 2px 0;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+ul.DropDownMenuOptions li a::before
+{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 ul.DropDownMenuOptions li a img
@@ -234,7 +252,8 @@ ul.DropDownMenuOptions li.DropDownMenuItemDisabled a
   color: gray;
 }
 
-ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:hover
+ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:hover,
+ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:active
 {
   background-color: transparent;
   border-style: none;

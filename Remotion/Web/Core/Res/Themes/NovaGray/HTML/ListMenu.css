@@ -18,6 +18,9 @@ span.listMenuItem a
 {
   color: #09457E;
   padding: 2px;
+
+  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+  position: relative;
 }
 
 span.listMenuItem a:hover
@@ -25,8 +28,28 @@ span.listMenuItem a:hover
   color: #09457E;
   padding: 1px;
   border-width: 1px;
-  background-color: #E5F0FC;
   border: solid 1px #7CB2E6;
+  background-color: #E5F0FC;
+}
+
+span.listMenuItem a:active
+{
+  color: #09457E;
+  padding: 1px;
+  border-width: 1px;
+  border: solid 1px #569CE0;
+  background-color: #C5E0FC;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+span.listMenuItem a::before
+{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 span.listMenuItemDisabled

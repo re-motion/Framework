@@ -137,39 +137,56 @@ div.tabbedMultiViewTabStrip span.tabStripTab
 
 div.tabbedMultiViewTabStrip span.tabStripTab:hover
 {
-  border-top-color: #7CB2E6;
-  border-left-color: #7CB2E6;
-  border-right-color: #7CB2E6;
+  border: solid 1px #7CB2E6;
+  border-bottom: solid 1px #AAAAAA;
   background-color: #E5F0FC;
 }
 
-div.tabbedMultiViewTabStrip span.tabStripTab a
-{
-  border: none;
-  background-color: transparent;
-  color: Black;
-  background-image: url(../Image/TabbedMultiViewTabBackground.gif);
-  background-position: center top;
-  background-repeat: repeat-x;
-}
-
-div.tabbedMultiViewTabStrip span.tabStripTab a:hover
-{
-  background-image: none;
-  background-color: #E5F0FC;
-}
-
+div.tabbedMultiViewTabStrip span.tabStripTab:active,
 div.tabbedMultiViewTabStrip span.tabStripTabSelected
 {
   border: solid 1px #569CE0;
   border-bottom: solid 1px #AAAAAA;
+  background-color: #E5F0FC;
 }
 
+div.tabbedMultiViewTabStrip span.tabStripTab a,
 div.tabbedMultiViewTabStrip span.tabStripTabSelected a
 {
   border: none;
-  background-color: #C5E0FC;
+  background-color: transparent;
   color: Black;
+  background-image: url(../Image/ButtonBackground.gif);
+  background-color: #E6E5E7;
+  background-position: center top;
+  background-repeat: repeat-x;
+
+  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+  position: relative;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab a:hover
+{
+  background-image: url(../Image/ButtonBackgroundHover.gif);
+  background-color: #E5F0FC;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab a:active,
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a
+{
+  background-image: url(../Image/ButtonBackgroundActive.gif);
+  background-color: #C5E0FC;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+div.tabbedMultiViewTabStrip span.tabStripTab a::before
+{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 /* Content area of the tab */

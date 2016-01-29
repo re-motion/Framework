@@ -943,7 +943,6 @@
     <Content Include="Res\Themes\NovaGray\Image\RequiredField.gif" />
     <Content Include="Res\Themes\NovaGray\Image\TabbedMenuTabBackground.gif" />
     <Content Include="Res\Themes\NovaGray\Image\TabbedMenuTabBackgroundHover.gif" />
-    <Content Include="Res\Themes\NovaGray\Image\TabbedMultiViewTabBackground.gif" />
     <Content Include="Res\Themes\NovaGray\Image\transparentbackground.gif" />
     <Content Include="Res\Themes\NovaGray\Image\TreeViewF.gif" />
     <Content Include="Res\Themes\NovaGray\Image\TreeViewFMinus.gif" />
