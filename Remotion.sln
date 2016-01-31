@@ -343,6 +343,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Validation.UnitTests", "Remotion\ObjectBinding\Web.Validation.UnitTests\ObjectBinding.Web.Validation.UnitTests.csproj", "{38429E11-0D23-41F0-8ED7-084C65EFDDC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Documentation", "SecurityManager\Documentation\SecurityManager.Documentation.csproj", "{F09B222C-EE32-4219-A817-8BF60980BEE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypePipe.Documentation", "TypePipe\Documentation\TypePipe.Documentation.csproj", "{CCF6D89F-A4A4-4A35-8324-B014F72C11BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Documentation", "Remotion\Documentation\Core.Documentation.csproj", "{63B34091-CDF0-4F92-9789-7816F86DEC4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1283,6 +1289,30 @@ Global
 		{38429E11-0D23-41F0-8ED7-084C65EFDDC9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{38429E11-0D23-41F0-8ED7-084C65EFDDC9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{38429E11-0D23-41F0-8ED7-084C65EFDDC9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F09B222C-EE32-4219-A817-8BF60980BEE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F09B222C-EE32-4219-A817-8BF60980BEE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F09B222C-EE32-4219-A817-8BF60980BEE4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F09B222C-EE32-4219-A817-8BF60980BEE4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F09B222C-EE32-4219-A817-8BF60980BEE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F09B222C-EE32-4219-A817-8BF60980BEE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F09B222C-EE32-4219-A817-8BF60980BEE4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F09B222C-EE32-4219-A817-8BF60980BEE4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CCF6D89F-A4A4-4A35-8324-B014F72C11BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCF6D89F-A4A4-4A35-8324-B014F72C11BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCF6D89F-A4A4-4A35-8324-B014F72C11BD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CCF6D89F-A4A4-4A35-8324-B014F72C11BD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CCF6D89F-A4A4-4A35-8324-B014F72C11BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCF6D89F-A4A4-4A35-8324-B014F72C11BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCF6D89F-A4A4-4A35-8324-B014F72C11BD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CCF6D89F-A4A4-4A35-8324-B014F72C11BD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{63B34091-CDF0-4F92-9789-7816F86DEC4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63B34091-CDF0-4F92-9789-7816F86DEC4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63B34091-CDF0-4F92-9789-7816F86DEC4E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{63B34091-CDF0-4F92-9789-7816F86DEC4E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{63B34091-CDF0-4F92-9789-7816F86DEC4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63B34091-CDF0-4F92-9789-7816F86DEC4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63B34091-CDF0-4F92-9789-7816F86DEC4E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{63B34091-CDF0-4F92-9789-7816F86DEC4E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1405,6 +1435,9 @@ Global
 		{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{38429E11-0D23-41F0-8ED7-084C65EFDDC9} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
+		{F09B222C-EE32-4219-A817-8BF60980BEE4} = {E1B271E4-22E6-4936-80A5-F0340AAB20A8}
+		{CCF6D89F-A4A4-4A35-8324-B014F72C11BD} = {2E38AD70-ECDF-4722-981C-7388C446A514}
+		{63B34091-CDF0-4F92-9789-7816F86DEC4E} = {5B3CB3F6-DE69-41D6-8BBC-EFF4932F0F7E}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1

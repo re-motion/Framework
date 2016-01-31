@@ -11,6 +11,8 @@
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Core\Core.Core.csproj">
       <CreateNuGetPackageWithSymbolServerSupport>True</CreateNuGetPackageWithSymbolServerSupport>
+    </ReleaseProjectFiles>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Documentation\Core.Documentation.csproj">
       <CreateDocumentationFile>True</CreateDocumentationFile>
     </ReleaseProjectFiles>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj"/>

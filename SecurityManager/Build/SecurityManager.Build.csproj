@@ -35,7 +35,9 @@
     <None Include="Customizations\Local\Configuration.targets" />
     <None Include="Customizations\Local\Shared.targets" />
     <None Include="Customizations\Overrides.targets" />
-    <None Include="Customizations\Projects.targets" />
+    <None Include="Customizations\Projects.targets">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Customizations\Properties.targets" />
     <None Include="Customizations\Server\Configuration.targets" />
     <None Include="Customizations\Server\Shared.targets" />
