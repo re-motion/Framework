@@ -21,7 +21,6 @@ namespace Remotion.Web
 {
   public class ResourceTheme
   {
-    [ImplementationFor (typeof (ResourceTheme), Lifetime = LifetimeKind.Singleton)]
     public class NovaBlue : ResourceTheme
     {
       public NovaBlue ()
@@ -30,6 +29,7 @@ namespace Remotion.Web
       }
     }
 
+    [ImplementationFor (typeof (ResourceTheme), Lifetime = LifetimeKind.Singleton)]
     public class NovaGray : ResourceTheme
     {
       public NovaGray ()

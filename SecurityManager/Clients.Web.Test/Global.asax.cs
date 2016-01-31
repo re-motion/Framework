@@ -40,7 +40,6 @@ namespace Remotion.SecurityManager.Clients.Web.Test
       //defaultServiceLocator.Register (typeof (Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory), typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory), LifetimeKind.Singleton);
       //defaultServiceLocator.RegisterMultiple<IOrganizationalStructureEditControlFormGridRowProvider<EditUserControl>> (() => new EditUserControlFormGridRowProvider());
       defaultServiceLocator.Register (typeof (IRenderingFeatures), typeof (WithDiagnosticMetadataRenderingFeatures), LifetimeKind.Singleton);
-      //defaultServiceLocator.Register (typeof (ResourceTheme), typeof (ResourceTheme.NovaGray), LifetimeKind.Singleton);
 
       ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
 

@@ -28,10 +28,10 @@ namespace Remotion.Web.UnitTests.Core.Resources
     public void GetUrl ()
     {
       var resourceUrlBuilderStub = MockRepository.GenerateStub<IResourcePathBuilder>();
-      var resourceUrl = new ThemedResourceUrl (resourceUrlBuilderStub, typeof (ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaBlue(), "theRelativeUrl.js");
+      var resourceUrl = new ThemedResourceUrl (resourceUrlBuilderStub, typeof (ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaGray(), "theRelativeUrl.js");
 
       resourceUrlBuilderStub
-          .Stub (_ => _.BuildAbsolutePath (typeof (ResourceUrlTest).Assembly, new[] { "Themes", "NovaBlue", "Html", "theRelativeUrl.js" }))
+          .Stub (_ => _.BuildAbsolutePath (typeof (ResourceUrlTest).Assembly, new[] { "Themes", "NovaGray", "Html", "theRelativeUrl.js" }))
           .Return ("expectedUrl");
 
       Assert.That (resourceUrl.GetUrl(), Is.EqualTo ("expectedUrl"));

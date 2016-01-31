@@ -34,7 +34,6 @@ namespace Remotion.Web.Test
     protected void Application_Start (Object sender, EventArgs e)
     {
       var defaultServiceLocator = DefaultServiceLocator.Create();
-      //defaultServiceLocator.RegisterSingle<ResourceTheme> (()=> new ResourceTheme.NovaGray());
       ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
       LogManager.Initialize();
 
