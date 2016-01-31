@@ -1,0 +1,225 @@
+/* Style applied to the BocReferenceValue. */
+
+span.bocReferenceValue
+{
+  width: 21.5em;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  min-height: 1.7em;
+}
+
+span.bocReferenceValue span.body
+{
+  display: block;
+}
+
+span.bocReferenceValue select
+{
+  width: 100%;
+  display: inline-block;
+  height: 1.68em;
+}
+
+body.msie10 span.bocReferenceValue select
+{
+  padding-top: 0.1em;
+}
+
+span.bocReferenceValue select.error
+{
+  background-image: url('../Image/ReferenceValueErrorIndicator.gif');
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+
+span.bocReferenceValue a.command
+{
+  display: inline-block;
+  margin-top: 1px;
+  margin-left: 1px;
+  border: solid 1px transparent;
+  height: 1.3em; 
+}
+
+span.bocReferenceValue a[href].command
+{
+  color: #09457E;
+  cursor: hand;
+  cursor: pointer;
+
+  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+  position: relative;
+}
+
+span.bocReferenceValue .disabled a.command,
+span.bocReferenceValue.disabled a.command
+{
+  color: gray;
+  cursor: default;
+}
+
+span.bocReferenceValue span.DropDownMenuContainer a.command
+{
+  margin-right: 17px;
+}
+
+span.bocReferenceValue span.body a.command
+{
+  margin-right: 1px;
+}
+
+span.bocReferenceValue a[href].command:hover
+{
+  color: Black;
+  border: 1px solid #7CB2E6;
+  background-color: #E5F0FC;
+  padding: 0;
+}
+
+span.bocReferenceValue a[href].command:active
+{
+  color: Black;
+  border: solid 1px #569CE0;
+  background-color: #C5E0FC;
+  padding: 0;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+span.bocReferenceValue a[href].command::before
+{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  /* IE 9 Selection fix*/
+  background-color: rgba(0,0,0,0);
+}
+
+span.bocReferenceValue a[href].command *
+{
+  cursor: pointer;
+}
+
+span.bocReferenceValue span.DropDownMenuContainer a.command span
+{
+  vertical-align: top;
+}
+
+span.bocReferenceValue.readOnly a.command img
+{
+  margin-right: 6px;
+}
+
+span.bocReferenceValue.disabled a.command img,
+span.bocReferenceValue .disabled a.command img
+{
+  -moz-opacity: 0.4;
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40), progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
+
+/* withoutOptionsMenu */
+span.bocReferenceValue span.content.withoutOptionsMenu
+{
+  right: 0;
+}
+
+/* embeddedOptionsMenu */
+span.bocReferenceValue span.DropDownMenuContainer span.DropDownMenuSelect,
+span.bocReferenceValue.disabled span.DropDownMenuContainer span.DropDownMenuSelect
+{
+  height: 1.7em;
+}
+
+span.bocReferenceValue.readOnly span.DropDownMenuContainer span.DropDownMenuSelect
+{
+  height: 1.6em;
+}
+
+span.bocReferenceValue span.content.embeddedOptionsMenu
+{
+  right: 1.3em; /* width of span.DropDownMenuButton + desired space between */
+}
+
+/* separateOptionsMenu */
+span.bocReferenceValue span.optionsMenu span.DropDownMenuSelect,
+span.bocReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect,
+span.bocReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect
+{
+  height: 1.5em;
+  top: 0;
+}
+
+body.webkit span.bocReferenceValue span.optionsMenu span.DropDownMenuSelect,
+body.webkit span.bocReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect,
+body.webkit span.bocReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect
+{
+  height: 1.45em;
+}
+
+span.bocReferenceValue span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
+span.bocReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
+span.bocReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel
+{
+  top: 0.15em;
+}
+
+body.mozilla span.bocReferenceValue span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
+body.mozilla span.bocReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
+body.mozilla span.bocReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel
+{
+  top: 0.1em;
+}
+
+span.bocReferenceValue span.content,
+span.bocReferenceValue.disabled span.content
+{
+  position: absolute;
+  width: auto;
+  display: inline-block;
+  top: 0;
+  left: 0;
+}
+
+span.bocReferenceValue.readOnly span.content
+{
+  position: static;
+}
+
+/* has Icon */
+span.bocReferenceValue a.command.hasIcon + span.content,
+span.bocReferenceValue.disabled a.command.hasIcon + span.content,
+span.bocReferenceValue.readOnly img > span.content
+{
+  left: 22px; /* width of a.command icon + desired space between */
+}
+
+span.bocReferenceValue a.command > img
+{
+  display: none;
+}
+
+span.bocReferenceValue a.command.hasIcon > img
+{
+  width: 16px;
+  height: 16px;
+  display: inline;
+}
+
+span.bocReferenceValue span.optionsMenu
+{
+  position: absolute;
+  display: inline-block;
+  right: 0;
+  top: 0;
+  width: 6.7em; /* Define width of span.optionsMenu */
+}
+
+span.bocReferenceValue span.content.separateOptionsMenu
+{
+  right: 7em; /* width of span.optionsMenu + desired space between */
+}

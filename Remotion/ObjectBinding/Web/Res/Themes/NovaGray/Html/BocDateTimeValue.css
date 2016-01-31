@@ -1,0 +1,164 @@
+/* Style applied to the BocDateTimeValue. */
+
+span.bocDateTimeValue,
+span.bocDateValue
+{
+  width: 15em;
+  height: 1.7em;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+span.bocDateTimeValue
+{
+  min-width: 14em;
+}
+
+span.bocDateValue
+{
+  min-width: 8em;
+}
+
+span.bocDateTimeValue.readOnly,
+span.bocDateValue.readOnly
+{
+  height: inherit;
+}
+
+body.msie7 span.bocDateTimeValue.readOnly,
+body.msie7 span.bocDateValue.readOnly
+{
+  height: auto;
+}
+
+span.bocDateTimeValue.disabled,
+span.bocDateValue.disabled
+{
+}
+
+span.bocDateInputWrapper
+{
+  position: absolute;
+  left: 0;
+  min-width: 4em;
+  width: auto;
+}
+
+span.bocTimeInputWrapper
+{
+  position: absolute;
+  right: 0;
+}
+
+span.bocDateTimeValue span.bocDate24HoursWithSeconds,
+span.bocDateTimeValue span.bocDate12HoursWithSeconds
+{
+  right: 9.0em;
+}
+
+span.bocDateTimeValue span.bocDate24Hours,
+span.bocDateTimeValue span.bocDate12Hours
+{
+  right: 7.4em;
+}
+
+span.bocDateValue span.bocDate24Hours,
+span.bocDateValue span.bocDate12Hours
+{
+  right: 2.2em;
+}
+
+span.bocDateInputWrapper input
+{
+  width: 100%;
+}
+
+span.bocTime24HoursWithSeconds input,
+span.bocTime12HoursWithSeconds input
+{
+  width: 6em;
+}
+
+span.bocTime24Hours input,
+span.bocTime12Hours input
+{
+  width: 4.5em;
+}
+
+a.bocPicker24HoursWithSeconds,
+a.bocPicker12HoursWithSeconds,
+a.bocPicker24Hours,
+a.bocPicker12Hours
+{
+  position: absolute;
+  top: 0.2em;
+}
+
+span.bocDateTimeValue a.bocPicker24HoursWithSeconds,
+span.bocDateTimeValue a.bocPicker12HoursWithSeconds
+{
+  right: 6.7em;
+}
+
+span.bocDateTimeValue a.bocPicker24Hours,
+span.bocDateTimeValue a.bocPicker12Hours
+{
+  right: 5.2em;
+}
+
+span.bocDateValue a.bocPicker24Hours,
+span.bocDateValue a.bocPicker12Hours
+{
+  right: 0;
+}
+
+span.bocDateTimeValue a img,
+span.bocDateValue a img
+{
+  border: 0;
+  text-decoration: none;
+}
+
+span.bocDateTimeValue.disabled a,
+span.bocDateValue.disabled a
+{
+  cursor: default;
+}
+
+span.bocDateTimeValue.disabled a img,
+span.bocDateValue.disabled a img
+{
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40), 
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
+
+span.bocDateInputWrapper input,
+span.bocTimeInputWrapper input
+{
+  height: 1.2em;
+  line-height: 1em;
+}
+
+body.msie7 span.bocDateInputWrapper input,
+body.msie7 span.bocTimeInputWrapper input,
+body.msie8 span.bocDateInputWrapper input,
+body.msie8 span.bocTimeInputWrapper input
+{
+  line-height: normal;
+}
+
+body.msie7 span.bocDate24Hours,
+body.msie7 span.bocDate12Hours,
+body.msie7 span.bocDate24HoursWithSeconds,
+body.msie7 span.bocDate12HoursWithSeconds,
+body.msie7 span.bocTime24Hours,
+body.msie7 span.bocTime12Hours,
+body.msie7 span.bocTime24HoursWithSeconds,
+body.msie7 span.bocTime12HoursWithSeconds
+{
+  top: -0.1em;
+}

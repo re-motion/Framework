@@ -23,10 +23,31 @@
 <head runat="server">
     <title>Tabbed multi-view theming test</title>
     <remotion:HtmlHeadContents runat="server" />
+  <style type="text/css">
+    html
+    {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    body
+    {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    form
+    {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-    <form id="form1" runat="server" style="height:100%;">
-    <div id="test">
+    <form id="form1" runat="server">
+    <div id="test" style="height:100%;">
     <remotion:TabbedMultiView ID="MyMultiView" runat="server">
       <TopControls>
         <h1>Tabbed multi-view theming test</h1>        

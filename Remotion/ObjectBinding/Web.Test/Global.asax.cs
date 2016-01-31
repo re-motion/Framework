@@ -64,11 +64,19 @@ namespace OBWTest
       LogManager.Initialize();
       PreferQuirksModeRendering = false;
       bool useClassicBlueTheme = false;
+      bool useNovaGrayTheme = false;
 
       if (useClassicBlueTheme)
       {
         DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
         defaultServiceLocator.Register (typeof (ResourceTheme), typeof (ResourceTheme.ClassicBlue), LifetimeKind.Singleton);
+        ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
+      }
+
+      if (useNovaGrayTheme)
+      {
+        DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
+        defaultServiceLocator.Register (typeof (ResourceTheme), typeof (ResourceTheme.NovaGray), LifetimeKind.Singleton);
         ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
       }
 

@@ -1,0 +1,92 @@
+﻿/* Style applied to the ListMenu. */
+
+td.listMenuRow
+{
+  padding-top: 1px;
+  padding-bottom: 1px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+span.listMenuItem
+{
+  margin-right: 10pt;
+}
+
+span.listMenuItem a
+{
+  color: #09457E;
+  padding: 2px;
+  cursor: hand;
+  cursor: pointer;
+
+  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+  position: relative;
+}
+
+span.listMenuItem a:hover
+{
+  color: Black;
+  padding: 1px;
+  border-width: 1px;
+  border: solid 1px #7CB2E6;
+  background-color: #E5F0FC;
+}
+
+span.listMenuItem a:active
+{
+  color: Black;
+  padding: 1px;
+  border-width: 1px;
+  border: solid 1px #569CE0;
+  background-color: #C5E0FC;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+span.listMenuItem a::before
+{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  /* IE 9 Selection fix*/
+  background-color: rgba(0,0,0,0);
+}
+
+span.listMenuItemDisabled
+{
+  margin-right: 10pt;
+}
+
+span.listMenuItemDisabled a
+{
+  padding: 2px;
+  color: gray;
+  cursor: default;
+}
+
+span.listMenuItem a,
+span.listMenuItemDisabled a
+{
+  display: inline-block;
+}
+
+span.listMenuItem a img,
+span.listMenuItemDisabled a img
+{
+  vertical-align: middle;
+}
+
+span.listMenuItem a span,
+span.listMenuItemDisabled a span
+{
+  vertical-align: middle;
+}
+
+span.listMenuItem a img + span,
+span.listMenuItemDisabled a img + span
+{
+  padding-left: 0.25em;
+}
