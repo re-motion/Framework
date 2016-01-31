@@ -18,6 +18,7 @@ using System;
 using System.Web;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
@@ -32,6 +33,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
     private IDatePickerButton _datePickerButton;
     private HttpContextBase _httpContext;
     private HtmlHelper _htmlHelper;
+    private CultureScope _cultureScope;
 
     [SetUp]
     public void SetUp ()
@@ -44,6 +46,14 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
       _datePickerButton.Stub (mock => mock.ContainerControlID).Return ("Container");
       _datePickerButton.Stub (mock => mock.TargetControlID).Return ("Target");
       _datePickerButton.Stub (mock => mock.ClientID).Return (_datePickerButton.ID);
+
+      _cultureScope = new CultureScope ("de-DE", "de-CH");
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      _cultureScope.Dispose();
     }
 
     [Test]
@@ -90,7 +100,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
           "document.getElementById ('{1}'), '{2}', '{3}', '{4}');return false;",
           _datePickerButton.ContainerControlID,
           _datePickerButton.TargetControlID,
-          "/fake/Remotion.Web/Themes/Fake/UI/DatePickerForm.aspx",
+          "/fake/Remotion.Web/Themes/Fake/UI/DatePickerForm.aspx?Culture=de-DE&UICulture=de-CH",
           "14em",
           "16em"
           );
