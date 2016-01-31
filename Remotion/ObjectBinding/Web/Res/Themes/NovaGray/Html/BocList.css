@@ -78,6 +78,22 @@ div.bocListNavigator img
   vertical-align: -0.1em;
 }
 
+div.bocListNavigator a[href]:hover img,
+div.bocListNavigator a[href]:active img
+{
+  -webkit-filter: brightness(0);
+  filter: brightness(0);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
+
+.msie div.bocListNavigator a[href]:hover,
+.msie div.bocListNavigator a[href]:active
+{
+  /* The image filter causes the grayscaled image to jump. */
+  padding-left: 2px;
+  padding-right: 0;
+}
+
 /*  Style applied to the BocList's menu block. */
 div.bocListMenuBlock
 {
@@ -262,6 +278,14 @@ th.bocListTitleCell a:active
   color: Black;
   border: solid 1px #569CE0;
   background-color: #C5E0FC;
+}
+
+th.bocListTitleCell a[href]:hover img,
+th.bocListTitleCell a[href]:active img
+{
+  -webkit-filter: brightness(0);
+  filter: brightness(0);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
 }
 
 /*  Style applied to the cells in the BocList's odd and even data rows. */
