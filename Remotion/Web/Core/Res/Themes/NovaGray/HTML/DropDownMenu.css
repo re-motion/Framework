@@ -102,6 +102,7 @@ span.DropDownMenuSelect
 
 span.DropDownMenuSelect:hover
 {
+  color: Black;
   background-image: url(../Image/ButtonBackgroundHover.gif);
   background-color: #DEECFC;
   border: 1px solid #7CB2E6;
@@ -184,7 +185,7 @@ ul.DropDownMenuOptions
   margin: 0;
   padding: 0;
   list-style: none;
-  background-color: #FFFFFF;
+  background-color: White;
   background-image: url('../Image/DropDownMenuItemIconPane.gif');
   background-repeat: repeat-y;
   background-position: top left;
@@ -192,12 +193,13 @@ ul.DropDownMenuOptions
 
 ul.DropDownMenuOptions li a
 {
+  cursor: default;
   text-decoration: none;
   display: block;
   margin: 1px;
   padding: 1px 3px 3px 1px;
   white-space: nowrap;
-  color: #09457E;
+  color: Black;
 
   /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
   position: relative;
@@ -206,7 +208,7 @@ ul.DropDownMenuOptions li a
 ul.DropDownMenuOptions li.selected a,
 ul.DropDownMenuOptions li a:hover
 {
-  color: #09457E;
+  color: Black;
   border: solid 1px #7CB2E6;
   background-color: #E5F0FC;
   padding: 0 2px 2px 0;
@@ -215,7 +217,7 @@ ul.DropDownMenuOptions li a:hover
 ul.DropDownMenuOptions li.selected a:active,
 ul.DropDownMenuOptions li a:active
 {
-  color: #09457E;
+  color: Black;
   border: solid 1px #569CE0;
   background-color: #C5E0FC;
   padding: 0 2px 2px 0;

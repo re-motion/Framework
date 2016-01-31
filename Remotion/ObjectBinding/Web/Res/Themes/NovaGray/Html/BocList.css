@@ -46,6 +46,31 @@ body.msie7 div.bocListNavigator > span > input
   vertical-align: middle;
 }
 
+div.bocListNavigator a
+{
+  padding: 2px;
+}
+
+div.bocListNavigator a[href]
+{
+  color: #09457E;
+}
+
+div.bocListNavigator a[href]:hover
+{
+  color: Black;
+  padding: 1px;
+  border: 1px solid #7CB2E6;
+  background-color: #E5F0FC;
+}
+
+div.bocListNavigator a:active
+{
+  color: Black;
+  border: solid 1px #569CE0;
+  background-color: #C5E0FC;
+}
+
 div.bocListNavigator img
 {
   padding-left: 0.35em;
@@ -226,7 +251,7 @@ th.bocListTitleCell a
 
 th.bocListTitleCell a:hover
 {
-  color: #09457E;
+  color: Black;
   padding: 1px;
   border: 1px solid #7CB2E6;
   background-color: #E5F0FC;
@@ -234,7 +259,7 @@ th.bocListTitleCell a:hover
 
 th.bocListTitleCell a:active
 {
-  color: #09457E;
+  color: Black;
   border: solid 1px #569CE0;
   background-color: #C5E0FC;
 }
@@ -317,14 +342,14 @@ tr.bocListDataRow.selected td.bocListDataCell a
 /*  Style applied to the anchor tags during hovering in BocList's data rows.  */
 tr.bocListDataRow td.bocListDataCell a:hover
 {
-  color: #09457E;
+  color: Black;
   border: 1px solid #7CB2E6;
   background-color: #E5F0FC;
 }
 
 tr.bocListDataRow td.bocListDataCell a:active
 {
-  color: #09457E;
+  color: Black;
   border: solid 1px #569CE0;
   background-color: #C5E0FC;
 }

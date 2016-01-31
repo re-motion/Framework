@@ -134,7 +134,7 @@ span.bocAutoCompleteReferenceValue span.body a.command
 
 span.bocAutoCompleteReferenceValue a[href].command:hover
 {
-  color: #09457E;
+  color: Black;
   border: 1px solid #7CB2E6;
   background-color: #E5F0FC;
   padding: 0;
@@ -142,7 +142,7 @@ span.bocAutoCompleteReferenceValue a[href].command:hover
 
 span.bocAutoCompleteReferenceValue a[href].command:active
 {
-  color: #09457E;
+  color: Black;
   border: solid 1px #569CE0;
   background-color: #C5E0FC;
   padding: 0;
