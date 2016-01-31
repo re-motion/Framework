@@ -154,7 +154,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var webButton = home.GetWebButton().ByID ("body_MyWebButton1Sync");
-      Assert.That (webButton.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.FromRgb (221, 221, 221)));
+      Assert.That (webButton.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.FromRgb (230, 229, 231)));
     }
 
     [Test]

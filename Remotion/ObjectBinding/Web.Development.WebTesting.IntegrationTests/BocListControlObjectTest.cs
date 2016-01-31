@@ -610,7 +610,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (cell1.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.White));
 
       var cell2 = bocList.GetRow (2).GetCell (1);
-      Assert.That (cell2.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.FromRgb(244, 244, 244)));
+      Assert.That (cell2.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.FromRgb(240, 240, 240)));
     }
 
     [Test]
