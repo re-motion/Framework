@@ -74,7 +74,7 @@ button.imageButton
 div.accessControlListContainer
 {
   width: 100%;
-  border-top: solid 2px black;
+  border-top: solid 2px #AAAAAA;
 }
 
 table.accessControlList
@@ -93,7 +93,7 @@ td.stateCombinationsButtons button
 td.stateCombinationsButtons, 
 td.stateCombinationsContainer
 {
-  border-right: solid 1px #d4d0c8;
+  border-right: solid 1px #AAAAAA;
   width: 13em;
 }
 
@@ -110,7 +110,7 @@ body.msie7 td.stateCombinationsButtons button.webButton
 td.accessControlEntriesButtons, 
 td.accessControlEntriesContainer
 {
-  border-left: solid 1px #d4d0c8;
+  border-left: solid 1px #AAAAAA;
   padding-left: 0.5em;
   padding-top: 0.5em;
 }
@@ -162,7 +162,7 @@ body.msie9 table.accessControlEntriesTable
 table.accessControlEntriesTable th.titleCellHorizontal, 
 table.accessControlEntriesTable th.titleCellVertical
 {
-  border-bottom: solid 1px black;
+  border-bottom: solid 1px #AAAAAA;
 }
 
 table.accessControlEntriesTable th.titleCellHorizontal
@@ -218,7 +218,7 @@ table.accessControlEntriesTable tr.odd
 
 table.accessControlEntriesTable tr.even
 {
-  background-color: #f4f4f4;
+  background-color: #F0F0F0;
 }
 
 table.accessControlEntriesTable td.conditionCell
@@ -232,8 +232,8 @@ table.accessControlEntriesTable td.conditionCell
 table.accessControlEntriesTable td.permissionCell
 {
   padding: 0.25em;
-  border-left: solid 1px #d4d0c8;
-  border-right: solid 1px #d4d0c8;
+  border-left: solid 1px #C8C8C8;
+  border-right: solid 1px #C8C8C8;
   text-align: center;
 }
 
