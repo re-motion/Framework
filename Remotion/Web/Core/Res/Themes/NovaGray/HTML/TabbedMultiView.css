@@ -160,9 +160,6 @@ div.tabbedMultiViewTabStrip span.tabStripTabSelected a
   background-color: #E6E5E7;
   background-position: center top;
   background-repeat: repeat-x;
-
-  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-  position: relative;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTab a:hover
@@ -176,19 +173,6 @@ div.tabbedMultiViewTabStrip span.tabStripTabSelected a
 {
   background-image: url(../Image/ButtonBackgroundActive.gif);
   background-color: #C5E0FC;
-}
-
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-div.tabbedMultiViewTabStrip span.tabStripTab a::before
-{
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  /* IE 9 Selection fix*/
-  background-color: rgba(0,0,0,0);
 }
 
 /* Content area of the tab */

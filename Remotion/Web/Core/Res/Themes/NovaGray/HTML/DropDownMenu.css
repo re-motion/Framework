@@ -192,7 +192,8 @@ ul.DropDownMenuOptions
 
 ul.DropDownMenuOptions li a
 {
-  cursor: default;
+  cursor: hand;
+  cursor: pointer;
   text-decoration: none;
   display: block;
   margin: 1px;
@@ -253,6 +254,7 @@ ul.DropDownMenuOptions li.DropDownMenuItemDisabled a
   border-style: none;
   padding: 1px 3px 3px 3px;
   color: gray;
+  cursor: default;
 }
 
 ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:hover,
@@ -261,7 +263,6 @@ ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:active
   background-color: transparent;
   border-style: none;
   padding: 1px 3px 3px 3px;
-  cursor: default;
 }
 
 

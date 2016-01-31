@@ -28,27 +28,66 @@
 
 *.tabStripTab a
 {
-  border: solid 1px #7CB2E6;
-  background-color: #E5F0FC;
-  color: Blue;
+  border: solid 1px #AAAAAA;
+  background-image: url(../Image/ButtonBackground.gif);
+  background-color: #E6E5E7;
+  color: Black;
   text-decoration: none;
   cursor: default;
+}
+
+*.tabStripTab a[href]
+{
+  color: Black;
 }
 
 *.tabStripTab a:hover
 {
+  color: Black;
+  border: solid 1px #7CB2E6;
+  background-image: url(../Image/ButtonBackgroundHover.gif);
   background-color: #E5F0FC;
-  cursor: pointer;
-  cursor: hand;
+  cursor: default;
+}
+
+*.tabStripTab a:active
+{
+  color: Black;
+  border: solid 1px #569CE0;
+  background-image: url(../Image/ButtonBackgroundActive.gif);
+  background-color: #C5E0FC;
+  cursor: default;
 }
 
 *.tabStripTabSelected a
 {
-  border: solid 1px #7CB2E6;
-  background-color: White;
-  color: Blue;
+  border: solid 1px #569CE0;
+  background-image: url(../Image/ButtonBackgroundActive.gif);
+  background-color: #C5E0FC;
+  color: Black;
   text-decoration: none;
   cursor: default;
+}
+
+*.tabStripTab a,
+*.tabStripTabSelected a
+{
+  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+  position: relative;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+*.tabStripTab a::before,
+*.tabStripTabSelected a::before
+{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  /* IE 9 Selection fix*/
+  background-color: rgba(0,0,0,0);
 }
 
 *.tabStripTab.disabled a,

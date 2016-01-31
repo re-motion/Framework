@@ -77,17 +77,18 @@ div.tabbedMainMenu span.tabStripTab a
   color: Black;
   font-size: 120%;
   font-weight: bold;
+  cursor: pointer;
+  cursor: hand;
 }
 
-div.tabbedMainMenu span.tabStripTab a:hover
+div.tabbedMainMenu span.tabStripTab a:hover,
+div.tabbedMainMenu span.tabStripTab a:active
 {
   background-color: #FEFFFF;
   background-image: url(../Image/TabbedMenuTabBackgroundHover.gif);
   background-repeat: repeat-x;
   background-position: top;
   color: Black;
-  cursor: pointer;
-  cursor: hand;
 }
 
 div.tabbedMainMenu span.tabStripTabSelected
@@ -101,27 +102,31 @@ div.tabbedMainMenu span.tabStripTabSelected
 div.tabbedMainMenu span.tabStripTabSelected a
 {
   border: none;
+  background: none;
   background-color: White;
   color: Black;
   font-size: 120%;
   font-weight: bold;
-}
-
-div.tabbedMainMenu span.tabStripTabSelected a:hover
-{
-  color: Black;
-  background-color: White;
-  text-decoration: underline;
   cursor: pointer;
   cursor: hand;
 }
 
+div.tabbedMainMenu span.tabStripTabSelected a:hover,
+div.tabbedMainMenu span.tabStripTabSelected a:active
+{
+  color: Black;
+  background: none;
+  background-color: White;
+  text-decoration: underline;
+}
+
 div.tabbedMainMenu span.tabStripTab.disabled a,
-div.tabbedMainMenu span.tabStripTab.disabled a:hover
+div.tabbedMainMenu span.tabStripTab.disabled a:hover,
+div.tabbedMainMenu span.tabStripTab.disabled a:active
 {
   color: #AAAAAA;
+  background: none;
   background-color: #efefef;
-  background-image: none;
   text-decoration: none;
   cursor: default;
 }
@@ -174,13 +179,27 @@ div.tabbedSubMenu span.tabStripTabSelected
 div.tabbedSubMenu span.tabStripTab a
 {
   border: none;
+  background: none;
   background-color: White;
   color: Black;
+  cursor: pointer;
+  cursor: hand;
 }
 
 div.tabbedSubMenu span.tabStripTab a:hover,
-div.tabbedSubMenu span.tabStripTabSelected a:hover
+div.tabbedSubMenu span.tabStripTabSelected a:hover,
+div.tabbedSubMenu span.tabStripTab a:active,
+div.tabbedSubMenu span.tabStripTabSelected a:active
 {
+  background-color: White;
+  color: Black;
+  text-decoration: underline;
+}
+
+div.tabbedSubMenu span.tabStripTabSelected a
+{
+  border: none;
+  background: none;
   background-color: White;
   color: Black;
   text-decoration: underline;
@@ -188,18 +207,12 @@ div.tabbedSubMenu span.tabStripTabSelected a:hover
   cursor: hand;
 }
 
-div.tabbedSubMenu span.tabStripTabSelected a
-{
-  border: none;
-  background-color: White;
-  color: Black;
-  text-decoration: underline;
-}
-
 div.tabbedSubMenu span.tabStripTab.disabled a,
-div.tabbedSubMenu span.tabStripTab.disabled a:hover
+div.tabbedSubMenu span.tabStripTab.disabled a:hover,
+div.tabbedSubMenu span.tabStripTab.disabled a:active
 {
   color: #AAAAAA;
+  background: none;
   background-color: White;
   cursor: default;
 }
