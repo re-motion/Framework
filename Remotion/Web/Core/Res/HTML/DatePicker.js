@@ -118,7 +118,8 @@ function DatePicker_Create(datePickerID, button, target, src, width, height)
 
   var frame = window.document.createElement("iframe");
   datePicker.append($(frame));
-  frame.src = src + '?DateValueField=' + target.value;
+  var queryStringConcatenator = src.indexOf ('?') === '-1' ? '?' : '&';
+  frame.src = src + queryStringConcatenator + 'DateValueField=' + target.value;
   frame.frameBorder = 'no';
   frame.scrolling = 'no';
   frame.style.width = '100%';

@@ -50,6 +50,9 @@ namespace Remotion.Web.UI.Controls
 /// </remarks>
 public class DatePickerPage : Page
 {
+  public const string CultureParameterName = "Culture";
+  public const string UICultureParameterName = "UICulture";
+
   protected HtmlHeadContents HtmlHeadContents;
   protected Calendar Calendar;
   /// <summary> Preserves the target control's ID during post backs. </summary>
@@ -59,7 +62,20 @@ public class DatePickerPage : Page
   /// <summary> Contains the date to be selected in the calendar. </summary>
   private HtmlInputHidden DateValueField;
 
-	override protected void OnInit(EventArgs e)
+  protected override void OnPreInit (EventArgs e)
+  {
+    base.OnPreInit (e);
+
+    var cultureName = Request.QueryString[CultureParameterName];
+    if (!string.IsNullOrWhiteSpace (cultureName))
+      Culture = cultureName.Trim();
+
+    var uiCultureName = Request.QueryString[UICultureParameterName];
+    if (!string.IsNullOrWhiteSpace (uiCultureName))
+      UICulture = uiCultureName.Trim();
+  }
+
+  override protected void OnInit(EventArgs e)
 	{
     if (Form == null)
       throw new HttpException (this.GetType().FullName + " does not initialize field 'Form'.");

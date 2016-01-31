@@ -15,12 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Globalization;
+using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
+using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 {
@@ -97,7 +100,14 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 
     public IResourceUrl GetDatePickerUrl ()
     {
-      return ResourceUrlFactory.CreateThemedResourceUrl (typeof (DatePickerPageRenderer), ResourceType.UI, c_datePickerPopupForm);
+      var datePickerUrl = string.Format (
+          "{0}?{1}={2}&{3}={4}",
+          c_datePickerPopupForm,
+          DatePickerPage.CultureParameterName,
+          CultureInfo.CurrentCulture.Name,
+          DatePickerPage.UICultureParameterName,
+          CultureInfo.CurrentUICulture.Name);
+      return ResourceUrlFactory.CreateThemedResourceUrl (typeof (DatePickerPageRenderer), ResourceType.UI, datePickerUrl);
     }
 
     public IResourceUrl GetResolvedImageUrl ()
