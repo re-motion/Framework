@@ -51,4 +51,8 @@
     </extends>
   </package>
 
+  <package id="Remotion.TypePipe.Documentation"
+           feature="Remotion.Core"
+           layer="Core"/>
+
 </packages>
