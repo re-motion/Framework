@@ -17,6 +17,8 @@ span.listMenuItem a
 {
   color: #09457E;
   padding: 2px;
+  cursor: hand;
+  cursor: pointer;
 
   /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
   position: relative;

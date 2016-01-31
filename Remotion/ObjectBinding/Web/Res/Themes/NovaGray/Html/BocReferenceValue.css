@@ -46,7 +46,8 @@ span.bocReferenceValue a.command
 span.bocReferenceValue a[href].command
 {
   color: #09457E;
-  cursor: default;
+  cursor: hand;
+  cursor: pointer;
 
   /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
   position: relative;
