@@ -1,0 +1,332 @@
+/* Style applied to the BocAutoCompleteReferenceValue. */
+
+span.bocAutoCompleteReferenceValue
+{
+  width: 21.5em;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  min-height: 1.7em;
+}
+
+span.bocAutoCompleteReferenceValue span.body
+{
+  display: block;
+}
+
+span.bocAutoCompleteReferenceValue input
+{
+  width: 100%;
+  display: inline-block;
+}
+
+span.bocAutoCompleteReferenceValue input.error
+{
+  background-image: url('../Image/AutoCompleteReferenceValueErrorIndicator.gif');
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+
+span.bocAutoCompleteReferenceValueButton
+{
+  display: inline-block;
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  border: solid 1px #AAAAAA;
+}
+
+span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueButton
+{
+  border: 1px solid Gray;
+}
+
+span.bocAutoCompleteReferenceValue span.embeddedOptionsMenu span.bocAutoCompleteReferenceValueButton
+{
+  right: 0.1em;
+  left: auto;
+}
+
+span.bocAutoCompleteReferenceValueButton:hover
+{
+  border: 1px solid #7CB2E6;
+}
+
+span.bocAutoCompleteReferenceValueButton img
+{
+  height: 100%;
+  width: 15px;
+  border: none;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background-image: url('../Image/AutoCompleteReferenceValueDropDownButtonFace.gif');
+  background-position: 0 center; /*-1px for border*/
+  background-repeat: no-repeat;
+  background-color: #EAEEFE;
+}
+
+span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueButton img
+{
+  background-position: -15px center;
+  background-color: #EFEFF0;
+  filter: none;
+  -moz-opacity: 1;
+  opacity: 1;
+}
+
+span.bocAutoCompleteReferenceValueButton img:hover
+{
+  background-position: -30px center;
+  background-color: #DEECFC;
+}
+
+span.bocAutoCompleteReferenceValueButton img:active
+{
+  background-position: -45px center;
+  background-color: #C5E0FC;
+}
+
+body.msie7 span.bocAutoCompleteReferenceValueButton img
+{
+  height: 1.3em;
+  width: 13px;
+}
+
+span.bocAutoCompleteReferenceValue a.command
+{
+  display: inline-block;
+  margin-top: 1px;
+  margin-left: 1px;
+  border: solid 1px transparent;
+  height: 1.3em; 
+}
+
+span.bocAutoCompleteReferenceValue a[href].command
+{
+  color: #09457E;
+  cursor: hand;
+  cursor: pointer;
+
+  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+  position: relative;
+}
+
+span.bocAutoCompleteReferenceValue.disabled a.command,
+span.bocAutoCompleteReferenceValue .disabled a.command
+{
+  color: gray;
+  cursor: default;
+}
+
+span.bocAutoCompleteReferenceValue span.DropDownMenuContainer a.command
+{
+  margin-right: 17px;
+}
+
+span.bocAutoCompleteReferenceValue span.body a.command
+{
+  margin-right: 1px;
+}
+
+span.bocAutoCompleteReferenceValue a[href].command:hover
+{
+  color: Black;
+  border: 1px solid #7CB2E6;
+  background-color: #E5F0FC;
+  padding: 0;
+}
+
+span.bocAutoCompleteReferenceValue a[href].command:active
+{
+  color: Black;
+  border: solid 1px #569CE0;
+  background-color: #C5E0FC;
+  padding: 0;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+span.bocAutoCompleteReferenceValue a[href].command::before
+{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  /* IE 9 Selection fix*/
+  background-color: rgba(0,0,0,0);
+}
+
+
+span.bocAutoCompleteReferenceValue a[href].command *
+{
+  cursor: pointer;
+}
+
+span.bocAutoCompleteReferenceValue span.DropDownMenuContainer a.command span
+{
+  vertical-align: top;
+}
+
+span.bocAutoCompleteReferenceValue.readOnly a.command img
+{
+  margin-right: 6px;
+}
+
+span.bocAutoCompleteReferenceValue.disabled a.command img,
+span.bocAutoCompleteReferenceValue .disabled a.command img
+{
+  -moz-opacity: 0.4;
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40), progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
+
+/* withoutOptionsMenu */
+span.bocAutoCompleteReferenceValue span.content.withoutOptionsMenu
+{
+  right: 0;
+}
+
+/* embeddedOptionsMenu */
+span.bocAutoCompleteReferenceValue span.DropDownMenuContainer span.DropDownMenuSelect,
+span.bocAutoCompleteReferenceValue.disabled span.DropDownMenuContainer span.DropDownMenuSelect
+{
+  height: 1.7em;
+}
+
+span.bocAutoCompleteReferenceValue.readOnly span.DropDownMenuContainer span.DropDownMenuSelect
+{
+  height: 1.6em;
+}
+
+span.bocAutoCompleteReferenceValue span.content.embeddedOptionsMenu
+{
+  right: 1.3em; /* width of span.DropDownMenuButton + desired space between */
+}
+
+/* separateOptionsMenu */
+span.bocAutoCompleteReferenceValue span.optionsMenu span.DropDownMenuSelect,
+span.bocAutoCompleteReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect,
+span.bocAutoCompleteReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect
+{
+  height: 1.5em;
+  top: 0;
+}
+
+body.webkit span.bocAutoCompleteReferenceValue span.optionsMenu span.DropDownMenuSelect,
+body.webkit span.bocAutoCompleteReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect,
+body.webkit span.bocAutoCompleteReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect
+{
+  height: 1.45em;
+}
+
+span.bocAutoCompleteReferenceValue span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
+span.bocAutoCompleteReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
+span.bocAutoCompleteReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel
+{
+  top: 0.15em;
+}
+
+body.mozilla span.bocAutoCompleteReferenceValue span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
+body.mozilla span.bocAutoCompleteReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
+body.mozilla span.bocAutoCompleteReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel
+{
+  top: 0.1em;
+}
+
+span.bocAutoCompleteReferenceValue span.content,
+span.bocAutoCompleteReferenceValue.disabled span.content
+{
+  position: absolute;
+  width: auto;
+  display: inline-block;
+  top: 0;
+  left: 0;
+  height: 1.65em; /* for Drop Down Button */
+  white-space: nowrap; /* for Drop Down Button */
+}
+
+span.bocAutoCompleteReferenceValue.readOnly span.content
+{
+  position: static;
+}
+
+/* has Icon */
+span.bocAutoCompleteReferenceValue a.command.hasIcon + span.content,
+span.bocAutoCompleteReferenceValue.disabled a.command.hasIcon + span.content,
+span.bocAutoCompleteReferenceValue.readOnly img > span.content
+{
+  left: 22px; /* width of a.command icon + desired space between */
+}
+
+span.bocAutoCompleteReferenceValue a.command > img
+{
+  display: none;
+}
+
+span.bocAutoCompleteReferenceValue a.command.hasIcon > img
+{
+  width: 16px;
+  height: 16px;
+  display: inline;
+}
+
+span.bocAutoCompleteReferenceValue span.optionsMenu
+{
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  right: 0;
+  width: 6.7em; /* Define width of span.optionsMenu */
+}
+
+span.bocAutoCompleteReferenceValue span.content.separateOptionsMenu
+{
+  right: 7em; /* width of span.optionsMenu + desired space between */
+}
+
+span.content.separateOptionsMenu span.bocAutoCompleteReferenceValueInput,
+span.content.withoutOptionsMenu span.bocAutoCompleteReferenceValueInput,
+span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
+{
+  display: inline-block;
+  width: auto;
+  position: absolute;
+  left: 0;
+  right: 24px;
+}
+
+body.webkit span.content.separateOptionsMenu span.bocAutoCompleteReferenceValueInput,
+body.webkit span.content.withoutOptionsMenu span.bocAutoCompleteReferenceValueInput,
+body.webkit span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
+{
+  right: 22px;
+}
+
+/* embeddedOptionsMenu */
+span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
+{
+  right: 26px;
+}
+
+span.bocAutoCompleteReferenceValueInput input
+{
+  height: 1.2em;
+  line-height: 1em;
+}
+
+body.msie7 span.bocAutoCompleteReferenceValueInput input,
+body.msie8 span.bocAutoCompleteReferenceValueInput input
+{
+  line-height: normal;
+}
+
+body.msie7 span.bocAutoCompleteReferenceValueInput
+{
+  top: -0.1em;
+}

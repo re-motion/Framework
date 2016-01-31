@@ -30,6 +30,14 @@ namespace Remotion.Web
       }
     }
 
+    public class NovaGray : ResourceTheme
+    {
+      public NovaGray ()
+        : base ("NovaGray")
+      {
+      }
+    }
+
     private readonly string _name;
 
     public ResourceTheme (string name)

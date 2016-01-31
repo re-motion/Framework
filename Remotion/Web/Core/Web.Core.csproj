@@ -915,6 +915,52 @@
   <ItemGroup>
     <None Include="FacetManifest.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Res\Themes\NovaGray\HTML\DatePicker.css" />
+    <Content Include="Res\Themes\NovaGray\HTML\DropDownMenu.css" />
+    <Content Include="Res\Themes\NovaGray\HTML\ExecutionEngine.css" />
+    <Content Include="Res\Themes\NovaGray\HTML\FormGrid.css" />
+    <Content Include="Res\Themes\NovaGray\HTML\ListMenu.css" />
+    <Content Include="Res\Themes\NovaGray\HTML\SingleView.css" />
+    <Content Include="Res\Themes\NovaGray\HTML\SmartPage.css" />
+    <Content Include="Res\Themes\NovaGray\HTML\Style.css" />
+    <Content Include="Res\Themes\NovaGray\HTML\StyleUtility.js" />
+    <Content Include="Res\Themes\NovaGray\HTML\TabbedMenu.css" />
+    <Content Include="Res\Themes\NovaGray\HTML\TabbedMultiView.css" />
+    <Content Include="Res\Themes\NovaGray\HTML\TabStrip.css" />
+    <Content Include="Res\Themes\NovaGray\HTML\TreeView.css" />
+    <Content Include="Res\Themes\NovaGray\HTML\WebButton.css" />
+    <Content Include="Res\Themes\NovaGray\Image\ButtonBackground.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\ButtonBackgroundActive.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\ButtonBackgroundHover.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\DatePicker.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\DropDownMenuButton.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\DropDownMenuItemIconPane.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\Help.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\RequiredField.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TabbedMenuTabBackground.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TabbedMenuTabBackgroundHover.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewF.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewFMinus.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewFPlus.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewI.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewL.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewLMinus.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewLPlus.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewMinus.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewPlus.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewR.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewRMinus.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewRPlus.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewT.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewTMinus.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewTPlus.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\TreeViewWhite.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\ValidationError.gif" />
+    <Content Include="Res\Themes\NovaGray\UI\DatePickerForm.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

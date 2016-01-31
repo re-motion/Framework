@@ -1,0 +1,182 @@
+/* Style applied to the TabStrip. */
+
+/* Applied to the tab strip itself.*/
+*.tabStrip
+{
+}
+
+*.tabStripTabsPane
+{
+}
+
+*.tabStripTabsPane.empty
+{
+}
+
+*.tabStripTabsPane ul
+{
+  margin: 0;
+  padding: 0px;
+  list-style: none;
+  width: 100%; 
+}
+
+*.tabStripTabsPane ul li
+{
+  display: inline;
+}
+
+*.tabStripTab a
+{
+  border: solid 1px #AAAAAA;
+  background-image: url(../Image/ButtonBackground.gif);
+  background-color: #E6E5E7;
+  color: Black;
+  text-decoration: none;
+  cursor: default;
+}
+
+*.tabStripTab a[href]
+{
+  color: Black;
+}
+
+*.tabStripTab a:hover
+{
+  color: Black;
+  border: solid 1px #7CB2E6;
+  background-image: url(../Image/ButtonBackgroundHover.gif);
+  background-color: #E5F0FC;
+  cursor: default;
+}
+
+*.tabStripTab a:active
+{
+  color: Black;
+  border: solid 1px #569CE0;
+  background-image: url(../Image/ButtonBackgroundActive.gif);
+  background-color: #C5E0FC;
+  cursor: default;
+}
+
+*.tabStripTabSelected a
+{
+  border: solid 1px #569CE0;
+  background-image: url(../Image/ButtonBackgroundActive.gif);
+  background-color: #C5E0FC;
+  color: Black;
+  text-decoration: none;
+  cursor: default;
+}
+
+*.tabStripTab a,
+*.tabStripTabSelected a
+{
+  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+  position: relative;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+*.tabStripTab a::before,
+*.tabStripTabSelected a::before
+{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  /* IE 9 Selection fix*/
+  background-color: rgba(0,0,0,0);
+}
+
+*.tabStripTab.disabled a,
+*.tabStripTab.disabled a:hover
+{
+  color: Gray;
+  background-color: #EFEFF0;
+  cursor: default;
+}
+
+*.tabStripTab.disabled img
+{
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
+
+/* Content area of the tab */
+*.tabStripTabsPane *.anchorBody
+{
+  padding-top: 2pt; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
+  padding-bottom: 2pt; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
+  padding-left: 2pt;
+  padding-right: 2pt;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+*.tabStripTabsPane *.anchorBody img
+{
+  vertical-align: text-bottom;
+}
+
+*.tabStripTabsPane ul *.tabStripTabWrapper
+{
+  float: left;
+  white-space: nowrap;
+}
+
+*.tabStripTabSeparator
+{
+  float: left;
+  width: 0.3em; /* Value must also be set in the Non-IE browsers section as left-margin of the tab. */
+  margin: 0px;
+}
+
+*.tabStripTab,
+*.tabStripTabSelected
+{
+  position: relative;
+  display: inline-block;
+}
+
+*.tabStripTabSeparator
+{
+  display: inline-block;
+}
+
+*.tabStripTabSeparator span,
+*.tabStripTabsPane a
+{
+  display: block;
+}
+
+*.tabStripTabsPane *.anchorBody
+{
+  display: block;
+}
+
+*.tabStripTabsPane *.last
+{
+  display: block;
+  clear: left;
+}
+
+*.tabStripTabsPane ul
+{
+  width: auto;
+}
+
+body.mozilla  *.tabStripTabSeparator span,
+body.webkit   *.tabStripTabSeparator span,
+body.opera    *.tabStripTabSeparator span
+{
+  padding-top: 1px; /* The padding used for the content span. */
+  padding-bottom: 1px; /* The padding used for the content span. */
+}
+
+*.tabStrip div.clearingPane
+{
+  clear: both;
+}

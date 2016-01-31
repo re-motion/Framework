@@ -1,0 +1,539 @@
+/* Style applied to the BocList. */
+
+div.bocList
+{
+  display: block;
+  position: relative;
+  zoom: 1;
+  height: auto;
+  width: auto; /* give it a value to make bocList scrollable, IE7 is buggy if you don't define height & width */
+}
+
+/* Style applied to the BocList in read-only mode. */
+.bocList.readOnly
+{
+}
+
+/*  Style applied to the BocList's navigator. */
+div.bocListNavigator
+{
+  white-space: nowrap;
+  overflow: hidden;
+  margin-top: 0.25em;
+}
+
+
+div.bocList.hasDimensions div.bocListNavigator
+{
+  position: absolute;
+  bottom: 0;
+}
+
+/*  Style applied to the BocList's navigator, page information. */
+div.bocListNavigator > span
+{
+  padding-right: 0.35em
+}
+
+div.bocListNavigator > span > input
+{
+  margin-left: 0.35em;
+  margin-right: 0.35em;
+}
+
+body.msie7 div.bocListNavigator > span > input
+{
+  vertical-align: middle;
+}
+
+div.bocListNavigator a
+{
+  padding: 2px;
+}
+
+div.bocListNavigator a[href]
+{
+  color: #09457E;
+}
+
+div.bocListNavigator a[href]:hover
+{
+  color: Black;
+  padding: 1px;
+  border: 1px solid #7CB2E6;
+  background-color: #E5F0FC;
+}
+
+div.bocListNavigator a:active
+{
+  color: Black;
+  border: solid 1px #569CE0;
+  background-color: #C5E0FC;
+}
+
+div.bocListNavigator img
+{
+  padding-left: 0.35em;
+  padding-right: 0.35em;
+  vertical-align: -0.1em;
+}
+
+div.bocListNavigator a[href]:hover img,
+div.bocListNavigator a[href]:active img
+{
+  -webkit-filter: brightness(0);
+  filter: brightness(0);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
+
+.msie div.bocListNavigator a[href]:hover,
+.msie div.bocListNavigator a[href]:active
+{
+  /* The image filter causes the grayscaled image to jump. */
+  padding-left: 2px;
+  padding-right: 0;
+}
+
+/*  Style applied to the BocList's menu block. */
+div.bocListMenuBlock
+{
+  display: block;
+  float: right;
+  width: 10em;
+}
+
+div.bocListMenuBlock > div
+{
+  margin-left: 0.5em;
+}
+
+/*  Style applied to the list-area (table and navigation block) of the BocList.  */
+div.bocListTableBlock
+{
+  display: block;
+  width: auto;
+  overflow: hidden;
+}
+
+/* Style applied to the list-area (table and navigation block) of the BocList if there is a menu block. */
+div.bocListTableBlock.hasMenuBlock
+{
+  border-right: 1px solid #AAAAAA;
+}
+
+/*  use JS to apply hasWidth and hasHeight depending on bocList-element on runtime */
+/*  Style applied to the list-area (table and navigation block) of the BocList when the BocList has a defined width or height.  */
+div.bocList.hasDimensions div.bocListTableBlock
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Style applied to the list-area (table and navigation block) of the BocList if there is a menu block. */
+div.bocList.hasDimensions div.bocListTableBlock.hasMenuBlock
+{
+  right: 10em; /* width of BocList menu block + some space */
+}
+
+/* Style applied to the div surrounding the BocList's table. */
+div.bocListTableContainer
+{
+  display: block;
+  width: auto;
+  height: auto;
+  background-color: #F0F0F0;
+}
+
+div.bocList.hasDimensions div.bocListTableBlock div.bocListTableContainer
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+/*  Style applied to the div surrounding the BocList's table when the BocList has a defined width or height and a navigation block.  */
+div.bocList.hasDimensions div.bocListTableBlock.hasNavigator div.bocListTableContainer
+{
+  bottom: 1.85em;
+}
+
+/* Style applied to the div allowing the BocList's table to scroll. */
+div.bocListTableScrollContainer
+{
+  display: block;
+  width: auto;
+  height: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: auto; /* IE9 bug fix, otherwise, the height would keep growing */
+  background-color: White;
+}
+
+div.bocList.hasDimensions div.bocListTableScrollContainer
+{
+  position: absolute;
+  top: 1.9em;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+  border-top: 1px solid #AAAAAA;
+}
+
+div.bocList.hasDimensions div.bocListTableScrollContainer table.bocListTable
+{
+  margin-top: -1.9em;
+  position: relative;
+}
+
+/* Style applied to the fake table head used for scrolling */
+div.bocListFakeTableHead
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding:0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/*  Style applied to the BocList's table's outer structure.  */
+table.bocListTable,
+div.bocListFakeTableHead table
+{
+  width: 100%;
+  border-collapse: collapse;
+  border-style: none;
+}
+
+body.msie7 table.bocListTable,
+body.msie7 div.bocListFakeTableHead table
+{
+  width: 98%;
+}
+
+/*  Style applied to the table head block of the BocList's table.  */
+tbody.bocListTableBody
+{
+}
+
+/*  Style applied to the cells in the BocList's title row.  */
+th.bocListTitleCell
+{
+  font-weight: bold;
+  text-align: left;
+
+  padding: 2px 2px 2px 2px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 1px solid #AAAAAA;
+  white-space: nowrap;
+}
+
+div.bocList.hasDimensions th.bocListTitleCell
+{
+  border-bottom: none;
+}
+
+body.msie7 th.bocListTitleCell *
+{
+  white-space: nowrap;
+}
+
+body.msie7 th.bocListTitleCell
+{
+  border-bottom-width: 1px;
+}
+
+th.bocListTitleCell span
+{
+  padding: 2px;
+}
+
+th.bocListTitleCell a
+{
+  color: #09457E;
+  padding: 2px;
+}
+
+th.bocListTitleCell a:hover
+{
+  color: Black;
+  padding: 1px;
+  border: 1px solid #7CB2E6;
+  background-color: #E5F0FC;
+}
+
+th.bocListTitleCell a:active
+{
+  color: Black;
+  border: solid 1px #569CE0;
+  background-color: #C5E0FC;
+}
+
+th.bocListTitleCell a[href]:hover img,
+th.bocListTitleCell a[href]:active img
+{
+  -webkit-filter: brightness(0);
+  filter: brightness(0);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
+
+/*  Style applied to the cells in the BocList's odd and even data rows. */
+td.bocListDataCell
+{
+  text-align: left;
+
+  padding: 2px 5px 2px 2px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 1px solid #C8C8C8;
+
+  cursor: default;
+}
+
+body.msie7 td.bocListDataCell
+{
+  position: relative;
+}
+
+/*  Style applied to the cells in the BocList's not-selected odd and even data rows. */
+tr.bocListDataRow.odd td.bocListDataCell
+{
+  background-color: White;
+}
+
+tr.bocListDataRow.even td.bocListDataCell
+{
+  background-color: #F0F0F0;
+}
+
+/*  Style applied to the cells in the BocList's selected odd and even data rows. */
+tr.bocListDataRow.selected td.bocListDataCell
+{
+  background-color: #C5E0FC;
+}
+
+
+/*  Style applied to the cell in the BocList's data row that contains the index. */
+th.bocListTitleCellIndex
+{
+  text-align: center;
+}
+
+/*  Style applied to the cell in the BocList's data row that contains the index. */
+td.bocListDataCellIndex
+{
+  text-align: center;
+}
+
+/*  Style applied to the non-anchor content in the data rows.  */
+span.bocListContent,
+label.bocListContent
+{
+  padding: 2px;
+}
+
+/*  Style applied to the anchor tags in BocList's data rows.  */
+tr.bocListDataRow td.bocListDataCell a
+{
+  display: inline-block;
+  padding: 1px;
+  border: 1px solid transparent;
+}
+
+tr.bocListDataRow td.bocListDataCell > a
+{
+  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+  position: relative;
+}
+
+/*  Style applied to the anchor tags in BocList's selected data rows.  */
+tr.bocListDataRow.selected td.bocListDataCell a
+{
+}
+
+/*  Style applied to the anchor tags during hovering in BocList's data rows.  */
+tr.bocListDataRow td.bocListDataCell a:hover
+{
+  color: Black;
+  border: 1px solid #7CB2E6;
+  background-color: #E5F0FC;
+}
+
+tr.bocListDataRow td.bocListDataCell a:active
+{
+  color: Black;
+  border: solid 1px #569CE0;
+  background-color: #C5E0FC;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+tr.bocListDataRow td.bocListDataCell > a::before
+{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  /* IE 9 Selection fix*/
+  background-color: rgba(0,0,0,0);
+}
+
+/*  Style applied to the disabled anchor tags during hovering in BocList's data rows.  */
+tr.bocListDataRow td.bocListDataCell a.disabled:hover,
+tr.bocListDataRow td.bocListDataCell a.disabled:active
+{
+  color: Gray;
+  border: 1px solid transparent;
+}
+
+/* Style applied to SPAN elements in command-enabled column cells */
+tr.bocListDataRow td.bocListDataCell span.CommandText
+{
+  vertical-align: middle;
+}
+
+
+/* Style to override the BocList's anchor style for drop down menus rendered inside a cell. */
+td.bocListDataCell div span.DropDownMenuSelect a.DropDownMenuLabel,
+td.bocListDataCell div span.DropDownMenuSelect:hover a.DropDownMenuLabel
+{
+  padding: 0;
+  border: none;
+  color: Black;
+  background-color: Transparent;
+}
+
+td.bocListDataCell div span.DropDownMenuSelect a.DropDownMenuButton
+{
+  padding: 0;
+  border: none;
+  border-left: solid 1px #AAAAAA;
+  background-color: Transparent;
+}
+
+td.bocListDataCell div span.DropDownMenuSelect:hover a.DropDownMenuButton
+{
+  border-left: solid 1px #7CB2E6;
+}
+
+td.bocListDataCell div span.DropDownMenuSelect:active a.DropDownMenuButton
+{
+  border-left: 1px solid #569CE0;
+}
+
+td.bocListDataCell span.DropDownMenuSelect.disabled a.DropDownMenuLabel,
+td.bocListDataCell span.DropDownMenuSelect.disabled:hover a.DropDownMenuLabel
+{
+  padding: 0px;
+  border: none;
+  color: Gray;
+  background-color: Transparent;
+}
+
+td.bocListDataCell span.DropDownMenuSelect.disabled a.DropDownMenuButton,
+td.bocListDataCell span.DropDownMenuSelect.disabled:hover a.DropDownMenuButton
+{
+  padding: 0px;
+  border: none;
+  border-left: solid 1px Gray;
+  background-color: Transparent;
+}
+
+td.bocListDataCell span.bocDateValue a,
+td.bocListDataCell span.bocDateValue a:hover,
+td.bocListDataCell span.bocDateTimeValue a,
+td.bocListDataCell span.bocDateTimeValue a:hover
+{
+  padding: 0px;
+  border-style: none;
+  background-color: Transparent;
+}
+
+/*  Style applied to the text providing the sorting order's index. */
+span.bocListSortingOrder
+{
+  color: Gray;
+  font-size: 80%;
+  font-weight: normal;
+}
+
+/*  Style applied to the BocList's list of available views. */
+select.bocListAvailableViewsListDropDownList
+{
+}
+
+/*  Style applied to the BocList's list of available views. */
+span.bocListAvailableViewsListLabel
+{
+}
+
+.bocList .validationRequiredMarker
+{
+  vertical-align: -0.3em;
+}
+
+.bocList .validationErrorMarker
+{
+  padding-top: 0.1em;
+}
+
+/*  Style applied to the validation messages, applied if the EditDetailsValidator has no style it self.  */
+div.bocListEditModeValidationMessage
+{
+  color: Red;
+}
+
+span.bocListEditableCell
+{
+  display: inline-block;
+  width: 100%
+}
+
+span.bocListEditableCell .validationErrorMarker
+{
+  float: left;
+}
+
+span.bocListEditableCell .control
+{
+  width: 100%; 
+  display: block;
+}
+
+span.bocListEditableCell .validationErrorMarker + .control
+{
+  padding-left: 14px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+span.bocListEditableCell .control > *
+{
+  width: 100%;
+  vertical-align: middle;
+}
+
+body.msie7 span.bocListEditableCell .validationErrorMarker
+{
+  margin-left: -9px;
+  position: absolute;
+}
+
+body.msie7 span.bocListEditableCell .validationErrorMarker + .control
+{
+  padding-left: 0px;
+}

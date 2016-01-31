@@ -1,0 +1,43 @@
+/* Style applied to the BocBooleanValue. */
+
+.bocBooleanValue
+{
+  margin-right: 0.5em;
+  vertical-align: middle;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.bocBooleanValue.readOnly
+{
+}
+
+.bocBooleanValue.disabled
+{
+  cursor: default;
+}
+
+.bocBooleanValue span
+{
+  vertical-align: middle;
+}
+
+.bocBooleanValue a
+{
+  padding : 0;
+  border: none;
+  background-color: transparent;
+}
+
+.bocBooleanValue img
+{
+  vertical-align: middle;
+  border: none;
+}
+
+.bocBooleanValue.disabled img
+{
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40), 
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}

@@ -25,10 +25,31 @@
 <head runat="server">
     <title>SingleView theming test</title>
     <remotion:HtmlHeadContents runat="server" />
+  <style type="text/css">
+    html
+    {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    body
+    {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    form
+    {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
+    <div style="height:100%;">
     <remotion:SingleView ID="MySingleView" runat="server">
       <TopControls>
         <h1>Single View Theming Test</h1>

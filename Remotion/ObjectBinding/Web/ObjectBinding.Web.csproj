@@ -658,6 +658,36 @@
   <ItemGroup>
     <None Include="FacetManifest.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Res\Themes\NovaGray\Html\BocAutoCompleteReferenceValue.css" />
+    <Content Include="Res\Themes\NovaGray\Html\BocAutoCompleteReferenceValue.jquery.css" />
+    <Content Include="Res\Themes\NovaGray\Html\BocBooleanValue.css" />
+    <Content Include="Res\Themes\NovaGray\Html\BocCheckBox.css" />
+    <Content Include="Res\Themes\NovaGray\Html\BocDateTimeValue.css" />
+    <Content Include="Res\Themes\NovaGray\Html\BocEnumValue.css" />
+    <Content Include="Res\Themes\NovaGray\Html\BocList.css" />
+    <Content Include="Res\Themes\NovaGray\Html\BocMultilineTextValue.css" />
+    <Content Include="Res\Themes\NovaGray\Html\BocReferenceValue.css" />
+    <Content Include="Res\Themes\NovaGray\Html\BocTextValue.css" />
+    <Content Include="Res\Themes\NovaGray\Image\AutoCompleteReferenceValueDropDownButtonFace.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\AutoCompleteReferenceValueErrorIndicator.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\AutoCompleteReferenceValueRequestInProgressIndicator.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\CheckBoxFalse.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\CheckBoxNull.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\CheckBoxTrue.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\MoveFirst.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\MoveFirstInactive.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\MoveLast.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\MoveLastInactive.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\MoveNext.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\MoveNextInactive.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\MovePrevious.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\MovePreviousInactive.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\ReferenceValueErrorIndicator.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\RequiredField.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\SortAscending.gif" />
+    <Content Include="Res\Themes\NovaGray\Image\SortDescending.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

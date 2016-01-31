@@ -66,6 +66,20 @@
     <Reference Include="System.Web.Services" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="res\Themes\NovaGray\Html\Style.css" />
+    <Content Include="res\Themes\NovaGray\Image\ApplyButton.gif" />
+    <Content Include="res\Themes\NovaGray\Image\CancelButton.gif" />
+    <Content Include="res\Themes\NovaGray\Image\Collapse.gif" />
+    <Content Include="res\Themes\NovaGray\Image\DeleteItem.gif" />
+    <Content Include="res\Themes\NovaGray\Image\EditItem.gif" />
+    <Content Include="res\Themes\NovaGray\Image\Expand.gif" />
+    <Content Include="res\Themes\NovaGray\Image\HierarchyThis.gif" />
+    <Content Include="res\Themes\NovaGray\Image\HierarchyThisAndChildren.gif" />
+    <Content Include="res\Themes\NovaGray\Image\HierarchyThisAndParent.gif" />
+    <Content Include="res\Themes\NovaGray\Image\HierarchyThisAndParentAndChildren.gif" />
+    <Content Include="res\Themes\NovaGray\Image\PermissionDenied.gif" />
+    <Content Include="res\Themes\NovaGray\Image\PermissionGranted.gif" />
+    <Content Include="res\Themes\NovaGray\Image\PermissionUndefined.gif" />
     <None Include="Default.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </None>

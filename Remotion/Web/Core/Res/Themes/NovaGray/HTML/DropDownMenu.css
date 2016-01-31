@@ -1,0 +1,284 @@
+/* Style applied to the DropDownMenu. */
+
+span.DropDownMenuContainer 
+{
+  display: block;
+  position: relative;
+  font-family: sans-serif;
+  width: 100%;
+  min-width: 18px;
+}
+
+tr.bocListDataRow span.DropDownMenuContainer,
+tr.bocListDataRowSelected span.DropDownMenuContainer
+{
+  display: inline-block;
+}
+
+span.DropDownMenuSelect
+{
+  display: block;
+  position: relative;
+  border: solid 1px #AAAAAA;
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+  cursor: default;
+  line-height: 1.25em;
+  height: 1.4em;
+}
+
+td.buttonCell span.DropDownMenuSelect
+{
+  /* only when display just arrow */
+  display: inline-block;
+}
+
+span.DropDownMenuSelect.disabled
+{
+  cursor: default;
+  border: 1px solid Gray;
+}
+
+span.DropDownMenuSelect span
+{
+  left: 0;
+  vertical-align: middle;
+}
+
+span.DropDownMenuSelect a.DropDownMenuLabel
+{
+  position: relative;
+  left: 0.1em;
+  top: 0.1em;
+  margin-right: 19px;
+  margin-left: 4px;
+  border-style: none;
+  background-color: Transparent;
+  color: Black;
+  font-weight: bold;
+  height: 1.2em !important;
+}
+
+span.DropDownMenuContainer span.disabled a.DropDownMenuLabel
+{
+  color: Gray;
+}
+
+span.DropDownMenuSelect a.DropDownMenuButton
+{
+  display: inline-block;
+  position: absolute;
+  left: auto;
+  top: 0px;
+  bottom: 0;
+  right: 0px;
+  border-left: solid 1px #AAAAAA;
+  margin-right: 0;
+}
+
+span.DropDownMenuSelect a.DropDownMenuButton
+{
+  border-left: 1px solid #AAAAAA;
+}
+
+span.DropDownMenuSelect:hover a.DropDownMenuButton
+{
+  border-left: solid 1px #7CB2E6;
+}
+
+span.DropDownMenuSelect:active a.DropDownMenuButton
+{
+  border-left: 1px solid #569CE0;
+}
+
+span.DropDownMenuSelect
+{
+  background-image: url(../Image/ButtonBackground.gif);
+  background-color: #E6E5E7;
+  background-position: center top;
+  background-repeat: repeat-x;
+}
+
+span.DropDownMenuSelect:hover
+{
+  color: Black;
+  background-image: url(../Image/ButtonBackgroundHover.gif);
+  background-color: #DEECFC;
+  border: 1px solid #7CB2E6;
+}
+
+span.DropDownMenuSelect:active
+{
+  background-image: url(../Image/ButtonBackgroundActive.gif);
+  background-color: #C5E0FC;
+  border: 1px solid #569CE0;
+}
+
+span.DropDownMenuSelect.disabled:hover
+{
+  background-image: url(../Image/ButtonBackground.gif);
+  background-color: #ECEEEC;
+  border: solid 1px Gray;
+}
+
+span.DropDownMenuSelect a.DropDownMenuButton:first-child
+{
+  width: 100%;
+  text-align: center;
+}
+
+span.DropDownMenuSelect.disabled a.DropDownMenuButton
+{
+  cursor: default;
+  border-left: solid 1px Gray;
+}
+
+/*
+span.DropDownMenuSelect a.DropDownMenuButton img:hover
+{
+  background-position: center;
+  background-image: url('../Image/DropDownMenuButton.gif');
+}
+*/
+span.DropDownMenuSelect a.DropDownMenuButton img
+{
+  height: 100%;
+  width: 16px;
+  background-position: 0 center;
+  background-image: url('../Image/DropDownMenuButton.gif');
+  background-repeat: no-repeat;
+}
+
+span.DropDownMenuSelect.disabled a.DropDownMenuButton img
+{
+  background-position: -16px center;
+  filter: none;
+  opacity: 1;
+}
+
+body.msie7 span.DropDownMenuSelect a.DropDownMenuButton img
+{
+  height: 1.6em;
+}
+
+span.DropDownMenuSelect img
+{
+  border: 0;
+}
+
+div.DropDownMenuOptions
+{
+  z-index: 2147483647;
+  position: absolute;
+  right: 0;
+  margin: 0;
+  padding: 0;
+}
+
+ul.DropDownMenuOptions
+{
+  border: solid 1px #AAAAAA;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: White;
+  background-image: url('../Image/DropDownMenuItemIconPane.gif');
+  background-repeat: repeat-y;
+  background-position: top left;
+}
+
+ul.DropDownMenuOptions li a
+{
+  cursor: hand;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  margin: 1px;
+  padding: 1px 3px 3px 1px;
+  white-space: nowrap;
+  color: Black;
+
+  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+  position: relative;
+}
+
+ul.DropDownMenuOptions li.selected a,
+ul.DropDownMenuOptions li a:hover
+{
+  color: Black;
+  border: solid 1px #7CB2E6;
+  background-color: #E5F0FC;
+  padding: 0 2px 2px 0;
+}
+
+ul.DropDownMenuOptions li.selected a:active,
+ul.DropDownMenuOptions li a:active
+{
+  color: Black;
+  border: solid 1px #569CE0;
+  background-color: #C5E0FC;
+  padding: 0 2px 2px 0;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+ul.DropDownMenuOptions li a::before
+{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  /* IE 9 Selection fix*/
+  background-color: rgba(0,0,0,0);
+}
+
+ul.DropDownMenuOptions li a img
+{
+  border: 0;
+  margin-right: 15px;
+  vertical-align: middle;
+}
+
+ul.DropDownMenuOptions li a span
+{
+  display: inline-block;
+  padding: 2px 0px;
+}
+
+ul.DropDownMenuOptions li.DropDownMenuItemDisabled a
+{
+  border-style: none;
+  padding: 1px 3px 3px 3px;
+  color: gray;
+  cursor: default;
+}
+
+ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:hover,
+ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:active
+{
+  background-color: transparent;
+  border-style: none;
+  padding: 1px 3px 3px 3px;
+}
+
+
+/* style separator */
+span.DropDownMenuSeparator
+{
+  display: block;
+  line-height: 1px;
+  margin-left: 30px;
+  border: 0;
+  background-color: #AAAAAA;
+}
+
+span.DropDownMenuItemIcon
+{
+  margin-right: 15px;
+  width: 16px;
+  padding: 0px;
+}
