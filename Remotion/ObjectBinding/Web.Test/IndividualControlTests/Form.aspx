@@ -27,7 +27,7 @@
         <obwt:NavigationTabs ID="NavigationTabs" runat="server" />
         <asp:PlaceHolder ID="ButtonPlaceHolder" runat="server">
           <div>
-            <remotion:WebButton ID="PostBackButton" runat="server" Text="Post Back"/>&nbsp;
+            <remotion:WebButton ID="PostBackButton" runat="server" Text="Post Back" Enabled="false" Icon-Url="http://mk-pc:60400/trunk/ObjectBinding.Web.Test/Images/Remotion.ObjectBinding.Sample.Person.gif"/>&nbsp;
             <remotion:WebButton ID="ValidateButton" runat="server" Width="10em" Text="Validate" />&nbsp;
             <remotion:WebButton ID="SaveButton" runat="server" Width="10em" Text="Save" />&nbsp;
             <remotion:WebButton ID="SaveAndRestartButton" runat="server" Width="10em" Text="Save &&amp;amp; Restart" />&nbsp;
