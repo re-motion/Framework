@@ -178,29 +178,38 @@ div.tabbedMultiViewTabStrip span.tabStripTabSelected a
 /* Content area of the tab */
 div.tabbedMultiViewTabStrip a span.anchorBody
 {
-  padding-top: 0.15em;
-  padding-bottom: 0.20em; 
+  padding-top: 0.2em;
+  padding-bottom: 0.2em; 
   padding-left: 0.5em;
   padding-right: 0.5em;
+}
+
+.msie9 div.tabbedMultiViewTabStrip a span.anchorBody
+{
+  padding-top: 0.25em;
+  padding-bottom: 0.15em;
+}
+
+div.tabbedMultiViewTabStrip a span.anchorBody img
+{
+  vertical-align: -0.3em;
+}
+
+.msie9 div.tabbedMultiViewTabStrip a span.anchorBody img
+{
+  vertical-align: top;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTabSeparator span
 {
   margin-bottom: 1px; /* The width of the top-border of the tabs. */
   padding-top: 0.2em; /* The padding used for the content span. */
-  padding-bottom: 0.15em; /* The padding used for the content span. */
+  padding-bottom: 0.2em; /* The padding used for the content span. */
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTab span.anchorBody,
 div.tabbedMultiViewTabStrip span.tabStripTabSelected span.anchorBody,
 div.tabbedMultiViewTabStrip span.tabStripTabSeparator span
-{
-  height: 1.15em;
-}
-
-body.webkit div.tabbedMultiViewTabStrip span.tabStripTab span.anchorBody,
-body.webkit div.tabbedMultiViewTabStrip span.tabStripTabSelected span.anchorBody,
-body.webkit div.tabbedMultiViewTabStrip span.tabStripTabSeparator span
 {
   height: 1.2em;
 }
