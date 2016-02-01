@@ -215,9 +215,20 @@ div.tabbedMultiViewTabStrip a span.anchorBody
   padding-right: 0.5em;
 }
 
+.msie9 div.tabbedMultiViewTabStrip a span.anchorBody
+{
+  padding-top: 0.25em;
+  padding-bottom: 0.15em;
+}
+
 div.tabbedMultiViewTabStrip a span.anchorBody img
 {
   vertical-align: -0.3em;
+}
+
+.msie9 div.tabbedMultiViewTabStrip a span.anchorBody img
+{
+  vertical-align: top;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTabSeparator span
