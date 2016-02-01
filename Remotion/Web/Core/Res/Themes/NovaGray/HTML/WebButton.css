@@ -56,3 +56,21 @@ button.webButton:active span.buttonBody
   background-color: #C5E0FC;
   border: 1px solid #569CE0;
 }
+
+button.webButton[disabled] span.buttonBody,
+button.webButton[disabled]:hover span.buttonBody,
+button.webButton[disabled].disabled:active span.buttonBody
+{
+  color: Gray;
+  border: solid 1px Gray;
+  background: none;
+  background-color: #EFEFF0;
+  cursor: default;
+}
+
+button.webButton[disabled] span.buttonBody img
+{
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
