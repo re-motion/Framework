@@ -236,6 +236,7 @@ th.bocListTitleCell
   border-right: none;
   border-left: none;
   border-bottom: 1px solid #AAAAAA;
+  background-color: #F0F0F0;
   white-space: nowrap;
 }
 
