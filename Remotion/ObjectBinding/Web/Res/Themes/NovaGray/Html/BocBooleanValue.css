@@ -14,7 +14,6 @@
 
 .bocBooleanValue.disabled
 {
-  cursor: default;
 }
 
 .bocBooleanValue span
@@ -27,6 +26,11 @@
   padding : 0;
   border: none;
   background-color: transparent;
+}
+
+.bocBooleanValue a[href]
+{
+  cursor: default;
 }
 
 .bocBooleanValue img

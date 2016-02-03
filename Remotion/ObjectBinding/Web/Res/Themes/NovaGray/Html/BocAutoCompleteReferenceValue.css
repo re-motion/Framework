@@ -74,9 +74,9 @@ span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueBu
 {
   background-position: -15px center;
   background-color: #EFEFF0;
-  filter: none;
-  -moz-opacity: 1;
-  opacity: 1;
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
 }
 
 span.bocAutoCompleteReferenceValueButton img:hover
@@ -162,12 +162,6 @@ span.bocAutoCompleteReferenceValue a[href].command::before
   background-color: rgba(0,0,0,0);
 }
 
-
-span.bocAutoCompleteReferenceValue a[href].command *
-{
-  cursor: pointer;
-}
-
 span.bocAutoCompleteReferenceValue span.DropDownMenuContainer a.command span
 {
   vertical-align: top;
@@ -181,9 +175,9 @@ span.bocAutoCompleteReferenceValue.readOnly a.command img
 span.bocAutoCompleteReferenceValue.disabled a.command img,
 span.bocAutoCompleteReferenceValue .disabled a.command img
 {
-  -moz-opacity: 0.4;
   opacity: 0.4;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40), progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
 }
 
 /* withoutOptionsMenu */

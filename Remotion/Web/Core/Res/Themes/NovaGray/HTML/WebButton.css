@@ -3,7 +3,8 @@
 button.webButton
 {
   background-color: Transparent;
-  cursor: default !important;
+  cursor: hand;
+  cursor: pointer;
   text-decoration: none !important;
   border: none;
   position: relative;
@@ -59,7 +60,7 @@ button.webButton:active span.buttonBody
 
 button.webButton[disabled] span.buttonBody,
 button.webButton[disabled]:hover span.buttonBody,
-button.webButton[disabled].disabled:active span.buttonBody
+button.webButton[disabled]:active span.buttonBody
 {
   color: Gray;
   border: solid 1px Gray;
