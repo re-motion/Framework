@@ -39,6 +39,8 @@
 *.tabStripTab a[href]
 {
   color: Black;
+  cursor: hand;
+  cursor: pointer;
 }
 
 *.tabStripTab a:hover
@@ -47,7 +49,6 @@
   border: solid 1px #7CB2E6;
   background-image: url(../Image/ButtonBackgroundHover.gif);
   background-color: #E5F0FC;
-  cursor: default;
 }
 
 *.tabStripTab a:active
@@ -56,7 +57,6 @@
   border: solid 1px #569CE0;
   background-image: url(../Image/ButtonBackgroundActive.gif);
   background-color: #C5E0FC;
-  cursor: default;
 }
 
 *.tabStripTabSelected a
@@ -66,7 +66,6 @@
   background-color: #C5E0FC;
   color: Black;
   text-decoration: none;
-  cursor: default;
 }
 
 *.tabStripTab a,
@@ -95,7 +94,6 @@
 {
   color: Gray;
   background-color: #EFEFF0;
-  cursor: default;
 }
 
 *.tabStripTab.disabled img

@@ -23,7 +23,8 @@ span.DropDownMenuSelect
   text-align: left;
   vertical-align: top;
   white-space: nowrap;
-  cursor: default;
+  cursor: hand;
+  cursor: pointer;
   line-height: 1.25em;
   height: 1.4em;
 }
@@ -130,7 +131,6 @@ span.DropDownMenuSelect a.DropDownMenuButton:first-child
 
 span.DropDownMenuSelect.disabled a.DropDownMenuButton
 {
-  cursor: default;
   border-left: solid 1px Gray;
 }
 
@@ -153,8 +153,9 @@ span.DropDownMenuSelect a.DropDownMenuButton img
 span.DropDownMenuSelect.disabled a.DropDownMenuButton img
 {
   background-position: -16px center;
-  filter: none;
-  opacity: 1;
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
 }
 
 body.msie7 span.DropDownMenuSelect a.DropDownMenuButton img
@@ -251,10 +252,10 @@ ul.DropDownMenuOptions li a span
 
 ul.DropDownMenuOptions li.DropDownMenuItemDisabled a
 {
+  cursor: default;
   border-style: none;
   padding: 1px 3px 3px 3px;
   color: gray;
-  cursor: default;
 }
 
 ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:hover,

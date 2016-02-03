@@ -77,8 +77,6 @@ div.tabbedMainMenu span.tabStripTab a
   color: Black;
   font-size: 120%;
   font-weight: bold;
-  cursor: pointer;
-  cursor: hand;
 }
 
 div.tabbedMainMenu span.tabStripTab a:hover,
@@ -107,8 +105,6 @@ div.tabbedMainMenu span.tabStripTabSelected a
   color: Black;
   font-size: 120%;
   font-weight: bold;
-  cursor: pointer;
-  cursor: hand;
 }
 
 div.tabbedMainMenu span.tabStripTabSelected a:hover,
@@ -128,7 +124,13 @@ div.tabbedMainMenu span.tabStripTab.disabled a:active
   background: none;
   background-color: #efefef;
   text-decoration: none;
-  cursor: default;
+}
+
+div.tabbedMainMenu span.tabStripTab.disabled img
+{
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
 }
 
 /* Content area of the tab */
@@ -182,8 +184,6 @@ div.tabbedSubMenu span.tabStripTab a
   background: none;
   background-color: White;
   color: Black;
-  cursor: pointer;
-  cursor: hand;
 }
 
 div.tabbedSubMenu span.tabStripTab a:hover,
@@ -203,8 +203,6 @@ div.tabbedSubMenu span.tabStripTabSelected a
   background-color: White;
   color: Black;
   text-decoration: underline;
-  cursor: pointer;
-  cursor: hand;
 }
 
 div.tabbedSubMenu span.tabStripTab.disabled a,
@@ -214,14 +212,14 @@ div.tabbedSubMenu span.tabStripTab.disabled a:active
   color: #AAAAAA;
   background: none;
   background-color: White;
-  cursor: default;
+  text-decoration: none;
 }
 
 div.tabbedSubMenu span.tabStripTab.disabled img
 {
-  opacity: 1;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=1),
-          progid:DXImageTransform.Microsoft.BasicImage(grayscale=0);
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
 }
 
 /* Content area of the tab */

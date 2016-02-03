@@ -100,6 +100,8 @@ a[href]
 {
   text-decoration: none;
   color: #09457E;
+  cursor: hand;
+  cursor: pointer;
 }
 
 /*  All elements sporting the class "disabled". */
@@ -111,6 +113,7 @@ a[href]
 .disabled label
 {
   color: Gray;
+  cursor: default;
 }
 
 body.webkit .disabled input,
