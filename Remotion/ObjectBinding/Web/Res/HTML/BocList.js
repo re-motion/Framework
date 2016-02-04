@@ -414,13 +414,6 @@ function BocList_FixUpScrolling(bocList)
   var scrollableContainer = tableContainer.children('div.bocListTableScrollContainer').first();
   var horizontalScroll = 0;
 
-  if ($ (document.body).hasClass ('webkit'))
-  {
-    //Workaround for webkit rendering but where scrollcontainer overflows the width of the parent element when the parent is also scrollable
-    bocList.hide();
-    setTimeout (function () { bocList.show(); }, 0);
-  }
-
   scrollableContainer.bind('scroll', function (event)
   {
     var newHorizontalScroll = scrollableContainer.scrollLeft();
