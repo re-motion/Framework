@@ -139,6 +139,15 @@ namespace OBWTest.ControlLayoutTests {
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue Line01AutoCompleteReferenceValue01;
         
         /// <summary>
+        /// Line01Button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton Line01Button;
+        
+        /// <summary>
         /// Line02CheckBox01 control.
         /// </summary>
         /// <remarks>
@@ -209,6 +218,15 @@ namespace OBWTest.ControlLayoutTests {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue Line02AutoCompleteReferenceValue01;
+        
+        /// <summary>
+        /// Line02Button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton Line02Button;
         
         /// <summary>
         /// Line03CheckBox01 control.
@@ -283,6 +301,15 @@ namespace OBWTest.ControlLayoutTests {
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue Line03AutoCompleteReferenceValue01;
         
         /// <summary>
+        /// Line03Button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton Line03Button;
+        
+        /// <summary>
         /// Line04CheckBox01 control.
         /// </summary>
         /// <remarks>
@@ -353,6 +380,15 @@ namespace OBWTest.ControlLayoutTests {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue Line04AutoCompleteReferenceValue01;
+        
+        /// <summary>
+        /// Line04Button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton Line04Button;
         
         /// <summary>
         /// CheckBox control.
@@ -499,6 +535,33 @@ namespace OBWTest.ControlLayoutTests {
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue AutoCompleteReferenceValueReadOnly;
         
         /// <summary>
+        /// WebButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton WebButton;
+        
+        /// <summary>
+        /// WebButtonWithImage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton WebButtonWithImage;
+        
+        /// <summary>
+        /// WebButtonDisabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton WebButtonDisabled;
+        
+        /// <summary>
         /// Line11CheckBox01 control.
         /// </summary>
         /// <remarks>
@@ -569,5 +632,14 @@ namespace OBWTest.ControlLayoutTests {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue Line11AutoCompleteReferenceValue01;
+        
+        /// <summary>
+        /// Line11Button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton Line11Button;
     }
 }

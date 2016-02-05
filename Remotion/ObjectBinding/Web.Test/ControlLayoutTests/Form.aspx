@@ -53,6 +53,7 @@
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
               </remotion:BocAutoCompleteReferenceValue>
+              <remotion:WebButton ID="Line01Button" runat="server" Text="Button" Icon-Url="Images/Remotion.ObjectBinding.Sample.Job.gif" />
             </td>
             <td>
               Line&nbsp;1
@@ -80,6 +81,7 @@
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
               </remotion:BocAutoCompleteReferenceValue>
+              <remotion:WebButton ID="Line02Button" runat="server" Text="Button" Icon-Url="Images/Remotion.ObjectBinding.Sample.Job.gif" />
             </td>
             <td>
               Line&nbsp;2
@@ -116,6 +118,8 @@
                 </OptionsMenuItems>
               </remotion:BocAutoCompleteReferenceValue>
               M
+              <remotion:WebButton ID="Line03Button" runat="server" Text="Button" Icon-Url="Images/Remotion.ObjectBinding.Sample.Job.gif" />
+              M
             </td>
             <td>
               Line&nbsp;3
@@ -151,6 +155,8 @@
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
               </remotion:BocAutoCompleteReferenceValue>
+              M
+              <remotion:WebButton ID="Line04Button" runat="server" Text="Button" Icon-Url="Images/Remotion.ObjectBinding.Sample.Job.gif" />
               M
             </td>
             <td>
@@ -288,6 +294,19 @@
             <td>
             </td>
           </tr>
+          <tr>
+            <td>
+              Button
+            </td>
+            <td>
+              <remotion:WebButton ID="WebButton" runat="server" Text="Button" />
+              <remotion:WebButton ID="WebButtonWithImage" runat="server" Text="Button" Icon-Url="Images/Remotion.ObjectBinding.Sample.Job.gif" />
+              <remotion:WebButton ID="WebButtonDisabled" runat="server" Text="Button" Icon-Url="Images/Remotion.ObjectBinding.Sample.Job.gif" />
+              M
+            </td>
+            <td>
+            </td>
+          </tr>
 
         </table>
         <p></p>
@@ -317,6 +336,8 @@
               <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
             </OptionsMenuItems>
           </remotion:BocAutoCompleteReferenceValue>
+          M
+          <remotion:WebButton ID="Line11Button" runat="server" Text="Button" Icon-Url="Images/Remotion.ObjectBinding.Sample.Job.gif" />
           M
         </div>
       </asp:PlaceHolder>

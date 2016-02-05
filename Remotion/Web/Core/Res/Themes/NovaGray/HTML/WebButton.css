@@ -37,11 +37,26 @@ button.webButton span.buttonBody
   
   width: 100%;
   white-space: nowrap;
-  
+
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 1px;
   padding-right: 1px;
+}
+
+button.webButton span.buttonBody:first-child::before
+{
+  content: "";
+  height: 1.25em;
+  width: 0;
+  display: inline-block;
+  vertical-align: text-bottom;
+}
+
+button.webButton span.buttonBody img
+{
+  vertical-align: bottom;
+  border: none;
 }
 
 button.webButton:hover span.buttonBody

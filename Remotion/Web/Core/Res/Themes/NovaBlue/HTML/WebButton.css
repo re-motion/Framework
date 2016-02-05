@@ -55,3 +55,9 @@ button.webButton.mouseDown span.buttonBody
   padding-left: 2px;
   padding-right: 0px;
 }
+
+button.webButton span.buttonBody img
+{
+  vertical-align: middle;
+  border: none;
+}
