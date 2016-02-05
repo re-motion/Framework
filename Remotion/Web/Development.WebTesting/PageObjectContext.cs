@@ -84,6 +84,18 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
+    /// Clones the context for a new <see cref="BrowserSession"/>.
+    /// </summary>
+    /// <param name="browserSession">The new <see cref="BrowserSession"/>.</param>
+    public PageObjectContext CloneForSession ([NotNull] BrowserSession browserSession)
+    {
+      ArgumentUtility.CheckNotNull ("browserSession", browserSession);
+
+      var rootScope = browserSession.GetRootScope();
+      return new PageObjectContext (browserSession, browserSession, rootScope, this);
+    }
+
+    /// <summary>
     /// Clones the context for a child <see cref="PageObject"/> which represents an IFRAME on the page.
     /// </summary>
     /// <param name="frameScope">The scope of the <see cref="PageObject"/> representing the IFRAME.</param>
