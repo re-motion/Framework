@@ -44,6 +44,11 @@ button.webButton span.buttonBody
   padding-right: 1px;
 }
 
+.msie button.webButton span.buttonBody
+{
+  padding-top: 1px;
+}
+
 button.webButton span.buttonBody:first-child::before
 {
   content: "";
