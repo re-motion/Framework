@@ -38,7 +38,7 @@ td.buttonCell span.DropDownMenuSelect
 span.DropDownMenuSelect.disabled
 {
   cursor: default;
-  border: 1px solid Gray;
+  border: 1px solid #BCBCBC;
 }
 
 span.DropDownMenuSelect span
@@ -120,7 +120,7 @@ span.DropDownMenuSelect.disabled:hover
 {
   background-image: url(../Image/ButtonBackground.gif);
   background-color: #ECEEEC;
-  border: solid 1px Gray;
+  border: solid 1px #BCBCBC;
 }
 
 span.DropDownMenuSelect a.DropDownMenuButton:first-child
@@ -131,7 +131,7 @@ span.DropDownMenuSelect a.DropDownMenuButton:first-child
 
 span.DropDownMenuSelect.disabled a.DropDownMenuButton
 {
-  border-left: solid 1px Gray;
+  border-left: solid 1px #BCBCBC;
 }
 
 /*

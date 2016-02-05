@@ -449,7 +449,7 @@ td.bocListDataCell span.DropDownMenuSelect.disabled:hover a.DropDownMenuButton
 {
   padding: 0px;
   border: none;
-  border-left: solid 1px Gray;
+  border-left: solid 1px #BCBCBC;
   background-color: Transparent;
 }
 
