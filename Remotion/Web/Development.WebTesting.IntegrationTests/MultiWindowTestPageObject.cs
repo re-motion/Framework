@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
-using Remotion.Web.Development.WebTesting.PageObjects;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
