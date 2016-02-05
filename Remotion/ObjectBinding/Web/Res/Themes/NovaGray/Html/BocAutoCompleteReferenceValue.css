@@ -42,7 +42,7 @@ span.bocAutoCompleteReferenceValueButton
 
 span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueButton
 {
-  border: 1px solid Gray;
+  border: 1px solid #BCBCBC;
 }
 
 span.bocAutoCompleteReferenceValue span.embeddedOptionsMenu span.bocAutoCompleteReferenceValueButton

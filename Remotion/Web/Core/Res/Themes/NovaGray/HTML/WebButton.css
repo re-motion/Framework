@@ -78,7 +78,7 @@ button.webButton[disabled]:hover span.buttonBody,
 button.webButton[disabled]:active span.buttonBody
 {
   color: Gray;
-  border: solid 1px Gray;
+  border: solid 1px #BCBCBC;
   background: none;
   background-color: #EFEFF0;
   cursor: default;
