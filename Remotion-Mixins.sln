@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Extensions", "Remotion
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.RhinoMocks", "Remotion\Development\RhinoMocks\Development.RhinoMocks.csproj", "{2177143E-345F-4FAA-9958-1AE2B5EED242}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Reflection", "Remotion\Core\Reflection\Core.Reflection.csproj", "{82D3420D-F557-4E31-955B-2935A785753E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{2177143E-345F-4FAA-9958-1AE2B5EED242}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2177143E-345F-4FAA-9958-1AE2B5EED242}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2177143E-345F-4FAA-9958-1AE2B5EED242}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82D3420D-F557-4E31-955B-2935A785753E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82D3420D-F557-4E31-955B-2935A785753E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82D3420D-F557-4E31-955B-2935A785753E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82D3420D-F557-4E31-955B-2935A785753E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
