@@ -22,10 +22,10 @@ namespace Remotion.Mixins.Samples.Tutorial.T02_ParamList.Core
 {
   public static class TheObjectFactory
   {
-    public static T Create<T> (ParamList ctorArgs)
+    public static T Create<T> (ParamList ctorArgs) where T : class
     {
       var pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
-      return (T) pipelineRegistry.DefaultPipeline.Create (typeof (T), ctorArgs, false);
+      return pipelineRegistry.DefaultPipeline.Create<T> (ctorArgs);
     }
   }
 }
