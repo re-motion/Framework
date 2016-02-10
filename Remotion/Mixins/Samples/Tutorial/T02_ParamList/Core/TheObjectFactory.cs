@@ -15,20 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 
 namespace Remotion.Mixins.Samples.Tutorial.T02_ParamList.Core
 {
-  [Obsolete]
   public static class TheObjectFactory
   {
     public static T Create<T> (ParamList ctorArgs)
     {
-      var info = new ConstructorLookupInfo (typeof (T));
-
-      var funcDelegate = info.GetDelegate (ctorArgs.FuncType);
-      return (T) ctorArgs.InvokeFunc (funcDelegate);
+      var pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
+      return (T) pipelineRegistry.DefaultPipeline.Create (typeof (T), ctorArgs, false);
     }
   }
 }

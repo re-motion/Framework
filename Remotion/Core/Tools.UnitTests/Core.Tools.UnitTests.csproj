@@ -83,10 +83,6 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Extensions\Core.Extensions.csproj">
-      <Project>{25811F76-8D00-496D-AFD0-8225569F666D}</Project>
-      <Name>Core.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tools\Core.Tools.csproj">
       <Project>{18269689-DC0F-4975-879B-A6ACBA0FA596}</Project>
       <Name>Core.Tools</Name>

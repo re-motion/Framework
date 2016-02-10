@@ -153,10 +153,6 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Core\Extensions\Core.Extensions.csproj">
-      <Project>{25811F76-8D00-496D-AFD0-8225569F666D}</Project>
-      <Name>Core.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Reflection.CodeGeneration\Core.Reflection.CodeGeneration.csproj">
       <Project>{503dcac3-e668-41d8-aa48-176e489b8e86}</Project>
       <Name>Core.Reflection.CodeGeneration</Name>
