@@ -11,15 +11,15 @@
 
 body.msie7 .ac_results 
 {
-  border: 1px solid WindowFrame;
+  border: 1px solid Black;
 }
 
 .ac_results > div
 {
   width: 100%;
   height: 100%;
-  border: 1px solid WindowFrame;
-  background-color: Window;
+  border: 1px solid Black;
+  background-color: White;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -109,13 +109,13 @@ body.msie8 .ac_results li > div:first-child img
 .ac_even
 {
   background-color: White;
-  color: WindowText;
+  color: Black;
 }
 
 .ac_odd
 {
   background-color: #EFEFF0;
-  color: WindowText;
+  color: Black;
 }
 
 .ac_over
@@ -135,15 +135,15 @@ body.msie8 .ac_results li > div:first-child img
 
 body.msie7 .ac_informationPopUp 
 {
-  border: 1px solid WindowFrame;
+  border: 1px solid Black;
 }
 
 .ac_informationPopUp > div
 {
   width: 100%;
   padding: 0.25em;
-  border: 1px solid WindowFrame;
-  background-color: InfoBackground;
+  border: 1px solid Black;
+  background-color: Lightyellow;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
