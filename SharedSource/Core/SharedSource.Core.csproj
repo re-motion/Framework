@@ -82,11 +82,17 @@
     <None Include="..\SharedSource Apache-2.0.licenseheader">
       <Link>SharedSource Apache-2.0.licenseheader</Link>
     </None>
+    <None Include="Remotion.FunctionalProgramming.EnumerableExtensions.Sources.nuspec" />
+    <None Include="Remotion.FunctionalProgramming.EnumerableUtility.Sources.nuspec" />
+    <None Include="Remotion.FunctionalProgramming.Maybe.Sources.nuspec" />
     <None Include="Remotion.JetBrains.Annotations.Sources.nuspec" />
     <None Include="Remotion.Utilities.ArgumentUtility.Sources.nuspec" />
     <None Include="Remotion.Utilities.Assertion.Sources.nuspec" />
+    <None Include="Remotion.Utilities.AttributeUtility.Sources.nuspec" />
     <None Include="Remotion.Utilities.EqualityUtility.Sources.nuspec" />
     <None Include="Remotion.Utilities.ExceptionUtility.Sources.nuspec" />
+    <None Include="Remotion.Utilities.MemberInfoEqualityComparer.Sources.nuspec" />
+    <None Include="Remotion.Utilities.MemberInfoFromExpressionUtility.Sources.nuspec" />
     <None Include="Remotion.Utilities.NullableTypeUtility.Sources.nuspec" />
     <None Include="Remotion.Utilities.FileUtility.Sources.nuspec" />
     <None Include="ReSharperAnnotations\ReSharperAnnotations Apache-2.0.licenseheader" />

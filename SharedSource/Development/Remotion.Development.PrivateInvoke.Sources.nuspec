@@ -12,6 +12,10 @@
     <copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under Apache License, Version 2.0</copyright>
     <tags>re-motion Development UnitTesting PrivateInvoke Reflection</tags>
     <developmentDependency>true</developmentDependency>
+    <dependencies>
+      <dependency id="Remotion.Utilities.ArgumentUtility.Sources" version="[1.15.23.0,2)" />
+      <dependency id="Remotion.Utilities.ExceptionUtility.Sources" version="[1.15.23.0,2)" />
+    </dependencies>
   </metadata>
   <files>
     <file src="UnitTesting\PrivateInvoke.cs" target="content/App_Packages/Remotion.Development.PrivateInvoke.Sources.$version$" />

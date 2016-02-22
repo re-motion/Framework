@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Remotion.Utilities.MemberInfoEqualityComparer.Sources</id>
+    <version>$version$</version>
+    <title>re-motion MemberInfoEqualityComparer</title>
+    <authors>rubicon IT GmbH</authors>
+    <owners>rubicon IT GmbH</owners>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <projectUrl>http://www.re-motion.org</projectUrl>
+    <description>The re-motion MemberInfoEqualityComparer as source code.</description>
+    <copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under Apache License, Version 2.0</copyright>
+    <tags>re-motion MemberInfoEqualityComparer</tags>
+    <developmentDependency>true</developmentDependency>
+  </metadata>
+  <files>
+    <file src="Utilities\MemberInfoEqualityComparer.cs" target="content/App_Packages/Remotion.Utilities.MemberInfoEqualityComparer.Sources.$version$" />
+    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Utilities.MemberInfoEqualityComparer.Sources.$version$" />
+  </files>
+</package>

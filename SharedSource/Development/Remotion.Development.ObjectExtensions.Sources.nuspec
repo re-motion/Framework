@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Remotion.Development.ObjectExtensions.Sources</id>
+    <version>$version$</version>
+    <title>re-motion Unit Testing ObjectExtensions</title>
+    <authors>rubicon IT GmbH</authors>
+    <owners>rubicon IT GmbH</owners>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <projectUrl>http://www.re-motion.org</projectUrl>
+    <description>The re-motion ObjectExtensions use the PrivateInvoke during unit testing when a non-public member needs to be invoked. Distributed as source code.</description>
+    <copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under Apache License, Version 2.0</copyright>
+    <tags>re-motion Development UnitTesting ObjectExtensions Reflection</tags>
+    <developmentDependency>true</developmentDependency>
+    <dependencies>
+      <dependency id="Remotion.Development.PrivateInvoke.Sources" version="[1.15.23.0,2)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="UnitTesting\ObjectExtensions.cs" target="content/App_Packages/Remotion.Development.ObjectExtensions.Sources.$version$" />
+    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Development.ObjectExtensions.Sources.$version$" />
+  </files>
+</package>

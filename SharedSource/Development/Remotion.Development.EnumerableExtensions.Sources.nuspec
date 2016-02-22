@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Remotion.Development.EnumerableExtensions.Sources</id>
+    <version>$version$</version>
+    <title>re-motion EnumerableExtensions</title>
+    <authors>rubicon IT GmbH</authors>
+    <owners>rubicon IT GmbH</owners>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <projectUrl>http://www.re-motion.org</projectUrl>
+    <description>The re-motion EnumerableExtensions for unit testing is used special constraints during an enumeration scenarios are required. Distributed as source code.</description>
+    <copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under Apache License, Version 2.0</copyright>
+    <tags>re-motion Development UnitTesting EnumerableExtensions</tags>
+    <developmentDependency>true</developmentDependency>
+    <dependencies>
+      <dependency id="Remotion.Utilities.ArgumentUtility.Sources" version="[1.15.23.0,2)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="UnitTesting\Enumerables\EnumerableExtensions.cs" target="content/App_Packages/Remotion.Development.EnumerableExtensions.Sources.$version$" />
+    <file src="UnitTesting\Enumerables\OneTimeEnumerable.cs" target="content/App_Packages/Remotion.Development.EnumerableExtensions.Sources.$version$" />
+    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Development.EnumerableExtensions.Sources.$version$" />
+  </files>
+</package>

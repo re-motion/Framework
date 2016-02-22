@@ -85,9 +85,17 @@
       <Link>SharedSource Apache-2.0.licenseheader</Link>
     </None>
     <None Include="packages.config" />
+    <None Include="Remotion.Development.AssemblyLoader.Sources.nuspec" />
     <None Include="Remotion.Development.Dev.Sources.nuspec" />
+    <None Include="Remotion.Development.EnumerableExtensions.Sources.nuspec" />
+    <None Include="Remotion.Development.NormalizingMemberInfoFromExpressionUtility.Sources.nuspec" />
+    <None Include="Remotion.Development.ObjectExtensions.Sources.nuspec" />
+    <None Include="Remotion.Development.PEVerifier.nuspec" />
     <None Include="Remotion.Development.PrivateInvoke.Sources.nuspec" />
     <None Include="Remotion.Development.BooleanObjectMother.Sources.nuspec" />
+    <None Include="Remotion.Development.ReflectionObjectMother.Sources.nuspec" />
+    <None Include="Remotion.Development.RhinoMocks.Decoration.Sources.nuspec" />
+    <None Include="Remotion.Development.RhinoMocks.ListArgs.Sources.nuspec" />
     <None Include="Remotion.Development.Serializer.Sources.nuspec" />
     <None Include="Remotion.Development.TempFile.Sources.nuspec" />
   </ItemGroup>

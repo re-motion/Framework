@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Remotion.FunctionalProgramming.EnumerableExtensions.Sources</id>
+    <version>$version$</version>
+    <title>re-motion EnumerableExtensions</title>
+    <authors>rubicon IT GmbH</authors>
+    <owners>rubicon IT GmbH</owners>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <projectUrl>http://www.re-motion.org</projectUrl>
+    <description>The re-motion EnumerableExtensions as source code.</description>
+    <copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under Apache License, Version 2.0</copyright>
+    <tags>re-motion EnumerableExtensions</tags>
+    <developmentDependency>true</developmentDependency>
+    <dependencies>
+      <dependency id="Remotion.FunctionalProgramming.EnumerableUtility.Sources" version="[1.17.6.0,2)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="FunctionalProgramming\EnumerableExtensions.cs" target="content/App_Packages/Remotion.FunctionalProgramming.EnumerableExtensions.Sources.$version$" />
+    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.FunctionalProgramming.EnumerableExtensions.Sources.$version$" />
+  </files>
+</package>

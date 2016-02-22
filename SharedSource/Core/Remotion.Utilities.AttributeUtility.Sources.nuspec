@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Remotion.Utilities.AttributeUtility.Sources</id>
+    <version>$version$</version>
+    <title>re-motion AttributeUtility</title>
+    <authors>rubicon IT GmbH</authors>
+    <owners>rubicon IT GmbH</owners>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <projectUrl>http://www.re-motion.org</projectUrl>
+    <description>The re-motion AttributeUtility as source code.</description>
+    <copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under Apache License, Version 2.0</copyright>
+    <tags>re-motion AttributeUtility</tags>
+    <developmentDependency>true</developmentDependency>
+  </metadata>
+  <files>
+    <file src="Utilities\AttributeUtility.cs" target="content/App_Packages/Remotion.Utilities.AttributeUtility.Sources.$version$" />
+    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Utilities.AttributeUtility.Sources.$version$" />
+  </files>
+</package>
