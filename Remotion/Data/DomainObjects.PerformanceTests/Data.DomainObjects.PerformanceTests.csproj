@@ -113,6 +113,10 @@
       <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.2.0.0-alpha-005\lib\net45\Remotion.Linq.SqlBackend.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.0-alpha-002\lib\net45\Remotion.TypePipe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -154,10 +158,6 @@
     <ProjectReference Include="..\..\Security\Core\Security.Core.csproj">
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\TypePipe\Core\TypePipe.Core.csproj">
-      <Project>{98e7f7aa-12b2-4a6b-8922-52c8e53b378e}</Project>
-      <Name>TypePipe.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
       <Project>{f3935d12-39e6-4f06-8316-98cd7ed60c6b}</Project>

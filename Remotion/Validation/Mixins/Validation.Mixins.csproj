@@ -38,6 +38,10 @@
     <DocumentationFile>bin\Release\Remotion.Validation.Mixins.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.0-alpha-002\lib\net45\Remotion.TypePipe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -63,12 +67,9 @@
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\TypePipe\Core\TypePipe.Core.csproj">
-      <Project>{98E7F7AA-12B2-4A6B-8922-52C8E53B378E}</Project>
-      <Name>TypePipe.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
       <Project>{2aa369ec-a4e7-4d75-9101-efa90e902625}</Project>
       <Name>Core.Core</Name>

@@ -18,13 +18,11 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <ItemGroup>
-    <ProjectsBuildLocal Include="$(SolutionDirectory)\TypePipe\Build\Remotion.Local.build" />
     <ProjectsBuildLocal Include="$(SolutionDirectory)\Remotion\Build\Remotion.Local.build" />
     <ProjectsBuildLocal Include="$(SolutionDirectory)\SecurityManager\Build\Remotion.Local.build" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectsBuildServer Include="$(SolutionDirectory)\TypePipe\Build\Remotion.Server.build" />
     <ProjectsBuildServer Include="$(SolutionDirectory)\Remotion\Build\Remotion.Server.build" />
     <ProjectsBuildServer Include="$(SolutionDirectory)\SecurityManager\Build\Remotion.Server.build" />
   </ItemGroup>

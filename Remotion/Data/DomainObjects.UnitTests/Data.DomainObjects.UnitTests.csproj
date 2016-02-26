@@ -132,6 +132,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.Development.2.0.0-alpha-005\lib\net45\Remotion.Linq.SqlBackend.Development.dll</HintPath>
     </Reference>
+    <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.0-alpha-002\lib\net45\Remotion.TypePipe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.TypePipe.Development, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Remotion.TypePipe.Development.2.0.0-alpha-002\lib\net45\Remotion.TypePipe.Development.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Rhino.Mocks, Version=2.8.7.11026, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
@@ -185,14 +193,6 @@
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
       <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
       <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\TypePipe\Core\TypePipe.Core.csproj">
-      <Project>{98e7f7aa-12b2-4a6b-8922-52c8e53b378e}</Project>
-      <Name>TypePipe.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\TypePipe\Development\TypePipe.Development.csproj">
-      <Project>{f6faf727-9405-4bcc-9153-803f73853e67}</Project>
-      <Name>TypePipe.Development</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Name>Data.DomainObjects</Name>
