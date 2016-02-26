@@ -28,8 +28,28 @@
     </PropertyGroup>
   </Target>
 
+  <Target Name="CIProductionBuild_Configuration">
+    <PropertyGroup>
+      <Platforms>x64</Platforms>
+      <DatabaseSystems>SqlServer2012</DatabaseSystems>
+      <Browsers>Chrome</Browsers>
+      <SkipDocumentation>True</SkipDocumentation>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="TestBuildReleaseOnly" DependsOnTargets="CleanFolders;PrepareBuildProperties;PrepareBuildTargets;">
+    <MSBuild Projects="$(MSBuildProjectFile)"
+             BuildInParallel="false"
+             Targets="$(TestBuildTargets)"
+             Properties="ConfigurationID=Release;$(BuildProperties);"/>
+  </Target>
+
   <Target Name="ArtifactBuild" DependsOnTargets="ArtifactBuild_Configuration;CreateAdditionalBuildMetadata;BuildAll;" />
 
   <Target Name="Server_ArtifactBuild" DependsOnTargets="CheckProperties;SetVersionCiAndNightlyBuild;ArtifactBuild" />
+
+  <Target Name="CIProductionBuild" DependsOnTargets="CIProductionBuild_Configuration;CreateAdditionalBuildMetadata;TestBuildDebugOnly;" />
+
+  <Target Name="Server_CIProductionBuild" DependsOnTargets="CheckProperties;SetVersionCiAndNightlyBuild;CIProductionBuild" />
 
 </Project>
