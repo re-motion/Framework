@@ -23,8 +23,8 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle ("Remotion Security Manager Core Components")]
-[assembly: AssemblyDescription("Documentation for the re-motion Security Manager.")]
+[assembly: AssemblyTitle ("Documentation for the re-motion Security Manager")]
+[assembly: AssemblyDescription ("Contains the documentation file for the re-motion Security Manager.")]
 [assembly: AssemblyMetadata ("tags", "re-motion SecurityManager Documentation")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
