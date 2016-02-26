@@ -119,6 +119,11 @@
     <CallTarget Targets="$(AfterTestBuildTargets)"/>
   </Target>
 
+  <Target Name="Server_CIProductionBuild" DependsOnTargets="$(BeforeTestBuildTargets)">
+    <MSBuild Projects="@(ProjectsBuildServer)" Targets="Server_CIProductionBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
+    <CallTarget Targets="$(AfterTestBuildTargets)"/>
+  </Target>
+
   <Target Name="Server_NightlyBuild" DependsOnTargets="$(BeforeTestBuildTargets)">
     <MSBuild Projects="@(ProjectsBuildServer)" Targets="Server_NightlyBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
     <CallTarget Targets="$(AfterTestBuildTargets)"/>
