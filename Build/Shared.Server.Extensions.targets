@@ -48,7 +48,7 @@
 
   <Target Name="Server_ArtifactBuild" DependsOnTargets="CheckProperties;SetVersionCiAndNightlyBuild;ArtifactBuild" />
 
-  <Target Name="CIProductionBuild" DependsOnTargets="CIProductionBuild_Configuration;CreateAdditionalBuildMetadata;TestBuildDebugOnly;" />
+  <Target Name="CIProductionBuild" DependsOnTargets="CIProductionBuild_Configuration;CreateAdditionalBuildMetadata;TestBuildReleaseOnly;" />
 
   <Target Name="Server_CIProductionBuild" DependsOnTargets="CheckProperties;SetVersionCiAndNightlyBuild;CIProductionBuild" />
 
