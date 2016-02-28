@@ -32,7 +32,7 @@
     <PropertyGroup>
       <Platforms>x64</Platforms>
       <DatabaseSystems>SqlServer2012</DatabaseSystems>
-      <Browsers>Chrome+InternetExplorer</Browsers>
+      <Browsers>Chrome</Browsers>
       <SkipDocumentation>True</SkipDocumentation>
     </PropertyGroup>
   </Target>
