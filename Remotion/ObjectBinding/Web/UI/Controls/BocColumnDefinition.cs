@@ -90,12 +90,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets the text displayed in the column title. </summary>
     /// <remarks>
     ///   Override this property to add validity checks to the set accessor.
-    ///   The get accessor should return the value verbatim. The value will be HTML encoded.
+    ///   The get accessor should return the value verbatim. The value will not be HTML encoded.
     /// </remarks>
     /// <value> A <see cref="string"/> representing the manually set title of this column. </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Appearance")]
-    [Description ("The manually assigned value of the column title, can be empty. The value will be HTML encoded.")]
+    [Description ("The manually assigned value of the column title, can be empty. The value will not be HTML encoded.")]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]
     public virtual string ColumnTitle
