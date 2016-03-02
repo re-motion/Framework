@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="CheckResourceProjectItemsType_BeforeBuild" BeforeTargets="BeforeBuild">
+
+    <ItemGroup>
+      <_contentReferences Remove="@(_contentReferences)" />
+      <_contentReferences Include="@(Content)" Condition="'%(Extension)' == '.css'" />
+      <_contentReferences Include="@(Content)" Condition="'%(Extension)' == '.js'" />
+      <_contentReferences Include="@(Content)" Condition="'%(Extension)' == '.gif'" />
+      <_contentReferences Include="@(Content)" Condition="'%(Extension)' == '.png'" />
+      <_contentReferences Include="@(Content)" Condition="'%(Extension)' == '.ascx'" />
+      <_contentReferences Include="@(Content)" Condition="'%(Extension)' == '.ashx'" />
+      <_contentReferences Include="@(Content)" Condition="'%(Extension)' == '.asmx'" />
+      <_contentReferences Include="@(Content)" Condition="'%(Extension)' == '.aspx'" />
+      <_contentReferences Include="@(Content)" Condition="'%(Extension)' == '.master'" />
+      <_contentReferences Include="@(Content)" Condition="'%(Extension)' == '.xml'" />
+      <_contentReferences Include="@(Content)" Condition="'%(Extension)' == '.xsd'" />
+    </ItemGroup>
+    <Error Text="Found web resources of type 'Content': @(_contentReferences)" Condition="'@(_contentReferences->Count())' &gt; 0" />
+  </Target>
+
+</Project>

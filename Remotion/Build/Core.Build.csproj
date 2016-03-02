@@ -50,6 +50,9 @@
     <None Include="NuSpec\TemplateSharedForTool.nuspec" />
     <None Include="NuSpec\TemplateSharedForWeb.nuspec" />
     <None Include="NuSpec\Uninstall.ps1" />
+    <None Include="NuSpec\Web.Build.targets">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="NuSpec\Web.targets" />
     <None Include="packages.config" />
     <None Include="NuSpec\TemplateShared.nuspec" />
