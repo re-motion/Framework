@@ -37,6 +37,18 @@
     </PropertyGroup>
   </Target>
 
+  <Target Name="SetVersionFromDependentBuild" DependsOnTargets="CheckVersion">
+    <Error Text="The property 'DependentVersion' is not set." Condition="'$(DependentVersion)' == ''" />
+
+    <PropertyGroup>
+      <Version>$(DependentVersion)</Version>
+      <!--Only used for Release Notes. Currently, no Release Notes are being generated. -->
+      <JiraVersion>$(Version)</JiraVersion>
+    </PropertyGroup>
+
+    <Message Text="##teamcity[buildNumber '$(Version)']" />
+  </Target>
+
   <Target Name="TestBuildReleaseOnly" DependsOnTargets="CleanFolders;PrepareBuildProperties;PrepareBuildTargets;">
     <MSBuild Projects="$(MSBuildProjectFile)"
              BuildInParallel="false"
@@ -50,6 +62,6 @@
 
   <Target Name="CIProductionBuild" DependsOnTargets="CIProductionBuild_Configuration;CreateAdditionalBuildMetadata;TestBuildReleaseOnly;" />
 
-  <Target Name="Server_CIProductionBuild" DependsOnTargets="CheckProperties;SetVersionCiAndNightlyBuild;CIProductionBuild" />
+  <Target Name="Server_CIProductionBuild" DependsOnTargets="CheckProperties;SetVersionFromDependentBuild;CIProductionBuild" />
 
 </Project>
