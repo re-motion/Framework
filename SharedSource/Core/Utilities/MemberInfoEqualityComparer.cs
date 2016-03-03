@@ -111,7 +111,8 @@ namespace Remotion.Utilities
     /// <returns>The calculated hash code of the <see cref="MemberInfo"/>.</returns>
     public int GetHashCode (T memberInfo)
     {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+      if (memberInfo == null)
+        throw new ArgumentNullException ("memberInfo");
  
       // DeclaringType can return null, even if ReSharper thinks otherwise.
       // ReSharper disable ConditionIsAlwaysTrueOrFalse
