@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.FunctionalProgramming
@@ -97,6 +96,9 @@ namespace Remotion.FunctionalProgramming
     /// <returns>An enumerable sequence containing all non-<see langword="null" /> values</returns>
     public static IEnumerable<T> EnumerateValues<T> (IEnumerable<Maybe<T>> maybeValues)
     {
+      if (maybeValues == null)
+        throw new ArgumentNullException ("maybeValues");
+
       return maybeValues.Where (v => v.HasValue).Select (v => v.ValueOrDefault ());
     }
 
@@ -108,6 +110,9 @@ namespace Remotion.FunctionalProgramming
     /// <returns>An enumerable sequence containing all non-<see langword="null" /> values</returns>
     public static IEnumerable<T> EnumerateValues<T> (params Maybe<T>[] maybeValues)
     {
+      if (maybeValues == null)
+        throw new ArgumentNullException ("maybeValues");
+
       return EnumerateValues ((IEnumerable<Maybe<T>>) maybeValues);
     }
   }
@@ -197,6 +202,9 @@ namespace Remotion.FunctionalProgramming
     /// <returns>This instance.</returns>
     public Maybe<T> Do (Action<T> action)
     {
+      if (action == null)
+        throw new ArgumentNullException ("action");
+
       if (_hasValue)
         action (_value);
 
@@ -211,6 +219,12 @@ namespace Remotion.FunctionalProgramming
     /// <returns>This instance.</returns>
     public Maybe<T> Do (Action<T> action, Action otherwise)
     {
+      if (action == null)
+        throw new ArgumentNullException ("action");
+
+      if (otherwise == null)
+        throw new ArgumentNullException ("otherwise");
+
       return Do (action).OtherwiseDo (otherwise);
     }
 
@@ -221,6 +235,9 @@ namespace Remotion.FunctionalProgramming
     /// <returns>This instance.</returns>
     public Maybe<T> OtherwiseDo (Action action)
     {
+      if (action == null)
+        throw new ArgumentNullException ("action");
+
       if (!_hasValue)
         action();
 
@@ -238,7 +255,8 @@ namespace Remotion.FunctionalProgramming
     /// </returns>
     public Maybe<TR> Select<TR> (Func<T, TR> selector)
     {
-      ArgumentUtility.CheckNotNull ("selector", selector);
+      if (selector == null)
+        throw new ArgumentNullException ("selector");
 
       if (_hasValue)
         return Maybe.ForValue (selector (_value));
@@ -275,6 +293,12 @@ namespace Remotion.FunctionalProgramming
     /// </remarks>
     public Maybe<TResult> SelectMany<TOther, TResult> (Func<T, Maybe<TOther>> otherMaybeSelector, Func<T, TOther, TResult> resultSelector) 
     {
+      if (otherMaybeSelector == null)
+        throw new ArgumentNullException ("otherMaybeSelector");
+
+      if (resultSelector == null)
+        throw new ArgumentNullException ("resultSelector");
+
       if (!_hasValue)
         return Maybe<TResult>.Nothing;
 
@@ -298,7 +322,8 @@ namespace Remotion.FunctionalProgramming
     /// </returns>
     public Maybe<TR> Select<TR> (Func<T, TR?> selector) where TR : struct
     {
-      ArgumentUtility.CheckNotNull ("selector", selector);
+      if (selector == null)
+        throw new ArgumentNullException ("selector");
 
       if (_hasValue)
         return Maybe.ForValue (selector (_value));
@@ -316,7 +341,8 @@ namespace Remotion.FunctionalProgramming
     /// </returns>
     public Maybe<T> OtherwiseSelect (Func<T> selector)
     {
-      ArgumentUtility.CheckNotNull ("selector", selector);
+      if (selector == null)
+        throw new ArgumentNullException ("selector");
 
       if (_hasValue)
         return this;

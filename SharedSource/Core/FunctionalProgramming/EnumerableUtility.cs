@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.FunctionalProgramming
@@ -68,7 +67,8 @@ namespace Remotion.FunctionalProgramming
     /// <returns>A sequence containing all items in the tree in a depth-first order.</returns>
     public static IEnumerable<T> SelectRecursiveDepthFirst<T> (T start, Func<T, IEnumerable<T>> childrenSelector)
     {
-      ArgumentUtility.CheckNotNull ("childrenSelector", childrenSelector);
+      if (childrenSelector == null)
+        throw new ArgumentNullException ("childrenSelector");
 
       return Singleton (start).Concat (childrenSelector (start).SelectMany (child => SelectRecursiveDepthFirst (child, childrenSelector)));
     }

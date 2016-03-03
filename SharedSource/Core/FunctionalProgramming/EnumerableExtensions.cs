@@ -375,7 +375,7 @@ namespace Remotion.FunctionalProgramming
     {
       ArgumentUtility.CheckNotNull ("source", source);
 
-      return source.Concat (EnumerableUtility.Singleton (item));
+      return source.Concat (new[] { item });
     }
 
     /// <summary>
