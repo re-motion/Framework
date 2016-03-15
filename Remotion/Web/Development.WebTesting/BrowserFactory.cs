@@ -20,6 +20,7 @@ using Coypu;
 using Coypu.Drivers;
 using Coypu.Drivers.Selenium;
 using JetBrains.Annotations;
+using OpenQA.Selenium.Chrome;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 
@@ -55,13 +56,6 @@ namespace Remotion.Web.Development.WebTesting
 
       if (sessionConfiguration.Browser == Browser.Chrome)
       {
-        // Todo RM-6337: Switch back to always using the default Chrome driver as soon as the ActaNova language problem has been solved.
-        if (ConfigurationManager.AppSettings["CustomChromeUserDataDir"] != null)
-        {
-          sessionConfiguration.Driver = typeof (CustomChromeDriver);
-          return new BrowserSession (sessionConfiguration, new CustomChromeDriver());
-        }
-
         sessionConfiguration.Driver = typeof (SeleniumWebDriver);
         return new BrowserSession (sessionConfiguration);
       }
