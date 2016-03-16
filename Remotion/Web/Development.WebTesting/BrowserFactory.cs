@@ -14,13 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Configuration;
 using Coypu;
 using Coypu.Drivers;
-using Coypu.Drivers.Selenium;
 using JetBrains.Annotations;
-using OpenQA.Selenium.Chrome;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 
@@ -56,8 +54,10 @@ namespace Remotion.Web.Development.WebTesting
 
       if (sessionConfiguration.Browser == Browser.Chrome)
       {
-        sessionConfiguration.Driver = typeof (SeleniumWebDriver);
-        return new BrowserSession (sessionConfiguration);
+        sessionConfiguration.Driver = typeof (CustomChromeDriver);
+        return new BrowserSession (
+            sessionConfiguration,
+            new CustomChromeDriver (sessionConfiguration.Browser, browserConfiguration.BrowserPreferences));
       }
 
       if (sessionConfiguration.Browser == Browser.InternetExplorer)

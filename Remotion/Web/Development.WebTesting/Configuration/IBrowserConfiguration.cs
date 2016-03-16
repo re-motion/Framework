@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Coypu.Drivers;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
@@ -45,6 +46,11 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// browser windows, which is why the default value is set to <see langword="false" />.
     /// </summary>
     bool CloseBrowserWindowsOnSetUpAndTearDown { get; }
+
+    /// <summary>
+    /// Additional browser preferences to be set (passed to the Selenium driver if supported, <see cref="BrowserFactory"/>).
+    /// </summary>
+    IReadOnlyDictionary<string, object> BrowserPreferences { get; }
 
     /// <summary>
     /// Returns whether the <see cref="Browser"/> is set to <see cref="Coypu.Drivers.Browser.InternetExplorer"/>.

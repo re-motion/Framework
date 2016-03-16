@@ -14,8 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Configuration;
+using System.Collections.Generic;
 using Coypu.Drivers;
 using Coypu.Drivers.Selenium;
 using log4net;
@@ -25,31 +26,32 @@ using OpenQA.Selenium.Chrome;
 namespace Remotion.Web.Development.WebTesting
 {
   /// <summary>
-  /// Custom <see cref="SeleniumWebDriver"/> implementation for <see cref="Browser.Chrome"/>. The default implementation uses a temporary profile
-  /// which sets the browser AcceptLanguage to English, which is not suitable for ActaNova tests.
+  /// Custom <see cref="SeleniumWebDriver"/> implementation for <see cref="Browser.Chrome"/>. The default implementation of Coypu does not
+  /// set all <see cref="ChromeOptions"/> as required.
   /// </summary>
   public class CustomChromeDriver : SeleniumWebDriver
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (CustomChromeDriver));
 
-    public CustomChromeDriver ()
-        : base (CreateChromeDriver(), Browser.Chrome)
+    public CustomChromeDriver (Browser browser)
+        : this (browser, null)
     {
     }
 
-    private static IWebDriver CreateChromeDriver ()
+    public CustomChromeDriver (Browser browser, IReadOnlyDictionary<string, object> browserPreferences)
+        : base (CreateChromeDriver (browserPreferences), browser)
     {
-      var customUserDataDir = ConfigurationManager.AppSettings["CustomChromeUserDataDir"];
+    }
 
+    private static IWebDriver CreateChromeDriver (IReadOnlyDictionary<string, object> browserPreferences)
+    {
       var driverService = ChromeDriverService.CreateDefaultService();
+
       var chromeOptions = new ChromeOptions();
-      chromeOptions.AddArgument (string.Format ("user-data-dir={0}", customUserDataDir));
+      foreach (var pref in browserPreferences)
+        chromeOptions.AddUserProfilePreference (pref.Key, pref.Value);
 
-      s_log.InfoFormat ("Using custom Chrome user-data-dir '{0}'.", customUserDataDir);
-
-      return new ChromeDriver (
-          driverService,
-          chromeOptions);
+      return new ChromeDriver (driverService, chromeOptions);
     }
   }
 }

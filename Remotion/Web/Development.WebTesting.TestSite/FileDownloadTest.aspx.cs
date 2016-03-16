@@ -26,12 +26,29 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       base.OnInit (e);
 
       DownloadButton.Click += DownloadButtonOnClick;
+      DownloadXmlButton.Click += DownloadXmlButtonOnClick;
     }
 
     private void DownloadButtonOnClick (object sender, EventArgs eventArgs)
     {
       const string file = "SampleFile.txt";
       var fullFilePath = Server.MapPath ("~/SampleFile.txt");
+
+      Response.Clear();
+      Response.ClearHeaders();
+      Response.ClearContent();
+      Response.AddHeader ("Content-Disposition", "attachment; filename=" + file);
+      Response.AddHeader ("Content-Length", file.Length.ToString());
+      Response.ContentType = "text/plain";
+      Response.Flush();
+      Response.TransmitFile (fullFilePath);
+      Response.End();
+    }
+
+    private void DownloadXmlButtonOnClick (object sender, EventArgs eventArgs)
+    {
+      const string file = "SampleXmlFile.xml";
+      var fullFilePath = Server.MapPath ("~/SampleXmlFile.xml");
 
       Response.Clear();
       Response.ClearHeaders();

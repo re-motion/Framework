@@ -36,6 +36,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       downloadHelper.DeleteFile();
     }
 
+    [Test]
+    public void TestXml ()
+    {
+      // Note: test for Chrome "safebrowsing" (requires safebrowsing.enabled to be set to true in browser preferences - see App.config).
+      const string fileName = "SampleXmlFile.xml";
+
+      var downloadHelper = NewDownloadHelper (fileName);
+      downloadHelper.AssertFileDoesNotExistYet();
+
+      var home = Start();
+      var button = home.Scope.FindId ("body_DownloadXmlButton");
+      downloadHelper.PerformDownload(() => button.Click());
+      downloadHelper.DeleteFile();
+    }
+
     private WebFormsTestPageObject Start ()
     {
       return Start<WebFormsTestPageObject> ("FileDownloadTest.aspx");

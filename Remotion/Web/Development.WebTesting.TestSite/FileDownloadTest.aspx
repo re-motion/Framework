@@ -18,4 +18,5 @@
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <h3>File Download</h3>
   <asp:Button ID="DownloadButton" Text="Start download!" runat="server"/>
+  <asp:Button ID="DownloadXmlButton" Text="Start XML download!" runat="server"/>
 </asp:Content>
