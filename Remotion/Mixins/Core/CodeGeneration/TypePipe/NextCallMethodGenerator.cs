@@ -24,6 +24,33 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
+  /// <summary>
+  /// Creates the expression tree for <b>next calls</b> on overridden methods.
+  /// </summary>
+  /// <remarks>
+  /// The same next call proxy is used for all mixins, but during instiantiation, the mixin index (= depth) is provided to the proxy. 
+  /// The target type's proxy contains an array of all mixins and when a next call is performed, the mixin to call is looked up via the depth value.
+  /// So, for a method where mixins #1 and #5 out of 10 override a specific method, for depth 0 mixin #1 is invoked, for depth 1-4, mixin #5 is invoked,
+  /// and for the remaining depth-values, the method on the target class is invoked.
+  /// <code><![CDATA[
+  /// public override void TheTargetClass.TheMethod()
+  /// {
+  ///   if (this.__depth == 0)
+  ///   {
+  ///     ((FirstMixin) this.__this.__extensions[0]).TheMethod();
+  ///   }
+  ///   else if (this.__depth >= 1 && this.__depth <= 4)
+  ///   {
+  ///     ((FifthMixin) this.__this.__extensions[4]).TheMethod();
+  ///   }
+  ///   else
+  ///   {
+  ///     this.__this.__base__TheMethod();
+  ///   }
+  /// }
+  /// ]]></code>
+  /// Note that presently, the generated code uses individual branches for each depth-value. The above snippet is a compact version of this semantics.
+  /// </remarks>
   public class NextCallMethodGenerator : INextCallMethodGenerator
   {
     private readonly TargetClassDefinition _targetClassDefinition;
