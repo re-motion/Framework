@@ -81,7 +81,9 @@ namespace Remotion.Web.Development.WebTesting
       if (_browserConfiguration.BrowserIsInternetExplorer())
       {
         Thread.Sleep (1500); // do not press too fast, IE-security in place
-        SendKeys.SendWait ("{F6}{TAB}{ENTER}");
+        SendKeys.SendWait ("{F6}");
+        Thread.Sleep (1000);
+        SendKeys.SendWait ("{TAB}{ENTER}");
       }
 
       var errorMessage = string.Format ("File download of '{0}' failed.", _fileName);
@@ -93,7 +95,9 @@ namespace Remotion.Web.Development.WebTesting
       if (_browserConfiguration.BrowserIsInternetExplorer())
       {
         Thread.Sleep (1500); // do not press too fast, IE-security in place
-        SendKeys.SendWait ("{F6}{TAB}{TAB}{TAB}{ENTER}");
+        SendKeys.SendWait ("{F6}");
+        Thread.Sleep (1000);
+        SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}");
       }
 
       s_log.DebugFormat ("Download to '{0}' successfully completed", _fullFilePath);
