@@ -154,11 +154,10 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNullOrEmpty ("testName", testName);
 
       _testName = testName;
+      s_log.InfoFormat ("Executing test: {0}.", _testName);
 
       if (MainBrowserSession != null)
         s_log.InfoFormat ("Current window title: {0}.", MainBrowserSession.Title);
-
-      s_log.InfoFormat ("Executing test: {0}.", _testName);
     }
 
     /// <summary>
