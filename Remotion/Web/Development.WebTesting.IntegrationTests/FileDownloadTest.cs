@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
+
 using NUnit.Framework;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
@@ -32,10 +32,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
       var button = home.Scope.FindId ("body_DownloadButton");
-      downloadHelper.PerformDownload(() => button.Click());
+      downloadHelper.PerformDownload (() => button.Click());
       downloadHelper.DeleteFile();
     }
 
+    private WebFormsTestPageObject Start ()
+    {
+      return Start<WebFormsTestPageObject> ("FileDownloadTest.aspx");
+    }
+  }
+
+  // Own TestFixture until we know why IE driver is dead after downloading a file (only on TC agents).
+  [TestFixture]
+  public class XmlFileDownloadTest : IntegrationTest
+  {
     [Test]
     public void TestXml ()
     {
@@ -47,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
       var button = home.Scope.FindId ("body_DownloadXmlButton");
-      downloadHelper.PerformDownload(() => button.Click());
+      downloadHelper.PerformDownload (() => button.Click());
       downloadHelper.DeleteFile();
     }
 
