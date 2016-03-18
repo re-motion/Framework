@@ -44,15 +44,21 @@ namespace Remotion.Web.Development.WebTesting
       driverService.LogFile = GetLogFile();
       driverService.LoggingLevel = InternetExplorerDriverLogLevel.Info;
 
-      return
-          new InternetExplorerDriver (
-              driverService,
-              new InternetExplorerOptions
-              {
-                  EnableNativeEvents = true,
-                  RequireWindowFocus = true,
-                  EnablePersistentHover = false
-              });
+      var options = new InternetExplorerOptions
+                    {
+                        EnableNativeEvents = true,
+                        RequireWindowFocus = true,
+                        EnablePersistentHover = false
+                    };
+      var driver = new InternetExplorerDriver (driverService, options);
+
+      s_log.InfoFormat (
+          "Created CustomInternetExplorerDriver with options: EnableNativeEvents={0}, RequireWindowFocus={1}, EnablePersistentHover={2}",
+          options.EnableNativeEvents,
+          options.RequireWindowFocus,
+          options.EnablePersistentHover);
+
+      return driver;
     }
 
     private static string GetLogFile ()
