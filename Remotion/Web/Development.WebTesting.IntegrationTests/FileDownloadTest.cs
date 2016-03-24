@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.Configuration;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -26,6 +26,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void Test ()
     {
+      if (WebTestingConfiguration.Current.BrowserIsInternetExplorer())
+        Assert.Ignore ("File download in IE currently broken. See https://github.com/SeleniumHQ/selenium/issues/1843 for more information.");
+
       const string fileName = "SampleFile.txt";
 
       var downloadHelper = NewDownloadHelper (fileName);
@@ -33,7 +36,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
       var button = home.Scope.FindId ("body_DownloadButton");
-      downloadHelper.PerformDownload(() => button.Click());
+      downloadHelper.PerformDownload (() => button.Click());
+      downloadHelper.DeleteFile();
+    }
+
+    [Test]
+    public void TestXml ()
+    {
+      if (WebTestingConfiguration.Current.BrowserIsInternetExplorer())
+        Assert.Ignore ("File download in IE currently broken. See https://github.com/SeleniumHQ/selenium/issues/1843 for more information.");
+
+      // Note: test for Chrome "safebrowsing" (requires safebrowsing.enabled to be set to true in browser preferences - see App.config).
+      const string fileName = "SampleXmlFile.xml";
+
+      var downloadHelper = NewDownloadHelper (fileName);
+      downloadHelper.AssertFileDoesNotExistYet();
+
+      var home = Start();
+      var button = home.Scope.FindId ("body_DownloadXmlButton");
+      downloadHelper.PerformDownload (() => button.Click());
       downloadHelper.DeleteFile();
     }
 
