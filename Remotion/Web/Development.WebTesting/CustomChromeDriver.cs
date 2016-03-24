@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Coypu.Drivers;
 using Coypu.Drivers.Selenium;
 using log4net;
@@ -51,7 +52,13 @@ namespace Remotion.Web.Development.WebTesting
       foreach (var pref in browserPreferences)
         chromeOptions.AddUserProfilePreference (pref.Key, pref.Value);
 
-      return new ChromeDriver (driverService, chromeOptions);
+      var driver = new ChromeDriver (driverService, chromeOptions);
+
+      s_log.InfoFormat (
+          "Created CustomChromeDriver with user profile preferences: {0}",
+          string.Join (", ", browserPreferences.Select (kvp => kvp.Key + "='" + kvp.Value + "'")));
+
+      return driver;
     }
   }
 }

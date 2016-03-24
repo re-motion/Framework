@@ -22,6 +22,7 @@ using Coypu;
 using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -129,6 +130,12 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public void OnFixtureSetUp ()
     {
+      s_log.InfoFormat ("WebTestHelper.OnFixtureSetup() has been called.");
+      s_log.InfoFormat ("Remotion version: " + typeof (WebTestHelper).Assembly.GetName().Version);
+      s_log.InfoFormat ("Selenium (WebDriver) version: " + typeof (IWebDriver).Assembly.GetName().Version);
+      s_log.InfoFormat ("Selenium Support (WebDriver.Support) version: " + typeof (WebDriverWait).Assembly.GetName().Version);
+      s_log.InfoFormat ("Coypu version: " + typeof (Element).Assembly.GetName().Version);
+
       // Note: otherwise the Selenium web driver may get confused when searching for windows.
       EnsureAllBrowserWindowsAreClosed();
 
@@ -148,6 +155,9 @@ namespace Remotion.Web.Development.WebTesting
 
       _testName = testName;
       s_log.InfoFormat ("Executing test: {0}.", _testName);
+
+      if (MainBrowserSession != null)
+        s_log.InfoFormat ("Current window title: {0}.", MainBrowserSession.Title);
     }
 
     /// <summary>
@@ -174,8 +184,13 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("browser", browser);
 
+      s_log.InfoFormat ("WebTestHelper.CreateInitialPageObject<" + typeof (TPageObject).FullName + "> has been called.");
       var context = PageObjectContext.New (browser);
-      return (TPageObject) Activator.CreateInstance (typeof (TPageObject), new object[] { context });
+      s_log.InfoFormat ("New PageObjectContext has been created.");
+
+      var pageObject = (TPageObject) Activator.CreateInstance (typeof (TPageObject), new object[] { context });
+      s_log.InfoFormat ("Initial PageObject has been created.");
+      return pageObject;
     }
 
     /// <summary>
@@ -230,8 +245,12 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public void OnFixtureTearDown ()
     {
+      s_log.InfoFormat ("WebTestHelper.OnFixtureTearDown() has been called.");
+
       if (MainBrowserSession != null)
         MainBrowserSession.Dispose();
+
+      s_log.InfoFormat ("MainBrowserSession has been disposed.");
 
       // Note: otherwise the sytem may get clogged, if the Selenium web driver implementation does not properly close all windows in all situations.
       EnsureAllBrowserWindowsAreClosed();
@@ -243,6 +262,7 @@ namespace Remotion.Web.Development.WebTesting
       if (!_browserConfiguration.CloseBrowserWindowsOnSetUpAndTearDown)
         return;
 
+      s_log.InfoFormat ("Killing all processes named '{0}'.", _browserConfiguration.GetBrowserExecutableName());
       var browserProcessName = _browserConfiguration.GetBrowserExecutableName();
       if (browserProcessName == null)
         return;
@@ -257,6 +277,7 @@ namespace Remotion.Web.Development.WebTesting
       if (webDriverProcessName == null)
         return;
 
+      s_log.InfoFormat ("Killing all processes named '{0}'.", _browserConfiguration.GetWebDriverExecutableName());
       ProcessUtils.KillAllProcessesWithName (webDriverProcessName);
     }
 
