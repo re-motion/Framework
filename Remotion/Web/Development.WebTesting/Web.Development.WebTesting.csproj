@@ -70,6 +70,8 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Configuration\BrowserPreferenceConfigurationElement.cs" />
+    <Compile Include="Configuration\BrowserPreferencesConfigurationElementCollection.cs" />
     <Compile Include="PageObjects\IWebFormsPageObject.cs" />
     <Compile Include="WebColor.cs" />
     <Compile Include="CompletionDetectionStrategies\CompoundCompletionDetectionStrategy.cs" />

@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using Coypu.Drivers;
 using JetBrains.Annotations;
 using Remotion.Utilities;
@@ -44,6 +45,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _logsDirectoryProperty;
     private readonly ConfigurationProperty _closeBrowserWindowsOnSetUpAndTearDownProperty;
     private readonly ConfigurationProperty _hostingProperty;
+    private readonly ConfigurationProperty _browserPreferences;
 
     static WebTestingConfiguration ()
     {
@@ -80,6 +82,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _logsDirectoryProperty = new ConfigurationProperty ("logsDirectory", typeof (string), ".");
       _closeBrowserWindowsOnSetUpAndTearDownProperty = new ConfigurationProperty ("closeBrowserWindowsOnSetUpAndTearDown", typeof (bool), false);
       _hostingProperty = new ConfigurationProperty ("hosting", typeof (ProviderSettings));
+      _browserPreferences = new ConfigurationProperty ("browserPreferences", typeof (BrowserPreferencesConfigurationElementCollection));
 
       _properties = new ConfigurationPropertyCollection
                     {
@@ -90,7 +93,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _screenshotDirectoryProperty,
                         _logsDirectoryProperty,
                         _closeBrowserWindowsOnSetUpAndTearDownProperty,
-                        _hostingProperty
+                        _hostingProperty,
+                        _browserPreferences
                     };
     }
 
@@ -209,6 +213,18 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public bool CloseBrowserWindowsOnSetUpAndTearDown
     {
       get { return (bool) this[_closeBrowserWindowsOnSetUpAndTearDownProperty]; }
+    }
+
+    /// <summary>
+    /// Additional browser preferences to be set (passed to the Selenium driver if supported, <see cref="BrowserFactory"/>).
+    /// </summary>
+    public IReadOnlyDictionary<string, object> BrowserPreferences
+    {
+      get
+      {
+        var configurationElementCollection = (BrowserPreferencesConfigurationElementCollection) this[_browserPreferences];
+        return configurationElementCollection.Cast<BrowserPreferenceConfigurationElement>().ToDictionary (k => k.Key, v => v.Value);
+      }
     }
 
     /// <summary>

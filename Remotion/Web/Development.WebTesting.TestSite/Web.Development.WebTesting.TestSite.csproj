@@ -72,6 +72,7 @@
     <Content Include="DropDownMenuTest.aspx" />
     <Content Include="FileDownloadTest.aspx" />
     <Content Include="ImageTest.aspx" />
+    <Content Include="SampleXmlFile.xml" />
     <Content Include="SampleFile.txt" />
     <Content Include="ScopeTest.aspx" />
     <Content Include="DropDownListTest.aspx" />
