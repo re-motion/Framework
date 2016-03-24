@@ -16,6 +16,7 @@
 // 
 
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.Configuration;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -25,6 +26,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void Test ()
     {
+      if (WebTestingConfiguration.Current.BrowserIsInternetExplorer())
+        Assert.Ignore ("File download in IE currently broken. See https://github.com/SeleniumHQ/selenium/issues/1843 for more information.");
+
       const string fileName = "SampleFile.txt";
 
       var downloadHelper = NewDownloadHelper (fileName);
@@ -36,19 +40,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       downloadHelper.DeleteFile();
     }
 
-    private WebFormsTestPageObject Start ()
-    {
-      return Start<WebFormsTestPageObject> ("FileDownloadTest.aspx");
-    }
-  }
-
-  // Own TestFixture until we know why IE driver is dead after downloading a file (only on TC agents).
-  [TestFixture]
-  public class XmlFileDownloadTest : IntegrationTest
-  {
     [Test]
     public void TestXml ()
     {
+      if (WebTestingConfiguration.Current.BrowserIsInternetExplorer())
+        Assert.Ignore ("File download in IE currently broken. See https://github.com/SeleniumHQ/selenium/issues/1843 for more information.");
+
       // Note: test for Chrome "safebrowsing" (requires safebrowsing.enabled to be set to true in browser preferences - see App.config).
       const string fileName = "SampleXmlFile.xml";
 
