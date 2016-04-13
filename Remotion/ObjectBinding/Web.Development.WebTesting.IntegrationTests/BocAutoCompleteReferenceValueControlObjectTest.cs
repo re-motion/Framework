@@ -178,7 +178,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    [Ignore ("Broken in IE on Build Server")]
     public void TestExecuteCommand ()
     {
       var home = Start();
