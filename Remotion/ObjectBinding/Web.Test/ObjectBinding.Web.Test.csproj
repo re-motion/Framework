@@ -497,6 +497,7 @@
     <Compile Include="ViewPersonsWxeFunction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Content Include="Experimental\FormGrid.htm" />
     <Content Include="Validation\BocValidationTestForm.aspx" />
     <Content Include="ClientForm.aspx">
       <SubType>Form</SubType>
