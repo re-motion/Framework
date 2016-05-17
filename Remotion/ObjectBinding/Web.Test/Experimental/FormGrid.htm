@@ -10,26 +10,44 @@
     <style type="text/css">
     
       /*  Style applied to the form grid table's outer structure  */
-      div.formGridTable
+      fieldset.formGridTable
       {
         display: table;
+        margin: 0;
+        padding: 0;
+
         border-collapse: collapse;
         border-width: 0;
         width: 100%;
       }
 
-      div.formGridRow
+      fieldset.formGridTable > ul
+      {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      fieldset.formGridTable > ul > li
+      {
+        margin: 0;
+        padding: 0;
+      }
+
+      div.formGridRow,
+      legend.formGridRow
       {
         display: table-row;
       }
 
-      div.formGridCell
+      div.formGridCell,
+      span.formGridCell
       {
         display: table-cell;
       }
 
-      div.formGridTitleCell,
-      div.formGridSubTitleCell
+      span.formGridTitleCell,
+      span.formGridSubTitleCell
       {
         font-weight: bold;
         font-size: 125%;
@@ -108,44 +126,69 @@
         <td class="formGridControlsCell"></td>
       </tr>
       <tr>
-        <td class="formGridControlsCell" colspan="3"><textarea style="width: calc(100% - 0.5em)"></textarea></td>
+        <td class="formGridControlsCell" colspan="3"><textarea style="width: 100%"></textarea></td>
+      </tr>
+      <tr>
+        <td class="formGridLabelsCell">Label</td>
+        <td class="formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </td>
+        <td class="formGridControlsCell"><input /></td>
       </tr>
     </table>
 
     <hr />
 
-    <div class="formGridTable">
-      <div class="formGridRow">
-        <div class="formGridCell formGridTitleCell">Table using DIV</div>
-      </div>
-      <div class="formGridRow">
-        <div class="formGridCell formGridLabelsCell formGridTopDataRow">Label</div>
-        <div class="formGridCell formGridMarkersCell formGridTopDataRow"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
-        <div class="formGridCell formGridControlsCell formGridTopDataRow"><input /></div>
-      </div>
-      <div class="formGridRow">
-        <div class="formGridCell formGridLabelsCell">Label</div>
-        <div class="formGridCell formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
-        <div class="formGridCell formGridControlsCell"><input /></div>
-      </div>
-      <div class="formGridRow">
-        <div class="formGridCell formGridLabelsCell">Label</div>
-        <div class="formGridCell formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
-        <div class="formGridCell formGridControlsCell"></div>
-      </div>
-      <div class="formGridRow">
-        <div class="formGridCell formGridControlsCell"><textarea style="width: calc(100% - 0.5em)"></textarea></div>
-      </div>
-    </div>
-
-    <!--
-
-    <div style="display: table-column-group">
-      <div style="display: table-column"></div>
-      <div style="display: table-column"></div>
-      <div style="display: table-column"></div>
-    </div>
-
-      -->
-</body>
+    <fieldset class="formGridTable">
+      <legend class="formGridRow">
+        <span class="formGridCell formGridTitleCell">Table using DIV</span>
+      </legend>
+      <ul>
+        <li>
+          <div class="formGridRow">
+            <div class="formGridCell formGridLabelsCell formGridTopDataRow">Label</div>
+            <div class="formGridCell formGridMarkersCell formGridTopDataRow"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
+            <div class="formGridCell formGridControlsCell formGridTopDataRow"><input /></div>
+          </div>
+        </li>
+        <li>
+          <div class="formGridRow">
+            <div class="formGridCell formGridLabelsCell">Label</div>
+            <div class="formGridCell formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
+            <div class="formGridCell formGridControlsCell"><input /></div>
+          </div>
+        </li>
+        <li>
+          <div class="formGridRow">
+            <div class="formGridCell formGridLabelsCell">Label</div>
+            <div class="formGridCell formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
+            <div class="formGridCell formGridControlsCell"></div>
+          </div>
+          <div>
+            <div class="formGridControlsCell"><textarea style="width: 100%"></textarea></div>
+          </div>
+        </li>
+        <li>
+          <div class="formGridRow">
+            <div class="formGridCell formGridLabelsCell">Label</div>
+            <div class="formGridCell formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
+            <div class="formGridCell formGridControlsCell"></div>
+          </div>
+          <div>
+            <div class="formGridControlsCell">
+              <table style="width: 100%">
+                <tr><td>Firstname</td><td>Lastname</td></tr>
+                <tr><td>John</td><td>Doe</td></tr>
+              </table>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="formGridRow">
+            <div class="formGridCell formGridLabelsCell">Label</div>
+            <div class="formGridCell formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
+            <div class="formGridCell formGridControlsCell"><input /></div>
+          </div>
+        </li>
+      </ul>
+    </fieldset>
+  </body>
 </html>
