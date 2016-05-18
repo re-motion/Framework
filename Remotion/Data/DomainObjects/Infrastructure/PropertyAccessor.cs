@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </summary>
     /// <value>True if this instance is null; otherwise, false.</value>
     /// <remarks>This can be used to efficiently check whether a related object property has a value without actually loading the related
-    /// object.</remarks>
+    /// object. Note that this only holds true when accessing the non-virtual side side of a relation.</remarks>
     /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="DomainObjects.ClientTransaction"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     public bool IsNull
