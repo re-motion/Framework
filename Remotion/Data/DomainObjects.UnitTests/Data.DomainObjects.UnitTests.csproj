@@ -316,6 +316,17 @@
     <Compile Include="Persistence\Rdbms\SchemaGenerationTestDomain\MixinAddedTwiceWithDifferentNullability\LayerSupertype.cs" />
     <Compile Include="Persistence\Rdbms\SchemaGenerationTestDomain\MixinAddedTwiceWithDifferentNullability\PersistentMixinAddedTwice.cs" />
     <Compile Include="Persistence\Rdbms\SchemaGenerationTestDomain\MixinAddedTwiceWithDifferentNullability\TargetClassWithDBTable.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\CustomDataTypeStorageProeprtyDefinitionFactoryDecorator.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\CustomDataTypeStorageObjectFactory.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\CustomDataTypeStorageTypeInformationProvider.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\CustomDataTypeTest.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\SimpleDataTypePropertyAttribute.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\SimpleDataTypePropertyValidator.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\SimpleDataTypeStorageTypeInformation.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\TestDomain\ClassWithCustomDataType.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\TestDomain\CompoundDataType.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\TestDomain\SimpleDataType.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\ReleationEndPointTestHelper.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\Model\Building\SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecoratorTest.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\Model\SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecoratorTest.cs" />
     <Compile Include="Serialization\FlattenedSerializableWithoutCtorStub.cs" />
@@ -419,7 +430,7 @@
     <Compile Include="Persistence\Rdbms\DataReaders\QueryResultRowTest.cs" />
     <Compile Include="Persistence\Rdbms\Model\Building\RelationStoragePropertyDefinitionFactoryTest.cs" />
     <Compile Include="Persistence\Rdbms\Model\Building\ValueStoragePropertyDefinitionFactoryTest.cs" />
-    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\CustomStorageObjectFactoryTestBase.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomStorageObjectFactoryTestBase.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\TestDomain\RelationTargetWithInheritanceHierarchy.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\TestDomain\RelationTargetWithoutInheritanceHierarchy.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\TestDomain\SubclassOfRelationTargetWithInheritanceHierarchy.cs" />
@@ -1971,6 +1982,7 @@
     <EmbeddedResource Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\TestData\TearDownDB_FirstStorageProvider.sql" />
     <EmbeddedResource Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\TestData\TearDownDB_SecondStorageProvider.sql" />
     <EmbeddedResource Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\TestData\TearDownDB_ThirdStorageProvider.sql" />
+    <Content Include="Database\DataDomainObjects_CreateEmptyTestData.sql" />
     <Content Include="QueriesForStorageGroupTest.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>

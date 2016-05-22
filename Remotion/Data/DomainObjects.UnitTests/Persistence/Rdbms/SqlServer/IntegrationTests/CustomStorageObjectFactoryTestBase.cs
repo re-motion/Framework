@@ -14,31 +14,42 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using NUnit.Framework;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
-using Remotion.Development.UnitTesting.Reflection;
+using Remotion.Development.UnitTesting.Data.SqlClient;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Rhino.Mocks;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.EnablingClassIDsInAllForeignKeys
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
-  public abstract class CustomStorageObjectFactoryTestBase
+  public abstract class CustomStorageObjectFactoryTestBase : DatabaseTest
   {
+    public const string CreateEmptyTestDataFileName = "DataDomainObjects_CreateEmptyTestData.sql";
+
     private SqlStorageObjectFactory _storageObjectFactory;
     private RdbmsProviderDefinition _storageProviderDefinition;
     private MappingConfiguration _mappingConfiguration;
 
-    [SetUp]
-    public void SetUp ()
+    protected CustomStorageObjectFactoryTestBase (string createTestDataFileName)
+        : base (new DatabaseAgent (TestDomainConnectionString), createTestDataFileName)
+    {
+    }
+
+    public override void SetUp ()
     {
       var mappingLoader = new MappingReflector (
           new FixedTypeDiscoveryService (GetReflectedTypes()),
@@ -46,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           new ReflectionBasedMemberInformationNameResolver(),
           new PropertyMetadataReflector(),
           new DomainModelConstraintProvider(),
-          new ThrowingDomainObjectCreator());
+          SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
       _storageObjectFactory = CreateSqlStorageObjectFactory ();
       var storageProviderDefinitionFinderStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder>();
       _storageProviderDefinition = new RdbmsProviderDefinition ("test", _storageObjectFactory, DatabaseTest.TestDomainConnectionString);
@@ -57,10 +68,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       _mappingConfiguration = new MappingConfiguration (mappingLoader, persistenceModelLoader);
 
       MappingConfiguration.SetCurrent (_mappingConfiguration);
+
+      DomainObjectsConfiguration.SetCurrent (
+          new FakeDomainObjectsConfiguration (
+              null,
+              new StorageConfiguration (
+                  new ProviderCollection<StorageProviderDefinition> { _storageProviderDefinition },
+                  _storageProviderDefinition),
+              null));
     }
 
-    [TearDown]
-    public void TearDown ()
+    public override void TearDown ()
     {
       MappingConfiguration.SetCurrent (null);
     }
@@ -87,13 +105,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var thisType = GetType();
       var testDomainNamespace = thisType.Namespace + ".TestDomain";
       return thisType.Assembly.GetTypes().Where (t => t.Namespace != null && t.Namespace.StartsWith (testDomainNamespace)).ToArray();
-    }
-
-    protected RelationEndPointDefinition GetRelationEndPointDefinition<TSource, TRelated> (Expression<Func<TSource, TRelated>> propertyAccessExpression)
-    {
-      var typeDefinition = MappingConfiguration.GetTypeDefinition (typeof (TSource));
-      var propertyInfoAdapter = PropertyInfoAdapter.Create (NormalizingMemberInfoFromExpressionUtility.GetProperty (propertyAccessExpression));
-      return (RelationEndPointDefinition) typeDefinition.ResolveRelationEndPoint (propertyInfoAdapter);
     }
   }
 }

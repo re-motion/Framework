@@ -1247,6 +1247,18 @@ CREATE TABLE [EagerFetching_RelationTarget] (
 ) 
 GO
 
+CREATE TABLE [dbo].[CustomDataType_ClassWithCustomDataType]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [CompoundDataTypeValueStringValue] nvarchar (100) NULL,
+  [CompoundDataTypeValueInt32Value] int NOT NULL,
+  [SimpleDataTypeValue] nvarchar (max) NULL,
+  CONSTRAINT [PK_ClassWithCustomDataType] PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+
 CREATE PROCEDURE rpf_testSPQuery
 AS
   SELECT * FROM [Order] WHERE [OrderNo] = 1 OR [OrderNo] = 3 ORDER BY [OrderNo] ASC
@@ -1734,3 +1746,9 @@ CREATE VIEW [dbo].[EagerFetching_RelationTargetView] ([ID], [ClassID], [Timestam
   WITH CHECK OPTION
 GO
 
+CREATE VIEW [dbo].[ClassWithCustomDataTypeView] ([ID], [ClassID], [Timestamp], [CompoundDataTypeValueStringValue], [CompoundDataTypeValueInt32Value], [SimpleDataTypeValue])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [CompoundDataTypeValueStringValue], [CompoundDataTypeValueInt32Value], [SimpleDataTypeValue]
+    FROM [dbo].[CustomDataType_ClassWithCustomDataType]
+  WITH CHECK OPTION
+GO

@@ -27,6 +27,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   [TestFixture]
   public class DefaultBehaviorTest : CustomStorageObjectFactoryTestBase
   {
+    public DefaultBehaviorTest ()
+        : base (CreateEmptyTestDataFileName)
+    {
+    }
+
     protected override SqlStorageObjectFactory CreateSqlStorageObjectFactory ()
     {
       return new SqlStorageObjectFactory ();
@@ -35,7 +40,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void EndPointWithoutInheritanceHierarchy_HasNoClassIDColumn ()
     {
-      var endPointWithoutInheritanceHierarchy = GetRelationEndPointDefinition ((ClassWithRelations obj) => obj.RelationWithoutInheritanceHierarchy);
+      var endPointWithoutInheritanceHierarchy = ReleationEndPointTestHelper.GetRelationEndPointDefinition (
+          MappingConfiguration,
+          (ClassWithRelations obj) => obj.RelationWithoutInheritanceHierarchy);
 
       var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition) endPointWithoutInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
       Assert.That (storagePropertyDefinition, Is.TypeOf<ObjectIDWithoutClassIDStoragePropertyDefinition>());
@@ -47,7 +54,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void EndPointWithInheritanceHierarchy_HasClassIDColumn ()
     {
-      var endPointWithInheritanceHierarchy = GetRelationEndPointDefinition ((ClassWithRelations obj) => obj.RelationWithInheritanceHierarchy);
+      var endPointWithInheritanceHierarchy = ReleationEndPointTestHelper.GetRelationEndPointDefinition (
+          MappingConfiguration,
+          (ClassWithRelations obj) => obj.RelationWithInheritanceHierarchy);
 
       var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition) endPointWithInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
       Assert.That (storagePropertyDefinition, Is.TypeOf<ObjectIDStoragePropertyDefinition> ());
