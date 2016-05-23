@@ -1967,8 +1967,12 @@
     <None Include="TestDomain\TableInheritance\AbstractClassWithHierarchy.cd" />
     <None Include="TestDomain\TableInheritance\TestDomain.cd" />
     <None Include="TestDomain\TableInheritance\FileSystem.cd" />
-    <None Include="Database\DataDomainObjects_DropFulltextIndices.sql" />
-    <None Include="Database\DataDomainObjects_CreateFulltextIndices.sql" />
+    <Content Include="Database\DataDomainObjects_DropFulltextIndices.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database\DataDomainObjects_CreateFulltextIndices.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Resources\DomainObjectsConfigurationWithFakeMappingLoader.xml" />
     <EmbeddedResource Include="Resources\DomainObjectsConfigurationWithMinimumSettings.xml" />
     <EmbeddedResource Include="Resources\DomainObjectsConfigurationWithCustomSectionGroupName.xml" />
@@ -1984,7 +1988,9 @@
     <EmbeddedResource Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\TestData\TearDownDB_FirstStorageProvider.sql" />
     <EmbeddedResource Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\TestData\TearDownDB_SecondStorageProvider.sql" />
     <EmbeddedResource Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\TestData\TearDownDB_ThirdStorageProvider.sql" />
-    <Content Include="Database\DataDomainObjects_CreateEmptyTestData.sql" />
+    <Content Include="Database\DataDomainObjects_CreateEmptyTestData.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="QueriesForStorageGroupTest.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -2001,11 +2007,18 @@
     <EmbeddedResource Include="Resources\MappingExportOutput.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Database\DataDomainObjects_CreateTableInheritanceTestData.sql" />
-    <Content Include="Database\DataDomainObjects_CreateDB.sql" />
-    <Content Include="Database\DataDomainObjects_CreateTestData.sql">
+    <Content Include="Database\DataDomainObjects_CreateTableInheritanceTestData.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Database\DataDomainObjects_SetupDB.sql" />
+    <Content Include="Database\DataDomainObjects_CreateDB.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database\DataDomainObjects_CreateTestData.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database\DataDomainObjects_SetupDB.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="QueriesForStandardMapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
