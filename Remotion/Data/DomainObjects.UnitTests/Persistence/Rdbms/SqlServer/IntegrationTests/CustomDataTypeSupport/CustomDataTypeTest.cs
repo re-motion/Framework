@@ -27,7 +27,6 @@ using Remotion.Development.Data.UnitTesting.DomainObjects.Linq;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 
-[assembly: ApplyQueryGeneratorMixin]
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport
 {
   [TestFixture]
