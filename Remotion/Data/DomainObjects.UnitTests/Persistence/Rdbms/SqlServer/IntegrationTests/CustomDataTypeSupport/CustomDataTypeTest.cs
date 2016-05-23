@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
-using Remotion.Development.Data.UnitTesting.DomainObjects.Linq;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 
