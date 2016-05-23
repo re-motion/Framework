@@ -78,24 +78,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
                         typeof (string),
                         new DefaultConverter (typeof (string))),
                     false)),
-                  obj => ((CompoundDataType) obj).StringValue),
+                  obj => obj == null ? null : ((CompoundDataType) obj).StringValue),
               new CompoundStoragePropertyDefinition.NestedPropertyInfo (
                   new SimpleStoragePropertyDefinition (
                       typeof (int),
                       new ColumnDefinition (
                           columnName + "Int32Value",
                           new StorageTypeInformation (
-                          typeof (int),
+                          typeof (int?),
                           "int",
                           DbType.Int32,
-                          false,
+                          true,
                           null,
-                          typeof (int),
-                          new DefaultConverter (typeof (int))),
+                          typeof (int?),
+                          new DefaultConverter (typeof (int?))),
                       false)),
-                  obj => ((CompoundDataType) obj).Int32Value)
+                  obj => obj == null ? (int?) null : ((CompoundDataType) obj).Int32Value)
           },
-          values => new CompoundDataType ((string) values[0], (int) values[1]));
+          values =>  values[0] == null && values[1] == null ? null : new CompoundDataType ((string) values[0], (int) values[1]));
     }
   }
 }

@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain
 {
-  public struct SimpleDataType
+  public sealed class SimpleDataType : IStructuralEquatable
   {
     private readonly string _stringValue;
 
@@ -32,6 +33,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public string StringValue
     {
       get { return _stringValue; }
+    }
+
+    public bool Equals (object other, IEqualityComparer comparer)
+    {
+      var otherSimpleDataType = other as SimpleDataType;
+      if (otherSimpleDataType == null)
+        return false;
+      return comparer.Equals (_stringValue, otherSimpleDataType._stringValue);
+    }
+
+    public int GetHashCode (IEqualityComparer comparer)
+    {
+      return comparer.GetHashCode (_stringValue);
     }
   }
 }

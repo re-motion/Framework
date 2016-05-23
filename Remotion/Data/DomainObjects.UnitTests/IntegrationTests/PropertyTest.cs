@@ -45,5 +45,73 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var instance = ClassWithEnumNotDefiningZero.NewObject();
       Assert.That (instance.EnumValue, Is.EqualTo (TestDomain.EnumNotDefiningZero.First));
     }
+
+    [Test]
+    public void UpdateStructuralEquatableValueWithIdenticalValue_RecognizeObjectAsUnchanged ()
+    {
+      var instance = ClassWithPropertyTypeImplementingIStructuralEquatable.NewObject();
+      instance.StructuralEquatableValue = Tuple.Create ("Value", 50);
+
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+      {
+        instance.EnsureDataAvailable();
+        Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+        instance.StructuralEquatableValue = Tuple.Create ("Value", 50);
+        Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+      }
+    }
+
+    [Test]
+    public void UpdateStructuralEquatableValueWithChangedValue_RecognizeObjectAsChanged ()
+    {
+      var instance = ClassWithPropertyTypeImplementingIStructuralEquatable.NewObject();
+      instance.StructuralEquatableValue = Tuple.Create ("Value", 50);
+
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+      {
+        instance.EnsureDataAvailable();
+
+        using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+        {
+          instance.EnsureDataAvailable();
+          Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+          instance.StructuralEquatableValue = Tuple.Create ("Other", 100);
+          Assert.That (instance.State, Is.EqualTo (StateType.Changed));
+
+          ClientTransaction.Current.Commit();
+          Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+        }
+
+        Assert.That(instance.StructuralEquatableValue, Is.EqualTo(Tuple.Create ("Other", 100)));
+        Assert.That (instance.State, Is.EqualTo (StateType.Changed));
+      }
+    }
+
+    [Test]
+    public void RollbackStructuralEquatableValue_ResetsChangedValue ()
+    {
+      var instance = ClassWithPropertyTypeImplementingIStructuralEquatable.NewObject();
+      instance.StructuralEquatableValue = Tuple.Create ("Value", 50);
+
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+      {
+        instance.EnsureDataAvailable();
+
+        using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+        {
+          instance.EnsureDataAvailable();
+          Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+          instance.StructuralEquatableValue = Tuple.Create ("Other", 100);
+          Assert.That (instance.State, Is.EqualTo (StateType.Changed));
+
+          ClientTransaction.Current.Rollback();
+          Assert.That(instance.StructuralEquatableValue, Is.EqualTo(Tuple.Create ("Value", 50)));
+          Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+        }
+
+        Assert.That(instance.StructuralEquatableValue, Is.EqualTo(Tuple.Create ("Value", 50)));
+        Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+      }
+    }
   }
 }

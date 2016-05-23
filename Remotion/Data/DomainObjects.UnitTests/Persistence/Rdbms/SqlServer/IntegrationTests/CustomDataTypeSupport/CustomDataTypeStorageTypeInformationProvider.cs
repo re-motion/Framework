@@ -58,17 +58,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public IStorageTypeInformation GetStorageType (PropertyDefinition propertyDefinition, bool forceNullable)
     {
       if (typeof (SimpleDataType).IsAssignableFrom (propertyDefinition.PropertyType))
-        return CreateSimpleDataTypeStorageTypeInformation (isStorageTypeNullable: false, maxLength: propertyDefinition.MaxLength);
-      if (typeof (SimpleDataType?).IsAssignableFrom (propertyDefinition.PropertyType))
-        return CreateSimpleDataTypeStorageTypeInformation (isStorageTypeNullable: true, maxLength: propertyDefinition.MaxLength);
+        return CreateSimpleDataTypeStorageTypeInformation (propertyDefinition.IsNullable, propertyDefinition.MaxLength);
       return _innerStorageTypeInformationProvider.GetStorageType (propertyDefinition, forceNullable);
     }
 
     public IStorageTypeInformation GetStorageType (Type type)
     {
       if (typeof (SimpleDataType).IsAssignableFrom (type))
-        return CreateSimpleDataTypeStorageTypeInformation (isStorageTypeNullable: false, maxLength: null);
-      if (typeof (SimpleDataType?).IsAssignableFrom (type))
         return CreateSimpleDataTypeStorageTypeInformation (isStorageTypeNullable: true, maxLength: null);
       return _innerStorageTypeInformationProvider.GetStorageType (type);
     }
@@ -76,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public IStorageTypeInformation GetStorageType (object value)
     {
       if (value is SimpleDataType)
-        return CreateSimpleDataTypeStorageTypeInformation (isStorageTypeNullable: false, maxLength: null);
+        return CreateSimpleDataTypeStorageTypeInformation (isStorageTypeNullable: true, maxLength: null);
       return _innerStorageTypeInformationProvider.GetStorageType (value);
     }
 

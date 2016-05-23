@@ -353,6 +353,7 @@
     <Compile Include="Infrastructure\TypePipe\DomainObjectParticipantTest.cs" />
     <Compile Include="Infrastructure\TypePipe\MutableTypeObjectMother.cs" />
     <Compile Include="IntegrationTests\RegisterForCommitTest.cs" />
+    <Compile Include="TestDomain\ClassWithPropertyTypeImplementingIStructuralEquatable.cs" />
     <Compile Include="TestDomain\SpecialCustomer.cs" />
     <Compile Include="Tracing\CompoundPersistenceExtensionFactoryTest.cs" />
     <Compile Include="Tracing\IPersistenceExtensionFactoryTest.cs" />

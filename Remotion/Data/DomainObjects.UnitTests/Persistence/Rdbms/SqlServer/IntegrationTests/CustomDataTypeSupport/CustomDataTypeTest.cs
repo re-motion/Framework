@@ -82,6 +82,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
+    public void InsertAndGetObject_WithCompoundDataType_Null ()
+    {
+      SetDatabaseModifyable();
+
+      ObjectID id;
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        var obj = ClassWithCustomDataType.NewObject();
+        obj.CompoundDataTypeValue = null;
+        ClientTransaction.Current.Commit();
+
+        id = obj.ID;
+      }
+
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        var obj = ClassWithCustomDataType.GetObject (ClientTransaction.Current, id);
+        Assert.That (obj.CompoundDataTypeValue, Is.Null);
+      }
+    }
+
+    [Test]
     public void InsertAndGetObject_WithSimpleDataType ()
     {
       SetDatabaseModifyable();
@@ -100,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       {
         var obj = ClassWithCustomDataType.GetObject (ClientTransaction.Current, id);
         Assert.That (obj.SimpleDataTypeValue, Is.Not.Null);
-        Assert.That (obj.SimpleDataTypeValue.Value.StringValue, Is.EqualTo ("StringValue"));
+        Assert.That (obj.SimpleDataTypeValue.StringValue, Is.EqualTo ("StringValue"));
       }
     }
 
@@ -135,7 +157,7 @@ CREATE TABLE [dbo].[CustomDataType_ClassWithCustomDataType]
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
   [CompoundDataTypeValueStringValue] nvarchar (100) NULL,
-  [CompoundDataTypeValueInt32Value] int NOT NULL,
+  [CompoundDataTypeValueInt32Value] int NULL,
   [SimpleDataTypeValue] nvarchar (100) NULL,
   CONSTRAINT [PK_CustomDataType_ClassWithCustomDataType] PRIMARY KEY CLUSTERED ([ID])
 )

@@ -40,6 +40,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public virtual CompoundDataType CompoundDataTypeValue { get; set; }
 
     [SimpleDataTypeProperty (MaximumLength = 100)]
-    public virtual SimpleDataType? SimpleDataTypeValue { get; set; }
+    public virtual SimpleDataType SimpleDataTypeValue { get; set; }
   }
 }

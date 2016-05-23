@@ -14,15 +14,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System.Collections;
+using Remotion.Utilities;
+
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain
 {
-  public struct CompoundDataType
+  public sealed class CompoundDataType : IStructuralEquatable
   {
     private readonly string _stringValue;
     private readonly int _int32Value;
 
     public CompoundDataType (string stringValue, int int32Value)
     {
+      ArgumentUtility.CheckNotNull ("stringValue", stringValue);
+
       _stringValue = stringValue;
       _int32Value = int32Value;
     }
@@ -35,6 +41,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public int Int32Value
     {
       get { return _int32Value; }
+    }
+
+    public bool Equals (object other, IEqualityComparer comparer)
+    {
+      var otherCompoundDataType = other as CompoundDataType;
+      if (otherCompoundDataType == null)
+        return false;
+      return comparer.Equals (_stringValue, otherCompoundDataType._stringValue) && comparer.Equals (_int32Value, otherCompoundDataType._int32Value);
+    }
+
+    public int GetHashCode (IEqualityComparer comparer)
+    {
+      return comparer.GetHashCode (_stringValue);
     }
   }
 }

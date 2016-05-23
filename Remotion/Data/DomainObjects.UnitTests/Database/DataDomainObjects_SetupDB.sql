@@ -1253,7 +1253,7 @@ CREATE TABLE [dbo].[CustomDataType_ClassWithCustomDataType]
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
   [CompoundDataTypeValueStringValue] nvarchar (100) NULL,
-  [CompoundDataTypeValueInt32Value] int NOT NULL,
+  [CompoundDataTypeValueInt32Value] int NULL,
   [SimpleDataTypeValue] nvarchar (max) NULL,
   CONSTRAINT [PK_ClassWithCustomDataType] PRIMARY KEY CLUSTERED ([ID])
 )

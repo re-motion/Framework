@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         return;
 
       Type propertyType = propertyDefinition.PropertyType;
-      if (propertyType != typeof (SimpleDataType) && propertyType != typeof (SimpleDataType?))
+      if (propertyType != typeof (SimpleDataType))
         return;
 
       object propertyValue = dataContainer.GetValueWithoutEvents (propertyDefinition, ValueAccess.Current);
