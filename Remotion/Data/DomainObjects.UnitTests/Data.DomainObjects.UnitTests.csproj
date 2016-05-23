@@ -313,6 +313,18 @@
     <Compile Include="Persistence\Rdbms\SchemaGenerationTestDomain\MixinAddedTwiceWithDifferentNullability\LayerSupertype.cs" />
     <Compile Include="Persistence\Rdbms\SchemaGenerationTestDomain\MixinAddedTwiceWithDifferentNullability\PersistentMixinAddedTwice.cs" />
     <Compile Include="Persistence\Rdbms\SchemaGenerationTestDomain\MixinAddedTwiceWithDifferentNullability\TargetClassWithDBTable.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\CustomDataTypeStorageProeprtyDefinitionFactoryDecorator.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\CustomDataTypeStorageObjectFactory.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\CustomDataTypeStorageTypeInformationProviderDecorator.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\CustomDataTypeTest.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\SimpleDataTypeMappingResolverDecorator.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\SimpleDataTypePropertyAttribute.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\SimpleDataTypePropertyValidator.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\SimpleDataTypeStorageTypeInformation.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\TestDomain\ClassWithCustomDataType.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\TestDomain\CompoundDataType.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\TestDomain\SimpleDataType.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\ReleationEndPointTestHelper.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\Model\SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecoratorTest.cs" />
     <Compile Include="Serialization\FlattenedSerializableWithoutCtorStub.cs" />
     <Compile Include="DomainObjectHandleConverterTest.cs" />
@@ -338,6 +350,7 @@
     <Compile Include="Infrastructure\TypePipe\DomainObjectParticipantTest.cs" />
     <Compile Include="Infrastructure\TypePipe\MutableTypeObjectMother.cs" />
     <Compile Include="IntegrationTests\RegisterForCommitTest.cs" />
+    <Compile Include="TestDomain\ClassWithPropertyTypeImplementingIStructuralEquatable.cs" />
     <Compile Include="TestDomain\SpecialCustomer.cs" />
     <Compile Include="Tracing\CompoundPersistenceExtensionFactoryTest.cs" />
     <Compile Include="Tracing\IPersistenceExtensionFactoryTest.cs" />
@@ -416,7 +429,7 @@
     <Compile Include="Persistence\Rdbms\DataReaders\QueryResultRowTest.cs" />
     <Compile Include="Persistence\Rdbms\Model\Building\RelationStoragePropertyDefinitionFactoryTest.cs" />
     <Compile Include="Persistence\Rdbms\Model\Building\ValueStoragePropertyDefinitionFactoryTest.cs" />
-    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\CustomStorageObjectFactoryTestBase.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomStorageObjectFactoryTestBase.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\TestDomain\RelationTargetWithInheritanceHierarchy.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\TestDomain\RelationTargetWithoutInheritanceHierarchy.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\TestDomain\SubclassOfRelationTargetWithInheritanceHierarchy.cs" />
@@ -1960,8 +1973,12 @@
     <None Include="TestDomain\TableInheritance\AbstractClassWithHierarchy.cd" />
     <None Include="TestDomain\TableInheritance\TestDomain.cd" />
     <None Include="TestDomain\TableInheritance\FileSystem.cd" />
-    <None Include="Database\DataDomainObjects_DropFulltextIndices.sql" />
-    <None Include="Database\DataDomainObjects_CreateFulltextIndices.sql" />
+    <Content Include="Database\DataDomainObjects_DropFulltextIndices.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database\DataDomainObjects_CreateFulltextIndices.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Resources\DomainObjectsConfigurationWithFakeMappingLoader.xml" />
     <EmbeddedResource Include="Resources\DomainObjectsConfigurationWithMinimumSettings.xml" />
     <EmbeddedResource Include="Resources\DomainObjectsConfigurationWithCustomSectionGroupName.xml" />
@@ -1977,6 +1994,9 @@
     <EmbeddedResource Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\TestData\TearDownDB_FirstStorageProvider.sql" />
     <EmbeddedResource Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\TestData\TearDownDB_SecondStorageProvider.sql" />
     <EmbeddedResource Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\TestData\TearDownDB_ThirdStorageProvider.sql" />
+    <Content Include="Database\DataDomainObjects_CreateEmptyTestData.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="QueriesForStorageGroupTest.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -1993,11 +2013,18 @@
     <EmbeddedResource Include="Resources\MappingExportOutput.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Database\DataDomainObjects_CreateTableInheritanceTestData.sql" />
-    <Content Include="Database\DataDomainObjects_CreateDB.sql" />
-    <Content Include="Database\DataDomainObjects_CreateTestData.sql">
+    <Content Include="Database\DataDomainObjects_CreateTableInheritanceTestData.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Database\DataDomainObjects_SetupDB.sql" />
+    <Content Include="Database\DataDomainObjects_CreateDB.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database\DataDomainObjects_CreateTestData.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database\DataDomainObjects_SetupDB.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="QueriesForStandardMapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

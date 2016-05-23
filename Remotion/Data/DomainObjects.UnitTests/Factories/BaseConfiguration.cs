@@ -51,7 +51,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation",
           "Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests",
           "Remotion.Data.DomainObjects.UnitTests.Security.TestDomain",
-          "Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain"
+          "Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain",
+          "Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests"
           );
     }
 

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
@@ -35,12 +36,22 @@ namespace Remotion.Data.DomainObjects.DataManagement
           || ReflectionUtility.IsBinaryPropertyValueType (propertyType)
           || ReflectionUtility.IsTypePropertyValueType (propertyType)
           || ReflectionUtility.IsObjectIDPropertyValueType (propertyType)
-          || ReflectionUtility.IsExtensibleEnumPropertyValueType (propertyType);
+          || ReflectionUtility.IsExtensibleEnumPropertyValueType (propertyType)
+          || ReflectionUtility.IsStructuralEquatablePropertyValueType (propertyType);
     }
 
     public static bool AreValuesDifferent (object value1, object value2)
     {
-      return !object.Equals (value1, value2);
+      if (ReferenceEquals (value1, value2))
+        return false;
+
+      if (value1 is byte[])
+        return true;
+
+      if (StructuralComparisons.StructuralEqualityComparer.Equals (value1, value2))
+        return false;
+
+      return true;
     }
 
     private readonly PropertyDefinition _definition;
@@ -65,7 +76,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (!IsTypeSupported (definition.PropertyType))
       {
         var message = string.Format ("The property '{0}' (declared on class '{1}') is invalid because its values cannot be copied. Only value types, "
-            + "strings, the Type type, byte arrays, and ObjectIDs are currently supported, but the property's type is '{2}'.",
+            + "strings, the Type type, byte arrays, types implementing IStructualEquatable, and ObjectIDs are currently supported, but the property's type is '{2}'.",
             definition.PropertyName, definition.ClassDefinition.ID, definition.PropertyType.FullName);
         throw new NotSupportedException (message);
       }

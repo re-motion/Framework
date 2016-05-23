@@ -44,9 +44,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (PropertyValue.AreValuesDifferent (10, 10), Is.False);
       Assert.That (PropertyValue.AreValuesDifferent (null, null), Is.False);
       Assert.That (PropertyValue.AreValuesDifferent ("test", "test"), Is.False);
-      
+
+      Assert.That (PropertyValue.AreValuesDifferent (Tuple.Create (100), Tuple.Create (100)), Is.False);
+      Assert.That (PropertyValue.AreValuesDifferent (Tuple.Create ("Value"), Tuple.Create ("Value")), Is.False);
+
       var array = new byte[] { 1, 2, 3 };
       Assert.That (PropertyValue.AreValuesDifferent (array, array), Is.False);
+
+      var guidValue = Guid.NewGuid();
+      Assert.That (
+          PropertyValue.AreValuesDifferent (new ObjectID (typeof (Order), guidValue), new ObjectID (typeof (Order), guidValue)),
+          Is.False);
     }
 
     [Test]
@@ -54,14 +62,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.That (PropertyValue.AreValuesDifferent (10, 11), Is.True);
       Assert.That (PropertyValue.AreValuesDifferent ("test", "other"), Is.True);
+      Assert.That (PropertyValue.AreValuesDifferent ("test", null), Is.True);
+      Assert.That (PropertyValue.AreValuesDifferent (null, "test"), Is.True);
+
+      Assert.That (PropertyValue.AreValuesDifferent (Tuple.Create (100), Tuple.Create (50)), Is.True);
+      Assert.That (PropertyValue.AreValuesDifferent (Tuple.Create ("Value"), Tuple.Create ("Other")), Is.True);
+      Assert.That (PropertyValue.AreValuesDifferent (Tuple.Create (100), null), Is.True);
+      Assert.That (PropertyValue.AreValuesDifferent (Tuple.Create ("Value"), null), Is.True);
+      Assert.That (PropertyValue.AreValuesDifferent (null, Tuple.Create (100)), Is.True);
+      Assert.That (PropertyValue.AreValuesDifferent (null, Tuple.Create ("Value")), Is.True);
 
       Assert.That (PropertyValue.AreValuesDifferent (new byte[] { 1, 2, 3 }, new byte[] { 1, 2, 3 }), Is.True);
+      Assert.That (PropertyValue.AreValuesDifferent (new byte[] { 1, 2, 3 }, new byte[] { 1, 3, 2 }), Is.True);
+
+      Assert.That (
+          PropertyValue.AreValuesDifferent (new ObjectID (typeof (Order), Guid.NewGuid()), new ObjectID (typeof (Order), Guid.NewGuid())),
+          Is.True);
     }
 
     [Test]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
         @"The property 'test' \(declared on class 'ClassName'\) is invalid because its values cannot be copied\. "
-        + @"Only value types, strings, the Type type, byte arrays, and ObjectIDs are currently supported, but the property's type is "
+        + @"Only value types, strings, the Type type, byte arrays, types implementing IStructualEquatable, and ObjectIDs are currently supported, but the property's type is "
         + @"'System\.Collections\.Generic\.List`1\[\[System\.Object, mscorlib, Version=*",
         MatchType = MessageMatch.Regex)]
     public void PropertyValue_WithReferenceType_NotAllowed ()
@@ -96,6 +118,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void PropertyValue_WithExtensibleEnum_Allowed ()
     {
       PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (Color), true);
+      Assert.That (() => new PropertyValue (propertyDefinition, null), Throws.Nothing);
+    }
+
+    [Test]
+    public void PropertyValue_WithStructuralEquatableType_Allowed ()
+    {
+      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (Tuple<int>), true);
       Assert.That (() => new PropertyValue (propertyDefinition, null), Throws.Nothing);
     }
 
@@ -206,6 +235,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       propertyValue.Value = "Test Value";
 
       Assert.AreEqual ("Test Value", propertyValue.Value, "Value after change #2");
+      Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #2");
+      Assert.IsTrue (propertyValue.HasChanged, "HasChanged after change #2");
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #2");
+
+      propertyValue.Value = null;
+
+      Assert.IsNull (propertyValue.Value, "Value after change #3");
+      Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #3");
+      Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #3");
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #3");
+    }
+
+    [Test]
+    public void SettingOfNullValueForStructuralEquatableType ()
+    {
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (Tuple<string>), true);
+
+      var propertyValue = new PropertyValue (definition, null);
+
+      Assert.IsNull (propertyValue.Value, "Value after initialization");
+      Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after initialization");
+      Assert.IsFalse (propertyValue.HasChanged, "HasChanged after initialization");
+      Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched after initialization");
+
+      propertyValue.Value = null;
+
+      Assert.IsNull (propertyValue.Value, "Value after change #1");
+      Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #1");
+      Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #1");
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #1");
+
+      propertyValue.Value = Tuple.Create ("Test Value");
+
+      Assert.AreEqual (Tuple.Create ("Test Value"), propertyValue.Value, "Value after change #2");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #2");
       Assert.IsTrue (propertyValue.HasChanged, "HasChanged after change #2");
       Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #2");
@@ -364,6 +427,54 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (Color), false);
       var propertyValue = new PropertyValue (definition, ExtensibleEnum<Color>.Values.Red());
+
+      propertyValue.Value = null;
+      Assert.That (propertyValue.Value, Is.Null);
+    }
+
+    [Test]
+    public void SetNullableStructuralEquatableType ()
+    {
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (Tuple<int>), true);
+
+      var propertyValue = new PropertyValue (definition, null);
+      Assert.That (propertyValue.Value, Is.Null);
+    }
+
+    [Test]
+    public void SetNotNullableStructuralEquatableType ()
+    {
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (Tuple<int>), false);
+
+      var propertyValue = new PropertyValue (definition, Tuple.Create (50));
+      Assert.That (propertyValue.Value, Is.EqualTo (Tuple.Create (50)));
+    }
+
+    [Test]
+    public void SetStructuralEquatableTypeWithInvalidType ()
+    {
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (Tuple<int>), false);
+
+      Assert.That (
+          () =>  new PropertyValue (definition, 12),
+          Throws.TypeOf<InvalidTypeException>()
+              .With.Message.EqualTo("Actual type 'System.Int32' of property 'test' does not match expected type 'System.Tuple`1[System.Int32]'."));
+    }
+
+    [Test]
+    public void SetNotNullableStructuralEquatableTypeToNullViaConstructor ()
+    {
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (Tuple<int>), false);
+
+      var propertyValue = new PropertyValue (definition, null);
+      Assert.That (propertyValue.Value, Is.Null);
+    }
+
+    [Test]
+    public void SetNotNullableStructuralEquatableTypeToNullViaProperty ()
+    {
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (Tuple<int>), false);
+      var propertyValue = new PropertyValue (definition, Tuple.Create (50));
 
       propertyValue.Value = null;
       Assert.That (propertyValue.Value, Is.Null);

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -235,6 +236,13 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("propertyType", propertyType);
       return ExtensibleEnumUtility.IsExtensibleEnumType (propertyType);
+    }
+
+    /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
+    internal static bool IsStructuralEquatablePropertyValueType (Type propertyType)
+    {
+      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
+      return typeof (IStructuralEquatable).IsAssignableFrom (propertyType);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
