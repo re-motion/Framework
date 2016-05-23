@@ -19,6 +19,7 @@ using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
+using Remotion.Linq.SqlBackend.MappingResolution;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport
 {
@@ -43,6 +44,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
               storageNameProvider,
               providerDefinitionFinder),
           storageNameProvider);
+    }
+
+    protected override IMappingResolver CreateMappingResolver (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IRdbmsPersistenceModelProvider persistenceModelProvider)
+    {
+      return new SimpleDataTypeMappingResolver (
+          base.CreateMappingResolver (storageProviderDefinition, persistenceModelProvider),
+          persistenceModelProvider);
     }
   }
 }

@@ -1746,7 +1746,7 @@ CREATE VIEW [dbo].[EagerFetching_RelationTargetView] ([ID], [ClassID], [Timestam
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[ClassWithCustomDataTypeView] ([ID], [ClassID], [Timestamp], [CompoundDataTypeValueStringValue], [CompoundDataTypeValueInt32Value], [SimpleDataTypeValue])
+CREATE VIEW [dbo].[CustomDataType_ClassWithCustomDataTypeView] ([ID], [ClassID], [Timestamp], [CompoundDataTypeValueStringValue], [CompoundDataTypeValueInt32Value], [SimpleDataTypeValue])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [CompoundDataTypeValueStringValue], [CompoundDataTypeValueInt32Value], [SimpleDataTypeValue]
     FROM [dbo].[CustomDataType_ClassWithCustomDataType]

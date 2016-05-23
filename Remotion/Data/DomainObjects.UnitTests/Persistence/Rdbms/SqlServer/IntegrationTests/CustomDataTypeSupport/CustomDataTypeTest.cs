@@ -20,11 +20,14 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
+using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
+using Remotion.Development.Data.UnitTesting.DomainObjects.Linq;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 
+[assembly: ApplyQueryGeneratorMixin]
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport
 {
   [TestFixture]
@@ -134,6 +137,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         var obj = ClassWithCustomDataType.NewObject();
         obj.SimpleDataTypeValue = new SimpleDataType (new string ('x', 200));
         Assert.That (() => ClientTransaction.Current.Commit(), Throws.TypeOf<PropertyValueTooLongException>());
+      }
+    }
+
+    [Test]
+    public void LinqQuery_WithSimpleDataType ()
+    {
+      SetDatabaseModifyable();
+
+      ObjectID id;
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        var obj = ClassWithCustomDataType.NewObject();
+        obj.SimpleDataTypeValue = new SimpleDataType ("StringValue");
+        ClientTransaction.Current.Commit();
+
+        id = obj.ID;
+      }
+
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        var result = QueryFactory.CreateLinqQuery<ClassWithCustomDataType>()
+            .SingleOrDefault (o => o.SimpleDataTypeValue == new SimpleDataType ("StringValue"));
+        Assert.That (result, Is.Not.Null);
+        Assert.That (result.ID, Is.EqualTo (id));
       }
     }
 

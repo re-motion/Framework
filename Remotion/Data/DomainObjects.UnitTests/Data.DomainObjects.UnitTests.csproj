@@ -320,6 +320,7 @@
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\CustomDataTypeStorageObjectFactory.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\CustomDataTypeStorageTypeInformationProvider.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\CustomDataTypeTest.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\SimpleDataTypeMappingResolver.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\SimpleDataTypePropertyAttribute.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\SimpleDataTypePropertyValidator.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\CustomDataTypeSupport\SimpleDataTypeStorageTypeInformation.cs" />
