@@ -31,12 +31,12 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport
 {
-  public class SimpleDataTypeMappingResolver : IMappingResolver
+  public class SimpleDataTypeMappingResolverDecorator : IMappingResolver
   {
     private readonly IMappingResolver _innerMappingResolver;
     private readonly IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProvider;
 
-    public SimpleDataTypeMappingResolver (IMappingResolver innerMappingResolver, IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider)
+    public SimpleDataTypeMappingResolverDecorator (IMappingResolver innerMappingResolver, IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider)
     {
       _innerMappingResolver = innerMappingResolver;
       _rdbmsPersistenceModelProvider = rdbmsPersistenceModelProvider;

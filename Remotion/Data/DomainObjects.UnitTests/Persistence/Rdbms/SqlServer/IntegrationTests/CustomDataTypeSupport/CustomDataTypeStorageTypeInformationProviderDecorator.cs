@@ -24,11 +24,11 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport
 {
-  public class CustomDataTypeStorageTypeInformationProvider : IStorageTypeInformationProvider
+  public class CustomDataTypeStorageTypeInformationProviderDecorator : IStorageTypeInformationProvider
   {
     private readonly IStorageTypeInformationProvider _innerStorageTypeInformationProvider;
 
-    public CustomDataTypeStorageTypeInformationProvider (IStorageTypeInformationProvider innerStorageTypeInformationProvider)
+    public CustomDataTypeStorageTypeInformationProviderDecorator (IStorageTypeInformationProvider innerStorageTypeInformationProvider)
     {
       ArgumentUtility.CheckNotNull ("innerStorageTypeInformationProvider", innerStorageTypeInformationProvider);
 

@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   {
     public override IStorageTypeInformationProvider CreateStorageTypeInformationProvider (RdbmsProviderDefinition rdmsStorageProviderDefinition)
     {
-      return new CustomDataTypeStorageTypeInformationProvider (
+      return new CustomDataTypeStorageTypeInformationProviderDecorator (
           base.CreateStorageTypeInformationProvider (rdmsStorageProviderDefinition));
     }
 
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         RdbmsProviderDefinition storageProviderDefinition,
         IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
-      return new SimpleDataTypeMappingResolver (
+      return new SimpleDataTypeMappingResolverDecorator (
           base.CreateMappingResolver (storageProviderDefinition, persistenceModelProvider),
           persistenceModelProvider);
     }
