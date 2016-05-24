@@ -2394,6 +2394,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _selectorControlCheckedState.Add (RowIDProvider.GetItemRowID (row));
     }
 
+    /// <summary>
+    /// Synchronizes the <see cref="Value"/> collection with the rows rendered on the page.
+    /// </summary>
+    /// <remarks>
+    /// Synchronization is needed when changes are made to the <see cref="Value"/> collection via a domain operation after <see cref="LoadValue"/> has been called.
+    /// When chaning the <see cref="Value"/> collection via APIs exposed by the <see cref="BocList"/> itself (e.g. <see cref="AddRow"/>), explicit
+    /// synchronization is not required.
+    /// </remarks>
+    public void SynchronizeRows ()
+    {
+      OnSortedRowsChanged();
+      ((EditModeController) _editModeController).SynchronizeEditModeControls (EnsureColumnsGot());
+    }
+
     /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
     /// <remarks> Sets the dirty state. </remarks>
     public void AddRows (IBusinessObject[] businessObjects)

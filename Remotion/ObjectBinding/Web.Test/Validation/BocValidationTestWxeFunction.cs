@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.ObjectBinding.Sample;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -74,26 +75,25 @@ namespace OBWTest.Validation
       jobs[1].Title = "CEO";
       jobs[1].StartDate = new DateTime (2005, 1, 1);
 
-      if (person.Children.Length == 0)
+      if (person.Children.Count == 0)
       {
-        Person[] children = new Person[2];
+        var child0 = Person.CreateObject (Guid.NewGuid());
+        child0.FirstName = "Jack";
+        child0.LastName = "Doe";
+        child0.DateOfBirth = new DateTime (1990, 4, 15);
+        child0.Height = 160;
+        child0.MarriageStatus = MarriageStatus.Single;
+        child0.Jobs = jobs;
 
-        children[0] = Person.CreateObject (Guid.NewGuid());
-        children[0].FirstName = "Jack";
-        children[0].LastName = "Doe";
-        children[0].DateOfBirth = new DateTime (1990, 4, 15);
-        children[0].Height = 160;
-        children[0].MarriageStatus = MarriageStatus.Single;
-        children[0].Jobs = jobs;
+        var child1 = Person.CreateObject (Guid.NewGuid());
+        child1.FirstName = "Max";
+        child1.LastName = "Doe";
+        child1.DateOfBirth = new DateTime (1991, 4, 15);
+        child1.Height = 155;
+        child1.MarriageStatus = MarriageStatus.Single;
 
-        children[1] = Person.CreateObject (Guid.NewGuid());
-        children[1].FirstName = "Max";
-        children[1].LastName = "Doe";
-        children[1].DateOfBirth = new DateTime (1991, 4, 15);
-        children[1].Height = 155;
-        children[1].MarriageStatus = MarriageStatus.Single;
-
-        person.Children = children;
+        person.Children.Add (child0);
+        person.Children.Add (child1);
       }
 
       if (person.Jobs.Length == 0)

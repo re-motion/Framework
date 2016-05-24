@@ -32,6 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     void EndRowEditMode (bool saveChanges, BocColumnDefinition[] columns);
     void EndListEditMode (bool saveChanges, BocColumnDefinition[] columns);
     void EnsureEditModeRestored (BocColumnDefinition[] columns);
+    void SynchronizeEditModeControls (BocColumnDefinition[] columns);
     BocListRow[] AddRows (IBusinessObject[] businessObjects, BocColumnDefinition[] columns);
     int AddRow (IBusinessObject businessObject, BocColumnDefinition[] columns);
     void RemoveRows (IBusinessObject[] businessObjects);

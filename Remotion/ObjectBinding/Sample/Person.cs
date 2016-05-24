@@ -15,7 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Xml.Serialization;
+using Remotion.Collections;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Sample
@@ -51,6 +56,7 @@ namespace Remotion.ObjectBinding.Sample
     private bool _deceased = false;
     private string[] _cv;
     private Guid _partnerID;
+    private ObservableCollection<Person> _children;
     private Guid[] _childIDs;
     private Guid[] _jobIDs;
     private Guid _fatherID;
@@ -148,32 +154,24 @@ namespace Remotion.ObjectBinding.Sample
     }
 
     [XmlIgnore]
-    public Person[] Children
+    public Collection<Person> Children
     {
       get
       {
-        if (_childIDs == null)
-          return new Person[0];
-
-        Person[] children = new Person[_childIDs.Length];
-        for (int i = 0; i < _childIDs.Length; i++)
-          children[i] = Person.GetObject (_childIDs[i]);
-
-        return children;
-      }
-      set
-      {
-        if (value != null)
+        if (_children == null)
         {
-          ArgumentUtility.CheckNotNullOrItemsNull ("value", value);
-          _childIDs = new Guid[value.Length];
-          for (int i = 0; i < value.Length; i++)
-            _childIDs[i] = value[i].ID;
+          _children = new ObservableCollection<Person> ((_childIDs??Enumerable.Empty<Guid>()).Select (Person.GetObject));
+          _children.CollectionChanged +=
+              (sender, args) =>
+              {
+                _childIDs =
+                    (_childIDs ?? Enumerable.Empty<Guid>())
+                        .Except ((args.OldItems ?? (IList) Enumerable.Empty<Person>()).Cast<Person>().Select (i => i.ID))
+                        .Concat ((args.NewItems ?? (IList) Enumerable.Empty<Person>()).Cast<Person>().Select (i => i.ID))
+                        .ToArray();
+              };
         }
-        else
-        {
-          _childIDs = new Guid[0];
-        }
+        return _children;
       }
     }
 
@@ -182,11 +180,13 @@ namespace Remotion.ObjectBinding.Sample
     {
       get
       {
-        return Children;
+        return Children.ToArray();
       }
       set
       {
-        Children = (Person[]) value;
+        Children.Clear();
+        foreach (var item in value)
+          Children.Add ((Person) item);
       }
     }
 
