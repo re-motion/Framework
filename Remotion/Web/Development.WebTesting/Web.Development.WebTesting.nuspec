@@ -3,7 +3,7 @@
   <!-- Copy from NuSpecTemplate.nuspec-->
   <metadata>
     <id>$id$</id>
-    <version>1.16.6-rtm</version>
+    <version>1.16.11-rtm</version>
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
