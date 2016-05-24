@@ -53,7 +53,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     private EditMode _editMode = EditMode.None;
     private List<string> _editedRowIDs;
-    private List<BocListRow> _newRows;
     private bool _isEditNewRow;
 
     private bool _isEditModeRestored;
@@ -128,8 +127,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
           new List<string> { _editModeHost.RowIDProvider.GetItemRowID (new BocListRow (index, (IBusinessObject) _editModeHost.Value[index])) };
       _editMode = EditMode.RowEditMode;
       CreateEditModeControls (columns);
+      LoadValues (false, new List<BocListRow>());
       SetFocus (_rows.First());
-      LoadValues (false);
     }
 
     public void SwitchListIntoEditMode (BocColumnDefinition[] columns)
@@ -151,9 +150,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
           _editModeHost.Value.Cast<IBusinessObject>().Select ((o, i) => _editModeHost.RowIDProvider.GetItemRowID (new BocListRow (i, o))).ToList();
       _editMode = EditMode.ListEditMode;
       CreateEditModeControls (columns);
+      LoadValues (false, new List<BocListRow>());
       if (_rows.Any())
         SetFocus (_rows.First());
-      LoadValues (false);
     }
 
     public bool AddAndEditRow (IBusinessObject businessObject, BocColumnDefinition[] columns)
@@ -301,8 +300,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _editedRowIDs = null;
     }
 
+    public void SynchronizeEditModeControls (BocColumnDefinition[] columns)
+    {
+      ArgumentUtility.CheckNotNull ("columns", columns);
 
-    private void CreateEditModeControls (BocColumnDefinition[] columns)
+      if (!_isEditModeRestored)
+        return;
+
+      var newRows = SynchronizeEditModeControlsForNewAndRemovedRows (columns);
+
+      foreach (var dataSource in newRows.Select (r => r.Item2.GetDataSource()))
+        dataSource.LoadValues (false);
+
+      if (newRows.Any())
+      {
+        var firstRow = newRows.First();
+        SetFocus (firstRow.Item2);
+      }
+    }
+
+
+    private Tuple<BocListRow, EditableRow>[] CreateEditModeControls (BocColumnDefinition[] columns)
     {
       EnsureChildControls();
 
@@ -341,21 +359,39 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
 
       _editedRowIDs.RemoveAll (missingRowIDs.Contains);
-      
-      _newRows = new List<BocListRow>();
-      if (IsListEditModeActive && _editedRowIDs.Count < _editModeHost.Value.Count)
-      {
-        var availableRows = _editModeHost.Value.Cast<IBusinessObject>().Select ((o, i) => new BocListRow (i, o));
-        var editedRows = _editedRowIDs.Select (rowID => _editModeHost.RowIDProvider.GetRowFromItemRowID (_editModeHost.Value, rowID));
-        var newRows = availableRows.Except (editedRows).ToList();
 
-        foreach (var row in newRows)
-        {
-          _editedRowIDs.Add (_editModeHost.RowIDProvider.GetItemRowID (row));
-          AddRowToDataStructure (row, columns);
-          _newRows.Add (row);
-        }
+      return SynchronizeEditModeControlsForNewAndRemovedRows (columns);
+    }
+
+    private Tuple<BocListRow, EditableRow>[] SynchronizeEditModeControlsForNewAndRemovedRows (BocColumnDefinition[] columns)
+    {
+      if (!IsListEditModeActive)
+        return new Tuple<BocListRow, EditableRow>[0];
+
+      var availableRows = _editModeHost.Value.Cast<IBusinessObject>().Select ((o, i) => new BocListRow (i, o)).ToList();
+      var editedRows = _editedRowIDs.Select (rowID => _editModeHost.RowIDProvider.GetRowFromItemRowID (_editModeHost.Value, rowID)).ToList();
+      var newRows = availableRows.Except (editedRows).ToList();
+      var result = new List<Tuple<BocListRow, EditableRow>> ();
+
+      foreach (var row in newRows)
+      {
+        _editedRowIDs.Add (_editModeHost.RowIDProvider.GetItemRowID (row));
+        var editableRow = AddRowToDataStructure (row, columns);
+        result.Add (Tuple.Create (row, editableRow));
       }
+
+      var removedRowIndices = editedRows
+          .Select ((r, i) => new { Row = r, Index = i })
+          .Where (_ => _.Row == null)
+          .Select (_ => _.Index)
+          .Reverse().ToList();
+      foreach (var rowIndex in removedRowIndices)
+      {
+        RemoveRowFromDataStructure (rowIndex);
+        _editedRowIDs.RemoveAt (rowIndex);
+      }
+
+      return result.ToArray();
     }
 
     private EditableRow CreateEditableRow (BocListRow bocListRow, BocColumnDefinition[] columns)
@@ -380,16 +416,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _editModeHost.SetFocus (firstControl);
     }
 
-    private void LoadValues (bool interim)
+    private void LoadValues (bool interim, IEnumerable<BocListRow> newRows)
     {
       Assertion.IsNotNull (_editModeHost.Value, "BocList does not have a value.");
       if (IsListEditModeActive)
         Assertion.IsTrue (_editModeHost.Value.Count == _rows.Count, "Number of rows in BocList differs from rows in ListEditMode.");
 
-      var newRows = _newRows.ToDictionary (r => r.BusinessObject);
+      var newBusinessObjects = newRows.ToDictionary (r => r.BusinessObject);
       foreach (var dataSource in _rows.Select (r => r.GetDataSource()))
-        dataSource.LoadValues (interim && !newRows.ContainsKey (dataSource.BusinessObject));
-      _newRows.Clear();
+        dataSource.LoadValues (interim && !newBusinessObjects.ContainsKey (dataSource.BusinessObject));
     }
 
     public void EnsureEditModeRestored (BocColumnDefinition[] columns)
@@ -407,8 +442,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
           throw new InvalidOperationException (
               string.Format ("Cannot restore edit mode: The BocList '{0}' does not have a Value.", _editModeHost.ID));
         }
-        CreateEditModeControls (columns);
-        LoadValues (true);
+        var newRows = CreateEditModeControls (columns);
+        LoadValues (true, newRows.Select (r => r.Item1));
       }
     }
 

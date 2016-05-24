@@ -208,7 +208,13 @@
 </FixedColumns>
 </remotion:boclist></td></tr>--%>
 </table>
-<p><asp:button id=ChildrenListEndEditModeButton runat="server" Text="End Edit Mode"></asp:button><asp:button id=ChildrenListAddAndEditButton runat="server" Text="Add and Edit"></asp:button><asp:button id=ChildrenListSetPageButton runat="server" Text="Set Page to 1st"></asp:button></p>
+<p>
+  <asp:button id="ChildrenListEndEditModeButton" runat="server" Text="End Edit Mode"></asp:button>
+  <asp:button id="ChildrenListAddAndEditButton" runat="server" Text="Add and Edit"></asp:button>
+  <asp:button id="ChildrenListSetPageButton" runat="server" Text="Set Page to 1st"></asp:button>
+  <asp:button id="ChildrenListAddRowButton" runat="server" Text="Add"></asp:button>
+  <asp:button id="ChildrenListRemoveRowsButton" runat="server" Text="Remove Selected"></asp:button>
+</p>
 <p><asp:checkbox id=ChildrenListEventCheckBox runat="server" Text="ChildrenList Event raised" enableviewstate="False" Enabled="False"></asp:checkbox></p>
 <p><asp:label id=ChildrenListEventArgsLabel runat="server" enableviewstate="False"></asp:label></p>
 <div style="BORDER-RIGHT: black thin solid; BORDER-TOP: black thin solid; BORDER-LEFT: black thin solid; BORDER-BOTTOM: black thin solid; BACKGROUND-COLOR: #ffff99" runat="server" visible="false" ID="NonVisualControls">

@@ -56,10 +56,12 @@ public class BocListAsGridUserControl : BaseUserControl
   protected HtmlGenericControl NonVisualControls;
   protected WebButton SwitchToEditModeButton;
   protected WebButton EndEditModeButton;
+  protected WebButton AddItemButton;
   protected WebButton AddRowButton;
   protected WebButton AddRowsButton;
   protected BocTextValue NumberOfNewRowsField;
-  protected WebButton RemoveRows;
+  protected WebButton RemoveRowsButton;
+  protected WebButton RemoveItemsButton;
   protected WebButton CancelEditModeButton;
   protected BindableObjectDataSourceControl CurrentObject;
 
@@ -71,9 +73,11 @@ public class BocListAsGridUserControl : BaseUserControl
     EndEditModeButton.Click += new EventHandler(EndEditModeButton_Click);
     CancelEditModeButton.Click += new EventHandler(CancelEditModeButton_Click);
 
+    AddItemButton.Click += new EventHandler (AddItemButton_Click);
     AddRowButton.Click += new EventHandler (AddRowButton_Click);
     AddRowsButton.Click += new EventHandler (AddRowsButton_Click);
-    RemoveRows.Click += new EventHandler (RemoveRows_Click);
+    RemoveRowsButton.Click += new EventHandler (RemoveRowsButton_Click);
+    RemoveItemsButton.Click += new EventHandler (RemoveItemsButton_Click);
     
     ChildrenList.ListItemCommandClick += new BocListItemCommandClickEventHandler(this.ChildrenList_ListItemCommandClick);
     ChildrenList.MenuItemClick += new WebMenuItemClickEventHandler(this.ChildrenList_MenuItemClick);
@@ -230,9 +234,20 @@ public class BocListAsGridUserControl : BaseUserControl
     ChildrenList.EndListEditMode (false);
   }
 
+  private void AddItemButton_Click(object sender, EventArgs e)
+  {
+    Person person = Person.CreateObject (Guid.NewGuid());
+    person.LastName = "X";
+
+    ChildrenList.Value.Add (person);
+    ChildrenList.SynchronizeRows();
+  }
+
   private void AddRowButton_Click(object sender, EventArgs e)
   {
     Person person = Person.CreateObject (Guid.NewGuid());
+    person.LastName = "X";
+
     ChildrenList.AddRow ((IBusinessObject) person);
   }
 
@@ -250,10 +265,18 @@ public class BocListAsGridUserControl : BaseUserControl
     ChildrenList.AddRows ((IBusinessObjectWithIdentity[]) ArrayUtility.Convert (persons, typeof (IBusinessObjectWithIdentity)));
   }
 
-  private void RemoveRows_Click(object sender, EventArgs e)
+  private void RemoveRowsButton_Click(object sender, EventArgs e)
   {
     IBusinessObject[] selectedBusinessObjects = ChildrenList.GetSelectedBusinessObjects();
     ChildrenList.RemoveRows (selectedBusinessObjects);
+  }
+
+  private void RemoveItemsButton_Click(object sender, EventArgs e)
+  {
+    IBusinessObject[] selectedBusinessObjects = ChildrenList.GetSelectedBusinessObjects();
+    foreach (var obj in selectedBusinessObjects)
+      ChildrenList.Value.Remove (obj);
+    ChildrenList.SynchronizeRows();
   }
 
   private void ChildrenList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)

@@ -56,11 +56,6 @@ namespace OBWTest
 
       DataBind();
 
-      if (person.Children == null)
-      {
-        person.Children = null;
-        ((Global) Context.ApplicationInstance).XmlReflectionBusinessObjectStorageProvider.Reset();
-      }
       CurrentObject.LoadValues (IsPostBack);
       BocTreeNode node = PersonTreeView.SelectedNode;
     }

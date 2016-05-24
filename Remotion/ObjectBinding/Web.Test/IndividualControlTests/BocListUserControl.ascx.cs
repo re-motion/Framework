@@ -39,6 +39,8 @@ public class BocListUserControl : BaseUserControl
   protected Button ChildrenListEndEditModeButton;
   protected Button ChildrenListAddAndEditButton;
   protected Button ChildrenListSetPageButton;
+  protected Button ChildrenListAddRowButton;
+  protected Button ChildrenListRemoveRowsButton;
   protected CheckBox ChildrenListEventCheckBox;
   protected Label ChildrenListEventArgsLabel;
   protected FormGridManager FormGridManager;
@@ -57,10 +59,12 @@ public class BocListUserControl : BaseUserControl
     ChildrenListAddAndEditButton.Click += new EventHandler(AddAndEditButton_Click);
     ChildrenListEndEditModeButton.Click += new EventHandler(ChildrenListEndEditModeButton_Click);
     ChildrenListSetPageButton.Click += ChildrenListSetPageButton_Click;
+    ChildrenListAddRowButton.Click += ChildrenListAddRowButton_Click;
+    ChildrenListRemoveRowsButton.Click += ChildrenListRemoveRowsButton_Click;
 
     ChildrenList.ListItemCommandClick += new BocListItemCommandClickEventHandler (ChildrenList_ListItemCommandClick);
     ChildrenList.MenuItemClick += new WebMenuItemClickEventHandler (ChildrenList_MenuItemClick);
-ChildrenList.RowMenuItemClick += ChildrenList_RowMenuItemClick;
+    ChildrenList.RowMenuItemClick += ChildrenList_RowMenuItemClick;
     ChildrenList.DataRowRender += new BocListDataRowRenderEventHandler(ChildrenList_DataRowRender);
     
     ChildrenList.EditableRowChangesCanceling += new BocListEditableRowChangesEventHandler (ChildrenList_EditableRowChangesCanceling);
@@ -342,6 +346,23 @@ ChildrenList.RowMenuItemClick += ChildrenList_RowMenuItemClick;
   private void ChildrenListSetPageButton_Click (object sender, EventArgs eventArgs)
   {
     ChildrenList.SetPageIndex (0);
+  }
+
+  private void ChildrenListAddRowButton_Click(object sender, EventArgs e)
+  {
+    Person person = Person.CreateObject (Guid.NewGuid());
+    person.LastName = "X";
+
+    ChildrenList.Value.Add (person);
+    ChildrenList.SynchronizeRows();
+  }
+
+  private void ChildrenListRemoveRowsButton_Click(object sender, EventArgs e)
+  {
+    IBusinessObject[] selectedBusinessObjects = ChildrenList.GetSelectedBusinessObjects();
+    foreach (var obj in selectedBusinessObjects)
+      ChildrenList.Value.Remove (obj);
+    ChildrenList.SynchronizeRows();
   }
 
   private void ChildrenList_ListItemCommandClick(object sender, BocListItemCommandClickEventArgs e)

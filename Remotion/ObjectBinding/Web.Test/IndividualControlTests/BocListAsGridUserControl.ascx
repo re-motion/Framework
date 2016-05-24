@@ -81,10 +81,15 @@
 
 </table>
 <p><remotion:WebButton id="SwitchToEditModeButton" runat="server" Text="Switch to Edit Mode"></remotion:WebButton><remotion:WebButton id="EndEditModeButton" runat="server" Text="End Edit Mode"></remotion:WebButton><remotion:WebButton id="CancelEditModeButton" runat="server" Text="Cancel Edit Mode"></remotion:WebButton></p>
-<p><remotion:WebButton id="AddRowButton" runat="server" Text="Add Row"></remotion:WebButton><remotion:BocTextValue id="NumberOfNewRowsField" runat="server" ValueType="Int32" Width="2em" Required="True">
-<textboxstyle textmode="SingleLine">
-</TextBoxStyle>
-</remotion:BocTextValue><remotion:WebButton id="AddRowsButton" runat="server" Text="Add Rows"></remotion:WebButton><remotion:WebButton id="RemoveRows" runat="server" Text="Remove Rows"></remotion:WebButton></p>
+<p><remotion:WebButton id="AddItemButton" runat="server" Text="Add Item"></remotion:WebButton>
+  <remotion:WebButton id="AddRowButton" runat="server" Text="Add Row"></remotion:WebButton>
+  <remotion:BocTextValue id="NumberOfNewRowsField" runat="server" ValueType="Int32" Width="2em" Required="True">
+  <textboxstyle textmode="SingleLine">
+  </TextBoxStyle>
+  </remotion:BocTextValue><remotion:WebButton id="AddRowsButton" runat="server" Text="Add Rows"></remotion:WebButton>
+  <remotion:WebButton id="RemoveRowsButton" runat="server" Text="Remove Rows"></remotion:WebButton>
+  <remotion:WebButton id="RemoveItemsButton" runat="server" Text="Remove Items"></remotion:WebButton>
+</p>
 <p><asp:checkbox id=ChildrenListEventCheckBox runat="server" Text="ChildrenList Event raised" enableviewstate="False" Enabled="False"></asp:checkbox></p>
 <p><asp:label id=ChildrenListEventArgsLabel runat="server" enableviewstate="False"></asp:label></p>
 <div style="BORDER-RIGHT: black thin solid; BORDER-TOP: black thin solid; BORDER-LEFT: black thin solid; BORDER-BOTTOM: black thin solid; BACKGROUND-COLOR: #ffff99" runat="server" visible="false" ID="NonVisualControls">
