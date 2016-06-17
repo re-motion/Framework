@@ -110,7 +110,7 @@
 </remotion:TabbedMenu>
 <div style="WIDTH: 100%;TEXT-ALIGN: right">
 WAI Conformance Level: 
-<remotion:BocEnumValue id="WaiConformanceLevelField" runat="server">
+<remotion:BocEnumValue id="WaiConformanceLevelField" runat="server" Required="true">
 <listcontrolstyle autopostback="True">
 </ListControlStyle></remotion:BocEnumValue>
 </div>
