@@ -35,7 +35,6 @@ public class CompleteBocTestMainWxeFunction: WxeFunction
 
   private WxeStep Step1 = new WxePageStep ("CompleteBocTestForm.aspx");
   private WxeStep Step2 = new WxePageStep ("CompleteBocTestUserControlForm.aspx");
-  private WxeStep Step3 = new WxePageStep ("PersonDetailsForm.aspx");
 }
 
 }

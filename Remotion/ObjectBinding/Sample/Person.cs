@@ -139,6 +139,7 @@ namespace Remotion.ObjectBinding.Sample
       set { _fatherID = value; }
     }
 
+    [XmlIgnore]
     public Person Father
     {
       get { return (_fatherID != Guid.Empty) ? Person.GetObject (_fatherID) : null; }
