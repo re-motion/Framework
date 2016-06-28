@@ -54,8 +54,9 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       //RunHasRelationChangedTest();
       //RunCommitTest ();
 
-      BindableObjectWithSecurityTest ();
-      BindableObjectWithoutSecurityTest ();
+      PropertyTest();
+      //BindableObjectWithSecurityTest ();
+      //BindableObjectWithoutSecurityTest ();
 
       //LinqTest();
       //InstantiationTest ();
@@ -129,6 +130,26 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       }
 
       test.TestFixtureTearDown();
+    }
+
+    private static void PropertyTest ()
+    {
+      var test = new PropertyTest();
+
+      test.SetUp();
+      test.String_GetProperty();
+      test.Unidirectional_GetProperty();
+      test.Bidirectional_OneToOne_RealEndPoint_GetProperty();
+      test.Bidirectional_OneToOne_VirtualEndPoint_GetProperty();
+      test.Bidirectional_OneToMany_RealEndPoint_GetProperty();
+      test.Bidirectional_OneToMany_CollectionEndPoint_GetProperty();
+      test.String_SetProperty();
+      test.Unidirectional_SetProperty();
+      test.Bidirectional_OneToOne_RealEndPoint_SetProperty();
+      test.Bidirectional_OneToOne_VirtualEndPoint_SetProperty();
+      test.Bidirectional_OneToMany_RealEndPoint_SetProperty();
+      test.Bidirectional_OneToMany_CollectionEndPoint_SetProperty();
+      test.TearDown();
     }
 
     private static void BindableObjectWithSecurityTest ()
