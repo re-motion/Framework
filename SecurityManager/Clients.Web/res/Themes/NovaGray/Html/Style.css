@@ -190,6 +190,8 @@ table.accessControlEntriesTable th.titleCellVertical div
   -webkit-transform: rotate(270deg);
   -webkit-transform-origin: 50% 25%;
   -o-transform: rotate(270deg);
+  transform: rotate(270deg);
+  transform-origin: 50% 25%;
   max-width: 1.4em !important;
   white-space: nowrap;
 }
