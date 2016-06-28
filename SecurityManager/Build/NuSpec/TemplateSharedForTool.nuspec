@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>$id$</id>
-    <version>1.17.7-pre1069</version>
+    <version>$version$</version>
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
@@ -20,8 +20,8 @@
          Note: This also makes the pdb-file optional for the nuget-package. This is acceptable. -->
     <file src="bin\$configuration$\$id$.pdb*" target="lib\net45" />
     <file src="bin\$configuration$\**\$id$.resources.dll" target="lib\net45" />
-    <file src="bin\$configuration$\$id$.exe.config*" target="lib\net45" />
-    <file src="bin\$configuration$\$id$.exe.config*" target="_files" />
+    <file src="bin\$configuration$\$id$.exe.config*" target="lib\net45"/>
+    <file src="bin\$configuration$\$id$.exe.config*" target="_files"/>
     <file src="FacetManifest.xml*" />
     <file src="$documentationFile$" target="doc" />
     <!-- By using a wildcard, the file-inclusion does not fail if no schema folder exists. -->
