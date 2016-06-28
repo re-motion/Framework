@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WebTestingFramework Development Tools
 // @namespace    http://www.re-motion.org/
-// @version      1.2
+// @version      1.3
 // @description  Displays relevant data-* attributes for the WebTestingFramework. Adapt match argument to your needs.
 // @author       Dominik Rauch
 // @match        http*://localhost/*/web/*
@@ -173,7 +173,7 @@ function _collectDmaFor (newElem) {
     var dma = null;
     while(true) {
         dma = _getAllDmaFor(elem);
-        if(!$.isEmptyObject(dma))
+        if(!$.isEmptyObject(dma) && dma.ControlType !== 'Command')
             break;
 
         elem = elem.parent();
