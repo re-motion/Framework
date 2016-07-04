@@ -46,6 +46,7 @@
     <None Include="Customizations\Server\Shared.targets" />
     <None Include="Customizations\Version.props" />
     <None Include="NuSpec\Install.ps1" />
+    <None Include="NuSpec\TemplateSharedForNuGetOrg.nuspec" />
     <None Include="NuSpec\TemplateSharedForMSBuildTask.nuspec" />
     <None Include="NuSpec\TemplateSharedForTool.nuspec" />
     <None Include="NuSpec\TemplateSharedForWeb.nuspec" />

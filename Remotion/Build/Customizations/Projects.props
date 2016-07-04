@@ -13,6 +13,7 @@
       <CreateNuGetPackageWithSymbolServerSupport>True</CreateNuGetPackageWithSymbolServerSupport>
     </ReleaseProjectFiles>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Documentation\Core.Documentation.csproj">
+      <!-- When enabling the package for NuGet.org, the nuspec file must be TemplateSharedForNuGetOrg.nuspec to act as trigger for removing the -rtm tag on the NuGet version. -->
       <CreateDocumentationFile>True</CreateDocumentationFile>
     </ReleaseProjectFiles>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj"/>
@@ -20,6 +21,7 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection\Core.Reflection.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration\Core.Reflection.CodeGeneration.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj">
+      <!-- When enabling the package for NuGet.org, the nuspec file must be TemplateSharedForNuGetOrg.nuspec to act as trigger for removing the -rtm tag on the NuGet version. -->
       <CreateNuGetPackageWithSymbolServerSupport>True</CreateNuGetPackageWithSymbolServerSupport>
     </ReleaseProjectFiles>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Tools\Core.Tools.csproj"/>
@@ -39,6 +41,7 @@
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Development\UnitTests\Development.UnitTests.csproj"/>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\Core\Mixins.Core.csproj">
+      <!-- When enabling the package for NuGet.org, the nuspec file must be TemplateSharedForNuGetOrg.nuspec to act as trigger for removing the -rtm tag on the NuGet version. -->
       <CreateNuGetPackageWithSymbolServerSupport>True</CreateNuGetPackageWithSymbolServerSupport>
     </ReleaseProjectFiles>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\MixerTools\Mixins.MixerTools.csproj"/>
