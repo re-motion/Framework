@@ -18,14 +18,9 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle ("Remtion.Scripting")]
-[assembly: AssemblyDescription ("Remotion Core Library Scripting Component")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyTitle ("re-mtion Scripting Library")]
+[assembly: AssemblyDescription ("IronPython-based scripting library with support for stable binding in mixin scenarios.")]
+[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

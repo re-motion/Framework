@@ -23,12 +23,7 @@ using System.Web.UI;
 
 [assembly: NeutralResourcesLanguage ("en")]
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("Remotion Controls Library for Web Applications")]
-[assembly: AssemblyDescription("Common Controls for Web Applications")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyTitle("remotion Web Controls")]
+[assembly: AssemblyDescription ("Common controls for web applications.")]
+[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

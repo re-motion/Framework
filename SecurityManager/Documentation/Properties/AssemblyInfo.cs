@@ -18,12 +18,7 @@
 using System;
 using System.Reflection;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle ("Documentation for the re-motion Security Manager")]
+[assembly: AssemblyTitle ("re-motion Security Manager Documentation")]
 [assembly: AssemblyDescription ("Contains the documentation file for the re-motion Security Manager.")]
 [assembly: AssemblyMetadata ("tags", "re-motion SecurityManager Documentation")]
 [assembly: AssemblyCulture("")]

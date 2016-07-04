@@ -21,13 +21,8 @@ using Remotion.Globalization.Mixins;
 
 [assembly: NeutralResourcesLanguage ("en")]
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("Remotion BusinessObjects Library")]
-[assembly: AssemblyDescription("Generic interfaces and classes for BusinessObjects and data binding.")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyTitle("re-motion BusinessObjects")]
+[assembly: AssemblyDescription("Generic interfaces and classes for business objects and data binding.")]
+[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 [assembly: EnsureGlobalizationSupportForMixins]

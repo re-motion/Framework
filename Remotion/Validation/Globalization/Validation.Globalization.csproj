@@ -50,7 +50,7 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="DefaultMessageEvaluator.cs" />
-    <Compile Include="EnsureValidationSupportForMixinsAttribute.cs" />
+    <Compile Include="EnsureValidationSupportForGlobalizationAttribute.cs" />
     <Compile Include="ErrorMessageStringSource.cs" />
     <Compile Include="IDefaultMessageEvaluator.cs" />
     <Compile Include="IErrorMessageGlobalizationService.cs" />

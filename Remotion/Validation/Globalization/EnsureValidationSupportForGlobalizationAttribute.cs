@@ -15,9 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Extensions")]
-[assembly: AssemblyDescription ("Extends the re-motion library with utilities.")]
-[assembly: AssemblyCulture("")]
-[assembly: CLSCompliant(true)]
+namespace Remotion.Validation.Globalization
+{
+  /// <summary>
+  /// Apply this <see cref="Attribute"/> to an assembly to force the inclusing of the globalization-extension for validation.
+  /// </summary>
+  [AttributeUsage (AttributeTargets.Assembly)]
+  public class EnsureValidationSupportForGlobalizationAttribute : Attribute
+  {
+  }
+}

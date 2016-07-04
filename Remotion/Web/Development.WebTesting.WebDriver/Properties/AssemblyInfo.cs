@@ -26,7 +26,7 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("Remotion integration for WebDriver binaries")]
-[assembly: AssemblyDescription ("Integrates the WebDriver binaries as NuGet package.")]
+[assembly: AssemblyTitle ("re-motion Integration for WebDriver")]
+[assembly: AssemblyDescription ("Internal: Integrates the WebDriver binaries as NuGet package.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

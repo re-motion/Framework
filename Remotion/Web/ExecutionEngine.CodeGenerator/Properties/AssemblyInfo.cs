@@ -17,13 +17,7 @@
 using System;
 using System.Reflection;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("Remotion WXE Function Generator")]
-[assembly: AssemblyDescription ("Remotion WXE Function Generator")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyTitle ("re-motion WXE Function Generator")]
+[assembly: AssemblyDescription ("Command line tool for generating WXE Functions based on XML metadata.")]
+[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
-
