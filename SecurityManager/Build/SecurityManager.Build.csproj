@@ -38,13 +38,10 @@
     <None Include="Customizations\Projects.props">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Customizations\Projects.targets" />
     <None Include="Customizations\Properties.props" />
-    <None Include="Customizations\Properties.targets" />
     <None Include="Customizations\Server\Configuration.targets" />
     <None Include="Customizations\Server\Shared.targets" />
     <None Include="Customizations\Version.props" />
-    <None Include="Customizations\Version.targets" />
     <None Include="NuSpec\Install.ps1" />
     <None Include="NuSpec\TemplateShared.nuspec" />
     <None Include="NuSpec\TemplateSharedForTool.nuspec" />
