@@ -188,5 +188,9 @@
                                        XPath="package/metadata/version"
                                        InnerText="$(_stableAssemblyNuGetVersion)"/>
   </Target>
-
+  
+  <Target Name="After_UpdateAssemblyInfos" AfterTargets="UpdateAssemblyInfos" Condition="'$(AssemblyInfoFileForMixins)' != ''">
+    <MSBuild.ExtensionPack.Framework.AssemblyInfo AssemblyInfoFiles="$(AssemblyInfoFileForMixins)"
+                                                  AssemblyProduct="$(ProductNameForMixins)" />
+  </Target>
 </Project>

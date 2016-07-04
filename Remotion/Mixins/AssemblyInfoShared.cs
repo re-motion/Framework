@@ -24,7 +24,7 @@ using System.Reflection;
 //
 [assembly: AssemblyConfiguration("Build type: Debug")]
 [assembly: AssemblyCompany("rubicon IT GmbH")]
-[assembly: AssemblyProduct("re-motion core framework (www.re-motion.org)")]
+[assembly: AssemblyProduct("re-motion Framework: re-mix (www.re-motion.org)")]
 [assembly: AssemblyCopyright ("Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under GNU LGPL 2.1 (or later)")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyInformationalVersion ("1.17.7.20000+Debug")]

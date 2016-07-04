@@ -6,7 +6,7 @@
     <CompanyName>rubicon IT GmbH</CompanyName>
     <CompanyUrl>http://www.rubicon.eu</CompanyUrl>
     <Copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under GNU AGPL 3.0</Copyright>
-    <ProductName>re-strict (www.re-motion.org)</ProductName>
+    <ProductName>re-motion Framework: re-strict (www.re-motion.org)</ProductName>
     <DocumentationRootPage>$(SolutionDirectory)SecurityManager\Core\Doc\include\GettingStartedWithRestrict.aml</DocumentationRootPage>
     <DocumentationNamespaceSummaryFiles>$(SolutionDirectory)SecurityManager\**\Doc\include\*.NamespaceDoc.xml</DocumentationNamespaceSummaryFiles>
     <DependDBProjectName>re-motion SecurityManager</DependDBProjectName>

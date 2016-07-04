@@ -2,11 +2,16 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectID>RM</ProjectID>
-    <AssemblyInfoFile>$(SolutionDirectory)Remotion\AssemblyInfoShared.*;$(SolutionDirectory)Remotion\Mixins\AssemblyInfoShared.*</AssemblyInfoFile>
+
+    <!-- Special settings for re-mix: -->
+    <AssemblyInfoFileForMixins>$(SolutionDirectory)Remotion\Mixins\AssemblyInfoShared.cs</AssemblyInfoFileForMixins>
+    <ProductNameForMixins>re-motion Framework: re-mix (www.re-motion.org)</ProductNameForMixins>
+
+    <AssemblyInfoFile>$(SolutionDirectory)Remotion\AssemblyInfoShared.*;$(AssemblyInfoFileForMixins)</AssemblyInfoFile>
     <CompanyName>rubicon IT GmbH</CompanyName>
     <CompanyUrl>http://www.rubicon.eu</CompanyUrl>
     <Copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under GNU LGPL 2.1 (or later)</Copyright>
-    <ProductName>re-motion core framework (www.re-motion.org)</ProductName>
+    <ProductName>re-motion Framework (www.re-motion.org)</ProductName>
     <DocumentationRootPage>$(SolutionDirectory)Remotion\Core\Core\Doc\include\GettingStartedWithRemotion.aml</DocumentationRootPage>
     <DocumentationNamespaceSummaryFiles>$(SolutionDirectory)Remotion\**\Doc\include\*.NamespaceDoc.xml</DocumentationNamespaceSummaryFiles>
     <DependDBProjectName>re-motion Core</DependDBProjectName>
