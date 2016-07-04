@@ -16,11 +16,6 @@
 // 
 using System;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
 using System.Reflection;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Globalization.Mixins;
@@ -28,7 +23,7 @@ using Remotion.ObjectBinding.Security;
 using Remotion.Validation.Globalization;
 using Remotion.Validation.Mixins;
 
-[assembly: AssemblyTitle ("Remotion Integration Library for Application Domains")]
+[assembly: AssemblyTitle ("re-motion Integration Library for Application Domains")]
 [assembly: AssemblyDescription ("This assembly can be linked to ensure that all domain-layer-related dependencies are integrated in the build output of a project.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

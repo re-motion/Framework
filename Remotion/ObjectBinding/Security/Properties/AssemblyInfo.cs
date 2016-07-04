@@ -17,12 +17,7 @@
 using System;
 using System.Reflection;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle ("Remotion Security for ObjectBinding Library")]
-[assembly: AssemblyDescription ("Integration of the security infrastructure into object binding.")]
+[assembly: AssemblyTitle ("re-motion Security Support for ObjectBinding")]
+[assembly: AssemblyDescription ("Internal: Integrates Remotion.Security and Remotion.ObjectBinding assemblies.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

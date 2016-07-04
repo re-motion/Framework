@@ -18,7 +18,7 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("Remotion Security Manager Metadata Importer")]
-[assembly: AssemblyDescription ("Commandline tool for importing the security metadata.")]
+[assembly: AssemblyTitle ("re-motion Security Manager Metadata Import Console")]
+[assembly: AssemblyDescription ("Command line tool for importing the security metadata.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

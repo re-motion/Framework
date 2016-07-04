@@ -17,13 +17,7 @@
 using System;
 using System.Reflection;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle ("Remotion Validation for Mixins Library")]
-[assembly: AssemblyDescription ("Integration of mixins into the validation infrastructure.")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyTitle ("re-motion Mixin Support for Validation Rules")]
+[assembly: AssemblyDescription ("Internal: Integrates Remotion.Mixins and Remotion.Validation assemblies.")]
+[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
-

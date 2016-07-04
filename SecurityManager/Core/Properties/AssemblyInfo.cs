@@ -19,7 +19,7 @@ using System;
 using System.Reflection;
 using System.Resources;
 
-[assembly: AssemblyTitle ("Remotion Security Manager Core Components")]
+[assembly: AssemblyTitle ("re-motion Security Manager Core Components")]
 [assembly: AssemblyDescription ("Component for managing an application's security requirements via access control lists.")]
 [assembly: AssemblyCulture ("")]
 [assembly: NeutralResourcesLanguage ("en")]

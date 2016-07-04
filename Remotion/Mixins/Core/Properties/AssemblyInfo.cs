@@ -17,13 +17,12 @@
 using System;
 using System.Reflection;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle ("Remotion Mixins Library")]
-[assembly: AssemblyDescription ("Mixin interfaces and implementations.")]
+[assembly: AssemblyTitle ("re-motion Mixins")]
+[assembly: AssemblyDescription (@"Provides extensive support for static and dynamic mixins in .NET languages.
+- Add interfaces, implementations and state
+- Override behaviour
+- Call base type methods
+- Use mixins from your own classes
+- Apply your mixins to other classes or entire class hierarchies")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]
-

@@ -17,12 +17,7 @@
 using System;
 using System.Reflection;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("Remotion Tooling Library")]
-[assembly: AssemblyDescription("Infrastructure for creating re-motion based tools")]
+[assembly: AssemblyTitle ("re-motion Command Line Tools Support")]
+[assembly: AssemblyDescription ("Infrastructure for creating re-motion based command line tools.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

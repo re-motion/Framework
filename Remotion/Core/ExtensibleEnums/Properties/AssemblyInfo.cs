@@ -17,13 +17,7 @@
 using System;
 using System.Reflection;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-
-[assembly: AssemblyTitle ("Remotion Extensible Enums Library")]
-[assembly: AssemblyDescription ("Support for setting up enum-like types in an application's domain")]
+[assembly: AssemblyTitle ("re-motion Extensible Enums")]
+[assembly: AssemblyDescription ("Support for setting up enum-like types in an application's domain.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

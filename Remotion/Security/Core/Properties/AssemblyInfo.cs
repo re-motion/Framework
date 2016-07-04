@@ -17,7 +17,7 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("Remotion Security Library")]
+[assembly: AssemblyTitle ("re-motion Security Library")]
 [assembly: AssemblyDescription ("Framework for checking permissions while performing operations in an application.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

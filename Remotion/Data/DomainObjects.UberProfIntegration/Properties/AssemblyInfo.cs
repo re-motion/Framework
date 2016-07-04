@@ -17,14 +17,7 @@
 using System;
 using System.Reflection;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-
-[assembly: AssemblyTitle("Remotion Data UberProf Integration Library")]
-[assembly: AssemblyDescription("Library for integrating the UberProf profiling API into re-store")]
+[assembly: AssemblyTitle ("re-motion UberProf Integration Library")]
+[assembly: AssemblyDescription ("Register the factories in this library with your IoC container to integrate the UberProf profiling APIs.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
-

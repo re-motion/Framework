@@ -20,13 +20,7 @@ using System.Resources;
 
 [assembly: NeutralResourcesLanguage ("en")]
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-
-[assembly: AssemblyTitle ("Remotion BusinessObjectControls Library WebTesting Framework Integration")]
-[assembly: AssemblyDescription ("WebTesting framework integration for business object web controls.")]
+[assembly: AssemblyTitle ("re-motion Web Testing Framework Control Objects for ObjectBinding")]
+[assembly: AssemblyDescription ("Provides an abstraction layer when implementing web tests for applications based on re-motion business object web controls.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

@@ -17,13 +17,7 @@
 using System;
 using System.Reflection;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-
-[assembly: AssemblyTitle ("Remotion Globalization for Mixins Library")]
-[assembly: AssemblyDescription ("Infrastructure for globalizing the mixins in an application.")]
+[assembly: AssemblyTitle ("re-motion Globalization Support for Mixins")]
+[assembly: AssemblyDescription ("Internal: Integrates Remotion.Mixins and Remotion.Globalization assemblies.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

@@ -17,7 +17,7 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("Remotion Security Web Library")]
-[assembly: AssemblyDescription ("Integration of the security infrastructure into web.")]
+[assembly: AssemblyTitle ("re-motion Security Support for Web Controls and Web Execution Engine")]
+[assembly: AssemblyDescription ("Internal: Integrates Remotion.Security and Remotion.Web assemblies.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

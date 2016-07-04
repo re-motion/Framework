@@ -15,16 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
 using System.Reflection;
 using Remotion.Validation.Mixins;
 
-[assembly: AssemblyTitle ("Remotion Validation for DomainObjects Library")]
-[assembly: AssemblyDescription ("Integration of the validation infrastructure into domain objects.")]
+[assembly: AssemblyTitle ("re-motion Validation Support for DomainObjects")]
+[assembly: AssemblyDescription ("Internal: Integrates Remotion.Validation and Remotion.Data.DomainObjects assemblies.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]
 [assembly: EnsureValidationSupportForMixins]

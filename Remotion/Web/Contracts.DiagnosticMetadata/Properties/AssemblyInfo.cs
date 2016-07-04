@@ -17,13 +17,7 @@
 using System;
 using System.Reflection;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-
-[assembly: AssemblyTitle ("Remotion Diagnostic Metadata Contract for WebControls Library")]
-[assembly: AssemblyDescription ("Shared contracts between control rendering and web testing framework in web controls library.")]
+[assembly: AssemblyTitle ("re-motion Metadata Contract for Web Controls Library")]
+[assembly: AssemblyDescription ("Internal: Defines the contract shared between control rendering and web testing framework in web controls library.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

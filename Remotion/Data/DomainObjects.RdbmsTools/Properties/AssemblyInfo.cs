@@ -17,7 +17,7 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("Remotion DomainObjects Database Tools Console")]
-[assembly: AssemblyDescription ("Commandline tool for generating the database schema and other related metadata for an application.")]
+[assembly: AssemblyTitle ("re-motion DomainObjects Database Tools Console")]
+[assembly: AssemblyDescription ("Command line tool for generating the database schema and other related metadata for an application.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

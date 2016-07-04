@@ -17,7 +17,7 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("Remotion Security Metadata Extractor")]
-[assembly: AssemblyDescription ("Commandline tool for extracting an assembly's security metadata.")]
+[assembly: AssemblyTitle ("re-motion Security Metadata Export Console")]
+[assembly: AssemblyDescription ("Command line tool for extracting an assembly's security metadata.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

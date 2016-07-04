@@ -17,7 +17,8 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("Remotion ObjectBinding for DomainObjects Library")]
-[assembly: AssemblyDescription ("Integration of the object binding infrastructure into domain objects.")]
+[assembly: AssemblyTitle ("re-motion ObjectBinding Support for DomainObjects")]
+[assembly: AssemblyDescription (@"Integrates Remotion.ObjectBinding and Remotion.Data.DomainObjects assemblies.
+- Use BindableDomainObject as a base class when using object binding in a domain.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

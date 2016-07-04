@@ -20,13 +20,7 @@ using System.Resources;
 
 [assembly: NeutralResourcesLanguage ("en")]
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-
-[assembly: AssemblyTitle ("Remotion WebTesting Framework WebForms Control Objects")]
-[assembly: AssemblyDescription ("ASP.NET WebForms control objects for the WebTesting framework.")]
+[assembly: AssemblyTitle ("re-motion Web Testing Framework Control Objects for ASP.NET WebForms")]
+[assembly: AssemblyDescription ("Provides an abstraction layer when implementing web tests for applications based on ASP.NET WebForms controls.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

@@ -17,13 +17,7 @@
 using System;
 using System.Reflection;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle ("Remotion Globalization for Validation Library")]
-[assembly: AssemblyDescription ("Infrastructure for globalizing the validation messages (based on FluentValidation library) in an application.")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyTitle ("re-motion Globalization Support for Validation Rules")]
+[assembly: AssemblyDescription ("Internal: Integrates Remotion.Globalization and Remotion.Validation assemblies.")]
+[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
-

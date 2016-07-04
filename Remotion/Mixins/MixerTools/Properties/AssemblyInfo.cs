@@ -17,10 +17,6 @@
 using System;
 using System.Reflection;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle ("Remotion.Mixins.MixerTool.Console")]
-[assembly: AssemblyDescription ("TypeMixer tool for generating concrete mixed types")]
+[assembly: AssemblyTitle ("re-motion Mixins Mixer Tools Console")]
+[assembly: AssemblyDescription ("Command line tool for pre-generating concrete mixed types.")]
 [assembly: AssemblyCulture ("")]
-

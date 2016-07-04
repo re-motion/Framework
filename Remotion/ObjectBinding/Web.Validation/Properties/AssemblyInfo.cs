@@ -23,13 +23,8 @@ using System.Web.UI;
 
 [assembly: NeutralResourcesLanguage ("en")]
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("Remotion BusinessObjectControls Validation Library")]
-[assembly: AssemblyDescription ("Integration of the validation infrastructure into the business object web controls.")]
+[assembly: AssemblyTitle ("re-motion Validation Support for ObjectBinding Web Controls")]
+[assembly: AssemblyDescription ("Internal: Integrates Remotion.Validation and Remotion.ObjectBinding.Web assemblies.")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]
 
