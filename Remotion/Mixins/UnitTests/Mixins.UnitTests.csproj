@@ -51,7 +51,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Remotion.TypePipe.Development, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.Development.2.0.0-alpha-002\lib\net45\Remotion.TypePipe.Development.dll</HintPath>
+      <HintPath>..\..\..\packages\Remotion.TypePipe.Development.2.0.0\lib\net45\Remotion.TypePipe.Development.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Rhino.Mocks, Version=3.0.1.526, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
