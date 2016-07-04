@@ -45,6 +45,7 @@
     <None Include="Customizations\Server\Shared.targets" />
     <None Include="Customizations\Version.props" />
     <None Include="NuSpec\Install.ps1" />
+    <None Include="NuSpec\TemplateSharedForNuGetOrg.nuspec" />
     <None Include="NuSpec\TemplateSharedForMSBuildTask.nuspec" />
     <None Include="NuSpec\TemplateSharedForTool.nuspec" />
     <None Include="NuSpec\TemplateSharedForWeb.nuspec" />
@@ -55,7 +56,9 @@
     <None Include="NuSpec\Web.targets" />
     <None Include="packages.config" />
     <None Include="NuSpec\TemplateShared.nuspec" />
-    <None Include="Remotion.build" />
+    <None Include="Remotion.build">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Remotion.Local.build" />
     <None Include="Remotion.Server.build" />
   </ItemGroup>

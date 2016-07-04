@@ -172,4 +172,21 @@
              Condition="'$(TEAMCITY_VERSION)' != ''" />
   </Target>
 
+  <Target Name="After_UpdateNuSpecFiles" AfterTargets="UpdateNuSpecFiles" Condition="$(AssemblyNuGetVersion.EndsWith('-rtm'))">
+
+    <ItemGroup>
+      <_nuSpecFilesForNuGetOrg Remove="@(_nuSpecFilesForNuGetOrg)" />
+      <_nuSpecFilesForNuGetOrg Include="@(_nuSpecFiles)" Condition="'%(FileName)' == 'TemplateSharedForNuGetOrg'" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <_stableAssemblyNuGetVersion>$(AssemblyNuGetVersion.Replace('-rtm',''))</_stableAssemblyNuGetVersion>
+    </PropertyGroup>
+    
+    <MSBuild.ExtensionPack.Xml.XmlFile TaskAction="UpdateElement"
+                                       File="%(_nuSpecFilesForNuGetOrg.Identity)"
+                                       XPath="package/metadata/version"
+                                       InnerText="$(_stableAssemblyNuGetVersion)"/>
+  </Target>
+
 </Project>
