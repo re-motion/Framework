@@ -1,21 +1,2 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
-  <PropertyGroup>
-    <TestingSetupBuildFile>$(SolutionDirectory)Build\TestingSetupForDatabase.targets</TestingSetupBuildFile>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\AclTools.Expander\SecurityManager.AclTools.Expander.csproj"/>
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Clients.Web\SecurityManager.Clients.Web.csproj"/>
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Core\SecurityManager.Core.csproj"/>
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Documentation\SecurityManager.Documentation.csproj">
-      <CreateDocumentationFile>True</CreateDocumentationFile>
-    </ReleaseProjectFiles>
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Metadata.Importer\SecurityManager.Metadata.Importer.csproj"/>
-    <UnitTestProjectFiles Include="$(SolutionDirectory)\SecurityManager\Core.UnitTests\SecurityManager.Core.UnitTests.csproj">
-      <IsDatabaseTest>True</IsDatabaseTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFile)</TestingSetupBuildFile>
-    </UnitTestProjectFiles>
-  </ItemGroup>
-</Project>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" />

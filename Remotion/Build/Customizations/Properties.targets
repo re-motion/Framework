@@ -1,21 +1,2 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectID>RM</ProjectID>
-    <AssemblyInfoFile>$(SolutionDirectory)Remotion\AssemblyInfoShared.*;$(SolutionDirectory)Remotion\Mixins\AssemblyInfoShared.*</AssemblyInfoFile>
-    <CompanyName>rubicon IT GmbH</CompanyName>
-    <CompanyUrl>http://www.rubicon.eu</CompanyUrl>
-    <Copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under GNU LGPL 2.1 (or later)</Copyright>
-    <ProductName>re-motion core framework (www.re-motion.org)</ProductName>
-    <DocumentationRootPage>$(SolutionDirectory)Remotion\Core\Core\Doc\include\GettingStartedWithRemotion.aml</DocumentationRootPage>
-    <DocumentationNamespaceSummaryFiles>$(SolutionDirectory)Remotion\**\Doc\include\*.NamespaceDoc.xml</DocumentationNamespaceSummaryFiles>
-    <DependDBProjectName>re-motion Core</DependDBProjectName>
-    <DependDBRetentionTime>30</DependDBRetentionTime>
-    <DependDBProjectBranch>trunk</DependDBProjectBranch>
-    <!-- Will be passed to MSBuild by TeamCity and uses fallback in local build script. -->
-    <DependDBProjectImportNotificationMailAddress></DependDBProjectImportNotificationMailAddress>
-    <DependDBTrackedReferences>Remotion;Remotion.*</DependDBTrackedReferences>
-    <!-- '#OutputDirectory#' and '#ConfigurationID#' will be replaced by '$(OutputDirectory)' and '$(ConfigurationID)' during DependDB processing. See Shared.Overrides.targets:BeforeCheckDependDBProperties -->
-    <DependDBNuGetSources>#OutputDirectory#..\TP\NuGetWithDebugSymbols\#ConfigurationID#;$(SolutionDirectory)packages</DependDBNuGetSources>
-  </PropertyGroup>
-</Project>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" />
