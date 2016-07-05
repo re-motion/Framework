@@ -172,8 +172,7 @@
              Condition="'$(TEAMCITY_VERSION)' != ''" />
   </Target>
 
-  <!--<Target Name="After_UpdateNuSpecFiles" AfterTargets="UpdateNuSpecFiles" Condition="$(AssemblyNuGetVersion.EndsWith('-rtm'))">-->
-  <Target Name="After_UpdateNuSpecFiles" AfterTargets="UpdateNuSpecFiles">
+  <Target Name="After_UpdateNuSpecFiles" AfterTargets="UpdateNuSpecFiles" Condition="$(AssemblyNuGetVersion.EndsWith('-rtm'))">
 
     <ItemGroup>
       <_nuSpecFilesForNuGetOrg Remove="@(_nuSpecFilesForNuGetOrg)" />
