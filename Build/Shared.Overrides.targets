@@ -172,7 +172,8 @@
              Condition="'$(TEAMCITY_VERSION)' != ''" />
   </Target>
 
-  <Target Name="After_UpdateNuSpecFiles" AfterTargets="UpdateNuSpecFiles" Condition="$(AssemblyNuGetVersion.EndsWith('-rtm'))">
+  <!--<Target Name="After_UpdateNuSpecFiles" AfterTargets="UpdateNuSpecFiles" Condition="$(AssemblyNuGetVersion.EndsWith('-rtm'))">-->
+  <Target Name="After_UpdateNuSpecFiles" AfterTargets="UpdateNuSpecFiles">
 
     <ItemGroup>
       <_nuSpecFilesForNuGetOrg Remove="@(_nuSpecFilesForNuGetOrg)" />
@@ -182,11 +183,12 @@
     <PropertyGroup>
       <_stableAssemblyNuGetVersion>$(AssemblyNuGetVersion.Replace('-rtm',''))</_stableAssemblyNuGetVersion>
     </PropertyGroup>
-    
+
     <MSBuild.ExtensionPack.Xml.XmlFile TaskAction="UpdateElement"
                                        File="%(_nuSpecFilesForNuGetOrg.Identity)"
                                        XPath="package/metadata/version"
-                                       InnerText="$(_stableAssemblyNuGetVersion)"/>
+                                       InnerText="$(_stableAssemblyNuGetVersion)"
+                                       Condition="'@(_nuSpecFilesForNuGetOrg)' != ''"/>
   </Target>
   
   <Target Name="After_UpdateAssemblyInfos" AfterTargets="UpdateAssemblyInfos" Condition="'$(AssemblyInfoFileForMixins)' != ''">
