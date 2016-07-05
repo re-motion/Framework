@@ -182,11 +182,12 @@
     <PropertyGroup>
       <_stableAssemblyNuGetVersion>$(AssemblyNuGetVersion.Replace('-rtm',''))</_stableAssemblyNuGetVersion>
     </PropertyGroup>
-    
+
     <MSBuild.ExtensionPack.Xml.XmlFile TaskAction="UpdateElement"
                                        File="%(_nuSpecFilesForNuGetOrg.Identity)"
                                        XPath="package/metadata/version"
-                                       InnerText="$(_stableAssemblyNuGetVersion)"/>
+                                       InnerText="$(_stableAssemblyNuGetVersion)"
+                                       Condition="'@(_nuSpecFilesForNuGetOrg)' != ''"/>
   </Target>
   
   <Target Name="After_UpdateAssemblyInfos" AfterTargets="UpdateAssemblyInfos" Condition="'$(AssemblyInfoFileForMixins)' != ''">
