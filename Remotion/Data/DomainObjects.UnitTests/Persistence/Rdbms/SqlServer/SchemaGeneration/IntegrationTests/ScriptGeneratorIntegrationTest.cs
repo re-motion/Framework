@@ -19,6 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
+using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Development.UnitTesting.Resources;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.SchemaGeneration.IntegrationTests
@@ -76,8 +77,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var scripts = _standardScriptGenerator.GetScripts (MappingConfiguration.GetTypeDefinitions ())
           .Single (s => s.StorageProviderDefinition == SchemaGenerationFirstStorageProviderDefinition);
 
-      Assert.That (scripts.SetUpScript, Is.EqualTo (_firstStorageProviderSetupDBScript));
-      Assert.That (scripts.TearDownScript, Is.EqualTo (_firstStorageProviderTearDownDBScript));
+      Assert.That (scripts.SetUpScript, Is.EqualTo (_firstStorageProviderSetupDBScript.ApplyDatabaseConfiguration()));
+      Assert.That (scripts.TearDownScript, Is.EqualTo (_firstStorageProviderTearDownDBScript.ApplyDatabaseConfiguration()));
     }
 
     [Test]
@@ -86,8 +87,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var scripts = _standardScriptGenerator.GetScripts (MappingConfiguration.GetTypeDefinitions ())
           .Single (s => s.StorageProviderDefinition == SchemaGenerationSecondStorageProviderDefinition);
 
-      Assert.That (scripts.SetUpScript, Is.EqualTo (_secondStorageProviderSetupDBScript));
-      Assert.That (scripts.TearDownScript, Is.EqualTo (_secondStorageProviderTearDownDBScript));
+      Assert.That (scripts.SetUpScript, Is.EqualTo (_secondStorageProviderSetupDBScript.ApplyDatabaseConfiguration()));
+      Assert.That (scripts.TearDownScript, Is.EqualTo (_secondStorageProviderTearDownDBScript.ApplyDatabaseConfiguration()));
     }
 
     [Test]
@@ -96,8 +97,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var scripts = _extendedScriptGenerator.GetScripts (MappingConfiguration.GetTypeDefinitions ())
           .Single (s => s.StorageProviderDefinition == SchemaGenerationThirdStorageProviderDefinition);
 
-      Assert.That (scripts.SetUpScript, Is.EqualTo (_thirdStorageProviderSetupDBScript));
-      Assert.That (scripts.TearDownScript, Is.EqualTo (_thirdStorageProviderTearDownDBScript));
+      Assert.That (scripts.SetUpScript, Is.EqualTo (_thirdStorageProviderSetupDBScript.ApplyDatabaseConfiguration()));
+      Assert.That (scripts.TearDownScript, Is.EqualTo (_thirdStorageProviderTearDownDBScript.ApplyDatabaseConfiguration()));
     }
   }
 }

@@ -45,12 +45,12 @@ namespace Remotion.SecurityManager.UnitTests
   {
     public static string TestDomainConnectionString
     {
-      get { return string.Format ("Integrated Security=SSPI;Initial Catalog=RemotionSecurityManager;Data Source={0}", DatabaseConfiguration.DataSource); }
+      get { return DatabaseConfiguration.UpdateConnectionString ("Integrated Security=SSPI;Initial Catalog=RemotionSecurityManager;Data Source=."); }
     }
 
     public static string MasterConnectionString
     {
-      get { return string.Format ("Integrated Security=SSPI;Initial Catalog=master;Data Source={0}", DatabaseConfiguration.DataSource); }
+      get { return DatabaseConfiguration.UpdateConnectionString ("Integrated Security=SSPI;Initial Catalog=master;Data Source=."); }
     }
 
     [SetUp]
@@ -91,9 +91,9 @@ namespace Remotion.SecurityManager.UnitTests
         DatabaseAgent masterAgent = new DatabaseAgent (MasterConnectionString);
         masterAgent.ExecuteBatchFile ("SecurityManagerCreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
         DatabaseAgent databaseAgent = new DatabaseAgent (TestDomainConnectionString);
-        databaseAgent.ExecuteBatchFile ("SecurityManagerSetupDB.sql", true);
-        databaseAgent.ExecuteBatchFile ("SecurityManagerSetupConstraints.sql", true);
-        databaseAgent.ExecuteBatchFile ("SecurityManagerSetupDBSpecialTables.sql", true);
+        databaseAgent.ExecuteBatchFile ("SecurityManagerSetupDB.sql", true, DatabaseConfiguration.GetReplacementDictionary());
+        databaseAgent.ExecuteBatchFile ("SecurityManagerSetupConstraints.sql", true, DatabaseConfiguration.GetReplacementDictionary());
+        databaseAgent.ExecuteBatchFile ("SecurityManagerSetupDBSpecialTables.sql", true, DatabaseConfiguration.GetReplacementDictionary());
       }
       catch (Exception e)
       {

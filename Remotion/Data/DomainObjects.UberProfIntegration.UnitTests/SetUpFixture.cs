@@ -37,15 +37,14 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
     {
       get
       {
-        return string.Format (
-            "Integrated Security=SSPI;Initial Catalog=RemotionDataDomainObjectsUberProfIntegrationTestDomain;Data Source={0}",
-            DatabaseConfiguration.DataSource);
+        return DatabaseConfiguration.UpdateConnectionString (
+            "Integrated Security=SSPI;Initial Catalog=DBPrefix_RemotionDataDomainObjectsUberProfIntegrationTestDomain;Data Source=.");
       }
     }
 
     public static string MasterConnectionString
     {
-      get { return string.Format ("Integrated Security=SSPI;Initial Catalog=master;Data Source={0}", DatabaseConfiguration.DataSource); }
+      get { return DatabaseConfiguration.UpdateConnectionString ("Integrated Security=SSPI;Initial Catalog=master;Data Source=."); }
     }
 
     [SetUp]

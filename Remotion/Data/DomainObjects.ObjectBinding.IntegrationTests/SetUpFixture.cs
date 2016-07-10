@@ -37,15 +37,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     {
       get
       {
-        return string.Format (
-            "Integrated Security=SSPI;Initial Catalog=RemotionDataDomainObjectsObjectBindingIntegrationTestDomain;Data Source={0}",
-            DatabaseConfiguration.DataSource);
+        return DatabaseConfiguration.UpdateConnectionString (
+            "Integrated Security=SSPI;Initial Catalog=DBPrefix_RemotionDataDomainObjectsObjectBindingIntegrationTestDomain;Data Source=.");
       }
     }
 
     public static string MasterConnectionString
     {
-      get { return string.Format ("Integrated Security=SSPI;Initial Catalog=master;Data Source={0}", DatabaseConfiguration.DataSource); }
+      get { return DatabaseConfiguration.UpdateConnectionString ("Integrated Security=SSPI;Initial Catalog=master;Data Source=."); }
     }
 
     [SetUp]

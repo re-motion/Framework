@@ -33,6 +33,7 @@
   <ItemGroup>
     <None Include="Build.licenseheader" />
     <None Include="Customizations\Local\Configuration.targets" />
+    <None Include="Customizations\Local\Shared.props" />
     <None Include="Customizations\Local\Shared.targets" />
     <None Include="Customizations\Overrides.targets" />
     <None Include="Customizations\Projects.props">
@@ -40,7 +41,9 @@
     </None>
     <None Include="Customizations\Properties.props" />
     <None Include="Customizations\Server\Configuration.targets" />
+    <None Include="Customizations\Server\Shared.props" />
     <None Include="Customizations\Server\Shared.targets" />
+    <None Include="Customizations\Shared.targets" />
     <None Include="Customizations\Version.props" />
     <None Include="NuSpec\Install.ps1" />
     <None Include="NuSpec\TemplateShared.nuspec" />

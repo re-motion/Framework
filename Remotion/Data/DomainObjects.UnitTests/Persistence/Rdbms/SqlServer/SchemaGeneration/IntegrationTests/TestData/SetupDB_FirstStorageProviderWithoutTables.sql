@@ -1,4 +1,4 @@
-USE SchemaGenerationTestDomain1
+USE DBPrefix_SchemaGenerationTestDomain1
 -- Create all tables
 -- Create constraints for tables that were created above
 -- Create a view for every class

@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
 using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Development.UnitTesting;
@@ -174,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Assert.That (
           scripts[0].SetUpScript,
           Is.EqualTo (
-              @"USE TestDomain
+              @"USE DBPrefix_TestDomain
 -- Create all tables
 CREATE TABLE [dbo].[CustomDataType_ClassWithCustomDataType]
 (
@@ -197,7 +198,7 @@ CREATE VIEW [dbo].[CustomDataType_ClassWithCustomDataTypeView] ([ID], [ClassID],
 GO
 -- Create indexes for tables that were created above
 -- Create synonyms for tables that were created above
-"));
+".ApplyDatabaseConfiguration()));
     }
   }
 }

@@ -19,11 +19,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Data.SqlClient;
+using System.Linq;
 
 namespace Remotion.SecurityManager.UnitTests
 {
-  public class DatabaseConfiguration
+  public static class DatabaseConfiguration
   {
+    public const string DefaultDatabaseDirectory = @"C:\Databases\";
+
+    public const string DefaultDatabaseNamePrefix = "Remotion";
+
     public static string DataSource
     {
       get { return ConfigurationManager.AppSettings["DataSource"]; }
@@ -31,7 +37,20 @@ namespace Remotion.SecurityManager.UnitTests
 
     public static string DatabaseDirectory
     {
-      get { return ConfigurationManager.AppSettings["DatabaseDirectory"]; }
+      get { return ConfigurationManager.AppSettings["DatabaseDirectory"].TrimEnd ('\\') + "\\"; }
+    }
+
+    public static string DatabaseNamePrefix
+    {
+      get { return ConfigurationManager.AppSettings["DatabaseNamePrefix"] + "Remotion"; }
+    }
+
+    public static string UpdateConnectionString (string connectionString)
+    {
+      var sqlConnectionStringBuilder = new SqlConnectionStringBuilder (connectionString);
+      sqlConnectionStringBuilder.DataSource = DataSource;
+      sqlConnectionStringBuilder.InitialCatalog = sqlConnectionStringBuilder.InitialCatalog.Replace (DefaultDatabaseNamePrefix, DatabaseNamePrefix);
+      return sqlConnectionStringBuilder.ConnectionString;
     }
 
     public static ReadOnlyDictionary<string, string> GetReplacementDictionary ()
@@ -39,10 +58,14 @@ namespace Remotion.SecurityManager.UnitTests
       return new ReadOnlyDictionary<string, string> (
           new Dictionary<string, string>
           {
-              {
-                  "C:\\Databases", DatabaseDirectory
-              }
+              { DefaultDatabaseDirectory, DatabaseDirectory },
+              { DefaultDatabaseNamePrefix, DatabaseNamePrefix }
           });
+    }
+
+    public static string ApplyDatabaseConfiguration (this string script)
+    {
+      return GetReplacementDictionary().Aggregate (script, (s, kvp) => s.Replace (kvp.Key, kvp.Value));
     }
   }
 }

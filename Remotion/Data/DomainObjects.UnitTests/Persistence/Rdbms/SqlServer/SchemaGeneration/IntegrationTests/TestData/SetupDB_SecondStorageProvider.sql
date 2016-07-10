@@ -1,4 +1,4 @@
-USE SchemaGenerationTestDomain2
+USE DBPrefix_SchemaGenerationTestDomain2
 -- Create all tables
 CREATE TABLE [dbo].[Official]
 (

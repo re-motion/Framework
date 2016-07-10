@@ -1,4 +1,4 @@
-USE SchemaGenerationTestDomain1
+USE DBPrefix_SchemaGenerationTestDomain1
 -- Create all tables
 CREATE TABLE [dbo].[Address]
 (
