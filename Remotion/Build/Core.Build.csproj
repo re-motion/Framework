@@ -31,7 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Customizations\Local\Shared.props" />
     <None Include="Customizations\Local\Shared.targets" />
     <None Include="Customizations\Local\Configuration.targets" />
     <None Include="Customizations\Overrides.targets" />
@@ -43,7 +42,6 @@
     </None>
     <None Include="Customizations\Extensions.targets" />
     <None Include="Customizations\Server\Configuration.targets" />
-    <None Include="Customizations\Server\Shared.props" />
     <None Include="Customizations\Server\Shared.targets" />
     <None Include="Customizations\Version.props" />
     <None Include="NuSpec\Install.ps1" />
