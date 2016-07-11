@@ -40,6 +40,21 @@
     <VcsUrlTemplate>$(SvnBaseUri)/!svn/bc/$(SvnRevision)/$(SvnBranchFolder)/{0}</VcsUrlTemplate>
 
     <JiraVersionPattern></JiraVersionPattern>
+
+    <DatabaseNamePrefix></DatabaseNamePrefix>
+
+    <DataSourceMsSql2005></DataSourceMsSql2005>
+    <DataSourceMsSql2008></DataSourceMsSql2008>
+    <DataSourceMsSql2008R2></DataSourceMsSql2008R2>
+    <DataSourceMsSql2012></DataSourceMsSql2012>
+    <DataSourceMsSql2014></DataSourceMsSql2014>
+    <DataSourceMsSql2016></DataSourceMsSql2016>
+
+    <DatabaseDirectoryMsSql2005></DatabaseDirectoryMsSql2005>
+    <DatabaseDirectoryMsSql2008></DatabaseDirectoryMsSql2008>
+    <DatabaseDirectoryMsSql2008R2></DatabaseDirectoryMsSql2008R2>
+    <DatabaseDirectoryMsSql2012></DatabaseDirectoryMsSql2012>
+    <DatabaseDirectoryMsSql2016></DatabaseDirectoryMsSql2016>
   </PropertyGroup>
 
   <!-- Check properties -->
