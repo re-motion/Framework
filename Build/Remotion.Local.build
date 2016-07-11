@@ -19,7 +19,6 @@
 
   <Import Project="Remotion.build" />
   <Import Project="Local.Version.props"/>
-  <Import Project="Local.Version.props"/>
 
   <PropertyGroup>
     <ReleaseType>LOCAL</ReleaseType>
