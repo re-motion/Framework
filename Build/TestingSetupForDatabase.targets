@@ -38,6 +38,7 @@
     <PropertyGroup>
       <_dataSource>%(_activeDatabaseSystem.DataSource)</_dataSource>
       <_databaseDirectory>%(_activeDatabaseSystem.DatabaseDirectory)</_databaseDirectory>
+      <_databaseNamePrefix>%(_activeDatabaseSystem.DatabaseNamePrefix)</_databaseNamePrefix>
     </PropertyGroup>
 
     <Error Text="The DatabaseSystem '$(DatabaseSystem)' is not supported by the build script. Supported values for DatabaseSystem are: @(AllDatabaseSystems)" 
@@ -46,6 +47,7 @@
     <Message Text="Selected DatabaseSystem: '$(DatabaseSystem)'" />
     <Message Text="Selected DataSource: '$(_dataSource)'" />
     <Message Text="Selected DatabaseDirectory: '$(_databaseDirectory)'" />
+    <Message Text="Selected DatabaseNamePrefix: '$(_databaseNamePrefix)'" />
 
     <ItemGroup>
       <_appConfigAttributes Remove="@(_appConfigAttributes)"/>
@@ -56,6 +58,10 @@
       <_appConfigAttributes Include="/configuration/appSettings/add[@key='DatabaseDirectory']">
         <Key>value</Key>
         <Value>$(_databaseDirectory)</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/appSettings/add[@key='DatabaseNamePrefix']">
+        <Key>value</Key>
+        <Value>$(_databaseNamePrefix)</Value>
       </_appConfigAttributes>
     </ItemGroup>
 
