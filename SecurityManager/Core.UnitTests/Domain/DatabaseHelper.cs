@@ -41,11 +41,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain
 
       try
       {
-        ExecuteSql (ReadFile (TearDownDBSpecialTablesScript), connection, transaction);
-        ExecuteSql (ReadFile (TearDownDBScript), connection, transaction);
-        ExecuteSql (ReadFile (SetupDBScript), connection, transaction);
-        ExecuteSql (ReadFile (SetupConstraintsScript), connection, transaction);
-        ExecuteSql (ReadFile (SetupDBSpecialTablesScript), connection, transaction);
+        ExecuteSql (ReadFile (TearDownDBSpecialTablesScript).ApplyDatabaseConfiguration(), connection, transaction);
+        ExecuteSql (ReadFile (TearDownDBScript).ApplyDatabaseConfiguration(), connection, transaction);
+        ExecuteSql (ReadFile (SetupDBScript).ApplyDatabaseConfiguration(), connection, transaction);
+        ExecuteSql (ReadFile (SetupConstraintsScript).ApplyDatabaseConfiguration(), connection, transaction);
+        ExecuteSql (ReadFile (SetupDBSpecialTablesScript).ApplyDatabaseConfiguration(), connection, transaction);
       }
       catch
       {

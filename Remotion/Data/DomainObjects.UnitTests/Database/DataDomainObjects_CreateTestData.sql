@@ -1,4 +1,4 @@
-use TestDomain
+use DBPrefix_TestDomain
 
 delete from [MixedDomains_TargetWithTwoUnidirectionalMixins]
 delete from [MixedDomains_TargetWithUnidirectionalMixin1]

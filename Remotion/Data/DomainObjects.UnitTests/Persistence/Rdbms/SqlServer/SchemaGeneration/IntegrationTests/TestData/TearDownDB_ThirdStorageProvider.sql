@@ -1,4 +1,4 @@
-USE SchemaGenerationTestDomain3
+USE DBPrefix_SchemaGenerationTestDomain3
 -- Drop all synonyms
 IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'AddedViewSynonym')
   DROP SYNONYM [dbo].[AddedViewSynonym]

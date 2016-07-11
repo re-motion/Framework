@@ -1,24 +1,24 @@
 ﻿USE master
 
-IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'RemotionDataDomainObjectsObjectBindingIntegrationTestDomain')
+IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'DBPrefix_RemotionDataDomainObjectsObjectBindingIntegrationTestDomain')
 BEGIN
-  ALTER DATABASE RemotionDataDomainObjectsObjectBindingIntegrationTestDomain SET SINGLE_USER WITH ROLLBACK IMMEDIATE
-  DROP DATABASE RemotionDataDomainObjectsObjectBindingIntegrationTestDomain
+  ALTER DATABASE DBPrefix_RemotionDataDomainObjectsObjectBindingIntegrationTestDomain SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+  DROP DATABASE DBPrefix_RemotionDataDomainObjectsObjectBindingIntegrationTestDomain
 END
 GO
 
-CREATE DATABASE RemotionDataDomainObjectsObjectBindingIntegrationTestDomain
+CREATE DATABASE DBPrefix_RemotionDataDomainObjectsObjectBindingIntegrationTestDomain
 ON PRIMARY (
-	Name = 'RemotionDataDomainObjectsObjectBindingIntegrationTestDomain_Data',
-	Filename = 'C:\Databases\RemotionDataDomainObjectsObjectBindingIntegrationTestDomain.mdf',
+	Name = 'DBPrefix_RemotionDataDomainObjectsObjectBindingIntegrationTestDomain_Data',
+	Filename = 'C:\Databases\DBPrefix_RemotionDataDomainObjectsObjectBindingIntegrationTestDomain.mdf',
 	Size = 10MB
 )
 LOG ON (
-	Name = 'RemotionDataDomainObjectsObjectBindingIntegrationTestDomain_Log',
-	Filename = 'C:\Databases\RemotionDataDomainObjectsObjectBindingIntegrationTestDomain.ldf',
+	Name = 'DBPrefix_RemotionDataDomainObjectsObjectBindingIntegrationTestDomain_Log',
+	Filename = 'C:\Databases\DBPrefix_RemotionDataDomainObjectsObjectBindingIntegrationTestDomain.ldf',
 	Size = 10MB
 )
 GO
 
-ALTER DATABASE RemotionDataDomainObjectsObjectBindingIntegrationTestDomain SET RECOVERY SIMPLE
+ALTER DATABASE DBPrefix_RemotionDataDomainObjectsObjectBindingIntegrationTestDomain SET RECOVERY SIMPLE
 GO

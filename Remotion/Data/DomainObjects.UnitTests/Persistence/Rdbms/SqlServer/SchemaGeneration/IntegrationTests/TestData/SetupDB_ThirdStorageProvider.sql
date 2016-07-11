@@ -1,4 +1,4 @@
-USE SchemaGenerationTestDomain3
+USE DBPrefix_SchemaGenerationTestDomain3
 -- Create all tables
 CREATE TABLE [dbo].[InheritanceRoot]
 (

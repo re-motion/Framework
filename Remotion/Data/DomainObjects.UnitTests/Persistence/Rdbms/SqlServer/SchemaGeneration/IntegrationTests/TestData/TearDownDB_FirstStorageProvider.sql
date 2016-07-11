@@ -1,4 +1,4 @@
-USE SchemaGenerationTestDomain1
+USE DBPrefix_SchemaGenerationTestDomain1
 -- Drop all synonyms
 -- Drop all indexes
 -- Drop all views
