@@ -68,7 +68,7 @@ function mainOnMousemove (e) {
 }
 
 function mainOnKeyup (e) {
-    if(e.which === 18 && e.ctrlKey) // ALT+CTRL
+    if(isToggleHotkey(e))
         toggleMode();
 }
 
@@ -99,11 +99,15 @@ function frameOnMousemove (e) {
 }
 
 function frameOnKeyup (e) {
-    if(e.which === 18 && e.ctrlKey) // ALT+CTRL
+    if(isToggleHotkey(e))
         window.parent.postMessage('keyup', '*');
 }
 
 // functionality
+function isToggleHotkey (e) {
+    return e.ctrlKey && e.which === 89; // CTRL+Y
+}
+
 function toggleMode () {
     ++mode;
     mode = mode % numberOfModes;
