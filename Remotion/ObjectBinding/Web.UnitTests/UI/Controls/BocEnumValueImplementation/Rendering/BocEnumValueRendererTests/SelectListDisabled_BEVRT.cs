@@ -42,7 +42,7 @@ using AttributeCollection = System.Web.UI.AttributeCollection;
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplementation.Rendering.BocEnumValueRendererTests
 {
   [TestFixture]
-  public class SelectList_BEVRT : RendererTestBase
+  public class SelectListDisabled_BEVRT : RendererTestBase
   {
     private const string c_clientID = "MyEnumValue";
     private const string c_valueName = "ListControlClientID";
