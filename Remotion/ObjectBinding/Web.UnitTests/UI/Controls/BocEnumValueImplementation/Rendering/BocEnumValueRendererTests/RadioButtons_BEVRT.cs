@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 using System.Collections.Generic;
 using System.Web.UI;
@@ -42,7 +41,7 @@ using AttributeCollection = System.Web.UI.AttributeCollection;
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplementation.Rendering.BocEnumValueRendererTests
 {
   [TestFixture]
-  public class ReadOnly_BEVRT : RendererTestBase
+  public class RadioButtons_BEVRT : RendererTestBase
   {
     private const string c_clientID = "MyEnumValue";
     private const string c_valueName = "ListControlClientID";
@@ -94,48 +93,95 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (mock => mock.GetValueName()).Return (c_valueName);
 
       StateBag stateBag = new StateBag();
-      _enumValue.Stub (mock => mock.Enabled).Return (true);
-      _enumValue.Stub (mock => mock.IsReadOnly).Return (true);
       _enumValue.Stub (mock => mock.Attributes).Return (new AttributeCollection (stateBag));
       _enumValue.Stub (mock => mock.Style).Return (_enumValue.Attributes.CssStyle);
       _enumValue.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
-      _enumValue.Stub (mock => mock.ListControlStyle).Return (new ListControlStyle());
+      _enumValue.Stub (mock => mock.ListControlStyle).Return (new ListControlStyle { ControlType = ListControlType.RadioButtonList });
       _enumValue.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
+      _enumValue.Stub (mock => mock.Enabled).Return (true);
+
+      var httpContext = HttpContextHelper.CreateHttpContext ("GET", "Page.aspx", "");
+      System.Web.HttpContext.Current = httpContext;
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      System.Web.HttpContext.Current = null;
     }
 
     [Test]
-    public void Render_NullValue ()
+    public void Render_NullValueSelected_IsNotRequired ()
     {
-      AssertLabel (null, false);
+      _enumValue.Stub (mock => mock.IsRequired).Return (false);
+
+      AssertRadioButtonList (true, null, false, false);
+    }
+
+    [Test]
+    [Ignore ("RM-6609")]
+    public void Render_NullValueSelected_IsRequired ()
+    {
+      _enumValue.Stub (mock => mock.IsRequired).Return (true);
+
+      AssertRadioButtonList (true, null, false, false);
+    }
+
+    [Test]
+    public void Render_NullValueSelected_AutoPostback ()
+    {
+      _enumValue.Stub (mock => mock.IsRequired).Return (false);
+      _enumValue.ListControlStyle.AutoPostBack = true;
+
+      AssertRadioButtonList (true, null, false, true);
     }
 
     [Test]
     public void Render_NamedValue ()
     {
+      _enumValue.Stub (mock => mock.IsRequired).Return (true);
       _enumValue.Value = TestEnum.First;
-      _enumValue.Stub (mock => mock.EnumerationValueInfo).Return (_enumerationInfos[0]);
 
-      AssertLabel (TestEnum.First, false);
+      AssertRadioButtonList (false, TestEnum.First, false, false);
+    }
+
+    [Test]
+    public void Render_NamedValueSelected_AutoPostback ()
+    {
+      _enumValue.Stub (mock => mock.IsRequired).Return (true);
+      _enumValue.ListControlStyle.AutoPostBack = true;
+      _enumValue.Value = TestEnum.First;
+
+      AssertRadioButtonList (false, TestEnum.First, false, true);
+    }
+
+    [Test]
+    public void Render_NamedValueSelected_WithNullOption ()
+    {
+      _enumValue.Stub (mock => mock.IsRequired).Return (false);
+      _enumValue.Value = TestEnum.First;
+
+      AssertRadioButtonList (true, TestEnum.First, false, false);
     }
 
     [Test]
     public void Render_NamedValueSelected_WithCssClass ()
     {
       _enumValue.CssClass = "CssClass";
+      _enumValue.Stub (mock => mock.IsRequired).Return (true);
       _enumValue.Value = TestEnum.First;
-      _enumValue.Stub (mock => mock.EnumerationValueInfo).Return (_enumerationInfos[0]);
 
-      AssertLabel (TestEnum.First, false);
+      AssertRadioButtonList (false, TestEnum.First, false, false);
     }
 
     [Test]
     public void Render_NamedValueSelected_WithCssClassInAttributes ()
     {
       _enumValue.Attributes["class"] = "CssClass";
+      _enumValue.Stub (mock => mock.IsRequired).Return (true);
       _enumValue.Value = TestEnum.First;
-      _enumValue.Stub (mock => mock.EnumerationValueInfo).Return (_enumerationInfos[0]);
 
-      AssertLabel (TestEnum.First, false);
+      AssertRadioButtonList (false, TestEnum.First, false, false);
     }
 
     [Test]
@@ -145,10 +191,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Width = _width;
       _enumValue.ControlStyle.Height = _height;
       _enumValue.ControlStyle.Width = _width;
+      _enumValue.Stub (mock => mock.IsRequired).Return (true);
       _enumValue.Value = TestEnum.First;
-      _enumValue.Stub (mock => mock.EnumerationValueInfo).Return (_enumerationInfos[0]);
 
-      AssertLabel (TestEnum.First, true);
+      AssertRadioButtonList (false, TestEnum.First, true, false);
     }
 
     [Test]
@@ -156,16 +202,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     {
       _enumValue.Style["height"] = _height.ToString();
       _enumValue.Style["width"] = _width.ToString();
+      _enumValue.Stub (mock => mock.IsRequired).Return (true);
       _enumValue.Value = TestEnum.First;
-      _enumValue.Stub (mock => mock.EnumerationValueInfo).Return (_enumerationInfos[0]);
 
-      AssertLabel (TestEnum.First, false);
+      AssertRadioButtonList (false, TestEnum.First, true, false);
     }
 
     [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
-      _enumValue.ListControlStyle.ControlType = ListControlType.ListBox;
       _enumValue.ListControlStyle.AutoPostBack = true;
       
       var resourceUrlFactory = new FakeResourceUrlFactory();
@@ -176,41 +221,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       renderer.Render (new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue));
       
       var document = Html.GetResultDocument();
-      var outerSpan = Html.GetAssertedChildElement (document, "span", 0);
+      var outerSpan = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributes.ControlType, "BocEnumValue");
       Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributes.TriggersPostBack, "true");
-      Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributesForObjectBinding.BocEnumValueStyle, "ListBox");
+      Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributesForObjectBinding.BocEnumValueStyle, "RadioButtonList");
     }
 
-    private void AssertLabel (TestEnum? value, bool withStyle)
+    private XmlNode GetAssertedDiv (XmlDocument document, bool withStyle, BocEnumValueRenderer renderer)
     {
-      var renderer = new BocEnumValueRenderer (new FakeResourceUrlFactory (), GlobalizationService, RenderingFeatures.Default);
-      renderer.Render (new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue));
-
-      var document = Html.GetResultDocument();
-      XmlNode div = GetAssertedSpan (document, false, renderer);
-
-
-      var span = Html.GetAssertedChildElement (div, "span", 0);
-      Html.AssertAttribute (span, "id", c_valueName);
-      if (_enumValue.EnumerationValueInfo!=null)
-        Html.AssertAttribute (span, "data-value", _enumValue.EnumerationValueInfo.Identifier);
-
-      if (withStyle)
-      {
-        Html.AssertStyleAttribute (span, "width", _width.ToString());
-        Html.AssertStyleAttribute (span, "height", "100%");
-      }
-
-      if (value.HasValue)
-        Html.AssertTextNode (span, value.Value.ToString(), 0);
-      else
-        Html.AssertChildElementCount (span, 0);
-    }
-
-    private XmlNode GetAssertedSpan (XmlDocument document, bool withStyle, BocEnumValueRenderer renderer)
-    {
-      var div = Html.GetAssertedChildElement (document, "span", 0);
+      var div = Html.GetAssertedChildElement (document, "div", 0);
       string cssClass = _enumValue.CssClass;
       if (string.IsNullOrEmpty (cssClass))
         cssClass = _enumValue.Attributes["class"];
@@ -219,7 +238,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
       Html.AssertAttribute (div, "id", "MyEnumValue");
       Html.AssertAttribute (div, "class", cssClass, HtmlHelperBase.AttributeValueCompareMode.Contains);
-      Html.AssertAttribute (div, "class", renderer.CssClassReadOnly, HtmlHelperBase.AttributeValueCompareMode.Contains);
 
       if (withStyle)
       {
@@ -228,6 +246,59 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       }
 
       return div;
+    }
+
+    private void AssertRadioButtonList (bool withNullValue, TestEnum? selectedValue, bool withStyle, bool autoPostBack)
+    {
+      var renderer = new BocEnumValueRenderer (new FakeResourceUrlFactory (), GlobalizationService, RenderingFeatures.Default);
+      renderer.Render (new BocEnumValueRenderingContext (HttpContext, Html.Writer, _enumValue));
+
+      var document = Html.GetResultDocument();
+      var div = GetAssertedDiv (document, false, renderer);
+
+      var select = Html.GetAssertedChildElement (div, "table", 0);
+      Html.AssertAttribute (select, "id", c_valueName);
+
+      if (withStyle)
+        Html.AssertStyleAttribute (select, "height", "100%");
+
+      if (withNullValue)
+        AssertNullOption (select, !selectedValue.HasValue, autoPostBack);
+
+      int index = withNullValue ? 1 : 0;
+      foreach (TestEnum value in Enum.GetValues (typeof (TestEnum)))
+      {
+        AssertRadioButton (select, value.ToString(), value.ToString(), index, selectedValue == value, autoPostBack);
+        ++index;
+      }
+    }
+
+    private void AssertRadioButton (XmlNode table, string value, string text, int index, bool isSelected, bool autoPostBack)
+    {
+      var id = string.Format ("{0}_{1}", c_valueName, index);
+
+      var tr = Html.GetAssertedChildElement (table, "tr", index);
+      var td = Html.GetAssertedChildElement (tr, "td", 0);
+      var input = Html.GetAssertedChildElement (td, "input", 0);
+      Html.AssertAttribute (input, "type", "radio");
+      Html.AssertAttribute (input, "value", value);
+      Html.AssertAttribute (input, "id", id);
+      Html.AssertAttribute (input, "name", c_valueName);
+
+      var label = Html.GetAssertedChildElement (td, "label", 1);
+      Html.AssertAttribute (label, "for", id);
+      Html.AssertTextNode (label, text, 0);
+
+      if (isSelected)
+        Html.AssertAttribute (input, "checked", "checked");
+
+      if (autoPostBack && !isSelected)
+        Html.AssertAttribute (input, "onclick", string.Format ("javascript:__doPostBack('{0}','')", c_valueName + "$" + id));
+    }
+
+    private void AssertNullOption (XmlNode select, bool isSelected, bool autoPostBack)
+    {
+      AssertRadioButton (select, _enumValue.NullIdentifier, _enumValue.GetNullItemText(), 0, isSelected, autoPostBack);
     }
   }
 }

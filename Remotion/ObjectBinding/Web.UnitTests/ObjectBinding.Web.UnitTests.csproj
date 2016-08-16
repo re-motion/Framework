@@ -81,6 +81,7 @@
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Validation\BocDateTimeValueValidatorTest.cs" />
     <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTests\ReadOnly_BEVRT.cs" />
     <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTests\SelectListDisabled_BEVRT.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTests\RadioButtons_BEVRT.cs" />
     <Compile Include="UI\Controls\BocListImplementation\Validation\BocListValidatorFactoryTest.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Validation\BocAutoCompleteReferenceValueValidatorFactoryTest.cs" />
     <Compile Include="UI\Controls\AlwaysInvalidValidator.cs" />

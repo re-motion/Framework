@@ -93,5 +93,10 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
     {
       PrivateInvoke.InvokeNonPublicMethod (this, typeof (Page), "SaveAllState", new object[0]);
     }
+
+    public override void VerifyRenderingInServerForm (Control control)
+    {
+      // Skip check since it will only result in errors during unit testing
+    }
   }
 }

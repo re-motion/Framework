@@ -89,14 +89,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumerationInfos = values.ToArray();
       _enumValue.Stub (mock => mock.GetEnabledValues()).Return (_enumerationInfos);
 
-      _enumValue.Stub (mock => mock.GetNullItemText()).Return ("null");
+      _enumValue.Stub (mock => mock.GetNullItemText()).Return ("null-text");
+      _enumValue.Stub (mock => mock.NullIdentifier).Return ("null-id");
       _enumValue.Stub (mock => mock.GetValueName()).Return (c_valueName);
 
       StateBag stateBag = new StateBag();
       _enumValue.Stub (mock => mock.Attributes).Return (new AttributeCollection (stateBag));
       _enumValue.Stub (mock => mock.Style).Return (_enumValue.Attributes.CssStyle);
       _enumValue.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
-      _enumValue.Stub (mock => mock.ListControlStyle).Return (new ListControlStyle());
+      _enumValue.Stub (mock => mock.ListControlStyle).Return (new ListControlStyle { ControlType = ListControlType.DropDownList });
       _enumValue.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
       _enumValue.Stub (mock => mock.Enabled).Return (false);
     }
@@ -119,7 +120,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     }
 
     [Test]
-    public void Render_NamedValue_WithCssClass ()
+    public void Render_NamedValueSelected_WithCssClass ()
     {
       _enumValue.CssClass = "CssClass";
       _enumValue.Stub (mock => mock.IsRequired).Return (true);
@@ -129,7 +130,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     }
 
     [Test]
-    public void Render_NamedValue_WithCssClassInAttributes ()
+    public void Render_NamedValueSelected_WithCssClassInAttributes ()
     {
       _enumValue.Attributes["class"] = "CssClass";
       _enumValue.Stub (mock => mock.IsRequired).Return (true);
@@ -139,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     }
 
     [Test]
-    public void Render_NamedValue_WithStyle ()
+    public void Render_NamedValueSelected_WithStyle ()
     {
       _enumValue.Height = _height;
       _enumValue.Width = _width;
@@ -152,7 +153,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     }
 
     [Test]
-    public void Render_NamedValue_WithStyleInAttributes ()
+    public void Render_NamedValueSelected_WithStyleInAttributes ()
     {
       _enumValue.Style["height"] = _height.ToString();
       _enumValue.Style["width"] = _width.ToString();
@@ -165,7 +166,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
-      _enumValue.ListControlStyle.ControlType = ListControlType.ListBox;
       _enumValue.ListControlStyle.AutoPostBack = true;
       
       var resourceUrlFactory = new FakeResourceUrlFactory();
@@ -179,7 +179,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       var outerSpan = Html.GetAssertedChildElement (document, "span", 0);
       Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributes.ControlType, "BocEnumValue");
       Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributes.TriggersPostBack, "true");
-      Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributesForObjectBinding.BocEnumValueStyle, "ListBox");
+      Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributesForObjectBinding.BocEnumValueStyle, "DropDownList");
     }
 
     private XmlNode GetAssertedSpan (XmlDocument document, bool isReadOnly, bool withStyle, BocEnumValueRenderer renderer)
@@ -252,7 +252,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
     private void AssertNullOption (XmlNode select, bool isSelected)
     {
-      AssertOption (select, _enumValue.GetNullItemText(), "", 0, isSelected);
+      AssertOption (select, _enumValue.NullIdentifier, "", 0, isSelected);
     }
   }
 }
