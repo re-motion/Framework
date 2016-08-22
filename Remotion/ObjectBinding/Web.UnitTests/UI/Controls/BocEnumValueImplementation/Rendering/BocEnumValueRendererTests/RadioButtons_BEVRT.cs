@@ -96,7 +96,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (mock => mock.Attributes).Return (new AttributeCollection (stateBag));
       _enumValue.Stub (mock => mock.Style).Return (_enumValue.Attributes.CssStyle);
       _enumValue.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
-      _enumValue.Stub (mock => mock.ListControlStyle).Return (new ListControlStyle { ControlType = ListControlType.RadioButtonList });
+      _enumValue.Stub (mock => mock.ListControlStyle)
+          .Return (
+              new ListControlStyle
+              {
+                  ControlType = ListControlType.RadioButtonList,
+                  RadioButtonListNullValueVisible = false
+              });
       _enumValue.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
       _enumValue.Stub (mock => mock.Enabled).Return (true);
 
@@ -111,20 +117,39 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     }
 
     [Test]
-    public void Render_NullValueSelected_IsNotRequired ()
+    public void Render_NullValueSelected_IsNotRequired_WithRadioButtonListNullValueVisible_RendersNullValue ()
     {
       _enumValue.Stub (mock => mock.IsRequired).Return (false);
+      _enumValue.ListControlStyle.RadioButtonListNullValueVisible = true;
 
       AssertRadioButtonList (true, null, false, false);
     }
 
     [Test]
-    [Ignore ("RM-6609")]
-    public void Render_NullValueSelected_IsRequired ()
+    public void Render_NullValueSelected_IsNotRequired_WithoutRadioButtonListNullValueVisible_DoesNotRenderNullValue ()
+    {
+      _enumValue.Stub (mock => mock.IsRequired).Return (false);
+      _enumValue.ListControlStyle.RadioButtonListNullValueVisible = false;
+
+      AssertRadioButtonList (false, null, false, false);
+    }
+
+    [Test]
+    public void Render_NullValueSelected_IsRequired_WithRadioButtonListNullValueVisible_DoesNotRenderNullValue ()
     {
       _enumValue.Stub (mock => mock.IsRequired).Return (true);
+      _enumValue.ListControlStyle.RadioButtonListNullValueVisible = true;
 
-      AssertRadioButtonList (true, null, false, false);
+      AssertRadioButtonList (false, null, false, false);
+    }
+
+    [Test]
+    public void Render_NullValueSelected_IsRequired_WithoutRadioButtonListNullValueVisible_DoesNotRenderNullValue ()
+    {
+      _enumValue.Stub (mock => mock.IsRequired).Return (true);
+      _enumValue.ListControlStyle.RadioButtonListNullValueVisible = false;
+
+      AssertRadioButtonList (false, null, false, false);
     }
 
     [Test]
@@ -132,12 +157,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     {
       _enumValue.Stub (mock => mock.IsRequired).Return (false);
       _enumValue.ListControlStyle.AutoPostBack = true;
+      _enumValue.ListControlStyle.RadioButtonListNullValueVisible = true;
 
       AssertRadioButtonList (true, null, false, true);
     }
 
     [Test]
-    public void Render_NamedValue ()
+    public void Render_NamedValueSelected ()
     {
       _enumValue.Stub (mock => mock.IsRequired).Return (true);
       _enumValue.Value = TestEnum.First;
@@ -156,12 +182,43 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     }
 
     [Test]
-    public void Render_NamedValueSelected_WithNullOption ()
+    public void Render_NamedValueSelected_IsNotRequired_WithoutRadioButtonListNullValueVisible_DoesNotRenderNullValue ()
     {
       _enumValue.Stub (mock => mock.IsRequired).Return (false);
+      _enumValue.ListControlStyle.RadioButtonListNullValueVisible = false;
+      _enumValue.Value = TestEnum.First;
+
+      AssertRadioButtonList (false, TestEnum.First, false, false);
+    }
+
+    [Test]
+    public void Render_NamedValueSelected_IsNotRequired_WithRadioButtonListNullValueVisible_RendersNullValue ()
+    {
+      _enumValue.Stub (mock => mock.IsRequired).Return (false);
+      _enumValue.ListControlStyle.RadioButtonListNullValueVisible = true;
       _enumValue.Value = TestEnum.First;
 
       AssertRadioButtonList (true, TestEnum.First, false, false);
+    }
+
+    [Test]
+    public void Render_NamedValueSelected_IsRequired_WithoutRadioButtonListNullValueVisible_DoesNotRenderNullValue ()
+    {
+      _enumValue.Stub (mock => mock.IsRequired).Return (true);
+      _enumValue.ListControlStyle.RadioButtonListNullValueVisible = false;
+      _enumValue.Value = TestEnum.First;
+
+      AssertRadioButtonList (false, TestEnum.First, false, false);
+    }
+
+    [Test]
+    public void Render_NamedValueSelected_IsRequired_WithRadioButtonListNullValueVisible_RendersNullValue ()
+    {
+      _enumValue.Stub (mock => mock.IsRequired).Return (true);
+      _enumValue.ListControlStyle.RadioButtonListNullValueVisible = true;
+      _enumValue.Value = TestEnum.First;
+
+      AssertRadioButtonList (false, TestEnum.First, false, false);
     }
 
     [Test]

@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     }
 
     [Test]
-    public void Render_NamedValue ()
+    public void Render_NamedValueSelected ()
     {
       _enumValue.Stub (mock => mock.IsRequired).Return (true);
       _enumValue.Value = TestEnum.First;
