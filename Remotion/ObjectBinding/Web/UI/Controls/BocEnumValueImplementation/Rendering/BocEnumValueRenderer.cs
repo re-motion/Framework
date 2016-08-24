@@ -119,6 +119,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       renderingContext.Writer.AddAttribute (
           DiagnosticMetadataAttributesForObjectBinding.BocEnumValueStyle,
           renderingContext.Control.ListControlStyle.ControlType.ToString());
+
+      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, renderingContext.Control.NullIdentifier);
     }
 
     private ListControl GetListControl (BocEnumValueRenderingContext renderingContext)
@@ -221,13 +223,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         //  Too long, can't resize in designer to less than the content's width
         //  label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
       }
-      else if (renderingContext.Control.EnumerationValueInfo != null)
+      else if (renderingContext.Control.EnumerationValueInfo == null)
+      {
+        text = null;
+        label.Attributes.Add ("data-value", renderingContext.Control.NullIdentifier);
+      }
+      else
       {
         text = renderingContext.Control.EnumerationValueInfo.DisplayName;
         label.Attributes.Add ("data-value", renderingContext.Control.EnumerationValueInfo.Identifier);
       }
-      else
-        text = null;
 
       label.Text = text;
 

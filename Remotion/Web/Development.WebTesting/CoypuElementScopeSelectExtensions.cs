@@ -47,7 +47,8 @@ namespace Remotion.Web.Development.WebTesting
             var webElement = (IWebElement) scope.Native;
 
             var select = new SelectElement (webElement);
-            return new OptionDefinition (select.SelectedOption.GetAttribute ("value"), -1, select.SelectedOption.Text);
+            var selectedOption = select.SelectedOption;
+            return new OptionDefinition (selectedOption.GetAttribute ("value"), -1, selectedOption.Text, selectedOption.Selected);
           });
     }
 

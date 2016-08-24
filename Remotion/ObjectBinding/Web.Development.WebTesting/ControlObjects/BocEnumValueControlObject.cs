@@ -44,6 +44,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       _variantImpl = CreateVariant (style);
     }
 
+    /// <summary>
+    /// Gets a flag that indicates if the control displays the value that represents <see langword="null" /> in the domain (i.e. the 'undefined' value).
+    /// </summary>
+    public bool HasNullOptionDefinition ()
+    {
+      if (IsReadOnly())
+        throw new InvalidOperationException ("A read-only control cannot contain a null option definition.");
+
+      return _variantImpl.HasNullOptionDefinition();
+    }
+
     /// <inheritdoc/>
     public OptionDefinition GetSelectedOption ()
     {
@@ -142,6 +153,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       UnspecifiedPageObject SelectOption ([NotNull] string itemID, IWebTestActionOptions actionOptions);
       UnspecifiedPageObject SelectOption (int index, IWebTestActionOptions actionOptions);
       UnspecifiedPageObject SelectOptionByText ([NotNull] string text, IWebTestActionOptions actionOptions);
+      bool HasNullOptionDefinition ();
     }
 
     /// <summary>
@@ -165,7 +177,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         var scope = _controlObject.Scope.FindChild ("Value");
 
         if (_controlObject.IsReadOnly())
-          return new OptionDefinition (scope["data-value"], -1, scope.Text);
+          return new OptionDefinition (scope["data-value"], -1, scope.Text, true);
 
         return scope.GetSelectedOption();
       }
@@ -174,7 +186,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       {
         return RetryUntilTimeout.Run (
             () => _controlObject.Scope.FindChild ("Value").FindAllCss ("option")
-                .Select ((optionScope, i) => new OptionDefinition (optionScope.Value, i + 1, optionScope.Text))
+                .Select ((optionScope, i) => new OptionDefinition (optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
                 .ToList());
       }
 
@@ -208,6 +220,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         new CustomAction (_controlObject, _controlObject.Scope.FindChild ("Value"), "Select", selectAction).Execute (actualActionOptions);
         return _controlObject.UnspecifiedPage();
       }
+
+      public bool HasNullOptionDefinition ()
+      {
+        var nullIdentifier = _controlObject.Scope[DiagnosticMetadataAttributesForObjectBinding.NullIdentifier];
+        return GetOptionDefinitions().Any (o => o.ItemID == nullIdentifier);
+      }
     }
 
     /// <summary>
@@ -230,11 +248,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         if (_controlObject.IsReadOnly())
         {
           var scope = _controlObject.Scope.FindChild ("Value");
-          return new OptionDefinition (scope["data-value"], -1, scope.Text);
+          return new OptionDefinition (scope["data-value"], -1, scope.Text, true);
         }
 
-        var radioScope = _controlObject.Scope.FindCss ("input[type='radio'][checked='checked']");
-        return CreateOptionDefinitionFromRadioScope (radioScope, -1);
+        var selectedOption = GetOptionDefinitions().FirstOrDefault (o => o.IsSelected);
+        if (selectedOption != null)
+          return new OptionDefinition (selectedOption.ItemID, -1, selectedOption.Text, true);
+
+        var nullIdentifier = _controlObject.Scope[DiagnosticMetadataAttributesForObjectBinding.NullIdentifier];
+        return new OptionDefinition (nullIdentifier, -1, "", true);
       }
 
       public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
@@ -247,7 +269,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       private OptionDefinition CreateOptionDefinitionFromRadioScope (ElementScope radioScope, int oneBasedIndex)
       {
-        return new OptionDefinition (radioScope.Value, oneBasedIndex, radioScope.FindXPath("../label").Text);
+        var text = radioScope.FindXPath("../label").Text;
+        var isSelected = !string.IsNullOrEmpty(radioScope["checked"]);
+        return new OptionDefinition (radioScope.Value, oneBasedIndex, text, isSelected);
       }
 
       public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions actionOptions)
@@ -280,6 +304,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         var actualActionOptions = _controlObject.MergeWithDefaultActionOptions (_controlObject.Scope, actionOptions);
         new CheckAction (_controlObject, scope).Execute (actualActionOptions);
         return _controlObject.UnspecifiedPage();
+      }
+
+      public bool HasNullOptionDefinition ()
+      {
+        var nullIdentifier = _controlObject.Scope[DiagnosticMetadataAttributesForObjectBinding.NullIdentifier];
+        return GetOptionDefinitions().Any (o => o.ItemID == nullIdentifier);
       }
     }
   }

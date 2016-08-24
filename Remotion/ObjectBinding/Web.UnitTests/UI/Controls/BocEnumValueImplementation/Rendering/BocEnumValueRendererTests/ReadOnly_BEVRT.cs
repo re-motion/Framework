@@ -180,6 +180,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributes.ControlType, "BocEnumValue");
       Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributes.TriggersPostBack, "true");
       Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributesForObjectBinding.BocEnumValueStyle, "ListBox");
+      Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, "null-id");
     }
 
     private void AssertLabel (TestEnum? value, bool withStyle)
@@ -193,7 +194,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
       var span = Html.GetAssertedChildElement (div, "span", 0);
       Html.AssertAttribute (span, "id", c_valueName);
-      if (_enumValue.EnumerationValueInfo!=null)
+      if (_enumValue.EnumerationValueInfo == null)
+        Html.AssertAttribute (span, "data-value", _enumValue.NullIdentifier);
+      else
         Html.AssertAttribute (span, "data-value", _enumValue.EnumerationValueInfo.Identifier);
 
       if (withStyle)

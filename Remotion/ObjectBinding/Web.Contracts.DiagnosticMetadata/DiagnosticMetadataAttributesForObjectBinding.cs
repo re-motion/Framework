@@ -27,6 +27,7 @@ namespace Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata
     public static readonly string IsBound = "data-is-bound";
     public static readonly string BoundType = "data-bound-type";
     public static readonly string BoundProperty = "data-bound-property";
+    public static readonly string NullIdentifier = "data-null-identifier";
 
     public static readonly string BocBooleanValueIsTriState = "data-bocbooleanvalue-is-tristate";
 
