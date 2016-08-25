@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         WebTestingFramework Development Tools
 // @namespace    http://www.re-motion.org/
-// @version      1.3
+// @version      1.3.1
 // @description  Displays relevant data-* attributes for the WebTestingFramework. Adapt match argument to your needs.
 // @author       Dominik Rauch
-// @match        http*://localhost/*/web/*
+// @match        *://localhost/*/web/*
 // @grant        none
 // ==/UserScript==
 
