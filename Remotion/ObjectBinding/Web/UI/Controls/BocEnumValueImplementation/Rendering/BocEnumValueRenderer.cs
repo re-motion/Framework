@@ -136,17 +136,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
       var oneBasedIndex = 1;
 
-      bool needsNullValueItem = (renderingContext.Control.Value == null)
-                                && (renderingContext.Control.ListControlStyle.ControlType != ListControlType.RadioButtonList);
-      if (!renderingContext.Control.IsRequired || needsNullValueItem)
+      if (IsNullItemVisible (renderingContext))
       {
         var nullItem = CreateNullItem (renderingContext);
 
         if (IsDiagnosticMetadataRenderingEnabled)
         {
-          nullItem.Attributes[DiagnosticMetadataAttributes.ItemID] = "==null==";
+          nullItem.Attributes[DiagnosticMetadataAttributes.ItemID] = nullItem.Value;
           nullItem.Attributes[DiagnosticMetadataAttributes.IndexInCollection] = oneBasedIndex.ToString();
-          nullItem.Attributes[DiagnosticMetadataAttributes.Content] = HtmlUtility.StripHtmlTags (renderingContext.Control.GetNullItemText());
+          nullItem.Attributes[DiagnosticMetadataAttributes.Content] = HtmlUtility.StripHtmlTags (nullItem.Text);
         }
 
         listControl.Items.Add (nullItem);
@@ -164,15 +162,40 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
         if (IsDiagnosticMetadataRenderingEnabled)
         {
-          item.Attributes[DiagnosticMetadataAttributes.ItemID] = valueInfo.Identifier;
+          item.Attributes[DiagnosticMetadataAttributes.ItemID] = item.Value;
           item.Attributes[DiagnosticMetadataAttributes.IndexInCollection] = oneBasedIndex.ToString();
-          item.Attributes[DiagnosticMetadataAttributes.Content] = HtmlUtility.StripHtmlTags (valueInfo.DisplayName);
+          item.Attributes[DiagnosticMetadataAttributes.Content] = HtmlUtility.StripHtmlTags (item.Text);
         }
 
         listControl.Items.Add (item);
       }
 
       return listControl;
+    }
+
+    private bool IsNullItemVisible (BocEnumValueRenderingContext renderingContext)
+    {
+      var isRequired = renderingContext.Control.IsRequired;
+      var isNullValueSelected = renderingContext.Control.Value == null;
+      var isRadioButtonList = renderingContext.Control.ListControlStyle.ControlType == ListControlType.RadioButtonList;
+
+      if (isRadioButtonList)
+      {
+        if (isRequired)
+          return false;
+
+        if (!renderingContext.Control.ListControlStyle.RadioButtonListNullValueVisible)
+          return false;
+
+        return true;
+      }
+      else
+      {
+        if (isRequired)
+          return isNullValueSelected;
+
+        return true;
+      }
     }
 
     /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>

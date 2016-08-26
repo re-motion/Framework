@@ -74,9 +74,11 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
                                             { "supportsCallback", "true" }
                                         }
                                 };
+      context.Request.Browser.Capabilities["tables"] = "true";
       Assertion.IsTrue (context.Request.Browser.W3CDomVersion == new Version (4, 0));
       Assertion.IsTrue (context.Request.Browser.EcmaScriptVersion == new Version (5, 0));
       Assertion.IsTrue (context.Request.Browser.SupportsCallback);
+      Assertion.IsTrue (context.Request.Browser.Tables);
 
       return context;
     }

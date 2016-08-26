@@ -101,7 +101,10 @@
     <Compile Include="UI\Controls\BocDateTimeValueTest.cs" />
     <Compile Include="UI\Controls\BocDropDownMenuMock.cs" />
     <Compile Include="UI\Controls\BocDropDownMenuTest.cs" />
-    <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTests\RadioButtons_BEVRT.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTests\ReadOnly_BEVRT.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTests\SelectListDisabled_BEVRT.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTests\SelectList_BEVRT.cs" />
     <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\IBocEnumValueRendererTest.cs" />
     <Compile Include="UI\Controls\BocEnumValueMock.cs" />
     <Compile Include="UI\Controls\BocEnumValueTest.cs" />
