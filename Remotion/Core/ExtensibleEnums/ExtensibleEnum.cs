@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using System.Threading;
 using Remotion.Utilities;
 
 namespace Remotion.ExtensibleEnums
@@ -36,12 +37,20 @@ namespace Remotion.ExtensibleEnums
   public abstract class ExtensibleEnum<T> : IExtensibleEnum, IEquatable<T>
       where T: ExtensibleEnum<T>
   {
+    private static readonly Lazy<ExtensibleEnumDefinition<T>> s_values =
+        new Lazy<ExtensibleEnumDefinition<T>> (
+            () => (ExtensibleEnumDefinition<T>) ExtensibleEnumUtility.GetDefinition (typeof (T)),
+            LazyThreadSafetyMode.ExecutionAndPublication);
+
     /// <summary>
     /// Provides access to all values of this extensible enum type.
     /// </summary>
     /// <remarks>Values of the extensible enum type are defined by declaring extension methods against 
     /// <see cref="ExtensibleEnumDefinition{T}"/> and can be accessed via this field.</remarks>
-    public static readonly ExtensibleEnumDefinition<T> Values = (ExtensibleEnumDefinition<T>) ExtensibleEnumUtility.GetDefinition (typeof (T));
+    public static ExtensibleEnumDefinition<T> Values
+    {
+      get { return s_values.Value; }
+    }
 
     /// <summary>
     /// Implements the equality operator for extensible enum values. The operator is implemented the same way as the <see cref="Equals(T)"/> method.
