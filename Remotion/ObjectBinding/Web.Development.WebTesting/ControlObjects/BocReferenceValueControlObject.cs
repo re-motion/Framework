@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
@@ -44,6 +45,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
     }
 
+    /// <summary>
+    /// Gets a flag that indicates if the control displays the value that represents <see langword="null" /> in the domain (i.e. the 'undefined' value).
+    /// </summary>
+    public bool HasNullOptionDefinition ()
+    {
+      if (IsReadOnly())
+        throw new InvalidOperationException ("A read-only control cannot contain a null option definition.");
+
+      var nullIdentifier = Scope[DiagnosticMetadataAttributesForObjectBinding.NullIdentifier];
+      return GetOptionDefinitions().Any (o => o.ItemID == nullIdentifier);
+    }
+
     /// <inheritdoc/>
     public OptionDefinition GetSelectedOption ()
     {
@@ -62,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       return RetryUntilTimeout.Run (
           () => Scope.FindChild("Value").FindAllCss ("option")
-              .Select ((optionScope, i) => new OptionDefinition (optionScope.Value, i + 1, optionScope.Text))
+              .Select ((optionScope, i) => new OptionDefinition (optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
               .ToList());
     }
 

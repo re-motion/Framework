@@ -31,6 +31,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         
         /// <summary>
+        /// NoObject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl NoObject;
+        
+        /// <summary>
         /// FormGrid control.
         /// </summary>
         /// <remarks>
@@ -101,5 +110,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField_NoCommandNoMenu;
+        
+        /// <summary>
+        /// PartnerField_Required control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField_Required;
+        
+        /// <summary>
+        /// PartnerField_WithoutSelectedValue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField_WithoutSelectedValue;
     }
 }

@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.Configuration;
@@ -122,16 +123,37 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestGetSelectedOption ()
+    public void TestGetSelectedOption_ValueSelected ()
     {
       var home = Start();
 
       const string daValue = "00000000-0000-0000-0000-000000000009";
 
       var bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_Normal");
-      Assert.That (bocReferenceValue.GetSelectedOption().ItemID, Is.EqualTo (daValue));
-      Assert.That (bocReferenceValue.GetSelectedOption().Index, Is.EqualTo (-1));
-      Assert.That (bocReferenceValue.GetSelectedOption().Text, Is.EqualTo ("D, A"));
+      AssertSelectedOption (bocReferenceValue, daValue, -1, "D, A");
+    }
+
+    [Test]
+    public void TestGetSelectedOption_NullSelected ()
+    {
+      var home = Start();
+
+      var bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_WithoutSelectedValue");
+      AssertSelectedOption (bocReferenceValue, "==null==", -1, "");
+    }
+
+    private void AssertSelectedOption (
+        BocReferenceValueControlObject bocReferenceValue,
+        string expectedItemID,
+        int expectedIndex,
+        string expectedText)
+    {
+      var optionDefinition = bocReferenceValue.GetSelectedOption();
+
+      Assert.That (optionDefinition.ItemID, Is.EqualTo (expectedItemID));
+      Assert.That (optionDefinition.Index, Is.EqualTo (expectedIndex));
+      Assert.That (optionDefinition.Text, Is.EqualTo (expectedText));
+      Assert.That (optionDefinition.IsSelected, Is.True);
     }
 
     [Test]
@@ -149,6 +171,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (options[0].ItemID, Is.EqualTo ("==null=="));
       Assert.That (options[0].Index, Is.EqualTo (1));
       Assert.That (options[0].Text, Is.Empty);
+      Assert.That (options[0].IsSelected, Is.False);
+
+      Assert.That (options[2].Text, Is.EqualTo ("D, A"));
+      Assert.That (options[2].IsSelected, Is.True);
 
       Assert.That (options[15].ItemID, Is.EqualTo (fValue));
       Assert.That (options[15].Index, Is.EqualTo (16));
@@ -156,16 +182,49 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
         Assert.That (options[15].Text, Is.EqualTo ("F,"));
       else
         Assert.That (options[15].Text, Is.EqualTo ("F, "));
+      Assert.That (options[15].IsSelected, Is.False);
     }
 
     [Test]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void TestGetOptionDefinitionsException ()
+    public void TestGetOptionDefinitions_IsReadOnly_ThrowsInvalidOperationException ()
     {
       var home = Start();
 
       var bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_ReadOnly");
-      bocReferenceValue.GetOptionDefinitions();
+      Assert.That (
+          () => bocReferenceValue.GetOptionDefinitions(),
+          Throws.InvalidOperationException.With.Message.EqualTo ("Cannot obtain option definitions on read-only control."));
+    }
+
+    [Test]
+    public void TestHasNullOptionDefinition_HasNullValue_ReturnsTrue ()
+    {
+      var home = Start();
+
+      var bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_Normal");
+      Assert.That (bocReferenceValue.HasNullOptionDefinition(), Is.True);
+
+    }
+
+    [Test]
+    public void TestHasNullOptionDefinition_WithoutNullValueInList_ReturnsFalse ()
+    {
+      var home = Start();
+
+      var bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_Required");
+      Assert.That (bocReferenceValue.HasNullOptionDefinition(), Is.False);
+
+    }
+
+    [Test]
+    public void TestHasNullOptionDefinition_IsReadOnly_ThrowsInvalidOperationException ()
+    {
+      var home = Start();
+
+      var bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_ReadOnly");
+      Assert.That (
+          () => bocReferenceValue.HasNullOptionDefinition(),
+          Throws.InvalidOperationException.With.Message.EqualTo ("A read-only control cannot contain a null option definition."));
     }
 
     [Test]

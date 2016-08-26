@@ -23,6 +23,7 @@ using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
@@ -119,6 +120,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Stub (stub => stub.GetLabelText()).Return ("MyText");
       Control.Stub (stub => stub.ResolveClientUrl (null)).IgnoreArguments().Do ((Func<string, string>) (url => url.TrimStart ('~')));
       Control.Stub (stub => stub.GetResourceManager()).Return (NullResourceManager.Instance);
+      Control.Stub (stub => stub.NullValueString).Return ("null-id");
 
       _resourceUrlFactoryStub = new FakeResourceUrlFactory();
     }
@@ -472,6 +474,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var control = document.DocumentElement;
       control.AssertAttributeValueEquals (DiagnosticMetadataAttributes.ControlType, "BocReferenceValue");
       control.AssertAttributeValueEquals (DiagnosticMetadataAttributes.TriggersPostBack, "true");
+      control.AssertAttributeValueEquals (DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, "null-id");
     }
 
     private void AssertReadOnlyContent (XmlNode parent)
