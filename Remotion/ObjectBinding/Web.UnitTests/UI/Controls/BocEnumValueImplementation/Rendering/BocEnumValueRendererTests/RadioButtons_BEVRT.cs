@@ -282,6 +282,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributes.ControlType, "BocEnumValue");
       Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributes.TriggersPostBack, "true");
       Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributesForObjectBinding.BocEnumValueStyle, "RadioButtonList");
+      Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, "null-id");
     }
 
     private XmlNode GetAssertedDiv (XmlDocument document, bool withStyle, BocEnumValueRenderer renderer)

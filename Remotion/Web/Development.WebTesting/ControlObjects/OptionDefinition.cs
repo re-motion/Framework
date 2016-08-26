@@ -29,6 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     private readonly string _itemID;
     private readonly int _index;
     private readonly string _text;
+    private readonly bool _isSelected;
 
     public OptionDefinition ([NotNull] string itemID, int index, [NotNull] string text)
     {
@@ -38,6 +39,17 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       _itemID = itemID;
       _index = index;
       _text = text;
+    }
+
+    public OptionDefinition ([NotNull] string itemID, int index, [NotNull] string text, bool isSelected)
+    {
+      ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNull ("text", text);
+
+      _itemID = itemID;
+      _index = index;
+      _text = text;
+      _isSelected = isSelected;
     }
 
     public string ItemID
@@ -53,6 +65,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public string Text
     {
       get { return _text; }
+    }
+
+    public bool IsSelected
+    {
+      get { return _isSelected; }
     }
   }
 }

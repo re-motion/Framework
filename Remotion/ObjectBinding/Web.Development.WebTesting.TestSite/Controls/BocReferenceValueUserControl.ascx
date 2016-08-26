@@ -17,6 +17,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BocReferenceValueUserControl.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.BocReferenceValueUserControl" %>
 <remotion:FormGridManager ID="FormGridManager" runat="server" />
 <remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
+<remotion:BindableObjectDataSourceControl ID="NoObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" Mode="Search" />
 <table id="FormGrid" runat="server">
   <tr>
     <td></td>
@@ -250,5 +251,33 @@
       </remotion:BocReferenceValue>
     </td>
     <td>(no command & no menu)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocReferenceValue ID="PartnerField_Required"
+                                  DropDownListStyle-AutoPostBack="true"
+                                  Required="true"
+                                  ReadOnly="False"
+                                  DataSourceControl="CurrentObject"
+                                  PropertyIdentifier="Partner"
+                                  EnableIcon="false"
+                                  runat="server">
+      </remotion:BocReferenceValue>
+    </td>
+    <td>(required, no icon)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocReferenceValue ID="PartnerField_WithoutSelectedValue"
+                                  DropDownListStyle-AutoPostBack="true"
+                                  ReadOnly="False"
+                                  DataSourceControl="NoObject"
+                                  PropertyIdentifier="Partner"
+                                  runat="server">
+      </remotion:BocReferenceValue>
+    </td>
+    <td>(without selected value)</td>
   </tr>
 </table>

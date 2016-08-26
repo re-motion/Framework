@@ -20,6 +20,7 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -101,6 +102,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var hasAutoPostBack = renderingContext.Control.DropDownListStyle.AutoPostBack.HasValue
                             && renderingContext.Control.DropDownListStyle.AutoPostBack.Value;
       renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, hasAutoPostBack.ToString().ToLower());
+      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, renderingContext.Control.NullValueString);
     }
 
     protected override void RegisterJavaScriptFiles (HtmlHeadAppender htmlHeadAppender)
