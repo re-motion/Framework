@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       var scope = Scope.FindChild ("Value");
       if (IsReadOnly())
-        return new OptionDefinition (scope["data-value"], -1, scope.Text);
+        return new OptionDefinition (scope["data-value"], -1, scope.Text, true);
       else
         return scope.GetSelectedOption();
     }

@@ -30,16 +30,6 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     private readonly string _text;
     private readonly bool _isSelected;
 
-    public OptionDefinition ([NotNull] string itemID, int index, [NotNull] string text)
-    {
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
-      ArgumentUtility.CheckNotNull ("text", text);
-
-      _itemID = itemID;
-      _index = index;
-      _text = text;
-    }
-
     public OptionDefinition ([NotNull] string itemID, int index, [NotNull] string text, bool isSelected)
     {
       ArgumentUtility.CheckNotNull ("itemID", itemID);

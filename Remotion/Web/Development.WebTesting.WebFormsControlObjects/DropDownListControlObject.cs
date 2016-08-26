@@ -51,7 +51,9 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
     {
       return RetryUntilTimeout.Run (
-          () => Scope.FindAllCss ("option").Select ((optionScope, i) => new OptionDefinition (optionScope.Value, i + 1, optionScope.Text)).ToList());
+          () => Scope.FindAllCss ("option")
+              .Select ((optionScope, i) => new OptionDefinition (optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
+              .ToList());
     }
 
     /// <inheritdoc/>

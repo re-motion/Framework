@@ -131,6 +131,17 @@
   <tr>
     <td></td>
     <td>
+      <remotion:BocReferenceValue ID="PartnerField_ReadOnlyWithoutSelectedValue"
+                                  ReadOnly="True"
+                                  DataSourceControl="NoObject"
+                                  PropertyIdentifier="Partner"
+                                  runat="server"/>
+    </td>
+    <td>(read-only without selected value)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
       <remotion:BocReferenceValue ID="PartnerField_ReadOnly_AlternativeRendering"
                                   DropDownListStyle-AutoPostBack="true"
                                   ReadOnly="True"

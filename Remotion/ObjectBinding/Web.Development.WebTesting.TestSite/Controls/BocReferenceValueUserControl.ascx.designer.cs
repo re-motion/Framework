@@ -76,6 +76,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField_ReadOnly;
         
         /// <summary>
+        /// PartnerField_ReadOnlyWithoutSelectedValue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField_ReadOnlyWithoutSelectedValue;
+        
+        /// <summary>
         /// PartnerField_ReadOnly_AlternativeRendering control.
         /// </summary>
         /// <remarks>

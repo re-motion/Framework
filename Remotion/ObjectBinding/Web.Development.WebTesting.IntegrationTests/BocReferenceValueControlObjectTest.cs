@@ -142,6 +142,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       AssertSelectedOption (bocReferenceValue, "==null==", -1, "");
     }
 
+    [Test]
+    public void TestGetSelectedOption_IsReadOnlyAndHasValue ()
+    {
+      var home = Start();
+
+      const string daValue = "00000000-0000-0000-0000-000000000009";
+
+      var bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_ReadOnly");
+      AssertSelectedOption (bocReferenceValue, daValue, -1, "D, A");
+    }
+
+    [Test]
+    public void TestGetSelectedOption_IsReadOnlyAndValueIs ()
+    {
+      var home = Start();
+
+      const string daValue = "00000000-0000-0000-0000-000000000009";
+
+      var bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_Normal");
+      AssertSelectedOption (bocReferenceValue, daValue, -1, "D, A");
+    }
+
     private void AssertSelectedOption (
         BocReferenceValueControlObject bocReferenceValue,
         string expectedItemID,
@@ -241,6 +263,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_ReadOnly");
       Assert.That (bocReferenceValue.GetText(), Is.EqualTo ("D, A"));
 
+      bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_ReadOnlyWithoutSelectedValue");
+      Assert.That (bocReferenceValue.GetText(), Is.EqualTo (""));
+
       bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_ReadOnly_AlternativeRendering");
       Assert.That (bocReferenceValue.GetText(), Is.EqualTo ("D, A"));
 
@@ -252,6 +277,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_NoCommandNoMenu");
       Assert.That (bocReferenceValue.GetText(), Is.EqualTo ("D, A"));
+
+      bocReferenceValue = home.GetReferenceValue().ByLocalID ("PartnerField_WithoutSelectedValue");
+      Assert.That (bocReferenceValue.GetText(), Is.EqualTo (""));
     }
 
     [Test]

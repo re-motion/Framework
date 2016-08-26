@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -88,9 +89,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var dropDownList = home.GetDropDownList().ByLocalID ("MyDropDownList");
-      Assert.That (dropDownList.GetSelectedOption().ItemID, Is.EqualTo ("Item1Value"));
-      Assert.That (dropDownList.GetSelectedOption().Index, Is.EqualTo (-1));
-      Assert.That (dropDownList.GetSelectedOption().Text, Is.EqualTo ("Item1"));
+      AssertSelectedOption (dropDownList, "Item1Value", -1, "Item1");
+    }
+
+    private static void AssertSelectedOption (
+        DropDownListControlObject dropDownList,
+        string expectedItemID,
+        int expectedIndex,
+        string expectedText)
+    {
+      var optionDefinition = dropDownList.GetSelectedOption();
+
+      Assert.That (optionDefinition.ItemID, Is.EqualTo (expectedItemID));
+      Assert.That (optionDefinition.Index, Is.EqualTo (expectedIndex));
+      Assert.That (optionDefinition.Text, Is.EqualTo (expectedText));
+      Assert.That (optionDefinition.IsSelected, Is.True);
     }
 
     [Test]
@@ -106,10 +119,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (options[0].ItemID, Is.EqualTo ("Item1Value"));
       Assert.That (options[0].Index, Is.EqualTo (1));
       Assert.That (options[0].Text, Is.EqualTo ("Item1"));
+      Assert.That (options[0].IsSelected, Is.True);
 
       Assert.That (options[2].ItemID, Is.EqualTo ("Item3Value"));
       Assert.That (options[2].Index, Is.EqualTo (3));
       Assert.That (options[2].Text, Is.EqualTo ("Item3"));
+      Assert.That (options[2].IsSelected, Is.False);
     }
 
     [Test]
