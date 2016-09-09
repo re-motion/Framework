@@ -229,7 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       _testHelper.ExpectExecuteNonQuery (
           "INSERT INTO [Employee] ([ID], [ClassID], [Name]) VALUES (@ID, @ClassID, @Name);",
           Tuple.Create ("@ID", DbType.Guid, newDataContainer.ID.Value),
-          Tuple.Create ("@ClassID", DbType.String, (object) "Employee"),
+          Tuple.Create ("@ClassID", DbType.AnsiString, (object) "Employee"),
           Tuple.Create ("@Name", DbType.String, (object) ""));
       _testHelper.ExpectExecuteNonQuery (
           "UPDATE [Employee] SET [Name] = @Name WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Tuple.Create ("@Timestamp", DbType.Binary, deletedDataContainer.Timestamp));
       _testHelper.ExpectExecuteNonQuery (
           "UPDATE [Employee] SET [ClassID] = @ClassID WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
-          Tuple.Create ("@ClassID", DbType.String, (object) "Employee"),
+          Tuple.Create ("@ClassID", DbType.AnsiString, (object) "Employee"),
           Tuple.Create ("@ID", DbType.Guid, markedAsChangedDataContainer.ID.Value),
           Tuple.Create ("@Timestamp", DbType.Binary, markedAsChangedDataContainer.Timestamp));
       _testHelper.ExpectExecuteNonQuery (

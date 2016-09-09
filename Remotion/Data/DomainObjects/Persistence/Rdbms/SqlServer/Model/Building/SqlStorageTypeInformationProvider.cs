@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       return new StorageTypeInformation (
           typeof (string),
           "varchar (100)",
-          DbType.String,
+          DbType.AnsiString,
           isStorageTypeNullable,
           100,
           typeof (string),
@@ -212,7 +212,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     {
       var storageTypeLength = GetColumnWidthForExtensibleEnum (extensibleEnumType);
       var storageType = GetStorageTypeStringForVarType ("varchar", storageTypeLength);
-      return new StorageTypeInformation (typeof (string), storageType, DbType.String, isNullableInDatabase, storageTypeLength, extensibleEnumType, new ExtensibleEnumConverter (extensibleEnumType));
+      return new StorageTypeInformation (typeof (string), storageType, DbType.AnsiString, isNullableInDatabase, storageTypeLength, extensibleEnumType, new ExtensibleEnumConverter (extensibleEnumType));
     }
 
     [CanBeNull]
