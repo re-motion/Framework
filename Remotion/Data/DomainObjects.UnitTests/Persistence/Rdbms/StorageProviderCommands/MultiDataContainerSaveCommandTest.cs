@@ -93,10 +93,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _mockRepository.ReplayAll();
 
-      Assert.That (
-          () => command.Execute (_rdbmsExecutionContextStrictMock),
-          Throws.Exception.TypeOf<ConcurrencyViolationException>().With.Message.EqualTo (
-              "Concurrency violation encountered. Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has already been changed by someone else."));
+      var exception = Assert.Throws<ConcurrencyViolationException> (() => command.Execute (_rdbmsExecutionContextStrictMock));
+      Assert.That (exception.IDs, Is.EqualTo (new ObjectID[] { _tuple1.Item1 }));
 
       _mockRepository.VerifyAll();
     }

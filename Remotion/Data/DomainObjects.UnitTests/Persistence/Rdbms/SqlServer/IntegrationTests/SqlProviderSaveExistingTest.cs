@@ -263,9 +263,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (ConcurrencyViolationException), ExpectedMessage =
-        "Concurrency violation encountered. Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has already been changed by someone else."
-        )]
     public void ConcurrentSave ()
     {
       DataContainer orderContainer1 = LoadDataContainer (DomainObjectIDs.Order1);
@@ -275,7 +272,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       SetPropertyValue (orderContainer2, typeof (Order), "OrderNumber", 11);
 
       Provider.Save (new[] { orderContainer1 });
-      Provider.Save (new[] { orderContainer2 });
+
+      var exception = Assert.Throws<ConcurrencyViolationException> (() => Provider.Save (new[] { orderContainer2 }));
+      Assert.That (exception.IDs, Is.EqualTo (new [] { orderContainer2.ID }));
     }
 
     [Test]

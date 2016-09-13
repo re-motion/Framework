@@ -20,6 +20,7 @@ using System.Data;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
+using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
@@ -66,10 +67,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
           }
 
           if (recordsAffected != 1)
-          {
-            throw new ConcurrencyViolationException (
-                string.Format ("Concurrency violation encountered. Object '{0}' has already been changed by someone else.", tuple.Item1));
-          }
+            throw new ConcurrencyViolationException (EnumerableUtility.Singleton (tuple.Item1));
         }
       }
     }
