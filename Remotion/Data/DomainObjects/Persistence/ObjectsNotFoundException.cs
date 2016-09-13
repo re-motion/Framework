@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     {
       return string.Format ("Object(s) could not be found: {0}.", string.Join (", ", ids.Select (id => "'" + id + "'")));
     }
-    
+
     private readonly ObjectID[] _ids;
 
     public ObjectsNotFoundException (IEnumerable<ObjectID> ids)
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     }
 
     public ObjectsNotFoundException (IEnumerable<ObjectID> ids, Exception inner)
-        : this (BuildMessage(ids), ids, inner)
+        : this (BuildMessage (ArgumentUtility.CheckNotNull ("ids", ids)), ids, inner)
     {
     }
 

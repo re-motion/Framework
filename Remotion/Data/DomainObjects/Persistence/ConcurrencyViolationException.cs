@@ -15,27 +15,60 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.Serialization;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
-[Serializable]
-public class ConcurrencyViolationException : StorageProviderException
-{
-  // types
+  /// <summary>
+  /// Thrown when an object cannot be committed to the underlying datasource because a newer version already exists.
+  /// </summary>
+  [Serializable]
+  public class ConcurrencyViolationException : StorageProviderException
+  {
+    private static string BuildMessage (IEnumerable<ObjectID> ids)
+    {
+      return string.Format ("Concurrency violation encountered. One or more object(s) have already been changed by someone else: {0}", string.Join (", ", ids.Select (id => "'" + id + "'")));
+    }
 
-  // static members and constants
+    private readonly ObjectID[] _ids;
 
-  // member fields
+    public ConcurrencyViolationException (IEnumerable<ObjectID> ids)
+        : this (ids, null)
+    {
+    }
 
-  // construction and disposing
+    public ConcurrencyViolationException (IEnumerable<ObjectID> ids, Exception inner)
+        : this (BuildMessage (ArgumentUtility.CheckNotNull ("ids", ids)), ids, inner)
+    {
+    }
 
-  public ConcurrencyViolationException () : this ("Concurrency violation encountered.") {}
-  public ConcurrencyViolationException (string message) : base (message) {}
-  public ConcurrencyViolationException (string message, Exception inner) : base (message, inner) {}
-  protected ConcurrencyViolationException (SerializationInfo info, StreamingContext context) : base (info, context) {}
+    public ConcurrencyViolationException (string message, IEnumerable<ObjectID> ids, Exception inner)
+        : base (message, inner)
+    {
+      ArgumentUtility.CheckNotNull ("ids", ids);
+      _ids = ids.ToArray();
+    }
 
-  // methods and properties
+    protected ConcurrencyViolationException (SerializationInfo info, StreamingContext context)
+        : base (info, context)
+    {
+      _ids = (ObjectID[]) info.GetValue ("_ids", typeof (ObjectID[]));
+    }
 
-}
+    public ReadOnlyCollection<ObjectID> IDs
+    {
+      get { return Array.AsReadOnly (_ids); }
+    }
+
+    public override void GetObjectData (SerializationInfo info, StreamingContext context)
+    {
+      base.GetObjectData (info, context);
+
+      info.AddValue ("_ids", _ids);
+    }
+  }
 }

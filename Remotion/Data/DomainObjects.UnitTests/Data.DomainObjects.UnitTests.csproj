@@ -300,6 +300,7 @@
     <Compile Include="Mapping\TestDomain\Integration\ReflectionBasedMappingSample\ClassWithStorageGroupAttributeAndBaseClass.cs" />
     <Compile Include="Mapping\TestDomain\Integration\ReflectionBasedMappingSample\ClassWithStorageGroupAttributeAndIgnoredForMappingConfigurationAttributeAndBaseClass.cs" />
     <Compile Include="Mapping\TestDomain\Integration\ReflectionBasedMappingSample\DerivedClassInMappingDerivedFromClassNotInMapping.cs" />
+    <Compile Include="Persistence\ConcurrencyViolationExceptionTest.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\ClassSerializerTest.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\ColumnSerializerTest.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\ExtensibleEnumSerializerDecoratorTest.cs" />
