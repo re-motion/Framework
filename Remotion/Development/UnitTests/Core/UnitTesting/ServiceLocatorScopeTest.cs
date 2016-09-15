@@ -75,14 +75,14 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void Initialization_AndDispose_ServiceLocator_InitialProviderNull ()
     {
-      Assert.That (() => ServiceLocator.Current, Throws.TypeOf<NullReferenceException>());
+      Assert.That (ServiceLocator.IsLocationProviderSet, Is.False);
 
       using (new ServiceLocatorScope (_locator2))
       {
         Assert.That (ServiceLocator.Current, Is.SameAs (_locator2));
       }
 
-      Assert.That (() => ServiceLocator.Current, Throws.TypeOf<NullReferenceException>());
+      Assert.That (ServiceLocator.IsLocationProviderSet, Is.False);
     }
 
     [Test]

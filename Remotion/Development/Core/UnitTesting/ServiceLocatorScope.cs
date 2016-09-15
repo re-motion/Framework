@@ -42,12 +42,12 @@ namespace Remotion.Development.UnitTesting
 
     public ServiceLocatorScope (IServiceLocator temporaryServiceLocator)
     {
-      try
+      if (ServiceLocator.IsLocationProviderSet)
       {
         var previousLocator = ServiceLocator.Current;
         _previousLocatorProvider = () => previousLocator;
       }
-      catch (NullReferenceException)
+      else
       {
         _previousLocatorProvider = null;
       }
