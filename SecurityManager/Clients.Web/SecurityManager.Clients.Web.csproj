@@ -49,8 +49,8 @@
     <NoWarn>1591;0419</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -66,6 +66,7 @@
     <Reference Include="System.Web.Services" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="res\Themes\NovaGray\Html\Style.css" />
     <None Include="res\Themes\NovaGray\Image\ApplyButton.gif" />
     <None Include="res\Themes\NovaGray\Image\CancelButton.gif" />
@@ -89,7 +90,6 @@
     <None Include="FacetManifest.xml" />
     <None Include="res\Themes\NovaBlue\Image\ApplyButton.gif" />
     <None Include="Web.config" />
-    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SecurityManager AGPL.licenseheader">

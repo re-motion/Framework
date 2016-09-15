@@ -74,19 +74,13 @@ namespace Remotion.ServiceLocation
     /// </remarks>
     public static IServiceLocator Current
     {
-      // Have debugger step through to avoid breaking on the NullReferenceException that might be thrown below.
-      [DebuggerStepThrough]
       get
       {
-        try
-        {
+        if (ServiceLocator.IsLocationProviderSet)
           return ServiceLocator.Current ?? s_defaultServiceLocator.Value;
-        }
-        catch (NullReferenceException)
-        {
-          ServiceLocator.SetLocatorProvider (() => s_defaultServiceLocator.Value);
-          return s_defaultServiceLocator.Value;
-        }
+
+        ServiceLocator.SetLocatorProvider (() => s_defaultServiceLocator.Value);
+        return s_defaultServiceLocator.Value;
       }
     }
 

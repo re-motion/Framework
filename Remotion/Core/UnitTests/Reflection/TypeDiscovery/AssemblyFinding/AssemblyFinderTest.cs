@@ -36,7 +36,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [SetUp]
     public void SetUp ()
     {
-      _assembly1 = typeof (object).Assembly;
+      _assembly1 = typeof (Enumerable).Assembly;
       _assembly2 = typeof (AssemblyFinder).Assembly;
       _assembly3 = typeof (AssemblyFinderTest).Assembly;
     }
@@ -147,8 +147,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
           .Return (null);
       loaderMock
           .Expect (mock => mock.TryLoadAssembly (ArgReferenceMatchesDefinition (_assembly1), Arg.Is (_assembly2.FullName))) // _assembly1 already loaded, no second time
-          .Repeat.Never ()
-          .Return (_assembly2);
+          .Repeat.Never ();
       loaderMock.Replay ();
       
       var rootAssemblyFinderStub = MockRepository.GenerateMock<IRootAssemblyFinder> ();
