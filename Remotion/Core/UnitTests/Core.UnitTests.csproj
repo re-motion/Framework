@@ -612,7 +612,9 @@
       <Link>remotion.snk</Link>
     </None>
     <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\FileLoadExceptionConsoleApplication\app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Xml\SampleClass.xsx">
       <DependentUpon>SampleClass.xsd</DependentUpon>
     </None>

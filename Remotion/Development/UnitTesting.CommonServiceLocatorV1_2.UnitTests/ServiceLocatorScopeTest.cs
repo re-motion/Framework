@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Rhino.Mocks;
 
-namespace Remotion.Development.UnitTests.Core.UnitTesting
+namespace Remotion.Development.UnitTesting.CommonServiceLocatorV1_2.UnitTests
 {
   [TestFixture]
   public class ServiceLocatorScopeTest
@@ -45,10 +45,10 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     }
 
     [Test]
-    public void ServiceLocatorHasNotBeenUpgradedPastV1_0 ()
+    public void ServiceLocatorHasNotBeenUpgradedPastV1_2 ()
     {
       var commonServiceLocatorAssembly = typeof (ServiceLocator).Assembly;
-      Assert.That (commonServiceLocatorAssembly.GetName().Version, Is.EqualTo (new Version (1, 0, 0, 0)));
+      Assert.That (commonServiceLocatorAssembly.GetName().Version, Is.EqualTo (new Version (1, 2, 0, 0)));
     }
 
     [Test]
@@ -82,14 +82,14 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void Initialization_AndDispose_ServiceLocator_InitialProviderNull ()
     {
-      Assert.That (() => ServiceLocator.Current, Throws.TypeOf<NullReferenceException>());
+      Assert.That (ServiceLocator.IsLocationProviderSet, Is.False);
 
       using (new ServiceLocatorScope (_locator2))
       {
         Assert.That (ServiceLocator.Current, Is.SameAs (_locator2));
       }
 
-      Assert.That (() => ServiceLocator.Current, Throws.TypeOf<NullReferenceException>());
+      Assert.That (ServiceLocator.IsLocationProviderSet, Is.False);
     }
 
     [Test]

@@ -31,6 +31,7 @@
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.UnitTests\Core.Reflection.UnitTests.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration.UnitTests\Core.Reflection.CodeGeneration.UnitTests.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration.TypePipe.UnitTests\Core.Reflection.CodeGeneration.TypePipe.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\ServiceLocation.CommonServiceLocatorV1_2.UnitTests\Core.ServiceLocation.CommonServiceLocatorV1_2.UnitTests.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Tools.UnitTests\Core.Tools.UnitTests.csproj"/>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\CodeDom\Development.CodeDom.csproj"/>
@@ -39,6 +40,7 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Mixins\Development.Mixins.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Web\Development.Web.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Development\UnitTests\Development.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Development\UnitTesting.CommonServiceLocatorV1_2.UnitTests\Development.UnitTesting.CommonServiceLocatorV1_2.UnitTests.csproj"/>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\Core\Mixins.Core.csproj">
       <!-- When enabling the package for NuGet.org, the nuspec file must be TemplateSharedForNuGetOrg.nuspec to act as trigger for removing the -rtm tag on the NuGet version. -->

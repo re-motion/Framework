@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Configuration.ServiceLocation;
 
@@ -60,7 +61,9 @@ namespace Remotion.ServiceLocation
     // wrapped in a TypeInitializationException.)
     private static readonly DoubleCheckedLockingContainer<IServiceLocator> s_defaultServiceLocator = 
         new DoubleCheckedLockingContainer<IServiceLocator> (GetDefaultServiceLocator);
-    
+
+    private static readonly Func<bool> s_isLocationProviderSetDelegate = GetIsLocationProviderSetDelegateOrNull();
+
     /// <summary>
     /// Gets the currently configured <see cref="IServiceLocator"/>. 
     /// If no service locator is configured or <see cref="ServiceLocator.Current"/> returns <see langword="null" />, 
@@ -78,12 +81,23 @@ namespace Remotion.ServiceLocation
       [DebuggerStepThrough]
       get
       {
-        try
+        if (s_isLocationProviderSetDelegate == null)
         {
-          return ServiceLocator.Current ?? s_defaultServiceLocator.Value;
+          try
+          {
+            return ServiceLocator.Current ?? s_defaultServiceLocator.Value;
+          }
+          catch (NullReferenceException)
+          {
+            ServiceLocator.SetLocatorProvider (() => s_defaultServiceLocator.Value);
+            return s_defaultServiceLocator.Value;
+          }
         }
-        catch (NullReferenceException)
+        else
         {
+          if (s_isLocationProviderSetDelegate())
+            return ServiceLocator.Current ?? s_defaultServiceLocator.Value;
+
           ServiceLocator.SetLocatorProvider (() => s_defaultServiceLocator.Value);
           return s_defaultServiceLocator.Value;
         }
@@ -119,6 +133,16 @@ namespace Remotion.ServiceLocation
 
       var serviceLocatorProvider = ServiceLocationConfiguration.Current.CreateServiceLocatorProvider();
       return serviceLocatorProvider.GetServiceLocator (Array.AsReadOnly (s_bootstrapServiceConfiguration.Registrations));
+    }
+
+    private static Func<bool> GetIsLocationProviderSetDelegateOrNull ()
+    {
+      var type = typeof (ServiceLocator);
+      var getter = type.GetMethod ("get_IsLocationProviderSet", BindingFlags.Public | BindingFlags.Static);
+      if (getter == null)
+        return null;
+
+      return  (Func<bool>) getter.CreateDelegate (typeof (Func<bool>));
     }
   }
 }

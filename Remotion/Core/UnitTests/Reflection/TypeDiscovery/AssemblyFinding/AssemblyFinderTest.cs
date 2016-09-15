@@ -147,8 +147,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
           .Return (null);
       loaderMock
           .Expect (mock => mock.TryLoadAssembly (ArgReferenceMatchesDefinition (_assembly1), Arg.Is (_assembly2.FullName))) // _assembly1 already loaded, no second time
-          .Repeat.Never ()
-          .Return (_assembly2);
+          .Repeat.Never ();
       loaderMock.Replay ();
       
       var rootAssemblyFinderStub = MockRepository.GenerateMock<IRootAssemblyFinder> ();

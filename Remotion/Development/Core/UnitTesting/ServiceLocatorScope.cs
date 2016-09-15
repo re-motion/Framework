@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -28,6 +29,8 @@ namespace Remotion.Development.UnitTesting
   /// </summary>
   public class ServiceLocatorScope : IDisposable
   {
+    private static readonly Func<bool> s_isLocationProviderSetDelegate = GetIsLocationProviderSetDelegateOrNull();
+
     private static DefaultServiceLocator CreateServiceLocator (IEnumerable<ServiceConfigurationEntry> configuration)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
@@ -38,18 +41,43 @@ namespace Remotion.Development.UnitTesting
       return defaultServiceLocator;
     }
 
+    private static Func<bool> GetIsLocationProviderSetDelegateOrNull ()
+    {
+      var type = typeof (ServiceLocator);
+      var getter = type.GetMethod ("get_IsLocationProviderSet", BindingFlags.Public | BindingFlags.Static);
+      if (getter == null)
+        return null;
+
+      return  (Func<bool>) getter.CreateDelegate (typeof (Func<bool>));
+    }
+
     private readonly ServiceLocatorProvider _previousLocatorProvider;
 
     public ServiceLocatorScope (IServiceLocator temporaryServiceLocator)
     {
-      try
+      if (s_isLocationProviderSetDelegate == null)
       {
-        var previousLocator = ServiceLocator.Current;
-        _previousLocatorProvider = () => previousLocator;
+        try
+        {
+          var previousLocator = ServiceLocator.Current;
+          _previousLocatorProvider = () => previousLocator;
+        }
+        catch (NullReferenceException)
+        {
+          _previousLocatorProvider = null;
+        }
       }
-      catch (NullReferenceException)
+      else
       {
-        _previousLocatorProvider = null;
+        if (s_isLocationProviderSetDelegate())
+        {
+          var previousLocator = ServiceLocator.Current;
+          _previousLocatorProvider = () => previousLocator;
+        }
+        else
+        {
+          _previousLocatorProvider = null;
+        }
       }
 
       ServiceLocator.SetLocatorProvider (() => temporaryServiceLocator);
