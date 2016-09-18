@@ -5,4 +5,11 @@
     <Copy SourceFiles="$(SolutionDirectory)Build\GlobalFacetManifest.xml" DestinationFolder="$(OutputDirectory)" />
   </Target>
 
+  <!-- Workaround until DependDB NuGetPreProcessor supports generating binding redirects (DEP-70) -->
+  <Target Name="Before_ProcessForDependDBInternal" BeforeTargets="ProcessForDependDBInternal">
+    <PropertyGroup>
+      <_preProcessorParameters>$(_preProcessorParameters) --xref-app-config="$(SolutionDirectory)Remotion\Core\ServiceLocation.CommonServiceLocatorV1_2.UnitTests\App.config"</_preProcessorParameters>
+    </PropertyGroup>
+  </Target>
+
 </Project>
