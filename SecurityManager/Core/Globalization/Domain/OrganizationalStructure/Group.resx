@@ -141,7 +141,7 @@
   <data name="property:Tenant" xml:space="preserve">
     <value>Tenant</value>
   </data>
-  <data name="Type:Group" xml:space="preserve">
+  <data name="type:Group" xml:space="preserve">
     <value>Group</value>
   </data>
 </root>
