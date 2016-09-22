@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -33,6 +34,12 @@ namespace Remotion.Data.DomainObjects.Linq
   /// </summary>
   public class StorageSpecificExpressionResolver : IStorageSpecificExpressionResolver
   {
+    private static readonly MemberInfo s_objectIDValueProperty = MemberInfoFromExpressionUtility.GetProperty ((ObjectID obj) => obj.Value);
+    private static readonly MemberInfo s_objectIDClassIDProperty = MemberInfoFromExpressionUtility.GetProperty ((ObjectID obj) => obj.ClassID);
+
+    private static readonly ConstructorInfo s_objectIDCtor =
+        Assertion.IsNotNull (typeof (ObjectID).GetConstructor (new[] { typeof (string), typeof (object) }));
+
     private readonly IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProvider;
 
     public StorageSpecificExpressionResolver (IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider)
@@ -221,16 +228,13 @@ namespace Remotion.Data.DomainObjects.Linq
       return GetColumnFromEntity (column, originatingEntity);
     }
 
-    private static Expression CreateCompoundObjectIDExpression (Expression classIDExpression, Expression valueExpression)
+    private Expression CreateCompoundObjectIDExpression (Expression classIDExpression, Expression valueExpression)
     {
-      var objectIDCtor = typeof (ObjectID).GetConstructor (new[] { typeof (string), typeof (object) });
-      Assertion.IsNotNull (objectIDCtor);
-      var valueMember = typeof (ObjectID).GetProperty ("Value");
-      var classIDMember = typeof (ObjectID).GetProperty ("ClassID");
+      // new ObjectID (classID, (object) value)
       var objectIDConstruction = Expression.New (
-          objectIDCtor, 
-          new[] { classIDExpression, Expression.Convert (valueExpression, typeof (object)) }, 
-          new[] { classIDMember, valueMember });
+          s_objectIDCtor,
+          new[] { classIDExpression, Expression.Convert (valueExpression, typeof (object)) },
+          new[] { s_objectIDClassIDProperty, s_objectIDValueProperty });
 
       return NamedExpression.CreateNewExpressionWithNamedArguments (objectIDConstruction);
     }
