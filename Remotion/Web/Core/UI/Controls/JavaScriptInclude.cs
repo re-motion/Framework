@@ -48,8 +48,8 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("writer", writer);
 
       writer.WriteBeginTag (s_tagName);
-      writer.WriteAttribute (s_typeAttribute, "text/javascript");
       writer.WriteAttribute (s_srcAttribute, _resourceUrl.GetUrl());
+      writer.WriteAttribute (s_typeAttribute, "text/javascript");
       writer.Write ('>');
       writer.WriteEndTag (s_tagName);
       writer.WriteLine();
