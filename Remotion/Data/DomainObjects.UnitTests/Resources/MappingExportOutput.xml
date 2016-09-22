@@ -53,7 +53,7 @@
           <column name="Enum" dbType="Int32" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty" displayName="ExtensibleEnumProperty" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Color, Remotion.Data.DomainObjects.UnitTests" isNullable="false">
-          <column name="ExtensibleEnum" dbType="String" />
+          <column name="ExtensibleEnum" dbType="AnsiString" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.GuidProperty" displayName="GuidProperty" type="System.Guid" isNullable="false">
           <column name="Guid" dbType="Guid" />
@@ -122,7 +122,7 @@
           <column name="StringWithNullValue" dbType="String" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.ExtensibleEnumWithNullValueProperty" displayName="ExtensibleEnumWithNullValueProperty" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Color, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
-          <column name="ExtensibleEnumWithNullValue" dbType="String" />
+          <column name="ExtensibleEnumWithNullValue" dbType="AnsiString" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaBooleanWithNullValueProperty" displayName="NaBooleanWithNullValueProperty" type="System.Boolean" isNullable="true">
           <column name="NaBooleanWithNullValue" dbType="Boolean" />
