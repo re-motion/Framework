@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       return new StorageTypeInformation (
           typeof (string), 
           "varchar (255)", 
-          DbType.String, 
+          DbType.AnsiString, 
           isStorageTypeNullable, 
           255,
           typeof (string), 
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       return new StorageTypeInformation (
           typeof (string),
           "varchar (100)",
-          DbType.String,
+          DbType.AnsiString,
           isStorageTypeNullable,
           100,
           typeof (string),
