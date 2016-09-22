@@ -155,7 +155,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           "SELECT * FROM [Order] WHERE OrderNo=@p1 OR ID=@p2 OR OfficialID=@p3 OR OfficialID=@p4",
           Tuple.Create ("@p1", DbType.Int32, (object) 1),
           Tuple.Create ("@p2", DbType.Guid, DomainObjectIDs.Order3.Value),
-          Tuple.Create ("@p3", DbType.String, (object) DomainObjectIDs.Official1.ToString()),
+          Tuple.Create ("@p3", DbType.AnsiString, (object) DomainObjectIDs.Official1.ToString()),
           Tuple.Create ("@p4", DbType.String, (object) DBNull.Value)
           );
       _testHelper.Replay();
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           "SELECT COUNT(*) FROM [Order] WHERE OrderNo=@p1 OR ID=@p2 OR OfficialID=@p3 OR OfficialID=@p4",
           Tuple.Create ("@p1", DbType.Int32, (object) 1),
           Tuple.Create ("@p2", DbType.Guid, DomainObjectIDs.Order3.Value),
-          Tuple.Create ("@p3", DbType.String, (object) DomainObjectIDs.Official1.ToString()),
+          Tuple.Create ("@p3", DbType.AnsiString, (object) DomainObjectIDs.Official1.ToString()),
           Tuple.Create ("@p4", DbType.String, (object) DBNull.Value)
           );
       _testHelper.Replay();
@@ -229,7 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       _testHelper.ExpectExecuteNonQuery (
           "INSERT INTO [Employee] ([ID], [ClassID], [Name]) VALUES (@ID, @ClassID, @Name);",
           Tuple.Create ("@ID", DbType.Guid, newDataContainer.ID.Value),
-          Tuple.Create ("@ClassID", DbType.String, (object) "Employee"),
+          Tuple.Create ("@ClassID", DbType.AnsiString, (object) "Employee"),
           Tuple.Create ("@Name", DbType.String, (object) ""));
       _testHelper.ExpectExecuteNonQuery (
           "UPDATE [Employee] SET [Name] = @Name WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Tuple.Create ("@Timestamp", DbType.Binary, deletedDataContainer.Timestamp));
       _testHelper.ExpectExecuteNonQuery (
           "UPDATE [Employee] SET [ClassID] = @ClassID WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
-          Tuple.Create ("@ClassID", DbType.String, (object) "Employee"),
+          Tuple.Create ("@ClassID", DbType.AnsiString, (object) "Employee"),
           Tuple.Create ("@ID", DbType.Guid, markedAsChangedDataContainer.ID.Value),
           Tuple.Create ("@Timestamp", DbType.Binary, markedAsChangedDataContainer.Timestamp));
       _testHelper.ExpectExecuteNonQuery (
