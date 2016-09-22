@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
       Assert.That (actual[0].Attribute ("name").Value, Is.EqualTo ("CompanyID"));
       Assert.That (actual[0].Attribute ("dbType").Value, Is.EqualTo ("Guid"));
       Assert.That (actual[1].Attribute ("name").Value, Is.EqualTo ("CompanyIDClassID"));
-      Assert.That (actual[1].Attribute ("dbType").Value, Is.EqualTo ("AnsiString"));
+      Assert.That (actual[1].Attribute ("dbType").Value, Is.EqualTo ("String"));
     }
 
     private IRdbmsPersistenceModelProvider GetRdbmsPersistenceModelProvider (ClassDefinition classDefinition)

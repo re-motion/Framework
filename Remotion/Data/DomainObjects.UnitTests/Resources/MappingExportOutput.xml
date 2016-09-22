@@ -25,7 +25,7 @@
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Company" displayName="Company" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Company, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
           <column name="CompanyID" dbType="Guid" />
-          <column name="CompanyIDClassID" dbType="AnsiString" />
+          <column name="CompanyIDClassID" dbType="String" />
         </property>
       </table>
     </class>
@@ -176,7 +176,7 @@
       <table name="TableWithRelations">
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithRelations.DerivedClass" displayName="DerivedClass" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedClass, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
           <column name="DerivedClassID" dbType="Guid" />
-          <column name="DerivedClassIDClassID" dbType="AnsiString" />
+          <column name="DerivedClassIDClassID" dbType="String" />
         </property>
       </table>
     </class>
@@ -247,7 +247,7 @@
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedOfDerivedClass.ClassWithRelationsToDerivedOfDerivedClass" displayName="ClassWithRelationsToDerivedOfDerivedClass" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithRelations, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
           <column name="ClassWithRelationsInDerivedOfDerivedClassID" dbType="Guid" />
-          <column name="ClassWithRelationsInDerivedOfDerivedClassIDClassID" dbType="AnsiString" />
+          <column name="ClassWithRelationsInDerivedOfDerivedClassIDClassID" dbType="String" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedClass.PropertyInDerivedClass" displayName="PropertyInDerivedClass" type="System.String" isNullable="false" maxLength="100">
           <column name="PropertyInDerivedClass" dbType="String" />
@@ -334,7 +334,7 @@
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Order.Customer" displayName="Customer" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Customer, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
           <column name="CustomerID" dbType="Guid" />
-          <column name="CustomerIDClassID" dbType="AnsiString" />
+          <column name="CustomerIDClassID" dbType="String" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Order.Official" displayName="Official" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Official, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
           <column name="OfficialID" dbType="String" />
@@ -364,7 +364,7 @@
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.SecondDerivedClass.ClassWithRelationsToSecondDerivedClass" displayName="ClassWithRelationsToSecondDerivedClass" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithRelations, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
           <column name="ClassWithRelationsInSecondDerivedClassID" dbType="Guid" />
-          <column name="ClassWithRelationsInSecondDerivedClassIDClassID" dbType="AnsiString" />
+          <column name="ClassWithRelationsInSecondDerivedClassIDClassID" dbType="String" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.PersistentMixin.PersistentProperty" displayName="PersistentProperty" type="System.String" isNullable="true">
           <column name="PersistentProperty" dbType="String" />
