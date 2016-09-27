@@ -105,24 +105,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
-    /// <summary> Renders the zero-based row index normalized to a one-based format
-    /// (Optionally as a label for the selector control). </summary>
+    /// <summary> Renders the zero-based row index normalized to a one-based format. </summary>
     private void RenderRowIndex (BocListRenderingContext renderingContext, int index, string selectorControlID)
     {
-      bool hasSelectorControl = selectorControlID != null;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Content);
-      if (hasSelectorControl)
-      {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.For, selectorControlID);
-        if (renderingContext.Control.HasClientScript)
-        {
-          const string script = "BocList_OnSelectorControlLabelClick();";
-          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
-        }
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Label);
-      }
-      else
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
       int renderedIndex = index + 1;
       if (renderingContext.Control.IndexOffset != null)
         renderedIndex += renderingContext.Control.IndexOffset.Value;

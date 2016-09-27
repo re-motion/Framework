@@ -29,7 +29,7 @@ var _bocList_isCommandClick = false;
 
 //  A flag that indicates that the OnClick event for a selection selectorControl has been raised
 //  prior to the row's OnClick event.
-var _bocList_isSelectorControlClick = false;
+var _bocList_isRowSelectorClickExecuting = false;
 
 //  A flag that indicates that the OnClick event for a selectorControl label has been raised
 //  prior to the row's OnClick event.
@@ -60,6 +60,9 @@ function BocList_SelectedRows (selection)
 
 function BocList_RowBlock (row, selectorControl)
 {
+  if (row.nodeName !== 'TR')
+    throw 'Unexpected element type: \'' + row.nodeName + '\'';
+
   this.Row = row;
   this.SelectorControl = selectorControl;
 }
@@ -69,7 +72,7 @@ function BocList_RowBlock (row, selectorControl)
 function BocList_InitializeGlobals ()
 {
   _bocList_isCommandClick = false;
-  _bocList_isSelectorControlClick = false;
+  _bocList_isRowSelectorClickExecuting = false;
   _bocList_isSelectorControlLabelClick = false;
 }
 
@@ -102,14 +105,27 @@ function BocList_InitializeList(bocList, selectRowSelectorControlName, selectAll
     selectedRows.SelectRowSelectorControls.each (function ()
     {
       selectedRows.DataRowCount++;
-      var row = this.parentNode.parentNode;
+
+      var checkBox = this;
+
+      var label = checkBox.parentNode;
+      if (label.nodeName !== 'LABEL')
+        throw 'Unexpected element type: \'' + label.nodeName + '\'';
+
+      var tableCell = label.parentNode;
+      if (tableCell.nodeName !== 'TD')
+        throw 'Unexpected element type: \'' + tableCell.nodeName + '\'';
+
+      var tableRow = tableCell.parentNode;
+      if (tableRow.nodeName !== 'TR')
+        throw 'Unexpected element type: \'' + tableRow.nodeName + '\'';
 
       if (hasClickSensitiveRows)
-        BocList_BindRowClickEventHandler(bocList, row, this);
+        BocList_BindRowClickEventHandler (bocList, tableRow, tableCell, label, this);
   
       if (this.checked)
       {
-        var rowBlock = new BocList_RowBlock (row, this);
+        var rowBlock = new BocList_RowBlock (tableRow, this);
         selectedRows.Rows[this.id] = rowBlock;
         selectedRows.Length++;
       }
@@ -125,7 +141,7 @@ function BocList_InitializeList(bocList, selectRowSelectorControlName, selectAll
   $(bocList).attr('data-boclist-is-initialized', 'true');
 }
 
-function BocList_BindRowClickEventHandler(bocList, row, selectorControl)
+function BocList_BindRowClickEventHandler(bocList, row, cell, label, selectorControl)
 {
   $(row).click(function (evt)
   {
@@ -135,6 +151,31 @@ function BocList_BindRowClickEventHandler(bocList, row, selectorControl)
       var selectedRows = _bocList_selectedRows[bocList.id];
       selectedRows.OnSelectionChanged (bocList, false);
     }
+  });
+
+  $(selectorControl).click(function (evt)
+  {
+    evt.stopPropagation();
+    BocList_OnRowSelectorClick();
+    $(row).trigger ('click');
+  });
+
+    // Disable click-behavior for the label. The remaining event handlers already handle the label's active area.
+  $(label).click(function (evt)
+  {
+    evt.preventDefault();
+  });
+
+    // Enable the entire selector control's cell for click events that mimic the selector control.
+  $(cell).click(function (evt)
+  {
+    BocList_OnRowSelectorClick();
+  });
+
+  // Enable the entire row to the left of the selector control's cell for click events that mimic the selector control.
+  $(cell).prevAll().click(function (evt)
+  {
+    BocList_OnRowSelectorClick();
   });
 }
 
@@ -154,15 +195,10 @@ function BocList_OnRowClick (evt, bocList, currentRow, selectorControl)
     _bocList_isCommandClick = false;
     return false;
   }  
-  
-  if (_bocList_isSelectorControlLabelClick)
-  {
-    _bocList_isSelectorControlLabelClick = false;
-    return false;
-  }  
 
   var currentRowBlock = new BocList_RowBlock (currentRow, selectorControl);
   var selectedRows = _bocList_selectedRows[bocList.id];
+  var isRowHighlightingEnabled = true
   var isCtrlKeyPress = false;
   if (evt)
     isCtrlKeyPress = evt.ctrlKey;
@@ -173,13 +209,13 @@ function BocList_OnRowClick (evt, bocList, currentRow, selectorControl)
     return false;
   }
     
-  if (isCtrlKeyPress || _bocList_isSelectorControlClick)
+  if (isCtrlKeyPress || _bocList_isRowSelectorClickExecuting)
   {
     //  Is current row selected?
     if (selectedRows.Rows[selectorControl.id] != null)
     {
       //  Remove currentRow from list and unselect it
-      BocList_UnselectRow (bocList, currentRowBlock);
+      BocList_UnselectRow (bocList, currentRowBlock, isRowHighlightingEnabled);
     }
     else
     {
@@ -188,10 +224,10 @@ function BocList_OnRowClick (evt, bocList, currentRow, selectorControl)
           && selectedRows.Length > 0)
       {
         //  Unselect all rows and clear the list
-        BocList_UnselectAllRows (bocList);
+        BocList_UnselectAllRows (bocList, isRowHighlightingEnabled);
       }
       //  Add currentRow to list and select it
-      BocList_SelectRow (bocList, currentRowBlock);
+      BocList_SelectRow (bocList, currentRowBlock, isRowHighlightingEnabled);
     }
   }
   else // cancel previous selection and select a new row
@@ -199,10 +235,10 @@ function BocList_OnRowClick (evt, bocList, currentRow, selectorControl)
     if (selectedRows.Length > 0)
     {
       //  Unselect all rows and clear the list
-      BocList_UnselectAllRows (bocList);
+      BocList_UnselectAllRows (bocList, isRowHighlightingEnabled);
     }
     //  Add currentRow to list and select it
-    BocList_SelectRow (bocList, currentRowBlock);
+    BocList_SelectRow (bocList, currentRowBlock, isRowHighlightingEnabled);
   }
   try
   {
@@ -211,7 +247,7 @@ function BocList_OnRowClick (evt, bocList, currentRow, selectorControl)
   catch (e)
   {
   }  
-  _bocList_isSelectorControlClick = false;
+  _bocList_isRowSelectorClickExecuting = false;
   return true;
 }
 
@@ -219,7 +255,8 @@ function BocList_OnRowClick (evt, bocList, currentRow, selectorControl)
 //  Adds the row to the _bocList_selectedRows array and increments _bocList_selectedRowsLength.
 //  bocList: The BocList to which the row belongs.
 //  rowBlock: The row to be selected.
-function BocList_SelectRow (bocList, rowBlock)
+//  isRowHighlightingEnabled: true to mark the selected rows via css-class
+function BocList_SelectRow (bocList, rowBlock, isRowHighlightingEnabled)
 {
   //  Add currentRow to list  
   var selectedRows = _bocList_selectedRows[bocList.id];
@@ -227,8 +264,9 @@ function BocList_SelectRow (bocList, rowBlock)
   selectedRows.Length++;
 
   // Select currentRow
-  $ (rowBlock.Row).addClass (_bocList_TrClassNameSelected);
   rowBlock.SelectorControl.checked = true;
+  if (isRowHighlightingEnabled)
+    $ (rowBlock.Row).addClass (_bocList_TrClassNameSelected);
 
   BocList_SetSelectAllRowsSelectorOnDemand (selectedRows);
 }
@@ -236,7 +274,8 @@ function BocList_SelectRow (bocList, rowBlock)
 //  Unselects all rows in a BocList.
 //  Clears _bocList_selectedRows array and sets _bocList_selectedRowsLength to zero.
 //  bocList: The BocList whose rows should be unselected.
-function BocList_UnselectAllRows (bocList)
+//  isRowHighlightingEnabled: true to update the row's css-class.
+function BocList_UnselectAllRows (bocList, isRowHighlightingEnabled)
 {
   var selectedRows = _bocList_selectedRows[bocList.id];
   for (var rowID in selectedRows.Rows)
@@ -244,7 +283,7 @@ function BocList_UnselectAllRows (bocList)
     var rowBlock = selectedRows.Rows[rowID];
     if (rowBlock != null)
     {
-      BocList_UnselectRow (bocList, rowBlock);
+      BocList_UnselectRow (bocList, rowBlock, isRowHighlightingEnabled);
     }
   }
   
@@ -256,7 +295,8 @@ function BocList_UnselectAllRows (bocList)
 //  Removes the row frin the _bocList_selectedRows array and decrements _bocList_selectedRowsLength.
 //  bocList: The BocList to which the row belongs.
 //  rowBlock: The row to be unselected.
-function BocList_UnselectRow (bocList, rowBlock)
+//  isRowHighlightingEnabled: true to update the row's css-class.
+function BocList_UnselectRow (bocList, rowBlock, isRowHighlightingEnabled)
 {
   //  Remove currentRow from list
   var selectedRows = _bocList_selectedRows[bocList.id];
@@ -264,8 +304,9 @@ function BocList_UnselectRow (bocList, rowBlock)
   selectedRows.Length--;
     
   // Unselect currentRow
-  $(rowBlock.Row).removeClass(_bocList_TrClassNameSelected);
   rowBlock.SelectorControl.checked = false;
+  if (isRowHighlightingEnabled)
+    $(rowBlock.Row).removeClass(_bocList_TrClassNameSelected);
 
   BocList_ClearSelectAllRowsSelector (selectedRows);
 }
@@ -285,7 +326,8 @@ function BocList_ClearSelectAllRowsSelector (selectedRows)
 //  Applies the checked state of the title's selectorControl to all data rows' selectu=ion selectorControles.
 //  bocList: The BocList to which the selectorControl belongs.
 //  selectRowControlName: The name of the row selector controls.
-function BocList_OnSelectAllSelectorControlClick(bocList, selectAllSelectorControl)
+//  isRowHighlightingEnabled: true to enable highting of the rows
+function BocList_OnSelectAllSelectorControlClick(bocList, selectAllSelectorControl, isRowHighlightingEnabled)
 {
   var selectedRows = _bocList_selectedRows[bocList.id];
 
@@ -297,12 +339,25 @@ function BocList_OnSelectAllSelectorControlClick(bocList, selectAllSelectorContr
 
   selectedRows.SelectRowSelectorControls.each (function ()
   {
-    var row =  this.parentNode.parentNode;
-    var rowBlock = new BocList_RowBlock (row, this);
+    var checkBox = this;
+
+    var label = checkBox.parentNode;
+    if (label.nodeName !== 'LABEL')
+      throw 'Unexpected element type: \'' + label.nodeName + '\'';
+
+    var tableCell = label.parentNode;
+    if (tableCell.nodeName !== 'TD')
+      throw 'Unexpected element type: \'' + tableCell.nodeName + '\'';
+
+    var tableRow = tableCell.parentNode;
+    if (tableRow.nodeName !== 'TR')
+      throw 'Unexpected element type: \'' + tableRow.nodeName + '\'';
+
+    var rowBlock = new BocList_RowBlock (tableRow, checkBox);
     if (selectAllSelectorControl.checked)
-      BocList_SelectRow (bocList, rowBlock);
+      BocList_SelectRow (bocList, rowBlock, isRowHighlightingEnabled);
     else
-      BocList_UnselectRow (bocList, rowBlock);
+      BocList_UnselectRow (bocList, rowBlock, isRowHighlightingEnabled);
   });
   
   if (! selectAllSelectorControl.checked)
@@ -313,16 +368,9 @@ function BocList_OnSelectAllSelectorControlClick(bocList, selectAllSelectorContr
 
 //  Event handler for the selection selectorControl in a data row.
 //  Sets the _bocList_isSelectorControlClick flag.
-function BocList_OnSelectionSelectorControlClick()
+function BocList_OnRowSelectorClick()
 {
-  _bocList_isSelectorControlClick = true;
-}
-
-//  Event handler for the label tags associated with the row index in a data row.
-//  Sets the _bocList_isSelectorControlLabelClick flag.
-function BocList_OnSelectorControlLabelClick()
-{
-  _bocList_isSelectorControlLabelClick = true;
+  _bocList_isRowSelectorClickExecuting = true;
 }
 
 //  Event handler for the anchor tags (commands) in a data row.

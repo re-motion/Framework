@@ -153,10 +153,10 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeCancelAlternateText" xml:space="preserve">
     <value>Discard Changes to Row</value>
   </data>
-  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectRowAlternateText" xml:space="preserve">
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectRowLabelText" xml:space="preserve">
     <value>Select this row</value>
   </data>
-  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectAllRowsAlternateText" xml:space="preserve">
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectAllRowsLabelText" xml:space="preserve">
     <value>Select all rows</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.IndexColumnTitle" xml:space="preserve">

@@ -104,9 +104,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCellIndex, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute (td, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, 1.ToString());
 
-      var label = Html.GetAssertedChildElement (td, "label", 0);
+      var label = Html.GetAssertedChildElement (td, "span", 0);
       Html.AssertAttribute (label, "class", _bocListCssClassDefinition.Content);
-      Html.AssertAttribute (label, "for", "SelectRowControl_UnqiueID_0");
 
       Html.AssertTextNode (label, (1 + indexOffset).ToString(), 0);
     }

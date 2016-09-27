@@ -147,10 +147,10 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeCancelAlternateText" xml:space="preserve">
     <value>Änderungen an der Zeile verwerfen</value>
   </data>
-  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectRowAlternateText" xml:space="preserve">
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectRowLabelText" xml:space="preserve">
     <value>Diese Zeile markieren</value>
   </data>
-  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectAllRowsAlternateText" xml:space="preserve">
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectAllRowsLabelText" xml:space="preserve">
     <value>Alle Zeilen markieren</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.IndexColumnTitle" xml:space="preserve">

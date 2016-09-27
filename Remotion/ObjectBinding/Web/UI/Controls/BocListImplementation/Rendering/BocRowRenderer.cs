@@ -160,6 +160,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       }
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
+      // Note: The cells preceeding the selector-control will also act as selector, allowing adding/removing of the selection.
+      // This behavior extends the original behavior, where clicking the selector-control or the associated label in the index-cell 
+      // changed the selection state. This improves usability as the user does not have to precisely hit the text or the checkbox/radio button.
+      // If this is changed, an update to the Javascript code will be required.
       GetIndexColumnRenderer().RenderDataCell (renderingContext, originalRowIndex, absoluteRowIndex, cssClassTableCell);
       GetSelectorColumnRenderer().RenderDataCell (renderingContext, rowRenderingContext, cssClassTableCell);
 
