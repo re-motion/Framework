@@ -223,12 +223,14 @@ namespace Remotion.Web.UI.Controls
       _isInitialized = true;
       if (!IsDesignMode)
       {
-        RegisterHtmlHeadContents (Page.Context, HtmlHeadAppender.Current);
+        RegisterHtmlHeadContents (HtmlHeadAppender.Current);
       }
     }
 
-    public void RegisterHtmlHeadContents (HttpContextBase context, HtmlHeadAppender htmlHeadAppender)
+    public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
+      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+
       var renderer = CreateRenderer();
       renderer.RegisterHtmlHeadContents (htmlHeadAppender, this);
     }
