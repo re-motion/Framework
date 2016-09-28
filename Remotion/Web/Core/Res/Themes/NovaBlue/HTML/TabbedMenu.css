@@ -1,7 +1,5 @@
 /* Style applied to the TabbedMenu. */
 
-@import url("TabStrip.css");
-
 table.tabbedMenu
 {
   width: 100%;

@@ -255,6 +255,7 @@
     <Compile Include="Core\UI\Controls\TabbedMenuImplementation\Rendering\IMenuTabRendererTest.cs" />
     <Compile Include="Core\UI\Controls\TabbedMenuImplementation\Rendering\ITabbedMenuRendererTest.cs" />
     <Compile Include="Core\UI\Controls\TabbedMultiViewImplementation\Rendering\ITabbedMultiViewRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\TabbedMultiViewTest.cs" />
     <Compile Include="Core\UI\Controls\TitleTagTest.cs" />
     <Compile Include="Core\UI\Controls\WebButtonImplementation\IWebButtonRendererTest.cs" />
     <Compile Include="Core\UI\Controls\WebButtonTests\WebButtonDiagnosticMetadataTest.cs" />
