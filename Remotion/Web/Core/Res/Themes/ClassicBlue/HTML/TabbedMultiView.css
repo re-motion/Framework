@@ -1,7 +1,5 @@
 /* Style applied to the TabbedMultiView. */
 
-@import url("TabStrip.css");
-
 div.tabbedMultiView
 {
   width: 100%;

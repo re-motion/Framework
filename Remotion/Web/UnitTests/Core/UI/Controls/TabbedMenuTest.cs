@@ -16,10 +16,13 @@
 // 
 using System;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Configuration;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.Utilities;
 
@@ -209,6 +212,25 @@ public class TabbedMenuTest: WebControlTest
 
 	  Assert.That (WcagHelperMock.HasWarning, Is.False);
 	  Assert.That (WcagHelperMock.HasError, Is.True);
+  }
+
+  [Test]
+  public void StylesheetRegistrationIntegrationTest ()
+  {
+    NamingContainer.Controls.Add (_tabbedMenu);
+
+    Assert.That (HtmlHeadAppender.Current, Is.Not.Null);
+    Assert.That (ControlHelper.IsDesignMode (_tabbedMenu), Is.False);
+
+    NamingContainerInvoker.InitRecursive();
+
+    var htmlHeadAppender = HtmlHeadAppender.Current;
+    var registeredStyleSheetBlock = htmlHeadAppender.GetHtmlHeadElements().OfType<StyleSheetBlock>().SingleOrDefault();
+    Assert.That (registeredStyleSheetBlock, Is.Not.Null);
+
+    Assert.That (registeredStyleSheetBlock.StyleSheetElements.Count, Is.EqualTo (2));
+    Assert.That (((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.StringEnding ("TabStrip.css"));
+    Assert.That (((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[1]).ResourceUrl.GetUrl(), Is.StringEnding ("TabbedMenu.css"));
   }
 }
 
