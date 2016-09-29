@@ -70,7 +70,7 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
       titleTag.Render (writer);
     }
 
-    protected virtual void RenderJavascriptIncludes (HtmlTextWriter writer, List<JavaScriptInclude> javascriptIncludes)
+    protected virtual void RenderJavascriptIncludes (HtmlTextWriter writer, IReadOnlyCollection<JavaScriptInclude> javascriptIncludes)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("javascriptIncludes", javascriptIncludes);
@@ -79,7 +79,7 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
         javascriptInclude.Render (writer);
     }
 
-    protected virtual void RenderStylesheetElements (HtmlTextWriter writer, List<StyleSheetElement> stylesheetElements)
+    protected virtual void RenderStylesheetElements (HtmlTextWriter writer, IReadOnlyCollection<StyleSheetElement> stylesheetElements)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("stylesheetElements", stylesheetElements);
@@ -88,7 +88,7 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
         styleSheetElement.Render (writer);
     }
 
-    protected virtual void RenderUncategorizedHtmlHeadElements (HtmlTextWriter writer, List<HtmlHeadElement> htmlHeadElements)
+    protected virtual void RenderUncategorizedHtmlHeadElements (HtmlTextWriter writer, IReadOnlyCollection<HtmlHeadElement> htmlHeadElements)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("htmlHeadElements", htmlHeadElements);
