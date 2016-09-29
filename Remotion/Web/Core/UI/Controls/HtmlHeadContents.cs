@@ -15,9 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
+using Remotion.Web.UI.Controls.HtmlHeadContentsImplementation;
+using Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
@@ -27,19 +31,38 @@ namespace Remotion.Web.UI.Controls
   ///   control renderes the controls registered with <see cref="HtmlHeadAppender"/>.
   /// </summary>
   [ToolboxData ("<{0}:HtmlHeadContents runat=\"server\" id=\"HtmlHeadContents\"></{0}:HtmlHeadContents>")]
-  public class HtmlHeadContents : Control, IControl
+  public class HtmlHeadContents : Control, IHtmlHeadContents
   {
+    public HtmlHeadContents ()
+    {
+    }
+
     protected override void Render (HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
       var htmlHeadAppender = HtmlHeadAppender.Current;
+      var htmlHeadElements = htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      foreach (var element in htmlHeadAppender.GetHtmlHeadElements())
-        element.Render (writer);
+      var renderingContext = CreateRenderingContext (writer, htmlHeadElements);
+      var renderer = CreateRenderer();
+      renderer.Render (renderingContext);
 
       if (!ControlHelper.IsDesignMode (this))
         htmlHeadAppender.SetAppended();
+    }
+
+    protected virtual HtmlHeadContentsRenderingContext CreateRenderingContext (HtmlTextWriter writer, HtmlHeadElement[] htmlHeadElements)
+    {
+      ArgumentUtility.CheckNotNull ("writer", writer);
+
+      var renderingContext = new HtmlHeadContentsRenderingContext (Page.Context, writer, this, htmlHeadElements);
+      return renderingContext;
+    }
+
+    protected virtual IHtmlHeadContentsRenderer CreateRenderer ()
+    {
+      return SafeServiceLocator.Current.GetInstance<IHtmlHeadContentsRenderer> ();
     }
 
     public new IPage Page

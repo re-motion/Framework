@@ -207,6 +207,10 @@
     <Compile Include="UI\Controls\ControlReplacing\StateReplacingStrategy.cs" />
     <Compile Include="UI\Controls\DatePickerButtonImplementation\Rendering\DatePickerButtonRenderingContext.cs" />
     <Compile Include="UI\Controls\DatePickerButtonImplementation\Rendering\IDatePickerButtonRenderer.cs" />
+    <Compile Include="UI\Controls\HtmlHeadContentsImplementation\IHtmlHeadContents.cs" />
+    <Compile Include="UI\Controls\HtmlHeadContentsImplementation\Rendering\HtmlHeadContentsRenderingContext.cs" />
+    <Compile Include="UI\Controls\HtmlHeadContentsImplementation\Rendering\HtmlHeadContentsRenderer.cs" />
+    <Compile Include="UI\Controls\HtmlHeadContentsImplementation\Rendering\IHtmlHeadContentsRenderer.cs" />
     <Compile Include="UI\Controls\IControlWithResourceManager.cs" />
     <Compile Include="UI\Controls\Rendering\DefaultRenderingFeatures.cs" />
     <Compile Include="UI\Controls\DropDownMenuImplementation\Rendering\DropDownMenuRenderingContext.cs" />
@@ -961,6 +965,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildProjectDirectory)\..\..\Build\NuSpec\Web.Build.targets" />
   <PropertyGroup>
