@@ -243,6 +243,9 @@
     <Compile Include="Core\UI\Controls\Hotkey\IHotkeyFormatterTest.cs" />
     <Compile Include="Core\UI\Controls\Hotkey\TextWithHotkeyTest.cs" />
     <Compile Include="Core\UI\Controls\Hotkey\UnderscoreHotkeyFormatterTest.cs" />
+    <Compile Include="Core\UI\Controls\HtmlHeadContentsImplementation\Rendering\HtmlHeadContentsRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\HtmlHeadContentsImplementation\Rendering\IHtmlHeadContentsRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\HtmlHeadContentsImplementation\StubHtmlHeadElement.cs" />
     <Compile Include="Core\UI\Controls\IClientScriptBehaviorTest.cs" />
     <Compile Include="Core\UI\Controls\ListMenuImplementation\Rendering\IListMenuRendererTest.cs" />
     <Compile Include="Core\SetUpFixture.cs" />
