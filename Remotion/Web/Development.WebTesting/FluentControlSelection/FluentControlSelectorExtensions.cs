@@ -59,6 +59,8 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <summary>
     /// Extension method for selecting a control by its local ID (using the
     /// <see cref="LocalIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>).
+    /// Note that selecting a control via the local ID can have inferrior performance compared to other means of selction, 
+    /// e.g. <see cref="ByID{TControlSelector,TControlObject}"/>.
     /// </summary>
     public static TControlObject ByLocalID<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
