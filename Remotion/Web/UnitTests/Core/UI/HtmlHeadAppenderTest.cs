@@ -78,6 +78,7 @@ namespace Remotion.Web.UnitTests.Core.UI
     }
 
     [Test]
+    [Obsolete]
     public void RegisterJavaScriptInclude_WithString ()
     {
       _htmlHeadAppender.RegisterJavaScriptInclude ("key", "url.js");
@@ -106,6 +107,7 @@ namespace Remotion.Web.UnitTests.Core.UI
     }
 
     [Test]
+    [Obsolete]
     public void RegisterStylesheetLink_WithString ()
     {
       _htmlHeadAppender.RegisterStylesheetLink ("key", "url.css");
@@ -142,6 +144,7 @@ namespace Remotion.Web.UnitTests.Core.UI
     }
 
     [Test]
+    [Obsolete]
     public void RegisterStylesheetLink_WithString_AndPriority ()
     {
       _htmlHeadAppender.RegisterStylesheetLink ("key2", "url2.css", HtmlHeadAppender.Priority.UserControl);

@@ -192,6 +192,7 @@ namespace Remotion.Web.UI
     /// <exception cref="InvalidOperationException"> 
     ///   Thrown if method is called after <see cref="SetAppended"/> has executed.
     /// </exception>
+    [Obsolete ("Use RegisterStylesheetLink (string, IResourceUrl, Priority) instead. (Version 1.17.9)")]
     public void RegisterStylesheetLink (string key, string href, Priority priority)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("key", key);
@@ -247,6 +248,7 @@ namespace Remotion.Web.UI
     /// <exception cref="InvalidOperationException"> 
     ///   Thrown if method is called after <see cref="SetAppended"/> has executed.
     /// </exception>
+    [Obsolete ("Use RegisterStylesheetLink (string, IResourceUrl) instead. (Version 1.17.9)")]
     public void RegisterStylesheetLink (string key, string href)
     {
       RegisterStylesheetLink (key, new StaticResourceUrl (href), Priority.Page);
@@ -299,6 +301,7 @@ namespace Remotion.Web.UI
     /// <exception cref="InvalidOperationException"> 
     ///   Thrown if method is called after <see cref="SetAppended"/> has executed.
     /// </exception>
+    [Obsolete ("Use RegisterJavaScriptInclude (string, IResourceUrl) instead. (Version 1.17.9)")]
     public void RegisterJavaScriptInclude (string key, string src)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("key", key);
