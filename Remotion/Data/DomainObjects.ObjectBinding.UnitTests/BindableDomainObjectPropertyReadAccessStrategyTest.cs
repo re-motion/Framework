@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       Assert.That (
           Enum.GetValues (typeof (StateType)).Length,
-          Is.EqualTo (7),
+          Is.EqualTo (6),
           "StateType enum has changed. BindableDomainObjectPropertyReadAccessStrategy implementation must be updated accordingly.");
     }
     [Test]
