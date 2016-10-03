@@ -694,34 +694,15 @@ function SmartPage_Context(
     ExecuteEventHandlers(_eventHandlers['onresize']);
   };
 
-  // Sends an AJAX request to the server. Fallback to the load-image technique.
+  // Sends an AJAX request to the server.
   this.SendOutOfBandRequest = function (url)
   {
     ArgumentUtility.CheckNotNullAndTypeIsString('url', url);
-    try
-    {
-      var xhttp;
-      if (TypeUtility.IsDefined(window.XMLHttpRequest))
-        xhttp = new XMLHttpRequest();
-      else
-        xhttp = new ActiveXObject('Microsoft.XMLHTTP');
+    var xhr = new XMLHttpRequest();
 
-      var method = 'GET';
-      var isSynchronousCall = false;
-      xhttp.open(method, url, isSynchronousCall);
-      xhttp.send();
-    }
-    catch (e)
-    {
-      try
-      {
-        var image = new Image();
-        image.src = url;
-      }
-      catch (e)
-      {
-      }
-    }
+    var method = 'GET';
+    xhr.open(method, url, true);
+    xhr.send();
   };
 
   function AddEventHandler(object, eventType, handler)
