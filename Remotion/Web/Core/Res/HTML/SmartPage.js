@@ -707,8 +707,8 @@ function SmartPage_Context(
         xhttp = new ActiveXObject('Microsoft.XMLHTTP');
 
       var method = 'GET';
-      var isSynchronousCall = false;
-      xhttp.open(method, url, isSynchronousCall);
+      var isAsyncCall = true;
+      xhttp.open(method, url, isAsyncCall);
       xhttp.send();
     }
     catch (e)
