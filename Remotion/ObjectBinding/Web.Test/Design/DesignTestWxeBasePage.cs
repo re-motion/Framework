@@ -16,6 +16,7 @@
 // 
 using System;
 using OBWTest.ValidatorFactoryDecorators;
+using Remotion.Web.Resources;
 using Remotion.Web.UI;
 
 namespace OBWTest.Design
@@ -31,7 +32,7 @@ namespace OBWTest.Design
     protected override void OnPreRender (EventArgs e)
     {
       base.OnPreRender (e);
-      HtmlHeadAppender.Current.RegisterStylesheetLink ("design", "Html/Design.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink ("design", new StaticResourceUrl ("Html/Design.css"));
     }
 
     protected override void OnInit (EventArgs e)

@@ -24,6 +24,7 @@ using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Resources;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -81,7 +82,7 @@ public class TestWxeBasePage:
     var key = GetType().FullName + "_Global";
     if (! HtmlHeadAppender.Current.IsRegistered (key))
     {
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, "Html/global.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, new StaticResourceUrl ("Html/global.css"));
     }
 
 

@@ -154,7 +154,7 @@ namespace Remotion.Web.UI
     /// <seealso cref="IResourceUrlFactory"/>
     /// </summary>
     /// <remarks>
-    ///   All calls to <see cref="RegisterStylesheetLink(string, string, Priority)"/> must be completed before
+    ///   All calls to <see cref="RegisterStylesheetLink(string, IResourceUrl, Priority)"/> must be completed before
     ///   <see cref="SetAppended"/> is called. (Typically during the <c>Render</c> phase.)
     /// </remarks>
     /// <param name="key"> 
@@ -207,7 +207,7 @@ namespace Remotion.Web.UI
     /// </summary>
     /// <remarks>
     ///   <para>
-    ///     All calls to <see cref="RegisterStylesheetLink(string, string)"/> must be completed before
+    ///     All calls to <see cref="RegisterStylesheetLink(string, IResourceUrl)"/> must be completed before
     ///     <see cref="SetAppended"/> is called. (Typically during the <c>Render</c> phase.)
     ///   </para><para>
     ///     Registeres the javascript file with a default priority of Page.

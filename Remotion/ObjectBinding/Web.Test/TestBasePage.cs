@@ -19,6 +19,7 @@ using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Resources;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Globalization;
 
@@ -64,7 +65,7 @@ namespace OBWTest
       if (! HtmlHeadAppender.Current.IsRegistered (key))
       {
         string href = ResolveClientUrl ("~/Html/global.css");
-        HtmlHeadAppender.Current.RegisterStylesheetLink (key, href);
+        HtmlHeadAppender.Current.RegisterStylesheetLink (key, new StaticResourceUrl (href));
       }
 
       base.OnPreRender (e);
