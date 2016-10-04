@@ -46,6 +46,7 @@ function WxePage_Context(
     _refreshUrl = refreshUrl;
     _refreshTimer = window.setInterval(function() { WxePage_Context._instance.Refresh(); }, refreshInterval);
   };
+  var _httpStatusFunctionTimeout = 409;
 
   // The URL used to post the abort request to.
   var _abortUrl = abortUrl;
@@ -85,7 +86,9 @@ function WxePage_Context(
     if (_isAbortEnabled
         && (_isCacheDetectionEnabled && (!isCached || hasSubmitted)))
     {
-      SmartPage_Context.Instance.SendOutOfBandRequest(_abortUrl);
+      var successHandler = function (args) {};
+      var errorHandler = function (args) {};
+      SmartPage_Context.Instance.SendOutOfBandRequest(_abortUrl, successHandler, errorHandler);
     }
   };
 
@@ -98,7 +101,23 @@ function WxePage_Context(
   // Handles the refresh timer events
   this.Refresh = function()
   {
-    SmartPage_Context.Instance.SendOutOfBandRequest(_refreshUrl + '&WxePage_Garbage=' + Math.random())
+    var successHandler = function (args) {};
+    var errorHandler = function (args)
+    {
+      if (args.Status === _httpStatusFunctionTimeout)
+      {
+        if (window.console)
+          window.console.warn ('WXE function has timed out. Stopping refresh- and abort-requests.');
+
+        if (_refreshTimer !== null)
+        {
+          window.clearInterval (_refreshTimer);
+          _refreshTimer = null;
+        }
+        _isAbortEnabled = false;
+      }
+    };
+    SmartPage_Context.Instance.SendOutOfBandRequest(_refreshUrl + '&WxePage_Garbage=' + Math.random(), successHandler, errorHandler);
   };
 
   // Evaluates whether the postback request should continue.

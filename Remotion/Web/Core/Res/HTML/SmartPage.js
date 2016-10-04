@@ -695,13 +695,33 @@ function SmartPage_Context(
   };
 
   // Sends an AJAX request to the server.
-  this.SendOutOfBandRequest = function (url)
+  // successHandler: function (args { Status }), called when the reqest succeeds
+  // errorHandler: function (args { Status }), called when the reqest fails
+  this.SendOutOfBandRequest = function (url, successHandler, errorHandler)
   {
     ArgumentUtility.CheckNotNullAndTypeIsString('url', url);
+    ArgumentUtility.CheckNotNullAndTypeIsFunction('successHandler', successHandler);
+    ArgumentUtility.CheckNotNullAndTypeIsFunction('errorHandler', errorHandler);
+
     var xhr = new XMLHttpRequest();
 
+    var readStateDone = 4;
+    var httpStatusSuccess = 299;
     var method = 'GET';
-    xhr.open(method, url, true);
+    var isAsyncCall = true;
+
+    xhr.open(method, url, isAsyncCall);
+    xhr.onreadystatechange = function ()
+    {
+      if (this.readyState === readStateDone)
+      {
+        var args = { Status : this.status };
+        if (this.status > 0 && this.status <= httpStatusSuccess)
+          successHandler (args);
+        else
+          errorHandler (args);
+      }
+    };
     xhr.send();
   };
 

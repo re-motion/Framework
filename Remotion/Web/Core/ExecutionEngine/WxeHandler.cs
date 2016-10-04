@@ -85,7 +85,8 @@ namespace Remotion.Web.ExecutionEngine
     }
 
 
-    private const int c_httpInternalServerError = 500;
+    private const int c_HttpSessionTimeout = 409;
+    private const int c_HttpFunctionTimeout = 409;
 
     private static ILog s_log = LogManager.GetLogger (typeof (WxeHandler));
 
@@ -277,10 +278,17 @@ namespace Remotion.Web.ExecutionEngine
 
       if (! WxeFunctionStateManager.HasSession)
       {
-        if (isPostRequest || isPostBackAction)
+        if (isPostBackAction)
         {
           s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
-          throw new WxeTimeoutException ("Session timeout.", functionToken); // TODO: display error message
+          context.Response.StatusCode = c_HttpSessionTimeout;
+          context.Response.StatusDescription = "Session Timeout.";
+          return null;
+        }
+        if (isPostRequest)
+        {
+          s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
+          throw new WxeTimeoutException ("Session Timeout.", functionToken); // TODO: display error message
         }
         try
         {
@@ -296,7 +304,14 @@ namespace Remotion.Web.ExecutionEngine
       WxeFunctionStateManager functionStateManager = WxeFunctionStateManager.Current;
       if (functionStateManager.IsExpired (functionToken))
       {
-        if (isPostRequest || isPostBackAction)
+        if (isPostBackAction)
+        {
+          s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
+          context.Response.StatusCode = c_HttpFunctionTimeout;
+          context.Response.StatusDescription = "Function Timeout.";
+          return null;
+        }
+        if (isPostRequest)
         {
           s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
           throw new WxeTimeoutException ("Function Timeout.", functionToken); // TODO: display error message

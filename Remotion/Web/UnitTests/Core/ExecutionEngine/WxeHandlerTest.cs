@@ -89,7 +89,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       _invalidFunctionTypeName = "Remotion.Web.UnitTests::ExecutionEngine.InvalidFunction";
 
       Thread.Sleep (20);
-      Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+      UrlMappingConfiguration.SetCurrent (null);
     }
 
     [TearDown]
@@ -102,7 +102,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       WxeFunctionStateManager.Current.Abort (_functionStateExpired);
       WxeFunctionStateManager.Current.Abort (_functionStateWithChildFunction);
 
-      Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+      UrlMappingConfiguration.SetCurrent (null);
       SafeContext.Instance.FreeData (typeof (WxeFunctionStateManager).AssemblyQualifiedName);
       base.TearDown ();
     }
@@ -276,8 +276,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (WxeTimeoutException))]
-    public void RetrieveMissingFunctionStateWithTypeFromMappingAndGetRequestWithPostBackAction ()
+    public void RetrieveMissingFunctionStateWithTypeFromMappingAndGetRequestWithPostBackAction_FailsWithStatusCode500 ()
     {
       HttpContext context = HttpContextHelper.CreateHttpContext ("GET", "Test.wxe", null);
       NameValueCollection queryString = new NameValueCollection();
@@ -287,6 +286,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (typeof (TestFunction), "~/Test.wxe"));
 
       _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
+
+      Assert.That (context.Response.StatusCode, Is.EqualTo (409));
+      Assert.That (context.Response.StatusDescription, Is.EqualTo ("Function Timeout."));
     }
 
     [Test]
@@ -311,7 +313,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       queryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
       HttpContextHelper.SetQueryString (context, queryString);
 
-      Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+      UrlMappingConfiguration.SetCurrent (null);
 
       WxeFunctionState functionState = _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
       Assert.That (functionState, Is.Not.Null);
@@ -319,8 +321,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (WxeTimeoutException))]
-    public void RetrieveMissingFunctionStateWithTypeFromQueryStringAndGetRequestWithPostBackAction ()
+    public void RetrieveMissingFunctionStateWithTypeFromQueryStringAndGetRequestWithPostBackAction_FailsWithStatusCode500 ()
     {
       HttpContext context = HttpContextHelper.CreateHttpContext ("GET", "Test.wxe", null);
       NameValueCollection queryString = new NameValueCollection();
@@ -328,9 +329,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       queryString.Add (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
       HttpContextHelper.SetQueryString (context, queryString);
 
-      Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+      UrlMappingConfiguration.SetCurrent (null);
 
       _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
+
+      Assert.That (context.Response.StatusCode, Is.EqualTo (409));
+      Assert.That (context.Response.StatusDescription, Is.EqualTo ("Function Timeout."));
     }
 
     [Test]
@@ -342,7 +346,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       queryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
       HttpContextHelper.SetQueryString (context, queryString);
 
-      Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+      UrlMappingConfiguration.SetCurrent (null);
 
       _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
     }
@@ -378,7 +382,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    public void RefreshExistingFunctionState ()
+    public void RefreshExistingFunctionState_Succeeds ()
     {
       NameValueCollection queryString = new NameValueCollection();
       queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
@@ -393,10 +397,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       Assert.That (WxeFunctionStateManager.Current.GetLastAccess (c_functionTokenForFunctionStateWithEnabledCleanUp) > timeBeforeRefresh, Is.True);
       Assert.That (_functionStateWithEnabledCleanUp.IsAborted, Is.False);
       Assert.That (WxeFunctionStateManager.Current.IsExpired (c_functionTokenForFunctionStateWithEnabledCleanUp), Is.False);
+
+      Assert.That (CurrentHttpContext.Response.StatusCode, Is.EqualTo (200));
     }
 
     [Test]
-    public void RefreshExistingFunctionStateWithMissingFunction ()
+    public void RefreshExistingFunctionStateWithMissingFunction_Succeeds ()
     {
       NameValueCollection queryString = new NameValueCollection();
       queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
@@ -412,10 +418,41 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       Assert.That (WxeFunctionStateManager.Current.GetLastAccess (c_functionTokenForFunctionStateWithMissingFunction) > timeBeforeRefresh, Is.True);
       Assert.That (_functionStateWithMissingFunction.IsAborted, Is.False);
       Assert.That (WxeFunctionStateManager.Current.IsExpired (c_functionTokenForFunctionStateWithMissingFunction), Is.False);
+
+      Assert.That (CurrentHttpContext.Response.StatusCode, Is.EqualTo (200));
     }
 
     [Test]
-    public void AbortExistingFunctionState ()
+    public void RefreshExpiredFunctionState_FailsWithStatusCode500 ()
+    {
+      NameValueCollection queryString = new NameValueCollection();
+      queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
+      HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
+
+      _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForExpiredFunctionState);
+
+      Assert.That (CurrentHttpContext.Response.StatusCode, Is.EqualTo (409));
+      Assert.That (CurrentHttpContext.Response.StatusDescription, Is.EqualTo ("Function Timeout."));
+    }
+
+    [Test]
+    public void RefreshWithoutSession_FailsWithStatusCode500 ()
+    {
+      CurrentHttpContext.Session.Clear();
+      Assert.That (WxeFunctionStateManager.HasSession, Is.False);
+
+      NameValueCollection queryString = new NameValueCollection();
+      queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
+      HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
+
+      _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForExpiredFunctionState);
+
+      Assert.That (CurrentHttpContext.Response.StatusCode, Is.EqualTo (409));
+      Assert.That (CurrentHttpContext.Response.StatusDescription, Is.EqualTo ("Session Timeout."));
+    }
+
+    [Test]
+    public void AbortExistingFunctionState_Succeeds ()
     {
       NameValueCollection queryString = new NameValueCollection();
       queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Abort);
@@ -428,10 +465,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 
       WxeFunctionState expiredFunctionState = WxeFunctionStateManager.Current.GetItem (c_functionTokenForExpiredFunctionState);
       Assert.That (expiredFunctionState, Is.Null);
+
+      Assert.That (CurrentHttpContext.Response.StatusCode, Is.EqualTo (200));
     }
 
     [Test]
-    public void AbortExistingFunctionStateMissingFunction ()
+    public void AbortExistingFunctionStateMissingFunction_Succeeds ()
     {
       NameValueCollection queryString = new NameValueCollection();
       queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Abort);
@@ -442,6 +481,37 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 
       Assert.That (functionState, Is.Null);
       Assert.That (_functionStateWithMissingFunction.IsAborted, Is.True);
+
+      Assert.That (CurrentHttpContext.Response.StatusCode, Is.EqualTo (200));
+    }
+
+    [Test]
+    public void AbortExpiredFunctionState_FailsWithStatusCode500 ()
+    {
+      NameValueCollection queryString = new NameValueCollection();
+      queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Abort);
+      HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
+
+      _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForExpiredFunctionState);
+
+      Assert.That (CurrentHttpContext.Response.StatusCode, Is.EqualTo (409));
+      Assert.That (CurrentHttpContext.Response.StatusDescription, Is.EqualTo ("Function Timeout."));
+    }
+
+    [Test]
+    public void AbortWithoutSession_FailsWithStatusCode500 ()
+    {
+      CurrentHttpContext.Session.Clear();
+      Assert.That (WxeFunctionStateManager.HasSession, Is.False);
+
+      NameValueCollection queryString = new NameValueCollection();
+      queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Abort);
+      HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
+
+      _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForExpiredFunctionState);
+
+      Assert.That (CurrentHttpContext.Response.StatusCode, Is.EqualTo (409));
+      Assert.That (CurrentHttpContext.Response.StatusDescription, Is.EqualTo ("Session Timeout."));
     }
 
     [Test]
