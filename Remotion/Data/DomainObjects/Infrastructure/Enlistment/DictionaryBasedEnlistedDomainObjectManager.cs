@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Collections;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
@@ -27,7 +26,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
   [Serializable]
   public class DictionaryBasedEnlistedDomainObjectManager : IEnlistedDomainObjectManager
   {
-    private readonly Dictionary<ObjectID, DomainObject> _enlistedObjects = new Dictionary<ObjectID, DomainObject> ();
+    private const int c_minimumSlack = 20;
+    private readonly Dictionary<ObjectID, int> _enlistedObjects = new Dictionary<ObjectID, int>();
+    private readonly List<DomainObject> _enlistedObjectsList = new List<DomainObject>();
 
     public int EnlistedDomainObjectCount
     {
@@ -36,14 +37,22 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
 
     public IEnumerable<DomainObject> GetEnlistedDomainObjects ()
     {
-      return _enlistedObjects.Values;
+      for (int i = 0; i < _enlistedObjects.Count; i++)
+      {
+        var enlistedDomainObject = _enlistedObjectsList[i];
+        if (enlistedDomainObject != null)
+          yield return enlistedDomainObject;
+      }
     }
 
     public DomainObject GetEnlistedDomainObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-      return _enlistedObjects.GetValueOrDefault (objectID);
+      int index;
+      if (_enlistedObjects.TryGetValue (objectID, out index))
+        return _enlistedObjectsList[index];
+      return null;
     }
     
     public bool IsEnlisted (DomainObject domainObject)
@@ -63,19 +72,39 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
         string message = string.Format ("A domain object instance for object '{0}' already exists in this transaction.", domainObject.ID);
         throw new InvalidOperationException (message);
       }
-      
+
       if (alreadyEnlistedObject == null)
-        _enlistedObjects.Add (domainObject.ID, domainObject);
+      {
+        _enlistedObjects.Add (domainObject.ID, _enlistedObjectsList.Count);
+        _enlistedObjectsList.Add (domainObject);
+      }
     }
 
     public void DisenlistDomainObject (DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-      if (!IsEnlisted (domainObject))
+      int index;
+      if (!_enlistedObjects.TryGetValue (domainObject.ID, out index))
+        throw new InvalidOperationException (string.Format ("Object '{0}' is not enlisted.", domainObject.ID));
+
+      if (_enlistedObjectsList[index] != domainObject)
         throw new InvalidOperationException (string.Format ("Object '{0}' is not enlisted.", domainObject.ID));
 
       _enlistedObjects.Remove (domainObject.ID);
+      _enlistedObjectsList[index] = null;
+
+      var emptySlots = _enlistedObjectsList.Count - _enlistedObjects.Count;
+      if (emptySlots > c_minimumSlack && emptySlots > _enlistedObjects.Count)
+        CompactEnlistedObjectsList();
+    }
+
+    private void CompactEnlistedObjectsList ()
+    {
+      _enlistedObjects.Clear();
+      _enlistedObjectsList.RemoveAll (o => o == null);
+      for (int index = 0; index < _enlistedObjectsList.Count; index++)
+        _enlistedObjects.Add (_enlistedObjectsList[index].ID, index);
     }
   }
 }

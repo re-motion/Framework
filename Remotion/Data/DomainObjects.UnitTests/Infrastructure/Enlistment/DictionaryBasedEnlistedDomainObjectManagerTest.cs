@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
@@ -110,11 +111,75 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.Enlistment
     }
 
     [Test]
+    public void Disenlist_CauseCleanup ()
+    {
+      var enlistedObjects = new List<DomainObject> (50);
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        for (int i = 0; i < enlistedObjects.Capacity; i++)
+          enlistedObjects.Add (Order.NewObject());
+      }
+
+      for (int i = 0; i < enlistedObjects.Count; i++)
+        _manager.EnlistDomainObject (enlistedObjects[i]);
+
+      for (int i = 0; i < enlistedObjects.Count; i++)
+      {
+        _manager.DisenlistDomainObject (enlistedObjects[i]);
+        if (i % 10 == 0)
+        {
+          for (int j = 0; j < enlistedObjects.Count; j++)
+          {
+            var isEnlisted = j > i;
+            Assert.That (_manager.IsEnlisted (enlistedObjects[j]), Is.EqualTo (isEnlisted));
+          }
+        }
+      }
+    }
+
+    [Test]
     public void GetEnlistedDomainObjects ()
     {
       _manager.EnlistDomainObject (_order);
 
       Assert.That (_manager.GetEnlistedDomainObjects ().ToArray(), Is.EqualTo (new[] { _order }));
+    }
+
+    [Test]
+    public void GetEnlistedDomainObjects_EnlistWhileIteratingResultSequence ()
+    {
+      var orderA = DomainObjectMother.GetObjectInOtherTransaction<Order> (DomainObjectIDs.Order1);
+      var orderB = DomainObjectMother.GetObjectInOtherTransaction<Order> (DomainObjectIDs.Order2);
+
+      _manager.EnlistDomainObject (orderA);
+      var enlistedObjects = new List<DomainObject>();
+      foreach (var enlistedDomainObject in _manager.GetEnlistedDomainObjects())
+      {
+        enlistedObjects.Add (enlistedDomainObject);
+        if (enlistedDomainObject == orderA)
+          _manager.EnlistDomainObject (orderB);
+      }
+
+      Assert.That (enlistedObjects, Is.EqualTo (new[] { orderA, orderB }));
+    }
+
+    [Test]
+    public void GetEnlistedDomainObjects_DisenlistWhileIteratingResultSequence ()
+    {
+      var orderA = DomainObjectMother.GetObjectInOtherTransaction<Order> (DomainObjectIDs.Order1);
+      var orderB = DomainObjectMother.GetObjectInOtherTransaction<Order> (DomainObjectIDs.Order2);
+
+      _manager.EnlistDomainObject (orderA);
+      _manager.EnlistDomainObject (orderB);
+      var enlistedObjects = new List<DomainObject>();
+      foreach (var enlistedDomainObject in _manager.GetEnlistedDomainObjects())
+      {
+        enlistedObjects.Add (enlistedDomainObject);
+        if (enlistedDomainObject == orderA)
+          _manager.DisenlistDomainObject (orderB);
+      }
+
+      Assert.That (enlistedObjects, Is.EqualTo (new[] { orderA }));
     }
 
     [Test]
