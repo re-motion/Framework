@@ -76,6 +76,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
     /// <summary>
     /// Disenlists the given <see cref="DomainObject"/>, throwing an exception if the object wasn't enlisted in the first place.
     /// </summary>
+    /// <remarks>
+    /// Note: Disenlist is presently only intended for use during DomainObject construction. Should this ever change, the default implementation of 
+    /// <see cref="DictionaryBasedEnlistedDomainObjectManager"/> must be updated to implement garbage collection.
+    /// </remarks>
     /// <param name="domainObject">The <see cref="DomainObject"/> to be disenlisted.</param>
     void DisenlistDomainObject (DomainObject domainObject);
   }

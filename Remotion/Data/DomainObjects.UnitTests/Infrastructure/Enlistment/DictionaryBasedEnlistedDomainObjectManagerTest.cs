@@ -111,33 +111,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.Enlistment
     }
 
     [Test]
-    public void Disenlist_CauseCleanup ()
-    {
-      var enlistedObjects = new List<DomainObject> (50);
-      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
-      {
-        for (int i = 0; i < enlistedObjects.Capacity; i++)
-          enlistedObjects.Add (Order.NewObject());
-      }
-
-      for (int i = 0; i < enlistedObjects.Count; i++)
-        _manager.EnlistDomainObject (enlistedObjects[i]);
-
-      for (int i = 0; i < enlistedObjects.Count; i++)
-      {
-        _manager.DisenlistDomainObject (enlistedObjects[i]);
-        if (i % 10 == 0)
-        {
-          for (int j = 0; j < enlistedObjects.Count; j++)
-          {
-            var isEnlisted = j > i;
-            Assert.That (_manager.IsEnlisted (enlistedObjects[j]), Is.EqualTo (isEnlisted));
-          }
-        }
-      }
-    }
-
-    [Test]
     public void GetEnlistedDomainObjects ()
     {
       _manager.EnlistDomainObject (_order);
