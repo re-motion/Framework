@@ -26,7 +26,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
   [Serializable]
   public class DictionaryBasedEnlistedDomainObjectManager : IEnlistedDomainObjectManager
   {
-    private const int c_minimumSlack = 20;
     private readonly Dictionary<ObjectID, int> _enlistedObjects = new Dictionary<ObjectID, int>();
     private readonly List<DomainObject> _enlistedObjectsList = new List<DomainObject>();
 
@@ -94,17 +93,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
       _enlistedObjects.Remove (domainObject.ID);
       _enlistedObjectsList[index] = null;
 
-      var emptySlots = _enlistedObjectsList.Count - _enlistedObjects.Count;
-      if (emptySlots > c_minimumSlack && emptySlots > _enlistedObjects.Count)
-        CompactEnlistedObjectsList();
-    }
-
-    private void CompactEnlistedObjectsList ()
-    {
-      _enlistedObjects.Clear();
-      _enlistedObjectsList.RemoveAll (o => o == null);
-      for (int index = 0; index < _enlistedObjectsList.Count; index++)
-        _enlistedObjects.Add (_enlistedObjectsList[index].ID, index);
+      // Note: The ever growing list of enlisted objects cannot be easily compacted because the iteration in GetEnlistedDomainObjects will not take the
+      // updated index into account. Since it is possible to have multiple active iterators, the correct update of the lists is a non-trivial problem.
     }
   }
 }
