@@ -317,6 +317,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private readonly IRenderingFeatures _renderingFeatures;
 
+
+    private bool _hasPreRenderCompleted;
+
     // construction and disposing
 
     public BocList ()
@@ -1015,6 +1018,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
         _optionsMenu.GetSelectionCount = GetSelectionCountScript();
       }
+
+      SetPreRenderComplete();
     }
 
     /// <summary> Gets a <see cref="HtmlTextWriterTag.Div"/> as the <see cref="WebControl.TagKey"/>. </summary>
@@ -1034,7 +1039,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         throw new ArgumentOutOfRangeException ("pageIndex", "The page index must not be less then zero.");
 
       if (!IsPagingEnabled)
-        throw new InvalidOperationException ("The page index cannot be set unless paging is enabled.");
+        throw new InvalidOperationException (string.Format ("The page index cannot be set on BoocList '{0}' unless paging is enabled.", ID));
 
       _newPageIndex = pageIndex;
     }
@@ -1323,7 +1328,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         throw new InvalidOperationException (
             string.Format (
-                "{0}, column {1}: Registering a custom column for a synchronous post back is only supported on pages implementing ISmartPage when used within an UpdatePanel.",
+                "BocList '{0}', column '{1}': Registering a custom column for a synchronous post back is only supported on pages implementing ISmartPage when used within an UpdatePanel.",
                 ID, columnIndex));
       }
 
@@ -1728,7 +1733,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ArgumentUtility.CheckNotNullOrItemsNull ("newSortingOrder", newSortingOrder);
 
       if (! IsMultipleSortingEnabled && newSortingOrder.Length > 1)
-        throw new InvalidOperationException ("Attempted to set multiple sorting keys but EnableMultipleSorting is False.");
+        throw new InvalidOperationException (string.Format ("Attempted to set multiple sorting keys on BocList '{0}' but EnableMultipleSorting is False.", ID));
       else
         _sortingOrder = newSortingOrder.ToArray();
 
@@ -2266,7 +2271,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if ((_editModeController.IsRowEditModeActive || _editModeController.IsListEditModeActive)
             && _isSelectedViewIndexSet
             && _selectedViewIndex != value)
-          throw new InvalidOperationException ("The selected column definition set cannot be changed while the BocList is in row edit mode.");
+        {
+          throw new InvalidOperationException (
+              string.Format ("The selected column definition set cannot be changed while the BocList '{0}' is in row edit mode.", ID));
+        }
 
         bool hasIndexChanged = _selectedViewIndex != value;
         _selectedViewIndex = value;
@@ -3625,12 +3633,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OnColumnsChanged ()
     {
+      CheckPreRenderHasNotCompleted();
+
       _columnDefinitions = null;
       OnSortedRowsChanged();
     }
 
     private void OnSortedRowsChanged ()
     {
+      CheckPreRenderHasNotCompleted();
+
       _indexedRowsSorted = null;
       _currentPageRows = null;
       OnStateOfDisplayedRowsChanged();
@@ -3638,6 +3650,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OnDisplayedRowsChanged ()
     {
+      CheckPreRenderHasNotCompleted();
+
       ClearSelectedRows();
       _currentPageRows = null;
       OnStateOfDisplayedRowsChanged();
@@ -3645,8 +3659,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OnStateOfDisplayedRowsChanged ()
     {
+      CheckPreRenderHasNotCompleted();
+
       ResetCustomColumns();
       ResetRowMenus();
+    }
+
+    private void SetPreRenderComplete ()
+    {
+      _hasPreRenderCompleted = true;
+    }
+
+    protected virtual void CheckPreRenderHasNotCompleted ()
+    {
+      if (_hasPreRenderCompleted)
+      {
+        throw new InvalidOperationException (
+            string.Format ("Cannot perform the requested operation on BocList '{0}' because the PreRender phase has already completed.", ID));
+      }
     }
 
     protected int CurrentPageIndex
