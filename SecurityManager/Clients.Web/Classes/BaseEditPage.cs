@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Remotion.Data.DomainObjects;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions;
@@ -84,23 +85,47 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
         if (ValidatePagePostSaveValues())
         {
-          ClientTransaction.Current.Commit();
+          try
+          {
+            ClientTransaction.Current.Commit();
+          }
+          catch (Exception ex)
+          {
+            if (IsValidationErrorException (ex))
+            {
+              ShowErrors();
+              return;
+            }
+            else
+            {
+              throw;
+            }
+          }
           ExecuteNextStep();
         }
         else
+        {
           ShowErrors();
+        }
       }
       else
+      {
         ShowErrors();
-    }
-
-    protected virtual void ShowErrors ()
-    {
+      }
     }
 
     protected virtual bool ValidatePage ()
     {
       return true;
+    }
+
+    protected virtual bool IsValidationErrorException ([NotNull] Exception exception)
+    {
+      return false;
+    }
+
+    protected virtual void ShowErrors ()
+    {
     }
 
     protected virtual void SaveValues (bool interim)
