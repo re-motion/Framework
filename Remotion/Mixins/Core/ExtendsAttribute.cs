@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Utilities;
@@ -39,6 +40,7 @@ namespace Remotion.Mixins
   /// apply the same mixin multiple times to the same target class.
   /// </para>
   /// </remarks>
+  [MeansImplicitUse]
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
   public class ExtendsAttribute : MixinRelationshipAttribute, IMixinConfigurationAttribute<Type>
   {

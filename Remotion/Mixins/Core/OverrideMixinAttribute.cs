@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins
@@ -33,6 +34,7 @@ namespace Remotion.Mixins
   /// can only be applied once per member.
   /// </para>
   /// </remarks>
+  [MeansImplicitUse]
   [AttributeUsage (AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = true)]
   public class OverrideMixinAttribute : Attribute, IOverrideAttribute
   {
