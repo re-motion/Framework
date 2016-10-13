@@ -70,10 +70,14 @@ span.bocAutoCompleteReferenceValueButton img
   background-color: #EAEEFE;
 }
 
+span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueButton
+{
+  background-color: #EFEFF0;
+}
+
 span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueButton img
 {
   background-position: -15px center;
-  background-color: #EFEFF0;
   opacity: 0.4;
   filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
           progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
