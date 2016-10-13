@@ -21,7 +21,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="http://rubicon.eu/Schemas/Packaging/NuGet/FacetManifest/1.0"
     feature="Remotion.Development"
-    layer="WebCommon">
+    layer="WebUnitTest">
   <extends>
     <feature name="Remotion.Web"/>
   </extends>
