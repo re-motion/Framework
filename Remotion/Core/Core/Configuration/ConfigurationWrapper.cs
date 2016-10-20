@@ -20,7 +20,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Configuration
 {
-  /// <summary>Use the <see cref="ConfigurationWrapper"/> to encapsulate the access to the configiration data.</summary>
+  /// <summary>Use the <see cref="ConfigurationWrapper"/> to encapsulate the access to the configuration data.</summary>
   /// <remarks>
   /// The .NET runtime does not provide an assignable well-known instance for the configuration. The <see cref="ConfigurationWrapper"/> is therefore
   /// the only option for injecting custom configuration data during design-time or for unit tests.
