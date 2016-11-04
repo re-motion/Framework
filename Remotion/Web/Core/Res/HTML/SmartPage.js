@@ -60,6 +60,7 @@ function SmartPage_Context(
   // null to disable the message.
   var _statusIsSubmittingMessage = statusIsSubmittingMessage;
   var _abortQueuedSubmit = false;
+  var _lastManualSubmitter = null;
 
   var _isAborting = false;
   var _isCached = false;
@@ -104,6 +105,8 @@ function SmartPage_Context(
   var _formClickHandler = function (evt) { return SmartPage_Context.Instance.OnFormClick(evt); };
   var _doPostBackHandler = function (eventTarget, eventArg) { SmartPage_Context.Instance.DoPostBack(eventTarget, eventArg); };
   var _valueChangedHandler = function (evt) { SmartPage_Context.Instance.OnValueChanged(evt); };
+  var _mouseDownHandler = function (evt) { SmartPage_Context.Instance.OnMouseDown(evt); };
+  var _mouseUpHandler = function (evt) { SmartPage_Context.Instance.OnMouseUp(evt); };
 
   this.Init = function ()
   {
@@ -168,6 +171,12 @@ function SmartPage_Context(
 
     RemoveEventHandler(window, 'scroll', _scrollHandler);
     AddEventHandler(window, 'scroll', _scrollHandler);
+
+    RemoveEventHandler(window.document, 'mousedown', _mouseDownHandler);
+    AddEventHandler(window.document, 'mousedown', _mouseDownHandler);
+
+    RemoveEventHandler(window.document, 'mouseup', _mouseUpHandler);
+    AddEventHandler(window.document, 'mouseup', _mouseUpHandler);
 
     PageUtility.Instance.RegisterResizeHandler('#' + _theForm.id, _resizeHandler);
 
@@ -281,6 +290,54 @@ function SmartPage_Context(
     _isDirty = true;
   };
 
+  this.OnMouseDown = function (e)
+  {
+    var isLeftButton = e.button === 0;
+    var target = GetSubmitTarget (e.target);
+    if (isLeftButton && target !== null)
+    {
+      _lastManualSubmitter = target;
+    }
+  };
+
+  this.OnMouseUp = function (e)
+  {
+    var lastTarget = _lastManualSubmitter;
+    _lastManualSubmitter = null;
+
+    if (lastTarget == null)
+      return;
+
+    if (IsRooted (lastTarget))
+      return;
+
+    var currentTarget = GetSubmitTarget (e.target);
+    var executeClick = false;
+    if (TypeUtility.IsDefined (currentTarget.id) && TypeUtility.IsDefined (lastTarget.id) && !StringUtility.IsNullOrEmpty (lastTarget.id))
+    {
+      executeClick = currentTarget.id === lastTarget.id;
+    }
+    else
+    {
+      var lastTargetContent = lastTarget.innerHTML;
+      var currentTargetContent = currentTarget.innerHTML;
+      executeClick = currentTargetContent === lastTargetContent;
+    }
+
+    if (executeClick)
+    {
+      if (IsJavaScriptAnchor (currentTarget))
+      {
+        var href = currentTarget.href;
+        eval (href);
+      }
+      else
+      {
+        $(currentTarget).trigger ('click');
+      }
+    }
+  }
+
   // Backs up the smart scrolling and smart focusing data for the next post back.
   this.Backup = function ()
   {
@@ -365,6 +422,9 @@ function SmartPage_Context(
         }
       }
     }
+
+    if (_abortQueuedSubmit)
+      _lastManualSubmitter = null;
 
     if (!isSubmitting)
     {
@@ -967,6 +1027,76 @@ function SmartPage_Context(
     {
       return IsJavaScriptAnchor(element.parentNode);
     }
+  };
+
+  // Gets the button, input-submit, input-button, or anchor element associated with the current element or null if the element is not a valid target.
+  function GetSubmitTarget (element)
+  {
+    if (TypeUtility.IsNull (element))
+      return null;
+
+    if (TypeUtility.IsUndefined (element.tagName))
+      return null;
+
+    ArgumentUtility.CheckTypeIsObject('element', element);
+
+    var tagName = element.tagName.toLowerCase();
+    if (tagName === 'button')
+      return element;
+    if (tagName === 'a')
+      return element;
+    if (tagName === 'input')
+    {
+      if (!TypeUtility.IsDefined (element.type))
+        return null;
+      var type = element.type.toLowerCase();
+      if (type === 'submit')
+        return element;
+      if (type === 'button')
+        return element;
+      return null;
+    }
+
+    if (tagName === 'select')
+        return null;
+    if (tagName === 'textarea')
+        return null;
+    if (tagName === 'li')
+        return null;
+    if (tagName === 'p')
+        return null;
+    if (tagName === 'div')
+        return null;
+    if (tagName === 'td')
+        return null;
+    if (tagName === 'table')
+        return null;
+    if (tagName === 'form')
+        return null;
+    if (tagName === 'body')
+        return null;
+    if (tagName === 'html')
+      return null;
+    return GetSubmitTarget (element.parentNode);
+  };
+
+  // Returns true if the element is still attached to the document.
+  function IsRooted (element)
+  {
+    if (TypeUtility.IsNull (element))
+      return false;
+
+    if (TypeUtility.IsUndefined (element.tagName))
+      return false;
+
+    var tagName = element.tagName.toLowerCase();
+    if (tagName === 'html')
+      return true;
+
+    if (TypeUtility.IsUndefined (element.parentNode))
+      return false;
+
+    return IsRooted (element.parentNode);
   };
 
   // Gets the source element for the event.

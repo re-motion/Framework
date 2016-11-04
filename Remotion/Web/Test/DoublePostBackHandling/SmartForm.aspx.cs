@@ -48,6 +48,16 @@ namespace Remotion.Web.Test.DoublePostBackHandling
       StatusLabel.Text = CounterTextBox.Text + " Async Button<br/>" + StatusLabel.Text;
     }
 
+    protected void UpdatePanelSyncSubmit_OnClick (object sender, EventArgs e)
+    {
+      StatusLabel.Text = CounterTextBox.Text + " Sync Button inside Update Panel<br/>" + StatusLabel.Text;
+    }
+
+    protected void UpdatePanelSyncLink_OnClick (object sender, EventArgs e)
+    {
+      StatusLabel.Text = CounterTextBox.Text + " Sync Link inside Update Panel<br/>" + StatusLabel.Text;
+    }
+
     protected void SyncSubmitButton_OnClick (object sender, EventArgs e)
     {
       StatusLabel.Text = CounterTextBox.Text + " Sync Button<br/>" + StatusLabel.Text;
@@ -66,6 +76,8 @@ namespace Remotion.Web.Test.DoublePostBackHandling
     protected override void OnPreRender (EventArgs e)
     {
       AbortQueuedSubmit = AbortedQueuedSubmitCheckBox.Checked;
+      RegisterControlForSynchronousPostBack (UpdatePanelSyncSubmitButton);
+      RegisterControlForSynchronousPostBack (UpdatePanelSyncLinkButton);
       base.OnPreRender (e);
     }
   }
