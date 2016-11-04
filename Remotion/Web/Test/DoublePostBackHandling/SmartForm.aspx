@@ -29,9 +29,13 @@
       <asp:UpdatePanel runat="server">
         <ContentTemplate>
           Async:
-          <asp:TextBox runat="server" id="AsyncTextBox" AutoPostBack="True" OnTextChanged="AsyncTextBox_OnTextChanged"/>
-          <asp:Button runat="server" id="AsyncSubmitButton" Text="Async Button" OnClick="AsyncSubmitButton_OnClick"/>
-          <asp:LinkButton runat="server" id="AsyncLinkButton" Text="Async Link" OnClick="AsyncLinkButton_OnClick"/>
+          <div>
+            <asp:TextBox runat="server" id="AsyncTextBox" AutoPostBack="True" OnTextChanged="AsyncTextBox_OnTextChanged"/>
+            <asp:Button runat="server" id="AsyncSubmitButton" Text="Async Button" OnClick="AsyncSubmitButton_OnClick"/>
+            <asp:LinkButton runat="server" id="AsyncLinkButton" Text="Async Link" OnClick="AsyncLinkButton_OnClick"/>
+            <asp:Button runat="server" id="UpdatePanelSyncSubmitButton" Text="Sync Button inside Update Panel" OnClick="UpdatePanelSyncSubmit_OnClick"/>
+            <asp:LinkButton runat="server" id="UpdatePanelSyncLinkButton" Text="Sync Link inside Update Panel" OnClick="UpdatePanelSyncLink_OnClick"/>
+          </div>
         </ContentTemplate>
       </asp:UpdatePanel>
       Sync:

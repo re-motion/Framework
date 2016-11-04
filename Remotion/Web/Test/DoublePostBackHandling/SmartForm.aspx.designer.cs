@@ -49,6 +49,24 @@ namespace Remotion.Web.Test.DoublePostBackHandling {
         protected global::System.Web.UI.WebControls.LinkButton AsyncLinkButton;
         
         /// <summary>
+        /// UpdatePanelSyncSubmitButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button UpdatePanelSyncSubmitButton;
+        
+        /// <summary>
+        /// UpdatePanelSyncLinkButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton UpdatePanelSyncLinkButton;
+        
+        /// <summary>
         /// SyncTextBox control.
         /// </summary>
         /// <remarks>
