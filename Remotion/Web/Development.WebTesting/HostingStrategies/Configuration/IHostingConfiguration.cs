@@ -14,24 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 
-namespace Remotion.Web.Development.WebTesting.Configuration
+using System;
+using JetBrains.Annotations;
+
+namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 {
   /// <summary>
-  /// Provides all the necessary information to run a web test.
+  /// Represents the configuration for hosting the web application that is to be tested.
   /// </summary>
-  public interface IWebTestConfiguration
+  /// <seealso cref="HostingConfiguration"/>
+  public interface IHostingConfiguration
   {
-    /// <summary>
-    /// URL to which the web application under test has been published.
-    /// </summary>
-    string WebApplicationRoot { get; }
-
-    /// <summary>
-    /// Absolute or relative path to the screenshot directory. The web testing framework automatically takes two screenshots (one of the whole desktop
-    /// and one of the browser window) in case a web test failed.
-    /// </summary>
-    string ScreenshotDirectory { get; }
+    [NotNull] IHostingStrategy GetHostingStrategy ();
   }
 }

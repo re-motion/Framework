@@ -15,13 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Diagnostics;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting;
-using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
-using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -30,11 +28,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   /// </summary>
   public abstract class IntegrationTest
   {
-    private readonly WebTestHelper _webTestHelper = WebTestHelper.CreateFromConfiguration();
+    private WebTestHelper _webTestHelper;
+
+    protected WebTestHelper Helper
+    {
+      get { return _webTestHelper; }
+    }
 
     [TestFixtureSetUp]
     public void IntegrationTestTestFixtureSetUp ()
     {
+      _webTestHelper = WebTestHelper.CreateFromConfiguration();
+      
       _webTestHelper.OnFixtureSetUp();
     }
 
@@ -44,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       _webTestHelper.OnSetUp (GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
 
       // Prevent failing IE tests due to topmost windows
-      if (WebTestingConfiguration.Current.BrowserIsInternetExplorer())
+      if (_webTestHelper.BrowserConfiguration.IsInternetExplorer())
         KillAnyExistingWindowsErrorReportingProcesses();
     }
 
@@ -65,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var userControlUrl = string.Format ("Controls/{0}UserControl.ascx", userControl);
 
-      var url = string.Format ("{0}ControlTest.wxe?UserControl={1}", WebTestingConfiguration.Current.WebApplicationRoot, userControlUrl);
+      var url = string.Format ("{0}ControlTest.wxe?UserControl={1}", _webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot, userControlUrl);
       _webTestHelper.MainBrowserSession.Visit (url);
       _webTestHelper.AcceptPossibleModalDialog();
 

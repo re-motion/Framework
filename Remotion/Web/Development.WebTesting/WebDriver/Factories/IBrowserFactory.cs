@@ -14,23 +14,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 
-namespace Remotion.Web.Development.WebTesting
+using System;
+using Coypu;
+using JetBrains.Annotations;
+using Remotion.Web.Development.WebTesting.Configuration;
+
+namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
 {
   /// <summary>
-  /// A hosting strategy determines which web server to start and how to deploy/undeploy the web application under test.
+  /// Factory to create Coypu <see cref="BrowserSession"/> objects.
   /// </summary>
-  public interface IHostingStrategy
+  public interface IBrowserFactory
   {
     /// <summary>
-    /// Deploys the web application and starts the corresponding server.
+    /// Creates a Coypu <see cref="BrowserSession"/>.
     /// </summary>
-    void DeployAndStartWebApplication ();
-
-    /// <summary>
-    /// Stops the corresponding server and undeploys the web application.
-    /// </summary>
-    void StopAndUndeployWebApplication ();
+    /// <returns>A new Coypu <see cref="BrowserSession"/>.</returns>
+    BrowserSession CreateBrowser ([NotNull] ITestInfrastructureConfiguration testInfrastructureConfiguration);
   }
 }

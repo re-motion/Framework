@@ -16,23 +16,22 @@
 // 
 
 using System;
-using System.Configuration;
+using Coypu.Drivers;
+using Coypu.Drivers.Selenium;
+using OpenQA.Selenium;
 
-namespace Remotion.Web.Development.WebTesting.Configuration
+namespace Remotion.Web.Development.WebTesting.WebDriver
 {
-  /// <summary>
-  /// Additionally configured browser preferences, see <see cref="WebTestingConfiguration.BrowserPreferences"/>.
-  /// </summary>
-  public class BrowserPreferencesConfigurationElementCollection : ConfigurationElementCollection
+  public class CustomSeleniumWebDriver : SeleniumWebDriver
   {
-    protected override ConfigurationElement CreateNewElement ()
+    public CustomSeleniumWebDriver (Browser browser)
+        : base(browser)
     {
-      return new BrowserPreferenceConfigurationElement();
     }
 
-    protected override object GetElementKey (ConfigurationElement element)
+    public CustomSeleniumWebDriver (IWebDriver webDriver, Browser browser)
+        : base(webDriver, browser)
     {
-      return ((BrowserPreferenceConfigurationElement) element).Key;
     }
   }
 }

@@ -18,7 +18,7 @@ using System;
 using JetBrains.Annotations;
 using log4net.Config;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.HostingStrategies;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -27,21 +27,35 @@ namespace Remotion.Web.Development.WebTesting
   /// </summary>
   public class WebTestSetUpFixtureHelper
   {
-    private readonly IHostingStrategy _hostingStrategy;
-
-    public WebTestSetUpFixtureHelper ([NotNull] IHostingStrategy hostingStrategy)
-    {
-      ArgumentUtility.CheckNotNull ("hostingStrategy", hostingStrategy);
-
-      _hostingStrategy = hostingStrategy;
-    }
-
     /// <summary>
-    /// Creates a new <see cref="WebTestSetUpFixtureHelper"/> from <see cref="WebTestingConfiguration.Current"/>.
+    /// Creates a new <see cref="WebTestSetUpFixtureHelper"/> with configuration based on <see cref="WebTestConfigurationFactory"/>.
     /// </summary>
     public static WebTestSetUpFixtureHelper CreateFromConfiguration ()
     {
-      return new WebTestSetUpFixtureHelper (WebTestingConfiguration.Current.GetHostingStrategy());
+      return new WebTestSetUpFixtureHelper(new WebTestConfigurationFactory());
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="WebTestSetUpFixtureHelper"/> with configuration based on <typeparamref name="TFactory"/>.
+    /// </summary>
+    /// <remarks>
+    /// Use this overload when you have to provide test-project specific configuration settings (e.g. custom <see cref="IHostingStrategy"/>) 
+    /// via custom <see cref="WebTestConfigurationFactory"/>.
+    /// </remarks>
+    public static WebTestSetUpFixtureHelper CreateFromConfiguration<TFactory> () where TFactory : WebTestConfigurationFactory, new()
+    {
+      return new WebTestSetUpFixtureHelper (new TFactory());
+    }
+
+    private readonly IHostingStrategy _hostingStrategy;
+
+    public WebTestSetUpFixtureHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
+    {
+      ArgumentUtility.CheckNotNull ("webTestConfigurationFactory", webTestConfigurationFactory);
+
+      var configuration = webTestConfigurationFactory.CreateHostingConfiguration();
+
+      _hostingStrategy = configuration.GetHostingStrategy();
     }
 
     /// <summary>

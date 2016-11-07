@@ -14,25 +14,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Coypu;
 
-namespace Remotion.Web.Development.WebTesting.Configuration
+using System;
+
+namespace Remotion.Web.Development.WebTesting.HostingStrategies
 {
   /// <summary>
-  /// Provides all the necessary information to initialize Coypu <see cref="Options"/>.
+  /// A hosting strategy determines which web server to start and how to deploy/undeploy the web application under test.
   /// </summary>
-  public interface ICoypuConfiguration
+  public interface IHostingStrategy
   {
     /// <summary>
-    /// Specifies how long the Coypu engine should maximally search for a web element or try to interact with a web element before it fails.
+    /// Deploys the web application and starts the corresponding server.
     /// </summary>
-    TimeSpan SearchTimeout { get; }
+    void DeployAndStartWebApplication ();
 
     /// <summary>
-    /// Whenever the element to be interacted with is not ready, visible or otherwise not present, the Coypu engine automatically retries the action
-    /// after the given <see cref="RetryInterval"/> until the <see cref="SearchTimeout"/> has been reached.
+    /// Stops the corresponding server and undeploys the web application.
     /// </summary>
-    TimeSpan RetryInterval { get; }
+    void StopAndUndeployWebApplication ();
   }
 }

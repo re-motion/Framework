@@ -14,28 +14,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Coypu;
 
-namespace Remotion.Web.Development.WebTesting.Configuration
+using System;
+using JetBrains.Annotations;
+using OpenQA.Selenium.Chrome;
+
+namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 {
   /// <summary>
-  /// Code-only configurable constants.
+  /// Provides configuration specific to initializing and shutting down Chrome.
   /// </summary>
-  public static class WebTestingConstants
+  /// <seealso cref="ChromeConfiguration"/>
+  public interface IChromeConfiguration : IBrowserConfiguration
   {
     /// <summary>
-    /// Defines whether Coypu queries should find invisible elements.
+    /// Creates the <see cref="ChromeOptions"/> used when instantiating the Chrome browser.
     /// </summary>
-    public static readonly bool ShouldConsiderInvisibleElements = true;
-
-    /// <summary>
-    /// Defines the default Coypu <see cref="Match"/> strategy.
-    /// </summary>
-    public static readonly Match DefaultMatchStrategy = Match.First;
-
-    /// <summary>
-    /// Defines the default Coypu <see cref="TextPrecision"/> strategy.
-    /// </summary>
-    public static readonly TextPrecision DefaultTextPrecision = TextPrecision.PreferExact;
+    [NotNull] ChromeOptions CreateChromeOptions ();
   }
 }

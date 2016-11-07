@@ -16,9 +16,8 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.Configuration;
-using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -27,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   /// </summary>
   public abstract class IntegrationTest
   {
-    private readonly WebTestHelper _webTestHelper = WebTestHelper.CreateFromConfiguration();
+    private WebTestHelper _webTestHelper;
 
     protected WebTestHelper Helper
     {
@@ -37,6 +36,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TestFixtureSetUp]
     public void IntegrationTestTestFixtureSetUp ()
     {
+      _webTestHelper = WebTestHelper.CreateFromConfiguration();
       _webTestHelper.OnFixtureSetUp();
     }
 
@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       _webTestHelper.OnSetUp (GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
 
       // Prevent failing IE tests due to topmost windows
-      if (WebTestingConfiguration.Current.BrowserIsInternetExplorer())
+      if (_webTestHelper.BrowserConfiguration.IsInternetExplorer())
         KillAnyExistingWindowsErrorReportingProcesses();
     }
 
@@ -66,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     protected TPageObject Start<TPageObject> (string page)
       where TPageObject : PageObject
     {
-      var url = WebTestingConfiguration.Current.WebApplicationRoot + page;
+      var url = _webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot + page;
       _webTestHelper.MainBrowserSession.Visit (url);
 
       return _webTestHelper.CreateInitialPageObject<TPageObject> (_webTestHelper.MainBrowserSession);

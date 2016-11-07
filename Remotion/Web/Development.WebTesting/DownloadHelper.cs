@@ -19,11 +19,14 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Coypu.Drivers;
 using JetBrains.Annotations;
 using log4net;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -78,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting
       Task.Factory.StartNew (downloadTrigger);
 
       // Todo RM-6337: Find a better way to handle the yellow download bar in IE11.
-      if (_browserConfiguration.BrowserIsInternetExplorer())
+      if (_browserConfiguration.IsInternetExplorer ())
       {
         Thread.Sleep (1500); // do not press too fast, IE-security in place
         SendKeys.SendWait ("{F6}");
@@ -92,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting
           _maxDownloadTimeSpan,
           TimeSpan.FromMilliseconds (250)).Run();
 
-      if (_browserConfiguration.BrowserIsInternetExplorer())
+      if (_browserConfiguration.IsInternetExplorer ())
       {
         Thread.Sleep (1500); // do not press too fast, IE-security in place
         SendKeys.SendWait ("{F6}");

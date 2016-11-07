@@ -14,27 +14,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using Coypu.Drivers;
-using JetBrains.Annotations;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.HostingStrategies;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
   /// <summary>
-  /// Configures the web testing framework.
+  /// Loads the app.config and validates the parameter. Serves as DTO Object to transfer the app.config settings to the finer grained config classes.
   /// </summary>
-  [UsedImplicitly]
-  public class WebTestingConfiguration : ConfigurationSection, IBrowserConfiguration, ICoypuConfiguration, IWebTestConfiguration
+  public class WebTestConfigurationSection : ConfigurationSection
   {
-    private static readonly Lazy<WebTestingConfiguration> s_current;
-    private static readonly Dictionary<string, Type> s_wellKnownHostingStrategyTypes;
+    private static readonly Lazy<WebTestConfigurationSection> s_current;
 
     private readonly ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _browserProperty;
@@ -45,22 +39,19 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _logsDirectoryProperty;
     private readonly ConfigurationProperty _closeBrowserWindowsOnSetUpAndTearDownProperty;
     private readonly ConfigurationProperty _hostingProperty;
-    private readonly ConfigurationProperty _browserPreferences;
 
-    static WebTestingConfiguration ()
+    static WebTestConfigurationSection ()
     {
-      s_current = new Lazy<WebTestingConfiguration> (
+      s_current = new Lazy<WebTestConfigurationSection> (
           () =>
           {
-            var configuration = (WebTestingConfiguration) ConfigurationManager.GetSection ("remotion.webTesting");
+            var configuration = (WebTestConfigurationSection) ConfigurationManager.GetSection ("remotion.webTesting");
             Assertion.IsNotNull (configuration, "Configuration section 'remotion.webTesting' missing.");
             return configuration;
           });
-
-      s_wellKnownHostingStrategyTypes = new Dictionary<string, Type> { { "IisExpress", typeof (IisExpressHostingStrategy) } };
     }
 
-    public WebTestingConfiguration ()
+    private WebTestConfigurationSection ()
     {
       _browserProperty = new ConfigurationProperty (
           "browser",
@@ -82,8 +73,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _logsDirectoryProperty = new ConfigurationProperty ("logsDirectory", typeof (string), ".");
       _closeBrowserWindowsOnSetUpAndTearDownProperty = new ConfigurationProperty ("closeBrowserWindowsOnSetUpAndTearDown", typeof (bool), false);
       _hostingProperty = new ConfigurationProperty ("hosting", typeof (ProviderSettings));
-      _browserPreferences = new ConfigurationProperty ("browserPreferences", typeof (BrowserPreferencesConfigurationElementCollection));
-
+      
       _properties = new ConfigurationPropertyCollection
                     {
                         _browserProperty,
@@ -93,9 +83,16 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _screenshotDirectoryProperty,
                         _logsDirectoryProperty,
                         _closeBrowserWindowsOnSetUpAndTearDownProperty,
-                        _hostingProperty,
-                        _browserPreferences
+                        _hostingProperty
                     };
+    }
+
+    /// <summary>
+    /// Internal method to access app.config webtesting section values. External projects needing to access configuration should use <see cref="WebTestConfigurationFactory"/>
+    /// </summary>
+    internal static WebTestConfigurationSection Current
+    {
+      get { return s_current.Value; }
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -104,63 +101,11 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     }
 
     /// <summary>
-    /// Returns the current <see cref="WebTestingConfiguration"/>.
-    /// </summary>
-    public static WebTestingConfiguration Current
-    {
-      get { return s_current.Value; }
-    }
-
-    /// <summary>
     /// Browser in which the web tests are run.
     /// </summary>
     public string BrowserName
     {
-      get { return (string) this[_browserProperty]; }
-    }
-
-    /// <summary>
-    /// Browser (as Coypu Browser object).
-    /// </summary>
-    public Browser Browser
-    {
-      get { return Browser.Parse (BrowserName); }
-    }
-
-    /// <summary>
-    /// Returns the process name of the configured browser.
-    /// </summary>
-    /// <returns>The process name without the file extension.</returns>
-    public string GetBrowserExecutableName ()
-    {
-      if (Browser == Browser.InternetExplorer)
-        return "iexplore";
-      if (Browser == Browser.Chrome)
-        return "chrome";
-
-      throw new NotSupportedException (string.Format ("Only browsers '{0}' and '{1}' are supported.", Browser.Chrome, Browser.InternetExplorer));
-    }
-
-    /// <summary>
-    /// Returns the process name of the configured browser's web driver implementation.
-    /// </summary>
-    /// <returns>The process name without the file extension.</returns>
-    public string GetWebDriverExecutableName ()
-    {
-      if (Browser == Browser.InternetExplorer)
-        return "IEDriverServer";
-      if (Browser == Browser.Chrome)
-        return "chromedriver";
-
-      throw new NotSupportedException (string.Format ("Only browsers '{0}' and '{1}' are supported.", Browser.Chrome, Browser.InternetExplorer));
-    }
-
-    /// <summary>
-    /// Returns whether the <see cref="Browser"/> is set to <see cref="Coypu.Drivers.Browser.InternetExplorer"/>.
-    /// </summary>
-    public bool BrowserIsInternetExplorer ()
-    {
-      return Browser == Browser.InternetExplorer;
+      get { return (string) this [_browserProperty]; }
     }
 
     /// <summary>
@@ -168,7 +113,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public TimeSpan SearchTimeout
     {
-      get { return (TimeSpan) this[_searchTimeoutProperty]; }
+      get { return (TimeSpan) this [_searchTimeoutProperty]; }
     }
 
     /// <summary>
@@ -177,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public TimeSpan RetryInterval
     {
-      get { return (TimeSpan) this[_retryIntervalProperty]; }
+      get { return (TimeSpan) this [_retryIntervalProperty]; }
     }
 
     /// <summary>
@@ -185,7 +130,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public string WebApplicationRoot
     {
-      get { return (string) this[_webApplicationRootProperty]; }
+      get { return (string) this [_webApplicationRootProperty]; }
     }
 
     /// <summary>
@@ -194,7 +139,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public string ScreenshotDirectory
     {
-      get { return Path.GetFullPath ((string) this[_screenshotDirectoryProperty]); }
+      get { return Path.GetFullPath ((string) this [_screenshotDirectoryProperty]); }
     }
 
     /// <summary>
@@ -202,7 +147,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public string LogsDirectory
     {
-      get { return (string) this[_logsDirectoryProperty]; }
+      get { return (string) this [_logsDirectoryProperty]; }
     }
 
     /// <summary>
@@ -212,48 +157,12 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public bool CloseBrowserWindowsOnSetUpAndTearDown
     {
-      get { return (bool) this[_closeBrowserWindowsOnSetUpAndTearDownProperty]; }
+      get { return (bool) this [_closeBrowserWindowsOnSetUpAndTearDownProperty]; }
     }
 
-    /// <summary>
-    /// Additional browser preferences to be set (passed to the Selenium driver if supported, <see cref="BrowserFactory"/>).
-    /// </summary>
-    public IReadOnlyDictionary<string, object> BrowserPreferences
+    public ProviderSettings HostingProviderSettings
     {
-      get
-      {
-        var configurationElementCollection = (BrowserPreferencesConfigurationElementCollection) this[_browserPreferences];
-        return configurationElementCollection.Cast<BrowserPreferenceConfigurationElement>().ToDictionary (k => k.Key, v => v.Value);
-      }
-    }
-
-    /// <summary>
-    /// Returns the configured hosting strategy or an instance of <see cref="NullHostingStrategy"/> if the user did not specify one.
-    /// </summary>
-    public IHostingStrategy GetHostingStrategy ()
-    {
-      if (string.IsNullOrEmpty (HostingProviderSettings.Type))
-        return new NullHostingStrategy();
-
-      var hostingStrategyTypeName = HostingProviderSettings.Type;
-      var hostingStrategyType = GetHostingStrategyType (hostingStrategyTypeName);
-      Assertion.IsNotNull (hostingStrategyType, string.Format ("Hosting strategy '{0}' could not be loaded.", hostingStrategyTypeName));
-
-      var hostingStrategy = (IHostingStrategy) Activator.CreateInstance (hostingStrategyType, new object[] { HostingProviderSettings.Parameters });
-      return hostingStrategy;
-    }
-
-    private ProviderSettings HostingProviderSettings
-    {
-      get { return (ProviderSettings) this[_hostingProperty]; }
-    }
-
-    private static Type GetHostingStrategyType (string hostingStrategyTypeName)
-    {
-      if (s_wellKnownHostingStrategyTypes.ContainsKey (hostingStrategyTypeName))
-        return s_wellKnownHostingStrategyTypes[hostingStrategyTypeName];
-
-      return Type.GetType (hostingStrategyTypeName);
+      get { return (ProviderSettings) this [_hostingProperty]; }
     }
   }
 }

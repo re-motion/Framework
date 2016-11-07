@@ -18,12 +18,14 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using Coypu;
+using Coypu.Drivers;
 using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 using Keys = OpenQA.Selenium.Keys;
 
 namespace Remotion.Web.Development.WebTesting
@@ -86,7 +88,7 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("value", value);
       ArgumentUtility.CheckNotNull ("finishInputWithAction", finishInputWithAction);
 
-      if (!WebTestingConfiguration.Current.BrowserIsInternetExplorer())
+      if (scope.Browser.IsInternetExplorer())
         scope.FillInWithFixedForNormalBrowsers (value, clearValue);
       else
         scope.FillInWithFixedForInternetExplorer (value, clearValue);

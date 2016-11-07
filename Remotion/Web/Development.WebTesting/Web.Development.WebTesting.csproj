@@ -70,8 +70,22 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="Configuration\BrowserPreferenceConfigurationElement.cs" />
-    <Compile Include="Configuration\BrowserPreferencesConfigurationElementCollection.cs" />
+    <Compile Include="WebDriver\Factories\Chrome\ChromeBrowserFactory.cs" />
+    <Compile Include="WebDriver\Configuration\Chrome\ChromeConfiguration.cs" />
+    <Compile Include="WebDriver\CustomSeleniumWebDriver.cs" />
+    <Compile Include="HostingStrategies\Configuration\HostingConfiguration.cs" />
+    <Compile Include="HostingStrategies\Configuration\IHostingConfiguration.cs" />
+    <Compile Include="WebDriver\BrowserConfigurationExtensions.cs" />
+    <Compile Include="WebDriver\Configuration\Chrome\IChromeConfiguration.cs" />
+    <Compile Include="WebDriver\Configuration\InternetExplorer\IInternetExplorerConfiguration.cs" />
+    <Compile Include="WebDriver\Factories\InternetExplorer\InternetExplorerBrowserFactory.cs" />
+    <Compile Include="WebDriver\Configuration\InternetExplorer\InternetExplorerConfiguration.cs" />
+    <Compile Include="Configuration\ITestInfrastructureConfiguration.cs" />
+    <Compile Include="WebDriver\Configuration\BrowserConfigurationBase.cs" />
+    <Compile Include="Configuration\TestInfrastructureConfiguration.cs" />
+    <Compile Include="WebTestConfigurationFactory.cs" />
+    <Compile Include="Configuration\WebTestConfigurationSection.cs" />
+    <Compile Include="WebDriver\Factories\WebDriverLogUtility.cs" />
     <Compile Include="PageObjects\IWebFormsPageObject.cs" />
     <Compile Include="WebColor.cs" />
     <Compile Include="CompletionDetectionStrategies\CompoundCompletionDetectionStrategy.cs" />
@@ -115,8 +129,8 @@
     <Compile Include="App_Packages\Remotion.Utilities.ArgumentUtility.Sources.1.25.23.0\ArgumentUtility.cs" />
     <Compile Include="App_Packages\Remotion.Utilities.Assertion.Sources.1.15.23.0\Assertion.cs" />
     <Compile Include="App_Packages\Remotion.Utilities.NullableTypeUtility.Sources.1.15.23.0\NullableTypeUtility.cs" />
-    <Compile Include="BrowserFactory.cs" />
-    <Compile Include="Configuration\WebTestingConstants.cs" />
+    <Compile Include="WebDriver\Factories\IBrowserFactory.cs" />
+    <Compile Include="WebDriver\WebTestingConstants.cs" />
     <Compile Include="ControlObjectContext.cs" />
     <Compile Include="ControlObjects\ControlHost.cs" />
     <Compile Include="ControlObjects\IControlObjectWithRows.cs" />
@@ -156,8 +170,6 @@
     <Compile Include="CoypuElementScopeSelectExtensions.cs" />
     <Compile Include="CoypuElementScopeClickAndFocusExtensions.cs" />
     <Compile Include="CoypuElementScopeFillInWithAndSendKeysExtensions.cs" />
-    <Compile Include="CustomChromeDriver.cs" />
-    <Compile Include="CustomInternetExplorerDriver.cs" />
     <Compile Include="DownloadHelper.cs" />
     <Compile Include="FinishInputWithAction.cs" />
     <Compile Include="FluentControlSelection\IFluentControlSelector.cs" />
@@ -174,11 +186,9 @@
     <Compile Include="IModalDialogHandler.cs" />
     <Compile Include="PageObjects\HtmlPageObject.cs" />
     <Compile Include="ICompletionDetectionStrategy.cs" />
-    <Compile Include="Configuration\IBrowserConfiguration.cs" />
-    <Compile Include="Configuration\ICoypuConfiguration.cs" />
-    <Compile Include="IHostingStrategy.cs" />
+    <Compile Include="WebDriver\Configuration\IBrowserConfiguration.cs" />
+    <Compile Include="HostingStrategies\IHostingStrategy.cs" />
     <Compile Include="HostingStrategies\IisExpressHostingStrategy.cs" />
-    <Compile Include="Configuration\IWebTestConfiguration.cs" />
     <Compile Include="HostingStrategies\NullHostingStrategy.cs" />
     <Compile Include="PageObjectContext.cs" />
     <Compile Include="Utilities\ActionsWithWaitSupport.cs" />
@@ -201,7 +211,6 @@
     <Compile Include="WebTestActions\SimpleClickAction.cs" />
     <Compile Include="WebTestActions\UncheckAction.cs" />
     <Compile Include="WebTestHelper.cs" />
-    <Compile Include="Configuration\WebTestingConfiguration.cs" />
     <Compile Include="WebTestActions\CustomAction.cs" />
     <Compile Include="WebTestObject.cs" />
     <Compile Include="WebTestObjectContext.cs" />
@@ -252,6 +261,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

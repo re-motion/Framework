@@ -59,22 +59,24 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static void Run ([NotNull] Action action)
     {
       ArgumentUtility.CheckNotNull ("action", action);
+      var configuration = new WebTestConfigurationFactory ().CreateTestInfrastructureConfiguration();
 
       var retryUntilTimeout = new RetryUntilTimeout (
           action,
-          WebTestingConfiguration.Current.SearchTimeout,
-          WebTestingConfiguration.Current.RetryInterval);
+          configuration.SearchTimeout,
+          configuration.RetryInterval);
       retryUntilTimeout.Run();
     }
 
     public static TReturnType Run<TReturnType> ([NotNull] Func<TReturnType> func)
     {
       ArgumentUtility.CheckNotNull ("func", func);
+      var configuration = new WebTestConfigurationFactory ().CreateTestInfrastructureConfiguration ();
 
       var retryUntilTimeout = new RetryUntilTimeout<TReturnType> (
           func,
-          WebTestingConfiguration.Current.SearchTimeout,
-          WebTestingConfiguration.Current.RetryInterval);
+          configuration.SearchTimeout,
+          configuration.RetryInterval);
       return retryUntilTimeout.Run();
     }
   }

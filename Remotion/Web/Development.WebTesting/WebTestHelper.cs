@@ -26,11 +26,14 @@ using OpenQA.Selenium.Support.UI;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 
 namespace Remotion.Web.Development.WebTesting
 {
   /// <summary>
-  /// Helper class for web tests which provides various convinience methods:
+  /// Helper class for web tests which provides various convinience methods.
+  /// </summary>
+  /// <remarks>
   /// <list type="table">
   ///   <listheader>
   ///     <term>Step</term>
@@ -73,56 +76,64 @@ namespace Remotion.Web.Development.WebTesting
   ///     </description>
   ///   </item>
   /// </list>
-  /// </summary>
+  /// </remarks>
   public class WebTestHelper
   {
+    /// <summary>
+    /// Creates a new <see cref="WebTestHelper"/> with configuration based on <see cref="WebTestConfigurationFactory"/>.
+    /// </summary>
+    public static WebTestHelper CreateFromConfiguration ()
+    {
+      return new WebTestHelper (new WebTestConfigurationFactory());
+    }
+    
+    /// <summary>
+    /// Creates a new <see cref="WebTestHelper"/> with configuration based on <typeparamref name="TFactory"/>.
+    /// </summary>
+    /// <remarks>
+    /// Use this overload when you have to provide test-project specific configuration settings (e.g. custom chrome.exe) 
+    /// via custom <see cref="WebTestConfigurationFactory"/>.
+    /// </remarks>
+    public static WebTestHelper CreateFromConfiguration<TFactory> () where TFactory: WebTestConfigurationFactory, new()
+    {
+      return new WebTestHelper (new TFactory());
+    }
+
     private static readonly ILog s_log = LogManager.GetLogger (typeof (WebTestHelper));
 
-    /// <summary>
-    /// Browser configuration.
-    /// </summary>
     private readonly IBrowserConfiguration _browserConfiguration;
-
-    /// <summary>
-    /// Coypu configuration.
-    /// </summary>
-    private readonly ICoypuConfiguration _coypuConfiguration;
-
-    /// <summary>
-    /// Web test configuration.
-    /// </summary>
-    private readonly IWebTestConfiguration _webTestConfiguration;
+    private readonly ITestInfrastructureConfiguration _testInfrastructureConfiguration;
+    private BrowserSession _mainBrowserSession;
 
     /// <summary>
     /// Name of the current web test.
     /// </summary>
     private string _testName;
+    
+    public WebTestHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
+    {
+      ArgumentUtility.CheckNotNull ("webTestConfigurationFactory", webTestConfigurationFactory);
+      
+      _browserConfiguration = webTestConfigurationFactory.CreateBrowserConfiguration();
+      _testInfrastructureConfiguration = webTestConfigurationFactory.CreateTestInfrastructureConfiguration();
+    }
+
+    public IBrowserConfiguration BrowserConfiguration
+    {
+      get { return _browserConfiguration; }
+    }
+
+    public ITestInfrastructureConfiguration TestInfrastructureConfiguration
+    {
+      get { return _testInfrastructureConfiguration; }
+    }
 
     /// <summary>
     /// Coypu main browser session for the web test.
     /// </summary>
-    public BrowserSession MainBrowserSession { get; private set; }
-
-    public WebTestHelper (
-        [NotNull] IBrowserConfiguration browserConfiguration,
-        [NotNull] ICoypuConfiguration coypuConfiguration,
-        [NotNull] IWebTestConfiguration webTestConfiguration)
+    public BrowserSession MainBrowserSession
     {
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
-      ArgumentUtility.CheckNotNull ("coypuConfiguration", coypuConfiguration);
-      ArgumentUtility.CheckNotNull ("webTestConfiguration", webTestConfiguration);
-
-      _browserConfiguration = browserConfiguration;
-      _coypuConfiguration = coypuConfiguration;
-      _webTestConfiguration = webTestConfiguration;
-    }
-
-    /// <summary>
-    /// Creates a new <see cref="WebTestHelper"/> from <see cref="WebTestingConfiguration.Current"/>.
-    /// </summary>
-    public static WebTestHelper CreateFromConfiguration ()
-    {
-      return new WebTestHelper (WebTestingConfiguration.Current, WebTestingConfiguration.Current, WebTestingConfiguration.Current);
+      get { return _mainBrowserSession; }
     }
 
     /// <summary>
@@ -139,7 +150,7 @@ namespace Remotion.Web.Development.WebTesting
       // Note: otherwise the Selenium web driver may get confused when searching for windows.
       EnsureAllBrowserWindowsAreClosed();
 
-      MainBrowserSession = CreateNewBrowserSession();
+      _mainBrowserSession = CreateNewBrowserSession();
 
       // Note: otherwise cursor could interfere with element hovering.
       EnsureCursorIsOutsideBrowserWindow();
@@ -156,12 +167,12 @@ namespace Remotion.Web.Development.WebTesting
       _testName = testName;
       s_log.InfoFormat ("Executing test: {0}.", _testName);
 
-      if (MainBrowserSession != null)
-        s_log.InfoFormat ("Current window title: {0}.", MainBrowserSession.Title);
+      if (_mainBrowserSession != null)
+        s_log.InfoFormat ("Current window title: {0}.", _mainBrowserSession.Title);
     }
 
     /// <summary>
-    /// Creates a new browser session using the configured settings from the App.config file.
+    /// Creates a new browser session using the configured settings from <see cref="WebTestConfigurationFactory"/>.
     /// </summary>
     /// <param name="maximiseWindow">Specified whether the new browser session's window should be maximized.</param>
     /// <returns>The new browser session.</returns>
@@ -169,7 +180,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       using (new PerformanceTimer (s_log, string.Format ("Created new {0} browser session.", _browserConfiguration.BrowserName)))
       {
-        var browser = BrowserFactory.CreateBrowser (_browserConfiguration, _coypuConfiguration);
+        var browser = _browserConfiguration.BrowserFactory.CreateBrowser(_testInfrastructureConfiguration);
         if (maximiseWindow)
           browser.MaximiseWindow();
         return browser;
@@ -200,7 +211,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       try
       {
-        MainBrowserSession.AcceptModalDialogImmediatelyFixed (MainBrowserSession);
+        _mainBrowserSession.AcceptModalDialogImmediatelyFixed (_mainBrowserSession);
       }
       catch (MissingDialogException)
       {
@@ -216,7 +227,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNullOrEmpty ("fileName", fileName);
 
-      return new DownloadHelper (_browserConfiguration, fileName, _coypuConfiguration.SearchTimeout);
+      return new DownloadHelper (_browserConfiguration, fileName, _testInfrastructureConfiguration.SearchTimeout);
     }
 
     /// <summary>
@@ -227,9 +238,9 @@ namespace Remotion.Web.Development.WebTesting
     {
       if (!hasSucceeded && ShouldTakeScreenshots())
       {
-        var screenshotCapturer = new ScreenshotCapturer (_webTestConfiguration.ScreenshotDirectory);
+        var screenshotCapturer = new ScreenshotCapturer (_testInfrastructureConfiguration.ScreenshotDirectory);
         screenshotCapturer.TakeDesktopScreenshot (_testName);
-        screenshotCapturer.TakeBrowserScreenshot (_testName, MainBrowserSession);
+        screenshotCapturer.TakeBrowserScreenshot (_testName, _mainBrowserSession);
       }
 
       s_log.InfoFormat ("Finished test: {0} [has succeeded: {1}].", _testName, hasSucceeded);
@@ -237,7 +248,7 @@ namespace Remotion.Web.Development.WebTesting
 
     private bool ShouldTakeScreenshots ()
     {
-      return !string.IsNullOrEmpty (_webTestConfiguration.ScreenshotDirectory);
+      return !string.IsNullOrEmpty (_testInfrastructureConfiguration.ScreenshotDirectory);
     }
 
     /// <summary>
@@ -247,8 +258,8 @@ namespace Remotion.Web.Development.WebTesting
     {
       s_log.InfoFormat ("WebTestHelper.OnFixtureTearDown() has been called.");
 
-      if (MainBrowserSession != null)
-        MainBrowserSession.Dispose();
+      if (_mainBrowserSession != null)
+        _mainBrowserSession.Dispose();
 
       s_log.InfoFormat ("MainBrowserSession has been disposed.");
 
@@ -259,25 +270,24 @@ namespace Remotion.Web.Development.WebTesting
 
     private void EnsureAllBrowserWindowsAreClosed ()
     {
-      if (!_browserConfiguration.CloseBrowserWindowsOnSetUpAndTearDown)
+      if (!_testInfrastructureConfiguration.CloseBrowserWindowsOnSetUpAndTearDown)
         return;
 
-      s_log.InfoFormat ("Killing all processes named '{0}'.", _browserConfiguration.GetBrowserExecutableName());
-      var browserProcessName = _browserConfiguration.GetBrowserExecutableName();
+      s_log.InfoFormat ("Killing all processes named '{0}'.", _browserConfiguration.BrowserExecutableName);
+      var browserProcessName = _browserConfiguration.BrowserExecutableName;
       if (browserProcessName == null)
         return;
 
       ProcessUtils.KillAllProcessesWithName (browserProcessName);
     }
 
-
     private void EnsureAllWebDriverInstancesAreClosed ()
     {
-      var webDriverProcessName = _browserConfiguration.GetWebDriverExecutableName();
+      var webDriverProcessName = _browserConfiguration.WebDriverExecutableName;
       if (webDriverProcessName == null)
         return;
 
-      s_log.InfoFormat ("Killing all processes named '{0}'.", _browserConfiguration.GetWebDriverExecutableName());
+      s_log.InfoFormat ("Killing all processes named '{0}'.", _browserConfiguration.WebDriverExecutableName);
       ProcessUtils.KillAllProcessesWithName (webDriverProcessName);
     }
 
