@@ -22,7 +22,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   [SetUpFixture]
   public class SetUpFixture
   {
-    private readonly WebTestSetUpFixtureHelper _setUpFixtureHelper = WebTestSetUpFixtureHelper.CreateFromConfiguration();
+    private readonly WebTestSetUpFixtureHelper _setUpFixtureHelper =
+        WebTestSetUpFixtureHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
     [SetUp]
     public void SetUp ()

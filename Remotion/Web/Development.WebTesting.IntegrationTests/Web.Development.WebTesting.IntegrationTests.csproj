@@ -54,6 +54,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="WebDriver, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Selenium.WebDriver.2.48.0\lib\net40\WebDriver.dll</HintPath>
@@ -68,6 +69,7 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="ControlObjectTest.cs" />
+    <Compile Include="CustomUserDirectory.cs" />
     <Compile Include="FileDownloadTest.cs" />
     <Compile Include="ImageControlObjectTest.cs" />
     <Compile Include="ImageButtonControlObjectTest.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="LabelControlObjectTest.cs" />
     <Compile Include="MultiWindowTest.cs" />
     <Compile Include="MultiWindowTestPageObject.cs" />
+    <Compile Include="CustomWebTestConfigurationFactory.cs" />
     <Compile Include="ScopeControlObjectTest.cs" />
     <Compile Include="SingleViewControlObjectTest.cs" />
     <Compile Include="FormGridControlObjectTest.cs" />

@@ -120,8 +120,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="configSettings">Receives app.config settings when called in <see cref="CreateBrowserConfiguration"/></param>
     /// <remarks>
-    /// Override this method to customize the configuration settings, 
-    /// e.g. custom <see cref="ChromeOptions"/>, by extending <see cref="ChromeConfiguration"/> itself.
+    /// Override this method to customize the configuration settings, e.g. the location of the chrome.exe and the user directory 
+    /// via <see cref="ChromeExecutable"/> or custom <see cref="ChromeOptions"/> by extending <see cref="ChromeConfiguration"/> itself.
     /// </remarks>
     protected virtual IChromeConfiguration CreateChromeConfiguration ([NotNull] WebTestConfigurationSection configSettings)
     {

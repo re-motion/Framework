@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="WebDriver\Factories\Chrome\ChromeBrowserFactory.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeConfiguration.cs" />
+    <Compile Include="WebDriver\Configuration\Chrome\ChromeExecutable.cs" />
     <Compile Include="WebDriver\CustomSeleniumWebDriver.cs" />
     <Compile Include="HostingStrategies\Configuration\HostingConfiguration.cs" />
     <Compile Include="HostingStrategies\Configuration\IHostingConfiguration.cs" />

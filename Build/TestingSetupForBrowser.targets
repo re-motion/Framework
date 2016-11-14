@@ -31,6 +31,7 @@
     <Error Text="The property 'Browser' is not set." Condition="'$(Browser)' == ''" />
 
     <Message Text="Selected Browser: '$(Browser)'" />
+    <Message Text="The property 'ChromeVersionArchive' is set to '$(ChromeVersionArchive)'." />
 
     <PropertyGroup>
       <_variantName>$(Browser)_$(Platform)_$(ConfigurationID)</_variantName>
@@ -58,6 +59,10 @@
       <_appConfigAttributes Include="/configuration/log4net/appender[@name='FileAppender']/file">
         <Key>value</Key>
         <Value>$(_logsDirectory)WebTestingFramework.log</Value>
+      </_appConfigAttributes>      
+      <_appConfigAttributes Include="/configuration/appSettings/add[@name='ChromeVersionArchive']">
+        <Key>value</Key>
+        <Value>$(ChromeVersionArchive)</Value>
       </_appConfigAttributes>
     </ItemGroup>
 
