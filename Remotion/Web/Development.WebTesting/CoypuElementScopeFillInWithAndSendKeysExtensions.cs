@@ -89,9 +89,9 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("finishInputWithAction", finishInputWithAction);
 
       if (scope.Browser.IsInternetExplorer())
-        scope.FillInWithFixedForNormalBrowsers (value, clearValue);
-      else
         scope.FillInWithFixedForInternetExplorer (value, clearValue);
+      else
+        scope.FillInWithFixedForNormalBrowsers (value, clearValue);
 
       finishInputWithAction (scope);
     }
