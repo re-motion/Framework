@@ -21,10 +21,9 @@ using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting;
-using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -201,7 +200,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (options[15].ItemID, Is.EqualTo (fValue));
       Assert.That (options[15].Index, Is.EqualTo (16));
-      if (WebTestingConfiguration.Current.BrowserIsInternetExplorer())
+      
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
         Assert.That (options[15].Text, Is.EqualTo ("F,"));
       else
         Assert.That (options[15].Text, Is.EqualTo ("F, "));

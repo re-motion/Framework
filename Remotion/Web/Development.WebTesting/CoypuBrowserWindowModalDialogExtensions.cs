@@ -20,6 +20,7 @@ using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -43,8 +44,8 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// See <see cref="AcceptModalDialogFixed"/>, however, the <see cref="WebTestingConfiguration.SearchTimeout"/> and
-    /// <see cref="WebTestingConfiguration.RetryInterval"/> do not apply.
+    /// See <see cref="AcceptModalDialogFixed"/>, however, the <see cref="BrowserConfigurationBase.SearchTimeout"/> and
+    /// <see cref="BrowserConfigurationBase.RetryInterval"/> do not apply.
     /// </summary>
     public static void AcceptModalDialogImmediatelyFixed ([NotNull] this BrowserWindow window, [NotNull] BrowserSession browser)
     {

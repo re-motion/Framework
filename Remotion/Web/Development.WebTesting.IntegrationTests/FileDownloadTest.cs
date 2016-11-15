@@ -16,7 +16,7 @@
 // 
 
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void Test ()
     {
-      if (WebTestingConfiguration.Current.BrowserIsInternetExplorer())
+      if (Helper.BrowserConfiguration.IsInternetExplorer ())
         Assert.Ignore ("File download in IE currently broken. See https://github.com/SeleniumHQ/selenium/issues/1843 for more information.");
 
       const string fileName = "SampleFile.txt";
@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestXml ()
     {
-      if (WebTestingConfiguration.Current.BrowserIsInternetExplorer())
+      if (Helper.BrowserConfiguration.IsInternetExplorer ())
         Assert.Ignore ("File download in IE currently broken. See https://github.com/SeleniumHQ/selenium/issues/1843 for more information.");
 
       // Note: test for Chrome "safebrowsing" (requires safebrowsing.enabled to be set to true in browser preferences - see App.config).

@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     }
 
     /// <summary>
-    /// Constructor required for direct usage in <see cref="WebTestingConfiguration"/>.
+    /// Constructor required for direct usage in <see cref="WebTestConfigurationSection"/>.
     /// </summary>
     /// <param name="properties">The configuration properties.</param>
     [UsedImplicitly]

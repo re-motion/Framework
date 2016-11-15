@@ -16,23 +16,21 @@
 // 
 
 using System;
-using System.Configuration;
+using Coypu;
+using JetBrains.Annotations;
+using Remotion.Web.Development.WebTesting.Configuration;
 
-namespace Remotion.Web.Development.WebTesting.Configuration
+namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
 {
   /// <summary>
-  /// Additionally configured browser preferences, see <see cref="WebTestingConfiguration.BrowserPreferences"/>.
+  /// Factory to create Coypu <see cref="BrowserSession"/> objects.
   /// </summary>
-  public class BrowserPreferencesConfigurationElementCollection : ConfigurationElementCollection
+  public interface IBrowserFactory
   {
-    protected override ConfigurationElement CreateNewElement ()
-    {
-      return new BrowserPreferenceConfigurationElement();
-    }
-
-    protected override object GetElementKey (ConfigurationElement element)
-    {
-      return ((BrowserPreferenceConfigurationElement) element).Key;
-    }
+    /// <summary>
+    /// Creates a Coypu <see cref="BrowserSession"/>.
+    /// </summary>
+    /// <returns>A new Coypu <see cref="BrowserSession"/>.</returns>
+    BrowserSession CreateBrowser ([NotNull] ITestInfrastructureConfiguration testInfrastructureConfiguration);
   }
 }
