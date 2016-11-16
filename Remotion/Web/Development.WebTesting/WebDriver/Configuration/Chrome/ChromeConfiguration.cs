@@ -85,10 +85,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
         chromeOptions.AddArgument (string.Format ("user-data-dir={0}", _userDirectory));
 
       chromeOptions.AddArgument ("no-first-run");
-	  
- 	  chromeOptions.AddUserProfilePreference ("safebrowsing.enabled", true);
-      
-	  return chromeOptions;
+
+      chromeOptions.AddUserProfilePreference ("safebrowsing.enabled", true);
+
+      return chromeOptions;
     }
   }
 }
