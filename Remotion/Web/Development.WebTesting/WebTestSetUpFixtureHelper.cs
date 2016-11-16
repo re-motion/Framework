@@ -25,11 +25,16 @@ namespace Remotion.Web.Development.WebTesting
   /// <summary>
   /// Helper class for web test set up fixtures. Initializes log4net and hosts the configured web application under test.
   /// </summary>
+  /// <remarks>
+  /// Use the factory methods <see cref="CreateFromConfiguration"/> or <see cref="CreateFromConfiguration{TFactory}"/> 
+  /// for instantiating an instance of type <see cref="WebTestSetUpFixtureHelper"/>.
+  /// </remarks>
   public class WebTestSetUpFixtureHelper
   {
     /// <summary>
     /// Creates a new <see cref="WebTestSetUpFixtureHelper"/> with configuration based on <see cref="WebTestConfigurationFactory"/>.
     /// </summary>
+    [PublicAPI]
     public static WebTestSetUpFixtureHelper CreateFromConfiguration ()
     {
       return new WebTestSetUpFixtureHelper(new WebTestConfigurationFactory());
@@ -42,6 +47,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Use this overload when you have to provide test-project specific configuration settings (e.g. custom <see cref="IHostingStrategy"/>) 
     /// via custom <see cref="WebTestConfigurationFactory"/>.
     /// </remarks>
+    [PublicAPI]
     public static WebTestSetUpFixtureHelper CreateFromConfiguration<TFactory> () where TFactory : WebTestConfigurationFactory, new()
     {
       return new WebTestSetUpFixtureHelper (new TFactory());
@@ -49,7 +55,8 @@ namespace Remotion.Web.Development.WebTesting
 
     private readonly IHostingStrategy _hostingStrategy;
 
-    public WebTestSetUpFixtureHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
+    [PublicAPI]
+    protected WebTestSetUpFixtureHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationFactory", webTestConfigurationFactory);
 
