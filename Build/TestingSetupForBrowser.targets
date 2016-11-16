@@ -60,7 +60,7 @@
         <Key>value</Key>
         <Value>$(_logsDirectory)WebTestingFramework.log</Value>
       </_appConfigAttributes>      
-      <_appConfigAttributes Include="/configuration/appSettings/add[@name='ChromeVersionArchive']">
+      <_appConfigAttributes Include="/configuration/appSettings/add[@key='ChromeVersionArchive']">
         <Key>value</Key>
         <Value>$(ChromeVersionArchive)</Value>
       </_appConfigAttributes>
