@@ -65,4 +65,4 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       get { return _userDirectory; }
     }
   }
-}
+}
