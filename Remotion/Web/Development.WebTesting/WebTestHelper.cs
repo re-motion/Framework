@@ -34,6 +34,8 @@ namespace Remotion.Web.Development.WebTesting
   /// Helper class for web tests which provides various convinience methods.
   /// </summary>
   /// <remarks>
+  /// Use the factory methods <see cref="CreateFromConfiguration"/> or <see cref="CreateFromConfiguration{TFactory}"/> 
+  /// for instantiating an instance of type <see cref="WebTestHelper"/>.
   /// <list type="table">
   ///   <listheader>
   ///     <term>Step</term>
@@ -82,11 +84,12 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Creates a new <see cref="WebTestHelper"/> with configuration based on <see cref="WebTestConfigurationFactory"/>.
     /// </summary>
+    [PublicAPI]
     public static WebTestHelper CreateFromConfiguration ()
     {
       return new WebTestHelper (new WebTestConfigurationFactory());
     }
-    
+
     /// <summary>
     /// Creates a new <see cref="WebTestHelper"/> with configuration based on <typeparamref name="TFactory"/>.
     /// </summary>
@@ -94,6 +97,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Use this overload when you have to provide test-project specific configuration settings (e.g. custom chrome.exe) 
     /// via custom <see cref="WebTestConfigurationFactory"/>.
     /// </remarks>
+    [PublicAPI]
     public static WebTestHelper CreateFromConfiguration<TFactory> () where TFactory: WebTestConfigurationFactory, new()
     {
       return new WebTestHelper (new TFactory());
@@ -109,8 +113,9 @@ namespace Remotion.Web.Development.WebTesting
     /// Name of the current web test.
     /// </summary>
     private string _testName;
-    
-    public WebTestHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
+
+    [PublicAPI]
+    protected WebTestHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationFactory", webTestConfigurationFactory);
       
