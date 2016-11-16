@@ -28,6 +28,8 @@
 
     <VcsUrlTemplate>http://localost/svn/!svn/bc/$(SvnRevision)/$(SvnBranchFolder)/{0}</VcsUrlTemplate>
 
+    <ChromeVersionArchive></ChromeVersionArchive>
+
     <DatabaseNamePrefix></DatabaseNamePrefix>
 
     <DataSourceMsSql2005>localhost\MsSql2005</DataSourceMsSql2005>

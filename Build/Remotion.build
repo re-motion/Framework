@@ -74,6 +74,7 @@
           ReleaseType=$(ReleaseType);
           VcsUrlTemplate=$(VcsUrlTemplate);
           SvnRevision=$(SvnRevision);
+          ChromeVersionArchive=$(ChromeVersionArchive);
           DatabaseNamePrefix=$(DatabaseNamePrefix);
           DataSourceMsSql2005=$(DataSourceMsSql2005);
           DataSourceMsSql2008=$(DataSourceMsSql2008);

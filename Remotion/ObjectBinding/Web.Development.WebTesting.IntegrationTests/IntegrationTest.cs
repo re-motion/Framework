@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [TestFixtureSetUp]
     public void IntegrationTestTestFixtureSetUp ()
     {
-      _webTestHelper = WebTestHelper.CreateFromConfiguration();
-      
+      _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
+
       _webTestHelper.OnFixtureSetUp();
     }
 

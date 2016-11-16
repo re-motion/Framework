@@ -28,6 +28,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
   public interface IChromeConfiguration : IBrowserConfiguration
   {
     /// <summary>
+    /// Gets the full path to chrome.exe.
+    /// </summary>
+    string BinaryPath { [CanBeNull] get; }
+
+    /// <summary>
+    /// Gets the path to the user directories, which is used by the started Chrome. If the path does not exists, it will be automatically created at startup.
+    /// </summary>
+    string UserDirectory { [CanBeNull] get; }
+
+    /// <summary>
     /// Creates the <see cref="ChromeOptions"/> used when instantiating the Chrome browser.
     /// </summary>
     [NotNull] ChromeOptions CreateChromeOptions ();
