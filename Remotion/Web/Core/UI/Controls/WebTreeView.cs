@@ -65,7 +65,7 @@ namespace Remotion.Web.UI.Controls
     #endregion
 
     /// <summary> The separator used for the node path. </summary>
-    private const char c_pathSeparator = '\t';
+    private const char c_pathSeparator = '|';
 
     /// <summary> The prefix for the expansion command. </summary>
     private const string c_expansionCommandPrefix = "Expand=";
