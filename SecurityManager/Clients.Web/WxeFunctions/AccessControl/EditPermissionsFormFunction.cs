@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.SecurityManager.Clients.Web.UI.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
@@ -29,17 +30,8 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
   [Serializable]
   public class EditPermissionsFormFunction : FormFunction<SecurableClassDefinition>
   {
-    public EditPermissionsFormFunction ()
-    {
-    }
-
-    protected EditPermissionsFormFunction (ITransactionMode transactionMode, params object[] args)
-        : base (transactionMode, args)
-    {
-    }
-
     public EditPermissionsFormFunction (ITransactionMode transactionMode, [NotNull] IDomainObjectHandle<SecurableClassDefinition> currentObjectHandle)
-        : base (transactionMode, currentObjectHandle)
+        : base (transactionMode, ArgumentUtility.CheckNotNull ("currentObjectHandle", currentObjectHandle))
     {
     }
 
