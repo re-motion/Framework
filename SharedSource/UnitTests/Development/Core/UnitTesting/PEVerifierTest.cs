@@ -57,7 +57,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     {
       var verifier = PEVerifier.CreateDefault ();
 
-      var path = verifier.GetVerifierPath (PEVerifyVersion.DotNet2);
+      var path = verifier.GetVerifierPath (PEVerifyVersion.DotNet4);
 
       Assert.That (path, Is.Not.Null);
       Assert.That (File.Exists (path), Is.True);
