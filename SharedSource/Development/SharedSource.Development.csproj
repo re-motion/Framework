@@ -73,6 +73,7 @@
     <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk6PEVerifyPathSource.cs" />
     <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk70aPEVerifyPathSource.cs" />
     <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk71PEVerifyPathSource.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk81aPEVerifyPathSource.cs" />
     <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk80aPEVerifyPathSource.cs" />
     <Compile Include="UnitTesting\PrivateInvoke.cs" />
     <Compile Include="UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtility.cs" />

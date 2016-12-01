@@ -183,6 +183,9 @@
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifyPathSources\WindowsSdk80aPEVerifyPathSource.cs">
       <Link>SharedSource\UnitTesting\PEVerifyPathSources\WindowsSdk80aPEVerifyPathSource.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifyPathSources\WindowsSdk81aPEVerifyPathSource.cs">
+      <Link>SharedSource\UnitTesting\PEVerifyPathSources\WindowsSdk81aPEVerifyPathSource.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PrivateInvoke.cs">
       <Link>SharedSource\UnitTesting\PrivateInvoke.cs</Link>
     </Compile>
