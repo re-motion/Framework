@@ -24,7 +24,6 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
   partial class WindowsSdk81aPEVerifyPathSource : PotentialPEVerifyPathSourceBase
   {
-    public const string WindowsSdkRegistryKey35 = @"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1A\WinSDK-NetFx35Tools";
     public const string WindowsSdkRegistryKey40 = @"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1A\WinSDK-NetFx40Tools";
     public const string WindowsSdkRegistryInstallationFolderValue = "InstallationFolder";
 
@@ -32,12 +31,6 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
     {
       switch (version)
       {
-        case PEVerifyVersion.DotNet2:
-          return string.Format (
-              "Windows SDK 8.1A: Registry: HKEY_LOCAL_MACHINE\\{0}\\{1}\\PEVerify.exe",
-              WindowsSdkRegistryKey35,
-              WindowsSdkRegistryInstallationFolderValue);
-
         case PEVerifyVersion.DotNet4:
           return string.Format (
               "Windows SDK 8.1A: Registry: HKEY_LOCAL_MACHINE\\{0}\\{1}\\PEVerify.exe",
@@ -45,7 +38,7 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
               WindowsSdkRegistryInstallationFolderValue);
 
         default:
-          return "Windows SDK 8.1A: n/a";
+          return string.Format ("{0}: Windows SDK 8.1A: n/a", version);
       }
     }
 
@@ -53,14 +46,6 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
     {
       switch (version)
       {
-        case PEVerifyVersion.DotNet2:
-          return Maybe
-              .ForValue (RegistryKey.OpenBaseKey (RegistryHive.LocalMachine, RegistryView.Registry32))
-              .Select (key => key.OpenSubKey (WindowsSdkRegistryKey35, false))
-              .Select (key => key.GetValue (WindowsSdkRegistryInstallationFolderValue) as string)
-              .Select (path => Path.Combine (path, "PEVerify.exe"))
-              .ValueOrDefault ();
-
         case PEVerifyVersion.DotNet4:
           return Maybe
               .ForValue (RegistryKey.OpenBaseKey (RegistryHive.LocalMachine, RegistryView.Registry32))
