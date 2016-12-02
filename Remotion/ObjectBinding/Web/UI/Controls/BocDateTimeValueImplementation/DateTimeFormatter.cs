@@ -51,7 +51,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation
 
     public bool Is12HourTimeFormat ()
     {
-      return !string.IsNullOrEmpty (CultureInfo.CurrentCulture.DateTimeFormat.AMDesignator);
+      var shortTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern;
+      var hoursOn12HourClockFormatSpecifier = "h";
+      var amPmDesignatorFormatSpecifier = "t";
+      return shortTimePattern.Contains (hoursOn12HourClockFormatSpecifier) && shortTimePattern.Contains (amPmDesignatorFormatSpecifier);
     }
 
     public int GetDateMaxLength ()
