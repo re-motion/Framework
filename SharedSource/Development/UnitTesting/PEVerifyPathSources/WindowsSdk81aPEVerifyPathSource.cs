@@ -38,7 +38,7 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
               WindowsSdkRegistryInstallationFolderValue);
 
         default:
-          return string.Format ("{0}: Windows SDK 8.1A: n/a", version);
+          return "Windows SDK 8.1A: n/a";
       }
     }
 
