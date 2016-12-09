@@ -15,12 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Rhino.Mocks;
 using EagerFetching_BaseClass = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.BaseClass;
 using EagerFetching_DerivedClass1 = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.DerivedClass1;
 using EagerFetching_DerivedClass2 = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.DerivedClass2;
@@ -465,6 +469,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Ignore ("RM-6131: Add integration test for sort property from derived type")]
     public void EagerFetching_RelationSortExpressionUsesPropertyFromDerivedType ()
     {
+    }
+
+    [Test]
+    public void EagerFetching_FailswhenUsingFetchClausesWithEnumerableQueryDueToDotNetFrameworkImplementaion_ ()
+    {
+      var orders = new[] { (Order) LifetimeService.GetObject (ClientTransaction.Current, DomainObjectIDs.Order1, false) };
+      var queryable = orders.AsQueryable().FetchOne (o => o.Customer);
+
+      //Note: EnumerableQuery<T> will throw an InvalidOperationException when encountering non-linq generic extension methods.
+      Assert.That (() => queryable.ToArray(), Throws.InvalidOperationException);
+    }
+
+    [Test]
+    public void EagerFetching_TransparentlyIgnoreFetchClausesOnNonRelinqBasedQueries_ ()
+    {
+      var orders = new[] { (Order) LifetimeService.GetObject (ClientTransaction.Current, DomainObjectIDs.Order1, false) };
+      var queryProviderStub = MockRepository.GenerateStub<IQueryProvider>();
+      queryProviderStub.Stub (_ => _.Execute<IEnumerable<Order>> (Arg<Expression>.Is.Anything)).Return (orders);
+
+      var queryableStub = MockRepository.GenerateStub<IQueryable<Order>>();
+      queryableStub.Stub (_ => _.Expression).Return (Expression.Constant (null, typeof (IQueryable<Order>)));
+      queryableStub.Stub (_ => _.Provider).Return (queryProviderStub);
+      var queryableWithFetch = queryableStub.FetchOne (o => o.Customer);
+
+      var result = queryableWithFetch.ToArray();
+      
+      Assert.That (result, Is.EqualTo (orders));
     }
 
     private void CheckFetchedCollectionProperty1SideForTargetClass2 ()

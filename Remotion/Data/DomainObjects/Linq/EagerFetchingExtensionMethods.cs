@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.Linq
         IQueryable<TOriginating> query, 
         LambdaExpression relatedObjectSelector)
     {
-      var queryProvider = ArgumentUtility.CheckNotNullAndType<QueryProviderBase> ("query.Provider", query.Provider);
+      var queryProvider = ArgumentUtility.CheckNotNull ("query.Provider", query.Provider);
       var callExpression = Expression.Call (currentFetchMethod, query.Expression, relatedObjectSelector);
       return new FluentFetchRequest<TOriginating, TRelated> (queryProvider, callExpression);
     }
