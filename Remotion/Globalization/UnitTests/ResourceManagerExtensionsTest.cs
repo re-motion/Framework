@@ -17,7 +17,13 @@
 
 using System;
 using System.Collections.Specialized;
+using log4net;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
+using log4net.Filter;
 using NUnit.Framework;
+using Remotion.Globalization.Implementation;
 using Remotion.Globalization.UnitTests.TestDomain;
 using Rhino.Mocks;
 
@@ -28,6 +34,7 @@ namespace Remotion.Globalization.UnitTests
   {
     private IResourceManager _resourceManagerMock;
     private string _fakeResourceID;
+    private MemoryAppender _memoryAppender;
 
     [SetUp]
     public void SetUp ()
@@ -35,6 +42,24 @@ namespace Remotion.Globalization.UnitTests
       _fakeResourceID = "fakeID";
 
       _resourceManagerMock = MockRepository.GenerateMock<IResourceManager>();
+
+      _memoryAppender = new MemoryAppender();
+
+      LoggerMatchFilter acceptFilter = new LoggerMatchFilter();
+      acceptFilter.LoggerToMatch = typeof (ResourceLogger).FullName;
+      acceptFilter.AcceptOnMatch = true;
+      _memoryAppender.AddFilter (acceptFilter);
+
+      DenyAllFilter denyFilter = new DenyAllFilter();
+      _memoryAppender.AddFilter (denyFilter);
+
+      BasicConfigurator.Configure (_memoryAppender);
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+      LogManager.ResetConfiguration();
     }
 
     [Test]
@@ -75,6 +100,13 @@ namespace Remotion.Globalization.UnitTests
 
       _resourceManagerMock.VerifyAllExpectations();
       Assert.That (result, Is.EqualTo (_fakeResourceID));
+
+      LoggingEvent[] events = _memoryAppender.GetEvents();
+      Assert.That (events.Length, Is.EqualTo (1));
+      Assert.That (events[0].Level, Is.EqualTo (Level.Debug));
+      Assert.That (
+          events[0].RenderedMessage,
+          Is.EqualTo ("No resource entry exists for the following element: ID: 'fakeID'"));
     }
 
     [Test]
