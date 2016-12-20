@@ -15,7 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using log4net;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
+using log4net.Filter;
 using NUnit.Framework;
+using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Rhino.Mocks;
 
@@ -28,12 +34,14 @@ namespace Remotion.Globalization.UnitTests
     private ITypeInformation _typeInformationForResourceResolutionStub;
     private ITypeInformation _typeInformationStub;
     private IPropertyInformation _propertyInformationStub;
+    private MemoryAppender _memoryAppender;
 
     [SetUp]
     public void SetUp ()
     {
       _typeInformationStub = MockRepository.GenerateStub<ITypeInformation>();
       _typeInformationStub.Stub (stub => stub.Name).Return ("TypeName");
+      _typeInformationStub.Stub (stub => stub.FullName).Return ("FullTypeName");
 
       _propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
       _propertyInformationStub.Stub (stub => stub.Name).Return ("PropertyName");
@@ -41,6 +49,24 @@ namespace Remotion.Globalization.UnitTests
       _typeInformationForResourceResolutionStub = MockRepository.GenerateStub<ITypeInformation>();
 
       _serviceStub = MockRepository.GenerateStub<IMemberInformationGlobalizationService> ();
+
+      _memoryAppender = new MemoryAppender();
+
+      LoggerMatchFilter acceptFilter = new LoggerMatchFilter();
+      acceptFilter.LoggerToMatch = typeof (ResourceLogger).FullName;
+      acceptFilter.AcceptOnMatch = true;
+      _memoryAppender.AddFilter (acceptFilter);
+
+      DenyAllFilter denyFilter = new DenyAllFilter();
+      _memoryAppender.AddFilter (denyFilter);
+
+      BasicConfigurator.Configure (_memoryAppender);
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+      LogManager.ResetConfiguration();
     }
 
     [Test]
@@ -86,9 +112,18 @@ namespace Remotion.Globalization.UnitTests
                   out Arg<string>.Out (null).Dummy))
           .Return (false);
 
+      _propertyInformationStub.Stub (_ => _.DeclaringType).Return (_typeInformationStub);
+
       var result = _serviceStub.GetPropertyDisplayName (_propertyInformationStub, _typeInformationForResourceResolutionStub);
 
       Assert.That (result, Is.EqualTo ("PropertyName"));
+
+      LoggingEvent[] events = _memoryAppender.GetEvents();
+      Assert.That (events.Length, Is.EqualTo (1));
+      Assert.That (events[0].Level, Is.EqualTo (Level.Debug));
+      Assert.That (
+          events[0].RenderedMessage,
+          Is.EqualTo ("No resource entry exists for the following element: Property: 'PropertyName' (Type: 'FullTypeName')"));
     }
 
     [Test]
@@ -186,6 +221,13 @@ namespace Remotion.Globalization.UnitTests
       var result = _serviceStub.GetTypeDisplayName (_typeInformationStub, _typeInformationForResourceResolutionStub);
 
       Assert.That (result, Is.EqualTo ("TypeName"));
+
+      LoggingEvent[] events = _memoryAppender.GetEvents();
+      Assert.That (events.Length, Is.EqualTo (1));
+      Assert.That (events[0].Level, Is.EqualTo (Level.Debug));
+      Assert.That (
+          events[0].RenderedMessage,
+          Is.EqualTo ("No resource entry exists for the following element: Type: 'FullTypeName'"));
     }
 
     [Test]

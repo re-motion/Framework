@@ -15,7 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using log4net;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
+using log4net.Filter;
 using NUnit.Framework;
+using Remotion.Globalization.Implementation;
 using Remotion.Globalization.UnitTests.TestDomain;
 using Rhino.Mocks;
 
@@ -26,12 +32,31 @@ namespace Remotion.Globalization.UnitTests
   {
     private IEnumerationGlobalizationService _serviceStub;
     private Enum _value;
+    private MemoryAppender _memoryAppender;
 
     [SetUp]
     public void SetUp ()
     {
       _serviceStub = MockRepository.GenerateStub<IEnumerationGlobalizationService>();
       _value = EnumWithResources.Value1;
+
+      _memoryAppender = new MemoryAppender();
+
+      LoggerMatchFilter acceptFilter = new LoggerMatchFilter();
+      acceptFilter.LoggerToMatch = typeof (ResourceLogger).FullName;
+      acceptFilter.AcceptOnMatch = true;
+      _memoryAppender.AddFilter (acceptFilter);
+
+      DenyAllFilter denyFilter = new DenyAllFilter();
+      _memoryAppender.AddFilter (denyFilter);
+
+      BasicConfigurator.Configure (_memoryAppender);
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+      LogManager.ResetConfiguration();
     }
 
     [Test]
@@ -72,6 +97,14 @@ namespace Remotion.Globalization.UnitTests
           .Return (false);
 
       Assert.That (_serviceStub.GetEnumerationValueDisplayName (_value), Is.EqualTo ("Value1"));
+
+      LoggingEvent[] events = _memoryAppender.GetEvents();
+      Assert.That (events.Length, Is.EqualTo (1));
+      Assert.That (events[0].Level, Is.EqualTo (Level.Debug));
+      Assert.That (
+          events[0].RenderedMessage,
+          Is.EqualTo (
+              "No resource entry exists for the following element: Enum value: 'Value1' (Type: 'Remotion.Globalization.UnitTests.TestDomain.EnumWithResources')"));
     }
 
     [Test]

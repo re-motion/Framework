@@ -17,6 +17,7 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.ExtensibleEnums;
+using Remotion.Globalization.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization.ExtensibleEnums
@@ -52,6 +53,16 @@ namespace Remotion.Globalization.ExtensibleEnums
       string result;
       if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName (value, out result))
         return result;
+
+      if (ResourceLogger.IsEnabled)
+      {
+        var definingMethod = value.GetValueInfo().DefiningMethod;
+        ResourceLogger.LogResourceEntryNotFound (
+            "Extensible enum value: '{0}' (Method: '{1}', Type: '{2}')",
+            value.ValueName,
+            definingMethod.Name,
+            definingMethod.DeclaringType == null ? "" : definingMethod.DeclaringType.FullName);
+      }
 
       return value.ValueName;
     }

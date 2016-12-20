@@ -96,6 +96,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Obsolete\ResourceException.cs" />
     <Compile Include="ResourceIdentifiersAttribute.cs" />
+    <Compile Include="Implementation\ResourceLogger.cs" />
     <Compile Include="ResourceManagerExtensions.cs" />
     <Compile Include="ResourceManagerSet.cs" />
   </ItemGroup>

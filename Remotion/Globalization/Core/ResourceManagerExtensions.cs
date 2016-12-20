@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Specialized;
 using JetBrains.Annotations;
+using Remotion.Globalization.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization
@@ -58,6 +59,7 @@ namespace Remotion.Globalization
       if (resourceManager.TryGetString (id, out value))
         return value;
 
+      ResourceLogger.LogResourceEntryNotFound ("ID: '{0}'", id);
       return id;
     }
 

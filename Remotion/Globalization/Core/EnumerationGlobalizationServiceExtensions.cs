@@ -16,6 +16,7 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Remotion.Globalization.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization
@@ -51,6 +52,11 @@ namespace Remotion.Globalization
       string result;
       if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out result))
         return result;
+
+      if (ResourceLogger.IsEnabled)
+      {
+        ResourceLogger.LogResourceEntryNotFound ("Enum value: '{0}' (Type: '{1}')", value, value.GetType().FullName);
+      }
 
       return value.ToString();
     }
