@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:c="http://www.re-motion.org/serviceLocation/configuration" 
+    targetNamespace="http://www.re-motion.org/serviceLocation/configuration" 
+    elementFormDefault="qualified" 
+    attributeFormDefault="unqualified">
+  <xs:element name="remotion.serviceLocation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="serviceLocatorProvider" minOccurs="0">
+          <xs:complexType>
+            <xs:attribute name="type" use="required" type="c:DotNetType"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="DotNetType">
+    <xs:restriction base="c:RequiredStringType">
+      <!--  Class, Assembly; Namespace.Class, Assembly; Namespace.Namespace.Class, Assembly; 
+            Class+Class, Assembly; Namespace.Class+Class, Assembly; Namespace.Namespace.Class+Class, Assembly
+            Class,Assembly; Namespace.Class,Assembly; Namespace.Namespace.Class,Assembly; 
+            Class+Class,Assembly; Namespace.Class+Class,Assembly; Namespace.Namespace.Class+Class,Assembly -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*),\s?([\p{L}\d]+\.)*([\p{L}\d]+)" />
+
+      <!--  Class; Namespace.Class; Namespace.Namespace.Class; 
+            Class+Class; Namespace.Class+Class; Namespace.Namespace.Class+Class -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*)" />
+
+      <!--  Namespace::Class; Namespace.Namespace::Class; 
+            Namespace::Class+Class; Namespace::Namespace.Class+Class -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*::)(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*)" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RequiredStringType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:whiteSpace value="collapse" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

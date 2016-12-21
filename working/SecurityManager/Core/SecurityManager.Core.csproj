@@ -1,0 +1,478 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.SecurityManager</RootNamespace>
+    <AssemblyName>Remotion.SecurityManager</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Remotion.SecurityManager.XML</DocumentationFile>
+    <NoWarn>1591;0419</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591;0419</NoWarn>
+    <DocumentationFile>bin\Release\Remotion.SecurityManager.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Linq, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Remotion.Linq.2.0.2\lib\net45\Remotion.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Linq.EagerFetching, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Remotion.Linq.EagerFetching.2.0.1\lib\net45\Remotion.Linq.EagerFetching.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Remotion.TypePipe.2.0.1\lib\net45\Remotion.TypePipe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>4.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Configuration\SecurityManagerConfiguration.xsd">
+      <SubType>
+      </SubType>
+    </EmbeddedResource>
+    <None Include="..\Build\NuSpec\TemplateShared.nuspec">
+      <Link>TemplateShared.nuspec</Link>
+    </None>
+    <None Include="..\SecurityManager AGPL.licenseheader">
+      <Link>SecurityManager AGPL.licenseheader</Link>
+    </None>
+    <None Include="Database\SecurityManagerCreateDB.sql">
+    </None>
+    <None Include="Database\SecurityManagerSetupDB.sql">
+    </None>
+    <Compile Include="..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="AclTools\Expansion\AclExpander.cs" />
+    <Compile Include="AclTools\Expansion\HtmlTagWriter\HtmlTagWriter.cs" />
+    <Compile Include="AclTools\Expansion\HtmlTagWriter\HtmlTagWriterTags.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\AclExpansionHtmlWriterImplementation.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\AclExpanderAclFinder.cs" />
+    <Compile Include="AclTools\Expansion\AclExpanderApplication.cs" />
+    <Compile Include="AclTools\Expansion\AclExpanderApplicationSettings.cs" />
+    <Compile Include="AclTools\Expansion\AclExpanderUserFinder.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionAccessConditions.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionEntry.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionHtmlWriter.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\AclExpansionHtmlWriterImplementationBase.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionHtmlWriterSettings.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionMultiFileHtmlWriter.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\AclExpansionTree.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\AclExpansionTreeNode.cs" />
+    <Compile Include="AclTools\Expansion\IAclExpansionWriter.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\AclExpansionTreeNode_ObjectMother.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\AclProbe.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\AclExpansionEntryCreator.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\AclExpansionEntryCreator_GetAccessTypesResult.cs" />
+    <Compile Include="AclTools\Expansion\IAclExpanderAclFinder.cs" />
+    <Compile Include="AclTools\Expansion\IAclExpanderUserFinder.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\IUserRoleAclAceCombinationFinder.cs" />
+    <Compile Include="AclTools\Expansion\TextWriterFactory\ITextWriterFactory.cs" />
+    <Compile Include="AclTools\Expansion\TextWriterFactory\StreamWriterFactory.cs" />
+    <Compile Include="AclTools\Expansion\TextWriterFactory\TextWriterData.cs" />
+    <Compile Include="AclTools\Expansion\TextWriterFactory\TextWriterFactoryBase.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\UserRoleAclAceCombination.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\UserRoleAclAceCombinationFinder.cs" />
+    <Compile Include="Configuration\AccessControlElement.cs" />
+    <Compile Include="Configuration\SecurityManagerConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Domain\AccessControl\AccessControlEntry.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryValidationError.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlExtensions.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\AccessResolver.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\CachedUser.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\IAccessResolver.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\ISecurityContextRepository.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\ISecurityPrincipalRepository.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\Principal.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\RepositoryBase.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurableClassDefinitionData.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextRepository.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextRevisionBasedCache.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextRevisionBasedCacheBase.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextUserRevisionBasedCache.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityPrincipalRepository.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\State.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\StatefulAccessControlListData.cs" />
+    <Compile Include="Domain\AccessControl\TenantHierarchyCondition.cs" />
+    <Compile Include="Domain\AccessControl\GroupHierarchyCondition.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityTokenMatcher.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryValidationResult.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlException.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlList.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\AccessControlListFinder.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlObject.cs" />
+    <Compile Include="Domain\AccessControl\AccessInformation.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\AccessTypeStatistics.cs" />
+    <Compile Include="Domain\AccessControl\IStateCombinationBuilder.cs" />
+    <Compile Include="Domain\AccessControl\PropertyStateTuple.cs" />
+    <Compile Include="AclTools\Expansion\TextWriterFactory\StringWriterFactory.cs" />
+    <Compile Include="Domain\AccessControl\StatefulAccessControlList.cs" />
+    <Compile Include="Domain\AccessControl\StatelessAccessControlList.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilter.cs" />
+    <Compile Include="Domain\DomainObjectDeleteHandler.cs" />
+    <Compile Include="Domain\DomainObjectExtensions.cs" />
+    <Compile Include="Domain\IDomainRevisionProvider.cs" />
+    <Compile Include="Domain\GuidRevisionValue.cs" />
+    <Compile Include="Domain\IRevisionKey.cs" />
+    <Compile Include="Domain\IRevisionValue.cs" />
+    <Compile Include="Domain\ISecurityManagerPrincipal.cs" />
+    <Compile Include="Domain\ISecurityManagerPrincipalFactory.cs" />
+    <Compile Include="Domain\IRevisionProvider.cs" />
+    <Compile Include="Domain\IUserRevisionProvider.cs" />
+    <Compile Include="Domain\Metadata\MetadataExtensions.cs" />
+    <Compile Include="Domain\NullSecurityManagerPrincipal.cs" />
+    <Compile Include="Domain\PrincipalRole.cs" />
+    <Compile Include="SecurityProvider\Implementation\AccessTypeCache.cs" />
+    <Compile Include="Domain\RevisionKey.cs" />
+    <Compile Include="Domain\RevisionProvider.cs" />
+    <Compile Include="Domain\RevisionProviderBase.cs" />
+    <Compile Include="Domain\SearchInfrastructure\Metadata\AbstractRoleDefinitionPropertyTypeSearchService.cs" />
+    <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\GroupTypePropertyTypeSearchService.cs" />
+    <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\PositionPropertyTypeSearchService.cs" />
+    <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\GroupPropertyTypeSearchService.cs" />
+    <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureObjectProxy.cs" />
+    <Compile Include="Domain\OrganizationalStructure\SubstitutionProxy.cs" />
+    <Compile Include="Domain\OrganizationalStructure\TenantProxy.cs" />
+    <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\RolePropertiesSearchArguments.cs" />
+    <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\RolePropertiesSearchService.cs" />
+    <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\SubstitutionPropertiesSearchService.cs" />
+    <Compile Include="Domain\OrganizationalStructure\Substitution.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Domain\OrganizationalStructure\UserProxy.cs" />
+    <Compile Include="Domain\SearchInfrastructure\DisplayNameConstraintExtensions.cs" />
+    <Compile Include="Domain\SearchInfrastructure\DisplayNameConstraint.cs" />
+    <Compile Include="Domain\SearchInfrastructure\ResultSizeConstraint.cs" />
+    <Compile Include="Domain\SearchInfrastructure\TenantConstraint.cs" />
+    <Compile Include="Domain\SearchInfrastructure\ResultSizeExtensions.cs" />
+    <Compile Include="Domain\SearchInfrastructure\SecurityManagerPropertyBasedSearchServiceBase.cs" />
+    <Compile Include="Domain\SearchInfrastructure\SecurityManagerPropertyTypeBasedSearchServiceBase.cs" />
+    <Compile Include="Domain\SearchInfrastructure\SecurityManagerSearchArguments.cs" />
+    <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\TenantPropertyTypeSearchService.cs" />
+    <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\UserPropertyTypeSearchService.cs" />
+    <Compile Include="Domain\SecurityManagerPrincipal.cs" />
+    <Compile Include="Domain\SecurityManagerPrincipalFactory.cs" />
+    <Compile Include="Domain\SecurityManagerPrincipalProvider.cs" />
+    <Compile Include="Domain\SearchInfrastructure\SecurityManagerSearchServiceBase.cs" />
+    <Compile Include="Domain\AccessControl\TenantCondition.cs" />
+    <Compile Include="Domain\AccessControl\GroupCondition.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\IAccessControlListFinder.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\ISecurityTokenBuilder.cs" />
+    <Compile Include="Domain\AccessControl\Permission.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityToken.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityTokenBuilder.cs" />
+    <Compile Include="Domain\AccessControl\StateCombination.cs" />
+    <Compile Include="Domain\AccessControl\StateCombinationBuilder.cs" />
+    <Compile Include="Domain\AccessControl\StateCombinationComparer.cs" />
+    <Compile Include="Domain\AccessControl\StateUsage.cs" />
+    <Compile Include="Domain\AccessControl\UserCondition.cs" />
+    <Compile Include="Domain\BaseSecurityManagerObject.cs" />
+    <Compile Include="Domain\SecurityManagerObjectServiceFactoryMixin.cs" />
+    <Compile Include="Domain\ConstraintViolationException.cs" />
+    <Compile Include="Domain\Metadata\AbstractRoleDefinition.cs" />
+    <Compile Include="Domain\Metadata\AccessTypeDefinition.cs" />
+    <Compile Include="Domain\Metadata\AccessTypeReference.cs" />
+    <Compile Include="Domain\Metadata\Culture.cs" />
+    <Compile Include="Domain\Metadata\CultureImporter.cs" />
+    <Compile Include="Domain\Metadata\EnumValueDefinition.cs" />
+    <Compile Include="Domain\Metadata\FindMetadataObjectQueryBuilder.cs" />
+    <Compile Include="Domain\Metadata\ImportException.cs" />
+    <Compile Include="Domain\Metadata\LocalizedName.cs" />
+    <Compile Include="Domain\Metadata\MetadataException.cs" />
+    <Compile Include="Domain\Metadata\MetadataImporter.cs" />
+    <Compile Include="Domain\Metadata\MetadataObject.cs" />
+    <Compile Include="Domain\Metadata\SecurableClassDefinition.cs" />
+    <Compile Include="Domain\Metadata\StateDefinition.cs" />
+    <Compile Include="Domain\Metadata\StatePropertyDefinition.cs" />
+    <Compile Include="Domain\Metadata\StatePropertyReference.cs" />
+    <Compile Include="Domain\OrganizationalStructure\Delegation.cs" />
+    <Compile Include="Domain\OrganizationalStructure\Tenant.cs" />
+    <Compile Include="Domain\OrganizationalStructure\Group.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupType.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupTypePosition.cs" />
+    <Compile Include="Domain\OrganizationalStructure\IOrganizationalStructureFactory.cs" />
+    <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureFactory.cs" />
+    <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureObject.cs" />
+    <Compile Include="Domain\OrganizationalStructure\Position.cs" />
+    <Compile Include="Domain\OrganizationalStructure\Role.cs" />
+    <Compile Include="Domain\OrganizationalStructure\User.cs" />
+    <Compile Include="Domain\Metadata\SecurableClassValidationResult.cs" />
+    <Compile Include="Domain\Revision.cs" />
+    <Compile Include="Domain\SecurityManagerAccessTypes.cs" />
+    <Compile Include="Domain\SecurityManagerStorageGroupAttribute.cs" />
+    <Compile Include="Domain\UserRevisionKey.cs" />
+    <Compile Include="Domain\UserRevisionProvider.cs" />
+    <Compile Include="SecurityProvider\Implementation\SecurityContextCache.cs" />
+    <Compile Include="Globalization\AclTools\Expansion\AclToolsExpansion.Designer.cs">
+      <DependentUpon>AclToolsExpansion.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Persistence\RevisionStorageProviderExtension.cs" />
+    <Compile Include="Persistence\SecurityManagerSqlStorageObjectFactory.cs" />
+    <Compile Include="Persistence\SecurityManagerStorageProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecurityManagerException.cs" />
+    <Compile Include="SecurityProvider\RevisionBasedCachingSecurityProviderDecorator.cs" />
+    <Compile Include="SecurityProvider\SecurityService.cs" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\AccessControlEntry.de.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>AccessControlEntry.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\AccessControlEntry.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>AccessControlEntry.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\TenantHierarchyCondition.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\TenantHierarchyCondition.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\UserCondition.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\UserCondition.resx">
+      <LastGenOutput>TenantCondition.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupHierarchyCondition.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupHierarchyCondition.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\TenantCondition.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\TenantCondition.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>TenantCondition.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupCondition.de.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>GroupSelection.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupCondition.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>GroupCondition.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Tenant.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Tenant.de.resx">
+      <LastGenOutput>Client.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\User.de.resx">
+      <LastGenOutput>User.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Role.de.resx">
+      <LastGenOutput>Role.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Position.de.resx">
+      <LastGenOutput>Position.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupTypePosition.de.resx">
+      <LastGenOutput>GroupTypePosition.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupType.de.resx">
+      <LastGenOutput>GroupType.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Group.de.resx">
+      <LastGenOutput>Group.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Delegation.de.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Delegation.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Delegation.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Group.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupType.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupTypePosition.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Position.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Role.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\User.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Core\Reflection\Core.Reflection.csproj">
+      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
+      <Name>Core.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Core\Tools\Core.Tools.csproj">
+      <Project>{18269689-DC0F-4975-879B-A6ACBA0FA596}</Project>
+      <Name>Core.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
+      <Project>{f3935d12-39e6-4f06-8316-98cd7ed60c6b}</Project>
+      <Name>Data.DomainObjects.ObjectBinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Data\DomainObjects.Security\Data.DomainObjects.Security.csproj">
+      <Project>{2C87FB62-CC00-4297-A3EA-35F4FC6649F0}</Project>
+      <Name>Data.DomainObjects.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Data\DomainObjects\Data.DomainObjects.csproj">
+      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
+      <Name>Data.DomainObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Data\Core\Data.Core.csproj">
+      <Project>{70273934-12F1-49AF-975A-303BAEFE1CAE}</Project>
+      <Name>Data.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Globalization\Core\Globalization.Core.csproj">
+      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
+      <Name>Globalization.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Mixins\Core\Mixins.Core.csproj">
+      <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
+      <Name>Mixins.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj">
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Name>ObjectBinding.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Security\Core\Security.Core.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Database\SecurityManagerSetupDBSpecialTables.sql">
+    </None>
+    <None Include="Doc\include\GettingStartedWithRestrict.aml" />
+    <None Include="GenerateSetupDBScript.cmd" />
+    <None Include="..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AclTools\Expansion\AclExpansion.css" />
+    <EmbeddedResource Include="Globalization\AclTools\Expansion\AclToolsExpansion.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\AclTools\Expansion\AclToolsExpansion.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AclToolsExpansion.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Substitution.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Substitution.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Database\SecurityManagerSetupIndexes.sql" />
+    <None Include="Database\SecurityManagerSetupConstraints.sql" />
+    <None Include="Database\SecurityManagerTearDownDB.sql" />
+    <None Include="Database\SecurityManagerTearDownDBSpecialTables.sql" />
+    <None Include="Doc\Whats_New.Remotion.SecurityManager.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FacetManifest.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>cd ..\..\
+.\GenerateSetupDBScript.cmd $(ConfigurationName)</PostBuildEvent>
+  </PropertyGroup>
+</Project>

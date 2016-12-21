@@ -1,0 +1,151 @@
+/*  */
+div.dropDownMenuHead
+{
+  border-color: #005588;
+  border-style: solid;
+  border-width: 1px;
+	background-color: White;
+}
+
+/*div.dropDownMenuHead
+{
+  padding: 1px;
+}
+
+div.dropDownMenuHeadFocus
+{
+  border-color: #005588;
+  border-style: solid;
+  border-width: 1px;
+	background-color: White;
+}*/
+
+td.dropDownMenuHeadTitle
+{
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: default;
+}
+
+/*div.dropDownMenuHeadFocus td.dropDownMenuHeadTitle
+{
+	background-color: White;
+}*/
+
+td.dropDownMenuHeadTitle a
+{
+  color: Blue;
+}
+
+/*  */
+td.dropDownMenuHeadButton
+{
+  vertical-align: middle;
+  cursor: default;
+  background-color: #d7e7fd;
+}
+
+/*div.dropDownMenuHead td.dropDownMenuHeadButton
+{
+  visibility: hidden;
+}
+
+div.dropDownMenuHeadFocus td.dropDownMenuHeadButton
+{
+  visibility: visible;
+}*/
+
+td.dropDownMenuHeadButton a
+{
+  cursor: default;
+  background-color: Transparent;
+  border-style: none;
+	padding: 0px;
+}
+
+td.dropDownMenuHeadButton a:hover
+{
+  cursor: default;
+  background-color: Transparent;
+  border-style: none;
+	padding: 0px;
+}
+
+/*  */
+div.dropDownMenuPopUp
+{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  border-color: #005588;
+  border-style: solid;
+  border-width: 1px;
+  background-image: url(../Image/DropDownMenuItemIconPane.gif);
+  background-repeat: repeat-y;  
+  background-color: White;
+}
+
+div.dropDownMenuItem
+{
+  color: Blue;
+	margin: 1px;
+	padding: 2px;
+	vertical-align: middle;	
+	white-space: nowrap;
+	cursor: default;
+}
+
+div.dropDownMenuItemFocus
+{
+  color: Blue;
+	margin: 1px;
+	padding: 1px;
+	vertical-align: middle;
+	white-space: nowrap;
+	border-color: #005588;
+	border-width: 1px;
+	border-style: solid;
+	background-color: #fee197;	
+  cursor: default;
+}
+
+div.dropDownMenuItemDisabled
+{
+	margin: 1px;
+	padding: 2px;
+	vertical-align: middle;	
+	white-space: nowrap;
+  color: gray;
+	cursor: default;
+}
+
+/*  */
+span.dropDownMenuItemTextPane
+{
+  padding-left: 8px;
+  padding-right: 4px;
+  font-size: 80%;
+  border-style: none;
+	vertical-align: middle;
+}
+
+
+/*  */
+span.dropDownMenuItemIconPane
+{
+  width: 20px;
+	padding-right: 2px;
+  border-style: none;
+	vertical-align: middle;
+	text-align: center;
+}
+
+span.dropDownMenuTextPaneSeparator
+{
+	margin-left: 32px;
+	margin-right: 0px;
+  font-size: 1px;
+  line-height: 1px;
+  height: 1px;
+  background-color: #6a8ccb;
+}

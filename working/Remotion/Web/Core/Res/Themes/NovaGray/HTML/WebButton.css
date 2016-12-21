@@ -1,0 +1,96 @@
+/* Style applied to the WebButton. */
+
+button.webButton
+{
+  background-color: Transparent;
+  cursor: hand;
+  cursor: pointer;
+  text-decoration: none !important;
+  border: none;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0px 2px;
+  -moz-padding-start: 0;
+  -moz-padding-end: 0;
+  outline: none;
+}
+
+button.webButton::-moz-focus-inner
+{ 
+  border: 0;
+}
+
+button.webButton span.buttonBody
+{
+  border: solid 1px #AAAAAA;
+  font-weight: bold;
+  background-image: url(../Image/ButtonBackground.gif);
+  background-color: #E6E5E7;
+  background-position: center top;
+  background-repeat: repeat-x;
+  
+  display: block;
+  position: relative;
+  top: 0px;
+  left: -2px;
+  
+  width: 100%;
+  white-space: nowrap;
+
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+.msie button.webButton span.buttonBody
+{
+  padding-top: 1px;
+}
+
+button.webButton span.buttonBody:first-child::before
+{
+  content: "";
+  height: 1.25em;
+  width: 0;
+  display: inline-block;
+  vertical-align: text-bottom;
+}
+
+button.webButton span.buttonBody img
+{
+  vertical-align: bottom !important;
+}
+
+button.webButton:hover span.buttonBody
+{
+  background-image: url(../Image/ButtonBackgroundHover.gif);
+  background-color: #DEECFC;
+  border: 1px solid #7CB2E6;
+}
+
+button.webButton:active span.buttonBody
+{
+  background-image: url(../Image/ButtonBackgroundActive.gif);
+  background-color: #C5E0FC;
+  border: 1px solid #569CE0;
+}
+
+button.webButton[disabled] span.buttonBody,
+button.webButton[disabled]:hover span.buttonBody,
+button.webButton[disabled]:active span.buttonBody
+{
+  color: Gray;
+  border: solid 1px #BCBCBC;
+  background: none;
+  background-color: #EFEFF0;
+  cursor: default;
+}
+
+button.webButton[disabled] span.buttonBody img
+{
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}

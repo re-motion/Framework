@@ -1,0 +1,167 @@
+/* Applied to the tab strip itself.*/
+*.tabStrip
+{
+}
+
+*.tabStripTabsPane
+{
+}
+
+*.tabStripTabsPane.empty
+{
+}
+
+*.tabStripTabsPane ul
+{
+  margin: 0px;
+  padding: 0px;  
+
+  list-style: none;
+  width: 100%; 
+}
+
+*.tabStripTabsPane ul li
+{
+  padding: 0;
+  margin: 0;
+  display: inline;
+}
+
+*.tabStripTab a
+{
+  border: solid 1px #005588;	
+  background-color: #e1ecfc;
+  color: Blue;
+  text-decoration: none;
+  cursor: default;
+}
+
+*.tabStripTab a:hover
+{
+	background-color: #fee197;	
+  cursor: pointer;
+	cursor: hand;
+}
+
+*.tabStripTabSelected a
+{
+  border: solid 1px #005588;	
+  background-color: White;
+  color: Blue;
+  text-decoration: none;
+  cursor: default;
+}
+
+*.tabStripTab.disabled a,
+*.tabStripTab.disabled a:hover
+{
+  color: Gray;
+  background-color: #E8E8E8;
+  cursor: default;
+}
+
+*.tabStripTab.disabled img
+{
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  -moz-opacity: 0.4;
+}
+
+/* Content area of the tab */
+*.tabStripTabsPane *.anchorBody
+{
+  padding-top: 2pt; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
+  padding-bottom: 2pt; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
+  padding-left: 2pt;
+  padding-right: 2pt;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+*.tabStripTabsPane ul *.tabStripTabWrapper
+{
+  float: left;
+  white-space: nowrap;
+}
+
+*.tabStripTabSeparator
+{
+  width: 0.3em; /* Value must also be set in the Non-IE browsers section as left-margin of the tab. */
+}
+
+*.tabStripTab,
+*.tabStripTabSelected
+{
+  position: relative;
+  display: inline-block; /* IE-only value */
+}
+
+*.tabStripTabSeparator
+{
+  display: inline-block; /* IE-only value */
+}
+
+*.tabStripTabSeparator span,
+*.tabStripTabsPane a
+{
+  display: block;
+}
+
+*.tabStripTabsPane *.anchorBody
+{
+  display: block;
+}
+
+*.tabStripTabsPane *.last
+{
+  display: block;
+  clear: left;
+}
+
+*.tabStripTab *.top, 
+*.tabStripTab *.left, 
+*.tabStripTab *.bottom, 
+*.tabStripTab *.bottom, 
+*.tabStripTab *.topLeft,
+*.tabStripTab *.bottomLeft, 
+*.tabStripTab *.topRight, 
+*.tabStripTab *.bottomRight,
+*.tabStripTabSelected *.top, 
+*.tabStripTabSelected *.left, 
+*.tabStripTabSelected *.bottom, 
+*.tabStripTabSelected *.bottom, 
+*.tabStripTabSelected *.topLeft,
+*.tabStripTabSelected *.bottomLeft, 
+*.tabStripTabSelected *.topRight, 
+*.tabStripTabSelected *.bottomRight
+{
+  display: none;
+}
+
+/* Non-IE Browsers hack \*/
+html>body *.tabStripTabsPane ul
+{
+  width: auto; 
+}
+
+html>body *.tabStripTab,
+html>body *.tabStripTabSelected
+{
+  display: block; /* Correction for Non-IE browsers. */
+  margin-left: 0.3em; /* Provides room for the separator. */
+}
+
+html>body *.tabStripTabSeparator
+{
+  display: block; /* Correction for Non-IE browsers. */
+  float: left;
+}
+
+html>body *.tabStripTabSeparator span
+{
+  padding-top: 0.1em; /* The padding used for the content span. */
+  padding-bottom: 0.1em; /* The padding used for the content span. */
+}
+
+/* End Non-IE Browsers hack\*/

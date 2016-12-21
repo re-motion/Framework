@@ -1,0 +1,17 @@
+﻿  public class TestAclExpanderAclFinder : IAclExpanderAclFinder
+  {
+    private readonly List<AccessControlList> _acls;
+    public TestAclExpanderAclFinder (List<AccessControlList> acls) { _acls = acls; }
+
+    public List<AccessControlList> FindAccessControlLists ()
+    {
+      return _acls;
+    }
+  }
+
+  public class TestAclExpanderUserFinder : IAclExpanderUserFinder
+  {
+    private readonly List<User> _users;
+    public TestAclExpanderUserFinder (List<User> users) { _users = users; }
+    public List<User> Users { get { return _users; } }
+  }

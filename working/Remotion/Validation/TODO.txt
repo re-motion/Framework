@@ -1,0 +1,106 @@
+  
+-> NotSupportedExceptions checken!
+
+
+-> Implementation Namespace -> grouping
+
+-> Integration Test: Culture Wechsel nach Validator create. Errormessage und property sollten in neuer Culture sein.
+-> Integration Test: Culture Wechsel nach Validation. Sprache von Errormessage und property muss gleich sein. 
+    ob alt oder neu ist nur du dokumentieren.	
+    Nice to have: ErrorMessage und Proprty wird On-The-Fly evaluiert und kann sich damit nach der Validierung noch ändern.
+
+
+-> Re-motion Integration
+   -> TODO MK: TypeElement.CreateInstance über IoC machen (custom service locators wieder rausnehmen)	=> JIRA-Task!  
+   
+-> ActaNova-Integration
+        -> neuer provider für dynamic types
+ 	-> fachdaten in eigenem layer rundherum - parallel zu fluent validator und beide instanzen in eigenem aggregating validator
+           -> property resolver für re-bind!?
+        -> Validator Provider in AppTools: caching von validatoren und validierung (verwendet intern FluentValidatorBuilder)
+		-> validator für fachdaten wird erzeugt - ist momentan noch null-implementierung
+		-> bekommt den cache als ICache (dekorierrt) per ctor für jeden cache-type (type based, special data based)
+        	-> interface in RM rein
+                -> implementierung in AN und AppTools (evtl. voneinander ableiten)	
+        -> Sortierung nach Komponente -> ApiBasedComponentValidationCollectorProvider -> HandlerTypeSource
+              -> should be decorated by AN to return collector-groups sorted by component!
+	-> Validatorklassen für Fachdaten (vorerst nur für mandatory und maxlength) -> kein cache benötigt!
+           -> in AN!
+        -> Adapter für IValidatorFormatter
+		-> caching factory decorator (falls factory null liefert unseren aufrufen)
+        -> Validation in Domain-Layer aufrufen (siehe Implementierung MM)
+        -> Validation in GUI (MM) 
+	-> In AN kann in einer Referrenz auf ein Proxy-Objekt stecken. 
+	-> Sonderfall Reference-Properties für BOC-Integration -> sind Proxy-Objekte
+		> das muss bei unserer Logik zum zuteilen der Validerungsmeldungen zu den BocControls auch berücksichtigt werden.
+                > Lösung: ähnlich zum BO-Proxy einen Validtor-Proxy machen!?
+
+
+
+-> Neues Feature: Message für When/Unless Rule Gruppen
+	When (
+          a => a.Street == "Maria Hilferstrasse 145",
+          () =>
+          {
+            AddRule (a => a.City).Matches ("Wien");
+            AddRule (a => a.PostalCode).Matches ("1090");
+          }).WithMessage("Für Maria Hilferstrasse 145 gilt:");
+
+-> erweiterte/neue (vordefinierte) Validation-Rules und MetaValidation-Rules ??
+
+-> Unique-Validator (in Transaktion / über DB) -> Pair MK
+
+-> CHECK alle Integration Tests vorhanden!!
+
+
+**********************************************************************************************************************
+
+
+ON_HOLD
+   -> alle HardConstraints durch meta validation rules ersetzen (Hinweis: meta validation rules müssten für beliebige validation rules generiert werden können)
+   -> bei diagnostic output decorator statt template method eien strategy für formatierungen verwenden
+
+
+**********************************************************************************************************************
+
+DONE:
+
+
+-> Api-based Provider Implementierung (TypeDiscoveryService)
+-> Attribute-based Provider Implementierung
+-> re-store validation-rule provider (StringPropertyAttribute, NotNullAttribut)
+-> Liskov substition prinzip für Validierung (Abstimmung) > wird nicht nach Liskov-Regeln gemacht!
+-> Conditional Messages (anhand z.Bsp. Enum-Wert) -> bereits inkludiert!
+-> Collector-Merge + Sotierreihenfolge (Sortierung zuerst nach Komponenten und dann alphabetisch 
+	-> kann injected werden (z.Bsp. ActaNover HandlerTypeSource  -> Api-Provider muss gewrappt werden!)
+-> Attribute sollen bei Property-Overriding überschrieben werden (sollte mit GetProperties-DeclaredOnTyp Flag erledigt sein!)
+-> per BusinessRules definieren welche Validatoren ziehen (When/Unless Operator für mehrere Rules im Collector)
+-> Basic Diagnostic Output! (vor und nach Merge -> DiagnosticOutputDecorator -> wrappt Merger und schickt daten zu log4net)
+-> Interface Topologie-Sort
+-> Mixin Support
+-> Check NotEmptyValidator: nur für Null und collection.empty (für ValueTypes soll Validator nicht anspringen) -> siehe Mail Jeremy
+-> Collectoren von Interfaces nur auf bestimmte Klassen anwenden (ApplyWithClass/ApplyWithMixin)
+-> ApplyWithMixin/Class(null) nicht => stattdessen ApplyProgrammatically
+-> ValidationPropertyRule Merge Mechanismus -> Entscheidung: kein expliziter Merge Mechanismus -> stattdessen Metavalidierungsregeln!
+-> Remove Rules auf gleicher Ebene vor allen AddRules auf gleicher Ebene
+-> MetaValidationRules
+   -> PropertyInfo muss immer von statischer Klasse sein bei Verererbungshierarchy damit all Rules für gesamten Ableitungspfad ziehen!
+   -> Unterschiedliche Ableitungspfade beeinflussen sich einander nicht!
+-> re-store length rules nicht als hard-constraint sonder als normale Rule mit MetaValidation-Rule hinzufügen
+-> Attribute MetaValidationRule Support
+-> Exception falls Hard-Constraints gelöscht werden sollen!
+-> Extended Diagnostic Output
+	-> welche validation rules/meta validation rule sind im system
+        -> welche rules wurden von welchem collector entfernt 
+        -> mehrfache Validatoren gruppieren und count anzeigen
+        -> Formatierung mit Werten (FluentValidationValidatorFormatterDecorator + DefaultValidatorFormatter)
+-> Umstellung von .NET 4 auf .NET für re-motion integration
+-> DefaultPropertyValidatorExtractor: Remove von Validator-Ableitungen könnte über RuleExtractorDecorator gehandhabt werden 
+-> Attribute mit Message Support
+-> Globalization-Support für RM
+	> Lokalisierte Property Namen (default technischer PropertyName, fallback kurzer PropertyName)
+	> Eigene Error-Message Lokalisierung durch eigene IValidatorGlobalizationService-Implementierung möglich 
+-> Setzen des technischen Property-Namens über RM-IMemberInfoNameResolver
+-> Check RM-Globalization: long names for mixins -> über Interface-Property Fullname!
+-> TODO: IoC für Validation
+-> Build testen

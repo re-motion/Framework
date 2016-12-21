@@ -1,0 +1,116 @@
+* Works for IE
+* MessageBox warning that an session expired request will be sent
+  Refresh, History.Back, History.Forward, Favorits, new URL, window.location = ...
+* If Refresh is after a submit, a 2nd Message Box will be shown if the first one is OK'ed.
+  The session is already expried at this point. 
+* Firefox cannot warn because event.returnValue is an IE speciality.  
+
+<script language="javascript">
+  var _wxe_expiredLocation = 'WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormClosingWxeFunction,OBWTest';
+  var _wxe_isSubmit = false;
+  var _wxe_aspnetDoPostBack = null;
+  
+  function OnBeforeUnload()
+  {
+    if (! _wxe_isSubmit)
+    {
+      var activeElement = window.document.activeElement;
+      var isJavaScriptAnchor = false;
+      if (  activeElement != null
+          && activeElement.tagName.toLowerCase() == 'a'
+          && activeElement.href != null
+          && activeElement.href.toLowerCase().indexOf ('javascript:') >= 0)
+      {
+        isJavaScriptAnchor = true;
+      }
+      if (! isJavaScriptAnchor)
+      {
+        event.returnValue = "If you leave now, forever lost your session will be.";
+        event.cancelBubble = true;
+      }
+    }
+  }
+
+  function OnUnload()
+  {
+    if (! _wxe_isSubmit)
+    {
+      try 
+      {
+        var image = new Image();
+        image.src = _wxe_expiredLocation;
+      }
+      catch (e)
+      {
+      }
+      SmartNavigation (null);
+    }
+  }
+
+  function OnLoad()
+  {
+    var theform;
+		if (window.navigator.appName.toLowerCase().indexOf("microsoft") > -1)
+			theform = document.Form;
+		else 
+			theform = document.forms["Form"];
+	  theform.onsubmit = function() { _wxe_isSubmit = true; };
+	  
+	  _wxe_aspnetDoPostBack = __doPostBack;
+	  __doPostBack = function (eventTarget, eventArgument)
+	      {
+	        _wxe_isSubmit = true;
+	        SmartNavigation (document.getElementById ('eventTarget'));
+	        _wxe_aspnetDoPostBack (eventTarget, eventArgument);
+	      };
+	  SmartNavigationRestore();
+  }
+
+  function SmartNavigationRestore()
+  {
+    var scrollParent = document.getElementById ('MultiView_ActiveView');
+    var scrollTop = 169;
+    var scrollLeft = 0;
+    if (scrollParent != null)
+    {
+      scrollParent.scrollTop = scrollTop;
+      scrollParent.scrollLeft = scrollLeft;
+    }
+    
+    var focusElement = document.getElementById ('TestTabbedPersonJobsUserControl_MultilineTextField_Boc_TextBox');
+    var offsetLeft = 417;
+    var offsetTop = 605;  
+    if (focusElement != null)
+    {
+      focusElement.focus();
+    }
+  }
+  
+  function SmartNavigation (srcElement)
+  {
+    var scrollParent = null;
+    for (var currentNode = srcElement; currentNode != null; currentNode = currentNode.offsetParent)
+    {
+      if (   currentNode.style.overflow.toLowerCase() == 'auto' 
+          || currentNode.style.overflow.toLowerCase() == 'scroll')
+      {
+        scrollParent = currentNode;
+        break;
+      }
+    }
+    if (scrollParent != null)
+    {
+      var scrollElement = document.getElementById ('smartNavigationScrollElement');
+      var scrollTop = document.getElementById ('smartNavigationScrollTop');
+      var scrollLeft = document.getElementById ('smartNavigationScrollLeft');
+      scrollElement.value = scrollParent.id;
+      scrollTop.value = scrollParent.scrollTop;
+      scrollLeft.value = scrollParent.scrollLeft;
+    }
+    if (srcElement != null)
+    {
+      var focus = document.getElementById ('smartNavigationFocus');
+      focus.value = srcElement.id;
+    }
+  }
+</script>

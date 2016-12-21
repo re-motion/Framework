@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+  <title></title>
+<script type="text/javascript">
+  var count = 0;
+  function SetUp()
+  {
+    var textBox = document.getElementById('TextBox');
+
+    if (textBox.attachEvent)
+    {
+      textBox.attachEvent('onkeydown', onKeyDownHandler);
+    }
+    else
+    {
+      textBox.addEventListener('keydown', onKeyDownHandler, false);
+    }
+  }
+
+  function onKeyDownHandler(event)
+  {
+    var statusLabel = document.getElementById('StatusLabel');
+    statusLabel.innerHTML += '<br/>' + new Date().getTime() + ' onKeyDown Begin';
+
+    if (!event)
+      event = window.event;
+    event.cancelBubble = true;
+    if (event.stopPropagation)
+      event.stopPropagation();
+
+    if (event.keyCode == 13)
+    {
+      if (event.preventDefault)
+        event.preventDefault();
+
+      statusLabel.innerHTML += '<br/>' + new Date().getTime() + ' trigger Change Begin';
+
+      var hiddenInput = document.getElementById('HiddenInput');
+      fireEvent(hiddenInput, 'change');
+
+      statusLabel.innerHTML += '<br/>' + new Date().getTime() + ' trigger Change End';
+      statusLabel.innerHTML += '<br/>' + new Date().getTime() + ' onKeyDown End';
+      return false;
+    }
+    else
+    {
+      statusLabel.innerHTML += '<br/>' + new Date().getTime() + ' onKeyDown End';
+      return;
+    }
+  }
+
+  function onChangeHandler()
+  {
+    var statusLabel = document.getElementById('StatusLabel');
+    statusLabel.innerHTML += '<br/>' + new Date().getTime() + ' onChange Begin';
+    
+    var updatePanel = document.getElementById('UP1');
+    count = count + 1;
+    updatePanel.innerHTML = "<span id=\"PostBackCountLabel\">" + count + "</span>\r\n<input id=\"TextBox\" onchange=\"onChangeHandler()\"/>";
+    
+    registerScript("SetUp();");
+                
+    statusLabel.innerHTML += '<br/>' + new Date().getTime() + ' onChange End';
+  }
+
+  function fireEvent(element, event)
+  {
+    if (document.createEventObject)
+    {
+      // dispatch for IE
+      var evt = document.createEventObject();
+      return element.fireEvent('on' + event, evt)
+    }
+    else
+    {
+      // dispatch for firefox + others
+      var evt = document.createEvent("HTMLEvents");
+      evt.initEvent(event, true, true); // event type,bubbling,cancelable
+      return !element.dispatchEvent(evt);
+    }
+  }
+
+  function registerScript(scriptText)
+  {
+    var scriptElement = document.createElement('script');
+    scriptElement.setAttribute('type', 'text/javascript');
+    if (scriptElement.canHaveChildren)
+    {
+      scriptElement.appendChild(document.createTextNode(scriptText));
+    }
+    else
+    {
+      scriptElement.text = scriptText;
+    }
+    var headElements = document.getElementsByTagName('head');
+    headElements[0].appendChild(scriptElement);
+  }
+</script>
+
+</head>
+<body>
+<form name="Form" method="post" action="javascript:alert('form submit should never be executed')"> 
+
+<div id="UP1">
+<span id="PostBackCountLabel" >0</span>
+<input id="TextBox" type="text" />
+<input id="HiddenInput" type="hidden" onchange="onChangeHandler()" />
+</div>
+
+<div id="StatusLabel"> </div>
+
+</form>
+
+<script type="text/javascript">
+  SetUp();
+</script>
+</body>
+</html>

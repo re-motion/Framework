@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<WxeStep>
+  <Class>
+    <remarks>
+      <para>
+        Extend the <b>WxeStep</b> type if you require a single step with a specialized execution and/or aborting 
+        logic. An example would be a step encapsulating behavior common accross more than one 
+        <see cref="WxeFunction"/>.
+      </para><para>
+        A <b>WxeStep</b> can be embedded in a <see cref="WxeStepList"/> or <see cref="WxeFunction"/> in the
+        form of a non-public instance field or as a non-public nested class.
+      </para>
+      <note type="inheritinfo">
+        In order to allow the usage of a state server, is is required to apply the 
+        <see cref="SerializableAttribute"/> when extending <b>WxeStep</b>. In addition, all fields not marked with 
+        the <see cref="NonSerializedAttribute"/> must be of a serializable type.
+      </note>
+    </remarks>
+    <example>
+      An advanced step, derived from <b>WxeStep</b>.
+      <code escaped="true" lang="C#">
+[Serializable]
+public class WxeAdvancedStep: WxeStep
+{
+  public override void Execute (WxeContext context)
+  {
+    // Your execution logic goes here.
+  }
+  
+  public override void AbortRecursice ()
+  {
+    base.AbortRecursive();
+    // Your clean-up code, if necessary.
+  }
+}
+      </code>
+    </example>
+    <example>
+      An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a field set to the 
+      advanced step.
+      <code escaped="true" lang="C#">
+[Serializable]
+public class MyFunction: WxeFunction
+{
+  ...
+  // Step 2
+  WxeStep Step3 = new WxeAdvancedStep();
+  // Step 4
+  ...
+}
+      </code>    
+    </example>
+    <example>
+      An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a class derived from
+      <see cref="WxeStep"/>.
+      <code escaped="true" lang="C#">
+[Serializable]
+public class MyFunction: WxeFunction
+{
+  ...
+  // Step 2
+  
+  [Serializable]
+  class Step3: WxeStep
+  {
+    public override void Execute (WxeContext context)
+    {
+      // Your execution logic goes here.
+    }
+    
+    public override void AbortRecursice ()
+    {
+      base.AbortRecursive();
+      // Your clean-up code, if necessary.
+    }
+  }
+  
+  // Step 4
+  ...
+}
+      </code>    
+    </example>
+  </Class>
+  <GetFunction>
+    <param name="step"> The <see cref="WxeStep"/> whose <see cref="WxeFunction"/> to get. </param>
+    <returns> 
+      The <see cref="WxeFunction"/> or <see langword="null"/> if the <paramref name="step"/> 
+      is not part of a function or is <see langword="null"/> it self. 
+    </returns>
+  </GetFunction>
+  <varref>
+    <param name="localVariable"> The name of a variable in the scope's <see cref="Variables"/> collection. </param>
+    <returns> A new instance of the <see cref="WxeVariableReference"/> type referencing the specified variable. </returns>
+    <remarks> See <see cref="WxeVariableReference"/> for detailed usage information. </remarks>
+    <example>
+<code>
+...
+MyWxeFunction Step1 = new MyWxeFunction (varref ("Var1"));
+
+public int Var1 
+{ 
+  get { return (int) Variables["Var1"]; }
+  set { Variables["Var1"] = value; }
+}
+...
+</code>
+    </example>
+  </varref>
+  <Variables>
+    <value> 
+      A <see cref="NameObjectCollection"/> or <see langword="null"/> if the <see cref="WxeStep"/> is not part of
+      a <see cref="WxeFunction"/>.
+    </value>
+    <remarks>
+      <note type="inheritinfo"> 
+        If you extend the execution engine without relying on the <see cref="WxeFunction"/> type for defining 
+        scope, override this property and provide a <see cref="NameObjectCollection"/> as variables collection.
+      </note>
+    </remarks>
+  </Variables>
+  <ExecutingStep>
+    <remarks> 
+      Override this method if you have designed a <see cref="WxeStep"/> derived type which contains and thereby 
+      executes one or more <see cref="WxeStep"/> objects.
+    </remarks>
+  </ExecutingStep>
+  <SetParentStep>
+    <param name="parentStep"> 
+      The <see cref="WxeStep"/> to be set as this step's parent. Must not be <see langword="null"/>.
+    </param>
+    <remarks>
+      This method should only be invoked by the WXE infrastructure.
+    </remarks>
+  </SetParentStep>
+  <RootFunction>
+    <value> 
+      The top-most <see cref="WxeFunction"/> in the hierarchy or <see langword="null"/> if the root 
+      <see cref="WxeStep"/> is not of type <see cref="WxeFunction"/>.
+    </value>
+  </RootFunction>
+  <ParentFunction>
+    <value> 
+      The <see cref="WxeFunction"/> containing this <see cref="WxeStep"/> or <see langword="null"/> if the
+      <see cref="WxeStep"/> is not part of another <see cref="WxeFunction"/>.
+    </value>
+  </ParentFunction>
+  <CurrentException>
+    <value> 
+      An <see cref="Exception"/> of <see langword="null"/> if no exception was caught in by the enclosing
+      <see cref="WxeTryCatch"/> block.
+    </value> 
+  </CurrentException>
+  <Abort>
+    <remarks> 
+      A single <b>WxeStep</b> is usually not aborted. This method is normally called by aborting the 
+      a <see cref="WxeFunctionState"/> and subsequently the contained <see cref="WxeFunction"/>, which is derived
+      from <b>WxeStep</b>.
+      <note>
+        This method should only be invoked by the WXE infrastructure.
+      </note>
+    </remarks>
+  </Abort>
+  <AbortRecursive>
+    <remarks>
+      Called by <see cref="Abort"/>.
+      <note type="inheritinfo">
+        Override this method to provide special abort logic to your to your <see cref="WxeStep"/> derived type.
+      </note>
+    </remarks>
+  </AbortRecursive>
+</WxeStep>

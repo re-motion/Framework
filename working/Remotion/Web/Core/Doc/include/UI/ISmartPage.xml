@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<ISmartPage>
+  <Class>
+    <remarks>
+      Refer to the default implementation <see cref="SmartPage"/>) for a descrioption of the features exposed through 
+      this interface.
+      <h4 class="dtH4">General Usage Notes</h4>
+      <para>
+        If possible, use the <see cref="SmartPage"/> default implementation of the <see cref="ISmartPage"/> interface
+        as base page in your project.
+      </para>
+      <note type="inotes">
+        If you cannot derive your pages from the default implementation (e.g., because you need to derive from 
+        another class), use <see cref="SmartPageInfo"/> to implement all methods and properties.
+      </note>
+    </remarks>
+    <seealso cref="SmartPage"/>
+    <seealso cref="SmartPageInfo"/>
+  </Class>
+  <RegisterClientSidePageEventHandler>
+    <param name="pageEvent"> The type of event to register for. </param>
+    <param name="key"> 
+      Forms in combination with <paramref name="pageEvent"/> a unique key that identifies the function.
+    </param>
+    <param name="function"> The name of the Java Script function to be called. </param>
+    <remarks> 
+      <para>
+        The Java Script function will be called without arguments and a return value will be ignored.
+      </para><para>
+        Any script blocks with the same <paramref name="pageEvent"/> and <paremref name="key"/> parameter values 
+        are considered duplicates. 
+      </para>
+    </remarks>
+    <exception cref="InvalidOperationException">
+      Thrown if the method is called after the <b>OnPreRender</b> method of the base page has been invoked invoked.
+    </exception>
+  </RegisterClientSidePageEventHandler>
+</ISmartPage>

@@ -1,0 +1,564 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0B5318E7-4878-402A-8CF8-6BFFC47F571D}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Remotion.Web.Test</AssemblyName>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.Web.Test</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>4.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Web.Abstractions">
+      <RequiredTargetFramework>4.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\WINDOWS\assembly\GAC_MSIL\System.Web.Extensions\1.0.61025.0__31bf3856ad364e35\System.Web.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Name>Core.Core</Name>
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\Core\Data.Core.csproj">
+      <Project>{70273934-12F1-49AF-975A-303BAEFE1CAE}</Project>
+      <Name>Data.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Development\Web\Development.Web.csproj">
+      <Project>{44924ed6-8c12-416d-972f-f1f10417e7ef}</Project>
+      <Name>Development.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Web.Core.csproj">
+      <Name>Web.Core</Name>
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CssHandler.ashx.cs">
+      <DependentUpon>CssHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultButtonTest.aspx.cs">
+      <DependentUpon>DefaultButtonTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DefaultButtonTest.aspx.designer.cs">
+      <DependentUpon>DefaultButtonTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DoublePostBackHandling\AspNetForm.aspx.cs">
+      <DependentUpon>AspNetForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DoublePostBackHandling\AspNetForm.aspx.designer.cs">
+      <DependentUpon>AspNetForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DoublePostBackHandling\SmartForm.aspx.cs">
+      <DependentUpon>SmartForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DoublePostBackHandling\SmartForm.aspx.designer.cs">
+      <DependentUpon>SmartForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DropDownMenu.aspx.cs">
+      <DependentUpon>DropDownMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DropDownMenu.aspx.designer.cs">
+      <DependentUpon>DropDownMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorHandling\ErrorForm.aspx.cs">
+      <DependentUpon>ErrorForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ErrorHandling\ErrorForm.aspx.designer.cs">
+      <DependentUpon>ErrorForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorHandling\ErrorHandlingException.cs" />
+    <Compile Include="ErrorHandling\TestForm.aspx.cs">
+      <DependentUpon>TestForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ErrorHandling\TestForm.aspx.designer.cs">
+      <DependentUpon>TestForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExecutionEngine\ExceptionHandling\InvalidMarkupForm.aspx.cs">
+      <DependentUpon>InvalidMarkupForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\ExceptionHandling\InvalidMarkupForm.aspx.designer.cs">
+      <DependentUpon>InvalidMarkupForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExecutionEngine\ExceptionHandling\InvalidMarkupFunction.cs" />
+    <Compile Include="ExecutionEngine\ExceptionHandling\MissingPageFunction.cs" />
+    <Compile Include="ExecutionEngine\ExceptionHandling\MissingUserControlForm.aspx.cs">
+      <DependentUpon>MissingUserControlForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\ExceptionHandling\MissingUserControlForm.aspx.designer.cs">
+      <DependentUpon>MissingUserControlForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExecutionEngine\ExceptionHandling\MissingUserControlFunction.cs" />
+    <Compile Include="ExecutionEngine\ExceptionHandling\TestFunction.cs" />
+    <Compile Include="ExecutionEngine\ExceptionHandling\TestForm.aspx.cs">
+      <DependentUpon>TestForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\ExceptionHandling\TestForm.aspx.designer.cs">
+      <DependentUpon>TestForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExecutionEngine\ExceptionHandling\ThrowingForm.aspx.cs">
+      <DependentUpon>ThrowingForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\ExceptionHandling\ThrowingForm.aspx.designer.cs">
+      <DependentUpon>ThrowingForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExecutionEngine\ExceptionHandling\ThrowingFunction.cs" />
+    <Compile Include="ExecutionEngine\RedirectHandler.ashx.cs">
+      <DependentUpon>RedirectHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ExecutionEngine\ZeroControl.ascx.cs">
+      <DependentUpon>ZeroControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\ZeroControl.ascx.designer.cs">
+      <DependentUpon>ZeroControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ExecutionEngine\NonSerializeableObject.cs" />
+    <Compile Include="ExecutionEngine\NonSerializeableObjectConverter.cs" />
+    <Compile Include="ExecutionEngine\ShowFirstUserControlFormFunction.cs" />
+    <Compile Include="ExecutionEngine\ShowFourthUserControlFormFunction.cs" />
+    <Compile Include="ExecutionEngine\FourthControl.ascx.cs">
+      <DependentUpon>FourthControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\FourthControl.ascx.designer.cs">
+      <DependentUpon>FourthControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ExecutionEngine\ThirdControl.ascx.cs">
+      <DependentUpon>ThirdControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\ThirdControl.ascx.designer.cs">
+      <DependentUpon>ThirdControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ExecutionEngine\ShowThirdUserControlFormFunction.cs" />
+    <Compile Include="ExecutionEngine\ShowSecondUserControlFormFunction.cs" />
+    <Compile Include="ExecutionEngine\SecondControl.ascx.cs">
+      <DependentUpon>SecondControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\SecondControl.ascx.designer.cs">
+      <DependentUpon>SecondControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ExecutionEngine\FirstControl.ascx.cs">
+      <DependentUpon>FirstControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\FirstControl.ascx.designer.cs">
+      <DependentUpon>FirstControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ExecutionEngine\ShowUserControlFormFunction.cs" />
+    <Compile Include="ExecutionEngine\UserControlForm.aspx.cs">
+      <DependentUpon>UserControlForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\UserControlForm.aspx.designer.cs">
+      <DependentUpon>UserControlForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="IFrameSupport\FrameContent.aspx.cs">
+      <DependentUpon>FrameContent.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IFrameSupport\FrameContent.aspx.designer.cs">
+      <DependentUpon>FrameContent.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="IFrameSupport\FrameContentFunction.cs" />
+    <Compile Include="IFrameSupport\MainForm.aspx.cs">
+      <DependentUpon>MainForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IFrameSupport\MainForm.aspx.designer.cs">
+      <DependentUpon>MainForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="IFrameSupport\MainFunction.cs" />
+    <Compile Include="IFrameSupport\NullTransactionFactory.cs" />
+    <Compile Include="MultiplePostBackCatching\TestSuiteForm.aspx.cs">
+      <DependentUpon>TestSuiteForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\TestSuiteForm.aspx.designer.cs">
+      <DependentUpon>TestSuiteForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\UpdatePanelTestSuiteForm.aspx.cs">
+      <DependentUpon>UpdatePanelTestSuiteForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\UpdatePanelTestSuiteForm.aspx.designer.cs">
+      <DependentUpon>UpdatePanelTestSuiteForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OnLoadEventTest.aspx.cs">
+      <DependentUpon>OnLoadEventTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OnLoadEventTest.aspx.designer.cs">
+      <DependentUpon>OnLoadEventTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PostBackFocus.aspx.cs">
+      <DependentUpon>PostBackFocus.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PostBackFocus.aspx.designer.cs">
+      <DependentUpon>PostBackFocus.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TestBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SutBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\UpdatePanelTestForm.aspx.cs">
+      <DependentUpon>UpdatePanelTestForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\UpdatePanelTestForm.aspx.designer.cs">
+      <DependentUpon>UpdatePanelTestForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\UpdatePanelSutForm.aspx.cs">
+      <DependentUpon>UpdatePanelSutForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\UpdatePanelSutForm.aspx.designer.cs">
+      <DependentUpon>UpdatePanelSutForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\SutGenerator.cs" />
+    <Compile Include="MultiplePostBackCatching\TestExpectationsGenerator.cs" />
+    <Compile Include="MultiplePostBackCatching\TestSuiteGenerator.cs" />
+    <Compile Include="IDEventArgs.cs" />
+    <Compile Include="MultiplePostBackCatching\SutForm.aspx.designer.cs">
+      <DependentUpon>SutForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\TestForm.aspx.cs">
+      <DependentUpon>TestForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\TestForm.aspx.designer.cs">
+      <DependentUpon>TestForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\SutForm.aspx.cs">
+      <DependentUpon>SutForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\ProfilingForm.aspx.cs">
+      <DependentUpon>ProfilingForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\ProfilingWxeFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\RedirectedWxeFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\SampleWxeFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\SessionForm.aspx.cs">
+      <DependentUpon>SessionForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\SessionWxeFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Start.aspx.cs">
+      <DependentUpon>Start.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\TestControlGenerator.cs" />
+    <Compile Include="ExecutionEngine\UserControl1.ascx.cs">
+      <DependentUpon>UserControl1.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Theming\SingleViewTest.aspx.cs">
+      <DependentUpon>SingleViewTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Theming\SingleViewTest.aspx.designer.cs">
+      <DependentUpon>SingleViewTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Theming\TabbedMultiViewTest.aspx.cs">
+      <DependentUpon>TabbedMultiViewTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Theming\TabbedMultiViewTest.aspx.designer.cs">
+      <DependentUpon>TabbedMultiViewTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UpdatePanelTests\SutForm.aspx.cs">
+      <DependentUpon>SutForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UpdatePanelTests\SutForm.aspx.designer.cs">
+      <DependentUpon>SutForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UpdatePanelTests\SutFunction.cs" />
+    <Compile Include="UpdatePanelTests\SutUserControl.ascx.cs">
+      <DependentUpon>SutUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UpdatePanelTests\SutUserControl.ascx.designer.cs">
+      <DependentUpon>SutUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CssIncludeTest.aspx.cs">
+      <DependentUpon>CssIncludeTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CssIncludeTest.aspx.designer.cs">
+      <DependentUpon>CssIncludeTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UpdatePanelTests\UpdatePanelMasterPage.Master.cs">
+      <DependentUpon>UpdatePanelMasterPage.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UpdatePanelTests\UpdatePanelMasterPage.Master.designer.cs">
+      <DependentUpon>UpdatePanelMasterPage.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Rendering\WebButtonDisabledCssTest.aspx.cs">
+      <DependentUpon>WebButtonDisabledCssTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Rendering\WebButtonDisabledCssTest.aspx.designer.cs">
+      <DependentUpon>WebButtonDisabledCssTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Rendering\WebButtonWithDisabledCssStyleSupport.cs" />
+    <Content Include="DefaultButtonTest.aspx" />
+    <Content Include="DoublePostBackHandling\AspNetForm.aspx" />
+    <Content Include="DoublePostBackHandling\Default.html" />
+    <Content Include="DoublePostBackHandling\SmartForm.aspx" />
+    <Content Include="ErrorHandling\ErrorForm.aspx" />
+    <Content Include="ErrorHandling\TestForm.aspx" />
+    <Content Include="ExecutionEngine\ExceptionHandling\InvalidMarkupForm.aspx" />
+    <Content Include="ExecutionEngine\ExceptionHandling\MissingUserControlForm.aspx" />
+    <Content Include="ExecutionEngine\ExceptionHandling\TestForm.aspx" />
+    <Content Include="ExecutionEngine\ExceptionHandling\ThrowingForm.aspx" />
+    <Content Include="ExecutionEngine\ZeroControl.ascx" />
+    <Content Include="ExecutionEngine\FourthControl.ascx" />
+    <Content Include="ExecutionEngine\ThirdControl.ascx" />
+    <Content Include="ExecutionEngine\SecondControl.ascx" />
+    <Content Include="ExecutionEngine\FirstControl.ascx" />
+    <Content Include="ExecutionEngine\UserControlForm.aspx" />
+    <Content Include="IFrameSupport\FrameContent.aspx" />
+    <Content Include="IFrameSupport\MainForm.aspx" />
+    <Content Include="Images\Image.gif" />
+    <Content Include="MultiplePostBackCatching\TestSuiteForm.aspx" />
+    <Content Include="MultiplePostBackCatching\UpdatePanelTestSuiteForm.aspx" />
+    <Content Include="MultiplePostBackCatching\UpdatePanelTestForm.aspx" />
+    <Content Include="MultiplePostBackCatching\UpdatePanelSutForm.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="Global.asax">
+      <SubType>Component</SubType>
+    </Content>
+    <Content Include="MultiplePostBackCatching\SutForm.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="MultiplePostBackCatching\TestForm.aspx" />
+    <Content Include="ExecutionEngine\ProfilingForm.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="ExecutionEngine\SessionForm.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="OnLoadEventTest.aspx" />
+    <Content Include="PostBackFocus.aspx" />
+    <Content Include="Start.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="Theming\SingleViewTest.aspx" />
+    <Content Include="Theming\TabbedMultiViewTest.aspx" />
+    <Content Include="UpdatePanelTests\SutForm.aspx" />
+    <Content Include="UpdatePanelTests\SutUserControl.ascx" />
+    <Content Include="UrlMapping.xml" />
+    <Content Include="ExecutionEngine\UserControl1.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="UtilitiesTest.htm" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ExecutionEngine\WebForm1.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="Rendering\WebButtonDisabledCssTest.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Remotion LGPL.licenseheader">
+      <Link>Remotion LGPL.licenseheader</Link>
+    </None>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <Content Include="CssHandler.ashx" />
+    <Content Include="DropDownMenu.aspx" />
+    <Content Include="ExecutionEngine\RedirectHandler.ashx" />
+    <Content Include="CssIncludeTest.aspx" />
+    <Content Include="UpdatePanelTests\UpdatePanelMasterPage.Master" />
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="res\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>50369</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:60400/branches/1.16/Web.Test/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+</Project>

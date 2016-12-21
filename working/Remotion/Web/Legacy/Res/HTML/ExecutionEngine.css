@@ -1,0 +1,22 @@
+#WxeStatusIsAbortingMessage,
+#WxeStatusIsCachedMessage
+{
+  background-color: White;
+  z-index: 100;
+}
+
+#WxeStatusIsAbortingMessage td
+{
+  background-color: White;
+  border: solid 3pt Gray;
+  font-weight: bold;
+  font-size: 100%;
+  color: Gray;
+}
+    
+#WxeStatusIsCachedMessage td
+{
+  background-color: White;
+  border: solid 1pt Black;
+  color: Black;
+}

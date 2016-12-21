@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<BocTextValue>
+  <Class>
+    <remarks>
+      
+      <h4 class="dtH4">Supported Data Types</h4>
+      <para>
+        The control's <see cref="Value"/> can be assigned strings, integers, doubles, as well as date and 
+        date/time values or <see langword="null"/>. 
+      </para><para>
+        The control's <see cref="BusinessObjectBoundWebControl.Property"/> supports objects of type 
+        <see cref="IBusinessObjectStringProperty"/>, <see cref="IBusinessObjectNumericProperty"/>, 
+        and <see cref="IBusinessObjectDateTimeProperty"/>.
+      </para>
+
+      <h4 class="dtH4">Usage Notes</h4>      
+      <para>
+        The resources required by this control are defined by the <see cref="BocTextValue.ResourceIdentifier"/> enum.
+      </para><para>
+        Provide the external resources for this control. See <see cref="T:Remotion.Web.ResourceUrlResolver"/> 
+        for details on this subject.
+      </para><para>
+        See the <see cref="BocTextValueBase.CreateValidators"/> method for the validators provided by this control.        
+      </para><para>
+        If <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
+        <see cref="BusinessObjectBoundWebControl.PropertyIdentifier"/> properties are not set, the 
+        control is unbound. In that case, the <see cref="BusinessObjectBoundWebControl.Property"/> and 
+        <see cref="Value"/> or <see cref="Text"/> properties must be accessed programmatically to display the
+        current value using automatic formatting.
+      </para><para>
+        It is also possible to programmatically set <see cref="ValueType"/>, and then assign 
+        a value to <see cref="Value"/> or <see cref="Text"/>, leaving 
+        <see cref="BusinessObjectBoundWebControl.Property"/> set to <see langword="null"/>.
+      </para><para>
+        Use the <see cref="Value"/> property to get or set values in their native data type, 
+        or the <see cref="Text"/> property to get or set the string representation.
+      </para><para>
+        The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocTextValue</c>.
+      </para><para>
+        The control supports auto-postback. Use the <see cref="TextBoxStyle"/>'s 
+        <see cref="SingleRowTextBoxStyle.AutoPostBack"/> property to enable this behavior.
+      </para>
+
+      <h4 class="dtH4">Localization Support</h4>
+      <para>
+        The resources required by this control are defined by the <see cref="BocTextValue.ResourceIdentifier"/> 
+        enum. See the <b>ResourceIdentifier</b>'s documentation for details on localization.
+      </para><para>
+        The control supports resource dispatching to its properties through the 
+        <see cref="Remotion.Web.UI.Globalization.ResourceDispatcher"/>.
+        Use the following resource identifiers for dispatching strings to the <b>BocTextValue</b>
+        or use the <b>global resource identifier</b> syntax for setting the resource identifier in the propery.
+      </para>
+      <list type="table">
+        <listheader>
+          <term>Property</term>
+          <description>Resource Identifier</description>
+        </listheader>
+        <item>
+          <term> <see cref="BocTextValue.ErrorMessage"/> </term>
+          <description>
+            <para> &lt;BocTextValue Resource ID&gt;:ErrorMessage </para>
+            <para> e.g. auto:MyBocTextValue:ErrorMessage </para>
+          </description>
+        </item>
+      </list>
+      
+      <h4 class="dtH4">Inner Workings</h4>
+      <para>
+        The control uses the view state to cache the value between postbacks. If the control is data bound,
+        a call to <see cref="SaveValue"/> with <b>interim</b> set <see langword="true"/> is required to save the
+        value back into the data source.
+      </para>
+      <para>
+        If the <see cref="TextBoxStyle"/>'s <see cref="Remotion.ObjectBinding.Web.UI.Controls.TextBoxStyle.TextMode"/> 
+        is set to <see cref="TextBoxMode.MultiLine"/>, the control uses a client script provided by 
+        <see cref="Remotion.ObjectBinding.Web.UI.Controls.TextBoxStyle"/> to check that the entered text does not exceed 
+        the maximum length. This only covers text entered by the keyboard, not through the clipboard. 
+        Set <see cref="SingleRowTextBoxStyle.CheckClientSideMaxLength"/> to <see langword="false"/> to disable this 
+        script.        
+      </para>
+      <para>
+        Rendering of the control is done by the <see cref="IBocTextValueRenderer" /> registered in 
+  <see cref="BusinessObjectBoundWebControl.ServiceLocator"/>.
+      </para>
+      <list type="table">
+        <listheader>
+          <term>State</term>
+          <description>Behaviour</description>
+        </listheader>
+        <item>
+          <term>
+            Read-Only / <see cref="Value"/> is not <see langword="null"/>
+          </term>
+          <description>
+            Renders <see cref="Text"/>.
+          </description>
+        </item>
+        <item>
+          <term>
+            Read-Only / <see cref="Value"/> is <see langword="null"/>
+          </term>
+          <description>
+            Displays no text.
+          </description>
+        </item>
+        <item>
+          <term>
+            Edit Mode / <see cref="Value"/> is not <see langword="null"/>
+          </term>
+          <description>
+            Sets the <see cref="System.Web.UI.WebControls.TextBox.Text"/> property of the <see cref="TextBox"/> to 
+            <see cref="Text"/>.
+          </description>
+        </item>
+        <item>
+          <term>
+            Edit Mode / <see cref="Value"/> is <see langword="null"/>
+          </term>
+          <description>
+            Sets the <see cref="System.Web.UI.WebControls.TextBox.Text"/> property of the <see cref="TextBox"/> 
+            to an empty string.
+          </description>
+        </item>
+      </list>
+      
+    </remarks>
+  </Class>
+  <LoadPostData>
+    <remarks>
+      <para>
+        Sets the new value and the <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> flag if the value 
+        has changed.
+      </para><para>
+        Evaluates the value of the <see cref="TextBox"/>.
+      </para>
+      <note type="inheritinfo">
+        Overrive this method to change the way of detecting a changed value when read from the 
+        <paramref name="postCollection"/>.
+      </note>
+    </remarks>
+    <param name="postDataKey"> The key identifier for this control. </param>
+    <param name="postCollection"> The collection of all incoming name values.  </param>
+    <returns>
+      <see langword="true"/> if the server control's state changes as a result of the post back; 
+      otherwise <see langword="false"/>.
+    </returns>
+  </LoadPostData>
+  <LoadValue>
+    <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
+    <remarks>
+      <para>
+        Loads the <see cref="Value"/> from the <see cref="BusinessObjectBoundWebControl.DataSource"/> 
+        if <paramref name="interim"/> is <see langword="false"/>. 
+      </para><para>
+        Requires a <see cref="BusinessObjectBoundWebControl.Property"/>, and a <see cref="BusinessObjectBoundWebControl.DataSource"/>.
+        If the <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see> is not set, the <see cref="Value"/> will
+        still be loaded but set to <see langword="null"/>.
+      </para><para>
+        <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> is <see langword="false"/> after invoking
+        <see cref="LoadValue"/> with <paramref name="interim"/> <see langword="false"/>.
+      </para>
+    </remarks>
+    <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
+  </LoadValue>
+  <LoadUnboundValue>
+    <remarks>
+      <para>
+        Populates the <see cref="Value"/> with the provided <paramref name="value"/> if <paramref name="interim"/>
+        is <see langword="false"/>.
+      </para><para>
+        <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> is <see langword="false"/> after invoking
+        <see cref="LoadValue"/> with <paramref name="interim"/> <see langword="false"/>.
+      </para>
+    </remarks>
+  </LoadUnboundValue>
+  <SaveValue>
+    <param name="interim"> Specifies whether this is the final saving or an interim saving. </param>
+    <returns><see langword="true"/> if the value was saved into the <see cref="BusinessObjectBoundWebControl.DataSource"/>.<see cref="IBusinessObjectDataSource.BusinessObject"/>.</returns>
+    <remarks>
+      <para>
+        Saves the <see cref="Value"/> into the <see cref="BusinessObjectBoundWebControl.DataSource"/> 
+        if <paramref name="interim"/> is <see langword="false"/> and the control's 
+        <see cref="BusinessObjectBoundEditableWebControl.IsReadOnly"/> property evaluates <see langword="false"/>. 
+      </para><para>
+        Requires a <see cref="BusinessObjectBoundWebControl.Property"/> and a <see cref="BusinessObjectBoundWebControl.DataSource"/>.
+        If the <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see> is not set, the <see cref="Value"/> will
+        not be saved.
+      </para><para>
+        <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> will be <see langword="false"/> after invoking
+        <see cref="SaveValue"/> with <paramref name="interim"/> <see langword="false"/>.
+      </para>
+    </remarks>
+    <seealso cref="IBusinessObjectBoundEditableControl.SaveValue">IBusinessObjectBoundEditableControl.SaveValue</seealso>
+  </SaveValue>
+</BocTextValue>

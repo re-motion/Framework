@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<WxePageStep>
+  <Class>
+    <remarks>   
+      <para>
+        A <b>WxePageStep</b> is used to incorporatre user interaction into a <see cref="WxeStepList"/> or 
+        <see cref="WxeFunction"/> in the form of an <b>ASPX Page</b>  that implents the <see cref="IWxePage"/>
+        interface.
+      </para><para>
+        Unlike steps without user interaction, the <b>WxePageStep</b> must transfer control to the <b>ASP.NET</b>
+        infrastructure to display the page. Once the page has been rendered, the execution of the thread stops
+        unitl it is resumed with a new post back request from the client. During the post back, the execution
+        engine offers the following means of directing the control flow.
+      </para>
+      <list type="table">
+        <listheader>
+          <term>
+            Server side event handler action
+          </term>
+          <description>
+            Resulting exection engine behavior
+          </description>
+        </listheader>
+        <item>
+          <term>
+            The event is handled by the page and results in the reposting of the page.
+          </term>
+          <description>
+            The execution engine does not change the behavior of the <b>ASP.NET</b> control flow.
+          </description>
+        </item>
+        <item>
+          <term>
+            The event handler invokes the <see cref="IWxePage.ExecuteNextStep"/> method. 
+          </term>
+          <description>
+            The page's <b>PreRender</b> and <b>Render</b> phases will not execute and the execution is transfered
+            back to the executing <b>WxePageStep</b>, which will then end.
+          </description>
+        </item>
+        <item>
+          <term>
+            The event handler throws an exception. 
+          </term>
+          <description>
+            The execution path will immedeatly leave the page and the exception will be passed through the 
+            hierarchy of steps until it is caught by a <see cref="Obsolete.WxeTryCatch"/> block or by a 
+            <see cref="WxeFunction"/> where the exception type has been registered for catching. Please refer
+            to the <see cref="WxeFunction"/>'s documentation for details on working with exceptions.
+          </description>
+        </item>
+        <item>
+          <term>
+            The event handler invokes a sub-function. 
+          </term>
+          <description>
+            The <b>WxePageStep</b> will back-up the page's post back data and transfer execution to the sub-function.
+            After the execution has completed, the original post back data will be restored and the page's execution
+            will restart with the post back cycle that originally caused the sub-function to be invoked. Use the
+            <see cref="IWxePage.IsReturningPostBack"/> flag to determine whether the current post back cycle has been
+            caused by a <b>repost</b>.
+          </description>
+        </item>
+      </list>
+    </remarks>
+    <seealso cref="IWxePage"/>
+    <example>
+      An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a <b>WxePageStep</b>
+      dislaying a the ASPX page <c>MyWebForm.aspx</c>.
+      <code escaped="true" lang="C#">
+[Serializable]
+public class MyFunction: WxeFunction
+{
+  ...
+  // Step2
+  WxeStep Step3 = new WxePageStep ("MyWebForm.aspx");
+  // Step4
+  ...
+}
+      </code>    
+    </example>
+  </Class>
+  <Ctor>
+    <param name="page">
+      The URL of the page to be displayed, relative to the application root. Must not be <see langword="null"/>
+      or emtpy.
+    </param>
+    <param name="pageref"> 
+      A <see cref="WxeVariableReference"/> pointing to the URL of the page to be displayed. The URL is relative 
+      to the application root. Must not be <see langword="null"/>.
+    </param>
+    <param name="resourceAssembly"> 
+      The (optional) <see cref="Assembly"/> containing the page.
+    </param>
+  </Ctor>
+  <Execute>
+    <param name="context"> 
+      The <see cref="WxeContext"/> containing the information about the execution. Must not be <see langword="null"/>. 
+    </param>
+    <remarks> 
+      <para>
+        While the current <see cref="WxePageStep"/> executes, this method will be invoked during each post back. 
+        It will then transfer control to the <see cref="WxePageStep"/>'s page. In order to end the execution of 
+        the step, it is necessary to invoke the <see cref="IWxePage.ExecuteNextStep"/> method from inside the page.
+        This will cause a <see cref="WxeExecuteNextStepException"/> to be thrown, which is then caught, resulting 
+        in the completion of the current step. Other exceptions will also end the execution of the step, 
+        but will be passed on by rethrowing the exception.
+      </para><para>
+        During the execution of a sub-function, the <see cref="WxePageStep"/> will transfer control to the 
+        sub-function and resume execution after the function has returned. The completed sub-function will then 
+        be available via the <see cref="ReturningFunction"/> property 
+        for the remainder or the current post back cycle.
+        <note>
+          The current <see cref="WxePageStep"/>'s <b>Execute</b> method will still be invoked during each post back, 
+          but execution will be transfered to the executing sub-function without interaction in the current step.
+        </note>
+      </para>
+    </remarks>
+  </Execute>
+  <ExecuteFunction>
+    <param name="page"> 
+      The <see cref="IWxePage"/> being executed. Must not be <see langword="null"/>. 
+    </param>
+    <param name="function"> 
+      The <see cref="WxeFunction"/> to be executed. Must not be <see langword="null"/>. 
+    </param>
+    <param name="permaUrlOptions"> 
+      The <see cref="WxePermaUrlOptions"/> used for executing the function using a permanent URL.      
+    </param>
+    <remarks>
+      Note that if you call this method from a postback event handler, the postback event will be raised again 
+      when the user returns to this page. You can either manually check whether the event was re-posted using 
+      <see cref="IWxePage.IsReturningPostBack"/> or suppress the re-post by calling 
+      <see cref="ExecuteFunctionNoRepost"/>.
+    </remarks>
+  </ExecuteFunction>
+  <ExecutingStep>
+    <value> 
+      Either the current step or the <see cref="WxeStepList.ExecutingStep"/> of the <see cref="WxeFunction"/> 
+      invoked by <see cref="ExecuteFunction"/>.
+    </value>
+  </ExecutingStep>
+  <PageToken>
+    <value> 
+      A value that uniquely identifies a <see cref="WxePageStep"/> while it is executing. 
+    </value>
+    <remarks> 
+      The page token remains valid until the user leaves the page, e.g. by invoking 
+      <see cref="IWxePage.ExecuteNextStep"/>.
+    </remarks>
+  </PageToken>
+</WxePageStep>

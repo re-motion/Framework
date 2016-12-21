@@ -1,0 +1,34 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Layout.master.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Layout" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head runat="server">
+    <title>Web.Development.WebTesting.TestSite</title>
+    <style type="text/css">
+      div.container
+      {
+        margin-top: 1em;
+        padding: 0 1em 1em;
+        border: 1px dotted black;
+      }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+  </head>
+  <body>
+    <form id="form1" runat="server">
+      <asp:ScriptManager ID="ScriptManager" EnablePartialRendering="true" AsyncPostBackTimeout="3600" runat="server" />
+      <div class="container">
+        <asp:ContentPlaceHolder ID="body" runat="server">
+        </asp:ContentPlaceHolder>
+      </div>
+      <div class="container">
+        <h3>Test output:</h3>
+        <asp:UpdatePanel ID="MainUpdatePanel" UpdateMode="Always" runat="server">
+          <ContentTemplate>
+            <asp:Label ID="TestOutputLabel" ViewStateMode="Disabled" runat="server"></asp:Label>
+          </ContentTemplate>
+        </asp:UpdatePanel>
+      </div>
+    </form>
+  </body>
+</html>

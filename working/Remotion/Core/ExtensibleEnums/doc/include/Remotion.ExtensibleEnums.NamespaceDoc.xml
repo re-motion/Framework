@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+
+<doc>
+  <assembly>
+    <name>_SharedItems_</name>
+  </assembly>
+  <members>
+    <member name="N:Remotion.ExtensibleEnums">
+      <summary>
+    <para>
+      The <B>Remotion.ExtensibleEnums</B> namespace contains an extensible enum infrastructure. Extensible enums are types that enumerate values,
+      similar to ordinary enums, but can be extended to hold new values from the outside. This means an extensible enum declaration is never 
+      "finished", every application component can add new values.
+    </para>
+    <para>
+      An extensible enum type is defined by deriving a class from <see cref="T:Remotion.ExtensibleEnums.ExtensibleEnum`1" />. The generic parameter
+      <c>T</c> is thereby substituted with the extensible enum type:
+      <code>
+        public class Color : ExtensibleEnum&lt;Color&gt;
+        {
+          public Color (string declarationSpace, string valueName)
+              : base (declarationSpace, valueName)
+          {
+          }
+        }
+      </code>
+    </para>
+    <para>
+      Each enum value is uniquely identified by an <see cref="P:Remotion.ExtensibleEnums.ExtensibleEnum`1.ID" /> string formed from a
+      <see cref="P:Remotion.ExtensibleEnums.ExtensibleEnum`1.DeclarationSpace" /> and a
+      <see cref="P:Remotion.ExtensibleEnums.ExtensibleEnum`1.ValueName" /> string.
+      The <see cref="T:Remotion.ExtensibleEnums.ExtensibleEnum`1" /> base class provides a number of different constructors to define those strings.
+      Each extensible enum type should choose one way to form the identifier and expose only one constructor conforming to that way.
+    </para>
+    <para>
+      The values of an extensible enum type are added by defining extension methods against the 
+      <see cref="T:Remotion.ExtensibleEnums.ExtensibleEnumDefinition`1" /> class. Each extension method defines exactly one enum value, and clients
+      of the extensible enum should use those methods to retrieve the values. For this purpose, the 
+      <see cref="T:Remotion.ExtensibleEnums.ExtensibleEnum`1" /> provides a <see cref="P:Remotion.ExtensibleEnums.ExtensibleEnum`1.Values" /> property
+      that allows easy access to the extension methods:
+      <code>
+        public static class ColorExtensions
+        {
+          public static Color Red (this ExtensibleEnumDefinition&lt;Color&gt; definition)
+          {
+            return new Color ("MainModule", "Red");
+          }
+
+          public static Color Green (this ExtensibleEnumDefinition&lt;Color&gt; definition)
+          {
+            return new Color ("MainModule", "Green");
+          }
+        }
+        
+        ...
+        
+        var redValue = Color.Values.Red(); // invokes ColorExtensions.Red()
+      </code>
+      In this example, the Color type's IDs are formed by specifying a declaration space and value name. The most convenient way to produce
+      unique identifiers, however, is to make use of the <see cref="T:Remotion.ExtensibleEnums.ExtensibleEnum`1" /> constructor taking the extension
+      method as its parameter:
+      <code>
+        public class Color : ExtensibleEnum&lt;Color&gt;
+        {
+          public Color (MethodBase currentMethod)
+            : base (currentMethod)
+          {
+          }
+        }
+        
+        public static class ColorExtensions
+        {
+          public static Color Red (this ExtensibleEnumDefinition&lt;Color&gt; definition)
+          {
+            return new Color (MethodBase.GetCurrentMethod());
+          }
+
+          public static Color Green (this ExtensibleEnumDefinition&lt;Color&gt; definition)
+          {
+            return new Color (MethodBase.GetCurrentMethod());
+          }
+        }
+      </code>
+    </para>
+    <para>
+      There can be more than one extension class defining values for an extensible enum type, and the values can even be defined in different
+      assemblies. The extensible enum infrastructure uses the <see cref="T:Remotion.Reflection.TypeDiscovery.ContextAwareTypeDiscoveryUtility" /> to
+      find all the values defined for an extensible enum type. This means that, by default, all application assemblies in the application directory 
+      are analyzed to find extensible enum values. This behavior can be customized by configuring the 
+      <see cref="T:Remotion.Reflection.TypeDiscovery.ContextAwareTypeDiscoveryUtility" />.
+    </para>
+    <para>
+      Apart from serving as the declaration target of the extension methods defining extensible enum values, the 
+      <see cref="T:Remotion.ExtensibleEnums.ExtensibleEnumDefinition`1" /> class also provides a way to reflectively look up all values of a given
+      extensible enum type and to retrieve a single value by its <see cref="P:Remotion.ExtensibleEnums.ExtensibleEnum`1.ID" />. Instances
+      of <see cref="T:Remotion.ExtensibleEnums.ExtensibleEnumDefinition`1" /> can be retrieved via the 
+      <see cref="P:Remotion.ExtensibleEnums.ExtensibleEnum`1.Values" /> (strongly types) or
+      <see cref="T:Remotion.ExtensibleEnums.ExtensibleEnumDefinitionUtility" /> (in reflective scenarios). The order of the values is alphabetic
+      by default (based on the full <see cref="P:Remotion.ExtensibleEnums.ExtensibleEnum`1.ID" />), but can be modified using 
+      <see cref="Remotion.ExtensibleEnums.ExtensibleEnumPositionAttribute" />.
+    </para>
+    <para>
+      It is possible to derive classes from an extensible enum type and override methods in those subclasses. Values for the enum type must still
+      be defined via extension methods for <see cref="T:Remotion.ExtensibleEnums.ExtensibleEnumDefinition`1" />, where T is the base enum type,
+      not the derived one, but the extension methods can return instances of the derived classes.
+    </para>
+    <para>
+      To attach resources to extensible enum values, apply the <see cref="T:Remotion.Globalization.MultiLingualResourcesAttribute" /> to the class
+      declaring the extension methods which define the values. The resource identifiers in the corresponding resource file must equal the enum 
+      values' IDs.
+    </para>
+    
+  </summary>
+    </member>
+  </members>
+</doc>

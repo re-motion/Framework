@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:c="http://www.re-motion.org/core/unitTests" 
+    elementFormDefault="qualified" 
+    attributeFormDefault="unqualified" 
+    targetNamespace="http://www.re-motion.org/core/unitTests">
+  <xs:element name="sampleClass">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="value" minOccurs="1" maxOccurs="1">
+          <xs:simpleType>
+            <xs:restriction base="xs:int"/>
+          </xs:simpleType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

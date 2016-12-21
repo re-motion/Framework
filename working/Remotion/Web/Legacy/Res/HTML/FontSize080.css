@@ -1,0 +1,40 @@
+/*  Include this style sheet to set the base font-size to 80% of the browser default 
+    for pages displayed in quirks mode.  */
+
+body
+{
+  /* Font-Size in body must be in percent. Otherwise IE has a cascading bug. */  
+  font-size: 80%;
+}
+
+/*  no inheritence from body */
+td, 
+th
+{
+  font-size: 80%;
+}
+
+/*  Style applied to the title cell  */
+/*  Style applied to the sub title cell  */
+/*  no inheritence from body */
+td.formGridTitleCell,
+td.formGridSubTitleCell
+{
+	font-size: 100%;
+}
+
+/*  Style applied to the BocList's in-place menu  */
+/*  no inheritence from body */
+td.listMenuRow
+{
+  font-size: 64%;
+}
+
+/* No scaling without a reference value */
+input,
+textarea,
+select,
+button
+{
+  font-size: 100%;
+}

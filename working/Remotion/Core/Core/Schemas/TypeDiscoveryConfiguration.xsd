@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:c="http://www.re-motion.org/typeDiscovery/configuration" 
+    targetNamespace="http://www.re-motion.org/typeDiscovery/configuration" 
+    elementFormDefault="qualified" 
+    attributeFormDefault="unqualified">
+  <xs:element name="remotion.typeDiscovery">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element name="specificRootAssemblies" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="byName" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="include" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                        <xs:attribute name="includeReferencedAssemblies" type="c:DotNetBoolean" default="false" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="byFile" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="include" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="filePattern" type="xs:string" use="required"/>
+                        <xs:attribute name="includeReferencedAssemblies" type="c:DotNetBoolean" default="false" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="exclude" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="filePattern" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="customRootAssemblyFinder" minOccurs="0">
+          <xs:complexType>
+            <xs:attribute name="type" use="required" type="c:DotNetType"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="customTypeDiscoveryService" minOccurs="0">
+          <xs:complexType>
+            <xs:attribute name="type" use="required" type="c:DotNetType"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+
+      <xs:attribute name="mode" default="Automatic" use="optional">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Automatic"/>
+            <xs:enumeration value="CustomRootAssemblyFinder"/>
+            <xs:enumeration value="SpecificRootAssemblies"/>
+            <xs:enumeration value="CustomTypeDiscoveryService"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="DotNetBoolean">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="true"/>
+      <xs:enumeration value="false"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="DotNetType">
+    <xs:restriction base="c:RequiredStringType">
+      <!--  Class, Assembly; Namespace.Class, Assembly; Namespace.Namespace.Class, Assembly; 
+            Class+Class, Assembly; Namespace.Class+Class, Assembly; Namespace.Namespace.Class+Class, Assembly
+            Class,Assembly; Namespace.Class,Assembly; Namespace.Namespace.Class,Assembly; 
+            Class+Class,Assembly; Namespace.Class+Class,Assembly; Namespace.Namespace.Class+Class,Assembly -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*),\s?([\p{L}\d]+\.)*([\p{L}\d]+)" />
+
+      <!--  Class; Namespace.Class; Namespace.Namespace.Class; 
+            Class+Class; Namespace.Class+Class; Namespace.Namespace.Class+Class -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*)" />
+
+      <!--  Namespace::Class; Namespace.Namespace::Class; 
+            Namespace::Class+Class; Namespace::Namespace.Class+Class -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*::)(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*)" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RequiredStringType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:whiteSpace value="collapse" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<BocReferenceValue>
+  <Class>
+    <remarks>
+      <h4 class="dtH4">Supported Data Types</h4>
+      <para>
+        The control's <see cref="BocReferenceValueBase.Value"/> can be assigned <see cref="IBusinessObjectWithIdentity"/> values 
+        or <see langword="null"/>. 
+      </para><para>
+        The control's <see cref="BocReferenceValueBase.Property"/> supports the <see cref="IBusinessObjectReferenceProperty"/>.
+      </para>
+      
+      <h4 class="dtH4">Standards Conformance</h4>
+      <list type="table">
+        <listheader>
+          <term>Standard</term>
+          <description>Conformance Information</description>
+        </listheader>
+        <item>
+          <term>HTML 4.01</term>
+          <description>valid</description>
+        </item>
+        <item>
+          <term>XHTML 1.0</term>
+          <description>valid</description>
+        </item>
+        <item>
+          <term>WAI WCAG 1.0</term>
+          <description>
+            <para> 
+              Level A conform if advanced features are turned off. This can be enforced by the 
+              <see cref="Remotion.Web.Configuration.WebConfiguration.Wcag"/> configuration entry.
+            </para>
+            <para> Priority 1 checkpoint 6.3 is not met by the following advacned features:</para>
+            <list type="bullet">
+              <item> An event or a WXE command is defined. </item>
+              <item> The drop down menu. </item>
+            </list>
+            <para>
+              Enabling auto post back can break compliance with priority 1 checkpoint 6.3 if the post back is 
+              required for using the page.
+            </para>
+            <para> Priority 2 checkpoints 6.5 and 10.1 are not met if the advanced features are enabled. </para>
+            <para> 
+              Priority 2 checkpoint 13.1 is not met by the command. The value is used to decribe the link's target.
+            </para>
+          </description>
+        </item>        
+      </list>
+
+      <h4 class="dtH4">Usage Notes</h4>      
+      <para>
+        See the <see cref="BocReferenceValueBase.CreateValidators"/> method for the validators provided by this control.        
+      </para><para>
+        Provide the external resources for this control. See <see cref="T:Remotion.Web.ResourceUrlResolver"/> 
+        for details on this subject.
+      </para><para>
+        If the <see cref="BusinessObjectBoundWebControl.DataSource"/> and
+        the <see cref="BusinessObjectBoundWebControl.PropertyIdentifier"/> properties are not set, the
+        control is unbound. The <see cref="BocReferenceValueBase.Value"/> properties must be set programmatically.
+        In order to get the value after the user has changed it, <see cref="BocReferenceValueBase.Value"/> must be read.
+      </para>
+      <para>
+        If the control is unbound, <see cref="BusinessObjectBoundWebControl.DataSource"/> must be set to the
+        <see cref="IBusinessObjectClassWithIdentity"/> of the values availble for selection in order to get the
+        <see cref="BocReferenceValueBase.Value"/> after a postback.
+      </para><para>
+        The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocReferenceValue</c>.
+      </para><para>
+        The control supports auto-postback. Use the <see cref="DropDownListStyle"/>'s 
+        <see cref="Remotion.ObjectBinding.Web.UI.Controls.DropDownListStyle.AutoPostBack"/> property to enable this
+        behavior.
+      </para><para>
+        Use the <see cref="SetBusinessObjectList"/> method to programmatically populate the list of 
+        <see cref="IBusinessObjectWithIdentity"/> objects. This call is only required during the first page life cycle. 
+        If the list has not been populated programmatically, the <see cref="Select"/> statement will be evaluated. 
+        This behavior can be deactivated by setting <see cref="IsSelectStatementEnabled"/> to 
+        <see langword="false"/>. Use <see cref="ClearBusinessObjectList"/> to remove all items from the
+        list <see cref="IBusinessObjectWithIdentity"/> objects. Use this method to progammatically clear the list, e.g.
+        in an event handler.
+      </para><para>
+        Use the <see cref="BocReferenceValueBase.IconServicePath"/> to specify the ASP.NET web service used to retrieve the icon after a value selection
+        without requiring an auto-postback. This web service must implement the <see cref="Remotion.ObjectBinding.Web.Services.IBusinessObjectIconWebService" /> interface.
+        Additional context information can be provided using the <see cref="BocReferenceValueBase.IconServiceArguments"/> property.
+      </para>
+
+      <h4 class="dtH4">Localization Support</h4>
+      <para>
+        The resources required by this control are defined by the 
+        <see cref="BocReferenceValue.ResourceIdentifier"/> enum. See the <b>ResourceIdentifier</b>'s documentation
+        for details on localization.
+      </para><para>
+        The control supports resource dispatching to its properties through the <see cref="ResourceDispatcher"/>.
+        Use the following resource identifiers for dispatching strings to the <b>BocReferenceValue</b>
+        or use the <b>global resource identifier</b> syntax for setting the resource identifier in the propery.
+      </para>
+      <list type="table">
+        <listheader>
+          <term>Property</term>
+          <description>Resource Identifier</description>
+        </listheader>
+        <item>
+          <term> <see cref="BocReferenceValueBase.NullItemErrorMessage"/> </term>
+          <description>
+            <para> &lt;BocReferenceValue Resource ID&gt;:NullItemErrorMessage </para>
+            <para> e.g. auto:MyBocReferenceValue:NullItemErrorMessage </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="BocReferenceValueBase.OptionsTitle"/> </term>
+          <description>
+            <para> &lt;BocReferenceValue Resource ID&gt;:OptionsTitle </para>
+            <para> e.g. auto:MyBocReferenceValue:OptionsTitle </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="BocReferenceValueBase.OptionsMenuItems"/>[x].Text </term>
+          <description>
+            <para> &lt;BocReferenceValue Resource ID&gt;:OptionsMenuItems:&lt;Menu Item ID&gt;:Text </para>
+            <para> e.g. auto:MyBocReferenceValue:OptionsMenuItems:MyItem:Text </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="BocReferenceValueBase.Command"/>.ToolTip </term>
+          <description>
+            <para> &lt;BocReferenceValue Resource ID&gt;:Command:ToolTip </para>
+            <para> e.g. auto:MyBocReferenceValue:Command:ToolTip </para>
+          </description>
+        </item>
+      </list>
+      
+      <h4 class="dtH4">Inner Workings</h4>
+      <para>
+        The control uses the view state to cache the value between postbacks. If the control is data bound,
+        a call to <see cref="SaveValue"/> with <b>interim</b> set <see langword="true"/> is required to save the
+        value back into the data source.
+      </para>
+
+      <list type="table">
+        <listheader>
+          <term>State</term>
+          <description>Behaviour</description>
+        </listheader>
+        <item>
+          <term>
+            Read-Only / <see cref="BocReferenceValueBase.Value"/> is not <see langword="null"/>
+          </term>
+          <description>
+            Displays the <see cref="IBusinessObjectWithIdentity.DisplayName"/> for <see cref="BocReferenceValueBase.Value"/> 
+            and the icon returned by <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
+            if <see cref="BocReferenceValueBase.EnableIcon"/> is <see langword="true"/>.
+          </description>
+        </item>
+        <item>
+          <term>
+            Read-Only / <see cref="BocReferenceValueBase.Value"/> is <see langword="null"/>
+          </term>
+          <description>
+            Displays no text and the icon returned by <see cref="IBusinessObjectWebUIService.GetIcon"/> for
+            <see langword="null"/>, if <see cref="BocReferenceValueBase.EnableIcon"/> is <see langword="true"/>.
+          </description>
+        </item>
+        <item>
+          <term>
+            Edit Mode / <see cref="BocReferenceValueBase.Value"/> is not <see langword="null"/>
+          </term>
+          <description>
+            Text is automatically provided by the <see cref="DropDownList"/>.
+            Displays the icon returned by <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
+            if <see cref="BocReferenceValueBase.EnableIcon"/> is <see langword="true"/>.
+          </description>
+        </item>
+        <item>
+          <term>
+            Edit Mode / <see cref="BocReferenceValueBase.Value"/> is <see langword="null"/>
+          </term>
+          <description>
+            <para>
+              Text is automatically provided by the <see cref="DropDownList"/>.
+              Displays the icon returned by <see cref="IBusinessObjectWebUIService.GetIcon"/> for
+              <see langword="null"/>, if <see cref="BocReferenceValueBase.EnableIcon"/> is <see langword="true"/>.
+            </para><para>
+              If the control is required, the undefined item is removed once a valid item is
+              selected.
+            </para>
+          </description>
+        </item>
+        <item>
+          <term>
+            Edit Mode / <see cref="BocReferenceValueBase.Value"/> is set to an item not in the list.
+          </term>
+          <description>
+            <para>
+              The new item is added to the list and displayed in the <see cref="DropDownList"/>. 
+            </para><para>
+              If <see cref="BocReferenceValueBase.Value"/> is <see langword="null"/> but the control is required, the undefined item is
+              added to the <see cref="DropDownList"/> unitl the selection is again changed to a
+              valid item.
+            </para>
+          </description>
+        </item>
+      </list>
+    </remarks>
+  </Class>
+  <LoadValue>
+    <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
+    <remarks>
+      <para>
+        Loads the <see cref="BocReferenceValueBase.Value"/> from the <see cref="BusinessObjectBoundWebControl.DataSource"/> 
+        if <paramref name="interim"/> is <see langword="false"/>. 
+      </para><para>
+        Requires a <see cref="BusinessObjectBoundWebControl.Property"/>, and a <see cref="BusinessObjectBoundWebControl.DataSource"/>.
+        If the <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see> is not set, the <see cref="BocReferenceValueBase.Value"/> will
+        still be loaded but set to <see langword="null"/>.
+      </para><para>
+        <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> is <see langword="false"/> after invoking
+        <see cref="LoadValue"/> with <paramref name="interim"/> <see langword="false"/>.
+      </para>
+    </remarks>
+    <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
+  </LoadValue>
+  <LoadUnboundValue>
+    <param name="value">The object implementing <see cref="IBusinessObjectWithIdentity"/> to load, or <see langword="null"/>.</param>
+    <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
+    <remarks>
+      <para>
+        Populates the <see cref="BocReferenceValueBase.Value"/> with the provided <paramref name="value"/> if <paramref name="interim"/> 
+        is <see langword="false"/>. 
+      </para><para>
+        Requires a <see cref="BocReferenceValueBase.Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
+        a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
+      </para><para>
+        <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> is <see langword="false"/> after invoking
+        <see cref="LoadValue"/> with <paramref name="interim"/> <see langword="false"/>.
+      </para>
+    </remarks>
+  </LoadUnboundValue>
+  <SaveValue>
+    <param name="interim"> Specifies whether this is the final saving or an interim saving. </param>
+    <returns><see langword="true"/> if the value was saved into the <see cref="BusinessObjectBoundWebControl.DataSource"/>.<see cref="IBusinessObjectDataSource.BusinessObject"/>.</returns>
+    <remarks>
+      <para>
+        Saves the <see cref="BocReferenceValueBase.Value"/> into the <see cref="BusinessObjectBoundWebControl.DataSource"/> 
+        if <paramref name="interim"/> is <see langword="false"/> and the control's 
+        <see cref="BusinessObjectBoundEditableWebControl.IsReadOnly"/> property evaluates <see langword="false"/>. 
+      </para><para>
+        Requires a <see cref="BusinessObjectBoundWebControl.Property"/> and a <see cref="BusinessObjectBoundWebControl.DataSource"/>.
+        If the <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see> is not set, the <see cref="BocReferenceValueBase.Value"/> will
+        not be saved.
+      </para><para>
+        <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> will be <see langword="false"/> after invoking
+        <see cref="SaveValue"/> with <paramref name="interim"/> <see langword="false"/>.
+      </para>
+    </remarks>
+    <seealso cref="IBusinessObjectBoundEditableControl.SaveValue">IBusinessObjectBoundEditableControl.SaveValue</seealso>
+  </SaveValue>
+  
+</BocReferenceValue>

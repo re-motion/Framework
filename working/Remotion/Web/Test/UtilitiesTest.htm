@@ -1,0 +1,645 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>Utilities Test</title>
+<script type="text/javascript" src="res/Remotion.Web/Html/Utilities.js"></script>
+</head>
+<body>
+<h1>Utilities Test</h1>
+
+<script type="text/javascript">
+function FunctionMock()
+{
+}
+
+var value;
+
+function PrintSucceeded (value)
+{
+  document.writeln ('<span style="color:Green">' + value + '</span><br>');
+}
+
+function PrintFailed (value)
+{
+  document.writeln ('<span style="color:Red">' + value + '</span><br>');
+}
+
+</script>
+
+<script type="text/javascript">
+if (TypeUtility.IsObject (document.body))
+{
+  PrintSucceeded ("TypeUtility.IsObject (document.body)");
+}
+else
+{
+  PrintFailed ("TypeUtility.IsObject (document.body)");
+}
+
+if (TypeUtility.IsString ('XXX'))
+{
+  PrintSucceeded ("TypeUtility.IsString ('XXX')");
+}
+else
+{
+  PrintFailed ("TypeUtility.IsString ('XXX')");
+}
+
+if (TypeUtility.IsNumber (1))
+{
+  PrintSucceeded ("TypeUtility.IsNumber (1)");
+}
+else
+{
+  PrintFailed ("TypeUtility.IsNumber (1)");
+}
+
+if (TypeUtility.IsBoolean (true))
+{
+  PrintSucceeded ("TypeUtility.IsBoolean (true)");
+}
+else
+{
+  PrintFailed ("TypeUtility.IsBoolean (true)");
+}
+
+if (TypeUtility.IsFunction (FunctionMock))
+{
+  PrintSucceeded ("TypeUtility.IsFunction (FunctionMock)");
+}
+else
+{
+  PrintFailed ("TypeUtility.IsFunction (FunctionMock)");
+}
+
+if (TypeUtility.IsNull (null))
+{
+  PrintSucceeded ("TypeUtility.IsNull (null)");
+}
+else
+{
+  PrintFailed ("TypeUtility.IsNull (null)");
+}
+
+if (TypeUtility.IsUndefined (document.bod))
+{
+  PrintSucceeded ("TypeUtility.IsUndefined (document.bod)");
+}
+else
+{
+  PrintFailed ("TypeUtility.IsUndefined (document.bod)");
+}
+</script>
+
+<script type="text/javascript">
+if (! TypeUtility.IsObject ('XXX'))
+{
+  PrintSucceeded ("! TypeUtility.IsObject ('XXX')");
+}
+else
+{
+  PrintFailed ("! TypeUtility.IsObject ('XXX')");
+}
+
+if (! TypeUtility.IsString (1))
+{
+  PrintSucceeded ("! TypeUtility.IsString (1)");
+}
+else
+{
+  PrintFailed ("! TypeUtility.IsString (1)");
+}
+
+if (! TypeUtility.IsNumber (true))
+{
+  PrintSucceeded ("! TypeUtility.IsNumber (true)");
+}
+else
+{
+  PrintFailed ("! TypeUtility.IsNumber (true)");
+}
+
+if (! TypeUtility.IsBoolean (FunctionMock))
+{
+  PrintSucceeded ("! TypeUtility.IsBoolean (FunctionMock)");
+}
+else
+{
+  PrintFailed ("! TypeUtility.IsBoolean (FunctionMock)");
+}
+
+if (! TypeUtility.IsFunction (document.body))
+{
+  PrintSucceeded ("! TypeUtility.IsFunction (document.body)");
+}
+else
+{
+  PrintFailed ("! TypeUtility.IsFunction (document.body)");
+}
+
+if (! TypeUtility.IsNull (document.bod))
+{
+  PrintSucceeded ("! TypeUtility.IsNull (document.bod)");
+}
+else
+{
+  PrintFailed ("! TypeUtility.IsNull (document.bod)");
+}
+
+if (! TypeUtility.IsUndefined (null))
+{
+  PrintSucceeded ("! TypeUtility.IsUndefined (null)");
+}
+else
+{
+  PrintFailed ("! TypeUtility.IsUndefined (null)");
+}
+
+</script>
+
+<script type="text/javascript">
+try
+{
+  ArgumentUtility.CheckNotNull ('', document.body);
+  ArgumentUtility.CheckNotNull ('', 'XXX');
+  ArgumentUtility.CheckNotNull ('', 1);
+  ArgumentUtility.CheckNotNull ('', true);
+  ArgumentUtility.CheckNotNull ('', FunctionMock);
+  ArgumentUtility.CheckNotNull ('', document.bod);
+  PrintSucceeded ("ArgumentUtility.CheckNotNull ('', ...)");
+}
+catch (e)
+{
+  PrintFailed ("ArgumentUtility.CheckNotNull ('', ...)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  value = document.body;
+  ArgumentUtility.CheckNotNull ('value', value);
+  value = 'XXX';
+  ArgumentUtility.CheckNotNull ('value', value);
+  value = 1;
+  ArgumentUtility.CheckNotNull ('value', value);
+  value = true;
+  ArgumentUtility.CheckNotNull ('value', value);
+  value = FunctionMock;
+  ArgumentUtility.CheckNotNull ('value', value);
+  PrintSucceeded ("ArgumentUtility.CheckNotNull ('value', ...)");
+}
+catch (e)
+{
+  PrintFailed ("ArgumentUtility.CheckNotNull ('value', ...)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  ArgumentUtility.CheckNotNull ('', null);
+  PrintFailed ("ArgumentUtility.CheckNotNull ('', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNull ('', null)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  value = null;
+  ArgumentUtility.CheckNotNull ('value', value);
+  PrintFailed ("ArgumentUtility.CheckNotNull ('value', value)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNull ('value', value)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  ArgumentUtility.CheckNotNullAndTypeIsObject ('', document.body);
+  ArgumentUtility.CheckNotNullAndTypeIsString ('', 'XXX');
+  ArgumentUtility.CheckNotNullAndTypeIsNumber ('', 1);
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean ('', true);
+  ArgumentUtility.CheckNotNullAndTypeIsFunction ('', FunctionMock);
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIs... ('', ...)");
+}
+catch (e)
+{
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIs... ('', ...)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  value = document.body;
+  ArgumentUtility.CheckNotNullAndTypeIsObject ('value', value);
+  value = 'XXX';
+  ArgumentUtility.CheckNotNullAndTypeIsString ('value', value);
+  value = 1;
+  ArgumentUtility.CheckNotNullAndTypeIsNumber ('value', value);
+  value = true;
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean ('value', value);
+  value = FunctionMock;
+  ArgumentUtility.CheckNotNullAndTypeIsFunction ('value', value);
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIs... ('value', value)");
+}
+catch (e)
+{
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIs... ('value', value)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  ArgumentUtility.CheckNotNullAndTypeIsObject ('', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsObject ('', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsObject ('', null)");
+}
+
+try
+{
+  ArgumentUtility.CheckNotNullAndTypeIsString ('', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsString ('', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsString ('', null)");
+}
+
+try
+{
+  ArgumentUtility.CheckNotNullAndTypeIsNumber ('', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsNumber ('', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsNumber ('', null)");
+}
+
+try
+{
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean ('', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsBoolean ('', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsBoolean ('', null)");
+}
+
+try
+{
+  ArgumentUtility.CheckNotNullAndTypeIsFunction ('', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsFunction ('', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsFunction ('', null)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  value = null;
+  ArgumentUtility.CheckNotNullAndTypeIsObject ('value', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsObject ('value', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsObject ('value', null)");
+}
+
+try
+{
+  value = null;
+  ArgumentUtility.CheckNotNullAndTypeIsString ('value', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsString ('value', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsString ('value', null)");
+}
+
+try
+{
+  value = null;
+  ArgumentUtility.CheckNotNullAndTypeIsNumber ('value', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsNumber ('value', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsNumber ('value', null)");
+}
+
+try
+{
+  value = null;
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean ('value', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsBoolean ('value', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsBoolean ('value', null)");
+}
+
+try
+{
+  value = null;
+  ArgumentUtility.CheckNotNullAndTypeIsFunction ('value', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsFunction ('value', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsFunction ('value', null)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  ArgumentUtility.CheckNotNullAndTypeIsObject ('', 'XXX');
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsObject ('', 'XXX')");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsObject ('', 'XXX')");
+}
+
+try
+{
+  ArgumentUtility.CheckNotNullAndTypeIsString ('', 1);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsString ('', 1)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsString ('', 1)");
+}
+
+try
+{
+  ArgumentUtility.CheckNotNullAndTypeIsNumber ('', true);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsNumber ('', true)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsNumber ('', true)");
+}
+
+try
+{
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean ('', FunctionMock);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsBoolean ('', FunctionMock)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsBoolean ('', FunctionMock)");
+}
+
+try
+{
+  ArgumentUtility.CheckNotNullAndTypeIsFunction ('', document.body);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsFunction ('', document.body)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsFunction ('', document.body)");
+}
+
+try
+{
+  ArgumentUtility.CheckNotNullAndTypeIsObject ('', document.bod);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsObject ('', document.bod)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsObject ('', document.bod)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  value = 'XXX';
+  ArgumentUtility.CheckNotNullAndTypeIsObject ('value', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsObject ('value', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsObject ('value', null)");
+}
+
+try
+{
+  value = 1;
+  ArgumentUtility.CheckNotNullAndTypeIsString ('value', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsString ('value', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsString ('value', null)");
+}
+
+try
+{
+  value = true;
+  ArgumentUtility.CheckNotNullAndTypeIsNumber ('value', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsNumber ('value', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsNumber ('value', null)");
+}
+
+try
+{
+  value = FunctionMock;
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean ('value', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsBoolean ('value', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsBoolean ('value', null)");
+}
+
+try
+{
+  value = document.body;
+  ArgumentUtility.CheckNotNullAndTypeIsFunction ('value', null);
+  PrintFailed ("ArgumentUtility.CheckNotNullAndTypeIsFunction ('value', null)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckNotNullAndTypeIsFunction ('value', null)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  ArgumentUtility.CheckTypeIsObject ('', document.body);
+  ArgumentUtility.CheckTypeIsString ('', 'XXX');
+  ArgumentUtility.CheckTypeIsNumber ('', 1);
+  ArgumentUtility.CheckTypeIsBoolean ('', true);
+  ArgumentUtility.CheckTypeIsFunction ('', FunctionMock);
+  PrintSucceeded ("ArgumentUtility.CheckTypeIs... ('', ...)");
+}
+catch (e)
+{
+  PrintFailed ("ArgumentUtility.CheckTypeIs... ('', ...)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  value = document.body;
+  ArgumentUtility.CheckTypeIsObject ('value', value);
+  value = 'XXX';
+  ArgumentUtility.CheckTypeIsString ('value', value);
+  value = 1;
+  ArgumentUtility.CheckTypeIsNumber ('value', value);
+  value = true;
+  ArgumentUtility.CheckTypeIsBoolean ('value', value);
+  value = FunctionMock;
+  ArgumentUtility.CheckTypeIsFunction ('value', value);
+  PrintSucceeded ("ArgumentUtility.CheckTypeIs... ('value', value)");
+}
+catch (e)
+{
+  PrintFailed ("ArgumentUtility.CheckTypeIs... ('value', value)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  ArgumentUtility.CheckIsObject ('', 'XXX');
+  PrintFailed ("ArgumentUtility.CheckIsObject ('', 'XXX')");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckIsObject ('', 'XXX')");
+}
+
+try
+{
+  ArgumentUtility.CheckTypeIsString ('', 1);
+  PrintFailed ("ArgumentUtility.CheckTypeIsString ('', 1)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckTypeIsString ('', 1)");
+}
+
+try
+{
+  ArgumentUtility.CheckTypeIsNumber ('', true);
+  PrintFailed ("ArgumentUtility.CheckTypeIsNumber ('', true)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckTypeIsNumber ('', true)");
+}
+
+try
+{
+  ArgumentUtility.CheckTypeIsBoolean ('', FunctionMock);
+  PrintFailed ("ArgumentUtility.CheckTypeIsBoolean ('', FunctionMock)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckTypeIsBoolean ('', FunctionMock)");
+}
+
+try
+{
+  ArgumentUtility.CheckTypeIsFunction ('', document.body);
+  PrintFailed ("ArgumentUtility.CheckTypeIsFunction ('', document.body)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckTypeIsFunction ('', document.body)");
+}
+
+try
+{
+  ArgumentUtility.CheckTypeIsObject ('', document.bod);
+  PrintFailed ("ArgumentUtility.CheckTypeIsObject ('', document.bod)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckTypeIsObject ('', document.bod)");
+}
+</script>
+
+<script type="text/javascript">
+try
+{
+  value = 'XXX';
+  ArgumentUtility.CheckTypeIsObject ('value', value);
+  PrintFailed ("ArgumentUtility.CheckTypeIsObject ('value', value)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckTypeIsObject ('value', value)");
+}
+
+try
+{
+  value = 1;
+  ArgumentUtility.CheckTypeIsString ('value', value);
+  PrintFailed ("ArgumentUtility.CheckTypeIsString ('value', value)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckTypeIsString ('value', value)");
+}
+
+try
+{
+  value = true;
+  ArgumentUtility.CheckTypeIsNumber ('value', value);
+  PrintFailed ("ArgumentUtility.CheckTypeIsNumber ('value', value)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckTypeIsNumber ('value', value)");
+}
+
+try
+{
+  value = FunctionMock;
+  ArgumentUtility.CheckTypeIsBoolean ('value', value);
+  PrintFailed ("ArgumentUtility.CheckTypeIsBoolean ('value', value)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckTypeIsBoolean ('value', value)");
+}
+
+try
+{
+  value = document.body;
+  ArgumentUtility.CheckTypeIsFunction ('value', value);
+  PrintFailed ("ArgumentUtility.CheckTypeIsFunction ('value', value)");
+}
+catch (e)
+{
+  PrintSucceeded ("ArgumentUtility.CheckTypeIsFunction ('value', value)");
+}
+</script>
+
+</body>
+</html>

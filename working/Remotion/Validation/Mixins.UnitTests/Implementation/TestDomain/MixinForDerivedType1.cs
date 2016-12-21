@@ -1,0 +1,55 @@
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+// 
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
+// 
+// re-motion is distributed in the hope that it will be useful, 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
+// 
+
+using System;
+using Remotion.Mixins;
+
+namespace Remotion.Validation.Mixins.UnitTests.Implementation.TestDomain
+{
+  public interface IBaseBaseIntroducedFromMixinForDerivedType1
+  {
+
+  }
+
+  public interface IBaseIntroducedFromMixinForDerivedTypeA1 : IBaseBaseIntroducedFromMixinForDerivedType1
+  {
+
+  }
+
+  public interface IBaseIntroducedFromMixinForDerivedTypeB1 : IBaseBaseIntroducedFromMixinForDerivedType1
+  {
+
+  }
+
+  public interface IIntroducedFromMixinForDerivedType1 : IBaseIntroducedFromMixinForDerivedTypeA1, IBaseIntroducedFromMixinForDerivedTypeB1
+  {
+    string IntroducedProperty2 { get; }
+  }
+
+  [AcceptsAlphabeticOrdering]
+  [Extends (typeof (DerivedConcreteTypeForMixin))]
+  public class MixinForDerivedType1 : BaseMixinForDerivedType, IIntroducedFromMixinForDerivedType1
+  {
+    [OverrideTarget]
+    public string Property4
+    {
+      get { return Next.Property4; }
+    }
+
+    public string IntroducedProperty2 { get; set; }
+  }
+}

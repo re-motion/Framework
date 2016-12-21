@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:q="http://www.re-motion.org/Data/DomainObjects/Queries/1.0" 
+    xmlns:t="http://www.re-motion.org/Data/DomainObjects/Types" 
+    elementFormDefault="qualified" 
+    attributeFormDefault="unqualified" 
+    targetNamespace="http://www.re-motion.org/Data/DomainObjects/Queries/1.0" 
+    xml:lang="en">
+
+  <!-- TODO: Import should contain schemaLocation to ensure application developer can check its mapping during design time. 
+             Before this is done it should be verified that schemaLocation there is no problem when XSD is used as embedded ressource during run time. -->
+  <xs:import namespace="http://www.re-motion.org/Data/DomainObjects/Types" />
+
+  <xs:element name="queries">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="query" type="q:queryType" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:key name="queryKey">
+      <xs:selector xpath="q:query" />
+      <xs:field xpath="@id" />
+    </xs:key>
+
+  </xs:element>
+
+  <xs:complexType name="queryType">
+    <xs:sequence>
+      <xs:element name="storageGroupType" type="t:requiredStringType" minOccurs="0" />
+      <xs:element name="statement" type="t:requiredStringType" />
+      <xs:element name="collectionType" type="t:requiredStringType" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="id" type="t:requiredStringType" use="required" />
+    <xs:attribute name="type" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="collection" />
+          <xs:enumeration value="scalar" />
+          <xs:enumeration value="custom" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+</xs:schema>

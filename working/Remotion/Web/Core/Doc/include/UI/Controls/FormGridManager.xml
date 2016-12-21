@@ -1,0 +1,1174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<FormGridManager>
+  <Class>
+    <remarks>
+    
+      <h4 class="dtH4">Standards Conformance</h4>
+      <list type="table">
+        <listheader>
+          <term>Standard</term>
+          <description>Conformance Information</description>
+        </listheader>
+        <item>
+          <term>HTML 4.01</term>
+          <description>valid</description>
+        </item>
+        <item>
+          <term>XHTML 1.0</term>
+          <description>valid</description>
+        </item>
+        <item>
+          <term>WAI WCAG 1.0</term>
+          <description>level Triple-A conform</description>
+        </item>        
+      </list>
+      
+      <h4 class="dtH4">Usage Notes</h4>
+      <list type="number">
+        <item>
+          Place an instance of <c>FormGridManager</c> onto the aspx-page or ascx-control.
+        </item>
+        <item>
+          Apply the suffix (property <see cref="FormGridSuffix" /> (defaults to <c>FormGrid</c>)
+          to the names of all the tables that you wish to use as form grids managed by this 
+          instance of the <c>FormGridManager</c>.
+        </item>
+        <item>
+          Place labels into the column identified by <see cref="LabelsColumn" />.
+          (Use labels as required by the controls you use).
+        </item>
+        <item>
+          <para>
+            Labels and controls in the same row:
+            Place controls into the column identified by <see cref="ControlsColumn" />.
+          </para><para>
+            Labels and controls in adjecent rows:
+            Alternatively, you can use a combined cell to host a large control. Add an extra row
+            below the row with the label, containing a cell spanning both the <c>LabelsColumn</c>
+            and the <c>ControlsColumn</c>. Insert the control into this cell and leave the 
+            control cell in the previous row empty. Please make sure that there is no content
+            in the cell, either visible or invisible (leftover HTML tags for instance).
+            During execution, the controls cell in the second row always spans from the 
+            <c>LabelsColumn</c> all the way to the <c>ControlsColumn</c>.
+          </para>
+        </item>
+        <item>
+          <para>
+            Specify how the validators inside the managed tables should be displayed using
+            <see cref="ValidatorVisibility" /> and <see cref="ShowValidationMarkers" />.
+          </para><para>
+            If you set <c>ValidatorVisibilty</c> to <c>Auto</c>, you might want to switch 
+            off the validation markers using <c>ShowValidationMarkers</c> set to 
+            <see langname="false"/>.
+          </para><para>
+            The <c>FormGridManager</c> considers only validators located in the same cell as the 
+            controls they are assigned to.
+          </para>
+        </item>
+        <item>
+          Provide the page's css file with all the classes used by the <c>FormGridManager</c>.
+          Use the <c>FormGridManager.css</c> for reference.
+        </item>
+        <item>
+          If the managed tables wish to make use of the automated header formatting,
+          they may only have a single cell inside the first row.
+        </item>
+      </list>
+    </remarks>
+
+    <example>
+    Example for a row with both the labels and the controls in the same row.
+      <code>
+<![CDATA[
+  <table id="MyFormGrid" runat="server" >
+    <tr>
+      <td>
+        <asp:Label ... />
+      </td>
+      <td>
+        <asp:TextBox ... />
+      </td>
+    </tr>
+  </table>                
+]]>
+</code>
+Example for a row with labels and the controls in adjecent row.
+<code>
+<![CDATA[
+  <table id="MyFormGrid" runat="server" >
+    <tr>
+      <td>
+        <asp:Label ... />
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <asp:TextBox ... />
+      </td>
+    </tr>
+  </table>                
+]]>
+      </code>
+    </example>
+  </Class> 
+  <Validate>
+    <returns>
+      <see langname="true"/> if no managed <c>FormGrid</c> containss a validation error.
+    </returns>
+  </Validate>
+  <GetValidationErrors>
+    <remarks>
+      Will return an empty list unless <see cref="Validate"/> is called before this method 
+      executes.
+    </remarks>
+    <returns>
+      An array of <see cref="ValidationError"/> objects.
+    </returns>
+  </GetValidationErrors>
+  <Dispatch>
+    <param name="values">
+      A dictonary of keys denoting the properties to be set, and the values to be used.
+      The property is described by the full path through the control collection, starting with
+      the form grid's ID.
+    </param>
+  </Dispatch>
+  <LoadFormGridViewState>
+    <remarks>
+      Restoring starts with the HtmlTable.
+    </remarks>
+    <param name="formGrid">
+      The form grid to restore.
+    </param>
+    <param name="savedState">
+      The view state object used for restoring.
+    </param>
+  </LoadFormGridViewState>
+  <SaveFormGridViewState>
+    <remarks>
+      Saving starts with the HtmlTable and omits any settings for the HtmlTableRow and 
+      HtmlTableCell objects.
+    </remarks>
+    <param name="formGrid">
+      The form grid to save.
+    </param>
+    <returns>
+      The view state object for this form grid.
+    </returns>
+  </SaveFormGridViewState>
+  <CreateFormGridRows>
+    <param name="table">
+      The <see cref="FormGrid"/> for which the rows are to be created
+    </param>
+    <returns>
+      An array of <see cref="FormGridRow"/> objects
+    </returns>
+  </CreateFormGridRows>
+  <ValidateFormGrid>
+    <remarks>
+      <see cref="ValidateDataRow"/> is called for each <see cref="FormGridRow"/> of type 
+      <see cref="FormGridRowType.DataRow"/>.
+    </remarks>
+    <param name="formGrid">
+      The <see cref="FormGrid"/> to be validated
+    </param>
+    <returns>
+      True if the <see cref="FormGrid"/> is valid
+    </returns>
+  </ValidateFormGrid>
+  <ValidateDataRow>
+    <remarks>
+      <para>
+        If a validation error is found, this method 
+        sets the validation marker to an <see cref="Image" /> and assigns a <c>ToolTip</c>.
+        It also creates an instance of <see cref="ValidationError" /> for each error found.
+      </para><para>
+        Only visible controls are validated.
+      </para><para>
+        Override this method to change the identification of validation controls or where the
+        validation messages are loaded from.
+      </para>
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> to be validated.
+    </param>
+  </ValidateDataRow>
+  <TransformIntoFormGridPreLoadViewState>
+    <remarks>
+      <para>
+        This step is executed before the <see cref="HtmlTable"/>'s view state is restored
+        so the <see cref="HtmlTable"/> is in the same configuration as it was when the view state
+        was saved.
+      </para><para>
+        <list type="number">
+          <item>
+            Call to <see cref="PopulateFormGridList"/>.
+          </item>
+          <item>
+            Disable the <see cref="HtmlTable"/> object's view state.
+          </item>
+          <item>
+            Call to <see cref="FormGrid.BuildIDCollection"/>.
+          </item>
+          <item>
+            Call to <see cref="LoadNewFormGridRows"/> get all additional <see cref="FormGridRow"/>
+            objects from the <see cref="IFormGridRowProvider"/>.
+          </item>
+          <item>
+            Call to <see cref="ApplyExternalHiddenSettings"/> get all <see cref="FormGridRow"/>
+            objects from the <see cref="IFormGridRowProvider"/> are to be hidden.
+          </item>
+          <item>
+            Call to <see cref="ComposeFormGridContents"/>.
+          </item>
+          <item>
+            Call to <see cref="FormatFormGrid"/>.
+          </item>
+        </list>
+    </para>
+    </remarks>
+  </TransformIntoFormGridPreLoadViewState>
+  <TransformIntoFormGridPostValidation>
+    <remarks>
+      <para>
+        This step is executed after the validation occured.
+      </para><para>
+        <list type="number">
+          <item>
+            Call to <see cref="CreateRequiredMarker"/> to test whether a required marker is needed.
+          </item>
+          <item>
+            Call to <see cref="GetHelpProvider"/> to test whether a help provider is needed.
+          </item>
+          <item>
+            Call to <see cref="CreateValidators"/>
+          </item>
+          <item>
+            Call to <see cref="ApplyValidatorSettings"/>
+          </item>
+          <item>
+            Call to <see cref="LoadMarkersIntoCell"/>.
+          </item>
+          <item>
+            Call to <see cref="LoadValidationMessagesIntoCell"/>.
+          </item>
+          <item>
+            Hide all <see cref="FormGridRow"/> objects that have no visible contents.
+          </item>
+          <item>
+            Call to <see cref="AddShowEmptyCellsHack"/>.
+          </item>
+        </list>
+    </para>
+    </remarks>
+  </TransformIntoFormGridPostValidation>
+  <LoadNewFormGridRows>
+    <remarks>
+      Knows how to build rows from the base implementation of <see cref="FormGridRowInfo"/>.
+    </remarks>
+    <param name="formGrid">
+      The form grid for which to load the rows. Must not be <see langname="null"/>.
+    </param>
+  </LoadNewFormGridRows>
+  <ApplyExternalHiddenSettings>
+    <param name="formGrid">
+      The form grid for which to load the rows. Must not be <see langname="null"/>.
+    </param>
+  </ApplyExternalHiddenSettings>
+  <GetFormGridRowProvider>
+    <remarks> Uses a cached reference once the <see cref="IFormGridRowProvider"/> is found. </remarks>
+    <param name="control">
+      The <see cref="Control"/> where to start searching for <see cref="IFormGridRowProvider"/>.
+    </param>
+    <returns>
+      An <see cref="IFormGridRowProvider"/> or <see langname="null"/> if not implemented.
+    </returns>
+  </GetFormGridRowProvider>
+  <ComposeFormGridContents>
+    <remarks>
+      <para>
+        The following methods are called for each data row.
+        <list type="number">
+          <item>
+            Call to <see cref="CreateLabels"/>, if the cell identified by 
+            <see cref="LabelsColumn"/> is empty.
+          </item>
+          <item>
+            Call to <see cref="HandleReadOnlyControls"/>.
+          </item>
+        </list>
+      </para><para>
+        Override this method to change the way the form grid rows are stepped through
+        or how the contents is created.
+      </para>
+    </remarks>
+      <param name="formGrid">
+        The <see cref="FormGrid"/> whose contents need to be composeds
+      </param>
+  </ComposeFormGridContents>
+  <ConfigureFormGrid>
+    <remarks>
+      <para>
+        <see cref="FormatDataRow"/> is called for each <see cref="FormGridRow"/> 
+        of type <see cref="FormGridRowType.DataRow"/>.
+      </para><para>
+        <see cref="FormatTitleRow"/> is called for each <see cref="FormGridRow"/> 
+        of type <see cref="FormGridRowType.TitleRow"/>.
+      </para><para>
+        Override this method to change the way the form grid rows are stepped through.
+      </para>
+    </remarks>
+    <param name="formGrid">
+      The <see cref="FormGrid"/> to be formatted.
+    </param>
+  </ConfigureFormGrid>
+  <ConfigureTitleRow>
+    <param name="titleRow">
+      The <see cref="FormGridRow"/> used as title row
+    </param>
+  </ConfigureTitleRow>
+  <ConfigureDataRow>
+    <remarks>
+      <list type="number">
+        <item>
+          Call to <see cref="CreateMarkersCell"/>
+        </item>
+        <item>
+          Call to <see cref="SetOrCreateValidationMessagesCell"/> and evaluation
+           whether or not a dummy cell is required.
+        </item>
+      </list>
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> used as data row.
+    </param>
+  </ConfigureDataRow>
+  <FormatTitleRow>
+    <remarks>
+      <para>
+        Applies formating to the title cell's borders and contents.
+      </para><para>
+        Overload this method to change the formatting of the title cell.
+      </para>
+    </remarks>
+    <param name="titleRow">
+      The <see cref="FormGridRow"/> used as title row
+    </param>
+  </FormatTitleRow>
+  <FormatDataRow>
+    <remarks>
+      <list type="number">
+        <item>
+          Call to <see cref="AssignCssClassesToCells"/>.
+        </item>
+        <item>
+          Call to <see cref="AssignCssClassesToInputControls"/>.
+        </item>
+      </list>
+      <para>
+        Overload this method to change the formatting of the data portion of the FormGrid.
+      </para>
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> used as data row.
+    </param>
+    <param name="isTopDataRow">
+      <see langword="true" /> if the <paramref name="dataRow" /> is the first row after the 
+      title row.
+    </param>
+  </FormatDataRow>
+  <CreateMarkersCell>
+    <remarks>
+      <para>
+        Default implementation places the required marker and and the validation marker 
+        on the left-hand side of the cell. The validation marker overrides the required marker. 
+        The help provider is placed on the right-hand side of the cell.
+      </para><para>
+        Overload this method to change how the markers are combined into a single cell.
+      </para>
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> for which the marker cell should be created.
+    </param>
+    <returns>
+      A new <see cref="HtmlTableCell"/> containing the markers or <see langname="null"/>.
+    </returns>
+  </CreateMarkersCell>
+  <LoadMarkersIntoCell>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> for which the marker cell should be created.
+    </param>
+  </LoadMarkersIntoCell>
+  <LoadValidationMessagesIntoCell>
+    <remarks>
+      <para>
+        Wrappes each validation message into a <c>div</c>-tag and adds it to the controls  
+        collection of the validation messages cell.
+      </para><para>
+        Override this method if you want to change the rendering of the validation messages.
+      </para>
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> containing the validation messages.
+    </param>
+  </LoadValidationMessagesIntoCell>
+  <AssignCssClassesToCells>
+    <remarks>
+      Override this method if you want to change how the CSS-classes are assigned.
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> containing the cells to get CSS classes assigned.
+    </param>
+    <param name="isTopDataRow">
+      <see langword="true" /> if the <paramref name="dataRow" /> is the first row after the 
+      title row.
+    </param>
+  </AssignCssClassesToCells>
+  <AssignCssClassesToInputControls>
+    <remarks>
+      Required to override the control cell's font definitions.
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> containing the input controls to get CSS classes assigned.
+    </param>
+  </AssignCssClassesToInputControls>
+  <AssignCssClassesToValidators>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> containing the validators to get CSS classes assigned.
+    </param>
+  </AssignCssClassesToValidators>
+  <InsertSpecialColumns>
+    <remarks>
+      Override this method to change the postioning of the special cells.
+    </remarks>
+    <Parameters>
+      <param name="formGridRow">
+        The <see cref="FormGridRow"/> where the special cell's are to be inserted.
+      </param>
+      <param name="markerCell">
+        The cell containing the marker controls or <see langword="null" /> if no markers column.
+      </param>
+      <param name="validationMessageCell">
+        The cell containing the validation messages or <see langword="null" />
+        if validation messages column.
+      </param>
+      <param name="validationMessageCellDummy">
+        An empty cell used as filler in multi-line rows in the postion of the single-line row's 
+        validation message cell or <see langname="null"/> for a single-line control or no extra
+        validation message column.
+      </param>
+    </Parameters>
+  </InsertSpecialColumns>
+  <CreateLabels>
+    <remarks>
+      <para>
+        Only visible controls will have labels created.
+      </para><para>
+        Override this method to change how the labels are created from the resources 
+        provided by the controls.
+      </para>
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> for which the lables will be created.
+    </param>
+  </CreateLabels>
+  <CreateValidators>
+    <remarks>
+      <para>
+        Only visible controls will be checked.
+      </para><para>
+        Override this method to change how the validators are created.
+      </para>
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> for which the validators will be created.
+    </param>
+  </CreateValidators>
+  <CreateRequiredMarker>
+    <remarks>
+      <para>
+        Only visible controls will be checked.
+      </para><para>
+        Override this method to change how the required marker is created.
+      </para>
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> to check for controls requiring input.
+    </param>
+  </CreateRequiredMarker>
+  <CreateHelpProvider>
+    <remarks>
+      <para>
+        Only visible controls will be checked.
+      </para><para>
+        Override this method to change how the help provider is created.
+      </para>
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> for which the validators will be created.
+    </param>
+  </CreateHelpProvider>
+  <HandleReadOnlyControls>
+    <remarks>
+      <para>
+        Only visible controls will be checked.
+      </para><para>   
+        Override this method to change how read-only controls are rendered.
+      </para>
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> to be checked for read-only controls.
+    </param>
+  </HandleReadOnlyControls>
+  <SetOrCreateValidationMessagesCell>
+    <remarks>
+      <para>
+        Depending on <see cref="ValidatorVisibility"/>, the cell containing the validation messages
+        is either a reference to an existing cell or a completly new cell.
+      </para><para>   
+        Override this method to change how the validation message cell is positioned.
+      </para>
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> containing the future validation message cell.
+    </param>
+  </SetOrCreateValidationMessagesCell>
+  <GetImageUrl>
+    <remarks>
+      Override this method to change how the URL is constructed from the symbols defined in the 
+      <see cref="FormGridImage"/> enumeration. Default's to: image name equals symbol name
+    </remarks>
+    <param name="image">
+      The image whose URL should be returned.
+    </param>
+    <returns> 
+      The URl of the specified icon.
+    </returns>
+  </GetImageUrl>
+  <CreateRequiredMarker1>
+    <remarks>
+      Override this method to change how the marker of for controls with mandatory input is constructed.
+    </remarks>
+    <returns> 
+      The new marker.
+    </returns>
+  </CreateRequiredMarker1>
+  <CreateHelpProvider1>
+    <remarks>
+      Override this method to change how the help provider is constructed.
+    </remarks>
+    <param name="helpInfo"> 
+      The <see cref="HelpInfo"/> object used to generate the hyperlink.
+    </param>
+    <returns> 
+      The new help provider. 
+    </returns>
+  </CreateHelpProvider1>
+  <CreateValidationMarker>
+    <remarks>
+      Override this method to change how the marker of for controls with a validation error is constructed.
+    </remarks>
+    <param name="toolTip"> 
+      The tool tip to be displayed upon hovering over the marker.
+    </param>
+    <returns> 
+      The new marker.
+    </returns>
+  </CreateValidationMarker>
+  <CreateBlankMarker>
+    <remarks>
+      Override this method if you cahnge the format of the markers and require the space to be of 
+      the same format.
+    </remarks>
+    <returns> 
+      a blank image.
+    </returns>
+  </CreateBlankMarker>
+  <CheckFormGridRowType>
+    <param name="argumentName">
+      The display name of <paramref name="formGridRow"/>
+    </param>
+    <param name="formGridRow">
+      The <see cref="FormGridRow"/> to be checked.
+    </param>
+    <param name="expectedFormGridRowType">
+      The <see cref="FormGridRowType"/> wanted.
+    </param>
+    <exception cref="ArgumentException">
+      If the <paramref name="formGridRow"/> is not of type <paramref name="expectedFormGridRowType"/>.
+    </exception>    
+  </CheckFormGridRowType>
+  <HasSeperateControlsRow>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> to check.
+    </param>
+    <returns>
+      <see langword="true"/> if the labels and the controls row differ.
+    </returns>
+  </HasSeperateControlsRow>
+  <PopulateFormGridList>
+    <remarks>
+      Select all HtmlTables used as globally managed Form Grids into the Form Grid list.
+      Form Grid tables are identified by their ID being prefixed 
+      with the contents of c_formGridSuffix. Search is recursive through all controls.
+    </remarks> 
+    <param name="control">
+      Parent element of the HtmlTable objects
+    </param>
+  </PopulateFormGridList>
+  <FormGridSuffix>
+    <remarks>
+      Suffix: <c>FormGrid</c>
+    </remarks>
+    <value>
+      A case sensitive string. 
+    </value>
+  </FormGridSuffix>
+  <LabelsColumn>
+    <value>
+      The index of the labels column.
+    </value>
+    <exception cref="ArgumentOutOfRangeException">
+      Thrown when atempted to set a value higher than or equal to the value of 
+      <see cref="ControlsColumn"/>
+    </exception>
+  </LabelsColumn>
+  <ControlsColumn>
+    <value> 
+      The index of the controls column. 
+    </value>
+    <exception cref="ArgumentOutOfRangeException">
+      Thrown when atempted to set a value less than or equal to the value of 
+      <see cref="LabelsColumn"/>
+    </exception>
+  </ControlsColumn>
+  <ValidatorVisibility>
+    <value> 
+      A symbol defined in the <see cref="ValidatorVisibility"/>enumeration. 
+    </value>  
+  </ValidatorVisibility>
+  <ShowValidationMarkers>
+    <remarks>
+      Set this property to <see langname="false"/> if you use client side scripted validators.
+    </remarks>
+    <value> 
+      <see langname="false"/> to deactivate the validation markers. 
+    </value>
+  </ShowValidationMarkers>
+  <ShowRequiredMarkers>
+    <value> 
+      <see langname="false"/> to deactivate the input required markers. 
+    </value>
+  </ShowRequiredMarkers>
+  <ShowHelpProviders>
+    <value> 
+      <see langname="false"/> to deactivate the help. 
+    </value>
+  </ShowHelpProviders>
+  <ImageDirectory>
+    <remarks>
+      <para>
+        Directory: <c>images/</c>
+      </para><para>
+        Only used if parent hierarchy does not implement interface <see cref="IResourceUrlResolver"/>
+      </para>
+    </remarks>
+  </ImageDirectory>
+  <ImageExtension>
+    <remarks>
+      Extension: <c>.gif</c>
+    </remarks>
+  </ImageExtension>
+  <CssClassTable>
+    <remarks>
+      Class: <c>formGridTable</c>
+    </remarks>
+  </CssClassTable>
+  <CssClassTitleCell>
+    <remarks>
+      Class: <c>formGridTitleCell</c>
+    </remarks>
+  </CssClassTitleCell>
+  <CssClassSubTitleCell>
+    <remarks>
+      Class: <c>formGridSubTitleCell</c>
+    </remarks>
+  </CssClassSubTitleCell>
+  <CssClassLabelsCell>
+    <remarks>
+      Class: <c>formGridControlCell</c>
+    </remarks>
+  </CssClassLabelsCell>
+  <CssClassMarkersCell>
+    <remarks>
+      Class: <c>formGridMarkerCell</c>
+    </remarks>
+  </CssClassMarkersCell>
+  <CssClassInputControlsCell>
+    <remarks>
+      Class: <c>formGridControlCell</c>
+    </remarks>
+  </CssClassInputControlsCell>
+  <CssClassValidationMessagesCell>
+      <remarks>
+        <para>
+          Class: <c>formGridValidationMessageCell</c>
+        </para><para>
+          Only used when <see cref="ValidatorVisibility"/> is set to 
+          <see cref="Remotion.Web.UI.Controls.ValidatorVisibility.ValidationMessageAfterControlsColumn"/>
+        </para>
+      </remarks>
+  </CssClassValidationMessagesCell>
+  <CssClassTopDataRow>
+      <remarks>
+        <para>
+          Class: <c>formGridTopDataRow</c>
+        </para><para>
+          Use <c>border-top-width</c> if you wish to add a special margin
+          between the header and the data sections.
+        </para>
+      </remarks>
+  </CssClassTopDataRow>
+  <CssClassValidationMessage>
+    <remarks>
+      Class: <c>formGridValidationMessage</c>
+    </remarks>
+  </CssClassValidationMessage>
+  <CssClassValidator>
+    <remarks>
+      Class: <c>formGridValidator</c>
+    </remarks>
+  </CssClassValidator>
+  
+  <FormGrid>
+    <CreateRows>
+      <remarks>
+        <para>
+          The <see cref="FormGrid"/> passed must be used to store the reference
+          to the parent <c>FormGrid</c>.
+        </para><para>
+          The callback is made at the end of the <c>FormGrid</c>'s construction.
+        </para>
+      </remarks>    
+    </CreateRows>
+    <Constructor>
+    </Constructor>
+    <GetHashCode>
+      <returns>
+        The hash code
+      </returns>
+    </GetHashCode>
+    <Equals>
+      <Parameters>
+        <param name="obj">
+          The <see cref="Object"/> to compare with the current Qbject.
+        </param>
+      </Parameters>
+      <returns>
+        <see langname="true" /> if the objects are equal
+      </returns>
+    </Equals>
+    <GetValidationErrors>
+      <remarks>
+        <para>
+          Only <see cref="FormGridRow"/> objects of type <see cref="FormGridRowType.DataRow"/>
+          are queried.
+        </para><para>
+          No acitve validation takes place.
+        </para>
+      </remarks>
+      <returns>
+        An array of <see cref="FormGridRow"/> objects.
+      </returns>
+    </GetValidationErrors>
+    <HasValidationErrors>
+      <remarks>
+        <para>
+          Only <see cref="FormGridRow"/> objects of type <see cref="FormGridRowType.DataRow"/>
+          are queried.
+        </para><para>
+          No acitve validation takes place.
+        </para>
+      </remarks>
+      <returns>
+        <see langname="true"/> if at least one <see cref="FormGridRow"/> has a validation error.
+      </returns>
+    </HasValidationErrors>
+    <HasValidationMarkers>
+      <remarks>
+        Only <see cref="FormGridRow"/> objects of type <see cref="FormGridRowType.DataRow"/>
+        are queried.
+      </remarks>
+      <returns>
+        <see langname="true"/> if at least one <see cref="FormGridRow"/> has a validation 
+        marker.
+      </returns>
+    </HasValidationMarkers>
+    <HasRequiredMarkers>
+      <remarks>
+        Only <see cref="FormGridRow"/> objects of type <see cref="FormGridRowType.DataRow"/>
+        are queried.
+      </remarks>
+      <returns>
+        <see langname="true"/> if at least one <see cref="FormGridRow"/> has a required 
+        marker.
+      </returns>
+    </HasRequiredMarkers>
+    <HasHelpProviders>
+      <remarks>
+        Only <see cref="FormGridRow"/> objects of type <see cref="FormGridRowType.DataRow"/>
+        are queried.
+      </remarks>
+      <returns>
+        <see langname="true"/> if at least one <see cref="FormGridRow"/> has a help provider.
+      </returns>
+    </HasHelpProviders>
+    <FormGridRow>
+      <param name="id">
+        The control ID to find the row for.
+      </param>
+      <returns>
+        The <see cref="FormGridRow"/> containing the <see cref="Control"/>
+        or <see langword="null"/> if row not found.
+      </returns>
+    </FormGridRow>
+    <InsertNewFormGridRow>
+      <remarks>
+        If position cannot be identified, the row placed at the end of the 
+        <see cref="FormGridRowCollection"/>.
+      </remarks>
+      <param name="newFormGridRow">
+        The <see cref="FormGridRow"/> to insert.
+      </param>
+      <param name="relatedRowID">
+        The ID of the row used to find the insert position.
+        </param>
+      <param name="positionInFormGrid">
+        Specifies where to insert the row in relation to <paramref name="relatedRowID"/>
+      </param>
+    </InsertNewFormGridRow>
+  </FormGrid>
+  
+  <FormGridRowCollection>
+    <Constructor>
+      <param name="ownerFormGrid">
+        The <see cref="FormGrid"/> to which this collection belongs to.
+      </param>
+      <param name="formGridRows">
+        The array of <see cref="FormGridRow"/> object to be managed by this collection.
+        May not contain null references.
+      </param>
+    </Constructor>
+    <Indexer>
+      <remarks>
+        Contains only non-null elements.
+      </remarks>
+      <value>
+        The indexed <see cref="FormGridRow"/>.
+      </value>
+    </Indexer>
+    <OnInsert>
+      <param name="index">
+        The zero-based index at which to insert value.
+      </param>
+      <param name="value">
+        The new value of the element at index.
+      </param>
+      <exception cref="ArgumentTypeException">
+        Thrown if value is not of type <see cref="FormGridRow"/>.
+      </exception>
+      <exception cref="ArgumentNullException">
+        Thrown if atempt to pass a <paramref name="value"/> of <see langword="null"/>.
+      </exception>
+    </OnInsert>
+  </FormGridRowCollection>
+  
+  <FormGridRow>
+    <Constructor>
+      <param name="htmlTableRows">
+        The array of <see cref="HtmlTableRow"/> objects logically forming this <c>FormGridRow</c>.
+        Must not be empty or contain <see langword="null"/>
+      </param>
+      <param name="type">
+        The <see cref="FormGridRowType"/> represented by this object.
+      </param>
+      <param name="labelsColumn">
+        The index of the labels column.
+      </param>
+      <param name="controlsColumn">
+        The index of the controls column.
+      </param>
+      <param name="isGenerated">
+        <see langword="true"> if this row has been generated by a <see cref="IFormGridRowProvider"/>.</see>
+      </param>
+      <exception cref="ArgumentException">
+        Thrown if the list of <see cref="HtmlTableRows"/> is empty.
+      </exception>
+      <exception cref="ArgumentNullException">
+        Thrown if the list of <see cref="HtmlTableRows"/> is <see langword="null"/> 
+        or contains <see langword="null"/>.
+      </exception>
+    </Constructor>
+    <SetLabelsCell>
+      <param name="rowIndex">
+        The index of the <see cref="HtmlTableRow"/> containing the labels cell.
+      </param>
+      <param name="cellIndex"> 
+        The index of the labels cell in the sepcified <see cref="HtmlTableRow"/>.
+      </param>
+      <returns> 
+        The cell that has just been set.
+      </returns>
+      <exception cref="ArgumentOutOfRangeException">
+        Thrown if one or both indices denote invalid positions.
+      </exception>
+    </SetLabelsCell>
+    <SetControlsCell>
+      <param name="rowIndex">
+        The index of the <see cref="HtmlTableRow"/> containing the controls cell.
+      </param>
+      <param name="cellIndex"> 
+        The index of the controls cell in the sepcified <see cref="HtmlTableRow"/>.
+      </param>
+      <returns> 
+        The cell that has just been set.
+      </returns>
+      <exception cref="ArgumentOutOfRangeException">
+        Thrown if one or both indices denote invalid positions.
+      </exception>
+    </SetControlsCell>
+    <SetControlsCellDummy>
+      <param name="rowIndex">
+        The index of the <see cref="HtmlTableRow"/> containing the controls cell dummy cell.
+      </param>
+      <param name="cellIndex"> 
+        The index of the controls cell dummy cell in the sepcified <see cref="HtmlTableRow"/>.
+      </param>
+      <returns> 
+        The cell that has just been set.
+      </returns>
+      <exception cref="ArgumentOutOfRangeException">
+        Thrown if one or both indices denote invalid positions.
+      </exception>
+    </SetControlsCellDummy>
+    <SetMarkersCell>
+      <param name="rowIndex">
+      The index of the <see cref="HtmlTableRow"/> containing the markers cell.
+      </param>
+      <param name="cellIndex"> 
+        The index of the markers cell in the sepcified <see cref="HtmlTableRow"/>.
+      </param>
+      <returns> The cell that has just been set. </returns>
+      <exception cref="ArgumentOutOfRangeException">
+        Thrown if one or both indices denote invalid positions.
+      </exception>
+    </SetMarkersCell>
+    <SetValidationMessagesCell>
+      <param name="rowIndex">
+        The index of the <see cref="HtmlTableRow"/> containing the validation messages cell.
+      </param>
+      <param name="cellIndex"> 
+        The index of the validation messages cell in the sepcified <see cref="HtmlTableRow"/>.
+      </param>
+      <returns>
+        The cell that has just been set.
+      </returns>
+      <exception cref="ArgumentOutOfRangeException">
+        Thrown if one or both indices denote invalid positions.
+      </exception>
+    </SetValidationMessagesCell>
+    <SetValidationMessagesCellDummy>
+      <param name="rowIndex">
+        The index of the <see cref="HtmlTableRow"/> containing the validation messages cell dummy.
+      </param>
+      <param name="cellIndex"> 
+        The index of the validation messages cell dummy in the sepcified.
+        <see cref="HtmlTableRow"/>.
+      </param>
+      <returns>
+        The cell that has just been set.
+      </returns>
+      <exception cref="ArgumentOutOfRangeException">
+        Thrown if one or both indices denote invalid positions.
+      </exception>
+    </SetValidationMessagesCellDummy>
+    <CheckCellRange>
+      <param name="rowIndex">
+        The index of row in the <see cref="ReadOnlyHtmlTableRowCollection"/>.
+      </param>
+      <param name="cellIndex">
+        The index of the cell in row denoted by <paramref name="rowIndex"/>.
+      </param>
+    </CheckCellRange>
+    <GetControlForID>
+      <remarks>
+        Requires a call to <see cref="BuildIDCollection"/> before called the first time.
+      </remarks>
+      <param name="id">
+        The ID to look up.
+      </param>
+      <returns>
+        The control or <see langword="null"/> if the ID cannot be found.
+      </returns>
+    </GetControlForID>
+    <ContainsControlWithID>
+      <remarks>
+        Requires a call to <see cref="BuildIDCollection"/> before called the first time.
+      </remarks>
+      <param name="id">
+        The ID to look up. </param>
+      <returns>
+        <see langword="true"/> if the ID is be found.
+      </returns>
+    </ContainsControlWithID>
+    <CheckVisibility>
+      <returns>
+        <see langword="false"/> if <see cref="Visible"/> is false or the row contains only 
+        invisible controls (labels, validators and controls without ID are not considered).
+      </returns>
+    </CheckVisibility>
+    <ValidationErrors>
+      <remarks>
+        The array cannot be null.
+      </remarks>
+    </ValidationErrors>
+    <ValidationMarker>
+      <value> 
+        A single object of type <see cref="Control"/> or <see langname="null"/>.
+      </value>
+    </ValidationMarker>
+    <RequiredMarker>
+      <value>
+        A single object of type <see cref="Control"/> or <see langname="null"/>.
+      </value>
+    </RequiredMarker>
+    <HelpProvider>
+      <value>
+        A  single object of type <see cref="Control"/> or <see langname="null"/>.
+      </value>
+    </HelpProvider>
+    <LabelsRowIndex>
+      <remarks>
+        Is set during <see cref="SetLabelsCell"/>.
+      </remarks>
+      <value>
+        An integer representing the index of the row in the collection.
+      </value>
+    </LabelsRowIndex>
+    <ControlsRowIndex>
+      <remarks>
+        Is set during <see cref="SetControlsCell"/>.
+      </remarks>
+      <value>
+        An integer representing the index of the row in the collection.
+      </value>
+    </ControlsRowIndex>
+    <LabelsColumn>
+      <value>
+        An integer representing the column's index based on the first row's cells.
+      </value>
+    </LabelsColumn>
+    <ControlsColumn>
+      <value>
+        An integer representing the column's index based on the first row's cells.
+      </value>
+    </ControlsColumn>
+    <LabelsRow>
+      <remarks>
+        Is set during <see cref="SetLabelsCell"/>.
+      </remarks>
+      <value>
+        An <see cref="HtmlTableRow"/>.
+      </value>
+    </LabelsRow>
+    <ControlsRow>
+      <remarks>
+        Is set during <see cref="SetControlsCell"/>.
+      </remarks>
+      <value>
+        An <see cref="HtmlTableRow"/>.
+      </value>
+    </ControlsRow>
+    <LabelsCell>
+      <remarks>
+        Is set during <see cref="SetLabelsCell"/>.
+      </remarks>
+      <value>
+        An <see cref="HtmlTableCell"/>.
+      </value>
+    </LabelsCell>
+    <ControlsCell>
+      <remarks>
+        Is set during <see cref="SetControlsCell"/>.
+      </remarks>
+      <value>
+        An <see cref="HtmlTableCell"/>. 
+      </value>
+    </ControlsCell>
+    <ControlsCellDummy>
+      <remarks>
+        Is set during <see cref="SetControlsCellDummy"/>.
+      </remarks>
+      <value>
+        An <see cref="HtmlTableCell"/>.
+      </value>
+    </ControlsCellDummy>
+    <MarkersCell>
+      <remarks>
+        Is set during <see cref="SetMarkersCell"/>.
+      </remarks>
+      <value>
+        An <see cref="HtmlTableCell"/>.
+      </value>    
+    </MarkersCell>
+    <ValidationMessagesCell>
+      <remarks>
+        Is set during <see cref="SetValidationMessagesCell"/>.
+      </remarks>
+      <value>
+        An <see cref="HtmlTableCell"/>.
+      </value>
+    </ValidationMessagesCell>
+    <ValidationMessagesCellDummy>
+      <remarks>
+        Is set during <see cref="SetValidationMessagesCellDummy"/>.
+      </remarks>
+      <value>
+        An <see cref="HtmlTableCell"/>.
+      </value>
+    </ValidationMessagesCellDummy>
+    
+  </FormGridRow>
+  <ReadOnlyHtmlTableRowCollection>
+    <Constructor>
+      <param name="htmlTableRows">
+        The array of <see cref="HtmlTableRow"/> object to be managed by this collection.
+        May not contain null references.
+      </param>
+    </Constructor>
+    <Indexer>
+      <remarks>
+        Contains only non-null elements.
+      </remarks>
+      <value>
+        The indexed <see cref="HtmlTableRow"/>.
+      </value>
+    </Indexer>
+  </ReadOnlyHtmlTableRowCollection>
+</FormGridManager>

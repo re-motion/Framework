@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.AbstractBaseClassWithHierarchy" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAJAEIAAAAAAQAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\AbstractBaseClassWithHierarchy.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FileSystemItemFromAbstractBaseClass" />
+      <Property Name="ClientFromAbstractBaseClass" />
+      <Property Name="ParentAbstractBaseClassWithHierarchy" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ChildAbstractBaseClassesWithHierarchy" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.DerivedClassWithEntityFromBaseClassWithHierarchy" Collapsed="true">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAgAAAAAAAIAAABAAAAAAAAQAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\DerivedClassWithEntityFromBaseClassWithHierarchy.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ClientFromDerivedClassWithEntityFromBaseClass" />
+      <Property Name="FileSystemItemFromDerivedClassWithEntityFromBaseClass" />
+      <Property Name="ParentDerivedClassWithEntityFromBaseClassWithHierarchy" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ChildDerivedClassesWithEntityFromBaseClassWithHierarchy" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.DerivedClassWithEntityWithHierarchy" Collapsed="true">
+    <Position X="5.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAIAgCAAAAAAAAAAAAAAAAQAACAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\DerivedClassWithEntityWithHierarchy.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ClientFromDerivedClassWithEntity" />
+      <Property Name="FileSystemItemFromDerivedClassWithEntity" />
+      <Property Name="ParentDerivedClassWithEntityWithHierarchy" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ChildDerivedClassesWithEntityWithHierarchy" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.Client" Collapsed="true">
+    <Position X="2.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAUAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\Client.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.FileSystemItem" Collapsed="true">
+    <Position X="8.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\FileSystemItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

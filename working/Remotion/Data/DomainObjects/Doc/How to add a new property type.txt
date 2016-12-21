@@ -1,0 +1,71 @@
+Vorgehensweise für das Hinzufügen eines neuen Datentyps für Eigenschaftenswerte:
+--------------------------------------------------------------------------------
+
+1. Folgende Tests in Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TypeInfoTest erweitern:
+    - MappingTypes
+    - Types
+
+2. Die beiden UnitTests laufen lassen. Die Tests müssen an der erwarteten Stelle scheitern.    
+
+3. Neue type mappings in Remotion.Data.DomainObjects.Mapping.TypeInfo (Methode GetAllKnownTypeInfos) ergänzen.
+
+4. Alle UnitTests müssen grün sein.
+
+5. Definition von ClassWithAllDataTypes in Remotion.Data.DomainObjects.UnitTests.Factories.TestMappingConfiguration 
+   (Methode CreateClassWithAllDataTypesDefinition) um neue Datentypen ergänzen.
+
+6. Tests im Namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping laufen lassen => Müssen an der erwarteten Stelle scheitern.
+
+7. Enumeration in Definition von "simpleType" in Mapping.xsd erweitern.
+ 
+8. Mapping.xml um neue Datentypen in ClassWithAllDataTypes ergänzen und gegen Mapping.xsd prüfen.
+
+9. Tests im Namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping müssen wieder grün sein.
+
+10. ClassWithAllDataTypes ergänzen:
+    - Remotion.Data.DomainObjects.DataContainer: Typed property accessors (GetNaBoolean, GetNaDateTime, ...) ergänzen.
+    - Properties in ClassWithAllDataTypes anlegen (Typed propery accessors für neue Datentypen verwenden).
+    - SetUpDB.sql erweitern und ausführen
+    - CreateTestData.sql erweitern und ausführen
+
+11. Integrationstests: In Remotion.Data.DomainObjects.UnitTests nach "ClassWithAllDataTypes" und "TableWithAllDataTypes" (wird in queries.xml referenziert) 
+    suchen und alle Tests um neue Datentypen ergänzen. In jedem Fall zumindest folgende Klassen und Tests erweitern:
+    - Remotion.Data.DomainObjects.UnitTests.Factories.TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer
+    - Remotion.Data.DomainObjects.UnitTests.DomainObjects.DomainObjectTest.LoadingOfSimpleObject
+    - Remotion.Data.DomainObjects.UnitTests.Persistence.SqlProviderCreateNewDataContainerTest.CreateClassWithAllDataTypes
+    - Remotion.Data.DomainObjects.UnitTests.Persistence.SqlProviderExecuteCollectionQueryTest.AllDataTypes
+    - Remotion.Data.DomainObjects.UnitTests.Persistence.SqlProviderSaveExistingTest.SaveAllSimpleDataTypes
+    - Remotion.Data.DomainObjects.UnitTests.Persistence.SqlProviderSaveExistingTest.SaveAllNullableTypes
+    - Remotion.Data.DomainObjects.UnitTests.Persistence.SqlProviderSaveExistingTest.SaveAllNullableTypesWithNull
+    - Remotion.Data.DomainObjects.UnitTests.Persistence.SqlProviderSaveNewTest.AllDataTypes
+    
+12. Alle UnitTests laufen lassen. Diese müssen an der erwarteten Stelle scheitern, wenn Änderungen in einer der folgenden Klassen/Methoden notwendig sind:
+    - Remotion.Data.DomainObjects.Persistence.ValueConverterBase (Alle Methoden)
+    - Remotion.Data.DomainObjects.Persistence.Rdbms.ValueConverter (Alle Methoden)
+    - Remotion.Data.DomainObjects.DataContainer (Methoden IsNull und IsNullOrEmpty)
+      => Möglicherweise neue Tests für IsNull oder IsNullOrEmpty ergänzen
+    
+13. Neue Datentypen in 
+    Remotion.Data.DomainObjects.Persistence.Rdbms.ValueConverter.GetValue bzw.
+    Remotion.Data.DomainObjects.Persistence.ValueConverterBase.GetValue ergänzen.
+    Evtl. muss auch Methode Remotion.Data.DomainObjects.Persistence.Rdbms.ValueConverter.GetDBValue ergänzt werden.
+
+
+Neue Datentypen in RPA ergänzen:
+--------------------------------
+
+14. Evtl. neue Property im Namespace Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes anlegen.
+
+15. Bei Anpassung von bestehenden Properties folgende Methoden erweitern: 
+    - FromInternalType
+    - ToInternalType
+    
+16. Neue Datentypen in Remotion.Data.DomainObjects.ObjectBinding.DomainObjectProperty.Create ergänzen.
+
+17. Remotion.Data.DomainObjects.ObjectBinding.Web.Test ergänzen:
+    - Mapping.xsd von Remotion.Data.DomainObjects nach "C:\development\libraries\Commons\trunk\Data\DomainObjects.Web.Test\bin" kopieren
+    - SetupDB.sql erweitern und ausführen
+    - CreateTestData.sql erweitern und ausführen
+    - Mapping.xml erweitern
+    - ClassWithAllDataTypes erweitern
+    - default.aspx erweitern und testen

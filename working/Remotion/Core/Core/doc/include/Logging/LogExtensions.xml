@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<LogExtensions>
+  <Log>
+    <param name="log">The <see cref="ILog"/> instance where the message is to be logged.</param>
+    <param name="logLevel">The <see cref="LogLevel"/> of the message to be logged.</param>
+    <param name="eventID">The numeric identifier for the event.</param>
+    <param name="message">The message object to log.</param>
+    <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
+  </Log>
+  <LogFormat>
+    <param name="messageEnum">
+      An <see cref="Enum"/> value that is used to supply the event id and the message or format string. Must not be <see langword="null"/>.
+    </param>
+    <param name="format">A String containing zero or more format items.</param>
+    <param name="args">An Object array containing zero or more objects to format.</param>
+  </LogFormat>
+  <LogFormatWithEnum>
+    <remarks>
+      The underlying <see cref="Int32"/> value of the <paramref name="messageEnum"/> is used as event id. 
+      Use <see cref="T:Remotion.Utilities.EnumDescriptionAttribute" /> or <see cref="T:Remotion.Utilities.EnumDescriptionResourceAttribute"/> 
+      to associate messages with the enum values.
+    </remarks>
+  </LogFormatWithEnum>
+</LogExtensions>

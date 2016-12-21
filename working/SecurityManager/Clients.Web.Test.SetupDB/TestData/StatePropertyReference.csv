@@ -1,0 +1,3 @@
+ID,ClassID,SecurableClassID,SecurableClassIDClassID,StatePropertyID,StatePropertyIDClassID
+{c5e7fa65-4bb7-442a-bee9-bbf00a1f689a},StatePropertyReference,{6b8b3a76-422f-4170-8f84-3451b58c3aad},SecurableClassDefinition,{1929df7a-ae89-417e-ab90-4459b6a090a3},StatePropertyDefinition
+{8F498972-57DB-459E-8E24-1AA033E1E31C},StatePropertyReference,{EC829A7C-CF1A-461A-9FB9-27B4B4BCD018},SecurableClassDefinition,{3D6D99CA-5F6C-4BB3-AEFF-345271DB82F8},StatePropertyDefinition

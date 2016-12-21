@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FFEF40DB-3E0C-4F8A-BC6D-4483ACE3A136}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.Globalization.Mixins.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.Globalization.Mixins.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>0067</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0067</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="IGlobalizationServiceTest.cs" />
+    <Compile Include="Obsolete\MixedMultiLingualResourcesTests\ExistsResourceTest.cs" />
+    <Compile Include="Obsolete\MixedMultiLingualResourcesTests\GetResourceManagerTest.cs" />
+    <Compile Include="MixinGlobalizationServiceTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestDomain\NamedResources.cs" />
+    <Compile Include="TestDomain\Resources\ClassWithResources.Designer.cs">
+      <DependentUpon>ClassWithResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TestDomain\Resources\MixinAddingResources.Designer.cs">
+      <DependentUpon>MixinAddingResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TestDomain\ClassWithMixinResource.cs" />
+    <Compile Include="TestDomain\ClassWithMultiLingualResourcesAttributes.cs" />
+    <Compile Include="TestDomain\ClassWithoutMultiLingualResourcesAttributes.cs" />
+    <Compile Include="TestDomain\ClassWithResources.cs" />
+    <Compile Include="TestDomain\InheritedClassWithMultiLingualResourcesAttributes.cs" />
+    <Compile Include="TestDomain\InheritedClassWithoutMultiLingualResourcesAttributes.cs" />
+    <Compile Include="TestDomain\InheritedMixinAddingMultiLingualResourcesAttributes.cs" />
+    <Compile Include="TestDomain\InheritedMixinWithoutMultiLingualResourcesAttributes1.cs" />
+    <Compile Include="TestDomain\MixinAddingMultiLingualResourcesAttributes1.cs" />
+    <Compile Include="TestDomain\MixinAddingMultiLingualResourcesAttributes2.cs" />
+    <Compile Include="TestDomain\MixinAddingResources.cs" />
+    <Compile Include="TestDomain\MixinOfMixinWithResources.cs" />
+    <Compile Include="TestDomain\MixinWithoutResourceAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <None Include="..\..\Remotion LGPL.licenseheader">
+      <Link>Remotion LGPL.licenseheader</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.resx" />
+    <EmbeddedResource Include="TestDomain\Resources\MixinOfMixinWithResources.resx" />
+    <EmbeddedResource Include="TestDomain\Resources\OnTarget.resx" />
+    <EmbeddedResource Include="TestDomain\Resources\OnInherited.resx" />
+    <EmbeddedResource Include="TestDomain\Resources\MixinAddingResources.resx" />
+    <EmbeddedResource Include="TestDomain\Resources\OnMixin1.resx" />
+    <EmbeddedResource Include="TestDomain\Resources\OnMixin2a.resx" />
+    <EmbeddedResource Include="TestDomain\Resources\OnMixin2b.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
+      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
+      <Name>Core.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
+      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
+      <Name>Development.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
+      <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
+      <Name>Mixins.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Globalization.Core.csproj">
+      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
+      <Name>Globalization.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mixins\Globalization.Mixins.csproj">
+      <Project>{E2CD7C20-2728-4F72-A6E8-FC4F7AE72EC9}</Project>
+      <Name>Globalization.Mixins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

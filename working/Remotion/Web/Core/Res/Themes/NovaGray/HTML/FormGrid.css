@@ -1,0 +1,101 @@
+/*  Style applied to the form grid table's outer structure  */
+table.formGridTable
+{
+  border-collapse: collapse;
+  border-width: 0;
+  width: 100%;
+}
+
+td.formGridTitleCell,
+td.formGridSubTitleCell
+{
+  font-weight: bold;
+  font-size: 125%;
+  padding: 2px 2px 2px 2px;
+  border: none;
+}
+
+td.formGridTitleCell h1
+{
+  width: 100%;
+  border-bottom: solid 1px #AAAAAA;
+  color: Black;
+}
+
+/*  Style applied to the cells containing the labels  */
+td.formGridLabelsCell
+{
+  background-color: #F0F0F0;
+  text-align: right;
+  padding: 0.3em 1em 0.3em 1em;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: solid 1px #C8C8C8;
+  width: 17%;
+}
+
+/*  Style applied to the cells containing the markers  */
+td.formGridMarkersCell
+{
+  white-space: nowrap;
+  padding: 0.3em 0.5em 0.3em 0.5em;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: solid 1px #C8C8C8;
+  width: 1%;
+}
+
+td.formGridMarkersCell img
+{
+  min-width: 12px;
+  border: none;
+}
+
+/*  Style applied to the cells containing the controls  */
+td.formGridControlsCell
+{
+  padding: 0.3em 1em 0.3em 0em;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: solid 1px #C8C8C8;
+  width: auto;
+}
+
+/*  Style applied to the cells containing the validation messages, 
+*   if a seperate column is specified  */
+td.formGridValidationMessagesCell
+{
+  padding: 2px 7px 2px 7px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: solid 1px #C8C8C8;
+  border-color: White;
+}
+
+/*  Style applied to the cells in the first row after the title row  */
+td.formGridTopDataRow
+{
+  border-top: solid 1px #AAAAAA;
+}
+
+/*  Style applied to the validation messages, additiv to formGridValidationMessagesCell  */
+.formGridValidationMessage
+{
+  color: Red;
+}
+
+/*  Style applied to the validators created by FormGridManager  */
+.formGridValidator
+{
+  color: Red;
+}
+
+/*  Style applied to the validation notice that can be displayed by the ValidationStateViewer  */
+.formGridValidationNotice
+{
+  color: Red;
+}

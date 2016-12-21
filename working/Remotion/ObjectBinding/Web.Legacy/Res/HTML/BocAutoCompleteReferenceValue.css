@@ -1,0 +1,51 @@
+﻿/* Style applied to the bocAutoCompleteReferenceValue's value. */
+td.bocAutoCompleteReferenceValueContent
+{
+  padding-top: 2px;
+  padding-left: 0px;
+  padding-bottom: 2px;
+  padding-right: 0px;
+  cursor: default;
+}
+
+td.bocAutoCompleteReferenceValueContent a
+{
+  color: Blue;
+  padding: 2px;
+}
+
+td.bocAutoCompleteReferenceValueContent a:hover
+{
+  color: Blue;
+  background-color: #fee197;	
+  padding: 1px;
+  border-width: 1px;
+  border-color: #005588;
+  border-style: solid;
+  background-color: #fee197;	
+}
+
+span.bocAutoCompleteReferenceValueButton 
+{
+  display: inline-block;
+  width: 16px;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 1px;
+  background-color: #083779;
+  background-image: url('../Image/DropDownMenuArrow.gif');
+  background-position: center center;
+  background-repeat:no-repeat;
+}
+
+.bocAutoCompleteReferenceValue
+{
+}
+
+.bocAutoCompleteReferenceValue.readOnly
+{
+}
+
+.bocAutoCompleteReferenceValue.disabled
+{
+}

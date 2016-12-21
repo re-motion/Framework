@@ -1,0 +1,6 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Debug" />
+  <Config name="Debug" binpathtype="Auto">
+    <assembly path="Core.UnitTests\bin\Debug\Remotion.SecurityManager.UnitTests.dll" />
+  </Config>
+</NUnitProject>

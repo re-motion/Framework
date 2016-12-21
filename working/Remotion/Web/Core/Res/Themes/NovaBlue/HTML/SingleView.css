@@ -1,0 +1,97 @@
+/* Style applied to the SingleView. */
+
+div.singleView
+{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  background-color: #083779;
+}
+
+div.singleView > div.wrapper
+{
+  position: absolute;
+  background-color: white;
+  top: 0;
+  bottom: 0.5em;
+  left: 0.5em;
+  right: 0.5em;
+  width: auto;
+  height: auto;
+}
+
+div.singleViewView
+{
+  height: 80%;
+}
+
+body.mozilla  div.singleViewView,
+body.webkit   div.singleViewView,
+body.opera    div.singleViewView
+{
+  width: inherit;
+}
+
+div.singleViewView > div.contentBorder
+{
+  position: relative;
+  border: solid 1px #083779;
+  background-color: white;
+  margin : 0 0.5em;
+  padding: 0.25em;
+  overflow: auto;
+  height: 60%;
+}
+
+div.singleViewView > div.contentBorder > div.content
+{
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body.msie7 div.singleViewView > div.contentBorder > div.content
+{
+  width: 98%;
+  height: 98%;
+}
+
+/* Applied to the top section of the multi view. Height cannot be provided in percent. */
+div.singleViewTopControls
+{
+  overflow: hidden;
+  background-color: White;
+}
+
+div.singleViewTopControls.empty
+{
+  height: 1em;
+  background-color: White;
+}
+
+/* Applied to the bottom section of the multi view. Height cannot be provided in percent. */
+div.singleViewBottomControls
+{
+  position: absolute;
+  overflow: hidden;
+  background-color: White;
+  margin-top: 0.5em;
+  left: 0.5em;
+  right: 0.5em;
+  bottom: 0.5em;
+}
+
+body.opera div.singleViewBottomControls
+{
+  border: solid 0 transparent;
+}
+
+div.singleViewBottomControls.empty
+{
+  height: 1em;
+  background-color: White;
+}
