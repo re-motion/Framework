@@ -143,11 +143,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.1\lib\net45\Remotion.TypePipe.dll</HintPath>
+      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.2\lib\net45\Remotion.TypePipe.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Remotion.TypePipe.Documentation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.Documentation.2.0.0\lib\net45\Remotion.TypePipe.Documentation.dll</HintPath>
+      <HintPath>..\..\..\packages\Remotion.TypePipe.Documentation.2.0.1\lib\net45\Remotion.TypePipe.Documentation.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
