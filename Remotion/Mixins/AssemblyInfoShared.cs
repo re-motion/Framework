@@ -28,7 +28,7 @@ using System.Reflection;
 [assembly: AssemblyProduct("re-motion Framework: re-mix (www.re-motion.org)")]
 [assembly: AssemblyCopyright ("Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under GNU LGPL 2.1 (or later)")]
 [assembly: AssemblyTrademark ("")]
-[assembly: AssemblyInformationalVersion ("1.16.22.10000+Debug.RTM.SVNRevision-31748")]
+[assembly: AssemblyInformationalVersion ("1.16.22.10000+Debug.RTM.SVNRevision-31757")]
 
 //
 // Version information for an assembly consists of the following four values:

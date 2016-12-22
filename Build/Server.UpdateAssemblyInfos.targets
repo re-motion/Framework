@@ -16,7 +16,7 @@
     <Error Text="The property 'BuildProperties' is not set." Condition="'$(BuildProperties)' == ''" />
 
     <MSBuild Projects="@(ProjectsBuildServer)"
-             Targets="UpdateAssemblyInfosLocalBuild"
+             Targets="UpdateAssemblyInfosForRelease"
              Properties="$(BuildProperties);Version=$(LocalVersion);"
              BuildInParallel="false" />
 
