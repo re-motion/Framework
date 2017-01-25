@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
   public class CascadedDeleteTest : ClientTransactionBaseTest
   {
     [Test]
-    [Ignore ("TODO: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
+    [Ignore ("TODO RM-6156: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
     public void BidirectionalRelation_CascadeWithinDeleting ()
     {
       var order = Order.NewObject ();
