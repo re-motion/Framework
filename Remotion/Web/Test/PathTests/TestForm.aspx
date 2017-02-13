@@ -24,26 +24,6 @@
   <body>
     <form id="Form1" method="post" runat="server">
       <table>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~")                </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~")                 %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/")               </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/")                %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/test")           </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/test")            %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/.")              </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/.")               %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/./path")         </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/./path")          %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/path/.")         </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/path/.")          %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/path1/../path2") </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/path1/../path2")  %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/../path2")       </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/../path2")        %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/~")              </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/~")               %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/~/")             </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/~/")              %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/~/test")         </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/~/test")          %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~\\test")          </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~\\test")           %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("/test/path")       </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "/test/path")        %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("\\test\\path")     </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "\\test\\path")      %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("/test\\path")      </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "/test\\path")       %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("\\test/path")      </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "\\test/path")       %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("")                 </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "")                  %>"</td></tr>
-
-        <tr><td>&nbsp;</td><td></td></tr>
-
         <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~")                </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~")                 %>"</td></tr>
         <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/")               </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/")                %>"</td></tr>
         <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/test")           </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/test")            %>"</td></tr>

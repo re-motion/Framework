@@ -93,7 +93,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
 
     private string GetUrl (IconInfo iconInfo)
     {
-      return UrlUtility.GetAbsoluteUrl (new HttpContextWrapper (Context), iconInfo.Url);
+      return UrlUtility.ResolveUrlCaseSensitive (new HttpContextWrapper (Context), iconInfo.Url);
     }
 
     private IconInfo GetIcon (IBusinessObject businessObject)

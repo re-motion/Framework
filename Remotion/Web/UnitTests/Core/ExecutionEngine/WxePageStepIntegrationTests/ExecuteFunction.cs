@@ -194,18 +194,15 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
     public void Test_SubFunction_RedirectToPermaUrl ()
     {
       WxeContextMock.SetCurrent (_wxeContext);
-      Uri uri = new Uri ("http://localhost/root.wxe");
+      Uri uri = new Uri ("http://localhost/AppDir/root.wxe");
 
       HttpResponseBase responseMock = _mockRepository.StrictMock<HttpResponseBase>();
-      responseMock.Stub (stub => stub.ApplyAppPathModifier ("~/sub.wxe")).Return ("/session/sub.wxe").Repeat.Any();
-      responseMock.Stub (stub => stub.ApplyAppPathModifier ("/session/sub.wxe")).Return ("/session/sub.wxe").Repeat.Any();
-      responseMock.Stub (stub => stub.ApplyAppPathModifier ("/root.wxe")).Return ("/session/root.wxe").Repeat.Any();
-      responseMock.Stub (stub => stub.ApplyAppPathModifier ("/session/root.wxe")).Return ("/session/root.wxe").Repeat.Any();
       responseMock.Stub (stub => stub.ContentEncoding).Return (Encoding.Default).Repeat.Any();
       _httpContextMock.Stub (stub => stub.Response).Return (responseMock).Repeat.Any();
 
       HttpRequestBase requestMock = _mockRepository.StrictMock<HttpRequestBase>();
       requestMock.Stub (stub => stub.Url).Return (uri).Repeat.Any();
+      requestMock.Stub (stub => stub.ApplicationPath).Return ("/AppDir").Repeat.Any();
       _httpContextMock.Stub (stub => stub.Request).Return (requestMock).Repeat.Any();
 
       using (_mockRepository.Ordered())
@@ -218,7 +215,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
         }
 
         //Redirect to subfunction
-        responseMock.Expect (mock => mock.Redirect ("/session/sub.wxe?WxeFunctionToken=" + _wxeContext.FunctionToken))
+        responseMock.Expect (mock => mock.Redirect ("/AppDir/sub.wxe?WxeFunctionToken=" + _wxeContext.FunctionToken))
             .WhenCalled (invocation => Thread.CurrentThread.Abort ());
 
         //Show sub function
@@ -228,7 +225,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
         _subFunction.Expect (mock => mock.Execute (_wxeContext)).Throw (new WxeExecuteNextStepException());
 
         //Return from sub function
-        responseMock.Expect (mock => mock.Redirect ("/session/root.wxe?WxeFunctionToken=" + _wxeContext.FunctionToken))
+        responseMock.Expect (mock => mock.Redirect ("/AppDir/root.wxe?WxeFunctionToken=" + _wxeContext.FunctionToken))
             .WhenCalled (
             invocation =>
             {

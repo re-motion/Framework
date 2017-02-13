@@ -111,7 +111,7 @@ namespace Remotion.Web.ExecutionEngine
         path = mappingEntry.Resource;
       }
 
-      string permanentUrl = UrlUtility.GetAbsoluteUrl (httpContext, path)
+      string permanentUrl = UrlUtility.ResolveUrlCaseSensitive (httpContext, path)
                             + UrlUtility.FormatQueryString (internalUrlParameters, httpContext.Response.ContentEncoding);
 
       int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
@@ -268,15 +268,19 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> Gets the URL that resumes the current function. </summary>
     /// <remarks>
+    /// <para>
     ///   If a WXE application branches to an external web site, the external site can
     ///   link back to this URL to resume the current function at the point where 
     ///   it was interrupted. Note that if the user stays on the external site longer
-    ///   that the session or function timeout, resuming will fail with a timeout
+    ///   than the session or function timeout, resuming will fail with a timeout
     ///   exception.
+    /// </para><para>
+    /// Note that cookieless sessions are not supported.
+    /// </para>
     /// </remarks>
     public string GetResumeUrl (bool includeServer)
     {
-      string pathPart = GetPath (_httpContext.Request.Url.AbsolutePath, FunctionToken, QueryString);
+      string pathPart = GetResumePath (_httpContext.Request.Url.AbsolutePath, FunctionToken, QueryString);
       if (includeServer)
         return UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (_httpContext, pathPart);
       else
@@ -285,12 +289,13 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> Gets the absolute path to the WXE handler used for the current function. </summary>
     /// <param name="queryString"> An optional list of URL parameters to be appended to the path. </param>
+    /// <remarks>Note that cookieless sessions are not supported.</remarks>
     protected internal string GetPath (NameValueCollection queryString)
     {
       if (queryString == null)
         queryString = new NameValueCollection ();
 
-      string path = _httpContext.Response.ApplyAppPathModifier (_httpContext.Request.Url.AbsolutePath);
+      string path = _httpContext.Request.Url.AbsolutePath;
       return UrlUtility.AddParameters (path, queryString, _httpContext.Response.ContentEncoding);
     }
 
@@ -299,23 +304,27 @@ namespace Remotion.Web.ExecutionEngine
     ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
     /// </param>
     /// <param name="queryString"> An optional list of URL parameters to be appended to the path. </param>
+    /// <remarks>Note that cookieless sessions are not supported.</remarks>
     protected internal string GetPath (string functionToken, NameValueCollection queryString)
     {
-      return GetPath (_httpContext.Request.Url.AbsolutePath, functionToken, queryString);
+      return GetResumePath (_httpContext.Request.Url.AbsolutePath, functionToken, queryString);
     }
 
     /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
-    /// <param name="path"> The path to the <see cref="WxeHandler"/>. Must not be <see langword="null"/> or emtpy. </param>
+    /// <param name="path"> The absolute path to the <see cref="WxeHandler"/>. Must not be <see langword="null"/> or emtpy. </param>
     /// <param name="functionToken"> 
     ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
     /// </param>
     /// <param name="queryString"> An optional list of URL parameters to be appended to the <paramref name="path"/>. </param>
-    private string GetPath (string path, string functionToken, NameValueCollection queryString)
+    private string GetResumePath (string path, string functionToken, NameValueCollection queryString)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("path", path);
       ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
 
-      if (path.IndexOf ("?") != -1)
+      if (!path.StartsWith ("/"))
+        throw new ArgumentException ("The path must be absolute", "path");
+
+      if (path.IndexOf ("?", StringComparison.InvariantCultureIgnoreCase) != -1)
         throw new ArgumentException ("The path must be provided without a query string. Use the query string parameter instead.", "path");
 
       if (queryString == null)
@@ -325,7 +334,6 @@ namespace Remotion.Web.ExecutionEngine
 
       queryString.Set (WxeHandler.Parameters.WxeFunctionToken, functionToken);
 
-      path = UrlUtility.GetAbsoluteUrl (_httpContext, path);
       return UrlUtility.AddParameters (path, queryString, _httpContext.Response.ContentEncoding);
     }
 
@@ -387,8 +395,10 @@ namespace Remotion.Web.ExecutionEngine
       else
       {
         UrlMappingEntry mappingEntry = UrlMappingConfiguration.Current.Mappings[function.GetType ()];
-        string path = (mappingEntry != null) ? mappingEntry.Resource : _httpContext.Request.Url.AbsolutePath;
-        href = GetPath (path, functionToken, permaUrlOptions.UrlParameters);
+        string path = mappingEntry != null
+            ? UrlUtility.ResolveUrlCaseSensitive (_httpContext, mappingEntry.Resource)
+            : _httpContext.Request.Url.AbsolutePath;
+        href = GetResumePath (path, functionToken, permaUrlOptions.UrlParameters);
       }
 
       return href;

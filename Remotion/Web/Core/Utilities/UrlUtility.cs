@@ -42,7 +42,7 @@ namespace Remotion.Web.Utilities
         return virtualPath;
 
       string serverPart = context.Request.Url.GetLeftPart (UriPartial.Authority);
-      string resolvedPath = GetAbsoluteUrl (context, virtualPath);
+      string resolvedPath = ResolveUrlCaseSensitive (context, virtualPath);
 
       return serverPart + resolvedPath;
     }

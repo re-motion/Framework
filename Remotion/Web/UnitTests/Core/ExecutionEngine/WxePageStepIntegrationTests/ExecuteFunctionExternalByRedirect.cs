@@ -76,18 +76,15 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
 
       _functionStateManager = new WxeFunctionStateManager (new FakeHttpSessionStateBase());
 
-      Uri uri = new Uri ("http://localhost/root.wxe");
+      Uri uri = new Uri ("http://localhost/AppDir/root.wxe");
 
       _responseMock = _mockRepository.StrictMock<HttpResponseBase>();
-      _responseMock.Stub (stub => stub.ApplyAppPathModifier ("~/sub.wxe")).Return ("/session/sub.wxe").Repeat.Any();
-      _responseMock.Stub (stub => stub.ApplyAppPathModifier ("/session/sub.wxe")).Return ("/session/sub.wxe").Repeat.Any();
-      _responseMock.Stub (stub => stub.ApplyAppPathModifier ("~/root.wxe")).Return ("/session/root.wxe").Repeat.Any();
-      _responseMock.Stub (stub => stub.ApplyAppPathModifier ("/session/root.wxe")).Return ("/session/root.wxe").Repeat.Any();
       _responseMock.Stub (stub => stub.ContentEncoding).Return (Encoding.Default).Repeat.Any();
       _httpContextMock.Stub (stub => stub.Response).Return (_responseMock).Repeat.Any();
 
       _requestMock = _mockRepository.StrictMock<HttpRequestBase>();
       _requestMock.Stub (stub => stub.Url).Return (uri).Repeat.Any();
+      _requestMock.Stub (stub => stub.ApplicationPath).Return ("/AppDir").Repeat.Any();
       _httpContextMock.Stub (stub => stub.Request).Return (_requestMock).Repeat.Any();
 
       _wxeContext = new WxeContext (_httpContextMock, _functionStateManager, _functionState, new NameValueCollection ());
@@ -110,7 +107,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
 
         //Redirect to external subfunction
         _responseMock
-            .Expect (mock => mock.Redirect (Arg<string>.Matches (arg => arg == "/session/sub.wxe?WxeFunctionToken=" + _subFunction.FunctionToken)))
+            .Expect (mock => mock.Redirect (Arg<string>.Matches (arg => arg == "/AppDir/sub.wxe?WxeFunctionToken=" + _subFunction.FunctionToken)))
             .WhenCalled (invocation => Thread.CurrentThread.Abort ());
 
         //Show external sub function
@@ -173,7 +170,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       {
       }
 
-      Assert.That (_subFunction.ReturnUrl, Is.EqualTo ("/session/root.wxe?CallerKey=CallerValue&WxeFunctionToken=" + _rootFunction.FunctionToken));
+      Assert.That (_subFunction.ReturnUrl, Is.EqualTo ("/AppDir/root.wxe?CallerKey=CallerValue&WxeFunctionToken=" + _rootFunction.FunctionToken));
 
       //Show current page
       _pageStep.Execute();
@@ -194,7 +191,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
         }
         //Redirect to external subfunction
         _responseMock
-            .Expect (mock => mock.Redirect (Arg<string>.Matches (arg => arg == "/session/sub.wxe?WxeFunctionToken=" + _subFunction.FunctionToken)))
+            .Expect (mock => mock.Redirect (Arg<string>.Matches (arg => arg == "/AppDir/sub.wxe?WxeFunctionToken=" + _subFunction.FunctionToken)))
             .WhenCalled (invocation => Thread.CurrentThread.Abort ());
 
         //Show external sub function
