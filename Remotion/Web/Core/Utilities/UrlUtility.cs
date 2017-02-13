@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -163,7 +164,19 @@ namespace Remotion.Web.Utilities
         return virtualPath;
 
       string serverPart = context.Request.Url.GetLeftPart (UriPartial.Authority);
-      string resolvedPath = GetAbsoluteUrl (context, virtualPath);
+
+      string resolvedPath;
+      var session = context.Session;
+      if (session != null && session.IsCookieless)
+      {
+#pragma warning disable 618
+        resolvedPath = GetAbsoluteUrl (context, virtualPath);
+#pragma warning restore 618
+      }
+      else
+      {
+        resolvedPath = ResolveUrlCaseSensitive (context, virtualPath);
+      }
 
       return serverPart + resolvedPath;
     }
@@ -172,8 +185,10 @@ namespace Remotion.Web.Utilities
     /// <param name="context"> The <see cref="HttpContextBase"/> to be used. Must not be <see langword="null"/>. </param>
     /// <param name="virtualPath"> The virtual path. Must not be <see langword="null"/>. Must be rooted or absolute. </param>
     /// <returns> The absolute URL. </returns>
+    [Obsolete ("Use ResolveUrlCaseSensitive (HttpContextBase, string) instead. Note that ResolveUrlCaseSensitive() no longer supports cookieless sessions. (Version 1.16.23)")]
     public static string GetAbsoluteUrl (HttpContextBase context, string virtualPath)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("virtualPath", virtualPath);
 
       if (HasScheme (virtualPath))
@@ -191,6 +206,135 @@ namespace Remotion.Web.Utilities
         throw new ArgumentException (
             "The path could not be resolved to an app-relative path. Most likely reason: The path did not begin with the root-operator ('~').");
       }
+    }
+
+    /// <summary>
+    /// Make a URL absolute using the request's original path to preserve the casing. 
+    /// The returned URL is for client use, and will not support cookieless sessions.
+    /// </summary>
+    /// <param name="context"> The <see cref="HttpContextBase"/> to be used. Must not be <see langword="null"/>. </param>
+    /// <param name="relativeUrl"> The virtual path. Must not be <see langword="null"/>.</param>
+    /// <returns> The absolute path. </returns>
+    public static string ResolveUrlCaseSensitive (HttpContextBase context, string relativeUrl)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("relativeUrl", relativeUrl);
+
+      // HtppResponse.ApplyAppPathModifier (string)
+      // "~"            "/AppDir/"
+      // "~/"           "/AppDir/"
+      // "~\\test"      "/AppDir/test"
+      // "~/test"       "/AppDir/test"
+      // "\\test\\path" "/test/path"
+      // "/test/path"   "/test/path"
+      // "~/~/test"     "/AppDir/~/test"
+      // "\\test/path"  "/test/path"
+      // "/test\\path"  "/test/path"
+      // "test/path"    "/appdIr/folder/test/path"
+      // ""             ""
+      // "~/."          "/AppDir"
+      // "~/./path"     "/AppDir/path
+      // "~/path/."     "/AppDir/path
+
+      if (HasScheme (relativeUrl))
+        return relativeUrl;
+
+      if (relativeUrl.Length == 0)
+        return relativeUrl;
+
+      // Cookieless sessions are not implemented in ASP.NET MVC and are discouraged for security reasons.
+      // There is no known usage of cookieless sessions in re-motion applications.
+      var session = context.Session;
+      if (session != null && session.IsCookieless)
+        throw new InvalidOperationException ("Cookieless sessions are not supported for resolving URLs.");
+
+      var applicationPath = GetApplicationPathFromHttpContext (context);
+      Assertion.IsTrue (System.Web.VirtualPathUtility.IsAbsolute (applicationPath));
+
+      if (relativeUrl == "~")
+        return System.Web.VirtualPathUtility.AppendTrailingSlash (applicationPath);
+
+      if (relativeUrl == "~/")
+        return System.Web.VirtualPathUtility.AppendTrailingSlash (applicationPath);
+
+      if (relativeUrl[0] == '~' && relativeUrl[1] == '/')
+      {
+        var virtualDirectory = relativeUrl.Substring (2);
+        // Protect nested root operatores given how they are not interpreted by HtppResponse.ApplyAppPathModifier (string)
+        if (virtualDirectory.Length == 1 && virtualDirectory[0] == '~')
+          return System.Web.VirtualPathUtility.AppendTrailingSlash (applicationPath) + "~";
+
+        if (virtualDirectory.Length > 1 && virtualDirectory[0] == '~')
+          return CombineVirtualPaths (applicationPath, "./" + virtualDirectory);
+
+        return CombineVirtualPaths (applicationPath, virtualDirectory);
+      }
+
+      var virtualPathUriStyle = relativeUrl.Replace ('\\', '/');
+      if (virtualPathUriStyle[0] == '\\' || virtualPathUriStyle[0] == '/')
+        return virtualPathUriStyle;
+
+      var requestedDirectory = GetRequestedDirectory (context);
+      return System.Web.VirtualPathUtility.AppendTrailingSlash (requestedDirectory) + virtualPathUriStyle;
+    }
+
+    private static string CombineVirtualPaths (string left, string right)
+    {
+      return System.Web.VirtualPathUtility.Combine (System.Web.VirtualPathUtility.AppendTrailingSlash (left), right);
+    }
+
+    private static string GetApplicationPathFromHttpContext (HttpContextBase context)
+    {
+      var applicationPath = System.Web.VirtualPathUtility.AppendTrailingSlash (context.Request.ApplicationPath) ?? "/";
+      if (applicationPath == "/")
+        return applicationPath;
+
+      Assertion.IsNotNull (context.Request.Url, "context.Request.Url != null");
+      var requestUrlAbsolutePath = System.Web.VirtualPathUtility.AppendTrailingSlash (context.Request.Url.AbsolutePath);
+      if (requestUrlAbsolutePath.StartsWith (applicationPath, StringComparison.OrdinalIgnoreCase))
+        return requestUrlAbsolutePath.Remove (applicationPath.Length - 1);
+
+      if (System.Web.VirtualPathUtility.AppendTrailingSlash (context.Request.Url.LocalPath).StartsWith (applicationPath, StringComparison.OrdinalIgnoreCase))
+      {
+        var applicationPathPartsCount = applicationPath.Split (new[] { '/' }, StringSplitOptions.None).Length - 1;
+
+        var calculatedApplicationPath = requestUrlAbsolutePath
+            .Split (new[] { '/' }, StringSplitOptions.None)
+            .Take (applicationPathPartsCount)
+            .Aggregate (new StringBuilder (requestUrlAbsolutePath.Length), (sb, part) => sb.Append (part).Append ("/"))
+            .ToString();
+
+        Assertion.IsTrue (
+            requestUrlAbsolutePath.StartsWith (calculatedApplicationPath),
+            "Calculation of application path from request URL failed.\r\n"
+            + "  Absolute path from request: {0}\r\n"
+            + "  Calculated path: {1}\r\n"
+            + "  Application path: {2}\r\n",
+            requestUrlAbsolutePath,
+            calculatedApplicationPath,
+            applicationPath);
+
+        return calculatedApplicationPath;
+      }
+
+      throw new InvalidOperationException (
+          string.Format (
+              "Cannot calculate the application path when the request URL does not start with the application path. "
+              + "Possible reasons include the use of escape sequences in the path, e.g. when the application path contains whitespace.\r\n"
+              + "  Absolute path from request: {0}\r\n"
+              + "  Application path: {1}\r\n",
+              requestUrlAbsolutePath,
+              applicationPath));
+    }
+
+    private static string GetRequestedDirectory (HttpContextBase context)
+    {
+      Assertion.IsNotNull (context.Request.Url, "context.Request.Url != null");
+      var absolutePath = context.Request.Url.AbsolutePath;
+      if (absolutePath.EndsWith ("/"))
+        return absolutePath;
+
+      return absolutePath.Remove (absolutePath.LastIndexOf ('/'));
     }
 
     /// <summary>

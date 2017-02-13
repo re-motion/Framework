@@ -314,6 +314,11 @@
     <Compile Include="OnLoadEventTest.aspx.designer.cs">
       <DependentUpon>OnLoadEventTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="PathTests\TestFunction.cs" />
+    <Compile Include="PathTests\TestForm.aspx.cs">
+      <DependentUpon>TestForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="PostBackFocus.aspx.cs">
       <DependentUpon>PostBackFocus.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -489,6 +494,9 @@
       <SubType>Form</SubType>
     </Content>
     <Content Include="OnLoadEventTest.aspx" />
+    <Content Include="PathTests\TestForm.aspx">
+      <SubType>Form</SubType>
+    </Content>
     <Content Include="PostBackFocus.aspx" />
     <Content Include="Start.aspx">
       <SubType>Form</SubType>

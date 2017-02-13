@@ -25,6 +25,7 @@ using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
 using Remotion.Web.Utilities;
+#pragma warning disable 618
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 {

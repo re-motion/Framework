@@ -111,8 +111,19 @@ namespace Remotion.Web.ExecutionEngine
         path = mappingEntry.Resource;
       }
 
-      string permanentUrl = UrlUtility.GetAbsoluteUrl (httpContext, path)
-                            + UrlUtility.FormatQueryString (internalUrlParameters, httpContext.Response.ContentEncoding);
+      string absoluteUrl;
+      var session = httpContext.Session;
+      if (session != null && session.IsCookieless)
+      {
+#pragma warning disable 618
+        absoluteUrl = UrlUtility.GetAbsoluteUrl (httpContext, path);
+#pragma warning restore 618
+      }
+      else
+      {
+        absoluteUrl = UrlUtility.ResolveUrlCaseSensitive (httpContext, path);
+      }
+      string permanentUrl = absoluteUrl + UrlUtility.FormatQueryString (internalUrlParameters, httpContext.Response.ContentEncoding);
 
       int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
       if (permanentUrl.Length > maxLength)
@@ -325,7 +336,18 @@ namespace Remotion.Web.ExecutionEngine
 
       queryString.Set (WxeHandler.Parameters.WxeFunctionToken, functionToken);
 
-      path = UrlUtility.GetAbsoluteUrl (_httpContext, path);
+      var session = _httpContext.Session;
+      if (session != null && session.IsCookieless)
+      {
+#pragma warning disable 618
+        path = UrlUtility.GetAbsoluteUrl (_httpContext, path);
+#pragma warning restore 618
+      }
+      else
+      {
+        path = UrlUtility.ResolveUrlCaseSensitive (_httpContext, path);
+      }
+
       return UrlUtility.AddParameters (path, queryString, _httpContext.Response.ContentEncoding);
     }
 

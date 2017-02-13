@@ -122,7 +122,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       bool isReadOnly = false;
       SessionStateItemCollection sessionItems = new SessionStateItemCollection ();
       HttpSessionStateContainer httpSessionStateContainer = new HttpSessionStateContainer (
-          id, sessionItems, staticObjects, timeout, newSession, HttpCookieMode.UseUri, mode, isReadOnly);
+          id, sessionItems, staticObjects, timeout, newSession, HttpCookieMode.UseCookies, mode, isReadOnly);
 
       sessionState = (HttpSessionState) PrivateInvoke.CreateInstanceNonPublicCtor (typeof (HttpSessionState), httpSessionStateContainer);
       return sessionState;

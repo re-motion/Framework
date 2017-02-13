@@ -28,6 +28,7 @@
   <add type="Remotion.Web.Test::IFrameSupport.MainFunction" resource="Main.wxe"/>
   <add type="Remotion.Web.Test::IFrameSupport.FrameContentFunction" resource="FrameContent.wxe"/>
   <add type="Remotion.Web.Test::ExecutionEngine.ExceptionHandling.TestFunction" resource="ExceptionHandlingTest.wxe"/>
+  <add type="Remotion.Web.Test::PathTests.TestFunction" resource="PathTests.wxe"/>
   <!--
 		<add type="Remotion.Web.Test.SampleWxeFunction,Remotion.Web.Test" resource="sample.wxe"/>
 		<add type="Remotion.Web.Test.SampleWxeFunction,Remotion.Web.Test" resource="sample_old.wxe"/>

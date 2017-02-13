@@ -47,7 +47,19 @@ namespace Remotion.Web.Services
 
       if (string.IsNullOrEmpty (iconInfo.Url))
         throw new ArgumentException ("IconProxy does not support IconInfo objects without an empty Url.", "iconInfo");
-      var absoluteUrl = UrlUtility.GetAbsoluteUrl (httpContext, iconInfo.Url);
+
+      string absoluteUrl;
+      var session = httpContext.Session;
+      if (session != null && session.IsCookieless)
+      {
+#pragma warning disable 618
+        absoluteUrl = UrlUtility.GetAbsoluteUrl (httpContext, iconInfo.Url);
+#pragma warning restore 618
+      }
+      else
+      {
+        absoluteUrl = UrlUtility.ResolveUrlCaseSensitive (httpContext, iconInfo.Url);
+      }
 
       return new IconProxy (
           absoluteUrl,
