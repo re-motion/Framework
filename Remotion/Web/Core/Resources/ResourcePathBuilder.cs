@@ -23,6 +23,8 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Configuration;
 using Remotion.Web.Infrastructure;
+using Remotion.Web.Utilities;
+using VirtualPathUtility = System.Web.VirtualPathUtility;
 
 namespace Remotion.Web.Resources
 {
@@ -74,7 +76,7 @@ namespace Remotion.Web.Resources
     private string GetApplicationPath ()
     {
       var context = _httpContextProvider.GetCurrentHttpContext();
-      return GetApplicationPathFromHttpContext (context);
+      return UrlUtility.ResolveUrlCaseSensitive (context, "~/");
     }
 
     private string GetApplicationPathFromHttpContext (HttpContextBase context)

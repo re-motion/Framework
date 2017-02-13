@@ -106,6 +106,12 @@ namespace Remotion.Web.Utilities
       if (relativeUrl.Length == 0)
         return relativeUrl;
 
+      // Cookieless sessions are not implemented in ASP.NET MVC and are discouraged for security reasons.
+      // There is no known usage of cookieless sessions in re-motion applications.
+      //var session = context.Session;
+      //if (session != null && session.IsCookieless)
+      //  throw new InvalidOperationException ("Cookieless sessions are not supported for resolving URLs.");
+
       var applicationPath = GetApplicationPathFromHttpContext (context);
       Assertion.IsTrue (System.Web.VirtualPathUtility.IsAbsolute (applicationPath));
 
