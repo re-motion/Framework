@@ -394,6 +394,36 @@ namespace Remotion.Web.UnitTests.Core.Utilities
                 .With.Message.StartsWith ("Cannot calculate the application path when the request URL does not start with the application path."));
     }
 
+    [Test]
+    public void ResolveUrlCaseSensitive_WithCookiebasedSession_ResolvedUrl ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      var sessionStub = MockRepository.GenerateStub<HttpSessionStateBase>();
+      sessionStub.Stub (_ => _.IsCookieless).Return (false);
+      httpContextStub.Stub (_ => _.Session).Return (sessionStub);
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Is.EqualTo ("/appDir/path"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithCookielessSession_ThrowsInvalidOperationException ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      var sessionStub = MockRepository.GenerateStub<HttpSessionStateBase>();
+      sessionStub.Stub (_ => _.IsCookieless).Return (true);
+      httpContextStub.Stub (_ => _.Session).Return (sessionStub);
+
+      Assert.That (
+          () =>
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Throws.InvalidOperationException
+                .With.Message.EqualTo ("Cookieless sessions are not supported for resolving URLs."));
+    }
+
     private HttpContextBase CreateHttpContextStub (Uri url, string applicationPath)
     {
       var httpRequestStub = MockRepository.GenerateStub<HttpRequestBase>();
