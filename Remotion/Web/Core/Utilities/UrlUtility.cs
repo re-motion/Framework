@@ -51,25 +51,11 @@ namespace Remotion.Web.Utilities
     /// <param name="context"> The <see cref="HttpContextBase"/> to be used. Must not be <see langword="null"/>. </param>
     /// <param name="virtualPath"> The virtual path. Must not be <see langword="null"/>. Must be rooted or absolute. </param>
     /// <returns> The absolute URL. </returns>
+    [Obsolete ("Use ResolveUrlCaseSensitive (HttpContextBase, string) instead. Note that ResolveUrlCaseSensitive() no longer supports cookieless sessions. (Version 1.16.23 and Version 1.17.11)", true)]
     public static string GetAbsoluteUrl (HttpContextBase context, string virtualPath)
     {
-      ArgumentUtility.CheckNotNull ("virtualPath", virtualPath);
-
-      if (HasScheme (virtualPath))
-        return virtualPath;
-
-      if (virtualPath.Length == 0)
-        return virtualPath;
-
-      if (virtualPath[0] == '\\' || virtualPath[0] == '/' || virtualPath[0] == '~')
-      {
-        return context.Response.ApplyAppPathModifier (virtualPath);
-      }
-      else
-      {
-        throw new ArgumentException (
-            "The path could not be resolved to an app-relative path. Most likely reason: The path did not begin with the root-operator ('~').");
-      }
+      throw new NotSupportedException (
+          "Use ResolveUrlCaseSensitive (HttpContextBase, string) instead. Note that ResolveUrlCaseSensitive() no longer supports cookieless sessions. (Version 1.16.23 and Version 1.17.11)");
     }
 
     /// <summary>
