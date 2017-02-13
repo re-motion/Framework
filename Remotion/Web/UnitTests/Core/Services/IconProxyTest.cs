@@ -33,9 +33,10 @@ namespace Remotion.Web.UnitTests.Core.Services
     public void SetUp ()
     {
       _httpContextStub = MockRepository.GenerateStub<HttpContextBase>();
-      var httpResponseStub = MockRepository.GenerateStub<HttpResponseBase>();
-      httpResponseStub.Stub (stub => stub.ApplyAppPathModifier ("~/url")).Return ("/root/url");
-      _httpContextStub.Stub (stub => stub.Response).Return (httpResponseStub);
+      var httpRequestStub = MockRepository.GenerateStub<HttpRequestBase>();
+      httpRequestStub.Stub (_ => _.Url).Return (new Uri("http://localhost/root/file"));
+      httpRequestStub.Stub (_ => _.ApplicationPath).Return ("/root");
+      _httpContextStub.Stub (stub => stub.Request).Return (httpRequestStub);
     }
 
     [Test]
