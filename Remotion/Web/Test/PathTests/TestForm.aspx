@@ -24,71 +24,111 @@
   <body>
     <form id="Form1" method="post" runat="server">
       <table>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~")            </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~")             %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/")           </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/")            %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/test")       </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/test")        %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/.")          </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/.")           %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/./path")     </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/./path")      %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/path/.")     </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/path/.")      %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~/~/test)"     </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/~/test")      %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("~\\test")      </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~\\test")       %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("/test/path")   </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "/test/path")    %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("\\test\\path") </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "\\test\\path")  %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("/test\\path")  </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "/test\\path")   %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("\\test/path")  </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "\\test/path")   %>"</td></tr>
-        <tr><td>UrlUtility.GetAbsoluteUrl ("")             </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "")              %>"</td></tr>
-<%--        <tr><td>UrlUtility.GetAbsoluteUrl ("test/path")    </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "test/path")     %>"</td></tr>--%>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("~")                </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~")                 %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("~/")               </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/")                %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("~/test")           </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/test")            %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("~/.")              </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/.")               %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("~/./path")         </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/./path")          %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("~/path/.")         </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/path/.")          %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("~/path1/../path2") </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/path1/../path2")  %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("~/../path2")       </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/../path2")        %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("~/~")              </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/~")               %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("~/~/")             </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/~/")              %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("~/~/test")         </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~/~/test")          %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("~\\test")          </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "~\\test")           %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("/test/path")       </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "/test/path")        %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("\\test\\path")     </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "\\test\\path")      %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("/test\\path")      </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "/test\\path")       %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("\\test/path")      </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "\\test/path")       %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrl ("")                 </td><td>"<%= UrlUtility.GetAbsoluteUrl (Context, "")                  %>"</td></tr>
 
         <tr><td>&nbsp;</td><td></td></tr>
 
-        <tr><td>HttpResponse.ApplyAppPathModifier ("~")            </td><td>"<%= Response.ApplyAppPathModifier ("~")             %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("~/")           </td><td>"<%= Response.ApplyAppPathModifier ("~/")            %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("~/test")       </td><td>"<%= Response.ApplyAppPathModifier ("~/test")        %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("~/.")          </td><td>"<%= Response.ApplyAppPathModifier ("~/.")           %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("~/./path")     </td><td>"<%= Response.ApplyAppPathModifier ("~/./path")      %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("~/path/.")     </td><td>"<%= Response.ApplyAppPathModifier ("~/path/.")      %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("~/~/test)"     </td><td>"<%= Response.ApplyAppPathModifier ("~/~/test")      %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("~\\test")      </td><td>"<%= Response.ApplyAppPathModifier ("~\\test")       %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("/test/path")   </td><td>"<%= Response.ApplyAppPathModifier ("/test/path")    %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("\\test\\path") </td><td>"<%= Response.ApplyAppPathModifier ("\\test\\path")  %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("/test\\path")  </td><td>"<%= Response.ApplyAppPathModifier ("/test\\path")   %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("\\test/path")  </td><td>"<%= Response.ApplyAppPathModifier ("\\test/path")   %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("")             </td><td>"<%= Response.ApplyAppPathModifier ("")              %>"</td></tr>
-        <tr><td>HttpResponse.ApplyAppPathModifier ("test/path")    </td><td>"<%= Response.ApplyAppPathModifier ("test/path")     %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~")                </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~")                 %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/")               </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/")                %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/test")           </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/test")            %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/.")              </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/.")               %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/./path")         </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/./path")          %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/path/.")         </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/path/.")          %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/path1/../path2") </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/path1/../path2")  %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/../path2")       </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/../path2")        %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/~")              </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/~")               %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/~/")             </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/~/")              %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/~/test")         </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/~/test")          %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~\\test")          </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~\\test")           %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("/test/path")       </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "/test/path")        %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("\\test\\path")     </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "\\test\\path")      %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("/test\\path")      </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "/test\\path")       %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("\\test/path")      </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "\\test/path")       %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("")                 </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "")                  %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("test/path")        </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "test/path")         %>"</td></tr>
+        <tr><td>UrlUtility.ResolveUrlCaseSensitive ("test\\path")       </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "test\\path")        %>"</td></tr>
 
         <tr><td>&nbsp;</td><td></td></tr>
 
-        <tr><td>Control.ResolveUrl ("~")            </td><td>"<%= ResolveUrl ("~")             %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("~/")           </td><td>"<%= ResolveUrl ("~/")            %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("~/test")       </td><td>"<%= ResolveUrl ("~/test")        %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("~/.")          </td><td>"<%= ResolveUrl ("~/.")           %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("~/./path")     </td><td>"<%= ResolveUrl ("~/./path")      %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("~/path/.")     </td><td>"<%= ResolveUrl ("~/path/.")      %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("~/~/test)"     </td><td>"<%= ResolveUrl ("~/~/test")      %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("~\\test")      </td><td>"<%= ResolveUrl ("~\\test")       %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("/test/path")   </td><td>"<%= ResolveUrl ("/test/path")    %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("\\test\\path") </td><td>"<%= ResolveUrl ("\\test\\path")  %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("/test\\path")  </td><td>"<%= ResolveUrl ("/test\\path")   %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("\\test/path")  </td><td>"<%= ResolveUrl ("\\test/path")   %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("")             </td><td>"<%= ResolveUrl ("")              %>"</td></tr>
-        <tr><td>Control.ResolveUrl ("test/path")    </td><td>"<%= ResolveUrl ("test/path")     %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("~")                </td><td>"<%= Response.ApplyAppPathModifier ("~")                 %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("~/")               </td><td>"<%= Response.ApplyAppPathModifier ("~/")                %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("~/test")           </td><td>"<%= Response.ApplyAppPathModifier ("~/test")            %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("~/.")              </td><td>"<%= Response.ApplyAppPathModifier ("~/.")               %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("~/./path")         </td><td>"<%= Response.ApplyAppPathModifier ("~/./path")          %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("~/path/.")         </td><td>"<%= Response.ApplyAppPathModifier ("~/path/.")          %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("~/path1/../path2") </td><td>"<%= Response.ApplyAppPathModifier ("~/path1/../path2")  %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("~/../path2")       </td><td>"<%= Response.ApplyAppPathModifier ("~/../path2")        %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("~/~")              </td><td>"<%= Response.ApplyAppPathModifier ("~/~")               %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("~/~/")             </td><td>"<%= Response.ApplyAppPathModifier ("~/~/")              %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("~/~/test")         </td><td>"<%= Response.ApplyAppPathModifier ("~/~/test")          %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("~\\test")          </td><td>"<%= Response.ApplyAppPathModifier ("~\\test")           %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("/test/path")       </td><td>"<%= Response.ApplyAppPathModifier ("/test/path")        %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("\\test\\path")     </td><td>"<%= Response.ApplyAppPathModifier ("\\test\\path")      %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("/test\\path")      </td><td>"<%= Response.ApplyAppPathModifier ("/test\\path")       %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("\\test/path")      </td><td>"<%= Response.ApplyAppPathModifier ("\\test/path")       %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("")                 </td><td>"<%= Response.ApplyAppPathModifier ("")                  %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("test/path")        </td><td>"<%= Response.ApplyAppPathModifier ("test/path")         %>"</td></tr>
+        <tr><td>HttpResponse.ApplyAppPathModifier ("test\\path")       </td><td>"<%= Response.ApplyAppPathModifier ("test\\path")        %>"</td></tr>
 
         <tr><td>&nbsp;</td><td></td></tr>
 
-        <tr><td>Control.ResolveClientUrl ("~")            </td><td>"<%= ResolveClientUrl ("~")             %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("~/")           </td><td>"<%= ResolveClientUrl ("~/")            %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("~/test")       </td><td>"<%= ResolveClientUrl ("~/test")        %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("~/.")          </td><td>"<%= ResolveClientUrl ("~/.")           %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("~/./path")     </td><td>"<%= ResolveClientUrl ("~/./path")      %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("~/path/.")     </td><td>"<%= ResolveClientUrl ("~/path/.")      %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("~/~/test)"     </td><td>"<%= ResolveClientUrl ("~/~/test")      %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("~\\test")      </td><td>"<%= ResolveClientUrl ("~\\test")       %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("/test/path")   </td><td>"<%= ResolveClientUrl ("/test/path")    %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("\\test\\path") </td><td>"<%= ResolveClientUrl ("\\test\\path")  %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("/test\\path")  </td><td>"<%= ResolveClientUrl ("/test\\path")   %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("\\test/path")  </td><td>"<%= ResolveClientUrl ("\\test/path")   %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("")             </td><td>"<%= ResolveClientUrl ("")              %>"</td></tr>
-        <tr><td>Control.ResolveClientUrl ("test/path")    </td><td>"<%= ResolveClientUrl ("test/path")     %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("~")                </td><td>"<%= ResolveUrl ("~")                 %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("~/")               </td><td>"<%= ResolveUrl ("~/")                %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("~/test")           </td><td>"<%= ResolveUrl ("~/test")            %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("~/.")              </td><td>"<%= ResolveUrl ("~/.")               %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("~/./path")         </td><td>"<%= ResolveUrl ("~/./path")          %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("~/path/.")         </td><td>"<%= ResolveUrl ("~/path/.")          %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("~/path1/../path2") </td><td>"<%= ResolveUrl ("~/path1/../path2")  %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("~/../path2")       </td><td>"<%= ResolveUrl ("~/../path2")        %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("~/~")              </td><td>"<%= ResolveUrl ("~/~")               %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("~/~/")             </td><td>"<%= ResolveUrl ("~/~/")              %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("~/~/test")         </td><td>"<%= ResolveUrl ("~/~/test")          %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("~\\test")          </td><td>"<%= ResolveUrl ("~\\test")           %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("/test/path")       </td><td>"<%= ResolveUrl ("/test/path")        %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("\\test\\path")     </td><td>"<%= ResolveUrl ("\\test\\path")      %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("/test\\path")      </td><td>"<%= ResolveUrl ("/test\\path")       %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("\\test/path")      </td><td>"<%= ResolveUrl ("\\test/path")       %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("")                 </td><td>"<%= ResolveUrl ("")                  %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("test/path")        </td><td>"<%= ResolveUrl ("test/path")         %>"</td></tr>
+        <tr><td>Control.ResolveUrl ("test\\path")       </td><td>"<%= ResolveUrl ("test\\path")        %>"</td></tr>
+
+        <tr><td>&nbsp;</td><td></td></tr>
+
+        <tr><td>Control.ResolveClientUrl ("~")                </td><td>"<%= ResolveClientUrl ("~")                 %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("~/")               </td><td>"<%= ResolveClientUrl ("~/")                %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("~/test")           </td><td>"<%= ResolveClientUrl ("~/test")            %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("~/.")              </td><td>"<%= ResolveClientUrl ("~/.")               %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("~/./path")         </td><td>"<%= ResolveClientUrl ("~/./path")          %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("~/path/.")         </td><td>"<%= ResolveClientUrl ("~/path/.")          %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("~/path1/../path2") </td><td>"<%= ResolveClientUrl ("~/path1/../path2")  %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("~/../path2")       </td><td>"<%= ResolveClientUrl ("~/../path2")        %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("~/~")              </td><td>"<%= ResolveClientUrl ("~/~")               %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("~/~/")             </td><td>"<%= ResolveClientUrl ("~/~/")              %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("~/~/test")         </td><td>"<%= ResolveClientUrl ("~/~/test")          %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("~\\test")          </td><td>"<%= ResolveClientUrl ("~\\test")           %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("/test/path")       </td><td>"<%= ResolveClientUrl ("/test/path")        %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("\\test\\path")     </td><td>"<%= ResolveClientUrl ("\\test\\path")      %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("/test\\path")      </td><td>"<%= ResolveClientUrl ("/test\\path")       %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("\\test/path")      </td><td>"<%= ResolveClientUrl ("\\test/path")       %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("")                 </td><td>"<%= ResolveClientUrl ("")                  %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("test/path")        </td><td>"<%= ResolveClientUrl ("test/path")         %>"</td></tr>
+        <tr><td>Control.ResolveClientUrl ("test\\path")       </td><td>"<%= ResolveClientUrl ("test\\path")        %>"</td></tr>
 
       </table>
     </form>

@@ -19,7 +19,9 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 using NUnit.Framework;
+using Remotion.Web.Infrastructure;
 using Remotion.Web.Utilities;
+using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.Utilities
 {
@@ -35,6 +37,377 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       _currentEncoding = System.Text.Encoding.UTF8;
     }
 
+    [Test]
+    public void ResolveUrlCaseSensitive_WithEmptyPath_ResultingPathIsEmpty ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, ""),
+          Is.EqualTo (""));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootedPath_ResultingPathIsInput ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "/AppDir/path"),
+          Is.EqualTo ("/AppDir/path"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootedPathUsingBackslashes_ResultingPathIsInputWithForwardSlashes ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "\\AppDir\\path"),
+          Is.EqualTo ("/AppDir/path"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootedPathUsingBackslashesAndForwardSlashes_ResultingPathIsInputWithForwardSlashes ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "/AppDir\\path"),
+          Is.EqualTo ("/AppDir/path"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRelativePath_ResultingPathIsAppendedToRequestFolderWithOriginalCasing ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/AppdIr/folder/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "part1/part2"),
+          Is.EqualTo ("/AppdIr/folder/part1/part2"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRelativePathAndBackslashes_ResultingPathIsAppendedToRequestFolderWithOriginalCasingAndUsesForwardSlashes ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/AppdIr/folder/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "part1\\part2"),
+          Is.EqualTo ("/AppdIr/folder/part1/part2"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRelativePath_RequestToRoot ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost"), "/");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "part1/part2"),
+          Is.EqualTo ("/part1/part2"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRelativePath_RequestToRootWithTrailingSlash ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/"), "/");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "part1/part2"),
+          Is.EqualTo ("/part1/part2"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRelativePath_UsesPathFromRequestUrl ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%c3%a4_/_%D6_%f6_/"), "/_ _Ä_ä_");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "path"),
+          Is.EqualTo ("/_%20_%C3%84_%c3%a4_/_%D6_%f6_/path"),
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_ResultingPathDoesNotEndWithTrailingSlash ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~"),
+          Is.EqualTo ("/appDir/"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndTrailingSlash_ResultingPathDoesNotEndWithTrailingSlash ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/"),
+          Is.EqualTo ("/appDir/"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndMultiplePathParts_ResultingPathDoesNotEndWithTrailingSlash ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/part1/part2"),
+          Is.EqualTo ("/appDir/part1/part2"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndPathIshDot_SkipsPart ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/."),
+          Is.EqualTo ("/appDir"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndBeginsWithDot_SkipsPart ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/./part2"),
+          Is.EqualTo ("/appDir/part2"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndPathEndsWithDot_SkipsPart ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/part1/."),
+          Is.EqualTo ("/appDir/part1"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndSecondRootOperator_ResultingPathDoesNotEndWithTrailingSlash ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/~"),
+          Is.EqualTo ("/appDir/~"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndSecondRootOperator_AndTrailingSlash_ResultingPathDoesNotEndWithTrailingSlash ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/~/"),
+          Is.EqualTo ("/appDir/~/"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndContainsRootOperatorAndBackslashes_ContainsRootOperatorAndUsesForwardSlashes ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/~/part1/part2/"),
+          Is.EqualTo ("/appDir/~/part1/part2/"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndTraversesRelativeParentDirectory_CollapsesDirectories ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/part1/../part2/"),
+          Is.EqualTo ("/appDir/part2/"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndTraversesAppDirectory_CollapsesDirectories ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/../part2/"),
+          Is.EqualTo ("/part2/"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndContainsRootOperator_ContainsRootOperator ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/~/part1/part2/"),
+          Is.EqualTo ("/appDir/~/part1/part2/"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndTraversesRelativeParentDirectoryPastRootOperator_DoesNotContainRootOperator ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/~/part1/../../part2/"),
+          Is.EqualTo ("/appDir/part2/"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndTraversesAppDirectoryPastRootOperator_DoesNotContainRootOperator ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/~/../../part1/part2/"),
+          Is.EqualTo ("/part1/part2/"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_AndEndsPathWithTrailingSlash_KeepsTrailingSlash ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/part1/part2/"),
+          Is.EqualTo ("/appDir/part1/part2/"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromUrl ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/AppdiR/file?x=y"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Is.EqualTo ("/AppdiR/path"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_RequestToRoot ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost"), "/");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Is.EqualTo ("/path"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_RequestToRootWithTrailingSlash ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/"), "/");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Is.EqualTo ("/path"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_RequestToRootWithApplicationPathNull_SubstitutesTrailingSlash ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost"), null);
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Is.EqualTo ("/path"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_RequestToVirtualApplicationPathRoot ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Is.EqualTo ("/appDir/path"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_RequestToVirtualApplicationPathRootWithTrailingSlash ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/"), "/appDir");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Is.EqualTo ("/appDir/path"));
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromUrl_ComparesUsingDecodedPath ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%c3%a4_/file"), "/_ _Ä_ä_");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Is.EqualTo ("/_%20_%C3%84_%c3%a4_/path"),
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromUrl_ComparesUsingDecodedPathWithTrailingSlash ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%c3%a4_/file"), "/_ _Ä_ä_/");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Is.EqualTo ("/_%20_%C3%84_%c3%a4_/path"),
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromRootUrl_ComparesUsingDecodedPath ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%c3%a4_"), "/_ _Ä_ä_");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Is.EqualTo ("/_%20_%C3%84_%c3%a4_/path"),
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromRootUrlWithTrailingSlash_ComparesUsingDecodedPath ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%c3%a4_/"), "/_ _Ä_ä_");
+
+      Assert.That (
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Is.EqualTo ("/_%20_%C3%84_%c3%a4_/path"),
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
+    }
+
+    [Test]
+    public void ResolveUrlCaseSensitive_WithRootOperator_DecodedVirtualApplicationPathsDoNotMatch_ThrowsInvalidOperationException ()
+    {
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/AppDir1/file"), "/AppDir");
+
+      Assert.That (
+          () =>
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          Throws.InvalidOperationException
+                .With.Message.StartsWith ("Cannot calculate the application path when the request URL does not start with the application path."));
+    }
+
+    private HttpContextBase CreateHttpContextStub (Uri url, string applicationPath)
+    {
+      var httpRequestStub = MockRepository.GenerateStub<HttpRequestBase>();
+      httpRequestStub.Stub (_ => _.Url).Return (url);
+      httpRequestStub.Stub (_ => _.ApplicationPath).Return (applicationPath);
+
+      var httpContextStub = MockRepository.GenerateStub<HttpContextBase>();
+      httpContextStub.Stub (_ => _.Request).Return (httpRequestStub);
+
+      var httpContextProviderStub = MockRepository.GenerateStub<IHttpContextProvider>();
+      httpContextProviderStub.Stub (_ => _.GetCurrentHttpContext()).Return (httpContextStub);
+
+      return httpContextStub;
+    }
 
     [Test]
     public void AddParameterToEmptyUrl ()
