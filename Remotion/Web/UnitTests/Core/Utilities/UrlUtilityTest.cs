@@ -120,11 +120,11 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void ResolveUrlCaseSensitive_WithRelativePath_UsesPathFromRequestUrl ()
     {
-      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%c3%a4_/_%D6_%f6_/"), "/_ _Ä_ä_");
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_/_%D6_%f6_/"), "/_ _Ä_ä_");
 
       Assert.That (
           UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "path"),
-          Is.EqualTo ("/_%20_%C3%84_%c3%a4_/_%D6_%f6_/path"),
+          Is.EqualTo ("/_%20_%C3%84_%C3%A4_/_%D6_%f6_/path"),
           "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
@@ -341,44 +341,44 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromUrl_ComparesUsingDecodedPath ()
     {
-      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%c3%a4_/file"), "/_ _Ä_ä_");
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_/file"), "/_ _Ä_ä_");
 
       Assert.That (
           UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
-          Is.EqualTo ("/_%20_%C3%84_%c3%a4_/path"),
+          Is.EqualTo ("/_%20_%C3%84_%C3%A4_/path"),
           "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
     [Test]
     public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromUrl_ComparesUsingDecodedPathWithTrailingSlash ()
     {
-      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%c3%a4_/file"), "/_ _Ä_ä_/");
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_/file"), "/_ _Ä_ä_/");
 
       Assert.That (
           UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
-          Is.EqualTo ("/_%20_%C3%84_%c3%a4_/path"),
+          Is.EqualTo ("/_%20_%C3%84_%C3%A4_/path"),
           "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
     [Test]
     public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromRootUrl_ComparesUsingDecodedPath ()
     {
-      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%c3%a4_"), "/_ _Ä_ä_");
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_"), "/_ _Ä_ä_");
 
       Assert.That (
           UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
-          Is.EqualTo ("/_%20_%C3%84_%c3%a4_/path"),
+          Is.EqualTo ("/_%20_%C3%84_%C3%A4_/path"),
           "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
     [Test]
     public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromRootUrlWithTrailingSlash_ComparesUsingDecodedPath ()
     {
-      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%c3%a4_/"), "/_ _Ä_ä_");
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_/"), "/_ _Ä_ä_");
 
       Assert.That (
           UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
-          Is.EqualTo ("/_%20_%C3%84_%c3%a4_/path"),
+          Is.EqualTo ("/_%20_%C3%84_%C3%A4_/path"),
           "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
