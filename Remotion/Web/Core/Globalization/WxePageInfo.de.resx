@@ -112,15 +112,15 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.Web.ExecutionEngine.WxePageInfo.StatusIsAbortingMessage" xml:space="preserve">
-    <value>&lt;p&gt;Sie sind dabei diese Seite zu verlassen.&lt;/p&gt;&lt;p&gt;Daher k&amp;ouml;nnen Sie keine weiteren Eingaben zum Server senden.&lt;/p&gt;</value>
+    <value>&lt;p&gt;Sie sind dabei, die Seite zu verlassen.&lt;/p&gt;&lt;p&gt;Sie k&amp;ouml;nnen keine weiteren Eingaben zum Server senden.&lt;/p&gt;</value>
   </data>
   <data name="Remotion.Web.ExecutionEngine.WxePageInfo.StatusIsCachedMessage" xml:space="preserve">
-    <value>Die Navigation über die Vorw&amp;auml;rts und Zur&amp;uuml;ck Schaltfl&amp;auml;chen wird nicht unterst&amp;uuml;tzt.</value>
+    <value>Die Navigation mit den Schaltflächen Vorw&amp;auml;rts und Zur&amp;uuml;ck wird nicht unterst&amp;uuml;tzt.</value>
   </data>
 </root>

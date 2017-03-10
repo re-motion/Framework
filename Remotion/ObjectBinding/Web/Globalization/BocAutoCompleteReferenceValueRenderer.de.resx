@@ -112,21 +112,21 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.LoadDataFailedErrorMessage" xml:space="preserve">
-    <value>Die Daten für die aktuelle Eingabe konnten nicht geladen werden.</value>
+    <value>Die Daten für Ihre Eingabe konnten nicht geladen werden.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.LoadIconFailedErrorMessage" xml:space="preserve">
-    <value>Das Symbol für die aktuelle Eingabe konnte nicht geladen werden.</value>
+    <value>Das Symbol für Ihre Eingabe konnte nicht geladen werden.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.NoDataFoundMessage" xml:space="preserve">
-    <value>Für die aktuelle Eingabe wurden keine Daten gefunden.</value>
+    <value>Für Ihre Eingabe wurden keine Treffer gefunden.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.SearchStringForDropDownDoesNotMatchRegexMessage" xml:space="preserve">
-    <value>Die aktuelle Eingabe entspricht nicht dem vorgegebenen Format.</value>
+    <value>Ihre Eingabe entspricht nicht dem vorgegebenem Format.</value>
   </data>
 </root>
