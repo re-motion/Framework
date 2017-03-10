@@ -96,6 +96,7 @@ body.msie7 .ac_results li > div:first-child img
 
 body.msie8 .ac_results li > div:first-child img
 {
+  /* ReSharper disable once InvalidValue */
   vertical-align: auto;
 }
 
