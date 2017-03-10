@@ -121,16 +121,16 @@
     <value>Name</value>
   </data>
   <data name="property:UserName" xml:space="preserve">
-    <value>Username</value>
+    <value>User name</value>
   </data>
   <data name="property:Title" xml:space="preserve">
     <value>Title</value>
   </data>
   <data name="property:FirstName" xml:space="preserve">
-    <value>Firstname</value>
+    <value>First name</value>
   </data>
   <data name="property:LastName" xml:space="preserve">
-    <value>Lastname</value>
+    <value>Last name</value>
   </data>
   <data name="property:OwningGroup" xml:space="preserve">
     <value>Group</value>

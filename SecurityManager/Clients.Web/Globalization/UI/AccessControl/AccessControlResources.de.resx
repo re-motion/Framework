@@ -121,7 +121,7 @@
     <value>Objektbezogene Berechtigungen</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStatefulAccessControlListControl.MissingStateCombinationsValidatorErrorMessage" xml:space="preserve">
-    <value>Bitte ordnen Sie einen Status zu.</value>
+    <value>Bitte weisen Sie einen Status zu.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificTenantFieldRequiredFieldErrorMessage" xml:space="preserve">
     <value>Bitte wählen Sie einen Mandanten aus.</value>
@@ -136,7 +136,7 @@
     <value>Status entfernen</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.DuplicateStateCombinationsValidatorErrorMessage" xml:space="preserve">
-    <value>Es dürfen keine doppelten Stati zugewiesen werden.</value>
+    <value>Jeder Status muss eindeutig sein.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.EditAccessControlListControlBase.NewAccessControlEntryButtonText" xml:space="preserve">
     <value>Zeile hinzufügen</value>
@@ -145,7 +145,7 @@
     <value>Objektbezogene ACL hinzufügen</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStatefulAccessControlListControl.NewStateCombinationButtonText" xml:space="preserve">
-    <value>Status zuordnen</value>
+    <value>Status zuweisen</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.Title" xml:space="preserve">
     <value>Berechtigungen für Klasse '{0}' verwalten</value>

@@ -121,7 +121,7 @@
     <value>Object-based permissions</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStatefulAccessControlListControl.MissingStateCombinationsValidatorErrorMessage" xml:space="preserve">
-    <value>Please assign at least one state.</value>
+    <value>Please assign a status.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificTenantFieldRequiredFieldErrorMessage" xml:space="preserve">
     <value>Please select a tenant.</value>
@@ -133,10 +133,10 @@
     <value>Delete ACL</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStateCombinationControl.DeleteStateCombinationButtonText" xml:space="preserve">
-    <value>Remove State</value>
+    <value>Remove Status</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.DuplicateStateCombinationsValidatorErrorMessage" xml:space="preserve">
-    <value>States must be unqiue within the ACL.</value>
+    <value>Each status must be unique.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.EditAccessControlListControlBase.NewAccessControlEntryButtonText" xml:space="preserve">
     <value>Add row</value>
@@ -145,7 +145,7 @@
     <value>Add object-based ACL</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStatefulAccessControlListControl.NewStateCombinationButtonText" xml:space="preserve">
-    <value>Assign State</value>
+    <value>Assign Status</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.Title" xml:space="preserve">
     <value>Edit permissions for class '{0}'</value>
@@ -154,7 +154,7 @@
     <value>Add class-based ACL</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStateCombinationControl.RequiredStateCombinationValidatorErrorMessage" xml:space="preserve">
-    <value>Please select a state.</value>
+    <value>Please select a status.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.StatelessAccessControlListTitle" xml:space="preserve">
     <value>Class-based permissions</value>
@@ -184,19 +184,19 @@
     <value>Deny all</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.AllPermissionsMenu_GrantAllPermissions_Text" xml:space="preserve">
-    <value>Grant all</value>
+    <value>Allow all</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionDeniedText" xml:space="preserve">
     <value>'{0}'-access denied</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionGrantedText" xml:space="preserve">
-    <value>'{0}'-access granted</value>
+    <value>'{0}'-access allowed</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionUndefinedText" xml:space="preserve">
-    <value>'{0}'-access not set</value>
+    <value>'{0}'-access not defined</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.BranchOfOwningGroupLabel" xml:space="preserve">
-    <value>Within same</value>
+    <value>Within the same</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupHierarchyCondition_This" xml:space="preserve">
     <value>Only this group</value>
@@ -226,9 +226,9 @@
     <value>any</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificGroupFieldInvalidItemErrorMessage" xml:space="preserve">
-    <value>The entered name does not identify a group. Please correct your input.</value>
+    <value>No group matches the entered name. Please correct your input.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificUserFieldInvalidItemErrorMessage" xml:space="preserve">
-    <value>The entered name does not identify a user. Please correct your input.</value>
+    <value>No user matches the entered name. Please correct your input.</value>
   </data>
 </root>

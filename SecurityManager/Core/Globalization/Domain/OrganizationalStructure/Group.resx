@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="property:ShortName" xml:space="preserve">
-    <value>Shortname</value>
+    <value>Short name</value>
   </data>
   <data name="property:Name" xml:space="preserve">
     <value>Name</value>

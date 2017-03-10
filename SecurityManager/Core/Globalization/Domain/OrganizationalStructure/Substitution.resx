@@ -121,21 +121,21 @@
     <value>User</value>
   </data>
   <data name="property:BeginDate" xml:space="preserve">
-    <value>Active from</value>
+    <value>Valid from</value>
   </data>
   <data name="property:EndDate" xml:space="preserve">
-    <value>Active till</value>
+    <value>Valid to</value>
   </data>
   <data name="property:IsEnabled" xml:space="preserve">
-    <value>Is enabled</value>
+    <value>Is available</value>
   </data>
   <data name="property:SubstitutedRole" xml:space="preserve">
     <value>Role</value>
   </data>
   <data name="property:SubstitutingUser" xml:space="preserve">
-    <value>Stand-in user</value>
+    <value>Substitute</value>
   </data>
   <data name="type:Substitution" xml:space="preserve">
-    <value>Substitution</value>
+    <value>Substitute</value>
   </data>
 </root>

@@ -124,7 +124,7 @@
     <value>Roles</value>
   </data>
   <data name="property:GroupTypes" xml:space="preserve">
-    <value>Possible group types</value>
+    <value>Group types</value>
   </data>
   <data name="property:DisplayName" xml:space="preserve">
     <value>Name</value>
