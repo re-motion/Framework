@@ -61,6 +61,6 @@
         <value>Unbekanntes Zeitformat.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.DataPickerButtonAlternateText">
-        <value>Kalender öffnen</value>
+        <value>Datumsauswahl öffnen</value>
     </data>
 </root>
