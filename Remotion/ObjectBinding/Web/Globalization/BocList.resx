@@ -139,19 +139,19 @@
     <value>No data available.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SortAscendingAlternateText" xml:space="preserve">
-    <value>Sorted Ascending</value>
+    <value>Sorted ascending</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SortDescendingAlternateText" xml:space="preserve">
-    <value>Sorted Descending</value>
+    <value>Sorted descending</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeEditAlternateText" xml:space="preserve">
-    <value>Edit Row</value>
+    <value>Edit row</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeSaveAlternateText" xml:space="preserve">
-    <value>Save Changes to Row</value>
+    <value>Save changes to row</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeCancelAlternateText" xml:space="preserve">
-    <value>Discard Changes to Row</value>
+    <value>Discard changes to row</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectRowLabelText" xml:space="preserve">
     <value>Select this row</value>
