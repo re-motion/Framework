@@ -52,7 +52,7 @@
         <value>Enter a time.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.InvalidDateAndTimeErrorMessage">
-        <value>Unknown date and time format.</value>
+        <value>Unknown date or time format.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.InvalidDateErrorMessage">
         <value>Unknown date format.</value>
