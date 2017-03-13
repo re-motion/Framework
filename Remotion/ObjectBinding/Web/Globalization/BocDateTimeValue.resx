@@ -61,6 +61,6 @@
         <value>Unknown time format.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.DataPickerButtonAlternateText">
-        <value>Open the Date-Picker</value>
+        <value>Open date picker control</value>
     </data>
 </root>
