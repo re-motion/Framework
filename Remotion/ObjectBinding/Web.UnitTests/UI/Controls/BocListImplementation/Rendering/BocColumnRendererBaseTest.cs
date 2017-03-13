@@ -72,25 +72,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderTitleCellAscendingZero ()
     {
-      RenderTitleCell (SortingDirection.Ascending, 0, "SortAscending.gif", "Sorted Ascending");
+      RenderTitleCell (SortingDirection.Ascending, 0, "SortAscending.gif", "Sorted ascending");
     }
 
     [Test]
     public void RenderTitleCellDescendingZero ()
     {
-      RenderTitleCell (SortingDirection.Descending, 0, "SortDescending.gif", "Sorted Descending");
+      RenderTitleCell (SortingDirection.Descending, 0, "SortDescending.gif", "Sorted descending");
     }
 
     [Test]
     public void RenderTitleCellAscendingThree ()
     {
-      RenderTitleCell (SortingDirection.Ascending, 3, "SortAscending.gif", "Sorted Ascending");
+      RenderTitleCell (SortingDirection.Ascending, 3, "SortAscending.gif", "Sorted ascending");
     }
 
     [Test]
     public void RenderTitleCellDescendingFour ()
     {
-      RenderTitleCell (SortingDirection.Descending, 4, "SortDescending.gif", "Sorted Descending");
+      RenderTitleCell (SortingDirection.Descending, 4, "SortDescending.gif", "Sorted descending");
     }
 
     [Test]
