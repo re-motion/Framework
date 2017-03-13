@@ -148,7 +148,7 @@
     <value>Assign Status</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.Title" xml:space="preserve">
-    <value>Edit permissions for class '{0}'</value>
+    <value>Edit permissions for class "{0}"</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.NewStatelessAccessControlListButtonText" xml:space="preserve">
     <value>Add class-based ACL</value>
@@ -187,13 +187,13 @@
     <value>Allow all</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionDeniedText" xml:space="preserve">
-    <value>'{0}' access denied</value>
+    <value>"{0}" access denied</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionGrantedText" xml:space="preserve">
-    <value>'{0}' access allowed</value>
+    <value>"{0}" access allowed</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionUndefinedText" xml:space="preserve">
-    <value>'{0}' access not defined</value>
+    <value>"{0}" access not defined</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.BranchOfOwningGroupLabel" xml:space="preserve">
     <value>Within the same</value>

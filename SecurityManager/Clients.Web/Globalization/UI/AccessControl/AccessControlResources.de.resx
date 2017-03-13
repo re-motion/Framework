@@ -148,7 +148,7 @@
     <value>Status zuweisen</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.Title" xml:space="preserve">
-    <value>Berechtigungen für Klasse '{0}' verwalten</value>
+    <value>Berechtigungen für Klasse "{0}" verwalten</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.NewStatelessAccessControlListButtonText" xml:space="preserve">
     <value>Klassenbezogene ACL hinzufügen</value>
@@ -187,13 +187,13 @@
     <value>Alle erlauben</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionDeniedText" xml:space="preserve">
-    <value>'{0}'-Zugriff verboten</value>
+    <value>"{0}"-Zugriff verboten</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionGrantedText" xml:space="preserve">
-    <value>'{0}'-Zugriff erlaubt</value>
+    <value>"{0}"-Zugriff erlaubt</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionUndefinedText" xml:space="preserve">
-    <value>'{0}'-Zugriff nicht bestimmt</value>
+    <value>"{0}"-Zugriff nicht bestimmt</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.BranchOfOwningGroupLabel" xml:space="preserve">
     <value>Innerhalb der selben</value>

@@ -49,6 +49,6 @@
         <value>Unbestimmt</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue.NullItemValidationMessage">
-        <value>Setzen Sie das Kontrollkästchen auf Ja oder Nein.</value>
+        <value>Setzen Sie das Kontrollkästchen auf "Ja" oder "Nein".</value>
     </data>
 </root>
