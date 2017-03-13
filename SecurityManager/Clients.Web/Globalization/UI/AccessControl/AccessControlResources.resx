@@ -187,13 +187,13 @@
     <value>Allow all</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionDeniedText" xml:space="preserve">
-    <value>'{0}'-access denied</value>
+    <value>'{0}' access denied</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionGrantedText" xml:space="preserve">
-    <value>'{0}'-access allowed</value>
+    <value>'{0}' access allowed</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionUndefinedText" xml:space="preserve">
-    <value>'{0}'-access not defined</value>
+    <value>'{0}' access not defined</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.BranchOfOwningGroupLabel" xml:space="preserve">
     <value>Within the same</value>
