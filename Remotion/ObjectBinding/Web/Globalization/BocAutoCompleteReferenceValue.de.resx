@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue.InvalidItemErrorMessage" xml:space="preserve">
-    <value>Für den eingegebenen Text wurden keine Treffer gefunden. Bitte korrigieren Sie Ihre Eingabe.</value>
+    <value>Für den eingegebenen Text wurden keine Treffer gefunden. Korrigieren Sie Ihre Eingabe.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue.NullItemErrorMessage" xml:space="preserve">
-    <value>Bitte wählen Sie einen Eintrag aus.</value>
+    <value>Wählen Sie einen Eintrag aus.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue.OptionsTitle" xml:space="preserve">
     <value>Optionen</value>

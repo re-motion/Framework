@@ -121,6 +121,6 @@
     <value>Undefined</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue.NullItemValidationMessage" xml:space="preserve">
-    <value>Please select an entry.</value>
+    <value>Select an entry.</value>
   </data>
 </root>

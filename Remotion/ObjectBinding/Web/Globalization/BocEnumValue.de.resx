@@ -43,6 +43,6 @@
         <value>Unbestimmt</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue.NullItemValidationMessage">
-        <value>Bitte wählen Sie einen Eintrag aus.</value>
+        <value>Wählen Sie einen Eintrag aus.</value>
     </data>
 </root>

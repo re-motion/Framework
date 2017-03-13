@@ -121,10 +121,10 @@
     <value>Objektbezogene Berechtigungen</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStatefulAccessControlListControl.MissingStateCombinationsValidatorErrorMessage" xml:space="preserve">
-    <value>Bitte weisen Sie einen Status zu.</value>
+    <value>Weisen Sie einen Status zu.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificTenantFieldRequiredFieldErrorMessage" xml:space="preserve">
-    <value>Bitte wählen Sie einen Mandanten aus.</value>
+    <value>Wählen Sie einen Mandanten aus.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.DeleteAccessControlEntryButtonText" xml:space="preserve">
     <value>Zeile löschen</value>
@@ -154,22 +154,22 @@
     <value>Klassenbezogene ACL hinzufügen</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStateCombinationControl.RequiredStateCombinationValidatorErrorMessage" xml:space="preserve">
-    <value>Bitte wählen sie einen Status aus.</value>
+    <value>Wählen sie einen Status aus.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.StatelessAccessControlListTitle" xml:space="preserve">
     <value>Klassenbezogene Berechtigungen</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificGroupFieldRequiredFieldErrorMessage" xml:space="preserve">
-    <value>Bitte wählen Sie eine Gruppe aus.</value>
+    <value>Wählen Sie eine Gruppe aus.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificGroupTypeFieldRequiredFieldErrorMessage" xml:space="preserve">
-    <value>Bitte wählen Sie eine Struktureinheit aus.</value>
+    <value>Wählen Sie eine Struktureinheit aus.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificPositionFieldRequiredFieldErrorMessage" xml:space="preserve">
-    <value>Bitte wählen Sie eine Stelle aus.</value>
+    <value>Wählen Sie eine Stelle aus.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificUserFieldRequiredFieldErrorMessage" xml:space="preserve">
-    <value>Bitte wählen Sie einen Benutzer aus.</value>
+    <value>Wählen Sie einen Benutzer aus.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.CollapseAccessControlEntryButtonText" xml:space="preserve">
     <value>Details ausblenden</value>
@@ -226,9 +226,9 @@
     <value>beliebig</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificGroupFieldInvalidItemErrorMessage" xml:space="preserve">
-    <value>Der eingegebene Name konnte keiner Gruppe zugeordnet werden. Bitte korrigieren Sie Ihre Eingabe.</value>
+    <value>Der eingegebene Name konnte keiner Gruppe zugeordnet werden. Korrigieren Sie Ihre Eingabe.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificUserFieldInvalidItemErrorMessage" xml:space="preserve">
-    <value>Der eingegebene Name konnte keinem Benutzer zugeordnet werden. Bitte korrigieren Sie Ihre Eingabe.</value>
+    <value>Der eingegebene Name konnte keinem Benutzer zugeordnet werden. Korrigieren Sie Ihre Eingabe.</value>
   </data>
 </root>

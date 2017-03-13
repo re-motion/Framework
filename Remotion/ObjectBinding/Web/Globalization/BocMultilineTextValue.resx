@@ -40,9 +40,9 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue.RequiredValidationMessage">
-        <value>Please enter a value.</value>
+        <value>Enter a value.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue.MaxLengthValidationMessage">
-        <value>Please do not enter more than {0} characters.</value>
+        <value>Do not enter more than {0} characters.</value>
     </data>
 </root>

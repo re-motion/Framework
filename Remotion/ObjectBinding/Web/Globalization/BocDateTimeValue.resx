@@ -40,16 +40,16 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.MissingDateAndTimeErrorMessage">
-        <value>Please enter a date and a time.</value>                    
+        <value>Enter a date and a time.</value>                    
     </data>                                                             
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.MissingDateOrTimeErrorMessage">
-        <value>Please enter at least a date or a time.</value>                    
+        <value>Enter at least a date or a time.</value>                    
     </data>                                                             
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.MissingDateErrorMessage">
-        <value>Please enter a date.</value>                             
+        <value>Enter a date.</value>                             
     </data>                                                             
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.MissingTimeErrorMessage">
-        <value>Please enter a time.</value>
+        <value>Enter a time.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.InvalidDateAndTimeErrorMessage">
         <value>Unknown date and time format.</value>

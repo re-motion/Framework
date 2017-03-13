@@ -121,10 +121,10 @@
     <value>Object-based permissions</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStatefulAccessControlListControl.MissingStateCombinationsValidatorErrorMessage" xml:space="preserve">
-    <value>Please assign a status.</value>
+    <value>Assign a status.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificTenantFieldRequiredFieldErrorMessage" xml:space="preserve">
-    <value>Please select a tenant.</value>
+    <value>Select a tenant.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.DeleteAccessControlEntryButtonText" xml:space="preserve">
     <value>Delete row</value>
@@ -154,22 +154,22 @@
     <value>Add class-based ACL</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStateCombinationControl.RequiredStateCombinationValidatorErrorMessage" xml:space="preserve">
-    <value>Please select a status.</value>
+    <value>Select a status.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.StatelessAccessControlListTitle" xml:space="preserve">
     <value>Class-based permissions</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificGroupFieldRequiredFieldErrorMessage" xml:space="preserve">
-    <value>Please select a group.</value>
+    <value>Select a group.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificGroupTypeFieldRequiredFieldErrorMessage" xml:space="preserve">
-    <value>Please select a group type.</value>
+    <value>Select a group type.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificPositionFieldRequiredFieldErrorMessage" xml:space="preserve">
-    <value>Please select a position.</value>
+    <value>Select a position.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificUserFieldRequiredFieldErrorMessage" xml:space="preserve">
-    <value>Please select a user.</value>
+    <value>Select a user.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.CollapseAccessControlEntryButtonText" xml:space="preserve">
     <value>Hide details</value>
@@ -226,9 +226,9 @@
     <value>any</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificGroupFieldInvalidItemErrorMessage" xml:space="preserve">
-    <value>No group matches the entered name. Please correct your input.</value>
+    <value>No group matches the entered name. Correct your input.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificUserFieldInvalidItemErrorMessage" xml:space="preserve">
-    <value>No user matches the entered name. Please correct your input.</value>
+    <value>No user matches the entered name. Correct your input.</value>
   </data>
 </root>
