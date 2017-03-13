@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue.TrueDescription" xml:space="preserve">
-    <value>yes</value>
+    <value>Yes</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue.FalseDescription" xml:space="preserve">
-    <value>no</value>
+    <value>No</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue.NullDescription" xml:space="preserve">
-    <value>undefined</value>
+    <value>Undefined</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue.NullItemValidationMessage" xml:space="preserve">
     <value>Set the check box to "Yes" or "No".</value>

@@ -127,7 +127,7 @@
     <value>Priority</value>
   </data>
   <data name="property:SpecificAbstractRole" xml:space="preserve">
-    <value>Abstract Role</value>
+    <value>Abstract role</value>
   </data>
   <data name="property:SpecificTenant" xml:space="preserve">
     <value>Tenant</value>
@@ -139,7 +139,7 @@
     <value>Group</value>
   </data>
   <data name="property:SpecificGroupType" xml:space="preserve">
-    <value>Group Type</value>
+    <value>Group type</value>
   </data>
   <data name="property:UserCondition" xml:space="preserve">
     <value>User</value>

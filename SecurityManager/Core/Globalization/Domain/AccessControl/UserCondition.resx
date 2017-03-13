@@ -118,15 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.SecurityManager.Domain.AccessControl.UserCondition.None" xml:space="preserve">
-    <value>Any User</value>
+    <value>Any user</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.UserCondition.Owner" xml:space="preserve">
-    <value>Owner of the Object</value>
+    <value>Owner of the object</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.UserCondition.SpecificPosition" xml:space="preserve">
-    <value>User with This Position</value>
+    <value>User with this position</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.UserCondition.SpecificUser" xml:space="preserve">
-    <value>Specific User</value>
+    <value>Specific user</value>
   </data>
 </root>

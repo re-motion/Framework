@@ -118,18 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.AnyGroupWithSpecificGroupType" xml:space="preserve">
-    <value>Group Type</value>
+    <value>Group type</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.BranchOfOwningGroup" xml:space="preserve">
-    <value>Same … (Group Type)</value>
+    <value>Same … (group type)</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.None" xml:space="preserve">
-    <value>Any Group</value>
+    <value>Any group</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.OwningGroup" xml:space="preserve">
-    <value>Group of the Object</value>
+    <value>Group of the object</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.SpecificGroup" xml:space="preserve">
-    <value>Specific Group</value>
+    <value>Specific group</value>
   </data>
 </root>

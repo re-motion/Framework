@@ -136,7 +136,7 @@
     <value>The page contains invalid inputs that are marked by red exclamation points.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.GroupType" xml:space="preserve">
-    <value>Group Type</value>
+    <value>Group type</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Group" xml:space="preserve">
     <value>Group</value>
@@ -160,7 +160,7 @@
     <value>Permissions</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.OrganizationalStructure" xml:space="preserve">
-    <value>Organizational Structure</value>
+    <value>Organizational structure</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.SecurableClassDefinition" xml:space="preserve">
     <value>Classes</value>
