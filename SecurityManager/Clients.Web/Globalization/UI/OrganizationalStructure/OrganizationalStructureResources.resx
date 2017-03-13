@@ -127,7 +127,7 @@
     <value>Edit group</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupTypeControl.GroupTypeLabelText" xml:space="preserve">
-    <value>Edit group Type</value>
+    <value>Edit group type</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListForm.Title" xml:space="preserve">
     <value>Manage users</value>
