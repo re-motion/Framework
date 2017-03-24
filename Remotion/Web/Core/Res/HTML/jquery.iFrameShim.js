@@ -16,33 +16,39 @@
 // 
 (function ($)
 {
-  $.fn.iFrameShim = function (s)
+  var isActiveXSupported = false;
+  try
   {
-    if ($.browser.mozilla)
-      return this;
+    new ActiveXObject ('htmlfile'); // Test if ActiveX controls are supported.
+    isActiveXSupported = true;
+  }
+  catch (e)
+  {
+  }
 
-    var iframe = $("<iframe/>")
-        .attr('src', 'javascript:false')
-        .attr('frameborder', '0')
-        .attr('tabindex', '-1')
-        .addClass('bgiframe')
-        .css({
-            display: 'block',
-            position: 'absolute',
-            'z-index': -1,
-            top: '0px',
-            left: '0px',
-            width: '100%',
-            height: '100%',
-            filter: "filter:Alpha(Opacity='0')"
+  $.fn.iFrameShim = isActiveXSupported
+      ? function (s)
+      {
+        var iframe = $ ("<iframe/>")
+            .attr ('src', 'javascript:false')
+            .attr ('frameborder', '0')
+            .attr ('tabindex', '-1')
+            .addClass ('bgiframe')
+            .css ({
+              display : 'block',
+              position : 'absolute',
+              'z-index' : -1,
+              top : '0px',
+              left : '0px',
+              width : '100%',
+              height : '100%',
+              filter : "filter:Alpha(Opacity='0')"
+          });
+
+        return this.each (function () {
+            if ($ ('> iframe.bgiframe', this).length == 0)
+              iframe.prependTo (this);
         });
-
-    return this.each(function ()
-    {
-      if ($('> iframe.bgiframe', this).length == 0)
-        iframe.prependTo(this);
-    });
-    return this;
-  };
-
+      }
+      : function (s) { return this; };
 })(jQuery);

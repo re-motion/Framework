@@ -73,8 +73,6 @@ function SmartPage_Context(
 
   var _statusMessageWindow = null;
   var _hasUnloaded = false;
-  var _isMsIEAspnetPostBack = false;
-  var _isMsIEFormClicked = false;
 
   var _aspnetFormOnSubmit = null;
   var _aspnetDoPostBack = null;
@@ -92,7 +90,6 @@ function SmartPage_Context(
   var _trackedIDs = new Array();
   var _synchronousPostBackCommands = new Array();
 
-  var _isMsIE = !isNaN(BrowserUtility.GetIEVersion());
   var _cacheStateHasSubmitted = 'hasSubmitted';
   var _cacheStateHasLoaded = 'hasLoaded';
 
@@ -576,13 +573,6 @@ function SmartPage_Context(
         _theForm.__EVENTARGUMENT.value = '';
         _isExecutingDoPostBack = false;
       }
-
-      if (_isMsIE)
-      {
-        if (!_isMsIEFormClicked)
-          _isMsIEAspnetPostBack = true;
-        _isMsIEFormClicked = false;
-      }
     }
   };
 
@@ -627,14 +617,6 @@ function SmartPage_Context(
         }
       }
 
-      var ieVersion = BrowserUtility.GetIEVersion();
-      if (ieVersion == 8 || ieVersion == 7 || ieVersion == 6)
-      {
-        //IE8 and earlier receive two submit-events when using doPostBack
-        if (this.IsSubmitting() && _submitState.Submitter != null && _submitState.Submitter.tagName.toLowerCase() == 'button' && _submitState.Submitter == GetSubmitterOrActiveElement())
-          return false;
-      }
-
       var continueRequest = this.CheckFormState();
       if (this.IsSubmitting() && continueRequest)
       {
@@ -671,20 +653,6 @@ function SmartPage_Context(
     var postBackSettings = GetPostBackSettings();
     if (postBackSettings != null && IsSynchronousPostBackRequired(postBackSettings))
       return true;
-
-    if (_isMsIE)
-    {
-      if (_isMsIEAspnetPostBack)
-      {
-        _isMsIEFormClicked = false;
-        _isMsIEAspnetPostBack = false;
-        return void (0);
-      }
-      else
-      {
-        _isMsIEFormClicked = true;
-      }
-    }
 
     var eventSource = GetEventSource(evt);
     if (IsJavaScriptAnchor(eventSource))
@@ -862,55 +830,34 @@ function SmartPage_Context(
   //  Shows a status message in the window using a DIV
   this.ShowMessage = function (id, message)
   {
-    ArgumentUtility.CheckNotNullAndTypeIsString('id', id);
-    ArgumentUtility.CheckNotNullAndTypeIsString('message', message);
+    ArgumentUtility.CheckNotNullAndTypeIsString ('id', id);
+    ArgumentUtility.CheckNotNullAndTypeIsString ('message', message);
 
     if (_statusMessageWindow == null)
     {
-      var statusMessageWindow;
-      var statusMessageBlock;
-      if (_isMsIE)
-      {
-        statusMessageWindow = window.document.createElement('DIV');
-
-        var iframe = window.document.createElement('IFRAME');
-        iframe.src = 'javascript:false;';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.left = '0';
-        iframe.style.top = '0';
-        iframe.style.position = 'absolute';
-        iframe.style.filter = 'progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)';
-        iframe.style.border = 'none';
-        statusMessageWindow.appendChild(iframe);
-
-        statusMessageBlock = window.document.createElement('DIV');
-        statusMessageBlock.style.width = '100%';
-        statusMessageBlock.style.height = '100%';
-        statusMessageBlock.style.left = '0';
-        statusMessageBlock.style.top = '0';
-        statusMessageBlock.style.position = 'absolute';
-        statusMessageWindow.appendChild(statusMessageBlock);
-      }
-      else
-      {
-        statusMessageWindow = window.document.createElement('DIV');
-        statusMessageBlock = statusMessageWindow;
-      }
-
+      var statusMessageWindow = window.document.createElement('DIV');
       statusMessageWindow.id = id;
       statusMessageWindow.style.width = '50%';
       statusMessageWindow.style.height = '50%';
       statusMessageWindow.style.left = '25%';
       statusMessageWindow.style.top = '25%';
       statusMessageWindow.style.position = 'absolute';
-      statusMessageBlock.innerHTML =
-            '<table style="border:none; height:100%; width:100%"><tr><td style="text-align:center;">'
-          + message
-          + '</td></tr></table>';
 
-      window.document.body.appendChild(statusMessageWindow, _theForm);
-      AlignStatusMessage(statusMessageWindow);
+      var statusMessageBlock = window.document.createElement ('DIV');
+      statusMessageBlock.style.width = '100%';
+      statusMessageBlock.style.height = '100%';
+      statusMessageBlock.style.left = '0';
+      statusMessageBlock.style.top = '0';
+      statusMessageBlock.style.position = 'absolute';
+      statusMessageBlock.innerHTML =
+        '<table style="border:none; height:100%; width:100%"><tr><td style="text-align:center;">' +
+        message +
+        '</td></tr></table>';
+      statusMessageWindow.appendChild (statusMessageBlock);
+      $(statusMessageBlock).iFrameShim({ top: '0px', left: '0px', width: '100%', height: '100%' });
+
+      window.document.body.appendChild (statusMessageWindow, _theForm);
+      AlignStatusMessage (statusMessageWindow);
       _statusMessageWindow = statusMessageWindow;
     }
   };
