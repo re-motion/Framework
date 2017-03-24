@@ -41,11 +41,6 @@ div.bocListNavigator > span > input
   margin-right: 0.35em;
 }
 
-body.msie7 div.bocListNavigator > span > input
-{
-  vertical-align: middle;
-}
-
 div.bocListNavigator img
 {
   padding-left: 0.35em;
@@ -170,12 +165,6 @@ div.bocListFakeTableHead table
   border-style: none;
 }
 
-body.msie7 table.bocListTable,
-body.msie7 div.bocListFakeTableHead table
-{
-  width: 98%;
-}
-
 /*  Style applied to the table head block of the BocList's table.  */
 tbody.bocListTableBody
 {
@@ -199,16 +188,6 @@ th.bocListTitleCell
 div.bocList.hasDimensions th.bocListTitleCell
 {
   border-bottom: none;
-}
-
-body.msie7 th.bocListTitleCell *
-{
-  white-space: nowrap;
-}
-
-body.msie7 th.bocListTitleCell
-{
-  border-bottom-width: 1px;
 }
 
 th.bocListTitleCell span
@@ -244,11 +223,6 @@ td.bocListDataCell
   border-bottom: 1px solid Black;
 
   cursor: default;
-}
-
-body.msie7 td.bocListDataCell
-{
-  position: relative;
 }
 
 /*  Style applied to the cells in the BocList's not-selected odd and even data rows. */
@@ -437,17 +411,6 @@ span.bocListEditableCell .control > *
 {
   width: 100%;
   vertical-align: middle;
-}
-
-body.msie7 span.bocListEditableCell .validationErrorMarker
-{
-  margin-left: -9px;
-  position: absolute;
-}
-
-body.msie7 span.bocListEditableCell .validationErrorMarker + .control
-{
-  padding-left: 0px;
 }
 
 /* Style used to hide elements from visual representation but not screen readers. Shared from style.css */

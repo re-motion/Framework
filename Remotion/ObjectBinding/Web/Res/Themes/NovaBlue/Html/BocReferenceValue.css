@@ -22,11 +22,6 @@ span.bocReferenceValue select
   height: 1.68em;
 }
 
-body.msie10 span.bocReferenceValue select
-{
-  padding-top: 0.1em;
-}
-
 span.bocReferenceValue select.error
 {
   background-image: url('../Image/ReferenceValueErrorIndicator.gif');
@@ -131,23 +126,9 @@ span.bocReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect
   top: 0;
 }
 
-body.webkit span.bocReferenceValue span.optionsMenu span.DropDownMenuSelect,
-body.webkit span.bocReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect,
-body.webkit span.bocReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect
-{
-  height: 1.45em;
-}
-
 span.bocReferenceValue span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
 span.bocReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
 span.bocReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel
-{
-  top: 0.15em;
-}
-
-body.mozilla span.bocReferenceValue span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
-body.mozilla span.bocReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
-body.mozilla span.bocReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel
 {
   top: 0.1em;
 }

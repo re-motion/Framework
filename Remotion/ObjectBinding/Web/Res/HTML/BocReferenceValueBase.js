@@ -42,7 +42,6 @@ BocReferenceValueBase.UpdateCommand = function (oldCommand, businessObject, icon
   newCommand.append(newIcon);
 
   oldCommand.replaceWith(newCommand);
-  BocReferenceValueBase.FixLayout(newCommand);
 
   if (iconServiceUrl != null && iconContext != null)
   {
@@ -62,13 +61,11 @@ BocReferenceValueBase.UpdateCommand = function (oldCommand, businessObject, icon
         function (result, context, methodName)
         {
           BocReferenceValueBase.UpdateIconFromWebService(newCommand, newIcon, result);
-          BocReferenceValueBase.FixLayout(newCommand);
         },
         function (err, context, methodName)
         {
           onFailure(err);
           BocReferenceValueBase.ResetCommand(newCommand);
-          BocReferenceValueBase.FixLayout(newCommand);
         });
   }
 
@@ -168,16 +165,4 @@ BocReferenceValueBase.ResetCommand = function (command)
   command.removeAttr('title');
   command.removeAttr('target');
   command.removeClass('hasIcon');
-};
-
-BocReferenceValueBase.FixLayout = function (command)
-{
-  // IE7 and IE8 cannot detect a change of the '+' CSS selector condition without a forced refresh
-  if (BrowserUtility.GetIEVersion() < 9)
-  {
-    var nextSibling = command.next();
-    if (nextSibling.length == 0)
-      return;
-    nextSibling[0].className = nextSibling[0].className;
-  }
 };

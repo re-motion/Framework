@@ -107,11 +107,6 @@ span.DropDownMenuSelect.disabled a.DropDownMenuButton img
   opacity: 1;
 }
 
-body.msie7 span.DropDownMenuSelect a.DropDownMenuButton img
-{
-  height: 1.6em;
-}
-
 span.DropDownMenuSelect img
 {
   border: 0;

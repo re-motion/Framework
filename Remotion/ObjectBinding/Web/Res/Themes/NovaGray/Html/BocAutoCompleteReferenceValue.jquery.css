@@ -9,11 +9,6 @@
   max-width: 30em;
 }
 
-body.msie7 .ac_results 
-{
-  border: 1px solid Black;
-}
-
 .ac_results > div
 {
   width: 100%;
@@ -24,11 +19,6 @@ body.msie7 .ac_results
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   overflow: auto;
-}
-
-body.msie7 .ac_results > div
-{
-  border: none;
 }
 
 .ac_results ul
@@ -71,35 +61,6 @@ body.msie7 .ac_results > div
   height: 16px;
 }
 
-body.msie7 .ac_results li
-{
-  padding-top: 0.1em;
-  padding-bottom: 0.2em;
-}
-
-body.msie7 .ac_results li > div
-{
-  display: inline;
-  padding: 0;
-  padding-left: 0.2em;
-}
-
-body.msie7 .ac_results li > div:first-child
-{
-  width: auto;
-}
-
-body.msie7 .ac_results li > div:first-child img
-{
-  vertical-align: -0.2em;
-}
-
-body.msie8 .ac_results li > div:first-child img
-{
-  /* ReSharper disable once InvalidValue */
-  vertical-align: auto;
-}
-
 .ac_loading
 {
   background-image: url('../Image/AutoCompleteReferenceValueRequestInProgressIndicator.gif');
@@ -134,11 +95,6 @@ body.msie8 .ac_results li > div:first-child img
   max-width: 30em;
 }
 
-body.msie7 .ac_informationPopUp 
-{
-  border: 1px solid Black;
-}
-
 .ac_informationPopUp > div
 {
   width: 100%;
@@ -148,9 +104,4 @@ body.msie7 .ac_informationPopUp
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-}
-
-body.msie7 .ac_informationPopUp > div
-{
-  border: none;
 }

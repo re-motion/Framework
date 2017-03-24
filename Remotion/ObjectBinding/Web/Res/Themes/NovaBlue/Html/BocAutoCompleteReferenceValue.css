@@ -85,12 +85,6 @@ span.bocAutoCompleteReferenceValueButton:hover img
   background-color: #A7D9F5;
 }
 
-body.msie7 span.bocAutoCompleteReferenceValueButton img
-{
-  height: 1.3em;
-  width: 13px;
-}
-
 span.bocAutoCompleteReferenceValue a.command
 {
   display: inline-block;
@@ -188,23 +182,9 @@ span.bocAutoCompleteReferenceValue.readOnly span.optionsMenu span.DropDownMenuSe
   top: 0;
 }
 
-body.webkit span.bocAutoCompleteReferenceValue span.optionsMenu span.DropDownMenuSelect,
-body.webkit span.bocAutoCompleteReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect,
-body.webkit span.bocAutoCompleteReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect
-{
-  height: 1.45em;
-}
-
 span.bocAutoCompleteReferenceValue span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
 span.bocAutoCompleteReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
 span.bocAutoCompleteReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel
-{
-  top: 0.15em;
-}
-
-body.mozilla span.bocAutoCompleteReferenceValue span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
-body.mozilla span.bocAutoCompleteReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
-body.mozilla span.bocAutoCompleteReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel
 {
   top: 0.1em;
 }
@@ -271,13 +251,6 @@ span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
   right: 24px;
 }
 
-body.webkit span.content.separateOptionsMenu span.bocAutoCompleteReferenceValueInput,
-body.webkit span.content.withoutOptionsMenu span.bocAutoCompleteReferenceValueInput,
-body.webkit span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
-{
-  right: 22px;
-}
-
 /* embeddedOptionsMenu */
 span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
 {
@@ -288,15 +261,4 @@ span.bocAutoCompleteReferenceValueInput input
 {
   height: 1.2em;
   line-height: 1em;
-}
-
-body.msie7 span.bocAutoCompleteReferenceValueInput input,
-body.msie8 span.bocAutoCompleteReferenceValueInput input
-{
-  line-height: normal;
-}
-
-body.msie7 span.bocAutoCompleteReferenceValueInput
-{
-  top: -0.1em;
 }

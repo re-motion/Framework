@@ -409,13 +409,6 @@ function BocList_HasDimensions(bocList)
 
   var referenceHeight = 0;
   var referenceWidth = 0;
-  var ieVersion = BrowserUtility.GetIEVersion();
-  if (ieVersion == 7)
-  {
-    // height reserved for scroll bar
-    referenceHeight = 25;
-  }
-
   var tempList = $("<div/>").attr("class", $(bocList).prop("class")).css("display", "none");
 
   // Catch styles applied to pseudo-selectors starting at the first element in the DOM collection
@@ -483,10 +476,6 @@ function BocList_FixUpScrolling(bocList)
   BocList_CreateFakeTableHead(tableContainer, scrollableContainer);
 
   var resizeInterval = 50;
-  var ieVersion = BrowserUtility.GetIEVersion();
-  if (ieVersion < 9)
-    resizeInterval = 200;
-
   var resizeHandler = function ()
   {
     if (!PageUtility.Instance.IsInDom (scrollableContainer[0]))
@@ -532,14 +521,6 @@ function BocList_CreateFakeTableHead(tableContainer, scrollableContainer)
     var checkStatus = $(this).prop('checked');
     $('input[name="' + checkName + '"]').prop('checked', checkStatus);
   });
-
-  var ieVersion = BrowserUtility.GetIEVersion();
-  if (ieVersion < 9)
-  {
-    BocList_FixHeaderSize(scrollableContainer);
-    setTimeout(function () { BocList_FixHeaderSize(scrollableContainer); }, 0);
-  }
-
   // BocList_FixHeaderSize() with timeout needs to be called after setup. This is already taken care of at the call-site.
 }
 
@@ -569,12 +550,9 @@ function BocList_FixHeaderSize(scrollableContainer)
   });
 
   // apply widths to fake header
-  var ieVersion = BrowserUtility.GetIEVersion();
   fakeTableHeadRowChildren.width(function (index, itemWidth)
   {
     var width = realTableHeadCellWidths[index];
-    if (ieVersion == 7)
-      width = width - 1;
     return width;
   });
 

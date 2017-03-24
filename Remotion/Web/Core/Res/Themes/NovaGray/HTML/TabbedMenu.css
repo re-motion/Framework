@@ -233,11 +233,6 @@ div.tabbedSubMenu div.tabStripTabsPane.empty
   padding-top: 1.7em;
 }
 
-body.msie7 div.tabbedSubMenu div.tabStripTabsPane.empty
-{
-  padding-top: 0.4em;
-}
-
 div.tabbedSubMenu div.clearingPane
 {
   clear: both;

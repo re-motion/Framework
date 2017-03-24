@@ -28,12 +28,6 @@ span.bocDateValue.readOnly
   height: inherit;
 }
 
-body.msie7 span.bocDateTimeValue.readOnly,
-body.msie7 span.bocDateValue.readOnly
-{
-  height: auto;
-}
-
 span.bocDateTimeValue.disabled,
 span.bocDateValue.disabled
 {
@@ -141,24 +135,4 @@ span.bocTimeInputWrapper input
 {
   height: 1.2em;
   line-height: 1em;
-}
-
-body.msie7 span.bocDateInputWrapper input,
-body.msie7 span.bocTimeInputWrapper input,
-body.msie8 span.bocDateInputWrapper input,
-body.msie8 span.bocTimeInputWrapper input
-{
-  line-height: normal;
-}
-
-body.msie7 span.bocDate24Hours,
-body.msie7 span.bocDate12Hours,
-body.msie7 span.bocDate24HoursWithSeconds,
-body.msie7 span.bocDate12HoursWithSeconds,
-body.msie7 span.bocTime24Hours,
-body.msie7 span.bocTime12Hours,
-body.msie7 span.bocTime24HoursWithSeconds,
-body.msie7 span.bocTime12HoursWithSeconds
-{
-  top: -0.1em;
 }

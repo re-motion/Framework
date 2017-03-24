@@ -36,13 +36,3 @@
   padding: 0px;
   vertical-align: middle;
 }
-
-body.msie7 .bocCheckBox img
-{
-  margin-left: 4px;
-}
-
-body.msie7 .bocCheckBox input + span
-{
-  vertical-align: 0.1em;
-}

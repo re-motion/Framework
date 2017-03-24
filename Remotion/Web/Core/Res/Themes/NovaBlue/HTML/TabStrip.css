@@ -18,7 +18,7 @@
   margin: 0;
   padding: 0px;
   list-style: none;
-  width: 100%; 
+  width: auto;
 }
 
 *.tabStripTabsPane ul li
@@ -69,12 +69,13 @@
 /* Content area of the tab */
 *.tabStripTabsPane *.anchorBody
 {
-  padding-top: 2pt; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
-  padding-bottom: 2pt; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
-  padding-left: 2pt;
-  padding-right: 2pt;
-  vertical-align: middle;
+  padding-top: 0.2em; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
+  padding-bottom: 0.2em; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+  vertical-align: -0.3em;
   white-space: nowrap;
+  display: block;
 }
 
 *.tabStripTabsPane *.anchorBody img
@@ -92,7 +93,8 @@
 {
   float: left;
   width: 0.3em; /* Value must also be set in the Non-IE browsers section as left-margin of the tab. */
-  margin: 0px;
+  margin: 0;
+  display: inline-block;
 }
 
 *.tabStripTab,
@@ -102,39 +104,22 @@
   display: inline-block;
 }
 
-*.tabStripTabSeparator
-{
-  display: inline-block;
-}
-
 *.tabStripTabSeparator span,
 *.tabStripTabsPane a
 {
   display: block;
 }
 
-*.tabStripTabsPane *.anchorBody
+*.tabStripTabSeparator span
 {
-  display: block;
+  padding-top: 1px; /* The padding used for the content span. */
+  padding-bottom: 1px; /* The padding used for the content span. */
 }
 
 *.tabStripTabsPane *.last
 {
   display: block;
   clear: left;
-}
-
-*.tabStripTabsPane ul
-{
-  width: auto;
-}
-
-body.mozilla  *.tabStripTabSeparator span,
-body.webkit   *.tabStripTabSeparator span,
-body.opera    *.tabStripTabSeparator span
-{
-  padding-top: 1px; /* The padding used for the content span. */
-  padding-bottom: 1px; /* The padding used for the content span. */
 }
 
 *.tabStrip div.clearingPane

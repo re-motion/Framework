@@ -25,9 +25,10 @@ StyleUtility.CreateBorderSpans = function (selector)
 StyleUtility.AddBrowserSwitch = function ()
 {
   var browser;
-  if ($.browser.msie)
+  var majorIEVersion = BrowserUtility.GetIEVersion();
+  if (!isNaN (majorIEVersion))
   {
-    var majorVersion = BrowserUtility.GetIEVersion();
+    var majorVersion = majorIEVersion;
     if (majorVersion < 9)
       browser = 'msie' + majorVersion;
     else if (majorVersion < 11)
@@ -35,15 +36,30 @@ StyleUtility.AddBrowserSwitch = function ()
     else
       browser = 'msie';
   }
-  else if ($.browser.mozilla)
-    browser = 'mozilla';
-  else if ($.browser.webkit)
+  else if (navigator.appVersion.indexOf ('Edge') !== -1)
+  {
+    browser = 'edge';
+  }
+  else if (navigator.appVersion.indexOf ('Chrome') !== -1)
+  {
+    browser = 'blink';
+  }
+  else if (navigator.appVersion.indexOf ('OPR') !== -1)
+  {
+    browser = 'blink';
+  }
+  else if (navigator.appVersion.indexOf('WebKit') !== -1)
+  {
     browser = 'webkit';
-  else if ($.browser.opera)
-    browser = 'opera';
+  }
+  else if (navigator.appName === 'Netscape')
+  {
+    browser = 'mozilla';
+  }
   else
+  {
     browser = 'browserUnknown';
-
+  }
   StyleUtility.AddPlatformSwitch();
 
   if (!$ ('body').hasClass (browser))
@@ -53,14 +69,14 @@ StyleUtility.AddBrowserSwitch = function ()
 StyleUtility.AddPlatformSwitch = function ()
 {
   var platform;
-  if (navigator.appVersion.indexOf ("Win") != -1)
-    platform = "win";
-  else if (navigator.appVersion.indexOf ("Mac") != -1)
-    platform = "mac";
-  else if (navigator.appVersion.indexOf ("X11") != -1)
-    platform = "x11";
+  if (navigator.appVersion.indexOf ('Win') !== -1)
+    platform = 'win';
+  else if (navigator.appVersion.indexOf ('Mac') !== -1)
+    platform = 'mac';
+  else if (navigator.appVersion.indexOf ('X11') !== -1)
+    platform = 'x11';
   else
-    platform = "platformUnknown";
+    platform = 'platformUnknown';
 
   if (!$ ('body').hasClass (platform))
     $ ('body').addClass (platform);

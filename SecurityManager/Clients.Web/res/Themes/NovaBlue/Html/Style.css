@@ -20,11 +20,6 @@ form
   width: 100%;
 }
 
-body.msie7 div.content 
-{
-  width: auto !important;
-}
-
 div#ErrorContainer
 {
   color: Red;
@@ -102,11 +97,6 @@ td.stateCombinationsButtons
   vertical-align: top;
 }
 
-body.msie7 td.stateCombinationsButtons button.webButton
-{
-  max-width: 96%;
-}
-
 td.accessControlEntriesButtons, 
 td.accessControlEntriesContainer
 {
@@ -128,13 +118,6 @@ td.accessControlEntriesButtons
   padding-right: 1em;
 }
 
-body.msie7 td.accessControlEntriesButtons,
-body.msie8 td.accessControlEntriesButtons,
-body.msie9 td.accessControlEntriesButtons
-{
-  padding-right: 0.66em;
-}
-
 table.accessControlEntriesTable
 {
   border-collapse: collapse;
@@ -145,18 +128,6 @@ table.accessControlEntriesTable
 body table.accessControlEntriesTable
 {
   width: calc(100% - 1em);
-}
-
-body.msie7 table.accessControlEntriesTable,
-body.msie8 table.accessControlEntriesTable,
-body.msie9 table.accessControlEntriesTable
-{
-  width: auto;
-}
-
-body.msie9 table.accessControlEntriesTable
-{
-  margin-right: 0.66em;
 }
 
 table.accessControlEntriesTable th.titleCellHorizontal, 
@@ -194,14 +165,6 @@ table.accessControlEntriesTable th.titleCellVertical div
   transform-origin: 50% 25%;
   max-width: 1.4em !important;
   white-space: nowrap;
-}
-
-body.msie7 table.accessControlEntriesTable th.titleCellVertical div,
-body.msie8 table.accessControlEntriesTable th.titleCellVertical div
-{
-  padding-top: 0.25em;
-  writing-mode: tb-rl;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
 }
 
 table.accessControlEntriesTable th.titleCellVertical 

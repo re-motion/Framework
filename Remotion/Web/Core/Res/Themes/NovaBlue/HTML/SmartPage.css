@@ -109,38 +109,7 @@ html.SmartPageBusy a:focus
   filter: grayscale(1);
   filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40), progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
 }
-
-html.SmartPageBusy body.msie  .SmartPageSubmitter *,
-html.SmartPageBusy body.msie  button:focus *,
-html.SmartPageBusy body.msie  a:focus *,
-html.SmartPageBusy body.msie8 .SmartPageSubmitter *,
-html.SmartPageBusy body.msie8 button:focus *,
-html.SmartPageBusy body.msie8 a:focus *,
-html.SmartPageBusy body.msie7 .SmartPageSubmitter *,
-html.SmartPageBusy body.msie7 button:focus *,
-html.SmartPageBusy body.msie7 a:focus *
-{
-  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.66), progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
-}
-
-html.SmartPageBusy body.msie .SmartPageSubmitter,
-html.SmartPageBusy body.msie .SmartPageSubmitter *,
-html.SmartPageBusy body.msie button:focus,
-html.SmartPageBusy body.msie button:focus *,
-html.SmartPageBusy body.msie input:focus,
-html.SmartPageBusy body.msie select:focus,
-html.SmartPageBusy body.msie a:focus,
-html.SmartPageBusy body.msie a:focus *
-{
-  /* IE9 renders artifacts when combining opacity and filter * /
-  opacity: 1;
-}
-
-html.SmartPageBusy body.msie8 a.SmartPageSubmitter,
-html.SmartPageBusy body.msie7 a.SmartPageSubmitter
-{
-  color: gray !important;
-}*/
+*/
 
 /*html.SmartPageBusy,
 html.SmartPageBusy *

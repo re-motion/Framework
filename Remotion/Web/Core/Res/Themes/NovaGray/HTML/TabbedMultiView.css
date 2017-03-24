@@ -25,12 +25,6 @@ div.tabbedMultiView > div.wrapper
 div.tabbedMultiViewActiveView
 {
   height: 80%;
-}
-
-body.mozilla  div.tabbedMultiViewActiveView,
-body.webkit   div.tabbedMultiViewActiveView,
-body.opera    div.tabbedMultiViewActiveView
-{
   width: inherit;
 }
 
@@ -51,12 +45,6 @@ div.tabbedMultiViewActiveView > div.contentBorder > div.content
   top: 0;
   width: 100%;
   height: 100%;
-}
-
-body.msie7 div.tabbedMultiViewActiveView > div.contentBorder > div.content
-{
-  width: 98%;
-  height: 98%;
 }
 
 /* Applied to the top section of the multi view. Height cannot be provided in percent. */
@@ -84,11 +72,6 @@ div.tabbedMultiViewBottomControls
   bottom: 0.5em;
 }
 
-body.opera div.tabbedMultiViewBottomControls
-{
-  border: solid 0 transparent;
-}
-
 div.tabbedMultiViewBottomControls.empty
 {
   height: 1em;
@@ -104,10 +87,6 @@ div.tabbedMultiViewTabStrip
   padding: 0;
   background-color: White;
   margin: 0;
-}
-
-body.mozilla div.tabbedMultiViewTabStrip 
-{ 
   margin-top: 0.1em;
 }
 
@@ -191,20 +170,9 @@ div.tabbedMultiViewTabStrip a span.anchorBody:first-child::before
   vertical-align: text-bottom;
 }
 
-.msie div.tabbedMultiViewTabStrip a span.anchorBody
-{
-  padding-top: 0.25em;
-  padding-bottom: 0.15em;
-}
-
 div.tabbedMultiViewTabStrip a span.anchorBody img
 {
-  vertical-align: top;
-}
-
-.msie div.tabbedMultiViewTabStrip a span.anchorBody img
-{
-  vertical-align: text-top;
+  vertical-align: -0.25em;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTabSeparator span

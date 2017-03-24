@@ -25,12 +25,6 @@ div.singleView > div.wrapper
 div.singleViewView
 {
   height: 80%;
-}
-
-body.mozilla  div.singleViewView,
-body.webkit   div.singleViewView,
-body.opera    div.singleViewView
-{
   width: inherit;
 }
 
@@ -51,12 +45,6 @@ div.singleViewView > div.contentBorder > div.content
   top: 0;
   width: 100%;
   height: 100%;
-}
-
-body.msie7 div.singleViewView > div.contentBorder > div.content
-{
-  width: 98%;
-  height: 98%;
 }
 
 /* Applied to the top section of the multi view. Height cannot be provided in percent. */
@@ -82,11 +70,6 @@ div.singleViewBottomControls
   left: 0.5em;
   right: 0.5em;
   bottom: 0.5em;
-}
-
-body.opera div.singleViewBottomControls
-{
-  border: solid 0 transparent;
 }
 
 div.singleViewBottomControls.empty

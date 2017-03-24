@@ -172,19 +172,19 @@ function BrowserUtility ()
 
 BrowserUtility.GetIEVersion = function ()
 {
-  if ($.browser.msie)
+  var isIE8OrLater = TypeUtility.IsDefined (window.document.documentMode);
+  if (isIE8OrLater)
   {
-    var majorVersion;
-    if (TypeUtility.IsDefined (window.document.documentMode))
-      majorVersion = parseInt (window.document.documentMode);
-    else
-      majorVersion = parseInt ($.browser.version);
-
+    var majorVersion = parseInt (window.document.documentMode);
     return majorVersion;
+  }
+  else if (navigator.appVersion.indexOf ('MSIE 7.0;') !== -1)
+  {
+    return 7;
   }
   else
   {
-    return NaN;
+    return Number.NaN;
   }
 };
 

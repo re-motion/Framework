@@ -44,6 +44,7 @@ div.tabbedMainMenu span.tabStripTabWrapper
 {
   padding-top: 0.3em;
   padding-right: 1px;
+  margin-bottom: 0; /* Removes an offset between the main menu and the sub menu */
 }
 
 div.tabbedMainMenu span.tabStripTabSeparator
@@ -120,13 +121,6 @@ div.tabbedMainMenu li span.anchorBody
   padding-bottom: 0.3em;
   padding-left: 0.6em;
   padding-right: 0.6em;
-}
-
-body.mozilla  div.tabbedMainMenu span.tabStripTabWrapper,
-body.webkit   div.tabbedMainMenu span.tabStripTabWrapper,
-body.opera    div.tabbedMainMenu span.tabStripTabWrapper
-{
-  margin-bottom: 0px; /* Removes an offset between the main menu and the sub menu */
 }
 
 div.tabbedMainMenu div.clearingPane
@@ -217,11 +211,6 @@ div.tabbedSubMenu span.anchorBody
 div.tabbedSubMenu div.tabStripTabsPane.empty
 {
   padding-top: 1.7em;
-}
-
-body.msie7 div.tabbedSubMenu div.tabStripTabsPane.empty
-{
-  padding-top: 0.4em;
 }
 
 div.tabbedSubMenu div.clearingPane

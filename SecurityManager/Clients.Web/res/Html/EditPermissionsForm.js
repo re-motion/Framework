@@ -17,31 +17,27 @@
 //
 jQuery(document).ready(function()
 {
-  if (!$('body').is('.msie7') && !$('body').is('.msie8')) 
+  var maximumLength = 0;
+  jQuery('.header').each(function(i) 
   {
-    var maximumLength = 0;
-    var headerRow = '';
-    jQuery('.header').each(function(i) 
+    var headerRow = jQuery(this);
+    headerRow.children('.titleCellVertical').each(function() 
     {
-      var headerRow = jQuery(this);
-      headerRow.children('.titleCellVertical').each(function() 
-      {
-        var currentLength = jQuery(this).text().length;
-        if (currentLength > maximumLength) 
-          maximumLength = currentLength;
-      });
+      var currentLength = jQuery(this).text().length;
+      if (currentLength > maximumLength) 
+        maximumLength = currentLength;
     });
+  });
 
-    if (maximumLength > 0) 
-    {
-      var headerHeight = 1 + maximumLength * 0.5 + 'em';
-      var styleElement = document.createElement('style');
-      var textStyle = 'th.header, th.titleCellVertical, tr.header, tr.titleCellVertical {height: ' + headerHeight + ' !important;}';
-      styleElement.setAttribute("type", "text/css");
-      var textElement = document.createTextNode(textStyle);
-      styleElement.appendChild(textElement);
-      var headElement = document.getElementsByTagName('head')[0];
-      headElement.appendChild(styleElement);
-    }
+  if (maximumLength > 0) 
+  {
+    var headerHeight = 1 + maximumLength * 0.5 + 'em';
+    var styleElement = document.createElement('style');
+    var textStyle = 'th.header, th.titleCellVertical, tr.header, tr.titleCellVertical {height: ' + headerHeight + ' !important;}';
+    styleElement.setAttribute("type", "text/css");
+    var textElement = document.createTextNode(textStyle);
+    styleElement.appendChild(textElement);
+    var headElement = document.getElementsByTagName('head')[0];
+    headElement.appendChild(styleElement);
   }
 });

@@ -1216,19 +1216,6 @@
                     else {
                         list.scrollTop(0);
                     }
-                    if (BrowserUtility.GetIEVersion() > 0 && typeof document.body.style.maxHeight === "undefined") {
-                        var listHeight = 0;
-                        listItems.each(function() {
-                            listHeight += this.offsetHeight;
-                        });
-                        var scrollbarsVisible = listHeight > options.scrollHeight;
-                        list.css('height', scrollbarsVisible ? options.scrollHeight : listHeight);
-                        if (!scrollbarsVisible) {
-                            // IE doesn't recalculate width when scrollbar disappears
-                            listItems.width(list.width() - parseInt(listItems.css("padding-left")) - parseInt(listItems.css("padding-right")));
-                        }
-                    }
-
                 }
 
             },
@@ -1396,12 +1383,6 @@
       if (!isVisibe)
       {
         contentWidth = Math.max(0, Math.max(popUpDiv.children().map(function () { return this.offsetWidth + this.offsetLeft; }).get()));
-        if (BrowserUtility.GetIEVersion() == 7)
-        {
-          // IE7 has problem with getting the content width
-          contentWidth = 0;
-        }
-
         popUp.data('popUpContentWidth', contentWidth);
       }
 
@@ -1467,12 +1448,5 @@
 
       popUpDiv[0].scrollLeft = scrollLeft;
       popUpDiv[0].scrollTop = scrollTop;
-
-      if (BrowserUtility.GetIEVersion() == 8)
-      {
-        //IE8 shows scrollbar because of 1px margin error
-        var overflowY = (requiredHeight > popUpInnerHeight && requiredHeight < maxHeightSafe) ? 'hidden' : '';
-        popUpDiv.css('overflow-y', overflowY);
-      }
     };
 })(jQuery);
