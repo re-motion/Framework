@@ -7,9 +7,33 @@
            feature="_Shared"
            layer="_References"/>
 
+  <package id="Castle.Core"
+           feature="Castle.Core"
+           layer="Core"/>
+
+  <package id="CommonServiceLocator"
+           feature="CommonServiceLocator"
+           layer="Core"/>
+
+  <package id="Coypu"
+           feature="Remotion.Web.Testing"
+           layer="Core"/>
+
   <package id="FluentValidation-Signed"
            feature="FluentValidation"
-           layer="_References"/>
+           layer="Core"/>
+
+  <package id="IronPython"
+           feature="IronPython"
+           layer="Core"/>
+
+  <package id="Selenium.Support"
+           feature="Remotion.Web.Testing"
+           layer="Core"/>
+
+  <package id="Selenium.WebDriver"
+           feature="Remotion.Web.Testing"
+           layer="Core"/>
 
   <package id="Remotion.Linq"
            feature="Remotion.Data"
