@@ -4,8 +4,8 @@
     xmlns="http://rubicon.eu/Schemas/Packaging/NuGet/FacetManifest/1.0">
 
   <package id="log4net"
-           feature="_Shared"
-           layer="_References"/>
+           feature="log4net"
+           layer="Core"/>
 
   <package id="Castle.Core"
            feature="Castle.Core"
@@ -33,6 +33,10 @@
 
   <package id="Selenium.WebDriver"
            feature="Remotion.Web.Testing"
+           layer="Core"/>
+
+  <package id="SharpZipLib"
+           feature="SharpZipLib"
            layer="Core"/>
 
   <package id="Remotion.Linq"
