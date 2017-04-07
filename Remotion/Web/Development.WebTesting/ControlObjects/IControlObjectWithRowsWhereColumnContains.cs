@@ -23,7 +23,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   /// Interface for all <see cref="ControlObject"/> implementations representing a collection of rows with cells, e.g. a BOC list. The interface
   /// allows to query a row by the contents of a certain cell, e.g. "give me the row of the list where the column 'xyz' contains the text 'abc'".
   /// </summary>
-  public interface IControlObjectWithRowsWhereColumnContains<TRowControlObject>
+  public interface IControlObjectWithRowsWhereColumnContains<out TRowControlObject>
       where TRowControlObject : ControlObject
   {
     /// <summary>
@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   /// <summary>
   /// Fluent interface for completing the <see cref="IControlObjectWithRowsWhereColumnContains{TCellControlObject}.GetRowWhere()"/> call.
   /// </summary>
-  public interface IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>
+  public interface IFluentControlObjectWithRowsWhereColumnContains<out TRowControlObject>
       where TRowControlObject : ControlObject
   {
     /// <summary>

@@ -24,7 +24,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   /// <summary>
   /// Control object selector for <see cref="BocListControlObject"/>.
   /// </summary>
-  public class BocListSelector : BocControlSelectorBase<BocListControlObject>
+  public class BocListSelector : BocListSelector<BocListControlObject>
+  {
+  }
+
+
+  /// <summary>
+  /// Control object selector for <see cref="BocListControlObject"/>.
+  /// </summary>
+  public class BocListSelector<TBocListControlObject> : BocControlSelectorBase<TBocListControlObject>
+      where TBocListControlObject : BocListControlObject
   {
     public BocListSelector ()
         : base ("BocList")
@@ -32,14 +41,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     }
 
     /// <inheritdoc/>
-    protected override BocListControlObject CreateControlObject (
+    protected override TBocListControlObject CreateControlObject (
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
       ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
       ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
 
-      return new BocListControlObject (newControlObjectContext);
+      return (TBocListControlObject) Activator.CreateInstance (typeof (TBocListControlObject), newControlObjectContext);
     }
   }
 }

@@ -105,6 +105,27 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
               .ToList());
     }
 
+    /// <inheritdoc />
+    public abstract int GetCurrentPage ();
+
+    /// <inheritdoc />
+    public abstract int GetNumberOfPages ();
+
+    /// <inheritdoc />
+    public abstract void GoToSpecificPage (int page);
+
+    /// <inheritdoc />
+    public abstract void GoToFirstPage ();
+
+    /// <inheritdoc />
+    public abstract void GoToPreviousPage ();
+
+    /// <inheritdoc />
+    public abstract void GoToNextPage ();
+
+    /// <inheritdoc />
+    public abstract void GoToLastPage ();
+
     /// <summary>
     /// Returns a <see cref="IBocListRowControlObjectHostAccessor"/> for accessing the
     /// <see cref="BocListControlObjectBase{TRowControlObject,TCellControlObject}"/> from a row.
@@ -150,7 +171,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public IReadOnlyList<TRowControlObject> GetDisplayedRows ()
     {
-      var cssSelector = string.Format (".bocListTable .bocListTableBody .bocListDataRow");
+      var cssSelector = ".bocListTable .bocListTableBody .bocListDataRow";
       return RetryUntilTimeout.Run (
           () => Scope.FindAllCss (cssSelector).Select (rowScope => CreateRowControlObject (GetHtmlID(), rowScope, _accessor)).ToList());
     }
