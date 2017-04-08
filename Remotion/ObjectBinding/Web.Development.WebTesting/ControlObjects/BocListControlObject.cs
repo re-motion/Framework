@@ -30,83 +30,78 @@ using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 {
+  public class BocListControlObject : BocListControlObject<BocListRowControlObject>
+  {
+    public BocListControlObject ([NotNull] ControlObjectContext context)
+        : base(context)
+    {
+    }
+  }
+
   /// <summary>
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocList"/>.
   /// </summary>
-  public class BocListControlObject
-      : BocListControlObjectBase<BocListRowControlObject, BocListCellControlObject>,
-          IControlObjectWithRowsWhereColumnContains<BocListRowControlObject>,
-          IFluentControlObjectWithRowsWhereColumnContains<BocListRowControlObject>,
+  public class BocListControlObject<TRowControlObject>
+      : BocListControlObjectBase<TRowControlObject, BocListCellControlObject>,
+          IControlObjectWithRowsWhereColumnContains<TRowControlObject>,
+          IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>,
           IControlObjectWithCellsInRowsWhereColumnContains<BocListCellControlObject>,
           IFluentControlObjectWithCellsInRowsWhereColumnContains<BocListCellControlObject>
+      where TRowControlObject : BocListRowControlObject
   {
     public BocListControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
     }
 
-    /// <summary>
-    /// Returns the current page number.
-    /// </summary>
-    public int GetCurrentPage ()
+    /// <inheritdoc/>
+    public override int GetCurrentPage ()
     {
       var currentPageTextInputScope = GetCurrentPageTextInputScope();
       return int.Parse (currentPageTextInputScope.Value);
     }
 
-    /// <summary>
-    /// Returns list's the number of pages.
-    /// </summary>
-    public int GetNumberOfPages ()
+    /// <inheritdoc/>
+    public override int GetNumberOfPages ()
     {
       var navigatorDivScope = Scope.FindCss (".bocListNavigator");
       return int.Parse (navigatorDivScope[DiagnosticMetadataAttributesForObjectBinding.BocListNumberOfPages]);
     }
 
-    /// <summary>
-    /// Switches to a specific <paramref name="page"/>.
-    /// </summary>
-    public void GoToSpecificPage (int page)
+    /// <inheritdoc/>
+    public override void GoToSpecificPage (int page)
     {
       var currentPageTextInputScope = GetCurrentPageTextInputScope();
       new FillWithAction (this, currentPageTextInputScope, Keys.Backspace + page, FinishInput.WithTab).Execute (
           Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
-    /// <summary>
-    /// Switches to the first list apge.
-    /// </summary>
-    public void GoToFirstPage ()
+    /// <inheritdoc/>
+    public override void GoToFirstPage ()
     {
       var firstPageLinkScope = Scope.FindChild ("Navigation_First");
       new ClickAction (this, firstPageLinkScope).Execute (
           Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
-    /// <summary>
-    /// Switches to the previous list page.
-    /// </summary>
-    public void GoToPreviousPage ()
+    /// <inheritdoc/>
+    public override void GoToPreviousPage ()
     {
       var previousPageLinkScope = Scope.FindChild ("Navigation_Previous");
       new ClickAction (this, previousPageLinkScope).Execute (
           Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
-    /// <summary>
-    /// Switches to the next list page.
-    /// </summary>
-    public void GoToNextPage ()
+    /// <inheritdoc/>
+    public override void GoToNextPage ()
     {
       var nextPageLinkScope = Scope.FindChild ("Navigation_Next");
       new ClickAction (this, nextPageLinkScope).Execute (
           Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
-    /// <summary>
-    /// Switches to the last list page.
-    /// </summary>
-    public void GoToLastPage ()
+    /// <inheritdoc/>
+    public override void GoToLastPage ()
     {
       var lastPageLinkScope = Scope.FindChild ("Navigation_Last");
       new ClickAction (this, lastPageLinkScope).Execute (
@@ -114,13 +109,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public IFluentControlObjectWithRowsWhereColumnContains<BocListRowControlObject> GetRowWhere ()
+    public IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject> GetRowWhere ()
     {
       return this;
     }
 
     /// <inheritdoc/>
-    public BocListRowControlObject GetRowWhere (string columnItemID, string containsCellText)
+    public TRowControlObject GetRowWhere (string columnItemID, string containsCellText)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
       ArgumentUtility.CheckNotNull ("containsCellText", containsCellText);
@@ -129,7 +124,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    BocListRowControlObject IFluentControlObjectWithRowsWhereColumnContains<BocListRowControlObject>.ColumnWithItemIDContains (
+    TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithItemIDContains (
         string itemID,
         string containsCellText)
     {
@@ -141,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    BocListRowControlObject IFluentControlObjectWithRowsWhereColumnContains<BocListRowControlObject>.ColumnWithIndexContains (
+    TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithIndexContains (
         int index,
         string containsCellText)
     {
@@ -152,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    BocListRowControlObject IFluentControlObjectWithRowsWhereColumnContains<BocListRowControlObject>.ColumnWithTitleContainsExactly (
+    TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithTitleContainsExactly (
         string title,
         string containsCellText)
     {
@@ -164,7 +159,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    BocListRowControlObject IFluentControlObjectWithRowsWhereColumnContains<BocListRowControlObject>.ColumnWithTitleContains (
+    TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithTitleContains (
         string title,
         string containsCellText)
     {
@@ -175,7 +170,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return GetRowFromCell (cell);
     }
 
-    private BocListRowControlObject GetRowFromCell (BocListCellControlObject cell)
+    private TRowControlObject GetRowFromCell (BocListCellControlObject cell)
     {
       var rowScope = cell.Scope.FindXPath ("..");
       return CreateRowControlObject (GetHtmlID(), rowScope, Accessor);
@@ -244,7 +239,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     private BocListCellControlObject GetCellWhereColumnContainsExactly (
-        BocListColumnDefinition<BocListRowControlObject, BocListCellControlObject> column,
+        BocListColumnDefinition<TRowControlObject, BocListCellControlObject> column,
         string containsCellText)
     {
       if (column.HasDiagnosticMetadata)
@@ -270,7 +265,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     private BocListCellControlObject GetCellWhereColumnContains (
-        BocListColumnDefinition<BocListRowControlObject, BocListCellControlObject> column,
+        BocListColumnDefinition<TRowControlObject, BocListCellControlObject> column,
         string containsCellText)
     {
       if (column.HasDiagnosticMetadata)
@@ -374,7 +369,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    protected override BocListRowControlObject CreateRowControlObject (
+    protected override TRowControlObject CreateRowControlObject (
         string id,
         ElementScope rowScope,
         IBocListRowControlObjectHostAccessor accessor)
@@ -383,7 +378,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("rowScope", rowScope);
       ArgumentUtility.CheckNotNull ("accessor", accessor);
 
-      return new BocListRowControlObject (accessor, Context.CloneForControl (rowScope));
+      return (TRowControlObject) Activator.CreateInstance (typeof (TRowControlObject), accessor, Context.CloneForControl (rowScope));
     }
 
     /// <inheritdoc/>
