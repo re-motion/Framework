@@ -4,8 +4,8 @@
     xmlns="http://rubicon.eu/Schemas/Packaging/NuGet/FacetManifest/1.0">
 
   <package id="log4net"
-           feature="log4net"
-           layer="Core"/>
+           feature="_References"
+           layer="_Shared"/>
 
   <package id="Castle.Core"
            feature="Castle.Core"
