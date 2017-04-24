@@ -52,10 +52,19 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Remotion.WindowFinder, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Remotion.WindowFinder.2.0.0-alpha-001\lib\net45\Remotion.WindowFinder.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.WindowFinder.Windows, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Remotion.WindowFinder.Windows.2.0.0-alpha-001\lib\net45\Remotion.WindowFinder.Windows.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="WebDriver, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -70,6 +79,23 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="DownloadInfrastructure\Chrome\ChromeNamedExpectedFileNameFinderStrategy.cs" />
+    <Compile Include="DownloadInfrastructure\Chrome\ChromeUnknownFileNameFinderStrategy.cs" />
+    <Compile Include="DownloadInfrastructure\DownloadHelperBase.cs" />
+    <Compile Include="DownloadInfrastructure\Chrome\ChromeDownloadHelper.cs" />
+    <Compile Include="DownloadInfrastructure\DownloadedFile.cs" />
+    <Compile Include="DownloadInfrastructure\DownloadedFileFinder.cs" />
+    <Compile Include="DownloadInfrastructure\IDownloadedFile.cs" />
+    <Compile Include="DownloadInfrastructure\IDownloadFileFinderStrategy.cs" />
+    <Compile Include="DownloadInfrastructure\IDownloadHelper.cs" />
+    <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerDownloadHelper.cs" />
+    <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerNativeWindowHandler.cs" />
+    <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerUnknownFileNameFileFinderStrategy.cs" />
+    <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerExpectedFileNameFinderStrategy.cs" />
+    <Compile Include="DownloadInfrastructure\InternetExplorer\Win32WindowSupport\IWin32WindowsNativeMethodsExtended.cs" />
+    <Compile Include="DownloadInfrastructure\InternetExplorer\Win32WindowSupport\Win32WindowsNativeMethodsExtended.cs" />
+    <Compile Include="DownloadInfrastructure\PartialFileState.cs" />
+    <Compile Include="Utilities\DownloadResultNotFoundException.cs" />
     <Compile Include="WebDriver\Factories\Chrome\ChromeBrowserFactory.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeConfiguration.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeExecutable.cs" />
@@ -171,7 +197,6 @@
     <Compile Include="CoypuElementScopeSelectExtensions.cs" />
     <Compile Include="CoypuElementScopeClickAndFocusExtensions.cs" />
     <Compile Include="CoypuElementScopeFillInWithAndSendKeysExtensions.cs" />
-    <Compile Include="DownloadHelper.cs" />
     <Compile Include="FinishInputWithAction.cs" />
     <Compile Include="FluentControlSelection\IFluentControlSelector.cs" />
     <Compile Include="FluentControlSelection\FirstControlSelectionCommandBuilder.cs" />

@@ -72,11 +72,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       return _webTestHelper.CreateInitialPageObject<TPageObject> (_webTestHelper.MainBrowserSession);
     }
 
-    protected DownloadHelper NewDownloadHelper (string fileName)
-    {
-      return _webTestHelper.NewDownloadHelper (fileName);
-    }
-
     private static void KillAnyExistingWindowsErrorReportingProcesses ()
     {
       ProcessUtils.KillAllProcessesWithName ("WerFault");

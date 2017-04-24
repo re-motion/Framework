@@ -13,21 +13,57 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
     public partial class FileDownloadTest {
         
         /// <summary>
-        /// DownloadButton control.
+        /// DownloadPostbackButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button DownloadButton;
+        protected global::System.Web.UI.WebControls.Button DownloadPostbackButton;
         
         /// <summary>
-        /// DownloadXmlButton control.
+        /// TargetBlankAnchor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button DownloadXmlButton;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor TargetBlankAnchor;
+        
+        /// <summary>
+        /// DownloadXmlFile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor DownloadXmlFile;
+        
+        /// <summary>
+        /// DownloadTxtReplaceSiteButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button DownloadTxtReplaceSiteButton;
+        
+        /// <summary>
+        /// TargetSelfAnchor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor TargetSelfAnchor;
+        
+        /// <summary>
+        /// DownloadWith5SecondTimeout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor DownloadWith5SecondTimeout;
     }
 }

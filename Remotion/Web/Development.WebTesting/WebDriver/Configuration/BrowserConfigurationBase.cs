@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
@@ -49,6 +49,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
 
     public abstract IBrowserFactory BrowserFactory { get; }
     
+    public abstract IDownloadHelper DownloadHelper { get; }
+
     public string BrowserName
     {
       get { return _browserName; }

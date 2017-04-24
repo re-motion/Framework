@@ -25,8 +25,8 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     {
       base.OnInit (e);
 
-      DownloadButton.Click += DownloadButtonOnClick;
-      DownloadXmlButton.Click += DownloadXmlButtonOnClick;
+      DownloadTxtReplaceSiteButton.Click += DownloadButtonOnClick;
+      DownloadPostbackButton.Click += DownloadPostbackButtonOnClick;
     }
 
     private void DownloadButtonOnClick (object sender, EventArgs eventArgs)
@@ -45,20 +45,12 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       Response.End();
     }
 
-    private void DownloadXmlButtonOnClick (object sender, EventArgs eventArgs)
+    private void DownloadPostbackButtonOnClick (object sender, EventArgs eventArgs)
     {
-      const string file = "SampleXmlFile.xml";
-      var fullFilePath = Server.MapPath ("~/SampleXmlFile.xml");
-
-      Response.Clear();
-      Response.ClearHeaders();
-      Response.ClearContent();
-      Response.AddHeader ("Content-Disposition", "attachment; filename=" + file);
-      Response.AddHeader ("Content-Length", file.Length.ToString());
-      Response.ContentType = "text/plain";
-      Response.Flush();
-      Response.TransmitFile (fullFilePath);
-      Response.End();
+      string script = "window.open(\'FileDownloadHandler.ashx?testMode=txt\')";
+      
+      ClientScriptManager clientScriptManager = Page.ClientScript;
+      clientScriptManager.RegisterClientScriptBlock (GetType(), "WindowOpenScript", script, true);
     }
   }
 }

@@ -56,6 +56,10 @@
         <Key>closeBrowserWindowsOnSetUpAndTearDown</Key>
         <Value>true</Value>
       </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/remotion.webTesting">
+        <Key>cleanUpUnmatchedDownloadedFiles</Key>
+        <Value>true</Value>
+      </_appConfigAttributes>
       <_appConfigAttributes Include="/configuration/log4net/appender[@name='FileAppender']/file">
         <Key>value</Key>
         <Value>$(_logsDirectory)WebTestingFramework.log</Value>

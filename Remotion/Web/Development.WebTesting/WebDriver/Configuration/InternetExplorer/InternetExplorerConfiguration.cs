@@ -15,9 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics;
+using System.IO;
 using JetBrains.Annotations;
 using OpenQA.Selenium.IE;
 using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
+using Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplorer;
 
@@ -28,9 +32,15 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetEx
   /// </summary>
   public class InternetExplorerConfiguration : BrowserConfigurationBase, IInternetExplorerConfiguration
   {
+    private readonly IDownloadHelper _downloadHelper;
+
     public InternetExplorerConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
         : base (webTestConfigurationSection)
     {
+      _downloadHelper = new InternetExplorerDownloadHelper (
+          webTestConfigurationSection.DownloadStartedTimeout,
+          webTestConfigurationSection.DownloadUpdatedTimeout,
+          webTestConfigurationSection.CleanUpUnmatchedDownloadedFiles);
     }
 
     public override string BrowserExecutableName
@@ -46,6 +56,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetEx
     public override IBrowserFactory BrowserFactory
     {
       get { return new InternetExplorerBrowserFactory (this); }
+    }
+
+    public override IDownloadHelper DownloadHelper
+    {
+      get { return _downloadHelper; }
     }
 
     public virtual InternetExplorerOptions CreateInternetExplorerOptions ()

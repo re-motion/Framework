@@ -17,6 +17,7 @@
 
 using System;
 using JetBrains.Annotations;
+using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
@@ -51,6 +52,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     /// Gets a <see cref="BrowserFactory"/> responsible for creating the browser instance.
     /// </summary>
     IBrowserFactory BrowserFactory { [NotNull] get; }
+
+    /// <summary>
+    /// Gets a <see cref="DownloadHelper" />, which provides an API to handle a file download and subsequently delete the downloaded files. 
+    /// </summary>
+    IDownloadHelper DownloadHelper { [NotNull] get; }
 
     /// <summary>
     /// Gets an absolute or relative path to the logs directory. Some web driver implementations write log files for debugging reasons.

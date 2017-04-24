@@ -56,8 +56,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +88,7 @@
       <Link>Remotion LGPL.licenseheader</Link>
     </Content>
     <Content Include="packages.config" />
+    <Content Include="FileDownloadHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -111,6 +114,9 @@
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="FileDownloadHandler.ashx.cs">
+      <DependentUpon>FileDownloadHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="ImageButtonTest.aspx.cs">
       <DependentUpon>ImageButtonTest.aspx</DependentUpon>

@@ -20,6 +20,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
@@ -33,11 +34,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _browserProperty;
     private readonly ConfigurationProperty _searchTimeoutProperty;
+    private readonly ConfigurationProperty _downloadStartedTimeoutProperty;
+    private readonly ConfigurationProperty _downloadUpdatedTimeoutProperty;
     private readonly ConfigurationProperty _retryIntervalProperty;
     private readonly ConfigurationProperty _webApplicationRootProperty;
     private readonly ConfigurationProperty _screenshotDirectoryProperty;
     private readonly ConfigurationProperty _logsDirectoryProperty;
     private readonly ConfigurationProperty _closeBrowserWindowsOnSetUpAndTearDownProperty;
+    private readonly ConfigurationProperty _cleanUpUnmatchedDownloadedFiles;
     private readonly ConfigurationProperty _hostingProperty;
 
     static WebTestConfigurationSection ()
@@ -58,9 +62,11 @@ namespace Remotion.Web.Development.WebTesting.Configuration
           typeof (string),
           null,
           null,
-          new StringValidator (minLength: 1),
+          new RegexStringValidator ("(InternetExplorer|Chrome)"),
           ConfigurationPropertyOptions.IsRequired);
       _searchTimeoutProperty = new ConfigurationProperty ("searchTimeout", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
+      _downloadStartedTimeoutProperty = new ConfigurationProperty ("downloadStartedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
+      _downloadUpdatedTimeoutProperty = new ConfigurationProperty ("downloadUpdatedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (5));
       _retryIntervalProperty = new ConfigurationProperty ("retryInterval", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
       _webApplicationRootProperty = new ConfigurationProperty (
           "webApplicationRoot",
@@ -72,17 +78,21 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _screenshotDirectoryProperty = new ConfigurationProperty ("screenshotDirectory", typeof (string));
       _logsDirectoryProperty = new ConfigurationProperty ("logsDirectory", typeof (string), ".");
       _closeBrowserWindowsOnSetUpAndTearDownProperty = new ConfigurationProperty ("closeBrowserWindowsOnSetUpAndTearDown", typeof (bool), false);
+      _cleanUpUnmatchedDownloadedFiles = new ConfigurationProperty ("cleanUpUnmatchedDownloadedFiles", typeof (bool), false);
       _hostingProperty = new ConfigurationProperty ("hosting", typeof (ProviderSettings));
       
       _properties = new ConfigurationPropertyCollection
                     {
                         _browserProperty,
                         _searchTimeoutProperty,
+                        _downloadStartedTimeoutProperty,
+                        _downloadUpdatedTimeoutProperty,
                         _retryIntervalProperty,
                         _webApplicationRootProperty,
                         _screenshotDirectoryProperty,
                         _logsDirectoryProperty,
                         _closeBrowserWindowsOnSetUpAndTearDownProperty,
+                        _cleanUpUnmatchedDownloadedFiles,
                         _hostingProperty
                     };
     }
@@ -114,6 +124,22 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public TimeSpan SearchTimeout
     {
       get { return (TimeSpan) this [_searchTimeoutProperty]; }
+    }
+
+    /// <summary>
+    /// Specifies how long the <see cref="DownloadHelperBase"/> should wait before looking for the downloaded file. Default is 10 seconds.
+    /// </summary>
+    public TimeSpan DownloadStartedTimeout
+    {
+      get { return (TimeSpan) this [_downloadStartedTimeoutProperty]; }
+    }
+
+    /// <summary>
+    /// Specifies how long the <see cref="DownloadHelperBase"/> should wait for a downloaded partial file to update. Default is 5 seconds.
+    /// </summary>
+    public TimeSpan DownloadUpdatedTimeout
+    {
+      get { return (TimeSpan) this [_downloadUpdatedTimeoutProperty]; }
     }
 
     /// <summary>
@@ -158,6 +184,22 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public bool CloseBrowserWindowsOnSetUpAndTearDown
     {
       get { return (bool) this [_closeBrowserWindowsOnSetUpAndTearDownProperty]; }
+    }
+    
+    /// <summary>
+    /// Clean up the download folder on error.
+    /// </summary>
+    /// <remarks>
+    /// When handling downloaded files, there are possible error conditions, where we cannot match the files in the download folder 
+    /// (e.g. when the given filename (<see cref="IDownloadHelper.HandleDownloadWithExpectedFileName"/>) does not match the name of the downloaded file).
+    /// Typically, you want to turn this on when running web tests, to ensure the clean up of all new downloaded files in case of an error.
+    /// However, in edge cases it is possible that files downloaded simultaneously with the test run will be deleted. This is only a concern when running the web test on a developer system.
+    /// (e.g. when the developer starts a download and then runs the web tests at the same time), which is why the default value is set to <see langword="false" />.
+    /// On your build servers you want to set this to <see langword="true" />, as normally, there is no download run simultaneously to the webtests.
+    /// </remarks>
+    public bool CleanUpUnmatchedDownloadedFiles
+    {
+      get { return (bool) this [_cleanUpUnmatchedDownloadedFiles]; }
     }
 
     public ProviderSettings HostingProviderSettings
