@@ -149,5 +149,95 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       TestFunction2 function = new TestFunction2();
       Assert.That (() =>function.SetExecutionListener (null), Throws.TypeOf<ArgumentNullException>());
     }
+
+    [Test]
+    public void GetExecutingStep_BeforeExecutionHasStarted_ReturnsCurrentFunction ()
+    {
+      TestFunction2 function = new TestFunction2();
+      function.Add (new WxeDelegateStep (() => { }));
+
+      Assert.That (function.IsExecutionStarted, Is.False);
+      Assert.That (function.ExecutingStep, Is.SameAs (function));
+    }
+
+    [Test]
+    public void GetExecutingStep_AfterExecutionHasFinished_ReturnsCurrentFunction ()
+    {
+      TestFunction2 function = new TestFunction2();
+      function.Add (new WxeDelegateStep (() => { }));
+
+      WxeContextFactory contextFactory = new WxeContextFactory();
+      var context = contextFactory.CreateContext (function);
+
+      function.Execute (context);
+
+      Assert.That (function.ExecutingStep, Is.SameAs (function));
+    }
+
+    [Test]
+    public void GetExecutingStep_AfterExecutionHasStarted_ReturnsCurrentStep ()
+    {
+      TestFunction2 function = new TestFunction2();
+      WxeStep actualStep = null;
+      var expectedStep = new WxeDelegateStep (
+          () =>
+          {
+            Assert.That (function.IsExecutionStarted, Is.True);
+            actualStep = function.ExecutingStep;
+          });
+      function.Add (expectedStep);
+
+      WxeContextFactory contextFactory = new WxeContextFactory();
+      var context = contextFactory.CreateContext (function);
+
+      function.Execute (context);
+
+      Assert.That (actualStep, Is.SameAs (expectedStep));
+    }
+
+    [Test]
+    public void GetLastExecutedStep_BeforeExecutionHasStarted_ReturnsNull ()
+    {
+      TestFunction2 function = new TestFunction2();
+      function.Add (new WxeDelegateStep (() => { }));
+
+      Assert.That (function.IsExecutionStarted, Is.False);
+      Assert.That (function.LastExecutedStep, Is.Null);
+    }
+
+    [Test]
+    public void GetLastExecutedStep_AfterExecutionHasFinished_ReturnsNull ()
+    {
+      TestFunction2 function = new TestFunction2();
+      function.Add (new WxeDelegateStep (() => { }));
+
+      WxeContextFactory contextFactory = new WxeContextFactory();
+      var context = contextFactory.CreateContext (function);
+
+      function.Execute (context);
+
+      Assert.That (function.LastExecutedStep, Is.Null);
+    }
+
+    [Test]
+    public void GetLastExecutedStep_AfterExecutionHasStarted_ReturnsNotNull ()
+    {
+      TestFunction2 function = new TestFunction2();
+      WxeStep actualStep = null;
+      var expectedStep = new WxeDelegateStep (
+          () =>
+          {
+            Assert.That (function.IsExecutionStarted, Is.True);
+            actualStep = function.ExecutingStep;
+          });
+      function.Add (expectedStep);
+
+      WxeContextFactory contextFactory = new WxeContextFactory();
+      var context = contextFactory.CreateContext (function);
+
+      function.Execute (context);
+
+      Assert.That (actualStep, Is.SameAs (expectedStep));
+    }
   }
 }

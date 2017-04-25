@@ -127,7 +127,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       get
       {
-        if (_executingStep < _steps.Count)
+        if (_executingStep < _steps.Count && IsExecutionStarted)
           return _steps[_executingStep].ExecutingStep;
         else
           return this;
