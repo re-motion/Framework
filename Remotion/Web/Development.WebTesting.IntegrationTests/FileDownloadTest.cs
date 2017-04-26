@@ -24,6 +24,7 @@ using Remotion.Web.Development.WebTesting.WebDriver;
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [Explicit]
   public class FileDownloadTest : IntegrationTest
   {
     [Test]
