@@ -165,9 +165,9 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     }
 
     /// <inheritdoc/>
-    public TreeViewNodeControlObject GetNode (int index)
+    public TreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
-      return GetNode().WithIndex (index);
+      return GetNode().WithIndex (oneBasedIndex);
     }
 
     /// <inheritdoc/>
@@ -179,9 +179,9 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     }
 
     /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithIndex (int index)
+    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
     {
-      var xpath = string.Format ("[{0}]", index);
+      var xpath = string.Format ("[{0}]", oneBasedIndex);
       return FindAndCreateNode (xpath);
     }
 

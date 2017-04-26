@@ -53,12 +53,12 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public TextBoxControlObject SelectPerIndex (ControlSelectionContext context, int index)
+    public TextBoxControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
       var hasAttributeCheck = XPathUtils.CreateHasAttributeCheck ("type", "text");
-      var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, index);
+      var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
       return CreateControlObject (context, scope);
     }

@@ -43,17 +43,17 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     }
 
     /// <summary>
-    /// Extension method for selecting a control by index (using the
+    /// Extension method for selecting a control by one-based index (using the
     /// <see cref="IndexControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>).
     /// </summary>
     public static TControlObject ByIndex<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
-        int index)
+        int oneBasedIndex)
         where TControlSelector : IIndexControlSelector<TControlObject> where TControlObject : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
 
-      return fluentControlSelector.GetControl (new IndexControlSelectionCommandBuilder<TControlSelector, TControlObject> (index));
+      return fluentControlSelector.GetControl (new IndexControlSelectionCommandBuilder<TControlSelector, TControlObject> (oneBasedIndex));
     }
 
     /// <summary>

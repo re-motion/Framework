@@ -93,9 +93,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int index, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
-      return _variantImpl.SelectOption (index, actionOptions);
+      return _variantImpl.SelectOption (oneBasedIndex, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -151,7 +151,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       IReadOnlyList<OptionDefinition> GetOptionDefinitions ();
         
       UnspecifiedPageObject SelectOption ([NotNull] string itemID, IWebTestActionOptions actionOptions);
-      UnspecifiedPageObject SelectOption (int index, IWebTestActionOptions actionOptions);
+      UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions actionOptions);
       UnspecifiedPageObject SelectOptionByText ([NotNull] string text, IWebTestActionOptions actionOptions);
       bool HasNullOptionDefinition ();
     }
@@ -198,9 +198,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         return SelectOption (selectAction, actionOptions);
       }
 
-      public UnspecifiedPageObject SelectOption (int index, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions actionOptions)
       {
-        Action<ElementScope> selectAction = s => s.SelectOptionByIndex (index);
+        Action<ElementScope> selectAction = s => s.SelectOptionByIndex (oneBasedIndex);
         return SelectOption (selectAction, actionOptions);
       }
 
@@ -282,10 +282,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         return CheckScope (scope, actionOptions);
       }
 
-      public UnspecifiedPageObject SelectOption (int index, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions actionOptions)
       {
         var scope =
-            _controlObject.Scope.FindTagWithAttribute ("span", DiagnosticMetadataAttributes.IndexInCollection, index.ToString()).FindCss ("input");
+            _controlObject.Scope.FindTagWithAttribute ("span", DiagnosticMetadataAttributes.IndexInCollection, oneBasedIndex.ToString()).FindCss ("input");
         return CheckScope (scope, actionOptions);
       }
 

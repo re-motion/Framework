@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Short for explicitly implemented <see cref="IFluentControlObjectWithNodes{TNodeControlObject}.WithIndex"/>.
     /// </summary>
-    TNodeControlObject GetNode (int index);
+    TNodeControlObject GetNode (int oneBasedIndex);
   }
 
   /// <summary>
@@ -54,9 +54,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     TNodeControlObject WithItemID ([NotNull] string itemID);
 
     /// <summary>
-    /// Selects the node using the given <paramref name="index"/>.
+    /// Selects the node using the given <paramref name="oneBasedIndex"/>.
     /// </summary>
-    TNodeControlObject WithIndex (int index);
+    TNodeControlObject WithIndex (int oneBasedIndex);
 
     /// <summary>
     /// Selects the node using the given <paramref name="displayText"/>.

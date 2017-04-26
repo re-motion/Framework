@@ -74,9 +74,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public WebTreeViewNodeControlObject GetNode (int index)
+    public WebTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
-      return GetNode().WithIndex (index);
+      return GetNode().WithIndex (oneBasedIndex);
     }
 
     /// <inheritdoc/>
@@ -89,9 +89,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithIndex (int index)
+    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
     {
-      var nodeScope = Scope.FindTagWithAttribute ("ul li", DiagnosticMetadataAttributes.IndexInCollection, index.ToString());
+      var nodeScope = Scope.FindTagWithAttribute ("ul li", DiagnosticMetadataAttributes.IndexInCollection, oneBasedIndex.ToString());
       return new WebTreeViewNodeControlObject (Context.CloneForControl (nodeScope));
     }
 

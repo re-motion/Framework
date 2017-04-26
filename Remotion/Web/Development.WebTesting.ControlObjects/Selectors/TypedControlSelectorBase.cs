@@ -73,12 +73,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectPerIndex (ControlSelectionContext context, int index)
+    public TControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
       var hasAttributeCheck = XPathUtils.CreateHasAttributeCheck (DiagnosticMetadataAttributes.ControlType, _controlType);
-      var scope = context.Scope.FindXPath (string.Format ("(.//*{0})[{1}]", hasAttributeCheck, index));
+      var scope = context.Scope.FindXPath (string.Format ("(.//*{0})[{1}]", hasAttributeCheck, oneBasedIndex));
       return CreateControlObject (context, scope);
     }
   }

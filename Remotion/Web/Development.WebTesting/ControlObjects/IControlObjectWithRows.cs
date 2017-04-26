@@ -105,8 +105,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     TRowControlObject WithItemID ([NotNull] string itemID);
 
     /// <summary>
-    /// Selects the row using the given <paramref name="index"/>.
+    /// Selects the row using the given <paramref name="oneBasedIndex"/>.
     /// </summary>
-    TRowControlObject WithIndex (int index);
+    TRowControlObject WithIndex (int oneBasedIndex);
   }
 }

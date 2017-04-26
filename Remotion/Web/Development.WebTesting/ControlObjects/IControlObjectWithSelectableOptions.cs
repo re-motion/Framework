@@ -59,9 +59,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     UnspecifiedPageObject WithItemID ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions actionOptions = null);
 
     /// <summary>
-    /// Selects the option using the given <paramref name="index"/>.
+    /// Selects the option using the given <paramref name="oneBasedIndex"/>.
     /// </summary>
-    UnspecifiedPageObject WithIndex (int index, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject WithIndex (int oneBasedIndex, [CanBeNull] IWebTestActionOptions actionOptions = null);
 
     /// <summary>
     /// Selects the option using the given <paramref name="displayText"/>.

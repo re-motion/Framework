@@ -27,14 +27,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       where TCellControlObject : ControlObject
   {
     private readonly string _itemID;
-    private readonly int _index;
+    private readonly int _oneBasedIndex;
     private readonly string _title;
     private readonly bool _hasDiagnosticMetadata;
 
-    public BocListColumnDefinition (string itemID, int index, string title, bool hasDiagnosticMetadata)
+    public BocListColumnDefinition (string itemID, int oneBasedIndex, string title, bool hasDiagnosticMetadata)
     {
       _itemID = itemID;
-      _index = index;
+      _oneBasedIndex = oneBasedIndex;
       _title = title;
       _hasDiagnosticMetadata = hasDiagnosticMetadata;
     }
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     public int Index
     {
-      get { return _index; }
+      get { return _oneBasedIndex; }
     }
 
     public string Title

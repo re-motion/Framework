@@ -36,13 +36,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   internal class BocListRowFunctionality : WebFormsControlObjectWithDiagnosticMetadata
   {
     private readonly IBocListRowControlObjectHostAccessor _accessor;
-    private readonly int _rowIndexOnPage;
+    private readonly int _oneBasedRowIndexOnPage;
 
     public BocListRowFunctionality (IBocListRowControlObjectHostAccessor accessor, [NotNull] ControlObjectContext context)
         : base (context)
     {
       _accessor = accessor;
-      _rowIndexOnPage = int.Parse (Scope[DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex]);
+      _oneBasedRowIndexOnPage = int.Parse (Scope[DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex]);
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       var zeroBasedAbsoluteRowIndexOfFirstRow = _accessor.GetZeroBasedAbsoluteRowIndexOfFirstRow();
 
-      var zeroBasedAbsoluteRowIndex = zeroBasedAbsoluteRowIndexOfFirstRow + _rowIndexOnPage - 1;
+      var zeroBasedAbsoluteRowIndex = zeroBasedAbsoluteRowIndexOfFirstRow + _oneBasedRowIndexOnPage - 1;
       return _accessor.ParentScope.FindChild (string.Format ("RowSelector_{0}", zeroBasedAbsoluteRowIndex));
     }
 
@@ -88,14 +88,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
 
-      var index = _accessor.GetColumnIndexForItemID (columnItemID);
-      return GetCellWithColumnIndex<TCellControlObject> (index);
+      var oneBasedIndex = _accessor.GetColumnIndexForItemID (columnItemID);
+      return GetCellWithColumnIndex<TCellControlObject> (oneBasedIndex);
     }
 
     /// <inheritdoc/>
-    public TCellControlObject GetCellWithColumnIndex<TCellControlObject> (int index)
+    public TCellControlObject GetCellWithColumnIndex<TCellControlObject> (int oneBasedIndex)
     {
-      var cellScope = Scope.FindTagWithAttribute ("td", DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, index.ToString());
+      var cellScope = Scope.FindTagWithAttribute ("td", DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedIndex.ToString());
       return (TCellControlObject) Activator.CreateInstance (typeof (TCellControlObject), new object[] { Context.CloneForControl (cellScope) });
     }
 
@@ -104,8 +104,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
 
-      var index = _accessor.GetColumnIndexForTitle (columnTitle);
-      return GetCellWithColumnIndex<TCellControlObject> (index);
+      var oneBasedIndex = _accessor.GetColumnIndexForTitle (columnTitle);
+      return GetCellWithColumnIndex<TCellControlObject> (oneBasedIndex);
     }
 
     /// <inheritdoc/>
@@ -113,8 +113,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
 
-      var index = _accessor.GetColumnIndexForTitleContains (columnTitleContains);
-      return GetCellWithColumnIndex<TCellControlObject> (index);
+      var oneBasedIndex = _accessor.GetColumnIndexForTitleContains (columnTitleContains);
+      return GetCellWithColumnIndex<TCellControlObject> (oneBasedIndex);
     }
 
     /// <inheritdoc/>

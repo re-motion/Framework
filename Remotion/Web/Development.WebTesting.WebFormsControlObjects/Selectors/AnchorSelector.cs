@@ -53,11 +53,11 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public AnchorControlObject SelectPerIndex (ControlSelectionContext context, int index)
+    public AnchorControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var scope = context.Scope.FindXPath (string.Format ("(.//{0})[{1}]", c_htmlAnchorTag, index));
+      var scope = context.Scope.FindXPath (string.Format ("(.//{0})[{1}]", c_htmlAnchorTag, oneBasedIndex));
       return CreateControlObject (context, scope);
     }
 

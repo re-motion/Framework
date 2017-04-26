@@ -52,11 +52,11 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public DropDownListControlObject SelectPerIndex (ControlSelectionContext context, int index)
+    public DropDownListControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var xPathSelector = string.Format ("(.//{0})[{1}]", c_htmlDropDownListTag, index);
+      var xPathSelector = string.Format ("(.//{0})[{1}]", c_htmlDropDownListTag, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
       return CreateControlObject (context, scope);
     }

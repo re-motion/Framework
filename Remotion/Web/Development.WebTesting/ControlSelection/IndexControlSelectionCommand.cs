@@ -28,20 +28,20 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
       where TControlObject : ControlObject
   {
     private readonly IIndexControlSelector<TControlObject> _controlSelector;
-    private readonly int _index;
+    private readonly int _oneBasedIndex;
 
-    public IndexControlSelectionCommand ([NotNull] IIndexControlSelector<TControlObject> controlSelector, int index)
+    public IndexControlSelectionCommand ([NotNull] IIndexControlSelector<TControlObject> controlSelector, int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
 
       _controlSelector = controlSelector;
-      _index = index;
+      _oneBasedIndex = oneBasedIndex;
     }
 
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
-      return _controlSelector.SelectPerIndex (context, _index);
+      return _controlSelector.SelectPerIndex (context, _oneBasedIndex);
     }
   }
 }

@@ -69,9 +69,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public BocListEditableCellControlObject GetCell (int index)
+    public BocListEditableCellControlObject GetCell (int oneBasedIndex)
     {
-      return GetCell().WithIndex (index);
+      return GetCell().WithIndex (oneBasedIndex);
     }
 
     /// <inheritdoc/>
@@ -83,9 +83,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    BocListEditableCellControlObject IFluentControlObjectWithCells<BocListEditableCellControlObject>.WithIndex (int index)
+    BocListEditableCellControlObject IFluentControlObjectWithCells<BocListEditableCellControlObject>.WithIndex (int oneBasedIndex)
     {
-      return _impl.GetCellWithColumnIndex<BocListEditableCellControlObject> (index);
+      return _impl.GetCellWithColumnIndex<BocListEditableCellControlObject> (oneBasedIndex);
     }
 
     /// <inheritdoc/>

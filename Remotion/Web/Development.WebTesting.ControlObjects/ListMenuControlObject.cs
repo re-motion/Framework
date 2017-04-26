@@ -77,9 +77,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int index, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
-      var itemScope = Scope.FindChild ((index - 1).ToString());
+      var itemScope = Scope.FindChild ((oneBasedIndex - 1).ToString());
       return ClickItem (itemScope, actionOptions);
     }
 

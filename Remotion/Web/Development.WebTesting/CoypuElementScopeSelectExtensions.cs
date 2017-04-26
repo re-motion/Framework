@@ -53,11 +53,11 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// Selects an option of a &lt;select&gt; element by <paramref name="index"/>.
+    /// Selects an option of a &lt;select&gt; element by <paramref name="oneBasedIndex"/>.
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
-    /// <param name="index">The index of the option to select.</param>
-    public static void SelectOptionByIndex ([NotNull] this ElementScope scope, int index)
+    /// <param name="oneBasedIndex">The one-based index of the option to select.</param>
+    public static void SelectOptionByIndex ([NotNull] this ElementScope scope, int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
@@ -68,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting
             var webElement = (IWebElement) scope.Native;
 
             var select = new SelectElement (webElement);
-            select.SelectByIndex (index - 1);
+            select.SelectByIndex (oneBasedIndex - 1);
           });
     }
 

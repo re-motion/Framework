@@ -68,10 +68,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public override void GoToSpecificPage (int page)
+    public override void GoToSpecificPage (int oneBasedPageNumber)
     {
       var currentPageTextInputScope = GetCurrentPageTextInputScope();
-      new FillWithAction (this, currentPageTextInputScope, Keys.Backspace + page, FinishInput.WithTab).Execute (
+      new FillWithAction (this, currentPageTextInputScope, Keys.Backspace + oneBasedPageNumber, FinishInput.WithTab).Execute (
           Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -136,12 +136,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     /// <inheritdoc/>
     TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithIndexContains (
-        int index,
+        int oneBasedIndex,
         string containsCellText)
     {
       ArgumentUtility.CheckNotNull ("containsCellText", containsCellText);
 
-      var cell = GetCellWhere().ColumnWithIndexContains (index, containsCellText);
+      var cell = GetCellWhere().ColumnWithIndexContains (oneBasedIndex, containsCellText);
       return GetRowFromCell (cell);
     }
 
@@ -204,12 +204,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     /// <inheritdoc/>
     BocListCellControlObject IFluentControlObjectWithCellsInRowsWhereColumnContains<BocListCellControlObject>.ColumnWithIndexContains (
-        int index,
+        int oneBasedIndex,
         string containsCellText)
     {
       ArgumentUtility.CheckNotNull ("containsCellText", containsCellText);
 
-      var column = GetColumnByIndex (index);
+      var column = GetColumnByIndex (oneBasedIndex);
       return GetCellWhereColumnContainsExactly (column, containsCellText);
     }
 
@@ -301,14 +301,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <summary>
-    /// Clicks on the column header given by <paramref name="columnIndex"/> in order to sort the column.
+    /// Clicks on the column header given by <paramref name="oneBasedColumnIndex"/> in order to sort the column.
     /// </summary>
-    public void ClickOnSortColumn (int columnIndex)
+    public void ClickOnSortColumn (int oneBasedColumnIndex)
     {
       var sortColumnClickScope = Scope.FindTagWithAttribute (
           HasFakeTableHead ? ".bocListFakeTableHead th" : ".bocListTableContainer th",
           DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
-          columnIndex.ToString());
+          oneBasedColumnIndex.ToString());
 
       var sortColumnLinkScope = sortColumnClickScope.FindLink();
       // Note: explicit hovering is required: Selenium does not correctly bring the fake table head into view.
@@ -341,11 +341,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <summary>
-    /// Changes the list's view to the view given by <paramref name="index"/>.
+    /// Changes the list's view to the view given by <paramref name="oneBasedIndex"/>.
     /// </summary>
-    public void ChangeViewTo (int index, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    public void ChangeViewTo (int oneBasedIndex, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
-      ChangeViewTo (scope => scope.SelectOptionByIndex (index), actionOptions);
+      ChangeViewTo (scope => scope.SelectOptionByIndex (oneBasedIndex), actionOptions);
     }
 
     /// <summary>

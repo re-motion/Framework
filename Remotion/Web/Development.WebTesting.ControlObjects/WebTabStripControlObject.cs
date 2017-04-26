@@ -82,12 +82,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithTabs.WithIndex (int index, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithTabs.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
       var xPathSelector = string.Format (
           "(.//span{0})[{1}]",
           XPathUtils.CreateHasOneOfClassesCheck ("tabStripTab", "tabStripTabSelected"),
-          index);
+          oneBasedIndex);
       var itemScope = Scope.FindXPath (xPathSelector);
       return SwitchTo (itemScope, actionOptions);
     }

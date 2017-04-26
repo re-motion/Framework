@@ -113,9 +113,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int index, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
-      Action<ElementScope> selectAction = s => s.SelectOptionByIndex (index);
+      Action<ElementScope> selectAction = s => s.SelectOptionByIndex (oneBasedIndex);
       return SelectOption (selectAction, actionOptions);
     }
 

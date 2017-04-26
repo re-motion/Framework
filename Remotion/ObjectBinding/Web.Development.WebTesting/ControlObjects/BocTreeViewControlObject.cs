@@ -59,9 +59,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public BocTreeViewNodeControlObject GetNode (int index)
+    public BocTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
-      return GetNode().WithIndex (index);
+      return GetNode().WithIndex (oneBasedIndex);
     }
 
     /// <inheritdoc/>
@@ -73,9 +73,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithIndex (int index)
+    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
     {
-      return _metaRootNode.GetNode().WithIndex (index);
+      return _metaRootNode.GetNode().WithIndex (oneBasedIndex);
     }
 
     /// <inheritdoc/>

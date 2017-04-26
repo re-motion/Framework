@@ -53,12 +53,12 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public ImageButtonControlObject SelectPerIndex (ControlSelectionContext context, int index)
+    public ImageButtonControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
       var hasAttributeCheck = XPathUtils.CreateHasAttributeCheck ("type", "image");
-      var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, index);
+      var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
       return CreateControlObject (context, scope);
     }

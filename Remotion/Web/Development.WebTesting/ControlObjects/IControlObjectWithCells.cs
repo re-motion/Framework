@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Short for explicitly implemented <see cref="IFluentControlObjectWithCells{TCellControlObject}.WithIndex"/>.
     /// </summary>
-    TCellControlObject GetCell (int index);
+    TCellControlObject GetCell (int oneBasedIndex);
   }
 
   /// <summary>
@@ -53,9 +53,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     TCellControlObject WithColumnItemID ([NotNull] string columnItemID);
 
     /// <summary>
-    /// Selects the cell using the given <paramref name="index"/>.
+    /// Selects the cell using the given <paramref name="oneBasedIndex"/>.
     /// </summary>
-    TCellControlObject WithIndex (int index);
+    TCellControlObject WithIndex (int oneBasedIndex);
 
     /// <summary>
     /// Selects the cell using the given <paramref name="columnTitle"/>.

@@ -84,10 +84,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int index, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
       var dropDownMenuScope = GetDropDownMenuScope();
-      var scope = dropDownMenuScope.FindXPath (string.Format ("li[{0}]", index));
+      var scope = dropDownMenuScope.FindXPath (string.Format ("li[{0}]", oneBasedIndex));
       return ClickItem (scope, actionOptions);
     }
 
