@@ -138,10 +138,10 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
       var nativeMethodsExtended = new Win32WindowsNativeMethodsExtended ();
       var windowFinder = new NativeWindowFinder (new Win32WindowsNativeMethods());
 
-      var internetExplorerNativeWindosHandler = new InternetExplorerNativeWindowHandler (windowFinder, nativeMethodsExtended);
+      var internetExplorerNativeWindowsHandler = new InternetExplorerNativeWindowHandler (windowFinder, nativeMethodsExtended);
       try
       {
-        internetExplorerNativeWindosHandler.WaitForDownloadInformationBar (downloadStartedTimeout);
+        internetExplorerNativeWindowsHandler.WaitForDownloadInformationBar (downloadStartedTimeout);
       }
       catch (InvalidOperationException ex)
       {

@@ -221,7 +221,7 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     }
 
     [Test]
-    public void TestDownloadOpensInNewWindow_NoDownloadTriggered_InternetExplorer_AfterNormalTest ()
+    public void TestDownloadOpensInNewWindow_NoDownloadTriggered_InternetExplorer_AfterNormal ()
     {
       if (Helper.BrowserConfiguration.IsChrome())
         Assert.Ignore ("This test is testing a specific InternetExplorer interaction.");
@@ -242,7 +242,7 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     }
 
     [Test]
-    public void TestDownloadOpensInNewWindow_NoDownloadTriggered_InternetExplorer_AfterDownloadTimeoutExceededTest ()
+    public void TestDownloadOpensInNewWindow_NoDownloadTriggered_InternetExplorer_AfterDownloadTimeoutExceeded ()
     {
       if (Helper.BrowserConfiguration.IsChrome())
         Assert.Ignore ("This test is testing a specific InternetExplorer interaction.");
