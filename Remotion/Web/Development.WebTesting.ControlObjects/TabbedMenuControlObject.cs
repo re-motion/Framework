@@ -84,9 +84,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int index, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
-      var menuItemScope = GetMainMenuScope().FindXPath (string.Format ("(.//li/span/span[2])[{0}]", index));
+      var menuItemScope = GetMainMenuScope().FindXPath (string.Format ("(.//li/span/span[2])[{0}]", oneBasedIndex));
       return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
     }
 
@@ -184,9 +184,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
       }
 
-      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int index, IWebTestActionOptions actionOptions)
+      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
       {
-        var menuItemScope = GetSubMenuScope().FindXPath (string.Format ("(.//li/span/span[2])[{0}]", index));
+        var menuItemScope = GetSubMenuScope().FindXPath (string.Format ("(.//li/span/span[2])[{0}]", oneBasedIndex));
         return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
       }
 

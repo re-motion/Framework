@@ -239,9 +239,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public TRowControlObject GetRow (int index)
+    public TRowControlObject GetRow (int oneBasedIndex)
     {
-      return GetRow().WithIndex (index);
+      return GetRow().WithIndex (oneBasedIndex);
     }
 
     /// <inheritdoc/>
@@ -257,12 +257,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    TRowControlObject IFluentControlObjectWithRows<TRowControlObject>.WithIndex (int index)
+    TRowControlObject IFluentControlObjectWithRows<TRowControlObject>.WithIndex (int oneBasedIndex)
     {
       var cssSelector = string.Format (
           ".bocListTable .bocListTableBody .bocListDataRow[{0}='{1}']",
           DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex,
-          index);
+          oneBasedIndex);
       return GetRowByCssSelector (cssSelector);
     }
 
@@ -287,7 +287,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <summary>
-    /// Returns the column defintion given by <paramref name="columnItemID"/>.
+    /// Returns the column definition given by <paramref name="columnItemID"/>.
     /// </summary>
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByItemID ([NotNull] string columnItemID)
     {
@@ -297,11 +297,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <summary>
-    /// Returns the column defintion given by <paramref name="index"/>.
+    /// Returns the column defintion given by <paramref name="oneBasedIndex"/>.
     /// </summary>
-    protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByIndex (int index)
+    protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByIndex (int oneBasedIndex)
     {
-      return _columns.Single (cd => cd.Index == index);
+      return _columns.Single (cd => cd.Index == oneBasedIndex);
     }
 
     /// <summary>

@@ -30,11 +30,11 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
       where TControlSelector : IIndexControlSelector<TControlObject>
       where TControlObject : ControlObject
   {
-    private readonly int _index;
+    private readonly int _oneBasedIndex;
 
-    public IndexControlSelectionCommandBuilder (int index)
+    public IndexControlSelectionCommandBuilder (int oneBasedIndex)
     {
-      _index = index;
+      _oneBasedIndex = oneBasedIndex;
     }
 
     /// <inheritdoc/>
@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     {
       ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
 
-      return new IndexControlSelectionCommand<TControlObject> (controlSelector, _index);
+      return new IndexControlSelectionCommand<TControlObject> (controlSelector, _oneBasedIndex);
     }
   }
 }

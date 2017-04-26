@@ -27,17 +27,17 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class ItemDefinition
   {
     private readonly string _itemID;
-    private readonly int _index;
+    private readonly int _oneBasedIndex;
     private readonly string _text;
     private readonly bool _isEnabled;
 
-    public ItemDefinition ([NotNull] string itemID, int index, [NotNull] string text, bool isEnabled)
+    public ItemDefinition ([NotNull] string itemID, int oneBasedIndex, [NotNull] string text, bool isEnabled)
     {
       ArgumentUtility.CheckNotNull ("itemID", itemID);
       ArgumentUtility.CheckNotNull ("text", text);
 
       _itemID = itemID;
-      _index = index;
+      _oneBasedIndex = oneBasedIndex;
       _text = text;
       _isEnabled = isEnabled;
     }
@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     public int Index
     {
-      get { return _index; }
+      get { return _oneBasedIndex; }
     }
 
     public string Text

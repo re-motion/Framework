@@ -60,10 +60,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public WebTreeViewNodeControlObject GetNode (int index)
+    public WebTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
 
-      return GetNode().WithIndex (index);
+      return GetNode().WithIndex (oneBasedIndex);
     }
 
     /// <inheritdoc/>
@@ -75,9 +75,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithIndex (int index)
+    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
     {
-      return _metaRootNode.GetNode().WithIndex (index);
+      return _metaRootNode.GetNode().WithIndex (oneBasedIndex);
     }
 
     /// <inheritdoc/>
