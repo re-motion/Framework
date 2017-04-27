@@ -282,10 +282,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\packages\WebDriver.ChromeDriver.win32.2.29.0.0\content\chromedriver.exe">
+    <None Include="..\..\..\packages\WebDriver.ChromeDriver.win32.2.29.0.0\content\chromedriver.exe">
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
