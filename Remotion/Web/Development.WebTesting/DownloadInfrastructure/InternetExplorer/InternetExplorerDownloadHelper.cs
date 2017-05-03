@@ -61,8 +61,9 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
     public InternetExplorerDownloadHelper (TimeSpan downloadStartedTimeout, TimeSpan downloadUpdatedTimeout, bool cleanUpDownloadFolderOnError)
         : base (downloadStartedTimeout, downloadUpdatedTimeout)
     {
-      //We don't need a grace period, as we trigger the download of the file and therefore know exactly when the download started
-      _downloadStartedGracePeriod = TimeSpan.Zero;
+      //We use a small grace period, as we need to bridge the time between starting the download (via the download information bar) and the browser creating the download file
+	  //Needs min. 2 seconds on a fast developer machine. So we take 2 * 3 to be sure it works on slower machines.
+      _downloadStartedGracePeriod = TimeSpan.FromSeconds (6);
       _cleanUpDownloadFolderOnError = cleanUpDownloadFolderOnError;
 
       //It is not possible to set the Downloads Directory of Internet Explorer programmatically, so we have to use the default DownloadDirectory
