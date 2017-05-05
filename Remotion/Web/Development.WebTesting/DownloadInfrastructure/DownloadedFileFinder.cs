@@ -216,8 +216,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
 
       try
       {
-		//Use fileInfo.LastWriteTimeUtc instead of fileInfo.CreationTimeUtc to check when the file got created.
-		//This is due Windows file tunneling, which caches the creation time of files with the same name. 
+        //Use fileInfo.LastWriteTimeUtc instead of fileInfo.CreationTimeUtc to check when the file got created.
+        //This is due Windows file tunneling, which caches the creation time of files with the same name. 
         //For more information see https://support.microsoft.com/en-us/help/172190/windows-nt-contains-file-system-tunneling-capabilities.
         return startedDownloadHandling < fileInfo.LastWriteTimeUtc + _downloadStartedGracePeriod;
       }
