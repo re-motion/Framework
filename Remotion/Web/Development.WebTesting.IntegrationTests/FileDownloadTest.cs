@@ -79,10 +79,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
       var button = home.Scope.FindId ("body_DownloadPostbackButton");
       button.Click();
-      IDownloadedFile downloadedFile = null;
 
-      Assert.That (() => downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName(), Throws.Nothing);
-      Assert.That ("SampleFile.txt", Is.EqualTo (downloadedFile.FileName));
+      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
+      Assert.That (downloadedFile.FileName, Is.EqualTo ("SampleFile.txt"));
+      Assert.That (Path.GetFileName (downloadedFile.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+      Assert.That (
+          new FileInfo (downloadedFile.FullFilePath).Directory.Parent.FullName,
+          Is.EqualTo (Path.GetTempPath().TrimEnd (Path.DirectorySeparatorChar)));
     }
 
     [Test]
@@ -92,7 +95,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var button = home.Scope.FindId ("body_DownloadPostbackButton");
       button.Click();
 
-      Assert.That (() => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt"), Throws.Nothing);
+      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt");
+      Assert.That (Path.GetFileName (downloadedFile.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+      Assert.That (
+          new FileInfo (downloadedFile.FullFilePath).Directory.Parent.FullName,
+          Is.EqualTo (Path.GetTempPath().TrimEnd (Path.DirectorySeparatorChar)));
     }
 
     [Test]
@@ -104,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       IDownloadedFile downloadedFile = null;
 
       Assert.That (() => downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName(), Throws.Nothing);
-      Assert.That ("SampleXmlFile.xml", Is.EqualTo (downloadedFile.FileName));
+      Assert.That (downloadedFile.FileName, Is.EqualTo ("SampleXmlFile.xml"));
     }
 
     [Test]
@@ -306,6 +313,78 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
 
       Assert.That (
           () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (fileName), Throws.Nothing);
+    }
+
+    [Test]
+    public void TestDownloadTwice_WithUnknownFileName_PreventsFileNameConflicts ()
+    {
+      var home = Start();
+      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      button.Click();
+
+      var downloadedFile1 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
+      Assert.That (downloadedFile1.FileName, Is.EqualTo ("SampleFile.txt"));
+      Assert.That (Path.GetFileName (downloadedFile1.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+
+      button.Click();
+
+      var downloadedFile2 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
+      Assert.That (downloadedFile2.FileName, Is.EqualTo ("SampleFile.txt"));
+      Assert.That (Path.GetFileName (downloadedFile2.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+
+      Assert.That (downloadedFile2.FullFilePath, Is.Not.EqualTo (downloadedFile1.FullFilePath));
+    }
+
+    [Test]
+    public void TestDownloadTwice_WithExpectedFileName_PreventsFileNameConflicts ()
+    {
+      var home = Start();
+      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      button.Click();
+
+      var downloadedFile1 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt");
+      Assert.That (downloadedFile1.FileName, Is.EqualTo ("SampleFile.txt"));
+      Assert.That (Path.GetFileName (downloadedFile1.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+
+      button.Click();
+
+      var downloadedFile2 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt");
+      Assert.That (downloadedFile2.FileName, Is.EqualTo ("SampleFile.txt"));
+      Assert.That (Path.GetFileName (downloadedFile2.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+
+      Assert.That (downloadedFile2.FullFilePath, Is.Not.EqualTo (downloadedFile1.FullFilePath));
+    }
+
+    [Test]
+    public void TestDownload_WithUnknownFileName_DeleteFilesRemovesDownloadedFiles ()
+    {
+      var home = Start();
+      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      button.Click();
+
+      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
+
+      Assert.That (File.Exists (downloadedFile.FullFilePath), Is.True);
+
+      Helper.BrowserConfiguration.DownloadHelper.DeleteFiles();
+
+      Assert.That (File.Exists (downloadedFile.FullFilePath), Is.False);
+    }
+
+    [Test]
+    public void TestDownload_WithExpectedFileName_DeleteFilesRemovesDownloadedFiles ()
+    {
+      var home = Start();
+      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      button.Click();
+
+      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt");
+
+      Assert.That (File.Exists (downloadedFile.FullFilePath), Is.True);
+
+      Helper.BrowserConfiguration.DownloadHelper.DeleteFiles();
+
+      Assert.That (File.Exists (downloadedFile.FullFilePath), Is.False);
     }
 
     private WebFormsTestPageObject Start ()

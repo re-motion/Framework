@@ -45,6 +45,12 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     }
 
     /// <inheritdoc/>
+    public string FullFilePath
+    {
+      get { return _fullFilePath; }
+    }
+
+    /// <inheritdoc/>
     public long FileLength
     {
       get { return new FileInfo (_fullFilePath).Length; }

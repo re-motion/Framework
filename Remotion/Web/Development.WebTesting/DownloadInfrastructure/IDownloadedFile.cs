@@ -30,6 +30,12 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     string FileName { get; }
 
     /// <summary>
+    /// Returns the location of the downloaded file.
+    /// Note that the file name may differ from <see cref="FileName"/> due to the way the download is processed by the server.
+    /// </summary>
+    string FullFilePath { get; }
+
+      /// <summary>
     /// Returns the size of the file
     /// </summary>
     long FileLength { get; }
