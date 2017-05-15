@@ -17,6 +17,7 @@
 
 using System;
 using System.Linq;
+using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
 using Remotion.ServiceLocation;
@@ -28,8 +29,15 @@ namespace Remotion.Mixins.UnitTests.Core
 {
   public class TypeGenerationHelper
   {
-    public static readonly IPipeline Pipeline = 
-        SafeServiceLocator.Current.GetInstance<IPipelineFactory>().Create ("TypeGenerationHelper", new MixinParticipant());
+    public static readonly IPipeline Pipeline =
+        SafeServiceLocator.Current.GetInstance<IPipelineFactory>()
+            .Create (
+            "TypeGenerationHelper",
+            MixinParticipant.Create (
+                SafeServiceLocator.Current.GetInstance<IConfigurationProvider>(),
+                SafeServiceLocator.Current.GetInstance<IMixinTypeProvider>(),
+                SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
+                SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>()));
 
     public static Type ForceTypeGeneration (Type targetType)
     {

@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using Remotion.FunctionalProgramming;
 using Remotion.Mixins.Definitions;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
@@ -31,6 +32,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// Generates <see cref="INextCallProxy"/> instances.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
+  [ImplementationFor (typeof (INextCallProxyGenerator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class NextCallProxyGenerator : INextCallProxyGenerator
   {
     public NextCallProxyGenerator ()

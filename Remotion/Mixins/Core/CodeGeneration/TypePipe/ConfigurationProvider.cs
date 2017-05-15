@@ -18,11 +18,13 @@ using System;
 using System.Collections.Generic;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   /// <threadsafety static="true" instance="true"/>
+  [ImplementationFor (typeof (IConfigurationProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class ConfigurationProvider : IConfigurationProvider
   {
     public ConfigurationProvider ()

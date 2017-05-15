@@ -39,6 +39,15 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       PipelineRegistryInitializer.InitializeWithServiceLocator();
     }
 
+    public static MixinParticipant Create (
+        IConfigurationProvider configurationProvider,
+        IMixinTypeProvider mixinTypeProvider,
+        ITargetTypeModifier targetTypeModifier,
+        IConcreteTypeMetadataImporter concreteTypeMetadataImporter)
+    {
+      return new MixinParticipant (configurationProvider, mixinTypeProvider, targetTypeModifier, concreteTypeMetadataImporter);
+    }
+
     private readonly IConfigurationProvider _configurationProvider;
     private readonly IMixinTypeProvider _mixinTypeProvider;
     private readonly ITargetTypeModifier _targetTypeModifier;
@@ -53,7 +62,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
     }
 
-    private MixinParticipant (
+    protected MixinParticipant (
         IConfigurationProvider configurationProvider,
         IMixinTypeProvider mixinTypeProvider,
         ITargetTypeModifier targetTypeModifier,

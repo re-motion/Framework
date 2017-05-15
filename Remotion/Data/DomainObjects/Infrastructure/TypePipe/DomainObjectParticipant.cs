@@ -54,6 +54,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       PipelineRegistryInitializer.InitializeWithServiceLocator();
     }
 
+    public static DomainObjectParticipant Create (ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
+    {
+      return new DomainObjectParticipant (typeDefinitionProvider, interceptedPropertyFinder);
+    }
+
     private static readonly Type s_domainObjectBaseType = typeof (DomainObject);
     private static readonly MethodInfo s_getPublicDomainObjectTypeImplementation = GetInfrastructureHook ("GetPublicDomainObjectTypeImplementation");
     private static readonly MethodInfo s_performConstructorCheck = GetInfrastructureHook ("PerformConstructorCheck");
@@ -75,7 +80,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     {
     }
 
-    private DomainObjectParticipant (ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
+    protected DomainObjectParticipant (ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
     {
       ArgumentUtility.CheckNotNull ("typeDefinitionProvider", typeDefinitionProvider);
       ArgumentUtility.CheckNotNull ("interceptedPropertyFinder", interceptedPropertyFinder);

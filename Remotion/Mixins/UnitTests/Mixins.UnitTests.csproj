@@ -87,6 +87,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\CodeGeneration\IntegrationTests\MixinTypeCodeGeneration\LoadingFlushedCodeTest.cs" />
+    <Compile Include="Core\CodeGeneration\TypePipe\INextCallProxyGeneratorTest.cs" />
+    <Compile Include="Core\CodeGeneration\TypePipe\ITargetTypeModifierTest.cs" />
+    <Compile Include="Core\CodeGeneration\TypePipe\IConcreteTypeMetadataImporterTest.cs" />
+    <Compile Include="Core\CodeGeneration\TypePipe\IMixinTypeProviderTest.cs" />
+    <Compile Include="Core\CodeGeneration\TypePipe\IConfigurationProviderTest.cs" />
     <Compile Include="Core\Definitions\Building\ITargetClassDefinitionBuilderTest.cs" />
     <Compile Include="Core\CodeGeneration\IntegrationTests\ServiceLocation\ParticipantRegistrationTest.cs" />
     <Compile Include="Core\IntegrationTests\Overrides\OverridingTargetMethodsWithShadowing.cs" />
