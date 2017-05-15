@@ -45,7 +45,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var classContext = ClassContextObjectMother.Create (typeof (ClassOverridingMixinMembers), typeof (FakeConcreteMixinType));
       _identifier = DefinitionObjectMother.GetTargetClassDefinition(classContext).Mixins[0].GetConcreteMixinTypeIdentifier();
 
-      _pipeline = SafeServiceLocator.Current.GetInstance<IPipelineFactory>().Create ("MixinSerializationHelper", new MixinParticipant());
+      _pipeline = SafeServiceLocator.Current.GetInstance<IPipelineFactory>()
+          .Create (
+          "MixinSerializationHelper",
+          new MixinParticipant (
+              SafeServiceLocator.Current.GetInstance<IConfigurationProvider>(),
+              SafeServiceLocator.Current.GetInstance<IMixinTypeProvider>(),
+              SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
+              SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>()));
       SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().Register (_pipeline);
     }
 

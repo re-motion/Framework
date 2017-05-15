@@ -21,7 +21,9 @@ using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
+using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.TypePipe;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.TypeAssembly.Implementation;
@@ -36,7 +38,17 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
     [Test]
     public void TypePipe ()
     {
-      var participants = new IParticipant[] { new MixinParticipant(), new DomainObjectParticipant() };
+      var participants = new IParticipant[]
+                         {
+                           new MixinParticipant (
+                               SafeServiceLocator.Current.GetInstance<IConfigurationProvider>(),
+                               SafeServiceLocator.Current.GetInstance<IMixinTypeProvider>(),
+                               SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
+                               SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>()),
+                           new DomainObjectParticipant (
+                               SafeServiceLocator.Current.GetInstance<ITypeDefinitionProvider>(),
+                               SafeServiceLocator.Current.GetInstance<IInterceptedPropertyFinder>())
+                         };
       var pipelineFactory = new RemotionPipelineFactory();
 
       var pipeline = pipelineFactory.Create ("CachePerformanceTest", participants);

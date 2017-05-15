@@ -23,11 +23,13 @@ using JetBrains.Annotations;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
 using Remotion.Reflection.CodeGeneration;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration
 {
   /// <threadsafety static="true" instance="true"/>
+  [ImplementationFor (typeof (IConcreteTypeMetadataImporter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class AttributeBasedMetadataImporter : IConcreteTypeMetadataImporter
   {
     public AttributeBasedMetadataImporter ()

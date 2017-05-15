@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
@@ -72,7 +73,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       var assemblyTrackingPipelineFactory = new AssemblyTrackingPipelineFactory();
       var settings = PipelineSettings.New().SetEnableSerializationWithoutAssemblySaving (true).Build();
-      var participants = new IParticipant[] { new MixinParticipant() };
+      var participants = new IParticipant[]
+                         {
+                           new MixinParticipant (
+                               SafeServiceLocator.Current.GetInstance<IConfigurationProvider>(),
+                               SafeServiceLocator.Current.GetInstance<IMixinTypeProvider>(),
+                               SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
+                               SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>())
+                         };
 
       s_pipeline = assemblyTrackingPipelineFactory.Create ("re-mix-tests", settings, participants);
       s_assemblyTrackingCodeManager = assemblyTrackingPipelineFactory.AssemblyTrackingCodeManager;

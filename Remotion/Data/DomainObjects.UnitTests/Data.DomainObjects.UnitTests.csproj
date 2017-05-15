@@ -223,6 +223,8 @@
     <Compile Include="Infrastructure\ObjectLifetime\ObjectInititalizationContextScopeTest.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\ObjectReferenceInitializationContextTest.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\LoadedObjectDataPendingRegistrationCollectorTest.cs" />
+    <Compile Include="Infrastructure\TypePipe\IInterceptedPropertyFinderTest.cs" />
+    <Compile Include="Infrastructure\TypePipe\ITypeDefinitionProviderTest.cs" />
     <Compile Include="IntegrationTests\DomainObjectAssociatedTransactionHierarchyTest.cs" />
     <Compile Include="IntegrationTests\EagerFetching\EagerFetchingWithInvalidMandatoryRelationsTest.cs" />
     <Compile Include="IntegrationTests\Loading\CanceledLoadOperationTest.cs" />

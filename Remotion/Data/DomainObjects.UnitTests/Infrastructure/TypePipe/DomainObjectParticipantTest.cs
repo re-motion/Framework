@@ -20,7 +20,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 using Remotion.TypePipe.Development.UnitTesting.ObjectMothers.CodeGeneration;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.MutableReflection;
@@ -48,9 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       _typeDefinitionProviderMock = MockRepository.GenerateStrictMock<ITypeDefinitionProvider>();
       _interceptedPropertyFinderMock = MockRepository.GenerateStrictMock<IInterceptedPropertyFinder>();
 
-      _participant = new DomainObjectParticipant();
-      PrivateInvoke.SetNonPublicField (_participant, "_typeDefinitionProvider", _typeDefinitionProviderMock);
-      PrivateInvoke.SetNonPublicField (_participant, "_interceptedPropertyFinder", _interceptedPropertyFinderMock);
+      _participant = new DomainObjectParticipant (_typeDefinitionProviderMock, _interceptedPropertyFinderMock);
 
       _proxyTypeAssemblyContext = ProxyTypeAssemblyContextObjectMother.Create (requestedType: typeof (Order));
       _proxyType = _proxyTypeAssemblyContext.ProxyType;

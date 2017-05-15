@@ -38,21 +38,22 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       PipelineRegistryInitializer.InitializeWithServiceLocator();
     }
 
+    [Obsolete ("Use constructor instead. (Version 1.17.13")]
+    public static MixinParticipant Create (
+        IConfigurationProvider configurationProvider,
+        IMixinTypeProvider mixinTypeProvider,
+        ITargetTypeModifier targetTypeModifier,
+        IConcreteTypeMetadataImporter concreteTypeMetadataImporter)
+    {
+      return new MixinParticipant (configurationProvider, mixinTypeProvider, targetTypeModifier, concreteTypeMetadataImporter);
+    }
+
     private readonly IConfigurationProvider _configurationProvider;
     private readonly IMixinTypeProvider _mixinTypeProvider;
     private readonly ITargetTypeModifier _targetTypeModifier;
     private readonly IConcreteTypeMetadataImporter _concreteTypeMetadataImporter;
 
-    public MixinParticipant ()
-        : this (
-            new ConfigurationProvider(),
-            new MixinTypeGeneratorFacade(),
-            new TargetTypeGeneratorFacade (new NextCallProxyGenerator()),
-            new AttributeBasedMetadataImporter())
-    {
-    }
-
-    private MixinParticipant (
+    public MixinParticipant (
         IConfigurationProvider configurationProvider,
         IMixinTypeProvider mixinTypeProvider,
         ITargetTypeModifier targetTypeModifier,
