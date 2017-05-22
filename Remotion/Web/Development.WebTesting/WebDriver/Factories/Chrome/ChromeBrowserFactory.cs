@@ -70,8 +70,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
 
       var driver = new ChromeDriver (driverService, chromeOptions);
 
-      CloseWelcomeTab (driver);
-
       return driver;
     }
 
@@ -83,22 +81,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
       driverService.LogPath = WebDriverLogUtility.CreateLogFile (_chromeConfiguration.LogsDirectory, _chromeConfiguration.BrowserName);
 
       return driverService;
-    }
-
-    private void CloseWelcomeTab (ChromeDriver driver)
-    {
-      //The argument "--no-first-run" is not working correctly with Chrome v53. 
-      //It does not create any first run artifacts, but does not block the first run "Welcome" tab.
-      //Reevulate in later Chrome versions, as just relying on this command line argument is more clean than closing the tab after creating the ChromeDriver.
-      
-      //When an empty CustomUserDirectory is used, Chrome launches a first-time "Welcome" Tab. 
-      //This has to be closed before continuing with the tests
-      if (driver.WindowHandles.Count == 2)
-      {
-        driver.SwitchTo().Window (driver.WindowHandles[1]);
-        driver.Close();
-        driver.SwitchTo().Window (driver.WindowHandles[0]);
-      }
     }
   }
 }
