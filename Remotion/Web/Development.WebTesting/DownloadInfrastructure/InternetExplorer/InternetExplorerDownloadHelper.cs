@@ -45,6 +45,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
     private readonly TimeSpan _downloadStartedGracePeriod;
     private readonly bool _cleanUpDownloadFolderOnError;
     private readonly string _downloadDirectory;
+    private readonly InternetExplorerNativeWindowDetection _internetExplorerNativeWindowsDetection;
+    private readonly InternetExplorerNativeWindowAutomation _internetExplorerNativeWindowAutomation;
 
     /// <summary>
     /// Creates a new <see cref="InternetExplorerDownloadHelper"/>.
@@ -70,6 +72,12 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
       var userProfilePath = Environment.GetFolderPath (Environment.SpecialFolder.UserProfile);
 
       _downloadDirectory = Path.Combine (userProfilePath, c_downloadsDirectoryName);
+
+      var nativeMethodsExtended = new Win32WindowsNativeMethodsExtended ();
+      var windowFinder = new NativeWindowFinder (new Win32WindowsNativeMethods());
+
+      _internetExplorerNativeWindowsDetection = new InternetExplorerNativeWindowDetection (windowFinder, nativeMethodsExtended);
+      _internetExplorerNativeWindowAutomation = new InternetExplorerNativeWindowAutomation();
     }
 
     public TimeSpan DownloadStartedGracePeriod
@@ -136,13 +144,9 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
 
     private void EnsureBrowserRespondedToTriggeredDownload (TimeSpan downloadStartedTimeout)
     {
-      var nativeMethodsExtended = new Win32WindowsNativeMethodsExtended ();
-      var windowFinder = new NativeWindowFinder (new Win32WindowsNativeMethods());
-
-      var internetExplorerNativeWindowsHandler = new InternetExplorerNativeWindowHandler (windowFinder, nativeMethodsExtended);
       try
       {
-        internetExplorerNativeWindowsHandler.WaitForDownloadInformationBar (downloadStartedTimeout);
+        _internetExplorerNativeWindowsDetection.WaitForDownloadInformationBar (downloadStartedTimeout);
       }
       catch (InvalidOperationException ex)
       {
@@ -152,10 +156,12 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
 
     private void StartBrowserDownload ()
     {
-      //Wait a little bit, following keypress does not get registered correctly when we go in too fast. 
+      //Wait a little bit, following action does not get registered correctly when we go in too fast. 
       //Needs min. 400 ms on a fast developer machine. So we take 400 * 3 to be sure it works on slower machines.
-      Thread.Sleep (1200); 
-      SendKeys.SendWait ("%s"); //"Alt + s" -> Press the save button of the download information bar
+      Thread.Sleep (1200);
+      
+      var downloadInformationBarWindowInformation = _internetExplorerNativeWindowsDetection.GetDownloadInformationBarWindowInformation();
+      _internetExplorerNativeWindowAutomation.ClickDownloadInformationBarSaveButton (downloadInformationBarWindowInformation);
     }
 
     private void AfterDownloadCompleted ()
@@ -163,11 +169,13 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
       var nativeMethodsExtended = new Win32WindowsNativeMethodsExtended();
       var windowFinder = new NativeWindowFinder (new Win32WindowsNativeMethods());
       
-      var internetExplorerNativeWindosHandler = new InternetExplorerNativeWindowHandler (windowFinder, nativeMethodsExtended);
+      var internetExplorerNativeWindosHandler = new InternetExplorerNativeWindowDetection (windowFinder, nativeMethodsExtended);
 
       for (var i = 0; i < c_maximumAttemptyForClosingDownloadInformationBar && internetExplorerNativeWindosHandler.IsDownloadInformationBarVisible(); i++)
       {
-        SendKeys.SendWait ("%q"); //"Alt + q" -> Close the download information bar
+        var downloadInformationBarWindowInformation = _internetExplorerNativeWindowsDetection.GetDownloadInformationBarWindowInformation();
+        _internetExplorerNativeWindowAutomation.CloseDownloadInformationBar (downloadInformationBarWindowInformation);
+
         Thread.Sleep (s_retryIntervalForClosingDownloadInformationBar);
       }
 

@@ -20,7 +20,7 @@ using Remotion.WindowFinder.Windows;
 namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer.Win32WindowSupport
 {
   /// <summary>
-  /// Declares the native methods used by the <see cref="InternetExplorerNativeWindowHandler"/>. See <see cref="Win32WindowsNativeMethodsExtended"/> for the implementation. 
+  /// Declares the native methods used by the <see cref="InternetExplorerNativeWindowDetection"/>. See <see cref="Win32WindowsNativeMethodsExtended"/> for the implementation. 
   /// </summary>
   public interface IWin32WindowsNativeMethodsExtended : IWin32WindowsNativeMethods
   {

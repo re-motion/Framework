@@ -52,6 +52,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Remotion.WindowFinder, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Remotion.WindowFinder.2.0.0-alpha-001\lib\net45\Remotion.WindowFinder.dll</HintPath>
       <Private>True</Private>
@@ -66,6 +67,8 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Linq" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WebDriver, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Selenium.WebDriver.2.48.0\lib\net40\WebDriver.dll</HintPath>
@@ -89,9 +92,10 @@
     <Compile Include="DownloadInfrastructure\IDownloadFileFinderStrategy.cs" />
     <Compile Include="DownloadInfrastructure\IDownloadHelper.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerDownloadHelper.cs" />
-    <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerNativeWindowHandler.cs" />
+    <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerNativeWindowDetection.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerUnknownFileNameFileFinderStrategy.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerExpectedFileNameFinderStrategy.cs" />
+    <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerNativeWindowAutomation.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\Win32WindowSupport\IWin32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\Win32WindowSupport\Win32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\PartialFileState.cs" />

@@ -39,15 +39,23 @@ namespace Remotion.Web.Development.WebTesting.TestSite
         case "txt":
           AddFileToResponse (context, "SampleFile.txt");
           break;
+        case "withoutExtension":
+          AddFileToResponse (context, "SampleFile.txt", "SampleFile");
+          break;
         case "longRunning":
           LongRunningResponse (context);
           break;
         default:
-          throw new HttpException (404, "Parameter 'testMode' only supports 'txt', 'xml' and 'longRunning'.");
+          throw new HttpException (404, "Parameter 'testMode' only supports 'txt', 'xml', 'withoutExtension', and 'longRunning'.");
       }
     }
 
     private static void AddFileToResponse (HttpContext context, string file)
+    {
+      AddFileToResponse (context, file, file);
+    }
+
+    private static void AddFileToResponse (HttpContext context, string file, string fileName)
     {
       var response = context.Response;
       var fullFilePath = context.Server.MapPath ("~/" + file);
@@ -55,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       response.Clear();
       response.ClearHeaders();
       response.ClearContent();
-      response.AddHeader ("Content-Disposition", "attachment; filename=" + file);
+      response.AddHeader ("Content-Disposition", "attachment; filename=" + fileName);
       response.AddHeader ("Content-Length", file.Length.ToString());
       response.ContentType = "text/plain";
       response.Flush();

@@ -387,6 +387,23 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       Assert.That (File.Exists (downloadedFile.FullFilePath), Is.False);
     }
 
+    [Test]
+    public void TestDownload_InternetExplorer_HandleDownloadWithoutFileExtension ()
+    {
+      const string fileName = "SampleFile";
+
+      var home = Start();
+      var button = home.Scope.FindId ("body_DownloadFileWithoutFileExtension");
+      button.Click();
+
+      //When downloading a file without a file extension, the Internet Explorer download information bar does not contain an Open-button.
+      //This can lead to problems when trying to automate the button click.
+      //This unit test is testing if our framework can handle the download information bar when the open-button is missing.
+      //The test is not restricted to Internet Explorer, to ensure that no browser has problem with this behavior.
+      Assert.That (
+        () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (fileName), Throws.Nothing);
+    }
+
     private WebFormsTestPageObject Start ()
     {
       return Start<WebFormsTestPageObject> ("FileDownloadTest.aspx");

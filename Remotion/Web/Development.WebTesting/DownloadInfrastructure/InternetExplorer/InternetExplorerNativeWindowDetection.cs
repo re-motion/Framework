@@ -27,9 +27,9 @@ using Remotion.WindowFinder;
 namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer
 {
   /// <summary>
-  /// Handles the native windows (like the download information bar or the download manager) for the Internet Explorer download.
+  /// Detects the native windows (like the download information bar or the download manager) for the Internet Explorer download.
   /// </summary>
-  public sealed class InternetExplorerNativeWindowHandler
+  public sealed class InternetExplorerNativeWindowDetection
   {
     private const string c_classNameOfDownloadInformationBar = "Frame Notification Bar";
     private const string c_classNameOfDownloadWindow = "#32770";
@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
     private readonly IWindowFinder _nativeWindowFinder;
     private readonly IWin32WindowsNativeMethodsExtended _nativeWindowsMethods;
 
-    public InternetExplorerNativeWindowHandler ([NotNull] IWindowFinder nativeWindowFinder, [NotNull] IWin32WindowsNativeMethodsExtended nativeWindowsMethods)
+    public InternetExplorerNativeWindowDetection ([NotNull] IWindowFinder nativeWindowFinder, [NotNull] IWin32WindowsNativeMethodsExtended nativeWindowsMethods)
     {
       ArgumentUtility.CheckNotNull ("nativeWindowFinder", nativeWindowFinder);
       ArgumentUtility.CheckNotNull ("nativeWindowsMethods", nativeWindowsMethods);
@@ -51,6 +51,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
 
     /// <summary>
     /// Waits for the download information bar to appear.
+    /// Assumes that the Internet Explorer window is in the foreground.
     /// </summary>
     /// <exception cref="InvalidOperationException">
     /// <para>Thrown if either no download information bar appeared until the <paramref name="downloadTimeout"/> </para>
@@ -70,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
                 "The Internet Explorer Download Manager window is open. It is not possible to correctly handle the download until the window has been closed. " +
                 "Ensure that there is no iexplore.exe instance running in the background and that the Download Manager Window is closed.");
           }
-            
+
           throw new InvalidOperationException ("Could not find the download information bar. This is probably because the download was not triggered correctly.");
         }
        
@@ -80,24 +81,39 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
 
     /// <summary>
     /// Checks if the download information bar is currently visible.
+    /// Assumes that the Internet Explorer window is in the foreground.
     /// </summary>
     public bool IsDownloadInformationBarVisible ()
     {
       var foregroundWindowHandle = _nativeWindowsMethods.GetForegroundWindow();
       var processID = _nativeWindowsMethods.GetWindowThreadProcessID (foregroundWindowHandle);
 
-      return IsSubclassVisible (processID, c_classNameOfDownloadInformationBar);
-    }
-    
-    private bool IsSubclassVisible (int processID, string className)
-    {
       var findWindows = _nativeWindowFinder.FindWindows (
-          new WindowFilterCriteria { IncludeChildWindows = true, ProcessID = processID, ClassName = new Regex (className) });
+        new WindowFilterCriteria { IncludeChildWindows = true, ProcessID = processID, ClassName = new Regex (c_classNameOfDownloadInformationBar) });
 
       if (findWindows.Length != 1)
         return false;
 
       return _nativeWindowsMethods.IsWindowVisible (findWindows.First().WindowHandle);
+    }
+
+    /// <summary>
+    /// Returns the download information bar of the current window.
+    /// Assumes that the Internet Explorer window is in the foreground.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">If none ore more than one download information bar is found.</exception>
+    public WindowInformation GetDownloadInformationBarWindowInformation ()
+    {
+      var foregroundWindowHandle = _nativeWindowsMethods.GetForegroundWindow();
+      var processID = _nativeWindowsMethods.GetWindowThreadProcessID (foregroundWindowHandle);
+
+      var findWindows = _nativeWindowFinder.FindWindows (
+        new WindowFilterCriteria { IncludeChildWindows = true, ProcessID = processID, ClassName = new Regex (c_classNameOfDownloadInformationBar) });
+
+      if (findWindows.Length != 1)
+        throw new InvalidOperationException ("The download bar is not visible.");
+
+      return findWindows.First();
     }
 
     private bool IsDownloadManagerOpen ()
