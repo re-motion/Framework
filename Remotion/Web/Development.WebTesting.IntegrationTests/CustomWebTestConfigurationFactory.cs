@@ -28,9 +28,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     protected override IChromeConfiguration CreateChromeConfiguration (WebTestConfigurationSection configSettings)
     {
       var chromeVersionArchivePath = ConfigurationManager.AppSettings["ChromeVersionArchive"];
+      var advancedChromeOptions = new AdvancedChromeOptions();
 
       if (string.IsNullOrEmpty (chromeVersionArchivePath))
-        return new ChromeConfiguration (configSettings);
+        return new ChromeConfiguration (configSettings, advancedChromeOptions);
 
       var customChromeBinary = PrepareCustomChromeBinary (chromeVersionArchivePath);
 
@@ -38,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var chromeExecutable = ChromeExecutable.CreateForCustomInstance (customChromeBinary, customUserDirectoryPath);
 
-      return new ChromeConfiguration (configSettings, chromeExecutable, true);
+      return new ChromeConfiguration (configSettings, chromeExecutable, advancedChromeOptions);
     }
 
     private string PrepareCustomChromeBinary (string chromeVersionArchivePath)

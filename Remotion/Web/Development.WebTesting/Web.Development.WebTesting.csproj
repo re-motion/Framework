@@ -100,6 +100,7 @@
     <Compile Include="DownloadInfrastructure\InternetExplorer\Win32WindowSupport\Win32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\PartialFileState.cs" />
     <Compile Include="Utilities\DownloadResultNotFoundException.cs" />
+    <Compile Include="WebDriver\Configuration\Chrome\AdvancedChromeOptions.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ExtendedChromeOptions.cs" />
     <Compile Include="WebDriver\Factories\Chrome\ChromeBrowserSession.cs" />
     <Compile Include="WebDriver\Factories\IBrowserSession.cs" />
