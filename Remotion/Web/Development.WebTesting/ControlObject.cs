@@ -83,7 +83,7 @@ namespace Remotion.Web.Development.WebTesting
     protected abstract ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy ([NotNull] ElementScope scope);
 
     /// <summary>
-    /// Convinience method for creating a new <see cref="UnspecifiedPageObject"/>.
+    /// Convenience method for creating a new <see cref="UnspecifiedPageObject"/>.
     /// </summary>
     protected UnspecifiedPageObject UnspecifiedPage ()
     {

@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting
     private static readonly ILog s_log = LogManager.GetLogger (typeof (CoypuElementScopeFillInWithAndSendKeysExtensions));
 
     /// <summary>
-    /// ASP.NET WebForms-ready &amp; IE-compatiable version for Coypu's <see cref="ElementScope.SendKeys"/> method.
+    /// ASP.NET WebForms-ready &amp; IE-compatible version for Coypu's <see cref="ElementScope.SendKeys"/> method.
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
     /// <param name="value">The value to fill in.</param>

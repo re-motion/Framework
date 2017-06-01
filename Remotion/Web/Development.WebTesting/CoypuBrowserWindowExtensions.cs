@@ -59,7 +59,7 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// Returns the native Selenium <see cref="IWebDriver"/> instance which correspons to the current window.
+    /// Returns the native Selenium <see cref="IWebDriver"/> instance which corresponds to the current window.
     /// </summary>
     public static IWebDriver GetNativeFromBrowserWindow ([NotNull] this BrowserWindow window)
     {

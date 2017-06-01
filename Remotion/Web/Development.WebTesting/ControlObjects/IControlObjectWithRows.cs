@@ -73,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     void GoToSpecificPage (int page);
 
     /// <summary>
-    /// Switches to the first list apge.
+    /// Switches to the first list page.
     /// </summary>
     void GoToFirstPage ();
 

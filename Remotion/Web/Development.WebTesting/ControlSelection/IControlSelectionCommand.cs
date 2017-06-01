@@ -21,7 +21,7 @@ using JetBrains.Annotations;
 namespace Remotion.Web.Development.WebTesting.ControlSelection
 {
   /// <summary>
-  /// Base interface for all <typeparamref name="TControlObject"/> selection commands. A selection command encapsualtes an implementation
+  /// Base interface for all <typeparamref name="TControlObject"/> selection commands. A selection command encapsulates an implementation
   /// of <see cref="IControlSelector"/> and all necessary selection parameters.
   /// </summary>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>

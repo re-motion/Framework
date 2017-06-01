@@ -75,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// Returns the <see cref="PageObject"/>'s parent context, e.g. a <see cref="PageObject"/> respresenting the parent frame or the parent window.
+    /// Returns the <see cref="PageObject"/>'s parent context, e.g. a <see cref="PageObject"/> representing the parent frame or the parent window.
     /// This property returns <see langword="null"/> for root contexts.
     /// </summary>
     public PageObjectContext ParentContext

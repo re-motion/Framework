@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       try
       {
         home.GetListAsGrid().Single();
-        Assert.Fail ("Should not be able to unambigously find a BOC list.");
+        Assert.Fail ("Should not be able to unambiguously find a BOC list.");
       }
       catch (AmbiguousException)
       {

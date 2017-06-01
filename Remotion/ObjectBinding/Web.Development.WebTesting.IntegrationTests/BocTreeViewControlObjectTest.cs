@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       try
       {
         home.GetTreeView().Single();
-        Assert.Fail ("Should not be able to unambigously find a BOC tree view.");
+        Assert.Fail ("Should not be able to unambiguously find a BOC tree view.");
       }
       catch (AmbiguousException)
       {

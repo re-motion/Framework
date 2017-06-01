@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       try
       {
         home.GetBooleanValue().Single();
-        Assert.Fail ("Should not be able to unambigously find a BOC boolean value.");
+        Assert.Fail ("Should not be able to unambiguously find a BOC boolean value.");
       }
       catch (AmbiguousException)
       {

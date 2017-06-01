@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       try
       {
         home.GetMultilineTextValue().Single();
-        Assert.Fail ("Should not be able to unambigously find a BOC text.");
+        Assert.Fail ("Should not be able to unambiguously find a BOC text.");
       }
       catch (AmbiguousException)
       {

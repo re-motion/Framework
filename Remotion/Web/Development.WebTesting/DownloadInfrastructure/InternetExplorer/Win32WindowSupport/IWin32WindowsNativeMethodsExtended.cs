@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
   public interface IWin32WindowsNativeMethodsExtended : IWin32WindowsNativeMethods
   {
     /// <summary>
-    /// Wrapps GetForegroundWindow.
+    /// Wraps GetForegroundWindow.
     /// </summary>
     /// <returns>
     /// The return value is a handle to the foreground window. 
@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
     IntPtr GetForegroundWindow ();
 
     /// <summary>
-    /// Wrapps IsWindowVisible.
+    /// Wraps IsWindowVisible.
     /// </summary>
     /// <returns>
     /// If the specified window, its parent window, its parent's parent window, and so forth, have the WS_VISIBLE style, the return value is nonzero. 

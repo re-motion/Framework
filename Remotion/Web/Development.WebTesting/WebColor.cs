@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Web.Development.WebTesting
 {
   /// <summary>
-  /// Represents an RGB color (possiblity transparent) without any known-color-handling (like <see cref="System.Drawing.Color"/>).
+  /// Represents an RGB color (possibility transparent) without any known-color-handling (like <see cref="System.Drawing.Color"/>).
   /// </summary>
   /// <remarks>
   /// This struct has been created due to some very special behavior in .NET's <see cref="System.Drawing.Color"/> struct (namely: well-known colors,

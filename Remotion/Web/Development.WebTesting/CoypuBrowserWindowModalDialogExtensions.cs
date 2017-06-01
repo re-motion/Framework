@@ -24,7 +24,7 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 namespace Remotion.Web.Development.WebTesting
 {
   /// <summary>
-  /// Various extension methods for Coypu's <see cref="BrowserWindow"/> class regaring modal dialog handling.
+  /// Various extension methods for Coypu's <see cref="BrowserWindow"/> class regarding modal dialog handling.
   /// </summary>
   public static class CoypuBrowserWindowModalDialogExtensions
   {

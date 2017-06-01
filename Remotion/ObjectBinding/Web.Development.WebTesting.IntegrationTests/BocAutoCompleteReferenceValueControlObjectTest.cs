@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       try
       {
         home.GetAutoComplete().Single();
-        Assert.Fail ("Should not be able to unambigously find a BOC auto complete reference value.");
+        Assert.Fail ("Should not be able to unambiguously find a BOC auto complete reference value.");
       }
       catch (AmbiguousException)
       {
