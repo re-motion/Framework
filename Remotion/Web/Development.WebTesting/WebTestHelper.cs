@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Coypu;
@@ -26,6 +27,7 @@ using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -97,7 +99,8 @@ namespace Remotion.Web.Development.WebTesting
     /// via custom <see cref="WebTestConfigurationFactory"/>.
     /// </remarks>
     [PublicAPI]
-    public static WebTestHelper CreateFromConfiguration<TFactory> () where TFactory: WebTestConfigurationFactory, new()
+    public static WebTestHelper CreateFromConfiguration<TFactory> ()
+        where TFactory : WebTestConfigurationFactory, new()
     {
       return new WebTestHelper (new TFactory());
     }
@@ -106,6 +109,7 @@ namespace Remotion.Web.Development.WebTesting
 
     private readonly IBrowserConfiguration _browserConfiguration;
     private readonly ITestInfrastructureConfiguration _testInfrastructureConfiguration;
+    private readonly List<IBrowserSession> _browserSessions = new List<IBrowserSession>();
     private BrowserSession _mainBrowserSession;
 
     /// <summary>
@@ -117,7 +121,7 @@ namespace Remotion.Web.Development.WebTesting
     protected WebTestHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationFactory", webTestConfigurationFactory);
-      
+
       _browserConfiguration = webTestConfigurationFactory.CreateBrowserConfiguration();
       _testInfrastructureConfiguration = webTestConfigurationFactory.CreateTestInfrastructureConfiguration();
     }
@@ -152,6 +156,9 @@ namespace Remotion.Web.Development.WebTesting
       s_log.InfoFormat ("Coypu version: " + typeof (Element).Assembly.GetName().Version);
 
       // Note: otherwise the Selenium web driver may get confused when searching for windows.
+      // Confusion could theoretically happen when calling Coypu.BrowserSession.FindWindow(string locator), as the window gets found per title.
+      // This method only gets called when using ExpectNewWindow or ExpectNewPopWindow.
+      // See RM-6731.
       EnsureAllBrowserWindowsAreClosed();
 
       _mainBrowserSession = CreateNewBrowserSession();
@@ -178,16 +185,19 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Creates a new browser session using the configured settings from <see cref="WebTestConfigurationFactory"/>.
     /// </summary>
-    /// <param name="maximiseWindow">Specified whether the new browser session's window should be maximized.</param>
+    /// <param name="maximizeWindow">Specified whether the new browser session's window should be maximized.</param>
     /// <returns>The new browser session.</returns>
-    public BrowserSession CreateNewBrowserSession (bool maximiseWindow = true)
+    public BrowserSession CreateNewBrowserSession (bool maximizeWindow = true)
     {
       using (new PerformanceTimer (s_log, string.Format ("Created new {0} browser session.", _browserConfiguration.BrowserName)))
       {
-        var browser = _browserConfiguration.BrowserFactory.CreateBrowser(_testInfrastructureConfiguration);
-        if (maximiseWindow)
-          browser.MaximiseWindow();
-        return browser;
+        var browserResult = _browserConfiguration.BrowserFactory.CreateBrowser (_testInfrastructureConfiguration);
+        _browserSessions.Add (browserResult);
+
+        if (maximizeWindow)
+          browserResult.Value.MaximiseWindow();
+
+        return browserResult.Value;
       }
     }
 
@@ -237,8 +247,8 @@ namespace Remotion.Web.Development.WebTesting
       }
 
       s_log.InfoFormat ("Finished test: {0} [has succeeded: {1}].", _testName, hasSucceeded);
-    
-      _browserConfiguration.DownloadHelper.DeleteFiles ();
+
+      _browserConfiguration.DownloadHelper.DeleteFiles();
     }
 
     private bool ShouldTakeScreenshots ()
@@ -253,14 +263,11 @@ namespace Remotion.Web.Development.WebTesting
     {
       s_log.InfoFormat ("WebTestHelper.OnFixtureTearDown() has been called.");
 
-      if (_mainBrowserSession != null)
-        _mainBrowserSession.Dispose();
+      foreach (var browserSession in _browserSessions)
+        browserSession.Dispose();
 
-      s_log.InfoFormat ("MainBrowserSession has been disposed.");
-
-      // Note: otherwise the system may get clogged, if the Selenium web driver implementation does not properly close all windows in all situations.
-      EnsureAllBrowserWindowsAreClosed();
-      EnsureAllWebDriverInstancesAreClosed();
+      s_log.InfoFormat ("{0} sessions have been disposed.", _browserSessions.Count);
+      _browserSessions.Clear();
     }
 
     private void EnsureAllBrowserWindowsAreClosed ()
@@ -274,16 +281,6 @@ namespace Remotion.Web.Development.WebTesting
         return;
 
       ProcessUtils.KillAllProcessesWithName (browserProcessName);
-    }
-
-    private void EnsureAllWebDriverInstancesAreClosed ()
-    {
-      var webDriverProcessName = _browserConfiguration.WebDriverExecutableName;
-      if (webDriverProcessName == null)
-        return;
-
-      s_log.InfoFormat ("Killing all processes named '{0}'.", _browserConfiguration.WebDriverExecutableName);
-      ProcessUtils.KillAllProcessesWithName (webDriverProcessName);
     }
 
     private void EnsureCursorIsOutsideBrowserWindow ()

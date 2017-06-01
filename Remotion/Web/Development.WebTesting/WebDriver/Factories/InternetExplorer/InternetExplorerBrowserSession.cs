@@ -15,21 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using JetBrains.Annotations;
-using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 
-namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
+namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplorer
 {
   /// <summary>
-  /// Factory to create <see cref="IBrowserSession"/>s.
+  /// Implements <see cref="BrowserSession"/> for the InternetExplorer browser.
   /// </summary>
-  public interface IBrowserFactory
+  public class InternetExplorerBrowserSession : BrowserSessionBase<IInternetExplorerConfiguration>
   {
-    /// <summary>
-    /// Creates a <see cref="IBrowserSession"/>.
-    /// </summary>
-    /// <returns>A new <see cref="IBrowserSession"/>.</returns>
-    [NotNull]
-    IBrowserSession CreateBrowser ([NotNull] ITestInfrastructureConfiguration testInfrastructureConfiguration);
+    public InternetExplorerBrowserSession ([NotNull] BrowserSession value, IInternetExplorerConfiguration configuration, int driverProcessId)
+        : base (value, configuration, driverProcessId)
+    {
+    }
   }
 }

@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 using Coypu;
 using Coypu.Drivers;
@@ -27,7 +26,7 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplor
 namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplorer
 {
   /// <summary>
-  /// Responsible for creating a new Chrome browser, configured based on <see cref="IInternetExplorerConfiguration"/> and <see cref="ITestInfrastructureConfiguration"/>.
+  /// Responsible for creating a new InternetExplorer browser, configured based on <see cref="IInternetExplorerConfiguration"/> and <see cref="ITestInfrastructureConfiguration"/>.
   /// </summary>
   public class InternetExplorerBrowserFactory : IBrowserFactory
   {
@@ -40,14 +39,17 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplor
       _internetExplorerConfiguration = internetExplorerConfiguration;
     }
 
-    public BrowserSession CreateBrowser (ITestInfrastructureConfiguration testInfrastructureConfiguration)
+    public IBrowserSession CreateBrowser (ITestInfrastructureConfiguration testInfrastructureConfiguration)
     {
       ArgumentUtility.CheckNotNull ("testInfrastructureConfiguration", testInfrastructureConfiguration);
 
       var sessionConfiguration = CreateSessionConfiguration (testInfrastructureConfiguration);
-      var driver = CreateInternetExplorerDriver();
+      int driverProcessId;
+      var driver = CreateInternetExplorerDriver (out driverProcessId);
 
-      return new BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.InternetExplorer));
+      var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.InternetExplorer));
+
+      return new InternetExplorerBrowserSession (session, _internetExplorerConfiguration, driverProcessId);
     }
 
     private SessionConfiguration CreateSessionConfiguration (ITestInfrastructureConfiguration testInfrastructureConfiguration)
@@ -64,12 +66,14 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplor
              };
     }
 
-    private InternetExplorerDriver CreateInternetExplorerDriver ()
+    private InternetExplorerDriver CreateInternetExplorerDriver (out int driverProcessId)
     {
       var driverService = CreateInternetExplorerDriverService();
       var options = _internetExplorerConfiguration.CreateInternetExplorerOptions();
 
       var driver = new InternetExplorerDriver (driverService, options);
+
+      driverProcessId = driverService.ProcessId;
 
       return driver;
     }
@@ -77,7 +81,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplor
     private InternetExplorerDriverService CreateInternetExplorerDriverService ()
     {
       var driverService = InternetExplorerDriverService.CreateDefaultService();
-      driverService.LogFile = WebDriverLogUtility.CreateLogFile (_internetExplorerConfiguration.LogsDirectory, _internetExplorerConfiguration.BrowserName);
+      driverService.LogFile = WebDriverLogUtility.CreateLogFile (
+          _internetExplorerConfiguration.LogsDirectory,
+          _internetExplorerConfiguration.BrowserName);
       driverService.LoggingLevel = InternetExplorerDriverLogLevel.Info;
       return driverService;
     }

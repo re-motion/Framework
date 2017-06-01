@@ -100,6 +100,10 @@
     <Compile Include="DownloadInfrastructure\InternetExplorer\Win32WindowSupport\Win32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\PartialFileState.cs" />
     <Compile Include="Utilities\DownloadResultNotFoundException.cs" />
+    <Compile Include="WebDriver\Configuration\Chrome\ExtendedChromeOptions.cs" />
+    <Compile Include="WebDriver\Factories\Chrome\ChromeBrowserSession.cs" />
+    <Compile Include="WebDriver\Factories\IBrowserSession.cs" />
+    <Compile Include="WebDriver\Factories\InternetExplorer\InternetExplorerBrowserSession.cs" />
     <Compile Include="WebDriver\Factories\Chrome\ChromeBrowserFactory.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeConfiguration.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeExecutable.cs" />
@@ -114,6 +118,7 @@
     <Compile Include="Configuration\ITestInfrastructureConfiguration.cs" />
     <Compile Include="WebDriver\Configuration\BrowserConfigurationBase.cs" />
     <Compile Include="Configuration\TestInfrastructureConfiguration.cs" />
+    <Compile Include="WebDriver\Factories\BrowserSessionBase.cs" />
     <Compile Include="WebTestConfigurationFactory.cs" />
     <Compile Include="Configuration\WebTestConfigurationSection.cs" />
     <Compile Include="WebDriver\Factories\WebDriverLogUtility.cs" />
