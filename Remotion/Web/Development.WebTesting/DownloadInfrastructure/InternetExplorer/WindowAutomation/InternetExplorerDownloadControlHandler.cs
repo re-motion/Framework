@@ -83,11 +83,24 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
           }
         }
 
+        // Handle the download window
+        var downloadWindow = GetDownloadWindow();
+        if (downloadWindow != null)
+        {
+          // Pressing the save button too early does not cause a click event to happen, so we have to wait some time
+          Thread.Sleep (s_waitTimeBeforeInteractingWithNewAutomationElement);
+
+          downloadWindow.Save();
+
+          hasDownloadStarted = true;
+          break;
+        }
+
         // Handle the download bar
         var downloadBar = GetDownloadBar();
         if (downloadBar != null)
         {
-          // Pressing the save button to early does not cause a click event to happen
+          // Pressing the save button too early does not cause a click event to happen, so we have to wait some time
           Thread.Sleep (s_waitTimeBeforeInteractingWithNewAutomationElement);
 
           downloadBar.Save();
@@ -160,6 +173,23 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
         return null;
 
       return InternetExplorerDownloadManagerWrapper.CreateFromHandle (downloadManagerWindow.WindowHandle);
+    }
+
+    [CanBeNull]
+    private InternetExplorerDownloadWindowWrapper GetDownloadWindow ()
+    {
+      // Find the download window
+      var downloadWindow = _windowFinder.FindWindows (
+          new WindowFilterCriteria
+          {
+              ClassName = new Regex (c_classNameOfDownloadWindow),
+              IncludeChildWindows = true
+          }).FirstOrDefault (w => w.WindowText.Contains (c_productNameContainedInDownloadManagerTitle) && _win32WindowsNativeMethodsExtended.IsWindowVisible (w.WindowHandle));
+
+      if (downloadWindow == null)
+        return null;
+
+      return InternetExplorerDownloadWindowWrapper.CreateFromHandle (downloadWindow.WindowHandle);
     }
   }
 }

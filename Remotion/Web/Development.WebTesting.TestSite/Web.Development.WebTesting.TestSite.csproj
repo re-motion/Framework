@@ -89,6 +89,7 @@
     </Content>
     <Content Include="packages.config" />
     <Content Include="FileDownloadHandler.ashx" />
+    <Content Include="SampleZipFile.zip" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

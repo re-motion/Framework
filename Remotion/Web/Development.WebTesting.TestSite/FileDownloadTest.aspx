@@ -43,9 +43,12 @@
     <a id="DownloadWith5SecondTimeout" href="FileDownloadHandler.ashx?testMode=longRunning" target="_blank" runat="server">Download which does not update the file for 5 seconds</a>
   </p>
   
-  <h4>Special use case</h4>
+  <h4>Special use cases</h4>
   <p>
     <a id="DownloadFileWithoutFileExtension" target="_blank" href="FileDownloadHandler.ashx?testMode=withoutExtension" runat="server">Download file without file extension</a>
+  </p>
+  <p>
+    <a id="DownloadZipFile" href="FileDownloadHandler.ashx?testMode=zip" runat="server">Download zip file</a>
   </p>
 
 </asp:Content>
