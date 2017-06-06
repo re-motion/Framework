@@ -286,7 +286,7 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
             TimeSpan.FromSeconds (1)),
           Throws.InstanceOf<DownloadResultNotFoundException>()
               .With.Message.EqualTo (
-                "Could not find the download information bar. This is probably because the download was not triggered correctly."));
+                "Could not start the download: Could not find download information bar or download manager."));
       }
       else if (Helper.BrowserConfiguration.IsChrome ())
       {

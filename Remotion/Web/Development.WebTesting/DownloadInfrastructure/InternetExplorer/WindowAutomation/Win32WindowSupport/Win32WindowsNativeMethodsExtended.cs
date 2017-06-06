@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Remotion.WindowFinder.Windows;
 
-namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer.Win32WindowSupport
+namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer.WindowAutomation.Win32WindowSupport
 {
   /// <summary>
   /// Implementation of <see cref="IWin32WindowsNativeMethodsExtended"/>. Delegates calls to external methods.
