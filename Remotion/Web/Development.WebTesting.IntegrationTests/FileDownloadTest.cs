@@ -122,12 +122,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var downloadUpdatedTimeout = TimeSpan.FromSeconds (3);
 
       var startDownloadLambda = new Action (
-        () =>
-        {
-          var home = Start();
-          var button = home.Scope.FindId ("body_DownloadWith5SecondTimeout");
-          button.Click();
-        });
+          () =>
+          {
+            var home = Start();
+            var button = home.Scope.FindId ("body_DownloadWith5SecondTimeout");
+            button.Click();
+          });
 
       if (Helper.BrowserConfiguration.IsInternetExplorer())
       {
@@ -182,12 +182,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       const string fileName = "SampleFile.txt";
 
       var startDownloadLambda = new Action (
-        () =>
-        {
-          var home = Start();
-          var button = home.Scope.FindId ("body_DownloadWith5SecondTimeout");
-          button.Click();
-        });
+          () =>
+          {
+            var home = Start();
+            var button = home.Scope.FindId ("body_DownloadWith5SecondTimeout");
+            button.Click();
+          });
 
       if (Helper.BrowserConfiguration.IsInternetExplorer())
       {
@@ -401,7 +401,7 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       //This unit test is testing if our framework can handle the download information bar when the open-button is missing.
       //The test is not restricted to Internet Explorer, to ensure that no browser has problem with this behavior.
       Assert.That (
-        () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (fileName), Throws.Nothing);
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (fileName), Throws.Nothing);
     }
 
     private WebFormsTestPageObject Start ()

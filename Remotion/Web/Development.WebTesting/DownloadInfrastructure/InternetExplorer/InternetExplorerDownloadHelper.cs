@@ -86,12 +86,12 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
       get { return _downloadStartedGracePeriod; }
     }
 
-    public bool CleanUpDownloadFolderOnError 
+    public bool CleanUpDownloadFolderOnError
     {
       get { return _cleanUpDownloadFolderOnError; }
     }
 
-    public string DownloadDirectory 
+    public string DownloadDirectory
     {
       get { return _downloadDirectory; }
     }
@@ -100,15 +100,26 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
     {
       ArgumentUtility.CheckNotNullOrEmpty ("fileName", fileName);
 
-      return new DownloadedFileFinder (_downloadDirectory, c_partialFileEnding, _downloadStartedGracePeriod, new InternetExplorerExpectedFileNameFinderStrategy (fileName));
+      return new DownloadedFileFinder (
+          _downloadDirectory,
+          c_partialFileEnding,
+          _downloadStartedGracePeriod,
+          new InternetExplorerExpectedFileNameFinderStrategy (fileName));
     }
 
     protected override DownloadedFileFinder CreateDownloadedFileFinderForUnknownFileName ()
     {
-      return new DownloadedFileFinder (_downloadDirectory, c_partialFileEnding, _downloadStartedGracePeriod, new InternetExplorerUnknownFileNameFileFinderStrategy (c_partialFileEnding));
+      return new DownloadedFileFinder (
+          _downloadDirectory,
+          c_partialFileEnding,
+          _downloadStartedGracePeriod,
+          new InternetExplorerUnknownFileNameFileFinderStrategy (c_partialFileEnding));
     }
 
-    protected override IDownloadedFile HandleDownload (DownloadedFileFinder downloadedFileFinder, TimeSpan downloadStartedTimeout, TimeSpan downloadUpdatedTimeout)
+    protected override IDownloadedFile HandleDownload (
+        DownloadedFileFinder downloadedFileFinder,
+        TimeSpan downloadStartedTimeout,
+        TimeSpan downloadUpdatedTimeout)
     {
       ArgumentUtility.CheckNotNull ("downloadedFileFinder", downloadedFileFinder);
 
@@ -128,7 +139,10 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
       DownloadedFile downloadedFile;
       try
       {
-        downloadedFile = downloadedFileFinder.WaitForDownloadCompleted (downloadStartedTimeout, downloadUpdatedTimeout, filesInDownloadDirectoryBeforeDownload);
+        downloadedFile = downloadedFileFinder.WaitForDownloadCompleted (
+            downloadStartedTimeout,
+            downloadUpdatedTimeout,
+            filesInDownloadDirectoryBeforeDownload);
       }
       catch (DownloadResultNotFoundException ex)
       {
@@ -199,7 +213,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
       foreach (var file in unmatchedFiles)
       {
         var fullFilePath = Path.Combine (_downloadDirectory, file);
-        
+
         try
         {
           //We don't wait for the file to be deleted, as we expect it to be deleted in time
@@ -207,8 +221,11 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
         }
         catch (IOException ex)
         {
-          s_log.WarnFormat (@"Could not delete '{0}'.
-{1}", fullFilePath, ex);
+          s_log.WarnFormat (
+              @"Could not delete '{0}'.
+{1}",
+              fullFilePath,
+              ex);
         }
       }
     }
