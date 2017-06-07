@@ -30,7 +30,7 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 namespace Remotion.Web.Development.WebTesting
 {
   /// <summary>
-  /// Helper class for web tests which provides various convinience methods.
+  /// Helper class for web tests which provides various convenience methods.
   /// </summary>
   /// <remarks>
   /// Use the factory methods <see cref="CreateFromConfiguration"/> or <see cref="CreateFromConfiguration{TFactory}"/> 
@@ -258,7 +258,7 @@ namespace Remotion.Web.Development.WebTesting
 
       s_log.InfoFormat ("MainBrowserSession has been disposed.");
 
-      // Note: otherwise the sytem may get clogged, if the Selenium web driver implementation does not properly close all windows in all situations.
+      // Note: otherwise the system may get clogged, if the Selenium web driver implementation does not properly close all windows in all situations.
       EnsureAllBrowserWindowsAreClosed();
       EnsureAllWebDriverInstancesAreClosed();
     }
