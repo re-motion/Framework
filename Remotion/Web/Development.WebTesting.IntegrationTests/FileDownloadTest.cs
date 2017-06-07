@@ -79,10 +79,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
       var button = home.Scope.FindId ("body_DownloadPostbackButton");
       button.Click();
-      IDownloadedFile downloadedFile = null;
 
-      Assert.That (() => downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName(), Throws.Nothing);
-      Assert.That ("SampleFile.txt", Is.EqualTo (downloadedFile.FileName));
+      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
+      Assert.That (downloadedFile.FileName, Is.EqualTo ("SampleFile.txt"));
+      Assert.That (Path.GetFileName (downloadedFile.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+      Assert.That (
+          new FileInfo (downloadedFile.FullFilePath).Directory.Parent.FullName,
+          Is.EqualTo (Path.GetTempPath().TrimEnd (Path.DirectorySeparatorChar)));
     }
 
     [Test]
@@ -92,7 +95,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var button = home.Scope.FindId ("body_DownloadPostbackButton");
       button.Click();
 
-      Assert.That (() => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt"), Throws.Nothing);
+      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt");
+      Assert.That (Path.GetFileName (downloadedFile.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+      Assert.That (
+          new FileInfo (downloadedFile.FullFilePath).Directory.Parent.FullName,
+          Is.EqualTo (Path.GetTempPath().TrimEnd (Path.DirectorySeparatorChar)));
     }
 
     [Test]
@@ -104,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       IDownloadedFile downloadedFile = null;
 
       Assert.That (() => downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName(), Throws.Nothing);
-      Assert.That ("SampleXmlFile.xml", Is.EqualTo (downloadedFile.FileName));
+      Assert.That (downloadedFile.FileName, Is.EqualTo ("SampleXmlFile.xml"));
     }
 
     [Test]
@@ -115,12 +122,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var downloadUpdatedTimeout = TimeSpan.FromSeconds (3);
 
       var startDownloadLambda = new Action (
-        () =>
-        {
-          var home = Start();
-          var button = home.Scope.FindId ("body_DownloadWith5SecondTimeout");
-          button.Click();
-        });
+          () =>
+          {
+            var home = Start();
+            var button = home.Scope.FindId ("body_DownloadWith5SecondTimeout");
+            button.Click();
+          });
 
       if (Helper.BrowserConfiguration.IsInternetExplorer())
       {
@@ -130,12 +137,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         startDownloadLambda();
 
         Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName (downloadStartedTimout, downloadUpdatedTimeout),
-          Throws.InstanceOf<DownloadResultNotFoundException>()
-              .With.Message.StartsWith (
+            () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName (downloadStartedTimout, downloadUpdatedTimeout),
+            Throws.InstanceOf<DownloadResultNotFoundException>()
+                .With.Message.StartsWith (
                 string.Format (
-                  "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
-                  downloadUpdatedTimeout)));
+                    "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
+                    downloadUpdatedTimeout)));
 
         //The browser continues writing in the download file, therefore we have to wait a little bit, so that it does not interfere with the next test.
         Thread.Sleep (TimeSpan.FromSeconds (3));
@@ -153,12 +160,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         startDownloadLambda();
 
         Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName (downloadStartedTimout, downloadUpdatedTimeout),
-          Throws.InstanceOf<DownloadResultNotFoundException>()
-              .With.Message.StartsWith (
+            () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName (downloadStartedTimout, downloadUpdatedTimeout),
+            Throws.InstanceOf<DownloadResultNotFoundException>()
+                .With.Message.StartsWith (
                 string.Format (
-                  "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
-                  downloadUpdatedTimeout)));
+                    "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
+                    downloadUpdatedTimeout)));
 
 
         //The browser continues writing in the download file, therefore we have to wait a little bit so that it does not interfere with the next test.
@@ -175,12 +182,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       const string fileName = "SampleFile.txt";
 
       var startDownloadLambda = new Action (
-        () =>
-        {
-          var home = Start();
-          var button = home.Scope.FindId ("body_DownloadWith5SecondTimeout");
-          button.Click();
-        });
+          () =>
+          {
+            var home = Start();
+            var button = home.Scope.FindId ("body_DownloadWith5SecondTimeout");
+            button.Click();
+          });
 
       if (Helper.BrowserConfiguration.IsInternetExplorer())
       {
@@ -190,16 +197,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         startDownloadLambda();
 
         Assert.That (
-          () =>
-            Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
-              fileName,
-              downloadStartedTimeout,
-              downloadUpdatedTimeout),
-          Throws.InstanceOf<DownloadResultNotFoundException>()
-              .With.Message.StartsWith (
+            () =>
+              Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
+                  fileName,
+                  downloadStartedTimeout,
+                  downloadUpdatedTimeout),
+            Throws.InstanceOf<DownloadResultNotFoundException>()
+                .With.Message.StartsWith (
                 string.Format (
-                  "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
-                  downloadUpdatedTimeout)));
+                    "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
+                    downloadUpdatedTimeout)));
 
         //The browser continues writing in the download file, therefore we have to wait a little bit so that does not interfere with the next test.
         Thread.Sleep (TimeSpan.FromSeconds (3));
@@ -217,16 +224,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         startDownloadLambda();
         
         Assert.That (
-          () =>
-            Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
-              fileName,
-              downloadStartedTimeout,
-              downloadUpdatedTimeout),
-          Throws.InstanceOf<DownloadResultNotFoundException>()
-              .With.Message.StartsWith (
+            () =>
+              Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
+                  fileName,
+                  downloadStartedTimeout,
+                  downloadUpdatedTimeout),
+            Throws.InstanceOf<DownloadResultNotFoundException>()
+                .With.Message.StartsWith (
                 string.Format (
-                  "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
-                  downloadUpdatedTimeout)));
+                    "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
+                    downloadUpdatedTimeout)));
 
         //The browser continues writing in the download file, therefore we have to wait a little bit so that does not interfere with the next test.
         Thread.Sleep (TimeSpan.FromSeconds (3));
@@ -244,16 +251,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       const string expectedFileName = "WrongFileName";
 
       Assert.That (
-        () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (expectedFileName),
-        Throws.InstanceOf<DownloadResultNotFoundException>()
-            .With.Message.EqualTo (
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (expectedFileName),
+          Throws.InstanceOf<DownloadResultNotFoundException>()
+              .With.Message.EqualTo (
               string.Format (
-                @"Did not find file with the name '{0}' in the download directory.
+                  @"Did not find file with the name '{0}' in the download directory.
 
 Unmatched files in the download directory (will be cleaned up by the infrastructure):
  - {1}",
-                expectedFileName,
-                realFileName)));
+                  expectedFileName,
+                  realFileName)));
 
       //InternetExplorer works in the default download directory of the user. If cleanUpUnmatchedDownloadedFiles is set to false in config, the unmatched file is not deleted by the WebTestFramework. 
       //Therefore, we have to delete these files manually.
@@ -273,23 +280,23 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       if (Helper.BrowserConfiguration.IsInternetExplorer())
       {
         Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
-            "SampleFile.txt",
-            TimeSpan.FromSeconds (1),
-            TimeSpan.FromSeconds (1)),
-          Throws.InstanceOf<DownloadResultNotFoundException>()
-              .With.Message.EqualTo (
-                "Could not find the download information bar. This is probably because the download was not triggered correctly."));
+            () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
+                "SampleFile.txt",
+                TimeSpan.FromSeconds (1),
+                TimeSpan.FromSeconds (1)),
+            Throws.InstanceOf<DownloadResultNotFoundException>()
+                .With.Message.EqualTo (
+                "Could not start the download: Could not find download information bar or download manager."));
       }
       else if (Helper.BrowserConfiguration.IsChrome ())
       {
         Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
-            "SampleFile.txt",
-            TimeSpan.FromSeconds (1),
-            TimeSpan.FromSeconds (1)),
-          Throws.InstanceOf<DownloadResultNotFoundException>()
-              .With.Message.EqualTo (
+            () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
+                "SampleFile.txt",
+                TimeSpan.FromSeconds (1),
+                TimeSpan.FromSeconds (1)),
+            Throws.InstanceOf<DownloadResultNotFoundException>()
+                .With.Message.EqualTo (
                 "Did not find any new files in the download directory."));
       }
     }
@@ -304,6 +311,95 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       var button = home.Scope.FindId ("body_DownloadXmlFile");
       button.Click();
 
+      Assert.That (
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (fileName), Throws.Nothing);
+    }
+
+    [Test]
+    public void TestDownloadTwice_WithUnknownFileName_PreventsFileNameConflicts ()
+    {
+      var home = Start();
+      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      button.Click();
+
+      var downloadedFile1 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
+      Assert.That (downloadedFile1.FileName, Is.EqualTo ("SampleFile.txt"));
+      Assert.That (Path.GetFileName (downloadedFile1.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+
+      button.Click();
+
+      var downloadedFile2 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
+      Assert.That (downloadedFile2.FileName, Is.EqualTo ("SampleFile.txt"));
+      Assert.That (Path.GetFileName (downloadedFile2.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+
+      Assert.That (downloadedFile2.FullFilePath, Is.Not.EqualTo (downloadedFile1.FullFilePath));
+    }
+
+    [Test]
+    public void TestDownloadTwice_WithExpectedFileName_PreventsFileNameConflicts ()
+    {
+      var home = Start();
+      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      button.Click();
+
+      var downloadedFile1 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt");
+      Assert.That (downloadedFile1.FileName, Is.EqualTo ("SampleFile.txt"));
+      Assert.That (Path.GetFileName (downloadedFile1.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+
+      button.Click();
+
+      var downloadedFile2 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt");
+      Assert.That (downloadedFile2.FileName, Is.EqualTo ("SampleFile.txt"));
+      Assert.That (Path.GetFileName (downloadedFile2.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+
+      Assert.That (downloadedFile2.FullFilePath, Is.Not.EqualTo (downloadedFile1.FullFilePath));
+    }
+
+    [Test]
+    public void TestDownload_WithUnknownFileName_DeleteFilesRemovesDownloadedFiles ()
+    {
+      var home = Start();
+      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      button.Click();
+
+      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
+
+      Assert.That (File.Exists (downloadedFile.FullFilePath), Is.True);
+
+      Helper.BrowserConfiguration.DownloadHelper.DeleteFiles();
+
+      Assert.That (File.Exists (downloadedFile.FullFilePath), Is.False);
+    }
+
+    [Test]
+    public void TestDownload_WithExpectedFileName_DeleteFilesRemovesDownloadedFiles ()
+    {
+      var home = Start();
+      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      button.Click();
+
+      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt");
+
+      Assert.That (File.Exists (downloadedFile.FullFilePath), Is.True);
+
+      Helper.BrowserConfiguration.DownloadHelper.DeleteFiles();
+
+      Assert.That (File.Exists (downloadedFile.FullFilePath), Is.False);
+    }
+
+    [Test]
+    public void TestDownload_InternetExplorer_HandleDownloadWithoutFileExtension ()
+    {
+      const string fileName = "SampleFile";
+
+      var home = Start();
+      var button = home.Scope.FindId ("body_DownloadFileWithoutFileExtension");
+      button.Click();
+
+      //When downloading a file without a file extension, the Internet Explorer download information bar does not contain an Open-button.
+      //This can lead to problems when trying to automate the button click.
+      //This unit test is testing if our framework can handle the download information bar when the open-button is missing.
+      //The test is not restricted to Internet Explorer, to ensure that no browser has problem with this behavior.
       Assert.That (
           () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (fileName), Throws.Nothing);
     }

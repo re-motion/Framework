@@ -17,15 +17,15 @@
 using System;
 using Remotion.WindowFinder.Windows;
 
-namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer.Win32WindowSupport
+namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer.WindowAutomation.Win32WindowSupport
 {
   /// <summary>
-  /// Declares the native methods used by the <see cref="InternetExplorerNativeWindowDetection"/>. See <see cref="Win32WindowsNativeMethodsExtended"/> for the implementation. 
+  /// Declares the native methods used by the <see cref="InternetExplorerDownloadHelper"/>. See <see cref="Win32WindowsNativeMethodsExtended"/> for the implementation. 
   /// </summary>
   public interface IWin32WindowsNativeMethodsExtended : IWin32WindowsNativeMethods
   {
     /// <summary>
-    /// Wrapps GetForegroundWindow.
+    /// Wraps GetForegroundWindow.
     /// </summary>
     /// <returns>
     /// The return value is a handle to the foreground window. 
@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
     IntPtr GetForegroundWindow ();
 
     /// <summary>
-    /// Wrapps IsWindowVisible.
+    /// Wraps IsWindowVisible.
     /// </summary>
     /// <returns>
     /// If the specified window, its parent window, its parent's parent window, and so forth, have the WS_VISIBLE style, the return value is nonzero. 

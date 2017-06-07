@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using JetBrains.Annotations;
 using log4net;
 using Remotion.Utilities;
@@ -32,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
   public class ChromeDownloadHelper : DownloadHelperBase
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (ChromeDownloadHelper));
-    
+
     private const string c_partialFileEnding = ".crdownload";
     private readonly string _downloadDirectory;
     private readonly TimeSpan _downloadStartedGracePeriod;
@@ -57,11 +56,16 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
     /// <param name="cleanUpDownloadFolderOnError">
     /// Clean up the download folder on error.
     /// </param>
-    public ChromeDownloadHelper ([NotNull] string downloadDirectory, TimeSpan downloadStartedTimeout, TimeSpan downloadUpdatedTimeout, TimeSpan downloadStartedGracePeriod, bool cleanUpDownloadFolderOnError)
+    public ChromeDownloadHelper (
+        [NotNull] string downloadDirectory,
+        TimeSpan downloadStartedTimeout,
+        TimeSpan downloadUpdatedTimeout,
+        TimeSpan downloadStartedGracePeriod,
+        bool cleanUpDownloadFolderOnError)
         : base (downloadStartedTimeout, downloadUpdatedTimeout)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("downloadDirectory", downloadDirectory);
-      
+
       _downloadDirectory = downloadDirectory;
       _downloadStartedGracePeriod = downloadStartedGracePeriod;
       _cleanUpDownloadFolderOnError = cleanUpDownloadFolderOnError;
@@ -82,7 +86,10 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
       get { return _cleanUpDownloadFolderOnError; }
     }
 
-    protected override IDownloadedFile HandleDownload (DownloadedFileFinder downloadedFileFinder, TimeSpan downloadStartedTimeout, TimeSpan downloadUpdatedTimeout)
+    protected override IDownloadedFile HandleDownload (
+        DownloadedFileFinder downloadedFileFinder,
+        TimeSpan downloadStartedTimeout,
+        TimeSpan downloadUpdatedTimeout)
     {
       ArgumentUtility.CheckNotNull ("downloadedFileFinder", downloadedFileFinder);
 
@@ -91,12 +98,15 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
       //Empty list, as our infrastructure should keep the download directory clean by moving downloaded files away, so we can assume the download directory is empty.
       //We need this assumption as Chrome downloads files without prompt, making it impossible to get the directory state before the download starts. 
       var filesInDownloadDirectoryBeforeDownload = new List<string>();
-      
+
       DownloadedFile downloadedFile = null;
 
       try
       {
-        downloadedFile = downloadedFileFinder.WaitForDownloadCompleted (downloadStartedTimeout, downloadUpdatedTimeout, filesInDownloadDirectoryBeforeDownload);
+        downloadedFile = downloadedFileFinder.WaitForDownloadCompleted (
+            downloadStartedTimeout,
+            downloadUpdatedTimeout,
+            filesInDownloadDirectoryBeforeDownload);
       }
       catch (DownloadResultNotFoundException ex)
       {
@@ -113,12 +123,20 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
     {
       ArgumentUtility.CheckNotNullOrEmpty ("fileName", fileName);
 
-      return new DownloadedFileFinder (_downloadDirectory, c_partialFileEnding, _downloadStartedGracePeriod, new ChromeNamedExpectedFileNameFinderStrategy (fileName));
+      return new DownloadedFileFinder (
+          _downloadDirectory,
+          c_partialFileEnding,
+          _downloadStartedGracePeriod,
+          new ChromeNamedExpectedFileNameFinderStrategy (fileName));
     }
 
     protected override DownloadedFileFinder CreateDownloadedFileFinderForUnknownFileName ()
     {
-      return new DownloadedFileFinder (_downloadDirectory, c_partialFileEnding, _downloadStartedGracePeriod, new ChromeUnknownFileNameFinderStrategy (c_partialFileEnding));
+      return new DownloadedFileFinder (
+          _downloadDirectory,
+          c_partialFileEnding,
+          _downloadStartedGracePeriod,
+          new ChromeUnknownFileNameFinderStrategy (c_partialFileEnding));
     }
 
     protected override void BrowserSpecificCleanup ()
@@ -131,13 +149,16 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
         }
         catch (IOException ex)
         {
-          s_log.WarnFormat (@"Could not delete '{0}'.
-{1}", _downloadDirectory, ex);
+          s_log.WarnFormat (
+              @"Could not delete '{0}'.
+{1}",
+              _downloadDirectory,
+              ex);
         }
       }
     }
 
-    
+
     private void EnsureDownloadDirectoryExists (string downloadDirectory)
     {
       if (!Directory.Exists (downloadDirectory))
@@ -151,7 +172,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
       foreach (var file in unmatchedFiles)
       {
         var fullFilePath = Path.Combine (_downloadDirectory, file);
-        
+
         try
         {
           //We don't wait for the file to be deleted, as we expect it to be deleted in time
@@ -159,8 +180,11 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
         }
         catch (IOException ex)
         {
-          s_log.WarnFormat (@"Could not delete '{0}'.
-{1}", fullFilePath, ex);
+          s_log.WarnFormat (
+              @"Could not delete '{0}'.
+{1}",
+              fullFilePath,
+              ex);
         }
       }
     }

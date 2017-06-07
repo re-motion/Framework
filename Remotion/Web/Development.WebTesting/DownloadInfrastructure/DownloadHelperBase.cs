@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using JetBrains.Annotations;
 using Remotion.Utilities;
@@ -28,14 +29,12 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
   {
     private readonly TimeSpan _downloadStartedTimeout;
     private readonly TimeSpan _downloadUpdatedTimeout;
-    private readonly string _tempDirectory;
+    private readonly List<string> _tempDirectories = new List<string>();
 
     protected DownloadHelperBase (TimeSpan downloadStartedTimeout, TimeSpan downloadUpdatedTimeout)
     {
       _downloadStartedTimeout = downloadStartedTimeout;
       _downloadUpdatedTimeout = downloadUpdatedTimeout;
-      
-      _tempDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
     }
     
     protected abstract DownloadedFileFinder CreateDownloadedFileFinderForExpectedFileName ([NotNull] string fileName);
@@ -64,18 +63,20 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     
     public void DeleteFiles ()
     {
-      if (Directory.Exists (_tempDirectory))
+      foreach (var tempDirectory in _tempDirectories)
       {
-        try
+        if (Directory.Exists (tempDirectory))
         {
-          Directory.Delete (_tempDirectory, true);
-        }
-        catch (Exception)
-        {
-          //We really do not care if this temp directory could not be deleted.
+          try
+          {
+            Directory.Delete (tempDirectory, true);
+          }
+          catch (Exception)
+          {
+            //We really do not care if this temp directory could not be deleted.
+          }
         }
       }
-      
       BrowserSpecificCleanup();
     }
 
@@ -88,10 +89,11 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     {
       ArgumentUtility.CheckNotNull ("downloadedFile", downloadedFile);
 
-      if (!Directory.Exists (_tempDirectory))
-        Directory.CreateDirectory (_tempDirectory);
+      var tempDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
+      Directory.CreateDirectory (tempDirectory);
+      _tempDirectories.Add (tempDirectory);
 
-      var newFilePath = Path.Combine (_tempDirectory, Path.GetRandomFileName());
+      var newFilePath = Path.Combine (tempDirectory, Path.GetFileName (downloadedFile.FullFilePath));
 
       return downloadedFile.Move (newFilePath);
     }
