@@ -98,7 +98,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("configSettings", configSettings);
 
-      throw new NotSupportedException(string.Format("Browser '{0}' is not supported by the '{1}'.", configSettings.BrowserName, GetType().Name));
+      throw new NotSupportedException (string.Format ("Browser '{0}' is not supported by the '{1}'.", configSettings.BrowserName, GetType().Name));
     }
 
     /// <summary>
@@ -127,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("configSettings", configSettings);
       
-      return new ChromeConfiguration (configSettings);
+      return new ChromeConfiguration (configSettings, new AdvancedChromeOptions());
     }
     
     /// <summary>

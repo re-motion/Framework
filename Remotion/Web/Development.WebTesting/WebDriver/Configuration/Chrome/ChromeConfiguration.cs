@@ -37,12 +37,14 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     private readonly string _userDirectoryRoot;
     private readonly IDownloadHelper _downloadHelper;
     private readonly string _downloadDirectory;
-    private readonly bool _enableUserDirectoryRootCleanup;
+    private readonly bool _disableInfoBars;
+    private readonly bool _deleteUserDirectoryRoot;
 
-    public ChromeConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
+    public ChromeConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection, [NotNull] AdvancedChromeOptions advancedChromeOptions)
         : base (webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
+      ArgumentUtility.CheckNotNull ("advancedChromeOptions", advancedChromeOptions);
 
       _downloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
 
@@ -54,21 +56,25 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
           webTestConfigurationSection.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,
           webTestConfigurationSection.CleanUpUnmatchedDownloadedFiles);
+
+      _disableInfoBars = advancedChromeOptions.DisableInfoBars;
     }
 
     public ChromeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection,
         [NotNull] ChromeExecutable chromeExecutable,
-        bool enableUserDirectoryRootCleanup)
+        [NotNull] AdvancedChromeOptions advancedChromeOptions)
         : base (webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
       ArgumentUtility.CheckNotNull ("chromeExecutable", chromeExecutable);
+      ArgumentUtility.CheckNotNull ("advancedChromeOptions", advancedChromeOptions);
 
       _binaryPath = chromeExecutable.BinaryPath;
       _userDirectoryRoot = chromeExecutable.UserDirectory;
 
-      _enableUserDirectoryRootCleanup = enableUserDirectoryRootCleanup;
+      _deleteUserDirectoryRoot = advancedChromeOptions.DeleteUserDirectoryRoot;
+      _disableInfoBars = advancedChromeOptions.DisableInfoBars;
 
       _downloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
 
@@ -114,7 +120,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
     public bool EnableUserDirectoryRootCleanup
     {
-      get { return _enableUserDirectoryRootCleanup; }
+      get { return _deleteUserDirectoryRoot; }
     }
 
     public virtual ExtendedChromeOptions CreateChromeOptions ()
@@ -129,6 +135,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
       if (!string.IsNullOrEmpty (userDirectory))
         chromeOptions.AddArgument (string.Format ("user-data-dir={0}", userDirectory));
+
+      if (_disableInfoBars)
+        chromeOptions.AddArgument ("disable-infobars");
 
       chromeOptions.AddArgument ("no-first-run");
 
