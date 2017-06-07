@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetEx
 
     public override string BrowserExecutableName
     {
-      get { return "ieexplore"; }
+      get { return "iexplore"; }
     }
 
     public override string WebDriverExecutableName
