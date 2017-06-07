@@ -15,21 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using JetBrains.Annotations;
-using Remotion.Web.Development.WebTesting.Configuration;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
 {
   /// <summary>
-  /// Factory to create <see cref="IBrowserSession"/>s.
+  /// Represents a wrapper around a <see cref="Coypu.BrowserSession"/> which has addition cleanup routines via <see cref="IDisposable.Dispose"/>
   /// </summary>
-  public interface IBrowserFactory
+  public interface IBrowserSession : IDisposable
   {
     /// <summary>
-    /// Creates a <see cref="IBrowserSession"/>.
+    /// The underlying <see cref="Coypu.BrowserSession"/>.
     /// </summary>
-    /// <returns>A new <see cref="IBrowserSession"/>.</returns>
     [NotNull]
-    IBrowserSession CreateBrowser ([NotNull] ITestInfrastructureConfiguration testInfrastructureConfiguration);
+    BrowserSession Value { get; }
   }
 }

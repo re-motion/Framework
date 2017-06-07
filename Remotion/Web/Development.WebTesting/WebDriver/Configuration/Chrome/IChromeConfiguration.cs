@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Chrome;
@@ -30,16 +29,24 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// <summary>
     /// Gets the full path to chrome.exe.
     /// </summary>
-    string BinaryPath { [CanBeNull] get; }
+    [CanBeNull]
+    string BinaryPath { get; }
 
     /// <summary>
     /// Gets the path to the user directories, which is used by the started Chrome. If the path does not exists, it will be automatically created at startup.
     /// </summary>
-    string UserDirectory { [CanBeNull] get; }
+    [CanBeNull]
+    string UserDirectoryRoot { get; }
+
+    /// <summary>
+    /// Defines whether the infrastructure should delete the given <see cref="UserDirectoryRoot"/>.
+    /// </summary>
+    bool EnableUserDirectoryRootCleanup { get; }
 
     /// <summary>
     /// Creates the <see cref="ChromeOptions"/> used when instantiating the Chrome browser.
     /// </summary>
-    [NotNull] ChromeOptions CreateChromeOptions ();
+    [NotNull]
+    ExtendedChromeOptions CreateChromeOptions ();
   }
 }

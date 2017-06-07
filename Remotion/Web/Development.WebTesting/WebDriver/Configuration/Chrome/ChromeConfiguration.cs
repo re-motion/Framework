@@ -17,7 +17,6 @@
 using System;
 using System.IO;
 using JetBrains.Annotations;
-using OpenQA.Selenium.Chrome;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
@@ -32,18 +31,21 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
   /// </summary>
   public class ChromeConfiguration : BrowserConfigurationBase, IChromeConfiguration
   {
+    private const string c_userDataFolderPrefix = "userdata";
+
     private readonly string _binaryPath;
-    private readonly string _userDirectory;
+    private readonly string _userDirectoryRoot;
     private readonly IDownloadHelper _downloadHelper;
     private readonly string _downloadDirectory;
+    private readonly bool _enableUserDirectoryRootCleanup;
 
     public ChromeConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
         : base (webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
-      
+
       _downloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
-      
+
       var downloadStartedGracePeriod = TimeSpan.FromMinutes (1);
 
       _downloadHelper = new ChromeDownloadHelper (
@@ -56,17 +58,20 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
     public ChromeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection,
-        [NotNull] ChromeExecutable chromeExecutable)
+        [NotNull] ChromeExecutable chromeExecutable,
+        bool enableUserDirectoryRootCleanup)
         : base (webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
       ArgumentUtility.CheckNotNull ("chromeExecutable", chromeExecutable);
 
       _binaryPath = chromeExecutable.BinaryPath;
-      _userDirectory = chromeExecutable.UserDirectory;
+      _userDirectoryRoot = chromeExecutable.UserDirectory;
+
+      _enableUserDirectoryRootCleanup = enableUserDirectoryRootCleanup;
 
       _downloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
-      
+
       var downloadStartedGracePeriod = TimeSpan.FromMinutes (1);
 
       _downloadHelper = new ChromeDownloadHelper (
@@ -102,20 +107,28 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       get { return _binaryPath; }
     }
 
-    public string UserDirectory
+    public string UserDirectoryRoot
     {
-      get { return _userDirectory; }
+      get { return _userDirectoryRoot; }
     }
 
-    public virtual ChromeOptions CreateChromeOptions ()
+    public bool EnableUserDirectoryRootCleanup
     {
-      var chromeOptions = new ChromeOptions();
+      get { return _enableUserDirectoryRootCleanup; }
+    }
+
+    public virtual ExtendedChromeOptions CreateChromeOptions ()
+    {
+      var chromeOptions = new ExtendedChromeOptions();
 
       if (!string.IsNullOrEmpty (_binaryPath))
         chromeOptions.BinaryLocation = _binaryPath;
 
-      if (!string.IsNullOrEmpty (_userDirectory))
-        chromeOptions.AddArgument (string.Format ("user-data-dir={0}", _userDirectory));
+      var userDirectory = CreateUnusedUserDirectoryPath();
+      chromeOptions.UserDirectory = userDirectory;
+
+      if (!string.IsNullOrEmpty (userDirectory))
+        chromeOptions.AddArgument (string.Format ("user-data-dir={0}", userDirectory));
 
       chromeOptions.AddArgument ("no-first-run");
 
@@ -123,6 +136,23 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       chromeOptions.AddUserProfilePreference ("download.default_directory", _downloadDirectory);
 
       return chromeOptions;
+    }
+
+    [CanBeNull]
+    private string CreateUnusedUserDirectoryPath ()
+    {
+      if (_userDirectoryRoot == null)
+        return null;
+
+      string userDirectory;
+      var userDirectoryID = 0;
+      do
+      {
+        userDirectory = Path.Combine (_userDirectoryRoot, string.Join (c_userDataFolderPrefix, userDirectoryID));
+        userDirectoryID++;
+      } while (Directory.Exists (userDirectory));
+
+      return userDirectory;
     }
   }
 }

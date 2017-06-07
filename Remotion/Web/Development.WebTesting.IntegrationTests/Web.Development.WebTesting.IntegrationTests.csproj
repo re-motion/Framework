@@ -98,6 +98,7 @@
     <Compile Include="TextBoxControlObjectTest.cs" />
     <Compile Include="WebButtonControlObjectTest.cs" />
     <Compile Include="TreeViewControlObjectTest.cs" />
+    <Compile Include="WebTestHelperTest.cs" />
     <Compile Include="WebTreeViewControlObjectTest.cs" />
   </ItemGroup>
   <ItemGroup>

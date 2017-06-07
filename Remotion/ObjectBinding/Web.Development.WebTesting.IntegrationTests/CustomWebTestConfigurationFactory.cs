@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var chromeExecutable = ChromeExecutable.CreateForCustomInstance (customChromeBinary, customUserDirectoryPath);
 
-      return new ChromeConfiguration (configSettings, chromeExecutable);
+      return new ChromeConfiguration (configSettings, chromeExecutable, true);
     }
 
     private string PrepareCustomChromeBinary (string chromeVersionArchivePath)

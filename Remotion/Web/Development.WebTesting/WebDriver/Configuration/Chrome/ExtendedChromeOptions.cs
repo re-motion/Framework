@@ -14,22 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using JetBrains.Annotations;
-using Remotion.Web.Development.WebTesting.Configuration;
+using OpenQA.Selenium.Chrome;
 
-namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
+namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 {
   /// <summary>
-  /// Factory to create <see cref="IBrowserSession"/>s.
+  /// Extends <see cref="ChromeOptions"/> provided by Selenium with additional data used by the web testing infrastructure.
   /// </summary>
-  public interface IBrowserFactory
+  public class ExtendedChromeOptions : ChromeOptions
   {
     /// <summary>
-    /// Creates a <see cref="IBrowserSession"/>.
+    /// The user directory of this <see cref="ChromeOptions"/>.
     /// </summary>
-    /// <returns>A new <see cref="IBrowserSession"/>.</returns>
-    [NotNull]
-    IBrowserSession CreateBrowser ([NotNull] ITestInfrastructureConfiguration testInfrastructureConfiguration);
+    [CanBeNull]
+    public string UserDirectory { get; set; }
   }
 }

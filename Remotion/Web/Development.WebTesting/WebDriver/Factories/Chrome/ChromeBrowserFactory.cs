@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Coypu;
 using Coypu.Drivers;
 using JetBrains.Annotations;
@@ -39,14 +38,18 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
       _chromeConfiguration = chromeConfiguration;
     }
 
-    public BrowserSession CreateBrowser (ITestInfrastructureConfiguration testInfrastructureConfiguration)
+    public IBrowserSession CreateBrowser (ITestInfrastructureConfiguration testInfrastructureConfiguration)
     {
       ArgumentUtility.CheckNotNull ("testInfrastructureConfiguration", testInfrastructureConfiguration);
 
       var sessionConfiguration = CreateSessionConfiguration (testInfrastructureConfiguration);
-      var driver = CreateChromeDriver();
+      int driverProcessID;
+      string userDirectory;
+      var driver = CreateChromeDriver (out driverProcessID, out userDirectory);
 
-      return new BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Chrome));
+      var session = new BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Chrome));
+
+      return new ChromeBrowserSession (session, _chromeConfiguration, driverProcessID, userDirectory);
     }
 
     private SessionConfiguration CreateSessionConfiguration (ITestInfrastructureConfiguration testInfrastructureConfiguration)
@@ -63,13 +66,14 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
              };
     }
 
-    private ChromeDriver CreateChromeDriver ()
+    private ChromeDriver CreateChromeDriver (out int driverProcessID, [CanBeNull] out string userDirectory)
     {
       var driverService = CreateChromeDriverService();
       var chromeOptions = _chromeConfiguration.CreateChromeOptions();
 
       var driver = new ChromeDriver (driverService, chromeOptions);
-
+      driverProcessID = driverService.ProcessId;
+      userDirectory = chromeOptions.UserDirectory;
       return driver;
     }
 
