@@ -404,6 +404,24 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
           () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (fileName), Throws.Nothing);
     }
 
+    [Test]
+    public void TestDownload_InternetExplorer_HandleZipFileDownload ()
+    {
+      const string fileName = "download.zip";
+
+      var home = Start();
+
+      var button = home.Scope.FindId ("body_DownloadZipFile");
+      button.Click();
+
+      //When downloading a file ending with ".zip", Internet Explorer opens the download in a special window.
+      //This unit test is testing if our framework can handle this special window.
+      //The test is not restricted to Internet Explorer, to ensure that no browser has problem with this behavior.
+      Assert.That (
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (fileName),
+          Throws.Nothing);
+    }
+
     private WebFormsTestPageObject Start ()
     {
       return Start<WebFormsTestPageObject> ("FileDownloadTest.aspx");

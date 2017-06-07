@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.ComponentModel;
+using System.IO;
 using System.Numerics;
 using System.Threading;
 using System.Web;
@@ -45,8 +45,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
         case "longRunning":
           LongRunningResponse (context);
           break;
+        case "zip":
+          ZipFileResponse (context, "SampleZipFile.zip");
+          break;
         default:
-          throw new HttpException (404, "Parameter 'testMode' only supports 'txt', 'xml', 'withoutExtension', and 'longRunning'.");
+          throw new HttpException (404, "Parameter 'testMode' only supports 'txt', 'xml', 'withoutExtension', 'longRunning' and 'zip'.");
       }
     }
 
@@ -90,6 +93,25 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       response.OutputStream.Write (someMagicNumber, 0, someMagicNumber.Length);
       response.OutputStream.Flush();
       Thread.Sleep (TimeSpan.FromSeconds(5));
+    }
+
+    private void ZipFileResponse (HttpContext context, string fileName)
+    {
+      var response = context.Response;
+      var fullFilePath = context.Server.MapPath ("~/" + fileName);
+      var data = File.ReadAllBytes (fullFilePath);
+
+      response.Clear();
+      response.ClearHeaders();
+      response.ClearContent();
+
+      response.AddHeader ("Content-Disposition", "filename=download.zip");
+      response.AddHeader ("Content-Length", data.Length.ToString());
+      response.ContentType = "application/x-zip-compressed";
+      response.TransmitFile (fullFilePath);
+
+      response.Flush();
+      response.End();
     }
 
     public bool IsReusable

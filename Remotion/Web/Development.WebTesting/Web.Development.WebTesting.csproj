@@ -92,6 +92,7 @@
     <Compile Include="DownloadInfrastructure\IDownloadFileFinderStrategy.cs" />
     <Compile Include="DownloadInfrastructure\IDownloadHelper.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\AutomationElementWrapper\InternetExplorerDownloadListItemWrapper.cs" />
+    <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\AutomationElementWrapper\InternetExplorerDownloadWindowWrapper.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\InternetExplorerDownloadControlHandler.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\AutomationElementWrapper\InternetExplorerDownloadNotificationBarWrapper.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerDownloadHelper.cs" />
