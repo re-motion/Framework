@@ -16,7 +16,31 @@
 --%>
 <%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="FileDownloadTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.FileDownloadTest" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
+
   <h3>File Download</h3>
-  <asp:Button ID="DownloadButton" Text="Start download!" runat="server"/>
-  <asp:Button ID="DownloadXmlButton" Text="Start XML download!" runat="server"/>
+  <h4>Typical download use cases</h4>
+  
+  <p>
+    <asp:Button ID="DownloadPostbackButton" Text="Start download via postback" runat="server"/>
+  </p>
+  <p>
+    <a id="TargetBlankAnchor" target="_blank" href="FileDownloadHandler.ashx?testMode=xml" runat="server">Download via anchor with target='_blank'</a>
+  </p>
+  <p>
+    <a id="DownloadXmlFile" target="_blank" href="FileDownloadHandler.ashx?testMode=xml" runat="server">Download Xml file</a>
+  </p>
+  
+  <h4>Download use cases which replace the current page</h4>
+  <p>
+    <asp:Button ID="DownloadTxtReplaceSiteButton" Text="Start download which replaces current page" runat="server"/>
+  </p>
+  <p>
+    <a id="TargetSelfAnchor" target="_self" href="FileDownloadHandler.ashx?testMode=txt" runat="server">Download via anchor with target='_self'</a>
+  </p>
+
+  <h4>Error use case</h4>
+  <p>
+    <a id="DownloadWith5SecondTimeout" href="FileDownloadHandler.ashx?testMode=longRunning" target="_blank" runat="server">Download which does not update the file for 5 seconds</a>
+  </p>
+  
 </asp:Content>

@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -225,17 +224,6 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// Returns a new <see cref="DownloadHelper"/> for the given <paramref name="fileName"/>.
-    /// </summary>
-    /// <param name="fileName">The name of the downloaded file (not the path).</param>
-    public DownloadHelper NewDownloadHelper ([NotNull] string fileName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("fileName", fileName);
-
-      return new DownloadHelper (_browserConfiguration, fileName, _testInfrastructureConfiguration.SearchTimeout);
-    }
-
-    /// <summary>
     /// TearDown method for each web test.
     /// </summary>
     /// <param name="hasSucceeded">Specifies whether the test has been successful.</param>
@@ -249,6 +237,8 @@ namespace Remotion.Web.Development.WebTesting
       }
 
       s_log.InfoFormat ("Finished test: {0} [has succeeded: {1}].", _testName, hasSucceeded);
+    
+      _browserConfiguration.DownloadHelper.DeleteFiles ();
     }
 
     private bool ShouldTakeScreenshots ()
