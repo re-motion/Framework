@@ -14,6 +14,7 @@
  % along with this program; if not, see http://www.gnu.org/licenses.
  % 
  % Additional permissions are listed in the file re-motion_exceptions.txt.
+ % 
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EditGroupControl.ascx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupControl" %>
 <%@ Register TagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>

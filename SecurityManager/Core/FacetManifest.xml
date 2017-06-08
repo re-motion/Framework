@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!-- This file is part of re-strict (www.re-motion.org)
  ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
  ! 
@@ -18,7 +17,6 @@
  ! Additional permissions are listed in the file re-motion_exceptions.txt.
  ! 
 -->
-
 <package
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="http://rubicon.eu/Schemas/Packaging/NuGet/FacetManifest/1.0"

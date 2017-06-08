@@ -14,6 +14,7 @@
  % along with this program; if not, see http://www.gnu.org/licenses.
  % 
  % Additional permissions are listed in the file re-motion_exceptions.txt.
+ % 
 --%>
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GroupListForm.aspx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupListForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
 <%@ Register TagPrefix="securityManager" Src="GroupListControl.ascx" TagName="GroupListControl" %>

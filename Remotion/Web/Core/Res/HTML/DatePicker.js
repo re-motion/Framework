@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 var _datePicker_current = null;
 var _datePicker_repositionInterval = 200;
 var _datePicker_repositionTimer = null;
