@@ -63,6 +63,10 @@ namespace Remotion.Globalization
   /// </list>
   /// The <see cref="IObjectWithResources"/> interface can be used to allow custom retrieval of the <see cref="IResourceManager"/> for a type. 
   /// This is used in web controls.
+  /// <para>
+  /// Use the <see cref="AvailableResourcesLanguagesAttribute"/> to list all cultures for which a localization has been provided in the assembly
+  /// to improve performance when retrieving the resources.
+  /// </para>
   /// </remarks>
   [AttributeUsage (AttributeTargets.Class | AttributeTargets.Enum, AllowMultiple = true, Inherited = false)]
   public class MultiLingualResourcesAttribute : Attribute, IResourcesAttribute
