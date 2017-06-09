@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Resources;
 using NUnit.Framework;
@@ -78,6 +79,17 @@ namespace Remotion.Globalization.UnitTests.Implementation
       Assert.That (
           ((ResourceManagerWrapper)((ResourceManagerSet) resourceManagers2).ResourceManagers[0]).ResourceManager,
           Is.SameAs (((ResourceManagerWrapper)((ResourceManagerSet) resourceManagers1).ResourceManagers[0]).ResourceManager));
+    }
+
+    [Test]
+    public void CreateResourceManager_UsesAvailableResourcesLanguagesAttribute ()
+    {
+      var resourceManager = _factory.CreateResourceManager (typeof (ClassWithResources));
+
+      var availableStrings = resourceManager.GetAvailableStrings ("type:ClassWithShortResourceIdentifier");
+      Assert.That (availableStrings.Count, Is.EqualTo (2));
+      Assert.That (availableStrings.ContainsKey (CultureInfo.InvariantCulture), Is.True);
+      Assert.That (availableStrings.ContainsKey (new CultureInfo ("de-AT")), Is.True);
     }
 
     [Test]

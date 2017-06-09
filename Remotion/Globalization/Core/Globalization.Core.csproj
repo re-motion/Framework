@@ -53,6 +53,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="AvailableResourcesLanguagesAttribute.cs" />
     <Compile Include="CultureInfoExtensions.cs" />
     <Compile Include="DeATAttribute.cs" />
     <Compile Include="DeAttribute.cs" />

@@ -16,9 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using System.Resources;
-
-[assembly: NeutralResourcesLanguage ("en")]
 
 [assembly: AssemblyTitle ("re-motion Web Testing Framework")]
 [assembly: AssemblyDescription ("Provides a basic infrastructure for performing web tests based on Selenium.")]

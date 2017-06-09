@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -71,7 +72,19 @@ namespace Remotion.Globalization.Implementation
                 key.Item1.GetName().Name,
                 key.Item2));
       }
-      return new ResourceManagerWrapper (resourceManager);
+
+      var availableCultures = GetAvailableCultures (key.Item1);
+
+      return new ResourceManagerWrapper (resourceManager, availableCultures);
+    }
+
+    private IReadOnlyList<CultureInfo> GetAvailableCultures (Assembly assembly)
+    {
+      var availableResourceLanguagesAttribute = assembly.GetCustomAttribute<AvailableResourcesLanguagesAttribute>();
+      if (availableResourceLanguagesAttribute == null)
+        return CultureInfo.GetCultures (CultureTypes.AllCultures);
+
+      return availableResourceLanguagesAttribute.CultureNames.Select (CultureInfo.GetCultureInfo).ToArray();
     }
   }
 }

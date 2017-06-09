@@ -35,7 +35,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     }
 
     [Test]
-    public void ResourceManagerWrapper_GetAvailableStringsDoesNotReturnFallbackValues ()
+    public void GetAvailableStrings_WithID1_DoesNotReturnFallbackValues_DoesNotReturnLocalizationsForCulturesNotDefinedViaAvailableResourcesLanguagesAttribute ()
     {
       var id ="property:Value1";
 
@@ -54,7 +54,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     }
 
     [Test]
-    public void ResourceManagerWrapper_GetAvailableStringsDoesNotReturnFallbackValues1 ()
+    public void GetAvailableStrings_WithID2_DoesNotReturnFallbackValues_DoesNotReturnLocalizationsForCulturesNotDefinedViaAvailableResourcesLanguagesAttribute ()
     {
       var id = "type:ClassWithShortResourceIdentifier";
 

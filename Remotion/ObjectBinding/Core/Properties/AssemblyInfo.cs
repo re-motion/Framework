@@ -17,9 +17,11 @@
 using System;
 using System.Reflection;
 using System.Resources;
+using Remotion.Globalization;
 using Remotion.Globalization.Mixins;
 
 [assembly: NeutralResourcesLanguage ("en")]
+[assembly: AvailableResourcesLanguages ("", "de")]
 
 [assembly: AssemblyTitle("re-motion BusinessObjects")]
 [assembly: AssemblyDescription("Generic interfaces and classes for business objects and data binding.")]

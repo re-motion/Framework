@@ -18,10 +18,12 @@ using System;
 using System.Reflection;
 using System.Resources;
 using System.Web.UI;
+using Remotion.Globalization;
 
 [assembly: TagPrefix ("Remotion.ObjectBinding.Web.Validation.UI.Controls", "remotion")]
 
 [assembly: NeutralResourcesLanguage ("en")]
+[assembly: AvailableResourcesLanguages ("", "de", "de-AT")]
 
 [assembly: AssemblyTitle ("re-motion Validation Support for ObjectBinding Web Controls")]
 [assembly: AssemblyDescription ("Internal: Integrates Remotion.Validation and Remotion.ObjectBinding.Web assemblies.")]

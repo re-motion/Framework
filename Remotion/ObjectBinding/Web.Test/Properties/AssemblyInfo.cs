@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using System.Resources;
+using Remotion.Globalization;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -45,4 +46,5 @@ using System.Resources;
 
 [assembly: AssemblyVersion("1.0.*")]
 [assembly: NeutralResourcesLanguage ("en")]
+[assembly: AvailableResourcesLanguages ("", "de", "de-AT")]
 
