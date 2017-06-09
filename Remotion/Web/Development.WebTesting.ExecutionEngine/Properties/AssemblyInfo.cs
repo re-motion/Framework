@@ -16,9 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using System.Resources;
-
-[assembly: NeutralResourcesLanguage ("en")]
 
 [assembly: AssemblyTitle ("re-motion Web Testing Framework Control Objects for Web Execution Engine")]
 [assembly: AssemblyDescription ("Provides an abstraction layer when implementing web tests for applications based on the re-motion web execution engine.")]

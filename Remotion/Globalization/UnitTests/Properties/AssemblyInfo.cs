@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using System.Resources;
+using Remotion.Globalization;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -27,4 +28,7 @@ using System.Resources;
 [assembly: AssemblyTitle ("Remotion Extensions Library Unit Tests")]
 [assembly: AssemblyCulture ("")]
 [assembly: NeutralResourcesLanguage ("")]
+// Explicitly supply "de-AT" twice to show that this is handled gracefully.
+// Explicitly do not place localizations in order to show that this is handled gracefully.
+[assembly: AvailableResourcesLanguages ("de-AT", "", "de-AT")]
 [assembly: CLSCompliant (true)]

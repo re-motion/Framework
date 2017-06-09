@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using System.Resources;
+using Remotion.Globalization;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -26,5 +27,6 @@ using System.Resources;
 
 [assembly: AssemblyTitle ("Remotion Mixins Library Unit Tests")]
 [assembly: NeutralResourcesLanguage ("en")]
+[assembly: AvailableResourcesLanguages ("")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

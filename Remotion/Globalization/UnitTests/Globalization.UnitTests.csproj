@@ -159,6 +159,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.it-IT.resx" />
     <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.de-AT.resx" />
     <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.resx" />
     <EmbeddedResource Include="TestDomain\Resources\Five.resx" />

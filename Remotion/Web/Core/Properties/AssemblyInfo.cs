@@ -18,10 +18,12 @@ using System;
 using System.Reflection;
 using System.Resources;
 using System.Web.UI;
+using Remotion.Globalization;
 
 [assembly: TagPrefix ("Remotion.Web.UI.Controls", "remotion")]
 
 [assembly: NeutralResourcesLanguage ("en")]
+[assembly: AvailableResourcesLanguages ("", "de")]
 
 [assembly: AssemblyTitle("remotion Web Controls")]
 [assembly: AssemblyDescription ("Common controls for web applications.")]

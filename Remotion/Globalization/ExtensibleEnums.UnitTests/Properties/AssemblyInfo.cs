@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using System.Resources;
+using Remotion.Globalization;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -27,4 +28,5 @@ using System.Resources;
 [assembly: AssemblyTitle ("Remotion Extensible Enums Library Unit Tests")]
 [assembly: AssemblyCulture ("")]
 [assembly: NeutralResourcesLanguage ("")]
+[assembly: AvailableResourcesLanguages ("")]
 [assembly: CLSCompliant (true)]

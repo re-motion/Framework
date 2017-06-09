@@ -16,9 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using System.Resources;
-
-[assembly: NeutralResourcesLanguage ("en")]
 
 [assembly: AssemblyTitle ("re-motion Web Testing Framework Control Objects for ASP.NET WebForms")]
 [assembly: AssemblyDescription ("Provides an abstraction layer when implementing web tests for applications based on ASP.NET WebForms controls.")]

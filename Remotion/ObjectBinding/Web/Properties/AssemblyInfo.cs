@@ -18,10 +18,12 @@ using System;
 using System.Reflection;
 using System.Resources;
 using System.Web.UI;
+using Remotion.Globalization;
 
 [assembly: TagPrefix ("Remotion.ObjectBinding.Web.UI.Controls", "remotion")]
 
 [assembly: NeutralResourcesLanguage ("en")]
+[assembly: AvailableResourcesLanguages ("", "de")]
 
 [assembly: AssemblyTitle ("re-motion ObjectBinding Web Controls")]
 [assembly: AssemblyDescription ("Web controls for 2-way databinding with business objects.")]

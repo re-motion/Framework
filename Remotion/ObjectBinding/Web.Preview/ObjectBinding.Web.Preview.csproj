@@ -96,6 +96,10 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
+      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
+      <Name>Globalization.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Name>Web.Core</Name>
