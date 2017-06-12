@@ -48,7 +48,7 @@
     <a id="DownloadFileWithoutFileExtension" target="_blank" href="FileDownloadHandler.ashx?testMode=withoutExtension" runat="server">Download file without file extension</a>
   </p>
   <p>
-    <a id="DownloadZipFile" href="FileDownloadHandler.ashx?testMode=zip" runat="server">Download zip file</a>
+      <a id="DownloadZipFile" target="_blank" href="FileDownloadHandler.ashx?testMode=zip" runat="server">Download zip file</a>
   </p>
 
 </asp:Content>
