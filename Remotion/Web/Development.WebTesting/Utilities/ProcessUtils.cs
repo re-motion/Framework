@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
@@ -120,9 +121,19 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       if (timeout < 0)
         throw new ArgumentOutOfRangeException ("timeout", "Timeout can not be smaller that zero.");
 
-      if (process.HasExited)
-        return;
-
+      try
+      {
+        if (process.HasExited)
+          return;
+      }
+      catch (Win32Exception)
+      {
+        // HasExited can throw Win32Exceptions in certain cases (for example when the process is running with admin rights).
+        // We ignore the exception, because it is still possible to kill the process and the following methods do not throw the same exception.
+        // Tested with process running with admin rights.
+        // If there is an unexpected exception which causes any of the other methods to fail, we have to decide how we want to handle that.
+      }
+      
       // Try to gracefully close the process
       if (process.CloseMainWindow())
       {

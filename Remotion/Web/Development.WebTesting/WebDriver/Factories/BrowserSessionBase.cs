@@ -86,7 +86,12 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
       // Get processes for driver and main browser, as well as the sub processes of the browser
       var driverProcess = FindDriverProcess();
       var browserProcess = FindBrowserProcess();
-      var browserSubProcesses = FindSubProcesses (browserProcess).ToList();
+
+      List<Process> browserSubProcesses;
+      if (browserProcess == null)
+        browserSubProcesses = new List<Process>();
+      else
+        browserSubProcesses = FindSubProcesses (browserProcess).ToList();
 
       // Dispose the underlying BrowserSession
       _value.Dispose();
@@ -96,9 +101,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
         ProcessUtils.GracefulProcessShutdown (driverProcess, c_driverShutdownWaitTime);
 
       if (browserProcess != null)
+      {
         ProcessUtils.GracefulProcessShutdown (browserProcess, c_browserShutdownWaitTime);
-
-      CheckForSubProcessesExited (browserSubProcesses, browserProcess);
+        CheckForSubProcessesExited (browserSubProcesses, browserProcess);
+      }
     }
 
     private void CheckForSubProcessesExited (List<Process> browserSubProcesses, Process browserProcess)
