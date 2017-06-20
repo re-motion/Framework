@@ -23,6 +23,8 @@ using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.SecurityManager.Domain;
@@ -38,30 +40,33 @@ namespace Remotion.SecurityManager.Persistence
 
     private readonly IDomainRevisionProvider _revisionProvider;
     private readonly IUserRevisionProvider _userRevisionProvider;
+    private readonly IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactory;
     private readonly PropertyDefinition _userNamePropertyDefinition;
     private readonly PropertyDefinition _substitutionUserPropertyDefinition;
 
-    public RevisionStorageProviderExtension (IDomainRevisionProvider revisionProvider, IUserRevisionProvider userRevisionProvider)
+    public RevisionStorageProviderExtension (
+        IDomainRevisionProvider revisionProvider,
+        IUserRevisionProvider userRevisionProvider,
+        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory)
     {
       ArgumentUtility.CheckNotNull ("revisionProvider", revisionProvider);
       ArgumentUtility.CheckNotNull ("userRevisionProvider", userRevisionProvider);
+      ArgumentUtility.CheckNotNull ("storageProviderCommandFactory", storageProviderCommandFactory);
 
       _revisionProvider = revisionProvider;
       _userRevisionProvider = userRevisionProvider;
+      _storageProviderCommandFactory = storageProviderCommandFactory;
 
-      _userNamePropertyDefinition =
-          MappingConfiguration.Current.GetTypeDefinition (typeof (User))
-                              .GetPropertyDefinition (GetPropertyIdentifierFromTypeAndShortName (typeof (User), "UserName"));
+      _userNamePropertyDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (User))
+          .GetPropertyDefinition (GetPropertyIdentifierFromTypeAndShortName (typeof (User), "UserName"));
 
-      _substitutionUserPropertyDefinition =
-          MappingConfiguration.Current.GetTypeDefinition (typeof (Substitution))
-                              .GetPropertyDefinition (GetPropertyIdentifierFromTypeAndShortName (typeof (Substitution), "SubstitutingUser"));
+      _substitutionUserPropertyDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Substitution))
+          .GetPropertyDefinition (GetPropertyIdentifierFromTypeAndShortName (typeof (Substitution), "SubstitutingUser"));
     }
 
-    public virtual void Saved (IDbConnection connection, IDbTransaction transaction, IEnumerable<DataContainer> dataContainers)
+    public virtual void Saved (IRdbmsProviderCommandExecutionContext executionContext, IEnumerable<DataContainer> dataContainers)
     {
-      ArgumentUtility.CheckNotNull ("connection", connection);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
       ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
 
       var securityManagerDataContainers =
@@ -75,7 +80,7 @@ namespace Remotion.SecurityManager.Persistence
         if (!isDomainRevisionInvalidated && IsDomainRevisionRelevant (dataContainer))
         {
           var revisionKey = new RevisionKey();
-          IncrementRevision (connection, transaction, revisionKey);
+          IncrementRevision (executionContext, revisionKey);
           _revisionProvider.InvalidateRevision (revisionKey);
 
           isDomainRevisionInvalidated = true;
@@ -103,23 +108,23 @@ namespace Remotion.SecurityManager.Persistence
           notLoadedUsers.Add (userID);
       }
 
-      userNamesToInvalidate.AddRange (LoadUserNames (connection, transaction, notLoadedUsers));
+      userNamesToInvalidate.AddRange (LoadUserNames (executionContext, notLoadedUsers));
 
       foreach (var userName in userNamesToInvalidate)
       {
         var revisionKey = new UserRevisionKey (userName);
-        IncrementRevision (connection, transaction, revisionKey);
+        IncrementRevision (executionContext, revisionKey);
         _userRevisionProvider.InvalidateRevision (revisionKey);
       }
 
       if (userNamesToInvalidate.Any())
       {
-        IncrementRevision (connection, transaction, UserRevisionKey.Global);
+        IncrementRevision (executionContext, UserRevisionKey.Global);
         _userRevisionProvider.InvalidateRevision (UserRevisionKey.Global);
       }
     }
 
-    private IEnumerable<string> LoadUserNames (IDbConnection connection, IDbTransaction transaction, ICollection<IDomainObjectHandle<User>> users)
+    private IEnumerable<string> LoadUserNames (IRdbmsProviderCommandExecutionContext executionContext, ICollection<IDomainObjectHandle<User>> users)
     {
       if (!users.Any())
         yield break;
@@ -129,14 +134,12 @@ namespace Remotion.SecurityManager.Persistence
       var query = QueryFactory.CreateQuery<string> (
           "load usernames",
           QueryFactory.CreateLinqQuery<User>()
-                      .Where (u => userIDs.Contains ((Guid) u.ID.Value))
-                      .Select (u => u.UserName));
-      using (var command = CreateCommandFromQuery (connection, transaction, query))
-      using (var dataReader = command.ExecuteReader())
-      {
-        while (dataReader.Read())
-          yield return dataReader.GetString (0);
-      }
+              .Where (u => userIDs.Contains ((Guid) u.ID.Value))
+              .Select (u => u.UserName));
+
+      var storageProviderCommand = _storageProviderCommandFactory.CreateForCustomQuery (query);
+      foreach (var queryResultRow in storageProviderCommand.Execute (executionContext))
+        yield return queryResultRow.GetConvertedValue<string> (0);
     }
 
     private bool IsDomainRevisionRelevant (DataContainer dataContainer)
@@ -200,30 +203,12 @@ namespace Remotion.SecurityManager.Persistence
       return domainObjectType.FullName + "." + shortPropertyName;
     }
 
-    private void IncrementRevision (IDbConnection connection, IDbTransaction transaction, IRevisionKey revisionKey)
+    private void IncrementRevision (IRdbmsProviderCommandExecutionContext executionContext, IRevisionKey revisionKey)
     {
       var query = Revision.GetIncrementRevisionQuery (revisionKey);
       Assertion.IsTrue (query.QueryType == QueryType.Scalar);
-      using (var command = CreateCommandFromQuery (connection, transaction, query))
-      {
-        command.ExecuteNonQuery();
-      }
-    }
-
-    private static IDbCommand CreateCommandFromQuery (IDbConnection connection, IDbTransaction transaction, IQuery query)
-    {
-      var command = connection.CreateCommand();
-      command.Transaction = transaction;
-      command.CommandText = query.Statement;
-      foreach (QueryParameter parameter in query.Parameters)
-      {
-        var dbParameter = command.CreateParameter();
-        dbParameter.ParameterName = parameter.Name;
-        dbParameter.Value = parameter.Value ?? DBNull.Value;
-        command.Parameters.Add (dbParameter);
-      }
-
-      return command;
+      var storageProviderCommand = _storageProviderCommandFactory.CreateForScalarQuery (query);
+      storageProviderCommand.Execute (executionContext);
     }
   }
 }
