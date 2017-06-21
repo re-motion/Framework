@@ -133,7 +133,7 @@
     <value>Delete ACL</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStateCombinationControl.DeleteStateCombinationButtonText" xml:space="preserve">
-    <value>Remove Status</value>
+    <value>Remove status</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.DuplicateStateCombinationsValidatorErrorMessage" xml:space="preserve">
     <value>Each status must be unique.</value>
@@ -145,7 +145,7 @@
     <value>Add object-based ACL</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStatefulAccessControlListControl.NewStateCombinationButtonText" xml:space="preserve">
-    <value>Assign Status</value>
+    <value>Assign status</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.Title" xml:space="preserve">
     <value>Manage permissions for class "{0}"</value>

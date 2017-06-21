@@ -154,7 +154,7 @@
     <value>Klassenbezogene ACL hinzufügen</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStateCombinationControl.RequiredStateCombinationValidatorErrorMessage" xml:space="preserve">
-    <value>Wählen sie einen Status aus.</value>
+    <value>Wählen Sie einen Status aus.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.StatelessAccessControlListTitle" xml:space="preserve">
     <value>Klassenbezogene Berechtigungen</value>
