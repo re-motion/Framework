@@ -1,4 +1,4 @@
-// This file is part of re-strict (www.re-motion.org)
+﻿// This file is part of re-strict (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // This program is free software; you can redistribute it and/or modify
@@ -15,20 +15,27 @@
 // 
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
+
 using System;
+using NUnit.Framework;
 using Remotion.Globalization;
-using Remotion.Security;
+using Remotion.SecurityManager.Domain;
+using Remotion.ServiceLocation;
 
-namespace Remotion.SecurityManager.Domain
+namespace Remotion.SecurityManager.UnitTests.Domain
 {
-  [AccessType]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.SecurityManagerAccessTypes")]
-  public enum SecurityManagerAccessTypes
+  [TestFixture]
+  public class SecurityManagerAccessTypesTest
   {
-    [PermanentGuid ("0348BE71-CFAF-4184-A3BF-C621B2611A29")]
-    AssignRole = 0,
-
-    [PermanentGuid ("4564E3BD-7E1D-4afc-9715-9C698B46A037")]
-    AssignSubstitute = 1,
+    [Test]
+    public void Localization ()
+    {
+      var globalizationService = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>();
+      foreach (SecurityManagerAccessTypes enumValue in Enum.GetValues (typeof (SecurityManagerAccessTypes)))
+      {
+        var localizations = globalizationService.GetAvailableEnumDisplayNames (enumValue);
+        Assert.That (localizations.Count, Is.EqualTo (2), enumValue.ToString()); // invariant and DE
+      }
+    }
   }
 }

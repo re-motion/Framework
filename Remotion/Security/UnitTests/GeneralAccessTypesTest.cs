@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,26 +14,26 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Globalization;
 
-namespace Remotion.Security
+using System;
+using NUnit.Framework;
+using Remotion.Globalization;
+using Remotion.ServiceLocation;
+
+namespace Remotion.Security.UnitTests
 {
-  [AccessType]
-  [MultiLingualResources ("Remotion.Security.Globalization.GeneralAccessTypes")]
-  public enum GeneralAccessTypes
+  [TestFixture]
+  public class GeneralAccessTypesTest
   {
-    [PermanentGuid ("1D6D25BC-4E85-43ab-A42D-FB5A829C30D5")]
-    Create = 0,
-    [PermanentGuid ("62DFCD92-A480-4d57-95F1-28C0F5996B3A")]
-    Read = 1,
-    [PermanentGuid ("11186122-6DE0-4194-B434-9979230C41FD")]
-    Edit = 2,
-    [PermanentGuid ("305FBB40-75C8-423a-84B2-B26EA9E7CAE7")]
-    Delete = 3,
-    [PermanentGuid ("67CEA479-0BE7-4e2f-B2E0-BB1FCC9EA1D6")]
-    Search = 4,
-    [PermanentGuid ("203B7478-96F1-4bf1-B4EA-5BDD1206252C")]
-    Find = 5
+    [Test]
+    public void Localization ()
+    {
+      var globalizationService = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>();
+      foreach (GeneralAccessTypes enumValue in Enum.GetValues (typeof (GeneralAccessTypes)))
+      {
+        var localizations = globalizationService.GetAvailableEnumDisplayNames (enumValue);
+        Assert.That (localizations.Count, Is.EqualTo (2), enumValue.ToString()); // invariant and DE
+      }
+    }
   }
 }

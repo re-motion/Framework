@@ -164,6 +164,7 @@
     <Compile Include="SecurityClientTests\HasStaticMethodAccessTest_WithMethodInformation.cs" />
     <Compile Include="SecurityClientTests\MultipleAccessTypesTest.cs" />
     <Compile Include="SecurityClientTests\SecurityClientIntegrationTest.cs" />
+    <Compile Include="GeneralAccessTypesTest.cs" />
     <Compile Include="SecurityPrincipalRoleTest.cs" />
     <Compile Include="SecurityPrincipalTest.cs" />
     <Compile Include="InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecoratorTest.cs" />
@@ -232,6 +233,10 @@
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
       <Name>Development.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
+      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
+      <Name>Globalization.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\UnitTests.TestDomain\Security.UnitTests.TestDomain.csproj">
       <Project>{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}</Project>

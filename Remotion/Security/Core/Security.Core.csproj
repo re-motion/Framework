@@ -74,6 +74,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Globalization\GeneralAccessTypes.de.resx">
+      <LastGenOutput>Delegation.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\GeneralAccessTypes.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Schemas\SecurityMetadataLocalization.xsd">
       <SubType>
       </SubType>
@@ -177,6 +184,10 @@
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
       <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
       <Name>Core.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
+      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
+      <Name>Globalization.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
