@@ -127,6 +127,6 @@
     <value>Für Ihre Eingabe wurden keine Treffer gefunden.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.SearchStringForDropDownDoesNotMatchRegexMessage" xml:space="preserve">
-    <value>Ihre Eingabe entspricht nicht dem vorgegebenem Format.</value>
+    <value>Ihre Eingabe entspricht nicht dem vorgegebenen Format.</value>
   </data>
 </root>
