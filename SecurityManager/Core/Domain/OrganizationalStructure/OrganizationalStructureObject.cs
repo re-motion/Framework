@@ -20,11 +20,13 @@ using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Security;
+using Remotion.Globalization;
 using Remotion.Security;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [PermanentGuid ("8DBA42FE-ECD9-4b10-8F79-48E7A1119414")]
+  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.OrganizationalStructureObject")]
   [Serializable]
   public abstract class OrganizationalStructureObject : BaseSecurityManagerObject, ISecurableObject, IDomainObjectSecurityContextFactory
   {

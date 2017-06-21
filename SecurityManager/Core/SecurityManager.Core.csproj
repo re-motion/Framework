@@ -323,6 +323,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>GroupCondition.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\OrganizationalStructureObject.de.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\OrganizationalStructureObject.resx" />
     <EmbeddedResource Include="Globalization\Domain\SecurityManagerAccessTypes.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

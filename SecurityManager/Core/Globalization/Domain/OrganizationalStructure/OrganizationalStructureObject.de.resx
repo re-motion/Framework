@@ -117,19 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="property:Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="property:GroupType" xml:space="preserve">
-    <value>Struktureinheit</value>
-  </data>
-  <data name="property:Position" xml:space="preserve">
-    <value>Stelle</value>
-  </data>
-  <data name="property:DisplayName" xml:space="preserve">
-    <value>Name</value>
-  </data>
   <data name="type:GroupTypePosition" xml:space="preserve">
-    <value>Stelle in Struktureinheit</value>
+    <value>Objekt der Aufbauorganisation</value>
   </data>
 </root>
