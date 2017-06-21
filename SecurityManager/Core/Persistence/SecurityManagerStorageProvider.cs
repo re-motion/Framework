@@ -46,7 +46,8 @@ namespace Remotion.SecurityManager.Persistence
     {
       _revisionExtension = new RevisionStorageProviderExtension (
           SafeServiceLocator.Current.GetInstance<IDomainRevisionProvider>(),
-          SafeServiceLocator.Current.GetInstance<IUserRevisionProvider>());
+          SafeServiceLocator.Current.GetInstance<IUserRevisionProvider>(),
+          commandFactory);
     }
 
     public override void Save (IEnumerable<DataContainer> dataContainers)
@@ -56,7 +57,7 @@ namespace Remotion.SecurityManager.Persistence
       //TODO RM-5638: Refactor to Streaming-API
       var dataContainersList = dataContainers.ToList();
       base.Save (dataContainersList);
-      _revisionExtension.Saved (Connection.WrappedInstance, Transaction.WrappedInstance, dataContainersList);
+      _revisionExtension.Saved (this, dataContainersList);
     }
   }
 }
