@@ -135,4 +135,7 @@
   <data name="type:Position" xml:space="preserve">
     <value>Stelle</value>
   </data>
+  <data name="property:Delegable" xml:space="preserve">
+    <value>Delegierbar</value>
+  </data>
 </root>

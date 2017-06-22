@@ -184,6 +184,7 @@
     <Compile Include="Domain\IUserRevisionProvider.cs" />
     <Compile Include="Domain\Metadata\MetadataExtensions.cs" />
     <Compile Include="Domain\NullSecurityManagerPrincipal.cs" />
+    <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureBindableDomainObjectMetadataFactory.cs" />
     <Compile Include="Domain\PrincipalRole.cs" />
     <Compile Include="SecurityProvider\Implementation\AccessTypeCache.cs" />
     <Compile Include="Domain\RevisionKey.cs" />

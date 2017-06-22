@@ -58,13 +58,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
         
         /// <summary>
-        /// DelegationField control.
+        /// DelegableField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DelegationField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue DelegableField;
         
         /// <summary>
         /// GroupTypesList control.

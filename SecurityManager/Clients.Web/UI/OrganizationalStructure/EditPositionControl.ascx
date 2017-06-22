@@ -38,7 +38,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocEnumValue runat="server" ID="DelegationField" DataSourceControl="CurrentObject" PropertyIdentifier="Delegation" />
+      <remotion:BocBooleanValue runat="server" ID="DelegableField" DataSourceControl="CurrentObject" PropertyIdentifier="Delegable" />
     </td>
   </tr>
   <tr>

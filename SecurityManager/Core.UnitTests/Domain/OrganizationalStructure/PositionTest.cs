@@ -22,6 +22,8 @@ using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Security;
+using Remotion.Development.UnitTesting.ObjectMothers;
+using Remotion.ObjectBinding;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
@@ -247,6 +249,90 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
         testHelper.CreatePosition ("Position1");
         Assert.That (SecurityFreeSection.IsActive, Is.False);
         Assert.That (propertyValueChangingCalled, Is.True);
+      }
+    }
+
+    [Test]
+    public void Get_Delegable_WithDelegationEnabled_ReturnsTrue ()
+    {
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterNonDiscardingScope())
+      {
+        Position position = testHelper.CreatePosition ("Position");
+
+        position.Delegation = Delegation.Enabled;
+        Assert.That (position.Delegable, Is.True);
+      }
+    }
+
+    [Test]
+    public void Get_Delegable_WithDelegationDisabled_ReturnsFalse ()
+    {
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterNonDiscardingScope())
+      {
+        Position position = testHelper.CreatePosition ("Position");
+
+        position.Delegation = Delegation.Disabled;
+        Assert.That (position.Delegable, Is.False);
+      }
+    }
+
+    [Test]
+    public void Set_Delegable_WithTrue_SetsDelegationToEnabled ()
+    {
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterNonDiscardingScope())
+      {
+        Position position = testHelper.CreatePosition ("Position");
+
+        position.Delegable = true;
+        Assert.That (position.Delegation, Is.EqualTo (Delegation.Enabled));
+      }
+    }
+
+    [Test]
+    public void Set_Delegable_WithFalse_SetsDelegationToDisabled ()
+    {
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterNonDiscardingScope())
+      {
+        Position position = testHelper.CreatePosition ("Position");
+
+        position.Delegable = false;
+        Assert.That (position.Delegation, Is.EqualTo (Delegation.Disabled));
+      }
+    }
+
+    [Test]
+    public void Get_Delegable_AsBusinessObjectProperty_WithDefaultValue_ReturnsNull ()
+    {
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterNonDiscardingScope())
+      {
+        Position position = testHelper.CreatePosition ("Position");
+
+        IBusinessObject businessObject = position;
+        IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition ("Delegable");
+
+        Assert.That (businessObject.GetProperty (property), Is.Null);
+      }
+    }
+
+    [Test]
+    public void Get_Delegable_AsBusinessObjectProperty_WithExplicitValue_ReturnsValue ()
+    {
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterNonDiscardingScope())
+      {
+        Position position = testHelper.CreatePosition ("Position");
+
+        IBusinessObject businessObject = position;
+        IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition ("Delegable");
+
+        var value = BooleanObjectMother.GetRandomBoolean();
+        position.Delegable = value;
+        Assert.That (businessObject.GetProperty (property), Is.EqualTo (value));
       }
     }
   }

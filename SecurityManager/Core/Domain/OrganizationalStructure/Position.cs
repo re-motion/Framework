@@ -22,6 +22,7 @@ using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Globalization;
+using Remotion.ObjectBinding;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.AccessControl;
 
@@ -93,8 +94,16 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string UniqueIdentifier { get; set; }
 
+    [ObjectBinding (Visible = false)]
     [PermanentGuid ("5C31F600-88F3-4ff7-988C-0E45A857AB4B")]
     public abstract Delegation Delegation { get; set; }
+
+    [StorageClassNone]
+    public bool Delegable
+    {
+      get { return Delegation == Delegation.Enabled; }
+      set { Delegation = value ? Delegation.Enabled : Delegation.Disabled; }
+    }
 
     [DBBidirectionalRelation ("Position")]
     public abstract ObjectList<GroupTypePosition> GroupTypes { get; }
