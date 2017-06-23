@@ -16,6 +16,11 @@
 // 
 using System;
 using System.Reflection;
+using System.Resources;
+using Remotion.Globalization;
+
+[assembly: NeutralResourcesLanguage ("en")]
+[assembly: AvailableResourcesLanguages ("", "de")]
 
 [assembly: AssemblyTitle ("re-motion Security Library")]
 [assembly: AssemblyDescription ("Framework for checking permissions while performing operations in an application.")]
