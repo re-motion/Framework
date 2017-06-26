@@ -99,7 +99,7 @@
     <Compile Include="ICommandHost.cs" />
     <Compile Include="Infrastructure\ControlSelection\IItemIDControlSelector.cs" />
     <Compile Include="Infrastructure\ControlSelection\ItemIDControlSelectionCommand.cs" />
-    <Compile Include="Infrastructure\FluentControlSelection\FluentControlSelectorExtensions.cs" />
+    <Compile Include="Infrastructure\FluentControlSelection\FluentControlSelectorExtensionsForControlObjects.cs" />
     <Compile Include="Infrastructure\FluentControlSelection\ItemIDControlSelectionCommandBuilder.cs" />
     <Compile Include="IListMenuHost.cs" />
     <Compile Include="IDropDownMenuHost.cs" />

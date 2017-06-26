@@ -15,14 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
-using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -30,17 +30,30 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocEnumValueControlObjectTest : IntegrationTest
   {
     [Test]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
+    {
+      testAction (Helper, e => e.EnumValues(), "enumValue");
+    }
+
+    [Test]
     public void TestSelection_ByHtmlID ()
     {
       var home = Start();
 
-      var dropDownListBocEnumValue = home.GetEnumValue().ByID ("body_DataEditControl_MarriageStatusField_DropDownListNormal");
+      var dropDownListBocEnumValue = home.EnumValues().GetByID ("body_DataEditControl_MarriageStatusField_DropDownListNormal");
       Assert.That (dropDownListBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_DropDownListNormal"));
 
-      var listBoxBocEnumValue = home.GetEnumValue().ByID ("body_DataEditControl_MarriageStatusField_ListBoxNormal");
+      var listBoxBocEnumValue = home.EnumValues().GetByID ("body_DataEditControl_MarriageStatusField_ListBoxNormal");
       Assert.That (listBoxBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_ListBoxNormal"));
 
-      var radioButtonListBocEnumValue = home.GetEnumValue().ByID ("body_DataEditControl_MarriageStatusField_RadioButtonListNormal");
+      var radioButtonListBocEnumValue = home.EnumValues().GetByID ("body_DataEditControl_MarriageStatusField_RadioButtonListNormal");
       Assert.That (radioButtonListBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_RadioButtonListNormal"));
     }
 
@@ -49,13 +62,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownListBocEnumValue = home.GetEnumValue().ByIndex (2);
+      var dropDownListBocEnumValue = home.EnumValues().GetByIndex (2);
       Assert.That (dropDownListBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_DropDownListReadOnly"));
 
-      var listBoxBocEnumValue = home.GetEnumValue().ByIndex (6);
+      var listBoxBocEnumValue = home.EnumValues().GetByIndex (6);
       Assert.That (listBoxBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_ListBoxNormal"));
 
-      var radioButtonListBocEnumValue = home.GetEnumValue().ByIndex (11);
+      var radioButtonListBocEnumValue = home.EnumValues().GetByIndex (11);
       Assert.That (radioButtonListBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_RadioButtonListNormal"));
     }
 
@@ -64,67 +77,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListNormal");
+      var dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNormal");
       Assert.That (dropDownListBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_DropDownListNormal"));
 
-      var listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxNormal");
+      var listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNormal");
       Assert.That (listBoxBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_ListBoxNormal"));
 
-      var radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListNormal");
+      var radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNormal");
       Assert.That (radioButtonListBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_RadioButtonListNormal"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var bocEnumValue = home.GetEnumValue().First();
-      Assert.That (bocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_DropDownListNormal"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-
-      try
-      {
-        home.GetEnumValue().Single();
-        Assert.Fail ("Should not be able to unambiguously find a BOC enum value.");
-      }
-      catch (AmbiguousException)
-      {
-      }
-    }
-
-    [Test]
-    public void TestSelection_DisplayName ()
-    {
-      var home = Start();
-
-      var bocEnumValue = home.GetEnumValue().ByDisplayName ("MarriageStatus");
-      Assert.That (bocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_DropDownListNormal"));
-    }
-
-    [Test]
-    public void TestSelection_DomainProperty ()
-    {
-      var home = Start();
-
-      var bocEnumValue = home.GetEnumValue().ByDomainProperty ("MarriageStatus");
-      Assert.That (bocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_DropDownListNormal"));
-    }
-
-    [Test]
-    public void TestSelection_DomainPropertyAndClass ()
-    {
-      var home = Start();
-
-      var bocEnumValue = home.GetEnumValue()
-          .ByDomainProperty ("MarriageStatus", "Remotion.ObjectBinding.Sample.Person, Remotion.ObjectBinding.Sample");
-      Assert.That (bocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_DropDownListNormal"));
     }
 
     [Test]
@@ -132,22 +92,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListNormal");
+      var dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNormal");
       Assert.That (dropDownListBocEnumValue.IsReadOnly(), Is.False);
 
-      dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListReadOnly");
+      dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListReadOnly");
       Assert.That (dropDownListBocEnumValue.IsReadOnly(), Is.True);
 
-      var listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxNormal");
+      var listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNormal");
       Assert.That (listBoxBocEnumValue.IsReadOnly(), Is.False);
 
-      listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxReadOnly");
+      listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxReadOnly");
       Assert.That (listBoxBocEnumValue.IsReadOnly(), Is.True);
 
-      var radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListNormal");
+      var radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNormal");
       Assert.That (radioButtonListBocEnumValue.IsReadOnly(), Is.False);
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListReadOnly");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListReadOnly");
       Assert.That (radioButtonListBocEnumValue.IsReadOnly(), Is.True);
     }
 
@@ -156,70 +116,72 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListNormal");
+      var dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNormal");
       AssertSelectedOption (dropDownListBocEnumValue, "Married", -1, "Married");
 
-      dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListReadOnly");
+      dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListReadOnly");
       AssertSelectedOption (dropDownListBocEnumValue, "Married", -1, "Married");
 
-      dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListReadOnlyWithoutSelectedValue");
+      dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListReadOnlyWithoutSelectedValue");
       AssertSelectedOption (dropDownListBocEnumValue, "==null==", -1, "");
 
-      dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListDisabled");
+      dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListDisabled");
       AssertSelectedOption (dropDownListBocEnumValue, "Married", -1, "Married");
 
-      dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListNoAutoPostBack");
+      dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNoAutoPostBack");
       AssertSelectedOption (dropDownListBocEnumValue, "Married", -1, "Married");
 
-      var listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxNormal");
+      var listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNormal");
       AssertSelectedOption (listBoxBocEnumValue, "Married", -1, "Married");
 
-      listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxReadOnly");
+      listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxReadOnly");
       AssertSelectedOption (listBoxBocEnumValue, "Married", -1, "Married");
 
-      listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxReadOnlyWithoutSelectedValue");
+      listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxReadOnlyWithoutSelectedValue");
       AssertSelectedOption (listBoxBocEnumValue, "==null==", -1, "");
 
-      listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxDisabled");
+      listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxDisabled");
       AssertSelectedOption (listBoxBocEnumValue, "Married", -1, "Married");
 
-      listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxNoAutoPostBack");
+      listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNoAutoPostBack");
       AssertSelectedOption (listBoxBocEnumValue, "Married", -1, "Married");
 
-      var radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListNormal");
+      var radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNormal");
       AssertSelectedOption (radioButtonListBocEnumValue, "Married", -1, "Married");
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListReadOnly");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListReadOnly");
       AssertSelectedOption (radioButtonListBocEnumValue, "Married", -1, "Married");
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListReadOnlyWithoutSelectedValue");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListReadOnlyWithoutSelectedValue");
       AssertSelectedOption (radioButtonListBocEnumValue, "==null==", -1, "");
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListDisabled");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListDisabled");
       AssertSelectedOption (radioButtonListBocEnumValue, "Married", -1, "Married");
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListNoAutoPostBack");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNoAutoPostBack");
       AssertSelectedOption (radioButtonListBocEnumValue, "Married", -1, "Married");
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListMultiColumn");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListMultiColumn");
       AssertSelectedOption (radioButtonListBocEnumValue, "Married", -1, "Married");
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListFlow");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListFlow");
       AssertSelectedOption (radioButtonListBocEnumValue, "Married", -1, "Married");
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListOrderedList");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListOrderedList");
       AssertSelectedOption (radioButtonListBocEnumValue, "Married", -1, "Married");
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListUnorderedList");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListUnorderedList");
       AssertSelectedOption (radioButtonListBocEnumValue, "Married", -1, "Married");
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListLabelLeft");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListLabelLeft");
       AssertSelectedOption (radioButtonListBocEnumValue, "Married", -1, "Married");
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListRequiredWithoutSelectedValue");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListRequiredWithoutSelectedValue");
       AssertSelectedOption (radioButtonListBocEnumValue, "==null==", -1, "");
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListWithoutSelectedValueAndWithoutVisibleNullValue");
+      radioButtonListBocEnumValue =
+          home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListWithoutSelectedValueAndWithoutVisibleNullValue");
+
       AssertSelectedOption (radioButtonListBocEnumValue, "==null==", -1, "");
     }
 
@@ -242,26 +204,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListNormal");
-      AssertOptions(dropDownListBocEnumValue);
+      var dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNormal");
+      AssertOptions (dropDownListBocEnumValue);
 
-      dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListReadOnly");
+      dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListReadOnly");
       Assert.That (
           () => dropDownListBocEnumValue.GetOptionDefinitions(),
           Throws.InvalidOperationException.With.Message.EqualTo ("Cannot obtain option definitions on read-only control."));
 
-      var listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxNormal");
-      AssertOptions(listBoxBocEnumValue);
+      var listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNormal");
+      AssertOptions (listBoxBocEnumValue);
 
-      listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxReadOnly");
+      listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxReadOnly");
       Assert.That (
           () => listBoxBocEnumValue.GetOptionDefinitions(),
           Throws.InvalidOperationException.With.Message.EqualTo ("Cannot obtain option definitions on read-only control."));
 
-      var radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListNormal");
-      AssertOptions(radioButtonListBocEnumValue);
+      var radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNormal");
+      AssertOptions (radioButtonListBocEnumValue);
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListReadOnly");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListReadOnly");
       Assert.That (
           () => radioButtonListBocEnumValue.GetOptionDefinitions(),
           Throws.InvalidOperationException.With.Message.EqualTo ("Cannot obtain option definitions on read-only control."));
@@ -290,82 +252,84 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListNormal");
+      var dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNormal");
       Assert.That (dropDownListBocEnumValue.HasNullOptionDefinition(), Is.True);
 
-      dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListReadOnly");
+      dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListReadOnly");
       Assert.That (
           () => dropDownListBocEnumValue.HasNullOptionDefinition(),
           Throws.InvalidOperationException.With.Message.EqualTo ("A read-only control cannot contain a null option definition."));
 
-      dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListReadOnlyWithoutSelectedValue");
+      dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListReadOnlyWithoutSelectedValue");
       Assert.That (
           () => dropDownListBocEnumValue.HasNullOptionDefinition(),
           Throws.InvalidOperationException.With.Message.EqualTo ("A read-only control cannot contain a null option definition."));
 
-      dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListDisabled");
+      dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListDisabled");
       Assert.That (dropDownListBocEnumValue.HasNullOptionDefinition(), Is.False);
 
-      dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListNoAutoPostBack");
+      dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNoAutoPostBack");
       Assert.That (dropDownListBocEnumValue.HasNullOptionDefinition(), Is.False);
 
-      var listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxNormal");
+      var listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNormal");
       Assert.That (listBoxBocEnumValue.HasNullOptionDefinition(), Is.True);
 
-      listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxReadOnly");
+      listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxReadOnly");
       Assert.That (
           () => listBoxBocEnumValue.HasNullOptionDefinition(),
           Throws.InvalidOperationException.With.Message.EqualTo ("A read-only control cannot contain a null option definition."));
 
-      listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxReadOnlyWithoutSelectedValue");
+      listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxReadOnlyWithoutSelectedValue");
       Assert.That (
           () => listBoxBocEnumValue.HasNullOptionDefinition(),
           Throws.InvalidOperationException.With.Message.EqualTo ("A read-only control cannot contain a null option definition."));
 
-      listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxDisabled");
+      listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxDisabled");
       AssertSelectedOption (listBoxBocEnumValue, "Married", -1, "Married");
 
-      listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxNoAutoPostBack");
+      listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNoAutoPostBack");
       Assert.That (listBoxBocEnumValue.HasNullOptionDefinition(), Is.False);
 
-      var radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListNormal");
+      var radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNormal");
       Assert.That (radioButtonListBocEnumValue.HasNullOptionDefinition(), Is.True);
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListReadOnly");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListReadOnly");
       Assert.That (
           () => radioButtonListBocEnumValue.HasNullOptionDefinition(),
           Throws.InvalidOperationException.With.Message.EqualTo ("A read-only control cannot contain a null option definition."));
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListReadOnlyWithoutSelectedValue");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListReadOnlyWithoutSelectedValue");
       Assert.That (
           () => radioButtonListBocEnumValue.HasNullOptionDefinition(),
           Throws.InvalidOperationException.With.Message.EqualTo ("A read-only control cannot contain a null option definition."));
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListDisabled");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListDisabled");
       Assert.That (radioButtonListBocEnumValue.HasNullOptionDefinition(), Is.False);
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListNoAutoPostBack");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNoAutoPostBack");
       Assert.That (radioButtonListBocEnumValue.HasNullOptionDefinition(), Is.False);
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListMultiColumn");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListMultiColumn");
       Assert.That (radioButtonListBocEnumValue.HasNullOptionDefinition(), Is.True);
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListFlow");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListFlow");
       Assert.That (radioButtonListBocEnumValue.HasNullOptionDefinition(), Is.True);
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListOrderedList");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListOrderedList");
       Assert.That (radioButtonListBocEnumValue.HasNullOptionDefinition(), Is.True);
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListUnorderedList");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListUnorderedList");
       Assert.That (radioButtonListBocEnumValue.HasNullOptionDefinition(), Is.True);
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListLabelLeft");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListLabelLeft");
       Assert.That (radioButtonListBocEnumValue.HasNullOptionDefinition(), Is.True);
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListRequiredWithoutSelectedValue");
+      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListRequiredWithoutSelectedValue");
       Assert.That (radioButtonListBocEnumValue.HasNullOptionDefinition(), Is.False);
 
-      radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListWithoutSelectedValueAndWithoutVisibleNullValue");
+      radioButtonListBocEnumValue =
+          home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListWithoutSelectedValueAndWithoutVisibleNullValue");
+
       Assert.That (radioButtonListBocEnumValue.HasNullOptionDefinition(), Is.False);
     }
 
@@ -377,7 +341,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       const string single = "Single";
       const string divorced = "Divorced";
 
-      var dropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListNormal");
+      var dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNormal");
 
       dropDownListBocEnumValue.SelectOption (single);
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNormalCurrentValueLabel").Text, Is.EqualTo (single));
@@ -391,7 +355,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       dropDownListBocEnumValue.SelectOption().WithDisplayText ("Is_So_Undefined");
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNormalCurrentValueLabel").Text, Is.Empty);
 
-      var listBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxNormal");
+      var listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNormal");
 
       listBoxBocEnumValue.SelectOption (single);
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNormalCurrentValueLabel").Text, Is.EqualTo (single));
@@ -405,7 +369,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       listBoxBocEnumValue.SelectOption().WithDisplayText ("Is_So_Undefined");
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNormalCurrentValueLabel").Text, Is.Empty);
 
-      var radioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListNormal");
+      var radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNormal");
 
       radioButtonListBocEnumValue.SelectOption (single);
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListNormalCurrentValueLabel").Text, Is.EqualTo (single));
@@ -419,7 +383,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       radioButtonListBocEnumValue.SelectOption().WithDisplayText ("Is_So_Undefined");
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListNormalCurrentValueLabel").Text, Is.Empty);
 
-      var multiColumnradioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListMultiColumn");
+      var multiColumnradioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListMultiColumn");
 
       multiColumnradioButtonListBocEnumValue.SelectOption (single);
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListMultiColumnCurrentValueLabel").Text, Is.EqualTo (single));
@@ -433,7 +397,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       multiColumnradioButtonListBocEnumValue.SelectOption().WithDisplayText ("Is_So_Undefined");
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListMultiColumnCurrentValueLabel").Text, Is.Empty);
 
-      var flowRadioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListFlow");
+      var flowRadioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListFlow");
 
       flowRadioButtonListBocEnumValue.SelectOption (single);
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListFlowCurrentValueLabel").Text, Is.EqualTo (single));
@@ -447,7 +411,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       flowRadioButtonListBocEnumValue.SelectOption().WithDisplayText ("Is_So_Undefined");
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListFlowCurrentValueLabel").Text, Is.Empty);
 
-      var orderedListRadioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListOrderedList");
+      var orderedListRadioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListOrderedList");
 
       orderedListRadioButtonListBocEnumValue.SelectOption (single);
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListOrderedListCurrentValueLabel").Text, Is.EqualTo (single));
@@ -461,7 +425,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       orderedListRadioButtonListBocEnumValue.SelectOption().WithDisplayText ("Is_So_Undefined");
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListOrderedListCurrentValueLabel").Text, Is.Empty);
 
-      var labelLeftRadioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListLabelLeft");
+      var labelLeftRadioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListLabelLeft");
 
       labelLeftRadioButtonListBocEnumValue.SelectOption (single);
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListLabelLeftCurrentValueLabel").Text, Is.EqualTo (single));
@@ -485,8 +449,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       const string single = "Single";
       const string divorced = "Divorced";
 
-      var normalDropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListNormal");
-      var noAutoPostBackDropDownListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_DropDownListNoAutoPostBack");
+      var normalDropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNormal");
+      var noAutoPostBackDropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNoAutoPostBack");
 
       normalDropDownListBocEnumValue.SelectOption ("==null==");
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNormalCurrentValueLabel").Text, Is.Empty);
@@ -504,8 +468,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNormalCurrentValueLabel").Text, Is.EqualTo (divorced));
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (single));
 
-      var normalListBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxNormal");
-      var noAutoPostBackListBoxBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_ListBoxNoAutoPostBack");
+      var normalListBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNormal");
+      var noAutoPostBackListBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNoAutoPostBack");
 
       normalListBoxBocEnumValue.SelectOption ("==null==");
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNormalCurrentValueLabel").Text, Is.Empty);
@@ -523,8 +487,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNormalCurrentValueLabel").Text, Is.EqualTo (divorced));
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (single));
 
-      var normalRadioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListNormal");
-      var noAutoPostBackRadioButtonListBocEnumValue = home.GetEnumValue().ByLocalID ("MarriageStatusField_RadioButtonListNoAutoPostBack");
+      var normalRadioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNormal");
+      var noAutoPostBackRadioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNoAutoPostBack");
 
       normalRadioButtonListBocEnumValue.SelectOption ("==null==");
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListNormalCurrentValueLabel").Text, Is.Empty);

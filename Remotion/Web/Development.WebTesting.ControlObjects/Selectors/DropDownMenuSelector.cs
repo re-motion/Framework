@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Coypu;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.ControlSelection;
@@ -38,14 +39,34 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("textContent", textContent);
 
-      var scope = context.Scope.FindTagWithAttributes (
-          "*",
-          new Dictionary<string, string>
-          {
-              { DiagnosticMetadataAttributes.ControlType, ControlType },
-              { DiagnosticMetadataAttributes.Content, textContent }
-          });
+      var scope = FindScopePerTextContent (context, textContent);
+
       return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public DropDownMenuControlObject SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("textContent", textContent);
+
+      var scope = FindScopePerTextContent (context, textContent);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
+    public bool ExistsPerTextContent (ControlSelectionContext context, string textContent)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("textContent", textContent);
+
+      var scope = FindScopePerTextContent (context, textContent);
+
+      return scope.Exists (Options.NoWait);
     }
 
     /// <inheritdoc/>
@@ -57,6 +78,17 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
 
       return new DropDownMenuControlObject (newControlObjectContext);
+    }
+
+    private ElementScope FindScopePerTextContent (ControlSelectionContext context, string textContent)
+    {
+      var diagnosticMetadata = new Dictionary<string, string>
+                               {
+                                   { DiagnosticMetadataAttributes.ControlType, ControlType },
+                                   { DiagnosticMetadataAttributes.Content, textContent }
+                               };
+
+      return context.Scope.FindTagWithAttributes ("*", diagnosticMetadata);
     }
   }
 }

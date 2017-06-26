@@ -15,10 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -26,59 +29,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ImageButtonControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<ImageButtonSelector, ImageButtonControlObject> testSetupAction)
     {
-      var home = Start();
-
-      var imageButton = home.GetImageButton().ByID ("body_MyImageButton");
-      Assert.That (imageButton.Scope.Id, Is.EqualTo ("body_MyImageButton"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      var imageButton = home.GetImageButton().ByIndex (2);
-      Assert.That (imageButton.Scope.Id, Is.EqualTo ("body_MyImageButton2"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var imageButton = home.GetImageButton().ByLocalID ("MyImageButton");
-      Assert.That (imageButton.Scope.Id, Is.EqualTo ("body_MyImageButton"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var imageButton = home.GetImageButton().First();
-      Assert.That (imageButton.Scope.Id, Is.EqualTo ("body_MyImageButton"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-      var scope = home.GetScope().ByID ("scope");
-
-      var imageButton = scope.GetImageButton().Single();
-      Assert.That (imageButton.Scope.Id, Is.EqualTo ("body_MyImageButton2"));
-
-      try
-      {
-        home.GetImageButton().Single();
-        Assert.Fail ("Should not be able to unambigously find an image button.");
-      }
-      catch (AmbiguousException)
-      {
-      }
+      testSetupAction (Helper, e => e.ImageButtons(), "imageButton");
     }
 
     [Test]
@@ -86,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var imageButton = home.GetImageButton().ByLocalID ("MyImageButton");
+      var imageButton = home.ImageButtons().GetByLocalID ("MyImageButton");
       Assert.That (imageButton.GetImageSourceUrl(), Is.StringEnding ("/Images/SampleIcon.gif"));
     }
 
@@ -95,11 +53,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var imageButton = home.GetImageButton().ByLocalID ("MyImageButton2");
+      var imageButton = home.ImageButtons().GetByLocalID ("MyImageButton2");
       home = imageButton.Click().Expect<WxePageObject>();
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("MyImageButton2|MyImageButton2Command"));
 
-      imageButton = home.GetImageButton().ByLocalID ("MyImageButton3");
+      imageButton = home.ImageButtons().GetByLocalID ("MyImageButton3");
       home = imageButton.Click().Expect<WxePageObject>();
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
     }

@@ -28,92 +28,92 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   /// </summary>
   public static class FluentControlSelectorExtensionsForIntegrationTests
   {
-    public static FluentControlSelector<AnchorSelector, AnchorControlObject> GetAnchor (this IControlHost host)
+    public static FluentControlSelector<AnchorSelector, AnchorControlObject> Anchors (this IControlHost host)
     {
       return new FluentControlSelector<AnchorSelector, AnchorControlObject> (host, new AnchorSelector());
     }
 
-    public static FluentControlSelector<CommandSelector, CommandControlObject> GetCommand (this IControlHost host)
+    public static FluentControlSelector<CommandSelector, CommandControlObject> Commands (this IControlHost host)
     {
       return new FluentControlSelector<CommandSelector, CommandControlObject> (host, new CommandSelector());
     }
 
-    public static FluentControlSelector<DropDownListSelector, DropDownListControlObject> GetDropDownList (this IControlHost host)
+    public static FluentControlSelector<DropDownListSelector, DropDownListControlObject> DropDownLists (this IControlHost host)
     {
       return new FluentControlSelector<DropDownListSelector, DropDownListControlObject> (host, new DropDownListSelector());
     }
 
-    public static FluentControlSelector<DropDownMenuSelector, DropDownMenuControlObject> GetDropDownMenu (this IControlHost host)
+    public static FluentControlSelector<DropDownMenuSelector, DropDownMenuControlObject> DropDownMenus (this IControlHost host)
     {
       return new FluentControlSelector<DropDownMenuSelector, DropDownMenuControlObject> (host, new DropDownMenuSelector());
     }
 
-    public static FluentControlSelector<FormGridSelector, FormGridControlObject> GetFormGrid (this IControlHost host)
+    public static FluentControlSelector<FormGridSelector, FormGridControlObject> FormGrids (this IControlHost host)
     {
       return new FluentControlSelector<FormGridSelector, FormGridControlObject> (host, new FormGridSelector());
     }
 
-    public static FluentControlSelector<ImageSelector, ImageControlObject> GetImage (this IControlHost host)
+    public static FluentControlSelector<ImageSelector, ImageControlObject> Images (this IControlHost host)
     {
       return new FluentControlSelector<ImageSelector, ImageControlObject> (host, new ImageSelector());
     }
 
-    public static FluentControlSelector<ImageButtonSelector, ImageButtonControlObject> GetImageButton (this IControlHost host)
+    public static FluentControlSelector<ImageButtonSelector, ImageButtonControlObject> ImageButtons (this IControlHost host)
     {
       return new FluentControlSelector<ImageButtonSelector, ImageButtonControlObject> (host, new ImageButtonSelector());
     }
 
-    public static FluentControlSelector<LabelSelector, LabelControlObject> GetLabel (this IControlHost host)
+    public static FluentControlSelector<LabelSelector, LabelControlObject> Labels (this IControlHost host)
     {
       return new FluentControlSelector<LabelSelector, LabelControlObject> (host, new LabelSelector());
     }
 
-    public static FluentControlSelector<ListMenuSelector, ListMenuControlObject> GetListMenu (this IControlHost host)
+    public static FluentControlSelector<ListMenuSelector, ListMenuControlObject> ListMenus (this IControlHost host)
     {
       return new FluentControlSelector<ListMenuSelector, ListMenuControlObject> (host, new ListMenuSelector());
     }
 
-    public static FluentControlSelector<ScopeSelector, ScopeControlObject> GetScope (this IControlHost host)
+    public static FluentControlSelector<ScopeSelector, ScopeControlObject> Scopes (this IControlHost host)
     {
       return new FluentControlSelector<ScopeSelector, ScopeControlObject> (host, new ScopeSelector());
     }
 
-    public static FluentControlSelector<SingleViewSelector, SingleViewControlObject> GetSingleView (this IControlHost host)
+    public static FluentControlSelector<SingleViewSelector, SingleViewControlObject> SingleViews (this IControlHost host)
     {
       return new FluentControlSelector<SingleViewSelector, SingleViewControlObject> (host, new SingleViewSelector());
     }
 
-    public static FluentControlSelector<TabbedMenuSelector, TabbedMenuControlObject> GetTabbedMenu (this IControlHost host)
+    public static FluentControlSelector<TabbedMenuSelector, TabbedMenuControlObject> TabbedMenus (this IControlHost host)
     {
       return new FluentControlSelector<TabbedMenuSelector, TabbedMenuControlObject> (host, new TabbedMenuSelector());
     }
 
-    public static FluentControlSelector<TabbedMultiViewSelector, TabbedMultiViewControlObject> GetTabbedMultiView (this IControlHost host)
+    public static FluentControlSelector<TabbedMultiViewSelector, TabbedMultiViewControlObject> TabbedMultiViews (this IControlHost host)
     {
       return new FluentControlSelector<TabbedMultiViewSelector, TabbedMultiViewControlObject> (host, new TabbedMultiViewSelector());
     }
 
-    public static FluentControlSelector<TextBoxSelector, TextBoxControlObject> GetTextBox (this IControlHost host)
+    public static FluentControlSelector<TextBoxSelector, TextBoxControlObject> TextBoxes (this IControlHost host)
     {
       return new FluentControlSelector<TextBoxSelector, TextBoxControlObject> (host, new TextBoxSelector());
     }
 
-    public static FluentControlSelector<TreeViewSelector, TreeViewControlObject> GetTreeView (this IControlHost host)
+    public static FluentControlSelector<TreeViewSelector, TreeViewControlObject> TreeViews (this IControlHost host)
     {
       return new FluentControlSelector<TreeViewSelector, TreeViewControlObject> (host, new TreeViewSelector());
     }
 
-    public static FluentControlSelector<WebButtonSelector, WebButtonControlObject> GetWebButton (this IControlHost host)
+    public static FluentControlSelector<WebButtonSelector, WebButtonControlObject> WebButtons (this IControlHost host)
     {
       return new FluentControlSelector<WebButtonSelector, WebButtonControlObject> (host, new WebButtonSelector());
     }
 
-    public static FluentControlSelector<WebTabStripSelector, WebTabStripControlObject> GetWebTabStrip (this IControlHost host)
+    public static FluentControlSelector<WebTabStripSelector, WebTabStripControlObject> WebTabStrips (this IControlHost host)
     {
       return new FluentControlSelector<WebTabStripSelector, WebTabStripControlObject> (host, new WebTabStripSelector());
     }
 
-    public static FluentControlSelector<WebTreeViewSelector, WebTreeViewControlObject> GetWebTreeView (this IControlHost host)
+    public static FluentControlSelector<WebTreeViewSelector, WebTreeViewControlObject> WebTreeViews (this IControlHost host)
     {
       return new FluentControlSelector<WebTreeViewSelector, WebTreeViewControlObject> (host, new WebTreeViewSelector());
     }

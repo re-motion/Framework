@@ -15,12 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -28,59 +29,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class DropDownListControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<DropDownListSelector, DropDownListControlObject> testSetupAction)
     {
-      var home = Start();
-
-      var dropDownList = home.GetDropDownList().ByID ("body_MyDropDownList");
-      Assert.That (dropDownList.Scope.Id, Is.EqualTo ("body_MyDropDownList"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      var dropDownList = home.GetDropDownList().ByIndex (2);
-      Assert.That (dropDownList.Scope.Id, Is.EqualTo ("body_MyDropDownList2"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var dropDownList = home.GetDropDownList().ByLocalID ("MyDropDownList");
-      Assert.That (dropDownList.Scope.Id, Is.EqualTo ("body_MyDropDownList"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var dropDownList = home.GetDropDownList().First();
-      Assert.That (dropDownList.Scope.Id, Is.EqualTo ("body_MyDropDownList"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-      var scope = home.GetScope().ByID ("scope");
-
-      var dropDownList = scope.GetDropDownList().Single();
-      Assert.That (dropDownList.Scope.Id, Is.EqualTo ("body_MyDropDownList2"));
-
-      try
-      {
-        home.GetDropDownList().Single();
-        Assert.Fail ("Should not be able to unambigously find a drop down list.");
-      }
-      catch (AmbiguousException)
-      {
-      }
+      testSetupAction (Helper, e => e.DropDownLists(), "dropDownList");
     }
 
     [Test]
@@ -88,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownList = home.GetDropDownList().ByLocalID ("MyDropDownList");
+      var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList");
       AssertSelectedOption (dropDownList, "Item1Value", -1, "Item1");
     }
 
@@ -111,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownList = home.GetDropDownList().ByLocalID ("MyDropDownList");
+      var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList");
 
       var options = dropDownList.GetOptionDefinitions();
       Assert.That (options.Count, Is.EqualTo (3));
@@ -132,7 +88,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownList = home.GetDropDownList().ByLocalID ("MyDropDownList");
+      var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList");
       dropDownList.SelectOption ("Item2Value");
       Assert.That (dropDownList.GetText(), Is.EqualTo ("Item2"));
     }
@@ -142,7 +98,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownList = home.GetDropDownList().ByLocalID ("MyDropDownList");
+      var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList");
 
       dropDownList.SelectOption ("Item3Value");
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Item3|Item3Value"));
@@ -159,7 +115,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownList = home.GetDropDownList().ByLocalID ("MyDropDownList3");
+      var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList3");
 
       dropDownList.SelectOption ("Item3Value", Opt.ContinueImmediately());
       Assert.That (dropDownList.GetSelectedOption().ItemID, Is.EqualTo ("Item3Value"));

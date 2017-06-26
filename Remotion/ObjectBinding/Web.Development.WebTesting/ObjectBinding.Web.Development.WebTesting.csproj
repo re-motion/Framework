@@ -136,7 +136,7 @@
     <Compile Include="ControlSelection\DisplayNameControlSelectionCommand.cs" />
     <Compile Include="FluentControlSelection\DisplayNameControlSelectionCommandBuilder.cs" />
     <Compile Include="ControlSelection\DomainPropertyControlSelectionCommand.cs" />
-    <Compile Include="FluentControlSelection\FluentControlSelectorExtensions.cs" />
+    <Compile Include="FluentControlSelection\FluentControlSelectorExtensionsForObjectBinding.cs" />
     <Compile Include="FluentControlSelection\DomainPropertyControlSelectionCommandBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

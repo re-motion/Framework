@@ -23,7 +23,8 @@
   <body>
     <form id="HtmlForm" runat="server">
       <div>
-        <table>
+        <label>Specific tests</label>
+        <table style="margin-bottom: 20px">
           <tr><td><a href="AnchorTest.wxe">AnchorTest</a></td></tr>
           <tr><td><a href="CommandTest.wxe">CommandTest</a></td></tr>
           <tr><td><a href="DropDownListTest.wxe">DropDownListTest</a></td></tr>
@@ -45,6 +46,28 @@
           <tr><td><a href="WebTabStripTest.wxe">WebTabStripTest</a></td></tr>
           <tr><td><a href="WebTreeViewTest.aspx">WebTreeViewTest</a></td></tr>
           <tr><td><a href="MultiWindowTest/Main.wxe">MultiWindowTest</a></td></tr>
+        </table>
+        
+        <label>Generic tests</label>
+        <table>
+          <tr><td><a href="GenericTest.wxe?control=anchor">AnchorTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=command">CommandTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=dropDownList">DropDownListTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=dropDownMenu">DropDownMenuTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=formGrid">FormGridTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=imageButton">ImageButtonTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=image">ImageTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=label">LabelTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=listMenu">ListMenuTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=scope">ScopeTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=singleView">SingleViewTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=tabbedMenu">TabbedMenuTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=tabbedMultiView">TabbedMultiViewTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=textBox">TextBoxTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=treeView">TreeViewTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=webButton">WebButtonTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=webTabStrip">WebTabStripTest</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=webTreeView">WebTreeViewTest</a></td></tr>
         </table>
       </div>
     </form>

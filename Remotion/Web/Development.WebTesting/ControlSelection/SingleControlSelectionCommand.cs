@@ -24,7 +24,9 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
   /// Represents a control selection, selecting the only control of the given <typeparamref name="TControlObject"/> type within the given scope.
   /// </summary>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class SingleControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
+  public class SingleControlSelectionCommand<TControlObject>
+      : IControlSelectionCommand<TControlObject>,
+        IControlOptionalSelectionCommand<TControlObject>
       where TControlObject : ControlObject
   {
     private readonly ISingleControlSelector<TControlObject> _controlSelector;
@@ -39,7 +41,17 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+
       return _controlSelector.SelectSingle (context);
+    }
+
+    /// <inheritdoc/>
+    public TControlObject SelectOptional (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      return _controlSelector.SelectSingleOrNull (context);
     }
   }
 }

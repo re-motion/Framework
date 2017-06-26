@@ -29,6 +29,12 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       base.OnPreRender (e);
     }
 
+    public void SetTestInformation (string testHelpOutput)
+    {
+      TestInformationOutputPanel.Visible = true;
+      TestInformationOutput.Text = testHelpOutput;
+    }
+
     public void SetTestOutput (string testOutput)
     {
       TestOutputLabel.Text = testOutput;

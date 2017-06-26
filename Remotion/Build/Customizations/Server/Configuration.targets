@@ -4,6 +4,7 @@
   <Target Name="After_TestBuild_Configuration" AfterTargets="TestBuild_Configuration">
     <PropertyGroup>
       <TestCategoriesToExclude>LongRunning</TestCategoriesToExclude>
+      <TestCategoriesToExclude>WebTest_GenericIntegrationTests</TestCategoriesToExclude>
     </PropertyGroup>
   </Target>
 

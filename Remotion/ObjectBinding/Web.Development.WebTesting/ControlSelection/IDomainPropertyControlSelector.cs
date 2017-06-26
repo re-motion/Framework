@@ -35,10 +35,33 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     /// <paramref name="domainClass"/>. If the <paramref name="domainClass"/> is <see langword="null" />, only the <paramref name="domainProperty"/>
     /// is used for selection.
     /// </summary>
-    /// <returns>The control object.</returns>
-    /// <exception cref="AmbiguousException">If multiple controls representing the given domain property are found.</exception>
+    /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
     /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    [NotNull]
     TControlObject SelectPerDomainProperty (
+        [NotNull] ControlSelectionContext context,
+        [NotNull] string domainProperty,
+        [CanBeNull] string domainClass);
+
+    /// <summary>
+    /// Selects the control, if it exists, within the given <paramref name="context"/> using the given <paramref name="domainProperty"/> and
+    /// <paramref name="domainClass"/>. If the <paramref name="domainClass"/> is <see langword="null" />, only the <paramref name="domainProperty"/>
+    /// is used for selection.
+    /// </summary>
+    /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
+    [CanBeNull]
+    TControlObject SelectOptionalPerDomainProperty (
+        [NotNull] ControlSelectionContext context,
+        [NotNull] string domainProperty,
+        [CanBeNull] string domainClass);
+    
+    /// <summary>
+    /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="domainProperty"/> and
+    /// <paramref name="domainClass"/> exists. If the <paramref name="domainClass"/> is <see langword="null" />, only the 
+    /// <paramref name="domainProperty"/> is used for the check.
+    /// </summary>
+    /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    bool ExistsPerDomainProperty (
         [NotNull] ControlSelectionContext context,
         [NotNull] string domainProperty,
         [CanBeNull] string domainClass);

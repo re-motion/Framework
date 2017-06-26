@@ -22,6 +22,14 @@
         <asp:ContentPlaceHolder ID="body" runat="server">
         </asp:ContentPlaceHolder>
       </div>
+      <asp:UpdatePanel ID="TestInformationUpdatePanel" UpdateMode="Always" runat="server">
+        <ContentTemplate>
+          <asp:Panel ID="TestInformationOutputPanel" ViewStateMode="Disabled" class="container" runat="server" Visible="False">
+            <h3>Test Information:</h3>
+            <asp:Label ID="TestInformationOutput" runat="server"></asp:Label>
+          </asp:Panel>
+        </ContentTemplate>
+      </asp:UpdatePanel>
       <div class="container">
         <h3>Test output:</h3>
         <asp:UpdatePanel ID="MainUpdatePanel" UpdateMode="Always" runat="server">

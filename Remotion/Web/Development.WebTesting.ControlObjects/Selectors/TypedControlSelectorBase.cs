@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -30,9 +31,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
   public abstract class TypedControlSelectorBase<TControlObject>
       : ControlSelectorBase<TControlObject>,
-          IFirstControlSelector<TControlObject>,
-          IIndexControlSelector<TControlObject>,
-          ISingleControlSelector<TControlObject>
+        IFirstControlSelector<TControlObject>,
+        IIndexControlSelector<TControlObject>,
+        ISingleControlSelector<TControlObject>
       where TControlObject : WebFormsControlObjectWithDiagnosticMetadata
   {
     private readonly string _controlType;
@@ -58,8 +59,22 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var scope = context.Scope.FindTagWithAttribute ("*", DiagnosticMetadataAttributes.ControlType, _controlType);
+      var scope = FindScopeByFirstOccurence (context);
+
       return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public TControlObject SelectFirstOrNull (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var scope = FindScopeByFirstOccurence (context);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
     }
 
     /// <inheritdoc/>
@@ -67,8 +82,25 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var scope = context.Scope.FindTagWithAttribute ("*", DiagnosticMetadataAttributes.ControlType, _controlType);
+      var scope = FindScopeByFirstOccurence (context);
+
       scope.EnsureSingle();
+
+      return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public TControlObject SelectSingleOrNull (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var scope = FindScopeByFirstOccurence (context);
+
+      if (!scope.Exists (Options.NoWait))
+        return null;
+
+      scope.EnsureSingle();
+
       return CreateControlObject (context, scope);
     }
 
@@ -77,9 +109,45 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
+      var scope = FindScopePerIndex (context, oneBasedIndex);
+
+      return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public TControlObject SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var scope = FindScopePerIndex (context, oneBasedIndex);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
+    public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var scope = FindScopePerIndex (context, oneBasedIndex);
+
+      return scope.Exists (Options.NoWait);
+    }
+
+    private ElementScope FindScopeByFirstOccurence (ControlSelectionContext context)
+    {
+      var scope = context.Scope.FindTagWithAttribute ("*", DiagnosticMetadataAttributes.ControlType, _controlType);
+      return scope;
+    }
+
+    private ElementScope FindScopePerIndex (ControlSelectionContext context, int oneBasedIndex)
+    {
       var hasAttributeCheck = XPathUtils.CreateHasAttributeCheck (DiagnosticMetadataAttributes.ControlType, _controlType);
       var scope = context.Scope.FindXPath (string.Format ("(.//*{0})[{1}]", hasAttributeCheck, oneBasedIndex));
-      return CreateControlObject (context, scope);
+      return scope;
     }
   }
 }

@@ -24,7 +24,10 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
   /// Represents a control selection, selecting the nth control of the given <typeparamref name="TControlObject"/> type within the given scope.
   /// </summary>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class IndexControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
+  public class IndexControlSelectionCommand<TControlObject>
+      : IControlSelectionCommand<TControlObject>,
+        IControlOptionalSelectionCommand<TControlObject>,
+        IControlExistsCommand
       where TControlObject : ControlObject
   {
     private readonly IIndexControlSelector<TControlObject> _controlSelector;
@@ -41,7 +44,25 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+
       return _controlSelector.SelectPerIndex (context, _oneBasedIndex);
+    }
+
+    /// <inheritdoc/>
+    public TControlObject SelectOptional (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      return _controlSelector.SelectOptionalPerIndex (context, _oneBasedIndex);
+    }
+
+    /// <inheritdoc/>
+    public bool Exists (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      return _controlSelector.ExistsPerIndex (context, _oneBasedIndex);
     }
   }
 }

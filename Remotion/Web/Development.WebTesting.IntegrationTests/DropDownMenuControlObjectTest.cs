@@ -15,11 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -29,68 +31,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     // Note: the <see cref="T:DropDownMenu.Mode"/>=<see cref="T:MenuMode.ContextMenu"/> option is tested indirectly by the BocTreeViewControlObjectTest.
 
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<DropDownMenuSelector, DropDownMenuControlObject> testSetupAction)
     {
-      var home = Start();
-
-      var dropDownMenu = home.GetDropDownMenu().ByID ("body_MyDropDownMenu");
-      Assert.That (dropDownMenu.Scope.Id, Is.EqualTo ("body_MyDropDownMenu"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      var dropDownMenu = home.GetDropDownMenu().ByIndex (2);
-      Assert.That (dropDownMenu.Scope.Id, Is.EqualTo ("body_MyDropDownMenu2"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var dropDownMenu = home.GetDropDownMenu().ByLocalID ("MyDropDownMenu");
-      Assert.That (dropDownMenu.Scope.Id, Is.EqualTo ("body_MyDropDownMenu"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var dropDownMenu = home.GetDropDownMenu().First();
-      Assert.That (dropDownMenu.Scope.Id, Is.EqualTo ("body_MyDropDownMenu"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-      var scope = home.GetScope().ByID ("scope");
-
-      var dropDownMenu = scope.GetDropDownMenu().Single();
-      Assert.That (dropDownMenu.Scope.Id, Is.EqualTo ("body_MyDropDownMenu2"));
-
-      try
-      {
-        home.GetDropDownMenu().Single();
-        Assert.Fail ("Should not be able to unambigously find a drop down menu.");
-      }
-      catch (AmbiguousException)
-      {
-      }
-    }
-
-    [Test]
-    public void TestSelection_Text ()
-    {
-      var home = Start();
-
-      var dropDownMenu = home.GetDropDownMenu().ByTextContent ("MyTitleText");
-      Assert.That (dropDownMenu.Scope.Id, Is.EqualTo ("body_MyDropDownMenu2"));
+      testSetupAction (Helper, e => e.DropDownMenus(), "dropDownMenu");
     }
 
     [Test]
@@ -98,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownMenu = home.GetDropDownMenu().ByLocalID ("MyDropDownMenu");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
       
       var items = dropDownMenu.GetItemDefinitions();
       Assert.That (items.Count, Is.EqualTo (5));
@@ -121,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownMenu = home.GetDropDownMenu().ByLocalID ("MyDropDownMenu");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
 
       dropDownMenu.SelectItem ("ItemID5");
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID5|Event"));

@@ -33,9 +33,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     /// <summary>
     /// Selects the control within the given <paramref name="context"/> using the given <paramref name="displayName"/>.
     /// </summary>
-    /// <returns>The control object.</returns>
-    /// <exception cref="AmbiguousException">If multiple controls with the given <paramref name="displayName"/> are found.</exception>
+    /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
     /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    [NotNull]
     TControlObject SelectPerDisplayName ([NotNull] ControlSelectionContext context, [NotNull] string displayName);
+
+    /// <summary>
+    /// Selects the control, if it exists, within the given <paramref name="context"/> using the given <paramref name="displayName"/>.
+    /// </summary>
+    /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
+    [CanBeNull]
+    TControlObject SelectOptionalPerDisplayName ([NotNull] ControlSelectionContext context, [NotNull] string displayName);
+    
+    /// <summary>
+    /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="displayName"/> exists.
+    /// </summary>
+    /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    bool ExistsPerDisplayName ([NotNull] ControlSelectionContext context, [NotNull] string displayName);
   }
 }

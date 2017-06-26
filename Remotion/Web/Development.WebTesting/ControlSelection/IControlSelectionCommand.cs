@@ -31,9 +31,10 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <summary>
     /// Performs the selection within the given <paramref name="context"/>.
     /// </summary>
-    /// <returns>The control object.</returns>
-    /// <exception cref="AmbiguousException">If the selection command cannot unambiguously identify the control.</exception>
+    /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
+    /// <exception cref="AmbiguousException">If multiple matching controls are found but the specific implementation of <see cref="IControlSelectionCommand{TControlObject}"/> requires an exact match.</exception>
     /// <exception cref="MissingHtmlException">If the element cannot be found.</exception>
+    [NotNull]
     TControlObject Select ([NotNull] ControlSelectionContext context);
   }
 }

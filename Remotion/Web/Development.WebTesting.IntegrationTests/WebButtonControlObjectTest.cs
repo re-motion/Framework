@@ -15,10 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -26,77 +29,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WebButtonControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
+    [TestCaseSource (typeof (ItemIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
+    [TestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<WebButtonSelector, WebButtonControlObject> testSetupAction)
     {
-      var home = Start();
-
-      var webButton = home.GetWebButton().ByID ("body_MyWebButton1Sync");
-      Assert.That (webButton.Scope.Id, Is.EqualTo ("body_MyWebButton1Sync"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      var webButton = home.GetWebButton().ByIndex (2);
-      Assert.That (webButton.Scope.Id, Is.EqualTo ("body_MyWebButton2Async"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var webButton = home.GetWebButton().ByLocalID ("MyWebButton3Href");
-      Assert.That (webButton.Scope.Id, Is.EqualTo ("body_MyWebButton3Href"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var webButton = home.GetWebButton().First();
-      Assert.That (webButton.Scope.Id, Is.EqualTo ("body_MyWebButton1Sync"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-      var scope = home.GetScope().ByID ("scope");
-
-      var webButton = scope.GetWebButton().Single();
-      Assert.That (webButton.Scope.Id, Is.EqualTo ("body_MyWebButton3Href"));
-
-      try
-      {
-        home.GetWebButton().Single();
-        Assert.Fail ("Should not be able to unambigously find a button.");
-      }
-      catch (AmbiguousException)
-      {
-      }
-    }
-
-    [Test]
-    public void TestSelection_Text ()
-    {
-      var home = Start();
-
-      var webButton = home.GetWebButton().ByTextContent ("AsyncButton");
-      Assert.That (webButton.Scope.Id, Is.EqualTo ("body_MyWebButton2Async"));
-    }
-
-    [Test]
-    public void TestSelection_ItemID ()
-    {
-      var home = Start();
-
-      var webButton = home.GetWebButton().ByItemID ("MyWebButton2Async");
-      Assert.That (webButton.Scope.Id, Is.EqualTo ("body_MyWebButton2Async"));
+      testSetupAction (Helper, e => e.WebButtons(), "webButton");
     }
 
     [Test]
@@ -104,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.GetWebButton().ByLocalID ("MyWebButton1Sync");
+      var webButton = home.WebButtons().GetByLocalID ("MyWebButton1Sync");
       Assert.That (webButton.GetText(), Is.EqualTo ("SyncButton"));
     }
 
@@ -113,10 +55,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.GetWebButton().ByLocalID ("MyWebButton1Sync");
+      var webButton = home.WebButtons().GetByLocalID ("MyWebButton1Sync");
       Assert.That (webButton.IsEnabled(), Is.True);
 
-      var disabledWebButton = home.GetWebButton().ByLocalID ("MyDisabledWebButton");
+      var disabledWebButton = home.WebButtons().GetByLocalID ("MyDisabledWebButton");
       Assert.That (disabledWebButton.IsEnabled(), Is.False);
     }
 
@@ -125,15 +67,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var syncWebButton = home.GetWebButton().ByLocalID ("MyWebButton1Sync");
+      var syncWebButton = home.WebButtons().GetByLocalID ("MyWebButton1Sync");
       home = syncWebButton.Click().Expect<WxePageObject>();
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Sync"));
 
-      var asyncWebButton = home.GetWebButton().ByLocalID ("MyWebButton2Async");
+      var asyncWebButton = home.WebButtons().GetByLocalID ("MyWebButton2Async");
       home = asyncWebButton.Click().Expect<WxePageObject>();
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Async"));
 
-      var hrefWebButton = home.GetWebButton().ByTextContent ("HrefButton");
+      var hrefWebButton = home.WebButtons().GetByTextContent ("HrefButton");
       home = hrefWebButton.Click().Expect<WxePageObject>();
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
     }
@@ -143,7 +85,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.GetWebButton().ByID ("body_MyWebButton1Sync");
+      var webButton = home.WebButtons().GetByID ("body_MyWebButton1Sync");
       Assert.That (webButton.StyleInfo.HasCssClass ("buttonBody"), Is.True);
       Assert.That (webButton.StyleInfo.HasCssClass ("doesNotHaveThisClass"), Is.False);
     }
@@ -153,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.GetWebButton().ByID ("body_MyWebButton1Sync");
+      var webButton = home.WebButtons().GetByID ("body_MyWebButton1Sync");
       Assert.That (webButton.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.FromRgb (230, 229, 231)));
     }
 
@@ -162,7 +104,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.GetWebButton().ByID ("body_MyWebButton1Sync");
+      var webButton = home.WebButtons().GetByID ("body_MyWebButton1Sync");
       Assert.That (webButton.StyleInfo.GetTextColor(), Is.EqualTo (WebColor.Black));
     }
 

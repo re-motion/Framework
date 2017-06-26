@@ -55,6 +55,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="WebDriver, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -69,6 +71,19 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="GenericTestCaseInfrastructure\ControlSelectorTestCaseFactoryBase.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\ITestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestCaseOptions.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\FirstControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\GenericPageTypes.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\HtmlIDControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\IndexControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\ItemIDControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\LocalIDControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\SingleControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestCaseFactoryBase.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\TextContentControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\TitleControlSelectorTestCaseFactory.cs" />
     <Compile Include="ControlObjectTest.cs" />
     <Compile Include="CustomUserDirectory.cs" />
     <Compile Include="FileDownloadTest.cs" />
@@ -91,6 +106,15 @@
     <Compile Include="IntegrationTest.cs" />
     <Compile Include="TabbedMenuControlObjectTest.cs" />
     <Compile Include="TabbedMultiViewControlObjectTest.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestConstants.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\SingleTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\FirstTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\HtmlIDTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\IndexTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\ItemIDTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\LocalIDTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\TextContentTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\TitleTestParameters.cs" />
     <Compile Include="WebFormsTestPageObject.cs" />
     <Compile Include="WebTabStripControlObjectTest.cs" />
     <Compile Include="AnchorControlObjectTest.cs" />
@@ -137,6 +161,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

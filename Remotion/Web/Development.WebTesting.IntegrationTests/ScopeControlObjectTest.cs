@@ -16,7 +16,11 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -24,13 +28,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ScopeControlObjectTest : IntegrationTest
   {
     [Test]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<ScopeSelector, ScopeControlObject> testAction)
+    {
+      testAction (Helper, e => e.Scopes(), "scope");
+    }
+
+    [Test]
     public void TestSelection_ByHtmlID ()
     {
       var home = Start();
 
       Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
 
-      var scope = home.GetScope().ByID ("body_MyScope");
+      var scope = home.Scopes().GetByID ("body_MyScope");
       Assert.That (scope.GetHtmlID(), Is.EqualTo ("body_MyScope"));
       Assert.That (scope.Scope.Text, Is.StringContaining ("Content"));
       Assert.That (scope.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
@@ -43,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
 
-      var scope = home.GetScope().ByLocalID ("MyScope");
+      var scope = home.Scopes().GetByLocalID ("MyScope");
       Assert.That (scope.GetHtmlID(), Is.EqualTo ("body_MyScope"));
       Assert.That (scope.Scope.Text, Is.StringContaining ("Content"));
       Assert.That (scope.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));

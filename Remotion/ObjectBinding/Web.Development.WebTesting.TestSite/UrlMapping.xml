@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-
 <!-- This file is part of the re-motion Core Framework (www.re-motion.org)
  ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
  ! 
@@ -16,7 +15,6 @@
  ! You should have received a copy of the GNU Lesser General Public License
  ! along with re-motion; if not, see http://www.gnu.org/licenses.
 -->
-
 <urlMapping
     application="WxeTest"
     xmlns="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0"
@@ -24,4 +22,5 @@
     xsi:schemaLocation="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
 
   <add id="ControlTest" type="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite::ControlTestFunction" resource="~/ControlTest.wxe" />
+  <add id="GenericTest" type="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite::GenericTestFunction" resource="~/GenericTest.wxe" />
 </urlMapping>

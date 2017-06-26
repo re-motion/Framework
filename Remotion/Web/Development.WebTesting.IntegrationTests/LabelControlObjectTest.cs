@@ -17,6 +17,10 @@
 using System;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -24,20 +28,28 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class LabelControlObjectTest : IntegrationTest
   {
     [Test]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<LabelSelector, LabelControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<LabelSelector, LabelControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<LabelSelector, LabelControlObject> testSetupAction)
+    {
+      testSetupAction (Helper, e => e.Labels(), "label");
+    }
+
+    [Test]
     public void TestSelection_ByHtmlID ()
     {
       var home = Start();
 
-      var smartLabel = home.GetLabel().ByID ("body_MySmartLabel");
+      var smartLabel = home.Labels().GetByID ("body_MySmartLabel");
       Assert.That (smartLabel.Scope.Id, Is.EqualTo ("body_MySmartLabel"));
 
-      var formGridLabel = home.GetLabel().ByID ("body_MyFormGridLabel");
+      var formGridLabel = home.Labels().GetByID ("body_MyFormGridLabel");
       Assert.That (formGridLabel.Scope.Id, Is.EqualTo ("body_MyFormGridLabel"));
 
-      var aspLabel = home.GetLabel().ByID ("body_MyAspLabel");
+      var aspLabel = home.Labels().GetByID ("body_MyAspLabel");
       Assert.That (aspLabel.Scope.Id, Is.EqualTo ("body_MyAspLabel"));
 
-      var htmlLabel = home.GetLabel().ByID ("body_MyHtmlLabel");
+      var htmlLabel = home.Labels().GetByID ("body_MyHtmlLabel");
       Assert.That (htmlLabel.Scope.Id, Is.EqualTo ("body_MyHtmlLabel"));
     }
 
@@ -46,16 +58,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var smartLabel = home.GetLabel().ByLocalID ("MySmartLabel");
+      var smartLabel = home.Labels().GetByLocalID ("MySmartLabel");
       Assert.That (smartLabel.Scope.Id, Is.EqualTo ("body_MySmartLabel"));
 
-      var formGridLabel = home.GetLabel().ByLocalID ("MyFormGridLabel");
+      var formGridLabel = home.Labels().GetByLocalID ("MyFormGridLabel");
       Assert.That (formGridLabel.Scope.Id, Is.EqualTo ("body_MyFormGridLabel"));
 
-      var aspLabel = home.GetLabel().ByLocalID ("MyAspLabel");
+      var aspLabel = home.Labels().GetByLocalID ("MyAspLabel");
       Assert.That (aspLabel.Scope.Id, Is.EqualTo ("body_MyAspLabel"));
 
-      var htmlLabel = home.GetLabel().ByLocalID ("MyHtmlLabel");
+      var htmlLabel = home.Labels().GetByLocalID ("MyHtmlLabel");
       Assert.That (htmlLabel.Scope.Id, Is.EqualTo ("body_MyHtmlLabel"));
     }
 
@@ -64,16 +76,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var smartLabel = home.GetLabel().ByLocalID ("MySmartLabel");
+      var smartLabel = home.Labels().GetByLocalID ("MySmartLabel");
       Assert.That (smartLabel.GetText(), Is.EqualTo ("MySmartLabelContent"));
 
-      var formGridLabel = home.GetLabel().ByLocalID ("MyFormGridLabel");
+      var formGridLabel = home.Labels().GetByLocalID ("MyFormGridLabel");
       Assert.That (formGridLabel.GetText(), Is.EqualTo ("MyFormGridLabelContent"));
 
-      var aspLabel = home.GetLabel().ByLocalID ("MyAspLabel");
+      var aspLabel = home.Labels().GetByLocalID ("MyAspLabel");
       Assert.That (aspLabel.GetText(), Is.EqualTo ("MyAspLabelContent"));
 
-      var htmlLabel = home.GetLabel().ByLocalID ("MyHtmlLabel");
+      var htmlLabel = home.Labels().GetByLocalID ("MyHtmlLabel");
       Assert.That (htmlLabel.GetText(), Is.EqualTo ("MyHtmlLabelContent"));
     }
 

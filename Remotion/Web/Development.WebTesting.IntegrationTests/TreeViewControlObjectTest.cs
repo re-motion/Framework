@@ -19,7 +19,10 @@ using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -27,21 +30,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TreeViewControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TreeViewSelector, TreeViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TreeViewSelector, TreeViewControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<TreeViewSelector, TreeViewControlObject> testSetupAction)
     {
-      var home = Start();
-
-      var treeView = home.GetTreeView().ByID ("body_MyTreeView");
-      Assert.That (treeView.Scope.Id, Is.EqualTo ("body_MyTreeView"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var treeView = home.GetTreeView().ByLocalID ("MyTreeView");
-      Assert.That (treeView.Scope.Id, Is.EqualTo ("body_MyTreeView"));
+      testSetupAction (Helper, e => e.TreeViews(), "treeView");
     }
 
     [Test]
@@ -49,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.GetTreeView().ByLocalID ("MyTreeView");
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
       var rootNode = treeView.GetRootNode();
       Assert.That (rootNode.GetText(), Is.EqualTo ("Root node"));
     }
@@ -59,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.GetTreeView().ByLocalID ("MyTreeView");
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
 
       var rootNode = treeView.GetRootNode().Expand();
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo("Expanded: Root node|RootValue (None)"));
@@ -79,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.GetTreeView().ByLocalID ("MyTreeView");
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
       var node = treeView.GetRootNode();
 
       Assert.That (node.GetText(), Is.EqualTo ("Root node"));
@@ -90,7 +83,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.GetTreeView().ByLocalID ("MyTreeView");
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
       var rootNode = treeView.GetRootNode();
       Assert.Throws<MissingHtmlException> (() => rootNode.IsChecked());
 
@@ -113,7 +106,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.GetTreeView().ByLocalID ("MyTreeView");
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
       var rootNode = treeView.GetRootNode();
       Assert.That (rootNode.GetNumberOfChildren(), Is.EqualTo (2));
 
@@ -126,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.GetTreeView().ByLocalID ("MyTreeView");
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
       var node = treeView.GetRootNode().Expand();
       node = node.GetNode (1).Expand();
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Expanded: Child node 1|Child1Value (None)"));
@@ -140,7 +133,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.GetTreeView().ByLocalID ("MyTreeView");
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
       var node = treeView.GetRootNode().Expand().Collapse().Expand();
       node = node.GetNode (2).Expand().Collapse().Expand();
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Expanded: Child node 2|Child2Value (None)"));
@@ -154,7 +147,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.GetTreeView().ByLocalID ("MyTreeView");
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
 
       var node = treeView.GetRootNode();
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.Empty);

@@ -15,11 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -27,59 +29,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WebTabStripControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<WebTabStripSelector, WebTabStripControlObject> testSetupAction)
     {
-      var home = Start();
-
-      var tabStrip = home.GetWebTabStrip().ByID ("body_MyTabStrip1");
-      Assert.That (tabStrip.Scope.Id, Is.EqualTo ("body_MyTabStrip1"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      var tabStrip = home.GetWebTabStrip().ByIndex (2);
-      Assert.That (tabStrip.Scope.Id, Is.EqualTo ("body_MyTabStrip2"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var tabStrip = home.GetWebTabStrip().ByLocalID ("MyTabStrip1");
-      Assert.That (tabStrip.Scope.Id, Is.EqualTo ("body_MyTabStrip1"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var tabStrip = home.GetWebTabStrip().First();
-      Assert.That (tabStrip.Scope.Id, Is.EqualTo ("body_MyTabStrip1"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-      var scope = home.GetScope().ByID ("scope");
-
-      var tabStrip = scope.GetWebTabStrip().Single();
-      Assert.That (tabStrip.Scope.Id, Is.EqualTo ("body_MyTabStrip2"));
-
-      try
-      {
-        home.GetWebTabStrip().Single();
-        Assert.Fail ("Should not be able to unambigously find a tab strip.");
-      }
-      catch (AmbiguousException)
-      {
-      }
+      testSetupAction (Helper, e => e.WebTabStrips(), "webTabStrip");
     }
 
     [Test]
@@ -87,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabStrip = home.GetWebTabStrip().First();
+      var tabStrip = home.WebTabStrips().First();
       Assert.That (tabStrip.GetSelectedTab().ItemID, Is.EqualTo ("Tab1"));
       Assert.That (tabStrip.GetSelectedTab().Index, Is.EqualTo (-1));
       Assert.That (tabStrip.GetSelectedTab().Title, Is.EqualTo ("Tab1Label"));
@@ -103,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabStrip = home.GetWebTabStrip().First();
+      var tabStrip = home.WebTabStrips().First();
       var tabs = tabStrip.GetTabDefinitions();
       Assert.That (tabs.Count, Is.EqualTo (2));
       Assert.That (tabs[1].ItemID, Is.EqualTo ("Tab2"));
@@ -116,8 +73,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabStrip1 = home.GetWebTabStrip().First();
-      var tabStrip2 = home.GetWebTabStrip().ByIndex (2);
+      var tabStrip1 = home.WebTabStrips().First();
+      var tabStrip2 = home.WebTabStrips().GetByIndex (2);
 
       home = tabStrip1.SwitchTo ("Tab2").Expect<WxePageObject>();
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("MyTabStrip1/Tab2"));

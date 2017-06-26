@@ -54,6 +54,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="WebDriver, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Selenium.WebDriver.2.48.0\lib\net40\WebDriver.dll</HintPath>
@@ -79,7 +81,27 @@
     <Compile Include="BocListControlObjectTest.cs" />
     <Compile Include="BocAutoCompleteReferenceValueControlObjectTest.cs" />
     <Compile Include="CustomUserDirectory.cs" />
-    <Compile Include="FluentControlSelectorExtensionsForIntegrationTests.cs" />
+    <Compile Include="FluentControlSelectorExtensionsForIntegrationTestsForObjectBinding.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\ControlSelectorTestCaseFactoryBase.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\DomainPropertyControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\FirstControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\DisplayNameControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\HtmlIDControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\IndexControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\LocalIDControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\Factories\SingleControlSelectorTestCaseFactory.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\GenericPageTypes.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\ITestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestCaseFactoryBase.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestCaseOptions.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestConstants.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\DisplayNameTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\DomainPropertyTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\FirstTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\HtmlIDTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\IndexTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\LocalIDTestParameters.cs" />
+    <Compile Include="GenericTestCaseInfrastructure\TestParameters\SingleTestParameters.cs" />
     <Compile Include="IntegrationTest.cs" />
     <Compile Include="CustomWebTestConfigurationFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -16,9 +16,12 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -26,63 +29,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TabbedMenuControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<TabbedMenuSelector, TabbedMenuControlObject> testSetupAction)
     {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var tabbedMenu = home.GetTabbedMenu().ByID ("body_MyTabbedMenu");
-      Assert.That (tabbedMenu.Scope.Id, Is.EqualTo ("body_MyTabbedMenu"));
-      Assert.That (tabbedMenu.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var tabbedMenu = home.GetTabbedMenu().ByIndex (1);
-      Assert.That (tabbedMenu.Scope.Id, Is.EqualTo ("body_MyTabbedMenu"));
-      Assert.That (tabbedMenu.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var tabbedMenu = home.GetTabbedMenu().ByLocalID ("MyTabbedMenu");
-      Assert.That (tabbedMenu.Scope.Id, Is.EqualTo ("body_MyTabbedMenu"));
-      Assert.That (tabbedMenu.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var tabbedMenu = home.GetTabbedMenu().First();
-      Assert.That (tabbedMenu.Scope.Id, Is.EqualTo ("body_MyTabbedMenu"));
-      Assert.That (tabbedMenu.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
-    }
-
-    [Test]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var tabbedMenu = home.GetTabbedMenu().Single();
-      Assert.That (tabbedMenu.Scope.Id, Is.EqualTo ("body_MyTabbedMenu"));
-      Assert.That (tabbedMenu.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
+      testSetupAction (Helper, e => e.TabbedMenus(), "tabbedMenu");
     }
 
     [Test]
@@ -90,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMenu = home.GetTabbedMenu().Single();
+      var tabbedMenu = home.TabbedMenus().Single();
       Assert.That (tabbedMenu.GetStatusText(), Is.EqualTo ("MyStatusText"));
     }
 
@@ -99,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMenu = home.GetTabbedMenu().ByLocalID ("MyTabbedMenu");
+      var tabbedMenu = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
       
       var items = tabbedMenu.GetItemDefinitions();
       Assert.That (items.Count, Is.EqualTo (5));
@@ -122,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMenu = home.GetTabbedMenu().Single();
+      var tabbedMenu = home.TabbedMenus().Single();
 
       tabbedMenu.SelectItem ("EventCommandTab");
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
@@ -145,7 +99,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMenu = home.GetTabbedMenu().Single();
+      var tabbedMenu = home.TabbedMenus().Single();
 
       tabbedMenu.SelectItem ("EventCommandTab");
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
@@ -165,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMenu = home.GetTabbedMenu().ByLocalID ("MyTabbedMenu");
+      var tabbedMenu = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
 
       var subMenuItems = tabbedMenu.SubMenu.GetItemDefinitions();
       Assert.That (subMenuItems, Is.Empty);
@@ -191,7 +145,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMenu = home.GetTabbedMenu().Single();
+      var tabbedMenu = home.TabbedMenus().Single();
       tabbedMenu.SelectItem ("TabWithSubMenu");
 
       tabbedMenu.SubMenu.SelectItem ("SubMenuTab1");

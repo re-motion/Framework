@@ -15,15 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Threading;
-using Coypu;
 using NUnit.Framework;
-using OpenQA.Selenium.Chrome;
-using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -31,83 +30,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocBooleanValueControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<BocBooleanValueSelector, BocBooleanValueControlObject> testAction)
     {
-      var home = Start();
-
-      var bocBooleanValue = home.GetBooleanValue().ByID ("body_DataEditControl_DeceasedField_Normal");
-      Assert.That (bocBooleanValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DeceasedField_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      var bocBooleanValue = home.GetBooleanValue().ByIndex (3);
-      Assert.That (bocBooleanValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DeceasedField_ReadOnly"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_Normal");
-      Assert.That (bocBooleanValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DeceasedField_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var bocBooleanValue = home.GetBooleanValue().First();
-      Assert.That (bocBooleanValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DeceasedField_Normal"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-
-      try
-      {
-        home.GetBooleanValue().Single();
-        Assert.Fail ("Should not be able to unambiguously find a BOC boolean value.");
-      }
-      catch (AmbiguousException)
-      {
-      }
-    }
-
-    [Test]
-    public void TestSelection_DisplayName ()
-    {
-      var home = Start();
-
-      var bocBooleanValue = home.GetBooleanValue().ByDisplayName ("Deceased");
-      Assert.That (bocBooleanValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DeceasedField_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_DomainProperty ()
-    {
-      var home = Start();
-
-      var bocBooleanValue = home.GetBooleanValue().ByDomainProperty ("Deceased");
-      Assert.That (bocBooleanValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DeceasedField_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_DomainPropertyAndClass ()
-    {
-      var home = Start();
-
-      var bocBooleanValue = home.GetBooleanValue()
-          .ByDomainProperty ("Deceased", "Remotion.ObjectBinding.Sample.Person, Remotion.ObjectBinding.Sample");
-      Assert.That (bocBooleanValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DeceasedField_Normal"));
+      testAction (Helper, e => e.BooleanValues(), "booleanValue");
     }
 
     [Test]
@@ -115,10 +47,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_Normal");
+      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_Normal");
       Assert.That (bocBooleanValue.IsReadOnly(), Is.False);
 
-      bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_ReadOnly");
+      bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_ReadOnly");
       Assert.That (bocBooleanValue.IsReadOnly(), Is.True);
     }
 
@@ -127,19 +59,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_Normal");
+      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_Normal");
       Assert.That (bocBooleanValue.GetState(), Is.EqualTo (false));
 
-      bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_ReadOnly");
+      bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_ReadOnly");
       Assert.That (bocBooleanValue.GetState(), Is.EqualTo (false));
 
-      bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_Disabled");
+      bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_Disabled");
       Assert.That (bocBooleanValue.GetState(), Is.EqualTo (false));
 
-      bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_NoAutoPostBack");
+      bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_NoAutoPostBack");
       Assert.That (bocBooleanValue.GetState(), Is.EqualTo (false));
 
-      bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_TriState");
+      bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_TriState");
       Assert.That (bocBooleanValue.GetState(), Is.EqualTo (false));
     }
 
@@ -148,10 +80,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_Normal");
+      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_Normal");
       Assert.That (bocBooleanValue.IsTriState(), Is.EqualTo (false));
 
-      bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_TriState");
+      bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_TriState");
       Assert.That (bocBooleanValue.IsTriState(), Is.EqualTo (true));
     }
 
@@ -160,8 +92,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var normalBocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_Normal");
-      var noAutoPostBackBocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_NoAutoPostBack");
+      var normalBocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_Normal");
+      var noAutoPostBackBocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_NoAutoPostBack");
 
       normalBocBooleanValue.SetTo (true);
       Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("True"));
@@ -182,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_TriState");
+      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_TriState");
 
       bocBooleanValue.SetTo (null);
       Assert.That (home.Scope.FindIdEndingWith ("TriStateCurrentValueLabel").Text, Is.Empty);
@@ -199,7 +131,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_NormalAndUnitialized");
+      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_NormalAndUnitialized");
 
       bocBooleanValue.SetTo (true);
       Assert.That (home.Scope.FindIdEndingWith ("NormalAndUnitializedCurrentValueLabel").Text, Is.EqualTo ("True"));
@@ -216,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocBooleanValue = home.GetBooleanValue().ByLocalID ("DeceasedField_NormalAndUnitialized");
+      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_NormalAndUnitialized");
 
       bocBooleanValue.SetTo (false);
       Assert.That (home.Scope.FindIdEndingWith ("NormalAndUnitializedCurrentValueLabel").Text, Is.EqualTo ("False"));

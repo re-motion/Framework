@@ -18,7 +18,6 @@ using System;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -30,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.GetWebButton().First();
+      var webButton = home.WebButtons().First();
       Assert.That (webButton.GetHtmlID(), Is.EqualTo ("body_MyWebButton1Sync"));
     }
 

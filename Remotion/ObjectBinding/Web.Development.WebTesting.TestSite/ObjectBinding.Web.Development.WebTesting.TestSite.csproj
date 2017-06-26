@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -90,6 +91,7 @@
     <Content Include="Controls\IconService.asmx" />
     <Content Include="ControlTestForm.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="GenericTest.aspx" />
     <Content Include="Images\SampleIcon.gif" />
     <Content Include="Images\Remotion.ObjectBinding.Sample.Job.gif" />
     <Content Include="Images\Remotion.ObjectBinding.Sample.Person.gif" />
@@ -309,6 +311,45 @@
     <Compile Include="ControlTestForm.aspx.designer.cs">
       <DependentUpon>ControlTestForm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GenericTest.aspx.cs">
+      <DependentUpon>GenericTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GenericTest.aspx.designer.cs">
+      <DependentUpon>GenericTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GenericTestFunction.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocAutoCompleteReferenceValueControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocCheckBoxControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocBooleanValueControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocDateTimeValueControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocEnumValueControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocListAsGridControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocListControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocMultilineTextValueControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocReferenceValueControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocTextValueControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocTreeViewControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\IControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\IPageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocAutoCompleteReferenceValuePageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocCheckBoxValuePageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocBooleanValuePageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocDateTimeValuePageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocEnumValuePageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocListAsGridPageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocListPageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocMultilineTextValuePageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocReferenceValuePageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocTextValuePageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocTreeViewPageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\SimpleControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\SimplePageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\TestArguments.cs" />
+    <Compile Include="GenericTestPageInfrastructure\TestConstants.cs" />
+    <Compile Include="GenericTestPageInfrastructure\TestOptions.cs" />
+    <Compile Include="GenericTestPageInfrastructure\TestParameter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

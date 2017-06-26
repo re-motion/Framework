@@ -31,8 +31,22 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <summary>
     /// Selects the control within the given <paramref name="context"/> using the given <paramref name="htmlID"/>.
     /// </summary>
-    /// <returns>The control object.</returns>
+    /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
     /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    [NotNull]
     TControlObject SelectPerHtmlID ([NotNull] ControlSelectionContext context, [NotNull] string htmlID);
+    
+    /// <summary>
+    /// Selects the control, if it exists, within the given <paramref name="context"/> using the given <paramref name="htmlID"/>.
+    /// </summary>
+    /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
+    [CanBeNull]
+    TControlObject SelectOptionalPerHtmlID ([NotNull] ControlSelectionContext context, [NotNull] string htmlID);
+
+    /// <summary>
+    /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="htmlID"/> exists.
+    /// </summary>
+    /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    bool ExistsPerHtmlID ([NotNull] ControlSelectionContext context, [NotNull] string htmlID);
   }
 }

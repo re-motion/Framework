@@ -30,7 +30,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
   /// <typeparam name="TControlSelector">The <see cref="IDisplayNameControlSelector{TControlObject}"/> to use.</typeparam>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
   public class DisplayNameControlSelectionCommandBuilder<TControlSelector, TControlObject>
-      : IControlSelectionCommandBuilder<TControlSelector, TControlObject>
+      : IControlSelectionCommandBuilder<TControlSelector, TControlObject>,
+        IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>,
+        IControlExistsCommandBuilder<TControlSelector>
       where TControlSelector : IDisplayNameControlSelector<TControlObject>
       where TControlObject : ControlObject
   {
@@ -44,7 +46,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     }
 
     /// <inheritdoc/>
-    public IControlSelectionCommand<TControlObject> Using (TControlSelector controlSelector)
+    IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
+    {
+      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+
+      return new DisplayNameControlSelectionCommand<TControlObject> (controlSelector, _displayName);
+    }
+
+    /// <inheritdoc/>
+    IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
+    {
+      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+
+      return new DisplayNameControlSelectionCommand<TControlObject> (controlSelector, _displayName);
+    }
+
+    /// <inheritdoc/>
+    IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
       ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
 

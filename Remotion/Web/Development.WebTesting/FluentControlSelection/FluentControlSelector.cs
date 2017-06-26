@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 
@@ -53,19 +52,31 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
       _controlSelector = controlSelector;
     }
 
-    /// <summary>
-    /// Performs the selection and returns the actual control.
-    /// </summary>
-    /// <param name="selectionCommandBuilder">The selection command builder which is combined with the <see cref="IControlSelector"/>.</param>
-    /// <returns>The selected control object.</returns>
-    /// <exception cref="AmbiguousException">If multiple matching controls are found.</exception>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <inheritdoc />
     TControlObject IFluentControlSelector<TControlSelector, TControlObject>.GetControl (
         IControlSelectionCommandBuilder<TControlSelector, TControlObject> selectionCommandBuilder)
     {
       ArgumentUtility.CheckNotNull ("selectionCommandBuilder", selectionCommandBuilder);
 
       return _host.GetControl (selectionCommandBuilder.Using (_controlSelector));
+    }
+
+    /// <inheritdoc />
+    TControlObject IFluentControlSelector<TControlSelector, TControlObject>.GetControlOrNull (
+        IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject> selectionCommandBuilder)
+    {
+      ArgumentUtility.CheckNotNull ("selectionCommandBuilder", selectionCommandBuilder);
+
+      return _host.GetControlOrNull (selectionCommandBuilder.Using (_controlSelector));
+    }
+
+    /// <inheritdoc />
+    bool IFluentControlSelector<TControlSelector, TControlObject>.HasControl (
+        IControlExistsCommandBuilder<TControlSelector> selectionCommandBuilder)
+    {
+      ArgumentUtility.CheckNotNull ("selectionCommandBuilder", selectionCommandBuilder);
+
+      return _host.HasControl (selectionCommandBuilder.Using (_controlSelector));
     }
   }
 }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ControlSelection;
@@ -42,12 +43,40 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
+    public ImageControlObject SelectFirstOrNull (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var scope = context.Scope.FindCss (c_imgTag);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
     public ImageControlObject SelectSingle (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
       var scope = context.Scope.FindCss (c_imgTag);
       scope.EnsureSingle();
+      return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public ImageControlObject SelectSingleOrNull (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var scope = context.Scope.FindCss (c_imgTag);
+
+      if (!scope.Exists (Options.NoWait))
+        return null;
+
+      scope.EnsureSingle();
+
       return CreateControlObject (context, scope);
     }
 
@@ -59,6 +88,31 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
       var xPathSelector = string.Format ("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
       return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public ImageControlObject SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var xPathSelector = string.Format ("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
+      var scope = context.Scope.FindXPath (xPathSelector);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
+    public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var xPathSelector = string.Format ("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
+      var scope = context.Scope.FindXPath (xPathSelector);
+
+      return scope.Exists (Options.NoWait);
     }
 
     /// <inheritdoc/>

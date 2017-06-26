@@ -44,6 +44,23 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
+    public TControlObject GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
+        where TControlObject : ControlObject
+    {
+      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+
+      return Children.GetControlOrNull (controlSelectionCommand);
+    }
+
+    /// <inheritdoc/>
+    public bool HasControl (IControlExistsCommand controlSelectionCommand)
+    {
+      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+
+      return Children.HasControl (controlSelectionCommand);
+    }
+
+    /// <inheritdoc/>
     protected override ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy (ElementScope scope)
     {
       throw new NotSupportedException ("The ScopeControlObject does not support any interaction.");

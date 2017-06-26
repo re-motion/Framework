@@ -39,5 +39,22 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
       return Children.GetControl (controlSelectionCommand);
     }
+
+    /// <inheritdoc/>
+    public TControlObject GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
+        where TControlObject : ControlObject
+    {
+      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+
+      return Children.GetControlOrNull (controlSelectionCommand);
+    }
+
+    /// <inheritdoc/>
+    public bool HasControl (IControlExistsCommand controlSelectionCommand)
+    {
+      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+
+      return Children.HasControl (controlSelectionCommand);
+    }
   }
 }

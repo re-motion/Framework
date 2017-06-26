@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
 
-      var textBox = home.GetTextBox().ByLocalID ("MyTextBox");
+      var textBox = home.TextBoxes().GetByLocalID ("MyTextBox");
 
       textBox.FillWith (input, FinishInput.WithTab);
 

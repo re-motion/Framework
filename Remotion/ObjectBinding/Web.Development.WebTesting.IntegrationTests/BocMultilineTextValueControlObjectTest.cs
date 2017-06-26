@@ -15,13 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
-using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -29,83 +30,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocMultilineTextValueControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
     {
-      var home = Start();
-
-      var bocMultilineText = home.GetMultilineTextValue().ByID ("body_DataEditControl_CVField_Normal");
-      Assert.That (bocMultilineText.Scope.Id, Is.EqualTo ("body_DataEditControl_CVField_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      var bocMultilineText = home.GetMultilineTextValue().ByIndex (2);
-      Assert.That (bocMultilineText.Scope.Id, Is.EqualTo ("body_DataEditControl_CVField_ReadOnly"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var bocMultilineText = home.GetMultilineTextValue().ByLocalID ("CVField_Normal");
-      Assert.That (bocMultilineText.Scope.Id, Is.EqualTo ("body_DataEditControl_CVField_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var bocMultilineText = home.GetMultilineTextValue().First();
-      Assert.That (bocMultilineText.Scope.Id, Is.EqualTo ("body_DataEditControl_CVField_Normal"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-
-      try
-      {
-        home.GetMultilineTextValue().Single();
-        Assert.Fail ("Should not be able to unambiguously find a BOC text.");
-      }
-      catch (AmbiguousException)
-      {
-      }
-    }
-
-    [Test]
-    public void TestSelection_DisplayName ()
-    {
-      var home = Start();
-
-      var bocMultilineText = home.GetMultilineTextValue().ByDisplayName ("CV");
-      Assert.That (bocMultilineText.Scope.Id, Is.EqualTo ("body_DataEditControl_CVField_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_DomainProperty ()
-    {
-      var home = Start();
-
-      var bocMultilineText = home.GetMultilineTextValue().ByDomainProperty ("CV");
-      Assert.That (bocMultilineText.Scope.Id, Is.EqualTo ("body_DataEditControl_CVField_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_DomainPropertyAndClass ()
-    {
-      var home = Start();
-
-      var bocMultilineText = home.GetMultilineTextValue()
-          .ByDomainProperty ("CV", "Remotion.ObjectBinding.Sample.Person, Remotion.ObjectBinding.Sample");
-      Assert.That (bocMultilineText.Scope.Id, Is.EqualTo ("body_DataEditControl_CVField_Normal"));
+      testAction (Helper, e => e.MultilineTextValues(), "multilineText");
     }
 
     [Test]
@@ -113,10 +47,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocMultilineText = home.GetMultilineTextValue().ByLocalID ("CVField_Normal");
+      var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
       Assert.That (bocMultilineText.IsReadOnly(), Is.False);
 
-      bocMultilineText = home.GetMultilineTextValue().ByLocalID ("CVField_ReadOnly");
+      bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_ReadOnly");
       Assert.That (bocMultilineText.IsReadOnly(), Is.True);
     }
 
@@ -125,16 +59,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocMultilineText = home.GetMultilineTextValue().ByLocalID ("CVField_Normal");
+      var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
       Assert.That (bocMultilineText.GetText(), Is.EqualTo ("<Test 1>" + Environment.NewLine + "Test 2" + Environment.NewLine + "Test 3"));
 
-      bocMultilineText = home.GetMultilineTextValue().ByLocalID ("CVField_ReadOnly");
+      bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_ReadOnly");
       Assert.That (bocMultilineText.GetText(), Is.EqualTo ("<Test 1>" + Environment.NewLine + "Test 2" + Environment.NewLine + "Test 3"));
 
-      bocMultilineText = home.GetMultilineTextValue().ByLocalID ("CVField_Disabled");
+      bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Disabled");
       Assert.That (bocMultilineText.GetText(), Is.EqualTo ("<Test 1>" + Environment.NewLine + "Test 2" + Environment.NewLine + "Test 3"));
 
-      bocMultilineText = home.GetMultilineTextValue().ByLocalID ("CVField_NoAutoPostBack");
+      bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_NoAutoPostBack");
       Assert.That (bocMultilineText.GetText(), Is.EqualTo ("<Test 1>" + Environment.NewLine + "Test 2" + Environment.NewLine + "Test 3"));
     }
 
@@ -143,19 +77,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocMultilineText = home.GetMultilineTextValue().ByLocalID ("CVField_Normal");
+      var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
       bocMultilineText.FillWith ("Blubba");
       Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("Blubba"));
 
-      bocMultilineText = home.GetMultilineTextValue().ByLocalID ("CVField_NoAutoPostBack");
+      bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_NoAutoPostBack");
       bocMultilineText.FillWith ("Blubba"); // no auto post back
       Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("<Test 1> NL Test 2 NL Test 3"));
 
-      bocMultilineText = home.GetMultilineTextValue().ByLocalID ("CVField_Normal");
+      bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
       bocMultilineText.FillWith ("Blubba", Opt.ContinueImmediately()); // same value, does not trigger post back
       Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("<Test 1> NL Test 2 NL Test 3"));
 
-      bocMultilineText = home.GetMultilineTextValue().ByLocalID ("CVField_Normal");
+      bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
       bocMultilineText.FillWith ("Doe" + Environment.NewLine + "SecondLineDoe");
       Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("Doe NL SecondLineDoe"));
       Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("Blubba"));
@@ -166,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocMultilineText = home.GetMultilineTextValue().ByLocalID ("CVField_Normal");
+      var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
       bocMultilineText.FillWith (new[] { "Line1", "Line2", "Line3", "Line4", "Line5" });
       Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("Line1 NL Line2 NL Line3 NL Line4 NL Line5"));
     }
