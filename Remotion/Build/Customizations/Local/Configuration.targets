@@ -10,6 +10,7 @@
 
   <Target Name="After_FullBuild_Configuration" AfterTargets="FullBuild_Configuration">
     <PropertyGroup>
+      <TestCategoriesToExclude>WebTest_GenericIntegrationTests</TestCategoriesToExclude>
     </PropertyGroup>
   </Target>
 
