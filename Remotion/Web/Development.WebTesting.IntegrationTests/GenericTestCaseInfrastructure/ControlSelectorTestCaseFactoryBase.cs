@@ -80,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseIn
     /// </summary>
     protected IControlHost BrowseGenericPage (WebTestHelper webTestHelper, string controlName, GenericPageTypes pageType)
     {
-      var url = VirtualPathUtility.Combine (
+      var url = string.Concat (
           webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot,
           string.Format (TestConstants.TestUrlTemplate, controlName, (int) pageType));
 
