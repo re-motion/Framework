@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       foreach (SecurityManagerAccessTypes enumValue in Enum.GetValues (typeof (SecurityManagerAccessTypes)))
       {
         var localizations = globalizationService.GetAvailableEnumDisplayNames (enumValue);
-        Assert.That (localizations.Count, Is.EqualTo (2), enumValue.ToString()); // invariant and DE
+        Assert.That (localizations.Count, Is.EqualTo (3), enumValue.ToString()); // invariant, EN, and DE
       }
     }
   }
