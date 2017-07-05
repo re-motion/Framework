@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using Remotion.Collections;
+using Remotion.FunctionalProgramming;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -84,7 +85,13 @@ namespace Remotion.Globalization.Implementation
       if (availableResourceLanguagesAttribute == null)
         return CultureInfo.GetCultures (CultureTypes.AllCultures);
 
-      return availableResourceLanguagesAttribute.CultureNames.Select (CultureInfo.GetCultureInfo).ToArray();
+      var result = availableResourceLanguagesAttribute.CultureNames.Select (CultureInfo.GetCultureInfo);
+
+      var neutralResourcesLanguageAttribute = assembly.GetCustomAttribute<NeutralResourcesLanguageAttribute>();
+      if (neutralResourcesLanguageAttribute != null)
+        result = result.Concat (CultureInfo.GetCultureInfo (neutralResourcesLanguageAttribute.CultureName));
+
+      return result.ToArray();
     }
   }
 }

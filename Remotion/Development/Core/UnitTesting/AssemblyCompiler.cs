@@ -93,6 +93,10 @@ namespace Remotion.Development.UnitTesting
 
       string[] sourceFiles = Directory.GetFiles (_sourceDirectory, "*.cs");
 
+      string[] resourceFiles = Directory.GetFiles (_sourceDirectory, "*.resources");
+      if (provider.Supports (GeneratorSupport.Resources))
+        _compilerParameters.EmbeddedResources.AddRange (resourceFiles);
+
       _results = provider.CompileAssemblyFromFile (_compilerParameters, sourceFiles);
 
       if (_results.Errors.Count > 0)

@@ -129,6 +129,7 @@
     <TestAssembly Include="TestDomain\TestAssemblies\En\TestEnum.cs" />
     <TestAssembly Include="TestDomain\TestAssemblies\EnUS\TestEnum.cs" />
     <TestAssembly Include="TestDomain\TestAssemblies\Without\TestEnum.cs" />
+    <TestAssembly Include="TestDomain\TestAssemblies\En\ClassWithResources.cs" />
     <Compile Include="TestDomain\TestEnum.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +160,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.fr-CA.resx" />
+    <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.fr.resx" />
+    <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.fr-CH.resx" />
     <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.it-IT.resx" />
     <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.de-AT.resx" />
     <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.resx" />
@@ -177,6 +181,9 @@
   <Target Name="AfterBuild">
     <Delete Files="@(TestAssembly->'$(MSBuildProjectDirectory)\$(OutputPath)\%(Directory)')" />
     <Copy SourceFiles="@(TestAssembly->'%(Fullpath)')" DestinationFiles="@(TestAssembly->'$(MSBuildProjectDirectory)\$(OutputPath)\%(Identity)')" />
+    
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)Remotion.Globalization.UnitTests.TestDomain.Resources.ClassWithResources.resources" 
+          DestinationFiles="$(MSBuildProjectDirectory)\$(OutputPath)\TestDomain\TestAssemblies\En\En.Globalization.ClassWithResources.resources" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
