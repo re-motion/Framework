@@ -14,8 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System.Resources;
+using System;
 using Remotion.Globalization;
-[assembly: NeutralResourcesLanguage ("en")]
-// The NeutralResourcesLanguage should not be part of the list of AvailableResourcesLanguages to show that it will always be included as well.
-[assembly: AvailableResourcesLanguages ("")]
+
+[MultiLingualResources ("En.Globalization.ClassWithResources")]
+public class ClassWithResources
+{
+}

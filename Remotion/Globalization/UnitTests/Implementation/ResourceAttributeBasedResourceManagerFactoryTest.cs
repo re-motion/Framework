@@ -87,7 +87,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var resourceManager = _factory.CreateResourceManager (typeof (ClassWithResources));
 
       var availableStrings = resourceManager.GetAvailableStrings ("type:ClassWithShortResourceIdentifier");
-      Assert.That (availableStrings.Count, Is.EqualTo (2));
+      Assert.That (availableStrings.Count, Is.EqualTo (5));
       Assert.That (availableStrings.ContainsKey (CultureInfo.InvariantCulture), Is.True);
       Assert.That (availableStrings.ContainsKey (new CultureInfo ("de-AT")), Is.True);
     }

@@ -30,5 +30,5 @@ using Remotion.Globalization;
 [assembly: NeutralResourcesLanguage ("")]
 // Explicitly supply "de-AT" twice to show that this is handled gracefully.
 // Explicitly do not place localizations in order to show that this is handled gracefully.
-[assembly: AvailableResourcesLanguages ("de-AT", "", "de-AT")]
+[assembly: AvailableResourcesLanguages ("de-AT", "fr-CA", "fr", "fr-CH", "de-AT")]
 [assembly: CLSCompliant (true)]
