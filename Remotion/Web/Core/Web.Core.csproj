@@ -743,6 +743,14 @@
     <Compile Include="Utilities\WebTypeUtility.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="Globalization\FormGridManager.fr.resx" />
+    <EmbeddedResource Include="Globalization\FormGridManager.it.resx" />
+    <EmbeddedResource Include="Globalization\SmartPageInfo.fr.resx" />
+    <EmbeddedResource Include="Globalization\SmartPageInfo.it.resx" />
+    <EmbeddedResource Include="Globalization\ValidationStateViewer.fr.resx" />
+    <EmbeddedResource Include="Globalization\ValidationStateViewer.it.resx" />
+    <EmbeddedResource Include="Globalization\WxePageInfo.fr.resx" />
+    <EmbeddedResource Include="Globalization\WxePageInfo.it.resx" />
     <EmbeddedResource Include="UI\SmartPageImplementation\Generic_Error_Async_Remote.htm" />
     <None Include="..\..\Build\NuSpec\TemplateSharedForWeb.nuspec">
       <Link>TemplateSharedForWeb.nuspec</Link>

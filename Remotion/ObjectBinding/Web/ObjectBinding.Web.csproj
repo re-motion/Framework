@@ -511,18 +511,40 @@
     <EmbeddedResource Include="Globalization\BocAutoCompleteReferenceValue.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocAutoCompleteReferenceValue.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocAutoCompleteReferenceValue.it.resx" />
     <EmbeddedResource Include="Globalization\BocAutoCompleteReferenceValue.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\BocAutoCompleteReferenceValueRenderer.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocAutoCompleteReferenceValueRenderer.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocAutoCompleteReferenceValueRenderer.it.resx" />
     <EmbeddedResource Include="Globalization\BocAutoCompleteReferenceValueRenderer.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocBooleanValue.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocBooleanValue.it.resx" />
+    <EmbeddedResource Include="Globalization\BocCheckBox.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocCheckBox.it.resx" />
+    <EmbeddedResource Include="Globalization\BocDateTimeValue.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocDateTimeValue.it.resx" />
+    <EmbeddedResource Include="Globalization\BocEnumValue.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocEnumValue.it.resx" />
+    <EmbeddedResource Include="Globalization\BocList.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocList.it.resx" />
+    <EmbeddedResource Include="Globalization\BocListNavigationBlockRenderer.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocListNavigationBlockRenderer.it.resx" />
+    <EmbeddedResource Include="Globalization\BocMultilineTextValue.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocMultilineTextValue.it.resx" />
+    <EmbeddedResource Include="Globalization\BocReferenceValue.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocReferenceValue.it.resx" />
     <EmbeddedResource Include="Globalization\BocReferenceValueRenderer.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocReferenceValueRenderer.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocReferenceValueRenderer.it.resx" />
     <EmbeddedResource Include="Globalization\BocReferenceValueRenderer.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -646,6 +668,8 @@
     <EmbeddedResource Include="Globalization\BocTextValue.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocTextValue.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocTextValue.it.resx" />
     <EmbeddedResource Include="Globalization\BocTextValue.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

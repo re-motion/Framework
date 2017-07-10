@@ -24,5 +24,5 @@ using Remotion.Globalization;
 [assembly: AssemblyDescription ("Provides the web user interface for administering the organizational structure and access-control domain of the re-motion Security Manager.")]
 [assembly: AssemblyCulture ("")]
 [assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("", "de")]
+[assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
 [assembly: CLSCompliant (true)]

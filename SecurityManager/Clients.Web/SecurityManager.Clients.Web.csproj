@@ -544,9 +544,15 @@
       <LastGenOutput>SecurableClassDefinitionTreeViewResources.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Classes\SecurableClassDefinitionTreeViewResources.fr.resx" />
+    <EmbeddedResource Include="Globalization\Classes\SecurableClassDefinitionTreeViewResources.it.resx" />
     <EmbeddedResource Include="Globalization\Classes\SecurableClassDefinitionTreeViewResources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\AccessControl\AccessControlResources.fr.resx" />
+    <EmbeddedResource Include="Globalization\UI\AccessControl\AccessControlResources.it.resx" />
+    <EmbeddedResource Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.fr.resx" />
+    <EmbeddedResource Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.it.resx" />
     <EmbeddedResource Include="Globalization\UI\GlobalResources.de.resx">
       <LastGenOutput>GlobalResources.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
@@ -565,10 +571,14 @@
     <EmbeddedResource Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\GlobalResources.fr.resx" />
+    <EmbeddedResource Include="Globalization\UI\GlobalResources.it.resx" />
     <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\OrganizationalStructureResources.de.resx">
       <LastGenOutput>EditGroupControlResources.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\OrganizationalStructureResources.fr.resx" />
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\OrganizationalStructureResources.it.resx" />
     <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\OrganizationalStructureResources.resx">
       <LastGenOutput>EditGroupControlResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>

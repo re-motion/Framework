@@ -368,6 +368,8 @@
     <EmbeddedResource Include="Globalization\BindableObjectGlobalizationService.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BindableObjectGlobalizationService.fr.resx" />
+    <EmbeddedResource Include="Globalization\BindableObjectGlobalizationService.it.resx" />
     <EmbeddedResource Include="Globalization\BindableObjectGlobalizationService.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>

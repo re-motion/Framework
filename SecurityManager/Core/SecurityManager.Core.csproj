@@ -286,19 +286,31 @@
       <SubType>Designer</SubType>
       <LastGenOutput>AccessControlEntry.de.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\AccessControlEntry.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\AccessControlEntry.it.resx" />
     <EmbeddedResource Include="Globalization\Domain\AccessControl\AccessControlEntry.resx">
       <SubType>Designer</SubType>
       <LastGenOutput>AccessControlEntry.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupCondition.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupCondition.it.resx" />
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupHierarchyCondition.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupHierarchyCondition.it.resx" />
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\TenantCondition.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\TenantCondition.it.resx" />
     <EmbeddedResource Include="Globalization\Domain\AccessControl\TenantHierarchyCondition.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\TenantHierarchyCondition.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\TenantHierarchyCondition.it.resx" />
     <EmbeddedResource Include="Globalization\Domain\AccessControl\TenantHierarchyCondition.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\AccessControl\UserCondition.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\UserCondition.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\UserCondition.it.resx" />
     <EmbeddedResource Include="Globalization\Domain\AccessControl\UserCondition.resx">
       <LastGenOutput>TenantCondition.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
@@ -324,8 +336,30 @@
       <SubType>Designer</SubType>
       <LastGenOutput>GroupCondition.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Delegation.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Delegation.it.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Group.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Group.it.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupType.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupType.it.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupTypePosition.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupTypePosition.it.resx" />
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\OrganizationalStructureObject.de.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\OrganizationalStructureObject.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\OrganizationalStructureObject.it.resx" />
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\OrganizationalStructureObject.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Position.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Position.it.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Role.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Role.it.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Substitution.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Substitution.it.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Tenant.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Tenant.it.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\User.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\User.it.resx" />
+    <EmbeddedResource Include="Globalization\Domain\SecurityManagerAccessTypes.fr.resx" />
+    <EmbeddedResource Include="Globalization\Domain\SecurityManagerAccessTypes.it.resx" />
     <EmbeddedResource Include="Globalization\Domain\SecurityManagerAccessTypes.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -24,5 +24,5 @@ using Remotion.Globalization;
 [assembly: AssemblyDescription ("Component for managing an application's security requirements via access control lists.")]
 [assembly: AssemblyCulture ("")]
 [assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("", "de")]
+[assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
 [assembly: CLSCompliant (true)]

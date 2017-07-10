@@ -23,7 +23,7 @@ using Remotion.Globalization;
 [assembly: TagPrefix ("Remotion.Web.UI.Controls", "remotion")]
 
 [assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("", "de")]
+[assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
 
 [assembly: AssemblyTitle("remotion Web Controls")]
 [assembly: AssemblyDescription ("Common controls for web applications.")]
