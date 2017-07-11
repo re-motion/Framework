@@ -118,22 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccessRightsNameTableHeader" xml:space="preserve">
-    <value>Access Rights</value>
+    <value>Granted permissions</value>
   </data>
   <data name="ClassTableHeader" xml:space="preserve">
     <value>Class</value>
   </data>
   <data name="DeniedRightsTableHeader" xml:space="preserve">
-    <value>Denied Rights</value>
+    <value>Denied permissions</value>
   </data>
   <data name="FirstNameTableHeader" xml:space="preserve">
-    <value>First Name</value>
+    <value>First name</value>
   </data>
   <data name="LastNameTableHeader" xml:space="preserve">
-    <value>Last Name</value>
+    <value>Last name</value>
   </data>
   <data name="NoAssociatedStatesHtmlText" xml:space="preserve">
-    <value>no associated states</value>
+    <value>no status assigned</value>
   </data>
   <data name="NO_CLASSES_DEFINED_Text" xml:space="preserve">
     <value>_NO_CLASSES_DEFINED_</value>
@@ -145,13 +145,13 @@
     <value>or its parents</value>
   </data>
   <data name="OwningGroupEqualsTableHeader" xml:space="preserve">
-    <value>Owning Group Equals</value>
+    <value>Group of the object is set to</value>
   </data>
   <data name="OwningTenantEqualsTableHeader" xml:space="preserve">
-    <value>Owning Tenant Equals</value>
+    <value>Tenant of the object is set to</value>
   </data>
   <data name="PageTitle" xml:space="preserve">
-    <value>re-motion ACL Expansion - User Master Table</value>
+    <value>re-motion ACL Expansion - Users</value>
   </data>
   <data name="PageTitleSingleFile" xml:space="preserve">
     <value>re-motion ACL Expansion</value>
@@ -160,16 +160,16 @@
     <value>Role</value>
   </data>
   <data name="StatelessHtmlText" xml:space="preserve">
-    <value>stateless</value>
+    <value>class-based ACL</value>
   </data>
   <data name="StatesTableHeader" xml:space="preserve">
-    <value>States</value>
+    <value>Status</value>
   </data>
   <data name="UserMustHaveAbstractRoleTableHeader" xml:space="preserve">
-    <value>User Must Have Abstract Role</value>
+    <value>User must have abstract role</value>
   </data>
   <data name="UserMustOwnTableHeader" xml:space="preserve">
-    <value>User Must Own</value>
+    <value>User must have ownership</value>
   </data>
   <data name="UserTableHeader" xml:space="preserve">
     <value>User</value>

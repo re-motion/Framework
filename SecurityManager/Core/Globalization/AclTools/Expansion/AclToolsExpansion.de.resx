@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccessRightsNameTableHeader" xml:space="preserve">
-    <value>Zugriffsrechte</value>
+    <value>Erteilte Berechtigungen</value>
   </data>
   <data name="ClassTableHeader" xml:space="preserve">
     <value>Klasse</value>
   </data>
   <data name="DeniedRightsTableHeader" xml:space="preserve">
-    <value>Verweigerte Zugriffsrechte</value>
+    <value>Verweigerte Berechtigungen</value>
   </data>
   <data name="FirstNameTableHeader" xml:space="preserve">
     <value>Vorname</value>
@@ -133,25 +133,25 @@
     <value>Nachname</value>
   </data>
   <data name="NoAssociatedStatesHtmlText" xml:space="preserve">
-    <value>keine assoziierten Zustände</value>
+    <value>kein Status zugeordnet</value>
   </data>
   <data name="NO_CLASSES_DEFINED_Text" xml:space="preserve">
     <value>_KEINE_KLASSEN_DEFINIERT_</value>
   </data>
   <data name="OrItsChildren" xml:space="preserve">
-    <value>oder darunterliegende</value>
+    <value>oder untergeordnete</value>
   </data>
   <data name="OrItsParents" xml:space="preserve">
-    <value>oder darüberliegende</value>
+    <value>oder übergeordnete</value>
   </data>
   <data name="OwningGroupEqualsTableHeader" xml:space="preserve">
-    <value>Besitzende Gruppe</value>
+    <value>Gruppe des Objekts entspricht</value>
   </data>
   <data name="OwningTenantEqualsTableHeader" xml:space="preserve">
-    <value>Besitzender Mandant</value>
+    <value>Mandant des Objekts entspricht</value>
   </data>
   <data name="PageTitle" xml:space="preserve">
-    <value>re-motion ACL Expansion - Benutzer Tabelle</value>
+    <value>re-motion ACL Expansion - Benutzer</value>
   </data>
   <data name="PageTitleSingleFile" xml:space="preserve">
     <value>re-motion ACL Expansion</value>
@@ -160,16 +160,16 @@
     <value>Rolle</value>
   </data>
   <data name="StatelessHtmlText" xml:space="preserve">
-    <value>zustandslos</value>
+    <value>klassenbezogene ACL</value>
   </data>
   <data name="StatesTableHeader" xml:space="preserve">
     <value>Status</value>
   </data>
   <data name="UserMustHaveAbstractRoleTableHeader" xml:space="preserve">
-    <value>Benutzers muß Abstrakte Rolle innehaben</value>
+    <value>Benutzer muss abstrakte Rolle innehaben</value>
   </data>
   <data name="UserMustOwnTableHeader" xml:space="preserve">
-    <value>Benutzer muß Objekt besitzen ?</value>
+    <value>Benutzer muss Eigentümer sein</value>
   </data>
   <data name="UserTableHeader" xml:space="preserve">
     <value>Benutzer</value>
