@@ -282,6 +282,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Globalization\AclTools\Expansion\AclToolsExpansion.it.resx" />
+    <EmbeddedResource Include="Globalization\AclTools\Expansion\AclToolsExpansion.fr.resx" />
     <EmbeddedResource Include="Globalization\Domain\AccessControl\AccessControlEntry.de.resx">
       <SubType>Designer</SubType>
       <LastGenOutput>AccessControlEntry.de.Designer.cs</LastGenOutput>
