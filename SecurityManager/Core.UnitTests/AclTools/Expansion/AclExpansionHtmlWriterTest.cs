@@ -193,12 +193,12 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
         <th class=""header"">User</th>
         <th class=""header"">Role</th>
         <th class=""header"">Class</th>
-        <th class=""header"">States</th>
-        <th class=""header"">User Must Own</th>
-        <th class=""header"">Owning Group Equals</th>
-        <th class=""header"">Owning Tenant Equals</th>
-        <th class=""header"">User Must Have Abstract Role</th>
-        <th class=""header"">Access Rights</th>
+        <th class=""header"">Status</th>
+        <th class=""header"">User must have ownership</th>
+        <th class=""header"">Group of the object is set to</th>
+        <th class=""header"">Tenant of the object is set to</th>
+        <th class=""header"">User must have abstract role</th>
+        <th class=""header"">Granted permissions</th>
       </tr>
       <tr>
         <td rowspan=""15"">James Ryan</td>
@@ -520,12 +520,12 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
         <th class=""header"">User</th>
         <th class=""header"">Role</th>
         <th class=""header"">Class</th>
-        <th class=""header"">States</th>
-        <th class=""header"">User Must Own</th>
-        <th class=""header"">Owning Group Equals</th>
-        <th class=""header"">Owning Tenant Equals</th>
-        <th class=""header"">User Must Have Abstract Role</th>
-        <th class=""header"">Access Rights</th>
+        <th class=""header"">Status</th>
+        <th class=""header"">User must have ownership</th>
+        <th class=""header"">Group of the object is set to</th>
+        <th class=""header"">Tenant of the object is set to</th>
+        <th class=""header"">User must have abstract role</th>
+        <th class=""header"">Granted permissions</th>
       </tr>
     </table>
   </body>
@@ -554,7 +554,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
         //Clipboard.SetText (result);
 
         // Detail tests 
-        Assert.That (result, Is.StringContaining ("Denied Rights</th>")); // Denied rights header
+        Assert.That (result, Is.StringContaining ("Denied permissions</th>")); // Denied rights header
         Assert.That (result, Is.StringContaining("<td>Delete</td>")); // allowed rights
         Assert.That (result, Is.StringContaining ("<td>Read, Write</td>")); // denied rights
 
@@ -573,13 +573,13 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
         <th class=""header"">User</th>
         <th class=""header"">Role</th>
         <th class=""header"">Class</th>
-        <th class=""header"">States</th>
-        <th class=""header"">User Must Own</th>
-        <th class=""header"">Owning Group Equals</th>
-        <th class=""header"">Owning Tenant Equals</th>
-        <th class=""header"">User Must Have Abstract Role</th>
-        <th class=""header"">Access Rights</th>
-        <th class=""header"">Denied Rights</th>
+        <th class=""header"">Status</th>
+        <th class=""header"">User must have ownership</th>
+        <th class=""header"">Group of the object is set to</th>
+        <th class=""header"">Tenant of the object is set to</th>
+        <th class=""header"">User must have abstract role</th>
+        <th class=""header"">Granted permissions</th>
+        <th class=""header"">Denied permissions</th>
       </tr>
       <tr>
         <td rowspan=""1"">Usa Da, Dr.</td>
