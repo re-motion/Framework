@@ -38,4 +38,21 @@
       <AllDatabaseSystems Include="SqlServer2016" Condition="'%(DatabaseSystemsList.Identity)' == 'SqlServer2016'"/>
     </ItemGroup>
   </Target>
+
+  <Target Name="After_BuildTestOutputFilesCrossProduct" AfterTargets="BuildTestOutputFilesCrossProduct">
+    <ItemGroup>
+      <_testOutputFilesWithInternetExplorer Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'InternetExplorer'" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'@(_testOutputFilesWithInternetExplorer->Count())' &gt; 1">
+      <_testOutputFilesWithIEFiltered Include="@(_testOutputFiles)" Condition="'%(Browser)' != 'InternetExplorer'" />
+      <_testOutputFilesWithIEFiltered Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'InternetExplorer' And '%(Platform)' == 'x86' And '$(ConfigurationID)' == 'Debug'"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'@(_testOutputFilesWithInternetExplorer->Count())' &gt; 1">
+      <_testOutputFiles Remove="@(_testOutputFiles)" />
+      <_testOutputFiles Include="@(_testOutputFilesWithIEFiltered)"/>
+    </ItemGroup>
+
+  </Target>
 </Project>
