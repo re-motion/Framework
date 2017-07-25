@@ -77,6 +77,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseIn
       Assert.That (control.Scope.Id, Is.EqualTo (Parameters.FoundControlID));
     }
 
+    [TestMethod (PageType = GenericPageTypes.NoAmbiguous)]
+    public void GetOrNull_Returns_NotNull_After_IFrameSwitch ()
+    {
+      SwitchToIFrame();
+
+      var control = Selector.SingleOrNull();
+
+      Assert.That (control, Is.Not.Null);
+      Assert.That (control.Scope.Id, Is.EqualTo (Parameters.FoundControlID));
+    }
+
     [TestMethod (PageType = GenericPageTypes.Hidden)]
     public void GetOrNull_Returns_Null ()
     {

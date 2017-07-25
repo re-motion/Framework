@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
       var scope = FindPerHtmlID (context, htmlID);
 
-      if (!scope.Exists (Options.NoWait))
+      if (!scope.ExistsWorkaround())
         return null;
 
       return CreateControlObject (context, scope);
@@ -60,7 +60,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("htmlID", htmlID);
 
       var scope = FindPerHtmlID (context, htmlID);
-      return scope.Exists (Options.NoWait);
+
+      return scope.ExistsWorkaround();
     }
 
     /// <inheritdoc/>
@@ -70,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("localID", localID);
 
       var scope = FindPerLocalID (context, localID);
-      if (!scope.Exists())
+      if (!scope.ExistsWorkaround())
         scope = FindPerHtmlID (context, localID);
 
       return CreateControlObject (context, scope);
@@ -83,11 +84,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("localID", localID);
 
       var scope = FindPerLocalID (context, localID);
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       scope = FindPerHtmlID (context, localID);
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -100,11 +101,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("localID", localID);
 
       var scope = FindPerLocalID (context, localID);
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return true;
 
       scope = FindPerHtmlID (context, localID);
-      return scope.Exists (Options.NoWait);
+      return scope.ExistsWorkaround();
     }
 
     /// <summary>

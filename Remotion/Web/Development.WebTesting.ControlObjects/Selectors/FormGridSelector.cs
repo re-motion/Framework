@@ -52,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
       var scope = FindScopePerTitle (context, title);
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -66,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
       var scope = FindScopePerTitle (context, title);
 
-      return scope.Exists (Options.NoWait);
+      return scope.ExistsWorkaround();
     }
 
     /// <inheritdoc/>

@@ -33,6 +33,9 @@
       <asp:Panel ID="PanelAmbiguousControl" runat="server">
         
       </asp:Panel>
+      <h3>Iframe controls</h3>
+      <!--Used to test if coypu switches correctly between normal window and iframe-->
+      <iframe id="frame"></iframe>
     </ContentTemplate>
   </asp:UpdatePanel>
   <script>

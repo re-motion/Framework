@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Web.Script.Serialization;
+using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -60,6 +61,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseIn
 
     private IFluentControlSelector<TControlSelector, TControl> _controlSelector;
     private TTestParameters _testParameters;
+    private ElementScope _frameRootElement;
 
     protected ControlSelectorTestCaseFactoryBase ()
     {
@@ -73,6 +75,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseIn
     protected TTestParameters Parameters
     {
       get { return _testParameters; }
+    }
+
+    protected void SwitchToIFrame ()
+    {
+      _frameRootElement.Now();
     }
 
     /// <summary>
@@ -131,6 +138,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseIn
       var host = BrowseGenericPage (webTestHelper, controlObjectName, testCaseOptions.PageType);
 
       _controlSelector = controlSelectorFactory (host);
+
+      var frame = webTestHelper.MainBrowserSession.FindFrame ("frame");
+      _frameRootElement = frame.FindCss ("html");
 
       try
       {

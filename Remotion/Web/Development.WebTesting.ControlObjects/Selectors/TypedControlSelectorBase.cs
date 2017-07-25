@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
       var scope = FindScopeByFirstOccurence (context);
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -96,10 +96,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
       var scope = FindScopeByFirstOccurence (context);
 
-      if (!scope.Exists (Options.NoWait))
+      if (!scope.ExistsWorkaroundWithEnsureSingle())
         return null;
-
-      scope.EnsureSingle();
 
       return CreateControlObject (context, scope);
     }
@@ -121,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
       var scope = FindScopePerIndex (context, oneBasedIndex);
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -134,7 +132,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
       var scope = FindScopePerIndex (context, oneBasedIndex);
 
-      return scope.Exists (Options.NoWait);
+      return scope.ExistsWorkaround();
     }
 
     private ElementScope FindScopeByFirstOccurence (ControlSelectionContext context)

@@ -64,6 +64,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseIn
     public void GetOrNull_Returns_NotNull ()
     {
       var control = Selector.FirstOrNull();
+      
+      Assert.That (control, Is.Not.Null);
+      Assert.That (control.Scope.Id, Is.EqualTo (Parameters.FoundControlID));
+    }
+
+    [TestMethod]
+    public void GetOrNull_Returns_NotNull_After_IFrameSwitch ()
+    {
+      SwitchToIFrame();
+
+      var control = Selector.FirstOrNull();
 
       Assert.That (control, Is.Not.Null);
       Assert.That (control.Scope.Id, Is.EqualTo (Parameters.FoundControlID));

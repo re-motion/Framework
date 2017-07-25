@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 
       var scope = context.Scope.FindCss (c_imgTag);
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -72,10 +72,8 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 
       var scope = context.Scope.FindCss (c_imgTag);
 
-      if (!scope.Exists (Options.NoWait))
+      if (!scope.ExistsWorkaroundWithEnsureSingle())
         return null;
-
-      scope.EnsureSingle();
 
       return CreateControlObject (context, scope);
     }
@@ -98,7 +96,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
       var xPathSelector = string.Format ("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -112,7 +110,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
       var xPathSelector = string.Format ("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
 
-      return scope.Exists (Options.NoWait);
+      return scope.ExistsWorkaround();
     }
 
     /// <inheritdoc/>

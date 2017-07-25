@@ -50,7 +50,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 
       var scope = context.Scope.FindCss (c_htmlAnchorTag);
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -72,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 
       var scope = context.Scope.FindCss (c_htmlAnchorTag, Options.Single);
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -94,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 
       var scope = context.Scope.FindXPath (string.Format ("(.//{0})[{1}]", c_htmlAnchorTag, oneBasedIndex));
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -107,7 +107,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 
       var scope = context.Scope.FindXPath (string.Format ("(.//{0})[{1}]", c_htmlAnchorTag, oneBasedIndex));
 
-      return scope.Exists (Options.NoWait);
+      return scope.ExistsWorkaround();
     }
 
     /// <inheritdoc/>
@@ -128,7 +128,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 
       var scope = context.Scope.FindXPath (string.Format ("(.//{0})[.='{1}']", c_htmlAnchorTag, textContent));
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -142,7 +142,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 
       var scope = context.Scope.FindXPath (string.Format ("(.//{0})[.='{1}']", c_htmlAnchorTag, textContent));
 
-      return scope.Exists (Options.NoWait);
+      return scope.ExistsWorkaround();
     }
 
     /// <inheritdoc/>

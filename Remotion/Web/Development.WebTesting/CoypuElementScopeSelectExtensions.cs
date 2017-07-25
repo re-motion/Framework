@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
@@ -40,7 +41,12 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      // Hack: Coypu does not yet support SelectElement, use Selenium directly.
+      var selectedOptions = scope.FindAllCss ("option[selected]").ToList();
+
+      if (selectedOptions.Count() == 1)
+        return new OptionDefinition (selectedOptions.First().Value, -1, scope.SelectedOption, true);
+      
+      // If we cant uniquely find an item per selected attribute, we have to use selenium directly
       return RetryUntilTimeout.Run (
           () =>
           {
@@ -61,15 +67,27 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      // Hack: Coypu does not yet support SelectElement, use Selenium directly.
-      RetryUntilTimeout.Run (
-          () =>
-          {
-            var webElement = (IWebElement) scope.Native;
+      var options = scope.FindAllCss ("option").ToList();
+      var toBeSelectedElement = options.ElementAt (oneBasedIndex - 1);
 
-            var select = new SelectElement (webElement);
-            select.SelectByIndex (oneBasedIndex - 1);
-          });
+      var numberOfItemsWithSameValue = options.Count (x => x.Value == toBeSelectedElement.Value);
+
+      if (numberOfItemsWithSameValue == 1)
+      {
+        scope.SelectOption (toBeSelectedElement.Value);
+      }
+      else
+      {
+        // Coypu only supports selecting by value. If the value of the select option is not unique, we have to use selenium directly
+        RetryUntilTimeout.Run (
+            () =>
+            {
+              var webElement = (IWebElement) scope.Native;
+
+              var select = new SelectElement (webElement);
+              select.SelectByIndex (oneBasedIndex - 1);
+            });
+      }
     }
 
     /// <summary>

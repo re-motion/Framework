@@ -70,6 +70,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseIn
     }
 
     [TestMethod]
+    public void GetOrNull_Returns_NotNull_After_IFrameSwitch ()
+    {
+      SwitchToIFrame();
+
+      var control = Selector.GetByItemIDOrNull (Parameters.VisibleControlItemID);
+
+      Assert.That (control, Is.Not.Null);
+      Assert.That (control.Scope.Id, Is.EqualTo (Parameters.FoundControlID));
+    }
+
+    [TestMethod]
     public void GetOrNull_Returns_Null ()
     {
       var control = Selector.GetByItemIDOrNull (Parameters.HiddenControlItemID);
@@ -80,6 +91,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseIn
     [TestMethod]
     public void Exists_Returns_True ()
     {
+      var controlVisible = Selector.ExistsByItemID (Parameters.VisibleControlItemID);
+
+      Assert.That (controlVisible, Is.True);
+    }
+
+    [TestMethod]
+    public void Exists_Returns_True_After_IFrameSwitch ()
+    {
+      SwitchToIFrame();
+
       var controlVisible = Selector.ExistsByItemID (Parameters.VisibleControlItemID);
 
       Assert.That (controlVisible, Is.True);

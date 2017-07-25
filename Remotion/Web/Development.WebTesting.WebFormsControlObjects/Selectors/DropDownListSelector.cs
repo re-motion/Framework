@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 
       var scope = context.Scope.FindCss (c_htmlDropDownListTag);
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 
       var scope = context.Scope.FindCss (c_htmlDropDownListTag, Options.Single);
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
       var xPathSelector = string.Format ("(.//{0})[{1}]", c_htmlDropDownListTag, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -109,7 +109,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
       var xPathSelector = string.Format ("(.//{0})[{1}]", c_htmlDropDownListTag, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
 
-      return scope.Exists (Options.NoWait);
+      return scope.ExistsWorkaround();
     }
 
     /// <inheritdoc/>

@@ -55,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
       var scope = FindScopePerTextContent (context, textContent);
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
       var scope = FindScopePerTextContent (context, textContent);
 
-      return scope.Exists (Options.NoWait);
+      return scope.ExistsWorkaround();
     }
 
     /// <inheritdoc/>
@@ -91,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
       var scope = FindScopePerItemID (context, itemID);
 
-      if (scope.Exists (Options.NoWait))
+      if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
 
       return null;
@@ -105,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
       var scope = FindScopePerItemID (context, itemID);
 
-      return scope.Exists (Options.NoWait);
+      return scope.ExistsWorkaround();
     }
 
     /// <inheritdoc/>
