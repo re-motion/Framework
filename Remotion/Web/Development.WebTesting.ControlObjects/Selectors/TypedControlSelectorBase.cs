@@ -96,7 +96,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
       var scope = FindScopeByFirstOccurence (context);
 
-      if (!scope.ExistsWorkaroundWithEnsureSingle())
+      if (!scope.ExistsWithEnsureSingleWorkaround())
         return null;
 
       return CreateControlObject (context, scope);

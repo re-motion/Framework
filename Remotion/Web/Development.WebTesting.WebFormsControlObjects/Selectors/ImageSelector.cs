@@ -72,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 
       var scope = context.Scope.FindCss (c_imgTag);
 
-      if (!scope.ExistsWorkaroundWithEnsureSingle())
+      if (!scope.ExistsWithEnsureSingleWorkaround())
         return null;
 
       return CreateControlObject (context, scope);

@@ -69,6 +69,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <remarks>
     /// As a workaround, we call elementScope.Now() and return false if an <see cref="MissingHtmlException"/>, <see cref="MissingWindowException"/> or <see cref="StaleElementException"/> is thrown.
     /// These are the same exceptions the coypu is catching in its elementScope.Exists() call.
+    /// Should be removed when the issue is fixed in coypu https://www.re-motion.org/jira/browse/RM-6773
     /// </remarks>
     /// <param name="scope">The <see cref="ElementScope"/> which is asserted to match only a single DOM element.</param>
     public static bool ExistsWorkaround ([NotNull] this ElementScope scope)
@@ -102,9 +103,10 @@ namespace Remotion.Web.Development.WebTesting
     /// This is due to caching of the scope.Now() call. .ExistsWorkaround() calls scope.Now() without <see cref="Match.Single"/> matching strategy ->
     /// .EnsureSingle() calls scope.Now() with <see cref="Match.Single"/> matching strategy.
     /// If .ExistsWorkaround() is called before .EnsureSingle(), the scope is cached and no evaluation takes place.
+    /// Should be removed when the issue is fixed in coypu https://www.re-motion.org/jira/browse/RM-6773
     /// </remarks>
     /// <param name="scope">The <see cref="ElementScope"/> which is asserted to match only a single DOM element.</param>
-    public static bool ExistsWorkaroundWithEnsureSingle ([NotNull] this ElementScope scope)
+    public static bool ExistsWithEnsureSingleWorkaround ([NotNull] this ElementScope scope)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
