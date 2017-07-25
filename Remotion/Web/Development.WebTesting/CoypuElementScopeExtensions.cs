@@ -64,12 +64,12 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// Coypus elementScope.Exists() does not work correctly when working with iframes (see https://www.re-motion.org/jira/projects/RM/issues/RM-6770)
+    /// Coypu`s <paramref name="scope"/>.<see cref="ElementScope.Exists"/> does not work correctly when working with iframes (see https://www.re-motion.org/jira/projects/RM/issues/RM-6770).
     /// </summary>
     /// <remarks>
-    /// As a workaround, we call elementScope.Now() and return false if an <see cref="MissingHtmlException"/>, <see cref="MissingWindowException"/> or <see cref="StaleElementException"/> is thrown.
-    /// These are the same exceptions the coypu is catching in its elementScope.Exists() call.
-    /// Should be removed when the issue is fixed in coypu https://www.re-motion.org/jira/browse/RM-6773
+    /// As a workaround, we call <paramref name="scope"/>.<see cref="ElementScope.Now"/> and return <see langword="false" /> if an <see cref="MissingHtmlException"/>, <see cref="MissingWindowException"/> or <see cref="StaleElementException"/> is thrown.
+    /// These are the same exceptions that Coypu is catching in its <paramref name="scope"/>.<see cref="ElementScope.Exists"/> call.
+    /// Should be removed when the issue is fixed in coypu https://www.re-motion.org/jira/browse/RM-6773.
     /// </remarks>
     /// <param name="scope">The <see cref="ElementScope"/> which is asserted to match only a single DOM element.</param>
     public static bool ExistsWorkaround ([NotNull] this ElementScope scope)
@@ -96,14 +96,14 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// Exists workaround which also ensures that the element is single (e.g. throws an <see cref="AmbiguousException"/> if the element is not single)
+    /// Exists-workaround which also ensures that the element is single (e.g. throws an <see cref="AmbiguousException"/> if the element is not single).
     /// </summary>
     /// <remarks>
-    /// This has to be done in its own function, as calling .EnsureSingle() after .ExistsWorkaround() does not throw the expected exception.
-    /// This is due to caching of the scope.Now() call. .ExistsWorkaround() calls scope.Now() without <see cref="Match.Single"/> matching strategy ->
-    /// .EnsureSingle() calls scope.Now() with <see cref="Match.Single"/> matching strategy.
-    /// If .ExistsWorkaround() is called before .EnsureSingle(), the scope is cached and no evaluation takes place.
-    /// Should be removed when the issue is fixed in coypu https://www.re-motion.org/jira/browse/RM-6773
+    /// This has to be done in its own function, as calling <see cref="EnsureSingle"/> after <see cref="ExistsWorkaround"/> does not throw the expected exception.
+    /// This is due to caching of the <paramref name="scope"/>.<see cref="ElementScope.Now"/> call. <see cref="ExistsWorkaround"/> calls <paramref name="scope"/>.<see cref="ElementScope.Now"/> without <see cref="Match.Single"/> matching strategy ->
+    /// <see cref="EnsureSingle"/> calls <paramref name="scope"/>.<see cref="ElementScope.Now"/> with <see cref="Match.Single"/> matching strategy.
+    /// If .<see cref="ExistsWorkaround"/> is called before <see cref="EnsureSingle"/>, the scope is cached and no evaluation takes place.
+    /// Should be removed when the issue is fixed in coypu https://www.re-motion.org/jira/browse/RM-6773.
     /// </remarks>
     /// <param name="scope">The <see cref="ElementScope"/> which is asserted to match only a single DOM element.</param>
     public static bool ExistsWithEnsureSingleWorkaround ([NotNull] this ElementScope scope)
