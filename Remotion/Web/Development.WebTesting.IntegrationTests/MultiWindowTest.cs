@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
@@ -105,13 +106,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       AssertPostBackSequenceNumber (mainLabel, 3);
 
       var loadWindowFunctionInNewWindowInFrameButton = home.Frame.WebButtons().GetByID ("LoadWindowFunctionInNewWindow");
-      loadWindowFunctionInNewWindowInFrameButton.Click().ExpectNewPopupWindow<WxePageObject> ("MyWindow");
-      AssertPostBackSequenceNumber (windowLabel, 1);
+      var window2 = loadWindowFunctionInNewWindowInFrameButton.Click().ExpectNewPopupWindow<WxePageObject> ("MyWindow");
+
+      //Workaround until it is possible to configure timeout on ExpectNewPopupWindow (RM-6771)
+      Thread.Sleep (TimeSpan.FromSeconds (5));
+      var windowLabel2 = window2.Labels().GetByID ("WindowLabel");
+
+      AssertPostBackSequenceNumber (windowLabel2, 1);
       AssertPostBackSequenceNumber (frameLabel, 2);
       AssertPostBackSequenceNumber (mainLabel, 3);
 
-      var closeAndRefreshMainAsWellButton = FluentControlSelectorExtensionsForIntegrationTests.WebButtons(window).GetByID ("CloseAndRefreshMainAsWell");
-      var options = Opt.ContinueWhenAll (Wxe.PostBackCompletedIn (home.Frame), Wxe.PostBackCompletedInContext (window.Context.ParentContext));
+      var closeAndRefreshMainAsWellButton = FluentControlSelectorExtensionsForIntegrationTests.WebButtons(window2).GetByID ("CloseAndRefreshMainAsWell");
+      var options = Opt.ContinueWhenAll (Wxe.PostBackCompletedIn (home.Frame), Wxe.PostBackCompletedInContext (window2.Context.ParentContext));
       closeAndRefreshMainAsWellButton.Click (options);
       AssertPostBackSequenceNumber (frameLabel, 3);
       AssertPostBackSequenceNumber (mainLabel, 4);
