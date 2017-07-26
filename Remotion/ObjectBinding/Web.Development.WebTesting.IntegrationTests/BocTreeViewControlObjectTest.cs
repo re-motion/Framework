@@ -15,9 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
-using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 
@@ -27,88 +29,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocTreeViewControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<BocTreeViewSelector, BocTreeViewControlObject> testAction)
     {
-      var home = Start();
-
-      var bocTreeView = home.GetTreeView().ByID ("body_DataEditControl_Normal");
-      Assert.That (bocTreeView.Scope.Id, Is.EqualTo ("body_DataEditControl_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      var bocTreeView = home.GetTreeView().ByIndex (2);
-      Assert.That (bocTreeView.Scope.Id, Is.EqualTo ("body_DataEditControl_NoTopLevelExpander"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var bocTreeView = home.GetTreeView().ByLocalID ("Normal");
-      Assert.That (bocTreeView.Scope.Id, Is.EqualTo ("body_DataEditControl_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var bocTreeView = home.GetTreeView().First();
-      Assert.That (bocTreeView.Scope.Id, Is.EqualTo ("body_DataEditControl_Normal"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-
-      try
-      {
-        home.GetTreeView().Single();
-        Assert.Fail ("Should not be able to unambiguously find a BOC tree view.");
-      }
-      catch (AmbiguousException)
-      {
-      }
-    }
-
-    [Test]
-    public void TestSelection_DisplayName ()
-    {
-      var home = Start();
-
-      var bocTreeView = home.GetTreeView().ByDisplayName ("Children");
-      Assert.That (bocTreeView.Scope.Id, Is.EqualTo ("body_DataEditControl_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_DomainProperty ()
-    {
-      var home = Start();
-
-      var bocTreeView = home.GetTreeView().ByDomainProperty ("Children");
-      Assert.That (bocTreeView.Scope.Id, Is.EqualTo ("body_DataEditControl_Normal"));
-
-      bocTreeView = home.GetTreeView().ByDomainProperty ("null");
-      Assert.That (bocTreeView.Scope.Id, Is.EqualTo ("body_DataEditControl_NoPropertyIdentifier"));
-    }
-
-    [Test]
-    public void TestSelection_DomainPropertyAndClass ()
-    {
-      var home = Start();
-
-      var bocTreeView = home.GetTreeView().ByDomainProperty ("Children", "Remotion.ObjectBinding.Sample.Person, Remotion.ObjectBinding.Sample");
-      Assert.That (bocTreeView.Scope.Id, Is.EqualTo ("body_DataEditControl_Normal"));
-
-      bocTreeView = home.GetTreeView().ByDomainProperty ("null", "Remotion.ObjectBinding.Sample.Person, Remotion.ObjectBinding.Sample");
-      Assert.That (bocTreeView.Scope.Id, Is.EqualTo ("body_DataEditControl_NoPropertyIdentifier"));
+      testAction (Helper, e => e.TreeViews(), "treeView");
     }
 
     [Test]
@@ -116,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.GetTextValue().ByLocalID ("Normal");
+      var bocTreeView = home.TextValues().GetByLocalID ("Normal");
       Assert.That (bocTreeView.IsReadOnly(), Is.True);
     }
 
@@ -125,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.GetTreeView().ByLocalID ("Normal");
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
       var rootNode = bocTreeView.GetRootNode().Expand();
       Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.Empty);
@@ -154,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.GetTreeView().ByLocalID ("NoTopLevelExpander");
+      var bocTreeView = home.TreeViews().GetByLocalID ("NoTopLevelExpander");
 
       var rootNode = bocTreeView.GetRootNode();
       Assert.That (home.Scope.FindIdEndingWith ("NoTopLevelExpanderSelectedNodeLabel").Text, Is.Empty);
@@ -168,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.GetTreeView().ByLocalID ("Normal");
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
       var node = bocTreeView.GetRootNode();
 
       Assert.That (node.GetText(), Is.EqualTo ("Doe, John"));
@@ -179,7 +109,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.GetTreeView().ByLocalID ("Normal");
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
       var rootNode = bocTreeView.GetRootNode();
       Assert.That (rootNode.IsSelected(), Is.False);
 
@@ -199,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.GetTreeView().ByLocalID ("Normal");
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
       var rootNode = bocTreeView.GetRootNode();
       Assert.That (rootNode.GetNumberOfChildren(), Is.EqualTo (6));
 
@@ -212,7 +142,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.GetTreeView().ByLocalID ("Normal");
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
       var node = bocTreeView.GetRootNode().Expand();
       node = node.GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Expand();
       Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.Empty);
@@ -227,7 +157,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.GetTreeView().ByLocalID ("NoLookAheadEvaluation");
+      var bocTreeView = home.TreeViews().GetByLocalID ("NoLookAheadEvaluation");
       var node = bocTreeView.GetRootNode().Expand();
       node = node.GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Expand();
       node = node.GetNode ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Expand();
@@ -245,7 +175,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.GetTreeView().ByLocalID ("Normal");
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
       bocTreeView.GetRootNode().Expand().Collapse().Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 
@@ -257,7 +187,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.GetTreeView().ByLocalID ("Normal");
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
       var node = bocTreeView.GetRootNode();
       Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.Empty);
@@ -271,7 +201,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.GetTreeView().ByLocalID ("NoPropertyIdentifier");
+      var bocTreeView = home.TreeViews().GetByLocalID ("NoPropertyIdentifier");
 
       var node = bocTreeView.GetRootNode().Expand();
 
@@ -289,7 +219,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.GetTreeView().ByLocalID ("Normal");
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
       var node = bocTreeView.GetRootNode();
       node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 

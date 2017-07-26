@@ -31,9 +31,18 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <summary>
     /// Selects the only control within the given <paramref name="context"/> matching the type <typeparamref name="TControlObject"/>.
     /// </summary>
-    /// <returns>The control object.</returns>
+    /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
     /// <exception cref="AmbiguousException">If multiple controls of type <typeparamref name="TControlObject"/> are found.</exception>
     /// <exception cref="MissingHtmlException">If no matching control can be found.</exception>
+    [NotNull]
     TControlObject SelectSingle ([NotNull] ControlSelectionContext context);
+
+    /// <summary>
+    /// Selects a single control, if it exists, within the given <paramref name="context"/> matching the type <typeparamref name="TControlObject"/>.
+    /// </summary>
+    /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
+    /// <exception cref="AmbiguousException">If multiple controls of type <typeparamref name="TControlObject"/> are found.</exception>
+    [CanBeNull]
+    TControlObject SelectSingleOrNull ([NotNull] ControlSelectionContext context);
   }
 }

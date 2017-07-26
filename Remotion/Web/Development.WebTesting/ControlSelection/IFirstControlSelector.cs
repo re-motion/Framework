@@ -31,8 +31,16 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <summary>
     /// Selects the first control within the given <paramref name="context"/> matching the type <typeparamref name="TControlObject"/>.
     /// </summary>
-    /// <returns>The control object.</returns>
+    /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
     /// <exception cref="MissingHtmlException">If no matching control can be found.</exception>
+    [NotNull]
     TControlObject SelectFirst ([NotNull] ControlSelectionContext context);
+
+    /// <summary>
+    /// Selects the first control, if it exists, within the given <paramref name="context"/> matching the type <typeparamref name="TControlObject"/>.
+    /// </summary>
+    /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
+    [CanBeNull]
+    TControlObject SelectFirstOrNull ([NotNull] ControlSelectionContext context);
   }
 }

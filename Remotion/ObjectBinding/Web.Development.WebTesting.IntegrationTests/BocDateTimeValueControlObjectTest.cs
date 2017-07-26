@@ -15,13 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
-using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -29,83 +30,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocDateTimeValueControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>), "GetTests")]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<BocDateTimeValueSelector, BocDateTimeValueControlObject> testAction)
     {
-      var home = Start();
-
-      var bocDateTimeValue = home.GetDateTimeValue().ByID ("body_DataEditControl_DateOfBirthField_Normal");
-      Assert.That (bocDateTimeValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DateOfBirthField_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      var bocDateTimeValue = home.GetDateTimeValue().ByIndex (2);
-      Assert.That (bocDateTimeValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DateOfBirthField_ReadOnly"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
-      Assert.That (bocDateTimeValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DateOfBirthField_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var bocDateTimeValue = home.GetDateTimeValue().First();
-      Assert.That (bocDateTimeValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DateOfBirthField_Normal"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-
-      try
-      {
-        home.GetDateTimeValue().Single();
-        Assert.Fail ("Should not be able to unambiguously find a BOC date time value.");
-      }
-      catch (AmbiguousException)
-      {
-      }
-    }
-
-    [Test]
-    public void TestSelection_DisplayName ()
-    {
-      var home = Start();
-
-      var bocDateTimeValue = home.GetDateTimeValue().ByDisplayName ("DateOfBirth");
-      Assert.That (bocDateTimeValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DateOfBirthField_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_DomainProperty ()
-    {
-      var home = Start();
-
-      var bocDateTimeValue = home.GetDateTimeValue().ByDomainProperty ("DateOfBirth");
-      Assert.That (bocDateTimeValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DateOfBirthField_Normal"));
-    }
-
-    [Test]
-    public void TestSelection_DomainPropertyAndClass ()
-    {
-      var home = Start();
-
-      var bocDateTimeValue = home.GetDateTimeValue()
-          .ByDomainProperty ("DateOfBirth", "Remotion.ObjectBinding.Sample.Person, Remotion.ObjectBinding.Sample");
-      Assert.That (bocDateTimeValue.Scope.Id, Is.EqualTo ("body_DataEditControl_DateOfBirthField_Normal"));
+      testAction (Helper, e => e.DateTimeValues(), "dateTimeValue");
     }
 
     [Test]
@@ -113,10 +47,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       Assert.That (bocDateTimeValue.IsReadOnly(), Is.False);
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_ReadOnly");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_ReadOnly");
       Assert.That (bocDateTimeValue.IsReadOnly(), Is.True);
     }
 
@@ -125,10 +59,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       Assert.That (bocDateTimeValue.HasTimeField(), Is.True);
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_ReadOnlyDateOnly");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_ReadOnlyDateOnly");
       Assert.That (bocDateTimeValue.HasTimeField(), Is.False);
     }
 
@@ -137,25 +71,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       Assert.That (bocDateTimeValue.GetDateTime(), Is.EqualTo (new DateTime (2008, 4, 4, 12, 0, 0)));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_ReadOnly");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_ReadOnly");
       Assert.That (bocDateTimeValue.GetDateTime(), Is.EqualTo (new DateTime (2008, 4, 4, 12, 0, 0)));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Disabled");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Disabled");
       Assert.That (bocDateTimeValue.GetDateTime(), Is.EqualTo (new DateTime (2008, 4, 4, 12, 0, 0)));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_NoAutoPostBack");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_NoAutoPostBack");
       Assert.That (bocDateTimeValue.GetDateTime(), Is.EqualTo (new DateTime (2008, 4, 4, 12, 0, 0)));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_DateOnly");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_DateOnly");
       Assert.That (bocDateTimeValue.GetDateTime(), Is.EqualTo (new DateTime (2008, 4, 4, 0, 0, 0)));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_ReadOnlyDateOnly");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_ReadOnlyDateOnly");
       Assert.That (bocDateTimeValue.GetDateTime(), Is.EqualTo (new DateTime (2008, 4, 4, 0, 0, 0)));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_WithSeconds");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_WithSeconds");
       bocDateTimeValue.SetTime (new TimeSpan (13, 37, 42));
       Assert.That (bocDateTimeValue.GetDateTime(), Is.EqualTo (new DateTime (2008, 4, 4, 13, 37, 42)));
     }
@@ -165,25 +99,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008 12:00"));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_ReadOnly");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_ReadOnly");
       Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008 12:00"));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Disabled");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Disabled");
       Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008 12:00"));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_NoAutoPostBack");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_NoAutoPostBack");
       Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008 12:00"));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_DateOnly");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_DateOnly");
       Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008"));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_ReadOnlyDateOnly");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_ReadOnlyDateOnly");
       Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008"));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_WithSeconds");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_WithSeconds");
       bocDateTimeValue.SetTime (new TimeSpan (13, 37, 42));
       Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008 13:37:42"));
     }
@@ -197,28 +131,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var dateTime = new DateTime (1988, 3, 20, 4, 2, 0);
       var withSeconds = new DateTime (1988, 3, 20, 4, 2, 17);
 
-      var bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       bocDateTimeValue.SetDateTime (dateTime);
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (dateTime));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_NoAutoPostBack");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_NoAutoPostBack");
       bocDateTimeValue.SetDateTime (dateTime); // no auto post back
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (initDateTime));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       bocDateTimeValue.SetDateTime (dateTime, Opt.ContinueImmediately()); // same value, does not trigger post back
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (initDateTime));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       bocDateTimeValue.SetDateTime (initDateTime);
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (initDateTime));
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (dateTime));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_DateOnly");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_DateOnly");
       bocDateTimeValue.SetDateTime (dateTime);
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("DateOnlyCurrentValueLabel").Text), Is.EqualTo (dateTime.Date));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_WithSeconds");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_WithSeconds");
       bocDateTimeValue.SetDateTime (withSeconds);
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("WithSecondsCurrentValueLabel").Text), Is.EqualTo (withSeconds));
     }
@@ -234,28 +168,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var withSeconds = new DateTime (1988, 3, 20, 4, 2, 17);
       var setWithSeconds = new DateTime (1988, 3, 20, 12, 0, 0);
 
-      var bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       bocDateTimeValue.SetDate (dateTime);
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (setDateTime));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_NoAutoPostBack");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_NoAutoPostBack");
       bocDateTimeValue.SetDate (dateTime); // no auto post back
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (initDateTime));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       bocDateTimeValue.SetDate (dateTime, Opt.ContinueImmediately()); // same value, does not trigger post back
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (initDateTime));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       bocDateTimeValue.SetDate (initDateTime);
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (initDateTime));
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (setDateTime));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_DateOnly");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_DateOnly");
       bocDateTimeValue.SetDate (dateTime);
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("DateOnlyCurrentValueLabel").Text), Is.EqualTo (setDateTime.Date));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_WithSeconds");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_WithSeconds");
       bocDateTimeValue.SetDate (withSeconds);
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("WithSecondsCurrentValueLabel").Text), Is.EqualTo (setWithSeconds));
     }
@@ -272,24 +206,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var withSeconds = new TimeSpan (4, 2, 17);
       var setWithSeconds = new DateTime (2008, 4, 4, 4, 2, 17);
 
-      var bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       bocDateTimeValue.SetTime (time);
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (setTime));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_NoAutoPostBack");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_NoAutoPostBack");
       bocDateTimeValue.SetTime (time); // no auto post back
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (setInitTime));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       bocDateTimeValue.SetTime (time, Opt.ContinueImmediately()); // same value, does not trigger post back
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (setInitTime));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       bocDateTimeValue.SetTime (initTime);
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (setInitTime));
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (setTime));
 
-      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_WithSeconds");
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_WithSeconds");
       bocDateTimeValue.SetTime (withSeconds);
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("WithSecondsCurrentValueLabel").Text), Is.EqualTo (setWithSeconds));
     }

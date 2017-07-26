@@ -42,6 +42,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       base.OnPreRender (e);
     }
 
+    public void SetTestInformation (string testHelpOutput)
+    {
+      TestInformationOutputPanel.Visible = true;
+      TestInformationOutput.Text = testHelpOutput;
+    }
+
     public UserControl GetTestOutputControl ()
     {
       return (UserControl) testOutput.Controls[1].Controls[0];

@@ -44,12 +44,38 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
+    public AnchorControlObject SelectFirstOrNull (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var scope = context.Scope.FindCss (c_htmlAnchorTag);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
     public AnchorControlObject SelectSingle (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
       var scope = context.Scope.FindCss (c_htmlAnchorTag, Options.Single);
       return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public AnchorControlObject SelectSingleOrNull (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var scope = context.Scope.FindCss (c_htmlAnchorTag, Options.Single);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
     }
 
     /// <inheritdoc/>
@@ -62,6 +88,29 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
+    public AnchorControlObject SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var scope = context.Scope.FindXPath (string.Format ("(.//{0})[{1}]", c_htmlAnchorTag, oneBasedIndex));
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
+    public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var scope = context.Scope.FindXPath (string.Format ("(.//{0})[{1}]", c_htmlAnchorTag, oneBasedIndex));
+
+      return scope.Exists (Options.NoWait);
+    }
+
+    /// <inheritdoc/>
     public AnchorControlObject SelectPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull ("context", context);
@@ -69,6 +118,31 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 
       var scope = context.Scope.FindXPath (string.Format ("(.//{0})[.='{1}']", c_htmlAnchorTag, textContent));
       return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public AnchorControlObject SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
+
+      var scope = context.Scope.FindXPath (string.Format ("(.//{0})[.='{1}']", c_htmlAnchorTag, textContent));
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
+    public bool ExistsPerTextContent (ControlSelectionContext context, string textContent)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
+
+      var scope = context.Scope.FindXPath (string.Format ("(.//{0})[.='{1}']", c_htmlAnchorTag, textContent));
+
+      return scope.Exists (Options.NoWait);
     }
 
     /// <inheritdoc/>

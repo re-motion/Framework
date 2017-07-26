@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -25,59 +28,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ImageControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<ImageSelector, ImageControlObject> testSetupAction)
     {
-      var home = Start();
-
-      var image = home.GetImage().ByID ("body_MyImage");
-      Assert.That (image.Scope.Id, Is.EqualTo ("body_MyImage"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      var image = home.GetImage().ByIndex (2);
-      Assert.That (image.Scope.Id, Is.EqualTo ("body_MyImage2"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var image = home.GetImage().ByLocalID ("MyImage");
-      Assert.That (image.Scope.Id, Is.EqualTo ("body_MyImage"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var image = home.GetImage().First();
-      Assert.That (image.Scope.Id, Is.EqualTo ("body_MyImage"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-      var scope = home.GetScope().ByID ("scope");
-
-      var image = scope.GetImage().Single();
-      Assert.That (image.Scope.Id, Is.EqualTo ("body_MyImage2"));
-
-      try
-      {
-        home.GetImage().Single();
-        Assert.Fail ("Should not be able to unambigously find an image button.");
-      }
-      catch (AmbiguousException)
-      {
-      }
+      testSetupAction (Helper, e => e.Images(), "image");
     }
 
     [Test]
@@ -85,10 +43,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var image = home.GetImage().ByLocalID ("MyImage");
+      var image = home.Images().GetByLocalID ("MyImage");
       Assert.That (image.GetSourceUrl(), Is.StringEnding ("/Images/SampleIcon.gif"));
 
-      var image3 = home.GetImage().ByLocalID ("MyImage3");
+      var image3 = home.Images().GetByLocalID ("MyImage3");
       Assert.That (image3.GetSourceUrl(), Is.Null);
     }
 
@@ -97,10 +55,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var image = home.GetImage().ByLocalID ("MyImage");
+      var image = home.Images().GetByLocalID ("MyImage");
       Assert.That (image.GetAltText(), Is.StringEnding ("My alternative text"));
 
-      var image2 = home.GetImage().ByLocalID ("MyImage2");
+      var image2 = home.Images().GetByLocalID ("MyImage2");
       Assert.That (image2.GetAltText(), Is.Empty);
     }
 

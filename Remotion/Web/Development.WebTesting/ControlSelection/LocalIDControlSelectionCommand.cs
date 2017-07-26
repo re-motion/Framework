@@ -25,7 +25,10 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
   /// the given scope.
   /// </summary>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class LocalIDControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
+  public class LocalIDControlSelectionCommand<TControlObject>
+      : IControlSelectionCommand<TControlObject>,
+        IControlOptionalSelectionCommand<TControlObject>,
+        IControlExistsCommand
       where TControlObject : ControlObject
   {
     private readonly ILocalIDControlSelector<TControlObject> _controlSelector;
@@ -43,7 +46,25 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+
       return _controlSelector.SelectPerLocalID (context, _localID);
+    }
+
+    /// <inheritdoc/>
+    public TControlObject SelectOptional (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      return _controlSelector.SelectOptionalPerLocalID (context, _localID);
+    }
+
+    /// <inheritdoc/>
+    public bool Exists (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      return _controlSelector.ExistsPerLocalID (context, _localID);
     }
   }
 }

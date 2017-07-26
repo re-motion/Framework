@@ -31,9 +31,22 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <summary>
     /// Selects the control within the given <paramref name="context"/> using the given <paramref name="localID"/>.
     /// </summary>
-    /// <returns>The control object.</returns>
-    /// <exception cref="AmbiguousException">If multiple controls with the given <paramref name="localID"/> are found.</exception>
+    /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
     /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    [NotNull]
     TControlObject SelectPerLocalID ([NotNull] ControlSelectionContext context, [NotNull] string localID);
+    
+    /// <summary>
+    /// Selects the control, if it exists, within the given <paramref name="context"/> using the given <paramref name="localID"/>.
+    /// </summary>
+    /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
+    [CanBeNull]
+    TControlObject SelectOptionalPerLocalID ([NotNull] ControlSelectionContext context, [NotNull] string localID);
+
+    /// <summary>
+    /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="localID"/> exists.
+    /// </summary>
+    /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    bool ExistsPerLocalID ([NotNull] ControlSelectionContext context, [NotNull] string localID);
   }
 }

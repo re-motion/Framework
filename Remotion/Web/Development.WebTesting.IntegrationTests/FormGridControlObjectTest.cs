@@ -15,9 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -25,76 +27,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class FormGridControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>), "GetTests")]
+    [TestCaseSource (typeof (TitleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<FormGridSelector, FormGridControlObject> testSetupAction)
     {
-      var home = Start();
-
-      var formGrid = home.GetFormGrid().ByID ("body_My1FormGrid");
-      Assert.That (formGrid.Scope.Text, Is.StringContaining ("Content1"));
-      Assert.That (formGrid.Scope.Text, Is.Not.StringContaining ("DoNotFindMe1"));
+      testSetupAction (Helper, e => e.FormGrids(), "formGrid");
     }
 
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      var formGrid = home.GetFormGrid().ByIndex (2);
-      Assert.That (formGrid.Scope.Text, Is.StringContaining ("Content2"));
-      Assert.That (formGrid.Scope.Text, Is.Not.StringContaining ("DoNotFindMe2"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var formGrid = home.GetFormGrid().ByLocalID ("My1FormGrid");
-      Assert.That (formGrid.Scope.Text, Is.StringContaining ("Content1"));
-      Assert.That (formGrid.Scope.Text, Is.Not.StringContaining ("DoNotFindMe1"));
-    }
-
-    [Test]
-    public void TestSelection_ByTitle ()
-    {
-      var home = Start();
-
-      var formGrid = home.GetFormGrid().ByTitle ("MyFormGrid2");
-      Assert.That (formGrid.Scope.Text, Is.StringContaining ("Content2"));
-      Assert.That (formGrid.Scope.Text, Is.Not.StringContaining ("DoNotFindMe2"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var formGrid = home.GetFormGrid().First();
-      Assert.That (formGrid.Scope.Text, Is.StringContaining ("Content1"));
-      Assert.That (formGrid.Scope.Text, Is.Not.StringContaining ("DoNotFindMe1"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-      var scope = home.GetScope().ByID ("scope");
-
-      var formGrid = scope.GetFormGrid().Single();
-      Assert.That (formGrid.Scope.Text, Is.StringContaining ("Content2"));
-      Assert.That (formGrid.Scope.Text, Is.Not.StringContaining ("DoNotFindMe2"));
-
-      try
-      {
-        home.GetFormGrid().Single();
-        Assert.Fail ("Should not be able to unambigously find a form grid.");
-      }
-      catch (AmbiguousException)
-      {
-      }
-    }
-
+    // Exists as unused member for future FormGrid tests.
+    // ReSharper disable once UnusedMember.Local
     private WebFormsTestPageObject Start ()
     {
       return Start<WebFormsTestPageObject> ("FormGridTest.aspx");

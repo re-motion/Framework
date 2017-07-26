@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -38,18 +39,34 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("title", title);
 
-      // Todo RM-6337: Replace with CSS-based search as soon as FormGridManager is able to render the data-title attribute.
-      // Note: it is not that easy, as we do not know the content of the title row on the server...FormGrid is just a design transformator...
-      //var scope = context.Scope.FindCss (string.Format ("table[{0}='{1}']", DiagnosticMetadataAttributes.FormGridTitle, title));
-
-      // Note: this implementation assumes that the title cell has the CSS class formGridTitleCell.
-      var hasClassCheck = XPathUtils.CreateHasClassCheck ("formGridTitleCell");
-      var scope = context.Scope.FindXPath (string.Format (".//table[tbody/tr/td{0}='{1}']", hasClassCheck, title));
-
-      // This alterantive implementation assumes that the title cell is the very first row and column.
-      // var scope = context.Scope.FindXPath (string.Format (".//table[tbody/tr[1]/td[1]='{0}']", title));
+      var scope = FindScopePerTitle (context, title);
 
       return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public FormGridControlObject SelectOptionalPerTitle (ControlSelectionContext context, string title)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("title", title);
+
+      var scope = FindScopePerTitle (context, title);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
+    public bool ExistsPerTitle (ControlSelectionContext context, string title)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("title", title);
+
+      var scope = FindScopePerTitle (context, title);
+
+      return scope.Exists (Options.NoWait);
     }
 
     /// <inheritdoc/>
@@ -61,6 +78,22 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
 
       return new FormGridControlObject (newControlObjectContext);
+    }
+
+    private ElementScope FindScopePerTitle (ControlSelectionContext context, string title)
+    {
+      // Todo RM-6337: Replace with CSS-based search as soon as FormGridManager is able to render the data-title attribute.
+      // Note: it is not that easy, as we do not know the content of the title row on the server...FormGrid is just a design transformator...
+      //var scope = context.Scope.FindCss (string.Format ("table[{0}='{1}']", DiagnosticMetadataAttributes.FormGridTitle, title));
+
+      // Note: this implementation assumes that the title cell has the CSS class formGridTitleCell.
+      var hasClassCheck = XPathUtils.CreateHasClassCheck ("formGridTitleCell");
+      var scope = context.Scope.FindXPath (string.Format (".//table[tbody/tr/td{0}='{1}']", hasClassCheck, title));
+
+      // This alternative implementation assumes that the title cell is the very first row and column.
+      // var scope = context.Scope.FindXPath (string.Format (".//table[tbody/tr[1]/td[1]='{0}']", title));
+
+      return scope;
     }
   }
 }

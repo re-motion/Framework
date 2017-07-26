@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection;
@@ -32,8 +33,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   /// </summary>
   public abstract class BocControlSelectorBase<TControlObject>
       : TypedControlSelectorBase<TControlObject>,
-          IDisplayNameControlSelector<TControlObject>,
-          IDomainPropertyControlSelector<TControlObject>
+        IDisplayNameControlSelector<TControlObject>,
+        IDomainPropertyControlSelector<TControlObject>
       where TControlObject : BocControlObject
   {
     protected BocControlSelectorBase ([NotNull] string controlType)
@@ -47,15 +48,34 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("displayName", displayName);
 
-      var scope = context.Scope.FindTagWithAttributes (
-          "*",
-          new Dictionary<string, string>
-          {
-              { DiagnosticMetadataAttributes.ControlType, ControlType },
-              { DiagnosticMetadataAttributesForObjectBinding.DisplayName, displayName }
-          });
+      var scope = FindScopePerDisplayName (context, displayName);
 
       return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public TControlObject SelectOptionalPerDisplayName (ControlSelectionContext context, string displayName)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("displayName", displayName);
+
+      var scope = FindScopePerDisplayName (context, displayName);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
+    public bool ExistsPerDisplayName (ControlSelectionContext context, string displayName)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("displayName", displayName);
+
+      var scope = FindScopePerDisplayName (context, displayName);
+
+      return scope.Exists (Options.NoWait);
     }
 
     /// <inheritdoc/>
@@ -64,6 +84,49 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("domainProperty", domainProperty);
 
+      var scope = FindScopePerDomainProperty (context, domainProperty, domainClass);
+
+      return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public TControlObject SelectOptionalPerDomainProperty (ControlSelectionContext context, string domainProperty, string domainClass)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("domainProperty", domainProperty);
+
+      var scope = FindScopePerDomainProperty (context, domainProperty, domainClass);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
+    public bool ExistsPerDomainProperty (ControlSelectionContext context, string domainProperty, string domainClass)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("domainProperty", domainProperty);
+
+      var scope = FindScopePerDomainProperty (context, domainProperty, domainClass);
+
+      return scope.Exists (Options.NoWait);
+    }
+
+    private ElementScope FindScopePerDisplayName (ControlSelectionContext context, string displayName)
+    {
+      var diagnosticMetadata = new Dictionary<string, string>
+                               {
+                                   { DiagnosticMetadataAttributes.ControlType, ControlType },
+                                   { DiagnosticMetadataAttributesForObjectBinding.DisplayName, displayName }
+                               };
+
+      return context.Scope.FindTagWithAttributes ("*", diagnosticMetadata);
+    }
+
+    private ElementScope FindScopePerDomainProperty (ControlSelectionContext context, string domainProperty, string domainClass)
+    {
       var diagnosticMetadata = new Dictionary<string, string>
                                {
                                    { DiagnosticMetadataAttributes.ControlType, ControlType },
@@ -73,8 +136,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
       if (domainClass != null)
         diagnosticMetadata.Add (DiagnosticMetadataAttributesForObjectBinding.BoundType, domainClass);
 
-      var scope = context.Scope.FindTagWithAttributes ("*", diagnosticMetadata);
-      return CreateControlObject (context, scope);
+      return context.Scope.FindTagWithAttributes ("*", diagnosticMetadata);
     }
   }
 }

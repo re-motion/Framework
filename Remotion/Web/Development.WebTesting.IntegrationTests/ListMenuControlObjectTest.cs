@@ -15,11 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -27,59 +29,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ListMenuControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<ListMenuSelector, ListMenuControlObject> testSetupAction)
     {
-      var home = Start();
-
-      var listMenu = home.GetListMenu().ByID ("body_MyListMenu");
-      Assert.That (listMenu.Scope.Id, Is.EqualTo ("body_MyListMenu"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      var listMenu = home.GetListMenu().ByIndex (2);
-      Assert.That (listMenu.Scope.Id, Is.EqualTo ("body_MyListMenu2"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var listMenu = home.GetListMenu().ByLocalID ("MyListMenu");
-      Assert.That (listMenu.Scope.Id, Is.EqualTo ("body_MyListMenu"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      var listMenu = home.GetListMenu().First();
-      Assert.That (listMenu.Scope.Id, Is.EqualTo ("body_MyListMenu"));
-    }
-
-    [Test]
-    [Category ("LongRunning")]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-      var scope = home.GetScope().ByID ("scope");
-
-      var listMenu = scope.GetListMenu().Single();
-      Assert.That (listMenu.Scope.Id, Is.EqualTo ("body_MyListMenu2"));
-
-      try
-      {
-        home.GetListMenu().Single();
-        Assert.Fail ("Should not be able to unambigously find a list menu.");
-      }
-      catch (AmbiguousException)
-      {
-      }
+      testSetupAction (Helper, e => e.ListMenus(), "listMenu");
     }
 
     [Test]
@@ -87,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var listMenu = home.GetListMenu().ByLocalID ("MyListMenu");
+      var listMenu = home.ListMenus().GetByLocalID ("MyListMenu");
       
       var items = listMenu.GetItemDefinitions();
       Assert.That (items.Count, Is.EqualTo (5));
@@ -110,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var listMenu = home.GetListMenu().ByLocalID ("MyListMenu");
+      var listMenu = home.ListMenus().GetByLocalID ("MyListMenu");
 
       listMenu.SelectItem ("ItemID5");
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID5|Event"));

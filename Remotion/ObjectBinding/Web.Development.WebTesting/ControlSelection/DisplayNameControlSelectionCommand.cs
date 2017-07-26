@@ -27,7 +27,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
   /// within the given scope.
   /// </summary>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class DisplayNameControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
+  public class DisplayNameControlSelectionCommand<TControlObject>
+      : IControlSelectionCommand<TControlObject>,
+        IControlOptionalSelectionCommand<TControlObject>,
+        IControlExistsCommand
       where TControlObject : ControlObject
   {
     private readonly IDisplayNameControlSelector<TControlObject> _controlSelector;
@@ -47,7 +50,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+
       return _controlSelector.SelectPerDisplayName (context, _displayName);
+    }
+
+    /// <inheritdoc/>
+    public TControlObject SelectOptional (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      return _controlSelector.SelectOptionalPerDisplayName (context, _displayName);
+    }
+
+    /// <inheritdoc/>
+    public bool Exists (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      return _controlSelector.ExistsPerDisplayName (context, _displayName);
     }
   }
 }

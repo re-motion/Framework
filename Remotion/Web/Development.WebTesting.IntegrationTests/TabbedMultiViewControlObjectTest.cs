@@ -16,9 +16,12 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -26,63 +29,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TabbedMultiViewControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<TabbedMultiViewSelector, TabbedMultiViewControlObject> testSetupAction)
     {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var tabbedMultiView = home.GetTabbedMultiView().ByID ("body_MyTabbedMultiView");
-      Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content1"));
-      Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var tabbedMultiView = home.GetTabbedMultiView().ByIndex (1);
-      Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content"));
-      Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var tabbedMultiView = home.GetTabbedMultiView().ByLocalID ("MyTabbedMultiView");
-      Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content1"));
-      Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var tabbedMultiView = home.GetTabbedMultiView().First();
-      Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content1"));
-      Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
-    }
-
-    [Test]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var tabbedMultiView = home.GetTabbedMultiView().Single();
-      Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content1"));
-      Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
+      testSetupAction (Helper, e => e.TabbedMultiViews(), "tabbedMultiView");
     }
 
     [Test]
@@ -90,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMultiView = home.GetTabbedMultiView().Single();
+      var tabbedMultiView = home.TabbedMultiViews().Single();
 
       var topControls = tabbedMultiView.GetTopControls();
       Assert.That (topControls.Scope.Text, Is.StringContaining ("TopControls"));
@@ -102,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMultiView = home.GetTabbedMultiView().Single();
+      var tabbedMultiView = home.TabbedMultiViews().Single();
 
       var view = tabbedMultiView.GetActiveView();
       Assert.That (view.Scope.Text, Is.StringContaining ("Content1"));
@@ -115,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMultiView = home.GetTabbedMultiView().Single();
+      var tabbedMultiView = home.TabbedMultiViews().Single();
 
       var bottomControls = tabbedMultiView.GetBottomControls();
       Assert.That (bottomControls.Scope.Text, Is.StringContaining ("BottomControls"));
@@ -127,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMultiView = home.GetTabbedMultiView().First();
+      var tabbedMultiView = home.TabbedMultiViews().First();
       Assert.That (tabbedMultiView.GetSelectedTab().ItemID, Is.EqualTo ("Tab1"));
       Assert.That (tabbedMultiView.GetSelectedTab().Index, Is.EqualTo (-1));
       Assert.That (tabbedMultiView.GetSelectedTab().Title, Is.EqualTo ("Tab1Title"));
@@ -143,7 +97,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMultiView = home.GetTabbedMultiView().First();
+      var tabbedMultiView = home.TabbedMultiViews().First();
       var tabs = tabbedMultiView.GetTabDefinitions();
       Assert.That (tabs.Count, Is.EqualTo (2));
       Assert.That (tabs[1].ItemID, Is.EqualTo ("Tab2"));
@@ -156,30 +110,30 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMultiView = home.GetTabbedMultiView().Single();
+      var tabbedMultiView = home.TabbedMultiViews().Single();
 
       home = tabbedMultiView.SwitchTo ("Tab2").Expect<WxePageObject>();
-      tabbedMultiView = home.GetTabbedMultiView().Single();
+      tabbedMultiView = home.TabbedMultiViews().Single();
       Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content2"));
       Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content1"));
 
       home = tabbedMultiView.SwitchTo().WithDisplayText ("Tab1Title").Expect<WxePageObject>();
-      tabbedMultiView = home.GetTabbedMultiView().Single();
+      tabbedMultiView = home.TabbedMultiViews().Single();
       Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content1"));
       Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content2"));
 
       home = tabbedMultiView.SwitchTo().WithDisplayTextContains ("b2T").Expect<WxePageObject>();
-      tabbedMultiView = home.GetTabbedMultiView().Single();
+      tabbedMultiView = home.TabbedMultiViews().Single();
       Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content2"));
       Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content1"));
 
       home = tabbedMultiView.SwitchTo().WithIndex (1).Expect<WxePageObject>();
-      tabbedMultiView = home.GetTabbedMultiView().Single();
+      tabbedMultiView = home.TabbedMultiViews().Single();
       Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content1"));
       Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content2"));
 
       home = tabbedMultiView.SwitchTo().WithHtmlID ("body_MyTabbedMultiView_TabStrip_Tab2_Tab").Expect<WxePageObject>();
-      tabbedMultiView = home.GetTabbedMultiView().Single();
+      tabbedMultiView = home.TabbedMultiViews().Single();
       Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content2"));
       Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content1"));
     }

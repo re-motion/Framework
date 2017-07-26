@@ -43,12 +43,38 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
+    public DropDownListControlObject SelectFirstOrNull (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var scope = context.Scope.FindCss (c_htmlDropDownListTag);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
     public DropDownListControlObject SelectSingle (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
       var scope = context.Scope.FindCss (c_htmlDropDownListTag, Options.Single);
       return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public DropDownListControlObject SelectSingleOrNull (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var scope = context.Scope.FindCss (c_htmlDropDownListTag, Options.Single);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
     }
 
     /// <inheritdoc/>
@@ -59,6 +85,31 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
       var xPathSelector = string.Format ("(.//{0})[{1}]", c_htmlDropDownListTag, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
       return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public DropDownListControlObject SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var xPathSelector = string.Format ("(.//{0})[{1}]", c_htmlDropDownListTag, oneBasedIndex);
+      var scope = context.Scope.FindXPath (xPathSelector);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
+    public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var xPathSelector = string.Format ("(.//{0})[{1}]", c_htmlDropDownListTag, oneBasedIndex);
+      var scope = context.Scope.FindXPath (xPathSelector);
+
+      return scope.Exists (Options.NoWait);
     }
 
     /// <inheritdoc/>

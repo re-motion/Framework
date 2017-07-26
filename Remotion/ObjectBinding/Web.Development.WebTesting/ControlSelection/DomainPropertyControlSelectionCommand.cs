@@ -27,7 +27,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
   /// domain object within the given scope.
   /// </summary>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class DomainPropertyControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
+  public class DomainPropertyControlSelectionCommand<TControlObject>
+      : IControlSelectionCommand<TControlObject>,
+        IControlOptionalSelectionCommand<TControlObject>,
+        IControlExistsCommand
       where TControlObject : ControlObject
   {
     private readonly IDomainPropertyControlSelector<TControlObject> _controlSelector;
@@ -51,7 +54,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+
       return _controlSelector.SelectPerDomainProperty (context, _domainProperty, _domainClass);
+    }
+
+    /// <inheritdoc/>
+    public TControlObject SelectOptional (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      return _controlSelector.SelectOptionalPerDomainProperty (context, _domainProperty, _domainClass);
+    }
+
+    /// <inheritdoc/>
+    public bool Exists (ControlSelectionContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      return _controlSelector.ExistsPerDomainProperty (context, _domainProperty, _domainClass);
     }
   }
 }

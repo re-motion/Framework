@@ -16,7 +16,11 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -24,63 +28,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class SingleViewControlObjectTest : IntegrationTest
   {
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>), "GetTests")]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>), "GetTests")]
+    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<SingleViewSelector, SingleViewControlObject> testSetupAction)
     {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var singleView = home.GetSingleView().ByID ("body_MySingleView");
-      Assert.That (singleView.Scope.Text, Is.StringContaining ("Content"));
-      Assert.That (singleView.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
-    }
-
-    [Test]
-    public void TestSelection_ByIndex ()
-    {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var singleView = home.GetSingleView().ByIndex (1);
-      Assert.That (singleView.Scope.Text, Is.StringContaining ("Content"));
-      Assert.That (singleView.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var singleView = home.GetSingleView().ByLocalID ("MySingleView");
-      Assert.That (singleView.Scope.Text, Is.StringContaining ("Content"));
-      Assert.That (singleView.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
-    }
-
-    [Test]
-    public void TestSelection_First ()
-    {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var singleView = home.GetSingleView().First();
-      Assert.That (singleView.Scope.Text, Is.StringContaining ("Content"));
-      Assert.That (singleView.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
-    }
-
-    [Test]
-    public void TestSelection_Single ()
-    {
-      var home = Start();
-
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
-
-      var singleView = home.GetSingleView().Single();
-      Assert.That (singleView.Scope.Text, Is.StringContaining ("Content"));
-      Assert.That (singleView.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
+      testSetupAction (Helper, e => e.SingleViews(), "singleView");
     }
 
     [Test]
@@ -88,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var singleView = home.GetSingleView().Single();
+      var singleView = home.SingleViews().Single();
 
       var topControls = singleView.GetTopControls();
       Assert.That (topControls.Scope.Text, Is.StringContaining ("TopControls"));
@@ -100,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var singleView = home.GetSingleView().Single();
+      var singleView = home.SingleViews().Single();
 
       var view = singleView.GetView();
       Assert.That (view.Scope.Text, Is.StringContaining ("Content"));
@@ -113,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var singleView = home.GetSingleView().Single();
+      var singleView = home.SingleViews().Single();
 
       var bottomControls = singleView.GetBottomControls();
       Assert.That (bottomControls.Scope.Text, Is.StringContaining ("BottomControls"));

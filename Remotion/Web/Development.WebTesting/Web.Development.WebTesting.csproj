@@ -82,6 +82,8 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="ControlSelection\IControlExistsCommand.cs" />
+    <Compile Include="ControlSelection\IControlOptionalSelectionCommand.cs" />
     <Compile Include="DownloadInfrastructure\Chrome\ChromeNamedExpectedFileNameFinderStrategy.cs" />
     <Compile Include="DownloadInfrastructure\Chrome\ChromeUnknownFileNameFinderStrategy.cs" />
     <Compile Include="DownloadInfrastructure\DownloadHelperBase.cs" />
@@ -102,6 +104,8 @@
     <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\Win32WindowSupport\IWin32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\Win32WindowSupport\Win32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\PartialFileState.cs" />
+    <Compile Include="FluentControlSelection\IControlExistsCommandBuilder.cs" />
+    <Compile Include="FluentControlSelection\IControlOptionalSelectionCommandBuilder.cs" />
     <Compile Include="Utilities\DownloadResultNotFoundException.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\AdvancedChromeOptions.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ExtendedChromeOptions.cs" />

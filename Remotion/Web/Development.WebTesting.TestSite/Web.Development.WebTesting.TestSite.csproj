@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,6 +67,7 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
+    <Content Include="GenericTest.aspx" />
     <Content Include="ImageButtonTest.aspx" />
     <Content Include="CommandTest.aspx" />
     <Content Include="Default.aspx" />
@@ -116,9 +118,32 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="GenericTestPageInfrastructure\ControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\SimpleControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\SimplePageSetup`1.cs" />
+    <Compile Include="GenericTestPageInfrastructure\TestArguments.cs" />
+    <Compile Include="GenericTestPageInfrastructure\IControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\IPageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\SimplePageSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\AnchorControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\CommandControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\DropDownMenuControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\FormGridControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\ControlSetups\WebButtonControlSetup.cs" />
+    <Compile Include="GenericTestPageInfrastructure\TestConstants.cs" />
+    <Compile Include="GenericTestPageInfrastructure\TestOptions.cs" />
+    <Compile Include="GenericTestPageInfrastructure\TestParameter.cs" />
     <Compile Include="FileDownloadHandler.ashx.cs">
       <DependentUpon>FileDownloadHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="GenericTest.aspx.cs">
+      <DependentUpon>GenericTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GenericTest.aspx.designer.cs">
+      <DependentUpon>GenericTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GenericTestFunction.cs" />
     <Compile Include="ImageButtonTest.aspx.cs">
       <DependentUpon>ImageButtonTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

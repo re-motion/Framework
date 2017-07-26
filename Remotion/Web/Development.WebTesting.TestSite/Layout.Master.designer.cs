@@ -49,6 +49,33 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder body;
         
         /// <summary>
+        /// TestInformationUpdatePanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel TestInformationUpdatePanel;
+        
+        /// <summary>
+        /// TestInformationOutputPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel TestInformationOutputPanel;
+        
+        /// <summary>
+        /// TestInformationOutput control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label TestInformationOutput;
+        
+        /// <summary>
         /// MainUpdatePanel control.
         /// </summary>
         /// <remarks>

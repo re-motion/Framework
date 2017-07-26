@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Coypu;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.ControlSelection;
@@ -27,8 +28,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
   /// </summary>
   public class WebButtonSelector
       : TypedControlSelectorBase<WebButtonControlObject>,
-          ITextContentControlSelector<WebButtonControlObject>,
-          IItemIDControlSelector<WebButtonControlObject>
+        ITextContentControlSelector<WebButtonControlObject>,
+        IItemIDControlSelector<WebButtonControlObject>
   {
     public WebButtonSelector ()
         : base ("WebButton")
@@ -41,14 +42,34 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("textContent", textContent);
 
-      var scope = context.Scope.FindTagWithAttributes (
-          "*",
-          new Dictionary<string, string>
-          {
-              { DiagnosticMetadataAttributes.ControlType, ControlType },
-              { DiagnosticMetadataAttributes.Content, textContent }
-          });
+      var scope = FindScopePerTextContent (context, textContent);
+
       return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public WebButtonControlObject SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("textContent", textContent);
+
+      var scope = FindScopePerTextContent (context, textContent);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
+    public bool ExistsPerTextContent (ControlSelectionContext context, string textContent)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("textContent", textContent);
+
+      var scope = FindScopePerTextContent (context, textContent);
+
+      return scope.Exists (Options.NoWait);
     }
 
     /// <inheritdoc/>
@@ -57,14 +78,34 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("itemID", itemID);
 
-      var scope = context.Scope.FindTagWithAttributes (
-          "*",
-          new Dictionary<string, string>
-          {
-              { DiagnosticMetadataAttributes.ControlType, ControlType },
-              { DiagnosticMetadataAttributes.ItemID, itemID }
-          });
+      var scope = FindScopePerItemID (context, itemID);
+
       return CreateControlObject (context, scope);
+    }
+
+    /// <inheritdoc/>
+    public WebButtonControlObject SelectOptionalPerItemID (ControlSelectionContext context, string itemID)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("itemID", itemID);
+
+      var scope = FindScopePerItemID (context, itemID);
+
+      if (scope.Exists (Options.NoWait))
+        return CreateControlObject (context, scope);
+
+      return null;
+    }
+
+    /// <inheritdoc/>
+    public bool ExistsPerItemID (ControlSelectionContext context, string itemID)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("itemID", itemID);
+
+      var scope = FindScopePerItemID (context, itemID);
+
+      return scope.Exists (Options.NoWait);
     }
 
     /// <inheritdoc/>
@@ -76,6 +117,31 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
 
       return new WebButtonControlObject (newControlObjectContext);
+    }
+
+    private ElementScope FindScopePerTextContent (ControlSelectionContext context, string textContent)
+    {
+      var diagnosticMetadata = new Dictionary<string, string>
+                                {
+                                    { DiagnosticMetadataAttributes.ControlType, ControlType },
+                                    { DiagnosticMetadataAttributes.Content, textContent }
+                                };
+
+      return context.Scope.FindTagWithAttributes ("*", diagnosticMetadata);
+
+    }
+
+    private ElementScope FindScopePerItemID (ControlSelectionContext context, string itemID)
+    {
+      var diagnosticMetadata = new Dictionary<string, string>
+                               {
+                                   { DiagnosticMetadataAttributes.ControlType, ControlType },
+                                   { DiagnosticMetadataAttributes.ItemID, itemID }
+                               };
+
+      var scope = context.Scope.FindTagWithAttributes ("*", diagnosticMetadata);
+
+      return scope;
     }
   }
 }

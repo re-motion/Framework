@@ -22,4 +22,5 @@
     xsi:schemaLocation="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
 
   <add id="ControlTest" type="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite::ControlTestFunction" resource="~/ControlTest.wxe" />
+  <add id="GenericTest" type="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite::GenericTestFunction" resource="~/GenericTest.wxe" />
 </urlMapping>
