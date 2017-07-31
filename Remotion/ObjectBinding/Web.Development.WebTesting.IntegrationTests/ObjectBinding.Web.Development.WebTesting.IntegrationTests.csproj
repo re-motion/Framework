@@ -105,6 +105,10 @@
     <Compile Include="IntegrationTest.cs" />
     <Compile Include="CustomWebTestConfigurationFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTesting.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTestingDelegate.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTestingExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTestingType.cs" />
     <Compile Include="SetUpFixture.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +146,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SavedTestScreenshots\**\*.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

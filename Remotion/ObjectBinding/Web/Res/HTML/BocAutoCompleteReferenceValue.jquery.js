@@ -79,6 +79,18 @@
 
           return collectedOptions;
         },
+        getAutoCompleteSelectList: function ()
+        {
+          var collectedOptions = {};
+          this.trigger("collectElements", [collectedOptions]);
+          return collectedOptions.selectList;
+        },
+        getAutoCompleteInformationPopUp: function ()
+        {
+          var collectedOptions = {};
+          this.trigger("collectElements", [collectedOptions]);
+          return collectedOptions.informationPopUp;
+        },
         setOptions: function(options) {
             return this.trigger("setOptions", [options]);
         },
@@ -366,7 +378,10 @@
             $.extend(options, arguments[1]);
             // if we've updated the data, repopulate
             if ("data" in arguments[1])
-                cache.populate();
+              cache.populate();
+        }).bind("collectElements", function () {
+            arguments[1].selectList = select;
+            arguments[1].informationPopUp = informationPopUp;
         }).bind("unautocomplete", function() {
             informationPopUp.unbind();
             select.unbind();
@@ -1119,6 +1134,21 @@
 
             return -1;
         }
+        
+        // re-motion: Finds the first item where predicate(data) == true.
+        function findItemPositionWhere (predicate) {
+          if (data == null)
+            return -1;
+
+          var max = data.length;
+          for (var i = 0; i < max; i++) {
+            if (predicate(data[i]) === true) {
+              return i;
+            }
+          }
+
+          return -1;
+        }
 
         return {
             display: function(d, q) {
@@ -1126,6 +1156,9 @@
                 data = d;
                 term = q;
                 fillList();
+            },
+            getElement: function () {
+              return element && element[0];
             },
             next: function() {
                 moveSelect(1, true);
@@ -1155,7 +1188,7 @@
                 active = -1;
             },
             visible: function() {
-                return element && element.is(":visible");
+                return (element && element.is(":visible")) ? true : false;
             },
             current: function() {
                 return this.visible() && (listItems.filter("." + CLASSES.ACTIVE)[0] || options.selectFirst($(input).val(), null) && listItems[0]);
@@ -1222,6 +1255,10 @@
             findItem: function (term) {
                 return findItemPosition (term, Math.max (active, 0));
             },
+            // re-motion: returns the index of the item matching the specified predicate
+            findItemPositionWhere: function (predicate) {
+              return findItemPositionWhere (predicate);
+            },
             // re-motion: selects the item at the specified index
             selectItem: function (index) {
                 setSelect (index, false);
@@ -1287,6 +1324,12 @@
         }
 
         return {
+            getElement: function () {
+              return element && element[0];
+            },
+            visible: function () {
+              return (element && element.is (":visible")) ? true : false;
+            },
             show: function(message) {
                 init();
                 element.empty();

@@ -64,6 +64,11 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="ScreenshotCreation\ScreenshotListMenuSelector.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotDropDownMenuSelector.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTabbedMenuSelector.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTabbedSubMenu.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotWebTabStripSelector.cs" />
     <Compile Include="IControlObjectWithTabs.cs">
       <SubType>
       </SubType>
@@ -104,6 +109,11 @@
     <Compile Include="IListMenuHost.cs" />
     <Compile Include="IDropDownMenuHost.cs" />
     <Compile Include="ListMenuControlObject.cs" />
+    <Compile Include="ScreenshotCreation\DropDownMenuControlObjectScreenshotExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ListMenuControlObjectScreenshotExtensions.cs" />
+    <Compile Include="ScreenshotCreation\TabbedMenuControlObjectScreenshotExtensions.cs" />
+    <Compile Include="ScreenshotCreation\TabbedMultiViewControlObjectScreenshotExtensions.cs" />
+    <Compile Include="ScreenshotCreation\WebTabStripControlObjectScreenshotExtensions.cs" />
     <Compile Include="Selectors\CommandSelector.cs" />
     <Compile Include="Selectors\DropDownMenuSelector.cs" />
     <Compile Include="Selectors\TabbedMenuSelector.cs" />

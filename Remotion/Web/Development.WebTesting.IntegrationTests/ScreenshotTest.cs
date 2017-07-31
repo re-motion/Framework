@@ -19,17 +19,25 @@ using System.Drawing;
 using System.Threading;
 using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
+using Remotion.Web.Development.WebTesting.WebDriver;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects.FluentScreenshots.Extensions;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   public class ScreenshotTest : IntegrationTest
   {
+    private const string c_nonBreakingSpace = " ";
+
     private static readonly WebPadding s_rainbowPaddingBig = new WebPadding (10, 40, 30, 20);
     private static readonly WebPadding s_rainbowPaddingSmall = new WebPadding (1, 4, 3, 2);
     private static readonly WebPadding s_uniformPaddingSmall = new WebPadding (5);
@@ -186,6 +194,159 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var element = home.Scope.FindFrame ("frame").FindId ("target");
 
       Helper.RunScreenshotTestExact<ElementScope, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
+    }
+
+
+    [Category ("Screenshot")]
+    [Test]
+    public void DropDownList ()
+    {
+      WebPadding padding;
+      if (Helper.BrowserConfiguration.IsChrome())
+      {
+        padding = new WebPadding (2, 3, 2, 53);
+      }
+      else if (Helper.BrowserConfiguration.IsInternetExplorer())
+      {
+        padding = new WebPadding (1, 1, 4, 31);
+      }
+      else
+      {
+        Assert.Fail ("The current browser is not supported by this test.");
+        // ReSharper disable once HeuristicUnreachableCode
+        return;
+      }
+
+      ScreenshotTestingDelegate<IFluentScreenshotElement<DropDownListControlObject>> test = (builder, target) =>
+      {
+        builder.AnnotateBox (target, Pens.Red, WebPadding.Inner);
+
+        builder.Crop (target, padding);
+      };
+
+      var home = Start();
+      var fluentDropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList").ForScreenshot();
+      fluentDropDownList.Open();
+      Thread.Sleep (250);
+
+      Helper.RunScreenshotTest<IFluentScreenshotElement<DropDownListControlObject>, DropDownListControlObjectTest> (
+          fluentDropDownList,
+          ScreenshotTestingType.Desktop,
+          test);
+    }
+
+    [Category ("Screenshot")]
+    [Test]
+    public void DropDownMenu ()
+    {
+      ScreenshotTestingDelegate<IFluentScreenshotElement<DropDownMenuControlObject>> test = (builder, target) =>
+      {
+        builder.AnnotateBox (target.GetMenu(), Pens.Magenta, WebPadding.Inner);
+
+        builder.AnnotateBox (target.SelectItem().WithDisplayText ("  "), Pens.Red, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithDisplayTextContains (c_nonBreakingSpace), Pens.Green, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithHtmlID ("body_MyDropDownMenu_2"), Pens.Blue, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithItemID ("ItemID4"), Pens.Orange, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithIndex (5), Pens.Yellow, WebPadding.Inner);
+
+        builder.Crop (target.GetMenu(), new WebPadding (1));
+      };
+
+      var home = Start();
+      var fluentDropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu").ForScreenshot();
+      fluentDropDownMenu.OpenMenu();
+      Thread.Sleep (250);
+
+      Helper.RunScreenshotTest<IFluentScreenshotElement<DropDownMenuControlObject>, DropDownMenuControlObjectTest> (
+          fluentDropDownMenu,
+          ScreenshotTestingType.Both,
+          test);
+    }
+
+    [Category ("Screenshot")]
+    [Test]
+    public void ListMenu ()
+    {
+      ScreenshotTestingDelegate<IFluentScreenshotElement<ListMenuControlObject>> test = (builder, target) =>
+      {
+        builder.AnnotateBox (target, Pens.Magenta, WebPadding.Inner);
+
+        builder.AnnotateBox (target.SelectItem().WithDisplayText ("  "), Pens.Red, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithDisplayTextContains (c_nonBreakingSpace), Pens.Green, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithHtmlID ("body_MyListMenu_2"), Pens.Blue, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithItemID ("ItemID4"), Pens.Orange, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithIndex (5), Pens.Yellow, WebPadding.Inner);
+
+        builder.Crop (target, new WebPadding (1));
+      };
+
+      var home = Start();
+      var fluentListMenu = home.ListMenus().GetByLocalID ("MyListMenu").ForScreenshot();
+
+      Helper.RunScreenshotTest<IFluentScreenshotElement<ListMenuControlObject>, ListMenuControlObjectTest> (
+          fluentListMenu,
+          ScreenshotTestingType.Both,
+          test);
+    }
+
+    [Category ("Screenshot")]
+    [Test]
+    public void TabbedMenu ()
+    {
+      ScreenshotTestingDelegate<IFluentScreenshotElement<TabbedMenuControlObject>> test = (builder, target) =>
+      {
+        builder.AnnotateBox (target, Pens.Magenta, WebPadding.Inner);
+
+        builder.AnnotateBox (target.SelectItem().WithDisplayText ("  "), Pens.Red, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithDisplayTextContains (c_nonBreakingSpace), Pens.Green, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithHtmlID ("body_MyTabbedMenu_MainMenuTabStrip_ItemID3"), Pens.Blue, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithItemID ("ItemID4"), Pens.Orange, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithIndex (5), Pens.Yellow, WebPadding.Inner);
+
+        var subMenu = target.GetSubMenu();
+        builder.AnnotateBox (subMenu.SelectItem().WithDisplayText ("  "), Pens.Red, WebPadding.Inner);
+        builder.AnnotateBox (subMenu.SelectItem().WithDisplayTextContains (c_nonBreakingSpace), Pens.Green, WebPadding.Inner);
+        builder.AnnotateBox (subMenu.SelectItem().WithHtmlID ("body_MyTabbedMenu_SubMenuTabStrip_ItemID3"), Pens.Blue, WebPadding.Inner);
+        builder.AnnotateBox (subMenu.SelectItem().WithItemID ("ItemID4"), Pens.Orange, WebPadding.Inner);
+        builder.AnnotateBox (subMenu.SelectItem().WithIndex (5), Pens.Yellow, WebPadding.Inner);
+
+        builder.Crop (target, new WebPadding (1));
+      };
+
+      var home = Start();
+      var menu = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
+      var fluentTabbedMenu = menu.ForScreenshot();
+
+      Helper.RunScreenshotTest<IFluentScreenshotElement<TabbedMenuControlObject>, TabbedMenuControlObjectTest> (
+          fluentTabbedMenu,
+          ScreenshotTestingType.Both,
+          test);
+    }
+
+    [Category ("Screenshot")]
+    [Test]
+    public void WebTabStrip ()
+    {
+      ScreenshotTestingDelegate<IFluentScreenshotElement<WebTabStripControlObject>> test = (builder, target) =>
+      {
+        builder.AnnotateBox (target, Pens.Magenta, WebPadding.Inner);
+
+        builder.AnnotateBox (target.SelectItem().WithDisplayText ("  "), Pens.Red, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithDisplayTextContains (c_nonBreakingSpace), Pens.Green, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithHtmlID ("body_MyTabStrip_ItemID3"), Pens.Blue, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithItemID ("ItemID4"), Pens.Orange, WebPadding.Inner);
+        builder.AnnotateBox (target.SelectItem().WithIndex (5), Pens.Yellow, WebPadding.Inner);
+
+        builder.Crop (target, new WebPadding (1));
+      };
+
+      var home = Start();
+      var fluentTabStrip = home.WebTabStrips().GetByLocalID ("MyTabStrip").ForScreenshot();
+
+      Helper.RunScreenshotTest<IFluentScreenshotElement<WebTabStripControlObject>, WebTabStripControlObjectTest> (
+          fluentTabStrip,
+          ScreenshotTestingType.Both,
+          test);
     }
 
     private ControlObject PrepareTest ()

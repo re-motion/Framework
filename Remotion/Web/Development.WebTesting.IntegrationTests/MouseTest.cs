@@ -23,7 +23,7 @@ using Coypu;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
-using Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotInfrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;

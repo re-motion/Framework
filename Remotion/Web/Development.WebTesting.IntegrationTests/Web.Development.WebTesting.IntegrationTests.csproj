@@ -102,10 +102,10 @@
     <Compile Include="CustomWebTestConfigurationFactory.cs" />
     <Compile Include="ScopeControlObjectTest.cs" />
     <Compile Include="ScreenshotTest.cs" />
-    <Compile Include="ScreenshotInfrastructure\ScreenshotTesting.cs" />
-    <Compile Include="ScreenshotInfrastructure\ScreenshotTestingExtensions.cs" />
-    <Compile Include="ScreenshotInfrastructure\ScreenshotTestingDelegate.cs" />
-    <Compile Include="ScreenshotInfrastructure\ScreenshotTestingType.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTesting.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTestingExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTestingDelegate.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTestingType.cs" />
     <Compile Include="ScrollTests.cs" />
     <Compile Include="SingleViewControlObjectTest.cs" />
     <Compile Include="FormGridControlObjectTest.cs" />

@@ -49,7 +49,7 @@
         ShowOptionsMenu="true"
         ShowSortingOrder="True"
         
-        Width="100%"
+        Width="835px"
         Height="10em"
         runat="server">
         <OptionsMenuItems>

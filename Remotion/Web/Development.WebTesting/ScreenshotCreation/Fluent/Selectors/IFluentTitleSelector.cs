@@ -15,28 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 
-namespace Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotInfrastructure
+namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent.Selectors
 {
   /// <summary>
-  /// Specifies which screenshot input types are tested.
+  /// A fluent selector which selects elements via the specified title.
   /// </summary>
-  [Flags]
-  public enum ScreenshotTestingType
+  public interface IFluentTitleSelector : IFluentSelector
   {
     /// <summary>
-    /// A desktop screenshot will be tested.
+    /// Selects the item with the specified <paramref name="title"/>.
     /// </summary>
-    Desktop = 0x1,
-
-    /// <summary>
-    /// A browser screenshot will be tested.
-    /// </summary>
-    Browser = 0x2,
-
-    /// <summary>
-    /// A desktop as well as a browser screenshot will be tested.
-    /// </summary>
-    Both = 0x3
+    void WithTitle ([NotNull] string title);
   }
 }

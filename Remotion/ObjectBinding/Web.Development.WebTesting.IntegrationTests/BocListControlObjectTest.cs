@@ -15,22 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Drawing;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
   public class BocListControlObjectTest : IntegrationTest
   {
-    [Test]
     [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>), "GetTests")]
     [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>), "GetTests")]
     [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>), "GetTests")]
@@ -41,6 +46,157 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<BocListSelector, BocListControlObject> testAction)
     {
       testAction (Helper, e => e.Lists(), "list");
+    }
+
+    /// <summary>
+    /// Annotates the three different container of an BocList: the MenuBlock on the right (red),
+    /// the Navigator on the bottom left (blue) and the table container on the top left (green).
+    /// </summary>
+    [Category ("Screenshot")]
+    [Test]
+    public void ScreenshotTest ()
+    {
+      var home = Start();
+
+      var control = home.Lists().GetByLocalID ("JobList_Normal");
+      var fluentControl = control.ForScreenshot();
+
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<ScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject>>,
+          BocListControlObjectTest> (
+              fluentControl,
+              ScreenshotTestingType.Both,
+              (builder, target) =>
+              {
+                var backgroundBrush = ScreenshotBackgroundBrush;
+
+                builder.AnnotateBox (target, Pens.Black, WebPadding.Inner, backgroundBrush);
+
+                builder.AnnotateBox (target.GetMenuBlock(), Pens.Red, WebPadding.Inner);
+                builder.AnnotateBox (target.GetNavigator(), Pens.Blue, WebPadding.Inner);
+                builder.AnnotateBox (target.GetTableContainer(), Pens.Green, WebPadding.Inner);
+
+                builder.Crop (target, new WebPadding (1));
+              });
+    }
+
+    /// <summary>
+    /// Tests that the navigator can be correctly annotated
+    /// and that the fluent API works as intended.
+    /// </summary>
+    [Category ("Screenshot")]
+    [Test]
+    public void ScreenshotTest_Navigator ()
+    {
+      var home = Start();
+
+      // List with a navigator
+      var control = home.Lists().GetByLocalID ("JobList_Normal");
+      var fluentControl = control.ForScreenshot();
+
+      // List without a navigator
+      var fluentControlWithoutNavigator = home.Lists().GetByLocalID ("JobList_WithRadioButtons").ForScreenshot();
+      Assert.That (() => fluentControlWithoutNavigator.GetNavigator(), Throws.InvalidOperationException);
+
+      Helper
+          .RunScreenshotTestExact
+          <FluentScreenshotElement<ScreenshotBocListNavigator<BocListControlObject, BocListRowControlObject, BocListCellControlObject>>,
+              BocListControlObjectTest> (
+                  fluentControl.GetNavigator(),
+                  ScreenshotTestingType.Both,
+                  (builder, target) =>
+                  {
+                    var backgroundBrush = ScreenshotBackgroundBrush;
+
+                    builder.AnnotateBox (target, Pens.Black, WebPadding.Inner, backgroundBrush);
+
+                    builder.AnnotateBox (target.GetFirstPageButton(), Pens.Orange, WebPadding.Inner);
+                    builder.AnnotateBox (target.GetPreviousPageButton(), Pens.Red, WebPadding.Inner);
+                    builder.AnnotateBox (target.GetNextPageButton(), Pens.Violet, WebPadding.Inner);
+                    builder.AnnotateBox (target.GetLastPageButton(), Pens.Aquamarine, WebPadding.Inner);
+
+                    builder.AnnotateBox (target.GetPageInformationText(), Pens.Blue, WebPadding.Inner);
+                    builder.AnnotateBox (target.GetPageNumberInput(), Pens.Green, WebPadding.Inner);
+
+                    builder.Crop (target, new WebPadding (1));
+                  });
+    }
+
+    /// <summary>
+    /// Tests that the menu-block can be correctly annotated
+    /// and that the fluent API works as intended.
+    /// </summary>
+    [Category ("Screenshot")]
+    [Test]
+    public void ScreenshotTest_MenuBlock ()
+    {
+      var home = Start();
+
+      // List with a menu-block
+      var control = home.Lists().GetByLocalID ("JobList_Normal");
+      var fluentControl = control.ForScreenshot();
+
+      // List without a menu-block
+      var fluentControlWithoutMenuBlock = home.Lists().GetByLocalID ("JobList_Special").ForScreenshot();
+      Assert.That (() => fluentControlWithoutMenuBlock.GetMenuBlock(), Throws.InvalidOperationException);
+
+      Helper
+          .RunScreenshotTestExact
+          <FluentScreenshotElement<ScreenshotBocListMenuBlock<BocListControlObject, BocListRowControlObject, BocListCellControlObject>>,
+              BocListControlObjectTest> (
+                  fluentControl.GetMenuBlock(),
+                  ScreenshotTestingType.Both,
+                  (builder, target) =>
+                  {
+                    var backgroundBrush = ScreenshotBackgroundBrush;
+
+                    builder.AnnotateBox (target, Pens.Black, WebPadding.Inner, backgroundBrush);
+
+                    builder.AnnotateBox (target.GetDropDownMenu(), Pens.Red, WebPadding.Inner);
+                    builder.AnnotateBox (target.GetViewsMenu(), Pens.Green, WebPadding.Inner);
+
+                    // The list menu is bigger than the surrounding div which can result in a cut off element
+                    builder.MinimumVisibility = ElementVisibility.PartiallyVisible;
+                    builder.AnnotateBox (target.GetListMenu(), Pens.Blue, WebPadding.Inner);
+                    builder.MinimumVisibility = ElementVisibility.FullyVisible;
+
+                    builder.Crop (target);
+                  });
+    }
+
+    /// <summary>
+    /// Tests that the table-container can be correctly annotated
+    /// and that the fluent API works as intended.
+    /// </summary>
+    [Category ("Screenshot")]
+    [Test]
+    public void ScreenshotTest_TableContainer ()
+    {
+      var home = Start();
+
+      var control = home.Lists().GetByLocalID ("JobList_Normal");
+      var fluentControl = control.ForScreenshot();
+
+      Helper
+          .RunScreenshotTestExact
+          <FluentScreenshotElement<ScreenshotBocListTableContainer<BocListControlObject, BocListRowControlObject, BocListCellControlObject>>,
+              BocListControlObjectTest> (
+                  fluentControl.GetTableContainer(),
+                  ScreenshotTestingType.Both,
+                  (builder, target) =>
+                  {
+                    var backgroundBrush = ScreenshotBackgroundBrush;
+
+                    builder.AnnotateBox (target, Pens.Black, WebPadding.Inner, backgroundBrush);
+
+                    builder.AnnotateBox (target.GetHeaderRow(), Pens.Red, WebPadding.Inner);
+                    builder.AnnotateBox (target.GetRow (2), Pens.Blue, WebPadding.Inner);
+                    builder.AnnotateBox (target.GetColumn (2), Pens.Green, WebPadding.Inner);
+                    builder.AnnotateBox (target.GetColumn (4, false), Pens.Violet, WebPadding.Inner);
+                    builder.AnnotateBox (target.GetHeaderRow().GetCell (5), Pens.Orange, WebPadding.Inner);
+                    builder.AnnotateBox (target.GetColumn (3).GetCell (1), Pens.Aquamarine, WebPadding.Inner);
+
+                    builder.Crop (target);
+                  });
     }
 
     [Test]
@@ -62,7 +218,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
       Assert.That (
-          bocList.GetColumnDefinitions().Select(cd => cd.Title),
+          bocList.GetColumnDefinitions().Select (cd => cd.Title),
           Is.EquivalentTo (new[] { "I_ndex", null, null, "Command", "Menu", "Title", "StartDate", "EndDate", "DisplayName", "TitleWithCmd" }));
     }
 
@@ -128,7 +284,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      
+
       var firstRow = bocList.GetRow (1);
       var lastRow = bocList.GetRow (bocList.GetNumberOfRows());
       Assert.That (firstRow.IsSelected, Is.False);
@@ -235,7 +391,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var row = bocList.GetRowWhere ("Title", "Developer");
       Assert.That (row.GetCell ("DisplayName").GetText(), Is.EqualTo ("Developer"));
 
-      var columnTitles = bocList.GetColumnDefinitions().Select(cd => cd.Title);
+      var columnTitles = bocList.GetColumnDefinitions().Select (cd => cd.Title);
       Assert.That (columnTitles, Is.EquivalentTo (new[] { "Title", "StartDate", "EndDate", "DisplayName" }));
     }
 
@@ -417,7 +573,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      
+
       var row1 = bocList.GetRow (1);
       Assert.That (row1.StyleInfo.HasCssClass ("bocListDataRow"), Is.True);
       Assert.That (row1.StyleInfo.HasCssClass ("odd"), Is.True);
@@ -545,7 +701,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (cell1.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.White));
 
       var cell2 = bocList.GetRow (2).GetCell (1);
-      Assert.That (cell2.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.FromRgb(240, 240, 240)));
+      Assert.That (cell2.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.FromRgb (240, 240, 240)));
     }
 
     [Test]
