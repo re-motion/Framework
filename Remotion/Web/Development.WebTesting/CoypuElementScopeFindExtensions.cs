@@ -31,13 +31,13 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Returns a child element of a control, specified by a <paramref name="idSuffix"/>.
     /// </summary>
-    public static ElementScope FindChild ([NotNull] this ElementScope scope, [NotNull] string idSuffix)
+    public static ElementScope FindChild ([NotNull] this ElementScope scope, [NotNull] string idSuffix, [CanBeNull] Options options = null)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
       ArgumentUtility.CheckNotNullOrEmpty ("idSuffix", idSuffix);
 
       var fullId = string.Format ("{0}_{1}", scope.Id, idSuffix);
-      return scope.FindId (fullId);
+      return scope.FindId (fullId, options);
     }
 
     /// <summary>

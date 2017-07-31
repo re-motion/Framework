@@ -17,6 +17,7 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
@@ -53,13 +54,33 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     IBrowserFactory BrowserFactory { [NotNull] get; }
 
     /// <summary>
+    /// Gets a <see cref="BrowserHelper"/>, which simplifies browser specific actions (e.g. resizing, positioning).
+    /// </summary>
+    BrowserHelper BrowserHelper { [NotNull] get; }
+
+    /// <summary>
     /// Gets a <see cref="DownloadHelper" />, which provides an API to handle a file download and subsequently delete the downloaded files. 
     /// </summary>
     IDownloadHelper DownloadHelper { [NotNull] get; }
 
     /// <summary>
+    /// Gets a <see cref="LocatorHelper"/>, which simplifies the interaction with the <see cref="Locator"/>.
+    /// </summary>
+    LocatorHelper LocatorHelper { [NotNull] get; }
+
+    /// <summary>
+    /// Gets a <see cref="MouseHelper"/>, which provides an API to handle mouse interactions.
+    /// </summary>
+    MouseHelper MouseHelper { [NotNull] get; }
+
+    /// <summary>
     /// Gets an absolute or relative path to the logs directory. Some web driver implementations write log files for debugging reasons.
     /// </summary>
     string LogsDirectory { [NotNull] get; }
+
+    /// <summary>
+    /// Returns the <see cref="IBrowserContentLocator"/> that will be used to located browser content (e.g. the browser content bounds).
+    /// </summary>
+    IBrowserContentLocator Locator { [NotNull] get; }
   }
 }

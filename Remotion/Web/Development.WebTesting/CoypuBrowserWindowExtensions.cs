@@ -61,12 +61,12 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Returns the native Selenium <see cref="IWebDriver"/> instance which corresponds to the current window.
     /// </summary>
-    public static IWebDriver GetNativeFromBrowserWindow ([NotNull] this BrowserWindow window)
+    public static IWebDriver GetWebDriver ([NotNull] this BrowserWindow window)
     {
       ArgumentUtility.CheckNotNull ("window", window);
-
+      
       var driverFieldInfo = typeof (BrowserWindow).GetField ("driver", BindingFlags.NonPublic | BindingFlags.Instance);
-      Assertion.IsNotNull (driverFieldInfo, "Coypu has changed, please update CoypuBrowserWindowExtensions.GetNativeFromBrowserWindow() method.");
+      Assertion.IsNotNull (driverFieldInfo, "Coypu has changed, please update CoypuBrowserWindowExtensions.GetWebDriver() method.");
 
       var driver = (Driver) driverFieldInfo.GetValue (window);
       return (IWebDriver) driver.Native;

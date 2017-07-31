@@ -1,5 +1,5 @@
 ﻿extensions: designer.cs
-extensions: .cs .js
+extensions: .cs .js .ts
 // This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 

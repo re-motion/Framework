@@ -30,6 +30,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   {
     private WebTestHelper _webTestHelper;
 
+    protected virtual bool MaximizeMainBrowserSession
+    {
+      get { return true; }
+    }
+
     protected WebTestHelper Helper
     {
       get { return _webTestHelper; }
@@ -40,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
-      _webTestHelper.OnFixtureSetUp();
+      _webTestHelper.OnFixtureSetUp (MaximizeMainBrowserSession);
     }
 
     [SetUp]

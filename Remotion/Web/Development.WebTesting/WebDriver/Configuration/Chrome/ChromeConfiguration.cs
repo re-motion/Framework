@@ -21,6 +21,8 @@ using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome;
+using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.Utilities.BrowserContentLocators;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome;
 
@@ -32,6 +34,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
   public class ChromeConfiguration : BrowserConfigurationBase, IChromeConfiguration
   {
     private const string c_userDataFolderPrefix = "userdata";
+
+    private readonly IBrowserContentLocator _locator = new ChromeBrowserContentLocator();
 
     private readonly string _binaryPath;
     private readonly string _userDirectoryRoot;
@@ -106,6 +110,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     public override IDownloadHelper DownloadHelper
     {
       get { return _downloadHelper; }
+    }
+
+    public override IBrowserContentLocator Locator
+    {
+      get { return _locator; }
     }
 
     public string BinaryPath

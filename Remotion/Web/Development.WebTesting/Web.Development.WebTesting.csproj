@@ -66,7 +66,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
     <Reference Include="UIAutomationClient" />
     <Reference Include="UIAutomationTypes" />
     <Reference Include="WebDriver, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -77,6 +79,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Selenium.Support.2.48.0\lib\net40\WebDriver.Support.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
@@ -104,9 +107,43 @@
     <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\Win32WindowSupport\IWin32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\Win32WindowSupport\Win32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\PartialFileState.cs" />
+    <Compile Include="ScreenshotCreation\Annotations\ScreenshotBoxAnnotation.cs" />
+    <Compile Include="ScreenshotCreation\Annotations\ScreenshotCustomAnnotation.cs" />
+    <Compile Include="ScreenshotCreation\Annotations\ScreenshotTextAnnotation.cs" />
+    <Compile Include="ScreenshotCreation\CoordinateSystem.cs" />
+    <Compile Include="ScreenshotCreation\CursorInformation.cs" />
+    <Compile Include="ScreenshotCreation\ElementVisibility.cs" />
+    <Compile Include="ScreenshotCreation\IScreenshotTransformation.cs" />
+    <Compile Include="ScreenshotCreation\ResolvedScreenshotElement.cs" />
+    <Compile Include="ScreenshotCreation\IScreenshotElementResolver.cs" />
+    <Compile Include="ScreenshotCreation\IScreenshotAnnotation.cs" />
+    <Compile Include="ScreenshotCreation\IScreenshotCropping.cs" />
+    <Compile Include="ScreenshotCreation\Resolvers\AutomationElementResolver.cs" />
+    <Compile Include="ScreenshotCreation\Resolvers\ControlObjectResolver.cs" />
+    <Compile Include="ScreenshotCreation\Resolvers\ElementScopeResolver.cs" />
+    <Compile Include="ScreenshotCreation\Resolvers\RectangleResolver.cs" />
+    <Compile Include="ScreenshotCreation\Resolvers\WebElementResolver.cs" />
+    <Compile Include="ScreenshotCreation\Screenshot.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotManipulation.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBuilder.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotCropping.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTransformationContext.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTransformationCollection.cs" />
+    <Compile Include="ScreenshotCreation\Transformations\EmptyTransformation.cs" />
+    <Compile Include="ScreenshotCreation\WebPadding.cs" />
+    <Compile Include="Utilities\BrowserContentLocators\ChromeBrowserContentLocator.cs" />
+    <Compile Include="Utilities\BrowserContentLocators\InternetExplorerBrowserContentLocator.cs" />
+    <Compile Include="Utilities\DataContractJsonSerializationUtility.cs" />
+    <Compile Include="Utilities\ElementScopeExtensions.cs" />
+    <Compile Include="Utilities\IBrowserContentLocator.cs" />
+    <Compile Include="Utilities\BrowserHelper.cs" />
+    <Compile Include="Utilities\LocatorHelper.cs" />
+    <Compile Include="Utilities\MouseHelper.cs" />
+    <Compile Include="Utilities\JavaScriptExecutor.cs" />
     <Compile Include="FluentControlSelection\IControlExistsCommandBuilder.cs" />
     <Compile Include="FluentControlSelection\IControlOptionalSelectionCommandBuilder.cs" />
     <Compile Include="Utilities\DownloadResultNotFoundException.cs" />
+    <Compile Include="Utilities\OptionalParameter.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\AdvancedChromeOptions.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ExtendedChromeOptions.cs" />
     <Compile Include="WebDriver\Factories\Chrome\ChromeBrowserSession.cs" />
@@ -238,7 +275,7 @@
     <Compile Include="Utilities\PerformanceTimer.cs" />
     <Compile Include="Utilities\ProcessUtils.cs" />
     <Compile Include="Utilities\RetryUntilTimeout.cs" />
-    <Compile Include="Utilities\ScreenshotCapturer.cs" />
+    <Compile Include="Utilities\TestExecutionScreenshotRecorder.cs" />
     <Compile Include="Utilities\SeleniumSendKeysToWindowsFormsSendKeysTransformer.cs" />
     <Compile Include="Utilities\XPathUtils.cs" />
     <Compile Include="CoypuElementScopeFindExtensions.cs" />
@@ -302,6 +339,9 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ScreenshotCreation\Resolvers\WebElementResolverScript.js" />
   </ItemGroup>
   <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

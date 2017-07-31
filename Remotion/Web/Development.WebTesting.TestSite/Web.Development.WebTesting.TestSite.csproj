@@ -67,6 +67,7 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
+    <Content Include="Empty.aspx" />
     <Content Include="GenericTest.aspx" />
     <Content Include="ImageButtonTest.aspx" />
     <Content Include="CommandTest.aspx" />
@@ -76,10 +77,14 @@
     <Content Include="DropDownMenuTest.aspx" />
     <Content Include="FileDownloadTest.aspx" />
     <Content Include="ImageTest.aspx" />
+    <Content Include="MouseTest.aspx" />
     <Content Include="SampleXmlFile.xml" />
     <Content Include="SampleFile.txt" />
     <Content Include="ScopeTest.aspx" />
     <Content Include="DropDownListTest.aspx" />
+    <Content Include="ScreenshotTest.aspx" />
+    <Content Include="ScreenshotTestFrame.aspx" />
+    <Content Include="ScrollTest.aspx" />
     <Content Include="TreeViewTest.aspx" />
     <Content Include="WebTreeViewTest.aspx" />
     <Content Include="TabbedMenuTest.aspx" />
@@ -89,7 +94,9 @@
     <Content Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </Content>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="FileDownloadHandler.ashx" />
     <Content Include="SampleZipFile.zip" />
     <None Include="Web.Debug.config">
@@ -118,6 +125,28 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Empty.aspx.cs">
+      <DependentUpon>Empty.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Empty.aspx.designer.cs">
+      <DependentUpon>Empty.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MouseTest.aspx.cs">
+      <DependentUpon>MouseTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MouseTest.aspx.designer.cs">
+      <DependentUpon>MouseTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ScreenshotTestFrame.aspx.cs">
+      <DependentUpon>ScreenshotTestFrame.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ScreenshotTestFrame.aspx.designer.cs">
+      <DependentUpon>ScreenshotTestFrame.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ScreenshotTestFunction.cs" />
     <Compile Include="GenericTestPageInfrastructure\ControlSetup.cs" />
     <Compile Include="GenericTestPageInfrastructure\SimpleControlSetup.cs" />
     <Compile Include="GenericTestPageInfrastructure\SimplePageSetup`1.cs" />
@@ -181,6 +210,20 @@
       <DependentUpon>DropDownListTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="DropDownListTestFunction.cs" />
+    <Compile Include="ScreenshotTest.aspx.cs">
+      <DependentUpon>ScreenshotTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ScreenshotTest.aspx.designer.cs">
+      <DependentUpon>ScreenshotTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ScrollTest.aspx.cs">
+      <DependentUpon>ScrollTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ScrollTest.aspx.designer.cs">
+      <DependentUpon>ScrollTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TreeViewTestFunction.cs" />
     <Compile Include="TreeViewTest.aspx.cs">
       <DependentUpon>TreeViewTest.aspx</DependentUpon>

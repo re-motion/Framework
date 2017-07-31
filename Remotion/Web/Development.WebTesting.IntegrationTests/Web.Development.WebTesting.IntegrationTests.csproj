@@ -71,6 +71,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="BrowserWindowTests.cs" />
     <Compile Include="GenericTestCaseInfrastructure\ControlSelectorTestCaseFactoryBase.cs" />
     <Compile Include="GenericTestCaseInfrastructure\ITestParameters.cs" />
     <Compile Include="GenericTestCaseInfrastructure\TestCaseOptions.cs" />
@@ -95,10 +96,17 @@
     <Compile Include="DropDownMenuControlObjectTest.cs" />
     <Compile Include="InfrastructureTests.cs" />
     <Compile Include="LabelControlObjectTest.cs" />
+    <Compile Include="MouseTest.cs" />
     <Compile Include="MultiWindowTest.cs" />
     <Compile Include="MultiWindowTestPageObject.cs" />
     <Compile Include="CustomWebTestConfigurationFactory.cs" />
     <Compile Include="ScopeControlObjectTest.cs" />
+    <Compile Include="ScreenshotTest.cs" />
+    <Compile Include="ScreenshotInfrastructure\ScreenshotTesting.cs" />
+    <Compile Include="ScreenshotInfrastructure\ScreenshotTestingExtensions.cs" />
+    <Compile Include="ScreenshotInfrastructure\ScreenshotTestingDelegate.cs" />
+    <Compile Include="ScreenshotInfrastructure\ScreenshotTestingType.cs" />
+    <Compile Include="ScrollTests.cs" />
     <Compile Include="SingleViewControlObjectTest.cs" />
     <Compile Include="FormGridControlObjectTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -129,6 +137,7 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
+    <None Include="SavedTestScreenshots\README.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj">
@@ -161,7 +170,9 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="SavedTestScreenshots\**\*.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
