@@ -225,7 +225,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       try
       {
-        _mainBrowserSession.AcceptModalDialogImmediatelyFixed (_mainBrowserSession);
+        _mainBrowserSession.AcceptModalDialog (Options.NoWait);
       }
       catch (MissingDialogException)
       {

@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ModalDialogHandlers
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      context.Window.CancelModalDialogFixed (context.Browser);
+      context.Window.CancelModalDialog ();
     }
   }
 }
