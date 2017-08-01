@@ -15,24 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
-using OpenQA.Selenium;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 
-namespace Remotion.Web.Development.WebTesting
+namespace Remotion.Web.Development.WebTesting.BrowserSession.InternetExplorer
 {
   /// <summary>
-  /// Various extension methods for Coypu's <see cref="BrowserSession"/> class.
+  /// Implements <see cref="IBrowserSession"/> for the InternetExplorer browser.
   /// </summary>
-  public static class CoypuBrowserSessionExtensions
+  public class InternetExplorerBrowserSession : BrowserSessionBase<IInternetExplorerConfiguration>
   {
-    /// <summary>
-    /// Clears all cookies for the current domain.
-    /// </summary>
-    public static void ClearCookies ([NotNull] this BrowserSession browser)
+    public InternetExplorerBrowserSession ([NotNull] Coypu.BrowserSession value, IInternetExplorerConfiguration configuration, int driverProcessId)
+        : base (value, configuration, driverProcessId)
     {
-      var webDriver = (IWebDriver) browser.Native;
-      webDriver.Manage().Cookies.DeleteAllCookies();
     }
   }
 }

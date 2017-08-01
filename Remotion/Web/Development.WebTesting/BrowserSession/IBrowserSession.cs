@@ -16,19 +16,32 @@
 // 
 using System;
 using Coypu;
-using JetBrains.Annotations;
 
-namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
+namespace Remotion.Web.Development.WebTesting.BrowserSession
 {
   /// <summary>
-  /// Represents a wrapper around a <see cref="Coypu.BrowserSession"/> which has addition cleanup routines via <see cref="IDisposable.Dispose"/>
+  /// Represents a wrapper around a <see cref="Coypu.BrowserSession"/> which has additional cleanup routines via <see cref="IDisposable.Dispose"/>.
   /// </summary>
   public interface IBrowserSession : IDisposable
   {
     /// <summary>
-    /// The underlying <see cref="Coypu.BrowserSession"/>.
+    /// The <see cref="BrowserWindow"/> of this <see cref="IBrowserSession"/>.
     /// </summary>
-    [NotNull]
-    BrowserSession Value { get; }
+    BrowserWindow Window { get; }
+
+    /// <inheritdoc cref="Coypu.BrowserSession.Driver"/>
+    Driver Driver { get; }
+
+    /// <inheritdoc cref="Coypu.BrowserSession.FindWindow"/>
+    /// <remarks>
+    /// Only used internally.
+    /// API access via <see cref="ControlObjectContext" />.<see cref="ControlObjectContext.CloneForNewPopupWindow" /> and <see cref="ControlObjectContext" />.<see cref="ControlObjectContext.CloneForNewWindow" />.
+    /// </remarks>
+    BrowserWindow FindWindow (string locator, Options options = null);
+
+    /// <summary>
+    /// Deletes all Cookies of this <see cref="IBrowserSession"/>.
+    /// </summary>
+    void DeleteAllCookies ();
   }
 }

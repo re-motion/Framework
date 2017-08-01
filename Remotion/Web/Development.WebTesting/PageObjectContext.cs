@@ -18,7 +18,10 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ControlSelection;
+using Remotion.Web.Development.WebTesting.WebDriver;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -27,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting
   /// </summary>
   public class PageObjectContext : WebTestObjectContext
   {
-    private readonly BrowserSession _browser;
+    private readonly IBrowserSession _browser;
     private readonly BrowserWindow _window;
     private readonly PageObjectContext _parentContext;
 
@@ -35,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Private constructor, use <see cref="New"/> to create a new root <see cref="PageObjectContext"/>.
     /// </summary>
     internal PageObjectContext (
-        [NotNull] BrowserSession browser,
+        [NotNull] IBrowserSession browser,
         [NotNull] BrowserWindow window,
         [NotNull] ElementScope scope,
         [CanBeNull] PageObjectContext parentContext)
@@ -52,18 +55,18 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Returns a new root context for a <see cref="PageObject"/> without a parent (e.g. a parent frame).
     /// </summary>
-    /// <param name="browser">The <see cref="BrowserSession"/> on which the <see cref="PageObject"/> resides.</param>
+    /// <param name="browser">The <see cref="IBrowserSession"/> on which the <see cref="PageObject"/> resides.</param>
     /// <returns>A new root context.</returns>
-    public static PageObjectContext New ([NotNull] BrowserSession browser)
+    public static PageObjectContext New ([NotNull] IBrowserSession browser)
     {
       ArgumentUtility.CheckNotNull ("browser", browser);
 
-      var scope = browser.GetRootScope();
-      return new PageObjectContext (browser, browser, scope, null);
+      var scope = browser.Window.GetRootScope();
+      return new PageObjectContext (browser, browser.Window, scope, null);
     }
 
     /// <inheritdoc/>
-    public override BrowserSession Browser
+    public override IBrowserSession Browser
     {
       get { return _browser; }
     }
@@ -84,15 +87,15 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// Clones the context for a new <see cref="BrowserSession"/>.
+    /// Clones the context for a new <see cref="IBrowserSession"/>.
     /// </summary>
-    /// <param name="browserSession">The new <see cref="BrowserSession"/>.</param>
-    public PageObjectContext CloneForSession ([NotNull] BrowserSession browserSession)
+    /// <param name="browserSession">The new <see cref="IBrowserSession"/>.</param>
+    public PageObjectContext CloneForSession ([NotNull] IBrowserSession browserSession)
     {
       ArgumentUtility.CheckNotNull ("browserSession", browserSession);
 
-      var rootScope = browserSession.GetRootScope();
-      return new PageObjectContext (browserSession, browserSession, rootScope, this);
+      var rootScope = browserSession.Window.GetRootScope();
+      return new PageObjectContext (browserSession, browserSession.Window, rootScope, this);
     }
 
     /// <summary>

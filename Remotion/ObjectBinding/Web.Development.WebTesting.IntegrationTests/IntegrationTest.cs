@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var userControlUrl = string.Format ("Controls/{0}UserControl.ascx", userControl);
 
       var url = string.Format ("{0}ControlTest.wxe?UserControl={1}", _webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot, userControlUrl);
-      _webTestHelper.MainBrowserSession.Visit (url);
+      _webTestHelper.MainBrowserSession.Window.Visit (url);
       _webTestHelper.AcceptPossibleModalDialog();
 
       return _webTestHelper.CreateInitialPageObject<WxePageObject> (_webTestHelper.MainBrowserSession);

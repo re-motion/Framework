@@ -15,20 +15,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplorer
+namespace Remotion.Web.Development.WebTesting.TestSite
 {
-  /// <summary>
-  /// Implements <see cref="BrowserSession"/> for the InternetExplorer browser.
-  /// </summary>
-  public class InternetExplorerBrowserSession : BrowserSessionBase<IInternetExplorerConfiguration>
+  [UsedImplicitly]
+  public class BrowserSessionTestFunction : WxeFunction
   {
-    public InternetExplorerBrowserSession ([NotNull] BrowserSession value, IInternetExplorerConfiguration configuration, int driverProcessId)
-        : base (value, configuration, driverProcessId)
+    public BrowserSessionTestFunction ()
+        : base (new NoneTransactionMode())
     {
     }
+
+    // Steps
+    private WxeStep Step1 = new WxePageStep ("BrowserSessionTest.aspx");
   }
 }

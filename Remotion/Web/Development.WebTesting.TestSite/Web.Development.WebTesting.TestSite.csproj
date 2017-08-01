@@ -86,6 +86,7 @@
     <Content Include="ScreenshotTestFrame.aspx" />
     <Content Include="ScrollTest.aspx" />
     <Content Include="TreeViewTest.aspx" />
+    <Content Include="BrowserSessionTest.aspx" />
     <Content Include="WebTreeViewTest.aspx" />
     <Content Include="TabbedMenuTest.aspx" />
     <Content Include="TextBoxTest.aspx" />
@@ -125,6 +126,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="BrowserSessionTestFunction.cs" />
     <Compile Include="Empty.aspx.cs">
       <DependentUpon>Empty.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -231,6 +233,13 @@
     </Compile>
     <Compile Include="TreeViewTest.aspx.designer.cs">
       <DependentUpon>TreeViewTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BrowserSessionTest.aspx.cs">
+      <DependentUpon>BrowserSessionTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BrowserSessionTest.aspx.designer.cs">
+      <DependentUpon>BrowserSessionTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebTreeViewTest.aspx.cs">
       <DependentUpon>WebTreeViewTest.aspx</DependentUpon>

@@ -20,6 +20,7 @@ using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -67,11 +68,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Returns the <see cref="IJavaScriptExecutor"/> associated with the specified <paramref name="browserSession"/>.
     /// </summary>
-    public static IJavaScriptExecutor GetJavaScriptExecutor ([NotNull] BrowserSession browserSession)
+    public static IJavaScriptExecutor GetJavaScriptExecutor ([NotNull] IBrowserSession browserSession)
     {
       ArgumentUtility.CheckNotNull ("browserSession", browserSession);
 
-      return (IJavaScriptExecutor) browserSession.Native;
+      return (IJavaScriptExecutor) browserSession.Driver.Native;
     }
 
     /// <summary>

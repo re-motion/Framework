@@ -17,15 +17,14 @@
 using System;
 using System.IO;
 using System.Threading;
-using Coypu;
 using JetBrains.Annotations;
 using log4net;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 
-namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
+namespace Remotion.Web.Development.WebTesting.BrowserSession.Chrome
 {
   /// <summary>
-  /// Implements <see cref="BrowserSession"/> for the Chrome browser.
+  /// Implements <see cref="IBrowserSession"/> for the Chrome browser.
   /// </summary>
   public class ChromeBrowserSession : BrowserSessionBase<IChromeConfiguration>
   {
@@ -34,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
     private readonly string _userDirectory;
 
     public ChromeBrowserSession (
-        [NotNull] BrowserSession value,
+        [NotNull] Coypu.BrowserSession value,
         [NotNull] IChromeConfiguration configuration,
         int driverProcessID,
         [CanBeNull] string userDirectory)

@@ -18,7 +18,14 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ControlSelection;
+using Remotion.Web.Development.WebTesting.WebDriver;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -41,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <inheritdoc/>
-    public override BrowserSession Browser
+    public override IBrowserSession Browser
     {
       get { return PageObject.Context.Browser; }
     }
@@ -67,7 +74,7 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// Clones the context for another <see cref="ControlObject"/> which resides within the same <see cref="BrowserSession"/>, on the same
+    /// Clones the context for another <see cref="ControlObject"/> which resides within the same <see cref="IBrowserSession"/>, on the same
     /// <see cref="BrowserWindow"/> and on the same page.
     /// </summary>
     /// <param name="scope">The scope of the other <see cref="ControlObject"/>.</param>
@@ -79,7 +86,7 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// Clones the context for a new <see cref="PageObject"/> which resides within the same <see cref="BrowserSession"/>, on the same
+    /// Clones the context for a new <see cref="PageObject"/> which resides within the same <see cref="IBrowserSession"/>, on the same
     /// <see cref="BrowserWindow"/> and replaces the current <see cref="PageObject"/>.
     /// </summary>
     public PageObjectContext CloneForNewPage ()
@@ -90,7 +97,7 @@ namespace Remotion.Web.Development.WebTesting
 
     /// <summary>
     /// Clones the context for a new <see cref="PageObject"/> which resides on a new window (specified by <paramref name="windowLocator"/>) within the
-    /// same <see cref="BrowserSession"/>.
+    /// same <see cref="IBrowserSession"/>.
     /// </summary>
     public PageObjectContext CloneForNewWindow ([NotNull] string windowLocator)
     {
@@ -103,7 +110,7 @@ namespace Remotion.Web.Development.WebTesting
 
     /// <summary>
     /// Clones the context for a new <see cref="PageObject"/> which resides on a new popup window (specified by <paramref name="windowLocator"/>)
-    /// within the same <see cref="BrowserSession"/>. In contrast to <see cref="CloneForNewWindow"/>, the window is not maximized.
+    /// within the same <see cref="IBrowserSession"/>. In contrast to <see cref="CloneForNewWindow"/>, the window is not maximized.
     /// </summary>
     public PageObjectContext CloneForNewPopupWindow ([NotNull] string windowLocator)
     {

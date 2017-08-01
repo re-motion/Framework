@@ -21,6 +21,7 @@ using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
@@ -47,11 +48,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Returns the window bounds of the window associated with the specified <paramref name="browserSession"/>.
     /// </summary>
-    public Rectangle GetBrowserContentBounds ([NotNull] BrowserSession browserSession)
+    public Rectangle GetBrowserContentBounds ([NotNull] IBrowserSession browserSession)
     {
       ArgumentUtility.CheckNotNull ("browserSession", browserSession);
 
-      return GetBrowserContentBounds ((IWebDriver) browserSession.Native);
+      return GetBrowserContentBounds ((IWebDriver) browserSession.Driver.Native);
     }
 
     /// <summary>
@@ -107,7 +108,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Returns the offset between window position and browser content position of the window associated with the specified <paramref name="browserSession"/>.
     /// </summary>
-    public Size GetBrowserContentOffset ([NotNull] BrowserSession browserSession)
+    public Size GetBrowserContentOffset ([NotNull] IBrowserSession browserSession)
     {
       ArgumentUtility.CheckNotNull ("browserSession", browserSession);
 
@@ -167,11 +168,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Returns the window bounds of the window associated with the specified <paramref name="browserSession"/>.
     /// </summary>
-    public Rectangle GetWindowBounds ([NotNull] BrowserSession browserSession)
+    public Rectangle GetWindowBounds ([NotNull] IBrowserSession browserSession)
     {
       ArgumentUtility.CheckNotNull ("browserSession", browserSession);
 
-      return GetWindowBounds ((IWebDriver) browserSession.Native);
+      return GetWindowBounds ((IWebDriver) browserSession.Driver.Native);
     }
 
     /// <summary>

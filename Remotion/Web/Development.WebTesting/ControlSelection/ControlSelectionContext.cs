@@ -17,6 +17,9 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Remotion.Web.Development.WebTesting.BrowserSession;
+using Remotion.Web.Development.WebTesting.WebDriver;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 
 namespace Remotion.Web.Development.WebTesting.ControlSelection
 {
@@ -34,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     }
 
     /// <summary>
-    /// Clones the context for another <see cref="ControlObject"/> which resides within the same <see cref="BrowserSession"/>, on the same
+    /// Clones the context for another <see cref="ControlObject"/> which resides within the same <see cref="IBrowserSession"/>, on the same
     /// <see cref="BrowserWindow"/> and on the given <paramref name="pageObject"/>.
     /// </summary>
     /// <param name="pageObject">The <see cref="PageObject"/> on which the <see cref="ControlObject"/> resides.</param>

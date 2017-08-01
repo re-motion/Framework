@@ -91,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseIn
           webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot,
           string.Format (TestConstants.TestUrlTemplate, controlName, (int) pageType));
 
-      webTestHelper.MainBrowserSession.Visit (url);
+      webTestHelper.MainBrowserSession.Window.Visit (url);
 
       var host = webTestHelper.CreateInitialPageObject<HtmlPageObject> (webTestHelper.MainBrowserSession);
 
@@ -139,7 +139,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseIn
 
       _controlSelector = controlSelectorFactory (host);
 
-      var frame = webTestHelper.MainBrowserSession.FindFrame ("frame");
+      var frame = webTestHelper.MainBrowserSession.Window.FindFrame ("frame");
       _frameRootElement = frame.FindCss ("html");
 
       try

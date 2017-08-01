@@ -22,6 +22,7 @@ using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
@@ -35,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// Takes a screenshot of the specified <paramref name="browserSession"/>.
     /// </summary>
     [NotNull]
-    public static Screenshot TakeBrowserScreenshot ([NotNull] BrowserSession browserSession, [NotNull] IBrowserContentLocator locator)
+    public static Screenshot TakeBrowserScreenshot ([NotNull] IBrowserSession browserSession, [NotNull] IBrowserContentLocator locator)
     {
       ArgumentUtility.CheckNotNull ("browserSession", browserSession);
       ArgumentUtility.CheckNotNull ("locator", locator);
@@ -77,9 +78,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     }
 
     [NotNull]
-    private static Screenshot CreateBrowserScreenshot (BrowserSession browserSession, IBrowserContentLocator locator)
+    private static Screenshot CreateBrowserScreenshot (IBrowserSession browserSession, IBrowserContentLocator locator)
     {
-      var browserBounds = locator.GetBrowserContentBounds ((IWebDriver) browserSession.Native);
+      var browserBounds = locator.GetBrowserContentBounds ((IWebDriver) browserSession.Driver.Native);
       var image = new Bitmap (browserBounds.Width, browserBounds.Height);
       using (var graphics = Graphics.FromImage (image))
       {

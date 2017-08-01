@@ -36,6 +36,7 @@
   <add id="TreeViewTest" type="Remotion.Web.Development.WebTesting.TestSite::TreeViewTestFunction" resource="~/TreeViewTest.wxe" />
   <add id="WebButtonTest" type="Remotion.Web.Development.WebTesting.TestSite::WebButtonTestFunction" resource="~/WebButtonTest.wxe" />
   <add id="WebTabStripTest" type="Remotion.Web.Development.WebTesting.TestSite::WebTabStripTestFunction" resource="~/WebTabStripTest.wxe" />
+  <add id="BrowserSessionTest" type="Remotion.Web.Development.WebTesting.TestSite::BrowserSessionTestFunction" resource="~/BrowserSessionTest.wxe" />
 
   <add id="MultiWindowTest_Main" type="Remotion.Web.Development.WebTesting.TestSite::MultiWindowTest.MainFunction"
       resource="~/MultiWindowTest/Main.wxe" />
