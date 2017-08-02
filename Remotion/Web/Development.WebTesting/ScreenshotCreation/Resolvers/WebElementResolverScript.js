@@ -131,7 +131,7 @@
       /* include the padding in the positioning */
       result.Offset (ParseProperty (style.paddingLeft), ParseProperty (style.paddingTop));
     }
-    return [result, { X : result.X - initial.X, Y : result.Y - initial.Y }];
+    return [result, { X : result.X - initial.X, Y : result.Y - initial.Y }, { Width: currentWindow.innerWidth, Height: currentWindow.innerHeight }];
   }
 
   /* Returns the client bounds restricted to the visible area and the parent bounds */
@@ -176,10 +176,13 @@
   var _temp = GetElementBounds(element);
   var elementBounds = _temp[0];
   var elementOffset = _temp[1];
+  var windowSize = _temp[2];
 
   /* Calculate the visible parents bounds */
   var visibleParentBounds = GetVisibleParentBounds (element);
   visibleParentBounds.Offset(elementOffset.X, elementOffset.Y);
+  visibleParentBounds = Rectangle.Intersect (visibleParentBounds,
+    new Rectangle (0, 0, windowSize.Width, windowSize.Height));
 
   /* Return the result as JSON */
   var result = { ElementBounds : elementBounds, ParentBounds : visibleParentBounds };
