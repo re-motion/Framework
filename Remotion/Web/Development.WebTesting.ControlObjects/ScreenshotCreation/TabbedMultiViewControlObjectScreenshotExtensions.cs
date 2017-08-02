@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
       var element = fluentTabbedMultiView.Target.Scope.FindChild ("TabStrip");
 
-      return new WebTabStripControlObject (fluentTabbedMultiView.Target.Context.CloneForControl (element)).ForScreenshot();
+      return new WebTabStripControlObject (fluentTabbedMultiView.Target.Context.CloneForControl (element)).ForControlObjectScreenshot();
     }
   }
 }

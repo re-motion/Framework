@@ -76,7 +76,7 @@ return true;";
 
     private static IWebElement GetInputField (IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentPopup)
     {
-      return (IWebElement) fluentPopup.Target.AutoComplete.ForScreenshot().GetValue().GetTarget().Native;
+      return (IWebElement) fluentPopup.Target.AutoComplete.ForControlObjectScreenshot().GetValue().GetTarget().Native;
     }
   }
 }

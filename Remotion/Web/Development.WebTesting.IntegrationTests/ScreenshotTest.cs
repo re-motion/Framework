@@ -225,7 +225,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       };
 
       var home = Start();
-      var fluentDropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList").ForScreenshot();
+      var fluentDropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList").ForControlObjectScreenshot();
       fluentDropDownList.Open();
       Thread.Sleep (250);
 
@@ -253,7 +253,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       };
 
       var home = Start();
-      var fluentDropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu").ForScreenshot();
+      var fluentDropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu").ForControlObjectScreenshot();
       fluentDropDownMenu.OpenMenu();
       Thread.Sleep (250);
 
@@ -281,7 +281,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       };
 
       var home = Start();
-      var fluentListMenu = home.ListMenus().GetByLocalID ("MyListMenu").ForScreenshot();
+      var fluentListMenu = home.ListMenus().GetByLocalID ("MyListMenu").ForControlObjectScreenshot();
 
       Helper.RunScreenshotTest<IFluentScreenshotElement<ListMenuControlObject>, ListMenuControlObjectTest> (
           fluentListMenu,
@@ -315,7 +315,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
       var menu = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
-      var fluentTabbedMenu = menu.ForScreenshot();
+      var fluentTabbedMenu = menu.ForControlObjectScreenshot();
 
       Helper.RunScreenshotTest<IFluentScreenshotElement<TabbedMenuControlObject>, TabbedMenuControlObjectTest> (
           fluentTabbedMenu,
@@ -341,7 +341,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       };
 
       var home = Start();
-      var fluentTabStrip = home.WebTabStrips().GetByLocalID ("MyTabStrip").ForScreenshot();
+      var fluentTabStrip = home.WebTabStrips().GetByLocalID ("MyTabStrip").ForControlObjectScreenshot();
 
       Helper.RunScreenshotTest<IFluentScreenshotElement<WebTabStripControlObject>, WebTabStripControlObjectTest> (
           fluentTabStrip,

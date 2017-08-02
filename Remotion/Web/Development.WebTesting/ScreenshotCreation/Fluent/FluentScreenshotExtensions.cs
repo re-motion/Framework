@@ -31,20 +31,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
   public static class FluentScreenshotExtensions
   {
     /// <summary>
-    /// Starts the fluent screenshot interface for the specified <paramref name="controlObject"/>.
-    /// </summary>
-    public static FluentScreenshotElement<T> ForScreenshot<T> (
-        [NotNull] this T controlObject,
-        [CanBeNull] IFluentScreenshotElement parent = null,
-        [CanBeNull] Rectangle? parentContainer = null)
-        where T : ControlObject
-    {
-      ArgumentUtility.CheckNotNull ("controlObject", controlObject);
-
-      return FluentUtility.CreateFluentControlObject (controlObject);
-    }
-
-    /// <summary>
     /// Starts the fluent screenshot interface for the specified <paramref name="automationElement"/>.
     /// </summary>
     public static FluentScreenshotElement<AutomationElement> ForAutomationElementScreenshot (
@@ -55,6 +41,20 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
       ArgumentUtility.CheckNotNull ("automationElement", automationElement);
 
       return FluentUtility.CreateFluentAutomationElement (automationElement);
+    }
+
+    /// <summary>
+    /// Starts the fluent screenshot interface for the specified <paramref name="controlObject"/>.
+    /// </summary>
+    public static FluentScreenshotElement<T> ForControlObjectScreenshot<T> (
+        [NotNull] this T controlObject,
+        [CanBeNull] IFluentScreenshotElement parent = null,
+        [CanBeNull] Rectangle? parentContainer = null)
+        where T : ControlObject
+    {
+      ArgumentUtility.CheckNotNull ("controlObject", controlObject);
+
+      return FluentUtility.CreateFluentControlObject (controlObject);
     }
 
     /// <summary>

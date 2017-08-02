@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
 
       return
           SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocListCell<TList, TRow, TCell> (_fluentList, _fluentRow.Target.GetCell (itemID).ForScreenshot()),
+              new ScreenshotBocListCell<TList, TRow, TCell> (_fluentList, _fluentRow.Target.GetCell (itemID).ForControlObjectScreenshot()),
               ElementVisibility.PartiallyVisible);
     }
 
@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
 
       return
           SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocListCell<TList, TRow, TCell> (_fluentList, _fluentRow.Target.GetCell (oneBasedIndex).ForScreenshot()),
+              new ScreenshotBocListCell<TList, TRow, TCell> (_fluentList, _fluentRow.Target.GetCell (oneBasedIndex).ForControlObjectScreenshot()),
               ElementVisibility.PartiallyVisible);
     }
 
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
 
       return
           SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocListCell<TList, TRow, TCell> (_fluentList, _fluentRow.Target.GetCell().WithColumnTitle (title).ForScreenshot()),
+              new ScreenshotBocListCell<TList, TRow, TCell> (_fluentList, _fluentRow.Target.GetCell().WithColumnTitle (title).ForControlObjectScreenshot()),
               ElementVisibility.PartiallyVisible);
     }
 
@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
           SelfResolvableFluentScreenshot.Create (
               new ScreenshotBocListCell<TList, TRow, TCell> (
                   _fluentList,
-                  _fluentRow.Target.GetCell().WithColumnTitleContains (content).ForScreenshot()),
+                  _fluentRow.Target.GetCell().WithColumnTitleContains (content).ForControlObjectScreenshot()),
               ElementVisibility.PartiallyVisible);
     }
   }

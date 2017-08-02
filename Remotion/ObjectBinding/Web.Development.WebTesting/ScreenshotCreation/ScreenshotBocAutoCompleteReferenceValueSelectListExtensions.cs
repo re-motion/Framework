@@ -212,7 +212,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
 
     private static IWebElement GetInputField (this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
-      return (IWebElement) fluentSelectList.Target.AutoComplete.ForScreenshot().GetValue().GetTarget().Native;
+      return (IWebElement) fluentSelectList.Target.AutoComplete.ForControlObjectScreenshot().GetValue().GetTarget().Native;
     }
   }
 }

@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     {
       ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
 
-      return fluentAutoComplete.Target.GetCommand().ForScreenshot();
+      return fluentAutoComplete.Target.GetCommand().ForControlObjectScreenshot();
     }
 
     /// <summary>
