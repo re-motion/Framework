@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace Remotion.Security
 {
@@ -26,22 +28,26 @@ namespace Remotion.Security
     /// <summary>
     /// Gets the name of the user. The <see cref="User"/> must always be specified.
     /// </summary>
+    [CanBeNull]
     string User { get; }
 
     /// <summary>
-    /// Gets the active role of the user. The <see cref="Role"/> is optional.
+    /// Gets the collection of active roles of the user. The <see cref="Roles"/> collection is optional and can be empty.
     /// </summary>
-    ISecurityPrincipalRole Role { get; }
+    [CanBeNull]
+    IReadOnlyList<ISecurityPrincipalRole> Roles { get; }
 
     /// <summary>
     /// Gets the name of the user that is being substitued. 
     /// The <see cref="SubstitutedUser"/> must be specified if a <see cref="SubstitutedRole"/> is specified as well.
     /// </summary>
+    [CanBeNull]
     string SubstitutedUser { get; }
 
     /// <summary>
     /// Gets the role that is being substituted. The <see cref="SubstitutedRole"/> is optional.
     /// </summary>
+    [CanBeNull]
     ISecurityPrincipalRole SubstitutedRole { get; }
   }
 }

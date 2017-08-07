@@ -69,7 +69,7 @@ th
     {
       var settings = new AclExpanderApplicationSettings();
       var aclExpansion = CreateAclExpanderApplicationAndCallGetAclExpansion (settings);
-      Assert.That (aclExpansion.Count, Is.EqualTo (20));
+      Assert.That (aclExpansion.Count, Is.EqualTo (22));
     }
 
 

@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
@@ -26,12 +27,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
 {
   public abstract class SecurityManagerPrincipalTestBase : DomainTest
   {
-    protected SecurityManagerPrincipal CreateSecurityManagerPrincipal (Tenant tenant, User user, Substitution substitution)
+    protected SecurityManagerPrincipal CreateSecurityManagerPrincipal (Tenant tenant, User user, Role[] roles, Substitution substitution)
     {
       ArgumentUtility.CheckNotNull ("tenant", tenant);
       ArgumentUtility.CheckNotNull ("user", user);
 
-      return new SecurityManagerPrincipal (tenant.GetHandle(), user.GetHandle(), substitution.GetSafeHandle());
+      return new SecurityManagerPrincipal (
+          tenant.GetHandle(),
+          user.GetHandle(),
+          roles == null ? null : roles.Select (r => r.GetHandle()).ToArray(),
+          substitution.GetSafeHandle());
     }
 
     protected void IncrementRevision ()

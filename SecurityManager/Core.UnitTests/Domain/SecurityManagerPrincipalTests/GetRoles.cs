@@ -29,38 +29,31 @@ using Rhino.Mocks;
 namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTests
 {
   [TestFixture]
-  public class GetSubstitution : SecurityManagerPrincipalTestBase
+  public class GetRoles : SecurityManagerPrincipalTestBase
   {
     private User _user;
     private Tenant _tenant;
-    private Substitution _substitution;
+    private Role[] _roles;
     private SecurityManagerPrincipal _principal;
 
     public override void SetUp ()
     {
-      base.SetUp();
+      base.SetUp ();
+
       SecurityManagerPrincipal.Current = SecurityManagerPrincipal.Null;
-      ClientTransaction.CreateRootTransaction().EnterDiscardingScope();
+      ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ();
 
-      _user = User.FindByUserName ("substituting.user");
+      _user = User.FindByUserName ("test.user");
       _tenant = _user.Tenant;
-      _substitution = _user.GetActiveSubstitutions().First();
-
-      _principal = CreateSecurityManagerPrincipal (_tenant, _user, null, _substitution);
+      _roles = _user.Roles.Skip (1).Take (2).ToArray();
+      Assert.That (_roles.Length, Is.EqualTo (2));
+      _principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, null);
     }
 
     public override void TearDown ()
     {
-      base.TearDown();
+      base.TearDown ();
       SecurityManagerPrincipal.Current = SecurityManagerPrincipal.Null;
-    }
-
-    [Test]
-    public void Test ()
-    {
-      var substitutionProxy = _principal.Substitution;
-
-      Assert.That (substitutionProxy.ID, Is.EqualTo (_substitution.ID));
     }
 
     [Test]
@@ -95,9 +88,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
         Assert.That (refreshedInstance, Is.Not.SameAs (_principal));
       }
 
-      var substitutionProxy = refreshedInstance.Substitution;
+      var roleProxies = refreshedInstance.Roles;
 
-      Assert.That (substitutionProxy.ID, Is.EqualTo (_substitution.ID));
+      Assert.That (roleProxies.Select (r=>r.ID), Is.EqualTo (_roles.Select (r=>r.ID)));
     }
   }
 }

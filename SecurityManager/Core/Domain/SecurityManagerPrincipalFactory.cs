@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.Domain
       ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
       ArgumentUtility.CheckNotNull ("userHandle", userHandle);
 
-      return new SecurityManagerPrincipal (tenantHandle, userHandle, substitutionHandle);
+      return new SecurityManagerPrincipal (tenantHandle, userHandle, null, substitutionHandle);
     }
   }
 }

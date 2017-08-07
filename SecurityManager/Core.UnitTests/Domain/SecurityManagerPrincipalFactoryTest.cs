@@ -43,6 +43,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
         Assert.That (principal, Is.TypeOf<SecurityManagerPrincipal>());
         Assert.That (principal.Tenant.ID, Is.EqualTo (tenant.ID));
         Assert.That (principal.User.ID, Is.EqualTo (user.ID));
+        Assert.That (principal.Roles, Is.Null);
         Assert.That (principal.Substitution, Is.Null);
       }
     }

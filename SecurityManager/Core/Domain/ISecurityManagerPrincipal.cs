@@ -16,6 +16,8 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
@@ -37,12 +39,28 @@ namespace Remotion.SecurityManager.Domain
   /// <threadsafety static="true" instance="true"/>
   public interface ISecurityManagerPrincipal : INullObject
   {
+    [CanBeNull]
     TenantProxy Tenant { get; }
+
+    [CanBeNull]
     UserProxy User { get; }
+
+    [CanBeNull]
+    IReadOnlyList<RoleProxy> Roles { get; }
+
+    [CanBeNull]
     SubstitutionProxy Substitution { get; }
+
+    [NotNull]
     ISecurityManagerPrincipal GetRefreshedInstance ();
+
+    [NotNull]
     ISecurityPrincipal GetSecurityPrincipal ();
+
+    [NotNull]
     TenantProxy[] GetTenants (bool includeAbstractTenants);
+
+    [NotNull]
     SubstitutionProxy[] GetActiveSubstitutions ();
   }
 }

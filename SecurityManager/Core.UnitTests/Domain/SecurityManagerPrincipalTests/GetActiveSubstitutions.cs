@@ -54,7 +54,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     [Test]
     public void ExcludeInactiveSubstitutions ()
     {
-      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_tenantHandle, _userHandle, null);
+      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_tenantHandle, _userHandle, null, null);
 
       Assert.That (principal.GetActiveSubstitutions().Select (s => s.ID), Is.EquivalentTo (_substitutionIDs));
     }

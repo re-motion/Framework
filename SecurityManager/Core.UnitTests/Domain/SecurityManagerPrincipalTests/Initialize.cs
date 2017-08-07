@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       Tenant tenant = user.Tenant;
       Substitution substitution = user.GetActiveSubstitutions().First();
 
-      SecurityManagerPrincipal principal = CreateSecurityManagerPrincipal (tenant, user, substitution);
+      SecurityManagerPrincipal principal = CreateSecurityManagerPrincipal (tenant, user, null, substitution);
 
       Assert.That (principal.Tenant.ID, Is.EqualTo (tenant.ID));
       Assert.That (principal.Tenant, Is.Not.SameAs (tenant));

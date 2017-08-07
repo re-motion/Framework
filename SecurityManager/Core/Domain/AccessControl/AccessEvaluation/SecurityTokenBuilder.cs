@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using JetBrains.Annotations;
 using Remotion.Data.DomainObjects;
 using Remotion.FunctionalProgramming;
 using Remotion.Security;
@@ -110,8 +111,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           principalUser = user;
           principalRoles = user.Roles;
 
-          if (principal.Role != null)
-            principalRoles = principalRoles.Where (r => IsRoleMatchingPrincipalRole (r, principal.Role));
+          if (principal.Roles != null)
+            principalRoles = principalRoles.Where (r => IsRoleContainedInPrincipalRoles (r, principal.Roles));
         }
 
         return new Principal (
@@ -135,7 +136,18 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       return substitutions.FirstOrDefault ();
     }
 
-    private bool IsRoleMatchingPrincipalRole (Role role, ISecurityPrincipalRole principalRole)
+    private bool IsRoleContainedInPrincipalRoles ([CanBeNull]Role role, [NotNull] IEnumerable<ISecurityPrincipalRole> principalRoles)
+    {
+      // ReSharper disable once LoopCanBeConvertedToQuery
+      foreach (var principalRole in principalRoles)
+      {
+        if (IsRoleMatchingPrincipalRole (role, principalRole))
+          return true;
+      }
+      return false;
+    }
+
+    private bool IsRoleMatchingPrincipalRole ([CanBeNull]Role role, [NotNull] ISecurityPrincipalRole principalRole)
     {
       if (role == null)
         return false;

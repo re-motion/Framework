@@ -199,6 +199,7 @@
     <Compile Include="Domain\NullSecurityManagerPrincipalTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTests\GetHierarchy.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTests\Initialization.cs" />
+    <Compile Include="Domain\OrganizationalStructure\RoleProxyTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\RoleTests\CommitRole.cs" />
     <Compile Include="Domain\OrganizationalStructure\SubstitutionTests\CommitSubstitution.cs" />
     <Compile Include="Domain\OrganizationalStructure\TenantTests\Initialization.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="Domain\SecurityManagerAccessTypesTest.cs" />
     <Compile Include="Domain\SecurityManagerPrincipalFactoryTest.cs" />
     <Compile Include="Domain\SecurityManagerPrincipalTests\GetActiveSubstitutions.cs" />
+    <Compile Include="Domain\SecurityManagerPrincipalTests\GetRoles.cs" />
     <Compile Include="Domain\SecurityManagerPrincipalTests\GetSecurityPrincipal.cs" />
     <Compile Include="Domain\SecurityManagerPrincipalTests\GetSubstitution.cs" />
     <Compile Include="Domain\SecurityManagerPrincipalTests\GetTenant.cs" />

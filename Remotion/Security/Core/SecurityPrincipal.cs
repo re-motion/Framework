@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Security
@@ -26,11 +28,15 @@ namespace Remotion.Security
   public sealed class SecurityPrincipal : ISecurityPrincipal, IEquatable<SecurityPrincipal>
   {
     private readonly string _user;
-    private readonly ISecurityPrincipalRole _role;
+    private readonly IReadOnlyList<ISecurityPrincipalRole> _roles;
     private readonly string _substitutedUser;
     private readonly ISecurityPrincipalRole _substitutedRole;
 
-    public SecurityPrincipal (string user, ISecurityPrincipalRole role, string substitutedUser, ISecurityPrincipalRole substitutedRole)
+    public SecurityPrincipal (
+        [NotNull] string user,
+        [CanBeNull] IReadOnlyList<ISecurityPrincipalRole> roles,
+        [CanBeNull] string substitutedUser,
+        [CanBeNull] ISecurityPrincipalRole substitutedRole)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("user", user);
       ArgumentUtility.CheckNotEmpty ("substitutedUser", substitutedUser);
@@ -40,7 +46,7 @@ namespace Remotion.Security
       _user = user;
       _substitutedRole = substitutedRole;
       _substitutedUser = substitutedUser;
-      _role = role;
+      _roles = roles;
     }
 
     public string User
@@ -48,9 +54,9 @@ namespace Remotion.Security
       get { return _user; }
     }
 
-    public ISecurityPrincipalRole Role
+    public IReadOnlyList<ISecurityPrincipalRole> Roles
     {
-      get { return _role; }
+      get { return _roles; }
     }
 
     public string SubstitutedUser
@@ -74,16 +80,51 @@ namespace Remotion.Security
       if (!string.Equals (this._user, other._user, StringComparison.Ordinal))
         return false;
 
-      if ((this._role == null && other._role != null) || (this._role != null && !this._role.Equals (other._role)))
+      if (this._roles == null && other._roles != null)
         return false;
+
+      if (this._roles != null && other._roles == null)
+        return false;
+
+      if (this._roles != null && other._roles != null)
+      {
+        if (this._roles.Count != other._roles.Count)
+          return false;
+
+        // ReSharper disable once LoopCanBeConvertedToQuery
+        for (int i = 0; i < this._roles.Count; i++)
+        {
+          if (!IsRoleInList (this._roles[i], i, other._roles))
+            return false;
+        }
+      }
 
       if (!string.Equals (this._substitutedUser, other._substitutedUser, StringComparison.Ordinal))
         return false;
 
-      if ((this._substitutedRole == null && other._substitutedRole != null) || (this._substitutedRole != null && !this._substitutedRole.Equals (other._substitutedRole)))
+      if (this._substitutedRole == null && other._substitutedRole != null)
+        return false;
+
+      if (this._substitutedRole != null && !this._substitutedRole.Equals (other._substitutedRole))
         return false;
 
       return true;
+    }
+
+    private static bool IsRoleInList (ISecurityPrincipalRole roleToLookUp, int currentIndex, IReadOnlyList<ISecurityPrincipalRole> roles)
+    {
+      if (roleToLookUp.Equals (roles[currentIndex]))
+        return true;
+
+      // ReSharper disable once LoopCanBeConvertedToQuery
+      // ReSharper disable once ForCanBeConvertedToForeach
+      for (int j = 0; j < roles.Count; j++)
+      {
+        if (roleToLookUp.Equals (roles[j]))
+          return true;
+      }
+
+      return false;
     }
 
     public override bool Equals (object obj)
@@ -96,7 +137,11 @@ namespace Remotion.Security
 
     public override int GetHashCode ()
     {
-      return EqualityUtility.GetRotatedHashCode (_user, _role, _substitutedUser, _substitutedRole);
+      return EqualityUtility.GetRotatedHashCode (
+          _user,
+          // Skip roles, they don't do much for the hash code but require complex implemenetation.
+          _substitutedUser,
+          _substitutedRole);
     }
 
     public bool IsNull

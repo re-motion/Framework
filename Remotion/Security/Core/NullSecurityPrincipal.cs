@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 
 namespace Remotion.Security
 {
@@ -32,7 +33,7 @@ namespace Remotion.Security
       get { return null; }
     }
 
-    public ISecurityPrincipalRole Role
+    public IReadOnlyList<ISecurityPrincipalRole> Roles
     {
       get { return null; }
     }

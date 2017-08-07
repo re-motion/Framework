@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
@@ -44,6 +45,11 @@ namespace Remotion.SecurityManager.Domain
     }
 
     public UserProxy User
+    {
+      get { return null; }
+    }
+
+    public IReadOnlyList<RoleProxy> Roles
     {
       get { return null; }
     }

@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
@@ -48,10 +49,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    public void Create_WithValidPrincipal ()
+    public void Create_WithValidPrincipal_WithRolesNull ()
     {
       SecurityContext context = CreateContext ();
       ISecurityPrincipal principal = CreateTestPrincipal ();
+      Assert.That (principal.Roles, Is.Null);
 
       SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
       SecurityToken token = builder.CreateToken (principal, context);
@@ -65,15 +67,37 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    public void Create_WithValidPrincipal_WithRole ()
+    public void Create_WithValidPrincipal_WithRolesEmpty ()
     {
       var principalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
       principalStub.Stub (stub => stub.User).Return ("test.user");
-      var princialRoleStub = MockRepository.GenerateStub<ISecurityPrincipalRole>();
-      princialRoleStub.Stub (stub => stub.Group).Return ("UID: testGroup");
-      princialRoleStub.Stub (stub => stub.Position).Return ("UID: Official");
-      principalStub.Stub (stub => stub.Role).Return (princialRoleStub);
-      
+      principalStub.Stub (stub => stub.Roles).Return (new ISecurityPrincipalRole[0]);
+
+      SecurityContext context = CreateContext ();
+
+      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
+      SecurityToken token = builder.CreateToken (principalStub, context);
+
+      var user = token.Principal.User.GetObject();
+      Assert.That (user.UserName, Is.EqualTo ("test.user"));
+      Assert.That (token.Principal.Tenant, Is.EqualTo (user.Tenant).Using (DomainObjectHandleComparer.Instance));
+      Assert.That (token.Principal.Roles, Is.Empty);
+      Assert.That (token.Principal.IsNull, Is.False);
+    }
+
+    [Test]
+    public void Create_WithValidPrincipal_WithRoles ()
+    {
+      var principalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
+      principalStub.Stub (stub => stub.User).Return ("test.user");
+      var princialRole1Stub = MockRepository.GenerateStub<ISecurityPrincipalRole>();
+      princialRole1Stub.Stub (stub => stub.Group).Return ("UID: testGroup");
+      princialRole1Stub.Stub (stub => stub.Position).Return ("UID: Official");
+      var princialRole2Stub = MockRepository.GenerateStub<ISecurityPrincipalRole>();
+      princialRole2Stub.Stub (stub => stub.Group).Return ("UID: testGroup");
+      princialRole2Stub.Stub (stub => stub.Position).Return ("UID: Manager");
+      principalStub.Stub (stub => stub.Roles).Return (new[] { princialRole1Stub, princialRole2Stub });
+
       SecurityContext context = CreateContext ();
       ISecurityPrincipal principal = principalStub;
 
@@ -83,9 +107,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       var principalUser = token.Principal.User.GetObject();
       Assert.That (principalUser.UserName, Is.EqualTo ("test.user"));
       Assert.That (token.Principal.Tenant, Is.EqualTo (principalUser.Tenant).Using (DomainObjectHandleComparer.Instance));
-      Assert.That (token.Principal.Roles.Count, Is.EqualTo (1));
-      Assert.That (token.Principal.Roles[0].Group.GetObject().UniqueIdentifier, Is.EqualTo ("UID: testGroup"));
-      Assert.That (token.Principal.Roles[0].Position.GetObject().UniqueIdentifier, Is.EqualTo ("UID: Official"));
+      Assert.That (token.Principal.Roles.Count, Is.EqualTo (2));
+      Assert.That (
+          token.Principal.Roles.Select (r => Tuple.Create (r.Group.GetObject().UniqueIdentifier, r.Position.GetObject().UniqueIdentifier)),
+          Is.EquivalentTo (new[] { Tuple.Create ("UID: testGroup", "UID: Manager"), Tuple.Create ("UID: testGroup", "UID: Official") }));
       Assert.That (token.Principal.IsNull, Is.False);
     }
 

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 
@@ -29,7 +30,18 @@ namespace Remotion.Security.UnitTests
       var principal = new SecurityPrincipal ("TheUser", null, null, null);
 
       Assert.That (principal.User, Is.EqualTo ("TheUser"));
-      Assert.That (principal.Role, Is.Null);
+      Assert.That (principal.Roles, Is.Null);
+      Assert.That (principal.SubstitutedUser, Is.Null);
+      Assert.That (principal.SubstitutedRole, Is.Null);
+    }
+
+    [Test]
+    public void Initialize_WithUserAndEmptyRoles ()
+    {
+      var principal = new SecurityPrincipal ("TheUser", new SecurityPrincipalRole[0], null, null);
+
+      Assert.That (principal.User, Is.EqualTo ("TheUser"));
+      Assert.That (principal.Roles, Is.Empty);
       Assert.That (principal.SubstitutedUser, Is.Null);
       Assert.That (principal.SubstitutedRole, Is.Null);
     }
@@ -37,12 +49,13 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Initialize_WithUserAndRoleAndSubstitutedUserAndSubstitedRole ()
     {
-      var role = new SecurityPrincipalRole ("TheGroup", null);
+      var role1 = new SecurityPrincipalRole ("TheGroup1", null);
+      var role2 = new SecurityPrincipalRole ("TheGroup2", null);
       var substitutedRole = new SecurityPrincipalRole ("SomeGroup", null);
-      var principal = new SecurityPrincipal ("TheUser", role, "SomeUser", substitutedRole);
+      var principal = new SecurityPrincipal ("TheUser", new[] { role1, role2 }, "SomeUser", substitutedRole);
 
       Assert.That (principal.User, Is.EqualTo ("TheUser"));
-      Assert.That (principal.Role, Is.SameAs (role));
+      Assert.That (principal.Roles, Is.EqualTo (new[] { role1, role2 }));
       Assert.That (principal.SubstitutedUser, Is.EqualTo ("SomeUser"));
       Assert.That (principal.SubstitutedRole, Is.SameAs (substitutedRole));
     }
@@ -75,7 +88,7 @@ namespace Remotion.Security.UnitTests
         "The substituted user must be specified if a substituted role is also specified.\r\nParameter name: substitutedUser")]
     public void Initialize_WithSubstitutedUserMissing ()
     {
-      new SecurityPrincipal ("TheUser", null, null, new SecurityPrincipalRole("group", "position"));
+      new SecurityPrincipal ("TheUser", null, null, new SecurityPrincipalRole ("group", "position"));
     }
 
     [Test]
@@ -91,8 +104,8 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Equals_WithAllEqual ()
     {
-      var left = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
-      var right = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
+      var left = CreatePrincipal ("TheUser", new[] { "TheGroup1", "TheGroup2" }, "SomeUser", "SomeGroup");
+      var right = CreatePrincipal ("TheUser", new[] { "TheGroup2", "TheGroup1" }, "SomeUser", "SomeGroup");
 
       Assert.That (left.Equals (right), Is.True);
       Assert.That (right.Equals (left), Is.True);
@@ -101,8 +114,8 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Equals_WithUserNotEqual ()
     {
-      var left = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
-      var right = CreatePrincipal ("OtherUser", "TheGroup", "SomeUser", "SomeGroup");
+      var left = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
+      var right = CreatePrincipal ("OtherUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
 
       Assert.That (left.Equals (right), Is.False);
       Assert.That (right.Equals (left), Is.False);
@@ -111,8 +124,8 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Equals_WithRoleNotEqual ()
     {
-      var left = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
-      var right = CreatePrincipal ("TheUser", "OtherGroup", "SomeUser", "SomeGroup");
+      var left = CreatePrincipal ("TheUser", new[] { "TheGroup", "SomeGroup" }, "SomeUser", "SomeGroup");
+      var right = CreatePrincipal ("TheUser", new[] { "TheGroup", "TheOtherGroup" }, "SomeUser", "SomeGroup");
 
       Assert.That (left.Equals (right), Is.False);
       Assert.That (right.Equals (left), Is.False);
@@ -121,8 +134,18 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Equals_WithRoleNotEqual_RoleIsNull ()
     {
-      var left = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
+      var left = CreatePrincipal ("TheUser", new [] { "TheGroup" }, "SomeUser", "SomeGroup");
       var right = CreatePrincipal ("TheUser", null, "SomeUser", "SomeGroup");
+
+      Assert.That (left.Equals (right), Is.False);
+      Assert.That (right.Equals (left), Is.False);
+    }
+
+    [Test]
+    public void Equals_WithRoleNotEqual_RoleIsEmpty ()
+    {
+      var left = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
+      var right = CreatePrincipal ("TheUser", new string[0], "SomeUser", "SomeGroup");
 
       Assert.That (left.Equals (right), Is.False);
       Assert.That (right.Equals (left), Is.False);
@@ -131,8 +154,8 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Equals_WithSubstitutedUserNotEqual ()
     {
-      var left = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
-      var right = CreatePrincipal ("TheUser", "TheGroup", "OtherUser", "SomeGroup");
+      var left = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
+      var right = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "OtherUser", "SomeGroup");
 
       Assert.That (left.Equals (right), Is.False);
       Assert.That (right.Equals (left), Is.False);
@@ -141,8 +164,8 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Equals_WithSubstitutedRoleNotEqual ()
     {
-      var left = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
-      var right = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "OtherGroup");
+      var left = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
+      var right = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "OtherGroup");
 
       Assert.That (left.Equals (right), Is.False);
       Assert.That (right.Equals (left), Is.False);
@@ -151,8 +174,8 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Equals_WithSubstitutedRoleNotEqual_RoleIsNull ()
     {
-      var left = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
-      var right = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", null);
+      var left = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
+      var right = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", null);
 
       Assert.That (left.Equals (right), Is.False);
       Assert.That (right.Equals (left), Is.False);
@@ -161,7 +184,7 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Equals_WithNull ()
     {
-      var left = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
+      var left = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
       var right = (SecurityPrincipal) null;
 
       Assert.That (left.Equals (right), Is.False);
@@ -170,8 +193,8 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void EqualsObject_WithEqual ()
     {
-      var left = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
-      var right = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
+      var left = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
+      var right = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
 
       Assert.That (left.Equals ((object) right), Is.True);
     }
@@ -179,7 +202,7 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void EqualsObject_WithNull ()
     {
-      var left = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
+      var left = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
 
       Assert.That (left.Equals ((object) null), Is.False);
     }
@@ -187,7 +210,7 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void EqualsObject_WithObject ()
     {
-      var left = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
+      var left = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
 
       Assert.That (left.Equals (new object()), Is.False);
     }
@@ -195,8 +218,8 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void TestGetHashCode ()
     {
-      var left = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
-      var right = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
+      var left = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
+      var right = CreatePrincipal ("TheUser", null, "SomeUser", "SomeGroup");
 
       Assert.That (left.GetHashCode(), Is.EqualTo (right.GetHashCode()));
     }
@@ -204,7 +227,7 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Serialization ()
     {
-      var principal = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
+      var principal = CreatePrincipal ("TheUser", new[] { "TheGroup1", "TheGroup2" }, "SomeUser", "SomeGroup");
 
       var deserializedRole = Serializer.SerializeAndDeserialize (principal);
 
@@ -215,16 +238,16 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void IsNull ()
     {
-      var principal = CreatePrincipal ("TheUser", "TheGroup", "SomeUser", "SomeGroup");
-      
+      var principal = CreatePrincipal ("TheUser", new[] { "TheGroup" }, "SomeUser", "SomeGroup");
+
       Assert.That (principal.IsNull, Is.False);
     }
 
-    private SecurityPrincipal CreatePrincipal (string user, string roleGroup, string substitutedUser, string substitutedRoleGroup)
+    private SecurityPrincipal CreatePrincipal (string user, string[] roleGroups, string substitutedUser, string substitutedRoleGroup)
     {
-      var role = roleGroup != null ? new SecurityPrincipalRole (roleGroup, null) : null;
+      var roles = roleGroups == null ? null : roleGroups.Select (g => new SecurityPrincipalRole (g, null)).ToArray();
       var substitutedRole = substitutedRoleGroup != null ? new SecurityPrincipalRole (substitutedRoleGroup, null) : null;
-      return new SecurityPrincipal (user, role, substitutedUser, substitutedRole);
+      return new SecurityPrincipal (user, roles, substitutedUser, substitutedRole);
     }
   }
 }

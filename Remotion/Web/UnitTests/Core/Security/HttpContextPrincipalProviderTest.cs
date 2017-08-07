@@ -69,6 +69,9 @@ namespace Remotion.Web.UnitTests.Core.Security
       var securityPrincipal = principalProvider.GetPrincipal();
       Assert.That (securityPrincipal, Is.TypeOf<SecurityPrincipal>());
       Assert.That (securityPrincipal.User, Is.EqualTo ("The User"));
+      Assert.That (securityPrincipal.Roles, Is.Null);
+      Assert.That (securityPrincipal.SubstitutedUser, Is.Null);
+      Assert.That (securityPrincipal.SubstitutedRole, Is.Null);
     }
 
     [Test]

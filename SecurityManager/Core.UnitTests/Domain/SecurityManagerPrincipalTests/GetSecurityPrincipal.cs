@@ -33,8 +33,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
   {
     private User _user;
     private Tenant _tenant;
+    private Role[] _roles;
     private Substitution _substitution;
-    private SecurityManagerPrincipal _principal;
 
     public override void SetUp ()
     {
@@ -44,9 +44,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
 
       _user = User.FindByUserName ("substituting.user");
       _tenant = _user.Tenant;
+      _roles = _user.Roles.Skip (1).Take (2).ToArray();
+      Assert.That (_roles.Length, Is.EqualTo (2));
       _substitution = _user.GetActiveSubstitutions().First (s => s.SubstitutedRole != null);
+      Assert.That (_substitution, Is.Not.Null);
 
-      _principal = CreateSecurityManagerPrincipal (_tenant, _user, _substitution);
     }
 
     public override void TearDown ()
@@ -58,25 +60,46 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     [Test]
     public void Test ()
     {
-      ISecurityPrincipal securityPrincipal = _principal.GetSecurityPrincipal();
+      var principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, _substitution);
+      ISecurityPrincipal securityPrincipal = principal.GetSecurityPrincipal();
       Assert.That (securityPrincipal.IsNull, Is.False);
       Assert.That (securityPrincipal.User, Is.EqualTo (_user.UserName));
-      Assert.That (securityPrincipal.Role, Is.Null);
+
+      Assert.That (securityPrincipal.Roles, Is.Not.Null);
+      Assert.That (securityPrincipal.Roles.Count, Is.EqualTo (2));
+      Assert.That (securityPrincipal.Roles[0].Group, Is.EqualTo (_roles[0].Group.UniqueIdentifier));
+      Assert.That (securityPrincipal.Roles[0].Position, Is.EqualTo (_roles[0].Position.UniqueIdentifier));
+      Assert.That (securityPrincipal.Roles[1].Group, Is.EqualTo (_roles[1].Group.UniqueIdentifier));
+      Assert.That (securityPrincipal.Roles[1].Position, Is.EqualTo (_roles[1].Position.UniqueIdentifier));
+
       Assert.That (securityPrincipal.SubstitutedUser, Is.EqualTo (_substitution.SubstitutedUser.UserName));
       Assert.That (securityPrincipal.SubstitutedRole.Group, Is.EqualTo (_substitution.SubstitutedRole.Group.UniqueIdentifier));
       Assert.That (securityPrincipal.SubstitutedRole.Position, Is.EqualTo (_substitution.SubstitutedRole.Position.UniqueIdentifier));
     }
 
     [Test]
+    public void Test_WithMinimumData ()
+    {
+      var principal = CreateSecurityManagerPrincipal (_tenant, _user, null, null);
+      ISecurityPrincipal securityPrincipal = principal.GetSecurityPrincipal();
+      Assert.That (securityPrincipal.IsNull, Is.False);
+      Assert.That (securityPrincipal.User, Is.EqualTo (_user.UserName));
+      Assert.That (securityPrincipal.Roles, Is.Null);
+      Assert.That (securityPrincipal.SubstitutedUser, Is.Null);
+    }
+
+    [Test]
     public void UsesCache ()
     {
-      Assert.That (_principal.GetSecurityPrincipal(), Is.SameAs (_principal.GetSecurityPrincipal()));
+      var principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, _substitution);
+      Assert.That (principal.GetSecurityPrincipal(), Is.SameAs (principal.GetSecurityPrincipal()));
     }
 
     [Test]
     public void SerializesCache ()
     {
-      var deserialized = Serializer.SerializeAndDeserialize (Tuple.Create (_principal, _principal.GetSecurityPrincipal()));
+      var principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, _substitution);
+      var deserialized = Serializer.SerializeAndDeserialize (Tuple.Create (principal, principal.GetSecurityPrincipal()));
       SecurityManagerPrincipal deserialziedSecurityManagerPrincipal = deserialized.Item1;
       ISecurityPrincipal deserialziedSecurityPrincipal = deserialized.Item2;
 
@@ -86,6 +109,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     [Test]
     public void UsesSecurityFreeSection ()
     {
+      var principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, _substitution);
       var securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
       securityProviderStub.Stub (stub => stub.IsNull).Return (false);
 
@@ -95,13 +119,15 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       using (new ServiceLocatorScope (serviceLocator))
       {
         IncrementRevision();
-        refreshedInstance = _principal.GetRefreshedInstance();
-        Assert.That (refreshedInstance, Is.Not.SameAs (_principal));
+        refreshedInstance = principal.GetRefreshedInstance();
+        Assert.That (refreshedInstance, Is.Not.SameAs (principal));
       }
 
       ISecurityPrincipal securityPrincipal = refreshedInstance.GetSecurityPrincipal();
       Assert.That (securityPrincipal.IsNull, Is.False);
       Assert.That (securityPrincipal.User, Is.EqualTo ("substituting.user"));
+      Assert.That (securityPrincipal.Roles, Is.Not.Empty);
+      Assert.That (securityPrincipal.SubstitutedUser, Is.Not.Null);
     }
   }
 }

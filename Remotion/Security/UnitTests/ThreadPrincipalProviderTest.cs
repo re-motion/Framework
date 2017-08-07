@@ -36,7 +36,11 @@ namespace Remotion.Security.UnitTests
     public void GetUser ()
     {
       Thread.CurrentPrincipal = new GenericPrincipal (new GenericIdentity ("user"), new string[0]);
-      Assert.That (_principalProvider.GetPrincipal().User, Is.EqualTo ("user"));
+      var securityPrincipal = _principalProvider.GetPrincipal();
+      Assert.That (securityPrincipal.User, Is.EqualTo ("user"));
+      Assert.That (securityPrincipal.Roles, Is.Null);
+      Assert.That (securityPrincipal.SubstitutedUser, Is.Null);
+      Assert.That (securityPrincipal.SubstitutedRole, Is.Null);
     }
 
     [Test]

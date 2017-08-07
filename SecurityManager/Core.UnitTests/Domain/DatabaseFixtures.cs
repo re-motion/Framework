@@ -147,6 +147,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
         User substitutingUser = CreateUser ("substituting.user", null, "substitute", null, testRootGroup, tenant1);
         CreateRole (substitutingUser, testOwningGroup, managerPosition);
         CreateRole (substitutingUser, testRootGroup, officialPosition);
+        CreateRole (substitutingUser, testGroup, officialPosition);
 
         Substitution enabledUserSubstitution = Substitution.NewObject ();
         enabledUserSubstitution.SubstitutingUser = substitutingUser;
