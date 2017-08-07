@@ -71,6 +71,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="PlatformTest.cs" />
     <Compile Include="BrowserSessionTest.cs" />
     <Compile Include="BrowserWindowTests.cs" />
     <Compile Include="GenericTestCaseInfrastructure\ControlSelectorTestCaseFactoryBase.cs" />

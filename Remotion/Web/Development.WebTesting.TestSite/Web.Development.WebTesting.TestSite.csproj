@@ -67,6 +67,7 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
+    <Content Include="PlatformTest.aspx" />
     <Content Include="Empty.aspx" />
     <Content Include="GenericTest.aspx" />
     <Content Include="ImageButtonTest.aspx" />
@@ -126,6 +127,14 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="PlatformTest.aspx.cs">
+      <DependentUpon>PlatformTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PlatformTest.aspx.designer.cs">
+      <DependentUpon>PlatformTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PlatformTestFunction.cs" />
     <Compile Include="BrowserSessionTestFunction.cs" />
     <Compile Include="Empty.aspx.cs">
       <DependentUpon>Empty.aspx</DependentUpon>
