@@ -74,13 +74,18 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     MouseHelper MouseHelper { [NotNull] get; }
 
     /// <summary>
+    /// Returns the <see cref="IBrowserContentLocator"/> that will be used to located browser content (e.g. the browser content bounds).
+    /// </summary>
+    IBrowserContentLocator Locator { [NotNull] get; }
+
+    /// <summary>
     /// Gets an absolute or relative path to the logs directory. Some web driver implementations write log files for debugging reasons.
     /// </summary>
     string LogsDirectory { [NotNull] get; }
 
     /// <summary>
-    /// Returns the <see cref="IBrowserContentLocator"/> that will be used to located browser content (e.g. the browser content bounds).
+    /// Prefix for log files created in <see cref="LogsDirectory" />.
     /// </summary>
-    IBrowserContentLocator Locator { [NotNull] get; }
+    string LogPrefix { [NotNull] get; }
   }
 }

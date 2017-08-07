@@ -36,6 +36,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     private readonly BrowserHelper _browserHelper;
     private readonly LocatorHelper _locatorHelper;
     private readonly MouseHelper _mouseHelper;
+	private readonly string _logPrefix;
 
     protected BrowserConfigurationBase ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
     {
@@ -45,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
       _searchTimeout = webTestConfigurationSection.SearchTimeout;
       _retryInterval = webTestConfigurationSection.RetryInterval;
       _logsDirectory = webTestConfigurationSection.LogsDirectory;
-
+      _logPrefix = webTestConfigurationSection.LogPrefix;
       _browserHelper = new BrowserHelper(this);
       _locatorHelper = new LocatorHelper (this);
       _mouseHelper = new MouseHelper (this);
@@ -94,6 +95,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     public string LogsDirectory
     {
       get { return _logsDirectory; }
+    }
+    
+    public string LogPrefix
+    {
+      get { return _logPrefix; }
     }
   }
 }

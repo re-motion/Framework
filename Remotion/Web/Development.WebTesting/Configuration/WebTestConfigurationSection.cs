@@ -40,6 +40,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _webApplicationRootProperty;
     private readonly ConfigurationProperty _screenshotDirectoryProperty;
     private readonly ConfigurationProperty _logsDirectoryProperty;
+    private readonly ConfigurationProperty _logPrefixProperty;
     private readonly ConfigurationProperty _closeBrowserWindowsOnSetUpAndTearDownProperty;
     private readonly ConfigurationProperty _cleanUpUnmatchedDownloadedFiles;
     private readonly ConfigurationProperty _hostingProperty;
@@ -77,6 +78,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
           ConfigurationPropertyOptions.IsRequired);
       _screenshotDirectoryProperty = new ConfigurationProperty ("screenshotDirectory", typeof (string));
       _logsDirectoryProperty = new ConfigurationProperty ("logsDirectory", typeof (string), ".");
+      _logPrefixProperty = new ConfigurationProperty ("logPrefix", typeof (string), "");
       _closeBrowserWindowsOnSetUpAndTearDownProperty = new ConfigurationProperty ("closeBrowserWindowsOnSetUpAndTearDown", typeof (bool), false);
       _cleanUpUnmatchedDownloadedFiles = new ConfigurationProperty ("cleanUpUnmatchedDownloadedFiles", typeof (bool), false);
       _hostingProperty = new ConfigurationProperty ("hosting", typeof (ProviderSettings));
@@ -91,6 +93,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _webApplicationRootProperty,
                         _screenshotDirectoryProperty,
                         _logsDirectoryProperty,
+                        _logPrefixProperty,
                         _closeBrowserWindowsOnSetUpAndTearDownProperty,
                         _cleanUpUnmatchedDownloadedFiles,
                         _hostingProperty
@@ -174,6 +177,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public string LogsDirectory
     {
       get { return (string) this [_logsDirectoryProperty]; }
+    }
+
+    /// <summary>
+    /// Prefix for log files created in <see cref="LogsDirectory" />.
+    /// </summary>
+    public string LogPrefix
+    {
+      get { return (string) this [_logPrefixProperty]; }
     }
 
     /// <summary>

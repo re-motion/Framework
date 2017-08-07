@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
       var driverService = ChromeDriverService.CreateDefaultService();
 
       driverService.EnableVerboseLogging = false;
-      driverService.LogPath = WebDriverLogUtility.CreateLogFile (_chromeConfiguration.LogsDirectory, _chromeConfiguration.BrowserName);
+      driverService.LogPath = WebDriverLogUtility.CreateLogFile (_chromeConfiguration.LogsDirectory, _chromeConfiguration.LogPrefix, _chromeConfiguration.BrowserName);
 
       return driverService;
     }
