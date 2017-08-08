@@ -173,7 +173,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       new ClickAction (this, selectAnchorScope).Execute (actualCompletionDetector);
     }
 
-    public ContextMenuControlObject OpenContextMenu ()
+    public ContextMenuControlObject GetContextMenu ()
     {
       var selectAnchorScope = GetWellKnownSelectAnchorScope();
       return new ContextMenuControlObject (Context.CloneForControl (selectAnchorScope));

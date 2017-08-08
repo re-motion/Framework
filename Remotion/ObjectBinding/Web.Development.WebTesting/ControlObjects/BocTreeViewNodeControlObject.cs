@@ -106,9 +106,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Opens the node's context menu.
     /// </summary>
-    public ContextMenuControlObject OpenContextMenu ()
+    public ContextMenuControlObject GetContextMenu ()
     {
-      return _webTreeViewNode.OpenContextMenu();
+      return _webTreeViewNode.GetContextMenu();
     }
 
      /// <inheritdoc/>
