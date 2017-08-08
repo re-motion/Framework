@@ -143,6 +143,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     /// <summary>
+    /// Tests that the <see cref="ScreenshotTooltipAnnotation"/> is drawn correctly.
+    /// </summary>
+    [Category("Screenshot")]
+    [Test]
+    public void TooltipTest ()
+    {
+      ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
+      {
+        Helper.BrowserConfiguration.AnnotateHelper.DrawTooltip (builder, target, style: ScreenshotTooltipStyle.Chrome);
+        Helper.BrowserConfiguration.AnnotateHelper.DrawTooltip (builder, target, style: ScreenshotTooltipStyle.InternetExplorer);
+        builder.Crop (target.ForElementScopeScreenshot(), new WebPadding (30, 60, 30, 60));
+      };
+
+      var home = Start();
+      var element = home.Scope.FindId ("tooltipTarget");
+      Helper.RunScreenshotTestExact<ElementScope, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
+    }
+
+    /// <summary>
     /// Tests that the text annotation is drawing text correctly.
     /// </summary>
     [Category ("Screenshot")]
@@ -257,7 +276,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       fluentDropDownMenu.OpenMenu();
       Thread.Sleep (250);
 
-      Helper.RunScreenshotTest<IFluentScreenshotElement<DropDownMenuControlObject>, DropDownMenuControlObjectTest> (
+      Helper.RunScreenshotTestExact<IFluentScreenshotElement<DropDownMenuControlObject>, DropDownMenuControlObjectTest> (
           fluentDropDownMenu,
           ScreenshotTestingType.Both,
           test);
@@ -283,7 +302,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
       var fluentListMenu = home.ListMenus().GetByLocalID ("MyListMenu").ForControlObjectScreenshot();
 
-      Helper.RunScreenshotTest<IFluentScreenshotElement<ListMenuControlObject>, ListMenuControlObjectTest> (
+      Helper.RunScreenshotTestExact<IFluentScreenshotElement<ListMenuControlObject>, ListMenuControlObjectTest> (
           fluentListMenu,
           ScreenshotTestingType.Both,
           test);
@@ -317,7 +336,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var menu = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
       var fluentTabbedMenu = menu.ForControlObjectScreenshot();
 
-      Helper.RunScreenshotTest<IFluentScreenshotElement<TabbedMenuControlObject>, TabbedMenuControlObjectTest> (
+      Helper.RunScreenshotTestExact<IFluentScreenshotElement<TabbedMenuControlObject>, TabbedMenuControlObjectTest> (
           fluentTabbedMenu,
           ScreenshotTestingType.Both,
           test);
@@ -343,8 +362,31 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
       var fluentTabStrip = home.WebTabStrips().GetByLocalID ("MyTabStrip").ForControlObjectScreenshot();
 
-      Helper.RunScreenshotTest<IFluentScreenshotElement<WebTabStripControlObject>, WebTabStripControlObjectTest> (
+      Helper.RunScreenshotTestExact<IFluentScreenshotElement<WebTabStripControlObject>, WebTabStripControlObjectTest> (
           fluentTabStrip,
+          ScreenshotTestingType.Both,
+          test);
+    }
+
+    [Category ("Screenshot")]
+    [Test]
+    public void WebTreeView ()
+    {
+      ScreenshotTestingDelegate<IFluentScreenshotElement<ScreenshotWebTreeViewNodeControlObject>> test = (builder, target) =>
+      {
+        builder.AnnotateBox (target, Pens.Red, WebPadding.Inner);
+        builder.AnnotateBox (target.GetLabel(), Pens.Green, WebPadding.Inner);
+        builder.AnnotateBox (target.GetChildren(), Pens.Blue, WebPadding.Inner);
+
+        builder.Crop (target, new WebPadding(1));
+      };
+
+      var home = Start();
+      var webTreeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView");
+      var fluentNode = webTreeView.GetNode().WithItemID ("ItemA").ForScreenshot();
+
+      Helper.RunScreenshotTestExact<IFluentScreenshotElement<ScreenshotWebTreeViewNodeControlObject>, WebTreeViewControlObjectTest> (
+          fluentNode,
           ScreenshotTestingType.Both,
           test);
     }

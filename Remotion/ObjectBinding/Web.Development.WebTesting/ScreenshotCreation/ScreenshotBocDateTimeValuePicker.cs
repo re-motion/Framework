@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
-using Remotion.Web.Development.WebTesting.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocDateTimeValue
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
 {
   /// <summary>
   /// Marker class for the screenshot fluent API. Represents a <see cref="BocDateTimeValueControlObject"/> date picker.

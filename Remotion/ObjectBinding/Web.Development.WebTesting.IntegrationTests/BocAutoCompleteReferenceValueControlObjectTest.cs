@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Drawing;
-using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
@@ -32,7 +31,6 @@ using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.Utilities;
-using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -69,9 +67,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           ScreenshotTestingType.Both,
           (builder, target) =>
           {
-            var backgroundBrush = ScreenshotBackgroundBrush;
-
-            builder.AnnotateBox (target, Pens.Black, WebPadding.Inner, backgroundBrush);
+            builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
 
             builder.AnnotateBox (target.GetCommand(), Pens.Orange, WebPadding.Inner);
             builder.AnnotateBox (target.GetDropDownButton(), Pens.Red, WebPadding.Inner);
@@ -120,9 +116,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
               ScreenshotTestingType.Desktop,
               (builder, target) =>
               {
-                var backgroundBrush = ScreenshotBackgroundBrush;
-
-                builder.AnnotateBox (target, Pens.Transparent, WebPadding.Inner, backgroundBrush);
+                builder.AnnotateBox (target, Pens.Transparent, WebPadding.Inner);
 
                 builder.AnnotateBox (target.GetSelectedItem(), Pens.Blue, WebPadding.Inner);
 
@@ -207,9 +201,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
               ScreenshotTestingType.Both,
               (builder, target) =>
               {
-                var backgroundBrush = ScreenshotBackgroundBrush;
-
-                builder.AnnotateBox (target, Pens.Transparent, WebPadding.Inner, backgroundBrush);
+                builder.AnnotateBox (target, Pens.Transparent, WebPadding.Inner);
 
                 builder.Crop (target);
               });

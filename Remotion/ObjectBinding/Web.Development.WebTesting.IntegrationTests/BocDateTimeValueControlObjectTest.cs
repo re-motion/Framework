@@ -23,7 +23,6 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Generic
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
-using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocDateTimeValue;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -65,9 +64,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           ScreenshotTestingType.Both,
           (builder, target) =>
           {
-            var backgroundBrush = ScreenshotBackgroundBrush;
-
-            builder.AnnotateBox (target, Pens.Black, WebPadding.Inner, backgroundBrush);
+            builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
 
             builder.AnnotateBox (target.GetDateField(), Pens.Red, WebPadding.Inner);
             builder.AnnotateBox (target.GetDatePickerIcon(), Pens.Blue, WebPadding.Inner);
@@ -94,9 +91,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           ScreenshotTestingType.Both,
           (builder, target) =>
           {
-            var backgroundBrush = ScreenshotBackgroundBrush;
-
-            builder.AnnotateBox (target, Pens.DeepPink, WebPadding.Inner, backgroundBrush);
+            builder.AnnotateBox (target, Pens.DeepPink, WebPadding.Inner);
 
             builder.AnnotateBox (target.GetNavigationBar(), Pens.Orange, WebPadding.Inner);
             builder.AnnotateBox (target.GetPreviousMonthButton(), Pens.Green, WebPadding.Inner);

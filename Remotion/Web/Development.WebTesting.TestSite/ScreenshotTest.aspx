@@ -22,7 +22,7 @@
       <div id="screenshotTarget" style="">
       </div>
       
-      <table id="screenshotControlContainer" style="margin-bottom: 40px;">
+      <table id="screenshotControlContainer" style="margin-bottom: 80px;">
         <tr>
           <td>
             <%-- DropDownList tests --%>
@@ -90,6 +90,14 @@
               </Tabs>
             </remotion:WebTabStrip>
           </td>
+          <td>
+            <%-- WebTreeView --%>
+            <remotion:WebTreeView ID="MyWebTreeView" runat="server" />
+          </td>
+          <td>
+            <%-- Tooltip test --%>
+            <div id="tooltipTarget" style="margin: 30px; width: 1px; height: 1px;" title="title"></div>
+          </td>
         </tr>
       </table>
       <iframe id="frame" src="ScreenshotTestFrame.aspx" >
@@ -121,6 +129,12 @@
         #screenshotControlContainer > tr > td
         {
           padding: 0;
+        }
+
+        #body_MyWebTreeView
+        {
+          width: 80px;
+          height: 120px;
         }
       </style>
     </ContentTemplate>

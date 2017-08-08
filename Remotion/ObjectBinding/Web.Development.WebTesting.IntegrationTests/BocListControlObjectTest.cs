@@ -67,9 +67,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
               ScreenshotTestingType.Both,
               (builder, target) =>
               {
-                var backgroundBrush = ScreenshotBackgroundBrush;
-
-                builder.AnnotateBox (target, Pens.Black, WebPadding.Inner, backgroundBrush);
+                builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
 
                 builder.AnnotateBox (target.GetMenuBlock(), Pens.Red, WebPadding.Inner);
                 builder.AnnotateBox (target.GetNavigator(), Pens.Blue, WebPadding.Inner);
@@ -105,9 +103,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
                   ScreenshotTestingType.Both,
                   (builder, target) =>
                   {
-                    var backgroundBrush = ScreenshotBackgroundBrush;
-
-                    builder.AnnotateBox (target, Pens.Black, WebPadding.Inner, backgroundBrush);
+                    builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
 
                     builder.AnnotateBox (target.GetFirstPageButton(), Pens.Orange, WebPadding.Inner);
                     builder.AnnotateBox (target.GetPreviousPageButton(), Pens.Red, WebPadding.Inner);
@@ -147,9 +143,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
                   ScreenshotTestingType.Both,
                   (builder, target) =>
                   {
-                    var backgroundBrush = ScreenshotBackgroundBrush;
-
-                    builder.AnnotateBox (target, Pens.Black, WebPadding.Inner, backgroundBrush);
+                    builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
 
                     builder.AnnotateBox (target.GetDropDownMenu(), Pens.Red, WebPadding.Inner);
                     builder.AnnotateBox (target.GetViewsMenu(), Pens.Green, WebPadding.Inner);
@@ -184,9 +178,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
                   ScreenshotTestingType.Both,
                   (builder, target) =>
                   {
-                    var backgroundBrush = ScreenshotBackgroundBrush;
-
-                    builder.AnnotateBox (target, Pens.Black, WebPadding.Inner, backgroundBrush);
+                    builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
 
                     builder.AnnotateBox (target.GetHeaderRow(), Pens.Red, WebPadding.Inner);
                     builder.AnnotateBox (target.GetRow (2), Pens.Blue, WebPadding.Inner);

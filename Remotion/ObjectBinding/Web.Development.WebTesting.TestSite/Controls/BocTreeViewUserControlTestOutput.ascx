@@ -27,3 +27,10 @@
     <td><asp:Label ID="ActionPerformedParameterLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td>
   </tr>
 </table>
+<style>
+  #body_DataEditControl_NoTopLevelExpander > div
+  {
+    width: 200px;
+    height: 220px;
+  }
+</style>

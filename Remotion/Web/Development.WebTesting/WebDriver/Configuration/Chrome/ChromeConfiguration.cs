@@ -21,8 +21,9 @@ using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome;
-using Remotion.Web.Development.WebTesting.Utilities;
-using Remotion.Web.Development.WebTesting.Utilities.BrowserContentLocators;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome;
 
@@ -44,7 +45,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     private readonly bool _disableInfoBars;
     private readonly bool _deleteUserDirectoryRoot;
 
-    public ChromeConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection, [NotNull] AdvancedChromeOptions advancedChromeOptions)
+    public ChromeConfiguration (
+        [NotNull] WebTestConfigurationSection webTestConfigurationSection,
+        [NotNull] AdvancedChromeOptions advancedChromeOptions)
         : base (webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
@@ -115,6 +118,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     public override IBrowserContentLocator Locator
     {
       get { return _locator; }
+    }
+
+    public override ScreenshotTooltipStyle TooltipStyle
+    {
+      get { return ScreenshotTooltipStyle.Chrome; }
     }
 
     public string BinaryPath

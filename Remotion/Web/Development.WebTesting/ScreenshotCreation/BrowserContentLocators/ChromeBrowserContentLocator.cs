@@ -20,15 +20,19 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Automation;
+using JetBrains.Annotations;
 using OpenQA.Selenium;
+using Remotion.Web.Development.WebTesting.Utilities;
 
-namespace Remotion.Web.Development.WebTesting.Utilities.BrowserContentLocators
+namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators
 {
   /// <summary>
   /// Locates the browser content area for Chrome.
   /// </summary>
   public class ChromeBrowserContentLocator : IBrowserContentLocator
   {
+    private const string c_setWindowTitle = "var w = window; while (w.frameElement) w = w.frameElement.ownerDocument.defaultView; var t = w.document.title; w.document.title = arguments[0]; return t;";
+
     [DllImport ("user32.dll")]
     private static extern IntPtr GetForegroundWindow ();
 
@@ -67,10 +71,31 @@ namespace Remotion.Web.Development.WebTesting.Utilities.BrowserContentLocators
 
       var highestRating = windows.Max (w => w.Key);
       var results = windows.Where (w => w.Key == highestRating).Take (2).ToArray();
-      if (windows.Length == 0 || highestRating == 0 || results.Length == 2)
+
+      // If the result are ambiguous we try to find the browser by changing the window title 
+      AutomationElement automationElement = null;
+      if (results.Length == 2)
+        automationElement = ResolveByChangingWindowTitle (driver);
+
+      if (windows.Length == 0 || highestRating == 0 || results.Length == 2 && automationElement == null)
         throw new InvalidOperationException ("Could not find a chrome window in order to resolve the bounds of the content area.");
 
-      return ResolveBoundsFromWindow (results[0].Value);
+      return ResolveBoundsFromWindow (automationElement ?? results[0].Value);
+    }
+
+    [CanBeNull]
+    private AutomationElement ResolveByChangingWindowTitle (IWebDriver driver)
+    {
+      var id = Guid.NewGuid().ToString();
+
+      var executor = (IJavaScriptExecutor) driver;
+      var previousTitle = JavaScriptExecutor.ExecuteStatement<string> (executor, c_setWindowTitle, id);
+
+      var result = AutomationElement.RootElement.FindFirst (TreeScope.Children, new PropertyCondition (AutomationElement.NameProperty, id));
+
+      JavaScriptExecutor.ExecuteStatement<string> (executor, c_setWindowTitle, previousTitle);
+
+      return result;
     }
 
     private Rectangle ResolveBoundsFromWindow (AutomationElement window)

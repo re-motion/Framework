@@ -19,6 +19,8 @@ using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 
@@ -33,6 +35,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     private readonly TimeSpan _searchTimeout;
     private readonly TimeSpan _retryInterval;
     private readonly string _logsDirectory;
+    private readonly AnnotateHelper _annotateHelper;
     private readonly BrowserHelper _browserHelper;
     private readonly LocatorHelper _locatorHelper;
     private readonly MouseHelper _mouseHelper;
@@ -47,14 +50,20 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
       _retryInterval = webTestConfigurationSection.RetryInterval;
       _logsDirectory = webTestConfigurationSection.LogsDirectory;
       _logPrefix = webTestConfigurationSection.LogPrefix;
-      _browserHelper = new BrowserHelper(this);
+      _annotateHelper = new AnnotateHelper (this);
+      _browserHelper = new BrowserHelper (this);
       _locatorHelper = new LocatorHelper (this);
       _mouseHelper = new MouseHelper (this);
     }
-   
+
     public abstract string BrowserExecutableName { get; }
 
     public abstract string WebDriverExecutableName { get; }
+
+    public AnnotateHelper AnnotateHelper
+    {
+      get { return _annotateHelper; }
+    }
 
     public abstract IBrowserFactory BrowserFactory { get; }
 
@@ -77,6 +86,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
 
     public abstract IBrowserContentLocator Locator { get; }
 
+    public abstract ScreenshotTooltipStyle TooltipStyle { get; }
+
     public string BrowserName
     {
       get { return _browserName; }
@@ -91,7 +102,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     {
       get { return _retryInterval; }
     }
-    
+
     public string LogsDirectory
     {
       get { return _logsDirectory; }

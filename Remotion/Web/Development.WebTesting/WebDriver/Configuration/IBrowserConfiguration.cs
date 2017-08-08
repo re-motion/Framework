@@ -17,6 +17,8 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
@@ -47,6 +49,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     /// </summary>
     /// <returns>The process name without the file extension.</returns>
     string WebDriverExecutableName { [NotNull] get; }
+
+    /// <summary>
+    /// Gets a <see cref="AnnotateHelper"/>, which simplifies annotations like tooltips.
+    /// </summary>
+    AnnotateHelper AnnotateHelper { [NotNull] get; }
 
     /// <summary>
     /// Gets a <see cref="BrowserFactory"/> responsible for creating the browser instance.
@@ -87,5 +94,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     /// Prefix for log files created in <see cref="LogsDirectory" />.
     /// </summary>
     string LogPrefix { [NotNull] get; }
+
+    /// <summary>
+    /// Returns the <see cref="ScreenshotTooltipStyle"/> that will be used when drawing tooltips for this browser.
+    /// </summary>
+    ScreenshotTooltipStyle TooltipStyle { [NotNull] get; }
   }
 }

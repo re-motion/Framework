@@ -15,15 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Drawing;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
-using Remotion.Web.Development.WebTesting;
-using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -41,6 +44,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<BocTreeViewSelector, BocTreeViewControlObject> testAction)
     {
       testAction (Helper, e => e.TreeViews(), "treeView");
+    }
+
+    [Category ("Screenshot")]
+    [Test]
+    public void WebTreeView ()
+    {
+      ScreenshotTestingDelegate<IFluentScreenshotElement<ScreenshotBocTreeViewNodeControlObject>> test = (builder, target) =>
+      {
+        builder.AnnotateBox (target, Pens.Red, WebPadding.Inner);
+        builder.AnnotateBox (target.GetLabel(), Pens.Green, WebPadding.Inner);
+        builder.AnnotateBox (target.GetChildren(), Pens.Blue, WebPadding.Inner);
+
+        builder.Crop (target, new WebPadding (1));
+      };
+
+      var home = Start();
+      var webTreeView = home.TreeViews().GetByLocalID ("NoTopLevelExpander");
+      var fluentNode = webTreeView.GetRootNode().ForScreenshot();
+
+      Helper.RunScreenshotTest<IFluentScreenshotElement<ScreenshotBocTreeViewNodeControlObject>, BocTreeViewControlObjectTest> (
+          fluentNode,
+          ScreenshotTestingType.Both,
+          test);
     }
 
     [Test]

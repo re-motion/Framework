@@ -16,8 +16,9 @@
 // 
 using System;
 using System.Drawing;
+using JetBrains.Annotations;
+using OpenQA.Selenium;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 {
@@ -31,8 +32,21 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// </summary>
     public static readonly RectangleResolver Instance = new RectangleResolver();
 
+    private readonly IWebDriver _driver;
+    private readonly bool _relative;
+
     private RectangleResolver ()
     {
+      _driver = null;
+      _relative = false;
+    }
+
+    public RectangleResolver ([NotNull] IWebDriver driver)
+    {
+      ArgumentUtility.CheckNotNull ("driver", driver);
+
+      _driver = driver;
+      _relative = true;
     }
 
     /// <inheritdoc />
@@ -45,6 +59,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     public ResolvedScreenshotElement ResolveDesktopCoordinates (Rectangle target, IBrowserContentLocator locator)
     {
       ArgumentUtility.CheckNotNull ("locator", locator);
+
+      if (_relative)
+        target.Offset (locator.GetBrowserContentBounds (_driver).Location);
 
       return new ResolvedScreenshotElement (CoordinateSystem.Desktop, target, ElementVisibility.FullyVisible, null);
     }
