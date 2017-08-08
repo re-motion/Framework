@@ -20,6 +20,8 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 
@@ -228,6 +230,78 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("Normal_Boc_TreeView"));
       Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("NodeContextMenuClick"));
       Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("c8ace752-55f6-4074-8890-130276ea6cd1|B, A"));
+    }
+
+    [Test]
+    public void TestContextMenuControlObject_SelectItem_AfterGetItemDefinitions ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+      var node = bocTreeView.GetRootNode();
+      node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
+
+      //The "Open" is a lie
+      var contextMenu = node.OpenContextMenu();
+
+      contextMenu.GetItemDefinitions();
+
+      Assert.That (() => contextMenu.SelectItem ("MenuItem"), Throws.Nothing);
+    }
+
+    [Test]
+    public void TestContextMenuControlObject_IsOpen ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+      var node = bocTreeView.GetRootNode();
+      node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
+
+      //The "Open" is a lie
+      var contextMenu = node.OpenContextMenu();
+
+      Assert.That (contextMenu.IsOpen(), Is.False);
+    }
+
+    [Test]
+    public void TestContextMenuControlObject_OpenDropDownMenu ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+      var node = bocTreeView.GetRootNode();
+      node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
+
+      //The "Open" is a lie
+      var contextMenu = node.OpenContextMenu();
+
+      contextMenu.Open();
+      Assert.That (contextMenu.IsOpen(), Is.True);
+
+      //Open a second time to ensure it does not close it
+      contextMenu.Open();
+      Assert.That (contextMenu.IsOpen(), Is.True);
+    }
+
+    [Test]
+    public void TestContextMenuControlObject_CloseDropDownMenu ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+      var node = bocTreeView.GetRootNode();
+      node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
+
+      //The "Open" is a lie
+      var contextMenu = node.OpenContextMenu();
+
+      contextMenu.Close();
+      Assert.That (contextMenu.IsOpen(), Is.False);
+
+      //Close it a second time to ensure it stays closed
+      contextMenu.Close();
+      Assert.That (contextMenu.IsOpen(), Is.False);
     }
 
     private WxePageObject Start ()

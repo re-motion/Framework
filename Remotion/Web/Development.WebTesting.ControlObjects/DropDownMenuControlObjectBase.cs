@@ -32,6 +32,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public abstract class DropDownMenuControlObjectBase
       : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithSelectableItems, IFluentControlObjectWithSelectableItems
   {
+    private const string c_dropDownMenuOptionsCssCssSelector = "ul.DropDownMenuOptions";
+
     protected DropDownMenuControlObjectBase ([NotNull] ControlObjectContext context)
         : base (context)
     {
@@ -40,14 +42,33 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Template method for derived classes to open the drop down menu (i.e. make it visible on the page).
     /// </summary>
-    protected abstract void OpenDropDownMenu ();
+    public abstract void Open ();
+
+    /// <summary>
+    /// Method to close the currently open DropDown via javascript.
+    /// </summary>
+    public void Close ()
+    {
+      if (IsOpen())
+        Context.Browser.Driver.ExecuteScript ("DropDownMenu_ClosePopUp()", Scope);
+    }
+
+    /// <summary>
+    /// Returns true if the drop down option menu is detected to be open.
+    /// </summary>
+    public bool IsOpen ()
+    {
+      var dropDownMenuOptionsScope = Context.RootScope.FindCss (c_dropDownMenuOptionsCssCssSelector);
+
+      return dropDownMenuOptionsScope.ExistsWorkaround();
+    }
 
     /// <inheritdoc/>
     public IReadOnlyList<ItemDefinition> GetItemDefinitions ()
     {
       var dropDownMenuScope = GetDropDownMenuScope();
 
-      return RetryUntilTimeout.Run (
+      var itemDefinitions = RetryUntilTimeout.Run (
           () => dropDownMenuScope.FindAllCss ("li.DropDownMenuItem, li.DropDownMenuItemDisabled")
               .Select (
                   (itemScope, i) =>
@@ -57,6 +78,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                           itemScope.Text.Trim(),
                           !itemScope["class"].Contains ("DropDownMenuItemDisabled")))
               .ToList());
+
+      Close();
+
+      return itemDefinitions;
+
     }
 
     /// <inheritdoc/>
@@ -129,9 +155,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     private ElementScope GetDropDownMenuScope ()
     {
-      OpenDropDownMenu();
+      Open();
 
-      var dropDownMenuOptionsScope = Context.RootScope.FindCss ("ul.DropDownMenuOptions");
+      var dropDownMenuOptionsScope = Context.RootScope.FindCss (c_dropDownMenuOptionsCssCssSelector);
+
       return dropDownMenuOptionsScope;
     }
 
