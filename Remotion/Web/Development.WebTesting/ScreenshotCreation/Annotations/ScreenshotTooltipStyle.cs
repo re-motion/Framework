@@ -18,6 +18,7 @@ using System;
 using System.Drawing;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
@@ -46,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         new WebPadding (9, 8, 9, 7),
         false,
         new Size (20, 29),
-        new Size (190, 320));
+        new Size (378, 209));
 
     private readonly Font _font;
     private readonly Brush _foregroundBrush;
@@ -156,6 +157,32 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     public Size MaximumSize
     {
       get { return _maximumSize; }
+    }
+
+    /// <summary>
+    /// Clones the <see cref="ScreenshotTooltipStyle"/> overriding the specified members.
+    /// </summary>
+    public ScreenshotTooltipStyle Clone (
+        Font font = null,
+        Brush foregroundBrush = null,
+        OptionalParameter<Brush> backgroundBrush = default(OptionalParameter<Brush>),
+        Pen border = null,
+        TooltipPositioning? positioning = null,
+        WebPadding? contentPadding = null,
+        bool? wrapLines = null,
+        Size? minimumSize = null,
+        Size? maximumSize = null)
+    {
+      return new ScreenshotTooltipStyle (
+          font ?? _font,
+          foregroundBrush ?? _foregroundBrush,
+          backgroundBrush.GetValueOrDefault (_backgroundBrush),
+          border ?? _border,
+          positioning ?? _positioning,
+          contentPadding ?? _contentPadding,
+          wrapLines ?? _wrapLines,
+          minimumSize ?? _minimumSize,
+          maximumSize ?? _maximumSize);
     }
   }
 }

@@ -47,13 +47,20 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public void DrawCursorTooltip (
         [NotNull] ScreenshotBuilder builder,
         [NotNull] string content,
+        ScreenshotTooltipStyle style = null,
         WebPadding? padding = null,
         TooltipPositioning? positioning = null,
-        ScreenshotTooltipStyle style = null)
+        bool? wrapLines = null,
+        Size? maximumSize = null)
     {
+      ArgumentUtility.CheckNotNull ("builder", builder);
+      ArgumentUtility.CheckNotNull ("content", content);
+
+      var clonedStyle = (style ?? BrowserConfiguration.TooltipStyle).Clone (positioning: positioning, wrapLines: wrapLines, maximumSize: maximumSize);
+
       var tooltipAnnotation = new ScreenshotTooltipAnnotation (
           content,
-          style ?? BrowserConfiguration.TooltipStyle,
+          clonedStyle,
           padding ?? new WebPadding (0, 20, 0, 25));
       builder.Annotate (new Rectangle (Cursor.Position, new Size (1, 1)), RectangleResolver.Instance, tooltipAnnotation);
     }
@@ -64,14 +71,16 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public void DrawTooltip (
         [NotNull] ScreenshotBuilder builder,
         [NotNull] ControlObject controlObject,
+        ScreenshotTooltipStyle style = null,
         WebPadding? padding = null,
         TooltipPositioning? positioning = null,
-        ScreenshotTooltipStyle style = null)
+        bool? wrapLines = null,
+        Size? maximumSize = null)
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("controlObject", controlObject);
 
-      DrawTooltip (builder, (IWebElement) controlObject.Scope.Native, padding, positioning, style);
+      DrawTooltip (builder, (IWebElement) controlObject.Scope.Native, style, padding, positioning, wrapLines, maximumSize);
     }
 
     /// <summary>
@@ -80,14 +89,16 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public void DrawTooltip (
         [NotNull] ScreenshotBuilder builder,
         [NotNull] ElementScope element,
+        ScreenshotTooltipStyle style = null,
         WebPadding? padding = null,
         TooltipPositioning? positioning = null,
-        ScreenshotTooltipStyle style = null)
+        bool? wrapLines = null,
+        Size? maximumSize = null)
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("element", element);
 
-      DrawTooltip (builder, (IWebElement) element.Native, padding, positioning, style);
+      DrawTooltip (builder, (IWebElement) element.Native, style, padding, positioning, wrapLines, maximumSize);
     }
 
     /// <summary>
@@ -96,9 +107,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public void DrawTooltip (
         [NotNull] ScreenshotBuilder builder,
         [NotNull] IWebElement webElement,
+        ScreenshotTooltipStyle style = null,
         WebPadding? padding = null,
         TooltipPositioning? positioning = null,
-        ScreenshotTooltipStyle style = null)
+        bool? wrapLines = null,
+        Size? maximumSize = null)
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("webElement", webElement);
@@ -107,9 +120,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       if (title == null)
         throw new InvalidOperationException ("Can not display the tooltip for the specified element as it has no title attribute.");
 
+      var clonedStyle = (style ?? BrowserConfiguration.TooltipStyle).Clone (positioning: positioning, wrapLines: wrapLines, maximumSize: maximumSize);
+
       var tooltipAnnotation = new ScreenshotTooltipAnnotation (
           title,
-          style ?? BrowserConfiguration.TooltipStyle,
+          clonedStyle,
           padding ?? new WebPadding (0, 20, 0, 20));
       builder.Annotate (
           new Rectangle (

@@ -18,6 +18,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations;
@@ -218,12 +219,19 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Saves the screenshot with all applied annotations and/or cropping under <paramref name="path"/>.
     /// </summary>
-    public void Save ([NotNull] string path)
+    public void Save ([NotNull] string path, bool @override = false)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("path", path);
 
       if (_drawMouseCursor && _screenshot.CursorInformation.IsVisible)
         _screenshot.CursorInformation.Draw (_graphics);
+
+      if (!@override && File.Exists (path))
+        throw new InvalidOperationException (string.Format ("A screenshot with the file name '{0}' does already exist.", path));
+
+      var directory = Path.GetDirectoryName (path);
+      if (Directory.Exists (directory))
+        Directory.CreateDirectory (directory);
 
       _graphics.Flush();
       _screenshot.Image.Save (path, ImageFormat.Png);
