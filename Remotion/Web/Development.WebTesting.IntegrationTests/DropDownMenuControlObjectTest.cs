@@ -140,6 +140,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (dropDownMenu.IsOpen(), Is.False);
     }
 
+    [Test]
+    public void TestDropDownMenuControlObject_IsOpen_OnOtherDropDownMenu ()
+    {
+      var home = Start();
+
+      var myDropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+      var myDropDownMenu2 = home.DropDownMenus().GetByLocalID ("MyDropDownMenu2");
+
+      myDropDownMenu.Open();
+      Assert.That (myDropDownMenu2.IsOpen(), Is.False);
+    }
+
     private WxePageObject Start ()
     {
       return Start<WxePageObject> ("DropDownMenuTest.wxe");

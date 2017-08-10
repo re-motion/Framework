@@ -175,8 +175,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     public ContextMenuControlObject GetContextMenu ()
     {
-      var selectAnchorScope = GetWellKnownSelectAnchorScope();
-      return new ContextMenuControlObject (Context.CloneForControl (selectAnchorScope));
+      var contextMenuScope = Scope.FindXPath ("./span/span");
+
+      return new ContextMenuControlObject (Context.CloneForControl (contextMenuScope));
     }
 
     private ElementScope GetWellKnownSelectAnchorScope ()

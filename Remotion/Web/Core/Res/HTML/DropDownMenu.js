@@ -102,6 +102,7 @@ function DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, evt)
 
   var div = document.createElement('div');
   div.className = 'DropDownMenuOptions';
+  div.id = menuID + '_DropDownMenuOptions';
   _dropDownMenu_currentPopup = div;
 
   var ul = document.createElement('ul');

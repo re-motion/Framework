@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public abstract class DropDownMenuControlObjectBase
       : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithSelectableItems, IFluentControlObjectWithSelectableItems
   {
-    private const string c_dropDownMenuOptionsCssCssSelector = "ul.DropDownMenuOptions";
+    private const string c_dropDownMenuOptionsCssSelector = "ul.DropDownMenuOptions";
 
     protected DropDownMenuControlObjectBase ([NotNull] ControlObjectContext context)
         : base (context)
@@ -45,22 +45,30 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public abstract void Open ();
 
     /// <summary>
+    /// Returns true if the drop down option menu is detected to be open.
+    /// </summary>
+    public bool IsOpen ()
+    {
+      var dropDownMenuOptionsScope = Context.RootScope.FindCss (c_dropDownMenuOptionsCssSelector);
+
+      var exists = dropDownMenuOptionsScope.ExistsWorkaround();
+
+      // No dropdown menu exists on the screen? --> Guaranteed not open
+      if (!exists)
+        return false;
+
+      return IsDropDownMenuOfCurrentScope (dropDownMenuOptionsScope);
+    }
+
+    
+
+    /// <summary>
     /// Method to close the currently open DropDown via javascript.
     /// </summary>
     public void Close ()
     {
       if (IsOpen())
         Context.Browser.Driver.ExecuteScript ("DropDownMenu_ClosePopUp()", Scope);
-    }
-
-    /// <summary>
-    /// Returns true if the drop down option menu is detected to be open.
-    /// </summary>
-    public bool IsOpen ()
-    {
-      var dropDownMenuOptionsScope = Context.RootScope.FindCss (c_dropDownMenuOptionsCssCssSelector);
-
-      return dropDownMenuOptionsScope.ExistsWorkaround();
     }
 
     /// <inheritdoc/>
@@ -153,11 +161,20 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       return ClickItem (scope, actionOptions);
     }
 
+    private bool IsDropDownMenuOfCurrentScope (ElementScope dropDownMenuOptionsScope)
+    {
+      var currentID = GetHtmlID();
+
+      var dropDownMenuOptionsID = dropDownMenuOptionsScope.FindXPath ("..").Id;
+
+      return dropDownMenuOptionsID == currentID + "_DropDownMenuOptions";
+    }
+
     private ElementScope GetDropDownMenuScope ()
     {
       Open();
 
-      var dropDownMenuOptionsScope = Context.RootScope.FindCss (c_dropDownMenuOptionsCssCssSelector);
+      var dropDownMenuOptionsScope = Context.RootScope.FindCss (c_dropDownMenuOptionsCssSelector);
 
       return dropDownMenuOptionsScope;
     }
