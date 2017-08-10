@@ -388,6 +388,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return node;
     }
 
+    /// <summary> Overrides the parent control's <c>TagKey</c> property. </summary>
+    protected override HtmlTextWriterTag TagKey
+    {
+      get { return HtmlTextWriterTag.Div; }
+    }
+
     protected virtual string GetText (IBusinessObjectWithIdentity businessObject)
     {
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
