@@ -630,7 +630,7 @@ namespace Remotion.Web.UI.Controls
       if (isMenuVisible)
       {
         writer.AddAttribute ("oncontextmenu", "return false;");
-        writer.AddAttribute ("name", menu.ClientID);
+        writer.AddAttribute ("id", menu.ClientID);
       }
       RenderNodeHead (writer, node, nodePath);
 
@@ -1167,7 +1167,7 @@ namespace Remotion.Web.UI.Controls
                 @"$(document).ready( function(){{ 
   $('#{0}').find('span.treeViewNodeHead, span.treeViewNodeHeadSelected').each(
     function() {{
-      var menuID = $(this).attr('name');
+      var menuID = $(this).attr('id');
       if (menuID != null && menuID.length > 0)
         {1}
     }}
