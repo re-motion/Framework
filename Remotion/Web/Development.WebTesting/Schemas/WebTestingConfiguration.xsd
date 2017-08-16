@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:c="http://www.re-motion.org/WebTesting/Configuration/1.0"
+    targetNamespace="http://www.re-motion.org/WebTesting/Configuration/1.0"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified">
+
+  <xs:element name="remotion.webTesting">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="hosting">
+          <xs:complexType>
+            <xs:attribute name="name" type="c:RequiredStringType" use="required" />
+            <xs:attribute name="type" type="c:RequiredStringType" use="required" />
+            <xs:anyAttribute processContents="skip" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+
+      <xs:attribute name="browser" type="c:BrowserType" use="required" />
+      <xs:attribute name="searchTimeout" type="xs:time" use="required" />
+      <xs:attribute name="downloadStartedTimeout" type="xs:time" default="00:00:10" />
+      <xs:attribute name="downloadUpdatedTimeout" type="xs:time" default="00:00:05" />
+      <xs:attribute name="retryInterval" type="xs:time" use="required" />
+      <xs:attribute name="webApplicationRoot" type="c:RequiredStringType" use="required" />
+      <xs:attribute name="screenshotDirectory" type="c:RequiredStringType" />
+      <xs:attribute name="logsDirectory" type="c:RequiredStringType" default="." />
+      <xs:attribute name="logPrefix" type="xs:string" default="" />
+      <xs:attribute name="closeBrowserWindowsOnSetUpAndTearDown" type="xs:boolean" default="false" />
+      <xs:attribute name="cleanUpUnmatchedDownloadedFiles" type="xs:boolean" default="false" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="BrowserType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Chrome" />
+      <xs:enumeration value="InternetExplorer" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RequiredStringType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:whiteSpace value="collapse" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
