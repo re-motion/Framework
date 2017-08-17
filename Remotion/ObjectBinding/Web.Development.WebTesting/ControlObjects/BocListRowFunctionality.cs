@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public void Select ()
     {
-      var scope = GetRowSelectorCheckboxScope();
+      var scope = GetRowSelectorScope();
       new CheckAction (this, scope).Execute (Opt.ContinueImmediately());
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public void Deselect ()
     {
-      var scope = GetRowSelectorCheckboxScope();
+      var scope = GetRowSelectorScope();
       new UncheckAction (this, scope).Execute (Opt.ContinueImmediately());
     }
 
@@ -70,17 +70,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       get
       {
-        var rowSelectorCheckboxScope = GetRowSelectorCheckboxScope();
+        var rowSelectorCheckboxScope = GetRowSelectorScope();
         return rowSelectorCheckboxScope.IsSelected();
       }
     }
 
-    private ElementScope GetRowSelectorCheckboxScope ()
+    private ElementScope GetRowSelectorScope ()
     {
-      var zeroBasedAbsoluteRowIndexOfFirstRow = _accessor.GetZeroBasedAbsoluteRowIndexOfFirstRow();
-
-      var zeroBasedAbsoluteRowIndex = zeroBasedAbsoluteRowIndexOfFirstRow + _oneBasedRowIndexOnPage - 1;
-      return _accessor.ParentScope.FindChild (string.Format ("RowSelector_{0}", zeroBasedAbsoluteRowIndex));
+      return Context.Scope.FindCss (".bocListDataCellRowSelector input[type='checkbox'], .bocListDataCellRowSelector input[type='radio']");
     }
 
     /// <inheritdoc/>

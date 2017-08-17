@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
 
       var th = Html.GetAssertedChildElement (document, "th", 0);
-      Html.AssertAttribute (th, "class", _bocListCssClassDefinition.TitleCell);
+      Html.AssertAttribute (th, "class", _bocListCssClassDefinition.TitleCell + " " + _bocListCssClassDefinition.TitleCellSelector);
 
       var label = Html.GetAssertedChildElement (th, "label", 0);
       Html.AssertNoAttribute (label, "for");
@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", "bocListTableCell");
+      Html.AssertAttribute (td, "class", "bocListTableCell bocListDataCellRowSelector");
 
       var label = Html.GetAssertedChildElement (td, "label", 0);
       Html.AssertNoAttribute (label, "for");
@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
 
       var th = Html.GetAssertedChildElement (document, "th", 0);
-      Html.AssertAttribute (th, "class", _bocListCssClassDefinition.TitleCell);
+      Html.AssertAttribute (th, "class", _bocListCssClassDefinition.TitleCell + " " + _bocListCssClassDefinition.TitleCellSelector);
 
       Html.AssertTextNode (th, HtmlHelper.WhiteSpace, 0);
     }
@@ -127,7 +127,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", "bocListTableCell");
+      Html.AssertAttribute (td, "class", "bocListTableCell bocListDataCellRowSelector");
 
       var label = Html.GetAssertedChildElement (td, "label", 0);
       Html.AssertNoAttribute (label, "for");

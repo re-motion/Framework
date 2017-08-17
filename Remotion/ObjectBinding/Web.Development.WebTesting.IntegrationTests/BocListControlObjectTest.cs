@@ -192,6 +192,36 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestSelectAfterClickOnSortColumnCheckBox ()
+    {
+      var home = Start();
+
+      var bocListWithCheckboxes = home.Lists().GetByLocalID ("JobList_Normal");
+
+      bocListWithCheckboxes.ClickOnSortColumn ("StartDate");
+      bocListWithCheckboxes.ClickOnSortColumn ("Title");
+
+      Assert.That (bocListWithCheckboxes.GetRow (2).GetCell (6).GetText(), Is.EqualTo ("Programmer"));
+      Assert.That (() => bocListWithCheckboxes.GetRow (2).Select(), Throws.Nothing);
+      Assert.That (bocListWithCheckboxes.GetRow (2).IsSelected, Is.True);
+    }
+
+    [Test]
+    public void TestSelectAfterClickOnSortColumnRadioButton ()
+    {
+      var home = Start();
+
+      var bocListWithRadiobuttons = home.Lists().GetByLocalID ("JobList_WithRadioButtons");
+
+      bocListWithRadiobuttons.ClickOnSortColumn ("StartDate");
+      bocListWithRadiobuttons.ClickOnSortColumn ("Title");
+
+      Assert.That (bocListWithRadiobuttons.GetRow (2).GetCell (2).GetText(), Is.EqualTo ("Programmer"));
+      Assert.That (() => bocListWithRadiobuttons.GetRow (2).Select(), Throws.Nothing);
+      Assert.That (bocListWithRadiobuttons.GetRow (2).IsSelected, Is.True);
+    }
+
+    [Test]
     public void TestIsReadOnly ()
     {
       var home = Start();

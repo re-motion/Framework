@@ -133,6 +133,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return "bocListDataCellIndex"; }
     }
 
+    /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s title row that contains the all rows selector. </summary>
+    /// <remarks> Class: <c>bocListTitleCellAllRowsSelector</c> </remarks>
+    public virtual string TitleCellSelector
+    {
+      get { return "bocListTitleCellAllRowsSelector"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s data rows that contains the row selector. </summary>
+    /// <remarks> Class: <c>bocListDataCellRowSelector</c> </remarks>
+    public virtual string DataCellSelector
+    {
+      get { return "bocListDataCellRowSelector"; }
+    }
+
     /// <summary> Gets the CSS-Class applied to the content if there is no anchor element. </summary>
     /// <remarks> Class: <c>bocListDataCellContent</c> </remarks>
     public virtual string Content
