@@ -117,4 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.GoToFirstAlternateText" xml:space="preserve">
+    <value>Mostra prima pagina</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.GoToLastAlternateText" xml:space="preserve">
+    <value>Mostra ultima pagina</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.GoToNextAlternateText" xml:space="preserve">
+    <value>Mostra prossima pagina</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.GoToPreviousAlternateText" xml:space="preserve">
+    <value>Mostra pagina precedente</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.PageLabelText" xml:space="preserve">
+    <value>Pagina</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.TotalPageCountText" xml:space="preserve">
+    <value>di {0}</value>
+  </data>
 </root>

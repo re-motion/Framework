@@ -117,4 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Remotion.Web.UI.SmartPageImplementation.SmartPageInfo.AbortMessage" xml:space="preserve">
+    <value>Proseguendo, eventuali dati non salvati andranno perduti.</value>
+  </data>
+  <data name="Remotion.Web.UI.SmartPageImplementation.SmartPageInfo.StatusIsSubmittingMessage" xml:space="preserve">
+    <value>&lt;p&gt;È in corso il nuovo caricamento della pagina.&lt;/p&gt;&lt;p&gt;Prima di proseguire con altri input, attendere che la trasmissione sia conclusa.&lt;/p&gt;</value>
+  </data>
 </root>

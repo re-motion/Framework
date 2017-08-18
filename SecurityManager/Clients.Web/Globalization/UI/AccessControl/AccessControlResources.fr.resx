@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,118 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.StatefulAccessControlListsTitle" xml:space="preserve">
+    <value>Autorisations relatives à un objet</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStatefulAccessControlListControl.MissingStateCombinationsValidatorErrorMessage" xml:space="preserve">
+    <value>Attribuez un état.</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificTenantFieldRequiredFieldErrorMessage" xml:space="preserve">
+    <value>Choisissez une client.</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.DeleteAccessControlEntryButtonText" xml:space="preserve">
+    <value>Supprimer la ligne</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.EditAccessControlListControlBase.DeleteAccessControlListButtonText" xml:space="preserve">
+    <value>Supprimer l’ACL</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStateCombinationControl.DeleteStateCombinationButtonText" xml:space="preserve">
+    <value>Supprimer l’état</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.DuplicateStateCombinationsValidatorErrorMessage" xml:space="preserve">
+    <value>Chaque état doit être sans équivoque.</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.EditAccessControlListControlBase.NewAccessControlEntryButtonText" xml:space="preserve">
+    <value>Insérer une ligne</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.NewStatefulAccessControlListButtonText" xml:space="preserve">
+    <value>Ajouter une ACL relative à un objet</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStatefulAccessControlListControl.NewStateCombinationButtonText" xml:space="preserve">
+    <value>Attribuer un état</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.Title" xml:space="preserve">
+    <value>Gérer les autorisations pour la classe &quot;{0}&quot;</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.NewStatelessAccessControlListButtonText" xml:space="preserve">
+    <value>Ajouter une ACL relative à une classe</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStateCombinationControl.RequiredStateCombinationValidatorErrorMessage" xml:space="preserve">
+    <value>Choisissez un état.</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.StatelessAccessControlListTitle" xml:space="preserve">
+    <value>Autorisations relatives à une classe</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificGroupFieldRequiredFieldErrorMessage" xml:space="preserve">
+    <value>Choisissez un groupe.</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificGroupTypeFieldRequiredFieldErrorMessage" xml:space="preserve">
+    <value>Choisissez une unité de structure.</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificPositionFieldRequiredFieldErrorMessage" xml:space="preserve">
+    <value>Choisissez un poste.</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificUserFieldRequiredFieldErrorMessage" xml:space="preserve">
+    <value>Choisissez un utilisateur.</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.CollapseAccessControlEntryButtonText" xml:space="preserve">
+    <value>Masquer les détails</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.ExpandAccessControlEntryButtonText" xml:space="preserve">
+    <value>Afficher les détails</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.AllPermissionsMenu_ClearAllPermissions_Text" xml:space="preserve">
+    <value>Tout supprimer</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.AllPermissionsMenu_DenyAllPermissions_Text" xml:space="preserve">
+    <value>Interdire tout</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.AllPermissionsMenu_GrantAllPermissions_Text" xml:space="preserve">
+    <value>Autoriser tout</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionDeniedText" xml:space="preserve">
+    <value>Accès &quot;{0}&quot; interdit</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionGrantedText" xml:space="preserve">
+    <value>Accès &quot;{0}&quot; autorisé</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionUndefinedText" xml:space="preserve">
+    <value>Accès &quot;{0}&quot; non défini</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.BranchOfOwningGroupLabel" xml:space="preserve">
+    <value>Au sein du même</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupHierarchyCondition_This" xml:space="preserve">
+    <value>Uniquement ce groupe</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupHierarchyCondition_ThisAndChildren" xml:space="preserve">
+    <value>Ce groupe ou de type enfant</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupHierarchyCondition_ThisAndParent" xml:space="preserve">
+    <value>Ce groupe ou de type parent</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupHierarchyCondition_ThisAndParentAndChildren" xml:space="preserve">
+    <value>Ce groupe ou de type parent/enfant</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.TenantHierarchyCondition_This" xml:space="preserve">
+    <value>Uniquement ce client</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.TenantHierarchyCondition_ThisAndParent" xml:space="preserve">
+    <value>Ce client ou de type parent</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupCondition_None" xml:space="preserve">
+    <value>Quelconque</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.TenantCondition_None" xml:space="preserve">
+    <value>Quelconque</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.UserCondition_None" xml:space="preserve">
+    <value>Quelconque</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificGroupFieldInvalidItemErrorMessage" xml:space="preserve">
+    <value>Impossible d’attribuer le nom entré à un groupe. Veuillez rectifier votre saisie.</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificUserFieldInvalidItemErrorMessage" xml:space="preserve">
+    <value>Impossible d’attribuer le nom entré à un utilisateur. Veuillez rectifier votre saisie.</value>
+  </data>
 </root>

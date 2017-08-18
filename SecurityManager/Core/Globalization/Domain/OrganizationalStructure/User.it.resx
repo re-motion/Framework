@@ -117,4 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="property:DisplayName" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="property:UserName" xml:space="preserve">
+    <value>Nome utente</value>
+  </data>
+  <data name="property:Title" xml:space="preserve">
+    <value>Titolo</value>
+  </data>
+  <data name="property:FirstName" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="property:LastName" xml:space="preserve">
+    <value>Cognome</value>
+  </data>
+  <data name="property:OwningGroup" xml:space="preserve">
+    <value>Gruppo</value>
+  </data>
+  <data name="property:Roles" xml:space="preserve">
+    <value>Ruoli</value>
+  </data>
+  <data name="property:SubstitutedBy" xml:space="preserve">
+    <value>Sostituito da</value>
+  </data>
+  <data name="property:Tenant" xml:space="preserve">
+    <value>Tenant</value>
+  </data>
+  <data name="type:User" xml:space="preserve">
+    <value>Utente</value>
+  </data>
 </root>

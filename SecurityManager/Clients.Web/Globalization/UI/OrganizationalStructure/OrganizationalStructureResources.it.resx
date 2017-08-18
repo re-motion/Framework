@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupControl.GroupLabelText" xml:space="preserve">
+    <value>Modifica gruppo</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupControl.ParentValidatorErrorMessage" xml:space="preserve">
+    <value>Impossibile utilizzare il gruppo selezionato come padre perché risulterebbe una gerarchia circolare.</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListForm.Title" xml:space="preserve">
+    <value>Gestisci utente</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListControl.UserListLabelText" xml:space="preserve">
+    <value>Gestisci utente</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListControl.NewUserButtonText" xml:space="preserve">
+    <value>Crea nuovo utente</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.TenantListForm.Title" xml:space="preserve">
+    <value>Gestisci tenant</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.TenantListControl.TenantListLabelText" xml:space="preserve">
+    <value>Gestisci tenant</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.TenantListControl.NewTenantButtonText" xml:space="preserve">
+    <value>Crea nuovo tenant</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.PositionListForm.Title" xml:space="preserve">
+    <value>Gestisci posti</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.PositionListControl.PositionListLabelText" xml:space="preserve">
+    <value>Gestisci posti</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.PositionListControl.NewPositionButtonText" xml:space="preserve">
+    <value>Crea nuovo posto</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupTypeListForm.Title" xml:space="preserve">
+    <value>Gestisci unità strutturali</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupTypeListControl.GroupTypeListLabelText" xml:space="preserve">
+    <value>Gestisci unità strutturali</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupTypeListControl.NewGroupTypeButtonText" xml:space="preserve">
+    <value>Crea nuova unità strutturale</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupListForm.Title" xml:space="preserve">
+    <value>Gestisci gruppi</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupListControl.GroupListLabelText" xml:space="preserve">
+    <value>Gestisci gruppi</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupListControl.NewGroupButtonText" xml:space="preserve">
+    <value>Crea nuovo gruppo</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditUserForm.Title" xml:space="preserve">
+    <value>Modifica utente</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditUserControl.UserLabelText" xml:space="preserve">
+    <value>Modifica utente</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantForm.Title" xml:space="preserve">
+    <value>Modifica tenant</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl.ParentValidatorErrorMessage" xml:space="preserve">
+    <value>Impossibile utilizzare il tenant selezionato come padre perché risulterebbe una gerarchia circolare.</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl.TenantLabelText" xml:space="preserve">
+    <value>Modifica tenant</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditPositionForm.Title" xml:space="preserve">
+    <value>Modifica posto</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditPositionControl.PositionLabelText" xml:space="preserve">
+    <value>Modifica posto</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupTypeForm.Title" xml:space="preserve">
+    <value>Modifica unità strutturale</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupTypeControl.GroupTypeLabelText" xml:space="preserve">
+    <value>Modifica unità strutturale</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupForm.Title" xml:space="preserve">
+    <value>Modifica gruppo</value>
+  </data>
 </root>

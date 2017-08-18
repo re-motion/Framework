@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.User" xml:space="preserve">
+    <value>Utente</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Save" xml:space="preserve">
+    <value>Salva</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Cancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Apply" xml:space="preserve">
+    <value>Applica</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Edit" xml:space="preserve">
+    <value>Modifica</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.ErrorMessage" xml:space="preserve">
+    <value>La pagina contiene input non validi, contrassegnati da segni esclamativi rossi.</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.GroupType" xml:space="preserve">
+    <value>Unità strutturale</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Group" xml:space="preserve">
+    <value>Gruppo</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Position" xml:space="preserve">
+    <value>Posto</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.New" xml:space="preserve">
+    <value>Nuovo</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Delete" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Add" xml:space="preserve">
+    <value>Aggiungi</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Remove" xml:space="preserve">
+    <value>Rimuovi</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.AccessControl" xml:space="preserve">
+    <value>Autorizzazioni</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.OrganizationalStructure" xml:space="preserve">
+    <value>Organizzazione strutturale</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.SecurableClassDefinition" xml:space="preserve">
+    <value>Classi</value>
+  </data>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Tenant" xml:space="preserve">
+    <value>Tenant</value>
+  </data>
 </root>

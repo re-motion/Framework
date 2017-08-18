@@ -348,8 +348,12 @@
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupTypePosition.fr.resx" />
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupTypePosition.it.resx" />
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\OrganizationalStructureObject.de.resx" />
-    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\OrganizationalStructureObject.fr.resx" />
-    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\OrganizationalStructureObject.it.resx" />
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\OrganizationalStructureObject.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\OrganizationalStructureObject.it.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\OrganizationalStructureObject.resx" />
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Position.fr.resx" />
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Position.it.resx" />

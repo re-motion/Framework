@@ -32,7 +32,7 @@ namespace Remotion.Security.UnitTests
       foreach (GeneralAccessTypes enumValue in Enum.GetValues (typeof (GeneralAccessTypes)))
       {
         var localizations = globalizationService.GetAvailableEnumDisplayNames (enumValue);
-        Assert.That (localizations.Count, Is.EqualTo (3), enumValue.ToString()); // invariant, EN, and DE
+        Assert.That (localizations.Count, Is.EqualTo (5), enumValue.ToString()); // invariant, EN, DE, FR, IT
       }
     }
   }

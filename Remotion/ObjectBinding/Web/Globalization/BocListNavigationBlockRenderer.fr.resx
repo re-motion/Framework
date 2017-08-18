@@ -117,4 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.GoToFirstAlternateText" xml:space="preserve">
+    <value>Afficher la première page</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.GoToLastAlternateText" xml:space="preserve">
+    <value>Afficher la dernière page</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.GoToNextAlternateText" xml:space="preserve">
+    <value>Afficher la page suivante</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.GoToPreviousAlternateText" xml:space="preserve">
+    <value>Afficher la page précédente</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.PageLabelText" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.TotalPageCountText" xml:space="preserve">
+    <value>sur {0}</value>
+  </data>
 </root>

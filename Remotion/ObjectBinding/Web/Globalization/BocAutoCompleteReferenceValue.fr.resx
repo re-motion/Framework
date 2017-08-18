@@ -117,4 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue.InvalidItemErrorMessage" xml:space="preserve">
+    <value>Aucun résultat trouvé pour le texte entré. Veuillez rectifier votre saisie.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue.NullItemErrorMessage" xml:space="preserve">
+    <value>Choisissez une entrée.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue.OptionsTitle" xml:space="preserve">
+    <value>Options</value>
+  </data>
 </root>

@@ -524,7 +524,9 @@
     <EmbeddedResource Include="Globalization\BocAutoCompleteReferenceValueRenderer.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\BocBooleanValue.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocBooleanValue.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\BocBooleanValue.it.resx" />
     <EmbeddedResource Include="Globalization\BocCheckBox.fr.resx" />
     <EmbeddedResource Include="Globalization\BocCheckBox.it.resx" />

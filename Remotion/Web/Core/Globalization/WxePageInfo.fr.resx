@@ -117,4 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Remotion.Web.ExecutionEngine.WxePageInfo.StatusIsAbortingMessage" xml:space="preserve">
+    <value>&lt;p&gt;Vous êtes sur le point de quitter la page.&lt;/p&gt;&lt;p&gt;Vous ne pouvez plus saisir aucune donnée sur le serveur.&lt;/p&gt;</value>
+  </data>
+  <data name="Remotion.Web.ExecutionEngine.WxePageInfo.StatusIsCachedMessage" xml:space="preserve">
+    <value>Impossible de naviguer avec les boutons Suivant et Précédent.</value>
+  </data>
 </root>

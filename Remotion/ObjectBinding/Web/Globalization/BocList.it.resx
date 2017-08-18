@@ -117,4 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.OptionsTitle" xml:space="preserve">
+    <value>Opzioni</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.AvailableViewsListTitle" xml:space="preserve">
+    <value>Visualizzazione</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeErrorMessage" xml:space="preserve">
+    <value>Nella riga in corso di modifica si sono verificati errori.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle" xml:space="preserve">
+    <value>Input necessario nella riga in corso di modifica.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.EmptyListMessage" xml:space="preserve">
+    <value>Nessun dato presente.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SortAscendingAlternateText" xml:space="preserve">
+    <value>Ordinamento crescente</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SortDescendingAlternateText" xml:space="preserve">
+    <value>Ordinamento decrescente</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeEditAlternateText" xml:space="preserve">
+    <value>Modifica riga</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeSaveAlternateText" xml:space="preserve">
+    <value>Applica modifiche alla riga</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeCancelAlternateText" xml:space="preserve">
+    <value>Scarta modifiche alla riga</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectRowLabelText" xml:space="preserve">
+    <value>Seleziona questa riga</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectAllRowsLabelText" xml:space="preserve">
+    <value>Seleziona tutte le righe</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.IndexColumnTitle" xml:space="preserve">
+    <value>N.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowMenuTitle" xml:space="preserve">
+    <value>Opzioni</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
+    <value>In almeno una riga si è verificato un errore.</value>
+  </data>
 </root>

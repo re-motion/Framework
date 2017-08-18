@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -112,9 +112,66 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccessRightsNameTableHeader" xml:space="preserve">
+    <value>Autorizzazioni conferite</value>
+  </data>
+  <data name="ClassTableHeader" xml:space="preserve">
+    <value>Classe</value>
+  </data>
+  <data name="DeniedRightsTableHeader" xml:space="preserve">
+    <value>Autorizzazioni negate</value>
+  </data>
+  <data name="FirstNameTableHeader" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="LastNameTableHeader" xml:space="preserve">
+    <value>Cognome</value>
+  </data>
+  <data name="NoAssociatedStatesHtmlText" xml:space="preserve">
+    <value>nessuno stato assegnato</value>
+  </data>
+  <data name="NO_CLASSES_DEFINED_Text" xml:space="preserve">
+    <value>_NESSUNA_CLASSE_DEFINITA_</value>
+  </data>
+  <data name="OrItsChildren" xml:space="preserve">
+    <value>o subordinati</value>
+  </data>
+  <data name="OrItsParents" xml:space="preserve">
+    <value>o padre</value>
+  </data>
+  <data name="OwningGroupEqualsTableHeader" xml:space="preserve">
+    <value>Gruppo dell&apos;oggetto corrisponde</value>
+  </data>
+  <data name="OwningTenantEqualsTableHeader" xml:space="preserve">
+    <value>Tenant dell&apos;oggetto corrisponde</value>
+  </data>
+  <data name="PageTitle" xml:space="preserve">
+    <value>re-motion ACL Expansion - utente</value>
+  </data>
+  <data name="PageTitleSingleFile" xml:space="preserve">
+    <value>re-motion ACL Expansion</value>
+  </data>
+  <data name="RoleTableHeader" xml:space="preserve">
+    <value>Ruolo</value>
+  </data>
+  <data name="StatelessHtmlText" xml:space="preserve">
+    <value>ACL riferito a classe</value>
+  </data>
+  <data name="StatesTableHeader" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="UserMustHaveAbstractRoleTableHeader" xml:space="preserve">
+    <value>L&apos;utente deve detenere un ruolo astratto</value>
+  </data>
+  <data name="UserMustOwnTableHeader" xml:space="preserve">
+    <value>L&apos;utente deve essere proprietario</value>
+  </data>
+  <data name="UserTableHeader" xml:space="preserve">
+    <value>Utente</value>
+  </data>
 </root>
