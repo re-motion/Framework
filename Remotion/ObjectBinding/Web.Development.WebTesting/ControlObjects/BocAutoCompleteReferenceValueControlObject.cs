@@ -31,6 +31,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   public class BocAutoCompleteReferenceValueControlObject
       : BocControlObject, IFillableControlObject, ICommandHost, IDropDownMenuHost, IControlObjectWithFormElements
   {
+    /// <summary>
+    /// Various constants shared by the script and the script-user client-code.
+    /// </summary>
+    private static class AutoCompleteSearchService
+    {
+      public const string State = "state";
+      public const string Data = "data";
+      public const string Success = "success";
+      public const string Error = "error";
+    }
+
     public BocAutoCompleteReferenceValueControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
@@ -97,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var inputScopeID = GetInputScopeID();
 
-      var searchServiceRequestScript = CommonJavaScripts.CreateAutoCompleteSearchServiceRequest (inputScopeID, searchText, completionSetCount);
+      var searchServiceRequestScript = CreateAutoCompleteSearchServiceRequest (inputScopeID, searchText, completionSetCount);
       var response = (IReadOnlyDictionary<string, object>) Context.Browser.Driver.ExecuteScript (searchServiceRequestScript, Scope);
       return ParseSearchServiceResponse (response);
     }
@@ -114,27 +125,117 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var inputScopeId = GetInputScopeID();
 
-      var searchServiceRequestScript = CommonJavaScripts.CreateAutoCompleteExactSearchServiceRequest (inputScopeId, searchText);
+      var searchServiceRequestScript = CreateAutoCompleteExactSearchServiceRequest (inputScopeId, searchText);
       var response = (IReadOnlyDictionary<string, object>) Context.Browser.Driver.ExecuteScript (searchServiceRequestScript, Scope);
       return ParseSearchServiceResponse (response).SingleOrDefault();
+    }
+
+
+    /// <summary>
+    /// JavaScript for calling the auto completion SearchExact web service method.
+    /// </summary>
+    /// <param name="autoCompleteTextValueInputFieldId">The auto completes input field ID.</param>
+    /// <param name="searchText">The search text.</param>
+    private string CreateAutoCompleteExactSearchServiceRequest (
+        [NotNull] string autoCompleteTextValueInputFieldId,
+        [NotNull] string searchText)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
+      ArgumentUtility.CheckNotNullOrEmpty ("searchText", searchText);
+
+      return CreateAutoCompleteSearchServiceRequestScript (autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearchExact", null);
+    }
+
+    /// <summary>
+    /// JavaScript for calling the auto completion Search web service method.
+    /// </summary>
+    /// <param name="autoCompleteTextValueInputFieldId">The auto completes input field ID.</param>
+    /// <param name="searchText">The search text.</param>
+    /// <param name="completionSetCount">The maximum size of the returned auto completion set.</param>
+    private string CreateAutoCompleteSearchServiceRequest (
+        [NotNull] string autoCompleteTextValueInputFieldId,
+        [NotNull] string searchText,
+        int completionSetCount)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
+      ArgumentUtility.CheckNotNullOrEmpty ("searchText", searchText);
+
+      return CreateAutoCompleteSearchServiceRequestScript (autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearch", completionSetCount);
+    }
+
+    private string CreateAutoCompleteSearchServiceRequestScript (
+        [NotNull] string autoCompleteTextValueInputFieldId,
+        [NotNull] string searchText,
+        [NotNull] string searchMethod,
+        int? completionSetCount)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
+      ArgumentUtility.CheckNotNullOrEmpty ("searchText", searchText);
+      ArgumentUtility.CheckNotNullOrEmpty ("searchMethod", searchMethod);
+
+      var setCompletionSetCountScriptPart = completionSetCount.HasValue
+          ? string.Format ("data['completionSetCount'] = {0};", completionSetCount.Value)
+          : string.Empty;
+
+      return string.Format (
+          @"
+CallWebService = function() {{
+  var input = $('#{0}');
+  var options = input.getAutoCompleteSearchParameters('{1}');
+  
+  var data = options.params;
+  data['searchString'] = options.searchString;
+  {2}
+
+  data = Sys.Serialization.JavaScriptSerializer.serialize(data);
+
+  var returnValue = null;
+  var request = {{
+    async:false,
+    type:'POST',
+    contentType:'application/json; charset=utf-8',
+    url:options.serviceUrl + '/' + options.{3},
+    data:data,
+    dataType:'json',
+    success:function(result, context, methodName){{ returnValue = {{ {4}:'{6}', {5}:result.d }}; }},
+    error:function(error, context, methodName){{ returnValue = {{ {4}:'{7}', {5}:error }}; }}
+  }};
+
+  $.ajax(request);
+
+  // Normalize communication between JS and C# API: always return an array if succeeded.
+  if(returnValue.state === 'success' && !Array.isArray(returnValue.data))
+    returnValue.data = [ returnValue.data ];
+
+  return returnValue;
+}};
+return CallWebService();",
+          autoCompleteTextValueInputFieldId,
+          searchText,
+          setCompletionSetCountScriptPart,
+          searchMethod,
+          AutoCompleteSearchService.State,
+          AutoCompleteSearchService.Data,
+          AutoCompleteSearchService.Success,
+          AutoCompleteSearchService.Error);
     }
 
     private IReadOnlyList<SearchServiceResultItem> ParseSearchServiceResponse ([NotNull] IReadOnlyDictionary<string, object> response)
     {
       ArgumentUtility.CheckNotNull ("response", response);
 
-      var state = (string) response[CommonJavaScripts.AutoCompleteSearchService.State];
-      var data = response[CommonJavaScripts.AutoCompleteSearchService.Data];
+      var state = (string) response[AutoCompleteSearchService.State];
+      var data = response[AutoCompleteSearchService.Data];
       switch (state)
       {
-        case CommonJavaScripts.AutoCompleteSearchService.Success:
+        case AutoCompleteSearchService.Success:
           var successData = (IReadOnlyCollection<object>) data;
           return successData.Cast<IDictionary<string, object>>()
               .Where (d => d != null) // empty JSON object (= no result) is converted to null
               .Select (d => new SearchServiceResultItem ((string) d["UniqueIdentifier"], (string) d["DisplayName"], (string) d["IconUrl"]))
               .ToList();
 
-        case CommonJavaScripts.AutoCompleteSearchService.Error:
+        case AutoCompleteSearchService.Error:
           var errorData = (IDictionary<string, object>) data;
           throw new WebServiceExceutionException (
               (long) errorData["readyState"],

@@ -22,9 +22,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 
-namespace Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotInfrastructure
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation
 {
   /// <summary>
   /// Provides helper methods for testing the screenshot infrastructure.
@@ -113,12 +114,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotInfrast
       var results = new List<SubTestResult>();
 
       if (type.HasFlag (ScreenshotTestingType.Desktop))
-      {
         results.Add (
             RunSubTest<TValue, TTarget> (helper, helper.CreateDesktopScreenshot(), test, value, "Desktop", testName, savePath, maxVariance, maxRatio));
-      }
       if (type.HasFlag (ScreenshotTestingType.Browser))
-      {
         results.Add (
             RunSubTest<TValue, TTarget> (
                 helper,
@@ -130,7 +128,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotInfrast
                 savePath,
                 maxVariance,
                 maxRatio));
-      }
 
       var stringBuilder = new StringBuilder();
       var failed = results.Count (t => !t.Success);
@@ -139,26 +136,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotInfrast
       else
         stringBuilder.AppendLine (string.Format ("{0} out of {1} sub tests failed:", results.Count (t => !t.Success), results.Count));
 
-      var hasFailed = false;
+      var fail = false;
       foreach (var testResult in results)
       {
         stringBuilder.AppendLine();
         if (!testResult.Success)
         {
-          hasFailed = true;
+          fail = true;
           stringBuilder.AppendLine (string.Format ("Test '{0}' failed:", testResult.Name));
           stringBuilder.AppendLine (string.Format ("message: {0}", testResult.Message));
           stringBuilder.AppendLine (string.Format ("source: {0}", testResult.ImageSource));
         }
         else
-        {
           stringBuilder.AppendLine (string.Format ("Test '{0}' succeeded:", testResult.Name));
-        }
         stringBuilder.AppendLine (string.Format ("resource(s): {0}", testResult.ResourceName));
       }
 
-      if (hasFailed)
+      if (fail)
         Assert.Fail (stringBuilder.ToString());
+      Console.Write (stringBuilder.ToString());
     }
 
     private static SubTestResult RunSubTest<TValue, TTarget> (

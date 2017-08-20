@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Drawing;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
@@ -28,6 +29,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   /// </summary>
   public abstract class IntegrationTest
   {
+    private readonly Brush _screenshotWhiteBrush = new SolidBrush (Color.White);
+    private readonly Brush _screenshotTransparentBrush = new SolidBrush (Color.Transparent);
+
     private WebTestHelper _webTestHelper;
 
     protected virtual bool MaximizeMainBrowserSession
@@ -38,6 +42,27 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     protected WebTestHelper Helper
     {
       get { return _webTestHelper; }
+    }
+
+    /// <summary>
+    /// This brush is used to cover up element details that are not relevant when testing the fluent screenshot API.
+    /// This allows a test screenshot to be used with different browsers, although the browsers render details differently.
+    /// If irrelevant test details would not be covered up a test screenshot for each configuration would be needed (see DropDownMenu).
+    /// In order to debug test screenshot errors use the <see cref="ScreenshotBackgroundBrushDebug"/> instead of <see cref="ScreenshotBackgroundBrush"/>.
+    /// </summary>
+    protected Brush ScreenshotBackgroundBrush
+    {
+      get { return _screenshotWhiteBrush; }
+    }
+
+    /// <summary>
+    /// Brush that should be used when debugging fluent screenshot API.
+    /// For deployment use <see cref="ScreenshotBackgroundBrush"/>.
+    /// For more information about the use case <see cref="ScreenshotBackgroundBrush"/>.
+    /// </summary>
+    protected Brush ScreenshotBackgroundBrushDebug
+    {
+      get { return _screenshotTransparentBrush; }
     }
 
     [TestFixtureSetUp]

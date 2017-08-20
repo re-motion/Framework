@@ -41,111 +41,11 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public static readonly string GetComputedTextColor = CreateGetComputedCssValueScript ("color");
 
-    /// <summary>
-    /// JavaScript for calling the auto completion SearchExact web service method.
-    /// </summary>
-    /// <param name="autoCompleteTextValueInputFieldId">The auto completes input field ID.</param>
-    /// <param name="searchText">The search text.</param>
-    public static string CreateAutoCompleteExactSearchServiceRequest (
-        [NotNull] string autoCompleteTextValueInputFieldId,
-        [NotNull] string searchText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
-      ArgumentUtility.CheckNotNullOrEmpty ("searchText", searchText);
-
-      return CreateAutoCompleteSearchServiceRequestScript (autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearchExact", null);
-    }
-
-    /// <summary>
-    /// JavaScript for calling the auto completion Search web service method.
-    /// </summary>
-    /// <param name="autoCompleteTextValueInputFieldId">The auto completes input field ID.</param>
-    /// <param name="searchText">The search text.</param>
-    /// <param name="completionSetCount">The maximum size of the returned auto completion set.</param>
-    public static string CreateAutoCompleteSearchServiceRequest (
-        [NotNull] string autoCompleteTextValueInputFieldId,
-        [NotNull] string searchText,
-        int completionSetCount)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
-      ArgumentUtility.CheckNotNullOrEmpty ("searchText", searchText);
-
-      return CreateAutoCompleteSearchServiceRequestScript (autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearch", completionSetCount);
-    }
-
-    /// <summary>
-    /// Various constants shared by the script and the script-user client-code.
-    /// </summary>
-    public static class AutoCompleteSearchService
-    {
-      public const string State = "state";
-      public const string Data = "data";
-      public const string Success = "success";
-      public const string Error = "error";
-    }
-
     private static string CreateGetComputedCssValueScript ([NotNull] string cssProperty)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("cssProperty", cssProperty);
 
       return string.Format ("return $(arguments[0]).css('{0}');", cssProperty);
-    }
-
-    private static string CreateAutoCompleteSearchServiceRequestScript (
-        [NotNull] string autoCompleteTextValueInputFieldId,
-        [NotNull] string searchText,
-        [NotNull] string searchMethod,
-        int? completionSetCount)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
-      ArgumentUtility.CheckNotNullOrEmpty ("searchText", searchText);
-      ArgumentUtility.CheckNotNullOrEmpty ("searchMethod", searchMethod);
-
-      var setCompletionSetCountScriptPart = completionSetCount.HasValue
-          ? string.Format ("data['completionSetCount'] = {0};", completionSetCount.Value)
-          : string.Empty;
-
-      return string.Format (
-          @"
-CallWebService = function() {{
-  var input = $('#{0}');
-  var options = input.getAutoCompleteSearchParameters('{1}');
-  
-  var data = options.params;
-  data['searchString'] = options.searchString;
-  {2}
-
-  data = Sys.Serialization.JavaScriptSerializer.serialize(data);
-
-  var returnValue = null;
-  var request = {{
-    async:false,
-    type:'POST',
-    contentType:'application/json; charset=utf-8',
-    url:options.serviceUrl + '/' + options.{3},
-    data:data,
-    dataType:'json',
-    success:function(result, context, methodName){{ returnValue = {{ {4}:'{6}', {5}:result.d }}; }},
-    error:function(error, context, methodName){{ returnValue = {{ {4}:'{7}', {5}:error }}; }}
-  }};
-
-  $.ajax(request);
-
-  // Normalize communication between JS and C# API: always return an array if succeeded.
-  if(returnValue.state === 'success' && !Array.isArray(returnValue.data))
-    returnValue.data = [ returnValue.data ];
-
-  return returnValue;
-}};
-return CallWebService();",
-          autoCompleteTextValueInputFieldId,
-          searchText,
-          setCompletionSetCountScriptPart,
-          searchMethod,
-          AutoCompleteSearchService.State,
-          AutoCompleteSearchService.Data,
-          AutoCompleteSearchService.Success,
-          AutoCompleteSearchService.Error);
     }
   }
 }

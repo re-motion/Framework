@@ -15,14 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Drawing;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocDateTimeValue;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -40,6 +46,67 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<BocDateTimeValueSelector, BocDateTimeValueControlObject> testAction)
     {
       testAction (Helper, e => e.DateTimeValues(), "dateTimeValue");
+    }
+
+    /// <summary>
+    /// Tests that the various parts of the <see cref="BocDateTimeValueControlObject"/> can be annotated when using the screenshot API.
+    /// </summary>
+    [Category ("Screenshot")]
+    [Test]
+    public void ScreenshotTest ()
+    {
+      var home = Start();
+
+      var control = home.DateTimeValues().GetByID ("body_DataEditControl_DateOfBirthField_Normal");
+      var fluentControl = control.ForScreenshot();
+
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<BocDateTimeValueControlObject>, BocDateTimeValueControlObjectTest> (
+          fluentControl,
+          ScreenshotTestingType.Both,
+          (builder, target) =>
+          {
+            var backgroundBrush = ScreenshotBackgroundBrush;
+
+            builder.AnnotateBox (target, Pens.Black, WebPadding.Inner, backgroundBrush);
+
+            builder.AnnotateBox (target.GetDateField(), Pens.Red, WebPadding.Inner);
+            builder.AnnotateBox (target.GetDatePickerIcon(), Pens.Blue, WebPadding.Inner);
+            builder.AnnotateBox (target.GetTimeField(), Pens.Green, WebPadding.Inner);
+
+            builder.Crop (target, new WebPadding (1));
+          });
+    }
+
+    [Category ("Screenshot")]
+    [Test]
+    public void ScreenshotTest_DatePicker ()
+    {
+      var home = Start();
+
+      var control = home.DateTimeValues().GetByID ("body_DataEditControl_DateOfBirthField_Normal");
+      var fluentControl = control.ForScreenshot();
+      var datePicker = fluentControl.GetDatePicker();
+
+      datePicker.Open();
+
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<ScreenshotBocDateTimeValuePicker>, BocDateTimeValueControlObjectTest> (
+          datePicker,
+          ScreenshotTestingType.Both,
+          (builder, target) =>
+          {
+            var backgroundBrush = ScreenshotBackgroundBrush;
+
+            builder.AnnotateBox (target, Pens.DeepPink, WebPadding.Inner, backgroundBrush);
+
+            builder.AnnotateBox (target.GetNavigationBar(), Pens.Orange, WebPadding.Inner);
+            builder.AnnotateBox (target.GetPreviousMonthButton(), Pens.Green, WebPadding.Inner);
+            builder.AnnotateBox (target.GetTitle(), Pens.Red, WebPadding.Inner);
+            builder.AnnotateBox (target.GetNextMonthButton(), Pens.Blue, WebPadding.Inner);
+            builder.AnnotateBox (target.GetWeekdayRow(), Pens.Magenta, WebPadding.Inner);
+            builder.AnnotateBox (target.GetSelectedDay(), Pens.Yellow, WebPadding.Inner);
+
+            builder.Crop (target, WebPadding.None);
+          });
     }
 
     [Test]

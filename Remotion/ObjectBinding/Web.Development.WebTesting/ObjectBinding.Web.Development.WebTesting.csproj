@@ -138,6 +138,36 @@
     <Compile Include="ControlSelection\DomainPropertyControlSelectionCommand.cs" />
     <Compile Include="FluentControlSelection\FluentControlSelectorExtensionsForObjectBinding.cs" />
     <Compile Include="FluentControlSelection\DomainPropertyControlSelectionCommandBuilder.cs" />
+    <Compile Include="ScreenshotCreation\BocAutoCompleteReferenceValue\ScreenshotBocAutoCompleteReferenceValueSelectList.cs" />
+    <Compile Include="ScreenshotCreation\BocAutoCompleteReferenceValue\ScreenshotBocAutoCompleteReferenceValueSelectListSelector.cs" />
+    <Compile Include="ScreenshotCreation\BocAutoCompleteReferenceValue\ScreenshotBocAutoCompleteReferenceValueInformationPopup.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListFluentColumnCellSelector.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListFluentColumnSelector.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListFluentHeaderCellSelector.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListFluentRowCellSelector.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListFluentRowSelector.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocAutoCompleteReferenceValueSelectListExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocAutoCompleteReferenceValueExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocAutoCompleteReferenceValueInformationPopupExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocDateTimeValuePickerExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocDateTimeValueExtensions.cs" />
+    <Compile Include="ScreenshotCreation\BocDateTimeValue\ScreenshotBocDateTimeValuePicker.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocListHeaderRowExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocListMenuBlockExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocListDropDownExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocListNavigationExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocListTableContainerExtensions.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocList.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListCell.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListColumn.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocListExtensions.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListDropDown.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListHeaderRow.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListMenuBlock.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListNavigator.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListRow.cs" />
+    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListTableContainer.cs" />
+    <Compile Include="ScreenshotCreation\ObjectBindingExtensionsInWebTesting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

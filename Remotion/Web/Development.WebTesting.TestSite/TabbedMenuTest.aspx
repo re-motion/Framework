@@ -17,7 +17,7 @@
 <%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="TabbedMenuTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.TabbedMenuTest" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <h3>TabbedMenu</h3>
-  <remotion:TabbedMenu ID="MyTabbedMenu" StatusText=" MyStatusText " runat="server">
+  <remotion:TabbedMenu ID="MyTabbedMenu" StatusText=" MyStatusText " style="width: 1000px" runat="server">
     <Tabs>
       <remotion:MainMenuTab ItemID="EventCommandTab" Text="EventCommandTabTitle">
         <PersistedCommand>
