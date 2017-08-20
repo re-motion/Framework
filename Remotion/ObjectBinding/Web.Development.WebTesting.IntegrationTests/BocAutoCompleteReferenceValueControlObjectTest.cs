@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
-      var fluentControl = control.ForScreenshot();
+      var fluentControl = control.ForControlObjectScreenshot();
 
       Helper.RunScreenshotTestExact<FluentScreenshotElement<BocAutoCompleteReferenceValueControlObject>, BocAutoCompleteReferenceValueControlObjectTest> (
           fluentControl,
@@ -96,7 +96,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
-      var input = control.ForScreenshot();
+      var input = control.ForControlObjectScreenshot();
       var selectList = input.GetSelectList();
 
       if (control.IsReadOnly())
@@ -160,7 +160,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
-      var input = control.ForScreenshot();
+      var input = control.ForControlObjectScreenshot();
       var selectList = input.GetSelectList();
 
       if (control.IsReadOnly())
@@ -191,7 +191,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
-      var fluentControl = control.ForScreenshot();
+      var fluentControl = control.ForControlObjectScreenshot();
       var informationPopup = fluentControl.GetInformationPopup();
 
       if (control.IsReadOnly())
@@ -227,7 +227,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
-      var fluentControl = control.ForScreenshot();
+      var fluentControl = control.ForControlObjectScreenshot();
       var informationPopup = fluentControl.GetInformationPopup();
 
       if (control.IsReadOnly())
@@ -252,7 +252,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
-      var fluentControl = control.ForScreenshot();
+      var fluentControl = control.ForControlObjectScreenshot();
       var informationPopup = fluentControl.GetInformationPopup();
 
       if (control.IsReadOnly())

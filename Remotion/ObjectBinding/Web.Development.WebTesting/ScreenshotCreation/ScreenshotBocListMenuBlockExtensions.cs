@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     {
       ArgumentUtility.CheckNotNull ("listMenu", listMenu);
 
-      return listMenu.Target.List.GetDropDownMenu().ForScreenshot();
+      return listMenu.Target.List.GetDropDownMenu().ForControlObjectScreenshot();
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     {
       ArgumentUtility.CheckNotNull ("listMenu", listMenu);
 
-      return listMenu.Target.List.GetListMenu().ForScreenshot();
+      return listMenu.Target.List.GetListMenu().ForControlObjectScreenshot();
     }
 
     /// <summary>

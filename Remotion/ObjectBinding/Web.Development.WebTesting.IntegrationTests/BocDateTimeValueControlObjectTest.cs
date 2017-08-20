@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var control = home.DateTimeValues().GetByID ("body_DataEditControl_DateOfBirthField_Normal");
-      var fluentControl = control.ForScreenshot();
+      var fluentControl = control.ForControlObjectScreenshot();
 
       Helper.RunScreenshotTestExact<FluentScreenshotElement<BocDateTimeValueControlObject>, BocDateTimeValueControlObjectTest> (
           fluentControl,
@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var control = home.DateTimeValues().GetByID ("body_DataEditControl_DateOfBirthField_Normal");
-      var fluentControl = control.ForScreenshot();
+      var fluentControl = control.ForControlObjectScreenshot();
       var datePicker = fluentControl.GetDatePicker();
 
       datePicker.Open();

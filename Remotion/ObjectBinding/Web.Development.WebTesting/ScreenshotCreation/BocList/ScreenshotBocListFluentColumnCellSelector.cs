@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
           SelfResolvableFluentScreenshot.Create (
               new ScreenshotBocListCell<TList, TRow, TCell> (
                   _fluentList,
-                  _fluentList.Target.List.GetRow (itemID).GetCell (_columnIndex).ForScreenshot()));
+                  _fluentList.Target.List.GetRow (itemID).GetCell (_columnIndex).ForControlObjectScreenshot()));
     }
 
     /// <inheritdoc />
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
           SelfResolvableFluentScreenshot.Create (
               new ScreenshotBocListCell<TList, TRow, TCell> (
                   _fluentList,
-                  _fluentList.Target.List.GetRow (oneBasedIndex).GetCell (_columnIndex).ForScreenshot()));
+                  _fluentList.Target.List.GetRow (oneBasedIndex).GetCell (_columnIndex).ForControlObjectScreenshot()));
     }
   }
 }
