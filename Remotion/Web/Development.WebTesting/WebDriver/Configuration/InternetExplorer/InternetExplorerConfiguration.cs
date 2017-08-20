@@ -20,8 +20,9 @@ using OpenQA.Selenium.IE;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer;
-using Remotion.Web.Development.WebTesting.Utilities;
-using Remotion.Web.Development.WebTesting.Utilities.BrowserContentLocators;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplorer;
 
@@ -68,6 +69,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetEx
     public override IBrowserContentLocator Locator
     {
       get { return _locator; }
+    }
+
+    public override ScreenshotTooltipStyle TooltipStyle
+    {
+      get { return ScreenshotTooltipStyle.InternetExplorer; }
     }
 
     public virtual InternetExplorerOptions CreateInternetExplorerOptions ()

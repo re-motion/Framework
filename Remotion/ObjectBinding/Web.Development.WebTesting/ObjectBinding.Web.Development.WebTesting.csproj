@@ -151,7 +151,7 @@
     <Compile Include="ScreenshotCreation\ScreenshotBocAutoCompleteReferenceValueInformationPopupExtensions.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotBocDateTimeValuePickerExtensions.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotBocDateTimeValueExtensions.cs" />
-    <Compile Include="ScreenshotCreation\BocDateTimeValue\ScreenshotBocDateTimeValuePicker.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocDateTimeValuePicker.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotBocListHeaderRowExtensions.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotBocListMenuBlockExtensions.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotBocListDropDownExtensions.cs" />
@@ -169,6 +169,8 @@
     <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListTableContainer.cs" />
     <Compile Include="ScreenshotCreation\ObjectBindingExtensionsInWebTesting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotBocTreeViewNodeControlObject.cs" />
+    <Compile Include="ScreenshotCreation\WebTreeViewNodeControlObjectExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

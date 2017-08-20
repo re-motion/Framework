@@ -110,6 +110,9 @@
     <Compile Include="ScreenshotCreation\Annotations\ScreenshotBoxAnnotation.cs" />
     <Compile Include="ScreenshotCreation\Annotations\ScreenshotCustomAnnotation.cs" />
     <Compile Include="ScreenshotCreation\Annotations\ScreenshotTextAnnotation.cs" />
+    <Compile Include="ScreenshotCreation\Annotations\ScreenshotTooltipAnnotation.cs" />
+    <Compile Include="ScreenshotCreation\Annotations\ScreenshotTooltipStyle.cs" />
+    <Compile Include="ScreenshotCreation\Annotations\TooltipPositioning.cs" />
     <Compile Include="ScreenshotCreation\CoordinateSystem.cs" />
     <Compile Include="ScreenshotCreation\CursorInformation.cs" />
     <Compile Include="ScreenshotCreation\Fluent\FluentControlHostScreenshotElement.cs" />
@@ -156,11 +159,12 @@
     <Compile Include="ScreenshotCreation\Transformations\FluentTransformation.cs" />
     <Compile Include="ScreenshotCreation\Transformations\EmptyTransformation.cs" />
     <Compile Include="ScreenshotCreation\WebPadding.cs" />
-    <Compile Include="Utilities\BrowserContentLocators\ChromeBrowserContentLocator.cs" />
-    <Compile Include="Utilities\BrowserContentLocators\InternetExplorerBrowserContentLocator.cs" />
+    <Compile Include="Utilities\AnnotateHelper.cs" />
+    <Compile Include="ScreenshotCreation\BrowserContentLocators\ChromeBrowserContentLocator.cs" />
+    <Compile Include="ScreenshotCreation\BrowserContentLocators\InternetExplorerBrowserContentLocator.cs" />
     <Compile Include="Utilities\DataContractJsonSerializationUtility.cs" />
     <Compile Include="Utilities\ElementScopeExtensions.cs" />
-    <Compile Include="Utilities\IBrowserContentLocator.cs" />
+    <Compile Include="ScreenshotCreation\IBrowserContentLocator.cs" />
     <Compile Include="Utilities\BrowserHelper.cs" />
     <Compile Include="Utilities\LocatorHelper.cs" />
     <Compile Include="Utilities\MouseHelper.cs" />

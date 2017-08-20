@@ -72,40 +72,32 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       ArgumentUtility.CheckNotNull ("graphics", graphics);
       ArgumentUtility.CheckNotNull ("resolvedScreenshotElement", resolvedScreenshotElement);
 
-      // Transforms the bounding rectangle of the element so that GDI+ draws
-      // exactly around the element, respecting the thickness of the drawing
-      // pen. The box will never touch the elements bounds (as long as no
-      // negative padding is specified).
-      var size = (int) Math.Floor (_pen.Width);
-      var xyOffset = (size - 1) / 2;
-      var whOffset = xyOffset + size / 2;
+      // Calculate the bound of the annotation with padding
+      var annotationBounds = _padding.Apply (resolvedScreenshotElement.ElementBounds);
 
-      var bounds = resolvedScreenshotElement.ElementBounds;
-      var area = new Rectangle (bounds.X - 1 - xyOffset, bounds.Y - 1 - xyOffset, bounds.Width + 1 + whOffset, bounds.Height + 1 + whOffset);
-      var areaWithPadding = _padding.Apply (area);
+      // Draw the background if there is one
+      if (_backgroundBrush != null)
+        graphics.FillRectangle (_backgroundBrush, annotationBounds);
 
-      // GDI+ is essentially unable to correctly draw rectangles
-      // correctly, that's why we draw lines instead.
+      // Apply the padding for the border
+      var border = (int) Math.Floor (_pen.Width);
+      var xyOffset = (border - 1) / 2;
+      var whOffset = border / 2;
+      var borderBounds = new WebPadding (xyOffset + 1, xyOffset + 1, whOffset, whOffset).Apply (annotationBounds);
+
+      // Draw the border by drawing 5 lines. GDI+ is somehow
+      // unable to draw rectangles in certain situations
       graphics.DrawLines (
           _pen,
           new[]
           {
-              areaWithPadding.Location,
-              areaWithPadding.Location + new Size (areaWithPadding.Width, 0),
-              areaWithPadding.Location + areaWithPadding.Size,
-              areaWithPadding.Location + new Size (0, areaWithPadding.Height),
-              areaWithPadding.Location,
-              areaWithPadding.Location + new Size (areaWithPadding.Width, 0)
+              borderBounds.Location,
+              borderBounds.Location + new Size (borderBounds.Width, 0),
+              borderBounds.Location + borderBounds.Size,
+              borderBounds.Location + new Size (0, borderBounds.Height),
+              borderBounds.Location,
+              borderBounds.Location + new Size (borderBounds.Width, 0)
           });
-
-      if (_backgroundBrush != null)
-      {
-        if (areaWithPadding.Width <= 2 || areaWithPadding.Height <= 2)
-          return;
-
-        var innerRectangle = new Rectangle (areaWithPadding.X + 1, areaWithPadding.Y + 1, areaWithPadding.Width - 1, areaWithPadding.Height - 1);
-        graphics.FillRectangle (_backgroundBrush, innerRectangle);
-      }
     }
   }
 }

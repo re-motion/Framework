@@ -21,7 +21,6 @@ using System.Drawing.Imaging;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations;
-using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -135,6 +134,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       get { return _minimumVisibility; }
       set { _minimumVisibility = value; }
+    }
+
+    /// <summary>
+    /// The <see cref="ScreenshotCreation.Screenshot"/> behind the <see cref="ScreenshotBuilder"/> instance.
+    /// </summary>
+    public Screenshot Screenshot
+    {
+      get { return _screenshot; }
     }
 
     /// <summary>

@@ -111,9 +111,11 @@
     <Compile Include="ListMenuControlObject.cs" />
     <Compile Include="ScreenshotCreation\DropDownMenuControlObjectScreenshotExtensions.cs" />
     <Compile Include="ScreenshotCreation\ListMenuControlObjectScreenshotExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotWebTreeViewNodeControlObject.cs" />
     <Compile Include="ScreenshotCreation\TabbedMenuControlObjectScreenshotExtensions.cs" />
     <Compile Include="ScreenshotCreation\TabbedMultiViewControlObjectScreenshotExtensions.cs" />
     <Compile Include="ScreenshotCreation\WebTabStripControlObjectScreenshotExtensions.cs" />
+    <Compile Include="ScreenshotCreation\WebTreeViewNodeControlObjectExtension.cs" />
     <Compile Include="Selectors\CommandSelector.cs" />
     <Compile Include="Selectors\DropDownMenuSelector.cs" />
     <Compile Include="Selectors\TabbedMenuSelector.cs" />
