@@ -59,11 +59,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         return;
 
       string selectorControlID = renderingContext.Control.GetSelectorControlName().Replace ('$', '_') + "_" + rowRenderingContext.Row.Index;
+      var cssClass = cssClassTableCell + " " + CssClasses.DataCellSelector;
       var selectorControlName = renderingContext.Control.GetSelectorControlName();
       var selectorControlValue = renderingContext.Control.GetSelectorControlValue (rowRenderingContext.Row);
       var isChecked = rowRenderingContext.IsSelected;
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataListCellIndex (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
@@ -78,7 +79,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!renderingContext.Control.IsSelectionEnabled)
         return;
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TitleCell);
+      var cssClass = CssClasses.TitleCell + " " + CssClasses.TitleCellSelector;
+
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataListCellIndex (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);
