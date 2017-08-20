@@ -58,6 +58,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
     private WebTestConfigurationSection ()
     {
+      var xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
       _browserProperty = new ConfigurationProperty (
           "browser",
           typeof (string),
@@ -85,6 +86,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       
       _properties = new ConfigurationPropertyCollection
                     {
+                        xmlnsProperty,
                         _browserProperty,
                         _searchTimeoutProperty,
                         _downloadStartedTimeoutProperty,
