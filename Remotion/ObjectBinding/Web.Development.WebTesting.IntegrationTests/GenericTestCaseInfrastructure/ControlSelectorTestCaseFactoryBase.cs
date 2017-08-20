@@ -86,6 +86,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
           string.Format (TestConstants.TestUrlTemplate, controlName, (int) pageType));
 
       webTestHelper.MainBrowserSession.Window.Visit (url);
+      webTestHelper.AcceptPossibleModalDialog();
 
       var host = webTestHelper.CreateInitialPageObject<HtmlPageObject> (webTestHelper.MainBrowserSession);
 
