@@ -25,9 +25,11 @@ using log4net;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
@@ -113,7 +115,7 @@ namespace Remotion.Web.Development.WebTesting
     private readonly IBrowserConfiguration _browserConfiguration;
     private readonly ITestInfrastructureConfiguration _testInfrastructureConfiguration;
     private readonly List<IBrowserSession> _browserSessions = new List<IBrowserSession>();
-    private BrowserSession _mainBrowserSession;
+    private IBrowserSession _mainBrowserSession;
 
     /// <summary>
     /// Name of the current web test.
@@ -142,7 +144,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Coypu main browser session for the web test.
     /// </summary>
-    public BrowserSession MainBrowserSession
+    public IBrowserSession MainBrowserSession
     {
       get { return _mainBrowserSession; }
     }
@@ -183,7 +185,7 @@ namespace Remotion.Web.Development.WebTesting
       s_log.InfoFormat ("Executing test: {0}.", _testName);
 
       if (_mainBrowserSession != null)
-        s_log.InfoFormat ("Current window title: {0}.", _mainBrowserSession.Title);
+        s_log.InfoFormat ("Current window title: {0}.", _mainBrowserSession.Window.Title);
     }
 
     /// <summary>
@@ -191,7 +193,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="maximizeWindow">Specified whether the new browser session's window should be maximized.</param>
     /// <returns>The new browser session.</returns>
-    public BrowserSession CreateNewBrowserSession (bool maximizeWindow = true)
+    public IBrowserSession CreateNewBrowserSession (bool maximizeWindow = true)
     {
       using (new PerformanceTimer (s_log, string.Format ("Created new {0} browser session.", _browserConfiguration.BrowserName)))
       {
@@ -199,16 +201,16 @@ namespace Remotion.Web.Development.WebTesting
         _browserSessions.Add (browserResult);
 
         if (maximizeWindow)
-          browserResult.Value.MaximiseWindow();
+          browserResult.Window.MaximiseWindow();
 
-        return browserResult.Value;
+        return browserResult;
       }
     }
 
     /// <summary>
     /// Returns a new <typeparamref name="TPageObject"/> for the initial page displayed by <paramref name="browser"/>.
     /// </summary>
-    public TPageObject CreateInitialPageObject<TPageObject> ([NotNull] BrowserSession browser)
+    public TPageObject CreateInitialPageObject<TPageObject> ([NotNull] IBrowserSession browser)
         where TPageObject : PageObject
     {
       ArgumentUtility.CheckNotNull ("browser", browser);
@@ -229,7 +231,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       try
       {
-        _mainBrowserSession.AcceptModalDialog (Options.NoWait);
+        _mainBrowserSession.Window.AcceptModalDialog (Options.NoWait);
       }
       catch (MissingDialogException)
       {
@@ -248,7 +250,7 @@ namespace Remotion.Web.Development.WebTesting
         var screenshotRecorder = new TestExecutionScreenshotRecorder (_testInfrastructureConfiguration.ScreenshotDirectory);
         screenshotRecorder.Capture();
         screenshotRecorder.TakeDesktopScreenshot (_testName);
-        screenshotRecorder.TakeBrowserScreenshot (_testName, _browserSessions.Select (s => s.Value).ToArray(), BrowserConfiguration.Locator);
+        screenshotRecorder.TakeBrowserScreenshot (_testName, _browserSessions.ToArray(), BrowserConfiguration.Locator);
       }
 
       s_log.InfoFormat ("Finished test: {0} [has succeeded: {1}].", _testName, hasSucceeded);
@@ -261,7 +263,7 @@ namespace Remotion.Web.Development.WebTesting
       return new ScreenshotBuilder (Screenshot.TakeDesktopScreenshot(), BrowserConfiguration.Locator);
     }
 
-    public ScreenshotBuilder CreateBrowserScreenshot (BrowserSession browserSession = null)
+    public ScreenshotBuilder CreateBrowserScreenshot (IBrowserSession browserSession = null)
     {
       if (browserSession == null)
         browserSession = MainBrowserSession;

@@ -18,6 +18,9 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.BrowserSession;
+using Remotion.Web.Development.WebTesting.WebDriver;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -42,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// The browser session in which the <see cref="WebTestObject{TWebTestObjectContext}"/> resides.
     /// </summary>
-    public abstract BrowserSession Browser { get; }
+    public abstract IBrowserSession Browser { get; }
 
     /// <summary>
     /// The browser window on which the <see cref="WebTestObject{TWebTestObjectContext}"/> resides.

@@ -23,6 +23,9 @@ using Coypu;
 using JetBrains.Annotations;
 using log4net;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.BrowserSession;
+using Remotion.Web.Development.WebTesting.WebDriver;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -95,7 +98,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     /// <param name="baseFileName">Base file name, will be combined with the screenshot directory, "_Browser" and the file ending to the final file path.</param>
     /// <param name="browser">The browser session of which the screenshot should be taken.</param>
-    public void TakeBrowserScreenshot ([NotNull] string baseFileName, [NotNull] BrowserSession browser)
+    public void TakeBrowserScreenshot ([NotNull] string baseFileName, [NotNull] IBrowserSession browser)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("baseFileName", baseFileName);
       ArgumentUtility.CheckNotNull ("browser", browser);
@@ -105,7 +108,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
       try
       {
-        browser.SaveScreenshot (fullFilePath, ImageFormat.Png);
+        browser.Window.SaveScreenshot (fullFilePath, ImageFormat.Png);
       }
       catch (Exception ex)
       {

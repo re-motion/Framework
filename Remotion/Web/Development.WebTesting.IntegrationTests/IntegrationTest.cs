@@ -72,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       where TPageObject : PageObject
     {
       var url = _webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot + page;
-      _webTestHelper.MainBrowserSession.Visit (url);
+      _webTestHelper.MainBrowserSession.Window.Visit (url);
 
       return _webTestHelper.CreateInitialPageObject<TPageObject> (_webTestHelper.MainBrowserSession);
     }

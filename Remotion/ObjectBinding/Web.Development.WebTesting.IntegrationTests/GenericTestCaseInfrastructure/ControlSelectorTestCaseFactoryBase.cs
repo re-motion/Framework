@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
           webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot,
           string.Format (TestConstants.TestUrlTemplate, controlName, (int) pageType));
 
-      webTestHelper.MainBrowserSession.Visit (url);
+      webTestHelper.MainBrowserSession.Window.Visit (url);
 
       var host = webTestHelper.CreateInitialPageObject<HtmlPageObject> (webTestHelper.MainBrowserSession);
 

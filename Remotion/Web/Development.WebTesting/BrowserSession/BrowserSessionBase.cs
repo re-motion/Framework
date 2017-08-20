@@ -20,11 +20,12 @@ using System.Diagnostics;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
+using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 
-namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
+namespace Remotion.Web.Development.WebTesting.BrowserSession
 {
   /// <summary>
   /// Wraps around <see cref="Coypu.BrowserSession"/> to handle browser specific routines.
@@ -37,12 +38,12 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
     private const int c_browserSubProcessShutdownWaitTime = 100;
 
     private readonly T _browserConfiguration;
-    private readonly BrowserSession _value;
+    private readonly Coypu.BrowserSession _value;
     private readonly int _driverProcessID;
     private bool _isDisposed;
 
     protected BrowserSessionBase (
-        [NotNull] BrowserSession value,
+        [NotNull] Coypu.BrowserSession value,
         [NotNull] T browserConfiguration,
         int driverProcessId)
     {
@@ -65,12 +66,30 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
       get { return _browserConfiguration; }
     }
 
-    /// <summary>
-    /// Returns the underlying <see cref="Coypu.BrowserSession"/>.
-    /// </summary>
-    public BrowserSession Value
+    public void AcceptModalDialog (Options options = null)
+    {
+      _value.AcceptModalDialog (options);
+    }
+
+    public Driver Driver
+    {
+      get { return _value.Driver; }
+    }
+
+    public BrowserWindow Window
     {
       get { return _value; }
+    }
+
+    public BrowserWindow FindWindow (string locator, Options options = null)
+    {
+      return _value.FindWindow (locator, options);
+    }
+
+    public virtual void DeleteAllCookies ()
+    {
+      var webDriver = (IWebDriver) _value.Driver.Native;
+      webDriver.Manage().Cookies.DeleteAllCookies();
     }
 
     /// <summary>

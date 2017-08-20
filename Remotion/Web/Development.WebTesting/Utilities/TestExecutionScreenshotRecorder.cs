@@ -24,6 +24,7 @@ using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
 
@@ -111,7 +112,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </remarks>
     public void TakeBrowserScreenshot (
         [NotNull] string testName,
-        [NotNull] BrowserSession[] browserSessions,
+        [NotNull] IBrowserSession[] browserSessions,
         [NotNull] IBrowserContentLocator locator)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("testName", testName);
@@ -123,7 +124,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       var sessionID = 0;
       foreach (var browserSession in browserSessions)
       {
-        var driver = (IWebDriver) browserSession.Native;
+        var driver = (IWebDriver) browserSession.Driver.Native;
         var sessionName = string.Concat (testName, ".", "Browser", sessionID);
 
         var windowID = 0;
@@ -157,7 +158,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           windowID++;
         }
 
-        s_log.InfoFormat ("Saved screenshots for the browser sesion '{0}'.", browserSession.Text);
+        s_log.InfoFormat ("Saved screenshots for the browser session '{0}'.", browserSession.Window.Text);
 
 
         sessionID++;

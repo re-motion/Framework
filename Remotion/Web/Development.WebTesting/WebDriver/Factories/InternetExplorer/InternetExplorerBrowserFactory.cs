@@ -20,6 +20,8 @@ using Coypu.Drivers;
 using JetBrains.Annotations;
 using OpenQA.Selenium.IE;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.BrowserSession;
+using Remotion.Web.Development.WebTesting.BrowserSession.InternetExplorer;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 

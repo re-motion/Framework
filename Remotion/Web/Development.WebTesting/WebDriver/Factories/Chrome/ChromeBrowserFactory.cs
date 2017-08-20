@@ -19,6 +19,8 @@ using Coypu.Drivers;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Chrome;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.BrowserSession;
+using Remotion.Web.Development.WebTesting.BrowserSession.Chrome;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 
@@ -47,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
       string userDirectory;
       var driver = CreateChromeDriver (out driverProcessID, out userDirectory);
 
-      var session = new BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Chrome));
+      var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Chrome));
 
       return new ChromeBrowserSession (session, _chromeConfiguration, driverProcessID, userDirectory);
     }
