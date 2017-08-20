@@ -167,10 +167,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     /// <summary>
     /// Calls <see cref="WebTestHelper.OnTearDown"/> and <see cref="WebTestHelper.OnFixtureTearDown"/> on the specified <see cref="WebTestHelper"/>.
+    /// Cleans up screenshots created by the <see cref="WebTestHelper.OnTearDown"/> method call.
     /// </summary>
     private void ShutdownWebTestHelper (WebTestHelper webTestHelper, bool success)
     {
+      var screenshotDirectory = webTestHelper.TestInfrastructureConfiguration.ScreenshotDirectory;
+      var screenshotDirectoryBeforeShutdown = Directory.GetFiles (screenshotDirectory);
+
       webTestHelper.OnTearDown (success);
+
+      var screenshotsCreatedByWebTestHelperShutDown = Directory.GetFiles (screenshotDirectory).Except (screenshotDirectoryBeforeShutdown);
+
+      foreach (var screenshotFileName in screenshotsCreatedByWebTestHelperShutDown)
+      {
+        File.Delete (Path.Combine (screenshotDirectory, screenshotFileName));
+      }
+
       webTestHelper.OnFixtureTearDown();
     }
 
