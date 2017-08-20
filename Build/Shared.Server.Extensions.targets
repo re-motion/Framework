@@ -64,4 +64,6 @@
 
   <Target Name="Server_CIProductionBuild" DependsOnTargets="CheckProperties;SetVersionFromDependentBuild;CIProductionBuild" />
 
+  <Target Name="Server_CIConfigurableBuild" DependsOnTargets="CheckProperties;SetVersionCiAndNightlyBuild;TestBuildDebugOnly"></Target>
+
 </Project>

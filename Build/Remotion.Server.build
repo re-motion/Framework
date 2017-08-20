@@ -128,6 +128,11 @@
     <MSBuild Projects="@(ProjectsBuildServer)" Targets="Server_CIBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
     <CallTarget Targets="$(AfterTestBuildTargets)"/>
   </Target>
+  
+  <Target Name="Server_CIConfigurableBuild" DependsOnTargets="$(BeforeTestBuildTargets)">
+    <MSBuild Projects="@(ProjectsBuildServer)" Targets="Server_CIConfigurableBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
+    <CallTarget Targets="$(AfterTestBuildTargets)"/>
+  </Target>
 
   <Target Name="Server_ArtifactBuild" DependsOnTargets="$(BeforeTestBuildTargets)">
     <MSBuild Projects="@(ProjectsBuildServer)" Targets="Server_ArtifactBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
