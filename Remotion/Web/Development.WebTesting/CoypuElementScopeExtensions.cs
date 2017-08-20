@@ -130,10 +130,7 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("scope", scope);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      // Todo RM-6337: Coypu does not support JavaScript executions with arguments by now, simplify as soon as https://github.com/featurist/coypu/issues/128 has been implemented.
-      var javaScriptExecutor = (IJavaScriptExecutor) context.Browser.Driver.Native;
-      var computedBackgroundColor =
-          RetryUntilTimeout.Run (() => (string) javaScriptExecutor.ExecuteScript (CommonJavaScripts.GetComputedBackgroundColor, scope.Native));
+      var computedBackgroundColor = (string) context.Browser.Driver.ExecuteScript (CommonJavaScripts.GetComputedBackgroundColor, scope, scope.Native);
 
       if (IsTransparent (computedBackgroundColor))
         return WebColor.Transparent;
@@ -151,10 +148,7 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("scope", scope);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      // Todo RM-6337: Coypu does not support JavaScript executions with arguments by now, simplify as soon as https://github.com/featurist/coypu/issues/128 has been implemented.
-      var javaScriptExecutor = (IJavaScriptExecutor) context.Browser.Driver.Native;
-      var computedTextColor =
-          RetryUntilTimeout.Run (() => (string) javaScriptExecutor.ExecuteScript (CommonJavaScripts.GetComputedTextColor, scope.Native));
+      var computedTextColor = (string) context.Browser.Driver.ExecuteScript (CommonJavaScripts.GetComputedTextColor, scope, scope.Native);
 
       if (IsTransparent (computedTextColor))
         return WebColor.Transparent;
