@@ -88,6 +88,58 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID4|WxeFunction"));
     }
 
+    [Test]
+    public void TestDropDownSelectItem_AfterGetItemDefinitions ()
+    {
+      var home = Start();
+
+      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+
+      dropDownMenu.GetItemDefinitions();
+      Assert.That (() => dropDownMenu.SelectItem ("ItemID5"), Throws.Nothing);
+    }
+
+    [Test]
+    public void TestDropDownMenuControlObject_IsOpen ()
+    {
+      var home = Start();
+
+      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+      Assert.That (dropDownMenu.IsOpen(), Is.False);
+    }
+
+    [Test]
+    public void TestDropDownMenuControlObject_OpenDropDownMenu ()
+    {
+      var home = Start();
+
+      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+
+      dropDownMenu.Open();
+      Assert.That (dropDownMenu.IsOpen(), Is.True);
+
+      //Open it a second time to ensure it stays open
+      dropDownMenu.Open();
+      Assert.That (dropDownMenu.IsOpen(), Is.True);
+    }
+
+    [Test]
+    public void TestDropDownMenuControlObject_CloseDropDownMenu ()
+    {
+      var home = Start();
+
+      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+
+      dropDownMenu.Open();
+
+      dropDownMenu.Close();
+      Assert.That (dropDownMenu.IsOpen(), Is.False);
+
+      //Close it a second time to ensure it stays closed
+      dropDownMenu.Close();
+      Assert.That (dropDownMenu.IsOpen(), Is.False);
+    }
+
     private WxePageObject Start ()
     {
       return Start<WxePageObject> ("DropDownMenuTest.wxe");

@@ -29,10 +29,17 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
     }
 
-    /// <inheritdoc/>
-    protected override void OpenDropDownMenu ()
+    [Obsolete ("Use the Open() method instead. (Version 1.17.15.0)", false)]
+    protected void OpenDropDownMenu ()
     {
-      Scope.ContextClick (Context);
+      Open();
+    }
+
+    /// <inheritdoc/>
+    public override void Open ()
+    {
+      if (!IsOpen())
+        Scope.ContextClick (Context);
     }
   }
 }

@@ -29,11 +29,20 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
     }
 
-    /// <inheritdoc/>
-    protected override void OpenDropDownMenu ()
+    [Obsolete ("Use the Open() method instead. (Version 1.17.15.0)", false)]
+    protected void OpenDropDownMenu ()
     {
-      var dropDownMenuButtonScope = Scope.FindCss ("a.DropDownMenuButton");
-      dropDownMenuButtonScope.Click();
+      Open();
+    }
+
+    /// <inheritdoc/>
+    public override void Open ()
+    {
+      if (!IsOpen())
+      {
+        var dropDownMenuButtonScope = Scope.FindCss ("a.DropDownMenuButton");
+        dropDownMenuButtonScope.Click();
+      }
     }
   }
 }
