@@ -23,16 +23,25 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
   public static class WebDriverLogUtility
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (WebDriverLogUtility));
-    
-    public static string CreateLogFile (string logsDirectory, string browserName)
+    private const string SubDirectoryName = "BrowserLogs";
+
+    public static string CreateLogFile (string logsDirectory, string browserLogPrefix, string browserName)
     {
-      EnsureLogsDirectoryExists (logsDirectory);
+      var finalLogsDirectory = Path.Combine (logsDirectory, SubDirectoryName);
+
+      EnsureLogsDirectoryExists (finalLogsDirectory);
 
       //Note: unfortunately there is no append-mode for this log and we do not have enough context information to create a nice name.
       for (var i = 0;; ++i)
       {
-        var fileName = string.Format ("{0}driver{1}.log", browserName, i);
-        var logFile = Path.Combine (logsDirectory, fileName);
+        string fileName;
+
+        if (string.IsNullOrEmpty (browserLogPrefix))
+          fileName = string.Format ("{0}driver{1}.log", browserName, i);
+        else
+          fileName = string.Format ("{0}.{1}driver{2}.log", browserLogPrefix, browserName, i);
+
+        var logFile = Path.Combine (finalLogsDirectory, fileName);
 
         if (File.Exists (logFile))
           continue;

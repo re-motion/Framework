@@ -38,6 +38,17 @@
       <_logsDirectory>$(LogDirectory)WebTesting\$(_variantName)\</_logsDirectory>
     </PropertyGroup>
     
+    <MSBuild.ExtensionPack.Xml.XmlFile
+        TaskAction="ReadAttribute"
+        File="$(AppConfigFile)"
+        XPath="/configuration/log4net/appender[@name='FileAppender']/file/@value">
+      <Output TaskParameter="Value" PropertyName="_logsDirectoryValueBefore" />
+    </MSBuild.ExtensionPack.Xml.XmlFile>
+
+    <PropertyGroup>
+      <_logsDirectoryFileName>$([System.IO.Path]::GetFileName('$(_logsDirectoryValueBefore)'))</_logsDirectoryFileName>
+    </PropertyGroup>
+
     <ItemGroup>
       <_appConfigAttributes Remove="@(_appConfigAttributes)"/>
       <_appConfigAttributes Include="/configuration/remotion.webTesting">
@@ -62,7 +73,7 @@
       </_appConfigAttributes>
       <_appConfigAttributes Include="/configuration/log4net/appender[@name='FileAppender']/file">
         <Key>value</Key>
-        <Value>$(_logsDirectory)WebTestingFramework.log</Value>
+        <Value>$(_logsDirectory)$(_logsDirectoryFileName)</Value>
       </_appConfigAttributes>      
       <_appConfigAttributes Include="/configuration/appSettings/add[@key='ChromeVersionArchive']">
         <Key>value</Key>
