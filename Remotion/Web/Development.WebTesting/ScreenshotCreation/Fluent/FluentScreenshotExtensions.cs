@@ -94,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     }
 
     /// <summary>
-    /// Annotates the specified <paramref name="fluentTarget"/> with a box.
+    /// Annotates the specified <paramref name="fluentTarget"/> with a <see cref="ScreenshotBoxAnnotation"/>.
     /// </summary>
     public static void AnnotateBox<T> (
         [NotNull] this ScreenshotBuilder builder,
@@ -115,7 +115,39 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     }
 
     /// <summary>
-    /// Annotates the specified <paramref name="fluentTarget"/> with the specified text.
+    /// Annotates the specified <paramref name="fluentTarget"/> with a <see cref="ScreenshotBadgeAnnotation"/>.
+    /// </summary>
+    public static void AnnotateBadge<T> (
+        [NotNull] this ScreenshotBuilder builder,
+        [NotNull] IFluentScreenshotElement<T> fluentTarget,
+        [NotNull] string content,
+        [CanBeNull] WebPadding? contentPadding = null,
+        [CanBeNull] Font font = null,
+        [CanBeNull] Brush contentBrush = null,
+        [CanBeNull] Pen borderPen = null,
+        [CanBeNull] Brush backgroundBrush = null,
+        [CanBeNull] Size? translation = null,
+        [CanBeNull] bool? forceCircle = null)
+    {
+      ArgumentUtility.CheckNotNull ("builder", builder);
+      ArgumentUtility.CheckNotNull ("fluentTarget", fluentTarget);
+      ArgumentUtility.CheckNotNull ("content", content);
+
+      IScreenshotAnnotation annotation = new ScreenshotBadgeAnnotation (
+          content,
+          contentPadding ?? new WebPadding (3, 3, 3, 0),
+          font ?? new Font ("Arial", 14),
+          contentBrush ?? Brushes.White,
+          borderPen ?? Pens.White,
+          backgroundBrush ?? Brushes.Red,
+          translation ?? Size.Empty,
+          forceCircle ?? true);
+
+      FluentUtility.AnnotateFluent (builder, fluentTarget, annotation);
+    }
+
+    /// <summary>
+    /// Annotates the specified <paramref name="fluentTarget"/> with a <see cref="ScreenshotTextAnnotation"/>.
     /// </summary>
     public static void AnnotateText<T> (
         [NotNull] this ScreenshotBuilder builder,

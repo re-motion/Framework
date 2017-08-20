@@ -143,6 +143,24 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     /// <summary>
+    /// Tests that the <see cref="ScreenshotBadgeAnnotation"/> is drawn correctly.
+    /// </summary>
+    [Category("Screenshot")]
+    [Test]
+    public void BadgeTest ()
+    {
+      ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test = (builder, target) =>
+      {
+        builder.AnnotateBadge (target, "123", borderPen: Pens.Black);
+        builder.Crop (target, new WebPadding(25, 25, 25, 25));
+      };
+
+      var home = Start();
+      var element = home.Scope.FindId ("tooltipTarget");
+      Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest> (element.ForElementScopeScreenshot(), ScreenshotTestingType.Both, test);
+    }
+
+    /// <summary>
     /// Tests that the <see cref="ScreenshotTooltipAnnotation"/> is drawn correctly.
     /// </summary>
     [Category("Screenshot")]
@@ -151,8 +169,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
       {
-        Helper.BrowserConfiguration.AnnotateHelper.DrawTooltip (builder, target, style: ScreenshotTooltipStyle.Chrome);
-        Helper.BrowserConfiguration.AnnotateHelper.DrawTooltip (builder, target, style: ScreenshotTooltipStyle.InternetExplorer);
+        Helper.BrowserConfiguration.AnnotateHelper.DrawTooltip (builder, target, ScreenshotTooltipStyle.Chrome);
+        Helper.BrowserConfiguration.AnnotateHelper.DrawTooltip (builder, target, ScreenshotTooltipStyle.InternetExplorer);
         builder.Crop (target.ForElementScopeScreenshot(), new WebPadding (30, 60, 30, 60));
       };
 
