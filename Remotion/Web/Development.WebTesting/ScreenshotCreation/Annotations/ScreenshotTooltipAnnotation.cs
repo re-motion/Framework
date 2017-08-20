@@ -29,13 +29,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     private readonly string _content;
     private readonly ScreenshotTooltipStyle _style;
     private readonly WebPadding _padding;
-    private readonly TooltipPositioning? _position;
 
     public ScreenshotTooltipAnnotation (
         [NotNull] string content,
         [NotNull] ScreenshotTooltipStyle style,
-        WebPadding padding,
-        TooltipPositioning? position = null)
+        WebPadding padding)
     {
       ArgumentUtility.CheckNotNull ("content", content);
       ArgumentUtility.CheckNotNull ("style", style);
@@ -43,7 +41,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       _content = content;
       _style = style;
       _padding = padding;
-      _position = position;
     }
 
     /// <summary>
@@ -106,10 +103,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         tooltipBounds.Height = _style.MinimumSize.Height;
 
       // Reposition the tooltip based on the content alignment
-      var positioning = _style.Positioning;
-      if (_position.HasValue)
-        positioning = _position.Value;
-      tooltipBounds.Location = PositionTooltipWithAlignment (positioning, resolvedScreenshotElement.ElementBounds, tooltipBounds);
+      tooltipBounds.Location = PositionTooltipWithAlignment (_style.Positioning, resolvedScreenshotElement.ElementBounds, tooltipBounds);
 
       // Draw the box of the tooltip
       var boxAnnotation = new ScreenshotBoxAnnotation (_style.Border, WebPadding.None, _style.BackgroundBrush);
