@@ -19,6 +19,7 @@ using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
@@ -32,6 +33,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     private readonly TimeSpan _searchTimeout;
     private readonly TimeSpan _retryInterval;
     private readonly string _logsDirectory;
+    private readonly BrowserHelper _browserHelper;
+    private readonly LocatorHelper _locatorHelper;
+    private readonly MouseHelper _mouseHelper;
 
     protected BrowserConfigurationBase ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
     {
@@ -41,6 +45,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
       _searchTimeout = webTestConfigurationSection.SearchTimeout;
       _retryInterval = webTestConfigurationSection.RetryInterval;
       _logsDirectory = webTestConfigurationSection.LogsDirectory;
+
+      _browserHelper = new BrowserHelper(this);
+      _locatorHelper = new LocatorHelper (this);
+      _mouseHelper = new MouseHelper (this);
     }
    
     public abstract string BrowserExecutableName { get; }
@@ -48,8 +56,25 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     public abstract string WebDriverExecutableName { get; }
 
     public abstract IBrowserFactory BrowserFactory { get; }
-    
+
+    public BrowserHelper BrowserHelper
+    {
+      get { return _browserHelper; }
+    }
+
     public abstract IDownloadHelper DownloadHelper { get; }
+
+    public LocatorHelper LocatorHelper
+    {
+      get { return _locatorHelper; }
+    }
+
+    public MouseHelper MouseHelper
+    {
+      get { return _mouseHelper; }
+    }
+
+    public abstract IBrowserContentLocator Locator { get; }
 
     public string BrowserName
     {

@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
@@ -25,9 +26,11 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
+using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -147,7 +150,8 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// SetUp method for each web test fixture.
     /// </summary>
-    public void OnFixtureSetUp ()
+    /// <param name="maximizeWindow">Specifies whether the main browser session's window should be maximized.</param>
+    public void OnFixtureSetUp (bool maximizeWindow = true)
     {
       s_log.InfoFormat ("WebTestHelper.OnFixtureSetup() has been called.");
       s_log.InfoFormat ("Remotion version: " + typeof (WebTestHelper).Assembly.GetName().Version);
@@ -161,7 +165,7 @@ namespace Remotion.Web.Development.WebTesting
       // See RM-6731.
       EnsureAllBrowserWindowsAreClosed();
 
-      _mainBrowserSession = CreateNewBrowserSession();
+      _mainBrowserSession = CreateNewBrowserSession (maximizeWindow);
 
       // Note: otherwise cursor could interfere with element hovering.
       EnsureCursorIsOutsideBrowserWindow();
@@ -241,14 +245,28 @@ namespace Remotion.Web.Development.WebTesting
     {
       if (!hasSucceeded && ShouldTakeScreenshots())
       {
-        var screenshotCapturer = new ScreenshotCapturer (_testInfrastructureConfiguration.ScreenshotDirectory);
-        screenshotCapturer.TakeDesktopScreenshot (_testName);
-        screenshotCapturer.TakeBrowserScreenshot (_testName, _mainBrowserSession);
+        var screenshotRecorder = new TestExecutionScreenshotRecorder (_testInfrastructureConfiguration.ScreenshotDirectory);
+        screenshotRecorder.Capture();
+        screenshotRecorder.TakeDesktopScreenshot (_testName);
+        screenshotRecorder.TakeBrowserScreenshot (_testName, _browserSessions.Select (s => s.Value).ToArray(), BrowserConfiguration.Locator);
       }
 
       s_log.InfoFormat ("Finished test: {0} [has succeeded: {1}].", _testName, hasSucceeded);
 
       _browserConfiguration.DownloadHelper.DeleteFiles();
+    }
+
+    public ScreenshotBuilder CreateDesktopScreenshot ()
+    {
+      return new ScreenshotBuilder (Screenshot.TakeDesktopScreenshot(), BrowserConfiguration.Locator);
+    }
+
+    public ScreenshotBuilder CreateBrowserScreenshot (BrowserSession browserSession = null)
+    {
+      if (browserSession == null)
+        browserSession = MainBrowserSession;
+
+      return new ScreenshotBuilder (Screenshot.TakeBrowserScreenshot (browserSession, BrowserConfiguration.Locator), BrowserConfiguration.Locator);
     }
 
     private bool ShouldTakeScreenshots ()

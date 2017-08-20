@@ -15,13 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Diagnostics;
-using System.IO;
 using JetBrains.Annotations;
 using OpenQA.Selenium.IE;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer;
+using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.Utilities.BrowserContentLocators;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplorer;
 
@@ -32,6 +32,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetEx
   /// </summary>
   public class InternetExplorerConfiguration : BrowserConfigurationBase, IInternetExplorerConfiguration
   {
+    private readonly IBrowserContentLocator _locator = new InternetExplorerBrowserContentLocator();
+
     private readonly IDownloadHelper _downloadHelper;
 
     public InternetExplorerConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
@@ -61,6 +63,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetEx
     public override IDownloadHelper DownloadHelper
     {
       get { return _downloadHelper; }
+    }
+
+    public override IBrowserContentLocator Locator
+    {
+      get { return _locator; }
     }
 
     public virtual InternetExplorerOptions CreateInternetExplorerOptions ()
