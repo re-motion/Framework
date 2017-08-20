@@ -30,27 +30,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly string _displayName;
     private readonly string _iconUrl;
 
-    public SearchServiceResultItem ([NotNull] string uniqueIdentifier, [NotNull] string displayName, [NotNull] string iconUrl)
+    public SearchServiceResultItem ([NotNull] string uniqueIdentifier, [NotNull] string displayName, [CanBeNull] string iconUrl)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
       ArgumentUtility.CheckNotNullOrEmpty ("displayName", displayName);
-      ArgumentUtility.CheckNotNullOrEmpty ("iconUrl", iconUrl);
 
       _uniqueIdentifier = uniqueIdentifier;
       _displayName = displayName;
-      _iconUrl = iconUrl;
+      _iconUrl = iconUrl == string.Empty ? null : iconUrl;
     }
 
+    [NotNull]
     public string UniqueIdentifier
     {
       get { return _uniqueIdentifier; }
     }
 
+    [NotNull]
     public string DisplayName
     {
       get { return _displayName; }
     }
 
+    [CanBeNull]
     public string IconUrl
     {
       get { return _iconUrl; }
