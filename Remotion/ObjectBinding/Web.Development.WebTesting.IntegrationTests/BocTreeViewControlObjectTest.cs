@@ -225,7 +225,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var node = bocTreeView.GetRootNode();
       node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 
-      node.OpenContextMenu().SelectItem ("MenuItem");
+      node.GetContextMenu().SelectItem ("MenuItem");
 
       Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("Normal_Boc_TreeView"));
       Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("NodeContextMenuClick"));
@@ -241,8 +241,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var node = bocTreeView.GetRootNode();
       node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 
-      //The "Open" is a lie
-      var contextMenu = node.OpenContextMenu();
+      var contextMenu = node.GetContextMenu();
 
       contextMenu.GetItemDefinitions();
 
@@ -258,8 +257,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var node = bocTreeView.GetRootNode();
       node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 
-      //The "Open" is a lie
-      var contextMenu = node.OpenContextMenu();
+      var contextMenu = node.GetContextMenu();
 
       Assert.That (contextMenu.IsOpen(), Is.False);
     }
@@ -273,8 +271,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var node = bocTreeView.GetRootNode();
       node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 
-      //The "Open" is a lie
-      var contextMenu = node.OpenContextMenu();
+      var contextMenu = node.GetContextMenu();
 
       contextMenu.Open();
       Assert.That (contextMenu.IsOpen(), Is.True);
@@ -293,8 +290,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var node = bocTreeView.GetRootNode();
       node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 
-      //The "Open" is a lie
-      var contextMenu = node.OpenContextMenu();
+      var contextMenu = node.GetContextMenu();
 
       contextMenu.Close();
       Assert.That (contextMenu.IsOpen(), Is.False);
