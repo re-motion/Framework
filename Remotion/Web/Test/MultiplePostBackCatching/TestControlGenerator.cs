@@ -268,7 +268,7 @@ namespace Remotion.Web.Test.MultiplePostBackCatching
       hyperLink.Attributes["onclick"] = string.Empty;
       hyperLink.PreRender += delegate
       {
-        hyperLink.Attributes["onclick"] = _page.ClientScript.GetPostBackEventReference (_postBackEventHandler, hyperLink.ID) + ";";
+        hyperLink.Attributes["onclick"] = _page.ClientScript.GetPostBackEventReference (_postBackEventHandler, hyperLink.ID) + ";return false;";
       };
 
       return hyperLink;

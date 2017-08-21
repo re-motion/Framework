@@ -252,8 +252,9 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
           if (isPostBackCommand)
           {
             // Clientside script creates an anchor with href="#" and onclick=function
+            // The function will be executed using eval(...) and must therefor not end with a return statement.
             string argument = menuItemIndex.ToString();
-            href = renderingContext.Control.Page.ClientScript.GetPostBackClientHyperlink (renderingContext.Control, argument) + ";";
+            href = renderingContext.Control.Page.ClientScript.GetPostBackClientHyperlink (renderingContext.Control, argument);
             href = ScriptUtility.EscapeClientScript (href);
             href = "'" + href + "'";
           }

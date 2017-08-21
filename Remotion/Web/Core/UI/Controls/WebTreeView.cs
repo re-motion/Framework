@@ -652,7 +652,7 @@ namespace Remotion.Web.UI.Controls
       if (hasExpansionLink)
       {
         string argument = c_expansionCommandPrefix + nodePath;
-        string postBackEventReference = Page.ClientScript.GetPostBackEventReference (this, argument);
+        string postBackEventReference = Page.ClientScript.GetPostBackEventReference (this, argument) + ";return false;";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEventReference);
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         if (_renderingFeatures.EnableDiagnosticMetadata)
@@ -685,7 +685,7 @@ namespace Remotion.Web.UI.Controls
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       string argument = GetClickCommandArgument (nodePath);
-      string postBackEventReference = Page.ClientScript.GetPostBackEventReference (this, argument);
+      string postBackEventReference = Page.ClientScript.GetPostBackEventReference (this, argument) + ";return false;";
       writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEventReference);
       writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
       if (_renderingFeatures.EnableDiagnosticMetadata)

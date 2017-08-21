@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var a = Html.GetAssertedChildElement (td, "a", 0);
       Html.AssertAttribute (a, "id", List.ClientID + "_Column_0_RowEditCommand_Edit_Row_10");
       Html.AssertAttribute (a, "href", "#");
-      Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList_OnCommandClick();");
+      Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList_OnCommandClick();return false;");
       Html.AssertTextNode (a, "Bearbeiten", 0);
     }
 
@@ -100,13 +100,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var save = Html.GetAssertedChildElement (td, "a", 0);
       Html.AssertAttribute (save, "id", List.ClientID + "_Column_0_RowEditCommand_Save_Row_10");
       Html.AssertAttribute (save, "href", "#");
-      Html.AssertAttribute (save, "onclick", "postBackEventReference;BocList_OnCommandClick();");
+      Html.AssertAttribute (save, "onclick", "postBackEventReference;BocList_OnCommandClick();return false;");
       Html.AssertTextNode (save, "Speichern", 0);
 
       var cancel = Html.GetAssertedChildElement (td, "a", 1);
       Html.AssertAttribute (cancel, "id", List.ClientID + "_Column_0_RowEditCommand_Cancel_Row_10");
       Html.AssertAttribute (cancel, "href", "#");
-      Html.AssertAttribute (cancel, "onclick", "postBackEventReference;BocList_OnCommandClick();");
+      Html.AssertAttribute (cancel, "onclick", "postBackEventReference;BocList_OnCommandClick();return false;");
       Html.AssertTextNode (cancel, "Abbrechen", 0);
     }
 

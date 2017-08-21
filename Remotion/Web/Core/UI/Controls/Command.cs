@@ -555,7 +555,7 @@ namespace Remotion.Web.UI.Controls
       return CommandInfo.CreateForPostBack (
           StringUtility.EmptyToNull (_toolTip),
           StringUtility.EmptyToNull (_accessKey),
-          postBackEvent + (onClick ?? string.Empty));
+          AppendReturnStatementOnDemand(postBackEvent + (onClick ?? string.Empty)));
     }
 
     /// <summary> Creates a <see cref="CommandInfo"/> for the <see cref="WxeFunctionCommand"/>. </summary>
@@ -594,7 +594,20 @@ namespace Remotion.Web.UI.Controls
       return CommandInfo.CreateForPostBack (
           StringUtility.EmptyToNull (_toolTip),
           StringUtility.EmptyToNull (_accessKey),
-          postBackEvent + (onClick ?? string.Empty));
+          AppendReturnStatementOnDemand(postBackEvent + (onClick ?? string.Empty)));
+    }
+
+    private string AppendReturnStatementOnDemand (string script)
+    {
+      var endsWithSemiColon = script.EndsWith (";") || script.Trim().EndsWith (";");
+      if (!endsWithSemiColon)
+        script += ";";
+
+      var endsWithReturnFalse = script.EndsWith ("return false;") || script.Trim().EndsWith ("return false;");
+      if (!endsWithReturnFalse)
+        script += "return false;";
+
+      return script;
     }
 
     /// <summary> Renders the closing tag for the command. </summary>

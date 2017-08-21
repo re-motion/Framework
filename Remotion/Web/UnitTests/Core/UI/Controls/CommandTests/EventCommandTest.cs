@@ -80,7 +80,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     {
       Command command = _testHelper.CreateEventCommandAsPartialMock ();
       command.Click += TestHandler;
-      string expectedOnClick = _testHelper.PostBackEvent + _testHelper.OnClick;
+      string expectedOnClick = _testHelper.PostBackEvent + _testHelper.OnClick + "return false;";
       _testHelper.ExpectOnceOnHasAccess (command, true);
       _testHelper.ReplayAll ();
 

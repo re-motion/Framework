@@ -78,7 +78,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     public void Render_WithAccessGranted ()
     {
       Command command = _testHelper.CreateWxeFunctionCommandAsPartialMock();
-      string expectedOnClick = _testHelper.PostBackEvent + _testHelper.OnClick;
+      string expectedOnClick = _testHelper.PostBackEvent + _testHelper.OnClick + "return false;";
       _testHelper.ExpectOnceOnHasAccess (command, true);
       _testHelper.ReplayAll();
 

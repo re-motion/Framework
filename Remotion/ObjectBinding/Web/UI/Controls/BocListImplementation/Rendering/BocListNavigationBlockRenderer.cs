@@ -268,7 +268,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, navigateCommandID);
 
         var currentPageControlClientID = GetCurrentPageIndexControlID (renderingContext);
-        var postBackEvent = string.Format ("$('#{0}').val({1}).trigger('change');", currentPageControlClientID, pageIndex);
+        var postBackEvent = string.Format ("$('#{0}').val({1}).trigger('change');return false;", currentPageControlClientID, pageIndex);
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
 
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");

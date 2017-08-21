@@ -123,6 +123,7 @@ function DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, evt)
     {
     }
     setTimeout('_dropDownMenu_itemClicked = false;', 10);
+    return false;
   };
   setTimeout("$('body').bind('click', DropDownMenu_ClosePopUp);", 10);
 

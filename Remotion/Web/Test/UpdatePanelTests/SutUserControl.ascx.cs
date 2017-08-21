@@ -53,13 +53,13 @@ namespace Remotion.Web.Test.UpdatePanelTests
       string asyncPostBackCommandInsideUpdatePanelID = "AsyncPostBackCommandInsideUpdatePanel";
       AsyncCommandInsideUpdatePanelHyperLink.NavigateUrl = "#";
       AsyncCommandInsideUpdatePanelHyperLink.Attributes["onclick"] =
-          Page.ClientScript.GetPostBackEventReference (_postBackEventHandler, asyncPostBackCommandInsideUpdatePanelID);
+          Page.ClientScript.GetPostBackEventReference (_postBackEventHandler, asyncPostBackCommandInsideUpdatePanelID) + ";return false;";
 
       string syncPostBackCommandInsideUpdatePanelID = "SyncPostBackCommandInsideUpdatePanel";
       ((ISmartPage) Page).RegisterCommandForSynchronousPostBack (_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID);
       SyncCommandInsideUpdatePanelHyperLink.NavigateUrl = "#";
       SyncCommandInsideUpdatePanelHyperLink.Attributes["onclick"] =
-          Page.ClientScript.GetPostBackEventReference (_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID);
+          Page.ClientScript.GetPostBackEventReference (_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID) + ";return false;";
     }
 
     protected override void OnLoad (EventArgs e)

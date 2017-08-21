@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var a = Html.GetAssertedChildElement (td, "a", 0);
       Html.AssertAttribute (a, "id", List.ClientID + "_Column_0_Command_Row_10");
       Html.AssertAttribute (a, "href", "#");
-      Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList_OnCommandClick();");
+      Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList_OnCommandClick();return false;");
 
       Html.AssertTextNode (a, "TestCommand", 0);
     }
@@ -90,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var a = Html.GetAssertedChildElement (td, "a", 0);
       Html.AssertAttribute (a, "href", "#");
-      Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList_OnCommandClick();");
+      Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList_OnCommandClick();return false;");
 
       Html.AssertIcon (a, EventArgs.BusinessObject, null);
 
@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var a = Html.GetAssertedChildElement (td, "a", 0);
       Html.AssertAttribute (a, "href", "#");
-      Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList_OnCommandClick();");
+      Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList_OnCommandClick();return false;");
 
       Html.AssertIcon (a, EventArgs.BusinessObject, Column.Icon.Url.TrimStart ('~'));
 

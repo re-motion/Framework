@@ -399,7 +399,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       }
       if (webTab.EvaluateEnabled() && !isDisabledBySelection)
       {
-        string clickScript = _pageStub.ClientScript.GetPostBackClientHyperlink (_webTabStrip, webTab.ItemID);
+        string clickScript = _pageStub.ClientScript.GetPostBackClientHyperlink (_webTabStrip, webTab.ItemID) + ";return false;";
         link.AssertAttributeValueEquals ("onclick", clickScript);
       }
 

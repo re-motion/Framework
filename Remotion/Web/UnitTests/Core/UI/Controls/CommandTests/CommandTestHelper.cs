@@ -52,7 +52,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     private string _href = "/test.html?Param1={0}&Param2={1}";
     private string _target = "_blank";
     private string _postBackEvent = "__doPostBack (\"Target\", \"Args\");";
-    private string _onClick = "return false;";
+    private string _onClick = "DoStuff();";
     private string _ownerControlClientID = "OwnerControlClientID";
     private string _itemID = "CommandID";
 

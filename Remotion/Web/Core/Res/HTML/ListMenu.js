@@ -94,7 +94,7 @@ function ListMenu_Update (listMenu, getSelectionCount)
           anchor.href = '#';
           anchor.removeAttribute ('target');
           anchor.setAttribute ('javascript', itemInfo.Href);
-          anchor.onclick = function () { eval (this.getAttribute ('javascript')); };
+          anchor.onclick = function () { eval (this.getAttribute ('javascript')); return false; };
         }
         else
         {
