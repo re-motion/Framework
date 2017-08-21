@@ -50,24 +50,31 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <_namespaces Include="www.re-motion.org/WebTesting/Configuration/1.0">
+        <Prefix>rwt</Prefix>
+        <Uri>http://www.re-motion.org/WebTesting/Configuration/1.0</Uri>
+      </_namespaces>
+    </ItemGroup>
+    
+    <ItemGroup>
       <_appConfigAttributes Remove="@(_appConfigAttributes)"/>
-      <_appConfigAttributes Include="/configuration/remotion.webTesting">
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting">
         <Key>browser</Key>
         <Value>$(Browser)</Value>
       </_appConfigAttributes>
-      <_appConfigAttributes Include="/configuration/remotion.webTesting">
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting">
         <Key>logsDirectory</Key>
         <Value>$(_logsDirectory)</Value>
       </_appConfigAttributes>
-      <_appConfigAttributes Include="/configuration/remotion.webTesting">
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting">
         <Key>screenshotDirectory</Key>
         <Value>$(_logsDirectory)</Value>
       </_appConfigAttributes>
-      <_appConfigAttributes Include="/configuration/remotion.webTesting">
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting">
         <Key>closeBrowserWindowsOnSetUpAndTearDown</Key>
         <Value>true</Value>
       </_appConfigAttributes>
-      <_appConfigAttributes Include="/configuration/remotion.webTesting">
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting">
         <Key>cleanUpUnmatchedDownloadedFiles</Key>
         <Value>true</Value>
       </_appConfigAttributes>
@@ -83,6 +90,7 @@
 
     <MSBuild.ExtensionPack.Xml.XmlFile TaskAction="UpdateAttribute"
                                        File="$(AppConfigFile)"
+                                       Namespaces="@(_namespaces)"
                                        XPath="%(_appConfigAttributes.Identity)"
                                        Key="%(_appConfigAttributes.Key)"
                                        Value="%(_appConfigAttributes.Value)"/>
