@@ -102,6 +102,7 @@ function ListMenu_Update (listMenu, getSelectionCount)
           if (itemInfo.Target != null)
             anchor.target = itemInfo.Target;
           anchor.onclick = null;
+          anchor.removeAttribute ('onclick');
           anchor.removeAttribute ('javascript');
         }
       }
@@ -119,6 +120,7 @@ function ListMenu_Update (listMenu, getSelectionCount)
       anchor.removeAttribute ('href');
       anchor.removeAttribute ('target');
       anchor.onclick = null;
+      anchor.removeAttribute ('onclick');
       anchor.removeAttribute ('javascript');
     }
   }

@@ -161,7 +161,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       command.RenderBegin (
           renderingContext.Writer,
           RenderingFeatures,
-          renderingContext.Control.Page.ClientScript.GetPostBackClientHyperlink (renderingContext.Control, index.ToString()),
+          "",
           new[] { index.ToString() },
           "",
           null);

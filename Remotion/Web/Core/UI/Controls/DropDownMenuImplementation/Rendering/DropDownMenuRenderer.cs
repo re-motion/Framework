@@ -111,7 +111,6 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       if (renderingContext.Control.Enabled)
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, "return false;");
       }
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.A);
 
@@ -135,7 +134,6 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         if (renderingContext.Control.Enabled)
         {
           renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
-          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, "return false;");
         }
       }
 

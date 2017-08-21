@@ -156,7 +156,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
 
       var titleAnchor = titleDiv.GetAssertedChildElement ("a", 0);
       titleAnchor.AssertAttributeValueEquals ("href", "#");
-      titleAnchor.AssertAttributeValueEquals ("onclick", "return false;");
+      titleAnchor.AssertNoAttribute ("onclick");
       titleAnchor.AssertChildElementCount (withIcon ? 1 : 0);
       if (withTitle)
         titleAnchor.AssertTextNode (c_MenuTitle + HtmlHelper.WhiteSpace, withIcon ? 1 : 0);
