@@ -310,7 +310,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       else
       {
         string argument = itemIndex.ToString();
-        href = _control.Page.ClientScript.GetPostBackClientHyperlink (_control, argument) + ";";
+        href = _control.Page.ClientScript.GetPostBackClientHyperlink (_control, argument);
         href = ScriptUtility.EscapeClientScript (href);
         href = "'" + href + "'";
       }
