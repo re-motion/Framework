@@ -18,8 +18,8 @@ using System;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
@@ -29,13 +29,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class AnchorControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>), "GetTests")]
-    [TestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<AnchorSelector, AnchorControlObject> testSetupAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
+    [RemotionTestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<AnchorSelector, AnchorControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.Anchors(), "anchor");
     }

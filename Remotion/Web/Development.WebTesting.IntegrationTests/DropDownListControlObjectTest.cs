@@ -18,8 +18,8 @@ using System;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
@@ -29,12 +29,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class DropDownListControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<DropDownListSelector, DropDownListControlObject> testSetupAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<DropDownListSelector, DropDownListControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.DropDownLists(), "dropDownList");
     }

@@ -127,6 +127,13 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="GenericPages\AnchorGenericTestPage.cs" />
+    <Compile Include="GenericPages\CommandGenericTestPage.cs" />
+    <Compile Include="GenericPages\DropDownMenuGenericTestPage.cs" />
+    <Compile Include="GenericPages\FormGridGenericTestPage.cs" />
+    <Compile Include="GenericPages\SimpleGenericTestPage.cs" />
+    <Compile Include="GenericPages\WebButtonGenericTestPage.cs" />
+    <Compile Include="GenericTestOptions.cs" />
     <Compile Include="PlatformTest.aspx.cs">
       <DependentUpon>PlatformTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -158,21 +165,6 @@
       <DependentUpon>ScreenshotTestFrame.aspx</DependentUpon>
     </Compile>
     <Compile Include="ScreenshotTestFunction.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\SimpleControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\SimplePageSetup`1.cs" />
-    <Compile Include="GenericTestPageInfrastructure\TestArguments.cs" />
-    <Compile Include="GenericTestPageInfrastructure\IControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\IPageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\SimplePageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\AnchorControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\CommandControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\DropDownMenuControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\FormGridControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\WebButtonControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\TestConstants.cs" />
-    <Compile Include="GenericTestPageInfrastructure\TestOptions.cs" />
-    <Compile Include="GenericTestPageInfrastructure\TestParameter.cs" />
     <Compile Include="FileDownloadHandler.ashx.cs">
       <DependentUpon>FileDownloadHandler.ashx</DependentUpon>
     </Compile>
@@ -419,6 +411,10 @@
     <ProjectReference Include="..\Core\Web.Core.csproj">
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Name>Web.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj">
+      <Project>{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}</Project>
+      <Name>Web.Development.WebTesting.TestSite.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

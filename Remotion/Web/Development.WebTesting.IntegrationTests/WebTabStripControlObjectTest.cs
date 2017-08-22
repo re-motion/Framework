@@ -20,8 +20,8 @@ using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -29,12 +29,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WebTabStripControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<WebTabStripSelector, WebTabStripControlObject> testSetupAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<WebTabStripSelector, WebTabStripControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.WebTabStrips(), "webTabStrip");
     }

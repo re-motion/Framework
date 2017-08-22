@@ -82,26 +82,8 @@
     <Compile Include="BocAutoCompleteReferenceValueControlObjectTest.cs" />
     <Compile Include="CustomUserDirectory.cs" />
     <Compile Include="FluentControlSelectorExtensionsForIntegrationTestsForObjectBinding.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\ControlSelectorTestCaseFactoryBase.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\DomainPropertyControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\FirstControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\DisplayNameControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\HtmlIDControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\IndexControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\LocalIDControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\SingleControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\GenericPageTypes.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\ITestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestCaseFactoryBase.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestCaseOptions.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestConstants.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\DisplayNameTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\DomainPropertyTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\FirstTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\HtmlIDTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\IndexTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\LocalIDTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\SingleTestParameters.cs" />
+    <Compile Include="GenericTestPageParameters\DisplayNameGenericTestPageParameter.cs" />
+    <Compile Include="GenericTestPageParameters\DomainPropertyGenericTestPageParameter.cs" />
     <Compile Include="IntegrationTest.cs" />
     <Compile Include="CustomWebTestConfigurationFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -110,6 +92,8 @@
     <Compile Include="ScreenshotCreation\ScreenshotTestingExtensions.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotTestingType.cs" />
     <Compile Include="SetUpFixture.cs" />
+    <Compile Include="TestCaseFactories\DisplayNameControlSelectorTestCaseFactory.cs" />
+    <Compile Include="TestCaseFactories\DomainPropertyControlSelectorTestCaseFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">
@@ -124,6 +108,10 @@
     <ProjectReference Include="..\..\Web\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj">
       <Project>{febe7c1a-2cd5-4543-b0f1-de224d340f51}</Project>
       <Name>Web.Development.WebTesting.ExecutionEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Development.WebTesting.IntegrationTests.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj">
+      <Project>{1b8f7a8a-f95c-4497-8029-9cf32b271134}</Project>
+      <Name>Web.Development.WebTesting.IntegrationTests.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj">
       <Project>{5B5EC73A-B796-4D2D-A781-E889EE9EC4DF}</Project>

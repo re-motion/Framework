@@ -18,8 +18,8 @@ using System;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
@@ -29,12 +29,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TextBoxControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<TextBoxSelector, TextBoxControlObject> testSetupAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<TextBoxSelector, TextBoxControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.TextBoxes(), "textBox");
     }

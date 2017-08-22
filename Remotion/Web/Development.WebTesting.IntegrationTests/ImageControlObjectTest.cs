@@ -17,8 +17,8 @@
 using System;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
@@ -28,12 +28,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ImageControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<ImageSelector, ImageControlObject> testSetupAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<ImageSelector, ImageControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.Images(), "image");
     }

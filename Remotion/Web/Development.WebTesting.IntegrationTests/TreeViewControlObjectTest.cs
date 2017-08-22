@@ -19,8 +19,8 @@ using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
@@ -30,9 +30,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TreeViewControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TreeViewSelector, TreeViewControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TreeViewSelector, TreeViewControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<TreeViewSelector, TreeViewControlObject> testSetupAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TreeViewSelector, TreeViewControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TreeViewSelector, TreeViewControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<TreeViewSelector, TreeViewControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.TreeViews(), "treeView");
     }
@@ -55,8 +55,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
 
       var rootNode = treeView.GetRootNode().Expand();
-      Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo("Expanded: Root node|RootValue (None)"));
-      
+      Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Expanded: Root node|RootValue (None)"));
+
       rootNode.GetNode().WithIndex (2).Select();
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Child node 2|Child2Value (None)"));
 
@@ -66,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       rootNode.GetNode().WithDisplayTextContains ("ode 2").Select();
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Child node 2|Child2Value (None)"));
     }
-    
+
     [Test]
     public void TestNodeGetText ()
     {
@@ -92,7 +92,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (checkableNode.IsChecked(), Is.True);
 
       checkableNode.Select();
-      Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Child node 11|Child11Value (Child node 11|Child11Value)"));
+      Assert.That (
+          home.Scope.FindIdEndingWith ("TestOutputLabel").Text,
+          Is.EqualTo ("Selected: Child node 11|Child11Value (Child node 11|Child11Value)"));
 
       checkableNode.Uncheck();
       Assert.That (checkableNode.IsChecked(), Is.False);

@@ -18,8 +18,8 @@ using System;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -27,13 +27,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class FormGridControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>), "GetTests")]
-    [TestCaseSource (typeof (TitleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<FormGridSelector, FormGridControlObject> testSetupAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [RemotionTestCaseSource (typeof (TitleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<FormGridSelector, FormGridControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.FormGrids(), "formGrid");
     }

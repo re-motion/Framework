@@ -18,11 +18,12 @@ using System;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
-using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
@@ -31,14 +32,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
     {
       testAction (Helper, e => e.ReferenceValues(), "referenceValue");
     }

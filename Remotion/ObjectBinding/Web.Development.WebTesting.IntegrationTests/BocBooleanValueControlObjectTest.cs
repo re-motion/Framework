@@ -18,11 +18,12 @@ using System;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
-using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -30,14 +31,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocBooleanValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<BocBooleanValueSelector, BocBooleanValueControlObject> testAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<BocBooleanValueSelector, BocBooleanValueControlObject> testAction)
     {
       testAction (Helper, e => e.BooleanValues(), "booleanValue");
     }

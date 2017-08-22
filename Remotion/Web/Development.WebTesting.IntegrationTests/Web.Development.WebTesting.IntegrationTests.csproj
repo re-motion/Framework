@@ -71,22 +71,10 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="GenericTestPageParameters\ItemIDGenericTestPageParameter.cs" />
     <Compile Include="PlatformTest.cs" />
     <Compile Include="BrowserSessionTest.cs" />
     <Compile Include="BrowserWindowTests.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\ControlSelectorTestCaseFactoryBase.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\ITestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestCaseOptions.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\FirstControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\GenericPageTypes.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\HtmlIDControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\IndexControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\ItemIDControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\LocalIDControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\SingleControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestCaseFactoryBase.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\TextContentControlSelectorTestCaseFactory.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\Factories\TitleControlSelectorTestCaseFactory.cs" />
     <Compile Include="ControlObjectTest.cs" />
     <Compile Include="CustomUserDirectory.cs" />
     <Compile Include="FileDownloadTest.cs" />
@@ -116,15 +104,7 @@
     <Compile Include="IntegrationTest.cs" />
     <Compile Include="TabbedMenuControlObjectTest.cs" />
     <Compile Include="TabbedMultiViewControlObjectTest.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestConstants.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\SingleTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\FirstTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\HtmlIDTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\IndexTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\ItemIDTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\LocalIDTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\TextContentTestParameters.cs" />
-    <Compile Include="GenericTestCaseInfrastructure\TestParameters\TitleTestParameters.cs" />
+    <Compile Include="TestCaseFactories\ItemIDControlSelectorTestCaseFactory.cs" />
     <Compile Include="WebFormsTestPageObject.cs" />
     <Compile Include="WebTabStripControlObjectTest.cs" />
     <Compile Include="AnchorControlObjectTest.cs" />
@@ -149,6 +129,10 @@
     <ProjectReference Include="..\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj">
       <Project>{febe7c1a-2cd5-4543-b0f1-de224d340f51}</Project>
       <Name>Web.Development.WebTesting.ExecutionEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Development.WebTesting.IntegrationTests.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj">
+      <Project>{1b8f7a8a-f95c-4497-8029-9cf32b271134}</Project>
+      <Name>Web.Development.WebTesting.IntegrationTests.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Development.WebTesting.TestSite\Web.Development.WebTesting.TestSite.csproj">
       <Project>{e660cf09-930b-4381-9ac6-7a349e899d3b}</Project>

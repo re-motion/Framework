@@ -20,8 +20,8 @@ using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -29,12 +29,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TabbedMenuControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<TabbedMenuSelector, TabbedMenuControlObject> testSetupAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<TabbedMenuSelector, TabbedMenuControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.TabbedMenus(), "tabbedMenu");
     }
@@ -54,10 +54,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var tabbedMenu = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
-      
+
       var items = tabbedMenu.GetItemDefinitions();
       Assert.That (items.Count, Is.EqualTo (5));
-      
+
       Assert.That (items[0].ItemID, Is.EqualTo ("EventCommandTab"));
       Assert.That (items[0].Index, Is.EqualTo (1));
       Assert.That (items[0].Text, Is.EqualTo ("EventCommandTabTitle"));
@@ -128,7 +128,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       subMenuItems = tabbedMenu.SubMenu.GetItemDefinitions();
 
       Assert.That (subMenuItems.Count, Is.EqualTo (3));
-      
+
       Assert.That (subMenuItems[0].ItemID, Is.EqualTo ("SubMenuTab1"));
       Assert.That (subMenuItems[0].Index, Is.EqualTo (1));
       Assert.That (subMenuItems[0].Text, Is.EqualTo ("SubMenuTab1Title"));

@@ -291,9 +291,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.IntegrationTests", "Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj", "{5282552B-F3AB-42D3-B965-BF676E4F40F0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E660CF09-930B-4381-9AC6-7A349E899D3B} = {E660CF09-930B-4381-9AC6-7A349E899D3B}
+		{1B8F7A8A-F95C-4497-8029-9CF32B271134} = {1B8F7A8A-F95C-4497-8029-9CF32B271134}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.TestSite", "Remotion\Web\Development.WebTesting.TestSite\Web.Development.WebTesting.TestSite.csproj", "{E660CF09-930B-4381-9AC6-7A349E899D3B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA} = {651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Development.WebTesting.IntegrationTests", "Remotion\ObjectBinding\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj", "{6FE3C047-655C-4C26-92BC-E3C0D293D1A7}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -301,6 +305,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Developme
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Development.WebTesting.TestSite", "Remotion\ObjectBinding\Web.Development.WebTesting.TestSite\ObjectBinding.Web.Development.WebTesting.TestSite.csproj", "{652E65FE-81EF-4D91-9C52-1CB781862957}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1B8F7A8A-F95C-4497-8029-9CF32B271134} = {1B8F7A8A-F95C-4497-8029-9CF32B271134}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_SolutionItems", "{8FD13EC8-8054-47D6-A818-847C3B022C89}"
 	ProjectSection(SolutionItems) = preProject
@@ -335,6 +342,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Documentation", "SecurityManager\Documentation\SecurityManager.Documentation.csproj", "{F09B222C-EE32-4219-A817-8BF60980BEE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Documentation", "Remotion\Documentation\Core.Documentation.csproj", "{63B34091-CDF0-4F92-9789-7816F86DEC4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.TestSite.Infrastructure", "Remotion\Web\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj", "{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.IntegrationTests.Infrastructure", "Remotion\Web\Development.WebTesting.IntegrationTests.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj", "{1B8F7A8A-F95C-4497-8029-9CF32B271134}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.UnitTests", "Remotion\Web\Development.WebTesting.UnitTests\Web.Development.WebTesting.UnitTests.csproj", "{651D3C40-63D1-4422-B2C0-67272AA1DBDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1252,6 +1265,30 @@ Global
 		{63B34091-CDF0-4F92-9789-7816F86DEC4E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63B34091-CDF0-4F92-9789-7816F86DEC4E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{63B34091-CDF0-4F92-9789-7816F86DEC4E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1B8F7A8A-F95C-4497-8029-9CF32B271134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B8F7A8A-F95C-4497-8029-9CF32B271134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B8F7A8A-F95C-4497-8029-9CF32B271134}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1B8F7A8A-F95C-4497-8029-9CF32B271134}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1B8F7A8A-F95C-4497-8029-9CF32B271134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B8F7A8A-F95C-4497-8029-9CF32B271134}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B8F7A8A-F95C-4497-8029-9CF32B271134}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1B8F7A8A-F95C-4497-8029-9CF32B271134}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{651D3C40-63D1-4422-B2C0-67272AA1DBDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{651D3C40-63D1-4422-B2C0-67272AA1DBDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{651D3C40-63D1-4422-B2C0-67272AA1DBDF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{651D3C40-63D1-4422-B2C0-67272AA1DBDF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{651D3C40-63D1-4422-B2C0-67272AA1DBDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{651D3C40-63D1-4422-B2C0-67272AA1DBDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{651D3C40-63D1-4422-B2C0-67272AA1DBDF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{651D3C40-63D1-4422-B2C0-67272AA1DBDF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1371,6 +1408,9 @@ Global
 		{38429E11-0D23-41F0-8ED7-084C65EFDDC9} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{F09B222C-EE32-4219-A817-8BF60980BEE4} = {E1B271E4-22E6-4936-80A5-F0340AAB20A8}
 		{63B34091-CDF0-4F92-9789-7816F86DEC4E} = {5B3CB3F6-DE69-41D6-8BBC-EFF4932F0F7E}
+		{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
+		{1B8F7A8A-F95C-4497-8029-9CF32B271134} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
+		{651D3C40-63D1-4422-B2C0-67272AA1DBDF} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1

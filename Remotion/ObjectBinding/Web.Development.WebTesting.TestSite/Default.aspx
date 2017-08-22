@@ -44,10 +44,12 @@
           <tr><td><a href="GenericTest.wxe?control=booleanValue">BocBooleanValue</a></td></tr>
           <tr><td><a href="GenericTest.wxe?control=checkBox">BocCheckBox</a></td></tr>
           <tr><td><a href="GenericTest.wxe?control=dateTimeValue">BocDateTimeValue</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=enumValue">BocEnumValue</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=listAsGrid">BocListAsGrid</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=dropDownList">BocEnumValue - DropDownList</a></td></tr>
           <tr><td><a href="GenericTest.wxe?control=list">BocList</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=listAsGrid">BocListAsGrid</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=listBox">BocEnumValue - ListBox</a></td></tr>
           <tr><td><a href="GenericTest.wxe?control=multilineText">BocMultilineTextValue</a></td></tr>
+          <tr><td><a href="GenericTest.wxe?control=radioButtonList">BocEnumValue - RadioButtonList</a></td></tr>
           <tr><td><a href="GenericTest.wxe?control=referenceValue">BocReferenceValue</a></td></tr>
           <tr><td><a href="GenericTest.wxe?control=textValue">BocTextValue</a></td></tr>
           <tr><td><a href="GenericTest.wxe?control=treeView">BocTreeView</a></td></tr>

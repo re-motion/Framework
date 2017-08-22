@@ -20,8 +20,9 @@ using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -29,14 +30,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WebButtonControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
-    [TestCaseSource (typeof (ItemIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
-    [TestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<WebButtonSelector, WebButtonControlObject> testSetupAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [RemotionTestCaseSource (typeof (ItemIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [RemotionTestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<WebButtonSelector, WebButtonControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.WebButtons(), "webButton");
     }
