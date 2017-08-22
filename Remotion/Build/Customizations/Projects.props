@@ -125,7 +125,7 @@
     <!--<ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTest.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj"/>-->
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\UnitTests\Web.UnitTests.csproj"/>
-    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\WebDevelopment.WebTesting.UnitTests\Web.Development.WebTesting.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.UnitTests\Web.Development.WebTesting.UnitTests.csproj"/>
 
 
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj">
