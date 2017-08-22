@@ -14,49 +14,34 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
-using Remotion.Web.Development.WebTesting.TestSite;
 
-namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure
+// ReSharper disable once CheckNamespace
+
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
   /// <summary>
-  /// The type of page that should be displayed when displaying the generic page.
+  /// Defines which element should be displayed on the generic test page.
   /// </summary>
-  /// <remarks>
-  /// This enumeration goes hand in hand with <see cref="GenericTest.GenericPageTypes"/>. 
-  /// </remarks>
   [Flags]
-  public enum GenericPageTypes
+  public enum GenericTestPageType
   {
-    /// <summary>
-    /// Renders only the hidden sections.
-    /// </summary>
-    Hidden = 1,
+    Default = HiddenElements | VisibleElements | AmbiguousElements,
+    NonAmbiguous = HiddenElements | VisibleElements,
 
     /// <summary>
-    /// Renders all sections that are not ambiguous.
+    /// Renders the hidden elements.
     /// </summary>
-    NoAmbiguous = 3,
+    HiddenElements = 1,
 
     /// <summary>
-    /// Renders all sections.
+    /// Renders the visible elements.
     /// </summary>
-    All = 7,
+    VisibleElements = 2,
 
     /// <summary>
-    /// Renders the hidden section.
+    /// Renders the ambiguous elements.
     /// </summary>
-    HiddenSection = 1,
-
-    /// <summary>
-    /// Renders the shown section.
-    /// </summary>
-    ShownSection = 2,
-
-    /// <summary>
-    /// Renders the ambiguous section.
-    /// </summary>
-    AmbiguousSection = 4
+    AmbiguousElements = 4
   }
 }

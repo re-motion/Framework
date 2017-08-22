@@ -14,19 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
-using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericTestPageInfrastructure.ControlSetups;
+using NUnit.Framework;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericTestPageInfrastructure.PageSetups
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
-  public class BocCheckBoxValuePageSetup : SimplePageSetup
+  /// <summary>
+  /// Simplifies the usage of the <see cref="TestCaseSourceAttribute"/> by automatically supplying the sourceName parameter.
+  /// </summary>
+  [AttributeUsage (AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+  public class RemotionTestCaseSourceAttribute : TestCaseSourceAttribute
   {
-    public BocCheckBoxValuePageSetup ()
-        : base ((p, n) => new BocCheckBoxControlSetup (p, n))
+    public RemotionTestCaseSourceAttribute (Type sourceType)
+        : base (sourceType, "GetTests")
     {
-      AddParameter (TestParameter.ForDisplayName ("Deceased"));
-      AddParameter (TestParameter.ForDomainName ("Deceased"));
     }
   }
 }

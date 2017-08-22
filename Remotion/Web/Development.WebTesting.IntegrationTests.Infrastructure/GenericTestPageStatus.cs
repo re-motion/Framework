@@ -14,42 +14,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
-using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.TestParameters
+// ReSharper disable once CheckNamespace
+
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
   /// <summary>
-  /// Parameters for <see cref="SingleControlSelectorTestCaseFactory{TControlSelector,TControl}"/>.
+  /// Status code of the generic test page.
   /// </summary>
-  public class SingleTestParameters : ITestParameters
+  public enum GenericTestPageStatus
   {
-    private string _foundControlID;
-
-    public SingleTestParameters ()
-    {
-    }
-
-    public string FoundControlID
-    {
-      get { return _foundControlID; }
-    }
-
-    /// <inheritdoc />
-    public string Name
-    {
-      get { return TestConstants.Single; }
-    }
-
-    /// <inheritdoc />
-    public bool Apply (string[] data)
-    {
-      if (data.Length != 1)
-        return false;
-
-      _foundControlID = data[0];
-      return true;
-    }
+    Unknown = 0,
+    Failed = 1,
+    Ok = 2
   }
 }

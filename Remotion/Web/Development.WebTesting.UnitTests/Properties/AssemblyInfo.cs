@@ -14,29 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
-using System;
 using System.Reflection;
-
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure
-{
-  /// <summary>
-  /// Represents options used by <see cref="TestCaseFactoryBase"/>.
-  /// </summary>
-  public class TestCaseOptions
-  {
-    public TestCaseOptions ()
-    {
-    }
-
-    /// <summary>
-    /// The test method that will be invoked when the test starts.
-    /// </summary>
-    public MethodInfo TargetMethod { get; set; }
-
-    /// <summary>
-    /// The page that will be passed to the generic page.
-    /// </summary>
-    public GenericPageTypes PageType { get; set; }
-  }
-}
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("Remotion WebTesting Framework Unit Tests")]
+[assembly: AssemblyCulture("")]

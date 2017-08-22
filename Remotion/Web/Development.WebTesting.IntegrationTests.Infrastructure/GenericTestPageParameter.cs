@@ -14,32 +14,51 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Remotion.Web.Development.WebTesting.TestSite.GenericTestPageInfrastructure
+// ReSharper disable once CheckNamespace
+
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
-  public class TestArguments : IEnumerable<string>
+  /// <summary>
+  /// Represents a parameter that is passed to the test client via generic test page.
+  /// </summary>
+  public class GenericTestPageParameter : IEnumerable<string>
   {
-    private readonly string[] _values;
+    private readonly string _name;
+    private readonly string[] _arguments;
 
-    public TestArguments (params string[] values)
+    public GenericTestPageParameter (string name)
     {
-      _values = values;
+      _name = name;
+      _arguments = new string[0];
     }
 
-    public int Length
+    public GenericTestPageParameter (string name, params string[] arguments)
     {
-      get { return _values.Length; }
+      _name = name;
+      _arguments = arguments;
     }
 
+    public int ArgumentCount
+    {
+      get { return _arguments.Length; }
+    }
+
+    public string Name
+    {
+      get { return _name; }
+    }
+
+    /// <inheritdoc />
     public IEnumerator<string> GetEnumerator ()
     {
-      return ((IEnumerable<string>) _values).GetEnumerator();
+      return ((IEnumerable<string>) _arguments).GetEnumerator();
     }
 
+    /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator ()
     {
       return GetEnumerator();
@@ -47,7 +66,12 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericTestPageInfrastruc
 
     public string this [int index]
     {
-      get { return _values[index]; }
+      get
+      {
+        if (index < 0 || index >= _arguments.Length)
+          throw new ArgumentOutOfRangeException ("index");
+        return _arguments[index];
+      }
     }
   }
 }

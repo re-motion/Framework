@@ -14,27 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
-using System;
-using System.Web.UI;
-
-namespace Remotion.Web.Development.WebTesting.TestSite.GenericTestPageInfrastructure
-{
-  /// <summary>
-  /// Represents a <see cref="IControlSetup"/> that is setup with specific <see cref="TestOptions"/> and <see cref="ControlIndex"/>.
-  /// </summary>
-  public abstract class ControlSetup : IControlSetup
-  {
-    protected readonly TestOptions Options;
-    protected readonly int ControlIndex;
-
-    protected ControlSetup (TestOptions options, int controlIndex)
-    {
-      Options = options;
-      ControlIndex = controlIndex;
-    }
-
-    /// <inheritdoc />
-    public abstract void AddToContainer (Control container);
-  }
-}
+using System.Reflection;
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("Remotion WebTesting Framework TestSite Infrastructure")]
+[assembly: AssemblyCulture("")]

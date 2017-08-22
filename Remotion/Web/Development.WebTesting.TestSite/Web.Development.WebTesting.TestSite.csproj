@@ -170,7 +170,6 @@
     </Compile>
     <Compile Include="GenericTest.aspx.cs">
       <DependentUpon>GenericTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="GenericTest.aspx.designer.cs">
       <DependentUpon>GenericTest.aspx</DependentUpon>

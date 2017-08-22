@@ -14,24 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
-using System;
-
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure
-{
-  /// <summary>
-  /// Represents parameters for <see cref="ControlSelectorTestCaseFactoryBase{TControlSelector,TControl,TTestParameter}"/> sub classes.
-  /// </summary>
-  public interface ITestParameters
-  {
-    /// <summary>
-    /// Unique name of <see cref="ITestParameters"/>.
-    /// </summary>
-    string Name { get; }
-
-    /// <summary>
-    /// Applies the specified <paramref name="data"/> to the <see cref="ITestParameters"/> and returns if it was successful.
-    /// </summary>
-    bool Apply (string[] data);
-  }
-}
+using System.Reflection;
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("Remotion WebTesting Framework Integration Tests Infrastructure")]
+[assembly: AssemblyCulture("")]

@@ -14,34 +14,28 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
-using System.Web.UI;
+using JetBrains.Annotations;
 
-namespace Remotion.Web.Development.WebTesting.TestSite.GenericTestPageInfrastructure
+// ReSharper disable once CheckNamespace
+
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
-  public class SimpleControlSetup<TControl> : ControlSetup
-      where TControl : Control, new()
+  /// <summary>
+  /// DTO object for JSON conversion.
+  /// </summary>
+#pragma warning disable 0649
+  [UsedImplicitly (ImplicitUseTargetFlags.WithMembers)]
+  public class GenericTestPageParameterDto
   {
-    public SimpleControlSetup (TestOptions options, int controlIndex)
-        : base (options, controlIndex)
+    public GenericTestPageParameterDto (GenericTestPageStatus status, GenericTestPageParameterCollection parameters)
     {
+      Status = status;
+      Parameters = parameters;
     }
 
-    /// <summary>
-    /// Creates a new instance of <see cref="TControl"/> which is then added to the container.
-    /// </summary>
-    public virtual TControl CreateControl ()
-    {
-      return new TControl();
-    }
-
-    /// <inheritdoc />
-    public override void AddToContainer (Control container)
-    {
-      var control = CreateControl();
-      control.ID = Options.ID;
-      container.Controls.Add (control);
-    }
+    public GenericTestPageStatus Status;
+    public GenericTestPageParameterCollection Parameters;
   }
+#pragma warning restore 0649
 }
