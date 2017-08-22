@@ -116,7 +116,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
               ScreenshotTestingType.Desktop,
               (builder, target) =>
               {
-                builder.AnnotateBox (target, Pens.Transparent, WebPadding.Inner);
+                builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
 
                 builder.AnnotateBox (target.GetSelectedItem(), Pens.Blue, WebPadding.Inner);
 
