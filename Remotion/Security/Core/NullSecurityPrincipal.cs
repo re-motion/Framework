@@ -43,7 +43,7 @@ namespace Remotion.Security
       get { return null; }
     }
 
-    public ISecurityPrincipalRole SubstitutedRole
+    public IReadOnlyList<ISecurityPrincipalRole> SubstitutedRoles
     {
       get { return null; }
     }

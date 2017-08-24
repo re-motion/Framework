@@ -60,7 +60,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     [Test]
     public void Test ()
     {
-      var principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, _substitution);
+      var principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, null);
       ISecurityPrincipal securityPrincipal = principal.GetSecurityPrincipal();
       Assert.That (securityPrincipal.IsNull, Is.False);
       Assert.That (securityPrincipal.User, Is.EqualTo (_user.UserName));
@@ -71,10 +71,76 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       Assert.That (securityPrincipal.Roles[0].Position, Is.EqualTo (_roles[0].Position.UniqueIdentifier));
       Assert.That (securityPrincipal.Roles[1].Group, Is.EqualTo (_roles[1].Group.UniqueIdentifier));
       Assert.That (securityPrincipal.Roles[1].Position, Is.EqualTo (_roles[1].Position.UniqueIdentifier));
+    }
+
+    [Test]
+    public void Test_WithSubstitution_AndWithImplicitSubstutedUserAndRoles ()
+    {
+      var principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, _substitution);
+      ISecurityPrincipal securityPrincipal = principal.GetSecurityPrincipal();
 
       Assert.That (securityPrincipal.SubstitutedUser, Is.EqualTo (_substitution.SubstitutedUser.UserName));
-      Assert.That (securityPrincipal.SubstitutedRole.Group, Is.EqualTo (_substitution.SubstitutedRole.Group.UniqueIdentifier));
-      Assert.That (securityPrincipal.SubstitutedRole.Position, Is.EqualTo (_substitution.SubstitutedRole.Position.UniqueIdentifier));
+      Assert.That (securityPrincipal.SubstitutedRoles.Count, Is.EqualTo (1));
+      Assert.That (securityPrincipal.SubstitutedRoles[0].Group, Is.EqualTo (_substitution.SubstitutedRole.Group.UniqueIdentifier));
+      Assert.That (securityPrincipal.SubstitutedRoles[0].Position, Is.EqualTo (_substitution.SubstitutedRole.Position.UniqueIdentifier));
+    }
+
+    [Test]
+    public void Test_WithSubstitutionAndExplicitSubstitutedUserAndRoles_UsesExplicitData ()
+    {
+      var substitutedUser = User.FindByUserName ("group1/user1");
+      var substitutedRoles = substitutedUser.Roles.Take (1).ToArray();
+      Assert.That (substitutedRoles.Length, Is.EqualTo (1));
+
+      var principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, _substitution, substitutedUser, substitutedRoles);
+      ISecurityPrincipal securityPrincipal = principal.GetSecurityPrincipal();
+
+      Assert.That (securityPrincipal.SubstitutedUser, Is.EqualTo (substitutedUser.UserName));
+      Assert.That (securityPrincipal.SubstitutedRoles.Count, Is.EqualTo (1));
+      Assert.That (securityPrincipal.SubstitutedRoles[0].Group, Is.EqualTo (substitutedRoles[0].Group.UniqueIdentifier));
+      Assert.That (securityPrincipal.SubstitutedRoles[0].Position, Is.EqualTo (substitutedRoles[0].Position.UniqueIdentifier));
+    }
+
+    [Test]
+    public void Test_WithSubstitutionAndExplicitSubstitutedUser_UsesExplicitData ()
+    {
+      var substitutedUser = User.FindByUserName ("group1/user1");
+
+      var principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, _substitution, substitutedUser, null);
+      ISecurityPrincipal securityPrincipal = principal.GetSecurityPrincipal();
+
+      Assert.That (securityPrincipal.SubstitutedUser, Is.EqualTo (substitutedUser.UserName));
+      Assert.That (securityPrincipal.SubstitutedRoles, Is.Null);
+    }
+
+    [Test]
+    public void Test_WithSubstitutionAndExplicitSubstitutedRoles_UsesExplicitData ()
+    {
+      var substitutedUser = User.FindByUserName ("group1/user1");
+      var substitutedRoles = substitutedUser.Roles.Take (1).ToArray();
+      Assert.That (substitutedRoles.Length, Is.EqualTo (1));
+
+      var principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, _substitution, null, substitutedRoles);
+      ISecurityPrincipal securityPrincipal = principal.GetSecurityPrincipal();
+
+      Assert.That (securityPrincipal.SubstitutedUser, Is.Null);
+      Assert.That (securityPrincipal.SubstitutedRoles.Count, Is.EqualTo (1));
+      Assert.That (securityPrincipal.SubstitutedRoles[0].Group, Is.EqualTo (substitutedRoles[0].Group.UniqueIdentifier));
+      Assert.That (securityPrincipal.SubstitutedRoles[0].Position, Is.EqualTo (substitutedRoles[0].Position.UniqueIdentifier));
+    }
+
+    [Test]
+    public void Test_WithSubstitutionAndExplicitSubstitutedRolesEmpty_UsesExplicitData ()
+    {
+      var substitutedUser = User.FindByUserName ("group1/user1");
+      var substitutedRoles = substitutedUser.Roles.Take (1).ToArray();
+      Assert.That (substitutedRoles.Length, Is.EqualTo (1));
+
+      var principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, _substitution, null, new Role[0]);
+      ISecurityPrincipal securityPrincipal = principal.GetSecurityPrincipal();
+
+      Assert.That (securityPrincipal.SubstitutedUser, Is.Null);
+      Assert.That (securityPrincipal.SubstitutedRoles, Is.Empty);
     }
 
     [Test]

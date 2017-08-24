@@ -25,6 +25,8 @@ using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.UnitTests.TestDomain;
 using Rhino.Mocks;
 
@@ -33,6 +35,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
   [TestFixture]
   public class SecurityTokenBuilderTest : DomainTest
   {
+    private SecurityTokenBuilder _securityTokenBuilder;
+    private SecurityPrincipalRepository _securityPrincipalRepository;
+    private ClientTransactionScope _clientTransactionScope;
+
     public override void TestFixtureSetUp ()
     {
       base.TestFixtureSetUp();
@@ -45,18 +51,30 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       base.SetUp();
 
-      ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
+      var userRevisionProvider = new UserRevisionProvider();
+      _securityPrincipalRepository = new SecurityPrincipalRepository (userRevisionProvider);
+      _securityTokenBuilder = new SecurityTokenBuilder (
+          _securityPrincipalRepository,
+          new SecurityContextRepository (new RevisionProvider(), userRevisionProvider));
+
+      _clientTransactionScope = ClientTransaction.CreateRootTransaction().EnterDiscardingScope();
+    }
+
+    public override void TearDown ()
+    {
+      _clientTransactionScope.Leave();
+
+      base.TearDown();
     }
 
     [Test]
     public void Create_WithValidPrincipal_WithRolesNull ()
     {
-      SecurityContext context = CreateContext ();
+      SecurityContext context = CreateContext();
       ISecurityPrincipal principal = CreateTestPrincipal ();
       Assert.That (principal.Roles, Is.Null);
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (principal, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
 
       var user = token.Principal.User.GetObject();
       Assert.That (user.UserName, Is.EqualTo ("test.user"));
@@ -73,10 +91,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       principalStub.Stub (stub => stub.User).Return ("test.user");
       principalStub.Stub (stub => stub.Roles).Return (new ISecurityPrincipalRole[0]);
 
-      SecurityContext context = CreateContext ();
+      SecurityContext context = CreateContext();
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (principalStub, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (principalStub, context);
 
       var user = token.Principal.User.GetObject();
       Assert.That (user.UserName, Is.EqualTo ("test.user"));
@@ -98,11 +115,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       princialRole2Stub.Stub (stub => stub.Position).Return ("UID: Manager");
       principalStub.Stub (stub => stub.Roles).Return (new[] { princialRole1Stub, princialRole2Stub });
 
-      SecurityContext context = CreateContext ();
+      SecurityContext context = CreateContext();
       ISecurityPrincipal principal = principalStub;
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (principal, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
 
       var principalUser = token.Principal.User.GetObject();
       Assert.That (principalUser.UserName, Is.EqualTo ("test.user"));
@@ -115,42 +131,114 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    public void Create_WithValidPrincipal_WithSubstitutedRole ()
+    public void Create_WithValidPrincipal_WithoutSubstitutedUser_WithOneSubstitutedRole_MatchingSubstitionWithRole_UsesSubstitutedRole ()
     {
       var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
       principalStub.Stub (stub => stub.User).Return ("substituting.user");
-      principalStub.Stub (stub => stub.SubstitutedUser).Return ("test.user");
+      principalStub.Stub (stub => stub.SubstitutedUser).Return (null);
       var princialSubstitutedRoleStub = MockRepository.GenerateStub<ISecurityPrincipalRole> ();
       princialSubstitutedRoleStub.Stub (stub => stub.Group).Return ("UID: testGroup");
       princialSubstitutedRoleStub.Stub (stub => stub.Position).Return ("UID: Official");
-      principalStub.Stub (stub => stub.SubstitutedRole).Return (princialSubstitutedRoleStub);
+      principalStub.Stub (stub => stub.SubstitutedRoles).Return (new[] { princialSubstitutedRoleStub });
 
-      SecurityContext context = CreateContext ();
+      SecurityContext context = CreateContext();
       ISecurityPrincipal principal = principalStub;
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (principal, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
 
       Assert.That (token.Principal.User, Is.Null);
       Assert.That (token.Principal.Tenant.GetObject().UniqueIdentifier, Is.EqualTo ("UID: testTenant"));
       Assert.That (token.Principal.Roles.Count, Is.EqualTo (1));
-      Assert.That (token.Principal.Roles[0].Group.GetObject().UniqueIdentifier, Is.EqualTo ("UID: testGroup"));
-      Assert.That (token.Principal.Roles[0].Position.GetObject().UniqueIdentifier, Is.EqualTo ("UID: Official"));
+      Assert.That (
+          token.Principal.Roles.Select (r => Tuple.Create (r.Group.GetObject().UniqueIdentifier, r.Position.GetObject().UniqueIdentifier)),
+          Is.EquivalentTo (new[] { Tuple.Create ("UID: testGroup", "UID: Official") }));
       Assert.That (token.Principal.IsNull, Is.False);
     }
 
     [Test]
-    public void Create_WithValidPrincipal_WithSubstitutedUser ()
+    public void Create_WithValidPrincipal_WithoutSubstitutedUser_WithSubstitutedRolesEmpty_HasNoRoles ()
+    {
+      var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
+      principalStub.Stub (stub => stub.User).Return ("substituting.user");
+      principalStub.Stub (stub => stub.SubstitutedUser).Return (null);
+      principalStub.Stub (stub => stub.SubstitutedRoles).Return (new ISecurityPrincipalRole[0]);
+
+      SecurityContext context = CreateContext();
+      ISecurityPrincipal principal = principalStub;
+
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
+
+      Assert.That (token.Principal.User, Is.Null);
+      Assert.That (token.Principal.Tenant.GetObject().UniqueIdentifier, Is.EqualTo ("UID: testTenant"));
+      Assert.That (token.Principal.Roles, Is.Empty);
+      Assert.That (token.Principal.IsNull, Is.False);
+    }
+
+    [Test]
+    public void Create_WithValidPrincipal_WithoutSubstitutedUser_WithMultipleSubstitutedRoles_DoesNotMatch ()
+    {
+      var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
+      principalStub.Stub (stub => stub.User).Return ("substituting.user");
+      principalStub.Stub (stub => stub.SubstitutedUser).Return (null);
+      var princialSubstitutedRoleStub1 = MockRepository.GenerateStub<ISecurityPrincipalRole> ();
+      princialSubstitutedRoleStub1.Stub (stub => stub.Group).Return ("UID: testGroup");
+      princialSubstitutedRoleStub1.Stub (stub => stub.Position).Return ("UID: Official");
+      var princialSubstitutedRoleStub2 = MockRepository.GenerateStub<ISecurityPrincipalRole> ();
+      princialSubstitutedRoleStub2.Stub (stub => stub.Group).Return ("UID: testOwningGroup");
+      princialSubstitutedRoleStub2.Stub (stub => stub.Position).Return ("UID: Manager");
+      principalStub.Stub (stub => stub.SubstitutedRoles).Return (new[] { princialSubstitutedRoleStub1, princialSubstitutedRoleStub2 });
+
+      SecurityContext context = CreateContext();
+      ISecurityPrincipal principal = principalStub;
+
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
+
+      Assert.That (token.Principal.User, Is.Null);
+      Assert.That (token.Principal.Tenant.GetObject().UniqueIdentifier, Is.EqualTo ("UID: testTenant"));
+      Assert.That (token.Principal.Roles, Is.Empty);
+      Assert.That (token.Principal.IsNull, Is.False);
+    }
+
+    [Test]
+    public void Create_WithValidPrincipal_WithoutSubstitutedUser_WithTenantMismatch_HasNoRoles ()
+    {
+      var principalUser = _securityPrincipalRepository.GetUser ("User.Tenant2");
+      var substitution = principalUser.GetActiveSubstitutions().Single();
+      substitution.SubstitutedRole = substitution.SubstitutedUser.Roles.First (r => r.User.Tenant != principalUser.Tenant);
+      principalUser.RootTransaction.Commit();
+      Assert.That (substitution.IsActive, Is.True, "Substitution must be unchanged.");
+
+      var principalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
+      principalStub.Stub (stub => stub.User).Return (principalUser.UserName);
+      principalStub.Stub (stub => stub.SubstitutedUser).Return (null);
+      var princialSubstitutedRoleStub = MockRepository.GenerateStub<ISecurityPrincipalRole>();
+      princialSubstitutedRoleStub.Stub (stub => stub.Group).Return (substitution.SubstitutedRole.Group.UniqueIdentifier);
+      princialSubstitutedRoleStub.Stub (stub => stub.Position).Return (substitution.SubstitutedRole.Position.UniqueIdentifier);
+      principalStub.Stub (stub => stub.SubstitutedRoles).Return (new[] { princialSubstitutedRoleStub });
+
+      SecurityContext context = CreateContext();
+      ISecurityPrincipal principal = principalStub;
+
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
+
+      Assert.That (token.Principal.User, Is.Null);
+      Assert.That (token.Principal.Tenant.GetObject().UniqueIdentifier, Is.Not.EqualTo ("UID: testTenant"));
+      Assert.That (token.Principal.Roles, Is.Empty);
+      Assert.That (token.Principal.IsNull, Is.False);
+    }
+
+    [Test]
+    public void Create_WithValidPrincipal_WithSubstitutedUser_WithSubstitutedRolesNull_UsesSubstitutedUserAndAllRolesOfSubstitutedUser ()
     {
       var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
       principalStub.Stub (stub => stub.User).Return ("substituting.user");
       principalStub.Stub (stub => stub.SubstitutedUser).Return ("test.user");
+      principalStub.Stub (stub => stub.SubstitutedRoles).Return (null);
 
-      SecurityContext context = CreateContext ();
+      SecurityContext context = CreateContext();
       ISecurityPrincipal principal = principalStub;
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (principal, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
 
       var user = token.Principal.User.GetObject();
       Assert.That (user.UserName, Is.EqualTo ("test.user"));
@@ -161,21 +249,175 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    public void Create_WithValidPrincipal_WithInactiveSubstitution ()
+    public void Create_WithValidPrincipal_WithSubstitutedUser_WithSubstitutedRolesEmpty_UsesSubstitutedUserButHasNoRoles ()
+    {
+      var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
+      principalStub.Stub (stub => stub.User).Return ("substituting.user");
+      principalStub.Stub (stub => stub.SubstitutedUser).Return ("test.user");
+      principalStub.Stub (stub => stub.SubstitutedRoles).Return (new ISecurityPrincipalRole[0]);
+
+      SecurityContext context = CreateContext();
+      ISecurityPrincipal principal = principalStub;
+
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
+
+      var user = token.Principal.User.GetObject();
+      Assert.That (user.UserName, Is.EqualTo ("test.user"));
+      Assert.That (token.Principal.Tenant.GetObject().UniqueIdentifier, Is.EqualTo ("UID: testTenant"));
+      Assert.That (token.Principal.Roles, Is.Empty);
+      Assert.That (token.Principal.IsNull, Is.False);
+    }
+
+    [Test]
+    public void Create_WithValidPrincipal_WithSubstitutedUser_WithOneSubstitutedRole_MatchingSubstitionWithRole_UsesSubstitutedUserAndRole ()
     {
       var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
       principalStub.Stub (stub => stub.User).Return ("substituting.user");
       principalStub.Stub (stub => stub.SubstitutedUser).Return ("test.user");
       var princialSubstitutedRoleStub = MockRepository.GenerateStub<ISecurityPrincipalRole> ();
       princialSubstitutedRoleStub.Stub (stub => stub.Group).Return ("UID: testGroup");
-      princialSubstitutedRoleStub.Stub (stub => stub.Position).Return ("UID: Manager");
-      principalStub.Stub (stub => stub.SubstitutedRole).Return (princialSubstitutedRoleStub);
+      princialSubstitutedRoleStub.Stub (stub => stub.Position).Return ("UID: Official");
+      principalStub.Stub (stub => stub.SubstitutedRoles).Return (new[] { princialSubstitutedRoleStub });
 
-      SecurityContext context = CreateContext ();
+      SecurityContext context = CreateContext();
       ISecurityPrincipal principal = principalStub;
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (principal, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
+
+      var user = token.Principal.User.GetObject();
+      Assert.That (user.UserName, Is.EqualTo ("test.user"));
+      Assert.That (token.Principal.Tenant.GetObject().UniqueIdentifier, Is.EqualTo ("UID: testTenant"));
+      Assert.That (token.Principal.Roles.Count, Is.EqualTo (1));
+      Assert.That (
+          token.Principal.Roles.Select (r => Tuple.Create (r.Group.GetObject().UniqueIdentifier, r.Position.GetObject().UniqueIdentifier)),
+          Is.EquivalentTo (new[] { Tuple.Create ("UID: testGroup", "UID: Official") }));
+      Assert.That (token.Principal.IsNull, Is.False);
+    }
+
+    [Test]
+    public void Create_WithValidPrincipal_WithSubstitutedUser_WithOneSubstitutedRole_WouldMatchRoleOnlyInOtherSubstitution_UsesSubstitutedUserButUserHasNoRoles ()
+    {
+      var principalUser = _securityPrincipalRepository.GetUser ("substituting.user");
+      using (principalUser.RootTransaction.EnterNonDiscardingScope())
+      {
+        var testHelper = new OrganizationalStructureTestHelper (principalUser.RootTransaction);
+        var otherUser = testHelper.CreateUser ("otherUser", "First", "Last", null, principalUser.OwningGroup, principalUser.Tenant);
+        var testRootGroup = Group.FindByUnqiueIdentifier ("UID: rootGroup");
+        var managerPosition = Position.FindAll().Single (p => p.UniqueIdentifier == "UID: Manager");
+        var role2 = testHelper.CreateRole (otherUser, testRootGroup, managerPosition);
+        var substitution2 = Substitution.NewObject();
+        substitution2.SubstitutedRole = role2;
+        substitution2.SubstitutedUser = otherUser;
+        substitution2.SubstitutingUser = principalUser;
+        principalUser.RootTransaction.Commit();
+        Assert.That (substitution2.IsActive, Is.True, "Substitution must be unchanged.");
+      }
+
+      var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
+      principalStub.Stub (stub => stub.User).Return ("substituting.user");
+      principalStub.Stub (stub => stub.SubstitutedUser).Return ("test.user");
+      var princialSubstitutedRoleStub = MockRepository.GenerateStub<ISecurityPrincipalRole> ();
+      princialSubstitutedRoleStub.Stub (stub => stub.Group).Return ("UID: rootGroup");
+      princialSubstitutedRoleStub.Stub (stub => stub.Position).Return ("UID: Manager");
+      principalStub.Stub (stub => stub.SubstitutedRoles).Return (new[] { princialSubstitutedRoleStub });
+
+      SecurityContext context = CreateContext();
+      ISecurityPrincipal principal = principalStub;
+
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
+
+      var user = token.Principal.User.GetObject();
+      Assert.That (user.UserName, Is.EqualTo ("test.user"));
+      Assert.That (token.Principal.Tenant.GetObject().UniqueIdentifier, Is.EqualTo ("UID: testTenant"));
+      Assert.That (token.Principal.Roles, Is.Empty);
+      Assert.That (token.Principal.IsNull, Is.False);
+    }
+
+    [Test]
+    public void Create_WithValidPrincipal_WithSubstitutedUser_WithMultipleSubstitutedRoles_MatchesUserSubstition_UsesSubstitutedUserAndReducesSetOfRolesToContainOnlySubstitutedRoles ()
+    {
+      var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
+      principalStub.Stub (stub => stub.User).Return ("substituting.user");
+      principalStub.Stub (stub => stub.SubstitutedUser).Return ("test.user");
+
+      var princialSubstitutedRoleStub1 = MockRepository.GenerateStub<ISecurityPrincipalRole> ();
+      princialSubstitutedRoleStub1.Stub (stub => stub.Group).Return ("UID: testGroup");
+      princialSubstitutedRoleStub1.Stub (stub => stub.Position).Return ("UID: Official");
+
+      var princialSubstitutedRoleStub2 = MockRepository.GenerateStub<ISecurityPrincipalRole> ();
+      princialSubstitutedRoleStub2.Stub (stub => stub.Group).Return ("UID: testOwningGroup");
+      princialSubstitutedRoleStub2.Stub (stub => stub.Position).Return ("UID: Manager");
+
+      principalStub.Stub (stub => stub.SubstitutedRoles).Return (new[] { princialSubstitutedRoleStub1, princialSubstitutedRoleStub2 });
+
+      SecurityContext context = CreateContext();
+      ISecurityPrincipal principal = principalStub;
+
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
+
+      var user = token.Principal.User.GetObject();
+      Assert.That (user.UserName, Is.EqualTo ("test.user"));
+      Assert.That (token.Principal.Tenant.GetObject().UniqueIdentifier, Is.EqualTo ("UID: testTenant"));
+      Assert.That (token.Principal.Roles.Count, Is.EqualTo (2));
+      Assert.That (
+          token.Principal.Roles.Select (r => Tuple.Create (r.Group.GetObject().UniqueIdentifier, r.Position.GetObject().UniqueIdentifier)),
+          Is.EquivalentTo (new[] { Tuple.Create ("UID: testGroup", "UID: Official"), Tuple.Create ("UID: testOwningGroup", "UID: Manager") }));
+      Assert.That (token.Principal.IsNull, Is.False);
+    }
+
+    [Test]
+    public void Create_WithValidPrincipal_WithSubstitutedUser_WithMultipleSubstitutedRoles_MatchesUserSubstition_UsesSubstitutedUserAndReducesSetOfRolesToContainOnlyRolesOfSubstitutedUser ()
+    {
+      var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
+      principalStub.Stub (stub => stub.User).Return ("substituting.user");
+      principalStub.Stub (stub => stub.SubstitutedUser).Return ("test.user");
+
+      var princialSubstitutedRoleStub1 = MockRepository.GenerateStub<ISecurityPrincipalRole> ();
+      princialSubstitutedRoleStub1.Stub (stub => stub.Group).Return ("UID: testGroup");
+      princialSubstitutedRoleStub1.Stub (stub => stub.Position).Return ("UID: Official");
+
+      var princialSubstitutedRoleStub2 = MockRepository.GenerateStub<ISecurityPrincipalRole> ();
+      princialSubstitutedRoleStub2.Stub (stub => stub.Group).Return ("UID: testOwningGroup");
+      princialSubstitutedRoleStub2.Stub (stub => stub.Position).Return ("UID: Manager");
+
+      var princialSubstitutedRoleStub3 = MockRepository.GenerateStub<ISecurityPrincipalRole> ();
+      princialSubstitutedRoleStub3.Stub (stub => stub.Group).Return ("UID: rootGroup");
+      princialSubstitutedRoleStub3.Stub (stub => stub.Position).Return ("UID: Manager");
+
+      principalStub
+          .Stub (stub => stub.SubstitutedRoles)
+          .Return (new[] { princialSubstitutedRoleStub1, princialSubstitutedRoleStub2, princialSubstitutedRoleStub3 });
+
+      SecurityContext context = CreateContext();
+      ISecurityPrincipal principal = principalStub;
+
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
+
+      var user = token.Principal.User.GetObject();
+      Assert.That (user.UserName, Is.EqualTo ("test.user"));
+      Assert.That (token.Principal.Tenant.GetObject().UniqueIdentifier, Is.EqualTo ("UID: testTenant"));
+      Assert.That (token.Principal.Roles.Count, Is.EqualTo (2));
+      Assert.That (
+          token.Principal.Roles.Select (r => Tuple.Create (r.Group.GetObject().UniqueIdentifier, r.Position.GetObject().UniqueIdentifier)),
+          Is.EquivalentTo (new[] { Tuple.Create ("UID: testGroup", "UID: Official"), Tuple.Create ("UID: testOwningGroup", "UID: Manager") }));
+      Assert.That (token.Principal.IsNull, Is.False);
+    }
+
+    [Test]
+    public void Create_WithValidPrincipal_WithInactiveSubstitution ()
+    {
+      var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
+      principalStub.Stub (stub => stub.User).Return ("substituting.user");
+      principalStub.Stub (stub => stub.SubstitutedUser).Return (null);
+      var princialSubstitutedRoleStub = MockRepository.GenerateStub<ISecurityPrincipalRole> ();
+      princialSubstitutedRoleStub.Stub (stub => stub.Group).Return ("UID: testGroup");
+      princialSubstitutedRoleStub.Stub (stub => stub.Position).Return ("UID: Manager");
+      principalStub.Stub (stub => stub.SubstitutedRoles).Return (new[] { princialSubstitutedRoleStub });
+
+      SecurityContext context = CreateContext();
+      ISecurityPrincipal principal = principalStub;
+
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
 
       Assert.That (token.Principal.User, Is.Null);
       Assert.That (token.Principal.Tenant.GetObject().UniqueIdentifier, Is.EqualTo ("UID: testTenant"));
@@ -190,11 +432,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       principalStub.Stub (stub => stub.User).Return ("substituting.user");
       principalStub.Stub (stub => stub.SubstitutedUser).Return ("notexisting.user");
 
-      SecurityContext context = CreateContext ();
+      SecurityContext context = CreateContext();
       ISecurityPrincipal principal = principalStub;
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (principal, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
 
       Assert.That (token.Principal.User, Is.Null);
       Assert.That (token.Principal.Tenant.GetObject().UniqueIdentifier, Is.EqualTo ("UID: testTenant"));
@@ -203,7 +444,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    public void Create_WithValidPrincipal_WithInvalidSubstitutedRoleFromGroup ()
+    public void Create_WithValidPrincipal_WithInvalidSubstitutedRoleFromGroup_ThrowsAccessControlException ()
     {
       var principalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
       principalStub.Stub (stub => stub.User).Return ("substituting.user");
@@ -211,14 +452,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       var princialSubstitutedRoleStub = MockRepository.GenerateStub<ISecurityPrincipalRole>();
       princialSubstitutedRoleStub.Stub (stub => stub.Group).Return ("UID: notexisting.group");
       princialSubstitutedRoleStub.Stub (stub => stub.Position).Return ("UID: Official");
-      principalStub.Stub (stub => stub.SubstitutedRole).Return (princialSubstitutedRoleStub);
+      principalStub.Stub (stub => stub.SubstitutedRoles).Return (new[] { princialSubstitutedRoleStub });
 
       SecurityContext context = CreateContext();
       ISecurityPrincipal principal = principalStub;
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
       Assert.That (
-          () => builder.CreateToken (principal, context),
+          () => _securityTokenBuilder.CreateToken (principal, context),
           Throws.TypeOf<AccessControlException>().With.Message.EqualTo ("The group 'UID: notexisting.group' could not be found."));
     }
 
@@ -231,29 +471,27 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       var princialSubstitutedRoleStub = MockRepository.GenerateStub<ISecurityPrincipalRole>();
       princialSubstitutedRoleStub.Stub (stub => stub.Group).Return ("UID: testGroup");
       princialSubstitutedRoleStub.Stub (stub => stub.Position).Return ("UID: notexisting.position");
-      principalStub.Stub (stub => stub.SubstitutedRole).Return (princialSubstitutedRoleStub);
+      principalStub.Stub (stub => stub.SubstitutedRoles).Return (new[] { princialSubstitutedRoleStub });
 
       SecurityContext context = CreateContext();
       ISecurityPrincipal principal = principalStub;
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
       Assert.That (
-          () => builder.CreateToken (principal, context),
+          () => _securityTokenBuilder.CreateToken (principal, context),
           Throws.TypeOf<AccessControlException>().With.Message.EqualTo ("The position 'UID: notexisting.position' could not be found."));
     }
 
     [Test]
-    public void Create_WithValidPrincipal_WithTenantMismatch ()
+    public void Create_WithValidPrincipal_WithSubstitutedUser_WithTenantMismatch_HasNoUserAndNoRoles ()
     {
       var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
       principalStub.Stub (stub => stub.User).Return ("User.Tenant2");
       principalStub.Stub (stub => stub.SubstitutedUser).Return ("test.user");
 
-      SecurityContext context = CreateContext ();
+      SecurityContext context = CreateContext();
       ISecurityPrincipal principal = principalStub;
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (principal, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
 
       Assert.That (token.Principal.User, Is.Null);
       Assert.That (token.Principal.Tenant, Is.Not.Null);
@@ -265,12 +503,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     [Test]
     public void Create_WithNullPrincipal ()
     {
-      SecurityContext context = CreateContext ();
+      SecurityContext context = CreateContext();
       var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
       principalStub.Stub (stub => stub.IsNull).Return (true);
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (principalStub, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (principalStub, context);
 
       Assert.That (token.Principal.User, Is.Null);
       Assert.That (token.Principal.Tenant, Is.Null);
@@ -282,41 +519,21 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The user 'notexisting.user' could not be found.")]
     public void Create_WithInvalidPrincipal_InvalidUserName ()
     {
-      SecurityContext context = CreateContext ();
+      SecurityContext context = CreateContext();
       ISecurityPrincipal principal = CreatePrincipal ("notexisting.user");
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      builder.CreateToken (principal, context);
+
+      _securityTokenBuilder.CreateToken (principal, context);
     }
 
     [Test]
     [ExpectedException (typeof (AccessControlException), ExpectedMessage = "No principal was provided.")]
     public void Create_WithInvalidPrincipal_EmptyUserName ()
     {
-      SecurityContext context = CreateContext ();
+      SecurityContext context = CreateContext();
       ISecurityPrincipal principal = CreatePrincipal ("");
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      builder.CreateToken (principal, context);
-    }
-
-    [Test]
-    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "A substituted role was specified without a substituted user.")]
-    public void Create_WithInvalidPrincipal_WithSubstitutedRoleButNoSubstitutedUser ()
-    {
-      var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
-      principalStub.Stub (stub => stub.User).Return ("substituting.user");
-      principalStub.Stub (stub => stub.SubstitutedUser).Return (null);
-      var princialSubstitutedRoleStub = MockRepository.GenerateStub<ISecurityPrincipalRole> ();
-      princialSubstitutedRoleStub.Stub (stub => stub.Group).Return ("UID: testGroup");
-      princialSubstitutedRoleStub.Stub (stub => stub.Position).Return ("UID: Official");
-      principalStub.Stub (stub => stub.SubstitutedRole).Return (princialSubstitutedRoleStub);
-
-      SecurityContext context = CreateContext ();
-      ISecurityPrincipal principal = principalStub;
-
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      builder.CreateToken (principal, context);
+      _securityTokenBuilder.CreateToken (principal, context);
     }
 
     [Test]
@@ -324,8 +541,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       SecurityContext context = CreateContext();
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (CreateTestPrincipal(), context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (CreateTestPrincipal(), context);
 
       Assert.That (token.AbstractRoles, Is.Empty);
     }
@@ -335,8 +551,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       SecurityContext context = CreateContext (ProjectRoles.QualityManager);
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (CreateTestPrincipal(), context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (CreateTestPrincipal(), context);
 
       Assert.That (token.AbstractRoles.Count, Is.EqualTo (1));
       Assert.That (
@@ -349,8 +564,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       SecurityContext context = CreateContext (ProjectRoles.QualityManager, ProjectRoles.Developer);
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (CreateTestPrincipal(), context);
+
+      SecurityToken token = _securityTokenBuilder.CreateToken (CreateTestPrincipal(), context);
 
       Assert.That (token.AbstractRoles.Count, Is.EqualTo (2));
     }
@@ -363,8 +578,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       SecurityContext context = CreateContext (ProjectRoles.Developer, UndefinedAbstractRoles.Undefined, ProjectRoles.QualityManager);
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      builder.CreateToken (CreateTestPrincipal(), context);
+      _securityTokenBuilder.CreateToken (CreateTestPrincipal(), context);
     }
 
     [Test]
@@ -373,8 +587,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       SecurityContext context = CreateContext();
       ISecurityPrincipal user = CreateTestPrincipal();
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (user, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (user, context);
 
       var tenant = token.OwningTenant;
       Assert.That (tenant, Is.Not.Null);
@@ -387,8 +600,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       SecurityContext context = CreateContextWithoutOwningTenant();
       ISecurityPrincipal user = CreateTestPrincipal();
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (user, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (user, context);
 
       Assert.That (token.OwningTenant, Is.Null);
     }
@@ -400,8 +612,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       SecurityContext context = CreateContextWithNotExistingOwningTenant();
       ISecurityPrincipal user = CreateTestPrincipal();
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      builder.CreateToken (user, context);
+      _securityTokenBuilder.CreateToken (user, context);
     }
 
     [Test]
@@ -410,8 +621,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       SecurityContext context = CreateContext();
       ISecurityPrincipal user = CreateTestPrincipal();
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (user, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (user, context);
 
       var group = token.OwningGroup;
       Assert.That (group, Is.Not.Null);
@@ -424,8 +634,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       SecurityContext context = CreateContextWithoutOwningGroup();
       ISecurityPrincipal user = CreateTestPrincipal();
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (user, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (user, context);
 
       Assert.That (token.OwningGroup, Is.Null);
     }
@@ -437,8 +646,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       SecurityContext context = CreateContextWithNotExistingOwningGroup();
       ISecurityPrincipal user = CreateTestPrincipal();
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      builder.CreateToken (user, context);
+      _securityTokenBuilder.CreateToken (user, context);
     }
 
     [Test]
@@ -447,8 +655,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       SecurityContext context = CreateContext();
       ISecurityPrincipal user = CreateTestPrincipal();
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (user, context);
+
+      SecurityToken token = _securityTokenBuilder.CreateToken (user, context);
 
       var owningUser = token.OwningUser;
       Assert.That (owningUser, Is.Not.Null);
@@ -461,8 +669,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       SecurityContext context = CreateContextWithoutOwningUser();
       ISecurityPrincipal user = CreateTestPrincipal();
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      SecurityToken token = builder.CreateToken (user, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (user, context);
 
       Assert.That (token.OwningUser, Is.Null);
     }
@@ -474,31 +681,21 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       SecurityContext context = CreateContextWithNotExistingOwningUser();
       ISecurityPrincipal user = CreateTestPrincipal();
 
-      SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-      builder.CreateToken (user, context);
+      _securityTokenBuilder.CreateToken (user, context);
     }
 
     [Test]
     public void Create_WithInactiveTransaction ()
     {
-      SecurityContext context = CreateContext ();
+      SecurityContext context = CreateContext();
       ISecurityPrincipal principal = CreateTestPrincipal ();
 
       using (ClientTransactionTestHelper.MakeInactive (ClientTransactionScope.CurrentTransaction))
-      {
-        SecurityTokenBuilder builder = CreateSecurityTokenBuilder();
-        SecurityToken token = builder.CreateToken (principal, context);
+      {  
+        SecurityToken token = _securityTokenBuilder.CreateToken (principal, context);
 
         Assert.That (token.Principal.IsNull, Is.False);
       }
-    }
-
-    private SecurityTokenBuilder CreateSecurityTokenBuilder ()
-    {
-      var userRevisionProvider = new UserRevisionProvider();
-      return new SecurityTokenBuilder (
-          new SecurityPrincipalRepository (userRevisionProvider),
-          new SecurityContextRepository (new RevisionProvider(), userRevisionProvider));
     }
 
     private ISecurityPrincipal CreateTestPrincipal ()

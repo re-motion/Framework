@@ -23,6 +23,7 @@ using Remotion.Context;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Security;
+using Remotion.FunctionalProgramming;
 using Remotion.Security;
 using Remotion.Security.Configuration;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
@@ -70,6 +71,11 @@ namespace Remotion.SecurityManager.Domain
     private readonly IDomainObjectHandle<User> _userHandle;
     private readonly IReadOnlyList<IDomainObjectHandle<Role>> _roleHandles;
     private readonly IDomainObjectHandle<Substitution> _substitutionHandle;
+    [CanBeNull]
+    private readonly IDomainObjectHandle<User> _substitutedUserHandle;
+
+    [CanBeNull]
+    private readonly IReadOnlyList<IDomainObjectHandle<Role>> _substitutedRoleHandles;
     private readonly GuidRevisionValue _revision;
     private readonly TenantProxy _tenantProxy;
     private readonly UserProxy _userProxy;
@@ -81,15 +87,25 @@ namespace Remotion.SecurityManager.Domain
         [NotNull] IDomainObjectHandle<Tenant> tenantHandle,
         [NotNull] IDomainObjectHandle<User> userHandle,
         [CanBeNull] IReadOnlyList<IDomainObjectHandle<Role>> roleHandles,
-        [CanBeNull] IDomainObjectHandle<Substitution> substitutionHandle)
+        [CanBeNull] IDomainObjectHandle<Substitution> substitutionHandle,
+        [CanBeNull] IDomainObjectHandle<User> substitutedUserHandle,
+        [CanBeNull] IReadOnlyList<IDomainObjectHandle<Role>> substitutedRoleHandles)
     {
       ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
       ArgumentUtility.CheckNotNull ("userHandle", userHandle);
+      if (substitutionHandle == null && (substitutedUserHandle != null || substitutedRoleHandles != null))
+      {
+        throw new ArgumentException (
+            "When the 'substitutedUserHandle' or the 'substitutedRoleHandles' are set, the 'substitutionHandle' must also be specified.",
+            "substitutionHandle");
+      }
 
       _tenantHandle = tenantHandle;
       _userHandle = userHandle;
       _roleHandles = roleHandles;
       _substitutionHandle = substitutionHandle;
+      _substitutedUserHandle = substitutedUserHandle;
+      _substitutedRoleHandles = substitutedRoleHandles;
 
       _revision = GetRevision();
       var transaction = CreateClientTransaction();
@@ -132,7 +148,13 @@ namespace Remotion.SecurityManager.Domain
       var currentRevision = GetRevision();
       if (_revision.IsCurrent (currentRevision))
         return this;
-      return new SecurityManagerPrincipal (_tenantHandle, _userHandle, _roleHandles, _substitutionHandle);
+      return new SecurityManagerPrincipal (
+          _tenantHandle,
+          _userHandle,
+          _roleHandles,
+          _substitutionHandle,
+          _substitutedUserHandle,
+          _substitutedRoleHandles);
     }
 
     public TenantProxy[] GetTenants (bool includeAbstractTenants)
@@ -167,18 +189,28 @@ namespace Remotion.SecurityManager.Domain
         if (rolesOrNull != null)
           roles = rolesOrNull.Select (CreateSecurityPrincipalRole).ToArray();
 
-        string substitutedUser = null;
-        ISecurityPrincipalRole substitutedRole = null;
-
-        Substitution substitution = GetSubstitution (transaction);
-        if (substitution != null)
+        var substitutedUserObject = GetSubstitutedUser (transaction);
+        var substitutedRoleObjects = GetSubstitutedRoles (transaction);
+        if (substitutedUserObject == null && substitutedRoleObjects == null)
         {
-          substitutedUser = substitution.SubstitutedUser.UserName;
-          if (substitution.SubstitutedRole != null)
-            substitutedRole = CreateSecurityPrincipalRole (substitution.SubstitutedRole);
+          Substitution substitution = GetSubstitution (transaction);
+          if (substitution != null)
+          {
+            substitutedUserObject = substitution.SubstitutedUser;
+            if (substitution.SubstitutedRole != null)
+              substitutedRoleObjects = EnumerableUtility.Singleton (substitution.SubstitutedRole);
+          }
         }
 
-        return new SecurityPrincipal (user, roles, substitutedUser, substitutedRole);
+        string substitutedUser = null;
+        if (substitutedUserObject != null)
+          substitutedUser = substitutedUserObject.UserName;
+
+        ISecurityPrincipalRole[] substitutedRoles = null;
+        if (substitutedRoleObjects != null)
+          substitutedRoles = substitutedRoleObjects.Select (CreateSecurityPrincipalRole).ToArray();
+
+        return new SecurityPrincipal (user, roles, substitutedUser, substitutedRoles);
       }
     }
 
@@ -249,6 +281,23 @@ namespace Remotion.SecurityManager.Domain
         return null;
 
       return (Substitution) LifetimeService.GetObject (transaction, _substitutionHandle.ObjectID, false);
+    }
+
+    private User GetSubstitutedUser (ClientTransaction transaction)
+    {
+      if (_substitutedUserHandle == null)
+        return null;
+
+      return _substitutedUserHandle.GetObject (transaction);
+    }
+
+    [CanBeNull]
+    private IEnumerable<Role> GetSubstitutedRoles (ClientTransaction transaction)
+    {
+      if (_substitutedRoleHandles == null)
+        return null;
+
+      return _substitutedRoleHandles.Select (r => (Role) LifetimeService.GetObject (transaction, r.ObjectID, false));
     }
 
     private ClientTransaction CreateClientTransaction ()

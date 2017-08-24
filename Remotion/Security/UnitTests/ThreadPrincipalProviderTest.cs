@@ -40,7 +40,7 @@ namespace Remotion.Security.UnitTests
       Assert.That (securityPrincipal.User, Is.EqualTo ("user"));
       Assert.That (securityPrincipal.Roles, Is.Null);
       Assert.That (securityPrincipal.SubstitutedUser, Is.Null);
-      Assert.That (securityPrincipal.SubstitutedRole, Is.Null);
+      Assert.That (securityPrincipal.SubstitutedRoles, Is.Null);
     }
 
     [Test]

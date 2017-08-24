@@ -27,7 +27,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
 {
   public abstract class SecurityManagerPrincipalTestBase : DomainTest
   {
-    protected SecurityManagerPrincipal CreateSecurityManagerPrincipal (Tenant tenant, User user, Role[] roles, Substitution substitution)
+    protected SecurityManagerPrincipal CreateSecurityManagerPrincipal (
+        Tenant tenant,
+        User user,
+        Role[] roles,
+        Substitution substitution,
+        User substitutedUser = null,
+        Role[] substitutedRoles = null)
     {
       ArgumentUtility.CheckNotNull ("tenant", tenant);
       ArgumentUtility.CheckNotNull ("user", user);
@@ -36,7 +42,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
           tenant.GetHandle(),
           user.GetHandle(),
           roles == null ? null : roles.Select (r => r.GetHandle()).ToArray(),
-          substitution.GetSafeHandle());
+          substitution.GetSafeHandle(),
+          substitutedUser.GetSafeHandle(),
+          substitutedRoles == null ? null : substitutedRoles.Select (r => r.GetHandle()).ToArray());
     }
 
     protected void IncrementRevision ()

@@ -59,7 +59,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     [Test]
     public void GetTenantHierarchyFromUser ()
     {
-      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_childTenantHandle, _userHandle, null, null);
+      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_childTenantHandle, _userHandle, null, null, null, null);
 
       Assert.That (
           principal.GetTenants (true).Select (t => t.ID),
@@ -69,7 +69,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     [Test]
     public void IncludeAbstractTenants ()
     {
-      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_rootTenantHandle, _userHandle, null, null);
+      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_rootTenantHandle, _userHandle, null, null, null, null);
 
       Assert.That (
           principal.GetTenants (true).Select (t => t.ID),
@@ -79,7 +79,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     [Test]
     public void ExcludeAbstractTenants ()
     {
-      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_rootTenantHandle, _userHandle, null, null);
+      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_rootTenantHandle, _userHandle, null, null, null, null);
 
       Assert.That (
           principal.GetTenants (false).Select (t => t.ID), Is.EqualTo (new[] { _rootTenantHandle.ObjectID, _grandChildTenantHandle.ObjectID }));
@@ -111,7 +111,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       serviceLocator.RegisterSingle<IPrincipalProvider> (() => new NullPrincipalProvider());
       using (new ServiceLocatorScope (serviceLocator))
       {
-        SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_rootTenantHandle, _userHandle, null, null);
+        SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_rootTenantHandle, _userHandle, null, null, null, null);
 
         Assert.That (principal.GetTenants (true), Is.Empty);
       }

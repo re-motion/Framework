@@ -76,9 +76,6 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       if (string.IsNullOrEmpty (principal.User))
         throw CreateAccessControlException ("No principal was provided.");
 
-      if (string.IsNullOrEmpty (principal.SubstitutedUser) && principal.SubstitutedRole != null)
-        throw CreateAccessControlException ("A substituted role was specified without a substituted user.");
-
       User user = _securityPrincipalRepository.GetUser (principal.User);
       lock (user.RootTransaction)
       {
@@ -88,23 +85,50 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
         if (principal.SubstitutedUser != null)
         {
-          Substitution substitution = GetSubstitution (principal, user);
+          var substitutionsWithMatchingUser = user.GetActiveSubstitutions()
+              .Where (s => s.SubstitutedUser.UserName == principal.SubstitutedUser)
+              .Where (s => s.SubstitutedUser.Tenant == user.Tenant)
+              .ToArray();
 
-          if (substitution == null)
+          var substitutionForUser = substitutionsWithMatchingUser.FirstOrDefault (s => s.SubstitutedRole == null);
+
+          var substitutionForRoles = FilterSubstitutionsForMatchingRoles (substitutionsWithMatchingUser, principal.SubstitutedRoles);
+
+          if (principal.SubstitutedRoles == null && substitutionForUser != null)
+          {
+            principalUser = substitutionForUser.SubstitutedUser;
+            principalRoles = substitutionForUser.SubstitutedUser.Roles;
+          }
+          else if (principal.SubstitutedRoles != null && substitutionForRoles != null)
+          {
+            principalUser = substitutionForRoles.SubstitutedUser;
+            principalRoles = EnumerableUtility.Singleton (substitutionForRoles.SubstitutedRole);
+          }
+          else if (principal.SubstitutedRoles != null && substitutionForRoles == null && substitutionForUser != null)
+          {
+            principalUser = substitutionForUser.SubstitutedUser;
+            principalRoles = substitutionForUser.SubstitutedUser.Roles.Where (r => IsRoleContainedInPrincipalRoles (r, principal.SubstitutedRoles));
+          }
+          else
           {
             principalUser = null;
             principalRoles = new Role[0];
           }
-          else if (principal.SubstitutedRole != null)
-          {
-            principalUser = null;
-            principalRoles = EnumerableUtility.Singleton (substitution.SubstitutedRole);
-          }
+        }
+        else if (principal.SubstitutedRoles != null)
+        {
+          Assertion.IsNull (principal.SubstitutedUser);
+          var substitutionsWithMatchingTenant = user.GetActiveSubstitutions()
+              .Where (s => s.SubstitutedUser.Tenant == user.Tenant)
+              .ToArray();
+
+          var substitutionForRoles = FilterSubstitutionsForMatchingRoles (substitutionsWithMatchingTenant, principal.SubstitutedRoles);
+
+          principalUser = null;
+          if (substitutionForRoles != null)
+            principalRoles = EnumerableUtility.Singleton (substitutionForRoles.SubstitutedRole);
           else
-          {
-            principalUser = substitution.SubstitutedUser;
-            principalRoles = substitution.SubstitutedUser.Roles;
-          }
+            principalRoles = new Role[0];
         }
         else
         {
@@ -122,18 +146,17 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       }
     }
 
-    private Substitution GetSubstitution (ISecurityPrincipal principal, User user)
+    private Substitution FilterSubstitutionsForMatchingRoles (
+        IEnumerable<Substitution> availableSubstitutions,
+        IReadOnlyList<ISecurityPrincipalRole> principalSubstitutedRoles)
     {
-      IEnumerable<Substitution> substitutions = user.GetActiveSubstitutions ();
-      
-      substitutions = substitutions.Where (s => s.SubstitutedUser.UserName == principal.SubstitutedUser && s.SubstitutedUser.Tenant == user.Tenant);
-      
-      if (principal.SubstitutedRole != null)
-        substitutions = substitutions.Where (s => IsRoleMatchingPrincipalRole (s.SubstitutedRole, principal.SubstitutedRole));
-      else
-        substitutions = substitutions.Where (s => s.SubstitutedRole == null);
-
-      return substitutions.FirstOrDefault ();
+      // ReSharper disable once ReplaceWithSingleCallToFirstOrDefault
+      return availableSubstitutions
+          .Where (s => s.SubstitutedRole != null)
+          .Where (s => principalSubstitutedRoles != null && principalSubstitutedRoles.Any())
+          // ReSharper disable once AssignNullToNotNullAttribute
+          .Where (s => principalSubstitutedRoles.All (r => IsRoleMatchingPrincipalRole (s.SubstitutedRole, r)))
+          .FirstOrDefault();
     }
 
     private bool IsRoleContainedInPrincipalRoles ([CanBeNull]Role role, [NotNull] IEnumerable<ISecurityPrincipalRole> principalRoles)

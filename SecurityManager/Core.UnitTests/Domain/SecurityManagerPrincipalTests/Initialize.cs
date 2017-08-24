@@ -57,5 +57,31 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
 
       Assert.That (principal.Substitution.ID, Is.EqualTo (substitution.ID));
       Assert.That (principal.Substitution, Is.Not.SameAs (substitution));
-    }}
+    }
+
+    [Test]
+    public void Initialize_WithInconsistentSubstitutionData1_ThrowsArgumentException ()
+    {
+      User user = User.FindByUserName ("substituting.user");
+      Tenant tenant = user.Tenant;
+      Substitution substitution = user.GetActiveSubstitutions().First();
+
+      Assert.That (
+          () => CreateSecurityManagerPrincipal (tenant, user, null, null, substitution.SubstitutedUser),
+          Throws.ArgumentException.With.Message.EqualTo (
+              "When the 'substitutedUserHandle' or the 'substitutedRoleHandles' are set, the 'substitutionHandle' must also be specified.\r\nParameter name: substitutionHandle"));
+    }
+
+    [Test]
+    public void Initialize_WithInconsistentSubstitutionData2_ThrowsArgumentException ()
+    {
+      User user = User.FindByUserName ("substituting.user");
+      Tenant tenant = user.Tenant;
+
+      Assert.That (
+          () => CreateSecurityManagerPrincipal (tenant, user, null, null, null, new Role[0]),
+          Throws.ArgumentException.With.Message.EqualTo (
+              "When the 'substitutedUserHandle' or the 'substitutedRoleHandles' are set, the 'substitutionHandle' must also be specified.\r\nParameter name: substitutionHandle"));
+    }
+  }
 }

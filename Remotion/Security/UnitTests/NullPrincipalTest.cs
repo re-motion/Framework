@@ -36,7 +36,7 @@ namespace Remotion.Security.UnitTests
       Assert.That (_principal.User, Is.Null);
       Assert.That (_principal.Roles, Is.Null);
       Assert.That (_principal.SubstitutedUser, Is.Null);
-      Assert.That (_principal.SubstitutedRole, Is.Null);
+      Assert.That (_principal.SubstitutedRoles, Is.Null);
     }
 
     [Test]

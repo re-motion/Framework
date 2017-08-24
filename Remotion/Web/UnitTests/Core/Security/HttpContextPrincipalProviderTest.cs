@@ -71,7 +71,7 @@ namespace Remotion.Web.UnitTests.Core.Security
       Assert.That (securityPrincipal.User, Is.EqualTo ("The User"));
       Assert.That (securityPrincipal.Roles, Is.Null);
       Assert.That (securityPrincipal.SubstitutedUser, Is.Null);
-      Assert.That (securityPrincipal.SubstitutedRole, Is.Null);
+      Assert.That (securityPrincipal.SubstitutedRoles, Is.Null);
     }
 
     [Test]

@@ -30,21 +30,19 @@ namespace Remotion.Security
     private readonly string _user;
     private readonly IReadOnlyList<ISecurityPrincipalRole> _roles;
     private readonly string _substitutedUser;
-    private readonly ISecurityPrincipalRole _substitutedRole;
+    private readonly IReadOnlyList<ISecurityPrincipalRole> _substitutedRoles;
 
     public SecurityPrincipal (
         [NotNull] string user,
         [CanBeNull] IReadOnlyList<ISecurityPrincipalRole> roles,
         [CanBeNull] string substitutedUser,
-        [CanBeNull] ISecurityPrincipalRole substitutedRole)
+        [CanBeNull] IReadOnlyList<ISecurityPrincipalRole> substitutedRoles)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("user", user);
       ArgumentUtility.CheckNotEmpty ("substitutedUser", substitutedUser);
-      if (substitutedRole != null && substitutedUser == null)
-        throw new ArgumentException ("The substituted user must be specified if a substituted role is also specified.", "substitutedUser");
 
       _user = user;
-      _substitutedRole = substitutedRole;
+      _substitutedRoles = substitutedRoles;
       _substitutedUser = substitutedUser;
       _roles = roles;
     }
@@ -64,9 +62,9 @@ namespace Remotion.Security
       get { return _substitutedUser; }
     }
 
-    public ISecurityPrincipalRole SubstitutedRole
+    public IReadOnlyList<ISecurityPrincipalRole> SubstitutedRoles
     {
-      get { return _substitutedRole; }
+      get { return _substitutedRoles; }
     }
 
     public bool Equals (SecurityPrincipal other)
@@ -102,11 +100,24 @@ namespace Remotion.Security
       if (!string.Equals (this._substitutedUser, other._substitutedUser, StringComparison.Ordinal))
         return false;
 
-      if (this._substitutedRole == null && other._substitutedRole != null)
+      if (this._substitutedRoles == null && other._substitutedRoles != null)
         return false;
 
-      if (this._substitutedRole != null && !this._substitutedRole.Equals (other._substitutedRole))
+      if (this._substitutedRoles != null && other._substitutedRoles == null)
         return false;
+
+      if (this._substitutedRoles != null && other._substitutedRoles != null)
+      {
+        if (this._substitutedRoles.Count != other._substitutedRoles.Count)
+          return false;
+
+        // ReSharper disable once LoopCanBeConvertedToQuery
+        for (int i = 0; i < this._substitutedRoles.Count; i++)
+        {
+          if (!IsRoleInList (this._substitutedRoles[i], i, other._substitutedRoles))
+            return false;
+        }
+      }
 
       return true;
     }
@@ -140,8 +151,9 @@ namespace Remotion.Security
       return EqualityUtility.GetRotatedHashCode (
           _user,
           // Skip roles, they don't do much for the hash code but require complex implemenetation.
-          _substitutedUser,
-          _substitutedRole);
+          _substitutedUser
+          // Skip roles, they don't do much for the hash code but require complex implemenetation.
+          );
     }
 
     public bool IsNull

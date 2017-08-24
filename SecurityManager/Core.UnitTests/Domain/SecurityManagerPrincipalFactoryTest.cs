@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
@@ -28,7 +29,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
   public class SecurityManagerPrincipalFactoryTest
   {
     [Test]
-    public void Create ()
+    public void Create_WithMinimumData ()
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
@@ -45,6 +46,43 @@ namespace Remotion.SecurityManager.UnitTests.Domain
         Assert.That (principal.User.ID, Is.EqualTo (user.ID));
         Assert.That (principal.Roles, Is.Null);
         Assert.That (principal.Substitution, Is.Null);
+      }
+    }
+
+    [Test]
+    public void Create_WithCompleteData ()
+    {
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        var dbFixtures = new DatabaseFixtures();
+        var tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.Current);
+        var user = User.FindByTenant (tenant.GetHandle()).AsEnumerable().First (u => u.Roles.Any() && u.GetActiveSubstitutions().Any());
+        var substitution = user.GetActiveSubstitutions().First (s => s.SubstitutedRole != null);
+
+        var factory = new SecurityManagerPrincipalFactory();
+
+        var principal = factory.Create (
+            tenant.GetHandle(),
+            user.GetHandle(),
+            substitution.GetHandle());
+
+        Assert.That (principal, Is.TypeOf<SecurityManagerPrincipal>());
+        Assert.That (principal.Tenant.ID, Is.EqualTo (tenant.ID));
+        Assert.That (principal.User.ID, Is.EqualTo (user.ID));
+        Assert.That (principal.Roles, Is.Null);
+        Assert.That (principal.Substitution, Is.Not.Null);
+        var securityPrincipal = principal.GetSecurityPrincipal();
+
+        Assert.That (securityPrincipal.SubstitutedUser, Is.EqualTo (substitution.SubstitutedUser.UserName));
+        Assert.That (
+            securityPrincipal.SubstitutedRoles,
+            Is.EquivalentTo (
+                new ISecurityPrincipalRole[]
+                {
+                  new SecurityPrincipalRole (
+                      substitution.SubstitutedRole.Group.UniqueIdentifier,
+                      substitution.SubstitutedRole.Position.UniqueIdentifier)
+                }));
       }
     }
   }
