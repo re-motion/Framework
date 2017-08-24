@@ -34,6 +34,8 @@ namespace Remotion.Web.Contracts.DiagnosticMetadata
 
     public static readonly string WebTreeViewNumberOfChildren = "data-webtreeview-number-of-children";
     public static readonly string WebTreeViewIsSelectedNode = "data-webtreeview-is-selected-node";
-    public static readonly string WebTreeViewWellKnownAnchor = "data-webtreeview-wellknown-anchor";
+    public static readonly string WebTreeViewIsExpanded = "data-webtreeview-is-expanded";
+
+    public static readonly string Null = "null";
   }
 }

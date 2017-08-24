@@ -68,7 +68,32 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return _webTreeViewNode.GetNumberOfChildren();
     }
 
-   /// <summary>
+    /// <summary>
+    /// Returns <see langword="true" /> if the node has been evaluated, otherwise <see langword="false" />.
+    /// </summary>
+    public bool IsEvaluated ()
+    {
+      return _webTreeViewNode.IsEvaluated();
+    }
+
+    /// <summary>
+    /// Returns <see langword="true" /> if the node can be expanded/collapsed - it has at 
+    /// least one child or is not evaluated yet, otherwise <see langword="false" />.
+    /// </summary>
+    public bool IsExpandable ()
+    {
+      return _webTreeViewNode.IsExpandable();
+    }
+
+    /// <summary>
+    /// Returns <see langword="true" /> if the node is expanded, otherwise <see langword="false" />.
+    /// </summary>
+    public bool IsExpanded ()
+    {
+      return _webTreeViewNode.IsExpanded();
+    }
+
+    /// <summary>
     /// Expands the node.
     /// </summary>
     public BocTreeViewNodeControlObject Expand ()

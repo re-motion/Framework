@@ -56,7 +56,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public int GetNumberOfChildren ()
     {
-      return int.Parse (Scope[DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren]);
+      var numberChildren = Scope[DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren];
+      if (numberChildren == DiagnosticMetadataAttributes.Null)
+        throw new MissingHtmlException ("TreeViewNode is not evaluated.");
+
+      return int.Parse (numberChildren);
     }
 
     /// <inheritdoc/>
@@ -118,17 +122,47 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <summary>
+    /// Returns <see langword="true" /> if the node has been evaluated, otherwise <see langword="false" />.
+    /// </summary>
+    public bool IsEvaluated ()
+    {
+      int nodeCount;
+      return int.TryParse (Scope[DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren], out nodeCount);
+    }
+
+    /// <summary>
+    /// Returns <see langword="true" /> if the node can be expanded/collapsed - it has at 
+    /// least one child or is not evaluated yet, otherwise <see langword="false" />.
+    /// </summary>
+    public bool IsExpandable ()
+    {
+      var numberOfChildren = Scope[DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren];
+      if (numberOfChildren == DiagnosticMetadataAttributes.Null)
+        return true;
+
+      return int.Parse (numberOfChildren) != 0;
+    }
+
+    /// <summary>
+    /// Returns <see langword="true" /> if the node is expanded, otherwise <see langword="false" />.
+    /// </summary>
+    public bool IsExpanded ()
+    {
+      return Scope[DiagnosticMetadataAttributes.WebTreeViewIsExpanded] == "true";
+    }
+
+    /// <summary>
     /// Expands the node.
     /// </summary>
     public WebTreeViewNodeControlObject Expand ()
     {
-      var expandAnchorScope = Scope.FindTagWithAttribute (
-          "span a",
-          DiagnosticMetadataAttributes.WebTreeViewWellKnownAnchor,
-          DiagnosticMetadataAttributeValues.WebTreeViewWellKnownExpandAnchor);
-      
-      var actionOptions = MergeWithDefaultActionOptions (expandAnchorScope, null);
-      new ClickAction (this, expandAnchorScope).Execute (actionOptions);
+      if (!IsExpandable())
+        throw new MissingHtmlException ("The WebTreeViewNode can not be expanded as it has no children.");
+      if (IsExpanded())
+        throw new MissingHtmlException ("TreeViewNode is already expanded.");
+
+      ToggleExpansion();
+
       return this;
     }
 
@@ -137,13 +171,13 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public WebTreeViewNodeControlObject Collapse ()
     {
-      var collapseAnchorScope = Scope.FindTagWithAttribute (
-          "span a",
-          DiagnosticMetadataAttributes.WebTreeViewWellKnownAnchor,
-          DiagnosticMetadataAttributeValues.WebTreeViewWellKnownCollapseAnchor);
+      if (!IsExpandable())
+        throw new MissingHtmlException ("The WebTreeViewNode can not be collapsed as it has no children.");
+      if (!IsExpanded())
+        throw new MissingHtmlException ("TreeViewNode is already collapsed.");
 
-      var actionOptions = MergeWithDefaultActionOptions (collapseAnchorScope, null);
-      new ClickAction (this, collapseAnchorScope).Execute (actionOptions);
+      ToggleExpansion();
+
       return this;
     }
 
@@ -167,7 +201,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     private void ClickNode (IWebTestActionOptions actionOptions)
     {
-      var selectAnchorScope = GetWellKnownSelectAnchorScope();
+      var selectAnchorScope = Scope.FindCss ("span > span > a");
 
       var actualCompletionDetector = MergeWithDefaultActionOptions (selectAnchorScope, actionOptions);
       new ClickAction (this, selectAnchorScope).Execute (actualCompletionDetector);
@@ -180,12 +214,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       return new ContextMenuControlObject (Context.CloneForControl (contextMenuScope));
     }
 
-    private ElementScope GetWellKnownSelectAnchorScope ()
+    private void ToggleExpansion ()
     {
-      return Scope.FindTagWithAttribute (
-          "span a",
-          DiagnosticMetadataAttributes.WebTreeViewWellKnownAnchor,
-          DiagnosticMetadataAttributeValues.WebTreeViewWellKnownSelectAnchor);
+      var toggleAnchor = Scope.FindCss ("span > a");
+
+      var actionOptions = MergeWithDefaultActionOptions (toggleAnchor, null);
+      new ClickAction (this, toggleAnchor).Execute (actionOptions);
     }
   }
 }

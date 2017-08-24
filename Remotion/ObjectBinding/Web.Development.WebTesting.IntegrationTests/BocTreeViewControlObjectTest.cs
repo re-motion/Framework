@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Drawing;
+using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -167,6 +168,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestNodeEnsureExpanded ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+
+      var rootNode = bocTreeView.GetRootNode();
+      rootNode.Expand();
+
+      Assert.That (() => rootNode.Expand(), Throws.InstanceOf<MissingHtmlException>());
+    }
+
+    [Test]
     public void TestNodeExpand ()
     {
       var home = Start();
@@ -179,6 +193,50 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       node.GetNode ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select();
 
       Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("eb94bfdb-1140-46f8-971f-e4b41dae13b8|A, B"));
+    }
+
+    [Test]
+    public void TestEvaluatedNodeExpanded ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+
+      var rootNode = bocTreeView.GetRootNode();
+      Assert.That (rootNode.IsExpanded(), Is.EqualTo (false));
+
+      rootNode.Expand();
+      Assert.That (rootNode.IsExpanded(), Is.EqualTo (true));
+    }
+
+    [Test]
+    public void TestEvaluatedNodeEvaluated ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("NoLookAheadEvaluation");
+
+      var rootNode = bocTreeView.GetRootNode();
+      Assert.That (rootNode.IsEvaluated(), Is.EqualTo (false));
+
+      rootNode.Expand();
+      Assert.That (rootNode.IsEvaluated(), Is.EqualTo (true));
+    }
+
+    [Test]
+    public void TestEvaluatedNodeExpandable ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+
+      var rootNode = bocTreeView.GetRootNode().Expand();
+
+      var node = rootNode.GetNode().WithDisplayText ("B, C");
+      Assert.That (node.IsExpandable(), Is.EqualTo (false));
+
+      Assert.That (() => node.Expand(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => node.Collapse(), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]
@@ -197,6 +255,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (
           home.Scope.FindIdEndingWith ("NoLookAheadEvaluationSelectedNodeLabel").Text,
           Is.EqualTo ("eb94bfdb-1140-46f8-971f-e4b41dae13b8|A, B"));
+    }
+
+    [Test]
+    public void TestNodeEnsureCollapsed ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+
+      var rootNode = bocTreeView.GetRootNode();
+
+      Assert.That (() => rootNode.Collapse(), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

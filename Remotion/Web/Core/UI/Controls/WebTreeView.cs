@@ -575,7 +575,11 @@ namespace Remotion.Web.UI.Controls
             writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (node.Text));
           if (node.IsSelected)
             writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewIsSelectedNode, "true");
-          writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren, node.Children.Count.ToString());
+          if (node.IsEvaluated)
+            writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren, node.Children.Count.ToString());
+          else
+            writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren, DiagnosticMetadataAttributes.Null);
+          writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewIsExpanded, node.IsExpanded ? "true" : "false");
           writer.AddAttribute (DiagnosticMetadataAttributes.IndexInCollection, (i + 1).ToString());
         }
 
@@ -656,14 +660,7 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEventReference);
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         if (_renderingFeatures.EnableDiagnosticMetadata)
-        {
           writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, "true");
-          writer.AddAttribute (
-              DiagnosticMetadataAttributes.WebTreeViewWellKnownAnchor,
-              !node.IsExpanded
-                  ? DiagnosticMetadataAttributeValues.WebTreeViewWellKnownExpandAnchor
-                  : DiagnosticMetadataAttributeValues.WebTreeViewWellKnownCollapseAnchor);
-        }
         writer.RenderBeginTag (HtmlTextWriterTag.A);
       }
 
@@ -689,12 +686,7 @@ namespace Remotion.Web.UI.Controls
       writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEventReference);
       writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
       if (_renderingFeatures.EnableDiagnosticMetadata)
-      {
         writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, "true");
-        writer.AddAttribute (
-            DiagnosticMetadataAttributes.WebTreeViewWellKnownAnchor,
-            DiagnosticMetadataAttributeValues.WebTreeViewWellKnownSelectAnchor);
-      }
       writer.RenderBeginTag (HtmlTextWriterTag.A);
       if (_treeNodeRenderMethod == null)
       {
