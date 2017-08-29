@@ -153,13 +153,6 @@ ul.DropDownMenuOptions li a
   color: #083779;
 }
 
-ul.DropDownMenuOptions li a:hover
-{
-  background-color: #e6f0ff;
-  border: solid 1px #083779;
-  padding: 0px 2px 2px 0px;
-}
-
 ul.DropDownMenuOptions li a img
 {
   border: 0;
@@ -179,15 +172,6 @@ ul.DropDownMenuOptions li.DropDownMenuItemDisabled a
   padding: 1px 3px 3px 3px;
   color: gray;
 }
-
-ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:hover
-{
-  background-color: transparent;
-  border-style: none;
-  padding: 1px 3px 3px 3px;
-  cursor: default;
-}
-
 
 /* style separator */
 span.DropDownMenuSeparator

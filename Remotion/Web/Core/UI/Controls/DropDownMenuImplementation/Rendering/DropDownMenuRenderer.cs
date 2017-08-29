@@ -206,10 +206,12 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       string getSelectionCount = (string.IsNullOrEmpty (renderingContext.Control.GetSelectionCount)
           ? "null"
           : renderingContext.Control.GetSelectionCount);
+      string hasDedicatedDropDownMenuElement = renderingContext.Control.Mode == MenuMode.DropDownMenu ? "true" : "false";
       string script = string.Format (
-          "$('#{0}').keydown( function(event){{ DropDownMenu_OnKeyDown(event, document.getElementById('{0}'), {1}); }} );",
+          "$('#{0}').keydown( function(event){{ DropDownMenu_OnKeyDown(event, $('#{0}'), {1}, {2}); }} );",
           renderingContext.Control.ClientID,
-          getSelectionCount);
+          getSelectionCount,
+          hasDedicatedDropDownMenuElement);
 
       renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (renderingContext.Control, typeof (ClientScriptBehavior), key, script);
 

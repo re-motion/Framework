@@ -1166,7 +1166,7 @@ namespace Remotion.Web.UI.Controls
   ); 
 }} );",
                 ClientID,
-                anyNodeContextMenu.GetBindOpenEventScript ("this", "menuID", true));
+                anyNodeContextMenu.GetBindOpenEventScript ("$(this)", "menuID", true));
         ((IControl) this).Page.ClientScript.RegisterStartupScriptBlock (this, typeof (WebTreeView), key, script);
       }
 

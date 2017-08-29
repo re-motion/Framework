@@ -48,6 +48,11 @@ TypeUtility.IsFunction = function (value)
     return typeof (value) == 'function';
 };
 
+TypeUtility.IsJQuery = function (value)
+{
+  return value instanceof jQuery;
+};
+
 TypeUtility.IsUndefined = function (value)
 {
     return typeof (value) == 'undefined';
@@ -164,6 +169,22 @@ ArgumentUtility.CheckNotNullAndTypeIsFunction = function (name, value)
 {
     ArgumentUtility.CheckNotNull(name, value);
     ArgumentUtility.CheckTypeIsFunction(name, value);
+};
+
+// Checks that value is not null and of type jquery.
+ArgumentUtility.CheckTypeIsJQueryObject = function (name, value)
+{
+  if (TypeUtility.IsNull(value))
+    return;
+  if (!TypeUtility.IsJQuery(value))
+    throw ('Error: The value of parameter "' + name + '" is not a jquery object.');
+};
+
+// Checks that value is not null and of type jquery.
+ArgumentUtility.CheckNotNullAndTypeIsJQuery = function (name, value)
+{
+  ArgumentUtility.CheckNotNull(name, value);
+  ArgumentUtility.CheckTypeIsJQueryObject(name, value);
 };
 
 function BrowserUtility ()

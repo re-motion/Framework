@@ -20,6 +20,7 @@ var _dropDownMenu_itemClassName = 'DropDownMenuItem';
 var _dropDownMenu_itemDisabledClassName = 'DropDownMenuItemDisabled';
 var _dropDownMenu_itemIconClassName = 'DropDownMenuItemIcon';
 var _dropDownMenu_itemSeparatorClassName = 'DropDownMenuSeparator';
+var _dropDownMenu_itemSelectedClassName = 'selected';
 var _dropDownMenu_currentMenu = null;
 var _dropDownMenu_currentPopup = null;
 
@@ -28,8 +29,6 @@ var _dropDownMenu_menuItemIDPrefix = 'menuItem_';
 var _dropDownMenu_requiredSelectionAny = 0;
 var _dropDownMenu_requiredSelectionExactlyOne = 1;
 var _dropDownMenu_requiredSelectionOneOrMore = 2;
-
-var _dropDownMenu_currentItemIndex = -1;
 
 var _dropDownMenu_itemClickHandler = null;
 var _dropDownMenu_itemClicked = false;
@@ -48,14 +47,21 @@ function DropDownMenu_AddMenuInfo(menuInfo)
   _dropDownMenu_menuInfos[menuInfo.ID] = menuInfo;
 }
 
-function DropDownMenu_BindOpenEvent(node, menuID, eventType, getSelectionCount, moveToMousePosition)
+function DropDownMenu_BindOpenEvent (node, menuID, eventType, getSelectionCount, moveToMousePosition)
 {
-  ArgumentUtility.CheckNotNull('node', node);
-  ArgumentUtility.CheckNotNullAndTypeIsString('menuID', menuID);
-  ArgumentUtility.CheckNotNullAndTypeIsString('eventType', eventType);
-  ArgumentUtility.CheckNotNullAndTypeIsBoolean('moveToMousePosition', moveToMousePosition);
+  ArgumentUtility.CheckNotNullAndTypeIsJQuery ('node', node);
+  ArgumentUtility.CheckNotNullAndTypeIsString ('menuID', menuID);
+  ArgumentUtility.CheckNotNullAndTypeIsString ('eventType', eventType);
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean ('moveToMousePosition', moveToMousePosition);
 
-  $(node).bind(eventType, function (evt) { DropDownMenu_OnClick (node, menuID, getSelectionCount, moveToMousePosition ? evt : null); });
+  node.bind(
+      eventType,
+      function (evt)
+      {
+        DropDownMenu_OnClick (node, menuID, getSelectionCount, moveToMousePosition ? evt : null);
+        if (moveToMousePosition)
+          node.first ('a[href]').focus();
+      });
 }
 
 function DropDownMenu_ItemInfo(id, category, text, icon, iconDisabled, requiredSelection, isDisabled, href, target, diagnosticMetadata)
@@ -74,12 +80,14 @@ function DropDownMenu_ItemInfo(id, category, text, icon, iconDisabled, requiredS
 
 function DropDownMenu_OnClick(context, menuID, getSelectionCount, evt)
 {
+  ArgumentUtility.CheckNotNullAndTypeIsJQuery('context', context);
+
   if (_dropDownMenu_itemClicked)
   {
     _dropDownMenu_itemClicked = false;
     return;
   }
-  if (context != _dropDownMenu_currentMenu)
+  if (context !== _dropDownMenu_currentMenu)
   {
     DropDownMenu_ClosePopUp();
   }
@@ -92,6 +100,8 @@ function DropDownMenu_OnClick(context, menuID, getSelectionCount, evt)
 
 function DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, evt)
 {
+  ArgumentUtility.CheckNotNullAndTypeIsJQuery('context', context);
+
   var itemInfos = _dropDownMenu_menuInfos[menuID].ItemInfos;
   var selectionCount = -1;
   if (getSelectionCount != null)
@@ -111,6 +121,20 @@ function DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, evt)
 
   $('body')[0].appendChild(div);
 
+  $(ul).mouseover (function (event)
+  {
+    var eventTarget = DropDownMenu_GetTarget (event, "LI");
+    $("li", ul).removeClass(_dropDownMenu_itemSelectedClassName);
+    if (eventTarget.firstChild != null && eventTarget.firstChild.href != null && eventTarget.firstChild.href !== '')
+    {
+      $(eventTarget).addClass (_dropDownMenu_itemSelectedClassName);
+      eventTarget.firstChild.focus();
+    }
+  }).keydown (function (event)
+  {
+    DropDownMenu_Options_OnKeyDown (event, _dropDownMenu_currentMenu);
+  });
+
   _dropDownMenu_itemClickHandler = function()
   {
     _dropDownMenu_itemClicked = true;
@@ -122,10 +146,10 @@ function DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, evt)
     catch (e)
     {
     }
-    setTimeout('_dropDownMenu_itemClicked = false;', 10);
+    setTimeout (function () { _dropDownMenu_itemClicked = false; }, 10);
     return false;
   };
-  setTimeout("$('body').bind('click', DropDownMenu_ClosePopUp);", 10);
+  setTimeout (function () { $ ('body').bind ('click', DropDownMenu_ClosePopUp); }, 10);
 
   for (var i = 0; i < itemInfos.length; i++)
   {
@@ -210,17 +234,17 @@ function DropDownMenu_ClosePopUp()
   if (_dropDownMenu_currentMenu == null)
     return;
 
-  $(_dropDownMenu_currentMenu).find('a[href]').first().focus();
+  _dropDownMenu_currentMenu.find('a[href]').first().focus();
 
   var div = $(_dropDownMenu_currentPopup);
+
+  $("li", div).removeClass(_dropDownMenu_itemSelectedClassName);
 
   $('body').unbind('click', DropDownMenu_ClosePopUp);
   _dropDownMenu_currentMenu = null;
   _dropDownMenu_currentPopup = null;
 
   div.remove();
-
-  _dropDownMenu_currentItemIndex = -1;
 }
 
 function DropDownMenu_CreateItem(itemInfo, selectionCount)
@@ -250,10 +274,12 @@ function DropDownMenu_CreateTextItem(itemInfo, selectionCount)
   item.className = className;
 
   var anchor = document.createElement("a");
-  anchor.setAttribute('href', '#');
   if (isEnabled)
+  {
+    anchor.setAttribute('href', '#');
     $(anchor).bind('click', _dropDownMenu_itemClickHandler);
-  
+  }
+
   item.appendChild(anchor);
   if (isEnabled && itemInfo.Href != null)
   {
@@ -330,80 +356,145 @@ function DropDownMenu_OnHeadControlClick()
   _dropDownMenu_itemClicked = true;
 }
 
-function DropDownMenu_OnKeyDown(event, dropDownMenu, getSelectionCount)
+function DropDownMenu_OnKeyDown(event, dropDownMenu, getSelectionCount, hasDedicatedDropDownMenuElement)
 {
-  // alert(event.keyCode + ', ' + dropDownMenu.nodeName + '#' + dropDownMenu.id);
+  ArgumentUtility.CheckNotNullAndTypeIsJQuery('dropDownMenu', dropDownMenu);
 
-  var itemInfos = _dropDownMenu_menuInfos[dropDownMenu.id].ItemInfos;
-  var oldIndex = _dropDownMenu_currentItemIndex;
-  var selectionCount = -1;
-  if (getSelectionCount != null)
-    selectionCount = getSelectionCount();
+  if (_dropDownMenu_currentMenu === null && !hasDedicatedDropDownMenuElement)
+    return;
 
   switch (event.keyCode)
   {
     case 13: //enter
     case 32: //space
-      if (_dropDownMenu_currentItemIndex >= 0)
+      event.preventDefault();
+      event.stopPropagation();
+      if (dropDownMenu !== _dropDownMenu_currentMenu)
       {
-        var itemAnchor = $($(dropDownMenu).find('ul').children()[_dropDownMenu_currentItemIndex]).children('a');
+        DropDownMenu_OnClick (dropDownMenu, dropDownMenu[0].id, getSelectionCount, null);
+        event.keyCode = 40; // always act as if the down-arrow was used when opening the drop down menu.
+        DropDownMenu_Options_OnKeyDown (event, dropDownMenu);
+      }
+      else
+      {
+        DropDownMenu_ClosePopUp();
+      }
+      return;
+    case 27: //escape
+      event.preventDefault();
+      event.stopPropagation();
+      DropDownMenu_ClosePopUp();
+      return;
+    case 38: // up arrow
+    case 40: // down arrow
+      event.preventDefault();
+      event.stopPropagation();
+      if (dropDownMenu !== _dropDownMenu_currentMenu)
+      {
+        DropDownMenu_OnClick (dropDownMenu, dropDownMenu[0].id, getSelectionCount, null);
+        event.keyCode = 40; // always act as if the down-arrow was used when opening the drop down menu.
+      }
+      DropDownMenu_Options_OnKeyDown (event, dropDownMenu);
+      return;
+    default:
+      DropDownMenu_Options_OnKeyDown(event, dropDownMenu);
+      return;
+  }
+}
+
+function DropDownMenu_Options_OnKeyDown(event, dropDownMenu)
+{
+  ArgumentUtility.CheckNotNullAndTypeIsJQuery('dropDownMenu', dropDownMenu);
+
+  if (_dropDownMenu_currentPopup == null)
+    return;
+
+  var itemInfos = _dropDownMenu_menuInfos[dropDownMenu[0].id].ItemInfos;
+  if (itemInfos.length === 0)
+    return;
+
+  var oldIndex;
+  var isSelectionUpdated = false;
+  var dropDownMenuItems = $(_dropDownMenu_currentPopup).find('ul').children();
+  var currentItemIndex = $('.' + _dropDownMenu_itemSelectedClassName, _dropDownMenu_currentPopup).index();
+
+  switch (event.keyCode)
+  {
+    case 13: //enter
+    case 32: //space
+      event.preventDefault();
+      event.stopPropagation();
+      if (currentItemIndex >= 0)
+      {
+        var itemAnchor = $(dropDownMenuItems[currentItemIndex]).children('a');
         itemAnchor.click();
       }
-
-      if (dropDownMenu != _dropDownMenu_currentMenu)
-        DropDownMenu_OnClick(dropDownMenu, dropDownMenu.id, getSelectionCount, null);
-      else
-        DropDownMenu_ClosePopUp();
       break;
     case 27: //escape
+      event.preventDefault();
+      event.stopPropagation();
       DropDownMenu_ClosePopUp();
       break;
-    case 39: // right arrow
     case 40: // down arrow
-      do
+      event.preventDefault();
+      event.stopPropagation();
+      isSelectionUpdated = true;
+      oldIndex = currentItemIndex;
+      while (true)
       {
-        if (_dropDownMenu_currentItemIndex < itemInfos.length - 1)
-          _dropDownMenu_currentItemIndex++;
+        if (currentItemIndex < itemInfos.length - 1)
+        {
+          currentItemIndex++;
+          if (currentItemIndex === 1 && oldIndex === -1)
+            oldIndex = 0;
+        }
         else
-          _dropDownMenu_currentItemIndex = 0;
-      } while (!DropDownMenu_IsSelectableItem(itemInfos, _dropDownMenu_currentItemIndex, selectionCount))
+        {
+          currentItemIndex = 0;
+        }
+
+        if (oldIndex === currentItemIndex)
+          break;
+        if ($(dropDownMenuItems[currentItemIndex]).children('a[href]').length > 0)
+          break;
+      }
       break;
-    case 37: // left arrow
     case 38: // up arrow
-      do
+      event.preventDefault();
+      event.stopPropagation();
+      isSelectionUpdated = true;
+      oldIndex = currentItemIndex >= 0 ? currentItemIndex : itemInfos.length - 1;
+      while (true)
       {
-        if (_dropDownMenu_currentItemIndex > 0)
-          _dropDownMenu_currentItemIndex--;
+        if (currentItemIndex > 0)
+          currentItemIndex--;
         else
-          _dropDownMenu_currentItemIndex = itemInfos.length - 1;
-      } while (!DropDownMenu_IsSelectableItem(itemInfos, _dropDownMenu_currentItemIndex, selectionCount))
+          currentItemIndex = itemInfos.length - 1;
+
+        if (oldIndex === currentItemIndex)
+          break;
+        if ($(dropDownMenuItems[currentItemIndex]).children('a[href]').length > 0)
+          break;
+      }
       break;
   }
-  if (0 <= _dropDownMenu_currentItemIndex && _dropDownMenu_currentItemIndex < itemInfos.length)
-  {
-    if (_dropDownMenu_currentPopup != null)
-    {
-      var menuItems = $(_dropDownMenu_currentPopup).children('ul:first').children();
-      var liGainSelected = menuItems[_dropDownMenu_currentItemIndex];
-      liGainSelected.className += " selected";
 
-      if (oldIndex >= 0)
+  if (isSelectionUpdated)
+  {
+    $("li", _dropDownMenu_currentPopup).removeClass (_dropDownMenu_itemSelectedClassName);
+    if (currentItemIndex >= 0 && currentItemIndex < itemInfos.length)
+    {
+      var dropDownMenuItem = $(dropDownMenuItems[currentItemIndex]);
+      if (dropDownMenuItem.children('a[href]').length > 0)
       {
-        var liLoseSelected = menuItems[oldIndex];
-        liLoseSelected.className = _dropDownMenu_itemClassName;
+        dropDownMenuItem.addClass(_dropDownMenu_itemSelectedClassName);
+        dropDownMenuItem.children ('a').focus();
       }
     }
   }
 }
 
-function DropDownMenu_IsSelectableItem(itemInfos, index, selectionCount)
-{
-  var isSeparator = (itemInfos[_dropDownMenu_currentItemIndex].ID == -1);
-
-  return !isSeparator && DropDownMenu_GetItemEnabled(itemInfos[index], selectionCount);
-}
-
-function DropDownMenu_GetItemEnabled(itemInfo, selectionCount)
+function DropDownMenu_GetItemEnabled (itemInfo, selectionCount)
 {
   var isEnabled = true;
   if (itemInfo.IsDisabled)
@@ -424,4 +515,15 @@ function DropDownMenu_GetItemEnabled(itemInfo, selectionCount)
     }
   }
   return isEnabled;
+}
+
+function DropDownMenu_GetTarget (event, tagName)
+{
+  var element = event.target;
+  while (element && element.tagName != tagName)
+    element = element.parentNode;
+  // more fun with IE, sometimes event.target is empty, just ignore it then
+  if (!element)
+    return [];
+  return element;
 }

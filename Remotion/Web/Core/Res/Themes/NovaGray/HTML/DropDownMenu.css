@@ -201,8 +201,7 @@ ul.DropDownMenuOptions li a
   position: relative;
 }
 
-ul.DropDownMenuOptions li.selected a,
-ul.DropDownMenuOptions li a:hover
+ul.DropDownMenuOptions li.selected a
 {
   color: Black;
   border: solid 1px #7CB2E6;
@@ -253,7 +252,6 @@ ul.DropDownMenuOptions li.DropDownMenuItemDisabled a
   color: gray;
 }
 
-ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:hover,
 ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:active
 {
   background-color: transparent;
