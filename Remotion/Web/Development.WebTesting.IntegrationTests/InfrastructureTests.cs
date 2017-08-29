@@ -26,9 +26,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   {
     [Test]
     [TestCase (null, "New Input")]
-    [TestCase ("TODO RM-6459: Chrome Bug", "^   ! \" § $ % & / ( ) = ? ²   { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
-    [TestCase ("TODO RM-6459: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
-    [TestCase ("TODO RM-6459: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9 ^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    [TestCase ("TODO RM-6402: Chrome Bug", "^   ! \" § $ % & / ( ) = ? ²   { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    [TestCase ("TODO RM-6402: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    [TestCase ("TODO RM-6402: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9 ^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
     public void TestCoypuElementScopeFillInWithAndSendKeysExtensions_FillWithAndWait (string ignore, string input)
     {
       if (ignore != null)
