@@ -61,11 +61,28 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       ArgumentUtility.CheckNotNull ("log", log);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      log.DebugFormat ("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle (context));
+      int newWxePostBackSequenceNumber;
+      try
+      {
+        newWxePostBackSequenceNumber = context.Window.Query (
+            () => GetWxePostBackSequenceNumber (context),
+            expectedWxePostBackSequenceNumber);
+      }
+      catch (Exception)
+      {
+        try
+        {
+          log.DebugFormat ("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle (context));
+        }
+        catch
+        {
+          // ignored
+        }
 
-      var newWxePostBackSequenceNumber = context.Window.Query (
-          () => GetWxePostBackSequenceNumber (context),
-          expectedWxePostBackSequenceNumber);
+        throw;
+      }
+
+      log.DebugFormat ("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle (context));
 
       Assertion.IsTrue (
           newWxePostBackSequenceNumber == expectedWxePostBackSequenceNumber,
@@ -102,9 +119,26 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       ArgumentUtility.CheckNotNullOrEmpty ("oldWxeFunctionToken", oldWxeFunctionToken);
 
       log.DebugFormat ("State: previous WXE-FT: {0}.", oldWxeFunctionToken);
-      log.DebugFormat ("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle (context));
 
-      context.Window.Query (() => GetWxeFunctionToken (context) != oldWxeFunctionToken, true);
+      try
+      {
+        context.Window.Query (() => GetWxeFunctionToken (context) != oldWxeFunctionToken, true);
+      }
+      catch (Exception)
+      {
+        try
+        {
+          log.DebugFormat ("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle (context));
+        }
+        catch
+        {
+          // ignored
+        }
+
+        throw;
+      }
+
+      log.DebugFormat ("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle (context));
 
       Assertion.IsTrue (
           GetWxeFunctionToken (context) != oldWxeFunctionToken,
@@ -117,7 +151,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
 
       ArgumentUtility.CheckNotNull ("context", context);
 
-      return context.Scope.FindCss ("title").InnerHTML;
+      return context.Scope.FindCss ("title").InnerHTML.Trim();
     }
   }
 }
