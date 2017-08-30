@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Drawing;
+using Coypu;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
@@ -329,6 +330,45 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       bocAutoComplete.FillWith ("D, A");
       Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (daLabel));
       Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (baLabel));
+    }
+
+    [Test]
+    public void TestSelectFirstMatch ()
+    {
+      var home = Start();
+
+      const string baLabel = "c8ace752-55f6-4074-8890-130276ea6cd1"; //B, A
+      const string daLabel = "00000000-0000-0000-0000-000000000009"; //D, D
+      const string dLabel = "a2752869-e46b-4cfa-b89f-0b824e42b250"; //D, 
+
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+      bocAutoComplete.SelectFirstMatch ("B,");
+      Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("B, A"));
+      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (baLabel));
+
+      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_NoAutoPostBack");
+      bocAutoComplete.SelectFirstMatch ("B,"); // no auto post back
+      Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("B, A"));
+      Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+
+      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+      bocAutoComplete.SelectFirstMatch ("B,", Opt.ContinueImmediately()); // same value, does not trigger post back
+      Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("B, A"));
+      Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+
+      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+      bocAutoComplete.SelectFirstMatch ("D");
+      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (dLabel));
+      Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (baLabel));
+    }
+
+    [Test]
+    public void TestSelectFirstMatch_NoFilterMatches_ThrowsMissingHtmlException ()
+    {
+      var home = Start();
+
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+      Assert.That (() => bocAutoComplete.SelectFirstMatch ("Invalid"), Throws.Exception.InstanceOf<MissingHtmlException>().With.Message.EqualTo ("No matches were found for the specified filter: 'Invalid'."));
     }
 
     [Test]

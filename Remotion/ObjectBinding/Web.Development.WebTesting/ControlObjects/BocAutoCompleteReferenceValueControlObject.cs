@@ -17,10 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
@@ -40,6 +42,54 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       public const string Data = "data";
       public const string Success = "success";
       public const string Error = "error";
+    }
+
+    private class SelectAutoCompleteAction : WebTestAction
+    {
+      private const string c_updateResultScript = "$(arguments[0]).trigger('updateResult', [{{DisplayName: '{0}', UniqueIdentifier: '{1}' }}, {{ Value: null }}]);";
+
+      private string _actionName = "BocAutoCompleteReferenceValueControlObject_SelectAutoCompleteAction";
+
+      [NotNull]
+      private readonly SearchServiceResultItem _autoCompleteResultItem;
+
+      [NotNull]
+      private readonly FinishInputWithAction _finishInputWith;
+
+      public SelectAutoCompleteAction (
+          [NotNull] ControlObject control,
+          [NotNull] ElementScope scope,
+          [NotNull] SearchServiceResultItem autoCompleteResultItem,
+          [NotNull] FinishInputWithAction finishInputWith)
+          : base (control, scope)
+      {
+        ArgumentUtility.CheckNotNull ("autoCompleteResultItem", autoCompleteResultItem);
+        ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
+
+        _autoCompleteResultItem = autoCompleteResultItem;
+        _finishInputWith = finishInputWith;
+      }
+
+      protected override string ActionName
+      {
+        get { return _actionName; }
+      }
+
+      protected override void ExecuteInteraction (ElementScope scope)
+      {
+        var displayName = _autoCompleteResultItem.DisplayName;
+
+        scope.FillInWithFixed (displayName, FinishInput.Promptly);
+
+        var executor = JavaScriptExecutor.GetJavaScriptExecutor (scope);
+
+        JavaScriptExecutor.ExecuteVoidStatement (
+            executor,
+            string.Format (c_updateResultScript, displayName, _autoCompleteResultItem.UniqueIdentifier),
+            scope.Native);
+
+        _finishInputWith (scope);
+      }
     }
 
     public BocAutoCompleteReferenceValueControlObject ([NotNull] ControlObjectContext context)
@@ -130,6 +180,56 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return ParseSearchServiceResponse (response).SingleOrDefault();
     }
 
+    /// <summary>
+    /// Selects the first auto-completion match for the given <paramref name="filter" />.
+    /// </summary>
+    /// <param name="filter">The filter used to constrain the possible options.</param>
+    /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
+    /// <exception cref="MissingHtmlException"><paramref name="filter"/> cannot be matched with an auto-completion result.</exception>
+    /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
+    public UnspecifiedPageObject SelectFirstMatch ([NotNull] string filter, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    {
+      ArgumentUtility.CheckNotNull ("filter", filter);
+      return SelectFirstMatch (filter, FinishInput.WithTab, actionOptions);
+    }
+
+    /// <summary>
+    /// Selects the first auto-completion match for the given <paramref name="filter" />.
+    /// Afterwards, it executes the given <paramref name="finishInputWith"/> action.
+    /// </summary>
+    /// <param name="filter">The filter used to constrain the possible options.</param>
+    /// <param name="finishInputWith">What to do after the text has been filled in (see <see cref="FinishInput"/> for supported default options).</param>
+    /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
+    /// <exception cref="MissingHtmlException"><paramref name="filter"/> cannot be matched with an auto-completion result.</exception>
+    /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
+    public UnspecifiedPageObject SelectFirstMatch ([NotNull] string filter, [NotNull] FinishInputWithAction finishInputWith, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    {
+      ArgumentUtility.CheckNotNull ("filter", filter);
+      ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
+
+      // todo check if disabled RM-6494
+      // todo check if readonly RM-6621
+
+      var firstAutoCompleteResult = GetFirstAutoCompleteResult (filter);
+      var textField = Scope.FindChild ("TextValue");
+
+      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
+      new SelectAutoCompleteAction (this, textField, firstAutoCompleteResult, finishInputWith).Execute (actualActionOptions);
+
+      return UnspecifiedPage();
+    }
+
+    private SearchServiceResultItem GetFirstAutoCompleteResult ([NotNull] string filter)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("filter", filter);
+
+      var results = GetSearchServiceResults (filter, 2);
+
+      if (results.Count == 0)
+        throw new MissingHtmlException (string.Format ("No matches were found for the specified filter: '{0}'.", filter));
+
+      return results.First();
+    }
 
     /// <summary>
     /// JavaScript for calling the auto completion SearchExact web service method.
@@ -262,5 +362,7 @@ return CallWebService();",
     {
       return GetHtmlID() + "_TextValue";
     }
+
+    
   }
 }
