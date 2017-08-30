@@ -64,6 +64,8 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       int newWxePostBackSequenceNumber;
       try
       {
+        EnsureWindowContext (context);
+
         newWxePostBackSequenceNumber = context.Window.Query (
             () => GetWxePostBackSequenceNumber (context),
             expectedWxePostBackSequenceNumber);
@@ -122,6 +124,8 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
 
       try
       {
+        EnsureWindowContext (context);
+
         context.Window.Query (() => GetWxeFunctionToken (context) != oldWxeFunctionToken, true);
       }
       catch (Exception)
@@ -143,6 +147,16 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       Assertion.IsTrue (
           GetWxeFunctionToken (context) != oldWxeFunctionToken,
           string.Format ("Expected WXE-FT to be different to '{0}', but it is equal.", oldWxeFunctionToken));
+    }
+
+    private static void EnsureWindowContext (PageObjectContext context)
+    {
+      //  Without this line, the WxePostBackSequenceNumber cannot be found in some MultiWindow Scenarios.
+      // Concrete Scenario: TestMultiWindowActions()
+      // var options = Opt.ContinueWhenAll (Wxe.PostBackCompletedIn (home.Frame), Wxe.PostBackCompletedInContext (window2.Context.ParentContext));
+      // closeAndRefreshMainAsWellButton.Click (options);
+      // This line probably activates some kind of cache, so the WxePostBackSequenceNumber can be found correctly.
+      var notNeeded = context.Window.Title;
     }
 
     private static string GetPageTitle ([NotNull] PageObjectContext context)
