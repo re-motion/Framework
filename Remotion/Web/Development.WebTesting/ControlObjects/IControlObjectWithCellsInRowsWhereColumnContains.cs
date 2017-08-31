@@ -33,9 +33,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     /// <summary>
     /// Short for explicitly implemented
-    /// <see cref="IFluentControlObjectWithCellsInRowsWhereColumnContains{TCellControlObject}.ColumnWithItemIDContains"/>.
+    /// <see cref="IFluentControlObjectWithCellsInRowsWhereColumnContains{TCellControlObject}.ColumnWithItemIDContainsExactly"/>.
     /// </summary>
-    TCellControlObject GetCellWhere ([NotNull] string columnItemID, [NotNull] string containsCellText);
+    TCellControlObject GetCellWhere ([NotNull] string columnItemID, [NotNull] string cellText);
   }
 
   /// <summary>
@@ -45,9 +45,19 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       where TCellControlObject : ControlObject
   {
     /// <summary>
+    /// Selects the cell which contains exactly the <paramref name="cellText"/> in the column given by <paramref name="itemID"/>.
+    /// </summary>
+    TCellControlObject ColumnWithItemIDContainsExactly ([NotNull] string itemID, [NotNull] string cellText);
+
+    /// <summary>
     /// Selects the cell which contains the <paramref name="containsCellText"/> in the column given by <paramref name="itemID"/>.
     /// </summary>
     TCellControlObject ColumnWithItemIDContains ([NotNull] string itemID, [NotNull] string containsCellText);
+
+    /// <summary>
+    /// Selects the cell which contains exactly the <paramref name="cellText"/> in the column given by <paramref name="oneBasedIndex"/>.
+    /// </summary>
+    TCellControlObject ColumnWithIndexContainsExactly (int oneBasedIndex, [NotNull] string cellText);
 
     /// <summary>
     /// Selects the cell which contains the <paramref name="containsCellText"/> in the column given by <paramref name="oneBasedIndex"/>.

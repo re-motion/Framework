@@ -114,12 +114,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public TRowControlObject GetRowWhere (string columnItemID, string containsCellText)
+    public TRowControlObject GetRowWhere (string columnItemID, string cellText)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
-      ArgumentUtility.CheckNotNull ("containsCellText", containsCellText);
+      ArgumentUtility.CheckNotNull ("cellText", cellText);
 
-      return GetRowWhere().ColumnWithItemIDContains (columnItemID, containsCellText);
+      return GetRowWhere().ColumnWithItemIDContainsExactly (columnItemID, cellText);
+    }
+
+    /// <inheritdoc/>
+    TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithItemIDContainsExactly (
+        string itemID,
+        string cellText)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNull ("cellText", cellText);
+      
+      var cell = GetCellWhere().ColumnWithItemIDContainsExactly (itemID, cellText);
+      return GetRowFromCell (cell);
     }
 
     /// <inheritdoc/>
@@ -130,7 +142,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
       ArgumentUtility.CheckNotNull ("containsCellText", containsCellText);
 
-      var cell = GetCellWhere (itemID, containsCellText);
+      var cell = GetCellWhere().ColumnWithItemIDContains (itemID, containsCellText);
+      return GetRowFromCell (cell);
+    }
+
+    /// <inheritdoc/>
+    TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithIndexContainsExactly (
+        int oneBasedIndex,
+        string cellText)
+    {
+      ArgumentUtility.CheckNotNull ("cellText", cellText);
+
+      var cell = GetCellWhere().ColumnWithIndexContainsExactly (oneBasedIndex, cellText);
       return GetRowFromCell (cell);
     }
 
@@ -148,12 +171,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithTitleContainsExactly (
         string title,
-        string containsCellText)
+        string cellText)
     {
       ArgumentUtility.CheckNotNull ("title", title);
-      ArgumentUtility.CheckNotNull ("containsCellText", containsCellText);
+      ArgumentUtility.CheckNotNull ("cellText", cellText);
 
-      var cell = GetCellWhere().ColumnWithTitleContainsExactly (title, containsCellText);
+      var cell = GetCellWhere().ColumnWithTitleContainsExactly (title, cellText);
       return GetRowFromCell (cell);
     }
 
@@ -182,12 +205,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public BocListCellControlObject GetCellWhere (string columnItemID, string containsCellText)
+    public BocListCellControlObject GetCellWhere (string columnItemID, string cellText)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
-      ArgumentUtility.CheckNotNull ("containsCellText", containsCellText);
+      ArgumentUtility.CheckNotNull ("cellText", cellText);
 
-      return GetCellWhere().ColumnWithItemIDContains (columnItemID, containsCellText);
+      return GetCellWhere().ColumnWithItemIDContainsExactly (columnItemID, cellText);
+    }
+
+    /// <inheritdoc/>
+    BocListCellControlObject IFluentControlObjectWithCellsInRowsWhereColumnContains<BocListCellControlObject>.ColumnWithItemIDContainsExactly (
+        string itemID,
+        string cellText)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNull ("cellText", cellText);
+
+      var column = GetColumnByItemID (itemID);
+      return GetCellWhereColumnContainsExactly (column, cellText);
     }
 
     /// <inheritdoc/>
@@ -199,7 +234,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("containsCellText", containsCellText);
 
       var column = GetColumnByItemID (itemID);
-      return GetCellWhereColumnContainsExactly (column, containsCellText);
+      return GetCellWhereColumnContains (column, containsCellText);
+    }
+
+    /// <inheritdoc/>
+    BocListCellControlObject IFluentControlObjectWithCellsInRowsWhereColumnContains<BocListCellControlObject>.ColumnWithIndexContainsExactly (
+        int oneBasedIndex,
+        string cellText)
+    {
+      ArgumentUtility.CheckNotNull ("cellText", cellText);
+
+      var column = GetColumnByIndex (oneBasedIndex);
+      return GetCellWhereColumnContainsExactly (column, cellText);
     }
 
     /// <inheritdoc/>
@@ -210,7 +256,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("containsCellText", containsCellText);
 
       var column = GetColumnByIndex (oneBasedIndex);
-      return GetCellWhereColumnContainsExactly (column, containsCellText);
+      return GetCellWhereColumnContains (column, containsCellText);
     }
 
     /// <inheritdoc/>

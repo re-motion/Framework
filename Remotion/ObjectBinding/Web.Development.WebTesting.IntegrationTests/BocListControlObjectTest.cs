@@ -17,6 +17,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -353,7 +354,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var row = bocList.GetRowWhere ("Title", "CEO");
       Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
 
-      row = bocList.GetRowWhere().ColumnWithIndexContains (6, "CEO");
+      row = bocList.GetRowWhere().ColumnWithItemIDContainsExactly ("Title", "Programmer");
+      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("Programmer"));
+
+      row = bocList.GetRowWhere().ColumnWithItemIDContains ("Title", "gra");
+      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("Programmer"));
+
+      row = bocList.GetRowWhere().ColumnWithIndexContainsExactly (6, "CEO");
+      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
+
+      row = bocList.GetRowWhere().ColumnWithIndexContains (6, "EO");
       Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
 
       row = bocList.GetRowWhere().ColumnWithTitleContainsExactly ("Title", "CEO");
@@ -361,6 +371,36 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       row = bocList.GetRowWhere().ColumnWithTitleContains ("Title", "EO");
       Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
+    }
+
+    [Test]
+    public void TestGetRowWhereContainsMultipleMatches_MatchesFirst ()
+    {
+      const string customFiveX = "Custom XXXXX";
+      const string customFourX = "Custom XXXX";
+
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Special");
+
+      var row = bocList.GetRowWhere().ColumnWithItemIDContains ("CustomCell", customFourX);
+      Assert.That (row.GetCell (2).GetText(), Is.EqualTo (customFiveX));
+
+      row = bocList.GetRowWhere().ColumnWithIndexContains (2, customFourX);
+      Assert.That (row.GetCell (2).GetText(), Is.EqualTo (customFiveX));
+
+      row = bocList.GetRowWhere().ColumnWithTitleContains ("Custom cell", customFourX);
+      Assert.That (row.GetCell (2).GetText(), Is.EqualTo (customFiveX));
+    }
+
+    [Test]
+    public void TestGetRowMatchesExactly ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (() => bocList.GetRowWhere ("Title", "EO"), Throws.Exception.InstanceOf<MissingHtmlException>());
     }
 
     [Test]
@@ -373,14 +413,53 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var cell = bocList.GetCellWhere ("Title", "CEO");
       Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContains (6, "CEO");
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("Title", "Programmer");
+      Assert.That (cell.GetText(), Is.EqualTo ("Programmer"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("Title", "gra");
+      Assert.That (cell.GetText(), Is.EqualTo ("Programmer"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (6, "CEO");
       Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContains (6, "gra");
+      Assert.That (cell.GetText(), Is.EqualTo ("Programmer"));
 
       cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Title", "CEO");
       Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
 
       cell = bocList.GetCellWhere().ColumnWithTitleContains ("Title", "EO");
       Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+    }
+
+    [Test]
+    public void TestGetCellWhereContainsMultipleMatches_MatchesFirst ()
+    {
+      const string customFiveX = "Custom XXXXX";
+      const string customFourX = "Custom XXXX";
+
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Special");
+
+      var cell = bocList.GetCellWhere().ColumnWithItemIDContains ("CustomCell", customFourX);
+      Assert.That (cell.GetText(), Is.EqualTo (customFiveX));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContains (2, customFourX);
+      Assert.That (cell.GetText(), Is.EqualTo (customFiveX));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Custom cell", customFourX);
+      Assert.That (cell.GetText(), Is.EqualTo (customFiveX));
+    }
+
+    [Test]
+    public void TestGetCellMatchesExactly ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (() => bocList.GetCellWhere ("Title", "EO"), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

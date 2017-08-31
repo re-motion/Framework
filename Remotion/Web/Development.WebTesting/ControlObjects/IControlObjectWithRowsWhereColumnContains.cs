@@ -32,9 +32,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject> GetRowWhere ();
 
     /// <summary>
-    /// Short for explicitly implemented <see cref="IFluentControlObjectWithRowsWhereColumnContains{TRowControlObject}.ColumnWithItemIDContains"/>.
+    /// Short for explicitly implemented <see cref="IFluentControlObjectWithRowsWhereColumnContains{TRowControlObject}.ColumnWithItemIDContainsExactly"/>.
     /// </summary>
-    TRowControlObject GetRowWhere ([NotNull] string columnItemID, [NotNull] string containsCellText);
+    TRowControlObject GetRowWhere ([NotNull] string columnItemID, [NotNull] string cellText);
   }
 
   /// <summary>
@@ -44,9 +44,19 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       where TRowControlObject : ControlObject
   {
     /// <summary>
+    /// Selects the row which contains exactly the <paramref name="cellText"/> in the column given by <paramref name="itemID"/>.
+    /// </summary>
+    TRowControlObject ColumnWithItemIDContainsExactly ([NotNull] string itemID, [NotNull] string cellText);
+
+    /// <summary>
     /// Selects the row which contains the <paramref name="containsCellText"/> in the column given by <paramref name="itemID"/>.
     /// </summary>
     TRowControlObject ColumnWithItemIDContains ([NotNull] string itemID, [NotNull] string containsCellText);
+
+    /// <summary>
+    /// Selects the row which contains exactly the <paramref name="cellText"/> in the column given by <paramref name="oneBasedIndex"/>.
+    /// </summary>
+    TRowControlObject ColumnWithIndexContainsExactly (int oneBasedIndex, [NotNull] string cellText);
 
     /// <summary>
     /// Selects the row which contains the <paramref name="containsCellText"/> in the column given by <paramref name="oneBasedIndex"/>.
@@ -54,9 +64,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     TRowControlObject ColumnWithIndexContains (int oneBasedIndex, [NotNull] string containsCellText);
 
     /// <summary>
-    /// Selects the row which contains exactly the <paramref name="containsCellText"/> in the column given by <paramref name="title"/>.
+    /// Selects the row which contains exactly the <paramref name="cellText"/> in the column given by <paramref name="title"/>.
     /// </summary>
-    TRowControlObject ColumnWithTitleContainsExactly ([NotNull] string title, [NotNull] string containsCellText);
+    TRowControlObject ColumnWithTitleContainsExactly ([NotNull] string title, [NotNull] string cellText);
 
     /// <summary>
     /// Selects the row which contains the <paramref name="containsCellText"/> in the column given by <paramref name="title"/>.
