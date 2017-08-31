@@ -100,11 +100,22 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
     private Rectangle ResolveBoundsFromWindow (AutomationElement window)
     {
-      var element = window.FindFirst (
-          TreeScope.Children,
-          new AndCondition (
-              new PropertyCondition (AutomationElement.NameProperty, "Chrome Legacy Window"),
-              new PropertyCondition (AutomationElement.ClassNameProperty, "Chrome_RenderWidgetHostHWND")));
+      AutomationElement element = null;
+      const int retryCount = 5;
+
+      // Sometimes we do not find a window on the first try
+      for (var i = 0; i < retryCount; i++)
+      {
+        element = window.FindFirst (
+            TreeScope.Children,
+            new AndCondition (
+                new PropertyCondition (AutomationElement.NameProperty, "Chrome Legacy Window"),
+                new PropertyCondition (AutomationElement.ClassNameProperty, "Chrome_RenderWidgetHostHWND")));
+
+        if (element != null)
+          break;
+      }
+
       if (element == null)
         throw new InvalidOperationException ("Can not find the content window of the found chrome browser window.");
 
