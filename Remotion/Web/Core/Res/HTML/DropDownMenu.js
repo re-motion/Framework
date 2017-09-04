@@ -250,7 +250,7 @@ function DropDownMenu_ClosePopUp()
   if (_dropDownMenu_currentMenu == null)
     return;
 
-  _dropDownMenu_currentMenu.find('a[href]').first().focus();
+  _dropDownMenu_currentMenu.find('a[href]:last').first().focus();
 
   var div = $(_dropDownMenu_currentPopup);
 
@@ -381,6 +381,9 @@ function DropDownMenu_OnKeyDown(event, dropDownMenu, getSelectionCount, hasDedic
 
   switch (event.keyCode)
   {
+    case 9: // tab
+      DropDownMenu_ClosePopUp();
+      return;
     case 13: //enter
     case 32: //space
       event.preventDefault();
@@ -436,6 +439,9 @@ function DropDownMenu_Options_OnKeyDown(event, dropDownMenu)
 
   switch (event.keyCode)
   {
+    case 9: // tab
+      DropDownMenu_ClosePopUp();
+      return;
     case 13: //enter
     case 32: //space
       event.preventDefault();
