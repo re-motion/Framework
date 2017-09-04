@@ -107,31 +107,23 @@ div.tabbedMultiViewTabStrip span.tabStripTabSeparator
   border-bottom: solid 1px #AAAAAA;
 }
 
-div.tabbedMultiViewTabStrip span.tabStripTab
-{
-  border: solid 1px #AAAAAA;
-}
-
-div.tabbedMultiViewTabStrip span.tabStripTab:hover
-{
-  border: solid 1px #7CB2E6;
-  border-bottom: solid 1px #AAAAAA;
-  background-color: #E5F0FC;
-}
-
-div.tabbedMultiViewTabStrip span.tabStripTab:active,
+div.tabbedMultiViewTabStrip span.tabStripTab,
 div.tabbedMultiViewTabStrip span.tabStripTabSelected
 {
-  border: solid 1px #569CE0;
-  border-bottom: solid 1px #AAAAAA;
-  background-color: #E5F0FC;
+  position: static;
+  display: inline;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab a
+{
+  border: solid 1px #AAAAAA;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTab a,
 div.tabbedMultiViewTabStrip span.tabStripTabSelected a
 {
-  border: none;
-  background-color: transparent;
+  position: relative;
+  display: inline-block;
   color: Black;
   background-image: url(../Image/ButtonBackground.gif);
   background-color: #E6E5E7;
@@ -139,8 +131,11 @@ div.tabbedMultiViewTabStrip span.tabStripTabSelected a
   background-repeat: repeat-x;
 }
 
+div.tabbedMultiViewTabStrip span.tabStripTab a:focus,
 div.tabbedMultiViewTabStrip span.tabStripTab a:hover
 {
+  border: solid 1px #7CB2E6;
+  border-bottom: solid 1px #AAAAAA;
   background-image: url(../Image/ButtonBackgroundHover.gif);
   background-color: #E5F0FC;
 }
@@ -148,6 +143,8 @@ div.tabbedMultiViewTabStrip span.tabStripTab a:hover
 div.tabbedMultiViewTabStrip span.tabStripTab a:active,
 div.tabbedMultiViewTabStrip span.tabStripTabSelected a
 {
+  border: solid 1px #569CE0;
+  border-bottom: solid 1px #AAAAAA;
   background-image: url(../Image/ButtonBackgroundActive.gif);
   background-color: #C5E0FC;
 }

@@ -51,12 +51,14 @@ div.bocListNavigator a[href]
   color: #09457E;
 }
 
+div.bocListNavigator a[href]:focus,
 div.bocListNavigator a[href]:hover
 {
   color: Black;
   padding: 1px;
   border: 1px solid #7CB2E6;
   background-color: #E5F0FC;
+  outline: none;
 }
 
 div.bocListNavigator a:active
@@ -73,6 +75,7 @@ div.bocListNavigator img
   vertical-align: -0.1em;
 }
 
+div.bocListNavigator a[href]:focus img,
 div.bocListNavigator a[href]:hover img,
 div.bocListNavigator a[href]:active img
 {
@@ -237,12 +240,14 @@ th.bocListTitleCell a
   padding: 2px;
 }
 
+th.bocListTitleCell a:focus,
 th.bocListTitleCell a:hover
 {
   color: Black;
   padding: 1px;
   border: 1px solid #7CB2E6;
   background-color: #E5F0FC;
+  outline: none;
 }
 
 th.bocListTitleCell a:active
@@ -252,6 +257,7 @@ th.bocListTitleCell a:active
   background-color: #C5E0FC;
 }
 
+th.bocListTitleCell a[href]:focus img,
 th.bocListTitleCell a[href]:hover img,
 th.bocListTitleCell a[href]:active img
 {
@@ -331,11 +337,13 @@ tr.bocListDataRow.selected td.bocListDataCell a
 }
 
 /*  Style applied to the anchor tags during hovering in BocList's data rows.  */
+tr.bocListDataRow td.bocListDataCell a:focus,
 tr.bocListDataRow td.bocListDataCell a:hover
 {
   color: Black;
   border: 1px solid #7CB2E6;
   background-color: #E5F0FC;
+  outline: none;
 }
 
 tr.bocListDataRow td.bocListDataCell a:active
@@ -375,6 +383,7 @@ tr.bocListDataRow td.bocListDataCell span.CommandText
 
 /* Style to override the BocList's anchor style for drop down menus rendered inside a cell. */
 td.bocListDataCell div span.DropDownMenuSelect a.DropDownMenuLabel,
+td.bocListDataCell div span.DropDownMenuSelect:focus a.DropDownMenuLabel,
 td.bocListDataCell div span.DropDownMenuSelect:hover a.DropDownMenuLabel
 {
   padding: 0;
@@ -391,6 +400,7 @@ td.bocListDataCell div span.DropDownMenuSelect a.DropDownMenuButton
   background-color: Transparent;
 }
 
+td.bocListDataCell div span.DropDownMenuSelect:focus a.DropDownMenuButton,
 td.bocListDataCell div span.DropDownMenuSelect:hover a.DropDownMenuButton
 {
   border-left: solid 1px #7CB2E6;
@@ -420,13 +430,29 @@ td.bocListDataCell span.DropDownMenuSelect.disabled:hover a.DropDownMenuButton
 }
 
 td.bocListDataCell span.bocDateValue a,
+td.bocListDataCell span.bocDateValue a:focus,
 td.bocListDataCell span.bocDateValue a:hover,
 td.bocListDataCell span.bocDateTimeValue a,
+td.bocListDataCell span.bocDateTimeValue a:focus,
 td.bocListDataCell span.bocDateTimeValue a:hover
 {
   padding: 0px;
   border-style: none;
   background-color: Transparent;
+}
+
+td.bocListDataCell span.bocBooleanValue a,
+td.bocListDataCell span.bocBooleanValue a:focus,
+td.bocListDataCell span.bocBooleanValue a:hover
+{
+  border: none;
+  background-color: Transparent;
+}
+
+td.bocListDataCell span.bocBooleanValue a:focus
+{
+  outline: dotted black 1px;
+  outline: auto 5px -webkit-focus-ring-color;
 }
 
 /*  Style applied to the text providing the sorting order's index. */

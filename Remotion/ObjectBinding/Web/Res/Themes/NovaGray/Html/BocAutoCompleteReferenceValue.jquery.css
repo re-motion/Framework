@@ -83,7 +83,8 @@
 .ac_over
 {
   background-color: #E5F0FC;
-  color: Black
+  color: Black;
+  text-decoration: underline;
 }
 
 .ac_informationPopUp 

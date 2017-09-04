@@ -59,11 +59,17 @@ button.webButton span.buttonBody img
   border: none;
 }
 
+button.webButton:focus span.buttonBody,
 button.webButton:hover span.buttonBody
 {
   background-image: url(../Image/ButtonBackgroundHover.gif);
   background-color: #DEECFC;
   border: 1px solid #7CB2E6;
+}
+
+button.webButton:focus span.buttonBody
+{
+  text-decoration: underline;
 }
 
 button.webButton:active span.buttonBody

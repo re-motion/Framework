@@ -24,6 +24,7 @@ span.listMenuItem a
   position: relative;
 }
 
+span.listMenuItem a:focus,
 span.listMenuItem a:hover
 {
   color: Black;
@@ -31,6 +32,7 @@ span.listMenuItem a:hover
   border-width: 1px;
   border: solid 1px #7CB2E6;
   background-color: #E5F0FC;
+  outline: none;
 }
 
 span.listMenuItem a:active

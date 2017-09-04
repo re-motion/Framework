@@ -61,6 +61,12 @@ span.DropDownMenuSelect a.DropDownMenuLabel
   height: 1.2em !important;
 }
 
+span.DropDownMenuSelect a.DropDownMenuLabel:focus
+{
+  outline: none;
+  text-decoration: underline;
+}
+
 span.DropDownMenuContainer span.disabled a.DropDownMenuLabel
 {
   color: Gray;
@@ -83,6 +89,7 @@ span.DropDownMenuSelect a.DropDownMenuButton
   border-left: 1px solid #AAAAAA;
 }
 
+span.DropDownMenuSelect.focus a.DropDownMenuButton,
 span.DropDownMenuSelect:hover a.DropDownMenuButton
 {
   border-left: solid 1px #7CB2E6;
@@ -101,12 +108,20 @@ span.DropDownMenuSelect
   background-repeat: repeat-x;
 }
 
+span.DropDownMenuSelect.focus,
 span.DropDownMenuSelect:hover
 {
   color: Black;
   background-image: url(../Image/ButtonBackgroundHover.gif);
   background-color: #DEECFC;
   border: 1px solid #7CB2E6;
+}
+
+span.DropDownMenuSelect.nestedHover:hover
+{
+  background-image: url(../Image/ButtonBackground.gif);
+  background-color: #E6E5E7;
+  border: solid 1px #AAAAAA;
 }
 
 span.DropDownMenuSelect:active
@@ -196,6 +211,7 @@ ul.DropDownMenuOptions li a
   padding: 1px 3px 3px 1px;
   white-space: nowrap;
   color: Black;
+  outline: none;
 
   /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
   position: relative;

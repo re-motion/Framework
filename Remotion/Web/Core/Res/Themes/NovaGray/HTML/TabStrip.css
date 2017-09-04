@@ -41,14 +41,21 @@
   color: Black;
   cursor: hand;
   cursor: pointer;
+  outline: none;
 }
 
+*.tabStripTab a:focus,
 *.tabStripTab a:hover
 {
   color: Black;
   border: solid 1px #7CB2E6;
   background-image: url(../Image/ButtonBackgroundHover.gif);
   background-color: #E5F0FC;
+}
+
+*.tabStripTab a:focus
+{
+  text-decoration: underline;
 }
 
 *.tabStripTab a:active
@@ -90,6 +97,7 @@
 }
 
 *.tabStripTab.disabled a,
+*.tabStripTab.disabled a:focus,
 *.tabStripTab.disabled a:hover
 {
   color: Gray;

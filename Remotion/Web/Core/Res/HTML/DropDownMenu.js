@@ -16,11 +16,14 @@
 // 
 var _dropDownMenu_menuInfos = new Object();
 
+var _dropDownMenu_buttonClassName = 'DropDownMenuSelect';
 var _dropDownMenu_itemClassName = 'DropDownMenuItem';
 var _dropDownMenu_itemDisabledClassName = 'DropDownMenuItemDisabled';
 var _dropDownMenu_itemIconClassName = 'DropDownMenuItemIcon';
 var _dropDownMenu_itemSeparatorClassName = 'DropDownMenuSeparator';
 var _dropDownMenu_itemSelectedClassName = 'selected';
+var _dropDownMenu_focusClassName = 'focus';
+var _dropDownMenu_nestedHoverClassName = 'nestedHover';
 var _dropDownMenu_currentMenu = null;
 var _dropDownMenu_currentPopup = null;
 
@@ -62,6 +65,19 @@ function DropDownMenu_BindOpenEvent (node, menuID, eventType, getSelectionCount,
         if (moveToMousePosition)
           node.first ('a[href]').focus();
       });
+
+  if (!moveToMousePosition)
+  {
+    var lastAnchor = node.find ('a[href]:last');
+    lastAnchor
+        .bind ("focus", function (evt) { node.find ('.' + _dropDownMenu_buttonClassName).addClass (_dropDownMenu_focusClassName); })
+        .bind("blur", function (evt) { node.find('.' + _dropDownMenu_buttonClassName).removeClass (_dropDownMenu_focusClassName); });
+
+    var allButLastAnchors = node.find ('a[href]:not(:last)');
+    allButLastAnchors
+        .bind ("mouseover", function (evt) { node.find ('.' + _dropDownMenu_buttonClassName).addClass (_dropDownMenu_nestedHoverClassName); })
+        .bind ("mouseout", function (evt) { node.find ('.' + _dropDownMenu_buttonClassName).removeClass (_dropDownMenu_nestedHoverClassName); });
+  }
 }
 
 function DropDownMenu_ItemInfo(id, category, text, icon, iconDisabled, requiredSelection, isDisabled, href, target, diagnosticMetadata)

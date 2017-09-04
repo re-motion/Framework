@@ -135,12 +135,14 @@ span.bocAutoCompleteReferenceValue span.body a.command
   margin-right: 1px;
 }
 
+span.bocAutoCompleteReferenceValue a[href].command:focus,
 span.bocAutoCompleteReferenceValue a[href].command:hover
 {
   color: Black;
   border: 1px solid #7CB2E6;
   background-color: #E5F0FC;
   padding: 0;
+  outline: none;
 }
 
 span.bocAutoCompleteReferenceValue a[href].command:active

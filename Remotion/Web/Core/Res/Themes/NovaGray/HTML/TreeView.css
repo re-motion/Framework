@@ -84,12 +84,15 @@ span.treeViewNodeHeadSelected a
   padding: 2px;
 }
 
+span.treeViewNodeHead a:focus,
 span.treeViewNodeHead a:hover,
+span.treeViewNodeHeadSelected a:focus,
 span.treeViewNodeHeadSelected a:hover
 {
   padding: 1px;
   border: 1px solid #7CB2E6;
   background-color: #E5F0FC;
+  outline: none;
 }
 
 span.treeViewNodeHead a:active,
