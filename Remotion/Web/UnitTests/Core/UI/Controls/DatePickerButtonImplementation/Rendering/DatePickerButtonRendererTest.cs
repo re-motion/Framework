@@ -110,11 +110,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
         script = "return false;";
         _htmlHelper.AssertAttribute (button, "disabled", "disabled");
       }
-      if (hasClientScript)
-      {
-        _htmlHelper.AssertAttribute (button, "onclick", script);
-        _htmlHelper.AssertAttribute (button, "href", "#");
-      }
+
+      _htmlHelper.AssertAttribute (button, "onclick", script);
+      _htmlHelper.AssertAttribute (button, "href", "#");
+      _htmlHelper.AssertAttribute (button, "tabindex", "-1");
+
 
       if (hasClientScript)
       {

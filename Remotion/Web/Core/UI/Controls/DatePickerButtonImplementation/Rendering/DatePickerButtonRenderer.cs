@@ -82,6 +82,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Tabindex, "-1");
 
       if (!renderingContext.Control.Enabled)
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Disabled, "disabled");
