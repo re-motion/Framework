@@ -47,7 +47,9 @@ div.tabbedMainMenu div.tabStripTabsPane
 div.tabbedMainMenu span.tabStripTabWrapper
 {
   padding-top: 0.3em;
-  margin-bottom: -1px;
+  /*margin-bottom: -1px;*/
+  display: inline;
+  position: static;
 }
 
 div.tabbedMainMenu span.tabStripTabSeparator
@@ -55,18 +57,30 @@ div.tabbedMainMenu span.tabStripTabSeparator
   display: none; /* magin-left must be set to 0 in the Non-IE browsers section for tabStripTab and tabStripTabSelected. */
 }
 
-div.tabbedMainMenu span.tabStripTab
+div.tabbedMainMenu span.tabStripTab a,
+div.tabbedMainMenu span.tabStripTabSelected a
 {
+  padding-top: 0.1em;
   padding-bottom: 0;
-  border-top: 1px solid #AAAAAA;
-  border-right: 1px solid #AAAAAA;
-  border-bottom: 1px solid #AAAAAA;
-  border-left: none;
+  margin-bottom: -1px;
+  display: inline-block;
+  position: relative;
+}
+
+div.tabbedMainMenu span.tabStripTab a img,
+div.tabbedMainMenu span.tabStripTabSelected a img
+{
+  position: relative;
+  top: -0.1em;
+  vertical-align: middle;
 }
 
 div.tabbedMainMenu span.tabStripTab a
 {  
-  border: none;
+  border-top: 1px solid #AAAAAA;
+  border-right: 1px solid #AAAAAA;
+  border-bottom: 1px solid #AAAAAA;
+  border-left: none;
   background-color: #DDDDDD;
   background-image: url(../Image/TabbedMenuTabBackground.gif);
   background-repeat: repeat-x;
@@ -94,23 +108,26 @@ div.tabbedMainMenu span.tabStripTab a:focus
   text-decoration: underline;
 }
 
-div.tabbedMainMenu span.tabStripTabSelected
-{
-  padding-bottom: 0;
-  border-top: 1px solid #AAAAAA;
-  border-right: 1px solid #AAAAAA;
-  border-bottom: 1px solid #fff;
-}
-
 div.tabbedMainMenu span.tabStripTabSelected a
 {
-  border: none;
+  border-top: 1px solid #AAAAAA;
+  border-right: 1px solid #AAAAAA;
+  border-bottom: none;
+  border-left: none;
   background: none;
   background-color: White;
   color: Black;
   font-size: 120%;
   font-weight: bold;
   text-decoration: none;
+}
+
+div.tabbedMainMenu span.tabStripTabSelected a:after
+{
+  content: '';
+  display: block;
+  /* Use a separate border element to ensure sharp corners instead of transitioning at the point where the border colors meet. */
+  border-bottom: solid 1px White;
 }
 
 div.tabbedMainMenu span.tabStripTabSelected a:focus,
@@ -169,11 +186,6 @@ div.tabbedSubMenu div.tabStripTabsPane.empty
   padding-top: 0.4em; /* padding from tabStripTabWrapper, tabStripTab and content */
 }
 
-div.tabbedSubMenu div.tabStripTabsPane span.tabStripTabWrapper
-{
-  padding-top: 0.1em;
-}
-
 div.tabbedSubMenu span.tabStripTabSeparator
 {
   display: none; /* magin-left must be set to 0 in the Non-IE browsers section for tabStripTab and tabStripTabSelected. */
@@ -188,6 +200,24 @@ div.tabbedSubMenu span.tabStripTabSelected
   padding-bottom: 0.1em;
   padding-left: 0.2em;
   padding-right: 0.2em;
+
+  height: 1.5em;
+}
+
+div.tabbedSubMenu span.tabStripTab a,
+div.tabbedSubMenu span.tabStripTabSelected a
+{
+  display: inline-block;
+  position: relative;
+  padding-top: 0.1em;
+}
+
+div.tabbedSubMenu span.tabStripTab a img,
+div.tabbedSubMenu span.tabStripTabSelected a img
+{
+  position: relative;
+  top: -0.1em;
+  vertical-align: middle;
 }
 
 div.tabbedSubMenu span.tabStripTab a

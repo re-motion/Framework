@@ -140,13 +140,29 @@ div.tabbedMultiViewTabStrip span.tabStripTab a:hover
   background-color: #E5F0FC;
 }
 
-div.tabbedMultiViewTabStrip span.tabStripTab a:active,
-div.tabbedMultiViewTabStrip span.tabStripTabSelected a
+div.tabbedMultiViewTabStrip span.tabStripTab a:active
 {
   border: solid 1px #569CE0;
   border-bottom: solid 1px #AAAAAA;
   background-image: url(../Image/ButtonBackgroundActive.gif);
   background-color: #C5E0FC;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a
+{
+  border: solid 1px #AAAAAA;
+  border-bottom: none;
+  background-image: none;
+  background-color: White;
+  position: relative;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a:after
+{
+  content: '';
+  display: block;
+  /* Use a separate border element to ensure sharp corners instead of transitioning at the point where the border colors meet. */
+  border-bottom: solid 1px White;
 }
 
 /* Content area of the tab */
@@ -167,9 +183,12 @@ div.tabbedMultiViewTabStrip a span.anchorBody:first-child::before
   vertical-align: text-bottom;
 }
 
-div.tabbedMultiViewTabStrip a span.anchorBody img
+div.tabbedMultiViewTabStrip span.tabStripTab a img,
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a img
 {
-  vertical-align: -0.25em;
+  position: relative;
+  top: -0.1em;
+  vertical-align: middle;
 }
 
 div.tabbedMultiViewTabStrip span.tabStripTabSeparator span

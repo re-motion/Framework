@@ -68,9 +68,9 @@
 
 *.tabStripTabSelected a
 {
-  border: solid 1px #569CE0;
-  background-image: url(../Image/ButtonBackgroundActive.gif);
-  background-color: #C5E0FC;
+  border: solid 1px #AAAAAA;
+  background-image: none;
+  background-color: White;
   color: Black;
   text-decoration: none;
 }
@@ -118,14 +118,13 @@
   padding-bottom: 0.2em; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
   padding-left: 0.2em;
   padding-right: 0.2em;
-  vertical-align: -0.3em;
   white-space: nowrap;
   display: block;
 }
 
 *.tabStripTabsPane *.anchorBody img
 {
-  vertical-align: text-bottom;
+  vertical-align: top;
 }
 
 *.tabStripTabsPane ul *.tabStripTabWrapper
