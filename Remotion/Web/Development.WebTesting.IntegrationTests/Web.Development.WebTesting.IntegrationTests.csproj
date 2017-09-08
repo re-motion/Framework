@@ -212,8 +212,7 @@
     <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopRight.png" />
     <EmbeddedResource Include="SavedTestScreenshots\TabbedMenuControlObjectTest\Chrome.any.TabbedMenu.png" />
     <EmbeddedResource Include="SavedTestScreenshots\TabbedMenuControlObjectTest\InternetExplorer.any.TabbedMenu.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\WebTabStripControlObjectTest\Chrome.any.WebTabStrip0.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\WebTabStripControlObjectTest\Chrome.any.WebTabStrip1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\WebTabStripControlObjectTest\Chrome.any.WebTabStrip.png" />
     <EmbeddedResource Include="SavedTestScreenshots\WebTabStripControlObjectTest\InternetExplorer.any.WebTabStrip.png" />
     <EmbeddedResource Include="SavedTestScreenshots\WebTreeViewControlObjectTest\WebTreeView.png" />
   </ItemGroup>
