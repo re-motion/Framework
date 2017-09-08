@@ -421,21 +421,30 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       var textWithHotkey = HotkeyParser.Parse (tab.Text);
       string text = textWithHotkey.Text ?? string.Empty;
       var hasIcon = tab.Icon != null && !string.IsNullOrEmpty (tab.Icon.Url);
+      var childIndex = 0;
       if (hasIcon)
       {
         string url = tab.Icon.Url.TrimStart ('~');
         string alt = tab.Icon.AlternateText ?? string.Empty;
-        text = HtmlHelper.WhiteSpace + text;
-        
-        var image = anchorBody.GetAssertedChildElement ("img", 0);
+
+        var image = anchorBody.GetAssertedChildElement ("img", childIndex);
         image.AssertAttributeValueEquals ("src", url);
         image.AssertAttributeValueEquals ("alt", alt);
+
+        childIndex++;
       }
 
-      if (string.IsNullOrEmpty (text))
-        text = HtmlHelper.WhiteSpace;
+      if (hasIcon || string.IsNullOrEmpty (text))
+      {
+        anchorBody.AssertTextNode (HtmlHelper.WhiteSpace, childIndex);
+        childIndex++;
+      }
 
-      anchorBody.AssertTextNode (text, hasIcon ? 1 : 0);
+      if (!string.IsNullOrEmpty (text))
+      {
+        var textBody = anchorBody.GetAssertedChildElement ("span", childIndex);
+        textBody.AssertTextNode (text, 0);
+      }
     }
 
     private WebTabRenderer CreateWebTabRenderer ()

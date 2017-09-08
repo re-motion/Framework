@@ -53,7 +53,13 @@
   background-color: #E5F0FC;
 }
 
-*.tabStripTab a:focus
+*.tabStripTab a:focus span.anchorBody > img:only-child
+{
+  outline: dotted black 1px;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
+*.tabStripTab a:focus span.anchorBody > span
 {
   text-decoration: underline;
 }
@@ -104,7 +110,7 @@
   background-color: #EFEFF0;
 }
 
-*.tabStripTab.disabled img
+*.tabStripTab.disabled > img
 {
   opacity: 0.4;
   filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
@@ -122,10 +128,15 @@
   display: block;
 }
 
-*.tabStripTabsPane *.anchorBody img
+*.tabStripTabsPane *.anchorBody > img
 {
-  vertical-align: top;
+  vertical-align: middle;
 }
+
+*.tabStripTabsPane *.anchorBody > span
+{
+}
+
 
 *.tabStripTabsPane ul *.tabStripTabWrapper
 {

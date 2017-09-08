@@ -195,8 +195,10 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
         renderingContext.Writer.Write ("&nbsp;");
       if (hasText)
       {
+        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin text span
         var textWithHotkey = HotkeyParser.Parse (tab.Text);
         renderingContext.Writer.Write (_hotkeyFormatter.FormatText (textWithHotkey, false)); // Do not HTML encode
+        renderingContext.Writer.RenderEndTag(); // End text span
       }
       if (!hasIcon && !hasText)
         renderingContext.Writer.Write ("&nbsp;");

@@ -47,7 +47,6 @@ div.tabbedMainMenu div.tabStripTabsPane
 div.tabbedMainMenu span.tabStripTabWrapper
 {
   padding-top: 0.3em;
-  /*margin-bottom: -1px;*/
   display: inline;
   position: static;
 }
@@ -60,15 +59,13 @@ div.tabbedMainMenu span.tabStripTabSeparator
 div.tabbedMainMenu span.tabStripTab a,
 div.tabbedMainMenu span.tabStripTabSelected a
 {
-  padding-top: 0.1em;
-  padding-bottom: 0;
   margin-bottom: -1px;
   display: inline-block;
   position: relative;
 }
 
-div.tabbedMainMenu span.tabStripTab a img,
-div.tabbedMainMenu span.tabStripTabSelected a img
+div.tabbedMainMenu span.tabStripTab a span.anchorBody > img,
+div.tabbedMainMenu span.tabStripTabSelected a span.anchorBody > img
 {
   position: relative;
   top: -0.1em;
@@ -103,11 +100,6 @@ div.tabbedMainMenu span.tabStripTab a:active
   outline: none;
 }
 
-div.tabbedMainMenu span.tabStripTab a:focus
-{
-  text-decoration: underline;
-}
-
 div.tabbedMainMenu span.tabStripTabSelected a
 {
   border-top: 1px solid #AAAAAA;
@@ -138,11 +130,6 @@ div.tabbedMainMenu span.tabStripTabSelected a:active
   background: none;
   background-color: White;
   outline: none;
-}
-
-div.tabbedMainMenu span.tabStripTabSelected a:focus
-{
-  text-decoration: underline;
 }
 
 div.tabbedMainMenu span.tabStripTab.disabled a,
@@ -197,27 +184,47 @@ div.tabbedSubMenu span.tabStripTabSelected
   border-right: solid 1px #AAAAAA;
 
   padding-top: 0.1em;
-  padding-bottom: 0.1em;
   padding-left: 0.2em;
   padding-right: 0.2em;
 
-  height: 1.5em;
+  min-height: 1.4em;
+  min-height: calc(16px + 0.2em);
+}
+
+div.tabbedSubMenu div.tabStripTabsPane span.tabStripTabWrapper
+{
+  /* Compensates for 1px offset due to rounding errors when calculating the height in Internet Explorer. 
+    This might only be an issue if the TabbedMenu is displayed at the top of the page and manifests itself by jumping when moving the keyboard focus out of the TabbedMenu. */
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
 }
 
 div.tabbedSubMenu span.tabStripTab a,
 div.tabbedSubMenu span.tabStripTabSelected a
 {
-  display: inline-block;
+  display: block;
   position: relative;
+  min-height: 16px;
+}
+
+div.tabbedSubMenu span.tabStripTab a span.anchorBody,
+div.tabbedSubMenu span.tabStripTabSelected a span.anchorBody
+{
+  /* Compensates the margin-top: -0.1em for the img-tag */
   padding-top: 0.1em;
 }
 
-div.tabbedSubMenu span.tabStripTab a img,
-div.tabbedSubMenu span.tabStripTabSelected a img
+div.tabbedSubMenu span.tabStripTab a span.anchorBody > img,
+div.tabbedSubMenu span.tabStripTabSelected a span.anchorBody > img
 {
   position: relative;
   top: -0.1em;
   vertical-align: middle;
+}
+
+div.tabbedSubMenu span.tabStripTab a span.anchorBody > span,
+div.tabbedSubMenu span.tabStripTabSelected a span.anchorBody > span
+{
 }
 
 div.tabbedSubMenu span.tabStripTab a
@@ -254,6 +261,21 @@ div.tabbedSubMenu span.tabStripTabSelected a:focus
   background: none;
   background-color: White;
   color: Black;
+}
+
+div.tabbedSubMenu span.tabStripTab a:focus span.anchorBody > img:only-child
+{
+  outline: none;
+}
+
+div.tabbedSubMenu span.tabStripTab a:focus span.anchorBody > span
+{
+  text-decoration: none;
+}
+
+div.tabbedSubMenu span.tabStripTabSelected a span.anchorBody > span,
+div.tabbedSubMenu span.tabStripTabSelected a:focus span.anchorBody > span
+{
   text-decoration: underline;
 }
 
@@ -277,8 +299,8 @@ div.tabbedSubMenu span.tabStripTab.disabled img
 /* Content area of the tab */
 div.tabbedSubMenu span.anchorBody
 {
-  padding-top: 0.1em;
-  padding-bottom: 0.1em;
+  padding-top: 0;
+  padding-bottom: 0;
   padding-left: 0.3em;
   padding-right: 0.3em;
 }
