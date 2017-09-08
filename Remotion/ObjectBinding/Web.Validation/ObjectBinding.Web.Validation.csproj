@@ -98,6 +98,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
+      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
+      <Name>Globalization.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj">
       <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
       <Name>ObjectBinding.Web</Name>
