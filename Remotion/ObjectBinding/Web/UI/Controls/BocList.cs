@@ -25,6 +25,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Globalization;
@@ -1262,7 +1263,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Builds the validation error marker. </summary>
-    protected virtual Image GetValidationErrorMarker ()
+    protected virtual Control GetValidationErrorMarker ()
     {
       Image validationErrorIcon = new Image();
       var urlFactory = ServiceLocator.GetInstance<IInfrastructureResourceUrlFactory>();
@@ -1271,8 +1272,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       IResourceManager resourceManager = GetResourceManager();
       validationErrorIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoAlternateText);
 
-      validationErrorIcon.CssClass = "validationErrorMarker";
-      return validationErrorIcon;
+      var validationErrorMarker = new HtmlGenericControl("span");
+      validationErrorMarker.Controls.Add (validationErrorIcon);
+      validationErrorMarker.Attributes["class"] = "validationErrorMarker";
+
+      return validationErrorMarker;
     }
 
     protected virtual void OnDataRowRendering (BocListDataRowRenderEventArgs e)

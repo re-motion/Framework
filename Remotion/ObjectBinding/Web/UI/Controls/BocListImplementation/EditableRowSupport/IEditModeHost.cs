@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Web.UI.Controls;
 
@@ -45,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     void OnEditableRowChangesCanceling (int index, IBusinessObject businessObject, IBusinessObjectDataSource dataSource, IBusinessObjectBoundEditableWebControl[] controls);
     void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject);
     Image GetRequiredMarker ();
-    Image GetValidationErrorMarker ();
+    Control GetValidationErrorMarker ();
     EditModeValidator GetEditModeValidator ();
     void SetFocus (IFocusableControl control);
   }

@@ -99,3 +99,27 @@ td.formGridTopDataRow
 {
   color: Red;
 }
+
+.formGridMarkersCell a[title]:focus
+{
+  position: relative;
+}
+
+.formGridMarkersCell a[title]:focus::after
+{
+  content: attr(title);
+  white-space: pre;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 0.25em;
+  top: -moz-calc(1.2em);
+  top: -webkit-calc(1.2em);
+  z-index: 1000;
+  padding: 0.25em;
+  border: 1px solid Black;
+  background-color: Lightyellow;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}

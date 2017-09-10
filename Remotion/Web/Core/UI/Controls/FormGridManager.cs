@@ -2979,14 +2979,18 @@ namespace Remotion.Web.UI.Controls
       Image validationErrorIcon = new Image();
       validationErrorIcon.ImageUrl = GetImageUrl (FormGridImage.ValidationError);
 
-      validationErrorIcon.ToolTip = toolTip;
- 
       IResourceManager resourceManager = GetResourceManager();
 
       validationErrorIcon.AlternateText = 
           resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoAlternateText);
 
-      return validationErrorIcon;
+      HtmlAnchor validationAnchor = new HtmlAnchor();
+      validationAnchor.Controls.Add (validationErrorIcon);
+      validationAnchor.Title = toolTip;
+      if (ValidatorVisibility == ValidatorVisibility.HideValidators)
+        validationAnchor.Attributes["tabIndex"] = "0";
+
+      return validationAnchor;
     }
 
     /// <summary> Returns a spacer to be used instead of a marker. </summary>

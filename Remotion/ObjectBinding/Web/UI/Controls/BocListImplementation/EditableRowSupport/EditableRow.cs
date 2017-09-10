@@ -20,7 +20,9 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
 
@@ -417,7 +419,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       if (_editModeHost.ShowEditModeValidationMarkers)
       {
         bool isCellValid = true;
-        Image validationErrorMarker = _editModeHost.GetValidationErrorMarker();
+        var toolTipBuilder = new StringBuilder();
+        var validationErrorMarker = _editModeHost.GetValidationErrorMarker();
 
         for (int i = 0; i < validators.Count; i++)
         {
@@ -425,19 +428,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
           isCellValid &= validator.IsValid;
           if (! validator.IsValid)
           {
-            if (string.IsNullOrEmpty (validationErrorMarker.ToolTip))
-            {
-              validationErrorMarker.ToolTip = validator.ErrorMessage;
-            }
-            else
-            {
-              validationErrorMarker.ToolTip += "\r\n";
-              validationErrorMarker.ToolTip += validator.ErrorMessage;
-            }
+            if (toolTipBuilder.Length > 0)
+              toolTipBuilder.AppendLine();
+            toolTipBuilder.Append (validator.ErrorMessage);
           }
         }
-        if (! isCellValid)
+        if (!isCellValid)
+        {
+          if (validationErrorMarker is HtmlControl)
+          {
+            ((HtmlControl)validationErrorMarker).Attributes["tabIndex"] = "0";
+            ((HtmlControl)validationErrorMarker).Attributes["title"] = toolTipBuilder.ToString();
+          }
+          else if (validationErrorMarker is WebControl)
+          {
+            ((WebControl)validationErrorMarker).TabIndex = 0;
+            ((WebControl)validationErrorMarker).ToolTip = toolTipBuilder.ToString();
+          }
           validationErrorMarker.RenderControl (writer);
+        }
       }
 
       writer.AddAttribute (HtmlTextWriterAttribute.Class, "control");

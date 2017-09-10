@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
@@ -100,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return _bocList.GetRequiredMarker();
       }
 
-      public Image GetValidationErrorMarker ()
+      public Control GetValidationErrorMarker ()
       {
         return _bocList.GetValidationErrorMarker();
       }
