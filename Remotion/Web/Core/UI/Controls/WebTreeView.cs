@@ -18,6 +18,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -550,7 +552,10 @@ namespace Remotion.Web.UI.Controls
       ResolveNodeIcons();
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassRoot);
       writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin child nodes
-      RenderNodes (writer, _nodes, true);
+      using (var nodeIDAlgorithm = MD5CryptoServiceProvider.Create())
+      {
+        RenderNodes (writer, _nodes, true, nodeIDAlgorithm);
+      }
       writer.RenderEndTag();
       if (IsDesignMode && _nodes.Count == 0)
         RenderDesignModeContents (writer);
@@ -559,7 +564,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Renders the <paremref name="nodes"/> onto the <paremref name="writer"/>. </summary>
-    private void RenderNodes (HtmlTextWriter writer, WebTreeNodeCollection nodes, bool isTopLevel)
+    private void RenderNodes (HtmlTextWriter writer, WebTreeNodeCollection nodes, bool isTopLevel, HashAlgorithm nodeIDAlgorithm)
     {
       for (int i = 0; i < nodes.Count; i++)
       {
@@ -587,12 +592,12 @@ namespace Remotion.Web.UI.Controls
 
         bool hasExpander = !isTopLevel || _enableTopLevelExpander;
 
-        RenderNode (writer, node, isFirstNode, isLastNode, hasExpander);
+        RenderNode (writer, node, isFirstNode, isLastNode, hasExpander, nodeIDAlgorithm);
         bool hasChildren = node.Children.Count > 0;
         if (!hasExpander)
           node.IsExpanded = true;
         if (hasChildren && node.IsExpanded)
-          RenderNodeChildren (writer, node, isLastNode, hasExpander);
+          RenderNodeChildren (writer, node, isLastNode, hasExpander, nodeIDAlgorithm);
 
         writer.RenderEndTag(); // End node block
       }
@@ -604,7 +609,8 @@ namespace Remotion.Web.UI.Controls
         WebTreeNode node,
         bool isFirstNode,
         bool isLastNode,
-        bool hasExpander)
+        bool hasExpander,
+        HashAlgorithm nodeIDAlgorithm)
     {
       DropDownMenu menu;
       bool isMenuVisible = false;
@@ -627,16 +633,17 @@ namespace Remotion.Web.UI.Controls
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       string nodePath = FormatNodePath (node);
+      string nodeID = BitConverter.ToString (nodeIDAlgorithm.ComputeHash (Encoding.Unicode.GetBytes (nodePath))).Replace ("-", "");
 
       if (hasExpander)
-        RenderNodeExpander (writer, node, nodePath, isFirstNode, isLastNode);
+        RenderNodeExpander (writer, node, nodePath, nodeID, isFirstNode, isLastNode);
 
       if (isMenuVisible)
       {
         writer.AddAttribute ("oncontextmenu", "return false;");
         writer.AddAttribute ("id", menu.ClientID);
       }
-      RenderNodeHead (writer, node, nodePath);
+      RenderNodeHead (writer, node, nodePath, nodeID);
 
       writer.RenderEndTag();
     }
@@ -646,6 +653,7 @@ namespace Remotion.Web.UI.Controls
         HtmlTextWriter writer,
         WebTreeNode node,
         string nodePath,
+        string nodeID,
         bool isFirstNode,
         bool isLastNode)
     {
@@ -661,16 +669,16 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         if (_renderingFeatures.EnableDiagnosticMetadata)
           writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, "true");
-        writer.RenderBeginTag (HtmlTextWriterTag.A);
       }
+      writer.AddAttribute (HtmlTextWriterAttribute.Id, "Expander_" + nodeID);
+      writer.RenderBeginTag (HtmlTextWriterTag.A);
 
       nodeIcon.Render (writer, this);
-      if (hasExpansionLink)
-        writer.RenderEndTag();
+      writer.RenderEndTag();
     }
 
     /// <summary> Renders the <paramref name="node"/>'s head (i.e. icon and text) onto the <paremref name="writer"/>. </summary>
-    private void RenderNodeHead (HtmlTextWriter writer, WebTreeNode node, string nodePath)
+    private void RenderNodeHead (HtmlTextWriter writer, WebTreeNode node, string nodePath, string nodeID)
     {
       if (node.IsSelected)
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHeadSelected);
@@ -687,6 +695,7 @@ namespace Remotion.Web.UI.Controls
       writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
       if (_renderingFeatures.EnableDiagnosticMetadata)
         writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, "true");
+      writer.AddAttribute (HtmlTextWriterAttribute.Id, "Head_" + nodeID);
       writer.RenderBeginTag (HtmlTextWriterTag.A);
       if (_treeNodeRenderMethod == null)
       {
@@ -696,7 +705,11 @@ namespace Remotion.Web.UI.Controls
           writer.Write ("&nbsp;");
         }
         if (!string.IsNullOrEmpty (node.Text))
+        {
+          writer.RenderBeginTag (HtmlTextWriterTag.Span);
           writer.WriteEncodedText (node.Text);
+          writer.RenderEndTag();
+        }
       }
       else
         _treeNodeRenderMethod.Invoke (writer, node);
@@ -711,7 +724,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Renders the <paramref name="node"/>'s children onto the <paremref name="writer"/>. </summary>
-    private void RenderNodeChildren (HtmlTextWriter writer, WebTreeNode node, bool isLastNode, bool hasExpander)
+    private void RenderNodeChildren (HtmlTextWriter writer, WebTreeNode node, bool isLastNode, bool hasExpander, HashAlgorithm nodeIDAlgorithm)
     {
       if (!hasExpander)
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopLevelNodeChildren);
@@ -721,7 +734,7 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeChildren);
       writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin child nodes
 
-      RenderNodes (writer, node.Children, false);
+      RenderNodes (writer, node.Children, false, nodeIDAlgorithm);
 
       writer.RenderEndTag(); // End child nodes
     }
@@ -735,7 +748,10 @@ namespace Remotion.Web.UI.Controls
       nodes.Add (new WebTreeNode ("node0", "Node 0"));
       nodes.Add (new WebTreeNode ("node1", "Node 1"));
       nodes.Add (new WebTreeNode ("node2", "Node 2"));
-      RenderNodes (writer, designModeNodes, true);
+      using (var nodeIDAlgorithm = MD5CryptoServiceProvider.Create())
+      {
+        RenderNodes (writer, designModeNodes, true, nodeIDAlgorithm);
+      }
     }
 
     /// <summary> Generates the string representation of the <paramref name="node"/>'s path. </summary>

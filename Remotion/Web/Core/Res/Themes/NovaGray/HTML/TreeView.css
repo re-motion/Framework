@@ -85,14 +85,35 @@ span.treeViewNodeHeadSelected a
 }
 
 span.treeViewNodeHead a:focus,
+span.treeViewNodeHeadSelected a:focus
+{
+  /* Style of focused tree node is chosen to differ from hover-style due to the hover style matching the style of the selected node and fact that 
+    expanding an empty tree node would set the focus onto this tree-node's head-element, potentially causing confusion about which node is actually selected. 
+    The focus style can be merged with the hover style when RM-6821 is implemented.
+  */
+}
+
+/*span.treeViewNodeHead a:focus,*/
 span.treeViewNodeHead a:hover,
-span.treeViewNodeHeadSelected a:focus,
+/*span.treeViewNodeHeadSelected a:focus,*/
 span.treeViewNodeHeadSelected a:hover
 {
   padding: 1px;
   border: 1px solid #7CB2E6;
   background-color: #E5F0FC;
   outline: none;
+}
+
+span.treeViewNodeHeadSelected a:focus
+{
+  outline: none;
+}
+
+/*span.treeViewNodeHead a:focus > span,*/
+span.treeViewNodeHead a:hover:focus > span,
+span.treeViewNodeHeadSelected a:focus > span
+{
+  text-decoration: underline;
 }
 
 span.treeViewNodeHead a:active,
