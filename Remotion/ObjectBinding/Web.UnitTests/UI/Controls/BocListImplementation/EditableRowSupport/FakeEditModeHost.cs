@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -129,7 +130,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       throw new System.NotImplementedException();
     }
 
-    public Image GetValidationErrorMarker ()
+    public Control GetValidationErrorMarker ()
     {
       throw new System.NotImplementedException();
     }
