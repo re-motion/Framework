@@ -156,7 +156,13 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
           command.AccessKey = _hotkeyFormatter.FormatHotkey (textWithHotkey);
       }
       else
+      {
         command.Type = CommandType.None;
+        if (tab.IsSelected)
+        {
+          command.NoneCommand.EnableFocus = true;
+        }
+      }
 
       command.RenderBegin (
           renderingContext.Writer,

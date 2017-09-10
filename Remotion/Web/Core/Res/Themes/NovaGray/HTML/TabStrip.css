@@ -53,13 +53,21 @@
   background-color: #E5F0FC;
 }
 
-*.tabStripTab a:focus span.anchorBody > img:only-child
+*.tabStripTab a:focus,
+*.tabStripTabSelected a:focus
+{
+  outline: none;
+}
+
+*.tabStripTab a:focus span.anchorBody > img:only-child,
+*.tabStripTabSelected a:focus span.anchorBody > img:only-child
 {
   outline: dotted black 1px;
   outline: auto 5px -webkit-focus-ring-color;
 }
 
-*.tabStripTab a:focus span.anchorBody > span
+*.tabStripTab a:focus span.anchorBody > span,
+*.tabStripTabSelected a:focus span.anchorBody > span
 {
   text-decoration: underline;
 }

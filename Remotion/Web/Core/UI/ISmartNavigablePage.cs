@@ -20,8 +20,7 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.UI
 {
-
-/// <summary>
+  /// <summary>
 ///   This interface declares methods and properties used to control and enhance the client side user experience
 ///   for navigating the page and to simplify application development towards this goal.
 /// </summary>
@@ -42,7 +41,8 @@ public interface ISmartNavigablePage: IPage
   bool IsSmartFocusingEnabled { get; }
 
   /// <summary> Clears scrolling and focus information on the page. </summary>
-  void DiscardSmartNavigationData ();
+  /// <param name="smartNavigationData">The types of <see cref="SmartNavigationData"/> to be cleared. Default is <see cref="SmartNavigationData.All"/>.</param>
+  void DiscardSmartNavigationData (SmartNavigationData smartNavigationData = SmartNavigationData.All);
 
   /// <summary> Sets the focus to the passed control. </summary>
   /// <param name="control"> 

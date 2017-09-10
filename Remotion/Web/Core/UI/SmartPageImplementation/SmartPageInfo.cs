@@ -64,7 +64,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private readonly ISmartPage _page;
 
-    private bool _isSmartNavigationDataDisacarded;
+    private SmartNavigationData _smartNavigationDataToBeDisacarded;
     private string _smartFocusID;
     private string _abortMessage;
     private string _statusIsSubmittingMessage = string.Empty;
@@ -495,7 +495,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       if (smartNavigablePage.IsSmartScrollingEnabled)
       {
         string smartScrollingValue = null;
-        if (postBackCollection != null && ! _isSmartNavigationDataDisacarded)
+        if (postBackCollection != null && (_smartNavigationDataToBeDisacarded & SmartNavigationData.ScrollPosition) == SmartNavigationData.None)
           smartScrollingValue = postBackCollection[c_smartScrollingID];
         _page.ClientScript.RegisterHiddenField (_page, c_smartScrollingID, smartScrollingValue);
       }
@@ -503,7 +503,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       if (smartNavigablePage.IsSmartFocusingEnabled)
       {
         string smartFocusValue = null;
-        if (postBackCollection != null && ! _isSmartNavigationDataDisacarded)
+        if (postBackCollection != null && (_smartNavigationDataToBeDisacarded & SmartNavigationData.Focus) == SmartNavigationData.None)
           smartFocusValue = postBackCollection[c_smartFocusID];
         if (! string.IsNullOrEmpty (_smartFocusID))
           smartFocusValue = _smartFocusID;
@@ -540,9 +540,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary>
     ///   Implements <see cref="ISmartNavigablePage.DiscardSmartNavigationData">ISmartNavigablePage.DiscardSmartNavigationData</see>.
     /// </summary>
-    public void DiscardSmartNavigationData ()
+    public void DiscardSmartNavigationData (SmartNavigationData smartNavigationData = SmartNavigationData.All)
     {
-      _isSmartNavigationDataDisacarded = true;
+      _smartNavigationDataToBeDisacarded = smartNavigationData;
     }
 
     /// <summary>

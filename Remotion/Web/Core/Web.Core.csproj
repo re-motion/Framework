@@ -299,6 +299,7 @@
     <Compile Include="UI\Controls\Rendering\WithDiagnosticMetadataRenderingFeatures.cs" />
     <Compile Include="UI\HtmlHeadAppenderExtensions.cs" />
     <Compile Include="UI\ISmartPageClientScriptManager.cs" />
+    <Compile Include="UI\SmartNavigationData.cs" />
     <Compile Include="UI\SmartPageClientScriptManager.cs" />
     <Compile Include="UI\SmartPageImplementation\SmartPageAsyncPostBackErrorHandler.cs" />
     <Compile Include="Utilities\ControlState.cs" />

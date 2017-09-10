@@ -157,7 +157,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
     public void RenderPopulatedStripWithDisabledTab ()
     {
       PopulateTabStrip();
-      _tab0.Stub (stub => stub.EvaluateEnabled()).Return (false);
+      _tab1.Stub (stub => stub.EvaluateEnabled()).Return (false);
 
       var renderingContext = new WebTabStripRenderingContext (
           _httpContextStub,
@@ -266,6 +266,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       _tab0.Stub (stub => stub.GetPostBackClientEvent()).Return (_pageStub.ClientScript.GetPostBackClientHyperlink (_webTabStrip, _tab0.ItemID));
       _tab0.Stub (stub => stub.GetActiveTab()).Return (_tab0);
       _tab0.Stub (stub => stub.Command).Return (new NavigationCommand (CommandType.Event));
+      _tab0.Stub (stub => stub.IsSelected).Return (true);
       _tab0.Stub (stub => stub.GetRenderer ()).IgnoreArguments ().Return (CreateWebTabRenderer());
 
       _tab1 = MockRepository.GenerateStub<IMenuTab>();

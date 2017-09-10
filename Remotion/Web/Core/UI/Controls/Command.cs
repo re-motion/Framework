@@ -42,6 +42,37 @@ namespace Remotion.Web.UI.Controls
   public class Command : IControlItem
   {
     [TypeConverter (typeof (ExpandableObjectConverter))]
+    public class NoneCommandInfo
+    {
+      private bool _enableFocus;
+
+      public NoneCommandInfo ()
+      {
+      }
+
+      [PersistenceMode (PersistenceMode.Attribute)]
+      [Category ("Behavior")]
+      [Description ("True to allow keyboard focus for the command.")]
+      [DefaultValue (false)]
+      [NotifyParentProperty (true)]
+      public bool EnableFocus
+      {
+        get { return _enableFocus; }
+        set { _enableFocus = value; }
+      }
+
+      /// <summary> Returns a string representation of this <see cref="NoneCommandInfo"/>. </summary>
+      /// <returns> A <see cref="string"/>. </returns>
+      public override string ToString ()
+      {
+        if (_enableFocus)
+          return "Focus enabled";
+        else
+          return string.Empty;
+      }
+    }
+
+    [TypeConverter (typeof (ExpandableObjectConverter))]
     public class EventCommandInfo
     {
       //  EventPermissionProvider; //None, EventHandler, Properties
@@ -308,6 +339,7 @@ namespace Remotion.Web.UI.Controls
     private CommandType _type;
     private readonly CommandType _defaultType = CommandType.None;
     private CommandShow _show = CommandShow.Always;
+    private NoneCommandInfo _noneCommand = new NoneCommandInfo();
     private EventCommandInfo _eventCommand = new EventCommandInfo();
     private HrefCommandInfo _hrefCommand = new HrefCommandInfo();
     private WxeFunctionCommandInfo _wxeFunctionCommand = new WxeFunctionCommandInfo();
@@ -400,7 +432,10 @@ namespace Remotion.Web.UI.Controls
         var clientID = OwnerControl.ClientID + "_" + ItemID;
         writer.AddAttribute (HtmlTextWriterAttribute.Id, clientID);
       }
-      
+
+      if (commandInfo == null && _type == CommandType.None && _noneCommand.EnableFocus)
+        writer.AddAttribute (HtmlTextWriterAttribute.Tabindex, "0");
+
       style.AddAttributesToRender (writer);
       
       writer.RenderBeginTag (HtmlTextWriterTag.A);
@@ -646,6 +681,14 @@ namespace Remotion.Web.UI.Controls
 
       switch (Type)
       {
+        case CommandType.None:
+          if (HrefCommand != null)
+            stringBuilder.AppendFormat (": {0}", NoneCommand);
+          break;
+        case CommandType.Event:
+          if (HrefCommand != null)
+            stringBuilder.AppendFormat (": {0}", EventCommand);
+          break;
         case CommandType.Href:
           if (HrefCommand != null)
             stringBuilder.AppendFormat (": {0}", HrefCommand);
@@ -781,6 +824,25 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary>
+    ///   The <see cref="NoneCommandInfo"/> used when rendering the command as not set.
+    /// </summary>
+    /// <remarks> 
+    ///   Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.None"/>.
+    /// </remarks>
+    /// <value> A <see cref="EventCommandInfo"/> object. </value>
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Behavior")]
+    [Description ("The properties when there is no command. Interpreted if Type is set to None.")]
+    [DefaultValue ((string) null)]
+    [NotifyParentProperty (true)]
+    public virtual NoneCommandInfo NoneCommand
+    {
+      get { return _noneCommand; }
+      set { _noneCommand = ArgumentUtility.CheckNotNull ("value", value); }
+    }
+
+    /// <summary>
     ///   The <see cref="EventCommandInfo"/> used when rendering the command as an event.
     /// </summary>
     /// <remarks> 
@@ -796,7 +858,7 @@ namespace Remotion.Web.UI.Controls
     public virtual EventCommandInfo EventCommand
     {
       get { return _eventCommand; }
-      set { _eventCommand = value; }
+      set { _eventCommand = ArgumentUtility.CheckNotNull ("value", value); }
     }
 
     /// <summary>
@@ -815,7 +877,7 @@ namespace Remotion.Web.UI.Controls
     public virtual HrefCommandInfo HrefCommand
     {
       get { return _hrefCommand; }
-      set { _hrefCommand = value; }
+      set { _hrefCommand = ArgumentUtility.CheckNotNull ("value", value); }
     }
 
     /// <summary>
@@ -834,7 +896,7 @@ namespace Remotion.Web.UI.Controls
     public virtual WxeFunctionCommandInfo WxeFunctionCommand
     {
       get { return _wxeFunctionCommand; }
-      set { _wxeFunctionCommand = value; }
+      set { _wxeFunctionCommand = ArgumentUtility.CheckNotNull ("value", value); }
     }
 
     /// <summary> Gets or sets the control to which this object belongs. </summary>

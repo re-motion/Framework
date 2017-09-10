@@ -90,7 +90,7 @@ namespace Remotion.Web.UI.Controls
 
         ISmartNavigablePage smartNavigablePage = Page as ISmartNavigablePage;
         if (smartNavigablePage != null)
-          smartNavigablePage.DiscardSmartNavigationData();
+          smartNavigablePage.DiscardSmartNavigationData (SmartNavigationData.All & ~SmartNavigationData.Focus);
       }
 
       protected override void OnPreRender (EventArgs e)

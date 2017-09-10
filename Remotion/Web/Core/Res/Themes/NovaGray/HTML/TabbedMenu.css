@@ -236,7 +236,8 @@ div.tabbedSubMenu span.tabStripTab a
   text-decoration: none;
 }
 
-div.tabbedSubMenu span.tabStripTab a:focus
+div.tabbedSubMenu span.tabStripTab a:focus,
+div.tabbedSubMenu span.tabStripTabSelected a:focus
 {
   outline: dotted black 1px;
   outline: auto 5px -webkit-focus-ring-color;

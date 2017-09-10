@@ -171,9 +171,9 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   #region ISmartNavigablePage Implementation
 
   /// <summary> Clears scrolling and focus information on the page. </summary>
-  public void DiscardSmartNavigationData ()
+  public void DiscardSmartNavigationData (SmartNavigationData smartNavigationData = SmartNavigationData.All)
   {
-    _smartPageInfo.DiscardSmartNavigationData();
+    _smartPageInfo.DiscardSmartNavigationData (smartNavigationData);
   }
 
   /// <summary> Sets the focus to the passed control. </summary>
