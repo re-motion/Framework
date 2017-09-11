@@ -44,4 +44,12 @@
       </Items>
     </asp:DropDownList>
   </div>
+  <h3>DropDownList4</h3>
+  <asp:DropDownList ID="MyDropDownList4" AutoPostBack="True" Enabled="true" runat="server">
+    <Items>
+      <asp:ListItem Value="A" Text="B"/>
+      <asp:ListItem Value="B" Text="A"/>
+      <asp:ListItem Value="C" Text="C"/>
+    </Items>
+  </asp:DropDownList>
 </asp:Content>

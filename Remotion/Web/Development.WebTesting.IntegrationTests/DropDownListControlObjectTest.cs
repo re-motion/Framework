@@ -40,6 +40,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestSelectors ()
+    {
+      var home = Start();
+
+      var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList4");
+
+      dropDownList.SelectOption().WithItemID ("B");
+      Assert.That (dropDownList.Scope["value"], Is.EqualTo ("B"));
+
+      dropDownList.SelectOption().WithIndex (3);
+      Assert.That (dropDownList.Scope["value"], Is.EqualTo ("C"));
+
+      dropDownList.SelectOption().WithDisplayText ("A");
+      Assert.That (dropDownList.Scope["value"], Is.EqualTo ("B"));
+    }
+
+    [Test]
     public void TestGetSelectedOption ()
     {
       var home = Start();

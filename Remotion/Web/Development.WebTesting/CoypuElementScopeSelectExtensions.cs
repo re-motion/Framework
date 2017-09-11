@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using Coypu;
+using Coypu.Drivers;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -32,6 +33,9 @@ namespace Remotion.Web.Development.WebTesting
   /// </summary>
   public static class CoypuElementScopeSelectExtensions
   {
+    private static readonly Html s_html = new Html();
+    private static readonly XPath s_xpath = new XPath();
+
     /// <summary>
     /// Returns the text of the currently selected option. If more than one option is selected, this method returns the first selected item's text.
     /// </summary>
@@ -45,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting
 
       if (selectedOptions.Count() == 1)
         return new OptionDefinition (selectedOptions.First().Value, -1, scope.SelectedOption, true);
-      
+
       // If we cant uniquely find an item per selected attribute, we have to use selenium directly
       return RetryUntilTimeout.Run (
           () =>
@@ -67,27 +71,22 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      var options = scope.FindAllCss ("option").ToList();
-      var toBeSelectedElement = options.ElementAt (oneBasedIndex - 1);
+      var targetOption = scope.FindXPath (string.Format("({0})[{1}]", s_html.Child ("option"), oneBasedIndex));
+      targetOption.Click();
+    }
 
-      var numberOfItemsWithSameValue = options.Count (x => x.Value == toBeSelectedElement.Value);
+    /// <summary>
+    /// Selects an option of a &lt;select&gt; element by <paramref name="displayText"/>.
+    /// </summary>
+    /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
+    /// <param name="displayText">The display text to select.</param>
+    public static void SelectOptionByDisplayText ([NotNull] this ElementScope scope, [NotNull] string displayText)
+    {
+      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull ("displayText", displayText);
 
-      if (numberOfItemsWithSameValue == 1)
-      {
-        scope.SelectOption (toBeSelectedElement.Value);
-      }
-      else
-      {
-        // Coypu only supports selecting by value. If the value of the select option is not unique, we have to use selenium directly
-        RetryUntilTimeout.Run (
-            () =>
-            {
-              var webElement = (IWebElement) scope.Native;
-
-              var select = new SelectElement (webElement);
-              select.SelectByIndex (oneBasedIndex - 1);
-            });
-      }
+      var targetOption = scope.FindXPath (s_html.Child ("option") + XPath.Where (s_xpath.IsText (displayText, Options.Exact)));
+      targetOption.Click();
     }
 
     /// <summary>
@@ -100,15 +99,8 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("scope", scope);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      // Hack: Coypu does not yet support SelectElement, use Selenium directly.
-      RetryUntilTimeout.Run (
-          () =>
-          {
-            var webElement = (IWebElement) scope.Native;
-
-            var select = new SelectElement (webElement);
-            select.SelectByValue (value);
-          });
+      var targetOption = scope.FindXPath (s_html.Child ("option") + XPath.Where (s_xpath.Is ("@value", value, Options.Exact)));
+      targetOption.Click();
     }
 
     /// <summary>
@@ -127,28 +119,10 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNullOrEmpty ("diagnosticMetadataAttributeName", diagnosticMetadataAttributeName);
       ArgumentUtility.CheckNotNullOrEmpty ("diagnosticMetadataAttributeValue", diagnosticMetadataAttributeValue);
 
-      // Hack: Coypu does not yet support SelectElement, use Selenium directly.
-      RetryUntilTimeout.Run (
-          () =>
-          {
-            var webElement = (IWebElement) scope.Native;
-
-            var select = new SelectElement (webElement);
-            foreach (var option in select.Options)
-            {
-              if (option.GetAttribute (diagnosticMetadataAttributeName) != diagnosticMetadataAttributeValue)
-                continue;
-
-              select.SelectByValue (option.GetAttribute ("value"));
-              return;
-            }
-
-            throw new MissingHtmlException (
-                string.Format (
-                    "No option matches the diagnostic metadata '{0}'='{1}'.",
-                    diagnosticMetadataAttributeName,
-                    diagnosticMetadataAttributeValue));
-          });
+      var targetOption =
+          scope.FindXPath (
+              s_html.Child ("option") + XPath.Where (s_xpath.Attr (diagnosticMetadataAttributeName, diagnosticMetadataAttributeValue, Options.Exact)));
+      targetOption.Click();
     }
   }
 }

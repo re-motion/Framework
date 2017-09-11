@@ -97,7 +97,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     {
       ArgumentUtility.CheckNotNull ("displayText", displayText);
 
-      Action<ElementScope> selectAction = s => s.SelectOption (displayText);
+      Action<ElementScope> selectAction = s => s.SelectOptionByDisplayText (displayText);
       return SelectOption (selectAction, actionOptions);
     }
 
