@@ -84,11 +84,6 @@ span.DropDownMenuSelect a.DropDownMenuButton
   margin-right: 0;
 }
 
-span.DropDownMenuSelect a.DropDownMenuButton
-{
-  border-left: 1px solid #AAAAAA;
-}
-
 span.DropDownMenuSelect.focus a.DropDownMenuButton,
 span.DropDownMenuSelect:hover a.DropDownMenuButton
 {
@@ -144,6 +139,11 @@ span.DropDownMenuSelect a.DropDownMenuButton:first-child
   text-align: center;
 }
 
+span.DropDownMenuSelect a.DropDownMenuButton:focus
+{
+  outline: none;
+}
+
 span.DropDownMenuSelect.disabled a.DropDownMenuButton
 {
   border-left: solid 1px #BCBCBC;
@@ -158,11 +158,23 @@ span.DropDownMenuSelect a.DropDownMenuButton img:hover
 */
 span.DropDownMenuSelect a.DropDownMenuButton img
 {
-  height: 100%;
-  width: 16px;
-  background-position: 0 center;
+  min-height: 12px;
+  height: 90%;
+  height: calc(100% - 4px);
+  margin-top: 2px;
+  margin-bottom: 2px;
+  width: 12px;
+  margin-left: 2px;
+  margin-right: 2px;
+  background-position: -2px center;
   background-image: url('../Image/DropDownMenuButton.gif');
   background-repeat: no-repeat;
+}
+
+span.DropDownMenuSelect a.DropDownMenuButton:focus img
+{
+  outline: dotted black 1px;
+  outline: auto 5px -webkit-focus-ring-color;
 }
 
 span.DropDownMenuSelect.disabled a.DropDownMenuButton img
