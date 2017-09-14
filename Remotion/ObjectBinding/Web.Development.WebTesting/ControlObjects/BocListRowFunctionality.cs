@@ -36,13 +36,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   internal class BocListRowFunctionality : WebFormsControlObjectWithDiagnosticMetadata
   {
     private readonly IBocListRowControlObjectHostAccessor _accessor;
-    private readonly int _oneBasedRowIndexOnPage;
 
     public BocListRowFunctionality (IBocListRowControlObjectHostAccessor accessor, [NotNull] ControlObjectContext context)
         : base (context)
     {
       _accessor = accessor;
-      _oneBasedRowIndexOnPage = int.Parse (Scope[DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex]);
     }
 
     /// <summary>
