@@ -138,6 +138,9 @@
   <ItemGroup>
     <EmbeddedResource Include="SavedTestScreenshots\**\*.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest_TableContainer3.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
