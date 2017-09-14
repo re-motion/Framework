@@ -52,7 +52,8 @@ span.DropDownMenuSelect a.DropDownMenuLabel
   position: relative;
   left: 0.1em;
   top: 0.1em;
-  margin-right: 19px;
+  margin-right: 25px;
+  margin-right: calc(22px + 0.1em);
   margin-left: 4px;
   border-style: none;
   background-color: Transparent;
@@ -179,7 +180,7 @@ span.DropDownMenuSelect a.DropDownMenuButton:focus img
 
 span.DropDownMenuSelect.disabled a.DropDownMenuButton img
 {
-  background-position: -16px center;
+  background-position: -18px center;
   opacity: 0.4;
   filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
           progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);

@@ -53,7 +53,8 @@ span.DropDownMenuSelect a.DropDownMenuLabel
   position: relative;
   left: 0.1em;
   top: 0.1em;
-  margin-right: 16px;
+  margin-right: 19px;
+  margin-right: calc(18px + 0.1em);
   border-style: none;
   background-color: Transparent;
   color: #083779;

@@ -159,7 +159,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       titleAnchor.AssertNoAttribute ("onclick");
       titleAnchor.AssertChildElementCount (withIcon ? 1 : 0);
       if (withTitle)
-        titleAnchor.AssertTextNode (c_MenuTitle + HtmlHelper.WhiteSpace, withIcon ? 1 : 0);
+        titleAnchor.AssertTextNode (c_MenuTitle, withIcon ? 1 : 0);
 
       if (withIcon)
       {
