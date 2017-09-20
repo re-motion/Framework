@@ -30,7 +30,7 @@
       ? function (s)
       {
         var iframe = $ ("<iframe/>")
-            .attr ('src', 'javascript:false')
+            .attr ('src', 'javascript:""')
             .attr ('frameborder', '0')
             .attr ('tabindex', '-1')
             .addClass ('bgiframe')
