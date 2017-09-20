@@ -471,9 +471,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     private SecurityTokenBuilder CreateSecurityTokenBuilder ()
     {
       var userRevisionProvider = new UserRevisionProvider();
+      var userNamesRevisionProvider = new UserNamesRevisionProvider();
       return new SecurityTokenBuilder (
           new SecurityPrincipalRepository (userRevisionProvider),
-          new SecurityContextRepository (new RevisionProvider(), userRevisionProvider));
+          new SecurityContextRepository (new RevisionProvider(), userNamesRevisionProvider));
     }
 
     private ISecurityPrincipal CreateTestPrincipal ()

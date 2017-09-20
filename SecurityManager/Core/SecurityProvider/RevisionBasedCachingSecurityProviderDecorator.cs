@@ -18,7 +18,6 @@
 using System;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
-using Remotion.SecurityManager.GlobalAccessTypeCache.Implementation;
 using Remotion.SecurityManager.SecurityProvider.Implementation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;

@@ -40,6 +40,7 @@ namespace Remotion.SecurityManager.Persistence
 
     private readonly IDomainRevisionProvider _revisionProvider;
     private readonly IUserRevisionProvider _userRevisionProvider;
+    private readonly IUserNamesRevisionProvider _userNamesRevisionProvider;
     private readonly IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactory;
     private readonly PropertyDefinition _userNamePropertyDefinition;
     private readonly PropertyDefinition _substitutionUserPropertyDefinition;
@@ -47,14 +48,17 @@ namespace Remotion.SecurityManager.Persistence
     public RevisionStorageProviderExtension (
         IDomainRevisionProvider revisionProvider,
         IUserRevisionProvider userRevisionProvider,
+        IUserNamesRevisionProvider userNamesRevisionProvider,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory)
     {
       ArgumentUtility.CheckNotNull ("revisionProvider", revisionProvider);
       ArgumentUtility.CheckNotNull ("userRevisionProvider", userRevisionProvider);
+      ArgumentUtility.CheckNotNull ("userNamesRevisionProvider", userNamesRevisionProvider);
       ArgumentUtility.CheckNotNull ("storageProviderCommandFactory", storageProviderCommandFactory);
 
       _revisionProvider = revisionProvider;
       _userRevisionProvider = userRevisionProvider;
+      _userNamesRevisionProvider = userNamesRevisionProvider;
       _storageProviderCommandFactory = storageProviderCommandFactory;
 
       _userNamePropertyDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (User))
@@ -73,6 +77,7 @@ namespace Remotion.SecurityManager.Persistence
           dataContainers.Where (dataContainer => typeof (BaseSecurityManagerObject).IsAssignableFrom (dataContainer.DomainObjectType));
 
       bool isDomainRevisionInvalidated = false;
+      bool isUserNamesRevisionInvalidated = false;
       var usersToInvalidate = new HashSet<IDomainObjectHandle<User>>();
       var loadedUsers = new Dictionary<IDomainObjectHandle<User>, DataContainer>();
       foreach (var dataContainer in securityManagerDataContainers)
@@ -84,6 +89,14 @@ namespace Remotion.SecurityManager.Persistence
           _revisionProvider.InvalidateRevision (revisionKey);
 
           isDomainRevisionInvalidated = true;
+        }
+
+        if (!isUserNamesRevisionInvalidated && IsUserNamesRevisionRelevant (dataContainer))
+        {
+          IncrementRevision (executionContext, UserNamesRevisionKey.Global);
+          _userNamesRevisionProvider.InvalidateRevision (UserNamesRevisionKey.Global);
+
+          isUserNamesRevisionInvalidated = true;
         }
 
         if (IsUserRevisionRelevant (dataContainer))
@@ -103,9 +116,18 @@ namespace Remotion.SecurityManager.Persistence
       {
         var userDataContainer = loadedUsers.GetValueOrDefault (userID);
         if (userDataContainer != null)
+        {
           userNamesToInvalidate.Add (GetValue<string> (userDataContainer, _userNamePropertyDefinition));
+
+          // For changed user names, also invalidate the original revision to ensure that the old user name cannot be used with state cache values.
+          var originalUserName = GetOriginalValueOrDefault<string> (userDataContainer, _userNamePropertyDefinition);
+          if (originalUserName != null)
+            userNamesToInvalidate.Add (originalUserName);
+        }
         else
+        {
           notLoadedUsers.Add (userID);
+        }
       }
 
       userNamesToInvalidate.AddRange (LoadUserNames (executionContext, notLoadedUsers));
@@ -162,10 +184,18 @@ namespace Remotion.SecurityManager.Persistence
       return false;
     }
 
+    private bool IsUserNamesRevisionRelevant (DataContainer dataContainer)
+    {
+      if (typeof (User).IsAssignableFrom (dataContainer.DomainObjectType))
+        return dataContainer.HasValueChanged (_userNamePropertyDefinition);
+
+      return false;
+    }
+
     private bool IsUserRevisionRelevant (DataContainer dataContainer)
     {
       if (typeof (User).IsAssignableFrom (dataContainer.DomainObjectType))
-        return true; //user.Username
+        return true; //user.Username, user.Roles
 
       if (typeof (Substitution).IsAssignableFrom (dataContainer.DomainObjectType))
         return true;
@@ -196,6 +226,17 @@ namespace Remotion.SecurityManager.Persistence
     {
       var valueAccess = dataContainer.State != StateType.Deleted ? ValueAccess.Current : ValueAccess.Original;
       return (TResult) dataContainer.GetValueWithoutEvents (propertyDefinition, valueAccess);
+    }
+
+    private TResult GetOriginalValueOrDefault<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)
+    {
+      if (!dataContainer.HasValueChanged (propertyDefinition))
+        return default(TResult);
+
+      if (dataContainer.State != StateType.Changed)
+        return default(TResult);
+
+      return (TResult) dataContainer.GetValueWithoutEvents (propertyDefinition, ValueAccess.Original);
     }
 
     private string GetPropertyIdentifierFromTypeAndShortName (Type domainObjectType, string shortPropertyName)

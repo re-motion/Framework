@@ -47,6 +47,7 @@ namespace Remotion.SecurityManager.Persistence
       _revisionExtension = new RevisionStorageProviderExtension (
           SafeServiceLocator.Current.GetInstance<IDomainRevisionProvider>(),
           SafeServiceLocator.Current.GetInstance<IUserRevisionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IUserNamesRevisionProvider>(),
           commandFactory);
     }
 
