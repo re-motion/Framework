@@ -185,6 +185,7 @@
     <Compile Include="Domain\IDomainRevisionProviderTest.cs" />
     <Compile Include="Domain\IPrincipalProviderTest.cs" />
     <Compile Include="Domain\ISecurityManagerPrincipalFactoryTest.cs" />
+    <Compile Include="Domain\IUserNamesRevisionProviderTest.cs" />
     <Compile Include="Domain\IUserRevisionProviderTest.cs" />
     <Compile Include="Domain\Metadata\AccessTypeDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\FindMetadataObjectQueryBuilderTest.cs" />

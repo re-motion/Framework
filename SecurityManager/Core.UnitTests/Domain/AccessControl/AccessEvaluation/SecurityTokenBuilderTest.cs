@@ -53,9 +53,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
       var userRevisionProvider = new UserRevisionProvider();
       _securityPrincipalRepository = new SecurityPrincipalRepository (userRevisionProvider);
+
+      var userNamesRevisionProvider = new UserNamesRevisionProvider();
       _securityTokenBuilder = new SecurityTokenBuilder (
           _securityPrincipalRepository,
-          new SecurityContextRepository (new RevisionProvider(), userRevisionProvider));
+          new SecurityContextRepository (new RevisionProvider(), userNamesRevisionProvider));
 
       _clientTransactionScope = ClientTransaction.CreateRootTransaction().EnterDiscardingScope();
     }

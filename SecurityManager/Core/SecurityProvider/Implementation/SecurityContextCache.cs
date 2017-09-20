@@ -20,9 +20,8 @@ using Remotion.Collections;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
-using Remotion.SecurityManager.SecurityProvider.Implementation;
 
-namespace Remotion.SecurityManager.GlobalAccessTypeCache.Implementation
+namespace Remotion.SecurityManager.SecurityProvider.Implementation
 {
   public sealed class SecurityContextCache : RepositoryBase<SecurityContextCache.Data, RevisionKey, GuidRevisionValue>
   {

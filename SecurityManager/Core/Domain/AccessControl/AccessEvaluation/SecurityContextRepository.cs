@@ -36,15 +36,15 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     //TODO RM-5640: test
 
     private readonly SecurityContextRevisionBasedCache _cache;
-    private SecurityContextUserRevisionBasedCache _userCache;
+    private readonly SecurityContextUserNamesRevisionBasedCache _userNamesCache;
 
-    public SecurityContextRepository (IDomainRevisionProvider revisionProvider, IUserRevisionProvider userRevisionProvider)
+    public SecurityContextRepository (IDomainRevisionProvider revisionProvider, IUserNamesRevisionProvider userRevisionProvider)
     {
       ArgumentUtility.CheckNotNull ("revisionProvider", revisionProvider);
       ArgumentUtility.CheckNotNull ("userRevisionProvider", userRevisionProvider);
       
       _cache = new SecurityContextRevisionBasedCache (revisionProvider);
-      _userCache = new SecurityContextUserRevisionBasedCache (userRevisionProvider);
+      _userNamesCache = new SecurityContextUserNamesRevisionBasedCache (userRevisionProvider);
     }
 
     public IDomainObjectHandle<Tenant> GetTenant (string uniqueIdentifier)
@@ -83,11 +83,11 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       ArgumentUtility.CheckNotNullOrEmpty ("userName", userName);
 
-      var cachedData = _userCache.GetData();
+      var cachedData = _userNamesCache.GetData();
       var user = cachedData.Users.GetValueOrDefault (userName);
       if (user == null)
       {
-        cachedData = _userCache.GetDataWithRefresh();
+        cachedData = _userNamesCache.GetDataWithRefresh();
         user = cachedData.Users.GetValueOrDefault (userName);
         if (user == null)
           throw CreateAccessControlException ("The user '{0}' could not be found.", userName);

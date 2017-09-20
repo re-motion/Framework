@@ -152,7 +152,7 @@
     <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextRepository.cs" />
     <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextRevisionBasedCache.cs" />
     <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextRevisionBasedCacheBase.cs" />
-    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextUserRevisionBasedCache.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextUserNamesRevisionBasedCache.cs" />
     <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityPrincipalRepository.cs" />
     <Compile Include="Domain\AccessControl\AccessEvaluation\State.cs" />
     <Compile Include="Domain\AccessControl\AccessEvaluation\StatefulAccessControlListData.cs" />
@@ -181,12 +181,15 @@
     <Compile Include="Domain\ISecurityManagerPrincipal.cs" />
     <Compile Include="Domain\ISecurityManagerPrincipalFactory.cs" />
     <Compile Include="Domain\IRevisionProvider.cs" />
+    <Compile Include="Domain\IUserNamesRevisionProvider.cs" />
     <Compile Include="Domain\IUserRevisionProvider.cs" />
     <Compile Include="Domain\Metadata\MetadataExtensions.cs" />
     <Compile Include="Domain\NullSecurityManagerPrincipal.cs" />
     <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureBindableDomainObjectMetadataFactory.cs" />
     <Compile Include="Domain\OrganizationalStructure\RoleProxy.cs" />
     <Compile Include="Domain\PrincipalRole.cs" />
+    <Compile Include="Domain\UserNamesRevisionKey.cs" />
+    <Compile Include="Domain\UserNamesRevisionProvider.cs" />
     <Compile Include="SecurityProvider\Implementation\AccessTypeCache.cs" />
     <Compile Include="Domain\RevisionKey.cs" />
     <Compile Include="Domain\RevisionProvider.cs" />

@@ -27,8 +27,8 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
-  public class SecurityContextUserRevisionBasedCache
-      : SecurityContextRevisionBasedCacheBase<SecurityContextUserRevisionBasedCache.Data, UserRevisionKey, GuidRevisionValue>
+  public class SecurityContextUserNamesRevisionBasedCache
+      : SecurityContextRevisionBasedCacheBase<SecurityContextUserNamesRevisionBasedCache.Data, UserNamesRevisionKey, GuidRevisionValue>
   {
     public class Data : RevisionBasedData
     {
@@ -45,19 +45,19 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private static readonly ILog s_log = LogManager.GetLogger (MethodInfo.GetCurrentMethod().DeclaringType);
 
-    public SecurityContextUserRevisionBasedCache (IUserRevisionProvider revisionProvider)
+    public SecurityContextUserNamesRevisionBasedCache (IUserNamesRevisionProvider revisionProvider)
         : base (revisionProvider)
     {
     }
 
     public Data GetData ()
     {
-      return GetCachedData (UserRevisionKey.Global, Revision.Stale);
+      return GetCachedData (UserNamesRevisionKey.Global, Revision.Stale);
     }
 
     public Data GetDataWithRefresh ()
     {
-      return GetCachedData (UserRevisionKey.Global, Revision.Invalidate);
+      return GetCachedData (UserNamesRevisionKey.Global, Revision.Invalidate);
     }
 
     protected override Data LoadData (GuidRevisionValue revision)
