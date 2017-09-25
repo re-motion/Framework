@@ -124,17 +124,14 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Security\Web.Security.csproj"/>
     <!--<ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTest.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj"/>-->
-    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\UnitTests\Web.UnitTests.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.UnitTests\Web.Development.WebTesting.UnitTests.csproj"/>
-
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\UnitTests\Web.UnitTests.csproj"/>
 
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj">
       <IsWebTest>True</IsWebTest>
       <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
     </IntegrationTestProjectFiles>
 
-
-    
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\Core\Scripting.Core.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\UnitTests\Scripting.UnitTests.csproj"/>
 
