@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var control = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
 
       var definitions = control.GetItemDefinitions();
-      Assert.That (definitions[3].IsDisabled, Is.True);
+      Assert.That (definitions[3].IsDisabled, Is.False);
       Assert.That (definitions[5].IsDisabled, Is.True);
     }
 
@@ -90,7 +90,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (items[0].Text, Is.EqualTo ("EventCommandTabTitle"));
       Assert.That (items[0].IsDisabled, Is.False);
 
-      Assert.That (items[3].IsDisabled, Is.True);
+      Assert.That (items[3].IsDisabled, Is.False);
 
       Assert.That (items[4].ItemID, Is.EqualTo ("TabWithSubMenu"));
       Assert.That (items[4].Index, Is.EqualTo (5));
