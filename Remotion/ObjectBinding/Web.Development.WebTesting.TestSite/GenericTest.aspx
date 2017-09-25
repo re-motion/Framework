@@ -40,7 +40,7 @@
       </asp:Panel>
 
       <h3>Frame test</h3>
-      <iframe id="testFrame">
+      <iframe id="testFrame" src="FrameTestFrame.aspx">
       </iframe>
     </ContentTemplate>
   </asp:UpdatePanel>

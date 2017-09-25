@@ -16,7 +16,15 @@
 --%>
 <%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="ElementScopeTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.ElementScopeTest" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
-  <h3>ElementScope Disabled</h3>
+<asp:UpdatePanel ID="UpdatePanel" runat="server">
+    <ContentTemplate>
+    <h3>Disabled</h3>
   <button id="DisabledButton" type="button" disabled="disabled">Disabled button</button>
   <button id="NormalButton" type="button">Normal button</button>
+    
+  <h3>Toggle Visibility</h3>
+  <asp:Button ID="ToggleVisibilityButton" Text="ToggleVisibilityButton" runat="server"/>
+  <asp:LinkButton ID="VisibilityButton" Text="VisibilityButton" CommandName="VisibilityButton" PostBackUrl="ElementScopeTest.aspx" runat="server" Visible="True"/>
+    </ContentTemplate>
+</asp:UpdatePanel>
 </asp:Content>

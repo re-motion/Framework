@@ -51,7 +51,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     // todo test until RM-6773 is fixed
     protected void SwitchToIFrame ()
     {
-      Helper.MainBrowserSession.Window.FindFrame ("testFrame").Now();
+      var frame = Helper.MainBrowserSession.Window.FindFrame ("testFrame");
+      frame.FindId ("target").Now();
     }
 
     /// <inheritdoc />

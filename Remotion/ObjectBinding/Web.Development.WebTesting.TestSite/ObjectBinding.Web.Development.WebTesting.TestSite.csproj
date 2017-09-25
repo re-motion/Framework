@@ -91,6 +91,7 @@
     <Content Include="Controls\IconService.asmx" />
     <Content Include="ControlTestForm.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="FrameTestFrame.aspx" />
     <Content Include="GenericTest.aspx" />
     <Content Include="Images\SampleIcon.gif" />
     <Content Include="Images\Remotion.ObjectBinding.Sample.Job.gif" />
@@ -310,6 +311,13 @@
     </Compile>
     <Compile Include="ControlTestForm.aspx.designer.cs">
       <DependentUpon>ControlTestForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FrameTestFrame.aspx.cs">
+      <DependentUpon>FrameTestFrame.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FrameTestFrame.aspx.designer.cs">
+      <DependentUpon>FrameTestFrame.aspx</DependentUpon>
     </Compile>
     <Compile Include="GenericPages\BocAutoCompleteReferenceValueGenericTestPage.cs" />
     <Compile Include="GenericPages\BocBooleanValueGenericTestPage.cs" />

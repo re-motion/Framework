@@ -15,22 +15,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.Development.WebTesting.TestSite
 {
-  public partial class ElementScopeTest : WxePage
+  [UsedImplicitly]
+  public class ElementScopeTestFunction : WxeFunction
   {
-    protected override void OnInit (EventArgs e)
+    public ElementScopeTestFunction ()
+        : base (new NoneTransactionMode())
     {
-      base.OnInit (e);
-
-      ToggleVisibilityButton.Click += ShowHiddenControl;
     }
 
-    private void ShowHiddenControl (object sender, EventArgs e)
-    {
-      VisibilityButton.Visible = !VisibilityButton.Visible;
-    }
+    // Steps
+    private WxeStep Step1 = new WxePageStep ("ElementScopeTest.aspx");
   }
 }

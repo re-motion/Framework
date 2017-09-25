@@ -69,17 +69,37 @@ namespace Remotion.Web.Development.WebTesting
     /// <remarks>
     /// As a workaround, we call <paramref name="scope"/>.<see cref="DriverScope.Now"/> and return <see langword="false" /> if an <see cref="MissingHtmlException"/>, <see cref="MissingWindowException"/> or <see cref="StaleElementException"/> is thrown.
     /// These are the same exceptions that Coypu is catching in its <paramref name="scope"/>.<see cref="ElementScope.Exists"/> call.
-    /// Should be removed when the issue is fixed in coypu https://www.re-motion.org/jira/browse/RM-6773.
+    /// Should be removed when the issue is fixed in coypu. See RM-6773.
     /// </remarks>
-    /// <param name="scope">The <see cref="ElementScope"/> which is asserted to match only a single DOM element.</param>
+    /// <param name="scope">The <see cref="ElementScope"/> which is asserted to exist.</param>
     public static bool ExistsWorkaround ([NotNull] this ElementScope scope)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
+      var scopeTimeoutBackup = scope.ElementFinder.Options.Timeout;
       try
       {
-        scope.Now();
+        scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
+
+        var exists = scope.Exists (Options.NoWait);
+
+        // scope.Exists (...) does not work correctly in some circumstances, whereby we do the exist check via this workaround. See RM-6773 for details.
+        if (!exists)
+        {
+          try
+          {
+            scope.Now();
+          }
+          catch (Exception)
+          {
+            // Sometimes the first scope.Now() call fails although the element exist. So we swallow that first exception and just try again.
+          }
+
+          scope.Now();
+        }
+
         return true;
+        
       }
       catch (MissingHtmlException)
       {
@@ -92,6 +112,14 @@ namespace Remotion.Web.Development.WebTesting
       catch (StaleElementException)
       {
         return false;
+      }
+      catch (StaleElementReferenceException)
+      {
+        return false;
+      }
+      finally
+      {
+        scope.ElementFinder.Options.Timeout = scopeTimeoutBackup;
       }
     }
 

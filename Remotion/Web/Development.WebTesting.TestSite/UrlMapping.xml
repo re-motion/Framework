@@ -25,6 +25,7 @@
   <add id="CommandTest" type="Remotion.Web.Development.WebTesting.TestSite::CommandTestFunction" resource="~/CommandTest.wxe" />
   <add id="DropDownListTest" type="Remotion.Web.Development.WebTesting.TestSite::DropDownListTestFunction" resource="~/DropDownListTest.wxe" />
   <add id="DropDownMenuTest" type="Remotion.Web.Development.WebTesting.TestSite::DropDownMenuTestFunction" resource="~/DropDownMenuTest.wxe" />
+  <add id="ElementScopeTest" type="Remotion.Web.Development.WebTesting.TestSite::ElementScopeTestFunction" resource="~/ElementScopeTest.wxe" />
   <add id="GenericTest" type="Remotion.Web.Development.WebTesting.TestSite::GenericTestFunction" resource="~/GenericTest.wxe" />
   <add id="ImageButtonTest" type="Remotion.Web.Development.WebTesting.TestSite::ImageButtonTestFunction" resource="~/ImageButtonTest.wxe" />
   <add id="InfrastructureTests" type="Remotion.Web.Development.WebTesting.TestSite::InfrastructureTestsFunction" resource="~/InfrastructureTests.wxe" />

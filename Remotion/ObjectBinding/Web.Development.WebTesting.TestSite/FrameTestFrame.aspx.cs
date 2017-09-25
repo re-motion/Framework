@@ -15,22 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 {
-  public partial class ElementScopeTest : WxePage
+  public partial class FrameTestFrame : System.Web.UI.Page
   {
-    protected override void OnInit (EventArgs e)
+    protected void Page_Load (object sender, EventArgs e)
     {
-      base.OnInit (e);
 
-      ToggleVisibilityButton.Click += ShowHiddenControl;
-    }
-
-    private void ShowHiddenControl (object sender, EventArgs e)
-    {
-      VisibilityButton.Visible = !VisibilityButton.Visible;
     }
   }
 }
