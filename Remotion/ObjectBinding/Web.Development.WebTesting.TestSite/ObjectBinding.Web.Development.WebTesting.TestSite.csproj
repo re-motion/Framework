@@ -311,6 +311,18 @@
     <Compile Include="ControlTestForm.aspx.designer.cs">
       <DependentUpon>ControlTestForm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GenericPages\BocAutoCompleteReferenceValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocBooleanValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocListAsGridGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocDateTimeValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocEnumValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\TestBocListWithRowMenuItemsGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocListGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocMultilineTextValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocReferenceValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocTextValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocTreeViewGenericTestPage.cs" />
+    <Compile Include="GenericPages\SimpleGenericTestPage.cs" />
     <Compile Include="GenericTest.aspx.cs">
       <DependentUpon>GenericTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -319,37 +331,7 @@
       <DependentUpon>GenericTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="GenericTestFunction.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocAutoCompleteReferenceValueControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocCheckBoxControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocBooleanValueControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocDateTimeValueControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocEnumValueControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocListAsGridControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocListControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocMultilineTextValueControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocReferenceValueControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocTextValueControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\ControlSetups\BocTreeViewControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\IControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\IPageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocAutoCompleteReferenceValuePageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocCheckBoxValuePageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocBooleanValuePageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocDateTimeValuePageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocEnumValuePageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocListAsGridPageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocListPageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocMultilineTextValuePageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocReferenceValuePageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocTextValuePageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\PageSetups\BocTreeViewPageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\SimpleControlSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\SimplePageSetup.cs" />
-    <Compile Include="GenericTestPageInfrastructure\TestArguments.cs" />
-    <Compile Include="GenericTestPageInfrastructure\TestConstants.cs" />
-    <Compile Include="GenericTestPageInfrastructure\TestOptions.cs" />
-    <Compile Include="GenericTestPageInfrastructure\TestParameter.cs" />
+    <Compile Include="GenericTestOptions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -379,6 +361,10 @@
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Name>Web.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj">
+      <Project>{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}</Project>
+      <Name>Web.Development.WebTesting.TestSite.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\ObjectBinding.Core.csproj">
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>

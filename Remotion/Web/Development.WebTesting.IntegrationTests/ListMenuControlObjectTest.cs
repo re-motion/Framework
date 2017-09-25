@@ -20,8 +20,8 @@ using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -29,12 +29,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ListMenuControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<ListMenuSelector, ListMenuControlObject> testSetupAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<ListMenuSelector, ListMenuControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.ListMenus(), "listMenu");
     }
@@ -45,10 +45,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var listMenu = home.ListMenus().GetByLocalID ("MyListMenu");
-      
+
       var items = listMenu.GetItemDefinitions();
       Assert.That (items.Count, Is.EqualTo (5));
-      
+
       Assert.That (items[0].ItemID, Is.EqualTo ("ItemID1"));
       Assert.That (items[0].Index, Is.EqualTo (1));
       Assert.That (items[0].Text, Is.EqualTo ("EventItem"));

@@ -15,7 +15,6 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 <%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="GenericTest.aspx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericTest" %>
-<%@ Import Namespace="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericTestPageInfrastructure" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <remotion:BindableObjectDataSourceControl ID="DataSource" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
@@ -34,13 +33,19 @@
       <asp:Panel ID="PanelAmbiguousControl" runat="server">
         
       </asp:Panel>
+      
+      <h3>Frame test</h3>
+      <iframe id="testFrame">
+      </iframe>
     </ContentTemplate>
   </asp:UpdatePanel>
   <script>
-    target = document.getElementById("<%= TestConstants.AmbiguousHtmlID %>");
+    var target = document.getElementById("<%= PanelAmbiguousControl.ClientID %>");
     if (target)
     {
-      target.parentNode.insertBefore (target.cloneNode (true), target.nextSibling);
+      var newTarget = target.cloneNode(true);
+      newTarget.ID += "2";
+      target.parentNode.insertBefore (newTarget, target.nextSibling);
     }
   </script>
 </asp:Content>

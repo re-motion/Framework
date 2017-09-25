@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1B8F7A8A-F95C-4497-8029-9CF32B271134}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure</RootNamespace>
+    <AssemblyName>Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591;0419</NoWarn>
+    <DocumentationFile>bin\Debug\Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591;0419</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Release\Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Coypu">
+      <HintPath>..\..\..\packages\Coypu.2.9.1\lib\net40\Coypu.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="WebDriver, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Selenium.WebDriver.2.48.0\lib\net40\WebDriver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebDriver.Support, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Selenium.Support.2.48.0\lib\net40\WebDriver.Support.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="ControlSelectorTestCaseFactoryBase.cs" />
+    <Compile Include="Delegates.cs" />
+    <Compile Include="GenericTestPageParameterDto.cs" />
+    <Compile Include="GenericTestPageParameter.cs" />
+    <Compile Include="GenericTestPageParameterCollection.cs" />
+    <Compile Include="GenericTestPageStatus.cs" />
+    <Compile Include="GenericPageTestCaseFactoryBase.cs" />
+    <Compile Include="GenericPageTestCaseFactoryBase`.cs" />
+    <Compile Include="GenericTestPageType.cs" />
+    <Compile Include="GenericTestPageParameters\FirstGenericTestPageParameter.cs" />
+    <Compile Include="GenericTestPageParameters\GenericTestPageParameterBase.cs" />
+    <Compile Include="GenericTestPageParameters\IndexGenericTestPageParameter.cs" />
+    <Compile Include="GenericTestPageParameters\LocalIDGenericTestPageParameter.cs" />
+    <Compile Include="GenericTestPageParameters\SingleGenericTestPageParameter.cs" />
+    <Compile Include="GenericTestPageParameters\TextContentGenericTestPageParameter.cs" />
+    <Compile Include="GenericTestPageParameters\TitleGenericTestPageParameter.cs" />
+    <Compile Include="GenericTestParameterConverter.cs" />
+    <Compile Include="TestCaseFactories\TextContentControlSelectorTestCaseFactory.cs" />
+    <Compile Include="IGenericTestPageParameter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemotionTestCaseSourceAttribute.cs" />
+    <Compile Include="TestCaseFactories\FirstControlSelectorTestCaseFactory.cs" />
+    <Compile Include="TestCaseFactories\HtmlIDControlSelectorTestCaseFactory.cs" />
+    <Compile Include="TestCaseFactories\IndexControlSelectorTestCaseFactory.cs" />
+    <Compile Include="TestCaseFactories\LocalIDControlSelectorTestCaseFactory.cs" />
+    <Compile Include="TestCaseFactories\SingleControlSelectorTestCaseFactory.cs" />
+    <Compile Include="TestCaseFactories\TitleControlSelectorTestCaseFactory.cs" />
+    <Compile Include="TestCaseFactoryBase.cs" />
+    <Compile Include="TestConstants.cs" />
+    <Compile Include="GenericTestPageParameters\HtmlIDGenericTestPageParameter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <None Include="..\..\Remotion LGPL.licenseheader">
+      <Link>Remotion LGPL.licenseheader</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj">
+      <Project>{5B5EC73A-B796-4D2D-A781-E889EE9EC4DF}</Project>
+      <Name>Web.Development.WebTesting</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

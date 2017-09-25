@@ -18,11 +18,12 @@ using System;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
-using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -30,61 +31,42 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocEnumValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
-    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    public void TestControlSelectors_DropDownList (GenericSelectorTestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
-      testAction (Helper, e => e.EnumValues(), "enumValue");
+      testAction (Helper, e => e.EnumValues(), "dropDownList");
     }
 
     [Test]
-    public void TestSelection_ByHtmlID ()
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    public void TestControlSelectors_ListBox (GenericSelectorTestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
-      var home = Start();
-
-      var dropDownListBocEnumValue = home.EnumValues().GetByID ("body_DataEditControl_MarriageStatusField_DropDownListNormal");
-      Assert.That (dropDownListBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_DropDownListNormal"));
-
-      var listBoxBocEnumValue = home.EnumValues().GetByID ("body_DataEditControl_MarriageStatusField_ListBoxNormal");
-      Assert.That (listBoxBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_ListBoxNormal"));
-
-      var radioButtonListBocEnumValue = home.EnumValues().GetByID ("body_DataEditControl_MarriageStatusField_RadioButtonListNormal");
-      Assert.That (radioButtonListBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_RadioButtonListNormal"));
+      testAction (Helper, e => e.EnumValues(), "listBox");
     }
 
     [Test]
-    public void TestSelection_ByIndex ()
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    public void TestControlSelectors_RadioButtonList (GenericSelectorTestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
-      var home = Start();
-
-      var dropDownListBocEnumValue = home.EnumValues().GetByIndex (2);
-      Assert.That (dropDownListBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_DropDownListReadOnly"));
-
-      var listBoxBocEnumValue = home.EnumValues().GetByIndex (6);
-      Assert.That (listBoxBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_ListBoxNormal"));
-
-      var radioButtonListBocEnumValue = home.EnumValues().GetByIndex (11);
-      Assert.That (radioButtonListBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_RadioButtonListNormal"));
-    }
-
-    [Test]
-    public void TestSelection_ByLocalID ()
-    {
-      var home = Start();
-
-      var dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNormal");
-      Assert.That (dropDownListBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_DropDownListNormal"));
-
-      var listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNormal");
-      Assert.That (listBoxBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_ListBoxNormal"));
-
-      var radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNormal");
-      Assert.That (radioButtonListBocEnumValue.Scope.Id, Is.EqualTo ("body_DataEditControl_MarriageStatusField_RadioButtonListNormal"));
+      testAction (Helper, e => e.EnumValues(), "radioButtonList");
     }
 
     [Test]

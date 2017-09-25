@@ -15,125 +15,128 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using System.Web.Script.Serialization;
-using JetBrains.Annotations;
-using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericTestPageInfrastructure;
-using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericTestPageInfrastructure.PageSetups;
-using Remotion.Utilities;
-using Remotion.Web.ExecutionEngine;
+using System.Web.UI;
+using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 {
-  public partial class GenericTest : WxePage
+  public partial class GenericTest : GenericTestPageBase<GenericTestOptions>
   {
-    private class TestInformationDto
+    private readonly GenericTestPageParameterCollection _parameters = new GenericTestPageParameterCollection();
+
+    private GenericTestOptions _ambiguousControlOptions;
+    private GenericTestOptions _hiddenControlOptions;
+    private GenericTestOptions _visibleControlOptions;
+
+    public GenericTest ()
     {
-      public static readonly TestInformationDto Fail = new TestInformationDto (TestConstants.First, null);
-
-      private readonly string _status;
-      private readonly TestParameter[] _parameters;
-
-      public TestInformationDto (string status, TestParameter[] parameters)
-      {
-        _status = status;
-        _parameters = parameters;
-      }
-
-      public string Status
-      {
-        get { return _status; }
-      }
-
-      public TestParameter[] Parameters
-      {
-        get { return _parameters; }
-      }
+      Register ("autoCompleteReferenceValue", new BocAutoCompleteReferenceValueGenericTestPage());
+      Register ("booleanValue", new BocBooleanValueGenericTestPage());
+      Register ("checkBox", new BocCheckBoxValueGenericTestPage());
+      Register ("dateTimeValue", new BocDateTimeValueGenericTestPage());
+      Register ("dropDownList", new BocEnumValueGenericTestPage(ListControlType.DropDownList));
+      Register ("list", new BocListGenericTestPage());
+      Register ("listAsGrid", new BocListAsGridGenericTestPage());
+      Register ("listBox", new BocEnumValueGenericTestPage(ListControlType.ListBox));
+      Register ("multilineText", new BocMultilineTextValueGenericTestPage());
+      Register ("radioButtonList", new BocEnumValueGenericTestPage(ListControlType.RadioButtonList));
+      Register ("referenceValue", new BocReferenceValueGenericTestPage());
+      Register ("textValue", new BocTextValueGenericTestPage());
+      Register ("treeView", new BocTreeViewGenericTestPage());
     }
 
-    [Flags]
-    public enum GenericPageTypes
+    /// <inheritdoc />
+    protected override GenericTestOptions AmbiguousControlOptions
     {
-      All = 7,
-
-      HiddenSection = 1,
-      ShownSection = 2,
-      AmbiguousSection = 4
+      get { return _ambiguousControlOptions; }
     }
 
-    private static readonly Dictionary<string, Func<IPageSetup>> s_pageSetupLookup =
-        new Dictionary<string, Func<IPageSetup>>();
-
-    static GenericTest ()
+    /// <inheritdoc />
+    protected override Control AmbiguousControlPanel
     {
-      s_pageSetupLookup.Add ("autoCompleteReferenceValue", () => new BocAutoCompleteReferenceValuePageSetup());
-      s_pageSetupLookup.Add ("booleanValue", () => new BocBooleanValuePageSetup());
-      s_pageSetupLookup.Add ("checkBox", () => new BocCheckBoxValuePageSetup());
-      s_pageSetupLookup.Add ("dateTimeValue", () => new BocDateTimeValuePageSetup());
-      s_pageSetupLookup.Add ("enumValue", () => new BocEnumValuePageSetup());
-      s_pageSetupLookup.Add ("listAsGrid", () => new BocListAsGridPageSetup());
-      s_pageSetupLookup.Add ("list", () => new BocListPageSetup());
-      s_pageSetupLookup.Add ("multilineText", () => new BocMultilineTextValuePageSetup());
-      s_pageSetupLookup.Add ("referenceValue", () => new BocReferenceValuePageSetup());
-      s_pageSetupLookup.Add ("textValue", () => new BocTextValuePageSetup());
-      s_pageSetupLookup.Add ("treeView", () => new BocTreeViewPageSetup());
+      get { return PanelAmbiguousControl; }
     }
 
+    /// <inheritdoc />
+    protected override GenericTestOptions HiddenControlOptions
+    {
+      get { return _hiddenControlOptions; }
+    }
+
+    /// <inheritdoc />
+    protected override Control HiddenControlPanel
+    {
+      get { return PanelHiddenControl; }
+    }
+
+    /// <inheritdoc />
+    protected override GenericTestPageParameterCollection Parameters
+    {
+      get { return _parameters; }
+    }
+
+    /// <inheritdoc />
+    protected override GenericTestOptions VisibleControlOptions
+    {
+      get { return _visibleControlOptions; }
+    }
+
+    /// <inheritdoc />
+    protected override Control VisibleControlPanel
+    {
+      get { return PanelVisibleControl; }
+    }
+
+    /// <inheritdoc />
     protected override void OnInit (EventArgs e)
     {
+      // Constants for all the controls on this generic page
+      const string ambiguousID = "AmbiguousControl";
+      const string hiddenID = "HiddenControl";
+      const string visibleID = "VisibleControl";
+      const string visibleIndex = "1", hiddenIndex = "133";
+      const string correctDomainProperty = "Remotion.ObjectBinding.Sample.Person, Remotion.ObjectBinding.Sample";
+      const string incorrectDomainProperty = "Remotion.ObjectBinding.Sample.Job, Remotion.ObjectBinding.Sample";
+
+      // "Real" HTML ids of the controls
+      var ambiguousHtmlID = string.Concat ("body_", hiddenID);
+      var hiddenHtmlID = string.Concat ("body_", hiddenID);
+      var visibleHtmlID = string.Concat ("body_", visibleID);
+
+      // Options for creating the controls
+      _ambiguousControlOptions = new GenericTestOptions (ambiguousID, ambiguousHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty);
+      _hiddenControlOptions = new GenericTestOptions (hiddenID, hiddenHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty);
+      _visibleControlOptions = new GenericTestOptions (visibleID, visibleHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty);
+
+      // Parameters which will be passed to the client
+      _parameters.Add (TestConstants.HtmlIDSelectorID, visibleHtmlID, hiddenHtmlID);
+      _parameters.Add (TestConstants.IndexSelectorID, visibleIndex, hiddenIndex, visibleHtmlID);
+      _parameters.Add (TestConstants.LocalIDSelectorID, visibleID, hiddenID, visibleHtmlID);
+      _parameters.Add (TestConstants.FirstSelectorID, visibleHtmlID);
+      _parameters.Add (TestConstants.SingleSelectorID, visibleHtmlID);
+
       base.OnInit (e);
-
-      var control = Request.Params["control"];
-
-      Func<IPageSetup> pageSetupFactory;
-      if (control == null || !s_pageSetupLookup.TryGetValue (control, out pageSetupFactory))
-      {
-        SetTestOutput (TestInformationDto.Fail);
-        return;
-      }
-
-      int type;
-      GenericPageTypes pageType;
-      if (int.TryParse (Request.Params["type"], out type))
-        pageType = (GenericPageTypes) type;
-      else
-        pageType = GenericPageTypes.All;
-
-      var pageSetup = pageSetupFactory();
-
-      var visibleControlPageSetup = pageSetup.CreateControlSetup (TestOptions.VisibleControl);
-      if ((pageType & GenericPageTypes.ShownSection) != 0)
-        visibleControlPageSetup.AddToContainer (PanelVisibleControl);
-
-      var hiddenControlPageSetup = pageSetup.CreateControlSetup (TestOptions.HiddenControl);
-      if ((pageType & GenericPageTypes.HiddenSection) != 0)
-        hiddenControlPageSetup.AddToContainer (PanelHiddenControl);
-
-      var ambiguousControlPageSetup = pageSetup.CreateControlSetup (TestOptions.AmbiguousControl);
-      if ((pageType & GenericPageTypes.AmbiguousSection) != 0)
-        ambiguousControlPageSetup.AddToContainer (PanelAmbiguousControl);
-
-      SetTestOutput (new TestInformationDto (TestConstants.Ok, pageSetup.Parameters));
     }
 
-    private void SetTestOutput ([NotNull] TestInformationDto information)
-    {
-      ArgumentUtility.CheckNotNull ("information", information);
-
-      var master = Master as Layout;
-      if (master == null)
-        throw new InvalidOperationException ("The master page does not support test information.");
-
-      var serializer = new JavaScriptSerializer();
-      master.SetTestInformation (serializer.Serialize (information));
-    }
-
+    /// <inheritdoc />
     protected override void OnLoad (EventArgs e)
     {
       base.OnLoad (e);
 
       DataSource.BusinessObject = (IBusinessObject) ((GenericTestFunction) CurrentFunction).Person;
       DataSource.LoadValues (IsReturningPostBack);
+    }
+
+    /// <inheritdoc />
+    protected override void SetTestInformation (string information)
+    {
+      var master = Master as Layout;
+      if (master == null)
+        throw new InvalidOperationException ("The master page of the generic test page is not set.");
+      master.SetTestInformation (information);
     }
   }
 }

@@ -18,8 +18,8 @@ using System;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -29,12 +29,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     // Note: functionality is integration tested via BocTreeViewControlObject in BocTreeViewControlObjectTest.
 
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<WebTreeViewSelector, WebTreeViewControlObject> testSetupAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<WebTreeViewSelector, WebTreeViewControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.WebTreeViews(), "webTreeView");
     }

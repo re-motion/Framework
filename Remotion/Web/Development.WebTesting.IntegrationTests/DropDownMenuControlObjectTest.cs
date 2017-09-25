@@ -20,8 +20,8 @@ using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestCaseInfrastructure.Factories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -31,13 +31,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     // Note: the <see cref="T:DropDownMenu.Mode"/>=<see cref="T:MenuMode.ContextMenu"/> option is tested indirectly by the BocTreeViewControlObjectTest.
 
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>), "GetTests")]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>), "GetTests")]
-    public void TestControlSelectors (TestCaseFactoryBase.TestSetupAction<DropDownMenuSelector, DropDownMenuControlObject> testSetupAction)
+    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    public void TestControlSelectors (GenericSelectorTestSetupAction<DropDownMenuSelector, DropDownMenuControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.DropDownMenus(), "dropDownMenu");
     }
@@ -48,10 +48,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
-      
+
       var items = dropDownMenu.GetItemDefinitions();
       Assert.That (items.Count, Is.EqualTo (5));
-      
+
       Assert.That (items[0].ItemID, Is.EqualTo ("ItemID1"));
       Assert.That (items[0].Index, Is.EqualTo (1));
       Assert.That (items[0].Text, Is.EqualTo ("EventItem"));

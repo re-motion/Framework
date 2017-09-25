@@ -15,126 +15,125 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using System.Web.Script.Serialization;
+using System.Web.UI;
 using System.Web.UI.WebControls;
-using JetBrains.Annotations;
-using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.TestSite.GenericTestPageInfrastructure;
-using Remotion.Web.Development.WebTesting.TestSite.GenericTestPageInfrastructure.ControlSetups;
-using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.TestSite.GenericPages;
+using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.Development.WebTesting.TestSite
 {
-  public partial class GenericTest : WxePage
+  public partial class GenericTest : GenericTestPageBase<GenericTestOptions>
   {
-    private class TestInformationDto
+    private readonly GenericTestPageParameterCollection _parameters = new GenericTestPageParameterCollection();
+
+    private GenericTestOptions _ambiguousControlOptions;
+    private GenericTestOptions _hiddenControlOptions;
+    private GenericTestOptions _visibleControlOptions;
+
+    public GenericTest ()
     {
-      public static readonly TestInformationDto Fail = new TestInformationDto (TestConstants.First, null);
-
-      private readonly string _status;
-      private readonly TestParameter[] _parameters;
-
-      public TestInformationDto (string status, TestParameter[] parameters)
-      {
-        _status = status;
-        _parameters = parameters;
-      }
-
-      public string Status
-      {
-        get { return _status; }
-      }
-
-      public TestParameter[] Parameters
-      {
-        get { return _parameters; }
-      }
+      Register ("anchor", new AnchorGenericTestPage());
+      Register ("command", new CommandGenericTestPage());
+      Register ("dropDownList", new SimpleGenericTestPage<DropDownList>());
+      Register ("dropDownMenu", new DropDownMenuGenericTestPage());
+      Register ("formGrid", new FormGridGenericTestPage());
+      Register ("imageButton", new SimpleGenericTestPage<ImageButton>());
+      Register ("image", new SimpleGenericTestPage<Image>());
+      Register ("label", new SimpleGenericTestPage<Label>());
+      Register ("listMenu", new SimpleGenericTestPage<ListMenu>());
+      Register ("scope", new SimpleGenericTestPage<Panel>());
+      Register ("singleView", new SimpleGenericTestPage<SingleView>());
+      Register ("tabbedMenu", new SimpleGenericTestPage<TabbedMenu>());
+      Register ("tabbedMultiView", new SimpleGenericTestPage<TabbedMultiView>());
+      Register ("textBox", new SimpleGenericTestPage<TextBox>());
+      Register ("treeView", new SimpleGenericTestPage<TreeView>());
+      Register ("webButton", new WebButtonGenericTestPage());
+      Register ("webTabStrip", new SimpleGenericTestPage<WebTabStrip>());
+      Register ("webTreeView", new SimpleGenericTestPage<WebTreeView>());
     }
 
-    [Flags]
-    public enum GenericPageTypes
+    /// <inheritdoc />
+    protected override GenericTestOptions AmbiguousControlOptions
     {
-      All = 7,
-
-      HiddenSection = 1,
-      ShownSection = 2,
-      AmbiguousSection = 4
+      get { return _ambiguousControlOptions; }
     }
 
-    private static readonly Dictionary<string, Func<IPageSetup>> s_pageSetupLookup =
-        new Dictionary<string, Func<IPageSetup>>();
-
-    static GenericTest ()
+    /// <inheritdoc />
+    protected override Control AmbiguousControlPanel
     {
-      s_pageSetupLookup.Add ("anchor", () => new SimplePageSetup ((p, n) => new AnchorControlSetup (p, n)));
-      s_pageSetupLookup.Add ("command", () => new SimplePageSetup ((p, n) => new CommandControlSetup (p, n)));
-      s_pageSetupLookup.Add ("dropDownList", () => new SimplePageSetup<DropDownList>());
-      s_pageSetupLookup.Add ("dropDownMenu", () => new SimplePageSetup ((p, n) => new DropDownMenuControlSetup (p, n)));
-      s_pageSetupLookup.Add ("formGrid", () => new SimplePageSetup ((p, n) => new FormGridControlSetup (p, n)));
-      s_pageSetupLookup.Add ("imageButton", () => new SimplePageSetup<ImageButton>());
-      s_pageSetupLookup.Add ("image", () => new SimplePageSetup<Image>());
-      s_pageSetupLookup.Add ("label", () => new SimplePageSetup<Label>());
-      s_pageSetupLookup.Add ("listMenu", () => new SimplePageSetup<ListMenu>());
-      s_pageSetupLookup.Add ("scope", () => new SimplePageSetup<Panel>());
-      s_pageSetupLookup.Add ("singleView", () => new SimplePageSetup<SingleView>());
-      s_pageSetupLookup.Add ("tabbedMenu", () => new SimplePageSetup<TabbedMenu>());
-      s_pageSetupLookup.Add ("tabbedMultiView", () => new SimplePageSetup<TabbedMultiView>());
-      s_pageSetupLookup.Add ("textBox", () => new SimplePageSetup<TextBox>());
-      s_pageSetupLookup.Add ("treeView", () => new SimplePageSetup<TreeView>());
-      s_pageSetupLookup.Add ("webButton", () => new SimplePageSetup ((p, n) => new WebButtonControlSetup (p, n), true, TestParameter.ItemID));
-      s_pageSetupLookup.Add ("webTabStrip", () => new SimplePageSetup<WebTabStrip>());
-      s_pageSetupLookup.Add ("webTreeView", () => new SimplePageSetup<WebTreeView>());
+      get { return PanelAmbiguousControl; }
     }
 
+    /// <inheritdoc />
+    protected override GenericTestOptions HiddenControlOptions
+    {
+      get { return _hiddenControlOptions; }
+    }
+
+    /// <inheritdoc />
+    protected override Control HiddenControlPanel
+    {
+      get { return PanelHiddenControl; }
+    }
+
+    /// <inheritdoc />
+    protected override GenericTestPageParameterCollection Parameters
+    {
+      get { return _parameters; }
+    }
+
+    /// <inheritdoc />
+    protected override GenericTestOptions VisibleControlOptions
+    {
+      get { return _visibleControlOptions; }
+    }
+
+    /// <inheritdoc />
+    protected override Control VisibleControlPanel
+    {
+      get { return PanelVisibleControl; }
+    }
+
+    /// <inheritdoc />
     protected override void OnInit (EventArgs e)
     {
+      // Constants for all the controls on this generic page
+      const string ambiguousID = "AmbiguousControl", ambiguousTextContent = "AmbiguousTextContent", ambiguousTitle = "AmbiguousTitle";
+      const string hiddenID = "HiddenControl", hiddenTextContent = "HiddenTextContent", hiddenTitle = "HiddenTitle";
+      const string visibleID = "VisibleControl", visibleTextContent = "VisibleTextContent", visibleTitle = "AmbiguousTitle";
+      const string visibleIndex = "1", hiddenIndex = "133";
+
+      // Options for creating the controls
+      _ambiguousControlOptions = new GenericTestOptions (ambiguousID, ambiguousTextContent, ambiguousTitle);
+      _hiddenControlOptions = new GenericTestOptions (hiddenID, hiddenTextContent, hiddenTitle);
+      _visibleControlOptions = new GenericTestOptions (visibleID, visibleTextContent, visibleTitle);
+
+      // "Real" HTML ids of the controls
+      var hiddenHtmlID = string.Concat ("body_", hiddenID);
+      var visibleHtmlID = string.Concat ("body_", visibleID);
+
+      // Parameters which will be passed to the client
+      _parameters.Add (TestConstants.HtmlIDSelectorID, visibleHtmlID, hiddenHtmlID);
+      _parameters.Add (TestConstants.IndexSelectorID, visibleIndex, hiddenIndex, visibleHtmlID);
+      _parameters.Add (TestConstants.LocalIDSelectorID, visibleID, hiddenID, visibleHtmlID);
+      _parameters.Add (TestConstants.FirstSelectorID, visibleHtmlID);
+      _parameters.Add (TestConstants.SingleSelectorID, visibleHtmlID);
+      _parameters.Add (TestConstants.TextContentSelectorID, visibleTextContent, hiddenTextContent, visibleHtmlID);
+      _parameters.Add (TestConstants.TitleSelectorID, visibleTitle, hiddenTitle, visibleHtmlID);
+      _parameters.Add (TestConstants.ItemIDSelectorID, visibleID, hiddenID, visibleHtmlID);
+
       base.OnInit (e);
-
-      var control = Request.Params["control"];
-
-      Func<IPageSetup> pageSetupFactory;
-      if (control == null || !s_pageSetupLookup.TryGetValue (control, out pageSetupFactory))
-      {
-        SetTestOutput (TestInformationDto.Fail);
-        return;
-      }
-
-      int type;
-      GenericPageTypes pageType;
-      if (int.TryParse (Request.Params["type"], out type))
-        pageType = (GenericPageTypes) type;
-      else
-        pageType = GenericPageTypes.All;
-
-      var pageSetup = pageSetupFactory();
-
-      var visibleControlPageSetup = pageSetup.CreateControlSetup (TestOptions.VisibleControl);
-      if ((pageType & GenericPageTypes.ShownSection) != 0)
-        visibleControlPageSetup.AddToContainer (PanelVisibleControl);
-
-      var hiddenControlPageSetup = pageSetup.CreateControlSetup (TestOptions.HiddenControl);
-      if ((pageType & GenericPageTypes.HiddenSection) != 0)
-        hiddenControlPageSetup.AddToContainer (PanelHiddenControl);
-
-      var ambiguousControlPageSetup = pageSetup.CreateControlSetup (TestOptions.AmbiguousControl);
-      if ((pageType & GenericPageTypes.AmbiguousSection) != 0)
-        ambiguousControlPageSetup.AddToContainer (PanelAmbiguousControl);
-
-      SetTestOutput (new TestInformationDto(TestConstants.Ok, pageSetup.Parameters));
     }
 
-    private void SetTestOutput ([NotNull] TestInformationDto information)
+    /// <inheritdoc />
+    protected override void SetTestInformation (string information)
     {
-      ArgumentUtility.CheckNotNull ("information", information);
-
       var master = Master as Layout;
       if (master == null)
-        throw new InvalidOperationException ("The master page does not support test information.");
-
-      var serializer = new JavaScriptSerializer();
-      master.SetTestInformation (serializer.Serialize (information));
+        throw new InvalidOperationException ("The master page of the generic test page is not set.");
+      master.SetTestInformation (information);
     }
   }
 }
