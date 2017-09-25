@@ -99,7 +99,9 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
         cssClass = CssClassTabSelected;
       else
         cssClass = CssClassTab;
-      if (!tab.EvaluateEnabled())
+      var isDisabled = !tab.EvaluateEnabled();
+
+      if (isDisabled)
         cssClass += " " + CssClassDisabled;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
 
@@ -110,6 +112,8 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
         if (!string.IsNullOrEmpty (tab.Text))
           renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (tab.Text));
+        
+        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.IsDisabled, (isDisabled).ToString().ToLower());
       }
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin tab span

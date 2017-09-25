@@ -34,7 +34,8 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
           IControlObjectWithSelectableOptions,
           IFluentControlObjectWithSelectableOptions,
           IControlObjectWithText,
-          IControlObjectWithFormElements
+          IControlObjectWithFormElements,
+          ISupportsDisabledState
   {
     public DropDownListControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -60,6 +61,12 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     public string GetText ()
     {
       return Scope.GetSelectedOption().Text;
+    }
+
+    /// <inheritdoc />
+    public bool IsDisabled ()
+    {
+      return Scope.Disabled;
     }
 
     /// <inheritdoc/>
@@ -110,6 +117,9 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("selectAction", selectAction);
+
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
       new CustomAction (this, Scope, "Select", selectAction).Execute (actualActionOptions);

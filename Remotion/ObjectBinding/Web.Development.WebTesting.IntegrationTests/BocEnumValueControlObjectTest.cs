@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -31,6 +32,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocEnumValueControlObjectTest : IntegrationTest
   {
     [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    public void GenericTests_DropDownList (GenericSelectorTestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
+    {
+      testAction (Helper, e => e.EnumValues(), "dropDownList");
+    }
+
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
@@ -41,6 +48,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors_DropDownList (GenericSelectorTestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "dropDownList");
+    }
+
+    [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    public void GenericTests_ListBox (GenericSelectorTestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
+    {
+      testAction (Helper, e => e.EnumValues(), "listBox");
     }
 
     [Test]
@@ -57,6 +71,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    public void GenericTests_RadioButtonList (GenericSelectorTestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
+    {
+      testAction (Helper, e => e.EnumValues(), "radioButtonList");
+    }
+
+    [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
@@ -67,6 +88,33 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors_RadioButtonList (GenericSelectorTestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "radioButtonList");
+    }
+
+    [Test]
+    public void TestIsDisabled_SetMethodsThrow ()
+    {
+      var home = Start();
+
+      var dropDownControl = home.EnumValues().GetByLocalID ("DataEditControl_MarriageStatusField_DropDownListDisabled");
+      Assert.That (dropDownControl.IsDisabled(), Is.True);
+      Assert.That (() => dropDownControl.SelectOption().WithDisplayText ("Married"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => dropDownControl.SelectOption().WithIndex (1), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => dropDownControl.SelectOption().WithItemID ("Married"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => dropDownControl.SelectOption ("Married"), Throws.InstanceOf<MissingHtmlException>());
+
+      var listBoxControl = home.EnumValues().GetByLocalID ("DataEditControl_MarriageStatusField_ListBoxDisabled");
+      Assert.That (listBoxControl.IsDisabled(), Is.True);
+      Assert.That (() => listBoxControl.SelectOption().WithDisplayText ("Married"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => listBoxControl.SelectOption().WithIndex (1), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => listBoxControl.SelectOption().WithItemID ("Married"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => listBoxControl.SelectOption ("Married"), Throws.InstanceOf<MissingHtmlException>());
+
+      var radioButton = home.EnumValues().GetByLocalID ("DataEditControl_MarriageStatusField_RadioButtonListDisabled");
+      Assert.That (radioButton.IsDisabled(), Is.True);
+      Assert.That (() => radioButton.SelectOption().WithDisplayText ("Married"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => radioButton.SelectOption().WithIndex (1), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => radioButton.SelectOption().WithItemID ("Married"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => radioButton.SelectOption ("Married"), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

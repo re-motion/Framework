@@ -62,7 +62,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
     /// </summary>
     public virtual TControl CreateControl (GenericTestOptions options)
     {
-      return new TControl { ID = options.LocalID, DataSourceControl = options.DataSource, PropertyIdentifier = PropertyIdentifier };
+      return new TControl
+             {
+                 ID = options.LocalID,
+                 DataSourceControl = options.DataSource,
+                 PropertyIdentifier = PropertyIdentifier,
+                 Enabled = options.Enabled
+             };
     }
   }
 }

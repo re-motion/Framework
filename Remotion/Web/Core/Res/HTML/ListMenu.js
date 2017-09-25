@@ -29,7 +29,7 @@ function ListMenu_MenuInfo(id, itemInfos)
   this.ItemInfos = itemInfos;
 }
 
-function ListMenuItemInfo (id, category, text, icon, iconDisabled, requiredSelection, isDisabled, href, target)
+function ListMenuItemInfo (id, category, text, icon, iconDisabled, requiredSelection, isDisabled, href, target, diagnosticMetadata)
 {
   this.ID = id;
   this.Category = category;
@@ -40,6 +40,7 @@ function ListMenuItemInfo (id, category, text, icon, iconDisabled, requiredSelec
   this.IsDisabled = isDisabled;
   this.Href = href;
   this.Target = target;
+  this.DiagnosticMetadata = diagnosticMetadata;
 }
 
 function ListMenu() { }
@@ -122,6 +123,20 @@ function ListMenu_Update (listMenu, getSelectionCount)
       anchor.onclick = null;
       anchor.removeAttribute ('onclick');
       anchor.removeAttribute ('javascript');
+    }
+
+    if (itemInfo.DiagnosticMetadata)
+    {
+      // Do not render empty diagnostic metadata attributes
+      $.each(itemInfo.DiagnosticMetadata, function (key, value)
+      {
+        if (value === "" || value === null)
+        {
+          delete itemInfo.DiagnosticMetadata[key];
+        }
+      });
+
+      $(item).attr(itemInfo.DiagnosticMetadata);
     }
   }
 }

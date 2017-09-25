@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Web.UI;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 using Remotion.Web.UI.Controls;
 
@@ -23,19 +25,27 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
   /// <summary>
   /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="TestCommand"/>.
   /// </summary>
-  public class CommandGenericTestPage : SimpleGenericTestPage<TestCommand>
+  public class CommandGenericTestPage : IGenericTestPage<GenericTestOptions>
   {
     public CommandGenericTestPage ()
     {
     }
 
     /// <inheritdoc />
-    public override TestCommand CreateControl (GenericTestOptions options)
+    public void AddParameters (GenericTestPageParameterCollection parameterCollection, GenericTestOptions options)
     {
-      var control = base.CreateControl (options);
-      control.Text = options.TextContent;
-      control.CommandType = CommandType.Event;
-      return control;
+    }
+
+    /// <inheritdoc />
+    public Control CreateControl (GenericTestOptions options)
+    {
+      CommandType type;
+      if (options.Enabled)
+        type = CommandType.Event;
+      else
+        type = CommandType.None;
+
+      return new TestCommand { ID = options.ID, Text = options.TextContent, CommandType = type };
     }
   }
 }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -31,6 +32,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocMultilineTextValueControlObjectTest : IntegrationTest
   {
     [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    public void GenericTests (GenericSelectorTestSetupAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
+    {
+      testAction (Helper, e => e.MultilineTextValues(), "multilineText");
+    }
+
+    [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
@@ -41,6 +49,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors (GenericSelectorTestSetupAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
     {
       testAction (Helper, e => e.MultilineTextValues(), "multilineText");
+    }
+
+    [Test]
+    public void TestIsDisabled_SetMethodsThrow ()
+    {
+      var home = Start();
+
+      var control = home.MultilineTextValues().GetByLocalID ("CVField_Disabled");
+
+      Assert.That (control.IsDisabled(), Is.True);
+      Assert.That (() => control.FillWith ("text"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.FillWith (new[] { "text" }), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.FillWith (new[] { "text" }, FinishInput.Promptly), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

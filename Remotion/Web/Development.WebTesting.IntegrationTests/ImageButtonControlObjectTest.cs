@@ -15,11 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
@@ -29,6 +31,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ImageButtonControlObjectTest : IntegrationTest
   {
     [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    public void GenericTests (GenericSelectorTestSetupAction<ImageButtonSelector, ImageButtonControlObject> testSetupAction)
+    {
+      testSetupAction (Helper, e => e.ImageButtons(), "imageButton");
+    }
+
+    [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
@@ -37,6 +46,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors (GenericSelectorTestSetupAction<ImageButtonSelector, ImageButtonControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.ImageButtons(), "imageButton");
+    }
+
+    [Test]
+    public void TestIsDisabled_SetMethodsThrow ()
+    {
+      var home = Start();
+
+      var control = home.ImageButtons().GetByLocalID ("ImageButtonDisabled");
+
+      Assert.That (control.IsDisabled(), Is.True);
+      Assert.That (() => control.Click(), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

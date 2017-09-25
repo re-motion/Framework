@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using Remotion.Globalization;
@@ -195,6 +196,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       base.AddDiagnosticMetadataAttributes (renderingContext);
 
       renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (renderingContext.Control.TitleText));
+      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.IsDisabled, (!renderingContext.Control.Enabled).ToString().ToLower());
     }
 
     private void RegisterEventHandlerScripts (DropDownMenuRenderingContext renderingContext)
@@ -324,28 +326,10 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       string text = showText ? "'" + menuItem.Text + "'" : "null";
       string diagnosticMetadataText = showText ? menuItem.Text : "";
 
-      var diagnosticMetadataJson = "null";
-      if (IsDiagnosticMetadataRenderingEnabled)
-      {
-        var htmlID = renderingContext.Control.ClientID + "_" + menuItemIndex;
-        // Note: the output of diagnosticMetadataText is enclosed by single quotes, as it may contain double quotes.
-        diagnosticMetadataJson = string.Format (
-            "{{\"{0}\":\"{1}\", \"{2}\":\"{3}\", \"{4}\":\"{5}\", \"{6}\":\"{7}\", \"{8}\":'{9}'}}",
-            HtmlTextWriterAttribute.Id,
-            htmlID,
-            DiagnosticMetadataAttributes.TriggersNavigation,
-            diagnosticMetadataTriggersNavigation.ToString().ToLower(),
-            DiagnosticMetadataAttributes.TriggersPostBack,
-            diagnosticMetadataTriggersPostBack.ToString().ToLower(),
-            DiagnosticMetadataAttributes.ItemID,
-            menuItem.ItemID,
-            DiagnosticMetadataAttributes.Content,
-            HtmlUtility.StripHtmlTags (diagnosticMetadataText ?? ""));
-      }
-
       bool isDisabled = !menuItem.EvaluateEnabled() || !isCommandEnabled;
+
       stringBuilder.AppendFormat (
-          "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9})",
+          "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, ",
           menuItemIndex,
           menuItem.Category,
           text,
@@ -354,8 +338,27 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
           (int) menuItem.RequiredSelection,
           isDisabled ? "true" : "false",
           href,
-          target,
-          diagnosticMetadataJson);
+          target);
+
+      if (IsDiagnosticMetadataRenderingEnabled)
+      {
+        var htmlID = renderingContext.Control.ClientID + "_" + menuItemIndex;
+        var diagnosticMetadataDictionary = new Dictionary<string, string>();
+        diagnosticMetadataDictionary.Add (HtmlTextWriterAttribute.Id.ToString(), htmlID);
+        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.TriggersNavigation, diagnosticMetadataTriggersNavigation.ToString().ToLower());
+        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.TriggersPostBack, diagnosticMetadataTriggersPostBack.ToString().ToLower());
+        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
+        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (diagnosticMetadataText ?? ""));
+        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.IsDisabled, isDisabled.ToString().ToLower());
+
+        stringBuilder.WriteDictionaryAsJson (diagnosticMetadataDictionary);
+      }
+      else
+      {
+        stringBuilder.Append ("null");
+      }
+
+      stringBuilder.Append (")");
     }
 
     protected virtual string GetIconUrl (DropDownMenuRenderingContext renderingContext, WebMenuItem menuItem, bool showIcon)

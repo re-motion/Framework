@@ -26,7 +26,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   [Flags]
   public enum GenericTestPageType
   {
-    Default = HiddenElements | VisibleElements | AmbiguousElements,
+    Default = HiddenElements | VisibleElements | AmbiguousElements | DisabledElements,
+    EnabledDisabled = VisibleElements | DisabledElements,
     NonAmbiguous = HiddenElements | VisibleElements,
 
     /// <summary>
@@ -42,6 +43,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// <summary>
     /// Renders the ambiguous elements.
     /// </summary>
-    AmbiguousElements = 4
+    AmbiguousElements = 4,
+
+    /// <summary>
+    /// Renders the disabled elements.
+    /// </summary>
+    DisabledElements = 8,
   }
 }

@@ -28,6 +28,32 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
   public class CommandInfoTest
   {
     [Test]
+    public void CreateForNone_WithoutTabIndex ()
+    {
+      var commandInfo = CommandInfo.CreateForNone (false);
+
+      Assert.That (commandInfo.Title, Is.Null);
+      Assert.That (commandInfo.AccessKey, Is.Null);
+      Assert.That (commandInfo.OnClick, Is.Null);
+      Assert.That (commandInfo.Href, Is.Null);
+      Assert.That (commandInfo.Target, Is.Null);
+      Assert.That (commandInfo.TabIndex, Is.Null);
+    }
+
+    [Test]
+    public void CreateForNone_WithTabIndex ()
+    {
+      var commandInfo = CommandInfo.CreateForNone (true);
+
+      Assert.That (commandInfo.Title, Is.Null);
+      Assert.That (commandInfo.AccessKey, Is.Null);
+      Assert.That (commandInfo.OnClick, Is.Null);
+      Assert.That (commandInfo.Href, Is.Null);
+      Assert.That (commandInfo.Target, Is.Null);
+      Assert.That (commandInfo.TabIndex, Is.EqualTo (0));
+    }
+
+    [Test]
     public void CreateForPostBack ()
     {
       var commandInfo = CommandInfo.CreateForPostBack ("TheTitle", "A", "ClickHandler");
@@ -73,6 +99,40 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       Assert.That (commandInfo.OnClick, Is.Null);
       Assert.That (commandInfo.Href, Is.EqualTo ("Url"));
       Assert.That (commandInfo.Target, Is.Null);
+    }
+
+    [Test]
+    public void AddAttributesToRender_None_WithoutTabIndex ()
+    {
+      var commandInfo = CommandInfo.CreateForNone (false);
+
+      var stringWriter = new StringWriter();
+      var htmlTextWriter = new HtmlTextWriter (stringWriter);
+
+      commandInfo.AddAttributesToRender (htmlTextWriter, RenderingFeatures.Default);
+      htmlTextWriter.RenderBeginTag (HtmlTextWriterTag.A);
+      htmlTextWriter.RenderEndTag();
+
+      var result = stringWriter.ToString();
+      
+      Assert.That (result, Is.EqualTo("<a></a>"));
+    }
+
+    [Test]
+    public void AddAttributesToRender_None_WithTabIndex ()
+    {
+      var commandInfo = CommandInfo.CreateForNone (true);
+
+      var stringWriter = new StringWriter();
+      var htmlTextWriter = new HtmlTextWriter (stringWriter);
+
+      commandInfo.AddAttributesToRender (htmlTextWriter, RenderingFeatures.Default);
+      htmlTextWriter.RenderBeginTag (HtmlTextWriterTag.A);
+      htmlTextWriter.RenderEndTag();
+
+      var result = stringWriter.ToString();
+      
+      Assert.That (result, Is.EqualTo("<a tabindex=\"0\"></a>"));
     }
 
     [Test]
@@ -286,6 +346,26 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
       Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersPostBack + "=\"false\""));
       Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
+    }
+
+    [Test]
+    public void AddDiagnosticMetadataAttributes_None ()
+    {
+      var commandInfo = CommandInfo.CreateForNone (false);
+
+      var stringWriter = new StringWriter();
+      var htmlTextWriter = new HtmlTextWriter (stringWriter);
+      commandInfo.AddAttributesToRender (htmlTextWriter, RenderingFeatures.WithDiagnosticMetadata);
+
+      htmlTextWriter.RenderBeginTag (HtmlTextWriterTag.A);
+      htmlTextWriter.RenderEndTag();
+
+      var result = stringWriter.ToString();
+
+      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
+      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.IsDisabled + "=\"true\""));
+      Assert.That (result, Is.Not.StringContaining (DiagnosticMetadataAttributes.TriggersPostBack));
+      Assert.That (result, Is.Not.StringContaining (DiagnosticMetadataAttributes.TriggersNavigation));
     }
   }
 }

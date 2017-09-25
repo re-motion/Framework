@@ -21,6 +21,7 @@
     <Tabs>
       <remotion:WebTab ItemID="Tab1" Text="Tab1Label"/>
       <remotion:WebTab ItemID="Tab2" Text="Tab2Label"/>
+      <remotion:WebTab ItemID="Tab3" Text="Tab3 disabled" IsDisabled="True"/>
     </Tabs>
   </remotion:WebTabStrip>
   <div id="scope">

@@ -17,8 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Utilities
@@ -58,6 +60,41 @@ namespace Remotion.Web.Utilities
         else
           break;
       }
+    }
+
+    /// <summary>
+    /// Writes a <paramref name="dictionary"/> as Json string to the <paramref name="stringBuilder"/>.
+    /// </summary>
+    public static void WriteDictionaryAsJson (this StringBuilder stringBuilder, IReadOnlyDictionary<string, string> dictionary)
+    {
+      ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
+      ArgumentUtility.CheckNotNull ("dictionary", dictionary);
+
+      if (dictionary.Count == 0)
+      {
+        stringBuilder.Append ("null");
+        return;
+      }
+
+      stringBuilder.Append ("{");
+
+      foreach (var dictionaryEntry in dictionary)
+      {
+        stringBuilder.Append ("\"").Append (dictionaryEntry.Key).Append ("\"").Append (":");
+
+        if (dictionaryEntry.Value.Contains ("\""))
+          stringBuilder.Append ("'").Append (dictionaryEntry.Value).Append ("'");
+        else
+          stringBuilder.Append ("\"").Append (dictionaryEntry.Value).Append ("\"");
+
+
+        stringBuilder.Append (",");
+      }
+
+      //Remove last comma
+      stringBuilder.Remove (stringBuilder.Length - 1, 1);
+
+      stringBuilder.Append ("}");
     }
   }
 }

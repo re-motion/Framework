@@ -29,8 +29,9 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     private readonly string _id;
     private readonly string _textContent;
     private readonly string _title;
+    private readonly bool _enabled;
 
-    public GenericTestOptions ([NotNull] string id, [NotNull] string textContent, [NotNull] string title)
+    public GenericTestOptions ([NotNull] string id, [NotNull] string textContent, [NotNull] string title, bool enabled)
     {
       ArgumentUtility.CheckNotNull ("id", id);
       ArgumentUtility.CheckNotNull ("textContent", textContent);
@@ -39,6 +40,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       _id = id;
       _textContent = textContent;
       _title = title;
+      _enabled = enabled;
     }
 
     public string ID
@@ -54,6 +56,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     public string Title
     {
       get { return _title; }
+    }
+
+    public bool Enabled
+    {
+      get { return _enabled; }
     }
   }
 }

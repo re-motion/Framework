@@ -14,20 +14,29 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System.Drawing;
-using JetBrains.Annotations;
-using OpenQA.Selenium;
+using System;
+using Remotion.Web.Development.WebTesting.TestSite.GenericPages;
+using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
+using Remotion.Web.UI.Controls;
 
-namespace Remotion.Web.Development.WebTesting.Utilities
+namespace Remotion.Web.Development.WebTesting.TestSite
 {
   /// <summary>
-  /// Provides methods for locating the browser content area.
+  /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="TabbedMenu"/>.
   /// </summary>
-  public interface IBrowserContentLocator
+  public class TabbedMenuGenericTestPage : SimpleGenericTestPage<TabbedMenu>
   {
-    /// <summary>
-    /// Returns the bounds of the browser content area associated with the current window of the specified <paramref name="driver"/>.
-    /// </summary>
-    Rectangle GetBrowserContentBounds ([NotNull] IWebDriver driver);
+    public TabbedMenuGenericTestPage ()
+    {
+    }
+
+    /// <inheritdoc />
+    public override TabbedMenu CreateControl (GenericTestOptions options)
+    {
+      var control = base.CreateControl (options);
+      control.Tabs.Add (new MainMenuTab { ItemID = "ItemA", Text = "A" });
+      control.Tabs.Add (new MainMenuTab { ItemID = "ItemB", Text = "B" });
+      return control;
+    }
   }
 }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -22,12 +23,20 @@ using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
   public class CommandControlObjectTest : IntegrationTest
   {
+    [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<CommandSelector, CommandControlObject>))]
+    public void GenericTests (GenericSelectorTestSetupAction<CommandSelector, CommandControlObject> testSetupAction)
+    {
+      testSetupAction (Helper, e => e.Commands(), "command");
+    }
+
     [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
@@ -37,6 +46,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors (GenericSelectorTestSetupAction<CommandSelector, CommandControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.Commands(), "command");
+    }
+
+    [Test]
+    public void TestIsDisabled_SetMethodsThrow ()
+    {
+      var home = Start();
+
+      var control = home.Commands().GetByLocalID ("TestCommand3");
+
+      Assert.That (control.IsDisabled(), Is.True);
+      Assert.That (() => control.Click(), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

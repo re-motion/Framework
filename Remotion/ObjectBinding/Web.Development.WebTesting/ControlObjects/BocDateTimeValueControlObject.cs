@@ -21,6 +21,7 @@ using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
@@ -81,8 +82,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Sets the date component of the control to <paramref name="newDate"/>.
     /// </summary>
+    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
     public UnspecifiedPageObject SetDate (DateTime newDate, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       var newDateString = newDate.ToShortDateString();
       return SetDate (newDateString, actionOptions);
     }
@@ -90,9 +95,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Sets the date component of the control to <paramref name="newDateString"/>.
     /// </summary>
+    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
     public UnspecifiedPageObject SetDate ([NotNull] string newDateString, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("newDateString", newDateString);
+
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var dateScope = GetDateScope();
 
@@ -104,8 +113,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Sets the time component of the control to <paramref name="newTime"/>.
     /// </summary>
+    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
     public UnspecifiedPageObject SetTime (TimeSpan newTime, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       var newTimeAsDateTime = DateTime.MinValue.Add (newTime);
 
       string newTimeString;
@@ -122,9 +135,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Sets the time component of the control to <paramref name="newTimeString"/>.
     /// </summary>
+    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
     public UnspecifiedPageObject SetTime ([NotNull] string newTimeString, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("newTimeString", newTimeString);
+
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var timeScope = GetTimeScope();
 
@@ -136,8 +153,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Sets the date component and the time component of the control to <paramref name="newDateTime"/>.
     /// </summary>
+    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
     public UnspecifiedPageObject SetDateTime (DateTime newDateTime, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       SetDate (newDateTime, actionOptions);
       if (_hasTimeField)
         SetTime (newDateTime.TimeOfDay, actionOptions);

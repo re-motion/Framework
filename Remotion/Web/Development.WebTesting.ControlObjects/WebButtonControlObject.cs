@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   /// Control object for <see cref="T:Remotion.Web.UI.Controls.WebButton"/>.
   /// </summary>
   public class WebButtonControlObject
-      : WebFormsControlObjectWithDiagnosticMetadata, IClickableControlObject, IControlObjectWithText, IStyledControlObject
+      : WebFormsControlObjectWithDiagnosticMetadata, IClickableControlObject, IControlObjectWithText, IStyledControlObject, ISupportsDisabledState
   {
     public WebButtonControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -50,18 +50,24 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       return Scope.Text.Trim();
     }
 
-    /// <summary>
-    /// Returns whether the web button is enabled.
-    /// </summary>
-    /// <returns>True if the web button is enabled, otherwise false.</returns>
+    [Obsolete ("Use IsDisabled instead. (Version 1.17.5)")]
     public bool IsEnabled ()
     {
-      return !Scope.Disabled;
+      return !IsDisabled();
+    }
+
+    /// <inheritdoc />
+    public bool IsDisabled ()
+    {
+      return Scope.Disabled;
     }
 
     /// <inheritdoc/>
     public UnspecifiedPageObject Click (IWebTestActionOptions actionOptions = null)
     {
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
       new ClickAction (this, Scope).Execute (actualActionOptions);
       return UnspecifiedPage();

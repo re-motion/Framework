@@ -81,6 +81,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       return SelectOption().WithItemID (itemID, actionOptions);
     }
 
@@ -89,12 +92,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       return _variantImpl.SelectOption (itemID, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       return _variantImpl.SelectOption (oneBasedIndex, actionOptions);
     }
 
@@ -102,6 +111,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
+
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
 
       return _variantImpl.SelectOptionByText (displayText, actionOptions);
     }

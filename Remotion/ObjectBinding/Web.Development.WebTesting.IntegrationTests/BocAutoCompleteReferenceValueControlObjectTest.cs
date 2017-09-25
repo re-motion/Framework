@@ -40,6 +40,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocAutoCompleteReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    public void GenericTests (GenericSelectorTestSetupAction<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> testAction)
+    {
+      testAction (Helper, e => e.AutoCompletes(), "autoCompleteReferenceValue");
+    }
+
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
@@ -261,6 +267,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       informationPopup.Hide();
       Assert.That (informationPopup.IsVisible(), Is.False);
+    }
+
+    [Test]
+    public void TestIsDisabled_SetMethodsThrow ()
+    {
+      var home = Start();
+
+      var control = home.AutoCompletes().GetByLocalID ("Disabled");
+
+      Assert.That (control.IsDisabled(), Is.True);
+      Assert.That (() => control.FillWith ("text"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.ExecuteCommand(), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

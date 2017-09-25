@@ -15,11 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
@@ -29,6 +31,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TextBoxControlObjectTest : IntegrationTest
   {
     [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    public void GenericTests (GenericSelectorTestSetupAction<TextBoxSelector, TextBoxControlObject> testSetupAction)
+    {
+      testSetupAction (Helper, e => e.TextBoxes(), "textBox");
+    }
+
+    [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
@@ -37,6 +46,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors (GenericSelectorTestSetupAction<TextBoxSelector, TextBoxControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.TextBoxes(), "textBox");
+    }
+
+    [Test]
+    public void TestIsDisabled_SetMethodsThrow ()
+    {
+      var home = Start();
+
+      var control = home.TextBoxes().GetByLocalID ("TextBoxDisabled");
+
+      Assert.That (control.IsDisabled(), Is.True);
+      Assert.That (() => control.FillWith ("text"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

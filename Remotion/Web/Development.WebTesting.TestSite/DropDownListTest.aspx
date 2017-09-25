@@ -52,4 +52,13 @@
       <asp:ListItem Value="C" Text="C"/>
     </Items>
   </asp:DropDownList>
+  
+  <h3>DropDownList5 Disabled</h3>
+  <asp:DropDownList ID="DropDownList5_Disabled" AutoPostBack="true" Enabled="False" runat="server">
+      <Items>
+          <asp:ListItem Text="Item1" Value="Item1Value"/>
+          <asp:ListItem Text="Item2" Value="Item2Value"/>
+          <asp:ListItem Text="Item3" Value="Item3Value"/>
+      </Items>
+  </asp:DropDownList>
 </asp:Content>

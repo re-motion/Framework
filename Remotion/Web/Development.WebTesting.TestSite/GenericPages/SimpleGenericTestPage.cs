@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
@@ -25,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
   /// Provides a simple way to implement <see cref="IGenericTestPage{TOptions}"/>.
   /// </summary>
   public class SimpleGenericTestPage<TControl> : IGenericTestPage<GenericTestOptions>
-      where TControl : Control, new()
+      where TControl : WebControl, new()
   {
     public SimpleGenericTestPage ()
     {
@@ -47,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
     /// </summary>
     public virtual TControl CreateControl (GenericTestOptions options)
     {
-      return new TControl { ID = options.ID };
+      return new TControl { ID = options.ID, Enabled = options.Enabled };
     }
   }
 }

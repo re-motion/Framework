@@ -94,6 +94,7 @@
     <Compile Include="SetUpFixture.cs" />
     <Compile Include="TestCaseFactories\DisplayNameControlSelectorTestCaseFactory.cs" />
     <Compile Include="TestCaseFactories\DomainPropertyControlSelectorTestCaseFactory.cs" />
+    <Compile Include="TestCaseFactories\GeneralTestCaseFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

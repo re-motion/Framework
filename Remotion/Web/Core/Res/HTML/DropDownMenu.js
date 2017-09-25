@@ -338,8 +338,10 @@ function DropDownMenu_CreateTextItem(itemInfo, selectionCount)
   if (itemInfo.DiagnosticMetadata)
   {
     // Do not render empty diagnostic metadata attributes
-    $.each(itemInfo.DiagnosticMetadata, function (key, value) {
-      if (value === "" || value === null) {
+    $.each(itemInfo.DiagnosticMetadata, function (key, value)
+    {
+      if (value === "" || value === null)
+      {
         delete itemInfo.DiagnosticMetadata[key];
       }
     });

@@ -26,4 +26,6 @@
     <h3>TextBox4 - ASP.NET TextBox (no auto postback)</h3>
     <asp:TextBox ID="MyAspTextBoxNoAutoPostBack" Text="MyAspTextBoxNoAutoPostBackValue" AutoPostBack="false" runat="server"/>
   </div>
+  <h3>TextBox5 - ASP.NET TextBox disabled</h3>
+  <asp:TextBox ID="TextBoxDisabled" Text="MyAspTextBoxValue" AutoPostBack="true" disabled="true" runat="server"/>
 </asp:Content>

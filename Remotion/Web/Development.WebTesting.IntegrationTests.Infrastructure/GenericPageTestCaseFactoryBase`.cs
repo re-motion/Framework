@@ -110,7 +110,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
                   argumentCount,
                   information.ArgumentCount));
         }
-        Console.WriteLine();
+        
         parameter.Apply (information);
       }
 

@@ -16,6 +16,8 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -23,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   /// <summary>
   /// Control object representing a <see cref="T:Remotion.Web.UI.Controls.Command"/>.
   /// </summary>
-  public class CommandControlObject : WebFormsControlObjectWithDiagnosticMetadata, IClickableControlObject
+  public class CommandControlObject : WebFormsControlObjectWithDiagnosticMetadata, IClickableControlObject, ISupportsDisabledState
   {
     public CommandControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -33,9 +35,18 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject Click (IWebTestActionOptions actionOptions = null)
     {
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
       new ClickAction (this, Scope).Execute (actualActionOptions);
       return UnspecifiedPage();
+    }
+
+    /// <inheritdoc />
+    public bool IsDisabled ()
+    {
+      return Scope[DiagnosticMetadataAttributes.IsDisabled] == "true";
     }
   }
 }

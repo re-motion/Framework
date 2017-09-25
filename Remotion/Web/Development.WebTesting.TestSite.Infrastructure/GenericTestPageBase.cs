@@ -40,6 +40,12 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
     protected abstract Control AmbiguousControlPanel { get; }
 
     [NotNull]
+    protected abstract TOptions DisabledControlOptions { get; }
+
+    [NotNull]
+    protected abstract Control DisabledControlPanel { get; }
+
+    [NotNull]
     protected abstract TOptions HiddenControlOptions { get; }
 
     [NotNull]
@@ -103,6 +109,9 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
 
       if (pageType.HasFlag (GenericTestPageType.AmbiguousElements))
         AmbiguousControlPanel.Controls.Add (testPage.CreateControl (AmbiguousControlOptions));
+
+      if (pageType.HasFlag (GenericTestPageType.DisabledElements))
+        DisabledControlPanel.Controls.Add (testPage.CreateControl (DisabledControlOptions));
 
       var parameters = Parameters.Clone();
       testPage.AddParameters (parameters, VisibleControlOptions);

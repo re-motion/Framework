@@ -95,6 +95,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!string.IsNullOrEmpty (control.DisplayName))
         renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.DisplayName, control.DisplayName);
 
+      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.IsDisabled, (!control.Enabled).ToString().ToLower());
       renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.IsReadOnly, IsReadOnly (control).ToString().ToLower());
 
       var isBound = IsBoundToBusinessObject (control);

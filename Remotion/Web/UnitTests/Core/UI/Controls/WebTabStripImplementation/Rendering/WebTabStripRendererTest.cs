@@ -254,6 +254,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       var tab = wrapper.GetAssertedChildElement ("span", 1);
       tab.AssertAttributeValueEquals (DiagnosticMetadataAttributes.ItemID, _tab0.ItemID);
       tab.AssertAttributeValueEquals (DiagnosticMetadataAttributes.Content, _tab0.Text);
+      tab.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsDisabled, (!_tab0.EvaluateEnabled()).ToString().ToLower());
     }
 
     private void PopulateTabStrip ()

@@ -28,6 +28,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     private readonly GenericTestPageParameterCollection _parameters = new GenericTestPageParameterCollection();
 
     private GenericTestOptions _ambiguousControlOptions;
+    private GenericTestOptions _disabledControlOptions;
     private GenericTestOptions _hiddenControlOptions;
     private GenericTestOptions _visibleControlOptions;
 
@@ -58,6 +59,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     protected override Control AmbiguousControlPanel
     {
       get { return PanelAmbiguousControl; }
+    }
+
+    /// <inheritdoc />
+    protected override GenericTestOptions DisabledControlOptions
+    {
+      get { return _disabledControlOptions; }
+    }
+
+    /// <inheritdoc />
+    protected override Control DisabledControlPanel
+    {
+      get { return PanelDisabledControl; }
     }
 
     /// <inheritdoc />
@@ -95,6 +108,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     {
       // Constants for all the controls on this generic page
       const string ambiguousID = "AmbiguousControl";
+      const string disabledID = "DisabledControl";
       const string hiddenID = "HiddenControl";
       const string visibleID = "VisibleControl";
       const string visibleIndex = "1", hiddenIndex = "133";
@@ -102,14 +116,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       const string incorrectDomainProperty = "Remotion.ObjectBinding.Sample.Job, Remotion.ObjectBinding.Sample";
 
       // "Real" HTML ids of the controls
-      var ambiguousHtmlID = string.Concat ("body_", hiddenID);
+      var ambiguousHtmlID = string.Concat ("body_", ambiguousID);
+      var disabledHtmlID = string.Concat ("body_", disabledID);
       var hiddenHtmlID = string.Concat ("body_", hiddenID);
       var visibleHtmlID = string.Concat ("body_", visibleID);
 
       // Options for creating the controls
-      _ambiguousControlOptions = new GenericTestOptions (ambiguousID, ambiguousHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty);
-      _hiddenControlOptions = new GenericTestOptions (hiddenID, hiddenHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty);
-      _visibleControlOptions = new GenericTestOptions (visibleID, visibleHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty);
+      _ambiguousControlOptions = new GenericTestOptions (
+          ambiguousID,
+          ambiguousHtmlID,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty,
+          true);
+      _disabledControlOptions = new GenericTestOptions (
+          disabledID,
+          disabledHtmlID,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty,
+          false);
+      _hiddenControlOptions = new GenericTestOptions (hiddenID, hiddenHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty, true);
+      _visibleControlOptions = new GenericTestOptions (visibleID, visibleHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty, true);
 
       // Parameters which will be passed to the client
       _parameters.Add (TestConstants.HtmlIDSelectorID, visibleHtmlID, hiddenHtmlID);
@@ -117,6 +145,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       _parameters.Add (TestConstants.LocalIDSelectorID, visibleID, hiddenID, visibleHtmlID);
       _parameters.Add (TestConstants.FirstSelectorID, visibleHtmlID);
       _parameters.Add (TestConstants.SingleSelectorID, visibleHtmlID);
+      _parameters.Add (TestConstants.GeneralTestsID, visibleHtmlID, disabledHtmlID);
 
       base.OnInit (e);
     }

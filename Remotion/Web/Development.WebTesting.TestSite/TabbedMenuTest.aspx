@@ -54,7 +54,12 @@
           <remotion:SubMenuTab ItemID="SubMenuTab3" Text="SubMenuTab3Title"/>
         </SubMenuTabs>
       </remotion:MainMenuTab>
+      <remotion:MainMenuTab ItemID="DisabledCommandTab" Text="DisabledCommandTabTitle" IsDisabled="True">
+        <PersistedCommand>
+          <remotion:NavigationCommand Type="None"/>
+        </PersistedCommand>
+      </remotion:MainMenuTab>
     </Tabs>
   </remotion:TabbedMenu>
-  <span>DoNotFindMe</span>
+  <span>DoNotFindMe</span>  
 </asp:Content>

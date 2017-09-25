@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -34,6 +35,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// information.
     /// </summary>
     /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
+    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
     UnspecifiedPageObject ExecuteCommand ([CanBeNull] IWebTestActionOptions actionOptions = null);
   }
 }

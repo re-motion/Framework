@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
@@ -26,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   /// <summary>
   /// Control object for <see cref="T:System.Web.UI.WebControls.TextBox"/> and all its derivatives (none in re-motion).
   /// </summary>
-  public class TextBoxControlObject : WebFormsControlObject, IFillableControlObject, IControlObjectWithFormElements
+  public class TextBoxControlObject : WebFormsControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsDisabledState
   {
     public TextBoxControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -44,6 +45,9 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     {
       ArgumentUtility.CheckNotNull ("text", text);
 
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       return FillWith (text, FinishInput.WithTab, actionOptions);
     }
 
@@ -56,6 +60,9 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       ArgumentUtility.CheckNotNull ("text", text);
       ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
 
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       var actualActionOptions = MergeWithDefaultActionOptions (actionOptions, finishInputWith);
       new FillWithAction (this, Scope, text, finishInputWith).Execute (actualActionOptions);
       return UnspecifiedPage();
@@ -65,6 +72,12 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
       return new[] { Scope.Name };
+    }
+
+    /// <inheritdoc />
+    public bool IsDisabled ()
+    {
+      return Scope.Disabled;
     }
 
     private IWebTestActionOptions MergeWithDefaultActionOptions (

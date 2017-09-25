@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -40,6 +41,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestIsDisabled_SetMethodsThrow ()
+    {
+      var home = Start();
+
+      var control = home.WebTabStrips().GetByLocalID ("MyTabStrip1");
+
+      Assert.That (() => control.SwitchTo().WithIndex (3), Throws.InstanceOf<MissingHtmlException>());
+    }
+
+    [Test]
     public void TestGetSelectedTab ()
     {
       var home = Start();
@@ -62,10 +73,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var tabStrip = home.WebTabStrips().First();
       var tabs = tabStrip.GetTabDefinitions();
-      Assert.That (tabs.Count, Is.EqualTo (2));
+      Assert.That (tabs.Count, Is.EqualTo (3));
       Assert.That (tabs[1].ItemID, Is.EqualTo ("Tab2"));
       Assert.That (tabs[1].Index, Is.EqualTo (2));
       Assert.That (tabs[1].Title, Is.EqualTo ("Tab2Label"));
+      Assert.That (tabs[1].IsDisabled, Is.False);
+      Assert.That (tabs[2].IsDisabled, Is.True);
     }
 
     [Test]

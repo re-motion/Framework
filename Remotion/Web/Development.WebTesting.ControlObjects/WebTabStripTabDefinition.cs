@@ -28,8 +28,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     private readonly string _itemID;
     private readonly int _index;
     private readonly string _title;
+    private readonly bool _isDisabled;
 
-    public WebTabStripTabDefinition ([NotNull] string itemID, int index, [NotNull] string title)
+    public WebTabStripTabDefinition ([NotNull] string itemID, int index, [NotNull] string title, bool isDisabled)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
       ArgumentUtility.CheckNotNullOrEmpty ("title", title);
@@ -37,6 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       _itemID = itemID;
       _index = index;
       _title = title;
+      _isDisabled = isDisabled;
     }
 
     public string ItemID
@@ -52,6 +54,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public string Title
     {
       get { return _title; }
+    }
+
+    public bool IsDisabled
+    {
+      get { return _isDisabled; }
     }
   }
 }

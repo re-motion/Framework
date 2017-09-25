@@ -184,7 +184,6 @@ namespace Remotion.Web.UI.Controls
         if (MissingPermissionBehavior == MissingPermissionBehavior.Disabled)
           return Command.HasAccess (null);
       }
-
       return true;
     }
 

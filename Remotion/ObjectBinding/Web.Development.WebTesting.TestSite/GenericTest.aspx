@@ -34,6 +34,11 @@
         
       </asp:Panel>
       
+      <h3>Disabled control</h3>
+      <asp:Panel ID="PanelDisabledControl" runat="server">
+        
+      </asp:Panel>
+
       <h3>Frame test</h3>
       <iframe id="testFrame">
       </iframe>

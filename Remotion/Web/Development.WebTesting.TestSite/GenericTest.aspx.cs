@@ -29,6 +29,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     private readonly GenericTestPageParameterCollection _parameters = new GenericTestPageParameterCollection();
 
     private GenericTestOptions _ambiguousControlOptions;
+    private GenericTestOptions _ambiguousDisabledOptions;
     private GenericTestOptions _hiddenControlOptions;
     private GenericTestOptions _visibleControlOptions;
 
@@ -41,17 +42,17 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       Register ("formGrid", new FormGridGenericTestPage());
       Register ("imageButton", new SimpleGenericTestPage<ImageButton>());
       Register ("image", new SimpleGenericTestPage<Image>());
-      Register ("label", new SimpleGenericTestPage<Label>());
-      Register ("listMenu", new SimpleGenericTestPage<ListMenu>());
+      Register ("label", new LabelGenericTestPage());
+      Register ("listMenu", new ListMenuGenericTestPage());
       Register ("scope", new SimpleGenericTestPage<Panel>());
       Register ("singleView", new SimpleGenericTestPage<SingleView>());
-      Register ("tabbedMenu", new SimpleGenericTestPage<TabbedMenu>());
+      Register ("tabbedMenu", new TabbedMenuGenericTestPage());
       Register ("tabbedMultiView", new SimpleGenericTestPage<TabbedMultiView>());
       Register ("textBox", new SimpleGenericTestPage<TextBox>());
-      Register ("treeView", new SimpleGenericTestPage<TreeView>());
+      Register ("treeView", new TreeViewGenericTestPage());
       Register ("webButton", new WebButtonGenericTestPage());
       Register ("webTabStrip", new SimpleGenericTestPage<WebTabStrip>());
-      Register ("webTreeView", new SimpleGenericTestPage<WebTreeView>());
+      Register ("webTreeView", new WebTreeViewGenericTestPage());
     }
 
     /// <inheritdoc />
@@ -64,6 +65,18 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     protected override Control AmbiguousControlPanel
     {
       get { return PanelAmbiguousControl; }
+    }
+
+    /// <inheritdoc />
+    protected override GenericTestOptions DisabledControlOptions
+    {
+      get { return _ambiguousDisabledOptions; }
+    }
+
+    /// <inheritdoc />
+    protected override Control DisabledControlPanel
+    {
+      get { return PanelDisabledControl; }
     }
 
     /// <inheritdoc />
@@ -101,16 +114,19 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     {
       // Constants for all the controls on this generic page
       const string ambiguousID = "AmbiguousControl", ambiguousTextContent = "AmbiguousTextContent", ambiguousTitle = "AmbiguousTitle";
+      const string disabledID = "DisabledControl", disabledTextContent = "DisabledTextContent", disabledTitle = "DisabledTitle";
       const string hiddenID = "HiddenControl", hiddenTextContent = "HiddenTextContent", hiddenTitle = "HiddenTitle";
       const string visibleID = "VisibleControl", visibleTextContent = "VisibleTextContent", visibleTitle = "AmbiguousTitle";
       const string visibleIndex = "1", hiddenIndex = "133";
 
       // Options for creating the controls
-      _ambiguousControlOptions = new GenericTestOptions (ambiguousID, ambiguousTextContent, ambiguousTitle);
-      _hiddenControlOptions = new GenericTestOptions (hiddenID, hiddenTextContent, hiddenTitle);
-      _visibleControlOptions = new GenericTestOptions (visibleID, visibleTextContent, visibleTitle);
+      _ambiguousControlOptions = new GenericTestOptions (ambiguousID, ambiguousTextContent, ambiguousTitle, true);
+      _ambiguousDisabledOptions = new GenericTestOptions (disabledID, disabledTextContent, disabledTitle, false);
+      _hiddenControlOptions = new GenericTestOptions (hiddenID, hiddenTextContent, hiddenTitle, true);
+      _visibleControlOptions = new GenericTestOptions (visibleID, visibleTextContent, visibleTitle, true);
 
       // "Real" HTML ids of the controls
+      var disabledHtmlID = string.Concat ("body_", disabledID);
       var hiddenHtmlID = string.Concat ("body_", hiddenID);
       var visibleHtmlID = string.Concat ("body_", visibleID);
 
@@ -123,6 +139,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       _parameters.Add (TestConstants.TextContentSelectorID, visibleTextContent, hiddenTextContent, visibleHtmlID);
       _parameters.Add (TestConstants.TitleSelectorID, visibleTitle, hiddenTitle, visibleHtmlID);
       _parameters.Add (TestConstants.ItemIDSelectorID, visibleID, hiddenID, visibleHtmlID);
+      _parameters.Add (TestConstants.GeneralTestsID, visibleHtmlID, disabledHtmlID);
 
       base.OnInit (e);
     }

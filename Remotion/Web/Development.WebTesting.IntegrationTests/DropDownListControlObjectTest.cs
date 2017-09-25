@@ -15,11 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
@@ -29,6 +31,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class DropDownListControlObjectTest : IntegrationTest
   {
     [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    public void GenericTests (GenericSelectorTestSetupAction<DropDownListSelector, DropDownListControlObject> testSetupAction)
+    {
+      testSetupAction (Helper, e => e.DropDownLists(), "dropDownList");
+    }
+
+    [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
@@ -37,6 +46,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors (GenericSelectorTestSetupAction<DropDownListSelector, DropDownListControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.DropDownLists(), "dropDownList");
+    }
+
+    [Test]
+    public void TestIsDisabled_SetMethodsThrow ()
+    {
+      var home = Start();
+
+      var control = home.DropDownLists().GetByLocalID ("DropDownList5_Disabled");
+      Assert.That (control.IsDisabled(), Is.True);
+      Assert.That (() => control.SelectOption().WithDisplayText ("EventItem"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectOption().WithIndex (1), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectOption().WithItemID ("ItemID4"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectOption ("ItemID4"), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

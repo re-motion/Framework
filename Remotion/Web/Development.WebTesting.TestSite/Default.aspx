@@ -39,6 +39,7 @@
           <tr><td><a href="LabelTest.aspx">LabelTest</a></td></tr>
           <tr><td><a href="ListMenuTest.wxe">ListMenuTest</a></td></tr>
           <tr><td><a href="ScopeTest.aspx">ScopeTest</a></td></tr>
+          <tr><td><a href="ElementScopeTest.aspx">ElementScopeTest</a></td></tr>
           <tr><td><a href="ScreenshotTest.wxe">ScreenshotTest</a></td></tr>
           <tr><td><a href="ScrollTest.aspx">ScrollTest</a></td></tr>
           <tr><td><a href="SingleViewTest.aspx">SingleViewTest</a></td></tr>

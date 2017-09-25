@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   /// Base class for all control objects representing a <see cref="T:Remotion.Web.UI.Controls.DropDownMenu"/>.
   /// </summary>
   public abstract class DropDownMenuControlObjectBase
-      : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithSelectableItems, IFluentControlObjectWithSelectableItems
+      : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithSelectableItems, IFluentControlObjectWithSelectableItems, ISupportsDisabledState
   {
     private const string c_dropDownMenuOptionsCssSelector = "ul.DropDownMenuOptions";
 
@@ -74,6 +74,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public IReadOnlyList<ItemDefinition> GetItemDefinitions ()
     {
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       var dropDownMenuScope = GetDropDownMenuScope();
 
       var itemDefinitions = RetryUntilTimeout.Run (
@@ -84,13 +87,19 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                           itemScope[DiagnosticMetadataAttributes.ItemID],
                           i + 1,
                           itemScope.Text.Trim(),
-                          !itemScope["class"].Contains ("DropDownMenuItemDisabled")))
+                          itemScope["class"].Contains ("DropDownMenuItemDisabled")))
               .ToList());
 
       Close();
 
       return itemDefinitions;
 
+    }
+
+    /// <inheritdoc />
+    public bool IsDisabled ()
+    {
+      return Scope[DiagnosticMetadataAttributes.IsDisabled] == "true";
     }
 
     /// <inheritdoc/>
@@ -104,6 +113,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       return SelectItem().WithItemID (itemID, actionOptions);
     }
 
@@ -111,6 +123,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var dropDownMenuScope = GetDropDownMenuScope();
       var scope = dropDownMenuScope.FindTagWithAttribute ("li.DropDownMenuItem", DiagnosticMetadataAttributes.ItemID, itemID);
@@ -120,6 +135,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       var dropDownMenuScope = GetDropDownMenuScope();
       var scope = dropDownMenuScope.FindXPath (string.Format ("li[{0}]", oneBasedIndex));
       return ClickItem (scope, actionOptions);
@@ -130,6 +148,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
 
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       var dropDownMenuScope = GetDropDownMenuScope();
       var scope = dropDownMenuScope.FindId (htmlID);
       return ClickItem (scope, actionOptions);
@@ -139,6 +160,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
+
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var dropDownMenuScope = GetDropDownMenuScope();
       var scope = dropDownMenuScope.FindTagWithAttribute ("li.DropDownMenuItem", DiagnosticMetadataAttributes.Content, displayText);
@@ -151,6 +175,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         IWebTestActionOptions actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
+
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var dropDownMenuScope = GetDropDownMenuScope();
       var scope = dropDownMenuScope.FindTagWithAttributeUsingOperator (
@@ -181,6 +208,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     private UnspecifiedPageObject ClickItem (ElementScope item, IWebTestActionOptions actionOptions)
     {
+      if (item[DiagnosticMetadataAttributes.IsDisabled] == "true")
+      {
+        throw AssertionExceptionUtility.CreateControlDisabledException ("WebMenuItem");
+      }
+
       var actualActionOptions = MergeWithDefaultActionOptions (item, actionOptions);
 
       var anchorScope = item.FindLink();

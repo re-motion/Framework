@@ -81,6 +81,7 @@
     <Content Include="MouseTest.aspx" />
     <Content Include="SampleXmlFile.xml" />
     <Content Include="SampleFile.txt" />
+    <Content Include="ElementScopeTest.aspx" />
     <Content Include="ScopeTest.aspx" />
     <Content Include="DropDownListTest.aspx" />
     <Content Include="ScreenshotTest.aspx" />
@@ -131,6 +132,8 @@
     <Compile Include="GenericPages\CommandGenericTestPage.cs" />
     <Compile Include="GenericPages\DropDownMenuGenericTestPage.cs" />
     <Compile Include="GenericPages\FormGridGenericTestPage.cs" />
+    <Compile Include="GenericPages\LabelGenericTestPage.cs" />
+    <Compile Include="GenericPages\ListMenuGenericTestPage.cs" />
     <Compile Include="GenericPages\SimpleGenericTestPage.cs" />
     <Compile Include="GenericPages\WebButtonGenericTestPage.cs" />
     <Compile Include="GenericTestOptions.cs" />
@@ -157,6 +160,13 @@
     <Compile Include="MouseTest.aspx.designer.cs">
       <DependentUpon>MouseTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ElementScopeTest.aspx.cs">
+      <DependentUpon>ElementScopeTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ElementScopeTest.aspx.designer.cs">
+      <DependentUpon>ElementScopeTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ScreenshotTestFrame.aspx.cs">
       <DependentUpon>ScreenshotTestFrame.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -170,6 +180,7 @@
     </Compile>
     <Compile Include="GenericTest.aspx.cs">
       <DependentUpon>GenericTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="GenericTest.aspx.designer.cs">
       <DependentUpon>GenericTest.aspx</DependentUpon>
@@ -226,6 +237,8 @@
     <Compile Include="ScrollTest.aspx.designer.cs">
       <DependentUpon>ScrollTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TabbedMenuGenericTestPage.cs" />
+    <Compile Include="TreeViewGenericTestPage.cs" />
     <Compile Include="TreeViewTestFunction.cs" />
     <Compile Include="TreeViewTest.aspx.cs">
       <DependentUpon>TreeViewTest.aspx</DependentUpon>
@@ -241,6 +254,7 @@
     <Compile Include="BrowserSessionTest.aspx.designer.cs">
       <DependentUpon>BrowserSessionTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebTreeViewGenericTestPage.cs" />
     <Compile Include="WebTreeViewTest.aspx.cs">
       <DependentUpon>WebTreeViewTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web.UI;
 using NUnit.Framework;
 using Remotion.Web.Utilities;
@@ -112,6 +114,55 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       var result = stringWriter.ToString();
       Assert.That (result, Is.EqualTo ("Fir&lt;html&gt;st<br />Sec&lt;html&gt;ond<br />Thi&lt;html&gt;rd"));
+    }
+
+    [Test]
+    public void ToJson_ReturnsNullForEmpty ()
+    {
+      var dictionary = new Dictionary<string, string>();
+      var stringBuilder = new StringBuilder();
+      
+      stringBuilder.WriteDictionaryAsJson (dictionary);
+
+      Assert.That (stringBuilder.ToString(), Is.EqualTo ("null"));
+    }
+
+    [Test]
+    public void ToJson_OneObject ()
+    {
+      var dictionary = new Dictionary<string, string>();
+      dictionary.Add ("data-TestDiagnosticMetadata", "teststring");
+      var stringBuilder = new StringBuilder();
+      
+      stringBuilder.WriteDictionaryAsJson (dictionary);
+
+      Assert.That (stringBuilder.ToString(), Is.EqualTo ("{\"data-TestDiagnosticMetadata\":\"teststring\"}"));
+    }
+
+    [Test]
+    public void ToJson_MultipleObjects ()
+    {
+      var dictionary = new Dictionary<string, string>();
+      dictionary.Add ("data-TestDiagnosticMetadata1", "teststring1");
+      dictionary.Add ("data-TestDiagnosticMetadata2", "teststring2");
+      dictionary.Add ("data-TestDiagnosticMetadata3", "teststring3");
+      var stringBuilder = new StringBuilder();
+      
+      stringBuilder.WriteDictionaryAsJson (dictionary);
+
+      Assert.That (stringBuilder.ToString(), Is.EqualTo ("{\"data-TestDiagnosticMetadata1\":\"teststring1\",\"data-TestDiagnosticMetadata2\":\"teststring2\",\"data-TestDiagnosticMetadata3\":\"teststring3\"}"));
+    }
+    
+    [Test]
+    public void ToJson_EncapsulatesValuesContainingDoubleQuotesIntoSingleQuotes ()
+    {
+      var dictionary = new Dictionary<string, string>();
+      dictionary.Add ("data-TestDiagnosticMetadata", "What\"ever");
+      var stringBuilder = new StringBuilder();
+      
+      stringBuilder.WriteDictionaryAsJson (dictionary);
+
+      Assert.That (stringBuilder.ToString(), Is.EqualTo ("{\"data-TestDiagnosticMetadata\":'What\"ever'}"));
     }
   }
 }

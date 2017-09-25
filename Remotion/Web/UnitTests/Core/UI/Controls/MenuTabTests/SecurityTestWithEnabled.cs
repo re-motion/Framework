@@ -72,7 +72,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithCommandSetNull ()
     {
-      MainMenuTab mainMenuTab = CreateMainMenuTabWithoutCommand ();
+      MainMenuTab mainMenuTab = CreateMainMenuTabWithCommandSetNull ();
       mainMenuTab.IsDisabled = false;
 
       bool isEnabled = mainMenuTab.EvaluateEnabled ();
@@ -82,8 +82,72 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     [Test]
     public void EvaluateFalse_FromFalseAndWithCommandSetNull ()
     {
-      MainMenuTab mainMenuTab = CreateMainMenuTabWithoutCommand ();
+      MainMenuTab mainMenuTab = CreateMainMenuTabWithCommandSetNull();
       mainMenuTab.IsDisabled = true;
+
+      bool isEnabled = mainMenuTab.EvaluateEnabled();
+      Assert.That (isEnabled, Is.False);
+    }
+
+    [Test]
+    public void EvaluateTrue_FromTrueAndWithCommandSetNone ()
+    {
+      MainMenuTab mainMenuTab = CreateMainMenuTabCommandTypeNone();
+      mainMenuTab.IsDisabled = false;
+
+      bool isEnabled = mainMenuTab.EvaluateEnabled();
+      Assert.That (isEnabled, Is.True);
+    }
+
+    [Test]
+    public void EvaluateFalse_FromFalseAndWithCommandSetNone ()
+    {
+      MainMenuTab mainMenuTab = CreateMainMenuTabCommandTypeNone();
+      mainMenuTab.IsDisabled = true;
+
+      bool isEnabled = mainMenuTab.EvaluateEnabled ();
+      Assert.That (isEnabled, Is.False);
+    }
+
+    [Test]
+    public void EvaluateTrue_FromTrueAndWithCommandSetNullAndWithMissingPermissionBehaviorSetToInvisible ()
+    {
+      MainMenuTab mainMenuTab = CreateMainMenuTabWithCommandSetNull ();
+      mainMenuTab.IsDisabled = false;
+      mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
+
+      bool isEnabled = mainMenuTab.EvaluateEnabled ();
+      Assert.That (isEnabled, Is.True);
+    }
+
+    [Test]
+    public void EvaluateFalse_FromFalseAndWithCommandSetNullAndWithMissingPermissionBehaviorSetToInvisible ()
+    {
+      MainMenuTab mainMenuTab = CreateMainMenuTabWithCommandSetNull();
+      mainMenuTab.IsDisabled = true;
+      mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
+
+      bool isEnabled = mainMenuTab.EvaluateEnabled();
+      Assert.That (isEnabled, Is.False);
+    }
+
+    [Test]
+    public void EvaluateTrue_FromTrueAndWithCommandSetNoneAndWithMissingPermissionBehaviorSetToInvisible ()
+    {
+      MainMenuTab mainMenuTab = CreateMainMenuTabCommandTypeNone();
+      mainMenuTab.IsDisabled = false;
+      mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
+
+      bool isEnabled = mainMenuTab.EvaluateEnabled();
+      Assert.That (isEnabled, Is.True);
+    }
+
+    [Test]
+    public void EvaluateFalse_FromFalseAndWithCommandSetNoneAndWithMissingPermissionBehaviorSetToInvisible ()
+    {
+      MainMenuTab mainMenuTab = CreateMainMenuTabCommandTypeNone();
+      mainMenuTab.IsDisabled = true;
+      mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
 
       bool isEnabled = mainMenuTab.EvaluateEnabled ();
       Assert.That (isEnabled, Is.False);
@@ -134,17 +198,25 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
 
     private MainMenuTab CreateMainMenuTab ()
     {
-      MainMenuTab mainMenuTab = CreateMainMenuTabWithoutCommand ();
+      MainMenuTab mainMenuTab = CreateMainMenuTabWithCommandSetNull ();
       mainMenuTab.Command = _mockNavigationCommand;
       _mocks.BackToRecordAll();
 
       return mainMenuTab;
     }
 
-    private MainMenuTab CreateMainMenuTabWithoutCommand ()
+    private MainMenuTab CreateMainMenuTabCommandTypeNone ()
+    {
+      MainMenuTab mainMenuTab = new MainMenuTab();
+      mainMenuTab.Command.Type = CommandType.None;
+      mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
+
+      return mainMenuTab;
+    }
+
+    private MainMenuTab CreateMainMenuTabWithCommandSetNull ()
     {
       MainMenuTab mainMenuTab = new MainMenuTab ();
-      mainMenuTab.Command.Type = CommandType.None;
       mainMenuTab.Command = null;
       mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
 

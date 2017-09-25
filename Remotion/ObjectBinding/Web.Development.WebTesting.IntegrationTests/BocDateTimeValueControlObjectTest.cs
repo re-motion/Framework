@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Drawing;
+using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -36,6 +37,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocDateTimeValueControlObjectTest : IntegrationTest
   {
     [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    public void GenericTests (GenericSelectorTestSetupAction<BocDateTimeValueSelector, BocDateTimeValueControlObject> testAction)
+    {
+      testAction (Helper, e => e.DateTimeValues(), "dateTimeValue");
+    }
+
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
@@ -103,6 +110,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
             builder.Crop (target, WebPadding.None);
           });
+    }
+
+    [Test]
+    public void TestIsDisabled_SetMethodsThrow ()
+    {
+      var home = Start();
+
+      var control = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Disabled");
+
+      Assert.That (control.IsDisabled(), Is.True);
+      Assert.That (() => control.SetDate (DateTime.MinValue), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SetDate (""), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SetDateTime (DateTime.MinValue), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SetTime (TimeSpan.MinValue), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SetTime (""), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

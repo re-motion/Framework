@@ -70,6 +70,7 @@
     <Compile Include="GenericTestPageParameterDto.cs" />
     <Compile Include="GenericTestPageParameter.cs" />
     <Compile Include="GenericTestPageParameterCollection.cs" />
+    <Compile Include="GenericTestPageParameters\GeneralTestPageParameters.cs" />
     <Compile Include="GenericTestPageStatus.cs" />
     <Compile Include="GenericPageTestCaseFactoryBase.cs" />
     <Compile Include="GenericPageTestCaseFactoryBase`.cs" />

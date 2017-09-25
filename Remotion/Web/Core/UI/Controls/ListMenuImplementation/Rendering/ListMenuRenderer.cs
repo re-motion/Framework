@@ -123,6 +123,13 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
+    protected override void AddDiagnosticMetadataAttributes (RenderingContext<IListMenu> renderingContext)
+    {
+      base.AddDiagnosticMetadataAttributes (renderingContext);
+
+      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.IsDisabled, (!renderingContext.Control.Enabled).ToString().ToLower());
+    }
+
     private IEnumerable<IEnumerable<WebMenuItem>> GetVisibleMenuItemsInGroups (ListMenuRenderingContext renderingContext)
     {
       var menuItems = renderingContext.Control.MenuItems.GroupMenuItems (false).Where (mi => mi.EvaluateVisible());
@@ -150,8 +157,6 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetMenuItemClientID (renderingContext, index));
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "listMenuItem");
-      if (IsDiagnosticMetadataRenderingEnabled)
-        RenderDiagnosticMetadataAttributesForListMenuItem (renderingContext, menuItem);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       var command = !menuItem.IsDisabled ? menuItem.Command : new Command (CommandType.None) { OwnerControl = menuItem.OwnerControl };
@@ -180,15 +185,6 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       command.RenderEnd (renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
-    }
-
-    private void RenderDiagnosticMetadataAttributesForListMenuItem (ListMenuRenderingContext renderingContext, WebMenuItem menuItem)
-    {
-      if (!string.IsNullOrEmpty (menuItem.ItemID))
-        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
-
-      if (!string.IsNullOrEmpty (menuItem.Text))
-        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (menuItem.Text));
     }
 
     private void RegisterMenuItems (ListMenuRenderingContext renderingContext)
@@ -280,8 +276,9 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       bool isDisabled = !renderingContext.Control.Enabled
                         || !menuItem.EvaluateEnabled()
                         || !isCommandEnabled;
+
       stringBuilder.AppendFormat (
-          "\t\tnew ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8})",
+          "\t\tnew ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, ",
           GetMenuItemClientID (renderingContext, menuItemIndex),
           menuItem.Category,
           text,
@@ -291,6 +288,27 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
           isDisabled ? "true" : "false",
           href,
           target);
+
+      if (IsDiagnosticMetadataRenderingEnabled)
+      {
+        var diagnosticMetadataDictionary = new Dictionary<string, string>();
+
+        if (!string.IsNullOrEmpty (menuItem.ItemID))
+          diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
+
+        if (!string.IsNullOrEmpty (menuItem.Text))
+          diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (menuItem.Text));
+
+        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.IsDisabled, isDisabled.ToString().ToLower());
+
+        stringBuilder.WriteDictionaryAsJson (diagnosticMetadataDictionary);
+      }
+      else
+      {
+        stringBuilder.Append ("null");
+      }
+
+      stringBuilder.Append (")");
     }
 
     private string GetMenuItemClientID (ListMenuRenderingContext renderingContext, int menuItemIndex)

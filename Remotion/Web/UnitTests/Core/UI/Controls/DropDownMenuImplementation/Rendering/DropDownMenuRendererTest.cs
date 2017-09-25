@@ -127,6 +127,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       var containerDiv = document.GetAssertedChildElement ("span", 0);
       containerDiv.AssertAttributeValueEquals (DiagnosticMetadataAttributes.ControlType, "DropDownMenu");
       containerDiv.AssertAttributeValueEquals (DiagnosticMetadataAttributes.Content, c_MenuTitle);
+      containerDiv.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsDisabled, (!_control.Enabled).ToString().ToLower());
     }
 
     private void AssertTitleSpan (XmlNode containerDiv, bool withTitle, bool withIcon)

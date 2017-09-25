@@ -38,5 +38,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     public const string SingleSelectorID = "Single";
     public const string TextContentSelectorID = "TextContent";
     public const string TitleSelectorID = "Title";
+
+    public const string GeneralTestsID = "General";
   }
 }

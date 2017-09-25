@@ -56,9 +56,17 @@ namespace Remotion.Web.Development.WebTesting
     /// Focuses an element.
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
+    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
     public static void Focus ([NotNull] this ElementScope scope)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
+
+      // This workaround is necessary, as in some cases in InternetExplorer this Property returns "true" on first access even when the scope is not disabled.
+      //TODO: Remove Workaround when RM-6831 is fixed
+      var disabled = scope.Disabled;
+
+      if (scope.Disabled)
+        throw AssertionExceptionUtility.CreateControlDisabledException();
 
       scope.SendKeys ("");
     }

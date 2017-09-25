@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -32,6 +33,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    public void GenericTests (GenericSelectorTestSetupAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
+    {
+      testAction (Helper, e => e.ReferenceValues(), "referenceValue");
+    }
+
+    [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
@@ -42,6 +50,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors (GenericSelectorTestSetupAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
     {
       testAction (Helper, e => e.ReferenceValues(), "referenceValue");
+    }
+
+    [Test]
+    public void TestIsDisabled_SetMethodsThrow ()
+    {
+      const string baValue = "c8ace752-55f6-4074-8890-130276ea6cd1";
+
+      var home = Start();
+
+      var control = home.ReferenceValues().GetByLocalID ("PartnerField_Disabled");
+
+      Assert.That (control.IsDisabled(), Is.True);
+      Assert.That (() => control.ExecuteCommand(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectOption().WithDisplayText ("D, A"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectOption().WithIndex (1), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectOption().WithItemID (baValue), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectOption (baValue), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

@@ -144,15 +144,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var postBackEvent = GetPostBackEvent (renderingContext);
       var commandInfo = command.GetCommandInfo (postBackEvent, new[] { "-0-" }, "", null, new NameValueCollection(), true);
 
-      if (commandInfo == null)
-        return null;
-
       var jsonBuilder = new StringBuilder (1000);
 
       jsonBuilder.Append ("{ ");
 
       jsonBuilder.Append ("href : ");
-      string href = commandInfo.Href.Replace ("-0-", "{0}");
+      string href;
+      if (commandInfo.Href != null)
+        href = commandInfo.Href.Replace ("-0-", "{0}");
+      else
+        href = null;
       AppendStringValueOrNullToScript (jsonBuilder, href);
 
       jsonBuilder.Append (", ");

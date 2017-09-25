@@ -28,6 +28,14 @@ namespace Remotion.Web.UI.Controls
   public sealed class CommandInfo
   {
     /// <summary>
+    /// Creates a <see cref="CommandInfo"/> for a <see cref="CommandType.None"/> command.
+    /// </summary>
+    public static CommandInfo CreateForNone (bool enableFocus)
+    {
+      return new CommandInfo (null, null, null, null, null, enableFocus ? 0 : default(int?));
+    }
+
+    /// <summary>
     /// Creates a <see cref="CommandInfo"/> for a hyperlink-based command.
     /// </summary>
     /// <param name="title">The text displayed as the command's title. Must not be empty.</param>
@@ -42,7 +50,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotEmpty ("target", target);
       ArgumentUtility.CheckNotEmpty ("onClick", onClick);
 
-      return new CommandInfo (title, accessKey, href, target, onClick);
+      return new CommandInfo (title, accessKey, href, target, onClick, null);
     }
 
     /// <summary>
@@ -56,7 +64,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotEmpty ("title", title);
       ArgumentUtility.CheckNotNullOrEmpty ("onClick", onClick);
 
-      return new CommandInfo (title, accessKey, "#", null, onClick);
+      return new CommandInfo (title, accessKey, "#", null, onClick, null);
     }
 
     private readonly string _title;
@@ -64,14 +72,16 @@ namespace Remotion.Web.UI.Controls
     private readonly string _href;
     private readonly string _target;
     private readonly string _onClick;
+    private readonly int? _tabIndex;
 
-    private CommandInfo (string title, string accessKey, string href, string target, string onClick)
+    private CommandInfo (string title, string accessKey, string href, string target, string onClick, int? tabIndex)
     {
       _title = title;
       _accessKey = accessKey;
       _href = href;
       _target = target;
       _onClick = onClick;
+      _tabIndex = tabIndex;
     }
 
     public string Href
@@ -99,6 +109,11 @@ namespace Remotion.Web.UI.Controls
       get { return _accessKey; }
     }
 
+    public int? TabIndex
+    {
+      get { return _tabIndex; }
+    }
+
     public void AddAttributesToRender (HtmlTextWriter writer, IRenderingFeatures renderingFeatures)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
@@ -118,6 +133,9 @@ namespace Remotion.Web.UI.Controls
       if (!string.IsNullOrEmpty (_title))
         writer.AddAttribute (HtmlTextWriterAttribute.Title, _title);
 
+      if (_tabIndex.HasValue)
+        writer.AddAttribute (HtmlTextWriterAttribute.Tabindex, _tabIndex.Value.ToString());
+
       if (renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataAttributes (writer);
     }
@@ -125,6 +143,12 @@ namespace Remotion.Web.UI.Controls
     private void AddDiagnosticMetadataAttributes (HtmlTextWriter writer)
     {
       writer.AddAttribute (DiagnosticMetadataAttributes.ControlType, "Command");
+      if (_href == null)
+      {
+        writer.AddAttribute (DiagnosticMetadataAttributes.IsDisabled, "true");
+        return;
+      }
+
       writer.AddAttribute (DiagnosticMetadataAttributes.TriggersNavigation, IsTriggeringNavigation().ToString().ToLower());
       writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, IsTriggeringPostBack().ToString().ToLower());
     }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -30,6 +31,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WebButtonControlObjectTest : IntegrationTest
   {
     [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    public void GenericTests (GenericSelectorTestSetupAction<WebButtonSelector, WebButtonControlObject> testSetupAction)
+    {
+      testSetupAction (Helper, e => e.WebButtons(), "webButton");
+    }
+
+    [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
     [RemotionTestCaseSource (typeof (ItemIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
@@ -43,24 +51,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestGetText ()
+    public void TestIsDisabled_SetMethodsThrow ()
     {
       var home = Start();
 
-      var webButton = home.WebButtons().GetByLocalID ("MyWebButton1Sync");
-      Assert.That (webButton.GetText(), Is.EqualTo ("SyncButton"));
+      var control = home.WebButtons().GetByLocalID ("MyDisabledWebButton");
+
+      Assert.That (control.IsDisabled(), Is.True);
+      Assert.That (() => control.Click(), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]
-    public void TestIsEnabled ()
+    public void TestGetText ()
     {
       var home = Start();
-
+      
       var webButton = home.WebButtons().GetByLocalID ("MyWebButton1Sync");
-      Assert.That (webButton.IsEnabled(), Is.True);
-
-      var disabledWebButton = home.WebButtons().GetByLocalID ("MyDisabledWebButton");
-      Assert.That (disabledWebButton.IsEnabled(), Is.False);
+      Assert.That (webButton.GetText(), Is.EqualTo ("SyncButton"));
     }
 
     [Test]

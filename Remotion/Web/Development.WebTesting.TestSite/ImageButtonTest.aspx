@@ -26,6 +26,8 @@
       </div>
       <h3>ImageButton3</h3>
       <asp:HyperLink ID="MyImageButton3" ImageUrl="~/Images/SampleIcon.gif" NavigateUrl="ImageButtonTest.wxe" runat="server" />
+      <h3>ImageButton disabled</h3>
+      <asp:ImageButton ID="ImageButtonDisabled" CommandName="MyImageButtonCommand" ImageUrl="~/Images/SampleIcon.gif" PostBackUrl="ImageButtonTest.wxe" disabled="true" runat="server"/>
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

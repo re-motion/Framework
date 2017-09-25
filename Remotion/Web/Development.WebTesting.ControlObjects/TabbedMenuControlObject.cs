@@ -30,7 +30,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   /// </summary>
   [UsedImplicitly]
   public class TabbedMenuControlObject
-      : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithSelectableItems, IFluentControlObjectWithSelectableItems
+      : WebFormsControlObjectWithDiagnosticMetadata,
+          IControlObjectWithSelectableItems,
+          IFluentControlObjectWithSelectableItems
   {
     public TabbedMenuControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -131,7 +133,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                                   itemScope[DiagnosticMetadataAttributes.ItemID],
                                   i + 1,
                                   itemScope.Text.Trim(),
-                                  true /* currently we have no way to determine if a menu item is enabled or not */))
+                                  itemScope[DiagnosticMetadataAttributes.IsDisabled] == "true"))
                       .ToList());
     }
 

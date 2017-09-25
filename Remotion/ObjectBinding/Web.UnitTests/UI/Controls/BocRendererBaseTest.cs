@@ -128,6 +128,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var control = document.DocumentElement;
       control.AssertNoAttribute (DiagnosticMetadataAttributesForObjectBinding.DisplayName);
       control.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsReadOnly, "true");
+      control.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsDisabled, "false");
       control.AssertAttributeValueEquals (DiagnosticMetadataAttributesForObjectBinding.IsBound, "false");
       control.AssertNoAttribute (DiagnosticMetadataAttributesForObjectBinding.BoundType);
       control.AssertNoAttribute (DiagnosticMetadataAttributesForObjectBinding.BoundProperty);
@@ -156,6 +157,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var control = document.DocumentElement;
       control.AssertAttributeValueEquals (DiagnosticMetadataAttributesForObjectBinding.DisplayName, "ReferenceValue");
       control.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsReadOnly, "false");
+      control.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsDisabled, "false");
       control.AssertAttributeValueEquals (DiagnosticMetadataAttributesForObjectBinding.IsBound, "true");
       control.AssertAttributeValueEquals (
           DiagnosticMetadataAttributesForObjectBinding.BoundType,

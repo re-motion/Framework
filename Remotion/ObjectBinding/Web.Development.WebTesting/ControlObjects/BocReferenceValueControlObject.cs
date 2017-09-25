@@ -100,6 +100,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       return SelectOption().WithItemID (itemID, actionOptions);
     }
 
@@ -108,6 +111,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNull ("itemID", itemID);
 
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       Action<ElementScope> selectAction = s => s.SelectOptionByValue (itemID);
       return SelectOption (selectAction, actionOptions);
     }
@@ -115,6 +121,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       Action<ElementScope> selectAction = s => s.SelectOptionByIndex (oneBasedIndex);
       return SelectOption (selectAction, actionOptions);
     }
@@ -123,6 +132,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
     {
       ArgumentUtility.CheckNotNull ("displayText", displayText);
+
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
 
       Action<ElementScope> selectAction = s => s.SelectOption (displayText);
       return SelectOption (selectAction, actionOptions);
@@ -147,6 +159,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject ExecuteCommand (IWebTestActionOptions actionOptions = null)
     {
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       return GetCommand().Click (actionOptions);
     }
 

@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   /// Control object for <see cref="T:Remotion.Web.UI.Controls.ListMenu"/>.
   /// </summary>
   public class ListMenuControlObject
-      : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithSelectableItems, IFluentControlObjectWithSelectableItems
+      : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithSelectableItems, IFluentControlObjectWithSelectableItems, ISupportsDisabledState
   {
     public ListMenuControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -49,8 +49,14 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                                   itemScope[DiagnosticMetadataAttributes.ItemID],
                                   i + 1,
                                   itemScope.Text.Trim(),
-                                  !itemScope["class"].Contains ("listMenuItemDisabled")))
+                                  itemScope["class"].Contains ("listMenuItemDisabled")))
                       .ToList());
+    }
+
+    /// <inheritdoc />
+    public bool IsDisabled ()
+    {
+      return Scope[DiagnosticMetadataAttributes.IsDisabled] == "true";
     }
 
     /// <inheritdoc/>
@@ -64,6 +70,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       return SelectItem().WithItemID (itemID, actionOptions);
     }
 
@@ -72,6 +81,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       var itemScope = Scope.FindTagWithAttribute ("span.listMenuItem", DiagnosticMetadataAttributes.ItemID, itemID);
       return ClickItem (itemScope, actionOptions);
     }
@@ -79,6 +91,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       var itemScope = Scope.FindChild ((oneBasedIndex - 1).ToString());
       return ClickItem (itemScope, actionOptions);
     }
@@ -88,6 +103,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
 
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       var itemScope = Scope.FindId (htmlID);
       return ClickItem (itemScope, actionOptions);
     }
@@ -96,6 +114,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
+
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var itemScope = Scope.FindTagWithAttribute ("span.listMenuItem", DiagnosticMetadataAttributes.Content, displayText);
       return ClickItem (itemScope, actionOptions);
@@ -107,6 +128,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         IWebTestActionOptions actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
+
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var itemScope = Scope.FindTagWithAttributeUsingOperator (
           "span.listMenuItem",

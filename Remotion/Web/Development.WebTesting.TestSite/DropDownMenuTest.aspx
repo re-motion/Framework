@@ -42,6 +42,11 @@
             </PersistedCommand>
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif"></remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID6" Text="DisabledItem" IsDisabled="True">
+            <PersistedCommand>
+              <remotion:Command Type="Href" HrefCommand-Href="DropDownMenuTest.wxe" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
         </MenuItems>
       </remotion:DropDownMenu>
       <div id="scope">
@@ -52,6 +57,32 @@
           </MenuItems>
         </remotion:DropDownMenu>
       </div>
+      <h3>DropDownMenu3</h3>
+      <remotion:DropDownMenu ID="MyDropDownMenu_Disabled" Mode="DropDownMenu" TitleText="Text" Enabled="False" runat="server">
+        <MenuItems>
+          <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="EventItem">
+            <PersistedCommand>
+              <remotion:Command Type="Event" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category1" ItemID="ItemID2" Text="HrefItem">
+            <PersistedCommand>
+              <remotion:Command Type="Href" HrefCommand-Href="DropDownMenuTest.wxe" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID3" Text="NoneItem">
+            <PersistedCommand>
+              <remotion:Command Type="None" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID4" Text="WxeFunctionItem">
+            <PersistedCommand>
+              <remotion:Command Type="WxeFunction" WxeFunctionCommand-MappingID="ListMenuTest" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif"></remotion:WebMenuItem>
+        </MenuItems>
+      </remotion:DropDownMenu>
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

@@ -90,6 +90,7 @@
     <Compile Include="MultiWindowTest.cs" />
     <Compile Include="MultiWindowTestPageObject.cs" />
     <Compile Include="CustomWebTestConfigurationFactory.cs" />
+    <Compile Include="ElementScopeTest.cs" />
     <Compile Include="ScopeControlObjectTest.cs" />
     <Compile Include="ScreenshotTest.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotTesting.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="IntegrationTest.cs" />
     <Compile Include="TabbedMenuControlObjectTest.cs" />
     <Compile Include="TabbedMultiViewControlObjectTest.cs" />
+    <Compile Include="TestCaseFactories\GeneralTestCaseFactory.cs" />
     <Compile Include="TestCaseFactories\ItemIDControlSelectorTestCaseFactory.cs" />
     <Compile Include="WebFormsTestPageObject.cs" />
     <Compile Include="WebTabStripControlObjectTest.cs" />

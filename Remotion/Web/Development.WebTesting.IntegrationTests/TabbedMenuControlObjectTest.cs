@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -40,6 +41,32 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestIsDisabled_TabsDisabled ()
+    {
+      var home = Start();
+
+      var control = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
+
+      var definitions = control.GetItemDefinitions();
+      Assert.That (definitions[3].IsDisabled, Is.True);
+      Assert.That (definitions[5].IsDisabled, Is.True);
+    }
+
+    [Test]
+    public void TestIsDisabled_SetMethodsThrow ()
+    {
+      var home = Start();
+
+      var control = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
+      Assert.That (() => control.SelectItem().WithDisplayText ("DisabledCommandTabTitle"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectItem().WithDisplayTextContains ("DisabledCommandTabTitle"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectItem().WithIndex (6), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectItem().WithHtmlID ("body_MyListMenu_Disabled_5"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectItem().WithItemID ("DisabledCommandTab"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectItem ("DisabledCommandTab"), Throws.InstanceOf<MissingHtmlException>());
+    }
+
+    [Test]
     public void TestStatusText ()
     {
       var home = Start();
@@ -56,19 +83,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var tabbedMenu = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
 
       var items = tabbedMenu.GetItemDefinitions();
-      Assert.That (items.Count, Is.EqualTo (5));
-
+      Assert.That (items.Count, Is.EqualTo (6));
+      
       Assert.That (items[0].ItemID, Is.EqualTo ("EventCommandTab"));
       Assert.That (items[0].Index, Is.EqualTo (1));
       Assert.That (items[0].Text, Is.EqualTo ("EventCommandTabTitle"));
-      Assert.That (items[0].IsEnabled, Is.True);
+      Assert.That (items[0].IsDisabled, Is.False);
 
-      Assert.That (items[2].IsEnabled, Is.True); // yep, currently we have no way to determine if a menu item is really enabled or not
+      Assert.That (items[3].IsDisabled, Is.True);
 
       Assert.That (items[4].ItemID, Is.EqualTo ("TabWithSubMenu"));
       Assert.That (items[4].Index, Is.EqualTo (5));
       Assert.That (items[4].Text, Is.EqualTo ("TabWithSubMenuTitle"));
-      Assert.That (items[4].IsEnabled, Is.True);
+      Assert.That (items[4].IsDisabled, Is.False);
     }
 
     [Test]
@@ -132,12 +159,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (subMenuItems[0].ItemID, Is.EqualTo ("SubMenuTab1"));
       Assert.That (subMenuItems[0].Index, Is.EqualTo (1));
       Assert.That (subMenuItems[0].Text, Is.EqualTo ("SubMenuTab1Title"));
-      Assert.That (subMenuItems[0].IsEnabled, Is.True);
+      Assert.That (subMenuItems[0].IsDisabled, Is.False);
 
       Assert.That (subMenuItems[2].ItemID, Is.EqualTo ("SubMenuTab3"));
       Assert.That (subMenuItems[2].Index, Is.EqualTo (3));
       Assert.That (subMenuItems[2].Text, Is.EqualTo ("SubMenuTab3Title"));
-      Assert.That (subMenuItems[2].IsEnabled, Is.True);
+      Assert.That (subMenuItems[2].IsDisabled, Is.False);
     }
 
     [Test]

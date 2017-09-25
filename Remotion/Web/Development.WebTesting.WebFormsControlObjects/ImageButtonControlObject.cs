@@ -20,6 +20,7 @@ using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
@@ -27,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   /// <summary>
   /// Control object for <see cref="T:System.Web.UI.WebControls.ImageButton"/>.
   /// </summary>
-  public class ImageButtonControlObject : WebFormsControlObject, IClickableControlObject
+  public class ImageButtonControlObject : WebFormsControlObject, IClickableControlObject, ISupportsDisabledState
   {
     public ImageButtonControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -43,9 +44,18 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       return Scope["src"];
     }
 
+    /// <inheritdoc />
+    public bool IsDisabled ()
+    {
+      return Scope.Disabled;
+    }
+
     /// <inheritdoc/>
     public UnspecifiedPageObject Click (IWebTestActionOptions actionOptions = null)
     {
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
       new ClickAction (this, Scope).Execute (actualActionOptions);
       return UnspecifiedPage();

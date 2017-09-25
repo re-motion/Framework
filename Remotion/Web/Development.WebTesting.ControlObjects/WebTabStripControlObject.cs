@@ -39,7 +39,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public WebTabStripTabDefinition GetSelectedTab ()
     {
       var tabScope = Scope.FindCss ("span.tabStripTabSelected");
-      return new WebTabStripTabDefinition (tabScope[DiagnosticMetadataAttributes.ItemID], -1, tabScope[DiagnosticMetadataAttributes.Content]);
+      return new WebTabStripTabDefinition (
+          tabScope[DiagnosticMetadataAttributes.ItemID],
+          -1,
+          tabScope[DiagnosticMetadataAttributes.Content],
+          tabScope[DiagnosticMetadataAttributes.IsDisabled] == "true");
     }
 
     /// <inheritdoc/>
@@ -54,7 +58,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                           new WebTabStripTabDefinition (
                               tabScope[DiagnosticMetadataAttributes.ItemID],
                               i + 1,
-                              tabScope[DiagnosticMetadataAttributes.Content]))
+                              tabScope[DiagnosticMetadataAttributes.Content],
+                              tabScope[DiagnosticMetadataAttributes.IsDisabled] == "true"))
                   .ToList());
     }
 

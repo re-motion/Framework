@@ -81,7 +81,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       return new WebTabStripTabDefinition (
           tabDefinition.ItemID.Substring (0, tabDefinition.ItemID.Length - "_Tab".Length),
           tabDefinition.Index,
-          tabDefinition.Title);
+          tabDefinition.Title,
+          tabDefinition.IsDisabled);
     }
 
     /// <inheritdoc/>

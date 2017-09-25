@@ -16,6 +16,7 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
@@ -38,6 +39,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public bool IsReadOnly ()
     {
       return Scope[DiagnosticMetadataAttributes.IsReadOnly] == "true";
+    }
+
+    /// <summary>
+    /// Returns whether the control is enabled.
+    /// </summary>
+    public bool IsDisabled ()
+    {
+      return Scope[DiagnosticMetadataAttributes.IsDisabled] == "true";
     }
   }
 }

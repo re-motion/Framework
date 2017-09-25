@@ -42,6 +42,11 @@
             </PersistedCommand>
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif"></remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID6" Text="DisabledItem" IsDisabled="True">
+            <PersistedCommand>
+              <remotion:Command Type="Href" HrefCommand-Href="ListMenuTest.wxe" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
         </MenuItems>
       </remotion:ListMenu>
       <div id="scope">
@@ -52,6 +57,12 @@
           </MenuItems>
         </remotion:ListMenu>
       </div>
+      <h3>ListMenu3 - Disabled</h3>
+      <remotion:ListMenu ID="MyListMenu_Disabled" runat="server" Enabled="False">
+        <MenuItems>
+          <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="Item"/>
+        </MenuItems>
+      </remotion:ListMenu>
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

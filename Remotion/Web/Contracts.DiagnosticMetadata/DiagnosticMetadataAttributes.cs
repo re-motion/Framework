@@ -28,9 +28,11 @@ namespace Remotion.Web.Contracts.DiagnosticMetadata
     public static readonly string ControlType = "data-control-type";
     public static readonly string IndexInCollection = "data-index";
     public static readonly string IsReadOnly = "data-is-readonly";
+    public static readonly string IsDisabled = "data-is-disabled";
     public static readonly string ItemID = "data-item-id";
     public static readonly string TriggersNavigation = "data-triggers-navigation";
     public static readonly string TriggersPostBack = "data-triggers-postback";
+
 
     public static readonly string WebTreeViewNumberOfChildren = "data-webtreeview-number-of-children";
     public static readonly string WebTreeViewIsSelectedNode = "data-webtreeview-is-selected-node";

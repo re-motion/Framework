@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -22,6 +23,7 @@ using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -29,6 +31,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class DropDownMenuControlObjectTest : IntegrationTest
   {
     // Note: the <see cref="T:DropDownMenu.Mode"/>=<see cref="T:MenuMode.ContextMenu"/> option is tested indirectly by the BocTreeViewControlObjectTest.
+
+    [Test]
+    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    public void GenericTests (GenericSelectorTestSetupAction<DropDownMenuSelector, DropDownMenuControlObject> testSetupAction)
+    {
+      testSetupAction (Helper, e => e.DropDownMenus(), "dropDownMenu");
+    }
 
     [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
@@ -43,6 +52,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestIsDisabled_SetMethodsThrow ()
+    {
+      var home = Start();
+
+      var disabledControl = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_Disabled");
+      Assert.That (disabledControl.IsDisabled(), Is.True);
+      Assert.That (() => disabledControl.GetItemDefinitions(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => disabledControl.SelectItem().WithDisplayText ("EventItem"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => disabledControl.SelectItem().WithDisplayTextContains ("Href"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => disabledControl.SelectItem().WithIndex (1), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => disabledControl.SelectItem().WithHtmlID ("body_MyDropDownMenu_Disabled_3"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => disabledControl.SelectItem().WithItemID ("ItemID4"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => disabledControl.SelectItem ("ItemID4"), Throws.InstanceOf<MissingHtmlException>());
+
+      var enabledControl = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+      Assert.That (() => enabledControl.SelectItem ("ItemID3"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => enabledControl.SelectItem ("ItemID6"), Throws.InstanceOf<MissingHtmlException>());
+    }
+
+    [Test]
     public void TestGetItemDefinitions ()
     {
       var home = Start();
@@ -50,19 +79,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
 
       var items = dropDownMenu.GetItemDefinitions();
-      Assert.That (items.Count, Is.EqualTo (5));
+      Assert.That (items.Count, Is.EqualTo (6));
 
       Assert.That (items[0].ItemID, Is.EqualTo ("ItemID1"));
       Assert.That (items[0].Index, Is.EqualTo (1));
       Assert.That (items[0].Text, Is.EqualTo ("EventItem"));
-      Assert.That (items[0].IsEnabled, Is.True);
+      Assert.That (items[0].IsDisabled, Is.False);
 
-      Assert.That (items[2].IsEnabled, Is.False);
+      Assert.That (items[2].IsDisabled, Is.True);
 
       Assert.That (items[4].ItemID, Is.EqualTo ("ItemID5"));
       Assert.That (items[4].Index, Is.EqualTo (5));
       Assert.That (items[4].Text, Is.EqualTo (""));
-      Assert.That (items[4].IsEnabled, Is.True);
+      Assert.That (items[4].IsDisabled, Is.False);
     }
 
     [Test]

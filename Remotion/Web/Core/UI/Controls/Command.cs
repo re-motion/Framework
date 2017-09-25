@@ -424,17 +424,13 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("style", style);
 
       var commandInfo = GetCommandInfo (postBackEvent, parameters, onClick, securableObject, additionalUrlParameters, includeNavigationUrlParameters);
-      if (commandInfo != null)
-        commandInfo.AddAttributesToRender (writer, renderingFeatures);
+      commandInfo.AddAttributesToRender (writer, renderingFeatures);
       
       if (OwnerControl != null && !string.IsNullOrEmpty (OwnerControl.ClientID) && !string.IsNullOrEmpty ( ItemID))
       {
         var clientID = OwnerControl.ClientID + "_" + ItemID;
         writer.AddAttribute (HtmlTextWriterAttribute.Id, clientID);
       }
-
-      if (commandInfo == null && _type == CommandType.None && _noneCommand.EnableFocus)
-        writer.AddAttribute (HtmlTextWriterAttribute.Tabindex, "0");
 
       style.AddAttributesToRender (writer);
       
@@ -496,7 +492,7 @@ namespace Remotion.Web.UI.Controls
         bool includeNavigationUrlParameters)
     {
       if (!HasAccess (securableObject))
-        return null;
+        return GetCommandInfoForNoneCommand();
 
       switch (_type)
       {
@@ -507,7 +503,7 @@ namespace Remotion.Web.UI.Controls
         case CommandType.WxeFunction:
           return GetCommandInfoForWxeFunctionCommand (postBackEvent, onClick, additionalUrlParameters, includeNavigationUrlParameters);
         case CommandType.None:
-          return null;
+          return GetCommandInfoForNoneCommand();
         default:
           throw new InvalidOperationException (
               string.Format ("The CommandType '{0}' is not supported by the '{1}'.", _type, typeof (Command).FullName));
@@ -630,6 +626,12 @@ namespace Remotion.Web.UI.Controls
           StringUtility.EmptyToNull (_toolTip),
           StringUtility.EmptyToNull (_accessKey),
           AppendReturnStatementOnDemand(postBackEvent + (onClick ?? string.Empty)));
+    }
+
+    /// <summary> Creates a <see cref="CommandInfo"/> for the <see cref="NoneCommand"/>. </summary>
+    protected virtual CommandInfo GetCommandInfoForNoneCommand ()
+    {
+      return CommandInfo.CreateForNone (_noneCommand.EnableFocus);
     }
 
     private string AppendReturnStatementOnDemand (string script)
