@@ -67,6 +67,7 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
+    <Content Include="ElementScopeTest.aspx" />
     <Content Include="PlatformTest.aspx" />
     <Content Include="Empty.aspx" />
     <Content Include="GenericTest.aspx" />
@@ -84,6 +85,7 @@
     <Content Include="ScopeTest.aspx" />
     <Content Include="DropDownListTest.aspx" />
     <Content Include="ScreenshotTest.aspx" />
+    <Content Include="FrameTestFrame.aspx" />
     <Content Include="ScreenshotTestFrame.aspx" />
     <Content Include="ScrollTest.aspx" />
     <Content Include="TreeViewTest.aspx" />
@@ -127,6 +129,14 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="ElementScopeTest.aspx.cs">
+      <DependentUpon>ElementScopeTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ElementScopeTest.aspx.designer.cs">
+      <DependentUpon>ElementScopeTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ElementScopeTestFunction.cs" />
     <Compile Include="GenericPages\AnchorGenericTestPage.cs" />
     <Compile Include="GenericPages\CommandGenericTestPage.cs" />
     <Compile Include="GenericPages\DropDownMenuGenericTestPage.cs" />
@@ -157,6 +167,13 @@
     <Compile Include="MouseTest.aspx.designer.cs">
       <DependentUpon>MouseTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FrameTestFrame.aspx.cs">
+      <DependentUpon>FrameTestFrame.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FrameTestFrame.aspx.designer.cs">
+      <DependentUpon>FrameTestFrame.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ScreenshotTestFrame.aspx.cs">
       <DependentUpon>ScreenshotTestFrame.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -170,6 +187,7 @@
     </Compile>
     <Compile Include="GenericTest.aspx.cs">
       <DependentUpon>GenericTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="GenericTest.aspx.designer.cs">
       <DependentUpon>GenericTest.aspx</DependentUpon>

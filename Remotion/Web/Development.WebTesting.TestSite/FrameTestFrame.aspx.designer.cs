@@ -7,11 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using Remotion.Web.ExecutionEngine;
-
 namespace Remotion.Web.Development.WebTesting.TestSite {
     
     
-    public partial class ScopeTest {
+    public partial class FrameTestFrame {
     }
 }
