@@ -34,67 +34,6 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   /// </summary>
   public class TestExecutionScreenshotRecorder
   {
-    internal static class ScreenshotCapturerFileNameGenerator
-    {
-      /// <summary>
-      /// Combines the given <paramref name="screenshotDirectory"/> with the <paramref name="baseFileName"/>, the suffix <paramref name="suffix"/> and
-      /// the file <paramref name="extension"/>. If the full file path would be longer than 260 characters, the <paramref name="baseFileName"/> is
-      /// shortened accordingly.
-      /// </summary>
-      /// <exception cref="PathTooLongException">
-      /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="baseFileName"/>).
-      /// </exception>
-      public static string GetFullScreenshotFilePath (string screenshotDirectory, string baseFileName, string suffix, string extension)
-      {
-        var sanitizedBaseFileName = SanitizeFileName (baseFileName);
-        var filePath = GetFullScreenshotFilePathInternal (screenshotDirectory, sanitizedBaseFileName, suffix, extension);
-        if (filePath.Length > 260)
-        {
-          var shortenedSanitizedBaseFileName = ShortenBaseFileName (filePath, sanitizedBaseFileName);
-          filePath = GetFullScreenshotFilePathInternal (screenshotDirectory, shortenedSanitizedBaseFileName, suffix, extension);
-        }
-
-        return filePath;
-      }
-
-      /// <summary>
-      /// Combines the given <paramref name="screenshotDirectory"/> with the <paramref name="baseFileName"/>, the suffix <paramref name="suffix"/> and
-      /// the file <paramref name="extension"/>.
-      /// </summary>
-      private static string GetFullScreenshotFilePathInternal (string screenshotDirectory, string baseFileName, string suffix, string extension)
-      {
-        var fileName = string.Format ("{0}.{1}.{2}", baseFileName, suffix, extension);
-        return Path.Combine (screenshotDirectory, fileName);
-      }
-
-      /// <summary>
-      /// Removes all invalid file name characters from the given <paramref name="fileName"/>.
-      /// </summary>
-      private static string SanitizeFileName (string fileName)
-      {
-        foreach (var c in Path.GetInvalidFileNameChars())
-          fileName = fileName.Replace (c, '_');
-
-        return fileName;
-      }
-
-      /// <summary>
-      /// Reduces the <paramref name="baseFileName"/> length such that the <paramref name="fullFilePath"/> is no longer than 260 characters. Throws an
-      /// <see cref="PathTooLongException"/> if the <paramref name="baseFileName"/> would have to be reduced to zero characters.
-      /// </summary>
-      private static string ShortenBaseFileName (string fullFilePath, string baseFileName)
-      {
-        var overflow = fullFilePath.Length - 260;
-        if (overflow > baseFileName.Length - 1)
-        {
-          throw new PathTooLongException (
-              string.Format ("Could not save screenshot to '{0}', the file path is too long and cannot be reduced to 260 characters.", fullFilePath));
-        }
-
-        return baseFileName.Substring (0, baseFileName.Length - overflow);
-      }
-    }
-
     private static readonly ILog s_log = LogManager.GetLogger (typeof (TestExecutionScreenshotRecorder));
 
     private readonly string _outputDirectory;
@@ -144,7 +83,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNullOrEmpty ("testName", testName);
 
-      var filePath = ScreenshotCapturerFileNameGenerator.GetFullScreenshotFilePath (_outputDirectory, testName, "Desktop", "png");
+      var filePath = ScreenshotRecorderFileNameGenerator.GetFullScreenshotFilePath (_outputDirectory, testName, "Desktop", "png");
 
       try
       {
@@ -221,7 +160,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
               GetCursorInformation().Draw (graphics);
             }
 
-            var filePath = ScreenshotCapturerFileNameGenerator.GetFullScreenshotFilePath (_outputDirectory, testName, windowSuffix, "png");
+            var filePath = ScreenshotRecorderFileNameGenerator.GetFullScreenshotFilePath (_outputDirectory, testName, windowSuffix, "png");
 
             screenshot.Image.Save (filePath, ImageFormat.Png);
           }

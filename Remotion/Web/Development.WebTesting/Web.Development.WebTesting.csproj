@@ -177,6 +177,7 @@
     <Compile Include="ISupportsDisabledState.cs" />
     <Compile Include="Utilities\DownloadResultNotFoundException.cs" />
     <Compile Include="Utilities\OptionalParameter.cs" />
+    <Compile Include="Utilities\ScreenshotRecorderFileNameGenerator.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\AdvancedChromeOptions.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ExtendedChromeOptions.cs" />
     <Compile Include="BrowserSession\Chrome\ChromeBrowserSession.cs" />

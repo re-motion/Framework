@@ -17,14 +17,13 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.UnitTests
 {
   [TestFixture]
-  public class ScreenshotCapturerFileNameGeneratorTest
+  public class ScreenshotRecorderFileNameGeneratorTest
   {
     [Test]
     public void GetFullScreenshotFilePath_ShouldReturnCorrectPath ()
@@ -34,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var randomSuffix = "Browser";
       var randomExtension = "png";
 
-      var fullScreenshotFilePath = CallGetFullScreenshotFilePath (randomPath, randomFilename, randomSuffix, randomExtension);
+      var fullScreenshotFilePath = ScreenshotRecorderFileNameGenerator.GetFullScreenshotFilePath (randomPath, randomFilename, randomSuffix, randomExtension);
 
       var expectedPath = string.Format ("{0}\\{1}.{2}.{3}", randomPath, randomFilename, randomSuffix, randomExtension);
 
@@ -50,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var randomSuffix = "Browser";
       var randomExtension = "png";
 
-      var fullScreenshotFilePath = CallGetFullScreenshotFilePath (randomPath, randomFilename, randomSuffix, randomExtension);
+      var fullScreenshotFilePath = ScreenshotRecorderFileNameGenerator.GetFullScreenshotFilePath (randomPath, randomFilename, randomSuffix, randomExtension);
 
       var fileNameWithInvalidCharsReplaced = new String ('_', randomFilename.Length);
       var expectedPath = string.Format ("{0}\\{1}.{2}.{3}", randomPath, fileNameWithInvalidCharsReplaced, randomSuffix, randomExtension);
@@ -69,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       // + 3 is for the extra 3 chars in the final Path to have an resulting path of exactly 260 chars
       var largeFileName = new String ('A', 260 - (currentPathLength + 3));
 
-      var fullScreenshotFilePath = CallGetFullScreenshotFilePath (randomPath, largeFileName, randomSuffix, randomExtension);
+      var fullScreenshotFilePath = ScreenshotRecorderFileNameGenerator.GetFullScreenshotFilePath (randomPath, largeFileName, randomSuffix, randomExtension);
 
       var expectedPath = string.Format ("{0}\\{1}.{2}.{3}", randomPath, largeFileName, randomSuffix, randomExtension);
 
@@ -88,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
 
       var randomFilename = "0123456789";
 
-      var fullScreenshotFilePath = CallGetFullScreenshotFilePath (largePath, randomFilename, randomSuffix, randomExtension);
+      var fullScreenshotFilePath = ScreenshotRecorderFileNameGenerator.GetFullScreenshotFilePath (largePath, randomFilename, randomSuffix, randomExtension);
 
       var reducedRandomFilename = "01234";
       var expectedPath = string.Format ("{0}\\{1}.{2}.{3}", largePath, reducedRandomFilename, randomSuffix, randomExtension);
@@ -108,24 +107,9 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var fullFilePath = string.Format ("{0}\\{1}.{2}.{3}", largePath, randomFilename, randomSuffix, randomExtension);
 
       Assert.That (
-          () => CallGetFullScreenshotFilePath (largePath, randomFilename, randomSuffix, randomExtension),
+          () => ScreenshotRecorderFileNameGenerator.GetFullScreenshotFilePath (largePath, randomFilename, randomSuffix, randomExtension),
           Throws.Exception.TypeOf<PathTooLongException>().With.Message.EqualTo (
               string.Format ("Could not save screenshot to '{0}', the file path is too long and cannot be reduced to 260 characters.", fullFilePath)));
-    }
-
-    public string CallGetFullScreenshotFilePath (string screenshotDirectory, string baseFileName, string suffix, string extension)
-    {
-      var privateObject = typeof (TestExecutionScreenshotRecorder).GetNestedType ("ScreenshotCapturerFileNameGenerator", BindingFlags.Static | BindingFlags.NonPublic);
-      var method = privateObject.GetMethod ("GetFullScreenshotFilePath");
-
-      try
-      {
-        return (string) method.Invoke (null, new object[] { screenshotDirectory, baseFileName, suffix, extension });
-      }
-      catch (TargetInvocationException exception)
-      {
-        throw exception.InnerException;
-      }
     }
   }
 }
