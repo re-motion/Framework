@@ -19,7 +19,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using Coypu;
 using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;
@@ -35,6 +34,67 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   /// </summary>
   public class TestExecutionScreenshotRecorder
   {
+    internal static class ScreenshotCapturerFileNameGenerator
+    {
+      /// <summary>
+      /// Combines the given <paramref name="screenshotDirectory"/> with the <paramref name="baseFileName"/>, the suffix <paramref name="suffix"/> and
+      /// the file <paramref name="extension"/>. If the full file path would be longer than 260 characters, the <paramref name="baseFileName"/> is
+      /// shortened accordingly.
+      /// </summary>
+      /// <exception cref="PathTooLongException">
+      /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="baseFileName"/>).
+      /// </exception>
+      public static string GetFullScreenshotFilePath (string screenshotDirectory, string baseFileName, string suffix, string extension)
+      {
+        var sanitizedBaseFileName = SanitizeFileName (baseFileName);
+        var filePath = GetFullScreenshotFilePathInternal (screenshotDirectory, sanitizedBaseFileName, suffix, extension);
+        if (filePath.Length > 260)
+        {
+          var shortenedSanitizedBaseFileName = ShortenBaseFileName (filePath, sanitizedBaseFileName);
+          filePath = GetFullScreenshotFilePathInternal (screenshotDirectory, shortenedSanitizedBaseFileName, suffix, extension);
+        }
+
+        return filePath;
+      }
+
+      /// <summary>
+      /// Combines the given <paramref name="screenshotDirectory"/> with the <paramref name="baseFileName"/>, the suffix <paramref name="suffix"/> and
+      /// the file <paramref name="extension"/>.
+      /// </summary>
+      private static string GetFullScreenshotFilePathInternal (string screenshotDirectory, string baseFileName, string suffix, string extension)
+      {
+        var fileName = string.Format ("{0}.{1}.{2}", baseFileName, suffix, extension);
+        return Path.Combine (screenshotDirectory, fileName);
+      }
+
+      /// <summary>
+      /// Removes all invalid file name characters from the given <paramref name="fileName"/>.
+      /// </summary>
+      private static string SanitizeFileName (string fileName)
+      {
+        foreach (var c in Path.GetInvalidFileNameChars())
+          fileName = fileName.Replace (c, '_');
+
+        return fileName;
+      }
+
+      /// <summary>
+      /// Reduces the <paramref name="baseFileName"/> length such that the <paramref name="fullFilePath"/> is no longer than 260 characters. Throws an
+      /// <see cref="PathTooLongException"/> if the <paramref name="baseFileName"/> would have to be reduced to zero characters.
+      /// </summary>
+      private static string ShortenBaseFileName (string fullFilePath, string baseFileName)
+      {
+        var overflow = fullFilePath.Length - 260;
+        if (overflow > baseFileName.Length - 1)
+        {
+          throw new PathTooLongException (
+              string.Format ("Could not save screenshot to '{0}', the file path is too long and cannot be reduced to 260 characters.", fullFilePath));
+        }
+
+        return baseFileName.Substring (0, baseFileName.Length - overflow);
+      }
+    }
+
     private static readonly ILog s_log = LogManager.GetLogger (typeof (TestExecutionScreenshotRecorder));
 
     private readonly string _outputDirectory;
@@ -73,13 +133,18 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     /// <remarks>
     /// Screenshot will be saved under: <c>&lt;testName&gt;.Desktop.png</c>
+    /// Any <see cref="Path"/>.<see cref="Path.GetInvalidFileNameChars"/> in the <paramref name="testName"/> will be replaced by "_"
+    /// If the full file path would be longer than 260 characters, the <paramref name="testName"/> is
+    /// shortened accordingly.
     /// </remarks>
+    /// <exception cref="PathTooLongException">
+    /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="testName"/>).
+    /// </exception>
     public void TakeDesktopScreenshot ([NotNull] string testName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("testName", testName);
 
-      var fileName = string.Join (".", testName, "Desktop", "png");
-      var filePath = Path.Combine (_outputDirectory, fileName);
+      var filePath = ScreenshotCapturerFileNameGenerator.GetFullScreenshotFilePath (_outputDirectory, testName, "Desktop", "png");
 
       try
       {
@@ -94,6 +159,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
           GetCursorInformation().Draw (graphics);
         }
+
         screenshot.Image.Save (filePath, ImageFormat.Png);
 
         s_log.InfoFormat ("Saved screenshot of desktop to '{0}'.", filePath);
@@ -108,8 +174,14 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Takes a screenshot of the desktop, crops it to the browser content area and saves it under the specified <paramref name="testName"/>.
     /// </summary>
     /// <remarks>
-    /// Screenshot will be saved under: <c>&lt;testName&gt;.Browser&lt;sessionID&gt;-&lt;windowID&gt;.png</c>
+    /// Screenshot will be saved under: <c>&lt;testName&gt;.Browser&lt;sessionID&gt;-&lt;windowID&gt;.png</c>.
+    /// Any <see cref="Path"/>.<see cref="Path.GetInvalidFileNameChars"/> in the <paramref name="testName"/> will be replaced by "_".
+    /// If the full file path would be longer than 260 characters, the <paramref name="testName"/> is
+    /// shortened accordingly.
     /// </remarks>
+    /// <exception cref="PathTooLongException">
+    /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="testName"/>).
+    /// </exception>
     public void TakeBrowserScreenshot (
         [NotNull] string testName,
         [NotNull] IBrowserSession[] browserSessions,
@@ -125,12 +197,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       foreach (var browserSession in browserSessions)
       {
         var driver = (IWebDriver) browserSession.Driver.Native;
-        var sessionName = string.Concat (testName, ".", "Browser", sessionID);
+        var baseSuffix = string.Concat ("Browser", sessionID);
 
         var windowID = 0;
         foreach (var windowHandle in driver.WindowHandles)
         {
-          var windowName = string.Concat (sessionName, "-", windowID, ".png");
+          var windowSuffix = string.Concat (baseSuffix, "-", windowID);
 
           driver.SwitchTo().Window (windowHandle);
 
@@ -148,7 +220,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
               GetCursorInformation().Draw (graphics);
             }
-            screenshot.Image.Save (Path.Combine (_outputDirectory, windowName), ImageFormat.Png);
+
+            var filePath = ScreenshotCapturerFileNameGenerator.GetFullScreenshotFilePath (_outputDirectory, testName, windowSuffix, "png");
+
+            screenshot.Image.Save (filePath, ImageFormat.Png);
           }
           catch (Exception ex)
           {

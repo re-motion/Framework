@@ -107,6 +107,7 @@
     <Compile Include="TabbedMultiViewControlObjectTest.cs" />
     <Compile Include="TestCaseFactories\GeneralTestCaseFactory.cs" />
     <Compile Include="TestCaseFactories\ItemIDControlSelectorTestCaseFactory.cs" />
+    <Compile Include="TestExecutionScreenshotRecorderTest.cs" />
     <Compile Include="WebFormsTestPageObject.cs" />
     <Compile Include="WebTabStripControlObjectTest.cs" />
     <Compile Include="AnchorControlObjectTest.cs" />
