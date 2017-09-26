@@ -18,8 +18,8 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.UnitTests
@@ -118,16 +118,14 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
     {
       var webtestingAssembly = typeof (TestExecutionScreenshotRecorder).Assembly;
       var screenshotRecorderPathUtilityType = webtestingAssembly.GetType ("Remotion.Web.Development.WebTesting.Utilities.ScreenshotRecorderPathUtility");
-      var getFullScreenshotFilePathMethod = screenshotRecorderPathUtilityType.GetMethod ("GetFullScreenshotFilePath");
 
-      try
-      {
-        return (string) getFullScreenshotFilePathMethod.Invoke (null, new object[] { screenshotDirectory, baseFileName, suffix, extension });
-      }
-      catch (TargetInvocationException exception)
-      {
-        throw exception.InnerException;
-      }
+      return (string) PrivateInvoke.InvokePublicStaticMethod (
+        screenshotRecorderPathUtilityType,
+        "GetFullScreenshotFilePath",
+        screenshotDirectory,
+        baseFileName,
+        suffix,
+        extension);
     }
   }
 }
