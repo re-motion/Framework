@@ -19,7 +19,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using Coypu;
 using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;
@@ -73,13 +72,18 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     /// <remarks>
     /// Screenshot will be saved under: <c>&lt;testName&gt;.Desktop.png</c>
+    /// Any <see cref="Path"/>.<see cref="Path.GetInvalidFileNameChars"/> in the <paramref name="testName"/> will be replaced by "_"
+    /// If the full file path would be longer than 260 characters, the <paramref name="testName"/> is
+    /// shortened accordingly.
     /// </remarks>
+    /// <exception cref="PathTooLongException">
+    /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="testName"/>).
+    /// </exception>
     public void TakeDesktopScreenshot ([NotNull] string testName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("testName", testName);
 
-      var fileName = string.Join (".", testName, "Desktop", "png");
-      var filePath = Path.Combine (_outputDirectory, fileName);
+      var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath (_outputDirectory, testName, "Desktop", "png");
 
       try
       {
@@ -94,6 +98,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
           GetCursorInformation().Draw (graphics);
         }
+
         screenshot.Image.Save (filePath, ImageFormat.Png);
 
         s_log.InfoFormat ("Saved screenshot of desktop to '{0}'.", filePath);
@@ -108,8 +113,14 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Takes a screenshot of the desktop, crops it to the browser content area and saves it under the specified <paramref name="testName"/>.
     /// </summary>
     /// <remarks>
-    /// Screenshot will be saved under: <c>&lt;testName&gt;.Browser&lt;sessionID&gt;-&lt;windowID&gt;.png</c>
+    /// Screenshot will be saved under: <c>&lt;testName&gt;.Browser&lt;sessionID&gt;-&lt;windowID&gt;.png</c>.
+    /// Any <see cref="Path"/>.<see cref="Path.GetInvalidFileNameChars"/> in the <paramref name="testName"/> will be replaced by "_".
+    /// If the full file path would be longer than 260 characters, the <paramref name="testName"/> is
+    /// shortened accordingly.
     /// </remarks>
+    /// <exception cref="PathTooLongException">
+    /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="testName"/>).
+    /// </exception>
     public void TakeBrowserScreenshot (
         [NotNull] string testName,
         [NotNull] IBrowserSession[] browserSessions,
@@ -125,12 +136,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       foreach (var browserSession in browserSessions)
       {
         var driver = (IWebDriver) browserSession.Driver.Native;
-        var sessionName = string.Concat (testName, ".", "Browser", sessionID);
+        var baseSuffix = string.Concat ("Browser", sessionID);
 
         var windowID = 0;
         foreach (var windowHandle in driver.WindowHandles)
         {
-          var windowName = string.Concat (sessionName, "-", windowID, ".png");
+          var windowSuffix = string.Concat (baseSuffix, "-", windowID);
 
           driver.SwitchTo().Window (windowHandle);
 
@@ -148,7 +159,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
               GetCursorInformation().Draw (graphics);
             }
-            screenshot.Image.Save (Path.Combine (_outputDirectory, windowName), ImageFormat.Png);
+
+            var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath (_outputDirectory, testName, windowSuffix, "png");
+
+            screenshot.Image.Save (filePath, ImageFormat.Png);
           }
           catch (Exception ex)
           {
