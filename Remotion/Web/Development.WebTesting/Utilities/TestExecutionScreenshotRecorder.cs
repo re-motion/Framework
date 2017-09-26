@@ -83,7 +83,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNullOrEmpty ("testName", testName);
 
-      var filePath = ScreenshotRecorderFileNameGenerator.GetFullScreenshotFilePath (_outputDirectory, testName, "Desktop", "png");
+      var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath (_outputDirectory, testName, "Desktop", "png");
 
       try
       {
@@ -160,7 +160,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
               GetCursorInformation().Draw (graphics);
             }
 
-            var filePath = ScreenshotRecorderFileNameGenerator.GetFullScreenshotFilePath (_outputDirectory, testName, windowSuffix, "png");
+            var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath (_outputDirectory, testName, windowSuffix, "png");
 
             screenshot.Image.Save (filePath, ImageFormat.Png);
           }

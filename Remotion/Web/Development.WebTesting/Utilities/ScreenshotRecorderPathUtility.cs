@@ -23,7 +23,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   /// Provides a way to create a valid file path where a screenshot can be saved.
   /// Used by <see cref="TestExecutionScreenshotRecorder"/>
   /// </summary>
-  internal static class ScreenshotRecorderFileNameGenerator
+  internal static class ScreenshotRecorderPathUtility
   {
     /// <summary>
     /// Combines the given <paramref name="screenshotDirectory"/> with the <paramref name="baseFileName"/>, the suffix <paramref name="suffix"/> and

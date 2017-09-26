@@ -16,11 +16,8 @@
 // 
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle ("re-motion Web Testing Framework")]
 [assembly: AssemblyDescription ("Provides a basic infrastructure for performing web tests based on Selenium.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]
-
-[assembly:InternalsVisibleTo("Remotion.Web.Development.WebTesting.UnitTests")]
