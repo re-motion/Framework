@@ -248,7 +248,7 @@ namespace Remotion.Web.Development.WebTesting
       if (!hasSucceeded && ShouldTakeScreenshots())
       {
         var screenshotRecorder = new TestExecutionScreenshotRecorder (_testInfrastructureConfiguration.ScreenshotDirectory);
-        screenshotRecorder.Capture();
+        screenshotRecorder.CaptureCursor();
         screenshotRecorder.TakeDesktopScreenshot (_testName);
         screenshotRecorder.TakeBrowserScreenshot (_testName, _browserSessions.ToArray(), BrowserConfiguration.Locator);
       }

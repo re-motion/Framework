@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     private readonly string _outputDirectory;
 
-    private bool _captured;
+    private bool _isCursorCaptured;
     private CursorInformation _cursorInformation;
 
     public TestExecutionScreenshotRecorder ([NotNull] string outputDirectory)
@@ -62,10 +62,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Captures the current state of the mouse cursor. All subsequent calls to either <see cref="TakeDesktopScreenshot"/>
     /// or <see cref="TakeBrowserScreenshot"/> will use the captured cursor information instead of the current cursor information.
     /// </summary>
-    public void Capture ()
+    public void CaptureCursor ()
     {
-      _cursorInformation = CursorInformation.Capture();
-      _captured = true;
+      _cursorInformation = CaptureCursorInformationWithLog();
+      _isCursorCaptured = true;
     }
 
     /// <summary>
@@ -167,9 +167,22 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     private CursorInformation GetCursorInformation ()
     {
-      if (_captured)
+      if (_isCursorCaptured)
         return _cursorInformation;
-      return CursorInformation.Capture();
+      return CaptureCursorInformationWithLog();
+    }
+
+    private CursorInformation CaptureCursorInformationWithLog ()
+    {
+      try
+      {
+        return CursorInformation.Capture();
+      }
+      catch (Exception ex)
+      {
+        s_log.ErrorFormat ("Could not capture CursorInformation. Exception: \n{0}", ex);
+        return CursorInformation.Empty;
+      }
     }
   }
 }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -41,13 +42,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     private const uint c_cursorVisible = 0x1;
 
+    [DllImport ("user32.dll", SetLastError = true)]
+    private static extern bool GetCursorInfo (ref CursorInfoDto info);
+
     /// <summary>
     /// Represents an invisible cursor with default cursor image at position (0,0).
     /// </summary>
     public static readonly CursorInformation Empty = new CursorInformation (Point.Empty, Cursors.Default, false);
-
-    [DllImport ("user32.dll")]
-    private static extern bool GetCursorInfo (ref CursorInfoDto info);
 
     /// <summary>
     /// Captures the current <see cref="CursorInformation"/>.
@@ -60,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
                               };
 
       if (!GetCursorInfo (ref cursorInformation))
-        throw new InvalidOperationException ("Could not retrieve the cursor information.");
+        throw new InvalidOperationException ("Could not retrieve the cursor information.", new Win32Exception (Marshal.GetLastWin32Error()));
 
       if (cursorInformation.Flags == c_cursorVisible)
         return new CursorInformation (cursorInformation.ScreenPosition, new Cursor (cursorInformation.CursorHandle), true);
