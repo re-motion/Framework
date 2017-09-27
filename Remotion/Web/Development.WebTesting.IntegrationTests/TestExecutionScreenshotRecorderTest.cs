@@ -46,6 +46,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         File.Delete (file);
 
       Directory.Delete (_tempSavePath);
+
+      IntegrationTestTearDown();
     }
 
     [Test]
@@ -122,6 +124,54 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var tempFileNameWitCharReplaced = "_Random_File_Na_me_";
       var fullPathWitCharReplaced = CombineToFullPath (_tempSavePath, tempFileNameWitCharReplaced, suffix, extension);
       Assert.That (File.Exists (fullPathWitCharReplaced), Is.True);
+    }
+
+    [Test]
+    public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesNotThrowWhenBrowserDisposed ()
+    {
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var fileName = "RandomFileName";
+
+      var browserSession = Helper.CreateNewBrowserSession();
+
+      browserSession.Dispose();
+
+
+      Assert.That (
+          () =>
+              testExecutionScreenshotRecorder.TakeBrowserScreenshot (
+                  fileName,
+                  new[] { browserSession },
+                  Helper.BrowserConfiguration.Locator),
+          Throws.Nothing); 
+
+      var fullPath = CombineToFullPath (_tempSavePath, fileName, "Browser0-0", "png");
+      Assert.That (File.Exists (fullPath), Is.False);
+    }
+
+    [Test]
+    public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesNotThrowWhenBrowserDisposed_AndTakesNextScreenshotCorrectly ()
+    {
+      //Just open the browser
+      Start();
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var fileName = "RandomFileName";
+      var secondBrowserSession = Helper.CreateNewBrowserSession();
+
+
+      secondBrowserSession.Dispose();
+
+
+      Assert.That (
+          () =>
+              testExecutionScreenshotRecorder.TakeBrowserScreenshot (
+                  fileName,
+                  new[] { secondBrowserSession, Helper.MainBrowserSession},
+                  Helper.BrowserConfiguration.Locator),
+          Throws.Nothing); 
+
+      var fullPath = CombineToFullPath (_tempSavePath, fileName, "Browser1-0", "png");
+      Assert.That (File.Exists (fullPath), Is.True);
     }
 
     private string CombineToFullPath (string tempPath, string fileName, string suffix, string extension)

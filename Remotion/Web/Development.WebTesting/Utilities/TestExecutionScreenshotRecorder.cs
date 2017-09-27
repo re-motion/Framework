@@ -135,55 +135,58 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       var sessionID = 0;
       foreach (var browserSession in browserSessions)
       {
-        var driver = (IWebDriver) browserSession.Driver.Native;
-        var baseSuffix = string.Concat ("Browser", sessionID);
-
-        var windowID = 0;
-        foreach (var windowHandle in driver.WindowHandles)
-        {
-          var windowSuffix = string.Concat (baseSuffix, "-", windowID);
-
-          driver.SwitchTo().Window (windowHandle);
-
-          try
-          {
-            var screenshot = Screenshot.TakeBrowserScreenshot (browserSession, locator);
-            var browserContentBounds = locator.GetBrowserContentBounds (driver);
-
-            using (var graphics = Graphics.FromImage (screenshot.Image))
-            {
-              var transformMatrix = new Matrix();
-              transformMatrix.Translate (-browserContentBounds.X, -browserContentBounds.Y);
-
-              graphics.Transform = transformMatrix;
-
-              GetCursorInformation().Draw (graphics);
-            }
-
-            var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath (_outputDirectory, testName, windowSuffix, "png");
-
-            screenshot.Image.Save (filePath, ImageFormat.Png);
-          }
-          catch (Exception ex)
-          {
-            s_log.Error (string.Format ("Could not save screenshot of browser session window. (window: {0})", windowID), ex);
-          }
-
-          windowID++;
-        }
-
-        s_log.InfoFormat ("Saved screenshots for the browser session '{0}'.", browserSession.Window.Text);
-
-
+        SaveBrowserSessionScreenshot (testName, locator, browserSession, sessionID);
         sessionID++;
       }
     }
 
-    private CursorInformation GetCursorInformation ()
+    private void SaveBrowserSessionScreenshot (string testName, IBrowserContentLocator locator, IBrowserSession browserSession, int sessionID)
     {
-      if (_isCursorCaptured)
-        return _cursorInformation;
-      return CaptureCursorInformationWithLog();
+      var driver = browserSession.Driver;
+      if (driver == null)
+        return;
+
+      var nativeDriver = (IWebDriver) driver.Native;
+      if (nativeDriver == null)
+        return;
+
+      var baseSuffix = string.Concat ("Browser", sessionID);
+
+      var windowID = 0;
+      foreach (var windowHandle in nativeDriver.WindowHandles)
+      {
+        var windowSuffix = string.Concat (baseSuffix, "-", windowID);
+
+        try
+        {
+          nativeDriver.SwitchTo().Window (windowHandle);
+
+          var screenshot = Screenshot.TakeBrowserScreenshot (browserSession, locator);
+          var browserContentBounds = locator.GetBrowserContentBounds (nativeDriver);
+
+          using (var graphics = Graphics.FromImage (screenshot.Image))
+          {
+            var transformMatrix = new Matrix();
+            transformMatrix.Translate (-browserContentBounds.X, -browserContentBounds.Y);
+
+            graphics.Transform = transformMatrix;
+
+            GetCursorInformation().Draw (graphics);
+          }
+
+          var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath (_outputDirectory, testName, windowSuffix, "png");
+
+          screenshot.Image.Save (filePath, ImageFormat.Png);
+        }
+        catch (Exception ex)
+        {
+          s_log.Error (string.Format ("Could not save screenshot of browser session window. (window: {0})", windowID), ex);
+        }
+
+        windowID++;
+      }
+
+      s_log.InfoFormat ("Saved screenshots for the browser session '{0}'.", browserSession.Window.Text);
     }
 
     private CursorInformation CaptureCursorInformationWithLog ()
@@ -197,6 +200,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         s_log.ErrorFormat ("Could not capture CursorInformation. Exception: \n{0}", ex);
         return CursorInformation.Empty;
       }
+    }
+
+    private CursorInformation GetCursorInformation ()
+    {
+      if (_isCursorCaptured)
+        return _cursorInformation;
+      return CaptureCursorInformationWithLog();
     }
   }
 }
