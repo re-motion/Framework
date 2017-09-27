@@ -16,7 +16,11 @@
 // 
 using System;
 using System.IO;
+using System.Resources;
+using System.Threading;
 using NUnit.Framework;
+using OpenQA.Selenium;
+using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
@@ -46,6 +50,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         File.Delete (file);
 
       Directory.Delete (_tempSavePath);
+
+      if (IsAlertDialogPresent ((IWebDriver) Helper.MainBrowserSession.Driver.Native))
+        Helper.MainBrowserSession.Window.AcceptModalDialog();
 
       IntegrationTestTearDown();
     }
@@ -174,11 +181,75 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (File.Exists (fullPath), Is.True);
     }
 
+    [Test]
+    public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesNotThrowWhenAlertWindowIsOpen ()
+    {
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var fileName = "RandomFileName";
+
+      var home = Start();
+
+      // Produce an alert dialog
+      home.Frame.TextBoxes().GetByLocalID ("MyTextBox").FillWith ("MyText", FinishInput.Promptly);
+      var loadFrameFunctionInFrameButton = home.WebButtons().GetByID ("LoadFrameFunctionInFrame");
+      loadFrameFunctionInFrameButton.Click (Opt.ContinueImmediately());
+      Thread.Sleep (TimeSpan.FromSeconds (1)); //Cannot use normal CompletionDetection, as it would require to close the alert dialog
+ 
+      Assert.That (IsAlertDialogPresent ((IWebDriver) home.Context.Browser.Driver.Native), Is.True);
+
+
+      Assert.That (
+          () =>
+              testExecutionScreenshotRecorder.TakeBrowserScreenshot (
+                  fileName,
+                  new[] { Helper.MainBrowserSession },
+                  Helper.BrowserConfiguration.Locator),
+          Throws.Nothing);
+    }
+
+    [Test]
+    [Ignore ("Is currently not working. See RM-6837 for Details.")]
+    public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesCreateScreenshotWhenAlertWindowIsOpen ()
+    {
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var fileName = "RandomFileName";
+
+      var home = Start();
+
+      // Produce an alert dialog
+      home.Frame.TextBoxes().GetByLocalID ("MyTextBox").FillWith ("MyText", FinishInput.Promptly);
+      var loadFrameFunctionInFrameButton = home.WebButtons().GetByID ("LoadFrameFunctionInFrame");
+      loadFrameFunctionInFrameButton.Click (Opt.ContinueImmediately());
+      Thread.Sleep (TimeSpan.FromSeconds (1)); //Cannot use normal CompletionDetection, as it would require to close the alert dialog
+ 
+      Assert.That (IsAlertDialogPresent ((IWebDriver) home.Context.Browser.Driver.Native), Is.True);
+
+      testExecutionScreenshotRecorder.TakeBrowserScreenshot (
+          fileName,
+          new[] { Helper.MainBrowserSession },
+          Helper.BrowserConfiguration.Locator);
+
+      var fullPath = CombineToFullPath (_tempSavePath, fileName, "Browser0-0", "png");
+      Assert.That (File.Exists (fullPath), Is.True);
+    }
+
     private string CombineToFullPath (string tempPath, string fileName, string suffix, string extension)
     {
       var fullFileNameWitCharReplaced = string.Format ("{0}.{1}.{2}", fileName, suffix, extension);
       var fullPathWitCharReplaced = string.Concat (tempPath, "/", fullFileNameWitCharReplaced);
       return fullPathWitCharReplaced;
+    }
+
+    private bool IsAlertDialogPresent (IWebDriver selenium)
+    {
+      try
+      {
+        return selenium.SwitchTo() != null && selenium.SwitchTo().Alert() != null;
+      }
+      catch (NoAlertPresentException)
+      {
+        return false;
+      }
     }
 
     private MultiWindowTestPageObject Start ()
