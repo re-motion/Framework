@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -135,7 +136,15 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       var sessionID = 0;
       foreach (var browserSession in browserSessions)
       {
-        SaveBrowserSessionScreenshot (testName, locator, browserSession, sessionID);
+        try
+        {
+          SaveBrowserSessionScreenshot (testName, locator, browserSession, sessionID);
+        }
+        catch (Exception ex)
+        {
+          s_log.Error (string.Format ("Could not save screenshot of browser session window. (window: {0})", sessionID), ex);
+        }
+
         sessionID++;
       }
     }
@@ -186,7 +195,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         windowID++;
       }
 
-      s_log.InfoFormat ("Saved screenshots for the browser session '{0}'.", browserSession.Window.Text);
+      s_log.InfoFormat ("Saved screenshots for the browser session '{0}'.", GetWindowText (browserSession));
     }
 
     private CursorInformation CaptureCursorInformationWithLog ()
@@ -207,6 +216,18 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       if (_isCursorCaptured)
         return _cursorInformation;
       return CaptureCursorInformationWithLog();
+    }
+
+    private string GetWindowText (IBrowserSession browserSession)
+    {
+      try
+      {
+        return browserSession.Window.Text;
+      }
+      catch (Exception)
+      {
+        return "<unknown>";
+      }
     }
   }
 }
