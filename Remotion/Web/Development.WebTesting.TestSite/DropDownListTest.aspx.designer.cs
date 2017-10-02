@@ -40,21 +40,21 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         protected global::System.Web.UI.WebControls.DropDownList MyDropDownList3;
         
         /// <summary>
-        /// DropDownList4_Disabled control.
+        /// MyDropDownList4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList4_Disabled;
+        protected global::System.Web.UI.WebControls.DropDownList MyDropDownList4;
         
         /// <summary>
-        /// DropDownList5 control.
+        /// DropDownList5_Disabled control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList5;
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList5_Disabled;
     }
 }
