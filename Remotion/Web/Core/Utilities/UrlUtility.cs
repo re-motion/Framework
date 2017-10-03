@@ -33,6 +33,10 @@ namespace Remotion.Web.Utilities
     /// <param name="context"> The <see cref="HttpContextBase"/> to be used for retrieving the protocol and hostname. Must not be <see langword="null"/>. </param>
     /// <param name="virtualPath"> The virtual path. Must not be <see langword="null"/>. Must be rooted or absolute. </param>
     /// <returns> The absolute URL. </returns>
+    /// <remarks>
+    /// Note that the request casing is only preserved in the return value if the <paramref name="virtualPath"/> is a relative URL.
+    /// For absolute URLs, the <paramref name="virtualPath"/> parameter is returned with the original casing preserved.
+    /// </remarks>
     public static string GetAbsoluteUrlWithProtocolAndHostname (HttpContextBase context, string virtualPath)
     {
       ArgumentUtility.CheckNotNull ("context", context);
