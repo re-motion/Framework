@@ -65,6 +65,10 @@ namespace Remotion.Web.Utilities
     /// <param name="context"> The <see cref="HttpContextBase"/> to be used. Must not be <see langword="null"/>. </param>
     /// <param name="relativeUrl"> The virtual path. Must not be <see langword="null"/>.</param>
     /// <returns> The absolute path. </returns>
+    /// <remarks>
+    /// Note that the request casing is only preserved in the return value if the <paramref name="relativeUrl"/> is actually a relative URL.
+    /// For absolute URLs, the <paramref name="relativeUrl"/> parameter is returned with the original casing preserved.
+    /// </remarks>
     public static string ResolveUrlCaseSensitive (HttpContextBase context, string relativeUrl)
     {
       ArgumentUtility.CheckNotNull ("context", context);
