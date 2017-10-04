@@ -9,6 +9,47 @@ Description: $($_.Description)
 }
 
 $output +=
+"Remotion (addendum for license)
+This software embeds code based on 'JetBrains Annotations'.
+Copyright (c) 2016 JetBrains http://www.jetbrains.com
+Original software available via ReSharper -> Options -> Code Annotations -> Copy to Clipboard.
+LicenseUrl: https://raw.githubusercontent.com/JetBrains/ExternalAnnotations/master/LICENSE.md (MIT License)
+"
+
+$output +=
+"Remotion.TypePipe (addendum for license)
+This software embeds code based on 'Microsoft Dynamic Language Runtime'.
+Copyright (c) Microsoft Corporation
+ProjectUrl: https://dlr.codeplex.com
+LicenseUrl: https://dlr.codeplex.com/license (Apache License 2.0)
+Relevant code (assembly 'Remotion.TypePipe.dll', namespace 'Remotion.TypePipe.Dlr') contains a copy of '/DLR_Main/Runtime/Microsoft.Scripting.Core', changeset #54115
+"
+
+$output +=
+"Remotion.ObjectBinding.Web (addendum for license)
+This software embeds code based on 'Autocomplete - jQuery plugin'.
+Copyright (c) 2007 Dylan Verheul, Dan G. Switzer, Anjesh Tuladhar, Jörn Zaefferer
+ProjectUrl: http://bassistance.de/jquery-plugins/jquery-plugin-autocomplete/
+LicenseUrl: http://www.opensource.org/licenses/mit-license.php
+"
+
+$output +=
+"Remotion.Web (addendum for license)
+This software embeds a copy of 'jQuery JavaScript Library'.
+Copyright JS Foundation and other contributors, https://js.foundation/
+ProjectUrl: http://jquery.com/
+LicenseUrl: https://jquery.org/license (MIT License)
+"
+
+$output +=
+"Remotion.Web (addendum for license)
+This software embeds code based on 'jquery.bgiframe'.
+Copyright (c) 2006 Brandon Aaron (http://brandonaaron.net)
+ProjectUrl: https://github.com/brandonaaron/bgiframe
+LicenseUrl: https://raw.githubusercontent.com/brandonaaron/bgiframe/master/LICENSE.txt (MIT License)
+"
+
+$output +=
 "RhinoMocks
 ProjectUrl: http://hibernatingrhinos.com/oss/rhino-mocks
 LicenseUrl: http://opensource.org/licenses/bsd-license.php
@@ -43,13 +84,6 @@ Description: NuGet Command Line Tool
 "
 
 $output +=
-"NuGet.for.MSBuild
-ProjectUrl: http://nuget4msbuild.codeplex.com/
-LicenseUrl: http://nuget4msbuild.codeplex.com/license
-Description: Provides MSBuild tasks around the NuGet command-line utility.
-"
-
-$output +=
 "NUnit.Runners
 ProjectUrl: http://nunit.org/
 LicenseUrl: http://nunit.org/nuget/license.html
@@ -78,7 +112,7 @@ Description: Source Control Client
 "
 
 $output +=
-"Used only as tool:
+"Used only in development / build tooling for re-motion and is not distributed with re-motion:
 * MSBuild
 * NuGet
 * NUnit
@@ -88,6 +122,6 @@ $output +=
 * Subversion Client
 "
 
-$output > 3rdParty.txt
+$output > re-motion_3rdParty.txt
 
-write-host Written to 3rdParty.txt
+write-host Written to re-motion_3rdParty.txt
