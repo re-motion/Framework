@@ -61,7 +61,7 @@ div.bocListNavigator a[href]:hover
   outline: none;
 }
 
-div.bocListNavigator a:active
+div.bocListNavigator a[href]:active
 {
   color: Black;
   border: solid 1px #569CE0;
@@ -240,8 +240,8 @@ th.bocListTitleCell a
   padding: 2px;
 }
 
-th.bocListTitleCell a:focus,
-th.bocListTitleCell a:hover
+th.bocListTitleCell a[href]:focus,
+th.bocListTitleCell a[href]:hover
 {
   color: Black;
   padding: 1px;
@@ -250,7 +250,7 @@ th.bocListTitleCell a:hover
   outline: none;
 }
 
-th.bocListTitleCell a:active
+th.bocListTitleCell a[href]:active
 {
   color: Black;
   border: solid 1px #569CE0;
