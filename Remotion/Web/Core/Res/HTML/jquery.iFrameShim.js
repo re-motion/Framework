@@ -14,6 +14,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+// Orignal license header:
+//
+// Copyright (c) 2006 Brandon Aaron (http://brandonaaron.net)
+// Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) 
+// and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
+// 
+// $LastChangedDate: 2007-07-21 18:44:59 -0500 (Sat, 21 Jul 2007) $
+// $Rev: 2446 $
+// 
+// Version 2.1.1
+
+// ************************************************
+// Significantly modified for re-motion
+// ************************************************
+
 (function ($)
 {
   var isActiveXSupported = false;
