@@ -184,7 +184,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       ISecurityManagerPrincipal refreshedInstance;
       using (new ServiceLocatorScope (serviceLocator))
       {
-        IncrementRevision();
+        IncrementDomainRevision();
         refreshedInstance = principal.GetRefreshedInstance();
         Assert.That (refreshedInstance, Is.Not.SameAs (principal));
       }

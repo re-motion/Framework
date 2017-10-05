@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     }
     
     [Test]
-    public void SameRevisionDoesNotChangeTransaction ()
+    public void SameDomainRevisionDoesNotChangeTransaction ()
     {
       var user = User.FindByUserName ("substituting.user");
       var tenant = user.Tenant;
@@ -54,27 +54,64 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     }
 
     [Test]
-    public void NewRevisionResetsTransaction ()
+    public void NewDomainRevisionResetsData ()
     {
       var user = User.FindByUserName ("substituting.user");
       var helper = new OrganizationalStructure.OrganizationalStructureTestHelper (ClientTransaction.Current);
-      var user2 = helper.CreateUser ("RevisionTestUser", "FN", "LN", null, user.OwningGroup, user.Tenant);
+      var user2 = helper.CreateUser ("DomainRevisionTestUser", "FN", "LN", null, user.OwningGroup, user.Tenant);
       ClientTransaction.Current.Commit();
       var tenant = user2.Tenant;
 
       var principal = CreateSecurityManagerPrincipal (tenant, user2, null, null);
 
       var oldUser = principal.User;
+      var oldTenant = principal.Tenant;
 
-      user2.LastName = "New LN";
       ClientTransaction.Current.Commit();
-      IncrementRevision();
+      IncrementDomainRevision();
 
       var refreshedInstance = principal.GetRefreshedInstance();
 
       Assert.That (refreshedInstance, Is.Not.SameAs (principal));
       Assert.That (refreshedInstance.User.ID, Is.EqualTo (oldUser.ID));
-      Assert.That (refreshedInstance.User.DisplayName, Is.Not.EqualTo (oldUser.DisplayName));
+      Assert.That (refreshedInstance.Tenant.ID, Is.EqualTo (oldTenant.ID));
+    }
+
+    [Test]
+    public void SameUserRevisionDoesNotChangeTransaction ()
+    {
+      var user = User.FindByUserName ("substituting.user");
+      var tenant = user.Tenant;
+
+      var principal = CreateSecurityManagerPrincipal (tenant, user, null, null);
+
+      var refreshedInstance = principal.GetRefreshedInstance ();
+
+      Assert.That (refreshedInstance, Is.SameAs (principal));
+    }
+
+    [Test]
+    public void NewUserRevisionResetsData ()
+    {
+      var user = User.FindByUserName ("substituting.user");
+      var helper = new OrganizationalStructure.OrganizationalStructureTestHelper (ClientTransaction.Current);
+      var user2 = helper.CreateUser ("UserRevisionTestUser", "FN", "LN", null, user.OwningGroup, user.Tenant);
+      ClientTransaction.Current.Commit();
+      var tenant = user2.Tenant;
+
+      var principal = CreateSecurityManagerPrincipal (tenant, user2, null, null);
+
+      var oldUser = principal.User;
+      var oldTenant = principal.Tenant;
+
+      ClientTransaction.Current.Commit();
+      IncrementUserRevision (user2.UserName);
+
+      var refreshedInstance = principal.GetRefreshedInstance();
+
+      Assert.That (refreshedInstance, Is.Not.SameAs (principal));
+      Assert.That (refreshedInstance.User.ID, Is.EqualTo (oldUser.ID));
+      Assert.That (refreshedInstance.Tenant.ID, Is.EqualTo (oldTenant.ID));
     }
   }
 }

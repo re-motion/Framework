@@ -47,10 +47,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
           substitutedRoles == null ? null : substitutedRoles.Select (r => r.GetHandle()).ToArray());
     }
 
-    protected void IncrementRevision ()
+    protected void IncrementDomainRevision ()
     {
       ClientTransaction.Current.QueryManager.GetScalar (Revision.GetIncrementRevisionQuery(new RevisionKey()));
       SafeServiceLocator.Current.GetInstance<IDomainRevisionProvider>().InvalidateRevision(new RevisionKey());
+    }
+
+    protected void IncrementUserRevision (string userName)
+    {
+      ClientTransaction.Current.QueryManager.GetScalar (Revision.GetIncrementRevisionQuery(new UserRevisionKey(userName)));
+      SafeServiceLocator.Current.GetInstance<IUserRevisionProvider>().InvalidateRevision(new UserRevisionKey(userName));
     }
   }
 }

@@ -76,7 +76,12 @@ namespace Remotion.SecurityManager.Domain
 
     [CanBeNull]
     private readonly IReadOnlyList<IDomainObjectHandle<Role>> _substitutedRoleHandles;
-    private readonly GuidRevisionValue _revision;
+
+    /// <summary>Required in case the domain change is an update to the tenant, group, or position identifiers.</summary>
+    private readonly GuidRevisionValue _domainRevision;
+
+    private readonly GuidRevisionValue _userRevision;
+
     private readonly TenantProxy _tenantProxy;
     private readonly UserProxy _userProxy;
     private readonly IReadOnlyList<RoleProxy> _roleProxies;
@@ -107,7 +112,6 @@ namespace Remotion.SecurityManager.Domain
       _substitutedUserHandle = substitutedUserHandle;
       _substitutedRoleHandles = substitutedRoleHandles;
 
-      _revision = GetRevision();
       var transaction = CreateClientTransaction();
 
       _tenantProxy = CreateTenantProxy (GetTenant (transaction));
@@ -116,6 +120,9 @@ namespace Remotion.SecurityManager.Domain
       var substitution = GetSubstitution (transaction);
       _substitutionProxy = substitution != null ? CreateSubstitutionProxy (substitution) : null;
       _securityPrincipal = CreateSecurityPrincipal (transaction);
+
+      _domainRevision = GetDomainRevision();
+      _userRevision = GetUserRevision (_securityPrincipal.User);
     }
 
     public TenantProxy Tenant
@@ -145,8 +152,7 @@ namespace Remotion.SecurityManager.Domain
 
     public ISecurityManagerPrincipal GetRefreshedInstance ()
     {
-      var currentRevision = GetRevision();
-      if (_revision.IsCurrent (currentRevision))
+      if (_domainRevision.IsCurrent (GetDomainRevision()) && _userRevision.IsCurrent (GetUserRevision (_securityPrincipal.User)))
         return this;
       return new SecurityManagerPrincipal (
           _tenantHandle,
@@ -310,9 +316,14 @@ namespace Remotion.SecurityManager.Domain
       return transaction;
     }
 
-    private GuidRevisionValue GetRevision ()
+    private GuidRevisionValue GetDomainRevision ()
     {
       return SafeServiceLocator.Current.GetInstance<IDomainRevisionProvider>().GetRevision(new RevisionKey());
+    }
+
+    private GuidRevisionValue GetUserRevision (string userName)
+    {
+      return SafeServiceLocator.Current.GetInstance<IUserRevisionProvider>().GetRevision (new UserRevisionKey (userName));
     }
 
     bool INullObject.IsNull
