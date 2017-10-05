@@ -277,7 +277,7 @@ namespace Remotion.SecurityManager.Domain
       if (_roleHandles == null)
         return null;
 
-      return _roleHandles.Select (r => (Role) LifetimeService.GetObject (transaction, r.ObjectID, false));
+      return LifetimeService.TryGetObjects<Role> (transaction, _roleHandles.Select (r => r.ObjectID)).Where (r => r != null);
     }
 
     [CanBeNull]
@@ -303,7 +303,7 @@ namespace Remotion.SecurityManager.Domain
       if (_substitutedRoleHandles == null)
         return null;
 
-      return _substitutedRoleHandles.Select (r => (Role) LifetimeService.GetObject (transaction, r.ObjectID, false));
+      return LifetimeService.TryGetObjects<Role> (transaction, _substitutedRoleHandles.Select (r=>r.ObjectID)).Where (r=>r != null);
     }
 
     private ClientTransaction CreateClientTransaction ()
