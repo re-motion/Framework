@@ -66,5 +66,52 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Assert.That (instance.M1 (), Is.EqualTo ("ClassDerivedFromBaseClassWithHasComleteInterface.M1"));
       Assert.That (instance.Method (), Is.EqualTo ("MixinImplementingSimpleInterface.Method"));
     }
+
+    [Test]
+    [Ignore ("RM-6845: System.NotSupportedException: Type 'Remotion.Mixins.UnitTests.Core.TestDomain.GenericClassWithComposedInterface`1_AssembledTypeProxy_1+NextCallProxy' was not completed.")]
+    public void GeneratedGenericClass_ImplementsComposedInterface ()
+    {
+      var type = TypeFactory.GetConcreteType (typeof (GenericClassWithComposedInterface<string>));
+      Assert.That (type.GetInterfaces(), Has.Member (typeof (IComposedInterfaceForGenericClassWithComposedInterface<string>)));
+
+      var instance = ObjectFactory.Create<GenericClassWithComposedInterface<string>>();
+
+      Assert.That (instance, Is.InstanceOf<IComposedInterfaceForGenericClassWithComposedInterface<string>>());
+    }
+
+    [Test]
+    [Ignore ("RM-6845: Remotion.Mixins.ConfigurationException : The dependency 'IComposedInterfaceForGenericClassWithMembersWithComposedInterface`1' (required by composed interface 'Remotion.Mixins.UnitTests.Core.TestDomain.IComposedInterfaceForGenericClassWithMembersWithComposedInterface`1[T]' on class 'Remotion.Mixins.UnitTests.Core.TestDomain.GenericClassWithMembersWithComposedInterface`1') is not fulfilled - public or protected method 'System.String M1(T)' could not be found on the target class.")]
+    public void GeneratedGenericClassWithMembers_ImplementsComposedInterface ()
+    {
+      var type = TypeFactory.GetConcreteType (typeof (GenericClassWithMembersWithComposedInterface<string>));
+      Assert.That (type.GetInterfaces(), Has.Member (typeof (IComposedInterfaceForGenericClassWithMembersWithComposedInterface<string>)));
+
+      var instance = (IComposedInterfaceForGenericClassWithMembersWithComposedInterface<string>) ObjectFactory.Create<GenericClassWithComposedInterface<string>>();
+      Assert.That (instance.M1 ("v"), Is.EqualTo ("GenericClassWithMembersWithComposedInterface.M1"));
+      Assert.That (instance.Method ("v"), Is.EqualTo ("GenericMixinImplementingGenericInterfaceWithMembers.Method"));
+    }
+
+    [Test]
+    [Ignore ("RM-6845: System.NotSupportedException: Type 'Remotion.Mixins.UnitTests.Core.TestDomain.GenericClassWithoutMixinWithComposedInterface`1_AssembledTypeProxy_7+NextCallProxy' was not completed.")]
+    public void GeneratedGenericClassWithoutMixin_ImplementsComposedInterface ()
+    {
+      var type = TypeFactory.GetConcreteType (typeof (GenericClassWithoutMixinWithComposedInterface<string>));
+      Assert.That (type.GetInterfaces(), Has.Member (typeof (IComposedInterfaceForGenericClassWithoutMixinWithComposedInterface<string>)));
+
+      var instance = ObjectFactory.Create<GenericClassWithoutMixinWithComposedInterface<string>>();
+      Assert.That (instance, Is.InstanceOf<IComposedInterfaceForGenericClassWithoutMixinWithComposedInterface<string>>());
+    }
+
+    [Test]
+    [Ignore ("RM-6845: type.GetInterfaces() -> Expected: collection containing <Remotion.Mixins.UnitTests.Core.TestDomain.IComposedInterfaceForGenericClassWithMembersWithComposedInterfaceHasComposedInterface`1[System.String]>")]
+    public void GeneratedGenericClassWithMembers_ImplementsComposedInterface_HasComposedInterface ()
+    {
+      var type = TypeFactory.GetConcreteType (typeof (GenericClassWithMembersWithComposedInterfaceWithHasComposedInterface<string>));
+      Assert.That (type.GetInterfaces(), Has.Member (typeof (IComposedInterfaceForGenericClassWithMembersWithComposedInterfaceHasComposedInterface<string>)));
+
+      var instance = (IComposedInterfaceForGenericClassWithMembersWithComposedInterfaceHasComposedInterface<string>) ObjectFactory.Create<GenericClassWithMembersWithComposedInterfaceWithHasComposedInterface<string>>();
+      Assert.That (instance.M1 ("v"), Is.EqualTo ("GenericClassWithMembersWithComposedInterfaceWithHasComposedInterface.M1"));
+      Assert.That (instance.Method ("v"), Is.EqualTo ("GenericMixinImplementingGenericInterfaceWithMembers.Method"));
+    }
   }
 }
