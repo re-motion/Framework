@@ -82,6 +82,7 @@
     <Compile Include="Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs" />
     <Compile Include="Utilities\AssertionTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\AttributeUsageTest.cs" />
+    <Compile Include="Utilities\CultureScopeTest.cs" />
     <Compile Include="Utilities\EqualityUtilityTest.cs" />
     <Compile Include="Utilities\FileUtilityTest.cs" />
     <Compile Include="Utilities\MemberInfoEqualityComparerTest.cs" />

@@ -503,7 +503,6 @@
     <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromType_WithSuppressTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesWithMetadataTest.cs" />
     <Compile Include="Utilities\AdvancedEnumConverterTest_Flags.cs" />
-    <Compile Include="Utilities\CultureScopeTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\TestDomain\BaseInheritedAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\TestDomain\BaseClassWithAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\TestDomain\BaseWithAttributesForSuppressed.cs" />

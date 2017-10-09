@@ -70,6 +70,7 @@
     <Compile Include="Utilities\ArgumentUtility.cs" />
     <Compile Include="Utilities\Assertion.cs" />
     <Compile Include="Utilities\AttributeUtility.cs" />
+    <Compile Include="Utilities\CultureScope.cs" />
     <Compile Include="Utilities\EqualityUtility.cs" />
     <Compile Include="Utilities\ExceptionUtility.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
@@ -89,6 +90,7 @@
     <None Include="Remotion.Utilities.ArgumentUtility.Sources.nuspec" />
     <None Include="Remotion.Utilities.Assertion.Sources.nuspec" />
     <None Include="Remotion.Utilities.AttributeUtility.Sources.nuspec" />
+    <None Include="Remotion.Utilities.CultureScope.Sources.nuspec" />
     <None Include="Remotion.Utilities.EqualityUtility.Sources.nuspec" />
     <None Include="Remotion.Utilities.ExceptionUtility.Sources.nuspec" />
     <None Include="Remotion.Utilities.MemberInfoEqualityComparer.Sources.nuspec" />

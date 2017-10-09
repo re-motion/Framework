@@ -198,6 +198,9 @@
     <Compile Include="..\..\..\SharedSource\Core\Utilities\AttributeUtility.cs">
       <Link>SharedSource\Utilities\AttributeUtility.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\CultureScope.cs">
+      <Link>SharedSource\Utilities\CultureScope.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\EqualityUtility.cs">
       <Link>SharedSource\Utilities\EqualityUtility.cs</Link>
     </Compile>
@@ -291,6 +294,7 @@
     <Compile Include="Utilities\Assertion.Partial.cs" />
     <Compile Include="Utilities\AttributeBasedTypeConverterFactory.cs" />
     <Compile Include="Utilities\CompoundTypeConverterFactory.cs" />
+    <Compile Include="Utilities\CultureScope.partial.cs" />
     <Compile Include="Utilities\EnumTypeConverterFactory.cs" />
     <Compile Include="Utilities\EqualityUtility.Partial.cs" />
     <Compile Include="Utilities\ExceptionUtility.Partial.cs" />
@@ -382,7 +386,6 @@
     <Compile Include="Reflection\InheritanceHierarchyFilter.cs" />
     <Compile Include="Utilities\AttributeUtility.Partial.cs" />
     <Compile Include="Utilities\AttributeWithMetadata.cs" />
-    <Compile Include="Utilities\CultureScope.cs" />
     <Compile Include="Utilities\FileUtility.Partial.cs" />
     <Compile Include="Utilities\DelegateBasedComparer.cs" />
     <Compile Include="Utilities\InvertedComparerDecorator.cs" />
