@@ -52,26 +52,13 @@ namespace Remotion.Utilities
     /// <summary>
     /// Intialize <see cref="CultureScope"/> with culture-names-strings, e.g. "de-AT", "en-GB".
     /// </summary>
-    /// <param name="cultureName">Culture name string. null to not switch culture.</param>
-    /// <param name="uiCultureName">User interface culture name string. null to not switch UI-culture.</param>
+    /// <param name="cultureName">Culture name string. <see langword="null" /> to not switch culture.</param>
+    /// <param name="uiCultureName">User interface culture name string. <see langword="null" /> to not switch UI-culture.</param>
     public CultureScope (string cultureName, string uiCultureName)
+      : this (
+      cultureName == null ? null : CultureInfo.GetCultureInfo (cultureName),
+      uiCultureName == null ? null : CultureInfo.GetCultureInfo (uiCultureName))
     {
-      _backupCulture = null;
-      _backupUICulture = null;
-
-      Thread currentThread = Thread.CurrentThread;
-
-      if (cultureName != null)
-      {
-        _backupCulture = currentThread.CurrentCulture;
-        currentThread.CurrentCulture = CultureInfo.GetCultureInfo (cultureName);
-      }
-
-      if (uiCultureName != null)
-      {
-        _backupUICulture = currentThread.CurrentUICulture;
-        currentThread.CurrentUICulture = CultureInfo.GetCultureInfo (uiCultureName);
-      }
     }
 
 
@@ -85,13 +72,27 @@ namespace Remotion.Utilities
     /// <summary>
     /// Intialize <see cref="CultureScope"/> from <see cref="CultureInfo"/> instances.
     /// </summary>
-    /// <param name="cultureInfo">Culture to use.</param>
-    /// <param name="uiCultureInfo">User interface culture to use.</param>
+    /// <param name="cultureInfo">Culture to use. <see langword="null" /> to not switch culture.</param>
+    /// <param name="uiCultureInfo">User interface culture to use. <see langword="null" /> to not switch UI-culture.</param>
     public CultureScope (CultureInfo cultureInfo, CultureInfo uiCultureInfo)
-        : this (cultureInfo.Name, uiCultureInfo.Name)
-    {}
+    {
+      _backupCulture = null;
+      _backupUICulture = null;
 
+      Thread currentThread = Thread.CurrentThread;
 
+      if (cultureInfo != null)
+      {
+        _backupCulture = currentThread.CurrentCulture;
+        currentThread.CurrentCulture = cultureInfo;
+      }
+
+      if (uiCultureInfo != null)
+      {
+        _backupUICulture = currentThread.CurrentUICulture;
+        currentThread.CurrentUICulture = uiCultureInfo;
+      }
+    }
 
 
     public void Dispose ()
