@@ -54,11 +54,11 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Remotion.WindowFinder, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.WindowFinder.2.0.0-alpha-001\lib\net45\Remotion.WindowFinder.dll</HintPath>
+      <HintPath>..\..\..\packages\Remotion.WindowFinder.2.0.0\lib\net45\Remotion.WindowFinder.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Remotion.WindowFinder.Windows, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.WindowFinder.Windows.2.0.0-alpha-001\lib\net45\Remotion.WindowFinder.Windows.dll</HintPath>
+      <HintPath>..\..\..\packages\Remotion.WindowFinder.Windows.2.0.0\lib\net45\Remotion.WindowFinder.Windows.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
