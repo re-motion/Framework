@@ -134,12 +134,16 @@
     <None Include="FacetManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib">
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Remotion.IO">
-      <HintPath>..\..\..\packages\Remotion.IO.2.0.0-alpha-006\lib\net45\Remotion.IO.dll</HintPath>
+    <Reference Include="Remotion.IO, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Remotion.IO.2.0.0\lib\net45\Remotion.IO.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.IO.Archive.Zip, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Remotion.IO.Archive.Zip.2.0.0\lib\net45\Remotion.IO.Archive.Zip.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
