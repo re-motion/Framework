@@ -6,10 +6,10 @@
     <title>JetBrains Annotations for re-motion</title>
     <authors>rubicon IT GmbH, JetBrains</authors>
     <owners>rubicon IT GmbH</owners>
-    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://www.re-motion.org</projectUrl>
     <description>An adaption of the JetBrains Annotations for use in the re-motion framework. Distributed in source form.</description>
-    <copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under Apache License, Version 2.0</copyright>
+    <copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under MIT</copyright>
     <tags>re-motion ReSharper Annotations</tags>
     <developmentDependency>true</developmentDependency>
   </metadata>

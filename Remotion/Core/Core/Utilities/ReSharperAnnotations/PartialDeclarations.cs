@@ -16,6 +16,7 @@
 // 
 using System;
 
+// ReSharper disable once CheckNamespace
 namespace JetBrains.Annotations
 {
   public partial class AssertionConditionAttribute
@@ -38,6 +39,10 @@ namespace JetBrains.Annotations
   {
   }
 
+  public partial class CollectionAccessAttribute
+  {
+  }
+
   public partial class ContractAnnotationAttribute
   {
   }
@@ -50,6 +55,14 @@ namespace JetBrains.Annotations
   {
   }
 
+  public partial class ItemCanBeNullAttribute
+  {
+  }
+  
+  public partial class ItemNotNullAttribute
+  {
+  }
+
   public partial class LinqTunnelAttribute
   {
   }
@@ -58,7 +71,15 @@ namespace JetBrains.Annotations
   {
   }
 
+  public partial class MacroAttribute
+  {
+  }
+
   public partial class MeansImplicitUseAttribute
+  {
+  }
+
+  public partial class MustUseReturnValueAttribute
   {
   }
 
@@ -78,6 +99,10 @@ namespace JetBrains.Annotations
   {
   }
 
+  public partial class ProvidesContextAttribute
+  {
+  }
+
   public partial class PublicAPIAttribute
   {
   }
@@ -86,15 +111,23 @@ namespace JetBrains.Annotations
   {
   }
 
+  public partial class RegexPatternAttribute
+  {
+  }
+
+  public partial class SourceTemplateAttribute
+  {
+  }
+
   public partial class StringFormatMethodAttribute
   {
   }
 
-  public partial class TerminatesProgramAttribute
+  public partial class UsedImplicitlyAttribute
   {
   }
 
-  public partial class UsedImplicitlyAttribute
+  public partial class ValueProviderAttribute
   {
   }
 }

@@ -1,16 +1,26 @@
 // NOTE: This file was originally generated via JetBrains ReSharper
-// and is part of the JetBrains.Annoations for ReSharper. 
+// and is part of the JetBrains.Annotations for ReSharper. 
 // It has since been modified for use in the re-motion framework development.
 //
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 //
-// See the NOTICE file distributed with this work for additional information
-// regarding copyright ownership.  rubicon licenses this file to you under 
-// the Apache License, Version 2.0 (the "License"); you may not use this 
-// file except in compliance with the License.  You may obtain a copy of the 
-// License at
-//
-//   http://www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 //
 // Unless required by applicable law or agreed to in writing, software 
 // distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
@@ -18,21 +28,28 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 // 
-// Orignal license header by JetBrains:
+// Original license header by JetBrains:
+// MIT License
 // 
-// Copyright 2007-2012 JetBrains s.r.o.
+// Copyright (c) 2016 JetBrains http://www.jetbrains.com
 // 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 // 
-// http://www.apache.org/licenses/LICENSE-2.0
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
 // 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // 
 
 using System;
@@ -51,53 +68,25 @@ namespace JetBrains.Annotations
   /// <summary>
   /// Indicates that marked element should be localized or not.
   /// </summary>
-  [AttributeUsage (AttributeTargets.All, AllowMultiple = false, Inherited = true)]
+  /// <example><code>
+  /// [LocalizationRequiredAttribute(true)]
+  /// class Foo {
+  ///   string str = "my string"; // Warning: Localizable string
+  /// }
+  /// </code></example>
+  [AttributeUsage (AttributeTargets.All)]
   sealed partial class LocalizationRequiredAttribute : Attribute
   {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="LocalizationRequiredAttribute"/> class with
-    /// <see cref="Required"/> set to <see langword="true"/>.
-    /// </summary>
     public LocalizationRequiredAttribute ()
         : this (true)
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="LocalizationRequiredAttribute"/> class.
-    /// </summary>
-    /// <param name="required"><c>true</c> if a element should be localized; otherwise, <c>false</c>.</param>
     public LocalizationRequiredAttribute (bool required)
     {
       Required = required;
     }
 
-    /// <summary>
-    /// Gets a value indicating whether a element should be localized.
-    /// <value><c>true</c> if a element should be localized; otherwise, <c>false</c>.</value>
-    /// </summary>
     public bool Required { get; private set; }
-
-    /// <summary>
-    /// Returns whether the value of the given object is equal to the current <see cref="LocalizationRequiredAttribute"/>.
-    /// </summary>
-    /// <param name="obj">The object to test the value equality of. </param>
-    /// <returns>
-    /// <c>true</c> if the value of the given object is equal to that of the current; otherwise, <c>false</c>.
-    /// </returns>
-    public override bool Equals (object obj)
-    {
-      var attribute = obj as LocalizationRequiredAttribute;
-      return attribute != null && attribute.Required == Required;
-    }
-
-    /// <summary>
-    /// Returns the hash code for this instance.
-    /// </summary>
-    /// <returns>A hash code for the current <see cref="LocalizationRequiredAttribute"/>.</returns>
-    public override int GetHashCode ()
-    {
-      return base.GetHashCode ();
-    }
   }
 }

@@ -1,4 +1,4 @@
-// NOTE: This file was originally generated via JetBrains ReSharper
+﻿// NOTE: This file was originally generated via JetBrains ReSharper
 // and is part of the JetBrains.Annotations for ReSharper. 
 // It has since been modified for use in the re-motion framework development.
 //
@@ -52,28 +52,6 @@
 // SOFTWARE.
 // 
 
-/* MIT License
-
-Copyright (c) 2016 JetBrains http://www.jetbrains.com
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. */
-
 using System;
 
 #pragma warning disable 1591
@@ -88,18 +66,30 @@ using System;
 namespace JetBrains.Annotations
 {
   /// <summary>
-  /// Indicates that the value of the marked element could never be <c>null</c>.
+  /// An extension method marked with this attribute is processed by ReSharper code completion
+  /// as a 'Source Template'. When extension method is completed over some expression, it's source code
+  /// is automatically expanded like a template at call site.
   /// </summary>
-  /// <example><code>
-  /// [NotNull] object Foo() {
-  ///   return null; // Warning: Possible 'null' assignment
+  /// <remarks>
+  /// Template method body can contain valid source code and/or special comments starting with '$'.
+  /// Text inside these comments is added as source code when the template is applied. Template parameters
+  /// can be used either as additional method parameters or as identifiers wrapped in two '$' signs.
+  /// Use the <see cref="MacroAttribute"/> attribute to specify macros for parameters.
+  /// </remarks>
+  /// <example>
+  /// In this example, the 'forEach' method is a source template available over all values
+  /// of enumerable types, producing ordinary C# 'foreach' statement and placing caret inside block:
+  /// <code>
+  /// [SourceTemplate]
+  /// public static void forEach&lt;T&gt;(this IEnumerable&lt;T&gt; xs) {
+  ///   foreach (var x in xs) {
+  ///      //$ $END$
+  ///   }
   /// }
-  /// </code></example>
-  [AttributeUsage (
-      AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
-      AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event |
-      AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.GenericParameter)]
-  sealed partial class NotNullAttribute : Attribute
+  /// </code>
+  /// </example>
+  [AttributeUsage (AttributeTargets.Method)]
+  sealed partial class SourceTemplateAttribute : Attribute
   {
   }
 }

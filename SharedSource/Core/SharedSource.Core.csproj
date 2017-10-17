@@ -50,23 +50,33 @@
     <Compile Include="ReSharperAnnotations\BaseTypeRequiredAttribute.cs" />
     <Compile Include="ReSharperAnnotations\CanBeNullAttribute.cs" />
     <Compile Include="ReSharperAnnotations\CannotApplyEqualityOperatorAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\CollectionAccessAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\CollectionAccessType.cs" />
     <Compile Include="ReSharperAnnotations\ContractAnnotationAttribute.cs" />
     <Compile Include="ReSharperAnnotations\ImplicitUseKindFlags.cs" />
     <Compile Include="ReSharperAnnotations\ImplicitUseTargetFlags.cs" />
     <Compile Include="ReSharperAnnotations\InstantHandleAttribute.cs" />
     <Compile Include="ReSharperAnnotations\InvokerParameterNameAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\ItemCanBeNullAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\ItemNotNullAttribute.cs" />
     <Compile Include="ReSharperAnnotations\LinqTunnelAttribute.cs" />
     <Compile Include="ReSharperAnnotations\LocalizationRequiredAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\MacroAttribute.cs" />
     <Compile Include="ReSharperAnnotations\MeansImplicitUseAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\MustUseReturnValueAttribute.cs" />
     <Compile Include="ReSharperAnnotations\NoEnumerationAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\NoReorderAttribute.cs" />
     <Compile Include="ReSharperAnnotations\NotifyPropertyChangedInvocatorAttribute.cs" />
     <Compile Include="ReSharperAnnotations\NotNullAttribute.cs" />
     <Compile Include="ReSharperAnnotations\PathReferenceAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\ProvidesContextAttribute.cs" />
     <Compile Include="ReSharperAnnotations\PublicAPIAttribute.cs" />
     <Compile Include="ReSharperAnnotations\PureAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\RegexPatternAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\SourceTemplateAttribute.cs" />
     <Compile Include="ReSharperAnnotations\StringFormatMethodAttribute.cs" />
-    <Compile Include="ReSharperAnnotations\TerminatesProgramAttribute.cs" />
     <Compile Include="ReSharperAnnotations\UsedImplicitlyAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\ValueProviderAttribute.cs" />
     <Compile Include="Utilities\ArgumentUtility.cs" />
     <Compile Include="Utilities\Assertion.cs" />
     <Compile Include="Utilities\AttributeUtility.cs" />
@@ -97,7 +107,7 @@
     <None Include="Remotion.Utilities.MemberInfoFromExpressionUtility.Sources.nuspec" />
     <None Include="Remotion.Utilities.NullableTypeUtility.Sources.nuspec" />
     <None Include="Remotion.Utilities.FileUtility.Sources.nuspec" />
-    <None Include="ReSharperAnnotations\ReSharperAnnotations Apache-2.0.licenseheader" />
+    <None Include="ReSharperAnnotations\ReSharperAnnotations MIT.licenseheader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

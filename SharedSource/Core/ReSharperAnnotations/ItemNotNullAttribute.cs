@@ -1,4 +1,4 @@
-// NOTE: This file was originally generated via JetBrains ReSharper
+﻿// NOTE: This file was originally generated via JetBrains ReSharper
 // and is part of the JetBrains.Annotations for ReSharper. 
 // It has since been modified for use in the re-motion framework development.
 //
@@ -52,28 +52,6 @@
 // SOFTWARE.
 // 
 
-/* MIT License
-
-Copyright (c) 2016 JetBrains http://www.jetbrains.com
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. */
-
 using System;
 
 #pragma warning disable 1591
@@ -88,18 +66,14 @@ using System;
 namespace JetBrains.Annotations
 {
   /// <summary>
-  /// Indicates that the value of the marked element could never be <c>null</c>.
+  /// Can be applied to symbols of types derived from IEnumerable as well as to symbols of Task
+  /// and Lazy classes to indicate that the value of a collection item, of the Task.Result property
+  /// or of the Lazy.Value property can never be null.
   /// </summary>
-  /// <example><code>
-  /// [NotNull] object Foo() {
-  ///   return null; // Warning: Possible 'null' assignment
-  /// }
-  /// </code></example>
   [AttributeUsage (
       AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
-      AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event |
-      AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.GenericParameter)]
-  sealed partial class NotNullAttribute : Attribute
+      AttributeTargets.Delegate | AttributeTargets.Field)]
+  sealed partial class ItemNotNullAttribute : Attribute
   {
   }
 }
