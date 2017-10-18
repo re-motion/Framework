@@ -889,7 +889,7 @@ function SmartPage_Context(
   function GetActiveElement()
   {
     var activeElement = window.document.activeElement;
-    if (activeElement != null && activeElement.tagName.toLowerCase() != 'body')
+    if (!TypeUtility.IsNull (activeElement) && !TypeUtility.IsUndefined (activeElement.tagName) && activeElement.tagName.toLowerCase() !== 'body')
       return activeElement;
 
     // WebKit does not set activeElement if the element is selected using the mouse
