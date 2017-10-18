@@ -60,13 +60,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeDesktopScreenshot_SavesToCorrectPath ()
     {
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
       var tempFileName = "RandomFileName";
       var suffix = "Desktop";
       var extension = "png";
 
       var fullPath = CombineToFullPath (_tempSavePath, tempFileName, suffix, extension);
-
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
 
       Assert.That (File.Exists (fullPath), Is.False);
       testExecutionScreenshotRecorder.TakeDesktopScreenshot (tempFileName);
@@ -76,19 +75,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeDesktopScreenshot_ReplacesInvalidFileNameChars ()
     {
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
       var tempFileName = "<Random\"File\"Na|me>";
       var suffix = "Desktop";
       var extension = "png";
 
-      var fullPath = CombineToFullPath (_tempSavePath, tempFileName, suffix, extension);
-
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
-
-      Assert.That (File.Exists (fullPath), Is.False);
-      testExecutionScreenshotRecorder.TakeDesktopScreenshot (tempFileName);
-      
       var tempFileNameWitCharReplaced = "_Random_File_Na_me_";
       var fullPathWitCharReplaced = CombineToFullPath (_tempSavePath, tempFileNameWitCharReplaced, suffix, extension);
+
+      Assert.That (File.Exists (fullPathWitCharReplaced), Is.False);
+      testExecutionScreenshotRecorder.TakeDesktopScreenshot (tempFileName);
       Assert.That (File.Exists (fullPathWitCharReplaced), Is.True);
     }
 
@@ -98,13 +94,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       //Just open the browser so we can take a browser Screenshot
       Start();
 
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
       var tempFileName = "RandomFileName";
       var suffix = "Browser0-0";
       var extension = "png";
 
       var fullPath = CombineToFullPath (_tempSavePath, tempFileName, suffix, extension);
-
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
 
       Assert.That (File.Exists (fullPath), Is.False);
       testExecutionScreenshotRecorder.TakeBrowserScreenshot (tempFileName, new[] {Helper.MainBrowserSession }, Helper.BrowserConfiguration.Locator);
@@ -117,19 +112,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       //Just open the browser so we can take a browser Screenshot
       Start();
 
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
       var tempFileName = "<Random\"File\"Na|me>";
       var suffix = "Browser0-0";
       var extension = "png";
 
-      var fullPath = CombineToFullPath (_tempSavePath, tempFileName, suffix, extension);
-
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
-
-      Assert.That (File.Exists (fullPath), Is.False);
-      testExecutionScreenshotRecorder.TakeBrowserScreenshot (tempFileName, new[] {Helper.MainBrowserSession }, Helper.BrowserConfiguration.Locator);
-      
       var tempFileNameWitCharReplaced = "_Random_File_Na_me_";
       var fullPathWitCharReplaced = CombineToFullPath (_tempSavePath, tempFileNameWitCharReplaced, suffix, extension);
+      
+      Assert.That (File.Exists (fullPathWitCharReplaced), Is.False);
+      testExecutionScreenshotRecorder.TakeBrowserScreenshot (tempFileName, new[] { Helper.MainBrowserSession }, Helper.BrowserConfiguration.Locator);
       Assert.That (File.Exists (fullPathWitCharReplaced), Is.True);
     }
 
@@ -138,11 +130,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
       var fileName = "RandomFileName";
+      var fullPath = CombineToFullPath (_tempSavePath, fileName, "Browser0-0", "png");
 
       var browserSession = Helper.CreateNewBrowserSession();
-
       browserSession.Dispose();
-
 
       Assert.That (
           () =>
@@ -152,23 +143,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
                   Helper.BrowserConfiguration.Locator),
           Throws.Nothing); 
 
-      var fullPath = CombineToFullPath (_tempSavePath, fileName, "Browser0-0", "png");
       Assert.That (File.Exists (fullPath), Is.False);
     }
 
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesNotThrowWhenBrowserDisposed_AndTakesNextScreenshotCorrectly ()
     {
-      //Just open the browser
+      //Just open the browser so we can take a browser Screenshot
       Start();
+
       var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
       var fileName = "RandomFileName";
+      var fullPath = CombineToFullPath (_tempSavePath, fileName, "Browser1-0", "png");
+
       var secondBrowserSession = Helper.CreateNewBrowserSession();
-
-
       secondBrowserSession.Dispose();
 
-
+      Assert.That (File.Exists (fullPath), Is.False);
       Assert.That (
           () =>
               testExecutionScreenshotRecorder.TakeBrowserScreenshot (
@@ -177,7 +168,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
                   Helper.BrowserConfiguration.Locator),
           Throws.Nothing); 
 
-      var fullPath = CombineToFullPath (_tempSavePath, fileName, "Browser1-0", "png");
       Assert.That (File.Exists (fullPath), Is.True);
     }
 
@@ -213,6 +203,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
       var fileName = "RandomFileName";
+      var fullPath = CombineToFullPath (_tempSavePath, fileName, "Browser0-0", "png");
 
       var home = Start();
 
@@ -224,12 +215,58 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
  
       Assert.That (IsAlertDialogPresent ((IWebDriver) home.Context.Browser.Driver.Native), Is.True);
 
+      Assert.That (File.Exists (fullPath), Is.False);
       testExecutionScreenshotRecorder.TakeBrowserScreenshot (
           fileName,
           new[] { Helper.MainBrowserSession },
           Helper.BrowserConfiguration.Locator);
 
-      var fullPath = CombineToFullPath (_tempSavePath, fileName, "Browser0-0", "png");
+      Assert.That (File.Exists (fullPath), Is.True);
+    }
+
+    [Test]
+    public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_SavesScreenshotWithShortenedName ()
+    {
+      //Just open the browser
+      Start();
+
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var fileName = new String ('A', 300);
+      var suffix = "Browser0-0";
+      var extension = "png";
+
+      var fileNameShortened = new String ('A', 259 - (_tempSavePath.Length + suffix.Length + extension.Length + 3));
+      var fullPath = CombineToFullPath (_tempSavePath, fileNameShortened, suffix, extension);
+
+      Assert.That (File.Exists (fullPath), Is.False);
+      Assert.That (
+          () =>
+              testExecutionScreenshotRecorder.TakeBrowserScreenshot (
+                  fileName,
+                  new[] { Helper.MainBrowserSession },
+                  Helper.BrowserConfiguration.Locator),
+          Throws.Nothing);
+      Assert.That (File.Exists (fullPath), Is.True);
+    }
+
+    [Test]
+    public void TestExecutionScreenshotRecorderTest_TakeDesktopScreenshot_SavesScreenshotWithShortenedName ()
+    {
+      var fileName = new String ('A', 300);
+      var suffix = "Desktop";
+      var extension = "png";
+
+      var fileNameShortened = new String ('A', 259 - (_tempSavePath.Length + suffix.Length + extension.Length + 3));
+      var fullPath = CombineToFullPath (_tempSavePath, fileNameShortened, suffix, extension);
+
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+
+      Assert.That (File.Exists (fullPath), Is.False);
+      Assert.That (
+          () =>
+              testExecutionScreenshotRecorder.TakeDesktopScreenshot (
+                  fileName),
+          Throws.Nothing);
       Assert.That (File.Exists (fullPath), Is.True);
     }
 
