@@ -60,7 +60,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Content Include="..\..\..\packages\WebDriver.ChromeDriver.win32.2.30.0.0\content\chromedriver.exe">
+    <Content Include="..\..\..\packages\WebDriver.ChromeDriver.win32.2.33.0.0\content\chromedriver.exe">
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
