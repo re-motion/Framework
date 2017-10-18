@@ -46,7 +46,10 @@ namespace Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata
     // Note: do not change value without chaning usages in JavaScript files.
     public static readonly string BocListIsInitialized = "data-boclist-is-initialized";
     public static readonly string BocListNumberOfPages = "data-boclist-number-of-pages";
+    public static readonly string BocListCurrentPageNumber = "data-boclist-current-page-number";
     public static readonly string BocListRowIndex = "data-boclist-row-index";
+    public static readonly string BocListIsEditModeActive = "data-boclist-is-edit-mode-active";
+    public static readonly string BocListHasNavigationBlock = "data-boclist-has-navigator";
     public static readonly string BocListWellKnownEditCell = "data-boclist-wellknown-cell-edit";
     public static readonly string BocListWellKnownRowDropDownMenuCell = "data-boclist-wellknown-cell-dropdownmenu";
     public static readonly string BocListWellKnownSelectAllControl = "data-boclist-wellknown-selectall-control";

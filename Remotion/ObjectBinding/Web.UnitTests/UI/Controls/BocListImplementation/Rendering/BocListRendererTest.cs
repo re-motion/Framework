@@ -18,6 +18,7 @@ using System;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls;
@@ -181,6 +182,142 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, DiagnosticMetadataAttributes.ControlType, "BocList");
+    }
+
+    [Test]
+    public void RenderDiagnosticMetadataAttributesWithNavigationBlock ()
+    {
+      var renderer = new BocListRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition,
+          new StubRenderer ("table"),
+          new StubRenderer ("navigation"),
+          new StubRenderer ("menu"));
+
+      List.Stub (mock => mock.HasNavigator).Return (true);
+
+      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+
+      var document = Html.GetResultDocument();
+
+      var div = Html.GetAssertedChildElement (document, "div", 0);
+      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListHasNavigationBlock, "true");
+    }
+
+    [Test]
+    public void RenderDiagnosticMetadataAttributesWithoutNavigationBlock ()
+    {
+      var renderer = new BocListRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition,
+          new StubRenderer ("table"),
+          new StubRenderer ("navigation"),
+          new StubRenderer ("menu"));
+
+      List.Stub (mock => mock.HasNavigator).Return (false);
+
+      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+
+      var document = Html.GetResultDocument();
+
+      var div = Html.GetAssertedChildElement (document, "div", 0);
+      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListHasNavigationBlock, "false");
+    }
+
+    [Test]
+    public void RenderDiagnosticMetadataAttributesRowEditModeAndListEditMode ()
+    {
+      var renderer = new BocListRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition,
+          new StubRenderer ("table"),
+          new StubRenderer ("navigation"),
+          new StubRenderer ("menu"));
+
+      List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (true);
+      List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (true);
+
+      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+
+      var document = Html.GetResultDocument();
+
+      var div = Html.GetAssertedChildElement (document, "div", 0);
+      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "true");
+    }
+
+    [Test]
+    public void RenderDiagnosticMetadataAttributesNoEditMode ()
+    {
+      var renderer = new BocListRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition,
+          new StubRenderer ("table"),
+          new StubRenderer ("navigation"),
+          new StubRenderer ("menu"));
+
+      List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (false);
+      List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (false);
+
+      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+
+      var document = Html.GetResultDocument();
+
+      var div = Html.GetAssertedChildElement (document, "div", 0);
+      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "false");
+    }
+
+    [Test]
+    public void RenderDiagnosticMetadataAttributesListEditMode ()
+    {
+      var renderer = new BocListRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition,
+          new StubRenderer ("table"),
+          new StubRenderer ("navigation"),
+          new StubRenderer ("menu"));
+
+      List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (true);
+      List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (false);
+
+      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+
+      var document = Html.GetResultDocument();
+
+      var div = Html.GetAssertedChildElement (document, "div", 0);
+      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "true");
+    }
+
+    [Test]
+    public void RenderDiagnosticMetadataAttributesRowEditMode ()
+    {
+      var renderer = new BocListRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition,
+          new StubRenderer ("table"),
+          new StubRenderer ("navigation"),
+          new StubRenderer ("menu"));
+
+      List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (false);
+      List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (true);
+
+      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+
+      var document = Html.GetResultDocument();
+
+      var div = Html.GetAssertedChildElement (document, "div", 0);
+      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "true");
     }
   }
 }

@@ -839,6 +839,372 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (bocList.GetCellWhere ("Title", "NewTitle").GetText(), Is.EqualTo ("NewTitle"));
     }
 
+    [Test]
+    public void TestGetCurrentPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void TestGetCurrentPage_WithoutNavigator ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void TestGetCurrentPage_InEditMode ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      //Enter edit mode
+      bocList.GetRow (2).Edit();
+
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void TestGetNumberOfPages ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (3));
+    }
+
+    [Test]
+    public void TestGetNumberOfPages_WithoutNavigator ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void TestGetNumberOfPages_InEditMode ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      //Enter edit mode
+      bocList.GetRow (2).Edit();
+
+      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (3));
+    }
+
+    
+    [Test]
+    public void TestGoToSpecificPage_FirstPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      //Navigate to next Page to be able to Test GoToSpecificPage (1)
+      bocList.GoToNextPage();
+
+      bocList.GoToSpecificPage (1);
+
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void TestGoToSpecificPage_LastPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      bocList.GoToSpecificPage (3);
+
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (3));
+    }
+
+    [Test]
+    public void TestGoToSpecificPage_WithoutNavigator ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+      Assert.That (
+          () => bocList.GoToSpecificPage (1),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
+    }
+
+    [Test]
+    public void TestGoToSpecificPage_InEditMode ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      //Enter edit mode
+      bocList.GetRow (2).Edit();
+
+      Assert.That (
+          () => bocList.GoToSpecificPage (3),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+    }
+
+    [Test]
+    public void TestGoToSpecificPage_CurrentPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (
+          () => bocList.GoToSpecificPage (1),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("List is already on page '1'."));
+    }
+
+    [Test]
+    public void TestGoToSpecificPage_PageNumberGreaterThanNumberofPages ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var pageNumberGreaterThanNumberOfPages = 4;
+
+
+      Assert.That (
+          () => bocList.GoToSpecificPage (pageNumberGreaterThanNumberOfPages),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
+              string.Format ("Unable to change page number to '{0}'. Page number must be between '1' and '3'.", pageNumberGreaterThanNumberOfPages)));
+    }
+
+    [Test]
+    public void TestGoToSpecificPage_PageNumberLesserThanNumberofPages ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var pageNumberLesserThanNumberOfPages = 0;
+
+
+      Assert.That (
+          () => bocList.GoToSpecificPage (pageNumberLesserThanNumberOfPages),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
+              string.Format ("Unable to change page number to '{0}'. Page number must be between '1' and '3'.", pageNumberLesserThanNumberOfPages)));
+    }
+
+    [Test]
+    public void TestGoToFirstPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      bocList.GoToSpecificPage (2);
+
+      bocList.GoToFirstPage();
+
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void TestGoToFirstPage_WithoutNavigator ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+      Assert.That (
+          () => bocList.GoToFirstPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
+    }
+
+    [Test]
+    public void TestGoToFirstPage_InEditMode ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      //Enter edit mode
+      bocList.GetRow (2).Edit();
+
+      Assert.That (
+          () => bocList.GoToFirstPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+    }
+
+    [Test]
+    public void TestGoToFirstPage_OnFirstPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (
+          () => bocList.GoToFirstPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
+              "Unable to change page number to the first page, as the list is already on the first page."));
+    }
+
+    [Test]
+    public void TestGoToPreviousPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      bocList.GoToSpecificPage (2);
+
+      bocList.GoToPreviousPage();
+
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void TestGoToPreviousPage_WithoutNavigator ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+      Assert.That (
+          () => bocList.GoToPreviousPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
+    }
+
+    [Test]
+    public void TestGoToPreviousPage_InEditMode ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      //Enter edit mode
+      bocList.GetRow (2).Edit();
+
+      Assert.That (
+          () => bocList.GoToPreviousPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+    }
+
+    [Test]
+    public void TestGoToPreviousPage_OnFirstPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (
+          () => bocList.GoToPreviousPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
+              "Unable to change page number to the previous page, as the list is already on the first page."));
+    }
+
+    [Test]
+    public void TestGoToNextPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      bocList.GoToNextPage();
+
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (2));
+    }
+
+    [Test]
+    public void TestGoToNextPage_WithoutNavigator ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+      Assert.That (
+          () => bocList.GoToNextPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
+    }
+
+    [Test]
+    public void TestGoToNextPage_InEditMode ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      //Enter edit mode
+      bocList.GetRow (2).Edit();
+
+      Assert.That (
+          () => bocList.GoToNextPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+    }
+
+    [Test]
+    public void TestGoToNextPage_OnLastPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      bocList.GoToLastPage();
+
+      Assert.That (
+          () => bocList.GoToNextPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
+              "Unable to change page number to the next page, as the list is already on the last page."));
+    }
+
+    [Test]
+    public void TestGoToLastPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      bocList.GoToLastPage();
+
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (3));
+    }
+
+    [Test]
+    public void TestGoToLastPage_WithoutNavigator ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+      Assert.That (
+          () => bocList.GoToLastPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
+    }
+
+    [Test]
+    public void TestGoToLastPage_InEditMode ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      //Enter edit mode
+      bocList.GetRow (2).Edit();
+
+      Assert.That (
+          () => bocList.GoToLastPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+    }
+
+    [Test]
+    public void TestGoToLastPage_OnLastPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      bocList.GoToSpecificPage (3);
+
+      Assert.That (
+          () => bocList.GoToLastPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
+              "Unable to change page number to the last page, as the list is already on the last page."));
+    }
+
     private WxePageObject Start ()
     {
       return Start ("BocList");

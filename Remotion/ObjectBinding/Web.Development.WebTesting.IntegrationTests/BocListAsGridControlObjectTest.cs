@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -271,6 +272,104 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       bocText.FillWith ("NewTitle");
 
       Assert.That (bocText.GetText(), Is.EqualTo ("NewTitle"));
+    }
+
+    [Test]
+    public void TestGetCurrentPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void TestGetCurrentPage_WithoutNavigator ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Empty");
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void TestGetNumberOfPages ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void TestGetNumberOfPages_WithoutNavigator ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Empty");
+      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (1));
+    }
+    
+    [Test]
+    public void TestGoToSpecificPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (
+          () => bocList.GoToSpecificPage (1),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+    }
+
+    [Test]
+    public void TestGoToFirstPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (
+          () => bocList.GoToFirstPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+    }
+
+    [Test]
+    public void TestGoToPreviousPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (
+          () => bocList.GoToPreviousPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+    }
+
+    [Test]
+    public void TestGoToNextPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (
+          () => bocList.GoToNextPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+    }
+
+    [Test]
+    public void TestGoToLastPage ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      Assert.That (
+          () => bocList.GoToLastPage(),
+          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
     }
 
     private WxePageObject Start ()

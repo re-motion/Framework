@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Coypu;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -68,28 +69,65 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     int GetNumberOfPages ();
 
     /// <summary>
-    /// Switches to a specific <paramref name="page"/>.
+    /// Switches to a specific <paramref name="oneBasedPageNumber"/>.
     /// </summary>
-    void GoToSpecificPage (int page);
+    /// <exception cref="MissingHtmlException">
+    /// <para>Thrown if the list is currently in edit mode</para>
+    /// <para>- or -</para>
+    /// <para>the navigation block is missing</para>
+    /// <para>- or -</para>
+    /// <para>the list is already on the given <paramref name="oneBasedPageNumber"/></para>
+    /// <para>- or -</para>
+    /// <para>the given <paramref name="oneBasedPageNumber"/> is out of index (smaller than 1 or bigger than the number returned by <see cref="GetNumberOfPages"/>).</para>
+    /// </exception>
+    void GoToSpecificPage (int oneBasedPageNumber);
 
     /// <summary>
     /// Switches to the first list page.
     /// </summary>
+    /// <exception cref="MissingHtmlException">
+    /// <para>Thrown if the list is currently in edit mode</para>
+    /// <para>- or -</para>
+    /// <para>the navigation block is missing</para>
+    /// <para>- or -</para>
+    /// <para>the list is already on the first list page.</para>
+    /// </exception>
     void GoToFirstPage ();
 
     /// <summary>
     /// Switches to the previous list page.
     /// </summary>
+    /// <exception cref="MissingHtmlException">
+    /// <para>Thrown if the list is currently in edit mode</para>
+    /// <para>- or -</para>
+    /// <para>the navigation block is missing</para>
+    /// <para>- or -</para>
+    /// <para>the list is already on the first list page.</para>
+    /// </exception>
     void GoToPreviousPage ();
 
     /// <summary>
     /// Switches to the next list page.
     /// </summary>
+    /// <exception cref="MissingHtmlException">
+    /// <para>Thrown if the list is currently in edit mode</para>
+    /// <para>- or -</para>
+    /// <para>the navigation block is missing</para>
+    /// <para>- or -</para>
+    /// <para>the list is already on the last list page.</para>
+    /// </exception>
     void GoToNextPage ();
 
     /// <summary>
     /// Switches to the last list page.
     /// </summary>
+    /// <exception cref="MissingHtmlException">
+    /// <para>Thrown if the list is currently in edit mode</para>
+    /// <para>- or -</para>
+    /// <para>the navigation block is missing</para>
+    /// <para>- or -</para>
+    /// <para>the list is already on the last list page.</para>
+    /// </exception>
     void GoToLastPage ();
   }
 

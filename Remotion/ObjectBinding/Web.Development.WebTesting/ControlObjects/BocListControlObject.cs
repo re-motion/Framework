@@ -54,60 +54,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public override int GetCurrentPage ()
-    {
-      var currentPageTextInputScope = GetCurrentPageTextInputScope();
-      return int.Parse (currentPageTextInputScope.Value);
-    }
-
-    /// <inheritdoc/>
-    public override int GetNumberOfPages ()
-    {
-      var navigatorDivScope = Scope.FindCss (".bocListNavigator");
-      return int.Parse (navigatorDivScope[DiagnosticMetadataAttributesForObjectBinding.BocListNumberOfPages]);
-    }
-
-    /// <inheritdoc/>
-    public override void GoToSpecificPage (int oneBasedPageNumber)
-    {
-      var currentPageTextInputScope = GetCurrentPageTextInputScope();
-      new FillWithAction (this, currentPageTextInputScope, Keys.Backspace + oneBasedPageNumber, FinishInput.WithTab).Execute (
-          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
-    }
-
-    /// <inheritdoc/>
-    public override void GoToFirstPage ()
-    {
-      var firstPageLinkScope = Scope.FindChild ("Navigation_First");
-      new ClickAction (this, firstPageLinkScope).Execute (
-          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
-    }
-
-    /// <inheritdoc/>
-    public override void GoToPreviousPage ()
-    {
-      var previousPageLinkScope = Scope.FindChild ("Navigation_Previous");
-      new ClickAction (this, previousPageLinkScope).Execute (
-          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
-    }
-
-    /// <inheritdoc/>
-    public override void GoToNextPage ()
-    {
-      var nextPageLinkScope = Scope.FindChild ("Navigation_Next");
-      new ClickAction (this, nextPageLinkScope).Execute (
-          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
-    }
-
-    /// <inheritdoc/>
-    public override void GoToLastPage ()
-    {
-      var lastPageLinkScope = Scope.FindChild ("Navigation_Last");
-      new ClickAction (this, lastPageLinkScope).Execute (
-          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
-    }
-
-    /// <inheritdoc/>
     public IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject> GetRowWhere ()
     {
       return this;
@@ -352,13 +298,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void ClickOnSortColumn (int oneBasedColumnIndex)
     {
       var sortColumnClickScope = Scope.FindTagWithAttribute (
-          HasFakeTableHead ? ".bocListFakeTableHead th" : ".bocListTableContainer th",
+          HasFakeTableHead() ? ".bocListFakeTableHead th" : ".bocListTableContainer th",
           DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
           oneBasedColumnIndex.ToString());
 
       var sortColumnLinkScope = sortColumnClickScope.FindLink();
       // Note: explicit hovering is required: Selenium does not correctly bring the fake table head into view.
-      if (HasFakeTableHead)
+      if (HasFakeTableHead())
         sortColumnLinkScope.Hover();
 
       new ClickAction (this, sortColumnLinkScope).Execute (
@@ -441,11 +387,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     protected virtual ElementScope GetAvailableViewsScope ()
     {
       return Scope.FindChild ("Boc_AvailableViewsList");
-    }
-
-    private ElementScope GetCurrentPageTextInputScope ()
-    {
-      return Scope.FindIdEndingWith ("Boc_CurrentPage_TextBox");
     }
   }
 }

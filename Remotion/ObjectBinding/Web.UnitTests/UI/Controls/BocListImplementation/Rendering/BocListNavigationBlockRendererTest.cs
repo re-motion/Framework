@@ -225,6 +225,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListNumberOfPages, totalPageCount.ToString());
+      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListCurrentPageNumber, (currentPageIndex + 1).ToString());
     }
 
     private void AssertManualInputArea (XmlNode manualInputArea, int currentPageIndex, int totalPageCount)

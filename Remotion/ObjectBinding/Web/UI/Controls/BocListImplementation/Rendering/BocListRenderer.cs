@@ -17,6 +17,7 @@
 using System;
 using System.Web.UI;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -145,6 +146,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
 
       RegisterInitializeListScript (renderingContext);
+    }
+
+    protected override void AddDiagnosticMetadataAttributes (RenderingContext<IBocList> renderingContext)
+    {
+      base.AddDiagnosticMetadataAttributes (renderingContext);
+
+      renderingContext.Writer.AddAttribute (
+          DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive,
+          renderingContext.Control.EditModeController.IsRowEditModeActive || renderingContext.Control.EditModeController.IsListEditModeActive
+              ? "true"
+              : "false");
+
+      renderingContext.Writer.AddAttribute (
+          DiagnosticMetadataAttributesForObjectBinding.BocListHasNavigationBlock,
+          renderingContext.Control.HasNavigator ? "true" : "false");
     }
 
     protected virtual void RenderContents (BocListRenderingContext renderingContext)

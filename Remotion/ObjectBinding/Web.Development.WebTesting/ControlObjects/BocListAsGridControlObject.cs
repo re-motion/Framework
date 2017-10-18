@@ -46,43 +46,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public override int GetCurrentPage ()
-    {
-      return 1;
-    }
-
-    /// <inheritdoc/>
-    public override int GetNumberOfPages ()
-    {
-      return 1;
-    }
-
-    /// <inheritdoc/>
-    public override void GoToSpecificPage (int page)
-    {
-    }
-
-    /// <inheritdoc/>
-    public override void GoToFirstPage ()
-    {
-    }
-
-    /// <inheritdoc/>
-    public override void GoToPreviousPage ()
-    {
-    }
-
-    /// <inheritdoc/>
-    public override void GoToNextPage ()
-    {
-    }
-
-    /// <inheritdoc/>
-    public override void GoToLastPage ()
-    {
-    }
-
-    /// <inheritdoc/>
     protected override BocListAsGridCellControlObject CreateCellControlObject (string id, ElementScope cellScope)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);

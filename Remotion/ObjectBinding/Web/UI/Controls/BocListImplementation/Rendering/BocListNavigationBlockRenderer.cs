@@ -143,6 +143,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddAttribute (
             DiagnosticMetadataAttributesForObjectBinding.BocListNumberOfPages,
             renderingContext.Control.PageCount.ToString());
+        
+        renderingContext.Writer.AddAttribute (
+            DiagnosticMetadataAttributesForObjectBinding.BocListCurrentPageNumber,
+            (renderingContext.Control.CurrentPageIndex + 1).ToString());
       }
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 

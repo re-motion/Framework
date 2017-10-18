@@ -20,11 +20,13 @@ using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using log4net;
+using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
@@ -105,27 +107,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
               .ToList());
     }
 
-    /// <inheritdoc />
-    public abstract int GetCurrentPage ();
-
-    /// <inheritdoc />
-    public abstract int GetNumberOfPages ();
-
-    /// <inheritdoc />
-    public abstract void GoToSpecificPage (int page);
-
-    /// <inheritdoc />
-    public abstract void GoToFirstPage ();
-
-    /// <inheritdoc />
-    public abstract void GoToPreviousPage ();
-
-    /// <inheritdoc />
-    public abstract void GoToNextPage ();
-
-    /// <inheritdoc />
-    public abstract void GoToLastPage ();
-
     /// <summary>
     /// Returns a <see cref="IBocListRowControlObjectHostAccessor"/> for accessing the
     /// <see cref="BocListControlObjectBase{TRowControlObject,TCellControlObject}"/> from a row.
@@ -138,9 +119,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Returns whether the list has a fake table head.
     /// </summary>
-    protected bool HasFakeTableHead
+    protected bool HasFakeTableHead ()
     {
-      get { return _hasFakeTableHead; }
+      return _hasFakeTableHead;
     }
 
     /// <summary>
@@ -155,6 +136,97 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// Factory method: implementations instantiate their default cell representation control object.
     /// </summary>
     protected abstract TCellControlObject CreateCellControlObject ([NotNull] string id, [NotNull] ElementScope cellScope);
+
+    /// <inheritdoc/>
+    public int GetCurrentPage ()
+    {
+      var navigatorDivScope = Scope.FindCss (".bocListNavigator");
+
+      if (!HasNavigator())
+        return 1;
+
+      return int.Parse (navigatorDivScope[DiagnosticMetadataAttributesForObjectBinding.BocListCurrentPageNumber]);
+    }
+
+    /// <inheritdoc/>
+    public int GetNumberOfPages ()
+    {
+      var navigatorDivScope = Scope.FindCss (".bocListNavigator");
+
+      if (!HasNavigator())
+        return 1;
+
+      return int.Parse (navigatorDivScope[DiagnosticMetadataAttributesForObjectBinding.BocListNumberOfPages]);
+    }
+
+    /// <inheritdoc/>
+    public void GoToSpecificPage (int oneBasedPageNumber)
+    {
+      EnsureNavigationPossible();
+
+      var currentPageNumber = GetCurrentPage();
+      if (currentPageNumber == oneBasedPageNumber)
+        throw new MissingHtmlException (string.Format ("List is already on page '{0}'.", currentPageNumber));
+
+      if (oneBasedPageNumber < 1 || oneBasedPageNumber > GetNumberOfPages())
+        throw CreateMissingHtmlExceptionForIndexOutOfRange (oneBasedPageNumber);
+
+      var currentPageTextInputScope = Scope.FindIdEndingWith ("Boc_CurrentPage_TextBox");
+      new FillWithAction (this, currentPageTextInputScope, Keys.Backspace + oneBasedPageNumber, FinishInput.WithTab).Execute (
+          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+    }
+
+    /// <inheritdoc/>
+    public void GoToFirstPage ()
+    {
+      EnsureNavigationPossible();
+
+      if (GetCurrentPage() == 1)
+        throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("first", "first");
+
+      var firstPageLinkScope = Scope.FindChild ("Navigation_First");
+      new ClickAction (this, firstPageLinkScope).Execute (
+          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+    }
+
+    /// <inheritdoc/>
+    public void GoToPreviousPage ()
+    {
+      EnsureNavigationPossible();
+
+      if (GetCurrentPage() == 1)
+        throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("previous", "first");
+
+      var previousPageLinkScope = Scope.FindChild ("Navigation_Previous");
+      new ClickAction (this, previousPageLinkScope).Execute (
+          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+    }
+
+    /// <inheritdoc/>
+    public void GoToNextPage ()
+    {
+      EnsureNavigationPossible();
+
+      if (GetCurrentPage() == GetNumberOfPages())
+        throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("next", "last");
+
+      var nextPageLinkScope = Scope.FindChild ("Navigation_Next");
+      new ClickAction (this, nextPageLinkScope).Execute (
+          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+    }
+
+    /// <inheritdoc/>
+    public void GoToLastPage ()
+    {
+      EnsureNavigationPossible();
+
+      if (GetCurrentPage() == GetNumberOfPages())
+        throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("last", "last");
+
+      var lastPageLinkScope = Scope.FindChild ("Navigation_Last");
+      new ClickAction (this, lastPageLinkScope).Execute (
+          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+    }
 
     /// <summary>
     /// Returns the list's columns.
@@ -182,6 +254,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public bool IsEmpty ()
     {
       return GetNumberOfRows() == 0;
+    }
+
+    /// <summary>
+    /// Returns whether the list is currently in edit mode.
+    /// </summary>
+    public bool IsEditModeActive ()
+    {
+      return Scope[DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive] == "true";
+    }
+
+    /// <summary>
+    /// Returns whether the list has a navigator.
+    /// </summary>
+    public bool HasNavigator ()
+    {
+      return Scope[DiagnosticMetadataAttributesForObjectBinding.BocListHasNavigationBlock] == "true";
     }
 
     /// <summary>
@@ -336,6 +424,35 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var bocListIsInitialized = RetryUntilTimeout.Run (() => Scope[DiagnosticMetadataAttributesForObjectBinding.BocListIsInitialized] == "true");
       if (!bocListIsInitialized)
         _log.WarnFormat ("Client side initialization of BocList '{0}' never finished.", GetHtmlID());
+    }
+
+    private void EnsureNavigationPossible ()
+    {
+      if (IsEditModeActive())
+        throw new MissingHtmlException ("Unable to change current page of the list. List is currently in edit mode.");
+
+      if (!HasNavigator())
+        throw new MissingHtmlException ("Unable to change current page of the list. List only has one page.");
+    }
+
+    private Exception CreateMissingHtmlExceptionForUnableToNavigateToPage (string pageWhichCantBeNavigatedTo, string currentPageAsString)
+    {
+      return new MissingHtmlException (string.Format ("Unable to change page number to the {0} page, as the list is already on the {1} page.", pageWhichCantBeNavigatedTo, currentPageAsString));
+    }
+
+    private Exception CreateMissingHtmlExceptionForIndexOutOfRange (int pageNumberToBeNavigated)
+    {
+      if (GetNumberOfPages() == 1)
+      {
+        return new MissingHtmlException (
+            string.Format ("Unable to navigate to page number '{0}'. The list only has one page.", pageNumberToBeNavigated));
+      }
+
+      return new MissingHtmlException (
+              string.Format (
+                  "Unable to change page number to '{0}'. Page number must be between '1' and '{1}'.",
+                  pageNumberToBeNavigated,
+                  GetNumberOfPages()));
     }
   }
 }
