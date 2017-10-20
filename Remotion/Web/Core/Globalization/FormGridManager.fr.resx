@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.Web.UI.Controls.FormGridManager.RequiredFieldTitle" xml:space="preserve">
-    <value>Saisie requise</value>
+    <value>Saisie nécessaire</value>
   </data>
   <data name="Remotion.Web.UI.Controls.FormGridManager.HelpTitle" xml:space="preserve">
     <value>Aide</value>

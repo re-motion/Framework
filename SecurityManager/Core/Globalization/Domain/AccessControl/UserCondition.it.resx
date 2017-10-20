@@ -121,12 +121,12 @@
     <value>Qualsiasi utente</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.UserCondition.Owner" xml:space="preserve">
-    <value>Proprietari dell&apos;oggetto</value>
+    <value>Proprietario dell’oggetto</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.UserCondition.SpecificPosition" xml:space="preserve">
-    <value>Utente con questo posto</value>
+    <value>Utente con posizione</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.UserCondition.SpecificUser" xml:space="preserve">
-    <value>Utente determinato</value>
+    <value>Utente specifico</value>
   </data>
 </root>

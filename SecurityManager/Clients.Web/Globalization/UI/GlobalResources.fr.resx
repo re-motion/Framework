@@ -127,16 +127,16 @@
     <value>Annuler</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Apply" xml:space="preserve">
-    <value>Appliquer</value>
+    <value>Reprendre</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Edit" xml:space="preserve">
-    <value>Traiter</value>
+    <value>Éditer</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.ErrorMessage" xml:space="preserve">
-    <value>La page contient des saisies non valides signalées par des points d’exclamation rouges.</value>
+    <value>La page contient des saisies non valables signalées par des points d’exclamation rouges.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.GroupType" xml:space="preserve">
-    <value>Unité de structure</value>
+    <value>Unité structurelle</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Group" xml:space="preserve">
     <value>Groupe</value>

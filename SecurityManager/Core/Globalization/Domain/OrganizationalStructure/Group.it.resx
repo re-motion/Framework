@@ -133,7 +133,7 @@
     <value>Gruppo padre</value>
   </data>
   <data name="property:Children" xml:space="preserve">
-    <value>Gruppi figli</value>
+    <value>Gruppi figlio</value>
   </data>
   <data name="property:Roles" xml:space="preserve">
     <value>Ruoli</value>

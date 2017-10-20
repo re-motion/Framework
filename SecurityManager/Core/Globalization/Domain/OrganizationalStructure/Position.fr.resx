@@ -124,7 +124,7 @@
     <value>Rôles</value>
   </data>
   <data name="property:GroupTypes" xml:space="preserve">
-    <value>Unités de structure</value>
+    <value>Unités structurelles</value>
   </data>
   <data name="property:DisplayName" xml:space="preserve">
     <value>Nom</value>

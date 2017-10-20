@@ -121,7 +121,7 @@
     <value>Utilisateur</value>
   </data>
   <data name="property:BeginDate" xml:space="preserve">
-    <value>Valable du</value>
+    <value>Valable à partir du</value>
   </data>
   <data name="property:EndDate" xml:space="preserve">
     <value>Valable jusqu’au</value>
@@ -133,9 +133,9 @@
     <value>Rôle</value>
   </data>
   <data name="property:SubstitutingUser" xml:space="preserve">
-    <value>Suppléant</value>
+    <value>Suppléance</value>
   </data>
   <data name="type:Substitution" xml:space="preserve">
-    <value>Suppléant</value>
+    <value>Suppléance</value>
   </data>
 </root>

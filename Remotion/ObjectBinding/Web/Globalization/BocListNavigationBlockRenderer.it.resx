@@ -124,7 +124,7 @@
     <value>Mostra ultima pagina</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.GoToNextAlternateText" xml:space="preserve">
-    <value>Mostra prossima pagina</value>
+    <value>Mostra pagina successiva</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.GoToPreviousAlternateText" xml:space="preserve">
     <value>Mostra pagina precedente</value>

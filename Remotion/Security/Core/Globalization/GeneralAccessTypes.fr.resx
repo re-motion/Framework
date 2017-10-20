@@ -124,7 +124,7 @@
     <value>Lire</value>
   </data>
   <data name="Remotion.Security.GeneralAccessTypes.Edit" xml:space="preserve">
-    <value>Traiter</value>
+    <value>Éditer</value>
   </data>
   <data name="Remotion.Security.GeneralAccessTypes.Delete" xml:space="preserve">
     <value>Supprimer</value>

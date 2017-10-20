@@ -49,6 +49,6 @@
         <value>Indeterminato</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue.NullItemValidationMessage">
-        <value>Impostare la casella di controllo su &quot;Sì&quot; o &quot;No&quot;.</value>
+        <value>Impostare la casella di controllo su "Sì" o "No".</value>
     </data>
 </root>

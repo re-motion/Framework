@@ -49,6 +49,6 @@
         <value>Indéfini</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue.NullItemValidationMessage">
-        <value>Mettez la case de contrôle sur "Oui" ou "Non".</value>
+        <value>Cochez la case «Oui» ou «Non».</value>
     </data>
 </root>

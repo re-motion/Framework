@@ -121,12 +121,12 @@
     <value>uniquement ce groupe</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupHierarchyCondition.ThisAndChildren" xml:space="preserve">
-    <value>ou de type enfant</value>
+    <value>ou enfant</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupHierarchyCondition.ThisAndParent" xml:space="preserve">
-    <value>ou de type parent</value>
+    <value>ou parent</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupHierarchyCondition.ThisAndParentAndChildren" xml:space="preserve">
-    <value>ou de type parent et enfant</value>
+    <value>ou enfant et parent</value>
   </data>
 </root>

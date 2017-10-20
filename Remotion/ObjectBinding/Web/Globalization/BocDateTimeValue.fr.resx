@@ -52,13 +52,13 @@
         <value>Entrez une heure.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.InvalidDateAndTimeErrorMessage">
-        <value>Format date ou heure inconnu.</value>
+        <value>Format de date ou d’heure inconnu.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.InvalidDateErrorMessage">
-        <value>Format date inconnu.</value>
+        <value>Format de date inconnu.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.InvalidTimeErrorMessage">
-        <value>Format horaire inconnu.</value>
+        <value>Format d’heure inconnu.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.DataPickerButtonAlternateText">
         <value>Ouvrir la sélection de dates</value>

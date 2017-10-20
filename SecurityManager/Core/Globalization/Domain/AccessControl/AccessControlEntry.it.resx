@@ -124,7 +124,7 @@
     <value>Priorità</value>
   </data>
   <data name="property:SpecificAbstractRole" xml:space="preserve">
-    <value>Ruolo Astratto</value>
+    <value>Ruolo astratto</value>
   </data>
   <data name="property:SpecificGroup" xml:space="preserve">
     <value>Gruppo</value>

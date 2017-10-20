@@ -127,13 +127,13 @@
     <value>Nom</value>
   </data>
   <data name="property:GroupType" xml:space="preserve">
-    <value>Unité de structure</value>
+    <value>Unité structurelle</value>
   </data>
   <data name="property:Parent" xml:space="preserve">
-    <value>Groupe de type parent</value>
+    <value>Groupe parent</value>
   </data>
   <data name="property:Children" xml:space="preserve">
-    <value>Groupe de type enfant</value>
+    <value>Groupes enfants</value>
   </data>
   <data name="property:Roles" xml:space="preserve">
     <value>Rôles</value>

@@ -121,16 +121,16 @@
     <value>Opzioni</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.AvailableViewsListTitle" xml:space="preserve">
-    <value>Visualizzazione</value>
+    <value>Vista</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeErrorMessage" xml:space="preserve">
-    <value>Nella riga in corso di modifica si sono verificati errori.</value>
+    <value>Si sono verificati errori nella riga appena modificata.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle" xml:space="preserve">
-    <value>Input necessario nella riga in corso di modifica.</value>
+    <value>Input obbligatorio nella riga appena modificata</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.EmptyListMessage" xml:space="preserve">
-    <value>Nessun dato presente.</value>
+    <value>Nessun dato disponibile.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SortAscendingAlternateText" xml:space="preserve">
     <value>Ordinamento crescente</value>
@@ -145,7 +145,7 @@
     <value>Applica modifiche alla riga</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeCancelAlternateText" xml:space="preserve">
-    <value>Scarta modifiche alla riga</value>
+    <value>Elimina modifiche della riga</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectRowLabelText" xml:space="preserve">
     <value>Seleziona questa riga</value>
@@ -160,6 +160,6 @@
     <value>Opzioni</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
-    <value>In almeno una riga si è verificato un errore.</value>
+    <value>Si è verificato un errore in almeno una riga.</value>
   </data>
 </root>

@@ -124,10 +124,10 @@
     <value>Impossibile utilizzare il gruppo selezionato come padre perché risulterebbe una gerarchia circolare.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListForm.Title" xml:space="preserve">
-    <value>Gestisci utente</value>
+    <value>Gestisci utenti</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListControl.UserListLabelText" xml:space="preserve">
-    <value>Gestisci utente</value>
+    <value>Gestisci utenti</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListControl.NewUserButtonText" xml:space="preserve">
     <value>Crea nuovo utente</value>
@@ -142,10 +142,10 @@
     <value>Crea nuovo tenant</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.PositionListForm.Title" xml:space="preserve">
-    <value>Gestisci posti</value>
+    <value>Gestisci posizioni</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.PositionListControl.PositionListLabelText" xml:space="preserve">
-    <value>Gestisci posti</value>
+    <value>Gestisci posizioni</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.PositionListControl.NewPositionButtonText" xml:space="preserve">
     <value>Crea nuovo posto</value>
@@ -184,10 +184,10 @@
     <value>Modifica tenant</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditPositionForm.Title" xml:space="preserve">
-    <value>Modifica posto</value>
+    <value>Modifica posizione</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditPositionControl.PositionLabelText" xml:space="preserve">
-    <value>Modifica posto</value>
+    <value>Modifica posizione</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupTypeForm.Title" xml:space="preserve">
     <value>Modifica unità strutturale</value>

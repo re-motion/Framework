@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.AnyGroupWithSpecificGroupType" xml:space="preserve">
-    <value>Unité de structure</value>
+    <value>Unité structurelle</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.BranchOfOwningGroup" xml:space="preserve">
-    <value>Même … (unité de structure)</value>
+    <value>Même... (unité structurelle)</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.None" xml:space="preserve">
-    <value>Groupe quelconque</value>
+    <value>N’importe quel groupe</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.OwningGroup" xml:space="preserve">
     <value>Groupe de l’objet</value>

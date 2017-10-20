@@ -130,7 +130,7 @@
     <value>Groupe</value>
   </data>
   <data name="property:SpecificGroupType" xml:space="preserve">
-    <value>Unité de structure</value>
+    <value>Unité structurelle</value>
   </data>
   <data name="property:SpecificPosition" xml:space="preserve">
     <value>Poste</value>

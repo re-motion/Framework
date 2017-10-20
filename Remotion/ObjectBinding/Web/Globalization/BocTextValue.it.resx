@@ -43,10 +43,10 @@
         <value>Immettere un valore.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.InvalidDateAndTimeErrorMessage">
-        <value>Formato data o orario sconosciuto.</value>
+        <value>Formato di ora o data sconosciuto.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.InvalidDateErrorMessage">
-        <value>Formato data sconosciuto.</value>
+        <value>Formato di data sconosciuto.</value>
     </data>
     <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.InvalidIntegerErrorMessage">
         <value>Immettere un numero intero.</value>

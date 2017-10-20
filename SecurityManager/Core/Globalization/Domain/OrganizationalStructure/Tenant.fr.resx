@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="property:Children" xml:space="preserve">
-    <value>Clients de type enfant</value>
+    <value>Clients enfants</value>
   </data>
   <data name="property:DisplayName" xml:space="preserve">
     <value>Nom</value>
@@ -130,7 +130,7 @@
     <value>Nom</value>
   </data>
   <data name="property:Parent" xml:space="preserve">
-    <value>Client de type parent</value>
+    <value>Client parent</value>
   </data>
   <data name="type:Tenant" xml:space="preserve">
     <value>Client</value>

@@ -121,6 +121,6 @@
     <value>solo questo tenant</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.TenantHierarchyCondition.ThisAndParent" xml:space="preserve">
-    <value>o tenant padre</value>
+    <value>O superiori</value>
   </data>
 </root>

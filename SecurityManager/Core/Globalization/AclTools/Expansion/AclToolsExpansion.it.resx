@@ -139,16 +139,16 @@
     <value>_NESSUNA_CLASSE_DEFINITA_</value>
   </data>
   <data name="OrItsChildren" xml:space="preserve">
-    <value>o subordinati</value>
+    <value>O inferiori</value>
   </data>
   <data name="OrItsParents" xml:space="preserve">
-    <value>o padre</value>
+    <value>O superiori</value>
   </data>
   <data name="OwningGroupEqualsTableHeader" xml:space="preserve">
-    <value>Gruppo dell&apos;oggetto corrisponde</value>
+    <value>Gruppo dell’oggetto corrisponde</value>
   </data>
   <data name="OwningTenantEqualsTableHeader" xml:space="preserve">
-    <value>Tenant dell&apos;oggetto corrisponde</value>
+    <value>Tenant dell’oggetto corrisponde</value>
   </data>
   <data name="PageTitle" xml:space="preserve">
     <value>re-motion ACL Expansion - utente</value>
@@ -166,10 +166,10 @@
     <value>Stato</value>
   </data>
   <data name="UserMustHaveAbstractRoleTableHeader" xml:space="preserve">
-    <value>L&apos;utente deve detenere un ruolo astratto</value>
+    <value>L’utente deve detenere un ruolo astratto</value>
   </data>
   <data name="UserMustOwnTableHeader" xml:space="preserve">
-    <value>L&apos;utente deve essere proprietario</value>
+    <value>L’utente deve essere proprietario</value>
   </data>
   <data name="UserTableHeader" xml:space="preserve">
     <value>Utente</value>

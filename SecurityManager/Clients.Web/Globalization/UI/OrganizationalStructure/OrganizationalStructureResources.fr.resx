@@ -118,84 +118,84 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupControl.GroupLabelText" xml:space="preserve">
-    <value>Traiter le groupe</value>
+    <value>Éditer groupe</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupControl.ParentValidatorErrorMessage" xml:space="preserve">
     <value>Vous ne pouvez pas utiliser le groupe selectionné comme parent car cela crée une hiérachie circulaire.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListForm.Title" xml:space="preserve">
-    <value>Gérer les utilisateurs</value>
+    <value>Gérer utilisateur</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListControl.UserListLabelText" xml:space="preserve">
-    <value>Gérer les utilisateurs</value>
+    <value>Gérer utilisateur</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListControl.NewUserButtonText" xml:space="preserve">
     <value>Créer un nouvel utilisateur</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.TenantListForm.Title" xml:space="preserve">
-    <value>Gérer les clients</value>
+    <value>Gérer clients</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.TenantListControl.TenantListLabelText" xml:space="preserve">
-    <value>Gérer les clients</value>
+    <value>Gérer clients</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.TenantListControl.NewTenantButtonText" xml:space="preserve">
     <value>Créer un nouveau client</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.PositionListForm.Title" xml:space="preserve">
-    <value>Gérer les postes</value>
+    <value>Gérer postes</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.PositionListControl.PositionListLabelText" xml:space="preserve">
-    <value>Gérer les postes</value>
+    <value>Gérer postes</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.PositionListControl.NewPositionButtonText" xml:space="preserve">
     <value>Créer un nouveau poste</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupTypeListForm.Title" xml:space="preserve">
-    <value>Gérer les unités de structure</value>
+    <value>Gérer unités structurelles</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupTypeListControl.GroupTypeListLabelText" xml:space="preserve">
-    <value>Gérer les unités de structure</value>
+    <value>Gérer unités structurelles</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupTypeListControl.NewGroupTypeButtonText" xml:space="preserve">
-    <value>Créer une nouvelle unité de structure</value>
+    <value>Créer une nouvelle unité structurelle</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupListForm.Title" xml:space="preserve">
-    <value>Gérer les groupes</value>
+    <value>Gérer groupes</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupListControl.GroupListLabelText" xml:space="preserve">
-    <value>Gérer les groupes</value>
+    <value>Gérer groupes</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupListControl.NewGroupButtonText" xml:space="preserve">
     <value>Créer un nouveau groupe</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditUserForm.Title" xml:space="preserve">
-    <value>Traiter l’utilisateur</value>
+    <value>Éditer utilisateur</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditUserControl.UserLabelText" xml:space="preserve">
-    <value>Traiter l’utilisateur</value>
+    <value>Éditer utilisateur</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantForm.Title" xml:space="preserve">
-    <value>Traiter le client</value>
+    <value>Éditer client</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl.ParentValidatorErrorMessage" xml:space="preserve">
     <value>Vous ne pouvez pas utiliser le client selectionné comme parent car cela crée une hiérachie circulaire.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl.TenantLabelText" xml:space="preserve">
-    <value>Traiter le client</value>
+    <value>Éditer client</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditPositionForm.Title" xml:space="preserve">
-    <value>Traiter le poste</value>
+    <value>Éditer poste</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditPositionControl.PositionLabelText" xml:space="preserve">
-    <value>Traiter le poste</value>
+    <value>Éditer poste</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupTypeForm.Title" xml:space="preserve">
-    <value>Traiter l’unité de structure</value>
+    <value>Éditer unité structurelle</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupTypeControl.GroupTypeLabelText" xml:space="preserve">
-    <value>Traiter l’unité de structure</value>
+    <value>Éditer unité structurelle</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupForm.Title" xml:space="preserve">
-    <value>Traiter le groupe</value>
+    <value>Éditer groupe</value>
   </data>
 </root>

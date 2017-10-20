@@ -121,7 +121,7 @@
     <value>Nom</value>
   </data>
   <data name="property:GroupType" xml:space="preserve">
-    <value>Unité de structure</value>
+    <value>Unité structurelle</value>
   </data>
   <data name="property:Position" xml:space="preserve">
     <value>Poste</value>
@@ -130,6 +130,6 @@
     <value>Nom</value>
   </data>
   <data name="type:GroupTypePosition" xml:space="preserve">
-    <value>Poste dans unité de structure</value>
+    <value>Poste dans unité structurelle</value>
   </data>
 </root>

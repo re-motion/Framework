@@ -139,10 +139,10 @@
     <value>_AUCUNE_CLASSE_DÉFINIE_</value>
   </data>
   <data name="OrItsChildren" xml:space="preserve">
-    <value>ou de type enfant</value>
+    <value>ou enfant</value>
   </data>
   <data name="OrItsParents" xml:space="preserve">
-    <value>ou de type parent</value>
+    <value>ou parent</value>
   </data>
   <data name="OwningGroupEqualsTableHeader" xml:space="preserve">
     <value>Le groupe de l’objet correspond</value>
