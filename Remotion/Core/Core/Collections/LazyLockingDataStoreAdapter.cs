@@ -15,12 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Threading;
 using Remotion.Utilities;
 
 namespace Remotion.Collections
 {
   /// <summary>
-  /// Adapts an implementation of <see cref="IDataStore{TKey,TValue}"/> that stores <see cref="DoubleCheckedLockingContainer{T}"/> holding
+  /// Adapts an implementation of <see cref="IDataStore{TKey,TValue}"/> that stores <see cref="Lazy{T}"/> holding
   /// lazily constructed values so that users can access those values without indirection, and in a thread-safe way. Use 
   /// <see cref="DataStoreFactory.CreateWithLazyLocking{TKey,TValue}()"/> to create an instance of this type.
   /// </summary>
@@ -28,11 +29,11 @@ namespace Remotion.Collections
   /// <typeparam name="TValue">The type of the values.</typeparam>
   /// <threadsafety static="true" instance="true" />
   /// <remarks>
-  /// This class internally combines a <see cref="LockingDataStoreDecorator{TKey,TValue}"/> with <see cref="DoubleCheckedLockingContainer{T}"/>
+  /// This class internally combines a <see cref="LockingDataStoreDecorator{TKey,TValue}"/> with <see cref="Lazy{T}"/>
   /// instances. This leads to the effect that the lock used for the synchronization of the data store is always held for a very short time only,
   /// even if the factory delegate for a specific value takes a long time to execute.
   /// </remarks>
-  // Not serializable because DoubleCheckedLockingContainer is not serializable.
+  [Serializable]
   public class LazyLockingDataStoreAdapter<TKey, TValue> : IDataStore<TKey, TValue>
       where TValue: class
   {
@@ -46,12 +47,12 @@ namespace Remotion.Collections
       }
     }
 
-    private readonly LockingDataStoreDecorator<TKey, DoubleCheckedLockingContainer<Wrapper>> _innerDataStore;
+    private readonly LockingDataStoreDecorator<TKey, Lazy<Wrapper>> _innerDataStore;
 
-    public LazyLockingDataStoreAdapter (IDataStore<TKey, DoubleCheckedLockingContainer<Wrapper>> innerDataStore)
+    public LazyLockingDataStoreAdapter (IDataStore<TKey, Lazy<Wrapper>> innerDataStore)
     {
       ArgumentUtility.CheckNotNull ("innerDataStore", innerDataStore);
-      _innerDataStore = new LockingDataStoreDecorator<TKey, DoubleCheckedLockingContainer<Wrapper>> (innerDataStore);
+      _innerDataStore = new LockingDataStoreDecorator<TKey, Lazy<Wrapper>> (innerDataStore);
     }
 
     public bool IsNull
@@ -68,7 +69,7 @@ namespace Remotion.Collections
     public void Add (TKey key, TValue value)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
-      _innerDataStore.Add (key, new DoubleCheckedLockingContainer<Wrapper> (() => new Wrapper (value)));
+      _innerDataStore.Add (key, new Lazy<Wrapper> (() => new Wrapper (value), LazyThreadSafetyMode.PublicationOnly));
     }
 
     public bool Remove (TKey key)
@@ -92,7 +93,7 @@ namespace Remotion.Collections
       set
       {
         ArgumentUtility.DebugCheckNotNull ("key", key);
-        _innerDataStore[key] = new DoubleCheckedLockingContainer<Wrapper> (() => new Wrapper (value));
+        _innerDataStore[key] = new Lazy<Wrapper> (() => new Wrapper (value), LazyThreadSafetyMode.PublicationOnly);
       }
     }
 
@@ -100,15 +101,15 @@ namespace Remotion.Collections
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
 
-      var doubleCheckedLockingContainer = _innerDataStore.GetValueOrDefault (key);
-      return doubleCheckedLockingContainer != null ? doubleCheckedLockingContainer.Value.Value : null;
+      var result = _innerDataStore.GetValueOrDefault (key);
+      return result != null ? result.Value.Value : null;
     }
 
     public bool TryGetValue (TKey key, out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
       
-      DoubleCheckedLockingContainer<Wrapper> result;
+      Lazy<Wrapper> result;
 
       if (_innerDataStore.TryGetValue (key, out result))
       {
@@ -125,7 +126,7 @@ namespace Remotion.Collections
       ArgumentUtility.DebugCheckNotNull ("key", key);
       ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
 
-      DoubleCheckedLockingContainer<Wrapper> value;
+      Lazy<Wrapper> value;
       Wrapper wrapper;
       if (_innerDataStore.TryGetValue (key, out value))
         wrapper = value.Value;
@@ -138,7 +139,10 @@ namespace Remotion.Collections
     private Wrapper GetOrCreateValueWithClosure (TKey key, Func<TKey, TValue> valueFactory)
     {
       ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
-      return _innerDataStore.GetOrCreateValue (key, k => new DoubleCheckedLockingContainer<Wrapper> (() => new Wrapper (valueFactory (k)))).Value;
+      var result = _innerDataStore.GetOrCreateValue (
+          key,
+          k => new Lazy<Wrapper> (() => new Wrapper (valueFactory (k)), LazyThreadSafetyMode.ExecutionAndPublication));
+      return result.Value;
     }
   }
 }

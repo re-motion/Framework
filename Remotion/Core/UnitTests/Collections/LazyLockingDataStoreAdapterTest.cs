@@ -27,18 +27,18 @@ using Wrapper = Remotion.Collections.LazyLockingDataStoreAdapter<string, object>
 
 namespace Remotion.UnitTests.Collections
 {
-  using InnerFactory = Func<IDataStore<string, DoubleCheckedLockingContainer<Wrapper>>, DoubleCheckedLockingContainer<Wrapper>>;
+  using InnerFactory = Func<IDataStore<string, Lazy<Wrapper>>, Lazy<Wrapper>>;
 
   [TestFixture]
   public class LazyLockingDataStoreAdapterTest
   {
-    private IDataStore<string, DoubleCheckedLockingContainer<Wrapper>> _innerDataStoreMock;
+    private IDataStore<string, Lazy<Wrapper>> _innerDataStoreMock;
     private LazyLockingDataStoreAdapter<string, object> _store;
 
     [SetUp]
     public void SetUp ()
     {
-      _innerDataStoreMock = MockRepository.GenerateStrictMock<IDataStore<string, DoubleCheckedLockingContainer<Wrapper>>>();
+      _innerDataStoreMock = MockRepository.GenerateStrictMock<IDataStore<string, Lazy<Wrapper>>>();
       _store = new LazyLockingDataStoreAdapter<string, object> (_innerDataStoreMock);
     }
 
@@ -68,7 +68,7 @@ namespace Remotion.UnitTests.Collections
     {
       var value = new object ();
       _innerDataStoreMock
-          .Expect (store => store.Add (Arg.Is ("key"), Arg<DoubleCheckedLockingContainer<Wrapper>>.Matches (c => c.Value.Value == value)))
+          .Expect (store => store.Add (Arg.Is ("key"), Arg<Lazy<Wrapper>>.Matches (c => c.Value.Value == value)))
           .WhenCalled (mi => CheckInnerDataStoreIsProtected ());
 
       _store.Add ("key", value);
@@ -125,7 +125,7 @@ namespace Remotion.UnitTests.Collections
     {
       var value = new object ();
       _innerDataStoreMock
-          .Expect (store => store[Arg.Is ("key")] = Arg<DoubleCheckedLockingContainer<Wrapper>>.Matches (c => c.Value.Value == value))
+          .Expect (store => store[Arg.Is ("key")] = Arg<Lazy<Wrapper>>.Matches (c => c.Value.Value == value))
           .WhenCalled (mi => CheckInnerDataStoreIsProtected ());
 
       _store["key"] = value;
@@ -171,7 +171,7 @@ namespace Remotion.UnitTests.Collections
       var doubleCheckedLockingContainer = CreateContainerThatChecksForNotProtected (value);
 
       _innerDataStoreMock
-          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<DoubleCheckedLockingContainer<Wrapper>>.Out (doubleCheckedLockingContainer).Dummy))
+          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (doubleCheckedLockingContainer).Dummy))
           .Return (true)
           .WhenCalled (mi => CheckInnerDataStoreIsProtected());
 
@@ -188,7 +188,7 @@ namespace Remotion.UnitTests.Collections
     public void TryGetValue_NoValueFound ()
     {
       _innerDataStoreMock
-          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<DoubleCheckedLockingContainer<Wrapper>>.Out (null).Dummy))
+          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (null).Dummy))
           .Return (false)
           .WhenCalled (mi => CheckInnerDataStoreIsProtected());
 
@@ -208,13 +208,13 @@ namespace Remotion.UnitTests.Collections
       var doubleCheckedLockingContainer = CreateContainerThatChecksForNotProtected (value);
 
       _innerDataStoreMock
-          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<DoubleCheckedLockingContainer<Wrapper>>.Out (null).Dummy))
+          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (null).Dummy))
           .Return (false)
           .WhenCalled (mi => CheckInnerDataStoreIsProtected());
       _innerDataStoreMock
           .Expect (mock => ((InnerFactory) (store => store.GetOrCreateValue (
               Arg.Is ("key"),
-              Arg<Func<string, DoubleCheckedLockingContainer<Wrapper>>>.Matches (f => f ("Test").Value.Value.Equals ("Test123"))))) (mock))
+              Arg<Func<string, Lazy<Wrapper>>>.Matches (f => f ("Test").Value.Value.Equals ("Test123"))))) (mock))
           .Return (doubleCheckedLockingContainer)
           .WhenCalled (mi => CheckInnerDataStoreIsProtected ());
 
@@ -232,7 +232,7 @@ namespace Remotion.UnitTests.Collections
 
       _innerDataStoreMock
           .Expect (
-              mock => mock.TryGetValue (Arg.Is ("key"), out Arg<DoubleCheckedLockingContainer<Wrapper>>.Out (doubleCheckedLockingContainer).Dummy))
+              mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (doubleCheckedLockingContainer).Dummy))
           .Return (true)
           .WhenCalled (mi => CheckInnerDataStoreIsProtected ());
 
@@ -245,7 +245,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetOrCreateValue_TwiceWithNullValue_DoesNotEvalueValueFactoryTwice ()
     {
-      var adapter = new LazyLockingDataStoreAdapter<string, object> (new SimpleDataStore<string, DoubleCheckedLockingContainer<Wrapper>>());
+      var adapter = new LazyLockingDataStoreAdapter<string, object> (new SimpleDataStore<string, Lazy<Wrapper>>());
 
       bool wasCalled = false;
 
@@ -261,6 +261,14 @@ namespace Remotion.UnitTests.Collections
 
       value = adapter.GetOrCreateValue ("test", s => { throw new InvalidOperationException ("Must not be called."); });
       Assert.That (value, Is.Null);
+    }
+
+    [Test]
+    public void Serializable ()
+    {
+      Serializer.SerializeAndDeserialize (
+          new LazyLockingDataStoreAdapter<string, object> (
+              new SimpleDataStore<string, Lazy<Wrapper>>()));
     }
 
     private void CheckInnerDataStoreIsProtected ()
@@ -279,19 +287,19 @@ namespace Remotion.UnitTests.Collections
       LockTestHelper.CheckLockIsNotHeld (lockObject);
     }
 
-    private DoubleCheckedLockingContainer<Wrapper> CreateContainerThatChecksForNotProtected (object value)
+    private Lazy<Wrapper> CreateContainerThatChecksForNotProtected (object value)
     {
-      return new DoubleCheckedLockingContainer<Wrapper> (() =>
+      return new Lazy<Wrapper> (() =>
       {
         CheckInnerDataStoreIsNotProtected();
         return new Wrapper (value);
       });
     }
 
-    private LockingDataStoreDecorator<string, DoubleCheckedLockingContainer<Wrapper>> GetLockingDataStoreDecorator (
+    private LockingDataStoreDecorator<string, Lazy<Wrapper>> GetLockingDataStoreDecorator (
         LazyLockingDataStoreAdapter<string, object> lazyLockingDataStoreAdapter)
     {
-      return (LockingDataStoreDecorator<string, DoubleCheckedLockingContainer<Wrapper>>) 
+      return (LockingDataStoreDecorator<string, Lazy<Wrapper>>) 
           PrivateInvoke.GetNonPublicField (lazyLockingDataStoreAdapter, "_innerDataStore");
     }
   }

@@ -84,17 +84,17 @@ namespace Remotion.Collections
     /// </returns>
     /// <remarks>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional,
-    /// double-checked locks (see <see cref="DoubleCheckedLockingContainer{T}"/>) to protect each single value. It is well-suited for data stores
+    /// double-checked locks (see <see cref="Lazy{T}"/>) to protect each single value. It is well-suited for data stores
     /// in which the factory delegates passed to <see cref="IDataStore{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue,TExpirationInfo,TScanInfo}"/> instead to reduce the number of locks used.
     /// </remarks>
     public static LazyLockingDataStoreAdapter<TKey, TValue> CreateWithLazyLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
-        IExpirationPolicy<DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> policy,
+        IExpirationPolicy<Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> policy,
         IEqualityComparer<TKey> comparer) 
         where TValue: class
     {
       return new LazyLockingDataStoreAdapter<TKey, TValue> (
-          new ExpiringDataStore<TKey, DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> (
+          new ExpiringDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> (
               policy, 
               comparer));
     }

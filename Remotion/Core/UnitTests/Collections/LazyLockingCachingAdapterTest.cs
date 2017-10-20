@@ -29,18 +29,18 @@ using Wrapper = Remotion.Collections.LazyLockingCachingAdapter<string, object>.W
 
 namespace Remotion.UnitTests.Collections
 {
-  using InnerFactory = Func<ICache<string, DoubleCheckedLockingContainer<Wrapper>>, DoubleCheckedLockingContainer<Wrapper>>;
+  using InnerFactory = Func<ICache<string, Lazy<Wrapper>>, Lazy<Wrapper>>;
 
   [TestFixture]
   public class LazyLockingCachingAdapterTest
   {
-    private ICache<string, DoubleCheckedLockingContainer<Wrapper>> _innerCacheMock;
+    private ICache<string, Lazy<Wrapper>> _innerCacheMock;
     private LazyLockingCachingAdapter<string, object> _cachingAdapter;
 
     [SetUp]
     public void SetUp ()
     {
-      _innerCacheMock = MockRepository.GenerateStrictMock<ICache<string, DoubleCheckedLockingContainer<Wrapper>>> ();
+      _innerCacheMock = MockRepository.GenerateStrictMock<ICache<string, Lazy<Wrapper>>> ();
       _cachingAdapter = new LazyLockingCachingAdapter<string, object> (_innerCacheMock);
     }
 
@@ -57,13 +57,13 @@ namespace Remotion.UnitTests.Collections
       var doubleCheckedLockingContainer = CreateContainerThatChecksForNotProtected (value);
 
       _innerCacheMock
-          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<DoubleCheckedLockingContainer<Wrapper>>.Out (null).Dummy))
+          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (null).Dummy))
           .Return (false)
           .WhenCalled (mi => CheckInnerCacheIsProtected ());
       _innerCacheMock
           .Expect (mock => ((InnerFactory) (store => store.GetOrCreateValue (
               Arg.Is ("key"),
-              Arg<Func<string, DoubleCheckedLockingContainer<Wrapper>>>.Matches (f => f ("Test").Value.Value.Equals ("Test123"))))) (mock))
+              Arg<Func<string, Lazy<Wrapper>>>.Matches (f => f ("Test").Value.Value.Equals ("Test123"))))) (mock))
           .Return (doubleCheckedLockingContainer)
           .WhenCalled (mi => CheckInnerCacheIsProtected ());
 
@@ -81,7 +81,7 @@ namespace Remotion.UnitTests.Collections
 
       _innerCacheMock
           .Expect (
-              mock => mock.TryGetValue (Arg.Is ("key"), out Arg<DoubleCheckedLockingContainer<Wrapper>>.Out (doubleCheckedLockingContainer).Dummy))
+              mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (doubleCheckedLockingContainer).Dummy))
           .Return (true)
           .WhenCalled (mi => CheckInnerCacheIsProtected ());
 
@@ -94,7 +94,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetOrCreateValue_TwiceWithNullValue_DoesNotEvalueValueFactoryTwice ()
     {
-      var adapter = new LazyLockingCachingAdapter<string, object>(new Cache<string, DoubleCheckedLockingContainer<Wrapper>>());
+      var adapter = new LazyLockingCachingAdapter<string, object>(new Cache<string, Lazy<Wrapper>>());
 
       bool wasCalled = false;
 
@@ -120,7 +120,7 @@ namespace Remotion.UnitTests.Collections
 
       _innerCacheMock
           .Expect (
-              mock => mock.TryGetValue (Arg.Is ("key"), out Arg<DoubleCheckedLockingContainer<Wrapper>>.Out (doubleCheckedLockingContainer).Dummy))
+              mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (doubleCheckedLockingContainer).Dummy))
           .Return (true)
           .WhenCalled (mi => CheckInnerCacheIsProtected ());
 
@@ -137,7 +137,7 @@ namespace Remotion.UnitTests.Collections
     public void TryGetValue_NoValueFound ()
     {
       _innerCacheMock
-          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<DoubleCheckedLockingContainer<Wrapper>>.Out (null).Dummy))
+          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (null).Dummy))
           .Return (false)
           .WhenCalled (mi => CheckInnerCacheIsProtected ());
 
@@ -156,11 +156,11 @@ namespace Remotion.UnitTests.Collections
       var expected1 = new object();
       var expected2 = new object();
 
-      var returnValue = ((IEnumerable<KeyValuePair<string, DoubleCheckedLockingContainer<Wrapper>>>)
+      var returnValue = ((IEnumerable<KeyValuePair<string, Lazy<Wrapper>>>)
           new[]
           {
-              new KeyValuePair<string, DoubleCheckedLockingContainer<Wrapper>> ("key1", CreateContainerThatChecksForNotProtected (expected1)),
-              new KeyValuePair<string, DoubleCheckedLockingContainer<Wrapper>> ("key2", CreateContainerThatChecksForNotProtected (expected2))
+              new KeyValuePair<string, Lazy<Wrapper>> ("key1", CreateContainerThatChecksForNotProtected (expected1)),
+              new KeyValuePair<string, Lazy<Wrapper>> ("key2", CreateContainerThatChecksForNotProtected (expected2))
           }).GetEnumerator();
 
       _innerCacheMock
@@ -188,11 +188,11 @@ namespace Remotion.UnitTests.Collections
       var expected1 = new object();
       var expected2 = new object();
 
-      var returnValue = ((IEnumerable<KeyValuePair<string, DoubleCheckedLockingContainer<Wrapper>>>)
+      var returnValue = ((IEnumerable<KeyValuePair<string, Lazy<Wrapper>>>)
           new[]
           {
-              new KeyValuePair<string, DoubleCheckedLockingContainer<Wrapper>> ("key1", CreateContainerThatChecksForNotProtected (expected1)),
-              new KeyValuePair<string, DoubleCheckedLockingContainer<Wrapper>> ("key2", CreateContainerThatChecksForNotProtected (expected2))
+              new KeyValuePair<string, Lazy<Wrapper>> ("key1", CreateContainerThatChecksForNotProtected (expected1)),
+              new KeyValuePair<string, Lazy<Wrapper>> ("key2", CreateContainerThatChecksForNotProtected (expected2))
           }).GetEnumerator();
 
       _innerCacheMock
@@ -229,6 +229,14 @@ namespace Remotion.UnitTests.Collections
       _innerCacheMock.VerifyAllExpectations ();
     }
 
+    [Test]
+    public void Serializable ()
+    {
+      Serializer.SerializeAndDeserialize (
+          new LazyLockingCachingAdapter<string, string> (
+              new Cache<string, Lazy<LazyLockingCachingAdapter<string, string>.Wrapper>>()));
+    }
+
     private void CheckInnerCacheIsProtected ()
     {
       var lockingCacheDecorator = GetLockingCacheDecorator (_cachingAdapter);
@@ -245,19 +253,19 @@ namespace Remotion.UnitTests.Collections
       LockTestHelper.CheckLockIsNotHeld (lockObject);
     }
 
-    private DoubleCheckedLockingContainer<Wrapper> CreateContainerThatChecksForNotProtected (object value)
+    private Lazy<Wrapper> CreateContainerThatChecksForNotProtected (object value)
     {
-      return new DoubleCheckedLockingContainer<Wrapper> (() =>
+      return new Lazy<Wrapper> (() =>
       {
         CheckInnerCacheIsNotProtected ();
         return new Wrapper (value);
       });
     }
 
-    private LockingCacheDecorator<string, DoubleCheckedLockingContainer<Wrapper>> GetLockingCacheDecorator (
+    private LockingCacheDecorator<string, Lazy<Wrapper>> GetLockingCacheDecorator (
         LazyLockingCachingAdapter<string, object> lazyLockingCacheAdapter)
     {
-      return (LockingCacheDecorator<string, DoubleCheckedLockingContainer<Wrapper>>)
+      return (LockingCacheDecorator<string, Lazy<Wrapper>>)
           PrivateInvoke.GetNonPublicField (lazyLockingCacheAdapter, "_innerCache");
     }
   }

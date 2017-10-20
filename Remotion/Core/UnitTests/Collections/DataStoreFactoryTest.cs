@@ -77,9 +77,9 @@ namespace Remotion.UnitTests.Collections
 
       Assert.That (result, Is.TypeOf (typeof (LazyLockingDataStoreAdapter<string, object>)));
       var innerStore = PrivateInvoke.GetNonPublicField (result, "_innerDataStore");
-      Assert.That (innerStore, Is.TypeOf (typeof (LockingDataStoreDecorator<string, DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
+      Assert.That (innerStore, Is.TypeOf (typeof (LockingDataStoreDecorator<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
       var innerDecoratorStore = PrivateInvoke.GetNonPublicField (innerStore, "_innerStore");
-      Assert.That (innerDecoratorStore, Is.TypeOf (typeof (SimpleDataStore<string, DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
+      Assert.That (innerDecoratorStore, Is.TypeOf (typeof (SimpleDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
     }
 
     [Test]
@@ -89,10 +89,10 @@ namespace Remotion.UnitTests.Collections
 
       Assert.That (result, Is.TypeOf (typeof (LazyLockingDataStoreAdapter<string, object>)));
       var innerStore = PrivateInvoke.GetNonPublicField (result, "_innerDataStore");
-      Assert.That (innerStore, Is.TypeOf (typeof (LockingDataStoreDecorator<string, DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
+      Assert.That (innerStore, Is.TypeOf (typeof (LockingDataStoreDecorator<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
       var innerDecoratorStore = PrivateInvoke.GetNonPublicField (innerStore, "_innerStore");
-      Assert.That (innerDecoratorStore, Is.TypeOf (typeof (SimpleDataStore<string, DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
-      Assert.That (((SimpleDataStore<string, DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<string, object>.Wrapper>>) innerDecoratorStore).Comparer, Is.SameAs (_comparer));
+      Assert.That (innerDecoratorStore, Is.TypeOf (typeof (SimpleDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
+      Assert.That (((SimpleDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>) innerDecoratorStore).Comparer, Is.SameAs (_comparer));
     }
   }
 }

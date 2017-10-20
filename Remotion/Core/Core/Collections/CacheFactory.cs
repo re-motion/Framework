@@ -200,14 +200,14 @@ namespace Remotion.Collections
     /// </returns>
     /// <remarks>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional, 
-    /// double-checked locks (see <see cref="DoubleCheckedLockingContainer{T}"/>) to protect each single value. It is well-suited for caches
+    /// double-checked locks (see <see cref="Lazy{T}"/>) to protect each single value. It is well-suited for caches
     /// in which the factory delegates passed to <see cref="ICache{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue}()"/> instead to reduce the number of locks used.
     /// </remarks>
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> () where TValue : class
     {
       return new LazyLockingCachingAdapter<TKey, TValue> (
-          new Cache<TKey, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>>());
+          new Cache<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>>());
     }
 
     /// <summary>
@@ -222,7 +222,7 @@ namespace Remotion.Collections
     /// </returns>
     /// <remarks>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional, 
-    /// double-checked locks (see <see cref="DoubleCheckedLockingContainer{T}"/>) to protect each single value. It is well-suited for caches
+    /// double-checked locks (see <see cref="Lazy{T}"/>) to protect each single value. It is well-suited for caches
     /// in which the factory delegates passed to <see cref="ICache{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue}()"/> instead to reduce the number of locks used.
     /// </remarks>
@@ -233,8 +233,8 @@ namespace Remotion.Collections
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
 
       return new LazyLockingCachingAdapter<TKey, TValue> (
-          new InvalidationTokenBasedCacheDecorator<TKey, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (
-              new Cache<TKey, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>>(),
+          new InvalidationTokenBasedCacheDecorator<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (
+              new Cache<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>>(),
               invalidationToken));
     }
 
@@ -250,7 +250,7 @@ namespace Remotion.Collections
     /// </returns>
     /// <remarks>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional,
-    /// double-checked locks (see <see cref="DoubleCheckedLockingContainer{T}"/>) to protect each single value. It is well-suited for caches
+    /// double-checked locks (see <see cref="Lazy{T}"/>) to protect each single value. It is well-suited for caches
     /// in which the factory delegates passed to <see cref="ICache{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using 
     /// <see cref="CreateWithLocking{TKey,TValue}(System.Collections.Generic.IEqualityComparer{TKey})"/> instead to reduce the number of locks used.
@@ -259,7 +259,7 @@ namespace Remotion.Collections
         where TValue : class
     {
       return new LazyLockingCachingAdapter<TKey, TValue> (
-          new Cache<TKey, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (comparer));
+          new Cache<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (comparer));
     }
 
     /// <summary>
@@ -275,7 +275,7 @@ namespace Remotion.Collections
     /// </returns>
     /// <remarks>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional,
-    /// double-checked locks (see <see cref="DoubleCheckedLockingContainer{T}"/>) to protect each single value. It is well-suited for caches
+    /// double-checked locks (see <see cref="Lazy{T}"/>) to protect each single value. It is well-suited for caches
     /// in which the factory delegates passed to <see cref="ICache{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using 
     /// <see cref="CreateWithLocking{TKey,TValue}(System.Collections.Generic.IEqualityComparer{TKey})"/> instead to reduce the number of locks used.
@@ -288,8 +288,8 @@ namespace Remotion.Collections
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
 
       return new LazyLockingCachingAdapter<TKey, TValue> (
-          new InvalidationTokenBasedCacheDecorator<TKey, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (
-              new Cache<TKey, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (comparer),
+          new InvalidationTokenBasedCacheDecorator<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (
+              new Cache<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (comparer),
               invalidationToken));
     }
   }

@@ -106,14 +106,14 @@ namespace Remotion.Collections
     /// </returns>
     /// <remarks>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional, 
-    /// double-checked locks (see <see cref="DoubleCheckedLockingContainer{T}"/>) to protect each single value. It is well-suited for data stores
+    /// double-checked locks (see <see cref="Lazy{T}"/>) to protect each single value. It is well-suited for data stores
     /// in which the factory delegates passed to <see cref="IDataStore{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue}()"/> instead to reduce the number of locks used.
     /// </remarks>
     public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> () where TValue: class
     {
       return new LazyLockingDataStoreAdapter<TKey, TValue> (
-          new SimpleDataStore<TKey, DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>>());
+          new SimpleDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>>());
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ namespace Remotion.Collections
     /// </returns>
     /// <remarks>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional,
-    /// double-checked locks (see <see cref="DoubleCheckedLockingContainer{T}"/>) to protect each single value. It is well-suited for data stores
+    /// double-checked locks (see <see cref="Lazy{T}"/>) to protect each single value. It is well-suited for data stores
     /// in which the factory delegates passed to <see cref="IDataStore{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue}(System.Collections.Generic.IEqualityComparer{TKey})"/>
     /// instead to reduce the number of locks used.
@@ -136,7 +136,7 @@ namespace Remotion.Collections
     public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> (IEqualityComparer<TKey> comparer) where TValue: class
     {
       return new LazyLockingDataStoreAdapter<TKey, TValue> (
-          new SimpleDataStore<TKey, DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>> (comparer));
+          new SimpleDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>> (comparer));
     }
   }
 }

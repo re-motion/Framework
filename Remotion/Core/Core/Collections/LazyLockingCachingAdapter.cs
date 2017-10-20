@@ -18,12 +18,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Remotion.Utilities;
 
 namespace Remotion.Collections
 {
   /// <summary>
-  /// Adapts an implementation of <see cref="ICache{TKey,TValue}"/> that stores <see cref="DoubleCheckedLockingContainer{T}"/> holding
+  /// Adapts an implementation of <see cref="ICache{TKey,TValue}"/> that stores <see cref="Lazy{T}"/> holding
   /// lazily constructed values so that users can access those values without indirection, and in a thread-safe way. Use 
   /// <see cref="CacheFactory.CreateWithLazyLocking{TKey,TValue}()"/> to create an instance of this type.
   /// </summary>
@@ -31,11 +32,11 @@ namespace Remotion.Collections
   /// <typeparam name="TValue">The type of the values.</typeparam>
   /// <threadsafety static="true" instance="true" />
   /// <remarks>
-  /// This class internally combines a <see cref="LockingCacheDecorator{TKey,TValue}"/> with <see cref="DoubleCheckedLockingContainer{T}"/>
+  /// This class internally combines a <see cref="LockingCacheDecorator{TKey,TValue}"/> with <see cref="Lazy{T}"/>
   /// instances. This leads to the effect that the lock used for the synchronization of the data store is always held for a very short time only,
   /// even if the factory delegate for a specific value takes a long time to execute.
   /// </remarks>
-  // Not serializable because DoubleCheckedLockingContainer is not serializable.
+  [Serializable]
   public class LazyLockingCachingAdapter<TKey, TValue> : ICache<TKey, TValue> where TValue : class 
   {
     public class Wrapper
@@ -48,13 +49,13 @@ namespace Remotion.Collections
       }
     }
 
-    private readonly LockingCacheDecorator<TKey, DoubleCheckedLockingContainer<Wrapper>> _innerCache;
+    private readonly LockingCacheDecorator<TKey, Lazy<Wrapper>> _innerCache;
 
-    public LazyLockingCachingAdapter (ICache<TKey, DoubleCheckedLockingContainer<Wrapper>> innerCache)
+    public LazyLockingCachingAdapter (ICache<TKey, Lazy<Wrapper>> innerCache)
     {
       ArgumentUtility.CheckNotNull ("innerCache", innerCache);
 
-      _innerCache = new LockingCacheDecorator<TKey, DoubleCheckedLockingContainer<Wrapper>> (innerCache);
+      _innerCache = new LockingCacheDecorator<TKey, Lazy<Wrapper>> (innerCache);
     }
 
     public bool IsNull
@@ -67,7 +68,7 @@ namespace Remotion.Collections
       ArgumentUtility.DebugCheckNotNull ("key", key);
       ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
 
-      DoubleCheckedLockingContainer<Wrapper> value;
+      Lazy<Wrapper> value;
       Wrapper wrapper;
       if (_innerCache.TryGetValue (key, out value))
         wrapper = value.Value;
@@ -80,14 +81,17 @@ namespace Remotion.Collections
     private Wrapper GetOrCreateValueWithClosure (TKey key, Func<TKey, TValue> valueFactory)
     {
       ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
-      return _innerCache.GetOrCreateValue (key, k => new DoubleCheckedLockingContainer<Wrapper> (() => new Wrapper (valueFactory (k)))).Value;
+      var result = _innerCache.GetOrCreateValue (
+          key,
+          k => new Lazy<Wrapper> (() => new Wrapper (valueFactory (k)), LazyThreadSafetyMode.ExecutionAndPublication));
+      return result.Value;
     }
 
     public bool TryGetValue (TKey key, out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
 
-      DoubleCheckedLockingContainer<Wrapper> result;
+      Lazy<Wrapper> result;
 
       if (_innerCache.TryGetValue (key, out result))
       {

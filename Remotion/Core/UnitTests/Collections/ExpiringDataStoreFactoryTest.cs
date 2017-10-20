@@ -68,20 +68,20 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void CreateWithLazyLocking ()
     {
-      var policy = MockRepository.GenerateStub<IExpirationPolicy<DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime, DateTime>> ();
+      var policy = MockRepository.GenerateStub<IExpirationPolicy<Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime, DateTime>> ();
 
       var result = ExpiringDataStoreFactory.CreateWithLazyLocking (policy,  _comparer);
 
       Assert.That (result, Is.TypeOf (typeof (LazyLockingDataStoreAdapter<string,  object>)));
       var innerDataStore = PrivateInvoke.GetNonPublicField (result, "_innerDataStore");
-      Assert.That (innerDataStore, Is.TypeOf (typeof (LockingDataStoreDecorator<string, DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
+      Assert.That (innerDataStore, Is.TypeOf (typeof (LockingDataStoreDecorator<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
       var innerStore = PrivateInvoke.GetNonPublicField (innerDataStore, "_innerStore");
-      Assert.That (innerStore, Is.TypeOf (typeof (ExpiringDataStore<string, DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime, DateTime>)));
+      Assert.That (innerStore, Is.TypeOf (typeof (ExpiringDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime, DateTime>)));
       var expirationPolicy = PrivateInvoke.GetNonPublicField (innerStore, "_expirationPolicy");
       Assert.That (expirationPolicy, Is.SameAs (expirationPolicy));
       var innerInnerDataStore = PrivateInvoke.GetNonPublicField (innerStore, "_innerDataStore");
-      Assert.That (innerInnerDataStore, Is.TypeOf (typeof (SimpleDataStore<string, Tuple<DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime>>)));
-      Assert.That (((SimpleDataStore<string, Tuple<DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime>>) innerInnerDataStore).Comparer, Is.SameAs (_comparer));
+      Assert.That (innerInnerDataStore, Is.TypeOf (typeof (SimpleDataStore<string, Tuple<Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime>>)));
+      Assert.That (((SimpleDataStore<string, Tuple<Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime>>) innerInnerDataStore).Comparer, Is.SameAs (_comparer));
     }
   }
 }
