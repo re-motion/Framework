@@ -175,13 +175,13 @@
     <value>Benutzer bearbeiten</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantForm.Title" xml:space="preserve">
-    <value>Mandant bearbeiten</value>
+    <value>Mandanten bearbeiten</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl.ParentValidatorErrorMessage" xml:space="preserve">
     <value>Sie können den ausgewählten Mandanten nicht als übergeordneten Mandanten verwenden, weil dadurch eine zirkuläre Hierarchie entsteht.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl.TenantLabelText" xml:space="preserve">
-    <value>Mandant bearbeiten</value>
+    <value>Mandanten bearbeiten</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditPositionForm.Title" xml:space="preserve">
     <value>Stelle bearbeiten</value>
