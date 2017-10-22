@@ -45,7 +45,12 @@ namespace Remotion.Web.Utilities
       if (HasScheme (virtualPath))
         return virtualPath;
 
-      string serverPart = context.Request.Url.GetLeftPart (UriPartial.Authority);
+      var hostHeader = context.Request.Headers["Host"];
+      string serverPart;
+      if (string.IsNullOrEmpty (hostHeader))
+        serverPart = hostHeader ?? context.Request.Url.GetLeftPart (UriPartial.Authority);
+      else
+        serverPart = context.Request.Url.GetLeftPart (UriPartial.Scheme) + hostHeader;
       string resolvedPath = ResolveUrlCaseSensitive (context, virtualPath);
 
       return serverPart + resolvedPath;

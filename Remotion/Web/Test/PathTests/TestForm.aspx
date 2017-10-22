@@ -24,6 +24,29 @@
   <body>
     <form id="Form1" method="post" runat="server">
       <table>
+
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("~")                </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "~")                 %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("~/")               </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "~/")                %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("~/test")           </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "~/test")            %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("~/.")              </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "~/.")               %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("~/./path")         </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "~/./path")          %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("~/path/.")         </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "~/path/.")          %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("~/path1/../path2") </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "~/path1/../path2")  %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("~/../path2")       </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "~/../path2")        %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("~/~")              </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "~/~")               %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("~/~/")             </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "~/~/")              %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("~/~/test")         </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "~/~/test")          %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("~\\test")          </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "~\\test")           %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("/test/path")       </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "/test/path")        %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("\\test\\path")     </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "\\test\\path")      %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("/test\\path")      </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "/test\\path")       %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("\\test/path")      </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "\\test/path")       %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("")                 </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "")                  %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("test/path")        </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "test/path")         %>"</td></tr>
+        <tr><td>UrlUtility.GetAbsoluteUrlWithProtocolAndHostname ("test\\path")       </td><td>"<%= UrlUtility.GetAbsoluteUrlWithProtocolAndHostname (Context, "test\\path")        %>"</td></tr>
+
+        <tr><td>&nbsp;</td><td></td></tr>
+
         <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~")                </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~")                 %>"</td></tr>
         <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/")               </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/")                %>"</td></tr>
         <tr><td>UrlUtility.ResolveUrlCaseSensitive ("~/test")           </td><td>"<%= UrlUtility.ResolveUrlCaseSensitive (Context, "~/test")            %>"</td></tr>
