@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return dataContainers.Select (dc => GetLoadedObjectDataForDataContainer (dc, alreadyLoadedObjectDataProvider));
     }
 
-    public IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
+    public virtual IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull ("query", query);
 
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    public IEnumerable<LoadedObjectDataWithDataSourceData> ExecuteFetchQuery (IQuery query, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
+    public virtual IEnumerable<LoadedObjectDataWithDataSourceData> ExecuteFetchQuery (IQuery query, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
       ArgumentUtility.CheckNotNull ("query", query);
       ArgumentUtility.CheckNotNull ("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
