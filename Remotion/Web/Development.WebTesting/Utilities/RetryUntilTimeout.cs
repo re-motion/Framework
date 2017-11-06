@@ -20,7 +20,6 @@ using System.Threading;
 using JetBrains.Annotations;
 using log4net;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.Configuration;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {

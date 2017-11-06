@@ -19,7 +19,6 @@ using System.Drawing;
 using System.Windows.Automation;
 using JetBrains.Annotations;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.Utilities;
 using Point = System.Windows.Point;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.IO;
-using System.Resources;
 using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;

@@ -17,7 +17,6 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
-using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;

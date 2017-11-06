@@ -18,8 +18,6 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.Web.Development.WebTesting.BrowserSession;
-using Remotion.Web.Development.WebTesting.WebDriver;
-using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 
 namespace Remotion.Web.Development.WebTesting.ControlSelection
 {

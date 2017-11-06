@@ -17,7 +17,6 @@
 using System;
 using OpenQA.Selenium;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 {

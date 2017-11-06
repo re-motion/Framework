@@ -20,8 +20,6 @@ using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ControlSelection;
-using Remotion.Web.Development.WebTesting.WebDriver;
-using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 
 namespace Remotion.Web.Development.WebTesting
 {

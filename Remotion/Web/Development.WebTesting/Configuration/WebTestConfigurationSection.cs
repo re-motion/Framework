@@ -15,10 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 

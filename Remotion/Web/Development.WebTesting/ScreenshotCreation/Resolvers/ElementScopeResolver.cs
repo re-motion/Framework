@@ -18,7 +18,6 @@ using System;
 using Coypu;
 using OpenQA.Selenium;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 {

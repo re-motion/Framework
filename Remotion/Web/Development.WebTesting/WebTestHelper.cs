@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
@@ -29,9 +28,7 @@ using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.Utilities;
-using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
-using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
 
 namespace Remotion.Web.Development.WebTesting

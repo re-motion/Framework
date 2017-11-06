@@ -17,7 +17,6 @@
 using System;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
-using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 {

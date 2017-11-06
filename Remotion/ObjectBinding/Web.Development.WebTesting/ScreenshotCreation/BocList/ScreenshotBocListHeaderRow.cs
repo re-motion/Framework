@@ -23,7 +23,6 @@ using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
-using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList
 {
