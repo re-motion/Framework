@@ -384,7 +384,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <summary>
-    /// Returns the column defintion given by <paramref name="oneBasedIndex"/>.
+    /// Returns the column definition given by <paramref name="oneBasedIndex"/>.
     /// </summary>
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByIndex (int oneBasedIndex)
     {
@@ -392,7 +392,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <summary>
-    /// Returns the column defintion given by <paramref name="columnTitle"/>.
+    /// Returns the column definition given by <paramref name="columnTitle"/>.
     /// </summary>
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByTitle ([NotNull] string columnTitle)
     {
@@ -402,7 +402,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <summary>
-    /// Returns the column defintion given by <paramref name="columnTitleContains"/>.
+    /// Returns the column definition given by <paramref name="columnTitleContains"/>.
     /// </summary>
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByTitleContains ([NotNull] string columnTitleContains)
     {

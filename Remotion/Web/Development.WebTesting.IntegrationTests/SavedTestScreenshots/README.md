@@ -26,14 +26,14 @@ Desktop.Test.png
 Test.png
 ```
 
-## Muliple reference images
+## Multiple reference images
 In order to store multiple images for one test the following format should be used:
 
 > <browser>.<type>.<name><id>.png
 
 Rules for `browser` and `type` are the same as above.
 
-`id` is a sequencial number starting at `0`
+`id` is a sequential number starting at `0`
 
 Examples:
 
@@ -44,7 +44,7 @@ Desktop.Test2.png
 ```
 ## Transparency
 
-In order to ignore certain part of the screenshot comparision the color can be set to transparent in the source file. This skips the equality check for that pixel. This is useful in cases where browsers could render content differently, but the content itself is not important for the test.
+In order to ignore certain part of the screenshot comparison the color can be set to transparent in the source file. This skips the equality check for that pixel. This is useful in cases where browsers could render content differently, but the content itself is not important for the test.
 
 ## Leniency
 

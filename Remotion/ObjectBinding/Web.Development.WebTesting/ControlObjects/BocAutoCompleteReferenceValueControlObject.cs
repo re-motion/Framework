@@ -139,12 +139,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject ExecuteCommand (IWebTestActionOptions acitonOptions = null)
+    public UnspecifiedPageObject ExecuteCommand (IWebTestActionOptions actionOptions = null)
     {
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
-      return GetCommand().Click (acitonOptions);
+      return GetCommand().Click (actionOptions);
     }
 
     /// <inheritdoc/>

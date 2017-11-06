@@ -129,7 +129,7 @@
         </ListMenuItems>
       </testsite:TestBocListWithRowMenuItems>
     </td>
-    <td>&nbsp; (selction via radio buttons)</td>
+    <td>&nbsp; (selection via radio buttons)</td>
   </tr>
   <tr>
     <td></td>

@@ -73,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 
     /// <summary>
     /// Creates a new <see cref="FluentScreenshotElement{T}"/> using <paramref name="target"/> and <paramref name="resolver"/> 
-    /// inheriting all properties that are not overriden from <paramref name="fluentTarget"/>.
+    /// inheriting all properties that are not overridden from <paramref name="fluentTarget"/>.
     /// </summary>
     public static FluentScreenshotElement<TTarget> CloneFor<TSource, TTarget> (
         [NotNull] IFluentScreenshotElement<TSource> fluentTarget,
