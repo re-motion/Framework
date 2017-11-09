@@ -127,13 +127,13 @@
     <value>Choisissez un client.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.DeleteAccessControlEntryButtonText" xml:space="preserve">
-    <value>Effacer ligne</value>
+    <value>Supprimer ligne</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.EditAccessControlListControlBase.DeleteAccessControlListButtonText" xml:space="preserve">
     <value>Supprimer ACL</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStateCombinationControl.DeleteStateCombinationButtonText" xml:space="preserve">
-    <value>Supprimer état</value>
+    <value>Retirer état</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.DuplicateStateCombinationsValidatorErrorMessage" xml:space="preserve">
     <value>Chaque état doit être unique.</value>
@@ -178,7 +178,7 @@
     <value>Afficher les détails</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.AllPermissionsMenu_ClearAllPermissions_Text" xml:space="preserve">
-    <value>Tout effacer</value>
+    <value>Tout retirer</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.AllPermissionsMenu_DenyAllPermissions_Text" xml:space="preserve">
     <value>Tout interdire</value>

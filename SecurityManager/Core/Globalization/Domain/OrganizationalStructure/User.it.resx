@@ -133,7 +133,7 @@
     <value>Cognome</value>
   </data>
   <data name="property:OwningGroup" xml:space="preserve">
-    <value>Gruppo</value>
+    <value>Gruppo proprietario</value>
   </data>
   <data name="property:Roles" xml:space="preserve">
     <value>Ruoli</value>

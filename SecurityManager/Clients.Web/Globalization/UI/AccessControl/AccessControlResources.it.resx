@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditPermissionsForm.StatefulAccessControlListsTitle" xml:space="preserve">
-    <value>Autorizzazioni basate sull’oggetto</value>
+    <value>Autorizzazioni basate sull'oggetto</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditStatefulAccessControlListControl.MissingStateCombinationsValidatorErrorMessage" xml:space="preserve">
     <value>Assegnare uno stato.</value>
@@ -196,25 +196,25 @@
     <value>Accesso a "{0}" non definito</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.BranchOfOwningGroupLabel" xml:space="preserve">
-    <value>All’interno dello stesso</value>
+    <value>All'interno dello stesso</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupHierarchyCondition_This" xml:space="preserve">
     <value>Solo questo gruppo</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupHierarchyCondition_ThisAndChildren" xml:space="preserve">
-    <value>Questo gruppo o gruppi inferiori</value>
+    <value>Questo gruppo o gruppi figlio</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupHierarchyCondition_ThisAndParent" xml:space="preserve">
-    <value>Questo gruppo o gruppi superiori</value>
+    <value>Questo gruppo o gruppi padre</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupHierarchyCondition_ThisAndParentAndChildren" xml:space="preserve">
-    <value>Questo gruppo o gruppi superiori o inferiori</value>
+    <value>Questo gruppo o gruppi padre o figlio</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.TenantHierarchyCondition_This" xml:space="preserve">
     <value>Solo questo tenant</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.TenantHierarchyCondition_ThisAndParent" xml:space="preserve">
-    <value>Questo tenant o tenant superiori</value>
+    <value>Questo tenant o tenant padre</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupCondition_None" xml:space="preserve">
     <value>qualsiasi</value>
@@ -226,9 +226,9 @@
     <value>qualsiasi</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificGroupFieldInvalidItemErrorMessage" xml:space="preserve">
-    <value>Il nome specificato non identifica alcun gruppo. Correggere l’input.</value>
+    <value>Il nome specificato non identifica alcun gruppo. Correggere l'input.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificUserFieldInvalidItemErrorMessage" xml:space="preserve">
-    <value>Il nome specificato non identifica alcun utente. Correggere l’input.</value>
+    <value>Il nome specificato non identifica alcun utente. Correggere l'input.</value>
   </data>
 </root>
