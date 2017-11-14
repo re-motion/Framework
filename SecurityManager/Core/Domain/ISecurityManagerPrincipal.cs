@@ -52,6 +52,7 @@ namespace Remotion.SecurityManager.Domain
     SubstitutionProxy Substitution { get; }
 
     [NotNull]
+    [MustUseReturnValue]
     ISecurityManagerPrincipal GetRefreshedInstance ();
 
     [NotNull]

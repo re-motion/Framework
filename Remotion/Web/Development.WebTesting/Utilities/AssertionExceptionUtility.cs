@@ -27,12 +27,14 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   public static class AssertionExceptionUtility
   {
     [NotNull]
+    [MustUseReturnValue]
     public static Exception CreateControlDisabledException ()
     {
       return new MissingHtmlException ("The control is currently in a disabled state. Therefore, the operation is not possible.");
     }
 
     [NotNull]
+    [MustUseReturnValue]
     public static Exception CreateControlDisabledException ([NotNull] string controlName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("controlName", controlName);

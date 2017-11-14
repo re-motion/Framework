@@ -403,11 +403,13 @@ namespace Remotion.Utilities
       return collection;
     }
 
+    [MustUseReturnValue]
     public static ArgumentException CreateArgumentEmptyException ([InvokerParameterName] string argumentName)
     {
       return new ArgumentException (string.Format("Parameter '{0}' cannot be empty.", argumentName), argumentName);
     }
 
+    [MustUseReturnValue]
     public static ArgumentException CreateArgumentTypeException ([InvokerParameterName] string argumentName, Type actualType, Type expectedType)
     {
       string actualTypeName = actualType != null ? actualType.ToString() : "<null>";
@@ -423,6 +425,7 @@ namespace Remotion.Utilities
       }
     }
 
+    [MustUseReturnValue]
     public static ArgumentException CreateArgumentItemTypeException (
         [InvokerParameterName] string argumentName,
         int index,
@@ -439,6 +442,7 @@ namespace Remotion.Utilities
           argumentName);
     }
 
+    [MustUseReturnValue]
     public static ArgumentNullException CreateArgumentItemNullException ([InvokerParameterName] string argumentName, int index)
     {
       return new ArgumentNullException (argumentName, string.Format ("Item {0} of parameter '{1}' is null.", index, argumentName));

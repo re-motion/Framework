@@ -84,6 +84,9 @@
     <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\MeansImplicitUseAttribute.cs">
       <Link>SharedSource\ReSharperAnnotations\MeansImplicitUseAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\MustUseReturnValueAttribute.cs">
+      <Link>SharedSource\Utilities\MustUseReturnValueAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\NoEnumerationAttribute.cs">
       <Link>SharedSource\ReSharperAnnotations\NoEnumerationAttribute.cs</Link>
     </Compile>

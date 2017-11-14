@@ -118,6 +118,7 @@ namespace Remotion.Security
     /// Enables a <see cref="SecurityFreeSection"/> until the <see cref="Scope"/> is disabled. 
     /// The <see cref="Scope"/> should always be used via a using-block, or if that is not possible, disposed inside a finally-block.
     /// </summary>
+    [MustUseReturnValue]
     public static Scope Activate ()
     {
       var result = PushSectionState (newIsActive: true);
@@ -128,6 +129,7 @@ namespace Remotion.Security
     /// Disables any active <see cref="SecurityFreeSection"/> until the <see cref="Scope"/> is disposed. 
     /// The <see cref="Scope"/> should always be used via a using-block, or if that is not possible, disposed inside a finally-block.
     /// </summary>
+    [MustUseReturnValue]
     public static Scope Deactivate ()
     {
       var result = PushSectionState (newIsActive: false);

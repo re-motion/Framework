@@ -86,6 +86,7 @@ namespace Remotion.Utilities
       return (TEnum) enumValue;
     }
  
+    [MustUseReturnValue]
     public static ArgumentOutOfRangeException CreateEnumArgumentOutOfRangeException ([InvokerParameterName] string argumentName, object actualValue)
     {
       string message = string.Format (

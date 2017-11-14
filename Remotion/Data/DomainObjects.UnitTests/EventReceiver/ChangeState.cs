@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
@@ -77,6 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       }
     }
 
+    [MustUseReturnValue]
     protected ApplicationException CreateApplicationException (string message, params object[] args)
     {
       return new ApplicationException (string.Format (message, args));
