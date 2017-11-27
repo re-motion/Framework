@@ -128,6 +128,11 @@
     <Compile Include="BindableObject\IntergrationTests\MixedProperties\TestDomain\TargetClassWithPubliclyIntroducedMembers.cs" />
     <Compile Include="BindableObject\IBindablePropertReadAccessStrategyTest.cs" />
     <Compile Include="BindableObject\IBindablePropertyWriteAccessStrategyTest.cs" />
+    <Compile Include="BindableObject\IntergrationTests\OverriddenProperties\OverriddenPropertiesTest.cs" />
+    <Compile Include="BindableObject\IntergrationTests\OverriddenProperties\TestDomain\DerivedTargetClass.cs" />
+    <Compile Include="BindableObject\IntergrationTests\OverriddenProperties\TestDomain\MixinClass.cs" />
+    <Compile Include="BindableObject\IntergrationTests\OverriddenProperties\TestDomain\TargetClass.cs" />
+    <Compile Include="BindableObject\IntergrationTests\OverriddenProperties\TestDomain\TestPropertyAttribute.cs" />
     <Compile Include="BusinessObjectPropertyAccessExceptionTest.cs" />
     <Compile Include="BusinessObjectPropertyPaths\BusinessObjectPropertyPathBaseTests\CascadedListPropertyPath_BusinessObjectPropertyPathBaseTest.cs" />
     <Compile Include="BusinessObjectPropertyPaths\BusinessObjectPropertyPathBaseTests\SingleValuePropertyPath_BusinessObjectPropertyPathBaseTest.cs" />
