@@ -108,12 +108,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!renderingContext.Control.HasAvailableViewsList)
         return;
 
+      var availableViewsList = renderingContext.Control.GetAvailableViewsList();
+
       renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       renderingContext.Writer.AddStyleAttribute ("margin-bottom", menuBlockItemOffset);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.AvailableViewsListLabel);
 
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.AvailableViewsListLabel);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.For, availableViewsList.ClientID);
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Label);
+
       string availableViewsListTitle;
       if (string.IsNullOrEmpty (renderingContext.Control.AvailableViewsListTitle))
         availableViewsListTitle = renderingContext.Control.GetResourceManager().GetString (Controls.BocList.ResourceIdentifier.AvailableViewsListTitle);
@@ -124,8 +128,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
 
       renderingContext.Writer.Write (c_whiteSpace);
-      
-      var availableViewsList = renderingContext.Control.GetAvailableViewsList();
+
       if (renderingContext.Control.IsDesignMode)
         availableViewsList.Width = Unit.Point (c_designModeAvailableViewsListWidthInPoints);
       availableViewsList.Enabled = !renderingContext.Control.EditModeController.IsRowEditModeActive && 

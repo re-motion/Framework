@@ -63,6 +63,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectBoundEd
       throw new NotImplementedException();
     }
 
+    public override bool UseLabel
+    {
+      get { throw new NotImplementedException(); }
+    }
+
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       return Enumerable.Empty<BaseValidator>();

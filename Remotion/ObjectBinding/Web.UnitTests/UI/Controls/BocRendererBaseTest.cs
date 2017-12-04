@@ -78,6 +78,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
         return new string[0];
       }
 
+      public override bool UseLabel
+      {
+        get { return false; }
+      }
+
       public override bool SaveValue (bool interim)
       {
         return true;

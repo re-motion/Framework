@@ -145,6 +145,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return new string[0];
     }
 
+    public override bool UseLabel
+    {
+      get { return false; }
+    }
+
     protected override void Render (HtmlTextWriter writer)
     {
       if (IsDesignMode)

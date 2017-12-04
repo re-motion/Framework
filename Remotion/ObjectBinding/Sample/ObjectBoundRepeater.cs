@@ -166,6 +166,11 @@ namespace Remotion.ObjectBinding.Sample
         return _owner.ValidateInternal();
       }
 
+      public override bool UseLabel
+      {
+        get { return false; }
+      }
+
       protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
       {
         return Enumerable.Empty<BaseValidator>();

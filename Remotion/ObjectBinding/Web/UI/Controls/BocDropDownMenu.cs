@@ -289,10 +289,10 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
   ///   <see cref="TargetControl"/>.
   /// </summary>
-  /// <value> Returns always <see langword="true"/>. </value>
+  /// <value> Returns always <see langword="false"/>. </value>
   public override bool UseLabel
   {
-    get { return true; }
+    get { return false; }
   }
 
   /// <summary>

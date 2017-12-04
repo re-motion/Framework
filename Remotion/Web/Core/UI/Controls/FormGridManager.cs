@@ -2440,8 +2440,7 @@ namespace Remotion.Web.UI.Controls
           //    || control is HtmlTable)
         {
           Label primitiveLabel = CreateWebLabel();
-          if (! (control is DropDownList))// || control is HtmlSelect))
-            primitiveLabel.AssociatedControlID = control.ID;
+          primitiveLabel.AssociatedControlID = control.ID;
           label = primitiveLabel;
         }
         else

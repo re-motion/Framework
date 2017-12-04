@@ -139,6 +139,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return new string[0];
     }
 
+    /// <summary>
+    ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
+    ///   <see cref="BusinessObjectBoundEditableWebControl"/>.
+    /// </summary>
+    /// <value> Returns always <see langword="false"/>. </value>
+    public override bool UseLabel
+    {
+      get { return false; }
+    }
+
     /// <summary> 
     ///   Loads the <see cref="BusinessObject"/> from the <see cref="ReferencedDataSource"/> using 
     ///   <see cref="ReferenceProperty"/> and populates the bound controls using <see cref="LoadValues"/>.

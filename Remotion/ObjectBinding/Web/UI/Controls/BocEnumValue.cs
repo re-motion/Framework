@@ -396,20 +396,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
     ///   <see cref="TargetControl"/>.
     /// </summary>
-    /// <value> 
-    ///   <see langword="false"/> if the <see cref="ListControlStyle"/>'s 
-    ///   <see cref="Remotion.ObjectBinding.Web.UI.Controls.ListControlStyle.ControlType"/> is set to 
-    ///   <see cref="ListControlType.DropDownList"/> or <see cref="ListControlType.ListBox"/>. 
-    /// </value>
+    /// <value> Always <see langword="true"/>. </value>
     public override bool UseLabel
     {
-      get
-      {
-        bool isDropDownList = _listControlStyle.ControlType == ListControlType.DropDownList;
-        bool isListBox = _listControlStyle.ControlType == ListControlType.ListBox;
-
-        return !(isDropDownList || isListBox);
-      }
+      get { return true; }
     }
 
     /// <summary>

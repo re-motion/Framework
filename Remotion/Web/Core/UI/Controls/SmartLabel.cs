@@ -125,7 +125,7 @@ public class SmartLabel: WebControl, IControl
       else if (target != null)
       {
         clientID = target.ClientID;
-        useLabel = ! (target is DropDownList || target is HtmlSelect);
+        useLabel = true;
       }
 
       if (useLabel && !string.IsNullOrEmpty (clientID))

@@ -429,10 +429,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="System.Web.UI.HtmlControls.HtmlSelect"/> control.
     /// </value>
     [Browsable (false)]
-    public virtual bool UseLabel
-    {
-      get { return !(TargetControl is DropDownList || TargetControl is HtmlSelect); }
-    }
+    public abstract bool UseLabel { get; }
 
     /// <summary> Evalutes whether this control is in <b>Design Mode</b>. </summary>
     /// <value><see langword="true"/> if the control is currently rendered by the Visual Studio Designer.</value>
