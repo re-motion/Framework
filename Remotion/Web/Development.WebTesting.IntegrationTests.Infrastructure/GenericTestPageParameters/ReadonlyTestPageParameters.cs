@@ -21,15 +21,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
   /// <summary>
   /// <see cref="IGenericTestPageParameter"/> for the general test case factories.
   /// </summary>
-  public class GeneralTestPageParameters : GenericTestPageParameterBase
+  public class ReadOnlyTestPageParameters : GenericTestPageParameterBase
   {
     private const int c_parameterCount = 2;
 
-    private string enabledHtmlID;
-    private string disabledHtmlID;
+    private string _enabledHtmlID;
+    private string _readOnlyHtmlID;
 
-    public GeneralTestPageParameters ()
-        : base (TestConstants.GeneralTestsID, c_parameterCount)
+    public ReadOnlyTestPageParameters ()
+        : base (TestConstants.ReadOnlyTestsID, c_parameterCount)
     {
     }
 
@@ -38,15 +38,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     /// </summary>
     public string EnabledHtmlID
     {
-      get { return enabledHtmlID; }
+      get { return _enabledHtmlID; }
     }
 
     /// <summary>
-    /// HTML id of the disabled control.
+    /// HTML id of the readonly control.
     /// </summary>
-    public string DisabledHtmlID
+    public string ReadOnlyHtmlID
     {
-      get { return disabledHtmlID; }
+      get { return _readOnlyHtmlID; }
     }
 
     /// <inheritdoc />
@@ -54,8 +54,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     {
       base.Apply (data);
 
-      enabledHtmlID = data[0];
-      disabledHtmlID = data[1];
+      _enabledHtmlID = data[0];
+      _readOnlyHtmlID = data[1];
     }
   }
 }

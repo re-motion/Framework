@@ -63,6 +63,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
       var isTriState = IsTriState();
       if (!isTriState && !newState.HasValue)
         throw new ArgumentException ("Must not be null for non-tri-state BocBooleanValue controls.", "newState");

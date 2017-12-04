@@ -32,7 +32,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocCheckBoxControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<BocCheckBoxSelector, BocCheckBoxControlObject> testAction)
     {
       testAction (Helper, e => e.CheckBoxes(), "checkBox");
@@ -62,15 +63,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestIsReadOnly ()
+    public void TestIsReadOnly_SetMethodsThrow ()
     {
       var home = Start();
 
-      var bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_Normal");
-      Assert.That (bocCheckBox.IsReadOnly(), Is.False);
+      var control = home.CheckBoxes().GetByLocalID ("DeceasedField_ReadOnly");
 
-      bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_ReadOnly");
-      Assert.That (bocCheckBox.IsReadOnly(), Is.True);
+      Assert.That (control.IsReadOnly(), Is.True);
+      Assert.That (() => control.SetTo (false), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

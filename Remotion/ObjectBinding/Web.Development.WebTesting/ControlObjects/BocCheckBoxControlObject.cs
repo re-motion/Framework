@@ -54,6 +54,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
       if (GetState() == newState)
         return UnspecifiedPage();
 

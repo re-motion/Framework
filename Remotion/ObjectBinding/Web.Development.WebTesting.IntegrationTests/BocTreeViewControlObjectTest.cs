@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocTreeViewControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<BocTreeViewSelector, BocTreeViewControlObject> testAction)
     {
       testAction (Helper, e => e.TreeViews(), "treeView");

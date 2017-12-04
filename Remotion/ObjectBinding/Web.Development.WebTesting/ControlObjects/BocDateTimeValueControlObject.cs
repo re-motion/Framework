@@ -88,6 +88,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
       var newDateString = newDate.ToShortDateString();
       return SetDate (newDateString, actionOptions);
     }
@@ -102,6 +105,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       var dateScope = GetDateScope();
 
@@ -118,6 +124,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       var newTimeAsDateTime = DateTime.MinValue.Add (newTime);
 
@@ -143,6 +152,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
       var timeScope = GetTimeScope();
 
       var actualActionOptions = MergeWithDefaultActionOptions (timeScope, actionOptions);
@@ -158,6 +170,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       SetDate (newDateTime, actionOptions);
       if (_hasTimeField)

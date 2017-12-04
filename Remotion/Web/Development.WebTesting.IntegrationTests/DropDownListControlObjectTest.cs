@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class DropDownListControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<DropDownListSelector, DropDownListControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.DropDownLists(), "dropDownList");

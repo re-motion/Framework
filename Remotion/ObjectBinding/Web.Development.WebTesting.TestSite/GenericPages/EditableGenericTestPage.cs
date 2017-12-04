@@ -16,42 +16,18 @@
 // 
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages
 {
-  /// <summary>
-  /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="BocAutoCompleteReferenceValue"/>.
-  /// </summary>
-  public class BocAutoCompleteReferenceValueGenericTestPage : EditableGenericTestPage<BocAutoCompleteReferenceValue>
+  public abstract class EditableGenericTestPage<TControl> : SimpleGenericTestPage<TControl>
+      where TControl : BusinessObjectBoundEditableWebControl, new()
   {
-    public BocAutoCompleteReferenceValueGenericTestPage ()
-    {
-    }
-
     /// <inheritdoc />
-    public override string DisplayName
-    {
-      get { return "Partner"; }
-    }
-
-    /// <inheritdoc />
-    public override string DomainProperty
-    {
-      get { return "Partner"; }
-    }
-
-    /// <inheritdoc />
-    public override string PropertyIdentifier
-    {
-      get { return "Partner"; }
-    }
-
-    /// <inheritdoc />
-    public override BocAutoCompleteReferenceValue CreateControl (GenericTestOptions options)
+    public override TControl CreateControl (GenericTestOptions options)
     {
       var control = base.CreateControl (options);
-      control.SearchServicePath = "~/Controls/AutoCompleteService.asmx";
+      control.ReadOnly = options.ReadOnlyState == ReadOnlyState.ReadOnly;
+
       return control;
     }
   }

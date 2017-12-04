@@ -114,6 +114,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
       return FillWith (text, FinishInput.WithTab, actionOptions);
     }
 
@@ -125,6 +128,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
       new FillWithAction (this, Scope.FindChild ("TextValue"), text, finishInputWith).Execute (actualActionOptions);

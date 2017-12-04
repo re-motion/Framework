@@ -33,7 +33,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
     {
       testAction (Helper, e => e.ReferenceValues(), "referenceValue");
@@ -70,15 +71,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestIsReadOnly ()
+    public void TestIsReadOnly_SetMethodsThrow ()
     {
+      const string baValue = "c8ace752-55f6-4074-8890-130276ea6cd1";
+
       var home = Start();
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      Assert.That (bocReferenceValue.IsReadOnly(), Is.False);
+      var control = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
-      Assert.That (bocReferenceValue.IsReadOnly(), Is.True);
+      Assert.That (control.IsReadOnly(), Is.True);
+      Assert.That (() => control.GetOptionDefinitions(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectOption().WithDisplayText ("D, A"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectOption().WithIndex (1), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectOption().WithItemID (baValue), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectOption (baValue), Throws.InstanceOf<MissingHtmlException>());
+    
     }
 
     [Test]
@@ -110,6 +117,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
       AssertSelectedOption (bocReferenceValue, daValue, -1, "D, A");
+    }
+
+    [Test]
+    public void TestGetSelectedOption_IsReadOnlyAndNullSelected ()
+    {
+      var home = Start();
+
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnlyWithoutSelectedValue");
+      AssertSelectedOption (bocReferenceValue, "==null==", -1, "");
     }
 
     [Test]
@@ -168,14 +184,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestGetOptionDefinitions_IsReadOnly_ThrowsInvalidOperationException ()
+    public void TestHasNullOptionDefinition_IsReadOnlyAndHasNullValue_ReturnsTrue ()
+    {
+      var home = Start();
+
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnlyWithoutSelectedValue");
+      Assert.That (bocReferenceValue.HasNullOptionDefinition(), Is.True);
+
+    }
+
+    [Test]
+    public void TestHasNullOptionDefinition_IsReadOnly_ReturnsFalse ()
     {
       var home = Start();
 
       var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
-      Assert.That (
-          () => bocReferenceValue.GetOptionDefinitions(),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Cannot obtain option definitions on read-only control."));
+      Assert.That (bocReferenceValue.HasNullOptionDefinition(), Is.False);
     }
 
     [Test]
@@ -196,17 +220,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Required");
       Assert.That (bocReferenceValue.HasNullOptionDefinition(), Is.False);
 
-    }
-
-    [Test]
-    public void TestHasNullOptionDefinition_IsReadOnly_ThrowsInvalidOperationException ()
-    {
-      var home = Start();
-
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
-      Assert.That (
-          () => bocReferenceValue.HasNullOptionDefinition(),
-          Throws.InvalidOperationException.With.Message.EqualTo ("A read-only control cannot contain a null option definition."));
     }
 
     [Test]

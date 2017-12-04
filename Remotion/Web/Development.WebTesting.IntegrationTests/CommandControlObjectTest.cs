@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class CommandControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<CommandSelector, CommandControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<CommandSelector, CommandControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.Commands(), "command");

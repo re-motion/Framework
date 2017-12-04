@@ -28,4 +28,8 @@
   </div>
   <h3>TextBox5 - ASP.NET TextBox disabled</h3>
   <asp:TextBox ID="TextBoxDisabled" Text="MyAspTextBoxValue" AutoPostBack="true" disabled="true" runat="server"/>
+  <h3>TextBox6 - ASP.NET TextBox readonly</h3>
+  <asp:TextBox ID="TextBoxReadOnly" Text="MyAspTextBoxValue" AutoPostBack="true" ReadOnly="True" runat="server"/>
+  <h3>TextBox7 - HTML input[type=text] readonly</h3>
+  <input id="MyHtmlTextBoxReadOnly" type="Text" value="MyHtmlTextBoxValue" readonly runat="server"/>
 </asp:Content>

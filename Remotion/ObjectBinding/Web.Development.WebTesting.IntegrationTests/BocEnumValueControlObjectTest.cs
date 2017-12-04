@@ -32,7 +32,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocEnumValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     public void GenericTests_DropDownList (GenericSelectorTestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "dropDownList");
@@ -51,7 +52,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     public void GenericTests_ListBox (GenericSelectorTestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "listBox");
@@ -71,7 +73,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     public void GenericTests_RadioButtonList (GenericSelectorTestSetupAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "radioButtonList");
@@ -115,30 +118,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (() => radioButton.SelectOption().WithIndex (1), Throws.InstanceOf<MissingHtmlException>());
       Assert.That (() => radioButton.SelectOption().WithItemID ("Married"), Throws.InstanceOf<MissingHtmlException>());
       Assert.That (() => radioButton.SelectOption ("Married"), Throws.InstanceOf<MissingHtmlException>());
-    }
-
-    [Test]
-    public void TestIsReadOnly ()
-    {
-      var home = Start();
-
-      var dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNormal");
-      Assert.That (dropDownListBocEnumValue.IsReadOnly(), Is.False);
-
-      dropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListReadOnly");
-      Assert.That (dropDownListBocEnumValue.IsReadOnly(), Is.True);
-
-      var listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNormal");
-      Assert.That (listBoxBocEnumValue.IsReadOnly(), Is.False);
-
-      listBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxReadOnly");
-      Assert.That (listBoxBocEnumValue.IsReadOnly(), Is.True);
-
-      var radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNormal");
-      Assert.That (radioButtonListBocEnumValue.IsReadOnly(), Is.False);
-
-      radioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListReadOnly");
-      Assert.That (radioButtonListBocEnumValue.IsReadOnly(), Is.True);
     }
 
     [Test]

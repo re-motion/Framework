@@ -54,6 +54,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
       return FillWith (text, FinishInput.WithTab, actionOptions);
     }
 
@@ -67,6 +70,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
       return FillWith (string.Join (Environment.NewLine, lines), actionOptions);
     }
 
@@ -78,6 +84,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       var actualActionOptions = MergeWithDefaultActionOptions (actionOptions, finishInputWith);
       new FillWithAction (this, Scope.FindChild ("Value"), text, finishInputWith).Execute (actualActionOptions);
@@ -97,6 +106,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       return FillWith (string.Join (Environment.NewLine, lines), finishInputWith, actionOptions);
     }

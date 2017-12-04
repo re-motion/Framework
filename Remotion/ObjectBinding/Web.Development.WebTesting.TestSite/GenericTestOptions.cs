@@ -31,7 +31,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     private readonly string _dataSource;
     private readonly string _correctDomainProperty;
     private readonly string _incorrectDomainProperty;
-    private readonly bool _enabled;
+    private readonly EnabledState _enabledState;
+    private readonly ReadOnlyState _readOnlyState;
 
     public GenericTestOptions (
         [NotNull] string localID,
@@ -39,7 +40,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
         [NotNull] string dataSource,
         [NotNull] string correctDomainProperty,
         [NotNull] string incorrectDomainProperty,
-        bool enabled)
+        EnabledState enabledState,
+        ReadOnlyState readOnlyState)
     {
       ArgumentUtility.CheckNotNull ("localID", localID);
       ArgumentUtility.CheckNotNull ("htmlID", htmlID);
@@ -51,7 +53,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       _dataSource = dataSource;
       _correctDomainProperty = correctDomainProperty;
       _incorrectDomainProperty = incorrectDomainProperty;
-      _enabled = enabled;
+      _enabledState = enabledState;
+      _readOnlyState = readOnlyState;
     }
 
     public string LocalID
@@ -79,9 +82,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       get { return _incorrectDomainProperty; }
     }
 
-    public bool Enabled
+    public EnabledState EnabledState
     {
-      get { return _enabled; }
+      get { return _enabledState; }
+    }
+
+    public ReadOnlyState ReadOnlyState
+    {
+      get { return _readOnlyState; }
     }
   }
 }

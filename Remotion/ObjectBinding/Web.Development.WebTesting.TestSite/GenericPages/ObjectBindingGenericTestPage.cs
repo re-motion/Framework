@@ -15,44 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ObjectBinding.Web.UI.Controls;
+using System.Web.UI;
+using JetBrains.Annotations;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages
 {
-  /// <summary>
-  /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="BocAutoCompleteReferenceValue"/>.
-  /// </summary>
-  public class BocAutoCompleteReferenceValueGenericTestPage : EditableGenericTestPage<BocAutoCompleteReferenceValue>
+  public abstract class ObjectBindingGenericTestPage<TOptions> : GenericTestPageBase<TOptions>
   {
-    public BocAutoCompleteReferenceValueGenericTestPage ()
-    {
-    }
+    [NotNull]
+    protected abstract TOptions ReadOnlyControlOptions { get; }
 
-    /// <inheritdoc />
-    public override string DisplayName
-    {
-      get { return "Partner"; }
-    }
+    [NotNull]
+    protected abstract Control ReadOnlyControlPanel { get; }
 
-    /// <inheritdoc />
-    public override string DomainProperty
+    protected override void AddControls (GenericTestPageType pageType, IGenericTestPage<TOptions> testPage)
     {
-      get { return "Partner"; }
-    }
+      base.AddControls (pageType, testPage);
 
-    /// <inheritdoc />
-    public override string PropertyIdentifier
-    {
-      get { return "Partner"; }
-    }
-
-    /// <inheritdoc />
-    public override BocAutoCompleteReferenceValue CreateControl (GenericTestOptions options)
-    {
-      var control = base.CreateControl (options);
-      control.SearchServicePath = "~/Controls/AutoCompleteService.asmx";
-      return control;
+      if (pageType.HasFlag (GenericTestPageType.ReadOnlyElements))
+        ReadOnlyControlPanel.Controls.Add (testPage.CreateControl (ReadOnlyControlOptions));
     }
   }
 }

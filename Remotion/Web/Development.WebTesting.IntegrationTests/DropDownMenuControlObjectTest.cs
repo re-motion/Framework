@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     // Note: the <see cref="T:DropDownMenu.Mode"/>=<see cref="T:MenuMode.ContextMenu"/> option is tested indirectly by the BocTreeViewControlObjectTest.
 
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<DropDownMenuSelector, DropDownMenuControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.DropDownMenus(), "dropDownMenu");

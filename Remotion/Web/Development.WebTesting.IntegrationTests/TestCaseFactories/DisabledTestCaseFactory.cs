@@ -16,30 +16,29 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.GenericTestPageParameters;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories
 {
   /// <summary>
-  /// Contains general tests for <see cref="BocControlObject"/>s.
+  /// Contains tests for disabled state of <see cref="ControlObject"/>s.
   /// </summary>
-  public class GeneralTestCaseFactory<TControlSelector, TControl>
-      : ControlSelectorTestCaseFactoryBase<TControlSelector, TControl, GeneralTestPageParameters>
+  public class DisabledTestCaseFactory<TControlSelector, TControl>
+      : ControlSelectorTestCaseFactoryBase<TControlSelector, TControl, DisabledTestPageParameters>
       where TControlSelector : IHtmlIDControlSelector<TControl>
-      where TControl : BocControlObject
+      where TControl : ControlObject, ISupportsDisabledState
   {
-    public GeneralTestCaseFactory ()
+    public DisabledTestCaseFactory ()
     {
     }
 
     /// <inheritdoc />
     protected override string TestPrefix
     {
-      get { return "General"; }
+      get { return "Disabled"; }
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.EnabledDisabled)]

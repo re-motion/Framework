@@ -32,7 +32,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocMultilineTextValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
     {
       testAction (Helper, e => e.MultilineTextValues(), "multilineText");
@@ -66,15 +67,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestIsReadOnly ()
+    public void TestIsReadOnly_SetMethodsThrow ()
     {
       var home = Start();
 
-      var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
-      Assert.That (bocMultilineText.IsReadOnly(), Is.False);
+      var control = home.MultilineTextValues().GetByLocalID ("CVField_ReadOnly");
 
-      bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_ReadOnly");
-      Assert.That (bocMultilineText.IsReadOnly(), Is.True);
+      Assert.That (control.IsReadOnly(), Is.True);
+      Assert.That (() => control.FillWith ("text"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.FillWith (new[] { "text" }), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.FillWith (new[] { "text" }, FinishInput.Promptly), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

@@ -139,7 +139,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       _parameters.Add (TestConstants.TextContentSelectorID, visibleTextContent, hiddenTextContent, visibleHtmlID);
       _parameters.Add (TestConstants.TitleSelectorID, visibleTitle, hiddenTitle, visibleHtmlID);
       _parameters.Add (TestConstants.ItemIDSelectorID, visibleID, hiddenID, visibleHtmlID);
-      _parameters.Add (TestConstants.GeneralTestsID, visibleHtmlID, disabledHtmlID);
+      _parameters.Add (TestConstants.DisabledTestsID, visibleHtmlID, disabledHtmlID);
 
       base.OnInit (e);
     }

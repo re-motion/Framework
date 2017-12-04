@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
                  ID = options.LocalID,
                  DataSourceControl = options.DataSource,
                  PropertyIdentifier = PropertyIdentifier,
-                 Enabled = options.Enabled
+                 Enabled = options.EnabledState == EnabledState.Enabled
              };
     }
   }

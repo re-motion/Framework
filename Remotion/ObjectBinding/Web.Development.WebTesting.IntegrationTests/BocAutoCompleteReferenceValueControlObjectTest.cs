@@ -40,7 +40,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocAutoCompleteReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> testAction)
     {
       testAction (Helper, e => e.AutoCompletes(), "autoCompleteReferenceValue");
@@ -283,15 +284,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestIsReadOnly ()
+    public void TestIsReadOnly_SetMethodsThrow ()
     {
       var home = Start();
 
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      Assert.That (bocAutoComplete.IsReadOnly(), Is.False);
+      var control = home.AutoCompletes().GetByLocalID ("PartnerField_ReadOnly");
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_ReadOnly");
-      Assert.That (bocAutoComplete.IsReadOnly(), Is.True);
+      Assert.That (control.IsReadOnly(), Is.True);
+      Assert.That (() => control.FillWith ("text"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

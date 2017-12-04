@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TextBoxControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<TextBoxSelector, TextBoxControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.TextBoxes(), "textBox");
@@ -56,6 +56,33 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var control = home.TextBoxes().GetByLocalID ("TextBoxDisabled");
 
       Assert.That (control.IsDisabled(), Is.True);
+      Assert.That (() => control.FillWith ("text"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.InstanceOf<MissingHtmlException>());
+    }
+
+    [Test]
+    public void TestIsReadOnly ()
+    {
+      var home = Start();
+
+      var myHtmlTextBox = home.TextBoxes().GetByLocalID ("MyHtmlTextBox");
+      Assert.That (myHtmlTextBox.IsReadOnly(), Is.False);
+
+      var textBoxReadOnly = home.TextBoxes().GetByLocalID ("TextBoxReadOnly");
+      Assert.That (textBoxReadOnly.IsReadOnly(), Is.True);
+
+      var myHtmlTextBoxReadOnly = home.TextBoxes().GetByLocalID ("MyHtmlTextBoxReadOnly");
+      Assert.That (myHtmlTextBoxReadOnly.IsReadOnly(), Is.True);
+    }
+
+    [Test]
+    public void TestIsReadOnly_SetMethodsThrow ()
+    {
+      var home = Start();
+
+      var control = home.TextBoxes().GetByLocalID ("TextBoxReadOnly");
+
+      Assert.That (control.IsReadOnly(), Is.True);
       Assert.That (() => control.FillWith ("text"), Throws.InstanceOf<MissingHtmlException>());
       Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.InstanceOf<MissingHtmlException>());
     }

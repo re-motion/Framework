@@ -39,6 +39,11 @@
         
       </asp:Panel>
 
+      <h3>ReadOnly control</h3>
+      <asp:Panel ID="PanelReadOnlyControl" runat="server">
+        
+      </asp:Panel>
+
       <h3>Frame test</h3>
       <iframe id="testFrame" src="FrameTestFrame.aspx">
       </iframe>

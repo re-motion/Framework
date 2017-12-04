@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
   /// <summary>
   /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="BocBooleanValue"/>.
   /// </summary>
-  public class BocBooleanValueGenericTestPage : SimpleGenericTestPage<BocBooleanValue>
+  public class BocBooleanValueGenericTestPage : EditableGenericTestPage<BocBooleanValue>
   {
     public BocBooleanValueGenericTestPage ()
     {

@@ -15,43 +15,44 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages
 {
   /// <summary>
-  /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="BocCheckBox"/>.
+  /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="TestBocListWithRowMenuItems"/>.
   /// </summary>
-  public class BocCheckBoxValueGenericTestPage : SimpleGenericTestPage<BocCheckBox>
+  public class BocListAsGridGenericTestPage : EditableGenericTestPage<TestBocListWithRowMenuItems>
   {
-    public BocCheckBoxValueGenericTestPage ()
+    public BocListAsGridGenericTestPage ()
     {
     }
 
     /// <inheritdoc />
     public override string DisplayName
     {
-      get { return "Deceased"; }
+      get { return "Jobs"; }
     }
 
     /// <inheritdoc />
     public override string DomainProperty
     {
-      get { return "Deceased"; }
+      get { return "Jobs"; }
     }
 
     /// <inheritdoc />
     public override string PropertyIdentifier
     {
-      get { return "Deceased"; }
+      get { return "Jobs"; }
     }
 
     /// <inheritdoc />
-    public override BocCheckBox CreateControl (GenericTestOptions options)
+    public override TestBocListWithRowMenuItems CreateControl (GenericTestOptions options)
     {
       var control = base.CreateControl (options);
-
+      control.FixedColumns.Add (new BocSimpleColumnDefinition { ColumnTitle = "Last Name", PropertyPathIdentifier = "Title" });
       return control;
     }
   }

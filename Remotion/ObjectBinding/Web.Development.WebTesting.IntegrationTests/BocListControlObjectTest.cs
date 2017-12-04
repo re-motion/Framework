@@ -39,7 +39,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocListControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocListSelector, BocListControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<BocListSelector, BocListControlObject> testAction)
     {
       testAction (Helper, e => e.Lists(), "list");
@@ -228,18 +229,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (bocListWithRadiobuttons.GetRow (2).GetCell (2).GetText(), Is.EqualTo ("Programmer"));
       Assert.That (() => bocListWithRadiobuttons.GetRow (2).Select(), Throws.Nothing);
       Assert.That (bocListWithRadiobuttons.GetRow (2).IsSelected, Is.True);
-    }
-
-    [Test]
-    public void TestIsReadOnly ()
-    {
-      var home = Start();
-
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      Assert.That (bocList.IsReadOnly(), Is.False);
-
-      bocList = home.Lists().GetByLocalID ("JobList_ReadOnly");
-      Assert.That (bocList.IsReadOnly(), Is.True);
     }
 
     [Test]
@@ -674,6 +663,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       row.Edit();
       Assert.That (home.Scope.FindIdEndingWith ("EditModeLabel").Text, Is.EqualTo ("True"));
+    }
+
+    [Test]
+    public void TestReadOnly_RowEditShouldThrow ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_ReadOnly");
+      Assert.That (bocList.IsReadOnly(), Is.True);
+
+      var row = bocList.GetRow (2);
+      Assert.That (() => row.Edit(), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

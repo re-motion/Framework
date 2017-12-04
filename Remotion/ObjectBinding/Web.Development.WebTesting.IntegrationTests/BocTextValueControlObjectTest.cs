@@ -32,7 +32,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocTextValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<BocTextValueSelector, BocTextValueControlObject> testAction)
     {
       testAction (Helper, e => e.TextValues(), "textValue");
@@ -64,15 +65,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestIsReadOnly ()
+    public void TestIsReadOnly_SetMethodsThrow ()
     {
       var home = Start();
 
-      var bocText = home.TextValues().GetByLocalID ("LastNameField_Normal");
-      Assert.That (bocText.IsReadOnly(), Is.False);
+      var control = home.TextValues().GetByLocalID ("LastNameField_ReadOnly");
 
-      bocText = home.TextValues().GetByLocalID ("LastNameField_ReadOnly");
-      Assert.That (bocText.IsReadOnly(), Is.True);
+      Assert.That (control.IsReadOnly(), Is.True);
+      Assert.That (() => control.FillWith ("text"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

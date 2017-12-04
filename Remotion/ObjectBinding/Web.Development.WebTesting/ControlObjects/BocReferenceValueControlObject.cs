@@ -50,10 +50,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public bool HasNullOptionDefinition ()
     {
-      if (IsReadOnly())
-        throw new InvalidOperationException ("A read-only control cannot contain a null option definition.");
-
       var nullIdentifier = Scope[DiagnosticMetadataAttributesForObjectBinding.NullIdentifier];
+
+      if (IsReadOnly())
+      {
+        var scope = Scope.FindChild ("Value");
+        return scope["data-value"] == nullIdentifier;
+      }
+
       return GetOptionDefinitions().Any (o => o.ItemID == nullIdentifier);
     }
 
@@ -71,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
     {
       if (IsReadOnly())
-        throw new InvalidOperationException ("Cannot obtain option definitions on read-only control.");
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       return RetryUntilTimeout.Run (
           () => Scope.FindChild("Value").FindAllCss ("option")
@@ -103,6 +107,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
       return SelectOption().WithItemID (itemID, actionOptions);
     }
 
@@ -114,6 +121,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
       Action<ElementScope> selectAction = s => s.SelectOptionByValue (itemID);
       return SelectOption (selectAction, actionOptions);
     }
@@ -123,6 +133,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       Action<ElementScope> selectAction = s => s.SelectOptionByIndex (oneBasedIndex);
       return SelectOption (selectAction, actionOptions);
@@ -135,6 +148,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       Action<ElementScope> selectAction = s => s.SelectOption (displayText);
       return SelectOption (selectAction, actionOptions);

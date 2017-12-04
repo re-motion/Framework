@@ -101,6 +101,16 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
       else
         pageType = GenericTestPageType.Default;
 
+      AddControls (pageType, testPage);
+
+      var parameters = Parameters.Clone();
+      testPage.AddParameters (parameters, VisibleControlOptions);
+
+      SetTestInformation (new GenericTestPageParameterDto (GenericTestPageStatus.Ok, parameters));
+    }
+
+    protected virtual void AddControls (GenericTestPageType pageType, IGenericTestPage<TOptions> testPage)
+    {
       if (pageType.HasFlag (GenericTestPageType.VisibleElements))
         VisibleControlPanel.Controls.Add (testPage.CreateControl (VisibleControlOptions));
 
@@ -112,11 +122,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
 
       if (pageType.HasFlag (GenericTestPageType.DisabledElements))
         DisabledControlPanel.Controls.Add (testPage.CreateControl (DisabledControlOptions));
-
-      var parameters = Parameters.Clone();
-      testPage.AddParameters (parameters, VisibleControlOptions);
-
-      SetTestInformation (new GenericTestPageParameterDto (GenericTestPageStatus.Ok, parameters));
     }
 
     private void SetTestInformation (GenericTestPageParameterDto information)

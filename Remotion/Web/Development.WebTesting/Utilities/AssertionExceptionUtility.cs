@@ -43,5 +43,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           string.Format ("The '{0}' is currently in a disabled state. Therefore, the operation is not possible.", controlName));
     }
 
+    [NotNull]
+    [MustUseReturnValue]
+    public static Exception CreateControlReadOnlyException ()
+    {
+      return new MissingHtmlException ("The control is currently in a read-only state. Therefore, the operation is not possible.");
+    }
   }
 }

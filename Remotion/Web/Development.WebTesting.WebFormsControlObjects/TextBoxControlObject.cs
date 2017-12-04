@@ -27,11 +27,20 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   /// <summary>
   /// Control object for <see cref="T:System.Web.UI.WebControls.TextBox"/> and all its derivatives (none in re-motion).
   /// </summary>
-  public class TextBoxControlObject : WebFormsControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsDisabledState
+  public class TextBoxControlObject
+      : WebFormsControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsDisabledState
   {
     public TextBoxControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
+    }
+
+    /// <summary>
+    /// Returns <see langword="true" /> if the control is read-only, otherwise <see langword="false" />.
+    /// </summary>
+    public bool IsReadOnly ()
+    {
+      return !string.IsNullOrEmpty(Scope["readonly"]);
     }
 
     /// <inheritdoc/>
@@ -48,6 +57,9 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
       return FillWith (text, FinishInput.WithTab, actionOptions);
     }
 
@@ -62,6 +74,9 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       var actualActionOptions = MergeWithDefaultActionOptions (actionOptions, finishInputWith);
       new FillWithAction (this, Scope, text, finishInputWith).Execute (actualActionOptions);

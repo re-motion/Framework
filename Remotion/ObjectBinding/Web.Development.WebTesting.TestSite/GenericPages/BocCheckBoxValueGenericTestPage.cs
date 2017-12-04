@@ -21,37 +21,37 @@ using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages
 {
   /// <summary>
-  /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="BocAutoCompleteReferenceValue"/>.
+  /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="BocCheckBox"/>.
   /// </summary>
-  public class BocAutoCompleteReferenceValueGenericTestPage : EditableGenericTestPage<BocAutoCompleteReferenceValue>
+  public class BocCheckBoxValueGenericTestPage : EditableGenericTestPage<BocCheckBox>
   {
-    public BocAutoCompleteReferenceValueGenericTestPage ()
+    public BocCheckBoxValueGenericTestPage ()
     {
     }
 
     /// <inheritdoc />
     public override string DisplayName
     {
-      get { return "Partner"; }
+      get { return "Deceased"; }
     }
 
     /// <inheritdoc />
     public override string DomainProperty
     {
-      get { return "Partner"; }
+      get { return "Deceased"; }
     }
 
     /// <inheritdoc />
     public override string PropertyIdentifier
     {
-      get { return "Partner"; }
+      get { return "Deceased"; }
     }
 
     /// <inheritdoc />
-    public override BocAutoCompleteReferenceValue CreateControl (GenericTestOptions options)
+    public override BocCheckBox CreateControl (GenericTestOptions options)
     {
       var control = base.CreateControl (options);
-      control.SearchServicePath = "~/Controls/AutoCompleteService.asmx";
+
       return control;
     }
   }

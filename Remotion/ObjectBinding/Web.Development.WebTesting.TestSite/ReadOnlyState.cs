@@ -15,36 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 {
-  /// <summary>
-  /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="BocReferenceValue"/>.
-  /// </summary>
-  public class BocReferenceValueGenericTestPage : EditableGenericTestPage<BocReferenceValue>
+  public enum ReadOnlyState
   {
-    public BocReferenceValueGenericTestPage ()
-    {
-    }
-
-    /// <inheritdoc />
-    public override string DisplayName
-    {
-      get { return "Partner"; }
-    }
-
-    /// <inheritdoc />
-    public override string DomainProperty
-    {
-      get { return "Partner"; }
-    }
-
-    /// <inheritdoc />
-    public override string PropertyIdentifier
-    {
-      get { return "Partner"; }
-    }
+    Editable,
+    ReadOnly
   }
 }

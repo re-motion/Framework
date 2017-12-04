@@ -32,7 +32,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocListAsGridControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<BocListAsGridSelector, BocListAsGridControlObject> testAction)
     {
       testAction (Helper, e => e.ListAsGrids(), "listAsGrid");
@@ -49,15 +50,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors (GenericSelectorTestSetupAction<BocListAsGridSelector, BocListAsGridControlObject> testAction)
     {
       testAction (Helper, e => e.ListAsGrids(), "listAsGrid");
-    }
-
-    [Test]
-    public void TestIsReadOnly ()
-    {
-      var home = Start();
-
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-      Assert.That (bocList.IsReadOnly(), Is.False);
     }
 
     [Test]

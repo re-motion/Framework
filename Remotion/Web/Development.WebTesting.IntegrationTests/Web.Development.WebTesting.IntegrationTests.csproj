@@ -105,7 +105,7 @@
     <Compile Include="IntegrationTest.cs" />
     <Compile Include="TabbedMenuControlObjectTest.cs" />
     <Compile Include="TabbedMultiViewControlObjectTest.cs" />
-    <Compile Include="TestCaseFactories\GeneralTestCaseFactory.cs" />
+    <Compile Include="TestCaseFactories\DisabledTestCaseFactory.cs" />
     <Compile Include="TestCaseFactories\ItemIDControlSelectorTestCaseFactory.cs" />
     <Compile Include="TestExecutionScreenshotRecorderTest.cs" />
     <Compile Include="WebFormsTestPageObject.cs" />

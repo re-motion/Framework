@@ -19,10 +19,12 @@ using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
+using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ControlSelection;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
@@ -124,6 +126,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public BocListEditableRowControlObject Edit ()
     {
+      if (_accessor.ParentScope[DiagnosticMetadataAttributes.IsReadOnly] == "true")
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
       var editCell = GetWellKnownEditCell();
 
       var edit = editCell.GetControl (new SingleControlSelectionCommand<CommandControlObject> (new CommandSelector()));

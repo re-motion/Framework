@@ -32,7 +32,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocBooleanValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<BocBooleanValueSelector, BocBooleanValueControlObject> testAction)
     {
       testAction (Helper, e => e.BooleanValues(), "booleanValue");
@@ -62,15 +63,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestIsReadOnly ()
+    public void TestIsReadOnly_SetMethodsThrow ()
     {
       var home = Start();
 
-      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_Normal");
-      Assert.That (bocBooleanValue.IsReadOnly(), Is.False);
+      var control = home.BooleanValues().GetByLocalID ("DeceasedField_ReadOnly");
 
-      bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_ReadOnly");
-      Assert.That (bocBooleanValue.IsReadOnly(), Is.True);
+      Assert.That (control.IsReadOnly(), Is.True);
+      Assert.That (() => control.SetTo (false), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

@@ -37,7 +37,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocDateTimeValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<BocDateTimeValueSelector, BocDateTimeValueControlObject> testAction)
     {
       testAction (Helper, e => e.DateTimeValues(), "dateTimeValue");
@@ -128,15 +129,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestIsReadOnly ()
+    public void TestIsReadOnly_SetMethodsThrow ()
     {
       var home = Start();
 
-      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
-      Assert.That (bocDateTimeValue.IsReadOnly(), Is.False);
+      var control = home.DateTimeValues().GetByLocalID ("DateOfBirthField_ReadOnly");
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_ReadOnly");
-      Assert.That (bocDateTimeValue.IsReadOnly(), Is.True);
+      Assert.That (control.IsReadOnly(), Is.True);
+      Assert.That (() => control.SetDate (DateTime.MinValue), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SetDate (""), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SetDateTime (DateTime.MinValue), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SetTime (TimeSpan.MinValue), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SetTime (""), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

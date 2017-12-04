@@ -19,16 +19,16 @@ using System.Web.UI;
 using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
-using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 {
-  public partial class GenericTest : GenericTestPageBase<GenericTestOptions>
+  public partial class GenericTest : ObjectBindingGenericTestPage<GenericTestOptions>
   {
     private readonly GenericTestPageParameterCollection _parameters = new GenericTestPageParameterCollection();
 
     private GenericTestOptions _ambiguousControlOptions;
     private GenericTestOptions _disabledControlOptions;
+    private GenericTestOptions _readOnlyControlOptions;
     private GenericTestOptions _hiddenControlOptions;
     private GenericTestOptions _visibleControlOptions;
 
@@ -74,6 +74,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     }
 
     /// <inheritdoc />
+    protected override GenericTestOptions ReadOnlyControlOptions
+    {
+      get { return _readOnlyControlOptions; }
+    }
+
+    /// <inheritdoc />
+    protected override Control ReadOnlyControlPanel
+    {
+      get { return PanelReadOnlyControl; }
+    }
+
+    /// <inheritdoc />
     protected override GenericTestOptions HiddenControlOptions
     {
       get { return _hiddenControlOptions; }
@@ -109,6 +121,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       // Constants for all the controls on this generic page
       const string ambiguousID = "AmbiguousControl";
       const string disabledID = "DisabledControl";
+      const string readonlyID = "ReadOnlyControl";
       const string hiddenID = "HiddenControl";
       const string visibleID = "VisibleControl";
       const string visibleIndex = "1", hiddenIndex = "133";
@@ -118,6 +131,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       // "Real" HTML ids of the controls
       var ambiguousHtmlID = string.Concat ("body_", ambiguousID);
       var disabledHtmlID = string.Concat ("body_", disabledID);
+      var readonlyHtmlID = string.Concat ("body_", readonlyID);
       var hiddenHtmlID = string.Concat ("body_", hiddenID);
       var visibleHtmlID = string.Concat ("body_", visibleID);
 
@@ -128,16 +142,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
           DataSource.ID,
           correctDomainProperty,
           incorrectDomainProperty,
-          true);
+          EnabledState.Enabled,
+          ReadOnlyState.Editable);
       _disabledControlOptions = new GenericTestOptions (
           disabledID,
           disabledHtmlID,
           DataSource.ID,
           correctDomainProperty,
           incorrectDomainProperty,
-          false);
-      _hiddenControlOptions = new GenericTestOptions (hiddenID, hiddenHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty, true);
-      _visibleControlOptions = new GenericTestOptions (visibleID, visibleHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty, true);
+          EnabledState.Disabled,
+          ReadOnlyState.Editable);
+      _readOnlyControlOptions = new GenericTestOptions (
+          readonlyID,
+          readonlyHtmlID,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty,
+          EnabledState.Enabled,
+          ReadOnlyState.ReadOnly);
+      _hiddenControlOptions = new GenericTestOptions (hiddenID, hiddenHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty, EnabledState.Enabled, ReadOnlyState.Editable);
+      _visibleControlOptions = new GenericTestOptions (visibleID, visibleHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty, EnabledState.Enabled, ReadOnlyState.Editable);
 
       // Parameters which will be passed to the client
       _parameters.Add (TestConstants.HtmlIDSelectorID, visibleHtmlID, hiddenHtmlID);
@@ -145,7 +169,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       _parameters.Add (TestConstants.LocalIDSelectorID, visibleID, hiddenID, visibleHtmlID);
       _parameters.Add (TestConstants.FirstSelectorID, visibleHtmlID);
       _parameters.Add (TestConstants.SingleSelectorID, visibleHtmlID);
-      _parameters.Add (TestConstants.GeneralTestsID, visibleHtmlID, disabledHtmlID);
+      _parameters.Add (TestConstants.DisabledTestsID, visibleHtmlID, disabledHtmlID);
+      _parameters.Add (TestConstants.ReadOnlyTestsID, visibleHtmlID, readonlyHtmlID);
 
       base.OnInit (e);
     }

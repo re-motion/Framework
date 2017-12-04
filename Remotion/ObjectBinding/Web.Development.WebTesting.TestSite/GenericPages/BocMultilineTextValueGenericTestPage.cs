@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
   /// <summary>
   /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="BocMultilineTextValue"/>.
   /// </summary>
-  public class BocMultilineTextValueGenericTestPage : SimpleGenericTestPage<BocMultilineTextValue>
+  public class BocMultilineTextValueGenericTestPage : EditableGenericTestPage<BocMultilineTextValue>
   {
     public BocMultilineTextValueGenericTestPage ()
     {

@@ -16,44 +16,46 @@
 // 
 using System;
 
-// ReSharper disable once CheckNamespace
-
-namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.GenericTestPageParameters
 {
   /// <summary>
-  /// Defines which element should be displayed on the generic test page.
+  /// <see cref="IGenericTestPageParameter"/> for the general test case factories.
   /// </summary>
-  [Flags]
-  public enum GenericTestPageType
+  public class DisabledTestPageParameters : GenericTestPageParameterBase
   {
-    Default = HiddenElements | VisibleElements | AmbiguousElements | DisabledElements,
-    EnabledDisabled = VisibleElements | DisabledElements,
-    EnabledReadOnly = VisibleElements | ReadOnlyElements,
-    NonAmbiguous = HiddenElements | VisibleElements,
+    private const int c_parameterCount = 2;
+
+    private string _enabledHtmlID;
+    private string _disabledHtmlID;
+
+    public DisabledTestPageParameters ()
+        : base (TestConstants.DisabledTestsID, c_parameterCount)
+    {
+    }
 
     /// <summary>
-    /// Renders the hidden elements.
+    /// HTML id of the enabled control.
     /// </summary>
-    HiddenElements = 1,
+    public string EnabledHtmlID
+    {
+      get { return _enabledHtmlID; }
+    }
 
     /// <summary>
-    /// Renders the visible elements.
+    /// HTML id of the disabled control.
     /// </summary>
-    VisibleElements = 2,
+    public string DisabledHtmlID
+    {
+      get { return _disabledHtmlID; }
+    }
 
-    /// <summary>
-    /// Renders the ambiguous elements.
-    /// </summary>
-    AmbiguousElements = 4,
+    /// <inheritdoc />
+    public override void Apply (GenericTestPageParameter data)
+    {
+      base.Apply (data);
 
-    /// <summary>
-    /// Renders the disabled elements.
-    /// </summary>
-    DisabledElements = 8,
-
-    /// <summary>
-    /// Renders the readonly elements.
-    /// </summary>
-    ReadOnlyElements = 16,
+      _enabledHtmlID = data[0];
+      _disabledHtmlID = data[1];
+    }
   }
 }

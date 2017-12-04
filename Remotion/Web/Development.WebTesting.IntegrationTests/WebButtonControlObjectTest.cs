@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WebButtonControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (GeneralTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
     public void GenericTests (GenericSelectorTestSetupAction<WebButtonSelector, WebButtonControlObject> testSetupAction)
     {
       testSetupAction (Helper, e => e.WebButtons(), "webButton");

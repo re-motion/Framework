@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
   /// <summary>
   /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="BocEnumValue"/>.
   /// </summary>
-  public class BocEnumValueGenericTestPage : SimpleGenericTestPage<BocEnumValue>
+  public class BocEnumValueGenericTestPage : EditableGenericTestPage<BocEnumValue>
   {
     private readonly ListControlType _controlType;
 
