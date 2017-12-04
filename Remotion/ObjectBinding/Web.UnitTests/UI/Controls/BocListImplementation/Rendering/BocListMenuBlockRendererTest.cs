@@ -45,6 +45,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Stub (mock => mock.HasAvailableViewsList).Return (true);
       List.Stub (mock => mock.AvailableViewsListTitle).Return ("Views List Title");
 
+      dropDownList.Stub (mock => mock.ClientID).Return ("MockedDropDownListClientID");
       dropDownList.Stub (mock => mock.RenderControl (Html.Writer)).WhenCalled (
           invocation => ((HtmlTextWriter) invocation.Arguments[0]).Write ("mocked dropdown list"));
 
@@ -57,7 +58,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertStyleAttribute (div, "width", "100%");
       Html.AssertStyleAttribute (div, "margin-bottom", "5pt");
 
-      var span = Html.GetAssertedChildElement (div, "span", 0);
+      var span = Html.GetAssertedChildElement (div, "label", 0);
+      Html.AssertAttribute (span, "for", "MockedDropDownListClientID");
       Html.AssertAttribute (span, "class", _bocListCssClassDefinition.AvailableViewsListLabel);
       Html.AssertTextNode (span, "Views List Title", 0);
 
