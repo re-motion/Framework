@@ -292,6 +292,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private EditableRowDataSourceFactory _editModeDataSourceFactory = new EditableRowDataSourceFactory();
     private EditableRowControlFactory _editModeControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
     private bool _enableEditModeValidator = true;
+    private bool _enableAutoFocusOnSwitchToEditMode = true;
     private bool _showEditModeRequiredMarkers = true;
     private bool _showEditModeValidationMarkers;
     private bool _disableEditModeValidationMessages;
@@ -2741,6 +2742,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _enableEditModeValidator; }
       set { _enableEditModeValidator = value; }
+    }
+
+    /// <summary> Gets or sets a flag for automatically setting the focus to the first editable control when the list is switched into edit mode. </summary>
+    /// <remarks> 
+    ///   <see langword="false"/> to prevent the focus from getting set by <see cref="SwitchRowIntoEditMode"/> or <see cref="SwitchListIntoEditMode"/>.
+    /// </remarks>
+    [Description ("Enables automatically setting the focus when switching to edit mode.")]
+    [Category ("Edit Mode")]
+    [DefaultValue (true)]
+    public bool EnableAutoFocusOnSwitchToEditMode
+    {
+      get { return _enableAutoFocusOnSwitchToEditMode; }
+      set { _enableAutoFocusOnSwitchToEditMode = value; }
     }
 
     /// <summary> Is raised before the changes to the editable row are saved. </summary>

@@ -105,7 +105,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
 
-      if (_editModeHost.Value == null)
+      SwitchRowIntoEditMode (index, columns, _editModeHost.IsAutoFocusOnSwitchToEditModeEnabled);
+    }
+
+    private void SwitchRowIntoEditMode (int index, BocColumnDefinition[] columns, bool autoFocus)
+    {
+        if (_editModeHost.Value == null)
       {
         throw new InvalidOperationException (
             string.Format ("Cannot initialize row edit mode: The BocList '{0}' does not have a Value.", _editModeHost.ID));
@@ -126,7 +131,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _editMode = EditMode.RowEditMode;
       CreateEditModeControls (columns);
       LoadValues (false, new List<BocListRow>());
-      SetFocus (_rows.First());
+      if (autoFocus)
+        SetFocus (_rows.First());
     }
 
     public void SwitchListIntoEditMode (BocColumnDefinition[] columns)
@@ -149,7 +155,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _editMode = EditMode.ListEditMode;
       CreateEditModeControls (columns);
       LoadValues (false, new List<BocListRow>());
-      if (_rows.Any())
+      if (_rows.Any() && _editModeHost.IsAutoFocusOnSwitchToEditModeEnabled)
         SetFocus (_rows.First());
     }
 
@@ -167,7 +173,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       if (index < 0)
         return false;
 
-      SwitchRowIntoEditMode (index, columns);
+      // Do not guard SetFocus with enable-auto-focus flag since add-rows will always intend for the user to start editing.
+      var autoFocus = true;
+
+      SwitchRowIntoEditMode (index, columns, autoFocus);
 
       if (! IsRowEditModeActive)
       {
@@ -310,11 +319,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       foreach (var dataSource in newRows.Select (r => r.Item2.GetDataSource()))
         dataSource.LoadValues (false);
 
-      if (newRows.Any())
-      {
-        var firstRow = newRows.First();
-        SetFocus (firstRow.Item2);
-      }
+      // Do not set focus to first new row since synchronize is not intended to shift user focus
     }
 
 
@@ -471,7 +476,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
             newRow.GetDataSource().LoadValues (false);
             newRows.Add (newRow);
           }
-          if (newRows.Any())
+          if (newRows.Any()) // Do not guard SetFocus with enable-auto-focus flag since add-rows will always intend for the user to start editing.
             SetFocus (newRows.First());
         }
       }

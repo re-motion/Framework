@@ -91,6 +91,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         get { return _bocList.EnableEditModeValidator; }
       }
 
+      public bool IsAutoFocusOnSwitchToEditModeEnabled
+      {
+        get { return _bocList.EnableAutoFocusOnSwitchToEditMode; }
+      }
+
       public IRowIDProvider RowIDProvider
       {
         get { return _bocList.RowIDProvider; }

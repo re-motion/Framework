@@ -272,7 +272,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       CheckValues (Values[4], "E", 5);
     }
 
-  
+    [Test]
+    public void SwitchRowIntoEditModeWithDisabledAutoFocus ()
+    {
+      Invoker.InitRecursive();
+      EditModeHost.IsAutoFocusOnSwitchToEditModeEnabled = false;
+      Controller.SwitchRowIntoEditMode (2, Columns);
+
+      Assert.That (Controller.IsRowEditModeActive, Is.True);
+
+      Assert.That (EditModeHost.FocusedControl, Is.Null);
+    }
+
     [Test]
     public void AddAndEditRow ()
     {
@@ -431,7 +442,30 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       CheckValues (Values[4], "E", 5);
     }
 
-  
+    [Test]
+    public void AddAndEditRowIgnoresAutoFocusFlag ()
+    {
+      Invoker.InitRecursive();
+      EditModeHost.IsAutoFocusOnSwitchToEditModeEnabled = false;
+
+      Assert.That (Controller.AddAndEditRow (NewValues[0], Columns), Is.True);
+
+      Assert.That (Controller.IsRowEditModeActive, Is.True);
+      Assert.That (Controller.GetEditedRow().Index, Is.EqualTo (5));
+      Assert.That (EditModeHost.Value.Count, Is.EqualTo (6));
+      Assert.That (EditModeHost.Value[5], Is.SameAs (NewValues[0]));
+
+      Assert.That (Controller.Controls.Count, Is.EqualTo (1));
+      Assert.That (Controller.Controls[0] is EditableRow, Is.True);
+
+      EditableRow row = (EditableRow) Controller.Controls[0];
+      Assert.That (row.ID, Is.EqualTo ("Controller_Row_5"));
+
+      Assert.That (ActualEvents.Count, Is.EqualTo (0));
+      Assert.That (EditModeHost.FocusedControl, Is.Not.Null);
+      Assert.That (EditModeHost.FocusedControl.FocusID, Is.EqualTo ("NamingContainer_Controller_Row_5_0_Value"));
+    }
+
     [Test]
     public void EndRowEditModeAndSaveChangesWithValidValues ()
     {

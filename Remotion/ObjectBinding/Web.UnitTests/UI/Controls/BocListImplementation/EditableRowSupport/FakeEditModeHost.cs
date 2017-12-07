@@ -55,6 +55,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public bool ShowEditModeValidationMarkers { get; set; }
     public bool ShowEditModeRequiredMarkers { get; set; }
     public bool EnableEditModeValidator { get; set; }
+    public bool IsAutoFocusOnSwitchToEditModeEnabled { get; set; }
     public IRowIDProvider RowIDProvider { get; set; }
 
     public BocListRow[] AddRows (IBusinessObject[] businessObjects)

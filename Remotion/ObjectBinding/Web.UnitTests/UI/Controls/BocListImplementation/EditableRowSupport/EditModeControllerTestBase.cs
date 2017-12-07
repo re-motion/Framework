@@ -126,6 +126,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       _editModeHost.EditModeControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
       _editModeHost.EditModeDataSourceFactory = new EditableRowDataSourceFactory();
       _editModeHost.EnableEditModeValidator = true;
+      _editModeHost.IsAutoFocusOnSwitchToEditModeEnabled = true;
       _editModeHost.AreCustomCellsValid = true;
     }
 
