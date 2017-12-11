@@ -497,19 +497,25 @@ function BocList_CreateFakeTableHead(tableContainer, scrollableContainer)
 
   var fakeTable = $('<table/>');
   fakeTable.attr({
+      'role' : 'presentation',
       'class' : table.attr('class'), 
       cellPadding: 0,
       cellSpacing: 0
     });
   fakeTable.css({ width: '100%' });
 
-  var fakeTableHead = table.children('thead').first().clone(true, true);
+  var realTableHead = table.children('thead').first();
+  var fakeTableHead = realTableHead.clone(true, true);
+  realTableHead.attr({
+    'aria-hidden': 'true',
+    'visible' : 'hidden'
+  });
   fakeTable.append(fakeTableHead);
   var fakeTableHeadContainer = $('<div/>').attr({ 'class': 'bocListFakeTableHead' });
   fakeTableHeadContainer.hide();
   fakeTableHeadContainer.append(fakeTable);
 
-  table.children('thead').find('a, input').each(function () { $(this).removeAttr('id').attr({ tabIndex: -1 }).attr({ tabIndex: -1 }); });
+  realTableHead.find('a, input').each(function () { $(this).removeAttr('id').attr({ tabIndex: -1 }).attr({ tabIndex: -1 }); });
 
   scrollableContainer.before(fakeTableHeadContainer);
 

@@ -71,6 +71,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
 
       var tr = Html.GetAssertedChildElement (document, "tr", 0);
+      Html.AssertAttribute (tr, "role", "row");
 
       Html.GetAssertedChildElement (tr, "th", 0);
     }
