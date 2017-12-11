@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private void PrepareLinkControl (BocBooleanValueRenderingContext renderingContext, HyperLink linkControl, bool isClientScriptEnabled)
     {
       // isClientScriptEnabled also includes IsReadOnly
-      linkControl.Attributes.Add ("role", "checkbox");
+      linkControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Checkbox);
       linkControl.Attributes.Add ("href", "#");
 
       if (!isClientScriptEnabled)
@@ -237,7 +237,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
       if (!renderingContext.Control.Value.HasValue)
       {
-        checkedState = "mixed";
+        checkedState = HtmlAriaCheckedAttributeValue.Mixed;
         imageUrl = resourceSet.NullIconUrl;
         description = string.IsNullOrEmpty (renderingContext.Control.NullDescription)
             ? resourceSet.DefaultNullDescription
@@ -245,7 +245,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
       else if (renderingContext.Control.Value.Value)
       {
-        checkedState = "true";
+        checkedState = HtmlAriaCheckedAttributeValue.True;
         imageUrl = resourceSet.TrueIconUrl;
         description = string.IsNullOrEmpty (renderingContext.Control.TrueDescription)
             ? resourceSet.DefaultTrueDescription
@@ -253,14 +253,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
       else
       {
-        checkedState = "false";
+        checkedState = HtmlAriaCheckedAttributeValue.False;
         imageUrl = resourceSet.FalseIconUrl;
         description = string.IsNullOrEmpty (renderingContext.Control.FalseDescription)
             ? resourceSet.DefaultFalseDescription
             : renderingContext.Control.FalseDescription;
       }
 
-      linkControl.Attributes.Add ("aria-checked", checkedState);
+      linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaChecked, checkedState);
 
       imageControl.ImageUrl = imageUrl;
       imageControl.GenerateEmptyAlternateText = true;

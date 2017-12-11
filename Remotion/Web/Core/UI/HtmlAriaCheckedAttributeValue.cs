@@ -14,16 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System.Web.UI;
+using System;
 
 namespace Remotion.Web.UI
 {
   /// <summary>
-  /// Defines additional HTML attributes not already included in <see cref="HtmlTextWriterAttribute"/>.
+  /// Defines values for the <see cref="HtmlTextWriterAttribute2.AriaChecked"/> attribute.
   /// </summary>
-  public static class HtmlTextWriterAttribute2
+  public static class HtmlAriaCheckedAttributeValue
   {
-    public const string AriaChecked = "aria-checked";
-    public const string Role = "role";
+    public const string False = "false";
+    public const string Mixed = "mixed";
+    public const string True = "true";
   }
 }

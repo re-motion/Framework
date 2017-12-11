@@ -297,6 +297,7 @@
     <Compile Include="UI\Controls\WebUpdatePanelRenderMode.cs" />
     <Compile Include="Infrastructure\BuildManagerWrapper.cs" />
     <Compile Include="UI\Controls\Rendering\WithDiagnosticMetadataRenderingFeatures.cs" />
+    <Compile Include="UI\HtmlAriaCheckedAttributeValue.cs" />
     <Compile Include="UI\HtmlAriaRoleAttributeValue.cs" />
     <Compile Include="UI\HtmlHeadAppenderExtensions.cs" />
     <Compile Include="UI\HtmlTextWriterAttribute2.cs" />
