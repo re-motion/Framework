@@ -41,7 +41,8 @@ BocBooleanValue_Resource = function(
     var _falseIconUrl = falseIconUrl;
     var _nullIconUrl = nullIconUrl;
 
-    this.SelectNextCheckboxValue = function(
+    this.SelectNextCheckboxValue = function (
+      link,
       icon,
       label,
       hiddenField,
@@ -75,46 +76,46 @@ BocBooleanValue_Resource = function(
 
         // Update the controls
         hiddenField.value = newValue;
+        var checkedState;
         var iconSrc;
-        var iconAlt;
-        var labelText;
+        var description;
 
         if (newValue == falseValue) {
+            checkedState = 'false';
             iconSrc = _falseIconUrl;
-            var description;
             if (falseDescription == null)
                 description = _falseDescription;
             else
                 description = falseDescription;
-            iconAlt = description;
-            labelText = description;
         }
         else if (newValue == nullValue) {
+            checkedState = 'mixed';
             iconSrc = _nullIconUrl;
-            var description;
             if (nullDescription == null)
                 description = _nullDescription;
             else
                 description = nullDescription;
-            iconAlt = description;
-            labelText = description;
         }
         else if (newValue == trueValue) {
+            checkedState = 'true';
             iconSrc = _trueIconUrl;
-            var description;
             if (trueDescription == null)
                 description = _trueDescription;
             else
                 description = trueDescription;
-            iconAlt = description;
-            labelText = description;
         }
-        icon.src = iconSrc;
-        icon.alt = iconAlt;
-        if (label != null)
-            label.innerHTML = labelText;
 
-        $(hiddenField).change();
+        link.setAttribute('aria-checked', checkedState);
+        icon.src = iconSrc;
+        if (label == null)
+        {
+          link.title = description;
+        }
+        else
+        {
+          label.innerHTML = description;
+        }
+      $(hiddenField).change();
     };
 }
 
@@ -145,12 +146,14 @@ function BocBooleanValue_InitializeGlobals(
 }
 
 // Selected the next value of the tri-state checkbox, skipping the null value if isRequired is true.
+// link: The anchor tag representing the clickable area.
 // icon: The icon representing the tri-state checkbox.
 // label: The label containing the description for the value. null for no description.
 // hiddenField: The hidden input field used to store the value between postbacks.
 // isRequired: true to enqable the null value, false to limit the choices to true and false.
 function BocBooleanValue_SelectNextCheckboxValue (
   key,
+  link,
   icon,
   label,
   hiddenField,
@@ -160,7 +163,9 @@ function BocBooleanValue_SelectNextCheckboxValue (
   nullDescription)
 {
   var resource = _bocBooleanValue_Resources[key];
-  resource.SelectNextCheckboxValue(icon,
+  resource.SelectNextCheckboxValue(
+  link,
+  icon,
   label,
   hiddenField,
   isRequired,

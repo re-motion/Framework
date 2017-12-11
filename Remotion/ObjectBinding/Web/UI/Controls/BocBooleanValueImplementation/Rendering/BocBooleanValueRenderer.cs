@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
 
       PrepareLinkControl (renderingContext, linkControl, isClientScriptEnabled);
-      PrepareVisibleControls (renderingContext, resourceSet, imageControl, labelControl);
+      PrepareVisibleControls (renderingContext, resourceSet, linkControl, imageControl, labelControl);
 
       if (!renderingContext.Control.IsReadOnly)
       {
@@ -116,6 +116,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         if (renderingContext.Control.Value.HasValue)
           dataValueReadOnlyControl.Attributes.Add ("data-value", renderingContext.Control.Value.Value.ToString());
         dataValueReadOnlyControl.RenderControl (renderingContext.Writer);
+        linkControl.Attributes.Add ("aria-readonly", "true");
       }
       linkControl.Controls.Add (imageControl);
       linkControl.RenderControl (renderingContext.Writer);
@@ -142,11 +143,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     private void PrepareLinkControl (BocBooleanValueRenderingContext renderingContext, HyperLink linkControl, bool isClientScriptEnabled)
     {
+      // isClientScriptEnabled also includes IsReadOnly
+      linkControl.Attributes.Add ("role", "checkbox");
+      linkControl.Attributes.Add ("href", "#");
+
       if (!isClientScriptEnabled)
         return;
 
       linkControl.Attributes.Add ("onkeydown", "BocBooleanValue_OnKeyDown (this);");
-      linkControl.Attributes.Add ("href", "#");
       linkControl.Enabled = renderingContext.Control.Enabled;
     }
 
@@ -194,6 +198,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       scriptBuilder.Append ("BocBooleanValue_SelectNextCheckboxValue (");
       scriptBuilder.Append ("'").Append (resourceSet.ResourceKey).Append ("'");
       scriptBuilder.Append (", ");
+      scriptBuilder.Append ("$(this).parent().children('a')[0]");
+      scriptBuilder.Append (", ");
       scriptBuilder.Append ("$(this).parent().children('a').children('img').first()[0]");
       scriptBuilder.Append (", ");
       if (renderingContext.Control.ShowDescription)
@@ -221,14 +227,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private void PrepareVisibleControls (
         BocBooleanValueRenderingContext renderingContext,
         BocBooleanValueResourceSet resourceSet,
+        HyperLink linkControl,
         Image imageControl,
         Label labelControl)
     {
+      string checkedState;
       string imageUrl;
       string description;
 
       if (!renderingContext.Control.Value.HasValue)
       {
+        checkedState = "mixed";
         imageUrl = resourceSet.NullIconUrl;
         description = string.IsNullOrEmpty (renderingContext.Control.NullDescription)
             ? resourceSet.DefaultNullDescription
@@ -236,6 +245,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
       else if (renderingContext.Control.Value.Value)
       {
+        checkedState = "true";
         imageUrl = resourceSet.TrueIconUrl;
         description = string.IsNullOrEmpty (renderingContext.Control.TrueDescription)
             ? resourceSet.DefaultTrueDescription
@@ -243,17 +253,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
       else
       {
+        checkedState = "false";
         imageUrl = resourceSet.FalseIconUrl;
         description = string.IsNullOrEmpty (renderingContext.Control.FalseDescription)
             ? resourceSet.DefaultFalseDescription
             : renderingContext.Control.FalseDescription;
       }
 
-      imageControl.AlternateText = description;
+      linkControl.Attributes.Add ("aria-checked", checkedState);
 
       imageControl.ImageUrl = imageUrl;
+      imageControl.GenerateEmptyAlternateText = true;
+
       if (renderingContext.Control.ShowDescription)
         labelControl.Text = description;
+      else
+        linkControl.ToolTip = description;
 
       labelControl.Width = Unit.Empty;
       labelControl.Height = Unit.Empty;
