@@ -62,6 +62,8 @@ BocBooleanValue_Resource = function(
         if (isRequired) {
             if (oldValue == falseValue)
                 newValue = trueValue;
+            else if (oldValue == nullValue)
+                newValue = trueValue;
             else
                 newValue = falseValue;
         }

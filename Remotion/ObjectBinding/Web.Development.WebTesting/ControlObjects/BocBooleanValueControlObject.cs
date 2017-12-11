@@ -80,7 +80,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         var states = new bool?[] { false, null, true, false, null };
         numberOfClicks = Array.LastIndexOf (states, newState) - Array.IndexOf (states, currentState);
       }
-      else if (currentState == null && newState == true)
+      else if (currentState == null && newState == false)
       {
         numberOfClicks = 2;
       }
