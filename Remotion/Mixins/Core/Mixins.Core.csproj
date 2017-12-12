@@ -352,10 +352,7 @@
       <Name>Core.Reflection.CodeGeneration.TypePipe</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Obsolete\Globalization\" />
-    <Folder Include="Obsolete\Singleton\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="FacetManifest.xml" />
   </ItemGroup>
