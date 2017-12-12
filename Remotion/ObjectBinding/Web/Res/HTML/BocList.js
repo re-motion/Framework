@@ -511,9 +511,13 @@ function BocList_CreateFakeTableHead(tableContainer, scrollableContainer)
     'visible' : 'hidden'
   });
   fakeTable.append(fakeTableHead);
+
+  var fakeTableHeadWidthContainer = $('<div/>');
+  fakeTableHeadWidthContainer.append(fakeTable);
+
   var fakeTableHeadContainer = $('<div/>').attr({ 'class': 'bocListFakeTableHead' });
   fakeTableHeadContainer.hide();
-  fakeTableHeadContainer.append(fakeTable);
+  fakeTableHeadContainer.append (fakeTableHeadWidthContainer);
 
   realTableHead.find('a, input').each(function () { $(this).removeAttr('id').attr({ tabIndex: -1 }).attr({ tabIndex: -1 }); });
 
@@ -562,7 +566,8 @@ function BocList_FixHeaderSize(scrollableContainer)
     return width;
   });
 
-  fakeTableHeadContainer.width(realTableWidth);
+  var fakeTableHeadWidthContainer = fakeTableHeadContainer.children ('div').first();
+  fakeTableHeadWidthContainer.width(realTableWidth);
   var fakeTableHeadContainerHeight = fakeTableHeadContainer.height();
   scrollableContainer.css({ top: fakeTableHeadContainerHeight});
   realTable.css({ 'margin-top': fakeTableHeadContainerHeight * -1 });
@@ -570,18 +575,27 @@ function BocList_FixHeaderSize(scrollableContainer)
   fakeTableHeadContainer.show();
 }
 
-function BocList_FixHeaderPosition(tableContainer, scrollableContainer)
+function BocList_FixHeaderPosition(tableContainer, scrollableContainerJQuery)
 {
-  var fakeTableHeadContainer = tableContainer.children('div.bocListFakeTableHead').first();
-  var scrollTop = 0;
-  var scrollLeft = scrollableContainer.scrollLeft();
+  var scrollableContainer = scrollableContainerJQuery[0];
+  var fakeTableHeadContainer = tableContainer.children('div.bocListFakeTableHead').first()[0];
+  var scrollLeft = scrollableContainer.scrollLeft;
+  var previousScrollLeft = scrollableContainerJQuery.data("bocListPreviousScrollLeft");
+  var fakeTableHeadScrollLeft = fakeTableHeadContainer.scrollLeft;
 
-  var previousScrollLeft = scrollableContainer.data("bocListPreviousScrollLeft");
-  if (previousScrollLeft == scrollLeft)
+  var hasScrollMoveFromScrollbar = previousScrollLeft !== scrollLeft;
+  var hasScrollMoveFromColumnHeader = previousScrollLeft !== fakeTableHeadScrollLeft;
+  if (!hasScrollMoveFromScrollbar && !hasScrollMoveFromColumnHeader)
     return;
-  scrollableContainer.data("bocListPreviousScrollLeft", scrollLeft);
 
-  fakeTableHeadContainer.css({ 'top': scrollTop, 'left': scrollLeft * -1 });
+  scrollLeft = hasScrollMoveFromColumnHeader ? fakeTableHeadScrollLeft : scrollLeft;
+  scrollableContainerJQuery.data("bocListPreviousScrollLeft", scrollLeft);
+
+  if (hasScrollMoveFromColumnHeader)
+    scrollableContainer.scrollLeft = scrollLeft;
+
+  if (hasScrollMoveFromScrollbar)
+    fakeTableHeadContainer.scrollLeft = scrollLeft;
 }
 
 function BocListNavigationBlock_Initialize(pageNumberField, pageIndexField)

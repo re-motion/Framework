@@ -156,6 +156,14 @@ div.bocListFakeTableHead
   overflow: hidden;
 }
 
+/* Style applied to the div used for definining the width of the fake table head */
+div.bocListFakeTableHead > div
+{
+  /* Reserve space in case there is a scrollbar for the data-part of the table. 
+     Note that the actual max-width is not important so long as the scrollbar's max-width is covered. '*/
+  border-right: 100px solid white;
+}
+
 /*  Style applied to the BocList's table's outer structure.  */
 table.bocListTable,
 div.bocListFakeTableHead table
