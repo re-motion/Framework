@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.IO;
 using NUnit.Framework;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
@@ -28,6 +29,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [SetUp]
     public void SetUp ()
     {
+      var screenshotDirectory = _setUpFixtureHelper.ScreenshotDirectory;
+
+      if (Directory.Exists (screenshotDirectory))
+        Directory.Delete (screenshotDirectory, true);
+
       _setUpFixtureHelper.OnSetUp();
     }
 

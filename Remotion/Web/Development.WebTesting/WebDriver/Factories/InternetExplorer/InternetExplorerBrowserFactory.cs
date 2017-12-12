@@ -85,7 +85,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplor
       var driverService = InternetExplorerDriverService.CreateDefaultService();
       driverService.LogFile = WebDriverLogUtility.CreateLogFile (
           _internetExplorerConfiguration.LogsDirectory,
-          _internetExplorerConfiguration.LogPrefix,
           _internetExplorerConfiguration.BrowserName);
       driverService.LoggingLevel = InternetExplorerDriverLogLevel.Info;
       return driverService;

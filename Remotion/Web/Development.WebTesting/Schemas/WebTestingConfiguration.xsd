@@ -26,7 +26,6 @@
       <xs:attribute name="webApplicationRoot" type="c:RequiredStringType" use="required" />
       <xs:attribute name="screenshotDirectory" type="c:RequiredStringType" />
       <xs:attribute name="logsDirectory" type="c:RequiredStringType" default="." />
-      <xs:attribute name="logPrefix" type="xs:string" default="" />
       <xs:attribute name="closeBrowserWindowsOnSetUpAndTearDown" type="xs:boolean" default="false" />
       <xs:attribute name="cleanUpUnmatchedDownloadedFiles" type="xs:boolean" default="false" />
     </xs:complexType>

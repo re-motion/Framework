@@ -91,11 +91,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     string LogsDirectory { [NotNull] get; }
 
     /// <summary>
-    /// Prefix for log files created in <see cref="LogsDirectory" />.
-    /// </summary>
-    string LogPrefix { [NotNull] get; }
-
-    /// <summary>
     /// Returns the <see cref="ScreenshotTooltipStyle"/> that will be used when drawing tooltips for this browser.
     /// </summary>
     ScreenshotTooltipStyle TooltipStyle { [NotNull] get; }
