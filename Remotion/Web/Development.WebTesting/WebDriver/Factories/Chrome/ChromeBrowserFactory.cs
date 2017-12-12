@@ -84,7 +84,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
       var driverService = ChromeDriverService.CreateDefaultService();
 
       driverService.EnableVerboseLogging = false;
+
+#pragma warning disable 0612
       driverService.LogPath = WebDriverLogUtility.CreateLogFile (_chromeConfiguration.LogsDirectory, _chromeConfiguration.LogPrefix, _chromeConfiguration.BrowserName);
+#pragma warning restore 0612
 
       return driverService;
     }

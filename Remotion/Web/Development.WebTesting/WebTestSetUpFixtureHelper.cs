@@ -54,15 +54,30 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     private readonly IHostingStrategy _hostingStrategy;
+    private readonly string _screenshotDirectory;
+    private readonly string _logDirectory;
 
     [PublicAPI]
     protected WebTestSetUpFixtureHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationFactory", webTestConfigurationFactory);
 
-      var configuration = webTestConfigurationFactory.CreateHostingConfiguration();
+      var hostingConfiguration = webTestConfigurationFactory.CreateHostingConfiguration();
+      _hostingStrategy = hostingConfiguration.GetHostingStrategy();
 
-      _hostingStrategy = configuration.GetHostingStrategy();
+      var testInfrastructureConfiguration = webTestConfigurationFactory.CreateTestInfrastructureConfiguration();
+      _screenshotDirectory = testInfrastructureConfiguration.ScreenshotDirectory;
+      _logDirectory = testInfrastructureConfiguration.ScreenshotDirectory;
+    }
+
+    public string ScreenshotDirectory
+    {
+      get { return _screenshotDirectory; }
+    }
+
+    public string LogDirectory
+    {
+      get { return _logDirectory; }
     }
 
     /// <summary>

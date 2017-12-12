@@ -83,10 +83,14 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplor
     private InternetExplorerDriverService CreateInternetExplorerDriverService ()
     {
       var driverService = InternetExplorerDriverService.CreateDefaultService();
+
+#pragma warning disable 0612
       driverService.LogFile = WebDriverLogUtility.CreateLogFile (
           _internetExplorerConfiguration.LogsDirectory,
           _internetExplorerConfiguration.LogPrefix,
           _internetExplorerConfiguration.BrowserName);
+#pragma warning restore 0612
+
       driverService.LoggingLevel = InternetExplorerDriverLogLevel.Info;
       return driverService;
     }

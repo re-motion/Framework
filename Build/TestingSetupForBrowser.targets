@@ -33,9 +33,17 @@
     <Message Text="Selected Browser: '$(Browser)'" />
     <Message Text="The property 'ChromeVersionArchive' is set to '$(ChromeVersionArchive)'." />
 
+    <MSBuild.ExtensionPack.Xml.XmlFile
+        TaskAction="ReadAttribute"
+        File="$(AppConfigFile)"
+        XPath="/configuration/appSettings/add[@key='BuildLogOutputSubDirectoryName']/@value">
+      <Output TaskParameter="Value" PropertyName="_buildLogOutputSubDirectoryName" />
+    </MSBuild.ExtensionPack.Xml.XmlFile>
+
+
     <PropertyGroup>
       <_variantName>$(Browser)_$(Platform)_$(ConfigurationID)</_variantName>
-      <_logsDirectory>$(LogDirectory)WebTesting\$(_variantName)\</_logsDirectory>
+      <_logsDirectory>$(LogDirectory)WebTesting\$(_variantName)\$(_buildLogOutputSubDirectoryName)\</_logsDirectory>
     </PropertyGroup>
     
     <MSBuild.ExtensionPack.Xml.XmlFile

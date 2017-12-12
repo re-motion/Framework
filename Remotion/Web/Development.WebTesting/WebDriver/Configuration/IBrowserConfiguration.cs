@@ -93,6 +93,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     /// <summary>
     /// Prefix for log files created in <see cref="LogsDirectory" />.
     /// </summary>
+    [Obsolete]
     string LogPrefix { [NotNull] get; }
 
     /// <summary>

@@ -184,6 +184,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// <summary>
     /// Prefix for log files created in <see cref="LogsDirectory" />.
     /// </summary>
+    [Obsolete]
     public string LogPrefix
     {
       get { return (string) this [_logPrefixProperty]; }
