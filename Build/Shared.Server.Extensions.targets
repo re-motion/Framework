@@ -22,7 +22,7 @@
   <Target Name="ArtifactBuild_Configuration">
     <PropertyGroup>
       <Platforms>x64</Platforms>
-      <DatabaseSystems>SqlServer2014</DatabaseSystems>
+      <DatabaseSystems>SqlServer2012</DatabaseSystems>
       <Browsers></Browsers>
       <SkipDocumentation>True</SkipDocumentation>
     </PropertyGroup>
@@ -31,7 +31,7 @@
   <Target Name="CIProductionBuild_Configuration">
     <PropertyGroup>
       <Platforms>x64</Platforms>
-      <DatabaseSystems>SqlServer2014</DatabaseSystems>
+      <DatabaseSystems>SqlServer2012</DatabaseSystems>
       <Browsers>Chrome</Browsers>
       <SkipDocumentation>True</SkipDocumentation>
     </PropertyGroup>

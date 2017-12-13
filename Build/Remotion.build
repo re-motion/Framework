@@ -76,18 +76,14 @@
           SvnRevision=$(SvnRevision);
           ChromeVersionArchive=$(ChromeVersionArchive);
           DatabaseNamePrefix=$(DatabaseNamePrefix);
-          DataSourceMsSql2005=$(DataSourceMsSql2005);
-          DataSourceMsSql2008=$(DataSourceMsSql2008);
-          DataSourceMsSql2008R2=$(DataSourceMsSql2008R2);
           DataSourceMsSql2012=$(DataSourceMsSql2012);
           DataSourceMsSql2014=$(DataSourceMsSql2014);
           DataSourceMsSql2016=$(DataSourceMsSql2016);
-          DatabaseDirectoryMsSql2005=$(DatabaseDirectoryMsSql2005);
-          DatabaseDirectoryMsSql2008=$(DatabaseDirectoryMsSql2008);
-          DatabaseDirectoryMsSql2008R2=$(DatabaseDirectoryMsSql2008R2);
+          DataSourceMsSql2017=$(DataSourceMsSql2017);
           DatabaseDirectoryMsSql2012=$(DatabaseDirectoryMsSql2012);
           DatabaseDirectoryMsSql2014=$(DatabaseDirectoryMsSql2014);
           DatabaseDirectoryMsSql2016=$(DatabaseDirectoryMsSql2016);
+          DatabaseDirectoryMsSql2017=$(DatabaseDirectoryMsSql2017);
       </BuildProperties>
     </PropertyGroup>
 

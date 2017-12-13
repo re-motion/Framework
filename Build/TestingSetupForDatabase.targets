@@ -73,27 +73,21 @@
   </Target>
 
   <Target Name="CreateAllDatabaseSystems">
-    <Error Text="The property 'DataSourceMsSql2008R2' is not set." Condition="'$(DataSourceMsSql2008R2)' == ''" />
     <Error Text="The property 'DataSourceMsSql2012' is not set." Condition="'$(DataSourceMsSql2012)' == ''" />
     <Error Text="The property 'DataSourceMsSql2014' is not set." Condition="'$(DataSourceMsSql2014)' == ''" />
     <Error Text="The property 'DataSourceMsSql2016' is not set." Condition="'$(DataSourceMsSql2016)' == ''" />
+    <Error Text="The property 'DataSourceMsSql2017' is not set." Condition="'$(DataSourceMsSql2017)' == ''" />
 
-    <Error Text="The property 'DatabaseDirectoryMsSql2008R2' is not set." Condition="'$(DatabaseDirectoryMsSql2008R2)' == ''" />
     <Error Text="The property 'DatabaseDirectoryMsSql2012' is not set." Condition="'$(DatabaseDirectoryMsSql2012)' == ''" />
     <Error Text="The property 'DatabaseDirectoryMsSql2014' is not set." Condition="'$(DatabaseDirectoryMsSql2014)' == ''" />
     <Error Text="The property 'DatabaseDirectoryMsSql2016' is not set." Condition="'$(DatabaseDirectoryMsSql2016)' == ''" />
+    <Error Text="The property 'DatabaseDirectoryMsSql2017' is not set." Condition="'$(DatabaseDirectoryMsSql2017)' == ''" />
 
     <ItemGroup>
       <AllDatabaseSystems Include="SqlServerDefault">
         <DataSource>localhost</DataSource>
         <DatabaseDirectory>C:\Databases\</DatabaseDirectory>
         <DatabaseNamePrefix></DatabaseNamePrefix>
-      </AllDatabaseSystems>
-
-      <AllDatabaseSystems Include="SqlServer2008R2">
-        <DataSource>$(DataSourceMsSql2008R2)</DataSource>
-        <DatabaseDirectory>$(DatabaseDirectoryMsSql2008R2)</DatabaseDirectory>
-        <DatabaseNamePrefix>$(DatabaseNamePrefix)</DatabaseNamePrefix>
       </AllDatabaseSystems>
 
       <AllDatabaseSystems Include="SqlServer2012">
@@ -111,6 +105,12 @@
       <AllDatabaseSystems Include="SqlServer2016">
         <DataSource>$(DataSourceMsSql2016)</DataSource>
         <DatabaseDirectory>$(DatabaseDirectoryMsSql2016)</DatabaseDirectory>
+        <DatabaseNamePrefix>$(DatabaseNamePrefix)</DatabaseNamePrefix>
+      </AllDatabaseSystems>
+
+      <AllDatabaseSystems Include="SqlServer2017">
+        <DataSource>$(DataSourceMsSql2017)</DataSource>
+        <DatabaseDirectory>$(DatabaseDirectoryMsSql2017)</DatabaseDirectory>
         <DatabaseNamePrefix>$(DatabaseNamePrefix)</DatabaseNamePrefix>
       </AllDatabaseSystems>
     </ItemGroup>
