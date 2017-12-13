@@ -9,7 +9,7 @@ Description: $($_.Description)
 }
 
 $output +=
-"Remotion (addendum for license)
+"Remotion and Remotion.* (addendum for license)
 This software embeds code based on 'JetBrains Annotations'.
 Copyright (c) 2016 JetBrains http://www.jetbrains.com
 Original software available via ReSharper -> Options -> Code Annotations -> Copy to Clipboard.
@@ -23,6 +23,14 @@ Copyright (c) Microsoft Corporation
 ProjectUrl: https://dlr.codeplex.com
 LicenseUrl: https://dlr.codeplex.com/license (Apache License 2.0)
 Relevant code (assembly 'Remotion.TypePipe.dll', namespace 'Remotion.TypePipe.Dlr') contains a copy of '/DLR_Main/Runtime/Microsoft.Scripting.Core', changeset #54115
+"
+
+$output +=
+"Remotion.TypePipe (addendum for license)
+This software embeds code based on 'JetBrains Annotations'.
+Copyright (c) 2016 JetBrains http://www.jetbrains.com
+Original software available via ReSharper -> Options -> Code Annotations -> Copy to Clipboard.
+LicenseUrl: https://raw.githubusercontent.com/JetBrains/ExternalAnnotations/master/LICENSE.md (MIT License)
 "
 
 $output +=
