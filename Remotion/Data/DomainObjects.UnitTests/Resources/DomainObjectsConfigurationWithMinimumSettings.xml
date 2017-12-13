@@ -12,7 +12,7 @@
       <providerDefinitions>
         <add type="Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"
             name="Test"
-            factoryType="Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2005.SqlStorageObjectFactory" 
+            factoryType="Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2012.SqlStorageObjectFactory" 
             connectionString="Test"/>
       </providerDefinitions>
     </storage>

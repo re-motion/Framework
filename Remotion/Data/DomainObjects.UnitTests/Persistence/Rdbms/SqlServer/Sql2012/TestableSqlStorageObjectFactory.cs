@@ -22,10 +22,10 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2005
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2012
 {
   public class TestableSqlStorageObjectFactory : SqlStorageObjectFactory
   {

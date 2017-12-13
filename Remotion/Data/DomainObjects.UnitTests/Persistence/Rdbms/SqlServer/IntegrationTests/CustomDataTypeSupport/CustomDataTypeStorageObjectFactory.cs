@@ -18,7 +18,7 @@ using System;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
 using Remotion.Linq.SqlBackend.MappingResolution;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport

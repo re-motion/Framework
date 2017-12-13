@@ -18,7 +18,7 @@ using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Mixins;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2005
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2012
 {
   public class SqlProviderTestMixin : Mixin<RdbmsProvider>
   {

@@ -663,7 +663,7 @@
     <Compile Include="Persistence\Rdbms\Model\UnionViewDefinition.cs" />
     <Compile Include="Persistence\Rdbms\DbCommandBuilders\IDbCommandBuilder.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\SqlDialect.cs" />
-    <Compile Include="Persistence\Rdbms\SqlServer\Sql2005\SqlStorageObjectFactory.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Sql2012\SqlStorageObjectFactory.cs" />
     <Compile Include="PropertyChangeEventArgs.cs" />
     <Compile Include="Queries\EagerFetching\FetchedRealObjectRelationDataRegistrationAgent.cs" />
     <Compile Include="Queries\EagerFetching\FetchedCollectionRelationDataRegistrationAgent.cs" />

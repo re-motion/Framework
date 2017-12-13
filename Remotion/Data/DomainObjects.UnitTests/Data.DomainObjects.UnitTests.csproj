@@ -716,7 +716,7 @@
     <Compile Include="Persistence\Rdbms\SqlServer\Model\SqlSecondaryXmlIndexDefinitionTest.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\ScriptGeneratorDatabaseIntegrationTest.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\ScriptGeneratorIntegrationTest.cs" />
-    <Compile Include="Persistence\Rdbms\SqlServer\Sql2005\TestableSqlStorageObjectFactory.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Sql2012\TestableSqlStorageObjectFactory.cs" />
     <Compile Include="Persistence\Rdbms\InlineRdbmsStorageEntityDefinitionVisitorTest.cs" />
     <Compile Include="Persistence\Rdbms\StorageProviderCommands\Factories\RelationLookupCommandFactoryTest.cs" />
     <Compile Include="Persistence\Rdbms\StorageProviderCommands\ScalarObjectLoadCommandTest.cs" />
@@ -1203,8 +1203,8 @@
     <Compile Include="Persistence\Rdbms\SchemaGenerationTestDomain\SpecialOfficial.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\SqlDialectTest.cs" />
     <Compile Include="Mapping\PersistenceModelLoaderTest.cs" />
-    <Compile Include="Persistence\Rdbms\SqlServer\Sql2005\SqlProviderTestMixin.cs" />
-    <Compile Include="Persistence\Rdbms\SqlServer\Sql2005\SqlStorageObjectFactoryTest.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Sql2012\SqlProviderTestMixin.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Sql2012\SqlStorageObjectFactoryTest.cs" />
     <Compile Include="IntegrationTests\Transaction\CountingObjectLoaderDecorator.cs" />
     <Compile Include="UnitTestStorageObjectFactoryStub.cs" />
     <Compile Include="Persistence\Rdbms\SchemaGenerationConfiguration.cs" />
@@ -1234,9 +1234,9 @@
     <Compile Include="MixedDomains\TestDomain\TargetClassForBehavioralMixin.cs" />
     <Compile Include="Persistence\Rdbms\RdbmsProviderTest.cs" />
     <Compile Include="Persistence\Rdbms\TestableRdbmsProvider.cs" />
-    <Compile Include="Persistence\Rdbms\SqlServer\Sql2005\TestMappingResolutionStageMixin.cs" />
-    <Compile Include="Persistence\Rdbms\SqlServer\Sql2005\TestSqlGenerationStageMixin.cs" />
-    <Compile Include="Persistence\Rdbms\SqlServer\Sql2005\TestSqlPreparationStageMixin.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Sql2012\TestMappingResolutionStageMixin.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Sql2012\TestSqlGenerationStageMixin.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Sql2012\TestSqlPreparationStageMixin.cs" />
     <Compile Include="ReadOnlyDomainObjectCollectionAdapterTest.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointRemoveCommandTest.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointInsertCommandTest.cs" />

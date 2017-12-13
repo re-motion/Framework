@@ -16,28 +16,23 @@
 // 
 using System;
 using System.Linq.Expressions;
-using NUnit.Framework;
+using Remotion.Linq;
 using Remotion.Linq.Clauses.StreamedData;
-using Remotion.Linq.SqlBackend.MappingResolution;
+using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Linq.SqlBackend.SqlStatementModel;
-using Remotion.Linq.SqlBackend.SqlStatementModel.Resolved;
 using Remotion.Mixins;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2005
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2012
 {
-  public class TestMappingResolutionStageMixin
+  public class TestSqlPreparationStageMixin
   {
     [OverrideTarget]
-    public virtual SqlStatement ResolveSqlStatement (SqlStatement sqlStatement, IMappingResolutionContext context)
+    public virtual SqlStatement PrepareSqlStatement (QueryModel queryModel, ISqlPreparationContext context)
     {
-      Assert.That (sqlStatement.SelectProjection, Is.TypeOf (typeof (ConstantExpression)));
-      Assert.That (((ConstantExpression) sqlStatement.SelectProjection).Value, Is.EqualTo ("Value added by preparation mixin"));
-
       var builder = new SqlStatementBuilder
                     {
                         DataInfo = new StreamedScalarValueInfo (typeof (string)),
-                        SelectProjection =
-                            new SqlEntityDefinitionExpression (typeof (int), "c", "CookTable", e => e.GetColumn (typeof (int), "ID", false))
+                        SelectProjection = Expression.Constant ("Value added by preparation mixin")
                     };
       return builder.GetSqlStatement();
     }
