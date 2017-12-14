@@ -170,6 +170,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       var script = new StringBuilder (1000);
       script.Append ("$(document).ready( function() { BocAutoCompleteReferenceValue.Initialize(");
+      script.AppendFormat ("'{0}', ", renderingContext.Control.ClientID);
+      script.AppendFormat (
+          "$('#{0} span[{1}={2}]'), ",
+          renderingContext.Control.ClientID,
+          HtmlTextWriterAttribute2.Role,
+          HtmlAriaRoleAttributeValue.Combobox);
       script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetTextValueName());
       script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetKeyValueName());
       script.AppendFormat ("$('#{0}'),", GetDropDownButtonName(renderingContext));
@@ -300,6 +306,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private void RenderEditModeValue (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext, TextBox textBox)
     {
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassInput);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Combobox);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Listbox);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaOwns, "");
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       bool autoPostBack = textBox.AutoPostBack;
@@ -331,6 +341,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetDropDownButtonName(renderingContext));
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassButton);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Tabindex, "-1");
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
       IconInfo.CreateSpacer (ResourceUrlFactory).Render (renderingContext.Writer, renderingContext.Control);
       renderingContext.Writer.RenderEndTag ();
@@ -358,7 +370,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       textBox.EnableViewState = false;
       textBox.Page = renderingContext.Control.Page.WrappedInstance;
       textBox.ApplyStyle (renderingContext.Control.CommonStyle);
-      renderingContext.Control.TextBoxStyle.ApplyStyle (textBox);   
+      renderingContext.Control.TextBoxStyle.ApplyStyle (textBox);
+      textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaAutoComplete, HtmlAriaAutoCompleteAttributeValue.Both);
+      textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaControls, "");
+      textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaActiveDescendant, "");
+      textBox.Attributes.Add ("autocomplete", "off");
       return textBox;
     }
 

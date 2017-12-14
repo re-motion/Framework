@@ -14,23 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System.Web.UI;
+using System;
 
 namespace Remotion.Web.UI
 {
   /// <summary>
-  /// Defines additional HTML attributes not already included in <see cref="HtmlTextWriterAttribute"/>.
+  /// Defines values for the <see cref="HtmlTextWriterAttribute2.AriaHidden"/> attribute.
   /// </summary>
-  public static class HtmlTextWriterAttribute2
+  public static class HtmlAriaHiddenAttributeValue
   {
-    public const string AriaActiveDescendant = "aria-activedescendant";
-    public const string AriaAutoComplete = "aria-autocomplete";
-    public const string AriaChecked = "aria-checked";
-    public const string AriaControls = "aria-controls";
-    public const string AriaExpanded = "aria-expanded";
-    public const string AriaHasPopup = "aria-haspopup";
-    public const string AriaHidden = "aria-hidden";
-    public const string AriaOwns = "aria-owns";
-    public const string Role = "role";
+    public const string True = "true";
+    public const string False = "false";
   }
 }

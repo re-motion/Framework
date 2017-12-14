@@ -43,8 +43,11 @@
                 serviceMethodSearch: serviceMethodSearch,
                 serviceMethodSearchExact: serviceMethodSearchExact,
                 data: null,
+                combobox: null,
+                selectListID: null,
+                informationPopUpID: null,
                 // re-motion: clicking this control will display the dropdown list with an assumed input of '' (regardless of textbox value)
-                dropDownButtonId: null
+                dropDownButtonID: null
             }, options);
 
             // if highlight is set to false, replace it with a do-nothing function
@@ -119,7 +122,9 @@
         };
 
         // Create $ object for input element
-        var $input = $(input).attr("autocomplete", "off").addClass(options.inputClass);
+        var $input = $ (input).addClass(options.inputClass);
+        //aria-controls has been removed since it does not provide a meaningful assistance at this point in time (IE 11 / JAWS 18)
+        //$input.attr ({ "aria-controls" : options.selectListID });
 
         // re-motion: Holds the currently executing request. 
         //            If the user types faster than the requests can be answered, the intermediate requests will be discarded.
@@ -147,7 +152,13 @@
             previousValue: '',
             lastKeyPressValue: null
         };
+
         var select = $.Autocompleter.Select(options, input, selectCurrent, state);
+        // Perform initialize on load to ensure that screenreader can recognize the BocAutoCompleteReferenceValue as a combobox.
+        // With IE 11 / JAWS 18, the input element is announced as an 'edit' input element until there is a listbox element available as well,
+        // Chrome 63 does not show this behavior, so it's just some weird issue that needs to be worked around.
+        select.init();
+
         var informationPopUp = $.Autocompleter.InformationPopUp(options, input);
         var blockSubmit;
 
@@ -340,9 +351,8 @@
             }
         }).click(function() {
 
-        }).bind("search", function () {
-            // TODO why not just specifying both arguments?
-            var fn = (arguments.length > 1) ? arguments[1] : null;
+        }).bind("search", function (eventTarget, eventArguments) {
+            var fn = eventArguments;
             function findValueCallback(q, data) {
                 var result;
                 if (data && data.length) {
@@ -360,7 +370,7 @@
             requestData(value, findValueCallback, findValueCallback);
         }).bind("flushCache", function() {
             cache.flush();
-        }).bind("collectOptions", function () {
+        }).bind("collectOptions", function (eventTarget, eventArguments) {
             var publicOptions = {
               serviceUrl: options.serviceUrl,
               serviceMethodSearch: options.serviceMethodSearch,
@@ -371,15 +381,19 @@
             for (var propName in options.extraParams)
               publicOptions.params[propName] = options.extraParams[propName];
             
-            $.extend(arguments[1], publicOptions);
-        }).bind("setOptions", function () {
-            $.extend(options, arguments[1]);
+            $.extend(eventArguments, publicOptions);
+        }).bind("setOptions", function (eventTarget, eventArguments) {
+            $.extend(options, eventArguments);
             // if we've updated the data, repopulate
-            if ("data" in arguments[1])
+            if ("data" in eventArguments)
               cache.populate();
-        }).bind("collectElements", function () {
-            arguments[1].selectList = select;
-            arguments[1].informationPopUp = informationPopUp;
+        }).bind("collectElements", function (eventTarget, eventArguments) {
+            eventArguments.selectList = select;
+            eventArguments.informationPopUp = informationPopUp;
+        }).bind("showInformationPopUp", function (eventTarget, eventArguments) {
+            informationPopUp.show(eventArguments.message);
+        }).bind("hideInformationPopUp", function() {
+            informationPopUp.hide();
         }).bind("unautocomplete", function() {
             informationPopUp.unbind();
             select.unbind();
@@ -388,7 +402,7 @@
         });
 
         // re-motion: bind onChange to the dropDownButton's click event
-        var dropdownButton = $('#' + options.dropDownButtonId);
+        var dropdownButton = $('#' + options.dropDownButtonID);
         if (dropdownButton.length > 0) {
             dropdownButton.mousedown(function() {
                 state.mouseDownOnSelect = true;
@@ -955,8 +969,9 @@
         function init() {
             if (!needsInit)
                 return;
-            element = $("<div/>")
+            element = $("<div role='listbox' />")
             .hide()
+            .attr("id", options.selectListID)
             .addClass(options.resultsClass)
             .css("position", "absolute")
             .appendTo(document.body);
@@ -1031,13 +1046,16 @@
         };
 
         function setSelect(position, updateInput) {
-            listItems.slice(active, active + 1).removeClass(CLASSES.ACTIVE);
+            listItems.slice(active, active + 1).removeClass(CLASSES.ACTIVE).attr("aria-selected", "false");
             setPosition (position);
-            var activeItem = listItems.slice(active, active + 1).addClass(CLASSES.ACTIVE);
+            var activeItem = listItems.slice(active, active + 1).addClass(CLASSES.ACTIVE).attr("aria-selected", "true");
             if (active >= 0) {
                 var result = $.data(activeItem[0], "ac_data").result;
+                var $input = $(input);
+                $input.attr ("aria-activedescendant", activeItem.attr("id"));
+
                 if (updateInput)
-                  $(input).val(result);
+                  $input.val(result);
 
                 // re-motion: do not select the text in the input element when moving the drop-down selection 
                 //$.Autocompleter.Selection(input, 0, input.value.length);
@@ -1100,12 +1118,16 @@
                 var formatted = options.formatItem(data[i].data, i + 1, max, data[i].value, term);
                 if (formatted === false)
                     continue;
-                var li = $("<li/>").html(options.highlight(formatted, term)).addClass(i % 2 == 0 ? "ac_even" : "ac_odd").appendTo(list)[0];
-                $.data(li, "ac_data", data[i]);
+                var li = $("<li role='option' aria-selected='false' />").html(options.highlight(formatted, term)).addClass(i % 2 == 0 ? "ac_even" : "ac_odd").appendTo(list);
+                li.attr ("id", options.selectListID + "_" + i);
+                $.data(li[0], "ac_data", data[i]);
             }
             listItems = list.find("li");
-            if (options.selectFirst($(input).val(), term)) {
-                listItems.slice(0, 1).addClass(CLASSES.ACTIVE);
+            var $input = $(input);
+            if (options.selectFirst($input.val(), term)) {
+                var activeItem = listItems.slice(0, 1);
+                $input.attr("aria-activedescendant", activeItem.attr("id"));
+                activeItem.addClass(CLASSES.ACTIVE).attr("aria-selected", "true");
                 active = 0;
             }
             element.iFrameShim({top: '0px', left: '0px', width: '100%', height: '100%'});
@@ -1149,6 +1171,9 @@
         }
 
         return {
+            init: function (){
+              init();
+            },
             display: function(d, q) {
                 init();
                 data = d;
@@ -1181,8 +1206,10 @@
             hide: function() {
                 if (repositionTimer) 
                     clearTimeout(repositionTimer);
+                options.combobox.attr("aria-expanded", "false");
+                $(input).attr("aria-activedescendant", "");
                 element && element.hide();
-                listItems && listItems.removeClass(CLASSES.ACTIVE);
+                listItems && listItems.removeClass(CLASSES.ACTIVE).attr("aria-selected", "false");
                 active = -1;
             },
             visible: function() {
@@ -1210,6 +1237,7 @@
                 applyPositionToDropDown();
                 
                 element.show();
+                options.combobox.attr("aria-expanded", "true");
                 
                 // re-motion: reposition element 
                 if (repositionTimer) 
@@ -1276,8 +1304,9 @@
         function init() {
             if (!needsInit)
                 return;
-            element = $("<div/>")
+            element = $("<div role='alert' aria-atomic='true' />")
             .hide()
+            .attr("id", options.informationPopUpID)
             .addClass(options.informationPopUpClass)
             .css("position", "absolute")
             .appendTo(document.body);

@@ -24,6 +24,7 @@ namespace Remotion.Web.UI
   public static class HtmlAriaRoleAttributeValue
   {
     public const string Checkbox = "checkbox";
+    public const string Combobox = "combobox";
     public const string Presentation = "presentation";
     public const string Row = "row";
     public const string Table = "table";

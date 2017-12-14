@@ -20,7 +20,8 @@ function BocAutoCompleteReferenceValue()
 }
 
 BocAutoCompleteReferenceValue.Initialize = function (
-    textbox, hiddenField, button, command, searchServiceUrl,
+    baseID,
+    combobox, textbox, hiddenField, button, command, searchServiceUrl,
     completionSetCount, dropDownDisplayDelay, dropDownRefreshDelay, selectionUpdateDelay,
     searchStringValidationInfo,
     nullValueString,
@@ -31,6 +32,8 @@ BocAutoCompleteReferenceValue.Initialize = function (
     commandInfo,
     resources)
 {
+  ArgumentUtility.CheckTypeIsString('baseID', baseID);
+  ArgumentUtility.CheckNotNullAndTypeIsObject('combobox', combobox);
   ArgumentUtility.CheckNotNullAndTypeIsObject('textbox', textbox);
   ArgumentUtility.CheckNotNullAndTypeIsObject('hiddenField', hiddenField);
   ArgumentUtility.CheckNotNullAndTypeIsObject('button', button);
@@ -51,9 +54,13 @@ BocAutoCompleteReferenceValue.Initialize = function (
 
   var _itemBackUp = null;
   var _isInvalidated = false;
-  BackupItemData($(hiddenField).val(), $(textbox).val());
+  BackupItemData(hiddenField.val(), textbox.val());
   var _command = command;
   var _commandBackUp = command;
+  var _selectListID = baseID + '_Results';
+  var _informationPopUpID = baseID + '_Information';
+
+  combobox.attr('aria-owns', _selectListID + ' ' + _informationPopUpID);
 
   textbox.autocomplete(searchServiceUrl, 'Search', 'SearchExact',
         {
@@ -79,7 +86,10 @@ BocAutoCompleteReferenceValue.Initialize = function (
           noDataFoundMessage: resources.NoDataFoundMessage,
           autoFill: true,
           matchContains: true,
-          dropDownButtonId: button.attr('id'),
+          combobox: combobox,
+          selectListID: _selectListID,
+          informationPopUpID: _informationPopUpID,
+          dropDownButtonID: button.attr('id'),
           inputAreaClass: 'content',
           // this can be set to true/removed once the problem is fixed that an empty textbox still selects the first element, making it impossible to clear the selection
           selectFirst: function (inputValue, searchTerm)
@@ -220,24 +230,15 @@ BocAutoCompleteReferenceValue.Initialize = function (
   {
     if (textbox.hasClass('error'))
     {
-      textbox.attr ('title', textbox.data ('title-backup'));
-      textbox.removeData ('title-backup');
       textbox.removeClass ('error');
+      textbox.trigger ('hideInformationPopUp');
     }
   };
 
   function SetError(message)
   {
-    if (!textbox.hasClass('error'))
-    {
-      var oldTitle = textbox.attr ('title');
-      if (TypeUtility.IsUndefined (oldTitle))
-        oldTitle = null;
-
-      textbox.data ('title-backup', oldTitle);
-    }
-    textbox.attr ('title', message);
-    textbox.addClass ('error');
+    textbox.addClass('error');
+    textbox.trigger ('showInformationPopUp', { 'message' : message });
   };
 
   function BackupItemData(uniqueIdentifier, displayName)
