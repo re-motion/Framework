@@ -281,13 +281,23 @@ ul.DropDownMenuOptions li.DropDownMenuItemDisabled a
   color: gray;
 }
 
+ul.DropDownMenuOptions li.DropDownMenuItemDisabled.selected a
+{
+  background-color: #ECEEEC;
+}
+
 ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:active
 {
   background-color: transparent;
   border-style: none;
   padding: 1px 3px 3px 3px;
+  color: gray;
 }
 
+ul.DropDownMenuOptions li.DropDownMenuItemDisabled.selected a:active
+{
+  background-color: #ECEEEC;
+}
 
 /* style separator */
 span.DropDownMenuSeparator

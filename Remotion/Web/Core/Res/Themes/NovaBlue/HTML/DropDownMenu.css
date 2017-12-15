@@ -141,7 +141,8 @@ ul.DropDownMenuOptions li.selected a
 {
   background-color: #e6f0ff;
   border: solid 1px #083779;
-  padding: 0px 2px 2px 2px;
+  padding: 0px 2px 2px 0px;
+  outline: none;
 }
 
 ul.DropDownMenuOptions li a
@@ -172,6 +173,24 @@ ul.DropDownMenuOptions li.DropDownMenuItemDisabled a
   border-style: none;
   padding: 1px 3px 3px 3px;
   color: gray;
+}
+
+ul.DropDownMenuOptions li.DropDownMenuItemDisabled.selected a
+{
+  background-color: #E8E8E8;
+}
+
+ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:active
+{
+  background-color: transparent;
+  border-style: none;
+  padding: 1px 3px 3px 3px;
+  color: gray;
+}
+
+ul.DropDownMenuOptions li.DropDownMenuItemDisabled.selected a:active
+{
+  background-color: #E8E8E8;
 }
 
 /* style separator */

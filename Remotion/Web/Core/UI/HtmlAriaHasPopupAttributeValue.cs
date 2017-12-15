@@ -23,6 +23,10 @@ namespace Remotion.Web.UI
   /// </summary>
   public static class HtmlAriaHasPopupAttributeValue
   {
+    public const string Dialog = "dialog";
+    public const string Grid = "grid";
     public const string Listbox = "listbox";
+    public const string Menu = "menu";
+    public const string Tree = "tree";
   }
 }

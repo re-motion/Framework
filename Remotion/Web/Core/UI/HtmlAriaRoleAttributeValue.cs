@@ -23,6 +23,7 @@ namespace Remotion.Web.UI
   /// </summary>
   public static class HtmlAriaRoleAttributeValue
   {
+    public const string Button = "button";
     public const string Checkbox = "checkbox";
     public const string Combobox = "combobox";
     public const string Presentation = "presentation";

@@ -61,6 +61,7 @@ function DropDownMenu_BindOpenEvent (node, menuID, eventType, getSelectionCount,
       eventType,
       function (evt)
       {
+        $('#' + menuID + ' a[href]').focus();
         DropDownMenu_OnClick (node, menuID, getSelectionCount, moveToMousePosition ? evt : null);
         if (moveToMousePosition)
           node.first ('a[href]').focus();
@@ -126,13 +127,22 @@ function DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, evt)
   if (itemInfos.length == 0)
     return;
 
+  var menuOptionsID = menuID + '_DropDownMenuOptions';
+  var menuButton = $('#' + menuID + ' a[aria-haspopup=menu]');
+  menuButton.attr('aria-controls', menuOptionsID);
+  menuButton.attr('aria-expanded', 'true');
+
   var div = document.createElement('div');
   div.className = 'DropDownMenuOptions';
-  div.id = menuID + '_DropDownMenuOptions';
+  div.id = menuOptionsID;
+  div.setAttribute('role', 'menu');
+  div.setAttribute('aria-labelledby', menuButton[0].id);
+  div.setAttribute('tabindex', '-1');
   _dropDownMenu_currentPopup = div;
 
   var ul = document.createElement('ul');
   ul.className = 'DropDownMenuOptions';
+  ul.setAttribute('role', 'none');
   div.appendChild(ul);
 
   $('body')[0].appendChild(div);
@@ -141,7 +151,7 @@ function DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, evt)
   {
     var eventTarget = DropDownMenu_GetTarget (event, "LI");
     $("li", ul).removeClass(_dropDownMenu_itemSelectedClassName);
-    if (eventTarget.firstChild != null && eventTarget.firstChild.href != null && eventTarget.firstChild.href !== '')
+    if (eventTarget.firstChild != null && eventTarget.firstChild.nodeName.toLowerCase() === 'a')
     {
       $(eventTarget).addClass (_dropDownMenu_itemSelectedClassName);
       eventTarget.firstChild.focus();
@@ -153,6 +163,9 @@ function DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, evt)
 
   _dropDownMenu_itemClickHandler = function()
   {
+    if (this.href == null || this.href === '')
+      return false;
+
     _dropDownMenu_itemClicked = true;
     DropDownMenu_ClosePopUp();
     try
@@ -253,6 +266,10 @@ function DropDownMenu_ClosePopUp()
   _dropDownMenu_currentMenu.find('a[href]:last').first().focus();
 
   var div = $(_dropDownMenu_currentPopup);
+  var menuButtonID = div.attr('aria-labelledBy');
+  var menuButton = document.getElementById (menuButtonID);
+  menuButton.setAttribute('aria-expanded', 'false');
+  menuButton.setAttribute('aria-controls', '');
 
   $("li", div).removeClass(_dropDownMenu_itemSelectedClassName);
 
@@ -288,13 +305,20 @@ function DropDownMenu_CreateTextItem(itemInfo, selectionCount)
     className = _dropDownMenu_itemDisabledClassName;
 
   item.className = className;
+  item.setAttribute('role', 'none');
 
   var anchor = document.createElement("a");
+  anchor.setAttribute('role', 'menuitem');
+  anchor.setAttribute('tabindex', '-1');
   if (isEnabled)
   {
     anchor.setAttribute('href', '#');
-    $(anchor).bind('click', _dropDownMenu_itemClickHandler);
   }
+  else
+  {
+    anchor.setAttribute('aria-disabled', 'true');
+  }
+  $(anchor).bind('click', _dropDownMenu_itemClickHandler);
 
   item.appendChild(anchor);
   if (isEnabled && itemInfo.Href != null)
@@ -362,11 +386,12 @@ function DropDownMenu_CreateSeparatorItem()
 
   var textPane = document.createElement('span');
   textPane.className = _dropDownMenu_itemSeparatorClassName;
+  item.setAttribute('role', 'none');
   textPane.innerHTML = '&nbsp;';
 
   item.appendChild(textPane);
 
-  return textPane;
+  return item;
 }
 
 function DropDownMenu_OnHeadControlClick()
@@ -464,7 +489,7 @@ function DropDownMenu_Options_OnKeyDown(event, dropDownMenu)
       event.stopPropagation();
       isSelectionUpdated = true;
       oldIndex = currentItemIndex;
-      while (true)
+      while (true) // skip separators
       {
         if (currentItemIndex < itemInfos.length - 1)
         {
@@ -479,7 +504,7 @@ function DropDownMenu_Options_OnKeyDown(event, dropDownMenu)
 
         if (oldIndex === currentItemIndex)
           break;
-        if ($(dropDownMenuItems[currentItemIndex]).children('a[href]').length > 0)
+        if ($(dropDownMenuItems[currentItemIndex]).children('a').length > 0) // skip separators
           break;
       }
       break;
@@ -488,7 +513,7 @@ function DropDownMenu_Options_OnKeyDown(event, dropDownMenu)
       event.stopPropagation();
       isSelectionUpdated = true;
       oldIndex = currentItemIndex >= 0 ? currentItemIndex : itemInfos.length - 1;
-      while (true)
+      while (true) // skip separators
       {
         if (currentItemIndex > 0)
           currentItemIndex--;
@@ -497,7 +522,7 @@ function DropDownMenu_Options_OnKeyDown(event, dropDownMenu)
 
         if (oldIndex === currentItemIndex)
           break;
-        if ($(dropDownMenuItems[currentItemIndex]).children('a[href]').length > 0)
+        if ($(dropDownMenuItems[currentItemIndex]).children('a').length > 0)
           break;
       }
       break;
@@ -509,7 +534,7 @@ function DropDownMenu_Options_OnKeyDown(event, dropDownMenu)
     if (currentItemIndex >= 0 && currentItemIndex < itemInfos.length)
     {
       var dropDownMenuItem = $(dropDownMenuItems[currentItemIndex]);
-      if (dropDownMenuItem.children('a[href]').length > 0)
+      if (dropDownMenuItem.children('a').length > 0) // skip separators
       {
         dropDownMenuItem.addClass(_dropDownMenu_itemSelectedClassName);
         dropDownMenuItem.children ('a').focus();
