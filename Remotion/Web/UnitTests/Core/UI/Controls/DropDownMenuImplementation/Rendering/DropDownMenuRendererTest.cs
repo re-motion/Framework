@@ -148,18 +148,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       {
         span.AssertNoAttribute ("id");
         span.AssertNoAttribute ("role");
-        span.AssertNoAttribute ("aria-haspopup");
-        span.AssertNoAttribute ("aria-expanded");
-        span.AssertNoAttribute ("aria-controls");
         span.AssertAttributeValueEquals ("aria-hidden", "true");
       }
       else
       {
         span.AssertAttributeValueEquals ("id", _control.ClientID + "_DropDownMenuButton");
         span.AssertAttributeValueEquals ("role", "button");
-        span.AssertAttributeValueEquals ("aria-haspopup", "menu");
-        span.AssertAttributeValueEquals ("aria-expanded", "false");
-        span.AssertAttributeValueEquals ("aria-controls", "");
         span.AssertNoAttribute ("aria-hidden");
       }
       var image = span.GetAssertedChildElement ("img", 0);
@@ -176,9 +170,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       titleAnchor.AssertAttributeValueEquals ("href", "#");
       titleAnchor.AssertNoAttribute ("onclick");
       titleAnchor.AssertAttributeValueEquals (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Button);
-      titleAnchor.AssertAttributeValueEquals (HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Menu);
-      titleAnchor.AssertAttributeValueEquals (HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
-      titleAnchor.AssertAttributeValueEquals (HtmlTextWriterAttribute2.AriaControls, "");
       titleAnchor.AssertChildElementCount (withIcon ? 1 : 0);
       if (withTitle)
         titleAnchor.AssertTextNode (c_MenuTitle, withIcon ? 1 : 0);
