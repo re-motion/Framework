@@ -110,9 +110,9 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassDropDownLabel);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_DropDownMenuLabel");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Button);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Menu);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaControls, "");
+      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Menu);
+      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
+      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaControls, "");
       if (renderingContext.Control.Enabled)
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
@@ -137,9 +137,9 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_DropDownMenuButton");
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Button);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Menu);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaControls, "");
+        //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Menu);
+        //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
+        //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaControls, "");
         if (renderingContext.Control.Enabled)
         {
           renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");

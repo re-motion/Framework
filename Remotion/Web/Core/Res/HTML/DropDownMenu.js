@@ -50,34 +50,36 @@ function DropDownMenu_AddMenuInfo(menuInfo)
   _dropDownMenu_menuInfos[menuInfo.ID] = menuInfo;
 }
 
-function DropDownMenu_BindOpenEvent (node, menuID, eventType, getSelectionCount, moveToMousePosition)
+function DropDownMenu_BindOpenEvent (openTarget, menuID, eventType, getSelectionCount, moveToMousePosition)
 {
-  ArgumentUtility.CheckNotNullAndTypeIsJQuery ('node', node);
+  ArgumentUtility.CheckNotNullAndTypeIsJQuery ('openTarget', openTarget);
   ArgumentUtility.CheckNotNullAndTypeIsString ('menuID', menuID);
   ArgumentUtility.CheckNotNullAndTypeIsString ('eventType', eventType);
   ArgumentUtility.CheckNotNullAndTypeIsBoolean ('moveToMousePosition', moveToMousePosition);
 
-  node.bind(
+  var menuButton = openTarget[0].tagName.toLowerCase() === 'a' ? openTarget : openTarget.find ('a[href]:last');
+  menuButton.attr('aria-haspopup', 'menu');
+  menuButton.attr('aria-expanded', 'false');
+  menuButton.attr('aria-controls', '');
+
+  openTarget.bind(
       eventType,
       function (evt)
       {
-        $('#' + menuID + ' a[href]').focus();
-        DropDownMenu_OnClick (node, menuID, getSelectionCount, moveToMousePosition ? evt : null);
-        if (moveToMousePosition)
-          node.first ('a[href]').focus();
+        menuButton.focus();
+        DropDownMenu_OnClick (openTarget, menuID, getSelectionCount, moveToMousePosition ? evt : null);
       });
 
   if (!moveToMousePosition)
   {
-    var lastAnchor = node.find ('a[href]:last');
-    lastAnchor
-        .bind ("focus", function (evt) { node.find ('.' + _dropDownMenu_buttonClassName).addClass (_dropDownMenu_focusClassName); })
-        .bind("blur", function (evt) { node.find('.' + _dropDownMenu_buttonClassName).removeClass (_dropDownMenu_focusClassName); });
+    menuButton
+        .bind ("focus", function (evt) { openTarget.find ('.' + _dropDownMenu_buttonClassName).addClass (_dropDownMenu_focusClassName); })
+        .bind("blur", function (evt) { openTarget.find('.' + _dropDownMenu_buttonClassName).removeClass (_dropDownMenu_focusClassName); });
 
-    var allButLastAnchors = node.find ('a[href]:not(:last)');
-    allButLastAnchors
-        .bind ("mouseover", function (evt) { node.find ('.' + _dropDownMenu_buttonClassName).addClass (_dropDownMenu_nestedHoverClassName); })
-        .bind ("mouseout", function (evt) { node.find ('.' + _dropDownMenu_buttonClassName).removeClass (_dropDownMenu_nestedHoverClassName); });
+    var allButMenuButton = openTarget.find ('a[href]').not(menuButton);
+    allButMenuButton
+        .bind ("mouseover", function (evt) { openTarget.find ('.' + _dropDownMenu_buttonClassName).addClass (_dropDownMenu_nestedHoverClassName); })
+        .bind ("mouseout", function (evt) { openTarget.find ('.' + _dropDownMenu_buttonClassName).removeClass (_dropDownMenu_nestedHoverClassName); });
   }
 }
 
@@ -104,13 +106,23 @@ function DropDownMenu_OnClick(context, menuID, getSelectionCount, evt)
     _dropDownMenu_itemClicked = false;
     return;
   }
-  if (context !== _dropDownMenu_currentMenu)
+  if (_dropDownMenu_currentMenu != null && _dropDownMenu_currentMenu[0] !== context[0])
   {
     DropDownMenu_ClosePopUp();
   }
   if (_dropDownMenu_currentMenu == null)
   {
-    DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, evt);
+    var event = null;
+    if (evt != null)
+    {
+      var bounds = context[0].getBoundingClientRect();
+      if (bounds.left <= evt.clientX &&
+        bounds.right >= evt.clientX &&
+        bounds.top <= evt.clientY &&
+        bounds.bottom >= evt.clientY)
+        event = evt;
+    }
+    DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, event);
     _dropDownMenu_currentMenu = context;
   }
 }
@@ -263,13 +275,12 @@ function DropDownMenu_ClosePopUp()
   if (_dropDownMenu_currentMenu == null)
     return;
 
-  _dropDownMenu_currentMenu.find('a[href]:last').first().focus();
-
   var div = $(_dropDownMenu_currentPopup);
   var menuButtonID = div.attr('aria-labelledBy');
   var menuButton = document.getElementById (menuButtonID);
   menuButton.setAttribute('aria-expanded', 'false');
   menuButton.setAttribute('aria-controls', '');
+  menuButton.focus();
 
   $("li", div).removeClass(_dropDownMenu_itemSelectedClassName);
 

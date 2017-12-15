@@ -91,9 +91,19 @@ span.DropDownMenuSelect:hover a.DropDownMenuButton
   border-left: solid 1px #7CB2E6;
 }
 
+span.DropDownMenuSelect.nestedHover:hover a.DropDownMenuButton
+{
+  border-left: solid 1px #AAAAAA;
+}
+
 span.DropDownMenuSelect:active a.DropDownMenuButton
 {
   border-left: 1px solid #569CE0;
+}
+
+span.DropDownMenuSelect.nestedHover:active a.DropDownMenuButton
+{
+  border-left: 1px solid #AAAAAA;
 }
 
 span.DropDownMenuSelect
