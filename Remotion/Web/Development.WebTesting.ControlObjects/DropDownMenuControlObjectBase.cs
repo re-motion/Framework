@@ -128,8 +128,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var dropDownMenuScope = GetDropDownMenuScope();
-      var scope = dropDownMenuScope.FindTagWithAttribute ("li.DropDownMenuItem", DiagnosticMetadataAttributes.ItemID, itemID);
-      return ClickItem (scope, actionOptions);
+      var scope = dropDownMenuScope.FindTagWithAttribute (
+          "ul.DropDownMenuOptions > li",
+          DiagnosticMetadataAttributes.ItemID,
+          itemID);
+        return ClickItem (scope, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -165,7 +168,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var dropDownMenuScope = GetDropDownMenuScope();
-      var scope = dropDownMenuScope.FindTagWithAttribute ("li.DropDownMenuItem", DiagnosticMetadataAttributes.Content, displayText);
+      var scope = dropDownMenuScope.FindTagWithAttribute (
+          "ul.DropDownMenuOptions > li",
+          DiagnosticMetadataAttributes.Content,
+          displayText);
       return ClickItem (scope, actionOptions);
     }
 
@@ -181,7 +187,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
       var dropDownMenuScope = GetDropDownMenuScope();
       var scope = dropDownMenuScope.FindTagWithAttributeUsingOperator (
-          "li.DropDownMenuItem",
+          "ul.DropDownMenuOptions > li",
           CssComparisonOperator.SubstringMatch,
           DiagnosticMetadataAttributes.Content,
           containsDisplayText);

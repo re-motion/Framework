@@ -84,7 +84,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
-      var itemScope = Scope.FindTagWithAttribute ("span.listMenuItem", DiagnosticMetadataAttributes.ItemID, itemID);
+      var itemScope = Scope.FindTagWithAttribute (
+          "td.listMenuRow > span",
+          DiagnosticMetadataAttributes.ItemID,
+          itemID);
       return ClickItem (itemScope, actionOptions);
     }
 
@@ -118,7 +121,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
-      var itemScope = Scope.FindTagWithAttribute ("span.listMenuItem", DiagnosticMetadataAttributes.Content, displayText);
+      var itemScope = Scope.FindTagWithAttribute (
+          "td.listMenuRow > span",
+          DiagnosticMetadataAttributes.Content,
+          displayText);
       return ClickItem (itemScope, actionOptions);
     }
 
@@ -133,7 +139,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var itemScope = Scope.FindTagWithAttributeUsingOperator (
-          "span.listMenuItem",
+          "td.listMenuRow > span",
           CssComparisonOperator.SubstringMatch,
           DiagnosticMetadataAttributes.Content,
           containsDisplayText);

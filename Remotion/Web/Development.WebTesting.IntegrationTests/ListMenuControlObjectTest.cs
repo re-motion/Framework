@@ -64,7 +64,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var enabledControl = home.ListMenus().GetByLocalID ("MyListMenu");
       Assert.That (() => enabledControl.SelectItem ("ItemID3"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => enabledControl.SelectItem().WithDisplayText ("NoneItem"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => enabledControl.SelectItem().WithDisplayTextContains ("None"), Throws.InstanceOf<MissingHtmlException>());
       Assert.That (() => enabledControl.SelectItem ("ItemID6"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => enabledControl.SelectItem().WithDisplayText ("DisabledItem"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => enabledControl.SelectItem().WithDisplayTextContains ("Disabled"), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]
