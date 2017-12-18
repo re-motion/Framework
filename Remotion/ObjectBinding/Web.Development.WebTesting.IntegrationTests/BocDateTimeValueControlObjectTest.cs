@@ -30,6 +30,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -121,11 +122,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Disabled");
 
       Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.SetDate (DateTime.MinValue), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SetDate (""), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SetDateTime (DateTime.MinValue), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SetTime (TimeSpan.MinValue), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SetTime (""), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SetDate (DateTime.MinValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SetDate (""), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SetDateTime (DateTime.MinValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SetTime (TimeSpan.MinValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SetTime (""), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
     }
 
     [Test]
@@ -136,11 +137,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.DateTimeValues().GetByLocalID ("DateOfBirthField_ReadOnly");
 
       Assert.That (control.IsReadOnly(), Is.True);
-      Assert.That (() => control.SetDate (DateTime.MinValue), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SetDate (""), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SetDateTime (DateTime.MinValue), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SetTime (TimeSpan.MinValue), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SetTime (""), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SetDate (DateTime.MinValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.SetDate (""), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.SetDateTime (DateTime.MinValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.SetTime (TimeSpan.MinValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.SetTime (""), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
     }
 
     [Test]

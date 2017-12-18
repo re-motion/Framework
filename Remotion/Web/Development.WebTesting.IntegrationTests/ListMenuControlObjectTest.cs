@@ -24,6 +24,7 @@ using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -55,20 +56,27 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var disabledControl = home.ListMenus().GetByLocalID ("MyListMenu_Disabled");
       Assert.That (disabledControl.IsDisabled(), Is.True);
-      Assert.That (() => disabledControl.SelectItem().WithDisplayText ("EventItem"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => disabledControl.SelectItem().WithDisplayTextContains ("Href"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => disabledControl.SelectItem().WithIndex (1), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => disabledControl.SelectItem().WithHtmlID ("body_MyListMenu_Disabled_3"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => disabledControl.SelectItem().WithItemID ("ItemID4"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => disabledControl.SelectItem ("ItemID4"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => disabledControl.SelectItem().WithDisplayText ("EventItem"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => disabledControl.SelectItem().WithDisplayTextContains ("Href"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => disabledControl.SelectItem().WithIndex (1), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => disabledControl.SelectItem().WithHtmlID ("body_MyListMenu_Disabled_3"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => disabledControl.SelectItem().WithItemID ("ItemID4"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => disabledControl.SelectItem ("ItemID4"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+    }
+
+    [Test]
+    public void TestListMenuItemIsDisabled_SetMethodsThrow ()
+    {
+      var home = Start();
 
       var enabledControl = home.ListMenus().GetByLocalID ("MyListMenu");
-      Assert.That (() => enabledControl.SelectItem ("ItemID3"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => enabledControl.SelectItem().WithDisplayText ("NoneItem"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => enabledControl.SelectItem().WithDisplayTextContains ("None"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => enabledControl.SelectItem ("ItemID6"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => enabledControl.SelectItem().WithDisplayText ("DisabledItem"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => enabledControl.SelectItem().WithDisplayTextContains ("Disabled"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => enabledControl.SelectItem ("ItemID3"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => enabledControl.SelectItem().WithDisplayText ("NoneItem"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => enabledControl.SelectItem().WithDisplayTextContains ("None"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => enabledControl.SelectItem ("ItemID6"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => enabledControl.SelectItem().WithDisplayText ("DisabledItem"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => enabledControl.SelectItem().WithDisplayTextContains ("Disabled"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+    
     }
 
     [Test]

@@ -23,6 +23,7 @@ using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -47,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var control = home.WebTabStrips().GetByLocalID ("MyTabStrip1");
 
-      Assert.That (() => control.SwitchTo().WithIndex (3), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SwitchTo().WithIndex (3), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
     }
 
     [Test]

@@ -24,6 +24,7 @@ using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -56,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var control = home.Commands().GetByLocalID ("TestCommand3");
 
       Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.Click(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.Click(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
     }
 
     [Test]

@@ -25,6 +25,7 @@ using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
@@ -63,11 +64,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.ReferenceValues().GetByLocalID ("PartnerField_Disabled");
 
       Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.ExecuteCommand(), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectOption().WithDisplayText ("D, A"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectOption().WithIndex (1), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectOption().WithItemID (baValue), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectOption (baValue), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.ExecuteCommand(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SelectOption().WithDisplayText ("D, A"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SelectOption().WithIndex (1), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SelectOption().WithItemID (baValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SelectOption (baValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
     }
 
     [Test]
@@ -80,11 +81,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
 
       Assert.That (control.IsReadOnly(), Is.True);
-      Assert.That (() => control.GetOptionDefinitions(), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectOption().WithDisplayText ("D, A"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectOption().WithIndex (1), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectOption().WithItemID (baValue), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectOption (baValue), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.GetOptionDefinitions(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.SelectOption().WithDisplayText ("D, A"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.SelectOption().WithIndex (1), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.SelectOption().WithItemID (baValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.SelectOption (baValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
     
     }
 

@@ -23,6 +23,7 @@ using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -58,12 +59,24 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var control = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
-      Assert.That (() => control.SelectItem().WithDisplayText ("DisabledCommandTabTitle"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectItem().WithDisplayTextContains ("DisabledCommandTabTitle"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectItem().WithIndex (6), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectItem().WithHtmlID ("body_MyListMenu_Disabled_5"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectItem().WithItemID ("DisabledCommandTab"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectItem ("DisabledCommandTab"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (
+          () => control.SelectItem().WithDisplayText ("DisabledCommandTabTitle"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (
+          () => control.SelectItem().WithDisplayTextContains ("DisabledCommandTabTitle"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (
+          () => control.SelectItem().WithIndex (6),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (
+          () => control.SelectItem().WithHtmlID ("body_MyTabbedMenu_MainMenuTabStrip_DisabledCommandTab"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (
+          () => control.SelectItem().WithItemID ("DisabledCommandTab"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (
+          () => control.SelectItem ("DisabledCommandTab"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
     }
 
     [Test]

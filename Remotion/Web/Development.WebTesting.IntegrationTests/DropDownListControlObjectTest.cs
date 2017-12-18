@@ -22,6 +22,7 @@ using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
@@ -55,10 +56,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var control = home.DropDownLists().GetByLocalID ("DropDownList5_Disabled");
       Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.SelectOption().WithDisplayText ("EventItem"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectOption().WithIndex (1), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectOption().WithItemID ("ItemID4"), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => control.SelectOption ("ItemID4"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => control.SelectOption().WithDisplayText ("EventItem"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SelectOption().WithIndex (1), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SelectOption().WithItemID ("ItemID4"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SelectOption ("ItemID4"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
     }
 
     [Test]
