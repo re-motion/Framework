@@ -62,22 +62,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     }
 
 
-    protected void PrepareTest (
-        [NotNull] GenericPageTestMethodAttribute attribute,
-        [NotNull] WebTestHelper helper,
-        [NotNull] SelectorFactory<TControlSelector, TControl> factory,
-        [NotNull] string control)
-    {
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
-      ArgumentUtility.CheckNotNull ("helper", helper);
-      ArgumentUtility.CheckNotNull ("factory", factory);
-      ArgumentUtility.CheckNotNull ("control", control);
-
-      base.PrepareTest (attribute, helper, control);
-
-      _selector = factory (Home);
-    }
-
     private TestCaseData CreateTestCaseData ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] MethodInfo method)
     {
       ArgumentUtility.CheckNotNull ("attribute", attribute);
@@ -86,8 +70,24 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       var testCaseData = new TestCaseData (
           (GenericSelectorTestAction<TControlSelector, TControl>) ((helper, factory, control) =>
           {
-            PrepareTest (attribute, helper, factory, control);
-            RunTest (method);
+            PrepareTest (attribute, helper, control);
+
+            var backupTimeout = Home.Scope.ElementFinder.Options.Timeout;
+
+            if (attribute.SearchTimeout == SearchTimeout.UseShortTimeout)
+              Home.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
+
+            _selector = factory (Home);
+
+            try
+            {
+              RunTest (method);
+            }
+            finally
+            {
+              Home.Scope.ElementFinder.Options.Timeout = backupTimeout;
+            }
+
           }));
 
       testCaseData.SetCategory ("ControlSelectorTest");

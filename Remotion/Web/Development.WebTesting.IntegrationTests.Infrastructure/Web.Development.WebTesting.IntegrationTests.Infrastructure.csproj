@@ -84,6 +84,7 @@
     <Compile Include="GenericTestPageParameters\TextContentGenericTestPageParameter.cs" />
     <Compile Include="GenericTestPageParameters\TitleGenericTestPageParameter.cs" />
     <Compile Include="GenericTestParameterConverter.cs" />
+    <Compile Include="SearchTimeout.cs" />
     <Compile Include="TestCaseFactories\TextContentControlSelectorTestCaseFactory.cs" />
     <Compile Include="IGenericTestPageParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

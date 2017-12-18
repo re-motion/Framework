@@ -85,9 +85,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
       var rootNode = treeView.GetRootNode();
-      Assert.Throws<MissingHtmlException> (() => rootNode.IsChecked());
+
+      // Set Timeout to Zero so we don't have to wait the full timeout for the exception
+      var backupTimeout = rootNode.Scope.ElementFinder.Options.Timeout;
+      rootNode.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
+
+      Assert.That (() => rootNode.IsChecked(), Throws.InstanceOf<MissingHtmlException>());
+
+      rootNode.Scope.ElementFinder.Options.Timeout = backupTimeout;
 
       var checkableNode = rootNode.Expand().GetNode (1).Expand().GetNode (1);
+
       checkableNode.Check();
       Assert.That (checkableNode.IsChecked(), Is.True);
 

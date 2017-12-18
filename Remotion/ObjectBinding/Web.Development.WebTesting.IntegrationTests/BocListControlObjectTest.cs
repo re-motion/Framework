@@ -396,6 +396,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
 
+      // Set Timeout to Zero so we don't have to wait the full timeout for the exception
+      bocList.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
+
       Assert.That (() => bocList.GetRowWhere ("Title", "EO"), Throws.Exception.InstanceOf<MissingHtmlException>());
     }
 
@@ -454,6 +457,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      // Set Timeout to Zero so we don't have to wait the full timeout for the exception
+      bocList.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
 
       Assert.That (() => bocList.GetCellWhere ("Title", "EO"), Throws.InstanceOf<MissingHtmlException>());
     }
