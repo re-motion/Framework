@@ -32,9 +32,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   {
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
-    public void GenericTests (GenericSelectorTestSetupAction<DropDownListSelector, DropDownListControlObject> testSetupAction)
+    public void GenericTests (GenericSelectorTestAction<DropDownListSelector, DropDownListControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.DropDownLists(), "dropDownList");
+      testAction (Helper, e => e.DropDownLists(), "dropDownList");
     }
 
     [Test]
@@ -43,9 +43,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<DropDownListSelector, DropDownListControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<DropDownListSelector, DropDownListControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.DropDownLists(), "dropDownList");
+      testAction (Helper, e => e.DropDownLists(), "dropDownList");
     }
 
     [Test]

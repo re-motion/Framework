@@ -33,9 +33,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<SingleViewSelector, SingleViewControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<SingleViewSelector, SingleViewControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.SingleViews(), "singleView");
+      testAction (Helper, e => e.SingleViews(), "singleView");
     }
 
     [Test]

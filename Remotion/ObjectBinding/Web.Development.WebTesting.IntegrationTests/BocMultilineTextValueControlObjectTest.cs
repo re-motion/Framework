@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
-    public void GenericTests (GenericSelectorTestSetupAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
+    public void GenericTests (GenericSelectorTestAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
     {
       testAction (Helper, e => e.MultilineTextValues(), "multilineText");
     }
@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
+    public void TestControlSelectors (GenericSelectorTestAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
     {
       testAction (Helper, e => e.MultilineTextValues(), "multilineText");
     }

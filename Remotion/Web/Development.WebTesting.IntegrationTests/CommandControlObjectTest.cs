@@ -32,9 +32,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   {
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<CommandSelector, CommandControlObject>))]
-    public void GenericTests (GenericSelectorTestSetupAction<CommandSelector, CommandControlObject> testSetupAction)
+    public void GenericTests (GenericSelectorTestAction<CommandSelector, CommandControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.Commands(), "command");
+      testAction (Helper, e => e.Commands(), "command");
     }
 
     [Test]
@@ -43,9 +43,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<CommandSelector, CommandControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<CommandSelector, CommandControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.Commands(), "command");
+      testAction (Helper, e => e.Commands(), "command");
     }
 
     [Test]

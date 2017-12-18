@@ -32,9 +32,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TreeViewSelector, TreeViewControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TreeViewSelector, TreeViewControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<TreeViewSelector, TreeViewControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<TreeViewSelector, TreeViewControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.TreeViews(), "treeView");
+      testAction (Helper, e => e.TreeViews(), "treeView");
     }
 
     [Test]

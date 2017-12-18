@@ -34,9 +34,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
-    public void GenericTests (GenericSelectorTestSetupAction<DropDownMenuSelector, DropDownMenuControlObject> testSetupAction)
+    public void GenericTests (GenericSelectorTestAction<DropDownMenuSelector, DropDownMenuControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.DropDownMenus(), "dropDownMenu");
+      testAction (Helper, e => e.DropDownMenus(), "dropDownMenu");
     }
 
     [Test]
@@ -46,9 +46,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<DropDownMenuSelector, DropDownMenuControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<DropDownMenuSelector, DropDownMenuControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.DropDownMenus(), "dropDownMenu");
+      testAction (Helper, e => e.DropDownMenus(), "dropDownMenu");
     }
 
     [Test]

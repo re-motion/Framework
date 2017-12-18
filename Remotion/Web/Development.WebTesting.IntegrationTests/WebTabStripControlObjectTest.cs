@@ -35,9 +35,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<WebTabStripSelector, WebTabStripControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<WebTabStripSelector, WebTabStripControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.WebTabStrips(), "webTabStrip");
+      testAction (Helper, e => e.WebTabStrips(), "webTabStrip");
     }
 
     [Test]

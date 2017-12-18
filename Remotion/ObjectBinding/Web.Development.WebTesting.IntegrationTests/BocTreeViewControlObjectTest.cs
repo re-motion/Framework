@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   {
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
-    public void GenericTests (GenericSelectorTestSetupAction<BocTreeViewSelector, BocTreeViewControlObject> testAction)
+    public void GenericTests (GenericSelectorTestAction<BocTreeViewSelector, BocTreeViewControlObject> testAction)
     {
       testAction (Helper, e => e.TreeViews(), "treeView");
     }
@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
     [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
     [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<BocTreeViewSelector, BocTreeViewControlObject> testAction)
+    public void TestControlSelectors (GenericSelectorTestAction<BocTreeViewSelector, BocTreeViewControlObject> testAction)
     {
       testAction (Helper, e => e.TreeViews(), "treeView");
     }

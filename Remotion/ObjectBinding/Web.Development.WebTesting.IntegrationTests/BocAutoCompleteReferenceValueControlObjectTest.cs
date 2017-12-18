@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    public void GenericTests (GenericSelectorTestSetupAction<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> testAction)
+    public void GenericTests (GenericSelectorTestAction<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> testAction)
     {
       testAction (Helper, e => e.AutoCompletes(), "autoCompleteReferenceValue");
     }
@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
     [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
     [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> testAction)
+    public void TestControlSelectors (GenericSelectorTestAction<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> testAction)
     {
       testAction (Helper, e => e.AutoCompletes(), "autoCompleteReferenceValue");
     }

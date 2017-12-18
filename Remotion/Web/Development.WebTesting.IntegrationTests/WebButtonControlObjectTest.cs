@@ -32,9 +32,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   {
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
-    public void GenericTests (GenericSelectorTestSetupAction<WebButtonSelector, WebButtonControlObject> testSetupAction)
+    public void GenericTests (GenericSelectorTestAction<WebButtonSelector, WebButtonControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.WebButtons(), "webButton");
+      testAction (Helper, e => e.WebButtons(), "webButton");
     }
 
     [Test]
@@ -45,9 +45,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<WebButtonSelector, WebButtonControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<WebButtonSelector, WebButtonControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.WebButtons(), "webButton");
+      testAction (Helper, e => e.WebButtons(), "webButton");
     }
 
     [Test]

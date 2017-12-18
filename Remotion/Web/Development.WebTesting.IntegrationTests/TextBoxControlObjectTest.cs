@@ -32,9 +32,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   {
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
-    public void GenericTests (GenericSelectorTestSetupAction<TextBoxSelector, TextBoxControlObject> testSetupAction)
+    public void GenericTests (GenericSelectorTestAction<TextBoxSelector, TextBoxControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.TextBoxes(), "textBox");
+      testAction (Helper, e => e.TextBoxes(), "textBox");
     }
 
     [Test]
@@ -43,9 +43,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<TextBoxSelector, TextBoxControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<TextBoxSelector, TextBoxControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.TextBoxes(), "textBox");
+      testAction (Helper, e => e.TextBoxes(), "textBox");
     }
 
     [Test]

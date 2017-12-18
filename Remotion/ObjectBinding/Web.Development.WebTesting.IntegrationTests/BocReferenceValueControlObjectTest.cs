@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    public void GenericTests (GenericSelectorTestSetupAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
+    public void GenericTests (GenericSelectorTestAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
     {
       testAction (Helper, e => e.ReferenceValues(), "referenceValue");
     }
@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
+    public void TestControlSelectors (GenericSelectorTestAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
     {
       testAction (Helper, e => e.ReferenceValues(), "referenceValue");
     }

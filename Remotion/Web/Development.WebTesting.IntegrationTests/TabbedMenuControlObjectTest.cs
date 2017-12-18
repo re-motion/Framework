@@ -35,9 +35,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<TabbedMenuSelector, TabbedMenuControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<TabbedMenuSelector, TabbedMenuControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.TabbedMenus(), "tabbedMenu");
+      testAction (Helper, e => e.TabbedMenus(), "tabbedMenu");
     }
 
     [Test]

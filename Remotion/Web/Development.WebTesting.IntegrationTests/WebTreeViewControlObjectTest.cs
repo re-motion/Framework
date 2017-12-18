@@ -34,9 +34,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<WebTreeViewSelector, WebTreeViewControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<WebTreeViewSelector, WebTreeViewControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.WebTreeViews(), "webTreeView");
+      testAction (Helper, e => e.WebTreeViews(), "webTreeView");
     }
 
     // Exists as unused member for future WebTreeView tests.

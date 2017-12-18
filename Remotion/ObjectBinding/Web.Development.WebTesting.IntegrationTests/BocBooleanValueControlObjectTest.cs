@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
-    public void GenericTests (GenericSelectorTestSetupAction<BocBooleanValueSelector, BocBooleanValueControlObject> testAction)
+    public void GenericTests (GenericSelectorTestAction<BocBooleanValueSelector, BocBooleanValueControlObject> testAction)
     {
       testAction (Helper, e => e.BooleanValues(), "booleanValue");
     }
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
     [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
     [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<BocBooleanValueSelector, BocBooleanValueControlObject> testAction)
+    public void TestControlSelectors (GenericSelectorTestAction<BocBooleanValueSelector, BocBooleanValueControlObject> testAction)
     {
       testAction (Helper, e => e.BooleanValues(), "booleanValue");
     }
