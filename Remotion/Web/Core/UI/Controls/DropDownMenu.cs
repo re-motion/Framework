@@ -33,6 +33,9 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Only used by control developers. </summary>
     public static readonly string OnHeadTitleClickScript = "DropDownMenu_OnHeadControlClick();";
 
+    private static readonly Action<HtmlTextWriter> s_emptyTitleRenderer = writer => { };
+
+    private bool _showTitle = true;
     private string _titleText = "";
     private IconInfo _titleIcon;
     private bool _enableGrouping = true;
@@ -153,9 +156,18 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Only used by control developers. </summary>
+    /// <remarks>Note that setting the <see cref="ShowTitle"/> flag will override the <paramref name="renderHeadTitleMethod"/>.</remarks>
     public void SetRenderHeadTitleMethodDelegate (Action<HtmlTextWriter> renderHeadTitleMethod)
     {
       _renderHeadTitleMethod = renderHeadTitleMethod;
+    }
+
+    [Description ("Set false to remove the title from the DropDownMenu's button when it is rendered.")]
+    [DefaultValue (true)]
+    public bool ShowTitle
+    {
+      get { return _showTitle; }
+      set { _showTitle = value; }
     }
 
     /// <remarks>
@@ -169,7 +181,12 @@ namespace Remotion.Web.UI.Controls
 
     Action<HtmlTextWriter> IDropDownMenu.RenderHeadTitleMethod
     {
-      get { return _renderHeadTitleMethod; }
+      get
+      {
+        if (!_showTitle)
+          return s_emptyTitleRenderer;
+        return _renderHeadTitleMethod;
+      }
     }
 
     string IDropDownMenu.MenuHeadClientID

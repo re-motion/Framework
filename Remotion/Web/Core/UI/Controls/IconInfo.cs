@@ -165,6 +165,8 @@ namespace Remotion.Web.UI.Controls
       writer.AddAttribute ("class", "Icon");
 
       writer.AddAttribute (HtmlTextWriterAttribute.Alt, _alternateText ?? string.Empty);
+      if (string.IsNullOrEmpty (_alternateText))
+        writer.AddAttribute (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
 
       if (! string.IsNullOrEmpty (_toolTip))
         writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);

@@ -79,6 +79,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       dropDownMenu.Enabled = !renderingContext.Control.EditModeController.IsRowEditModeActive;
 
+      dropDownMenu.ShowTitle = renderingContext.ColumnDefinition.ShowMenuTitle;
       dropDownMenu.TitleText = renderingContext.ColumnDefinition.MenuTitleText;
       dropDownMenu.TitleIcon = renderingContext.ColumnDefinition.MenuTitleIcon;
       dropDownMenu.RenderControl (renderingContext.Writer);

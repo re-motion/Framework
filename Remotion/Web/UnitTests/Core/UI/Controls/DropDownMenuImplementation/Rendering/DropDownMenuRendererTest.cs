@@ -108,10 +108,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     [Test]
     public void RenderPopulatedMenu ()
     {
+      _control.Stub (stub => stub.TitleText).Return (c_MenuTitle);
       PopulateMenu();
 
       XmlNode containerDiv = GetAssertedContainerSpan ();
-      AssertTitleSpan (containerDiv, false, false);
+      AssertTitleSpan (containerDiv, true, false);
     }
 
     [Test]
@@ -135,7 +136,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       var hasTitle = withTitle || withIcon;
       var titleDiv = containerDiv.GetAssertedChildElement ("span", 0);
       titleDiv.AssertAttributeValueEquals ("class", "DropDownMenuSelect");
-      titleDiv.AssertChildElementCount (hasTitle ? 2 : 1);
+      titleDiv.AssertChildElementCount (2);
 
       AssertTitleAnchor(titleDiv, withTitle, withIcon);
       AssertDropDownButton (titleDiv, hasTitle);
@@ -143,20 +144,21 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
 
     private void AssertDropDownButton (XmlNode titleDiv, bool hasTitle)
     {
-      var span = titleDiv.GetAssertedChildElement ("a", hasTitle ? 1 : 0);
+      var buttonAnchor = titleDiv.GetAssertedChildElement ("a", 1);
       if (hasTitle)
       {
-        span.AssertNoAttribute ("id");
-        span.AssertNoAttribute ("role");
-        span.AssertAttributeValueEquals ("aria-hidden", "true");
+        buttonAnchor.AssertNoAttribute ("id");
+        buttonAnchor.AssertNoAttribute ("role");
+        buttonAnchor.AssertAttributeValueEquals ("aria-hidden", "true");
       }
       else
       {
-        span.AssertAttributeValueEquals ("id", _control.ClientID + "_DropDownMenuButton");
-        span.AssertAttributeValueEquals ("role", "button");
-        span.AssertNoAttribute ("aria-hidden");
+        buttonAnchor.AssertAttributeValueEquals ("id", _control.ClientID + "_DropDownMenuButton");
+        buttonAnchor.AssertAttributeValueEquals ("role", "button");
+        buttonAnchor.AssertAttributeValueEquals ("aria-labelledby", _control.ClientID + "_DropDownMenuLabel");
+        buttonAnchor.AssertNoAttribute ("aria-hidden");
       }
-      var image = span.GetAssertedChildElement ("img", 0);
+      var image = buttonAnchor.GetAssertedChildElement ("img", 0);
       image.AssertAttributeValueEquals ("src", IconInfo.CreateSpacer(_resourceUrlFactory).Url);
       image.AssertAttributeValueEquals ("alt", "");
     }

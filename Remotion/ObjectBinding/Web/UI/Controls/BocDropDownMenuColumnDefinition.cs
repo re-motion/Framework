@@ -29,6 +29,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary> A column definition that renders a <see cref="DropDownMenu"/> in the cell. </summary>
   public class BocDropDownMenuColumnDefinition : BocColumnDefinition
   {
+    private bool _showMenuTitle = true;
     private string _menuTitleText = string.Empty;
     private IconInfo _menuTitleIcon;
 
@@ -48,6 +49,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override string DisplayedTypeName
     {
       get { return "DropDownMenuColumnDefinition"; }
+    }
+
+    /// <summary> Gets or sets a flag to show/hide the menu's title. </summary>
+    /// <value> <see langword="false" /> to hide the menu's title. </value>
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Appearance")]
+    [Description ("Set false to hide the menu's title")]
+    [DefaultValue (true)]
+    [NotifyParentProperty (true)]
+    public bool ShowMenuTitle
+    {
+      get { return _showMenuTitle; }
+      set { _showMenuTitle = value; }
     }
 
     /// <summary> Gets or sets the text displayed as the menu title. </summary>
