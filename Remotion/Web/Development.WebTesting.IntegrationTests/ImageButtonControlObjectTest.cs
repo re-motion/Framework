@@ -29,14 +29,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ImageButtonControlObjectTest : IntegrationTest
   {
     [Test]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    public void GenericTests (GenericSelectorTestAction<ImageButtonSelector, ImageButtonControlObject> testAction)
+    {
+      testAction (Helper, e => e.ImageButtons(), "imageButton");
+    }
+
+    [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<ImageButtonSelector, ImageButtonControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<ImageButtonSelector, ImageButtonControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.ImageButtons(), "imageButton");
+      testAction (Helper, e => e.ImageButtons(), "imageButton");
     }
 
     [Test]

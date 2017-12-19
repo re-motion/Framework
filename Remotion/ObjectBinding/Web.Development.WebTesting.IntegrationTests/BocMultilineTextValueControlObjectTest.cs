@@ -31,6 +31,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocMultilineTextValueControlObjectTest : IntegrationTest
   {
     [Test]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    public void GenericTests (GenericSelectorTestAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
+    {
+      testAction (Helper, e => e.MultilineTextValues(), "multilineText");
+    }
+
+    [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
@@ -38,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
+    public void TestControlSelectors (GenericSelectorTestAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
     {
       testAction (Helper, e => e.MultilineTextValues(), "multilineText");
     }

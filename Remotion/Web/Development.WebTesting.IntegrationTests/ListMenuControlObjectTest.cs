@@ -29,14 +29,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ListMenuControlObjectTest : IntegrationTest
   {
     [Test]
+    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    public void GenericTests (GenericSelectorTestAction<ListMenuSelector, ListMenuControlObject> testAction)
+    {
+      testAction (Helper, e => e.ListMenus(), "listMenu");
+    }
+
+    [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<ListMenuSelector, ListMenuControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<ListMenuSelector, ListMenuControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.ListMenus(), "listMenu");
+      testAction (Helper, e => e.ListMenus(), "listMenu");
     }
 
     [Test]

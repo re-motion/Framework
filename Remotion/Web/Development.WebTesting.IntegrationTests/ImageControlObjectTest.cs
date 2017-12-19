@@ -33,9 +33,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<ImageSelector, ImageControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<ImageSelector, ImageControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.Images(), "image");
+      testAction (Helper, e => e.Images(), "image");
     }
 
     [Test]

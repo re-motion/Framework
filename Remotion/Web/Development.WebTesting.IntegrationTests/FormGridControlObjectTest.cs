@@ -33,9 +33,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (TitleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<FormGridSelector, FormGridControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<FormGridSelector, FormGridControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.FormGrids(), "formGrid");
+      testAction (Helper, e => e.FormGrids(), "formGrid");
     }
 
     // Exists as unused member for future FormGrid tests.

@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   /// <summary>
   /// Setup action for a selector test using the generic test page.
   /// </summary>
-  public delegate void GenericSelectorTestSetupAction<in TControlSelector, TControl> (
+  public delegate void GenericSelectorTestAction<in TControlSelector, TControl> (
       WebTestHelper webTestHelper,
       SelectorFactory<TControlSelector, TControl> factory,
       string controlName)

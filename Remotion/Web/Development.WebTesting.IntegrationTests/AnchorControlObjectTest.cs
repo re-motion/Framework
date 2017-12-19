@@ -35,9 +35,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<AnchorSelector, AnchorControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<AnchorSelector, AnchorControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.Anchors(), "anchor");
+      testAction (Helper, e => e.Anchors(), "anchor");
     }
 
     [Test]

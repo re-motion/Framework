@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<ScopeSelector, ScopeControlObject> testAction)
+    public void TestControlSelectors (GenericSelectorTestAction<ScopeSelector, ScopeControlObject> testAction)
     {
       testAction (Helper, e => e.Scopes(), "scope");
     }

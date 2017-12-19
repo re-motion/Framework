@@ -34,9 +34,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
     [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
     [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
-    public void TestControlSelectors (GenericSelectorTestSetupAction<TabbedMultiViewSelector, TabbedMultiViewControlObject> testSetupAction)
+    public void TestControlSelectors (GenericSelectorTestAction<TabbedMultiViewSelector, TabbedMultiViewControlObject> testAction)
     {
-      testSetupAction (Helper, e => e.TabbedMultiViews(), "tabbedMultiView");
+      testAction (Helper, e => e.TabbedMultiViews(), "tabbedMultiView");
     }
 
     [Test]
