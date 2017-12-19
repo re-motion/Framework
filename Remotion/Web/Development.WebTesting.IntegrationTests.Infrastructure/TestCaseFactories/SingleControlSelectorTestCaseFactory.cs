@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
           Throws.InstanceOf<MissingHtmlException>());
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.AmbiguousElements)]
+    [GenericPageTestMethod (PageType = GenericTestPageType.AmbiguousElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_Throws_AmbiguousException ()
     {
       Assert.That (
@@ -94,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
       Assert.That (control, Is.Null);
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.AmbiguousElements)]
+    [GenericPageTestMethod (PageType = GenericTestPageType.AmbiguousElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void GetOrNull_Throws_AmbiguousException ()
     {
       Assert.That (
