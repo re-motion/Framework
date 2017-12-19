@@ -170,7 +170,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderTableOpeningTag (BocListRenderingContext renderingContext)
     {
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableContainer);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Table);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Table);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableScrollContainer);
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Table);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Presentation);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Presentation);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Table);
     }
 

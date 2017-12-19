@@ -118,7 +118,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
     {
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassDropDownLabel);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_DropDownMenuLabel");
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Button);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Button);
       if (renderingContext.Control.Enabled)
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
@@ -160,7 +160,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       if (!HasDefaultTitle (renderingContext) || HasCustomTitle (renderingContext))
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_DropDownMenuButton");
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Button);
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Button);
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, renderingContext.Control.ClientID + "_DropDownMenuLabel");
         if (renderingContext.Control.Enabled)
         {

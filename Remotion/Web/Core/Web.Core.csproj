@@ -303,7 +303,7 @@
     <Compile Include="UI\HtmlAriaHasPopupAttributeValue.cs" />
     <Compile Include="UI\HtmlAriaHiddenAttributeValue.cs" />
     <Compile Include="UI\HtmlHiddenAttributeValue.cs" />
-    <Compile Include="UI\HtmlAriaRoleAttributeValue.cs" />
+    <Compile Include="UI\HtmlRoleAttributeValue.cs" />
     <Compile Include="UI\HtmlHeadAppenderExtensions.cs" />
     <Compile Include="UI\HtmlTextWriterAttribute2.cs" />
     <Compile Include="UI\ISmartPageClientScriptManager.cs" />

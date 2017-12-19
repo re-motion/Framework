@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Row);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
       GetIndexColumnRenderer().RenderTitleCell (renderingContext);
@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           columnCount++;
       }
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Row);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Colspan, columnCount.ToString());
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
@@ -161,7 +161,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         var oneBasedRowIndex = rowIndex + 1;
         renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex, oneBasedRowIndex.ToString());
       }
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Row);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
       // Note: The cells preceeding the selector-control will also act as selector, allowing adding/removing of the selection.

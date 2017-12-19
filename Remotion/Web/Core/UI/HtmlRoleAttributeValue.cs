@@ -21,7 +21,7 @@ namespace Remotion.Web.UI
   /// <summary>
   /// Defines values for the <see cref="HtmlTextWriterAttribute2.Role"/> attribute.
   /// </summary>
-  public static class HtmlAriaRoleAttributeValue
+  public static class HtmlRoleAttributeValue
   {
     public const string Button = "button";
     public const string Checkbox = "checkbox";

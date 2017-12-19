@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private void PrepareLinkControl (BocBooleanValueRenderingContext renderingContext, HyperLink linkControl, bool isClientScriptEnabled)
     {
       // isClientScriptEnabled also includes IsReadOnly
-      linkControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Checkbox);
+      linkControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
       linkControl.Attributes.Add ("href", "#");
 
       if (!isClientScriptEnabled)

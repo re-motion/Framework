@@ -175,7 +175,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           "$('#{0} span[{1}={2}]'), ",
           renderingContext.Control.ClientID,
           HtmlTextWriterAttribute2.Role,
-          HtmlAriaRoleAttributeValue.Combobox);
+          HtmlRoleAttributeValue.Combobox);
       script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetTextValueName());
       script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetKeyValueName());
       script.AppendFormat ("$('#{0}'),", GetDropDownButtonName(renderingContext));
@@ -306,7 +306,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private void RenderEditModeValue (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext, TextBox textBox)
     {
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassInput);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlAriaRoleAttributeValue.Combobox);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Listbox);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaOwns, "");
