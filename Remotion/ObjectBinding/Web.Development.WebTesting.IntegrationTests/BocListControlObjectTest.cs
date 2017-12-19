@@ -37,14 +37,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public class BocListControlObjectTest : IntegrationTest
   {
-    [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocListSelector, BocListControlObject>))]
-    public void GenericTests (GenericSelectorTestAction<BocListSelector, BocListControlObject> testAction)
-    {
-      testAction (Helper, e => e.Lists(), "list");
-    }
-
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]

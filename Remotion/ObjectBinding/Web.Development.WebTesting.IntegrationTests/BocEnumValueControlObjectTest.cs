@@ -30,14 +30,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public class BocEnumValueControlObjectTest : IntegrationTest
   {
-    [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    public void GenericTests_DropDownList (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
-    {
-      testAction (Helper, e => e.EnumValues(), "dropDownList");
-    }
-
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
@@ -51,14 +43,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    public void GenericTests_ListBox (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
-    {
-      testAction (Helper, e => e.EnumValues(), "listBox");
-    }
-
-    [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
@@ -69,14 +53,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors_ListBox (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "listBox");
-    }
-
-    [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    public void GenericTests_RadioButtonList (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
-    {
-      testAction (Helper, e => e.EnumValues(), "radioButtonList");
     }
 
     [Test]

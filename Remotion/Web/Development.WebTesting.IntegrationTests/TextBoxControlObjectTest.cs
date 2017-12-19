@@ -29,13 +29,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TextBoxControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
-    public void GenericTests (GenericSelectorTestAction<TextBoxSelector, TextBoxControlObject> testAction)
-    {
-      testAction (Helper, e => e.TextBoxes(), "textBox");
-    }
-
-    [Test]
     [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
     [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
     [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
