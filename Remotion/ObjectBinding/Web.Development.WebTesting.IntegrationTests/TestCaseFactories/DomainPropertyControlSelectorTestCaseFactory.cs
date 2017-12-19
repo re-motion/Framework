@@ -52,8 +52,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
     }
 
-    [Category ("LongRunning")]
-    [GenericPageTestMethod]
+    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_Throws_MissingHtmlException ()
     {
       Assert.That (
@@ -70,8 +69,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
     }
 
-    [Category ("LongRunning")]
-    [GenericPageTestMethod]
+    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_WithClass_Throws_MissingHtmlException ()
     {
       Assert.That (
@@ -111,8 +109,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
     }
 
-    [Category ("LongRunning")]
-    [GenericPageTestMethod]
+    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void GetOrNull_WithClass_Throws_MissingHtmlException ()
     {
       Assert.That (
@@ -150,8 +147,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That (controlVisible, Is.True);
     }
 
-    [Category ("LongRunning")]
-    [GenericPageTestMethod]
+    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Exists_WithClass_Throws_MissingHtmlException ()
     {
       Assert.That (

@@ -33,12 +33,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       public GenericPageTestMethodAttribute ()
       {
         PageType = GenericTestPageType.Default;
+        SearchTimeout = SearchTimeout.UseConfigured;
       }
 
       /// <summary>
       /// Defines which page sections will be shown when using the generic page.
       /// </summary>
       public GenericTestPageType PageType { get; set; }
+
+      /// <summary>
+      /// Defines which SearchTimeout should be used for the Test.
+      /// </summary>
+      public SearchTimeout SearchTimeout { get; set; }
 
       /// <inheritdoc />
       public override void Apply (TestCaseData data)

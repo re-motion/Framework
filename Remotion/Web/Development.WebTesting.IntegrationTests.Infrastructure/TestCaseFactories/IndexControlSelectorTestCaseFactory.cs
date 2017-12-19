@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;using Coypu;
+using System;
+using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -49,8 +50,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
       Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
     }
 
-    [Category ("LongRunning")]
-    [GenericPageTestMethod]
+    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_Throws_MissingHtmlException ()
     {
       Assert.That (

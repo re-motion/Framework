@@ -50,8 +50,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
       Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
     }
 
-    [Category ("LongRunning")]
-    [GenericPageTestMethod]
+    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Test_ByItemID_Get_Throws_MissingHtmlException ()
     {
       Assert.That (
