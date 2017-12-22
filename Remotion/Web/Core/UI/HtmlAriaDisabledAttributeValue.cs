@@ -19,22 +19,11 @@ using System;
 namespace Remotion.Web.UI
 {
   /// <summary>
-  /// Defines values for the <see cref="HtmlTextWriterAttribute2.Role"/> attribute.
+  /// Defines values for the <see cref="HtmlTextWriterAttribute2.AriaDisabled"/> attribute.
   /// </summary>
-  public static class HtmlRoleAttributeValue
+  public static class HtmlAriaDisabledAttributeValue
   {
-    public const string Button = "button";
-    public const string Checkbox = "checkbox";
-    public const string Combobox = "combobox";
-    public const string Menu = "menu";
-    public const string MenuBar = "menubar";
-    public const string MenuItem = "menuitem";
-    public const string None = "none";
-    public const string Presentation = "presentation";
-    public const string Row = "row";
-    public const string Tab = "tab";
-    public const string Table = "table";
-    public const string TabList = "tablist";
-    public const string TabPanel = "tabpanel";
+    public const string True = "true";
+    public const string False = "false";
   }
 }

@@ -75,7 +75,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
           _testHelper.SecurableObject, 
           additionalUrlParameters, 
           true, 
-          new Style ());
+          new Style(),
+          new NameValueCollection());
 
       _testHelper.VerifyAll ();
 
@@ -114,7 +115,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
           _testHelper.SecurableObject, 
           additionalUrlParameters, 
           true, 
-          new Style ());
+          new Style(),
+          new NameValueCollection());
 
       _testHelper.VerifyAll ();
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");

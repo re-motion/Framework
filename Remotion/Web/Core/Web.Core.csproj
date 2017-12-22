@@ -299,9 +299,11 @@
     <Compile Include="UI\Controls\Rendering\WithDiagnosticMetadataRenderingFeatures.cs" />
     <Compile Include="UI\HtmlAriaAutoCompleteAttributeValue.cs" />
     <Compile Include="UI\HtmlAriaCheckedAttributeValue.cs" />
+    <Compile Include="UI\HtmlAriaDisabledAttributeValue.cs" />
     <Compile Include="UI\HtmlAriaExpandedAttributeValue.cs" />
     <Compile Include="UI\HtmlAriaHasPopupAttributeValue.cs" />
     <Compile Include="UI\HtmlAriaHiddenAttributeValue.cs" />
+    <Compile Include="UI\HtmlAriaSelectedAttributeValue.cs" />
     <Compile Include="UI\HtmlHiddenAttributeValue.cs" />
     <Compile Include="UI\HtmlRoleAttributeValue.cs" />
     <Compile Include="UI\HtmlHeadAppenderExtensions.cs" />
@@ -982,7 +984,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Res\HTML\TabStrip.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildProjectDirectory)\..\..\Build\NuSpec\Web.Build.targets" />
   <PropertyGroup>

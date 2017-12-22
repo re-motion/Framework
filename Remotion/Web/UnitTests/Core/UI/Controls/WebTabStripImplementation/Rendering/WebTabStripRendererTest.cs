@@ -349,6 +349,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       innerDiv.AssertAttributeValueContains ("class", _renderer.CssClassTabsPane);
       if (isEmpty)
         innerDiv.AssertAttributeValueContains ("class", _renderer.CssClassTabsPaneEmpty);
+      innerDiv.AssertAttributeValueEquals ("role", "tablist");
 
       innerDiv.AssertChildElementCount (1);
 
@@ -356,6 +357,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       clearingPaneDiv.AssertAttributeValueContains ("class", _renderer.CssClassClearingPane);
 
       var list = innerDiv.GetAssertedChildElement ("ul", 0);
+      list.AssertAttributeValueEquals ("role", "none");
       if (isDesignMode)
       {
         list.AssertStyleAttribute ("list-style", "none");
@@ -368,6 +370,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
 
     private void AssertItem (XmlNode item, IMenuTab webTab, bool isLastItem, bool isDesignMode)
     {
+      item.AssertAttributeValueEquals ("role", "none");
       if (isDesignMode)
       {
         item.AssertStyleAttribute ("float", "left");
@@ -389,10 +392,28 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       var tab = wrapper.GetAssertedChildElement ("span", 1);
       tab.AssertAttributeValueEquals ("id", _webTabStrip.ClientID + "_" + webTab.ItemID);
       tab.AssertAttributeValueContains ("class", webTab.IsSelected ? _renderer.CssClassTabSelected : _renderer.CssClassTab);
+      tab.AssertAttributeValueEquals ("role", "none");
       if (!webTab.EvaluateEnabled())
         tab.AssertAttributeValueContains ("class", _renderer.CssClassDisabled);
       var link = tab.GetAssertedChildElement ("a", 0);
       link.AssertAttributeValueEquals ("id", _webTabStrip.ClientID + "_" + webTab.ItemID + "_Command");
+      link.AssertAttributeValueEquals ("role", "tab");
+
+      if (webTab.IsSelected)
+      {
+        link.AssertAttributeValueEquals ("tabindex", "0");
+        link.AssertAttributeValueEquals ("aria-selected", "true");
+        link.AssertAttributeValueEquals ("aria-controls", "");
+      }
+      else
+      {
+        link.AssertAttributeValueEquals ("tabindex", "-1");
+        link.AssertAttributeValueEquals ("aria-selected", "false");
+        link.AssertNoAttribute ("aria-controls");
+      }
+
+      // Currently, no test case exists for disabled tabs.
+      link.AssertNoAttribute ("aria-disabled");
 
       bool isDisabledBySelection = webTab.IsSelected && !_webTabStrip.EnableSelectedTab;
       if (webTab.EvaluateEnabled())

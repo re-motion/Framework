@@ -15,12 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
+using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
@@ -118,6 +120,16 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ActiveViewContentClientID);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContentBorder);
+      var activeTab = renderingContext.Control.TabStrip.Tabs.Cast<IWebTab>().FirstOrDefault (t => t.IsSelected);
+      if (activeTab != null)
+      {
+        // Must point to an element not annotated with role=none to work consistently.
+        renderingContext.Writer.AddAttribute (
+            HtmlTextWriterAttribute2.AriaLabelledBy,
+            renderingContext.Control.TabStrip.ClientID + "_" + activeTab.ItemID + "_Command");
+      }
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Tabindex, "0");
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TabPanel);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);

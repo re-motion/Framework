@@ -409,23 +409,32 @@ namespace Remotion.Web.UI.Controls
     ///   <see langword="true"/> to include URL parameters provided by <see cref="ISmartNavigablePage"/>.
     /// </param>
     /// <param name="style"> The style applied to the opening tag. </param>
+    /// <param name="attributes"> The list of attributes to be added to the rendering output. Must not be <see langword="null" />. </param>
     public virtual void RenderBegin (
-        HtmlTextWriter writer,
-        IRenderingFeatures renderingFeatures,
-        string postBackEvent,
-        string[] parameters,
-        string onClick,
-        ISecurableObject securableObject,
-        NameValueCollection additionalUrlParameters,
+        [NotNull] HtmlTextWriter writer,
+        [NotNull] IRenderingFeatures renderingFeatures,
+        /*[CanBeNull]*/ string postBackEvent,
+        /*[CanBeNull]*/ string[] parameters,
+        [CanBeNull] string onClick,
+        [CanBeNull] ISecurableObject securableObject,
+        [NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters,
-        Style style)
+        [NotNull] Style style,
+        [NotNull] NameValueCollection attributes)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+      if (_type == CommandType.Event || _type == CommandType.WxeFunction)
+        ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);
+      if (_type == CommandType.Href)
+        ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters);
       ArgumentUtility.CheckNotNull ("style", style);
+      ArgumentUtility.CheckNotNull ("attributes", attributes);
 
       var commandInfo = GetCommandInfo (postBackEvent, parameters, onClick, securableObject, additionalUrlParameters, includeNavigationUrlParameters);
       commandInfo.AddAttributesToRender (writer, renderingFeatures);
-      
+
       if (OwnerControl != null && !string.IsNullOrEmpty (OwnerControl.ClientID) && !string.IsNullOrEmpty ( ItemID))
       {
         var clientID = OwnerControl.ClientID + "_" + ItemID;
@@ -433,7 +442,14 @@ namespace Remotion.Web.UI.Controls
       }
 
       style.AddAttributesToRender (writer);
-      
+
+      for (int i = 0; i < attributes.Count; i++)
+      {
+        var attributeName = attributes.Keys[i];
+        var attributeValue = attributes[i];
+        writer.AddAttribute (attributeName, attributeValue);
+      }
+
       writer.RenderBeginTag (HtmlTextWriterTag.A);
     }
 
@@ -455,9 +471,25 @@ namespace Remotion.Web.UI.Controls
     /// <param name="securableObject">
     ///   The <see cref="ISecurableObject"/> for which security is evaluated. Use <see landword="null"/> if security is stateless or not evaluated.
     /// </param>
-    public void RenderBegin (HtmlTextWriter writer, IRenderingFeatures renderingFeatures, string postBackEvent, string[] parameters, string onClick, ISecurableObject securableObject)
+    public void RenderBegin (
+        [NotNull] HtmlTextWriter writer,
+        [NotNull] IRenderingFeatures renderingFeatures,
+        /*[CanBeNull]*/ string postBackEvent,
+        /*[CanBeNull]*/ string[] parameters,
+        [CanBeNull] string onClick,
+        [CanBeNull] ISecurableObject securableObject)
     {
-      RenderBegin (writer, renderingFeatures, postBackEvent, parameters, onClick, securableObject, new NameValueCollection (0), true, new Style());
+      RenderBegin (
+          writer,
+          renderingFeatures,
+          postBackEvent,
+          parameters,
+          onClick,
+          securableObject,
+          new NameValueCollection (0),
+          true,
+          new Style(),
+          new NameValueCollection (0));
     }
 
     /// <summary> Gets the <see cref="CommandInfo"/> for the command. </summary>
@@ -484,13 +516,19 @@ namespace Remotion.Web.UI.Controls
     ///   <see langword="true"/> to include URL parameters provided by <see cref="ISmartNavigablePage"/>.
     /// </param>
     public CommandInfo GetCommandInfo (
-        string postBackEvent,
-        string[] parameters,
-        string onClick,
-        ISecurableObject securableObject,
-        NameValueCollection additionalUrlParameters,
+        /*[CanBeNull]*/ string postBackEvent,
+        /*[CanBeNull]*/ string[] parameters,
+        [CanBeNull] string onClick,
+        [CanBeNull] ISecurableObject securableObject,
+        [NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
+      if (_type == CommandType.Event || _type == CommandType.WxeFunction)
+        ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);
+      if (_type == CommandType.Href)
+        ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters);
+
       if (!HasAccess (securableObject))
         return GetCommandInfoForNoneCommand();
 
@@ -529,9 +567,9 @@ namespace Remotion.Web.UI.Controls
     ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.Href"/>.
     /// </exception> 
     protected virtual CommandInfo GetCommandInfoForHrefCommand (
-        string[] parameters,
-        string onClick,
-        NameValueCollection additionalUrlParameters,
+        [NotNull] string[] parameters,
+        [CanBeNull] string onClick,
+        [NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
       ArgumentUtility.CheckNotNull ("parameters", parameters);
@@ -577,7 +615,7 @@ namespace Remotion.Web.UI.Controls
     /// <exception cref="InvalidOperationException">
     ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.Event"/>.
     /// </exception> 
-    protected virtual CommandInfo GetCommandInfoForEventCommand (string postBackEvent, string onClick)
+    protected virtual CommandInfo GetCommandInfoForEventCommand ([NotNull] string postBackEvent, [CanBeNull] string onClick)
     {
       ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);
       if (Type != CommandType.Event)
@@ -605,17 +643,20 @@ namespace Remotion.Web.UI.Controls
     /// </param>
     /// <param name="includeNavigationUrlParameters"> 
     ///   <see langword="true"/> to include URL parameters provided by <see cref="ISmartNavigablePage"/>.
+    ///   Must not be <see langword="null"/>.
     /// </param>
     /// <exception cref="InvalidOperationException">
     ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
     /// </exception> 
     protected virtual CommandInfo GetCommandInfoForWxeFunctionCommand (
-        string postBackEvent,
-        string onClick,
-        NameValueCollection additionalUrlParameters,
+        [NotNull] string postBackEvent,
+        [CanBeNull] string onClick,
+        [NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
       ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);
+      ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters);
+
       if (Type != CommandType.WxeFunction)
       {
         throw new InvalidOperationException (

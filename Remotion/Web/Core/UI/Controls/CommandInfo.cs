@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Web.UI;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls.Rendering;
@@ -114,9 +115,10 @@ namespace Remotion.Web.UI.Controls
       get { return _tabIndex; }
     }
 
-    public void AddAttributesToRender (HtmlTextWriter writer, IRenderingFeatures renderingFeatures)
+    public void AddAttributesToRender ([NotNull] HtmlTextWriter writer, [NotNull] IRenderingFeatures renderingFeatures)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
 
       if (!string.IsNullOrEmpty (_href))
         writer.AddAttribute (HtmlTextWriterAttribute.Href, _href);

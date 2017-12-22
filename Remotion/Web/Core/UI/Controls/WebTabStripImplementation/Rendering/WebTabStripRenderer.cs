@@ -49,12 +49,22 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (WebTabStripRenderer), ResourceType.Html, "TabStrip.css");
       htmlHeadAppender.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
 
+      string keyScript = typeof (WebTabStripRenderer).FullName + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (WebTabStripRenderer), ResourceType.Html, "TabStrip.js");
+      htmlHeadAppender.RegisterJavaScriptInclude (keyScript, scriptUrl);
+
       ScriptUtility.Instance.RegisterJavaScriptInclude (control, htmlHeadAppender);
     }
 
     public void Render (WebTabStripRenderingContext renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+
+      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
+          renderingContext.Control,
+          typeof (WebTabStrip),
+          Guid.NewGuid ().ToString (),
+          string.Format ("WebTabStrip.Initialize ($('#{0}'));", renderingContext.Control.ClientID));
 
       AddAttributesToRender (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
@@ -89,6 +99,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       if (isEmpty)
         cssClass += " " + CssClassTabsPaneEmpty;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TabList);
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Div
 
@@ -98,6 +109,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
         renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
         renderingContext.Writer.AddStyleAttribute ("display", "inline");
       }
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin List
     }
 

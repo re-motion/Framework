@@ -94,6 +94,9 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
     private void RenderWrapperBegin (WebTabStripRenderingContext renderingContext, IWebTab tab)
     {
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetTabClientID (renderingContext, tab));
+      // role=none is required on span in this instance to remove the implied 'group' role.
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+
       string cssClass;
       if (tab.IsSelected)
         cssClass = CssClassTabSelected;
@@ -128,6 +131,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
         renderingContext.Writer.AddStyleAttribute ("white-space", "nowrap");
       }
 
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Li); // Begin list item
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "tabStripTabWrapper");
@@ -148,9 +152,13 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull ("style", style);
 
+      var attributes = new NameValueCollection();
+      attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Tab);
+
       var command = new Command();
       command.OwnerControl = renderingContext.Control;
       command.ItemID = tab.ItemID + "_Command";
+
       if (isEnabled && tab.EvaluateEnabled())
       {
         command.Type = CommandType.Event;
@@ -158,6 +166,20 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
         var textWithHotkey = HotkeyParser.Parse (tab.Text);
         if (textWithHotkey.Hotkey.HasValue)
           command.AccessKey = _hotkeyFormatter.FormatHotkey (textWithHotkey);
+
+        if (tab.IsSelected)
+        {
+          attributes.Add (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.True);
+          // aria-controls will not be populated at this time. Populating the element during rendering isn't possible with the current composition graph.
+          // Screenreaders do not depend/support aria-controls so this is not an issue at this time.
+          attributes.Add (HtmlTextWriterAttribute2.AriaControls, "");
+          attributes.Add ("tabindex", "0");
+        }
+        else
+        {
+          attributes.Add (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.False);
+          attributes.Add ("tabindex", "-1");
+        }
       }
       else
       {
@@ -165,6 +187,17 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
         if (tab.IsSelected)
         {
           command.NoneCommand.EnableFocus = true;
+          attributes.Add (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.True);
+          // aria-controls will not be populated at this time. Populating the element during rendering isn't possible with the current composition graph.
+          // Screenreaders do not depend/support aria-controls so this is not an issue at this time.
+          attributes.Add (HtmlTextWriterAttribute2.AriaControls, "");
+          attributes.Add ("tabindex", "0");
+        }
+        else
+        {
+          attributes.Add (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.False);
+          attributes.Add (HtmlTextWriterAttribute2.AriaDisabled, HtmlAriaDisabledAttributeValue.True);
+          attributes.Add ("tabindex", "-1");
         }
       }
 
@@ -177,7 +210,8 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
           null,
           new NameValueCollection(),
           false,
-          style);
+          style,
+          attributes);
 
       return command;
     }

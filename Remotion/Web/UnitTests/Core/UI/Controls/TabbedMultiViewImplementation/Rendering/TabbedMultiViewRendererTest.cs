@@ -65,6 +65,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
             writer.RenderBeginTag ("tabStrip");
             writer.RenderEndTag ();
           });
+      var tabs = new WebTabCollection(tabStrip);
+      tabs.Add (new WebTab { ItemID = "Tab1" });
+      tabs.Add (new WebTab { ItemID = "Tab2", IsSelected = true });
+      tabs.Add (new WebTab { ItemID = "Tab3" });
+      tabStrip.Stub (stub => stub.Tabs).Return (tabs);
+      tabStrip.Stub (stub => stub.ClientID).Return ("TabStripClientID");
 
       _control.Stub (stub => stub.TabStrip).Return (tabStrip);
 
@@ -274,12 +280,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
       var divActiveView = container.GetAssertedChildElement ("div", 2);
       divActiveView.AssertAttributeValueEquals ("id", _control.ActiveViewClientID);
       divActiveView.AssertAttributeValueEquals ("class", cssClassActiveView);
+
       if( isDesignMode )
         divActiveView.AssertStyleAttribute ("border", "solid 1px black");
       divActiveView.AssertChildElementCount (1);
 
       var divContentBorder = divActiveView.GetAssertedChildElement ("div", 0);
       divContentBorder.AssertAttributeValueEquals ("class", renderer.CssClassContentBorder);
+      divContentBorder.AssertAttributeValueEquals ("role", "tabpanel");
+      divContentBorder.AssertAttributeValueEquals ("aria-labelledby", "TabStripClientID_Tab2_Command");
+      divContentBorder.AssertAttributeValueEquals ("tabindex", "0");
 
       var divContent = divContentBorder.GetAssertedChildElement ("div", 0);
       divContent.AssertAttributeValueEquals ("class", renderer.CssClassContent);
