@@ -45,6 +45,16 @@ function ListMenuItemInfo (id, category, text, icon, iconDisabled, requiredSelec
 
 function ListMenu() { }
 
+function ListMenu_Initialize ($listMenu)
+{
+  ArgumentUtility.CheckNotNullAndTypeIsJQuery("$listMenu", $listMenu);
+
+  $listMenu.keydown (function (event)
+  {
+    ListMenu_OnKeyDown (event, $listMenu);
+  });
+}
+
 function ListMenu_AddMenuInfo (listMenu, menuInfo)
 {
   _listMenu_listMenuInfos[listMenu.id] = menuInfo;
@@ -107,6 +117,7 @@ function ListMenu_Update (listMenu, getSelectionCount)
           anchor.removeAttribute ('javascript');
         }
       }
+      anchor.removeAttribute ('aria-disabled');
     }
     else
     {
@@ -123,6 +134,7 @@ function ListMenu_Update (listMenu, getSelectionCount)
       anchor.onclick = null;
       anchor.removeAttribute ('onclick');
       anchor.removeAttribute ('javascript');
+      anchor.setAttribute ('aria-disabled', 'true');
     }
 
     if (itemInfo.DiagnosticMetadata)
@@ -138,5 +150,86 @@ function ListMenu_Update (listMenu, getSelectionCount)
 
       $(item).attr(itemInfo.DiagnosticMetadata);
     }
+  }
+}
+
+function ListMenu_OnKeyDown (event, $listMenu)
+{
+  ArgumentUtility.CheckNotNullAndTypeIsJQuery ('$tablist', $listMenu);
+
+  var $menuItems = $listMenu.find ('a');
+
+  var oldMenuItemIndex = -1;
+
+  var selectedMenuItem = document.activeElement;
+  if (selectedMenuItem != null && TypeUtility.IsDefined (selectedMenuItem.tagName) && selectedMenuItem.tagName.toUpperCase() === 'A')
+  {
+    oldMenuItemIndex = $menuItems.index (selectedMenuItem);
+  }
+  else
+  {
+    for (var i = 0; i < $menuItems.Length; i++)
+    {
+      if ($menuItems[i].tabindex === 0)
+      {
+        oldMenuItemIndex = i;
+        break;
+      }
+    }
+  }
+
+  var currentMenuItemIndex = Math.max (0, oldMenuItemIndex);
+
+  switch (event.keyCode)
+  {
+    case 9: // tab
+      // exit tab strip
+      return;
+    case 13: //enter
+    case 32: //space
+      {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (currentMenuItemIndex >= 0)
+        {
+          let $newMenuItem = $ ($menuItems[currentMenuItemIndex]);
+          $newMenuItem.focus();
+
+          $newMenuItem.click();
+        }
+
+        return;
+      }
+    case 37: // left arrow
+      {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (currentMenuItemIndex > 0)
+          currentMenuItemIndex--;
+        else
+          currentMenuItemIndex = $menuItems.length - 1;
+
+        let $newMenuItem = $ ($menuItems[currentMenuItemIndex]);
+        $newMenuItem.focus();
+
+        return;
+      }
+    case 39: // right arrow
+      {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (currentMenuItemIndex < $menuItems.length - 1)
+          currentMenuItemIndex++;
+        else
+          currentMenuItemIndex = 0;
+
+        var $newMenuItem = $ ($menuItems[currentMenuItemIndex]);
+        $newMenuItem.focus();
+
+        return;
+      }
   }
 }

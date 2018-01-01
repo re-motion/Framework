@@ -16,9 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -73,20 +75,26 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassListMenu);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Menu);
       if (IsDiagnosticMetadataRenderingEnabled)
         AddDiagnosticMetadataAttributes (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Table);
 
+      var isFirst = true;
       var groupedMenuItems = GetVisibleMenuItemsInGroups (renderingContext);
       foreach (var menuItemsInGroup in groupedMenuItems)
       {
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
         renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "listMenuRow");
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
         foreach (var menuItem in menuItemsInGroup)
-          RenderListMenuItem (renderingContext, menuItem, renderingContext.Control.MenuItems.IndexOf (menuItem));
+        {
+          RenderListMenuItem (renderingContext, menuItem, renderingContext.Control.MenuItems.IndexOf (menuItem), isFirst);
+          isFirst = false;
+        }
 
         renderingContext.Writer.RenderEndTag();
         renderingContext.Writer.RenderEndTag();
@@ -150,7 +158,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       }
     }
 
-    private void RenderListMenuItem (ListMenuRenderingContext renderingContext, WebMenuItem menuItem, int index)
+    private void RenderListMenuItem (ListMenuRenderingContext renderingContext, WebMenuItem menuItem, int index, bool isFirst)
     {
       bool showIcon = menuItem.Style == WebMenuItemStyle.Icon || menuItem.Style == WebMenuItemStyle.IconAndText;
       bool showText = menuItem.Style == WebMenuItemStyle.Text || menuItem.Style == WebMenuItemStyle.IconAndText;
@@ -158,6 +166,11 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetMenuItemClientID (renderingContext, index));
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "listMenuItem");
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
+      var attributes = new NameValueCollection();
+      attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.MenuItem);
+      attributes.Add ("tabindex", isFirst ? "0" : "-1");
+
 
       var command = !menuItem.IsDisabled ? menuItem.Command : new Command (CommandType.None) { OwnerControl = menuItem.OwnerControl };
       if (string.IsNullOrEmpty (command.ItemID))
@@ -169,7 +182,11 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
           "",
           new[] { index.ToString() },
           "",
-          null);
+          null,
+          new NameValueCollection(),
+          true,
+          new Style(),
+          attributes);
 
       if (showIcon && menuItem.Icon.HasRenderingInformation)
       {
@@ -198,6 +215,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       if (!renderingContext.Control.Page.ClientScript.IsStartupScriptRegistered (typeof (ListMenuRenderer), key))
       {
         StringBuilder script = new StringBuilder();
+        script.AppendFormat ("ListMenu_Initialize ($('#{0}'));", renderingContext.Control.ClientID).AppendLine();
         script.AppendFormat ("ListMenu_AddMenuInfo (document.getElementById ('{0}'), \r\n\t", renderingContext.Control.ClientID);
         script.AppendFormat ("new ListMenu_MenuInfo ('{0}', new Array (\r\n", renderingContext.Control.ClientID);
         bool isFirstItemInGroup = true;

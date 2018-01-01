@@ -86,7 +86,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     {
       SetUpGetPostBackLinkExpectations (false);
 
-      string script = "ListMenu_AddMenuInfo (document.getElementById ('{0}'), \r\n\tnew ListMenu_MenuInfo ('{0}', new Array (\r\n" +
+      string script = "ListMenu_Initialize ($('#{0}'));\r\n" +
+                      "ListMenu_AddMenuInfo (document.getElementById ('{0}'), \r\n\tnew ListMenu_MenuInfo ('{0}', new Array (\r\n" +
                       "\t\t{1},\r\n\t\t{2},\r\n\t\t{3},\r\n\t\t{4} ) ) );\r\n" +
                       "Update();";
 
@@ -117,7 +118,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
         var tr = table.GetAssertedChildElement ("tr", itemIndex < 3 ? itemIndex : itemIndex - 1);
         tr.AssertChildElementCount (1);
         var td = GetAssertedCell (tr, 0, 1);
-        AssertMenuItem (td, itemIndex, 0);
+        AssertMenuItem (td, itemIndex, 0, itemIndex == 0 ? "0" : "-1");
       }
     }
 
@@ -132,16 +133,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       tr1.AssertChildElementCount (1);
       var td1 = GetAssertedCell (tr1, 0, 2);
 
-      AssertMenuItem (td1, 0, 0);
-      AssertMenuItem (td1, 1, 1);
+      AssertMenuItem (td1, 0, 0, "0");
+      AssertMenuItem (td1, 1, 1, "-1");
 
       var tr2 = table.GetAssertedChildElement ("tr", 1);
       tr2.AssertChildElementCount (1);
 
       var td2 = GetAssertedCell (tr2, 0, 2);
 
-      AssertMenuItem (td2, 2, 0);
-      AssertMenuItem (td2, 4, 1);
+      AssertMenuItem (td2, 2, 0, "-1");
+      AssertMenuItem (td2, 4, 1, "-1");
     }
 
     [Test]
@@ -156,7 +157,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
       var td = GetAssertedCell (tr, 0, 4);
       for (int iColumn = 0; iColumn < 4; iColumn++)
-        AssertMenuItem (td, iColumn < 3 ? iColumn : iColumn + 1, iColumn);
+        AssertMenuItem (td, iColumn < 3 ? iColumn : iColumn + 1, iColumn, iColumn == 0 ? "0" : "-1");
     }
 
     [Test]
@@ -182,23 +183,24 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       table.AssertAttributeValueEquals ("cellspacing", "0");
       table.AssertAttributeValueEquals ("cellpadding", "0");
       table.AssertAttributeValueEquals ("border", "0");
+      table.AssertAttributeValueEquals ("role", "menu");
       return table;
     }
 
-    private void AssertMenuItem (XmlNode parentCell, int itemIndex, int nodeIndex)
+    private void AssertMenuItem (XmlNode parentCell, int itemIndex, int nodeIndex, string tabIndex)
     {
       var item = (WebMenuItem) _control.MenuItems[itemIndex];
 
       switch (item.Style)
       {
         case WebMenuItemStyle.IconAndText:
-          AssertIconAndText (itemIndex, parentCell, item, nodeIndex);
+          AssertIconAndText (itemIndex, parentCell, item, nodeIndex, tabIndex);
           break;
         case WebMenuItemStyle.Text:
-          AssertText (itemIndex, parentCell, item, nodeIndex);
+          AssertText (itemIndex, parentCell, item, nodeIndex, tabIndex);
           break;
         case WebMenuItemStyle.Icon:
-          AssertIcon (itemIndex, parentCell, nodeIndex);
+          AssertIcon (itemIndex, parentCell, nodeIndex, tabIndex);
           break;
       }
     }
@@ -207,27 +209,28 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     {
       var td = parentRow.GetAssertedChildElement ("td", cellIndex);
       td.AssertAttributeValueEquals ("class", "listMenuRow");
+      td.AssertAttributeValueEquals ("role", "none");
       td.AssertStyleAttribute ("width", "100%");
       td.AssertChildElementCount (itemCount);
       return td;
     }
 
-    private void AssertIcon (int itemIndex, XmlNode parent, int nodeIndex)
+    private void AssertIcon (int itemIndex, XmlNode parent, int nodeIndex, string tabIndex)
     {
-      XmlNode a = GetAssertedItemLink (parent, itemIndex, nodeIndex);
+      XmlNode a = GetAssertedItemLink (parent, itemIndex, nodeIndex, tabIndex);
       AssertIcon (a);
     }
 
-    private void AssertText (int itemIndex, XmlNode parent, WebMenuItem item, int nodeIndex)
+    private void AssertText (int itemIndex, XmlNode parent, WebMenuItem item, int nodeIndex, string tabIndex)
     {
-      XmlNode a = GetAssertedItemLink (parent, itemIndex, nodeIndex);
+      XmlNode a = GetAssertedItemLink (parent, itemIndex, nodeIndex, tabIndex);
       var span = a.GetAssertedChildElement ("span", 0);
       span.AssertTextNode (item.Text, 0);
     }
 
-    private void AssertIconAndText (int itemIndex, XmlNode td, WebMenuItem item, int nodeIndex)
+    private void AssertIconAndText (int itemIndex, XmlNode td, WebMenuItem item, int nodeIndex, string tabIndex)
     {
-      XmlNode a = GetAssertedItemLink (td, itemIndex, nodeIndex);
+      XmlNode a = GetAssertedItemLink (td, itemIndex, nodeIndex, tabIndex);
       AssertIcon (a);
 
       var span = a.GetAssertedChildElement ("span", 1);
@@ -240,13 +243,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       img.AssertAttributeValueContains ("src", "/Images/ClassicBlue/NullIcon.gif");
     }
 
-    private XmlNode GetAssertedItemLink (XmlNode td, int itemIndex, int nodeIndex)
+    private XmlNode GetAssertedItemLink (XmlNode td, int itemIndex, int nodeIndex, string tabIndex)
     {
       var span = td.GetAssertedChildElement ("span", nodeIndex);
       span.AssertAttributeValueEquals ("id", _control.ClientID + "_" + itemIndex);
       span.AssertChildElementCount (1);
 
-      return span.GetAssertedChildElement ("a", 0);
+      var anchor = span.GetAssertedChildElement ("a", 0);
+      anchor.AssertAttributeValueEquals ("role", "menuitem");
+      anchor.AssertAttributeValueEquals ("tabindex", tabIndex);
+      return anchor;
     }
 
     private void PopulateMenu ()
