@@ -149,7 +149,13 @@ function SmartFocus_Restore (data)
       var isEnabledFilter = function ()
       {
         var _this = $ (this);
-        if (_this.is ('a') && (_this.is ('a[href]') || _this.is ('a[tabindex]')) && !_this.is ('a[tabindex="-1"]'))
+        if (_this.is ('button'))
+          return true;
+        if (_this.is ('input[type=button]'))
+          return true;
+        if (_this.is ('input[type=submit]'))
+          return true;
+        if (_this.is ('a'))
           return true;
         if (!_this.is ('a') && _this.is (':enabled') && !_this.is ('input[type=hidden]'))
           return true;
