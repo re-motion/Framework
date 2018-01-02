@@ -30,6 +30,18 @@ ul.treeViewNodeChildren
   list-style: none;
 }
 
+ul.treeViewRoot > li,
+ul.treeViewTopLevelNodeChildren > li
+{
+  outline: none;
+}
+
+ul.treeViewNodeChildren > li,
+ul.treeViewNodeChildrenNoLines > li
+{
+  outline: none;
+}
+
 span.treeViewNode a
 {
   display: inline-block;
@@ -52,6 +64,13 @@ ul.treeViewNodeChildrenNoLines
   margin: 0;
   padding: 0 0 0 19px;
   list-style: none;
+}
+
+/* Applied to the node's expander. */
+span.treeViewNode > a
+{
+  cursor: default;
+  outline: none;
 }
 
 /* Applied to the node's head. */
@@ -84,18 +103,9 @@ span.treeViewNodeHeadSelected a
   padding: 2px;
 }
 
-span.treeViewNodeHead a:focus,
-span.treeViewNodeHeadSelected a:focus
-{
-  /* Style of focused tree node is chosen to differ from hover-style due to the hover style matching the style of the selected node and fact that 
-    expanding an empty tree node would set the focus onto this tree-node's head-element, potentially causing confusion about which node is actually selected. 
-    The focus style can be merged with the hover style when RM-6821 is implemented.
-  */
-}
-
-/*span.treeViewNodeHead a:focus,*/
+li:focus > span.treeViewNode span.treeViewNodeHead a,
 span.treeViewNodeHead a:hover,
-/*span.treeViewNodeHeadSelected a:focus,*/
+li:focus > span.treeViewNode span.treeViewNodeHeadSelected a,
 span.treeViewNodeHeadSelected a:hover
 {
   padding: 1px;
@@ -109,9 +119,9 @@ span.treeViewNodeHeadSelected a:focus
   outline: none;
 }
 
-/*span.treeViewNodeHead a:focus > span,*/
-span.treeViewNodeHead a:hover:focus > span,
-span.treeViewNodeHeadSelected a:focus > span
+li:focus > span.treeViewNode span.treeViewNodeHead a > span,
+li:focus > span.treeViewNode span.treeViewNodeHead a:hover > span,
+li:focus > span.treeViewNode span.treeViewNodeHeadSelected a > span
 {
   text-decoration: underline;
 }

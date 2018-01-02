@@ -30,6 +30,18 @@ ul.treeViewNodeChildren
   list-style: none;
 }
 
+ul.treeViewRoot > li,
+ul.treeViewTopLevelNodeChildren > li
+{
+  outline: none;
+}
+
+ul.treeViewNodeChildren > li,
+ul.treeViewNodeChildrenNoLines > li
+{
+  outline: none;
+}
+
 span.treeViewNode a
 {
   display: inline-block;
@@ -52,6 +64,13 @@ ul.treeViewNodeChildrenNoLines
   margin: 0;
   padding: 0 0 0 19px;
   list-style: none;
+}
+
+/* Applied to the node's expander. */
+span.treeViewNode > a
+{
+  cursor: default;
+  outline: none;
 }
 
 /* Applied to the node's head. */
@@ -82,6 +101,13 @@ span.treeViewNodeHeadSelected a
 {
   color: HighlightText;
   padding: 2px;
+}
+
+li:focus > span.treeViewNode span.treeViewNodeHead a,
+li:focus > span.treeViewNode span.treeViewNodeHeadSelected a
+{
+  outline: dotted black 1px;
+  outline: auto 5px -webkit-focus-ring-color;
 }
 
 span.treeViewNodeHead a:hover

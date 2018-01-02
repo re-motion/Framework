@@ -159,6 +159,8 @@ function SmartFocus_Restore (data)
           return true;
         if (!_this.is ('a') && _this.is (':enabled') && !_this.is ('input[type=hidden]'))
           return true;
+        if (!_this.is ('a') && _this.is ('*[tabindex]'))
+          return true;
         return false;
       };
 

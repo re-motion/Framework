@@ -987,6 +987,9 @@
   <ItemGroup>
     <None Include="Res\HTML\TabStrip.js" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Res\HTML\TreeView.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildProjectDirectory)\..\..\Build\NuSpec\Web.Build.targets" />
   <PropertyGroup>

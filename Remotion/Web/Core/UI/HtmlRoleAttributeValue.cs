@@ -26,6 +26,7 @@ namespace Remotion.Web.UI
     public const string Button = "button";
     public const string Checkbox = "checkbox";
     public const string Combobox = "combobox";
+    public const string Group = "group";
     public const string Menu = "menu";
     public const string MenuBar = "menubar";
     public const string MenuItem = "menuitem";
@@ -36,5 +37,7 @@ namespace Remotion.Web.UI
     public const string Table = "table";
     public const string TabList = "tablist";
     public const string TabPanel = "tabpanel";
+    public const string Tree = "tree";
+    public const string TreeItem = "treeitem";
   }
 }

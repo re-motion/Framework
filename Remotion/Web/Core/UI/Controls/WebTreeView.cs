@@ -120,6 +120,7 @@ namespace Remotion.Web.UI.Controls
     private bool _hasTreeNodesCreated;
     private bool _requiresSynchronousPostBack;
     private WebTreeNode _selectedNode;
+    private WebTreeNode _focusededNode;
     private WebTreeViewMenuItemProvider _menuItemProvider;
     private readonly Dictionary<WebTreeNode, DropDownMenu> _menus = new Dictionary<WebTreeNode, DropDownMenu>();
     private readonly PlaceHolder _menuPlaceHolder;
@@ -200,6 +201,7 @@ namespace Remotion.Web.UI.Controls
       WebTreeNode clickedNode = ParseNodePath (eventArgument, out pathSegments);
       if (clickedNode != null)
       {
+        _focusededNode = clickedNode;
         if (clickedNode.IsEvaluated)
         {
           clickedNode.IsExpanded = !clickedNode.IsExpanded;
@@ -549,10 +551,19 @@ namespace Remotion.Web.UI.Controls
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
         WcagHelper.Instance.HandleError (1, this);
 
+      ((IControl) this).Page.ClientScript.RegisterStartupScriptBlock (
+          this,
+          typeof (WebTreeView),
+          Guid.NewGuid().ToString(),
+          string.Format ("WebTreeView.Initialize ($('#{0}'));", ClientID));
+
       ResolveNodeIcons();
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassRoot);
+      writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Tree);
       writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin child nodes
-      using (var nodeIDAlgorithm = MD5CryptoServiceProvider.Create())
+      if (_focusededNode == null)
+        _focusededNode = _selectedNode;
+      using (var nodeIDAlgorithm = CreateNodeIDAlgorithm())
       {
         RenderNodes (writer, _nodes, true, nodeIDAlgorithm);
       }
@@ -571,6 +582,12 @@ namespace Remotion.Web.UI.Controls
         WebTreeNode node = nodes[i];
         bool isFirstNode = i == 0;
         bool isLastNode = i + 1 == nodes.Count;
+        bool hasChildren = node.Children.Count > 0;
+        bool hasExpander = !isTopLevel || _enableTopLevelExpander;
+        if (!hasExpander)
+          node.IsExpanded = true;
+        string nodePath = FormatNodePath (node);
+        string nodeID = CreateNodeID (nodeIDAlgorithm, nodePath);
 
         if (_renderingFeatures.EnableDiagnosticMetadata)
         {
@@ -588,14 +605,22 @@ namespace Remotion.Web.UI.Controls
           writer.AddAttribute (DiagnosticMetadataAttributes.IndexInCollection, (i + 1).ToString());
         }
 
+        writer.AddAttribute (HtmlTextWriterAttribute.Id, "Node_" + nodeID);
+        writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TreeItem);
+        if (hasChildren || !node.IsEvaluated)
+        {
+          writer.AddAttribute (
+              HtmlTextWriterAttribute2.AriaExpanded,
+              node.IsExpanded ? HtmlAriaExpandedAttributeValue.True : HtmlAriaExpandedAttributeValue.False);
+        }
+        if (node.IsSelected)
+        {
+          writer.AddAttribute (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaSelectedAttributeValue.True);
+        }
+        writer.AddAttribute ("tabindex", _focusededNode == node ? "0" : "-1");
         writer.RenderBeginTag (HtmlTextWriterTag.Li); // Begin node block
 
-        bool hasExpander = !isTopLevel || _enableTopLevelExpander;
-
-        RenderNode (writer, node, isFirstNode, isLastNode, hasExpander, nodeIDAlgorithm);
-        bool hasChildren = node.Children.Count > 0;
-        if (!hasExpander)
-          node.IsExpanded = true;
+        RenderNodeHead (writer, node, isFirstNode, isLastNode, hasExpander, nodePath, nodeID);
         if (hasChildren && node.IsExpanded)
           RenderNodeChildren (writer, node, isLastNode, hasExpander, nodeIDAlgorithm);
 
@@ -604,13 +629,14 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Renders the <paramref name="node"/> onto the <paremref name="writer"/>. </summary>
-    private void RenderNode (
+    private void RenderNodeHead (
         HtmlTextWriter writer,
         WebTreeNode node,
         bool isFirstNode,
         bool isLastNode,
         bool hasExpander,
-        HashAlgorithm nodeIDAlgorithm)
+        string nodePath,
+        string nodeID)
     {
       DropDownMenu menu;
       bool isMenuVisible = false;
@@ -632,9 +658,6 @@ namespace Remotion.Web.UI.Controls
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNode);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      string nodePath = FormatNodePath (node);
-      string nodeID = BitConverter.ToString (nodeIDAlgorithm.ComputeHash (Encoding.Unicode.GetBytes (nodePath))).Replace ("-", "");
-
       if (hasExpander)
         RenderNodeExpander (writer, node, nodePath, nodeID, isFirstNode, isLastNode);
 
@@ -643,7 +666,7 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute ("oncontextmenu", "return false;");
         writer.AddAttribute ("id", menu.ClientID);
       }
-      RenderNodeHead (writer, node, nodePath, nodeID);
+      RenderNodeLabel (writer, node, nodePath, nodeID);
 
       writer.RenderEndTag();
     }
@@ -670,7 +693,8 @@ namespace Remotion.Web.UI.Controls
         if (_renderingFeatures.EnableDiagnosticMetadata)
           writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, "true");
       }
-      writer.AddAttribute (HtmlTextWriterAttribute.Id, "Expander_" + nodeID);
+      writer.AddAttribute ("tabindex", "-1");
+      writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
       writer.RenderBeginTag (HtmlTextWriterTag.A);
 
       nodeIcon.Render (writer, this);
@@ -678,7 +702,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Renders the <paramref name="node"/>'s head (i.e. icon and text) onto the <paremref name="writer"/>. </summary>
-    private void RenderNodeHead (HtmlTextWriter writer, WebTreeNode node, string nodePath, string nodeID)
+    private void RenderNodeLabel (HtmlTextWriter writer, WebTreeNode node, string nodePath, string nodeID)
     {
       if (node.IsSelected)
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHeadSelected);
@@ -696,6 +720,8 @@ namespace Remotion.Web.UI.Controls
       if (_renderingFeatures.EnableDiagnosticMetadata)
         writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, "true");
       writer.AddAttribute (HtmlTextWriterAttribute.Id, "Head_" + nodeID);
+      writer.AddAttribute ("tabindex", "-1");
+      writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
       writer.RenderBeginTag (HtmlTextWriterTag.A);
       if (_treeNodeRenderMethod == null)
       {
@@ -732,6 +758,7 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeChildrenNoLines);
       else
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeChildren);
+      writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Group);
       writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin child nodes
 
       RenderNodes (writer, node.Children, false, nodeIDAlgorithm);
@@ -752,6 +779,16 @@ namespace Remotion.Web.UI.Controls
       {
         RenderNodes (writer, designModeNodes, true, nodeIDAlgorithm);
       }
+    }
+
+    private MD5 CreateNodeIDAlgorithm ()
+    {
+      return MD5CryptoServiceProvider.Create();
+    }
+
+    private string CreateNodeID (HashAlgorithm nodeIDAlgorithm, string nodePath)
+    {
+      return BitConverter.ToString (nodeIDAlgorithm.ComputeHash (Encoding.Unicode.GetBytes (nodePath))).Replace ("-", "");
     }
 
     /// <summary> Generates the string representation of the <paramref name="node"/>'s path. </summary>

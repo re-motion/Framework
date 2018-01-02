@@ -17,6 +17,7 @@
 using System;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
@@ -38,6 +39,12 @@ namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
+      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      
+      string scriptFileKey = typeof (WebTreeViewRenderer).FullName + "_Script";
+      var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (WebTreeViewRenderer), ResourceType.Html, "TreeView.js");
+      htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptFileUrl);
+
       string styleKey = typeof (WebTreeViewRenderer).FullName + "_Style";
       var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (WebTreeViewRenderer), ResourceType.Html, "TreeView.css");
       htmlHeadAppender.RegisterStylesheetLink (styleKey, styleSheetUrl, HtmlHeadAppender.Priority.Library);
