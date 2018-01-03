@@ -93,6 +93,16 @@ public class FormGridLabel: Label, ISmartControl
   {
     get { return PageWrapper.CastOrCreate (base.Page); }
   }
+  
+  protected override HtmlTextWriterTag TagKey
+  {
+    get
+    {
+      if (string.IsNullOrEmpty (AssociatedControlID))
+        return HtmlTextWriterTag.Span;
+      return HtmlTextWriterTag.Label;
+    }
+  }
 
   protected override void OnPreRender (EventArgs e)
   {

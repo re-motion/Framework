@@ -61,10 +61,10 @@
     <td><remotion:SmartLabel runat="server" ForControl="TextFieldWithSmartLabel" Text="&First Hotkey"/></td>
     <td><remotion:boctextvalue id="TextFieldWithSmartLabel" runat="server"></remotion:boctextvalue></td></tr>
   <tr>
-    <td><remotion:FormGridLabel runat="server" ForControl="TextFieldWithFormGridLabel" Text="&Second Hotkey"/></td>
+    <td><remotion:FormGridLabel runat="server" AssociatedControlID="TextFieldWithFormGridLabel" Text="&Second Hotkey"/></td>
     <td><asp:TextBox id="TextFieldWithFormGridLabel" runat="server"></asp:TextBox></td></tr>
   <tr>
-    <td><asp:Label runat="server" ForControl="TextFieldWithLabel" Text="&Third Hotkey"/></td>
+    <td><asp:Label runat="server" AssociatedControlID="TextFieldWithLabel" Text="&Third Hotkey"/></td>
     <td><asp:TextBox id="TextFieldWithLabel" runat="server"></asp:TextBox></td></tr>
 </table>
 <remotion:WebButton runat="server" ID="ShowExtraFormGridButton" OnClick="ShowExtraFormGridButton_Click" Text="Create FormGrid"/>

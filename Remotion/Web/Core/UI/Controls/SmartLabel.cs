@@ -16,9 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
-using System.Text;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Utilities;
@@ -37,7 +35,6 @@ public class SmartLabel: WebControl, IControl
   private string _text = null;
 
   public SmartLabel()
-    : base (HtmlTextWriterTag.Label)
   {
   }
 
@@ -66,6 +63,18 @@ public class SmartLabel: WebControl, IControl
     set { _text = value; }
   }
 
+  protected override HtmlTextWriterTag TagKey
+  {
+    get
+    {
+      var clientID = GetClientIDForTarget();
+
+      if (string.IsNullOrEmpty (clientID))
+        return HtmlTextWriterTag.Span;
+      return HtmlTextWriterTag.Label;
+    }
+  }
+
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
@@ -76,11 +85,11 @@ public class SmartLabel: WebControl, IControl
 
   protected override void Render(HtmlTextWriter writer)
   {
-    this.RenderBeginTag (writer);
+    RenderBeginTag (writer);
     string text = GetText();
     // Do not HTML encode
     writer.Write (text);
-    this.RenderEndTag (writer);
+    RenderEndTag (writer);
   }
 
   public string GetText()
@@ -114,21 +123,9 @@ public class SmartLabel: WebControl, IControl
 
     if (! ControlHelper.IsDesignMode (this))
     {
-      Control target = ControlHelper.FindControl (NamingContainer, ForControl);
-      bool useLabel = false;
-      string clientID = null;
-      if (target is ISmartControl && target is IFocusableControl)
-      {
-        clientID = ((IFocusableControl)target).FocusID;
-        useLabel = ((ISmartControl)target).UseLabel;
-      }
-      else if (target != null)
-      {
-        clientID = target.ClientID;
-        useLabel = true;
-      }
+      var clientID = GetClientIDForTarget();
 
-      if (useLabel && !string.IsNullOrEmpty (clientID))
+      if (!string.IsNullOrEmpty (clientID))
         writer.AddAttribute (HtmlTextWriterAttribute.For, clientID);
 
       // TODO: add <a href="ToName(target.ClientID)"> ...
@@ -146,6 +143,25 @@ public class SmartLabel: WebControl, IControl
     string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
     if (!string.IsNullOrEmpty (key))
       Text = resourceManager.GetString (key);
+  }
+
+  private string GetClientIDForTarget ()
+  {
+    Control target = ControlHelper.FindControl (NamingContainer, ForControl);
+    if (target is ISmartControl && target is IFocusableControl)
+    {
+      if (((ISmartControl) target).UseLabel)
+        return ((IFocusableControl) target).FocusID;
+
+      return null;
+    }
+
+    if (target != null)
+    {
+      return target.ClientID;
+    }
+
+    return null;
   }
 
   public new IPage Page
