@@ -1204,18 +1204,11 @@ namespace Remotion.Web.UI.Controls
               //  Label has associated control
               if (!string.IsNullOrEmpty (label.AssociatedControlID))
               {
-                Control associatedControl = NamingContainer.FindControl (label.AssociatedControlID);
-
                 ISmartControl smartControl = control as ISmartControl;
                 if (smartControl != null && smartControl.UseLabel)
                 {
                   label.Text = hotkeyFormatter.FormatText (textWithHotkey, false);
                   label.AccessKey = hotkeyFormatter.FormatHotkey (textWithHotkey);
-                }
-                else if (associatedControl is DropDownList || associatedControl is HtmlSelect)
-                {
-                  label.Text = textWithHotkey.Text;
-                  label.AccessKey = "";
                 }
                 else
                 {
