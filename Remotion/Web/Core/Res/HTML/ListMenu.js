@@ -164,11 +164,11 @@ function ListMenu_OnKeyDown (event, $listMenu)
   var selectedMenuItem = document.activeElement;
   if (selectedMenuItem != null && TypeUtility.IsDefined (selectedMenuItem.tagName) && selectedMenuItem.tagName.toUpperCase() === 'A')
   {
-    oldMenuItemIndex = $menuItems.index (selectedMenuItem);
+    oldMenuItemIndex = $menuItems.index(selectedMenuItem);
   }
   else
   {
-    for (var i = 0; i < $menuItems.Length; i++)
+    for (var i = 0; i < $menuItems.length; i++)
     {
       if ($menuItems[i].tabindex === 0)
       {
@@ -178,6 +178,9 @@ function ListMenu_OnKeyDown (event, $listMenu)
     }
   }
 
+  var $oldMenuItem = null;
+  if (oldMenuItemIndex >= 0)
+    $oldMenuItem = $($menuItems[oldMenuItemIndex]);
   var currentMenuItemIndex = Math.max (0, oldMenuItemIndex);
 
   switch (event.keyCode)
@@ -193,8 +196,8 @@ function ListMenu_OnKeyDown (event, $listMenu)
 
         if (currentMenuItemIndex >= 0)
         {
-          let $newMenuItem = $ ($menuItems[currentMenuItemIndex]);
-          $newMenuItem.focus();
+          let $newMenuItem = $($menuItems[currentMenuItemIndex]);
+          ListMenu_UpdateFocus ($newMenuItem, $oldMenuItem);
 
           $newMenuItem.click();
         }
@@ -212,7 +215,7 @@ function ListMenu_OnKeyDown (event, $listMenu)
           currentMenuItemIndex = $menuItems.length - 1;
 
         let $newMenuItem = $ ($menuItems[currentMenuItemIndex]);
-        $newMenuItem.focus();
+        ListMenu_UpdateFocus ($newMenuItem, $oldMenuItem);
 
         return;
       }
@@ -226,10 +229,22 @@ function ListMenu_OnKeyDown (event, $listMenu)
         else
           currentMenuItemIndex = 0;
 
-        var $newMenuItem = $ ($menuItems[currentMenuItemIndex]);
-        $newMenuItem.focus();
+        var $newMenuItem = $($menuItems[currentMenuItemIndex]);
+        ListMenu_UpdateFocus ($newMenuItem, $oldMenuItem);
 
         return;
       }
   }
+}
+
+function ListMenu_UpdateFocus ($newMenuItem, $oldMenuItem)
+{
+  ArgumentUtility.CheckNotNullAndTypeIsJQuery('$newMenuItem', $newMenuItem);
+  if ($oldMenuItem != null)
+    ArgumentUtility.CheckNotNullAndTypeIsJQuery ('$oldMenuItem', $oldMenuItem);
+
+  $newMenuItem.attr('tabindex', '0');
+  $newMenuItem.focus();
+  if ($oldMenuItem != null)
+    $oldMenuItem.attr ('tabindex', '-1');
 }
