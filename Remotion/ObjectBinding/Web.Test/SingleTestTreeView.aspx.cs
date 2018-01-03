@@ -135,6 +135,7 @@ namespace OBWTest
         currentNodes.Add (node);
         currentNodes = node.Children;
       }
+      ((WebTreeNode) WebTreeView.Nodes[5]).IsExpanded = false;
 
       WebTreeView.SetEvaluateTreeNodeDelegate (new EvaluateWebTreeNode (EvaluateTreeNode));
 
