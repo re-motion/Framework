@@ -31,10 +31,6 @@ var _bocList_isCommandClick = false;
 //  prior to the row's OnClick event.
 var _bocList_isRowSelectorClickExecuting = false;
 
-//  A flag that indicates that the OnClick event for a selectorControl label has been raised
-//  prior to the row's OnClick event.
-var _bocList_isSelectorControlLabelClick = false;
-
 var _bocList_rowSelectionUndefined = -1;
 var _bocList_rowSelectionDisabled = 0;
 var _bocList_rowSelectionSingleCheckBox = 1;
@@ -73,7 +69,6 @@ function BocList_InitializeGlobals ()
 {
   _bocList_isCommandClick = false;
   _bocList_isRowSelectorClickExecuting = false;
-  _bocList_isSelectorControlLabelClick = false;
 }
 
 //  Initalizes an individual BocList's List. The initialization synchronizes the selection state 
@@ -331,11 +326,7 @@ function BocList_OnSelectAllSelectorControlClick(bocList, selectAllSelectorContr
   {
     var checkBox = this;
 
-    var label = checkBox.parentNode;
-    if (label.nodeName !== 'LABEL')
-      throw 'Unexpected element type: \'' + label.nodeName + '\'';
-
-    var tableCell = label.parentNode;
+    var tableCell = checkBox.parentNode;
     if (tableCell.nodeName !== 'TD')
       throw 'Unexpected element type: \'' + tableCell.nodeName + '\'';
 
