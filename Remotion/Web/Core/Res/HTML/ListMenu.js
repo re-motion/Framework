@@ -243,8 +243,5 @@ function ListMenu_UpdateFocus ($newMenuItem, $oldMenuItem)
   if ($oldMenuItem != null)
     ArgumentUtility.CheckNotNullAndTypeIsJQuery ('$oldMenuItem', $oldMenuItem);
 
-  $newMenuItem.attr('tabindex', '0');
   $newMenuItem.focus();
-  if ($oldMenuItem != null)
-    $oldMenuItem.attr ('tabindex', '-1');
 }
