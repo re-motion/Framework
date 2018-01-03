@@ -108,11 +108,7 @@ function BocList_InitializeList(bocList, selectRowSelectorControlName, selectAll
 
       var checkBox = this;
 
-      var label = checkBox.parentNode;
-      if (label.nodeName !== 'LABEL')
-        throw 'Unexpected element type: \'' + label.nodeName + '\'';
-
-      var tableCell = label.parentNode;
+      var tableCell = checkBox.parentNode;
       if (tableCell.nodeName !== 'TD')
         throw 'Unexpected element type: \'' + tableCell.nodeName + '\'';
 
@@ -121,7 +117,7 @@ function BocList_InitializeList(bocList, selectRowSelectorControlName, selectAll
         throw 'Unexpected element type: \'' + tableRow.nodeName + '\'';
 
       if (hasClickSensitiveRows)
-        BocList_BindRowClickEventHandler (bocList, tableRow, tableCell, label, this);
+        BocList_BindRowClickEventHandler (bocList, tableRow, tableCell, this);
   
       if (this.checked)
       {
@@ -141,7 +137,7 @@ function BocList_InitializeList(bocList, selectRowSelectorControlName, selectAll
   $(bocList).attr('data-boclist-is-initialized', 'true');
 }
 
-function BocList_BindRowClickEventHandler(bocList, row, cell, label, selectorControl)
+function BocList_BindRowClickEventHandler(bocList, row, cell, selectorControl)
 {
   $(row).click(function (evt)
   {
@@ -158,12 +154,6 @@ function BocList_BindRowClickEventHandler(bocList, row, cell, label, selectorCon
     evt.stopPropagation();
     BocList_OnRowSelectorClick();
     $(row).trigger ('click');
-  });
-
-    // Disable click-behavior for the label. The remaining event handlers already handle the label's active area.
-  $(label).click(function (evt)
-  {
-    evt.preventDefault();
   });
 
     // Enable the entire selector control's cell for click events that mimic the selector control.

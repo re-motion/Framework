@@ -53,18 +53,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var th = Html.GetAssertedChildElement (document, "th", 0);
       Html.AssertAttribute (th, "class", _bocListCssClassDefinition.TitleCell + " " + _bocListCssClassDefinition.TitleCellSelector);
 
-      var label = Html.GetAssertedChildElement (th, "label", 0);
-      Html.AssertNoAttribute (label, "for");
-
-      var input = Html.GetAssertedChildElement (label, "input", 0);
+      var input = Html.GetAssertedChildElement (th, "input", 0);
       Html.AssertAttribute (input, "type", "checkbox");
       Html.AssertAttribute (input, "name", List.GetSelectAllControlName ());
       Html.AssertNoAttribute (input, "id");
       Html.AssertNoAttribute (input, "value");
-
-      var span = Html.GetAssertedChildElement (label, "span", 1);
-      Html.AssertAttribute (span, "class", _bocListCssClassDefinition.ScreenReaderText);
-      Html.AssertTextNode (span, "Select all rows", 0);
+      Html.AssertAttribute (input, "title", "Select all rows");
     }
 
     [Test]
@@ -84,18 +78,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var td = Html.GetAssertedChildElement (document, "td", 0);
       Html.AssertAttribute (td, "class", "bocListTableCell bocListDataCellRowSelector");
 
-      var label = Html.GetAssertedChildElement (td, "label", 0);
-      Html.AssertNoAttribute (label, "for");
-
-      var input = Html.GetAssertedChildElement (label, "input", 0);
+      var input = Html.GetAssertedChildElement (td, "input", 0);
       Html.AssertAttribute (input, "type", "checkbox");
       Html.AssertAttribute (input, "id", "SelectRowControl_UnqiueID_1");
       Html.AssertAttribute (input, "name", "SelectRowControl$UnqiueID");
       Html.AssertAttribute (input, "value", "row1");
-
-      var span = Html.GetAssertedChildElement (label, "span", 1);
-      Html.AssertAttribute (span, "class", _bocListCssClassDefinition.ScreenReaderText);
-      Html.AssertTextNode (span, "Select this row", 0);
+      Html.AssertAttribute (input, "title", "Select this row");
     }
 
     [Test]
@@ -129,18 +117,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var td = Html.GetAssertedChildElement (document, "td", 0);
       Html.AssertAttribute (td, "class", "bocListTableCell bocListDataCellRowSelector");
 
-      var label = Html.GetAssertedChildElement (td, "label", 0);
-      Html.AssertNoAttribute (label, "for");
-
-      var input = Html.GetAssertedChildElement (label, "input", 0);
+      var input = Html.GetAssertedChildElement (td, "input", 0);
       Html.AssertAttribute (input, "type", "radio");
       Html.AssertAttribute (input, "id", "SelectRowControl_UnqiueID_1");
       Html.AssertAttribute (input, "name", "SelectRowControl$UnqiueID");
       Html.AssertAttribute (input, "value", "row1");
-
-      var span = Html.GetAssertedChildElement (label, "span", 1);
-      Html.AssertAttribute (span, "class", _bocListCssClassDefinition.ScreenReaderText);
-      Html.AssertTextNode (span, "Select this row", 0);
+      Html.AssertAttribute (input, "title", "Select this row");
     }
 
     [Test]
@@ -155,8 +137,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var th = Html.GetAssertedChildElement (document, "th", 0);
       Html.AssertAttribute (th, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, 1.ToString());
 
-      var label = Html.GetAssertedChildElement (th, "label", 0);
-      var input = Html.GetAssertedChildElement (label, "input", 0);
+      var input = Html.GetAssertedChildElement (th, "input", 0);
       Html.AssertAttribute (input, DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownSelectAllControl, "true");
     }
 
@@ -176,8 +157,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var td = Html.GetAssertedChildElement (document, "td", 0);
       Html.AssertAttribute (td, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, 1.ToString());
 
-      var label = Html.GetAssertedChildElement (td, "label", 0);
-      var input = Html.GetAssertedChildElement (label, "input", 0);
+      var input = Html.GetAssertedChildElement (td, "input", 0);
       Html.AssertAttribute (input, "id", "SelectRowControl_UnqiueID_1");
     }
   }

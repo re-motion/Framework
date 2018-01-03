@@ -420,16 +420,3 @@ span.bocListEditableCell .control > *
   width: 100%;
   vertical-align: middle;
 }
-
-/* Style used to hide elements from visual representation but not screen readers. Shared from style.css */
-.screenReaderText
-{
-  clip: rect(1px, 1px, 1px, 1px) !important;
-  height: 1px !important;
-  width: 1px !important;
-  overflow: hidden !important;
-  position: absolute !important;
-  display: inline !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}

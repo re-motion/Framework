@@ -20,6 +20,7 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -100,8 +101,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Label);
-
+      string labelText = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.SelectAllRowsLabelText);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "checkbox");
 
@@ -109,6 +109,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (renderingContext.Control.EditModeController.IsRowEditModeActive)
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Disabled, "disabled");
+
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Title, labelText);
 
       if (renderingContext.Control.HasClientScript)
       {
@@ -126,17 +128,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
       renderingContext.Writer.RenderEndTag(); // Input-checkbox
-
-
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, _cssClasses.ScreenReaderText);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      string labelText = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.SelectAllRowsLabelText);
-      // Do not HTML encode.
-      renderingContext.Writer.Write (labelText);
-      renderingContext.Writer.RenderEndTag();
-
-
-      renderingContext.Writer.RenderEndTag(); // Label
     }
 
     private void RenderDataRowSelectorControl (BocListRenderingContext renderingContext, string id, string name, string value, bool isChecked)
@@ -145,8 +136,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Label);
-
+      string labelText = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.SelectRowLabelText);
 
       if (renderingContext.Control.Selection == RowSelection.SingleRadioButton)
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "radio");
@@ -162,22 +152,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Disabled, "disabled");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Value, value);
 
-      string alternateText = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.SelectRowLabelText);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Alt, alternateText);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Title, labelText);
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
       renderingContext.Writer.RenderEndTag();
-
-
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, _cssClasses.ScreenReaderText);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      string labelText = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.SelectRowLabelText);
-      // Do not HTML encode.
-      renderingContext.Writer.Write (labelText);
-      renderingContext.Writer.RenderEndTag();
-
-
-      renderingContext.Writer.RenderEndTag(); // Label
     }
 
     private static void AddDiagnosticMetadataListCellIndex (BocListRenderingContext renderingContext)

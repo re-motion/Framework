@@ -232,10 +232,5 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       return cssClass;
     }
-
-    public string ScreenReaderText
-    {
-      get { return "screenReaderText"; }
-    }
   }
 }
