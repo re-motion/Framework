@@ -126,6 +126,16 @@ namespace OBWTest
       nodes.Add (new WebTreeNode ("node43|id", "Node 4-3"));
       ((WebTreeNode) WebTreeView.Nodes[4]).IsEvaluated = true;
 
+      var currentNodes = WebTreeView.Nodes;
+      for (int i = 0; i < 55; i++)
+      {
+        WebTreeNode node = new WebTreeNode ("nodeNestingLevel" + i, "Node with nesting level " + i);
+        node.IsEvaluated = true;
+        node.IsExpanded = true;
+        currentNodes.Add (node);
+        currentNodes = node.Children;
+      }
+
       WebTreeView.SetEvaluateTreeNodeDelegate (new EvaluateWebTreeNode (EvaluateTreeNode));
 
       WebTreeView.MenuItemProvider = new TestWebTreeViewMenuItemProvider();
