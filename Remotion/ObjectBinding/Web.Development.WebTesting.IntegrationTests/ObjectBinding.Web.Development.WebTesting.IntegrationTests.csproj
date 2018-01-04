@@ -170,10 +170,13 @@
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest_TableContainer0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest_TableContainer1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest_TableContainer2.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocTreeViewControlObjectTest\WebTreeView.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocTreeViewControlObjectTest\InternetExplorer.any.WebTreeView.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest_TableContainer3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SavedTestScreenshots\BocTreeViewControlObjectTest\Chrome.any.WebTreeView.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
