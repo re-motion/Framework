@@ -98,6 +98,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
         get { return false; }
       }
 
+      IEnumerable<string> IControlWithLabel.GetLabelIDs ()
+      {
+        return Enumerable.Empty<string>();
+      }
+
       string IControlWithDiagnosticMetadata.ControlType
       {
         get { return "TestableBocControl"; }

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
@@ -146,12 +147,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return IsDesignMode; }
     }
 
+    IEnumerable<string> IControlWithLabel.GetLabelIDs ()
+    {
+      return GetLabelIDs();
+    }
+
     protected override void OnPreRender (EventArgs e)
     {
       EnsureChildControls();
       base.OnPreRender (e);
       _treeView.Width = Width;
       _treeView.Height = Height;
+
+      var labelID = GetLabelIDs().FirstOrDefault();
+      if (!string.IsNullOrEmpty (labelID))
+        _treeView.AssignLabel (labelID);
     }
 
     protected override void Render (HtmlTextWriter writer)

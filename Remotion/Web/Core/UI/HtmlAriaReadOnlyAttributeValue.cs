@@ -15,11 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Web.UI.Controls.Rendering;
 
-namespace Remotion.Web.UI.Controls.WebTreeViewImplementation
+namespace Remotion.Web.UI
 {
-  public interface IWebTreeView : IStyledControl, IControlWithDiagnosticMetadata, IControlWithLabel
+  /// <summary>
+  /// Defines values for the <see cref="HtmlTextWriterAttribute2.AriaReadOnly"/> attribute.
+  /// </summary>
+  public static class HtmlAriaReadOnlyAttributeValue
   {
+    public const string True = "true";
+    public const string False = "false";
   }
 }

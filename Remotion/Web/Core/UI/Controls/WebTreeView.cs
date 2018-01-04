@@ -126,6 +126,7 @@ namespace Remotion.Web.UI.Controls
     private readonly PlaceHolder _menuPlaceHolder;
     private bool _hasTreeNodeMenusCreated;
     private int _menuCounter;
+    private string _assignedLabelID;
 
     private readonly IRenderingFeatures _renderingFeatures;
 
@@ -560,6 +561,11 @@ namespace Remotion.Web.UI.Controls
       ResolveNodeIcons();
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassRoot);
       writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Tree);
+
+      var labelsID = string.Join (" ", GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
       writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin child nodes
       if (_focusededNode == null)
         _focusededNode = _selectedNode;
@@ -788,7 +794,7 @@ namespace Remotion.Web.UI.Controls
 
     private string CreateNodeID (HashAlgorithm nodeIDAlgorithm, string nodePath)
     {
-      return BitConverter.ToString (nodeIDAlgorithm.ComputeHash (Encoding.Unicode.GetBytes (nodePath))).Replace ("-", "");
+      return BitConverter.ToString (nodeIDAlgorithm.ComputeHash (Encoding.Unicode.GetBytes (ClientID + ":" + nodePath))).Replace ("-", "");
     }
 
     /// <summary> Generates the string representation of the <paramref name="node"/>'s path. </summary>
@@ -1129,6 +1135,23 @@ namespace Remotion.Web.UI.Controls
           _page = PageWrapper.CastOrCreate (Page);
         return _page;
       }
+    }
+
+    public void AssignLabel (string labelID)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("labelID", labelID);
+
+      _assignedLabelID = labelID;
+    }
+
+    protected virtual IEnumerable<string> GetLabelIDs ()
+    {
+      return EnumerableUtility.Singleton (_assignedLabelID);
+    }
+
+    IEnumerable<string> IControlWithLabel.GetLabelIDs ()
+    {
+      return GetLabelIDs();
     }
 
     private bool IsTreeNodeReachable (WebTreeNode node)

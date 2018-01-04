@@ -24,6 +24,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -345,6 +346,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     bool ISmartControl.UseLabel
     {
       get { return false; }
+    }
+
+    void ISmartControl.AssignLabel (string labelID)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("labelID", labelID);
+
+      //BocLiteral does not have a root element that could be labeled.
     }
 
     Control ISmartControl.TargetControl

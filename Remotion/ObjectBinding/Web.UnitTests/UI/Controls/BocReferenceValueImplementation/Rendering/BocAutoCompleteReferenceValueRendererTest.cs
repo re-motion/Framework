@@ -22,6 +22,7 @@ using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web.Services;
@@ -46,6 +47,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private const string c_textValueName = "MyReferenceValue_SelectedTextValue";
     private const string c_keyValueName = "MyReferenceValue_SelectedKeyValue";
     private const string c_uniqueidentifier = "uniqueidentifier";
+    private const string c_labelID = "TheLabel";
 
     private enum OptionMenuConfiguration
     {
@@ -87,6 +89,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Stub (stub => stub.ControlType).Return ("BocAutoCompleteReferenceValue");
       Control.Stub (stub => stub.GetTextValueName()).Return (c_textValueName);
       Control.Stub (stub => stub.GetKeyValueName()).Return (c_keyValueName);
+      Control.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
       Control.Stub (stub => stub.BusinessObjectUniqueIdentifier).Return (c_uniqueidentifier);
       Control.Stub (stub => stub.Command).Return (new BocCommand());
       Control.Command.Type = CommandType.Event;
@@ -566,6 +569,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
       var commandLink = span.GetAssertedChildElement ("a", 0);
       commandLink.AssertAttributeValueEquals ("id", Control.ClientID + "_Command");
+      commandLink.AssertAttributeValueEquals ("aria-labelledby", c_labelID);
       commandLink.AssertAttributeValueEquals ("class", "command");
       commandLink.AssertChildElementCount (1);
 
@@ -591,8 +595,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private void AssertDropDownListSpan (XmlNode contentSpan, AutoPostBack autoPostBack)
     {
       var inputSpan = contentSpan.GetAssertedChildElement ("span", 0);
-      inputSpan.AssertChildElementCount (0);
-      inputSpan.AssertTextNode ("TextBox", 0);
+      inputSpan.AssertChildElementCount (1);
+      var inputField = inputSpan.GetAssertedChildElement ("input", 0);
+      inputField.AssertAttributeValueEquals ("type", "stub");
 
       int hiddenFieldIndex = 1;
       if (Control.Enabled)

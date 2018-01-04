@@ -21,6 +21,7 @@ using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
+using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
@@ -42,6 +43,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private const string c_cssClass = "someCssClass";
     private const string c_clientID = "MyCheckBox";
     private const string c_valueName = "MyCheckBox_Value";
+    private const string c_labelID = "TheLabel";
     private readonly string _startUpScriptKey = typeof (BocCheckBox).FullName + "_Startup";
 
     private IBocCheckBox _checkbox;
@@ -57,6 +59,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _checkbox.Stub (mock => mock.ClientID).Return (c_clientID);
       _checkbox.Stub (mock => mock.ControlType).Return ("BocCheckBox");
       _checkbox.Stub (mock => mock.GetValueName()).Return (c_valueName);
+      _checkbox.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
       
       var clientScriptManagerMock = MockRepository.GenerateMock<IClientScriptManager>();
       _startupScript = string.Format (
@@ -260,8 +263,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       if (_checkbox.IsReadOnly)
       {
         var valueSpan = outerSpan.GetAssertedChildElement ("span", 0);
-        valueSpan.AssertAttributeValueContains ("id", c_valueName);
-        valueSpan.AssertAttributeValueContains ("data-value", value.ToString());
+        valueSpan.AssertAttributeValueEquals ("id", c_valueName);
+        valueSpan.AssertAttributeValueEquals ("data-value", value.ToString());
+        valueSpan.AssertAttributeValueEquals ("tabindex", "0");
+        valueSpan.AssertAttributeValueEquals ("role", "checkbox");
+        valueSpan.AssertAttributeValueEquals ("aria-readonly", "true");
         CheckImage (value, valueSpan, spanText);
       }
       else
@@ -269,9 +275,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         CheckInput (value, outerSpan);
       }
 
-      var label = Html.GetAssertedChildElement (outerSpan, "span", 1);
-
-      Html.AssertTextNode (label, spanText, 0);
+      if (_checkbox.IsDescriptionEnabled)
+      {
+        var label = Html.GetAssertedChildElement (outerSpan, "span", 1);
+        Html.AssertAttribute (label, "id", c_clientID + "_Description");
+        Html.AssertTextNode (label, spanText, 0);
+      }
+      else
+      {
+        Html.AssertChildElementCount (outerSpan, 1);
+      }
     }
 
     private void CheckInput (bool value, XmlNode outerSpan)
@@ -289,6 +302,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         Html.AssertNoAttribute (checkbox, "disabled");
       else
         Html.AssertAttribute (checkbox, "disabled", "disabled");
+
+      Html.AssertAttribute (checkbox, "aria-labelledby", c_labelID);
+
+      if (_checkbox.IsDescriptionEnabled)
+        Html.AssertAttribute (checkbox, "aria-describedby", c_clientID + "_Description");
     }
 
     private void CheckImage (bool value, XmlNode outerSpan, string altText)

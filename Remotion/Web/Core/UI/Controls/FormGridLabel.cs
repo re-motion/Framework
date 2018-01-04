@@ -84,6 +84,10 @@ public class FormGridLabel: Label, ISmartControl
     get { return true; }
   }
 
+  void ISmartControl.AssignLabel (string labelID)
+  {
+  }
+
   string ISmartControl.DisplayName
   {
     get { return base.Text; }

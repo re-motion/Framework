@@ -27,6 +27,7 @@ namespace Remotion.Web.UI
     public const string Checkbox = "checkbox";
     public const string Combobox = "combobox";
     public const string Group = "group";
+    public const string Listbox = "listbox";
     public const string Menu = "menu";
     public const string MenuBar = "menubar";
     public const string MenuItem = "menuitem";
@@ -34,11 +35,13 @@ namespace Remotion.Web.UI
     [Obsolete ("Use HtmlRoleAttributeValue.None instead.")]
     public const string Presentation = "presentation";
     public const string Radio = "radio";
+    public const string RadioGroup = "radiogroup";
     public const string Row = "row";
     public const string Tab = "tab";
     public const string Table = "table";
     public const string TabList = "tablist";
     public const string TabPanel = "tabpanel";
+    public const string Textbox = "textbox";
     public const string Tree = "tree";
     public const string TreeItem = "treeitem";
   }

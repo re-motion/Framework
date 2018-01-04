@@ -61,6 +61,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "id", "MyList");
+      Html.AssertAttribute (div, "role", "group");
+      Html.AssertAttribute (div, "aria-labelledby", "TheLabel");
 
       var tableBlock = Html.GetAssertedChildElement (div, "div", 0);
       Html.AssertAttribute (tableBlock, "class", "bocListTableBlock");
@@ -89,6 +91,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "id", "MyList");
+      Html.AssertAttribute (div, "role", "group");
+      Html.AssertAttribute (div, "aria-labelledby", "TheLabel");
 
       var menuBlock = Html.GetAssertedChildElement (div, "div", 0);
       Html.AssertAttribute (menuBlock, "class", _bocListCssClassDefinition.MenuBlock);
@@ -125,6 +129,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "id", "MyList");
+      Html.AssertAttribute (div, "role", "group");
+      Html.AssertAttribute (div, "aria-labelledby", "TheLabel");
 
       var menuBlock = Html.GetAssertedChildElement (div, "div", 0);
       Html.AssertAttribute (menuBlock, "class", _bocListCssClassDefinition.MenuBlock);
@@ -157,6 +163,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "id", "MyList");
+      Html.AssertAttribute (div, "role", "group");
+      Html.AssertAttribute (div, "aria-labelledby", "TheLabel");
 
       var tableBlock = Html.GetAssertedChildElement (div, "div", 0);
       Html.AssertAttribute (tableBlock, "class", "bocListTableBlock hasNavigator");

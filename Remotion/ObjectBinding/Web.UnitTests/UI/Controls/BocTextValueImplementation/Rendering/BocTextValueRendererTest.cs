@@ -16,11 +16,13 @@
 // 
 using System;
 using System.Web;
+using System.Web.UI;
 using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
+using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering;
@@ -37,6 +39,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
   {
     private const string c_valueName = "MyTextValue_Boc_Textbox";
     private const string c_clientID = "MyTextValue";
+    private const string c_labelID = "TheLabel";
     private BocTextValueRenderer _renderer;
 
     [SetUp]
@@ -48,6 +51,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       TextValue.Stub (stub => stub.ClientID).Return (c_clientID);
       TextValue.Stub (stub => stub.ControlType).Return ("BocTextValue");
       TextValue.Stub (stub => stub.GetValueName()).Return (c_valueName);
+      TextValue.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
       TextValue.Stub (mock => mock.CssClass).PropertyBehavior();
 
       var pageStub = MockRepository.GenerateStub<IPage>();
@@ -252,6 +256,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       var input = Html.GetAssertedChildElement (content, "input", 0);
       Html.AssertAttribute (input, "id", c_valueName);
       Html.AssertAttribute (input, "name", c_valueName);
+      Html.AssertAttribute (input, "aria-labelledby", c_labelID);
       Html.AssertAttribute (input, "type", "text");
       Html.AssertAttribute (input, "value", c_firstLineText);
       Assert.That (TextValue.TextBoxStyle.AutoPostBack, Is.EqualTo (autoPostBack));
@@ -317,6 +322,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       var labelSpan = Html.GetAssertedChildElement (content, "span", 0);
       Html.AssertAttribute (labelSpan, "id", c_valueName);
+      Html.AssertAttribute (labelSpan, "aria-labelledby", c_labelID + " " + c_valueName);
+      Html.AssertAttribute (labelSpan, "tabindex", "0");
       Html.AssertTextNode (labelSpan, c_firstLineText, 0);
 
       CheckStyle (withStyle, span, labelSpan);

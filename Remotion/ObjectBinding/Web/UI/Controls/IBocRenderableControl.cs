@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary>
   /// Common interface for controls which exposes properties relevant to rendering.
   /// </summary>
-  public interface IBocRenderableControl : IStyledControl, IControlWithDiagnosticMetadata
+  public interface IBocRenderableControl : IStyledControl, IControlWithDiagnosticMetadata, IControlWithLabel
   {
     /// <summary>Evalutes whether this control is in <b>Design Mode</b>.</summary>
     bool IsDesignMode { get; }

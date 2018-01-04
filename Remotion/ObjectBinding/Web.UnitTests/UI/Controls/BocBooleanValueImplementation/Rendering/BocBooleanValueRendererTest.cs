@@ -20,6 +20,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
@@ -42,14 +43,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private const string c_nullDescription = "Unbestimmt";
     private const string c_cssClass = "someCssClass";
     private const string c_postbackEventReference = "postbackEventReference";
-
-    private string _startupScript;
-    private string _clickScript;
-    private string _keyDownScript;
     private const string _dummyScript = "return false;";
     private const string c_clientID = "MyBooleanValue";
     private const string c_keyValueName = "MyBooleanValue_Value";
     private const string c_displayValueName = "MyBooleanValue_DisplayValue";
+    private const string c_labelID = "TheLabel";
+
+    private string _startupScript;
+    private string _clickScript;
+    private string _keyDownScript;
     private IBocBooleanValue _booleanValue;
     private BocBooleanValueRenderer _renderer;
     private BocBooleanValueResourceSet _resourceSet;
@@ -77,6 +79,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Stub (stub => stub.ControlType).Return ("BocBooleanValue");
       _booleanValue.Stub (mock => mock.GetValueName ()).Return (c_keyValueName);
       _booleanValue.Stub (mock => mock.GetDisplayValueName()).Return (c_displayValueName);
+      _booleanValue.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
       
       string startupScriptKey = typeof (BocBooleanValueRenderer).FullName + "_Startup_" + _resourceSet.ResourceKey;
       _startupScript = string.Format (
@@ -300,16 +303,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertChildElementCount (outerSpan, 3);
 
       var link = Html.GetAssertedChildElement (outerSpan, "a", 1);
-      Html.AssertAttribute (link, "id", c_displayValueName);
-      if (!_booleanValue.IsReadOnly)
-        CheckLinkAttributes (link, checkedState, null);
+      CheckLinkAttributes (link, checkedState, null, _booleanValue.IsReadOnly);
 
       var image = Html.GetAssertedChildElement (link, "img", 0);
       checkImageAttributes (image, iconUrl);
 
       var label = Html.GetAssertedChildElement (outerSpan, "span", 2);
       Html.AssertChildElementCount (label, 0);
+      Html.AssertAttribute (label, "id", c_clientID + "_Description");
       Html.AssertTextNode (label, description, 0);
+      if (_booleanValue.ShowDescription)
+        Html.AssertNoAttribute (label, "hidden");
+      else
+        Html.AssertAttribute (label, "hidden", "hidden");
+
 
       if (!_booleanValue.IsReadOnly)
         Html.AssertAttribute (label, "onclick", _booleanValue.Enabled ? _clickScript : _dummyScript);
@@ -343,13 +350,21 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute (image, "alt", "");
     }
 
-    private void CheckLinkAttributes (XmlNode link, string checkedState, string description)
+    private void CheckLinkAttributes (XmlNode link, string checkedState, string description, bool isReadOnly)
     {
+      Html.AssertAttribute (link, "id", c_displayValueName);
+      Html.AssertAttribute (link, "aria-labelledby", c_labelID);
+      Html.AssertAttribute (link, "aria-describedby", c_clientID + "_Description");
       Html.AssertAttribute (link, "role", "checkbox");
       Html.AssertAttribute (link, "aria-checked", checkedState);
+      if (isReadOnly)
+        Html.AssertAttribute (link, "aria-readonly", "true");
       Html.AssertAttribute (link, "href", "#");
-      Html.AssertAttribute (link, "onclick", _booleanValue.Enabled ? _clickScript : _dummyScript);
-      Html.AssertAttribute (link, "onkeydown", _keyDownScript);
+      if (!isReadOnly)
+      {
+        Html.AssertAttribute (link, "onclick", _booleanValue.Enabled ? _clickScript : _dummyScript);
+        Html.AssertAttribute (link, "onkeydown", _keyDownScript);
+      }
       if (description == null)
         Html.AssertNoAttribute (link, "title");
       else

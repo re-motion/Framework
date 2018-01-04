@@ -17,6 +17,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
@@ -135,6 +136,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       listControl.ApplyStyle (renderingContext.Control.CommonStyle);
       renderingContext.Control.ListControlStyle.ApplyStyle (listControl);
 
+      if (renderingContext.Control.ListControlStyle.ControlType == ListControlType.RadioButtonList)
+        listControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RadioGroup);
+
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        listControl.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
       var oneBasedIndex = 1;
 
       if (IsNullItemVisible (renderingContext))
@@ -240,6 +248,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       label.Height = Unit.Empty;
       label.ApplyStyle (renderingContext.Control.CommonStyle);
       label.ApplyStyle (renderingContext.Control.LabelStyle);
+
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        label.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
+      label.Attributes.Add ("tabindex", "0");
+      switch (renderingContext.Control.ListControlStyle.ControlType)
+      {
+        case ListControlType.DropDownList:
+          label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
+          break;
+        case ListControlType.ListBox:
+          label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Listbox);
+          break;
+        case ListControlType.RadioButtonList:
+          label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Radio);
+          break;
+        default:
+          throw new NotImplementedException();
+      }
+      label.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
+
       return label;
     }
 

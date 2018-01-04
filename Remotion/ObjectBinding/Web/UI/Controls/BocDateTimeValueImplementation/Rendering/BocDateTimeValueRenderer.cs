@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
@@ -107,6 +109,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     private void RenderEditModeControls (BocDateTimeValueRenderingContext renderingContext)
     {
       var formatter = renderingContext.Control.DateTimeFormatter;
+      var resourceManager = renderingContext.Control.GetResourceManager();
+
+      var dateTextBoxLabelID = renderingContext.Control.ClientID + "_DateLabel";
+      var timeTextBoxLabelID = renderingContext.Control.ClientID + "_TimeLabel";
 
       var dateTextBox = _dateTextBox;
       dateTextBox.ID = renderingContext.Control.GetDateValueName();
@@ -118,6 +124,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           formatter.GetDateMaxLength());
       dateTextBox.Text = renderingContext.Control.DateString;
       dateTextBox.Page = renderingContext.Control.Page.WrappedInstance;
+      dateTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy,
+          string.Join (" ", renderingContext.Control.GetLabelIDs().Concat (dateTextBoxLabelID)));
 
       var timeTextBox = _timeTextBox;
       timeTextBox.ID = renderingContext.Control.GetTimeValueName();
@@ -129,6 +137,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           formatter.GetTimeMaxLength (renderingContext.Control.ShowSeconds));
       timeTextBox.Text = renderingContext.Control.TimeString;
       timeTextBox.Page = renderingContext.Control.Page.WrappedInstance;
+      timeTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy,
+          string.Join (" ", renderingContext.Control.GetLabelIDs().Concat (timeTextBoxLabelID)));
 
       var datePickerButton = renderingContext.Control.DatePickerButton;
       datePickerButton.AlternateText = renderingContext.Control.GetDatePickerText();
@@ -164,11 +174,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         renderingContext.Writer.AddAttribute (
             HtmlTextWriterAttribute.Class, CssClassDateInputWrapper + " " + GetPositioningCssClass (renderingContext, DateTimeValuePart.Date));
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
         dateTextBox.RenderControl (renderingContext.Writer);
+
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, dateTextBoxLabelID);
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.Write (resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.DateLabelText));
+        renderingContext.Writer.RenderEndTag();
+        
         renderingContext.Writer.RenderEndTag();
 
         datePickerButton.CssClass = GetPositioningCssClass (renderingContext, DateTimeValuePart.Picker);
         datePickerButton.RenderControl (renderingContext.Writer);
+
       }
 
       if (hasTimeField)
@@ -176,7 +195,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         renderingContext.Writer.AddAttribute (
             HtmlTextWriterAttribute.Class, CssClassTimeInputWrapper + " " + GetPositioningCssClass (renderingContext, DateTimeValuePart.Time));
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
         timeTextBox.RenderControl (renderingContext.Writer);
+
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, timeTextBoxLabelID);
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.Write (resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.TimeLabelText));
+        renderingContext.Writer.RenderEndTag();
+
         renderingContext.Writer.RenderEndTag();
       }
     }
@@ -254,8 +281,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      var dateLabel = new Label();
-      var timeLabel = new Label();
+      var resourceManager = renderingContext.Control.GetResourceManager();
+      var dateLabel = new Label
+                      {
+                        ID = renderingContext.Control.GetDateValueName(),
+                        ClientIDMode = ClientIDMode.Static,
+                        ToolTip = resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.DateLabelText),
+                        AssociatedControlID = renderingContext.Control.ClientID + "_DateLabel"
+                      };
+      var timeLabel = new Label
+                      {
+                        ID = renderingContext.Control.GetTimeValueName(),
+                        ClientIDMode = ClientIDMode.Static,
+                        ToolTip = resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.TimeLabelText),
+                        AssociatedControlID = renderingContext.Control.ClientID + "_TimeLabel"
+                      };
 
       if (renderingContext.Control.IsDesignMode && !renderingContext.Control.Value.HasValue)
       {
@@ -281,7 +321,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           }
         }
       }
-
       RenderLabel (dateLabel, renderingContext);
       if (renderingContext.Control.ActualValueType == BocDateTimeValueType.DateTime)
       {
@@ -312,7 +351,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, renderingContext.Control.Style["width"]);
       }
 
+      label.Attributes.Add ("tabindex", "0");
+      // Screenreaders (JAWS v18) will not read the contents of a span with role=textbox,
+      // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
+      //label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Textbox);
+      //label.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
+
+      var descriptionLabelID = label.AssociatedControlID;
+      label.AssociatedControlID = null;
+      var descriptionLabelText = label.ToolTip;
+      label.ToolTip = null;
+
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs().Concat (descriptionLabelID).Concat (label.ClientID));
+      if (!string.IsNullOrEmpty (labelsID))
+        label.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
       label.RenderControl (renderingContext.Writer);
+
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, descriptionLabelID);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.Write (descriptionLabelText);
+      renderingContext.Writer.RenderEndTag();
     }
   }
 }

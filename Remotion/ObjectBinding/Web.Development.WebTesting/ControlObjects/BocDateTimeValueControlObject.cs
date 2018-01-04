@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       {
         dateTimeString = Scope.FindCss ("span:nth-child(1)").Text;
         if (_hasTimeField)
-          dateTimeString += " " + Scope.FindCss ("span:nth-child(2)").Text;
+          dateTimeString += " " + Scope.FindCss ("span:nth-child(3)").Text;
       }
       else
       {

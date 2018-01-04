@@ -3569,6 +3569,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return IsDesignMode; }
     }
 
+    IEnumerable<string> IControlWithLabel.GetLabelIDs ()
+    {
+      return GetLabelIDs();
+    }
+
     public string GetSelectorControlValue (BocListRow row)
     {
       ArgumentUtility.CheckNotNull ("row", row);

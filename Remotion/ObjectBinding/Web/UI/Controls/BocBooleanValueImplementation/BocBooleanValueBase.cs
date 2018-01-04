@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
@@ -318,6 +319,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     bool IBocRenderableControl.IsDesignMode
     {
       get { return IsDesignMode; }
+    }
+
+    IEnumerable<string> IControlWithLabel.GetLabelIDs ()
+    {
+      return GetLabelIDs();
     }
 
     protected abstract string ControlType { get; }

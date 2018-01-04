@@ -73,9 +73,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       var checkBoxControl = new HtmlInputCheckBox { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
-      var labelControl = new Label();
+      var labelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
 
       string description = GetDescription (renderingContext);
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
 
       if (renderingContext.Control.IsReadOnly)
       {
@@ -84,13 +85,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.GetValueName());
         if (renderingContext.Control.Value.HasValue)
-          renderingContext.Writer.AddAttribute ("data-value", renderingContext.Control.Value.Value.ToString ());
+          renderingContext.Writer.AddAttribute ("data-value", renderingContext.Control.Value.Value.ToString());
+        renderingContext.Writer.AddAttribute ("tabindex", "0");
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
+        if (!string.IsNullOrEmpty (labelsID))
+          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+        if (renderingContext.Control.IsDescriptionEnabled)
+          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
+
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
         imageControl.RenderControl (renderingContext.Writer);
-        renderingContext.Writer.RenderEndTag ();
+        renderingContext.Writer.RenderEndTag();
 
-        PrepareLabel (renderingContext, description, labelControl);
-        labelControl.RenderControl (renderingContext.Writer);
+        if (renderingContext.Control.IsDescriptionEnabled)
+        {
+          PrepareLabel (renderingContext, description, labelControl);
+          labelControl.RenderControl (renderingContext.Writer);
+        }
       }
       else
       {
@@ -102,11 +114,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
         checkBoxControl.Checked = renderingContext.Control.Value.Value;
         checkBoxControl.Disabled = !renderingContext.Control.Enabled;
+        if (!string.IsNullOrEmpty (labelsID))
+          checkBoxControl.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+        if (renderingContext.Control.IsDescriptionEnabled)
+          checkBoxControl.Attributes.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
 
         checkBoxControl.RenderControl (renderingContext.Writer);
 
-        PrepareLabel (renderingContext, description, labelControl);
-        labelControl.RenderControl (renderingContext.Writer);
+        if (renderingContext.Control.IsDescriptionEnabled)
+        {
+          PrepareLabel (renderingContext, description, labelControl);
+          labelControl.RenderControl (renderingContext.Writer);
+        }
       }
 
       renderingContext.Writer.RenderEndTag ();
@@ -188,13 +207,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     private void PrepareLabel (BocCheckBoxRenderingContext renderingContext, string description, Label labelControl)
     {
-      if (renderingContext.Control.IsDescriptionEnabled)
-      {
-        labelControl.Text = description;
-        labelControl.Width = Unit.Empty;
-        labelControl.Height = Unit.Empty;
-        labelControl.ApplyStyle (renderingContext.Control.LabelStyle);
-      }
+      labelControl.Text = description;
+      labelControl.Width = Unit.Empty;
+      labelControl.Height = Unit.Empty;
+      labelControl.ApplyStyle (renderingContext.Control.LabelStyle);
     }
 
     private string GetDescription (BocCheckBoxRenderingContext renderingContext)

@@ -718,6 +718,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return IsDesignMode; }
     }
 
+    IEnumerable<string> IControlWithLabel.GetLabelIDs ()
+    {
+      return GetLabelIDs();
+    }
+
     IEnumerationValueInfo[] IBocEnumValue.GetEnabledValues ()
     {
       return GetEnabledValues();

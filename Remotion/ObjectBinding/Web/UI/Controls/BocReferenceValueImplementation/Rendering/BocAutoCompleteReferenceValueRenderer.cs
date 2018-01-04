@@ -375,6 +375,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaControls, "");
       textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaActiveDescendant, "");
       textBox.Attributes.Add ("autocomplete", "off");
+
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
       return textBox;
     }
 

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
@@ -1010,6 +1011,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     IResourceManager IControlWithResourceManager.GetResourceManager ()
     {
       return GetResourceManager();
+    }
+
+    IEnumerable<string> IControlWithLabel.GetLabelIDs ()
+    {
+      return GetLabelIDs();
     }
 
     string IBocReferenceValueBase.GetLabelText ()

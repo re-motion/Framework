@@ -21,6 +21,7 @@ using Remotion.Globalization;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -91,6 +92,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     /// <returns>A <see cref="TextBox"/> control with the all relevant properties set and all appropriate styles applied to it.</returns>
     protected virtual TextBox GetTextBox (BocRenderingContext<T> renderingContext)
     {
+      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      
       TextBox textBox = new RenderOnlyTextBox { ClientIDMode = ClientIDMode.Static };
       textBox.Text = renderingContext.Control.Text;
       textBox.ID = renderingContext.Control.GetValueName();
@@ -101,6 +104,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       textBox.Height = Unit.Empty;
       textBox.ApplyStyle (renderingContext.Control.CommonStyle);
       renderingContext.Control.TextBoxStyle.ApplyStyle (textBox);
+
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
 
       return textBox;
     }

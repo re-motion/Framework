@@ -77,7 +77,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       InvalidTimeErrorMessage,
 
       /// <summary> The alternate text displayed for the date picker button. </summary>
-      DataPickerButtonAlternateText
+      DataPickerButtonAlternateText,
+      DateLabelText,
+      TimeLabelText
     }
 
     // static members
@@ -641,6 +643,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     bool IBocRenderableControl.IsDesignMode
     {
       get { return IsDesignMode; }
+    }
+
+    IEnumerable<string> IControlWithLabel.GetLabelIDs ()
+    {
+      return GetLabelIDs();
     }
 
     /// <summary> Gets or sets the displayed date string. </summary>

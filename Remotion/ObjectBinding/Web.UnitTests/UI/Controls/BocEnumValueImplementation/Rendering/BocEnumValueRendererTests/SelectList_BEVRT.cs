@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
+using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
@@ -45,6 +46,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
   {
     private const string c_clientID = "MyEnumValue";
     private const string c_valueName = "ListControlClientID";
+    private const string c_labelID = "TheLabel";
     private IBocEnumValue _enumValue;
     private readonly Unit _width = Unit.Point (173);
     private readonly Unit _height = Unit.Point (17);
@@ -77,6 +79,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (stub => stub.ClientID).Return (c_clientID);
       _enumValue.Stub (stub => stub.ControlType).Return ("BocEnumValue");
       _enumValue.Stub (mock => mock.IsDesignMode).Return (false);
+      _enumValue.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
 
       var pageStub = MockRepository.GenerateStub<IPage>();
       pageStub.Stub (stub => stub.WrappedInstance).Return (new PageMock());
@@ -241,6 +244,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       var select = Html.GetAssertedChildElement (div, "select", 0);
       Html.AssertAttribute (select, "id", c_valueName);
       Html.AssertAttribute (select, "name", c_valueName);
+      Html.AssertAttribute (select, "aria-labelledby", c_labelID);
 
       if (withStyle)
         Html.AssertStyleAttribute (select, "height", "100%");

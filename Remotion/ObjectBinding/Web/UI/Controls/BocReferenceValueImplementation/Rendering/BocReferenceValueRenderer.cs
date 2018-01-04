@@ -211,6 +211,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       dropDownList.ApplyStyle (renderingContext.Control.CommonStyle);
       renderingContext.Control.DropDownListStyle.ApplyStyle (dropDownList);
 
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        dropDownList.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
       return dropDownList;
     }
 

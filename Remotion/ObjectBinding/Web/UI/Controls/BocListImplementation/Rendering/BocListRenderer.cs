@@ -148,6 +148,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       RegisterInitializeListScript (renderingContext);
     }
 
+    protected override void AddAdditionalAttributes (RenderingContext<IBocList> renderingContext)
+    {
+      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      
+      base.AddAdditionalAttributes (renderingContext);
+
+      renderingContext.Writer.AddAttribute ("role", "group");
+
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+    }
+
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<IBocList> renderingContext)
     {
       base.AddDiagnosticMetadataAttributes (renderingContext);

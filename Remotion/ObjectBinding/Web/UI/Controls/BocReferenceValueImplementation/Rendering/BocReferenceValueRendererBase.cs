@@ -279,6 +279,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, anchorClass);
 
       var isCommandEnabled = isIconEnabled && IsCommandEnabled (renderingContext);
+
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
       var command = GetCommand (renderingContext, isCommandEnabled);
       command.RenderBegin (renderingContext.Writer, RenderingFeatures, postBackEvent, onClick, objectID, null);
 
@@ -303,12 +308,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       if (isIconEnabled)
         icon = GetIcon (renderingContext);
 
+      var isCommandEnabled = IsCommandEnabled (renderingContext);
+
       var anchorClass = CssClassCommand;
       if (icon != null)
         anchorClass += " " + CssClassHasIcon;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, anchorClass);
 
-      var isCommandEnabled = IsCommandEnabled (renderingContext);
+      if (!isCommandEnabled)
+      {
+        renderingContext.Writer.AddAttribute ("tabindex", "0");
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
+      }
+
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
       var command = GetCommand (renderingContext, isCommandEnabled);
       command.RenderBegin (renderingContext.Writer, RenderingFeatures, postBackEvent, onClick, objectID, null);
 
@@ -316,6 +333,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         icon.Render (renderingContext.Writer, renderingContext.Control);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, GetCssClassInnerContent (renderingContext));
+
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
       label.RenderControl (renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();

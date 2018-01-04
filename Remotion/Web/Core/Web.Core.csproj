@@ -211,6 +211,7 @@
     <Compile Include="UI\Controls\HtmlHeadContentsImplementation\Rendering\HtmlHeadContentsRenderingContext.cs" />
     <Compile Include="UI\Controls\HtmlHeadContentsImplementation\Rendering\HtmlHeadContentsRenderer.cs" />
     <Compile Include="UI\Controls\HtmlHeadContentsImplementation\Rendering\IHtmlHeadContentsRenderer.cs" />
+    <Compile Include="UI\Controls\IControlWithLabel.cs" />
     <Compile Include="UI\Controls\IControlWithResourceManager.cs" />
     <Compile Include="UI\Controls\Rendering\DefaultRenderingFeatures.cs" />
     <Compile Include="UI\Controls\DropDownMenuImplementation\Rendering\DropDownMenuRenderingContext.cs" />
@@ -303,6 +304,7 @@
     <Compile Include="UI\HtmlAriaExpandedAttributeValue.cs" />
     <Compile Include="UI\HtmlAriaHasPopupAttributeValue.cs" />
     <Compile Include="UI\HtmlAriaHiddenAttributeValue.cs" />
+    <Compile Include="UI\HtmlAriaReadOnlyAttributeValue.cs" />
     <Compile Include="UI\HtmlAriaSelectedAttributeValue.cs" />
     <Compile Include="UI\HtmlHiddenAttributeValue.cs" />
     <Compile Include="UI\HtmlRoleAttributeValue.cs" />

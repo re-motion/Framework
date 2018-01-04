@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,11 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Web.UI.Controls.Rendering;
+using System.Collections.Generic;
+using System.Web.UI;
 
-namespace Remotion.Web.UI.Controls.WebTreeViewImplementation
+namespace Remotion.Web.UI.Controls
 {
-  public interface IWebTreeView : IStyledControl, IControlWithDiagnosticMetadata, IControlWithLabel
+  public interface IControlWithLabel
   {
+    /// <summary>
+    /// Gets the <see cref="Control.ClientID"/> sequence control's labels.
+    /// </summary>
+    IEnumerable<string> GetLabelIDs ();
   }
 }

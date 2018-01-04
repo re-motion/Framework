@@ -25,6 +25,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Collections;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Design;
@@ -219,6 +220,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         CacheFactory.Create<Tuple<Type, Control>, IResourceManager>();
 
     private bool _controlExistedInPreviousRequest;
+
+    private string _assignedLabelID;
     
     /// <summary> Creates a new instance of the BusinessObjectBoundWebControl type. </summary>
     protected BusinessObjectBoundWebControl ()
@@ -424,12 +427,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary>Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the <see cref="TargetControl"/>.</summary>
-    /// <value>
-    ///   <see langword="true"/> unsless the <see cref="TargetControl"/> is a <see cref="DropDownList"/> or an 
-    ///   <see cref="System.Web.UI.HtmlControls.HtmlSelect"/> control.
-    /// </value>
     [Browsable (false)]
     public abstract bool UseLabel { get; }
+
+    public void AssignLabel (string labelID)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("labelID", labelID);
+
+      _assignedLabelID = labelID;
+    }
+
+    protected virtual IEnumerable<string> GetLabelIDs ()
+    {
+      return EnumerableUtility.Singleton (_assignedLabelID);
+    }
 
     /// <summary> Evalutes whether this control is in <b>Design Mode</b>. </summary>
     /// <value><see langword="true"/> if the control is currently rendered by the Visual Studio Designer.</value>

@@ -321,6 +321,10 @@ namespace Remotion.ObjectBinding.Sample
       get { return false; }
     }
 
+    void ISmartControl.AssignLabel (string labelID)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("labelID", labelID);
+    }
 
     /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>
     [Description ("Explicitly specifies whether the control is required.")]

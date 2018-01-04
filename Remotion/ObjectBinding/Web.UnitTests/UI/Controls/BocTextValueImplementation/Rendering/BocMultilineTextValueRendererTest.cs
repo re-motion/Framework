@@ -20,6 +20,7 @@ using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering;
@@ -35,6 +36,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
   public class BocMultilineTextValueRendererTest : BocTextValueRendererTestBase<IBocMultilineTextValue>
   {
     private const string c_textValueID = "MyTextValue_Boc_Textbox";
+    private const string c_labelID = "TheLabel";
     private BocMultilineTextValueRenderer _renderer;
     
     [SetUp]
@@ -52,6 +54,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       TextValue.Stub (stub => stub.ClientID).Return ("MyTextValue");
       TextValue.Stub (stub => stub.ControlType).Return ("BocMultilineTextValue");
       TextValue.Stub (stub => stub.GetValueName()).Return (c_textValueID);
+      TextValue.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
 
       TextValue.Stub (mock => mock.CssClass).PropertyBehavior();
 
@@ -191,6 +194,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       var textarea = Html.GetAssertedChildElement (content, "textarea", 0);
       Html.AssertAttribute (textarea, "id", c_textValueID);
       Html.AssertAttribute (textarea, "name", c_textValueID);
+      Html.AssertAttribute (textarea, "aria-labelledby", c_labelID);
       if (TextValue.TextBoxStyle.AutoPostBack == true)
         Html.AssertAttribute (textarea, "onchange", string.Format("javascript:__doPostBack('{0}','')", c_textValueID));
       CheckTextAreaStyle (textarea, false, withStyle);
@@ -227,6 +231,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       var label = Html.GetAssertedChildElement (content, "span", 0);
       Html.AssertAttribute (label, "id", c_textValueID);
+      Html.AssertAttribute (label, "aria-labelledby", c_labelID + " " + c_textValueID);
+      Html.AssertAttribute (label, "tabindex", "0");
       Html.AssertTextNode (label, BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText, 0);
       Html.GetAssertedChildElement (label, "br", 1);
       Html.AssertTextNode (label, BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText, 2);

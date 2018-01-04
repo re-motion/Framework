@@ -26,6 +26,7 @@ namespace OBWTest
   public class SingleTestTreeView : SingleBocTestBasePage
   {
     protected Label TreeViewLabel;
+    protected Label PersonTreeViewLabel;
     protected Button PostBackButton;
     protected FormGridManager FormGridManager;
     protected BindableObjectDataSourceControl CurrentObject;
@@ -63,6 +64,7 @@ namespace OBWTest
     protected override void OnPreRender (EventArgs e)
     {
       BocTreeNode node = PersonTreeView.SelectedNode;
+      PersonTreeView.AssignLabel (PersonTreeViewLabel.ClientID);
       base.OnPreRender (e);
     }
 

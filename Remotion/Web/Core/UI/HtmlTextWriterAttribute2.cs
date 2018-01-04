@@ -27,6 +27,7 @@ namespace Remotion.Web.UI
     public const string AriaAutoComplete = "aria-autocomplete";
     public const string AriaChecked = "aria-checked";
     public const string AriaControls = "aria-controls";
+    public const string AriaDescribedBy = "aria-describedby";
     public const string AriaDisabled = "aria-disabled";
     public const string AriaExpanded = "aria-expanded";
     public const string AriaHasPopup = "aria-haspopup";
@@ -34,6 +35,7 @@ namespace Remotion.Web.UI
     public const string AriaLabel = "aria-label";
     public const string AriaLabelledBy = "aria-labelledby";
     public const string AriaOwns = "aria-owns";
+    public const string AriaReadOnly = "aria-readonly";
     public const string AriaSelected = "aria-selected";
     public const string Hidden = "hidden";
     public const string Role = "role";

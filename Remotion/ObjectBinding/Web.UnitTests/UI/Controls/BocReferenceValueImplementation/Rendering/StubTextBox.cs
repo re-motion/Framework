@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
   {
     protected override void Render (HtmlTextWriter writer)
     {
-      writer.WriteLine ("TextBox");
+      writer.WriteLine ("<input type=\"stub\"/>");
     }
   }
 }

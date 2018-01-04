@@ -81,6 +81,13 @@ public class SmartLabel: WebControl, IControl
 
     var resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
     LoadResources (resourceManager);
+
+    if (!string.IsNullOrEmpty (ForControl))
+    {
+      var smartControl = NamingContainer.FindControl (ForControl) as ISmartControl;
+      if (smartControl != null)
+        smartControl.AssignLabel (ClientID);
+    }
   }
 
   protected override void Render(HtmlTextWriter writer)

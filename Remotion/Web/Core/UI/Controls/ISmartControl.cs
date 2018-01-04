@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -59,6 +60,8 @@ namespace Remotion.Web.UI.Controls
     ///   with labels. This flag has been introduced due to a bug in Microsoft Internet Explorer.
     /// </remarks>
     bool UseLabel { get; }
+
+    void AssignLabel ([NotNull] string labelID);
 
     //  /// <summary>
     //  ///   If UseInputControlCSS is true, the control requires special formatting.

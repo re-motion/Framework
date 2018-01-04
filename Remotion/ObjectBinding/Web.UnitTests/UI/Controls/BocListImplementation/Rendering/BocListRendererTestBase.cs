@@ -17,6 +17,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -75,6 +76,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Stub (list => list.ClientID).Return ("MyList");
       List.Stub (mock => mock.ControlType).Return ("BocList");
       List.Stub (list => list.HasClientScript).Return (true);
+      List.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton ("TheLabel"));
 
       List.Stub (list => list.DataSource).Return (MockRepository.GenerateStub<IBusinessObjectDataSource>());
       List.DataSource.BusinessObject = BusinessObject;

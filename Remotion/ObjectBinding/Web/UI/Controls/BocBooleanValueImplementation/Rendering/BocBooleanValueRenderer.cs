@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       AddAttributesToRender (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      var labelControl = new Label();
+      var labelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
       var imageControl = new Image();
       var hiddenFieldControl = new HiddenField { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       var dataValueReadOnlyControl = new Label { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
@@ -116,10 +116,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         if (renderingContext.Control.Value.HasValue)
           dataValueReadOnlyControl.Attributes.Add ("data-value", renderingContext.Control.Value.Value.ToString());
         dataValueReadOnlyControl.RenderControl (renderingContext.Writer);
-        linkControl.Attributes.Add ("aria-readonly", "true");
+        linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
       }
       linkControl.Controls.Add (imageControl);
+      linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
       linkControl.RenderControl (renderingContext.Writer);
+
       labelControl.RenderControl (renderingContext.Writer);
 
       renderingContext.Writer.RenderEndTag();
@@ -146,6 +148,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       // isClientScriptEnabled also includes IsReadOnly
       linkControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
       linkControl.Attributes.Add ("href", "#");
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
 
       if (!isClientScriptEnabled)
         return;
@@ -265,24 +270,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       imageControl.ImageUrl = imageUrl;
       imageControl.GenerateEmptyAlternateText = true;
 
-      if (renderingContext.Control.ShowDescription)
-        labelControl.Text = description;
-      else
+      labelControl.Text = description;
+      if (!renderingContext.Control.ShowDescription)
+      {
         linkControl.ToolTip = description;
+        labelControl.Attributes.Add (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+      }
 
       labelControl.Width = Unit.Empty;
       labelControl.Height = Unit.Empty;
       labelControl.ApplyStyle (renderingContext.Control.LabelStyle);
-    }
-
-    private string GetLabelName (BocBooleanValueRenderingContext renderingContext)
-    {
-      return renderingContext.Control.ClientID + "_LabelValue";
-    }
-
-    private string GetImageName (BocBooleanValueRenderingContext renderingContext)
-    {
-      return renderingContext.Control.ClientID + "_Image";
     }
 
     public override string GetCssClassBase (IBocBooleanValue control)

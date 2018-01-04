@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -44,6 +45,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private const string c_clientID = "MyReferenceValue";
     private const string c_valueName = "MyReferenceValue_SelectedValue";
     private const string c_uniqueIdentifier = "uniqueidentifiert";
+    private const string c_labelID = "TheLabel";
 
     private enum OptionMenuConfiguration
     {
@@ -75,6 +77,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control = MockRepository.GenerateStub<IBocReferenceValue>();
       Control.Stub (stub => stub.ClientID).Return (c_clientID);
       Control.Stub (stub => stub.ControlType).Return ("BocReferenceValue");
+      Control.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
       Control.Stub (stub => stub.Command).Return (new BocCommand());
       Control.Stub (stub => stub.BusinessObjectUniqueIdentifier).Return (c_uniqueIdentifier);
       Control.Command.Type = CommandType.Event;
@@ -460,6 +463,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var select = document.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 1).GetAssertedChildElement ("select", 0);
       select.AssertAttributeValueEquals ("id", c_valueName);
       select.AssertAttributeValueEquals ("name", c_valueName);
+      Html.AssertAttribute (select, "aria-labelledby", c_labelID);
     }
 
     [Test]
@@ -485,6 +489,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
       var commandLink = span.GetAssertedChildElement ("a", 0);
       commandLink.AssertAttributeValueEquals ("id", Control.ClientID + "_Command");
+      commandLink.AssertAttributeValueEquals ("aria-labelledby", c_labelID);
       commandLink.AssertAttributeValueEquals ("class", "command");
       commandLink.AssertChildElementCount (1);
 

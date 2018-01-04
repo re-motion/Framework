@@ -25,6 +25,7 @@
     <table width="100%">
       <tr>
         <td valign="top" width="33%">
+          <asp:Label ID="PersonTreeViewLabel" runat="server" hidden="hidden">Persons</asp:Label>
           <ros:PersonTreeView ID="PersonTreeView" runat="server" DataSourceControl="CurrentObject" CssClass="TreeBlock" EnableTopLevelExpander="False" EnableLookAheadEvaluation="True" />
           <asp:Button ID="RefreshPesonTreeViewButton" runat="server" Text="Refresh"></asp:Button>
         </td>
