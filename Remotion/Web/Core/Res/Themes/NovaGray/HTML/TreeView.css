@@ -598,8 +598,6 @@ span.treeViewNodeHead
 /* Applied to the node's head if it is the selected node. */
 span.treeViewNodeHeadSelected
 {
-  background-color: #C5E0FC;
-  color: Black;
 }
 
 span.treeViewNodeHead,
@@ -659,7 +657,13 @@ span.treeViewNodeHeadSelected a:active
 span.treeViewNodeHead img,
 span.treeViewNodeHeadSelected img
 {
-  vertical-align: bottom;
+  vertical-align: -4px;
+}
+
+span.treeViewNodeHead span,
+span.treeViewNodeHeadSelected span
+{
+  vertical-align: -1px;
 }
 
 span.treeViewNode ul

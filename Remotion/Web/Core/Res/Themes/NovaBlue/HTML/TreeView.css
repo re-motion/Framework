@@ -354,8 +354,6 @@ span.treeViewNodeHead
 /* Applied to the node's head if it is the selected node. */
 span.treeViewNodeHeadSelected
 {
-  background-color: Highlight;
-  color: HighlightText;
 }
 
 span.treeViewNodeHead,
@@ -372,6 +370,7 @@ span.treeViewNodeHead a
 
 span.treeViewNodeHeadSelected a
 {
+  background-color: Highlight;
   color: HighlightText;
   padding: 2px;
 }
