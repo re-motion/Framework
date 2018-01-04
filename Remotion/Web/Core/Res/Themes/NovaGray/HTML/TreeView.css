@@ -33,16 +33,19 @@ ul.treeViewNodeChildrenNoLines
   list-style: none;
 }
 
+ul.treeViewRoot li
+{
+  outline: none;
+}
+
 ul.treeViewRoot > li,
 ul.treeViewTopLevelNodeChildren > li
 {
-  outline: none;
 }
 
 ul.treeViewNodeChildren > li,
 ul.treeViewNodeChildrenNoLines > li
 {
-  outline: none;
 }
 
 /* Applied to the node itself */
@@ -307,10 +310,260 @@ ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  
   padding-left: calc(19px * 49);
 }
 
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren span.treeViewNode
+{
+  padding-left: calc(19px * 0);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul span.treeViewNode
+{
+  padding-left: calc(19px * 1);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 2);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 3);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 4);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul span.treeViewNode
+{
+  padding-left: calc(19px * 5);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 6);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 7);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 8);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 9);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
+{
+  padding-left: calc(19px * 10);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 11);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 12);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 13);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 14);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
+{
+  padding-left: calc(19px * 15);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 16);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 17);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 18);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 19);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
+{
+  padding-left: calc(19px * 20);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 21);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 22);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 23);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 24);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
+{
+  padding-left: calc(19px * 25);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 26);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 27);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 28);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 29);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
+{
+  padding-left: calc(19px * 30);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 31);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 32);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 33);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 34);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
+{
+  padding-left: calc(19px * 35);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 36);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 37);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 38);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 39);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
+{
+  padding-left: calc(19px * 40);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 41);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 42);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 43);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 44);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
+{
+  padding-left: calc(19px * 45);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 46);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 47);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
+{
+  padding-left: calc(19px * 48);
+}
+
 /* Restart nested layout at level 50 */
 ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul
 {
   padding-left: calc(19px * 50);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul
+{
+  padding-left: calc(19px * 49);
 }
 
 ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul
@@ -323,27 +576,18 @@ ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  
   padding-left: 0;
 }
 
-span.treeViewNode a
-{
-  display: inline-block;
-  vertical-align: bottom;
-}
-
-span.treeViewNode img
-{
-  vertical-align: bottom;
-}
-
-span.treeViewNode span
-{
-  display: inline-block;
-}
-
 /* Applied to the node's expander. */
 span.treeViewNode > a
 {
   cursor: default;
   outline: none;
+  display: block;
+  float: left;
+}
+
+span.treeViewNode > a img
+{
+  vertical-align: bottom;
 }
 
 /* Applied to the node's head. */
@@ -361,19 +605,23 @@ span.treeViewNodeHeadSelected
 span.treeViewNodeHead,
 span.treeViewNodeHeadSelected
 {
-  vertical-align: middle;
+  display: block;
+  height: 1.7em;
 }
 
-span.treeViewNodeHead a
+/* Nodes with an expander icon */
+span.treeViewNode > a + span.treeViewNodeHead,
+span.treeViewNode > a + span.treeViewNodeHeadSelected
 {
-  padding: 2px;
-  color: Black;
+  margin-left: 19px;
 }
 
+span.treeViewNodeHead a,
 span.treeViewNodeHeadSelected a
 {
-  color: Black;
+  vertical-align: -0.4em;
   padding: 2px;
+  color: Black;
 }
 
 li:focus > span.treeViewNode span.treeViewNodeHead a,
@@ -406,6 +654,12 @@ span.treeViewNodeHeadSelected a:active
   padding: 1px;
   border: 1px solid #569CE0;
   background-color: #C5E0FC;
+}
+
+span.treeViewNodeHead img,
+span.treeViewNodeHeadSelected img
+{
+  vertical-align: bottom;
 }
 
 span.treeViewNode ul
