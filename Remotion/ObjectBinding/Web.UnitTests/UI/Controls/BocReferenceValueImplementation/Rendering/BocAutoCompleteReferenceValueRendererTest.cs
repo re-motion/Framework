@@ -595,6 +595,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private void AssertDropDownListSpan (XmlNode contentSpan, AutoPostBack autoPostBack)
     {
       var inputSpan = contentSpan.GetAssertedChildElement ("span", 0);
+      inputSpan.AssertAttributeValueEquals ("role", "combobox");
+      inputSpan.AssertAttributeValueEquals ("aria-labelledby", c_labelID);
+      inputSpan.AssertAttributeValueEquals ("aria-expanded", "false");
+      inputSpan.AssertAttributeValueEquals ("aria-haspopup", "listbox");
+      inputSpan.AssertAttributeValueEquals ("aria-owns", "");
       inputSpan.AssertChildElementCount (1);
       var inputField = inputSpan.GetAssertedChildElement ("input", 0);
       inputField.AssertAttributeValueEquals ("type", "stub");

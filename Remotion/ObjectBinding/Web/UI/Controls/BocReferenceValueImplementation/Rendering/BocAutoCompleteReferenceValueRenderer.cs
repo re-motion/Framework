@@ -310,6 +310,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Listbox);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaOwns, "");
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       bool autoPostBack = textBox.AutoPostBack;
@@ -375,10 +378,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaControls, "");
       textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaActiveDescendant, "");
       textBox.Attributes.Add ("autocomplete", "off");
-
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
 
       return textBox;
     }
