@@ -248,6 +248,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       string checkedState;
       string imageUrl;
       string description;
+      bool hasRequiredAttribute;
 
       if (!renderingContext.Control.Value.HasValue)
       {
@@ -256,6 +257,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         description = string.IsNullOrEmpty (renderingContext.Control.NullDescription)
             ? resourceSet.DefaultNullDescription
             : renderingContext.Control.NullDescription;
+        hasRequiredAttribute = renderingContext.Control.IsRequired;
       }
       else if (renderingContext.Control.Value.Value)
       {
@@ -264,6 +266,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         description = string.IsNullOrEmpty (renderingContext.Control.TrueDescription)
             ? resourceSet.DefaultTrueDescription
             : renderingContext.Control.TrueDescription;
+        hasRequiredAttribute = false;
       }
       else
       {
@@ -272,9 +275,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         description = string.IsNullOrEmpty (renderingContext.Control.FalseDescription)
             ? resourceSet.DefaultFalseDescription
             : renderingContext.Control.FalseDescription;
+        hasRequiredAttribute = false;
       }
 
       linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaChecked, checkedState);
+      if (hasRequiredAttribute)
+        linkControl.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
 
       imageControl.ImageUrl = imageUrl;
       imageControl.GenerateEmptyAlternateText = true;

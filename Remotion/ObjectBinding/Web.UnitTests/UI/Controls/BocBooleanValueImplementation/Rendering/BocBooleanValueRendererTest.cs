@@ -306,7 +306,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertChildElementCount (outerSpan, 3);
 
       var link = Html.GetAssertedChildElement (outerSpan, "a", 1);
-      CheckLinkAttributes (link, checkedState, null, _booleanValue.IsReadOnly);
+      CheckLinkAttributes (link, checkedState, null, _booleanValue.IsReadOnly, _booleanValue.IsRequired && value == "null");
 
       var image = Html.GetAssertedChildElement (link, "img", 0);
       checkImageAttributes (image, iconUrl);
@@ -353,7 +353,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute (image, "alt", "");
     }
 
-    private void CheckLinkAttributes (XmlNode link, string checkedState, string description, bool isReadOnly)
+    private void CheckLinkAttributes (XmlNode link, string checkedState, string description, bool isReadOnly, bool isRequired)
     {
       Html.AssertAttribute (link, "id", c_displayValueName);
       Html.AssertAttribute (link, "aria-labelledby", c_labelID);
@@ -362,6 +362,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute (link, "aria-checked", checkedState);
       if (isReadOnly)
         Html.AssertAttribute (link, "aria-readonly", "true");
+      if (isRequired)
+        Html.AssertAttribute (link, "required", "required");
       Html.AssertAttribute (link, "href", "#");
       if (!isReadOnly)
       {
