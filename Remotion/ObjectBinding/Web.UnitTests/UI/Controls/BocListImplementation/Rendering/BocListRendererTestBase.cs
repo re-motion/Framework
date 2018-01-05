@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
@@ -118,6 +119,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           GlobalizationService.GetResourceManager (typeof (ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier)));
 
       List.Stub (stub => stub.ResolveClientUrl (null)).IgnoreArguments ().Do ((Func<string, string>) (url => url.TrimStart ('~')));
+
+      List.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
     }
   }
 }

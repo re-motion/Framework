@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Linq;
 using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.Design;
@@ -1021,6 +1022,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     string IBocReferenceValueBase.GetLabelText ()
     {
       return GetLabelText();
+    }
+
+    IEnumerable<string> IBocReferenceValueBase.GetValidationErrors ()
+    {
+      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
     }
 
     /// <summary>

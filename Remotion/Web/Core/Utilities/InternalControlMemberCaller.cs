@@ -20,6 +20,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -74,6 +75,9 @@ namespace Remotion.Web.Utilities
 
     private static readonly Lazy<Action<Control, HtmlTextWriter, ICollection>> s_RenderChildrenInternal =
         GetLazyMethod<Action<Control, HtmlTextWriter, ICollection>> ("RenderChildrenInternal");
+
+    private static readonly Lazy<Func<RadioButtonList, RadioButton>> s_get_ControlToRepeat =
+        GetLazyMethod<Func<RadioButtonList, RadioButton>> ("get_ControlToRepeat");
 
     public void SetControlState (Control control, ControlState value)
     {
@@ -255,6 +259,15 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull ("updatePanel", updatePanel);
 
       s_updatePanelRenderedFieldInfo.SetValue (updatePanel, value);
+    }
+
+    /// <summary>Encapsulates the get-access the the <see cref="RadioButtonList"/>'s ControlToRepeat property.</summary>
+    public RadioButton GetControlToRepeat (RadioButtonList radioButtonList)
+    {
+      ArgumentUtility.CheckNotNull ("radioButtonList", radioButtonList);
+
+      //  private RadioButton System.Web.UI.WebControls.RadioButtonList.ControlToRepeat
+      return s_get_ControlToRepeat.Value (radioButtonList);
     }
 
     private static Lazy<T> GetLazyMethod<T> (string name)

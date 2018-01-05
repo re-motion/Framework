@@ -390,14 +390,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     }
 
     public void RenderSimpleColumnCellEditModeControl (
-        HtmlTextWriter writer, 
+        HtmlTextWriter writer,
         BocSimpleColumnDefinition column,
         IBusinessObject businessObject,
-        int columnIndex)
+        int columnIndex,
+        string columnTitleID)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("column", column);
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNullOrEmpty ("columnTitleID", columnTitleID);
 
       if (! HasEditControl (columnIndex))
         return;
@@ -451,6 +453,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       writer.AddAttribute (HtmlTextWriterAttribute.Class, "control");
       writer.RenderBeginTag (HtmlTextWriterTag.Span); // Span Control
+
+      foreach (BaseValidator validator in validators)
+        editModeControl.RegisterValidator (validator);
+
+      editModeControl.AssignLabel (columnTitleID);
 
       editModeControl.RenderControl (writer);
 

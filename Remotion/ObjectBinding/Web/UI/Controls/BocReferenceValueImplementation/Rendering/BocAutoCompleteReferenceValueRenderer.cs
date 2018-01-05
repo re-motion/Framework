@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -305,6 +306,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void RenderEditModeValue (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext, TextBox textBox)
     {
+      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID (renderingContext);
+
+      SetValidationErrorOnControl (textBox, validationErrorsID, validationErrors);
+
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassInput);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Listbox);
@@ -338,6 +344,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onchange, postBackEventReference);
       }
       hiddenField.RenderControl (renderingContext.Writer);
+
+      RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
     }
 
     private void RenderDropdownButton (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)
@@ -378,6 +386,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaControls, "");
       textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaActiveDescendant, "");
       textBox.Attributes.Add ("autocomplete", "off");
+
+      if (renderingContext.Control.IsRequired)
+        textBox.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
 
       return textBox;
     }

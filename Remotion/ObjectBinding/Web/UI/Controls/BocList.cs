@@ -3569,6 +3569,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return IsDesignMode; }
     }
 
+    IEnumerable<string> IBocList.GetValidationErrors ()
+    {
+      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
+    }
+
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()
     {
       return GetLabelIDs();

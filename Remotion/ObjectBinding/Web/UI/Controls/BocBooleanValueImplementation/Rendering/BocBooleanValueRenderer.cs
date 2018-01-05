@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -82,6 +83,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       AddAttributesToRender (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
+      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID (renderingContext);
+
       var labelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
       var imageControl = new Image();
       var hiddenFieldControl = new HiddenField { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
@@ -120,9 +124,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
       linkControl.Controls.Add (imageControl);
       linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
+
+      SetValidationErrorOnControl (linkControl, validationErrorsID, validationErrors);
+
       linkControl.RenderControl (renderingContext.Writer);
 
       labelControl.RenderControl (renderingContext.Writer);
+
+      RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
 
       renderingContext.Writer.RenderEndTag();
     }

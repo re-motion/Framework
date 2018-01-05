@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -72,6 +73,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       AddAttributesToRender (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
+      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID (renderingContext);
+
       var checkBoxControl = new HtmlInputCheckBox { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       var labelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
 
@@ -119,6 +123,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         if (renderingContext.Control.IsDescriptionEnabled)
           checkBoxControl.Attributes.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
 
+        SetValidationErrorOnControl (checkBoxControl, validationErrorsID, validationErrors);
+
         checkBoxControl.RenderControl (renderingContext.Writer);
 
         if (renderingContext.Control.IsDescriptionEnabled)
@@ -126,6 +132,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
           PrepareLabel (renderingContext, description, labelControl);
           labelControl.RenderControl (renderingContext.Writer);
         }
+
+        RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
       }
 
       renderingContext.Writer.RenderEndTag ();

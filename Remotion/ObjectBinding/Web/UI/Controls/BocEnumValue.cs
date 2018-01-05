@@ -738,6 +738,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return GetNullItemText();
     }
 
+    IEnumerable<string> IBocEnumValue.GetValidationErrors ()
+    {
+      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
+    }
+
     string IControlWithDiagnosticMetadata.ControlType
     {
       get { return "BocEnumValue"; }

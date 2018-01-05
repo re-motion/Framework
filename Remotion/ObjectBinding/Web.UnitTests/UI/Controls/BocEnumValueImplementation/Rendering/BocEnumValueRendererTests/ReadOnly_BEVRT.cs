@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -37,6 +38,7 @@ using Remotion.ServiceLocation;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
+using Remotion.Web.Utilities;
 using Rhino.Mocks;
 using AttributeCollection = System.Web.UI.AttributeCollection;
 
@@ -52,6 +54,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     private readonly Unit _width = Unit.Point (173);
     private readonly Unit _height = Unit.Point (17);
     private IEnumerationValueInfo[] _enumerationInfos;
+    private IInternalControlMemberCaller _internalControlMemberCaller;
 
     [SetUp]
     public void SetUp ()
@@ -104,6 +107,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
       _enumValue.Stub (mock => mock.ListControlStyle).Return (new ListControlStyle());
       _enumValue.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
+
+      _enumValue.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
+
+      _internalControlMemberCaller = SafeServiceLocator.Current.GetInstance<IInternalControlMemberCaller>();
     }
 
     [Test]
@@ -175,7 +182,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       var renderer = new BocEnumValueRenderer (
           resourceUrlFactory,
           GlobalizationService,
-          RenderingFeatures.WithDiagnosticMetadata);
+          RenderingFeatures.WithDiagnosticMetadata,
+          _internalControlMemberCaller);
       renderer.Render (new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue));
       
       var document = Html.GetResultDocument();
@@ -188,7 +196,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
     private void AssertLabel (TestEnum? value, bool withStyle)
     {
-      var renderer = new BocEnumValueRenderer (new FakeResourceUrlFactory (), GlobalizationService, RenderingFeatures.Default);
+      var renderer = new BocEnumValueRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.Default,
+          _internalControlMemberCaller);
       renderer.Render (new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue));
 
       var document = Html.GetResultDocument();

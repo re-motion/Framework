@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
@@ -324,6 +325,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()
     {
       return GetLabelIDs();
+    }
+
+    IEnumerable<string> IBocBooleanValueBase.GetValidationErrors ()
+    {
+      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
     }
 
     protected abstract string ControlType { get; }

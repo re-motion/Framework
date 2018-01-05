@@ -30,10 +30,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     IBusinessObjectBoundEditableWebControl[] GetEditControlsAsArray();
 
     void RenderSimpleColumnCellEditModeControl (
-        HtmlTextWriter writer, 
+        HtmlTextWriter writer,
         BocSimpleColumnDefinition column,
         IBusinessObject businessObject,
-        int columnIndex);
+        int columnIndex,
+        string columnTitleID);
 
     IBusinessObjectBoundEditableWebControl GetEditControl (int index);
   }

@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Web.Utilities
@@ -25,7 +26,7 @@ namespace Remotion.Web.Utilities
   /// Defines an API for performing operations on ASP.NET WebForms which are only possible by invoking non-public APIs.
   /// </summary>
   /// <seealso cref="InternalControlMemberCaller"/>
- public interface IInternalControlMemberCaller
+  public interface IInternalControlMemberCaller
   {
     void SetControlState (Control control, ControlState value);
     ControlState GetControlState (Control control);
@@ -70,5 +71,8 @@ namespace Remotion.Web.Utilities
     PageStatePersister GetPageStatePersister (Page page);
 
     string SetCollectionReadOnly (ControlCollection collection, string exceptionMessage);
+
+    /// <summary>Encapsulates the get-access the the <see cref="RadioButtonList"/>'s ControlToRepeat property.</summary>
+    RadioButton GetControlToRepeat (RadioButtonList radioButtonList);
   }
 }

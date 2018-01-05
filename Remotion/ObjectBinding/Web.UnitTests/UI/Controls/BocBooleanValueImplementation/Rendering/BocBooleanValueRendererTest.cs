@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -127,6 +128,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
 
       _booleanValue.Stub (stub => stub.CreateResourceSet ()).Return (_resourceSet);
+
+      _booleanValue.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
     }
 
     [Test]

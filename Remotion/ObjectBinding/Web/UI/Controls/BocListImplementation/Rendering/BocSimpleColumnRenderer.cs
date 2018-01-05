@@ -102,7 +102,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           renderingContext.Writer,
           renderingContext.ColumnDefinition,
           businessObject,
-          renderingContext.ColumnIndex);
+          renderingContext.ColumnIndex,
+          GetColumnTitleID (renderingContext));
 
       renderingContext.Writer.RenderEndTag(); // End span
     }

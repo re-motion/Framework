@@ -15,7 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Remotion.Globalization;
+using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -27,9 +30,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   /// <seealso cref="BocBooleanValueRenderer"/>
   /// <seealso cref="BocCheckBoxRenderer"/>
   /// </summary>
-  /// <typeparam name="T">The concrete control or corresponding interface that will be rendered.</typeparam>
-  public abstract class BocBooleanValueRendererBase<T> : BocRendererBase<T>
-      where T : IBocBooleanValueBase
+  /// <typeparam name="TControl">The concrete control or corresponding interface that will be rendered.</typeparam>
+  public abstract class BocBooleanValueRendererBase<TControl> : BocRendererBase<TControl>
+      where TControl : IBocBooleanValueBase
   {
     protected BocBooleanValueRendererBase (
         IResourceUrlFactory resourceUrlFactory,
@@ -37,6 +40,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         IRenderingFeatures renderingFeatures)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
+    }
+
+    protected IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
+    {
+      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+
+      if (renderingContext.Control.IsReadOnly)
+        return Enumerable.Empty<string>();
+
+      return renderingContext.Control.GetValidationErrors();
+    }
+
+    protected string GetValidationErrorsID (BocRenderingContext<TControl> renderingContext)
+    {
+      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+
+      return renderingContext.Control.ClientID + "_ValidationErros";
     }
   }
 }

@@ -500,7 +500,7 @@ function BocList_CreateFakeTableHead(tableContainer, scrollableContainer)
   fakeTableHeadContainer.hide();
   fakeTableHeadContainer.append (fakeTableHeadWidthContainer);
 
-  realTableHead.find('a, input').each(function () { $(this).removeAttr('id').attr({ tabIndex: -1 }).attr({ tabIndex: -1 }); });
+  realTableHead.find('*').each(function () { $(this).removeAttr('id').attr({ tabIndex: -1 }).attr({ tabIndex: -1 }); });
 
   scrollableContainer.before(fakeTableHeadContainer);
 

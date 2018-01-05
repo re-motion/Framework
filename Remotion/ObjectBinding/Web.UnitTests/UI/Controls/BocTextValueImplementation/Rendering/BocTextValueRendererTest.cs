@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
@@ -53,6 +54,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       TextValue.Stub (stub => stub.GetValueName()).Return (c_valueName);
       TextValue.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
       TextValue.Stub (mock => mock.CssClass).PropertyBehavior();
+      TextValue.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
 
       var pageStub = MockRepository.GenerateStub<IPage>();
       pageStub.Stub (stub => stub.WrappedInstance).Return (new PageMock());

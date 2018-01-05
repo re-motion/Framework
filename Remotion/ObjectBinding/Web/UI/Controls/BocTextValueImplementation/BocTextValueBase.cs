@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
@@ -300,6 +301,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     protected string GetValueName ()
     {
       return ClientID + c_textboxIDPostfix;
+    }
+
+    IEnumerable<string> IBocTextValueBase.GetValidationErrors ()
+    {
+      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct().Distinct();
     }
 
     [Obsolete ("For DependDB only.", true)]

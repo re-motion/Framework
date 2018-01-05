@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Remotion.Web.UI.Controls;
 
@@ -30,5 +31,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation
     IEnumerationValueInfo[] GetEnabledValues();
     string GetNullItemText ();
     string GetValueName ();
+
+    /// <summary>
+    /// Gets the list of validation errors for this control.
+    /// </summary>
+    IEnumerable<string> GetValidationErrors ();
   }
 }

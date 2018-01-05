@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -114,6 +115,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       var dateTextBoxLabelID = renderingContext.Control.ClientID + "_DateLabel";
       var timeTextBoxLabelID = renderingContext.Control.ClientID + "_TimeLabel";
 
+      var dateValueValidationErrors = GetDateValueValidationErrorsToRender (renderingContext).ToArray();
+      var timeValueValidationErrors = GetTimeValueValidationErrorsToRender (renderingContext).ToArray();
+
+      var dateValueValidationErrorsID = GetDateValueValidationErrorsID (renderingContext);
+      var timeValueValidationErrorsID = GetTimeValueValidationErrorsID (renderingContext);
+
       var dateTextBox = _dateTextBox;
       dateTextBox.ID = renderingContext.Control.GetDateValueName();
       dateTextBox.CssClass = CssClassDate;
@@ -126,6 +133,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       dateTextBox.Page = renderingContext.Control.Page.WrappedInstance;
       dateTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy,
           string.Join (" ", renderingContext.Control.GetLabelIDs().Concat (dateTextBoxLabelID)));
+      if (renderingContext.Control.IsRequired)
+        dateTextBox.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
 
       var timeTextBox = _timeTextBox;
       timeTextBox.ID = renderingContext.Control.GetTimeValueName();
@@ -139,6 +148,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       timeTextBox.Page = renderingContext.Control.Page.WrappedInstance;
       timeTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy,
           string.Join (" ", renderingContext.Control.GetLabelIDs().Concat (timeTextBoxLabelID)));
+      if (renderingContext.Control.IsRequired)
+        timeTextBox.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
 
       var datePickerButton = renderingContext.Control.DatePickerButton;
       datePickerButton.AlternateText = renderingContext.Control.GetDatePickerText();
@@ -175,6 +186,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
             HtmlTextWriterAttribute.Class, CssClassDateInputWrapper + " " + GetPositioningCssClass (renderingContext, DateTimeValuePart.Date));
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
+        SetValidationErrorOnControl (dateTextBox, dateValueValidationErrorsID, dateValueValidationErrors);
+
         dateTextBox.RenderControl (renderingContext.Writer);
 
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, dateTextBoxLabelID);
@@ -183,6 +196,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         renderingContext.Writer.Write (resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.DateLabelText));
         renderingContext.Writer.RenderEndTag();
         
+        RenderValidationErrors (renderingContext, dateValueValidationErrorsID, dateValueValidationErrors);
+
         renderingContext.Writer.RenderEndTag();
 
         datePickerButton.CssClass = GetPositioningCssClass (renderingContext, DateTimeValuePart.Picker);
@@ -196,6 +211,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
             HtmlTextWriterAttribute.Class, CssClassTimeInputWrapper + " " + GetPositioningCssClass (renderingContext, DateTimeValuePart.Time));
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
+        SetValidationErrorOnControl (timeTextBox, timeValueValidationErrorsID, timeValueValidationErrors);
+
         timeTextBox.RenderControl (renderingContext.Writer);
 
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, timeTextBoxLabelID);
@@ -203,6 +220,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
         renderingContext.Writer.Write (resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.TimeLabelText));
         renderingContext.Writer.RenderEndTag();
+
+        RenderValidationErrors (renderingContext, timeValueValidationErrorsID, timeValueValidationErrors);
 
         renderingContext.Writer.RenderEndTag();
       }
@@ -373,6 +392,32 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
       renderingContext.Writer.Write (descriptionLabelText);
       renderingContext.Writer.RenderEndTag();
+    }
+
+    private IEnumerable<string> GetDateValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
+    {
+      if (renderingContext.Control.IsReadOnly)
+        return Enumerable.Empty<string>();
+
+      return renderingContext.Control.GetDateValueValidationErrors();
+    }
+
+    private string GetDateValueValidationErrorsID (BocRenderingContext<IBocDateTimeValue> renderingContext)
+    {
+      return renderingContext.Control.ClientID + "_DateValueValidationErros";
+    }
+
+    private IEnumerable<string> GetTimeValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
+    {
+      if (renderingContext.Control.IsReadOnly)
+        return Enumerable.Empty<string>();
+
+      return renderingContext.Control.GetTimeValueValidationErrors();
+    }
+
+    private string GetTimeValueValidationErrorsID (BocRenderingContext<IBocDateTimeValue> renderingContext)
+    {
+      return renderingContext.Control.ClientID + "_TimeValueValidationErros";
     }
   }
 }

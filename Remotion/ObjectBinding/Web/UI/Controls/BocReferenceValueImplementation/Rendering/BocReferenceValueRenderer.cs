@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -193,7 +194,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void RenderEditModeValue (BocRenderingContext<IBocReferenceValue> renderingContext, DropDownList dropDownList)
     {
+      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID (renderingContext);
+
+      SetValidationErrorOnControl (dropDownList, validationErrorsID, validationErrors);
+
       dropDownList.RenderControl (renderingContext.Writer);
+
+      RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
     }
 
     private DropDownList GetDropDownList (BocRenderingContext<IBocReferenceValue> renderingContext)
@@ -214,6 +222,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
       if (!string.IsNullOrEmpty (labelsID))
         dropDownList.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
+      if (renderingContext.Control.IsRequired && dropDownList.Items.FindByValue (renderingContext.Control.NullValueString) != null)
+        dropDownList.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
 
       return dropDownList;
     }

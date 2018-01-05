@@ -999,6 +999,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return InternalTimeValue; }
     }
 
+    IEnumerable<string> IBocDateTimeValue.GetDateValueValidationErrors ()
+    {
+      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
+    }
+
+    IEnumerable<string> IBocDateTimeValue.GetTimeValueValidationErrors ()
+    {
+      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
+    }
+
     string IControlWithDiagnosticMetadata.ControlType
     {
       get { return "BocDateTimeValue"; }

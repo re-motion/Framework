@@ -147,12 +147,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IEditableRow editableRow = MockRepository.GenerateMock<IEditableRow>();
       editableRow.Stub (mock => mock.HasEditControl (0)).IgnoreArguments().Return (true);
       editableRow.Stub (mock => mock.GetEditControl (0)).IgnoreArguments().Return (MockRepository.GenerateStub<IBocTextValue>());
-      editableRow.Expect (
-          mock => mock.RenderSimpleColumnCellEditModeControl (
-              Html.Writer,
-              Column,
-              firstObject,
-              0));
 
       List.EditModeController.Stub (mock => mock.GetEditableRow (EventArgs.ListIndex)).Return (editableRow);
 
@@ -175,7 +169,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
               Html.Writer,
               Column,
               firstObject,
-              0));
+              0,
+              List.ClientID + "_0_Title"));
     }
   }
 }

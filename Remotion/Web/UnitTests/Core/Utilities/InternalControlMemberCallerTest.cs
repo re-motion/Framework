@@ -22,6 +22,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
@@ -471,6 +472,13 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     public void RenderChildrenInternal_CanInvoke ()
     {
       _memberCaller.RenderChildrenInternal (_parent, new HtmlTextWriter(new StringWriter()), _parent.Controls);
+    }
+
+    [Test]
+    public void GetControlToRepeat_CanInvoke ()
+    {
+      var radioButtonList = new RadioButtonList();
+      _memberCaller.GetControlToRepeat (radioButtonList);
     }
   }
 }

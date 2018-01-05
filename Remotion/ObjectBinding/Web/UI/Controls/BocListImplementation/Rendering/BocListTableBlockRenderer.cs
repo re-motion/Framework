@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -82,29 +84,50 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private void RenderTable (BocListRenderingContext renderingContext, bool tableHead, bool tableBody)
     {
+      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID (renderingContext);
+
       if (!tableHead && !tableBody)
       {
-        RenderEmptyTable (renderingContext);
-        return;
+        RenderEmptyTable (renderingContext, validationErrorsID, validationErrors);
+      }
+      else
+      {
+        RenderTableOpeningTag (renderingContext, validationErrorsID, validationErrors);
+        RenderTableBlockColumnGroup (renderingContext);
+
+        if (tableHead)
+          RenderTableHead (renderingContext);
+
+        if (tableBody)
+          RenderTableBody (renderingContext);
+
+        RenderTableClosingTag (renderingContext);
       }
 
-      RenderTableOpeningTag (renderingContext);
-      RenderTableBlockColumnGroup (renderingContext);
-
-      if (tableHead)
-        RenderTableHead (renderingContext);
-
-      if (tableBody)
-        RenderTableBody (renderingContext);
-
-      RenderTableClosingTag (renderingContext);
+      RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
     }
 
-    private void RenderEmptyTable (BocListRenderingContext renderingContext)
+    private void RenderEmptyTable (
+        BocListRenderingContext renderingContext,
+        string validationErrorsID,
+        IReadOnlyCollection<string> validationErrors)
     {
       renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+      renderingContext.Writer.AddAttribute ("tabindex", "0");
+
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
+      if (validationErrors.Any())
+      {
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaDescribedBy, validationErrorsID);
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaInvalid, HtmlAriaInvalidAttributeValue.True);
+      }
+
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Table);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
       renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
@@ -167,10 +190,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     }
 
     /// <summary> Renderes the opening tag of the table. </summary>
-    private void RenderTableOpeningTag (BocListRenderingContext renderingContext)
+    private void RenderTableOpeningTag (
+        BocListRenderingContext renderingContext,
+        string validationErrorsID,
+        IReadOnlyCollection<string> validationErrors)
     {
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableContainer);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Table);
+      renderingContext.Writer.AddAttribute ("tabindex", "0");
+      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      if (!string.IsNullOrEmpty (labelsID))
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+      if (validationErrors.Any())
+      {
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaDescribedBy, validationErrorsID);
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaInvalid, HtmlAriaInvalidAttributeValue.True);
+      }
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableScrollContainer);
@@ -181,6 +216,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Table);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Table);
     }
 
@@ -253,6 +289,40 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         else
           renderingContext.Writer.Write (">");
       }
+    }
+
+    private IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<IBocList> renderingContext)
+    {
+      if (renderingContext.Control.IsReadOnly)
+        return Enumerable.Empty<string>();
+
+      return renderingContext.Control.GetValidationErrors();
+    }
+
+    private string GetValidationErrorsID (BocRenderingContext<IBocList> renderingContext)
+    {
+      return renderingContext.Control.ClientID + "_ValidationErros";
+    }
+
+    private void RenderValidationErrors (
+        BocRenderingContext<IBocList> renderingContext,
+        string validationErrorsID,
+        IReadOnlyCollection<string> validationErrors)
+    {
+      if (!validationErrors.Any())
+        return;
+
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, validationErrorsID);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
+      foreach (var validationError in validationErrors)
+      {
+        renderingContext.Writer.Write (validationError);
+        renderingContext.Writer.WriteBreak();
+      }
+
+      renderingContext.Writer.RenderEndTag();
     }
   }
 }

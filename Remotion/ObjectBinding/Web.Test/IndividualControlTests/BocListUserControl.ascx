@@ -23,7 +23,7 @@
   <tr>
     <td colSpan=2><remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue></td></tr>
   <tr>
-    <td>Jobs</td>
+    <td></td>
     <td><remotion:boclist id=JobList runat="server" datasourcecontrol="CurrentObject" showallproperties="True" showavailableviewslist="False" propertyidentifier="Jobs" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" selection="SingleRadioButton" index="Disabled" PageSize="2" ShowSortingOrder="True" Width="100%" Height="10em">
 </remotion:boclist></td></tr>
   <tr>

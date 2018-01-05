@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
@@ -59,6 +61,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       AddAttributesToRender (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
+      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID (renderingContext);
+
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
@@ -72,9 +77,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       if (!isControlHeightEmpty && isInnerControlHeightEmpty)
         renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
 
+      SetValidationErrorOnControl (innerControl, validationErrorsID, validationErrors);
+
       innerControl.RenderControl (renderingContext.Writer);
 
-      renderingContext.Writer.RenderEndTag ();
+      RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
+
+      renderingContext.Writer.RenderEndTag (); // Content Span
       renderingContext.Writer.RenderEndTag ();
     }
 
@@ -109,6 +118,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       if (!string.IsNullOrEmpty (labelsID))
         textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
 
+      if (renderingContext.Control.IsRequired)
+        textBox.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
+
       return textBox;
     }
 
@@ -117,6 +129,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     /// </summary>
     /// <returns>A <see cref="Label"/> control with all relevant properties set and all appropriate styles applied to it.</returns>
     protected abstract Label GetLabel (BocRenderingContext<T> renderingContext);
+
+    private IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<T> renderingContext)
+    {
+      if (renderingContext.Control.IsReadOnly)
+        return Enumerable.Empty<string>();
+
+      return renderingContext.Control.GetValidationErrors();
+    }
+
+    private string GetValidationErrorsID (BocRenderingContext<T> renderingContext)
+    {
+      return renderingContext.Control.ClientID + "_ValidationErros";
+    }
 
     private string CssClassContent
     {

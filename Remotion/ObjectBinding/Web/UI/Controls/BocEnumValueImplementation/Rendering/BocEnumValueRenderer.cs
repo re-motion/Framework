@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
@@ -38,15 +40,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
   [ImplementationFor (typeof (IBocEnumValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocEnumValueRenderer : BocRendererBase<IBocEnumValue>, IBocEnumValueRenderer
   {
+    private readonly IInternalControlMemberCaller _internalControlMemberCaller;
+
     /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
     private const string c_designModeEmptyLabelContents = "##";
 
     public BocEnumValueRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
-        IRenderingFeatures renderingFeatures)
+        IRenderingFeatures renderingFeatures,
+        IInternalControlMemberCaller internalControlMemberCaller)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
+      ArgumentUtility.CheckNotNull ("internalControlMemberCaller", internalControlMemberCaller);
+      
+      _internalControlMemberCaller = internalControlMemberCaller;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -77,6 +85,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
           : HtmlTextWriterTag.Span;
       renderingContext.Writer.RenderBeginTag (tag);
 
+      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID (renderingContext);
+
       bool isControlHeightEmpty = renderingContext.Control.Height.IsEmpty && string.IsNullOrEmpty (renderingContext.Control.Style["height"]);
       bool isControlWidthEmpty = renderingContext.Control.Width.IsEmpty && string.IsNullOrEmpty (renderingContext.Control.Style["width"]);
       Label label = GetLabel (renderingContext);
@@ -104,7 +115,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         }
       }
 
+      SetValidationErrorOnControl (innerControl, validationErrorsID, validationErrors);
+
       innerControl.RenderControl (renderingContext.Writer);
+
+      RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
 
       renderingContext.Writer.RenderEndTag();
     }
@@ -136,7 +151,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       listControl.ApplyStyle (renderingContext.Control.CommonStyle);
       renderingContext.Control.ListControlStyle.ApplyStyle (listControl);
 
-      if (renderingContext.Control.ListControlStyle.ControlType == ListControlType.RadioButtonList)
+      var isRadioButtonList = renderingContext.Control.ListControlStyle.ControlType == ListControlType.RadioButtonList;
+      if (isRadioButtonList)
         listControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RadioGroup);
 
       var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
@@ -145,7 +161,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
       var oneBasedIndex = 1;
 
-      if (IsNullItemVisible (renderingContext))
+      var isNullItemVisible = IsNullItemVisible (renderingContext);
+      if (isNullItemVisible)
       {
         var nullItem = CreateNullItem (renderingContext);
 
@@ -177,6 +194,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         }
 
         listControl.Items.Add (item);
+      }
+
+      if (renderingContext.Control.IsRequired && isNullItemVisible && !isRadioButtonList)
+      {
+        listControl.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
+      }
+      else if (renderingContext.Control.IsRequired && !isNullItemVisible && isRadioButtonList)
+      {
+        var radioButton = _internalControlMemberCaller.GetControlToRepeat ((RadioButtonList) listControl);
+        radioButton.InputAttributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
       }
 
       return listControl;
@@ -271,6 +298,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       label.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
 
       return label;
+    }
+
+    private IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<IBocEnumValue> renderingContext)
+    {
+      if (renderingContext.Control.IsReadOnly)
+        return Enumerable.Empty<string>();
+
+      return renderingContext.Control.GetValidationErrors();
+    }
+
+    private string GetValidationErrorsID (BocRenderingContext<IBocEnumValue> renderingContext)
+    {
+      return renderingContext.Control.ClientID + "_ValidationErros";
     }
 
     public override string GetCssClassBase (IBocEnumValue control)

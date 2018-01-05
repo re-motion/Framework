@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -390,6 +392,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return renderingContext.Control.HasValueEmbeddedInsideOptionsMenu == true && renderingContext.Control.HasOptionsMenu
              || renderingContext.Control.HasValueEmbeddedInsideOptionsMenu == null && renderingContext.Control.IsReadOnly
              && renderingContext.Control.HasOptionsMenu;
+    }
+
+    protected IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
+    {
+      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+
+      if (renderingContext.Control.IsReadOnly)
+        return Enumerable.Empty<string>();
+
+      return renderingContext.Control.GetValidationErrors();
+    }
+
+    protected string GetValidationErrorsID (BocRenderingContext<TControl> renderingContext)
+    {
+      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+
+      return renderingContext.Control.ClientID + "_ValidationErros";
     }
 
     private string GetCssClassInnerContent (BocRenderingContext<TControl> renderingContext)

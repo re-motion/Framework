@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,19 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web;
-using System.Web.UI;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering
+namespace Remotion.Web.UI
 {
   /// <summary>
-  /// Groups all arguments required for rendering a <see cref="BocCheckBox"/>.
+  /// Defines values for the <see cref="HtmlTextWriterAttribute2.AriaInvalid"/> attribute.
   /// </summary>
-  public class BocCheckBoxRenderingContext : BocRenderingContext<IBocCheckBox>
+  public static class HtmlAriaInvalidAttributeValue
   {
-    public BocCheckBoxRenderingContext (HttpContextBase httpContext, HtmlTextWriter writer, IBocCheckBox control)
-        : base(httpContext, writer, control)
-    {
-    }
+    public const string False = "false";
+    public const string True = "true";
+    public const string Grammar = "grammar";
+    public const string Spelling = "spelling";
   }
 }

@@ -32,12 +32,14 @@ namespace Remotion.Web.UI
     public const string AriaExpanded = "aria-expanded";
     public const string AriaHasPopup = "aria-haspopup";
     public const string AriaHidden = "aria-hidden";
+    public const string AriaInvalid = "aria-invalid";
     public const string AriaLabel = "aria-label";
     public const string AriaLabelledBy = "aria-labelledby";
     public const string AriaOwns = "aria-owns";
     public const string AriaReadOnly = "aria-readonly";
     public const string AriaSelected = "aria-selected";
     public const string Hidden = "hidden";
+    public const string Required = "required";
     public const string Role = "role";
   }
 }

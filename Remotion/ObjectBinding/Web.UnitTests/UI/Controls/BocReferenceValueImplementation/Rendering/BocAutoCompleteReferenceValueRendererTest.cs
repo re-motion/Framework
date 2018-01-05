@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -133,6 +134,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Stub (stub => stub.GetLabelText()).Return ("MyText");
       Control.Stub (stub => stub.ResolveClientUrl (null)).IgnoreArguments().Do ((Func<string, string>) (url => url.TrimStart ('~')));
       Control.Stub (stub => stub.GetResourceManager()).Return (NullResourceManager.Instance);
+
+      Control.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
 
       _resourceUrlFactory = new FakeResourceUrlFactory();
     }

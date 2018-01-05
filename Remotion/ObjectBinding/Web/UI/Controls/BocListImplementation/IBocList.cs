@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -176,5 +177,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     int? PageSize { get; }
     int CurrentPageIndex { get; }
     string GetCurrentPageControlName ();
+
+    /// <summary>
+    /// Gets the list of validation errors for this control.
+    /// </summary>
+    IEnumerable<string> GetValidationErrors ();
   }
 }

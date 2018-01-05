@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -88,6 +89,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _checkbox.Stub (mock => mock.Style).Return (_checkbox.Attributes.CssStyle);
       _checkbox.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
       _checkbox.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
+
+      _checkbox.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
     }
 
     [Test]

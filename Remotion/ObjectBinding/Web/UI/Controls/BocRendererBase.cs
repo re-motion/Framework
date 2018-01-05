@@ -15,6 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
@@ -109,6 +113,63 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         var boundProperty = Maybe.ForValue (control.Property).Select (p => p.Identifier).ValueOrDefault ("null");
         renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BoundProperty, boundProperty);
       }
+    }
+
+    protected void SetValidationErrorOnControl (WebControl control, string validationErrorsID, IReadOnlyCollection<string> validationErrors)
+    {
+      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorsID", validationErrorsID);
+      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
+
+      SetValidationErrorOnControl (control.Attributes, validationErrorsID, validationErrors);
+    }
+
+    protected void SetValidationErrorOnControl (HtmlControl control, string validationErrorsID, IReadOnlyCollection<string> validationErrors)
+    {
+      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorsID", validationErrorsID);
+      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
+
+      SetValidationErrorOnControl (control.Attributes, validationErrorsID, validationErrors);
+    }
+
+    private void SetValidationErrorOnControl (AttributeCollection attributes, string validationErrorsID, IReadOnlyCollection<string> validationErrors)
+    {
+      if (!validationErrors.Any())
+        return;
+
+      var attributeName = HtmlTextWriterAttribute2.AriaDescribedBy;
+      var attributeValue = attributes[attributeName];
+      if (string.IsNullOrEmpty (attributeValue))
+        attributes[attributeName] = validationErrorsID;
+      else
+        attributes[attributeName] = attributeValue + " " + validationErrorsID;
+      attributes.Add (HtmlTextWriterAttribute2.AriaInvalid, HtmlAriaInvalidAttributeValue.True);
+    }
+
+    protected void RenderValidationErrors (
+        BocRenderingContext<TControl> renderingContext,
+        string validationErrorsID,
+        IReadOnlyCollection<string> validationErrors)
+    {
+      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorsID", validationErrorsID);
+      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
+
+      if (!validationErrors.Any())
+        return;
+
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, validationErrorsID);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
+      foreach (var validationError in validationErrors)
+      {
+        renderingContext.Writer.Write (validationError);
+        renderingContext.Writer.WriteBreak();
+      }
+
+      renderingContext.Writer.RenderEndTag();
     }
 
     /// <summary>

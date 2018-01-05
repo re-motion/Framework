@@ -108,9 +108,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.Less (0, th.ChildNodes.Count);
       var sortCommandLink = Html.GetAssertedChildElement (th, "a", 0);
       Html.AssertAttribute (sortCommandLink, "id", List.ClientID + "_0_SortCommand");
-      Html.AssertTextNode (sortCommandLink, Column.ColumnTitleDisplayValue, 0);
+      Html.AssertChildElementCount (sortCommandLink, 1);
 
-      Html.AssertChildElementCount (sortCommandLink, 0);
+      var titleSpan = Html.GetAssertedChildElement (sortCommandLink, "span", 0);
+      Html.AssertAttribute (titleSpan, "id", List.ClientID + "_0_Title");
+      Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
+      Html.AssertChildElementCount (titleSpan, 0);
     }
 
     [Test]
@@ -172,9 +175,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.Less (0, th.ChildNodes.Count);
       var sortCommandLink = Html.GetAssertedChildElement (th, "a", 0);
       Html.AssertAttribute (sortCommandLink, "id", List.ClientID + "_0_SortCommand");
-      Html.AssertTextNode (sortCommandLink, Column.ColumnTitleDisplayValue + HtmlHelper.WhiteSpace, 0);
+      Html.AssertChildElementCount (sortCommandLink, 2);
 
-      var sortOrderSpan = Html.GetAssertedChildElement (sortCommandLink, "span", 1);
+      var titleSpan = Html.GetAssertedChildElement (sortCommandLink, "span", 0);
+      Html.AssertAttribute (titleSpan, "id", List.ClientID + "_0_Title");
+      Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
+
+      Html.AssertTextNode (sortCommandLink, HtmlHelper.WhiteSpace, 1);
+
+      var sortOrderSpan = Html.GetAssertedChildElement (sortCommandLink, "span", 2);
       Html.AssertAttribute (sortOrderSpan, "class", _bocListCssClassDefinition.SortingOrder, HtmlHelperBase.AttributeValueCompareMode.Contains);
 
       var sortIcon = Html.GetAssertedChildElement (sortOrderSpan, "img", 0);

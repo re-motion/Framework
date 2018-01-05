@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
@@ -270,6 +271,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _validators = new HashSet<BaseValidator>();
 
       _validators.Add (validator);
+    }
+
+    /// <summary>
+    /// Gets the validators associated with this control via <see cref="RegisterValidator"/>.
+    /// </summary>
+    protected IEnumerable<IValidator> GetRegisteredValidators ()
+    {
+      if (_validators == null)
+        return Enumerable.Empty<IValidator>();
+
+      return _validators.Select (v => v);
     }
 
     /// <summary>

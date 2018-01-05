@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -102,6 +103,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
 
       _resourceManager = GlobalizationService.GetResourceManager (typeof (BocDateTimeValue.ResourceIdentifier));
       _control.Stub (list => list.GetResourceManager()).Return (_resourceManager);
+
+      _control.Stub (mock => mock.GetDateValueValidationErrors()).Return (Enumerable.Empty<string>());
+      _control.Stub (mock => mock.GetTimeValueValidationErrors()).Return (Enumerable.Empty<string>());
 
       _dateTextBox = new StubTextBox();
       _timeTextBox = new StubTextBox();

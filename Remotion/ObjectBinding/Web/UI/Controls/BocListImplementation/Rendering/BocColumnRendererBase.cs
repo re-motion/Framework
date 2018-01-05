@@ -173,6 +173,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.Write (">");
     }
 
+    protected string GetColumnTitleID (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
+    {
+      return string.Format ("{0}_{1}_Title", renderingContext.Control.ClientID, renderingContext.ColumnIndex);
+    }
+
     private void RenderTitleCellMarkers (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
       renderingContext.Control.EditModeController.RenderTitleCellMarkers (
@@ -215,11 +220,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderTitleCellText (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
       if (renderingContext.Control.IsDesignMode && string.IsNullOrEmpty (renderingContext.ColumnDefinition.ColumnTitleDisplayValue))
+      {
         renderingContext.Writer.Write (c_designModeEmptyContents);
+      }
       else
       {
         string contents = StringUtility.EmptyToNull (renderingContext.ColumnDefinition.ColumnTitleDisplayValue) ?? c_whiteSpace;
+        var clientID = GetColumnTitleID (renderingContext);
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, clientID);
+        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
         renderingContext.Writer.Write (contents);
+        renderingContext.Writer.RenderEndTag();
       }
     }
 
