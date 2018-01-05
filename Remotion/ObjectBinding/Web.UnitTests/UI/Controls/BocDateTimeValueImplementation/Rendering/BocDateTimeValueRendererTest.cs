@@ -123,7 +123,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       BocDateTimeValueRenderer renderer;
       XmlNode container = GetAssertedContainer (out renderer, isDateOnly: true,  isReadOnly: false);
 
-      AssertDate (container, renderer);
+      AssertDate (container, renderer, isDateOnly: true);
 
       container.AssertTextNode ("DatePicker", 1);
     }
@@ -140,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       BocDateTimeValueRenderer renderer;
       XmlNode container = GetAssertedContainer (out renderer, isDateOnly: true, isReadOnly: true);
 
-      AssertDate (container, renderer);
+      AssertDate (container, renderer, isDateOnly: true);
     }
 
     [Test]
@@ -154,7 +154,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       BocDateTimeValueRenderer renderer;
       XmlNode container = GetAssertedContainer (out renderer, isDateOnly: false, isReadOnly: false);
 
-      AssertDate (container, renderer);
+      AssertDate (container, renderer, isDateOnly: false);
       AssertTime (container, renderer);
 
       container.AssertTextNode ("DatePicker", 1);
@@ -241,47 +241,74 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         var inputField = timeInputWrapper.GetAssertedChildElement("input", 0);
         inputField.AssertAttributeValueEquals ("type", "stub");
 
-        var inputLabel = timeInputWrapper.GetAssertedChildElement ("span", 1);
-        inputLabel.AssertAttributeValueEquals ("id", c_dateValueID + "_TimeLabel");
+        var timeDescriptionLabel = timeInputWrapper.GetAssertedChildElement ("span", 1);
+        timeDescriptionLabel.AssertAttributeValueEquals ("id", c_dateValueID + "_TimeLabel");
 
         Assert.That (_timeTextBox.ID, Is.EqualTo (c_timeValueName));
         Assert.That (_timeTextBox.CssClass, Is.EqualTo (renderer.CssClassTime));
         Assert.That (_timeTextBox.Text, Is.EqualTo (c_timeString));
         Assert.That (_timeTextBox.MaxLength, Is.EqualTo (5));
+        Assert.That (_timeTextBox.Attributes["aria-labelledby"], Is.EqualTo (c_labelID + " " + c_dateValueID + "_TimeLabel"));
       }
       else
       {
-        var dateLabel = container.GetAssertedChildElement ("span", 0);
-        dateLabel.AssertAttributeValueEquals ("data-value", c_formatedDateString);
-        var timeLabel = container.GetAssertedChildElement ("span", 2);
-        timeLabel.AssertAttributeValueEquals ("data-value", c_formatedTimeString);
+        container.AssertChildElementCount (4);
+
+        var timeValueLabel = container.GetAssertedChildElement ("span", 2);
+        timeValueLabel.AssertAttributeValueEquals ("id", c_dateValueID + "_TimeValue");
+        timeValueLabel.AssertAttributeValueEquals ("data-value", c_formatedTimeString);
+        timeValueLabel.AssertAttributeValueEquals ("aria-labelledby", c_labelID + " " + c_dateValueID + "_TimeLabel "+ c_dateValueID + "_TimeValue");
+
+        var timeDescriptionLabel = container.GetAssertedChildElement ("span", 3);
+        timeDescriptionLabel.AssertAttributeValueEquals ("id", c_dateValueID + "_TimeLabel");
       }
     }
 
-    private void AssertDate (XmlNode container, BocDateTimeValueRenderer renderer)
+    private void AssertDate (XmlNode container, BocDateTimeValueRenderer renderer, bool isDateOnly)
     {
-      var dateInputWrapper = container.GetAssertedChildElement ("span", 0);
       if (!_control.IsReadOnly)
       {
+        var dateInputWrapper = container.GetAssertedChildElement ("span", 0);
         dateInputWrapper.AssertAttributeValueContains ("class", renderer.CssClassDateInputWrapper);
         dateInputWrapper.AssertAttributeValueContains (
-            "class", renderer.GetPositioningCssClass (_renderingContext, BocDateTimeValueRenderer.DateTimeValuePart.Date));
-        dateInputWrapper.AssertChildElementCount (2);
+            "class",
+            renderer.GetPositioningCssClass (_renderingContext, BocDateTimeValueRenderer.DateTimeValuePart.Date));
+        dateInputWrapper.AssertChildElementCount (isDateOnly ? 1 : 2);
 
         var inputField = dateInputWrapper.GetAssertedChildElement ("input", 0);
         inputField.AssertAttributeValueEquals ("type", "stub");
 
-        var inputLabel = dateInputWrapper.GetAssertedChildElement ("span", 1);
-        inputLabel.AssertAttributeValueEquals ("id", c_dateValueID + "_DateLabel");
+        if (!isDateOnly)
+        {
+          var dateDescriptionLabel = dateInputWrapper.GetAssertedChildElement ("span", 1);
+          dateDescriptionLabel.AssertAttributeValueEquals ("id", c_dateValueID + "_DateLabel");
+        }
 
         Assert.That (_dateTextBox.ID, Is.EqualTo (c_dateValueName));
         Assert.That (_dateTextBox.CssClass, Is.EqualTo (renderer.CssClassDate));
         Assert.That (_dateTextBox.Text, Is.EqualTo (c_dateString));
         Assert.That (_dateTextBox.MaxLength, Is.EqualTo (10));
+        if (isDateOnly)
+          Assert.That (_dateTextBox.Attributes["aria-labelledby"], Is.EqualTo (c_labelID));
+        else
+          Assert.That (_dateTextBox.Attributes["aria-labelledby"], Is.EqualTo (c_labelID + " " + c_dateValueID + "_DateLabel"));
       }
       else
       {
-        dateInputWrapper.AssertAttributeValueEquals ("data-value", _dateValue.ToString ("yyyy-MM-dd"));
+        container.AssertChildElementCount (isDateOnly ? 1 : 4);
+        var dateValueLabel = container.GetAssertedChildElement ("span", 0);
+        dateValueLabel.AssertAttributeValueEquals ("id", c_dateValueID + "_DateValue");
+        dateValueLabel.AssertAttributeValueEquals ("data-value", _dateValue.ToString ("yyyy-MM-dd"));
+        if (isDateOnly)
+          dateValueLabel.AssertAttributeValueEquals ("aria-labelledby", c_labelID + " " + c_dateValueID + "_DateValue");
+        else
+          dateValueLabel.AssertAttributeValueEquals ("aria-labelledby", c_labelID + " " + c_dateValueID + "_DateLabel " + c_dateValueID + "_DateValue");
+
+        if (!isDateOnly)
+        {
+          var dateDescriptionLabel = container.GetAssertedChildElement ("span", 1);
+          dateDescriptionLabel.AssertAttributeValueEquals ("id", c_dateValueID + "_DateLabel");
+        }
       }
     }
 
@@ -302,7 +329,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       if (!isReadOnly)
         container.AssertChildElementCount (isDateOnly ? 1 : 2);
       else
-        container.AssertChildElementCount (isDateOnly ? 2 : 4);
+        container.AssertChildElementCount (isDateOnly ? 1 : 4);
       return container;
     }
   }

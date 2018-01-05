@@ -121,6 +121,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       var dateValueValidationErrorsID = GetDateValueValidationErrorsID (renderingContext);
       var timeValueValidationErrorsID = GetTimeValueValidationErrorsID (renderingContext);
 
+      bool hasDateField;
+      bool hasTimeField;
+      EvaluateActualValueType(renderingContext, out hasDateField, out hasTimeField);
+
       var dateTextBox = _dateTextBoxFactory();
       dateTextBox.ID = renderingContext.Control.GetDateValueName();
       dateTextBox.CssClass = CssClassDate;
@@ -131,8 +135,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           formatter.GetDateMaxLength());
       dateTextBox.Text = renderingContext.Control.DateString;
       dateTextBox.Page = renderingContext.Control.Page.WrappedInstance;
-      dateTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy,
-          string.Join (" ", renderingContext.Control.GetLabelIDs().Concat (dateTextBoxLabelID)));
+
+      var dateLabelIDs = renderingContext.Control.GetLabelIDs();
+      if (hasTimeField)
+        dateLabelIDs = dateLabelIDs.Concat (dateTextBoxLabelID);
+      var dateLabelsID = string.Join (" ", dateLabelIDs);
+      if (!string.IsNullOrEmpty (dateLabelsID))
+        dateTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, dateLabelsID);
+
       if (renderingContext.Control.IsRequired)
         dateTextBox.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
 
@@ -146,8 +156,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           formatter.GetTimeMaxLength (renderingContext.Control.ShowSeconds));
       timeTextBox.Text = renderingContext.Control.TimeString;
       timeTextBox.Page = renderingContext.Control.Page.WrappedInstance;
-      timeTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy,
-          string.Join (" ", renderingContext.Control.GetLabelIDs().Concat (timeTextBoxLabelID)));
+
+      var timeLabelIDs = renderingContext.Control.GetLabelIDs();
+      if (hasDateField)
+        timeLabelIDs = timeLabelIDs.Concat (timeTextBoxLabelID);
+      var timeLabelsID = string.Join (" ", timeLabelIDs);
+      if (!string.IsNullOrEmpty (timeLabelsID))
+        timeTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, timeLabelsID);
+
       if (renderingContext.Control.IsRequired)
         timeTextBox.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
 
@@ -166,20 +182,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         timeTextBox.Attributes[DiagnosticMetadataAttributes.TriggersPostBack] = timeTextBox.AutoPostBack.ToString().ToLower();
       }
 
-      bool hasDateField = false;
-      bool hasTimeField = false;
-      switch (renderingContext.Control.ActualValueType)
-      {
-        case BocDateTimeValueType.Date:
-          hasDateField = true;
-          break;
-        case BocDateTimeValueType.DateTime:
-        case BocDateTimeValueType.Undefined:
-          hasDateField = true;
-          hasTimeField = true;
-          break;
-      }
-
       if (hasDateField)
       {
         renderingContext.Writer.AddAttribute (
@@ -190,12 +192,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
         dateTextBox.RenderControl (renderingContext.Writer);
 
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, dateTextBoxLabelID);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-        renderingContext.Writer.Write (resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.DateLabelText));
-        renderingContext.Writer.RenderEndTag();
-        
+        if (hasTimeField)
+        {
+          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, dateTextBoxLabelID);
+          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+          renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+          renderingContext.Writer.Write (resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.DateLabelText));
+          renderingContext.Writer.RenderEndTag();
+        }
+
         RenderValidationErrors (renderingContext, dateValueValidationErrorsID, dateValueValidationErrors);
 
         renderingContext.Writer.RenderEndTag();
@@ -215,15 +220,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
         timeTextBox.RenderControl (renderingContext.Writer);
 
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, timeTextBoxLabelID);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-        renderingContext.Writer.Write (resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.TimeLabelText));
-        renderingContext.Writer.RenderEndTag();
+        if (hasDateField)
+        {
+          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, timeTextBoxLabelID);
+          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+          renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+          renderingContext.Writer.Write (resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.TimeLabelText));
+          renderingContext.Writer.RenderEndTag();
+        }
 
         RenderValidationErrors (renderingContext, timeValueValidationErrorsID, timeValueValidationErrors);
 
         renderingContext.Writer.RenderEndTag();
+      }
+    }
+
+    private void EvaluateActualValueType (BocDateTimeValueRenderingContext renderingContext, out bool hasDateField, out bool hasTimeField)
+    {
+      hasDateField = false;
+      hasTimeField = false;
+      switch (renderingContext.Control.ActualValueType)
+      {
+        case BocDateTimeValueType.Date:
+          hasDateField = true;
+          break;
+        case BocDateTimeValueType.DateTime:
+        case BocDateTimeValueType.Undefined:
+          hasDateField = true;
+          hasTimeField = true;
+          break;
       }
     }
 
@@ -300,20 +325,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
+      bool hasDateField;
+      bool hasTimeField;
+      EvaluateActualValueType(renderingContext, out hasDateField, out hasTimeField);
+
       var resourceManager = renderingContext.Control.GetResourceManager();
       var dateLabel = new Label
                       {
                         ID = renderingContext.Control.GetDateValueName(),
                         ClientIDMode = ClientIDMode.Static,
-                        ToolTip = resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.DateLabelText),
-                        AssociatedControlID = renderingContext.Control.ClientID + "_DateLabel"
+                        ToolTip = hasTimeField ? resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.DateLabelText) : null,
+                        AssociatedControlID = hasTimeField ? renderingContext.Control.ClientID + "_DateLabel" : null
                       };
       var timeLabel = new Label
                       {
                         ID = renderingContext.Control.GetTimeValueName(),
                         ClientIDMode = ClientIDMode.Static,
-                        ToolTip = resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.TimeLabelText),
-                        AssociatedControlID = renderingContext.Control.ClientID + "_TimeLabel"
+                        ToolTip = hasDateField ? resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.TimeLabelText) : null,
+                        AssociatedControlID = hasDateField ? renderingContext.Control.ClientID + "_TimeLabel" : null
                       };
 
       if (renderingContext.Control.IsDesignMode && !renderingContext.Control.Value.HasValue)
@@ -330,22 +359,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
           var dateTime = renderingContext.Control.Value.Value;
 
-          dateLabel.Text = formatter.FormatDateValue (dateTime);
-          dateLabel.Attributes.Add ("data-value", dateTime.ToString ("yyyy-MM-dd"));
+          if (hasDateField)
+          {
+            dateLabel.Text = formatter.FormatDateValue (dateTime);
+            dateLabel.Attributes.Add ("data-value", dateTime.ToString ("yyyy-MM-dd"));
+          }
 
-          if (renderingContext.Control.ActualValueType == BocDateTimeValueType.DateTime)
+          if (hasTimeField)
           {
             timeLabel.Text = formatter.FormatTimeValue (dateTime, renderingContext.Control.ShowSeconds);
             timeLabel.Attributes.Add ("data-value", dateTime.ToString ("HH:mm:ss"));
           }
         }
       }
-      RenderLabel (dateLabel, renderingContext);
-      if (renderingContext.Control.ActualValueType == BocDateTimeValueType.DateTime)
-      {
+      if (hasDateField)
+        RenderLabel (dateLabel, renderingContext);
+      if (hasDateField && hasTimeField)
         renderingContext.Writer.Write (' ');
+      if (hasTimeField)
         RenderLabel (timeLabel, renderingContext);
-      }
     }
 
     private static void RenderLabel (Label label, BocDateTimeValueRenderingContext renderingContext)
@@ -365,7 +397,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       if (!isControlWidthEmpty && isLabelWidthEmpty)
       {
         if (!renderingContext.Control.Width.IsEmpty)
-          renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, renderingContext.Control.Width.ToString ());
+          renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, renderingContext.Control.Width.ToString());
         else
           renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, renderingContext.Control.Style["width"]);
       }
@@ -381,17 +413,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       var descriptionLabelText = label.ToolTip;
       label.ToolTip = null;
 
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs().Concat (descriptionLabelID).Concat (label.ClientID));
+      var labelIDs = renderingContext.Control.GetLabelIDs();
+      if (!string.IsNullOrEmpty (descriptionLabelID))
+        labelIDs = labelIDs.Concat (descriptionLabelID);
+      labelIDs = labelIDs.Concat (label.ClientID);
+      var labelsID = string.Join (" ", labelIDs);
       if (!string.IsNullOrEmpty (labelsID))
         label.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
 
       label.RenderControl (renderingContext.Writer);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, descriptionLabelID);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      renderingContext.Writer.Write (descriptionLabelText);
-      renderingContext.Writer.RenderEndTag();
+      if (!string.IsNullOrEmpty (descriptionLabelID))
+      {
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, descriptionLabelID);
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.Write (descriptionLabelText);
+        renderingContext.Writer.RenderEndTag();
+      }
     }
 
     private IEnumerable<string> GetDateValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
