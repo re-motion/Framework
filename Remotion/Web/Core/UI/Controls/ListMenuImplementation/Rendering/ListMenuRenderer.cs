@@ -169,7 +169,8 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       var attributes = new NameValueCollection();
       attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.MenuItem);
-      attributes.Add ("tabindex", isFirst ? "0" : "-1");
+      if (renderingContext.Control.Enabled)
+        attributes.Add ("tabindex", isFirst ? "0" : "-1");
 
 
       var command = !menuItem.IsDisabled ? menuItem.Command : new Command (CommandType.None) { OwnerControl = menuItem.OwnerControl };
