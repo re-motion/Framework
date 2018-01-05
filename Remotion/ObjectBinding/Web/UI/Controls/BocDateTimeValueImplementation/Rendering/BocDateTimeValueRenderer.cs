@@ -45,14 +45,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     /// <summary> Text displayed when control is displayed in desinger and is read-only has no contents. </summary>
     private const string c_designModeEmptyLabelContents = "##";
 
-    private readonly TextBox _dateTextBox;
-    private readonly TextBox _timeTextBox;
+    private readonly Func<TextBox> _dateTextBoxFactory;
+    private readonly Func<TextBox> _timeTextBoxFactory;
 
     public BocDateTimeValueRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures)
-        : this (resourceUrlFactory, globalizationService, renderingFeatures, new RenderOnlyTextBox(), new RenderOnlyTextBox())
+        : this (resourceUrlFactory, globalizationService, renderingFeatures, () => new RenderOnlyTextBox(), () => new RenderOnlyTextBox())
     {
     }
 
@@ -60,15 +60,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
-        TextBox dateTextBox,
-        TextBox timeTextBox)
+        Func<TextBox> dateTextBoxFactory,
+        Func<TextBox> timeTextBoxFactory)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("dateTextBox", dateTextBox);
-      ArgumentUtility.CheckNotNull ("timeTextBox", timeTextBox);
+      ArgumentUtility.CheckNotNull ("dateTextBoxFactory", dateTextBoxFactory);
+      ArgumentUtility.CheckNotNull ("timeTextBoxFactory", timeTextBoxFactory);
 
-      _dateTextBox = dateTextBox;
-      _timeTextBox = timeTextBox;
+      _dateTextBoxFactory = dateTextBoxFactory;
+      _timeTextBoxFactory = timeTextBoxFactory;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       var dateValueValidationErrorsID = GetDateValueValidationErrorsID (renderingContext);
       var timeValueValidationErrorsID = GetTimeValueValidationErrorsID (renderingContext);
 
-      var dateTextBox = _dateTextBox;
+      var dateTextBox = _dateTextBoxFactory();
       dateTextBox.ID = renderingContext.Control.GetDateValueName();
       dateTextBox.CssClass = CssClassDate;
       Initialize (
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       if (renderingContext.Control.IsRequired)
         dateTextBox.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
 
-      var timeTextBox = _timeTextBox;
+      var timeTextBox = _timeTextBoxFactory();
       timeTextBox.ID = renderingContext.Control.GetTimeValueName();
       timeTextBox.CssClass = CssClassTime;
       Initialize (

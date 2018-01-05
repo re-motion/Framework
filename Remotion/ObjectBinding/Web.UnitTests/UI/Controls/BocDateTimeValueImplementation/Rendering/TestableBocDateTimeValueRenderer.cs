@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         IRenderingFeatures renderingFeatures,
         TextBox dateTextBox,
         TextBox timeTextBox)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures, dateTextBox, timeTextBox)
+        : base (resourceUrlFactory, globalizationService, renderingFeatures, () => dateTextBox, () => timeTextBox)
     {
     }
   }
