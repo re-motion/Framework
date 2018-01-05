@@ -237,19 +237,19 @@ div.bocList.hasDimensions th.bocListTitleCell
   border-bottom: none;
 }
 
-th.bocListTitleCell span
+th.bocListTitleCell > span
 {
   padding: 2px;
 }
 
-th.bocListTitleCell a
+th.bocListTitleCell > a
 {
   color: #09457E;
   padding: 2px;
 }
 
-th.bocListTitleCell a[href]:focus,
-th.bocListTitleCell a[href]:hover
+th.bocListTitleCell > a[href]:focus,
+th.bocListTitleCell > a[href]:hover
 {
   color: Black;
   padding: 1px;
@@ -258,16 +258,16 @@ th.bocListTitleCell a[href]:hover
   outline: none;
 }
 
-th.bocListTitleCell a[href]:active
+th.bocListTitleCell > a[href]:active
 {
   color: Black;
   border: solid 1px #569CE0;
   background-color: #C5E0FC;
 }
 
-th.bocListTitleCell a[href]:focus img,
-th.bocListTitleCell a[href]:hover img,
-th.bocListTitleCell a[href]:active img
+th.bocListTitleCell > a[href]:focus img,
+th.bocListTitleCell > a[href]:hover img,
+th.bocListTitleCell > a[href]:active img
 {
   -webkit-filter: brightness(0);
   filter: brightness(0);

@@ -198,18 +198,18 @@ div.bocList.hasDimensions th.bocListTitleCell
   border-bottom: none;
 }
 
-th.bocListTitleCell span
+th.bocListTitleCell > span
 {
   padding: 2px;
 }
 
-th.bocListTitleCell a
+th.bocListTitleCell > a
 {
   color: #083779;
   padding: 2px;
 }
 
-th.bocListTitleCell a:hover
+th.bocListTitleCell > a:hover
 {
   color: #083779;
   padding: 1px;
