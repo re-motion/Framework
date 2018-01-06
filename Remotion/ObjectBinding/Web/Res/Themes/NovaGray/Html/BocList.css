@@ -522,14 +522,16 @@ span.bocListEditableCell .validationErrorMarker + .control
   box-sizing: border-box;
 }
 
-span.bocListEditableCell .validationErrorMarker[title]:focus
+span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus,
+span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover
 {
   position: relative;
 }
 
-span.bocListEditableCell .validationErrorMarker[title]:focus::after
+span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus::after,
+span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover::after
 {
-  content: attr(title);
+  content: attr(aria-label);
   white-space: pre;
   display: inline-block;
   position: absolute;

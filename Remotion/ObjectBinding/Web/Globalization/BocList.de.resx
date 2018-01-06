@@ -162,4 +162,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
     <value>In zumindest einer Zeile ist ein Fehler aufgetreten.</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
+    <value>Ungültige Eingabe in der gerade bearbeiteten Zeile</value>
+  </data>
 </root>

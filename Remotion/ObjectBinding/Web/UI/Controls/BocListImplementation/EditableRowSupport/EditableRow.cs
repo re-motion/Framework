@@ -25,6 +25,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
+using Remotion.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport
 {
@@ -428,7 +429,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         {
           BaseValidator validator = (BaseValidator) validators[i];
           isCellValid &= validator.IsValid;
-          if (! validator.IsValid)
+          if (!validator.IsValid)
           {
             if (toolTipBuilder.Length > 0)
               toolTipBuilder.AppendLine();
@@ -439,13 +440,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         {
           if (validationErrorMarker is HtmlControl)
           {
-            ((HtmlControl)validationErrorMarker).Attributes["tabIndex"] = "0";
-            ((HtmlControl)validationErrorMarker).Attributes["title"] = toolTipBuilder.ToString();
+            ((HtmlControl) validationErrorMarker).Attributes["tabIndex"] = "0";
+            ((HtmlControl) validationErrorMarker).Attributes["title"] = null;
+            ((HtmlControl) validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
           }
           else if (validationErrorMarker is WebControl)
           {
-            ((WebControl)validationErrorMarker).TabIndex = 0;
-            ((WebControl)validationErrorMarker).ToolTip = toolTipBuilder.ToString();
+            ((WebControl) validationErrorMarker).TabIndex = 0;
+            ((WebControl) validationErrorMarker).ToolTip = null;
+            ((WebControl) validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
           }
           validationErrorMarker.RenderControl (writer);
         }

@@ -415,6 +415,30 @@ span.bocListEditableCell .validationErrorMarker + .control
   box-sizing: border-box;
 }
 
+span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus,
+span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover
+{
+  position: relative;
+}
+
+span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus::after,
+span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover::after
+{
+  content: attr(aria-label);
+  white-space: pre;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 1.5em;
+  z-index: 1000;
+  padding: 0.25em;
+  border: 1px solid Black;
+  background-color: Lightyellow;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
 span.bocListEditableCell .control > *
 {
   width: 100%;

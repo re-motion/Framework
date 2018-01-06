@@ -117,19 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Remotion.Web.UI.Controls.FormGridManager.RequiredFieldAlternateText" xml:space="preserve">
-    <value>*</value>
-  </data>
-  <data name="Remotion.Web.UI.Controls.FormGridManager.ValidationErrorInfoAlternateText" xml:space="preserve">
-    <value>!</value>
-  </data>
-  <data name="Remotion.Web.UI.Controls.FormGridManager.HelpAlternateText" xml:space="preserve">
-    <value>?</value>
-  </data>
   <data name="Remotion.Web.UI.Controls.FormGridManager.RequiredFieldTitle" xml:space="preserve">
     <value>Input required</value>
   </data>
   <data name="Remotion.Web.UI.Controls.FormGridManager.HelpTitle" xml:space="preserve">
     <value>Help</value>
+  </data>
+  <data name="Remotion.Web.UI.Controls.FormGridManager.ValidationErrorInfoTitle" xml:space="preserve">
+    <value>Invalid input</value>
   </data>
 </root>

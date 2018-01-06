@@ -129,12 +129,6 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle" xml:space="preserve">
     <value>Input required in the row currently being edited</value>
   </data>
-  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldAlternateText" xml:space="preserve">
-    <value>*</value>
-  </data>
-  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoAlternateText" xml:space="preserve">
-    <value>!</value>
-  </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.EmptyListMessage" xml:space="preserve">
     <value>No data available.</value>
   </data>
@@ -167,5 +161,8 @@
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
     <value>Errors have been found in at least one row.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
+    <value>Invalid input in the row currently being edited</value>
   </data>
 </root>

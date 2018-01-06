@@ -70,18 +70,12 @@ namespace Remotion.Web.UI.Controls
     [MultiLingualResources ("Remotion.Web.Globalization.FormGridManager")]
     public enum ResourceIdentifier
     {
-      /// <summary>The alternate text for the required icon.</summary>
-      RequiredFieldAlternateText,
-      /// <summary>The alternate text for the help icon.</summary>
-      HelpAlternateText,
-      /// <summary>The alternate text for the validation error icon.</summary>
-      ValidationErrorInfoAlternateText,
       /// <summary>The tool tip text for the required icon.</summary>
       RequiredFieldTitle,
       /// <summary>The tool tip text for the help icon.</summary>
       HelpTitle,
-      //  Not used, title always set to message
-      //  ValidationErrorInfoTitle,
+      /// <summary>The tool tip text for the validation icon.</summary>
+      ValidationErrorInfoTitle,
     }
   
     protected enum TransformationStep
@@ -2933,8 +2927,9 @@ namespace Remotion.Web.UI.Controls
     
       IResourceManager resourceManager = GetResourceManager();
 
-      requiredIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.RequiredFieldAlternateText);
+      requiredIcon.AlternateText = "*";
       requiredIcon.ToolTip = resourceManager.GetString (ResourceIdentifier.RequiredFieldTitle);
+      requiredIcon.Attributes.Add (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
 
       return requiredIcon;
     }
@@ -2950,9 +2945,9 @@ namespace Remotion.Web.UI.Controls
  
       IResourceManager resourceManager = GetResourceManager();
 
-      helpIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.HelpAlternateText);
-      helpIcon.ToolTip = helpInfo.ToolTip ?? resourceManager.GetString (ResourceIdentifier.HelpTitle);
-    
+      helpIcon.AlternateText = "?";
+      helpIcon.Attributes.Add (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+
       HtmlAnchor helpAnchor = new HtmlAnchor();
       helpAnchor.ID = "HelpLink";
       helpAnchor.Controls.Add (helpIcon);
@@ -2960,6 +2955,8 @@ namespace Remotion.Web.UI.Controls
       helpAnchor.Target = helpInfo.Target;
       if (!string.IsNullOrEmpty (helpInfo.OnClick))
         helpAnchor.Attributes.Add ("onclick", helpInfo.OnClick);
+      helpAnchor.Title = null;
+      helpAnchor.Attributes.Add (HtmlTextWriterAttribute2.AriaLabel, helpInfo.ToolTip ?? resourceManager.GetString (ResourceIdentifier.HelpTitle));
 
       return helpAnchor;
     }
@@ -2973,15 +2970,21 @@ namespace Remotion.Web.UI.Controls
 
       IResourceManager resourceManager = GetResourceManager();
 
-      validationErrorIcon.AlternateText = 
-          resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoAlternateText);
+      validationErrorIcon.AlternateText = "!";
+      validationErrorIcon.Attributes.Add (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
 
       HtmlAnchor validationAnchor = new HtmlAnchor();
       validationAnchor.Controls.Add (validationErrorIcon);
-      validationAnchor.Title = toolTip;
       if (ValidatorVisibility == ValidatorVisibility.HideValidators)
-        validationAnchor.Attributes["tabIndex"] = "0";
-
+      {
+        validationAnchor.Title = null;
+        validationAnchor.Attributes.Add (HtmlTextWriterAttribute2.AriaLabel, toolTip);
+        validationAnchor.Attributes["tabindex"] = "0";
+      }
+      else
+      {
+        validationAnchor.Title = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoTitle);
+      }
       return validationAnchor;
     }
 

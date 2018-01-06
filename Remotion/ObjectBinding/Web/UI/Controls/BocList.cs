@@ -115,12 +115,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       EmptyListMessage,
       OptionsTitle,
       AvailableViewsListTitle,
-      /// <summary>The alternate text for the required icon.</summary>
-      RequiredFieldAlternateText,
       /// <summary>The tool tip text for the required icon.</summary>
       RequiredFieldTitle,
-      /// <summary>The alternate text for the validation error icon.</summary>
-      ValidationErrorInfoAlternateText,
+      /// <summary>The tool tip text for the validation icon.</summary>
+      ValidationErrorInfoTitle,
       /// <summary> The alternate text for the sort ascending button. </summary>
       SortAscendingAlternateText,
       /// <summary> The alternate text for the sort descending button. </summary>
@@ -1256,8 +1254,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       requiredIcon.ImageUrl = themedResourceUrlResolver.CreateThemedResourceUrl (ResourceType.Image, c_rowEditModeRequiredFieldIcon).GetUrl();
 
       IResourceManager resourceManager = GetResourceManager();
-      requiredIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.RequiredFieldAlternateText);
+      requiredIcon.AlternateText = "*";
       requiredIcon.ToolTip = resourceManager.GetString (ResourceIdentifier.RequiredFieldTitle);
+      requiredIcon.Attributes.Add (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
 
       requiredIcon.CssClass = "validationRequiredMarker";
       return requiredIcon;
@@ -1271,11 +1270,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       validationErrorIcon.ImageUrl = urlFactory.CreateThemedResourceUrl (ResourceType.Image, c_rowEditModeValidationErrorIcon).GetUrl();
 
       IResourceManager resourceManager = GetResourceManager();
-      validationErrorIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoAlternateText);
+      validationErrorIcon.AlternateText = "!";
+      validationErrorIcon.Attributes.Add (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
 
       var validationErrorMarker = new HtmlGenericControl("span");
       validationErrorMarker.Controls.Add (validationErrorIcon);
       validationErrorMarker.Attributes["class"] = "validationErrorMarker";
+      validationErrorMarker.Attributes["title"] = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoTitle);
 
       return validationErrorMarker;
     }

@@ -100,14 +100,16 @@ td.formGridTopDataRow
   color: Red;
 }
 
-.formGridMarkersCell a[title]:focus
+.formGridMarkersCell a[aria-label]:not([title]):focus,
+.formGridMarkersCell a[aria-label]:not([title]):hover
 {
   position: relative;
 }
 
-.formGridMarkersCell a[title]:focus::after
+.formGridMarkersCell a[aria-label]:not([title]):focus::after,
+.formGridMarkersCell a[aria-label]:not([title]):hover::after
 {
-  content: attr(title);
+  content: attr(aria-label);
   white-space: pre;
   display: inline-block;
   position: absolute;
