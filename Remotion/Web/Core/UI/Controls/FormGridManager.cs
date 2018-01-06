@@ -2955,8 +2955,11 @@ namespace Remotion.Web.UI.Controls
       helpAnchor.Target = helpInfo.Target;
       if (!string.IsNullOrEmpty (helpInfo.OnClick))
         helpAnchor.Attributes.Add ("onclick", helpInfo.OnClick);
-      helpAnchor.Title = null;
-      helpAnchor.Attributes.Add (HtmlTextWriterAttribute2.AriaLabel, helpInfo.ToolTip ?? resourceManager.GetString (ResourceIdentifier.HelpTitle));
+
+      if (helpInfo.ToolTip == null)
+        helpAnchor.Title = resourceManager.GetString (ResourceIdentifier.HelpTitle);
+      else
+        helpAnchor.Attributes.Add (HtmlTextWriterAttribute2.AriaLabel, helpInfo.ToolTip);
 
       return helpAnchor;
     }
@@ -2977,7 +2980,6 @@ namespace Remotion.Web.UI.Controls
       validationAnchor.Controls.Add (validationErrorIcon);
       if (ValidatorVisibility == ValidatorVisibility.HideValidators)
       {
-        validationAnchor.Title = null;
         validationAnchor.Attributes.Add (HtmlTextWriterAttribute2.AriaLabel, toolTip);
         validationAnchor.Attributes["tabindex"] = "0";
       }
