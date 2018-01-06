@@ -306,6 +306,7 @@
     <Compile Include="UI\HtmlAriaHiddenAttributeValue.cs" />
     <Compile Include="UI\HtmlAriaInvalidAttributeValue.cs" />
     <Compile Include="UI\HtmlAriaReadOnlyAttributeValue.cs" />
+    <Compile Include="UI\HtmlAriaRequiredAttributeValue.cs" />
     <Compile Include="UI\HtmlAriaSelectedAttributeValue.cs" />
     <Compile Include="UI\HtmlHiddenAttributeValue.cs" />
     <Compile Include="UI\HtmlRequiredAttributeValue.cs" />

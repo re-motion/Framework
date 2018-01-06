@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         dateTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, dateLabelsID);
 
       if (renderingContext.Control.IsRequired)
-        dateTextBox.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
+        dateTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
 
       var timeTextBox = _timeTextBoxFactory();
       timeTextBox.ID = renderingContext.Control.GetTimeValueName();
@@ -165,7 +165,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         timeTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, timeLabelsID);
 
       if (renderingContext.Control.IsRequired)
-        timeTextBox.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
+        timeTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
 
       var datePickerButton = renderingContext.Control.DatePickerButton;
       datePickerButton.AlternateText = renderingContext.Control.GetDatePickerText();

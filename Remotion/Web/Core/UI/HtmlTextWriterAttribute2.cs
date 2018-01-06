@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.Web.UI;
 
 namespace Remotion.Web.UI
@@ -37,8 +38,10 @@ namespace Remotion.Web.UI
     public const string AriaLabelledBy = "aria-labelledby";
     public const string AriaOwns = "aria-owns";
     public const string AriaReadOnly = "aria-readonly";
+    public const string AriaRequired = "aria-required";
     public const string AriaSelected = "aria-selected";
     public const string Hidden = "hidden";
+    [Obsolete ("Use 'AriaRequired' instead to prevent the browser from adding a tooltip to the input fields for 'input required'.")]
     public const string Required = "required";
     public const string Role = "role";
   }

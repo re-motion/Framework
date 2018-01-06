@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -18,13 +18,12 @@ using System;
 
 namespace Remotion.Web.UI
 {
-#pragma warning disable 618
   /// <summary>
-  /// Defines values for the <see cref="HtmlTextWriterAttribute2.Required"/> attribute.
+  /// Defines values for the <see cref="HtmlTextWriterAttribute2.AriaRequired"/> attribute.
   /// </summary>
-#pragma warning restore 618
-  public static class HtmlRequiredAttributeValue
+  public static class HtmlAriaRequiredAttributeValue
   {
-    public const string Required = "required";
+    public const string True = "true";
+    public const string False = "true";
   }
 }

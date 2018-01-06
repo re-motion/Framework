@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
         textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
 
       if (renderingContext.Control.IsRequired)
-        textBox.Attributes.Add (HtmlTextWriterAttribute2.Required, HtmlRequiredAttributeValue.Required);
+        textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
 
       return textBox;
     }
