@@ -528,9 +528,15 @@ span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover
   position: relative;
 }
 
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus::after,
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover::after
+span.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after,
+span.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after
 {
+  visibility: hidden;
+  transition-property: visibility;
+  transition-duration: 0;
+  transition-delay: 0;
+  transition-timing-function: linear;
+
   content: attr(aria-label);
   white-space: pre;
   display: inline-block;
@@ -542,8 +548,13 @@ span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover::
   border: 1px solid Black;
   background-color: Lightyellow;
   box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
+}
+
+span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus::after,
+span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover::after
+{
+  visibility: visible;
+  transition-delay: 0.7s;
 }
 
 span.bocListEditableCell .control > *
