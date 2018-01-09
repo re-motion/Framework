@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.TypePipe;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 {
@@ -424,6 +425,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
+    public void UnloadData_New ()
+    {
+      var orderNew = (Order) LifetimeService.NewObject (TestableClientTransaction, typeof (Order), ParamList.Empty);
+      Assert.That (orderNew.State, Is.EqualTo (StateType.New));
+      Assert.That (TestableClientTransaction.GetEnlistedDomainObject (DomainObjectIDs.Order1), Is.Null);
+
+      ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents (TestableClientTransaction);
+
+      Assert.That (
+          () => UnloadService.UnloadData (TestableClientTransaction, orderNew.ID),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
+              + string.Format ("'Order|{0}|System.Guid' (New).", orderNew.ID.Value)));
+
+      Assert.That (orderNew.State, Is.EqualTo (StateType.New));
+    }
+
+    [Test]
     public void UnloadData_NonLoadedObject ()
     {
       ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents (TestableClientTransaction);
@@ -434,13 +453,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (Changed).")]
     public void UnloadData_Changed ()
     {
       ++DomainObjectIDs.Order1.GetObject<Order> ().OrderNumber;
-      UnloadService.UnloadData (TestableClientTransaction, DomainObjectIDs.Order1);
+
+      Assert.That (
+          () => UnloadService.UnloadData (TestableClientTransaction, DomainObjectIDs.Order1),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
+              + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (Changed)."));
+
     }
 
     [Test]

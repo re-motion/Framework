@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.TypePipe;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 {
@@ -324,7 +325,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
-    public void TryUnloadData_Failure ()
+    public void TryUnloadData_FailureWithChangedData ()
     {
       TestableClientTransaction.EnsureDataAvailable (DomainObjectIDs.Order1);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1], Is.Not.Null);
@@ -336,6 +337,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (result, Is.False);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1], Is.Not.Null);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1].State, Is.EqualTo (StateType.Changed));
+    }
+
+    [Test]
+    public void TryUnloadData_FailureWithNewObject ()
+    {
+      var orderNew = LifetimeService.NewObject (TestableClientTransaction, typeof (Order), ParamList.Empty);
+      Assert.That (TestableClientTransaction.DataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+
+      var result = UnloadService.TryUnloadData (TestableClientTransaction, orderNew.ID);
+
+      Assert.That (result, Is.False);
+      Assert.That (TestableClientTransaction.DataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
     }
 
     [Test]
@@ -357,7 +370,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
-    public void TryUnloadData_Failure_InHigherTransaction ()
+    public void TryUnloadData_FailureBecauseOfChangedData_InHigherTransaction ()
     {
       TestableClientTransaction.EnsureDataAvailable (DomainObjectIDs.Order1);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1], Is.Not.Null);
@@ -382,6 +395,59 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (subDataManager.DataContainers[DomainObjectIDs.Order1].State, Is.EqualTo (StateType.Unchanged));
       Assert.That (parentDataManager.DataContainers[DomainObjectIDs.Order1], Is.Not.Null);
       Assert.That (parentDataManager.DataContainers[DomainObjectIDs.Order1].State, Is.EqualTo (StateType.Changed));
+    }
+
+    [Test]
+    public void TryUnloadData_FailureBecauseOfNewObject_InHigherTransaction ()
+    {
+      var orderNew = LifetimeService.NewObject (TestableClientTransaction, typeof (Order), ParamList.Empty);
+      Assert.That (TestableClientTransaction.DataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+
+      var subTransaction = TestableClientTransaction.CreateSubTransaction();
+      var subDataManager = ClientTransactionTestHelper.GetDataManager (subTransaction);
+      var parentDataManager = TestableClientTransaction.DataManager;
+
+      subTransaction.EnsureDataAvailable (orderNew.ID);
+
+      Assert.That (subDataManager.DataContainers[orderNew.ID], Is.Not.Null);
+      Assert.That (parentDataManager.DataContainers[orderNew.ID], Is.Not.Null);
+
+      Assert.That (subDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (parentDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+
+      var result = UnloadService.TryUnloadData (subTransaction, orderNew.ID);
+
+      Assert.That (result, Is.False);
+      Assert.That (subDataManager.DataContainers[orderNew.ID], Is.Not.Null);
+      Assert.That (subDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (parentDataManager.DataContainers[orderNew.ID], Is.Not.Null);
+      Assert.That (parentDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+    }
+
+    [Test]
+    public void TryUnloadData_FailureBecauseOfNewObject_InLeafTransaction ()
+    {
+      var subTransaction = TestableClientTransaction.CreateSubTransaction();
+      var subDataManager = ClientTransactionTestHelper.GetDataManager (subTransaction);
+      var parentDataManager = TestableClientTransaction.DataManager;
+
+      var orderNew = (Order) LifetimeService.NewObject (subTransaction, typeof (Order), ParamList.Empty);
+      Assert.That (subDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+
+
+      Assert.That (subDataManager.DataContainers[orderNew.ID], Is.Not.Null);
+      Assert.That (parentDataManager.DataContainers[orderNew.ID], Is.Null);
+
+      Assert.That (subDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+      Assert.That (parentDataManager.GetState (orderNew.ID), Is.EqualTo (StateType.Invalid));
+
+      var result = UnloadService.TryUnloadData (subTransaction, orderNew.ID);
+
+      Assert.That (result, Is.False);
+      Assert.That (subDataManager.DataContainers[orderNew.ID], Is.Not.Null);
+      Assert.That (subDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+      Assert.That (parentDataManager.DataContainers[orderNew.ID], Is.Null);
+      Assert.That (parentDataManager.GetState (orderNew.ID), Is.EqualTo (StateType.Invalid));
     }
 
     [Test]

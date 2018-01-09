@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.TypePipe;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
@@ -409,6 +410,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That (order1.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Changed));
 
       Assert.That (order1.OrderNumber, Is.EqualTo (4711));
+    }
+
+    [Test]
+    public void UnloadData_New_InSubTransaction_ButNotInParentTransaction ()
+    {
+      var orderNew = (Order) LifetimeService.NewObject (_subTransaction, typeof (Order), ParamList.Empty);
+      orderNew.OrderNumber = 4711;
+
+      Assert.That (orderNew.State, Is.EqualTo (StateType.New));
+      Assert.That (orderNew.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Invalid));
+
+      try
+      {
+        UnloadService.UnloadData (_subTransaction, orderNew.ID);
+        Assert.Fail ("Expected InvalidOperationException");
+      }
+      catch (InvalidOperationException ex)
+      {
+        Assert.That (ex.Message, Is.EqualTo (
+            "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
+            + string.Format ("'Order|{0}|System.Guid' (New).", orderNew.ID.Value)));
+      }
+
+      Assert.That (orderNew.State, Is.EqualTo (StateType.New));
+      Assert.That (orderNew.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Invalid));
+
+      Assert.That (orderNew.OrderNumber, Is.EqualTo (4711));
     }
 
     [Test]

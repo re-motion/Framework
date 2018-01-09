@@ -227,6 +227,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public StateType GetState (ObjectID objectID)
     {
+      ArgumentUtility.CheckNotNull ("objectID", objectID);
+
       return _domainObjectStateCache.GetState (objectID);
     }
 
@@ -354,31 +356,38 @@ namespace Remotion.Data.DomainObjects.DataManagement
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
       var domainObjects = new List<DomainObject>();
-      var problematicDataContainers = new List<DataContainer>();
+      var problematicDataContainers = new List<KeyValuePair<ObjectID, StateType>>();
       var commands = new List<IDataManagementCommand>();
 
       foreach (var objectID in objectIDs)
       {
-        var dataContainer = GetDataContainerWithoutLoading (objectID);
-        if (dataContainer != null)
+        if (_invalidDomainObjectManager.IsInvalid (objectID))
         {
-          domainObjects.Add (dataContainer.DomainObject);
+          problematicDataContainers.Add (new KeyValuePair<ObjectID, StateType> (objectID, StateType.Invalid));
+        }
+        else
+        {
+          var dataContainer = GetDataContainerWithoutLoading (objectID);
+          if (dataContainer != null)
+          {
+            domainObjects.Add (dataContainer.DomainObject);
 
-          if (dataContainer.State != StateType.Unchanged)
-          {
-            problematicDataContainers.Add (dataContainer);
-          }
-          else
-          {
-            commands.Add (CreateUnregisterDataContainerCommand (objectID));
-            commands.Add (_relationEndPointManager.CreateUnregisterCommandForDataContainer (dataContainer));
+            if (dataContainer.State != StateType.Unchanged)
+            {
+              problematicDataContainers.Add (new KeyValuePair<ObjectID, StateType> (dataContainer.ID, dataContainer.State));
+            }
+            else
+            {
+              commands.Add (CreateUnregisterDataContainerCommand (objectID));
+              commands.Add (_relationEndPointManager.CreateUnregisterCommandForDataContainer (dataContainer));
+            }
           }
         }
       }
 
       if (problematicDataContainers.Count != 0)
       {
-        var itemList = string.Join (", ", problematicDataContainers.Select (dc => string.Format ("'{0}' ({1})", dc.ID, dc.State)));
+        var itemList = string.Join (", ", problematicDataContainers.Select (dc => string.Format ("'{0}' ({1})", dc.Key, dc.Value)));
         var message = string.Format (
             "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: {0}.",
             itemList);

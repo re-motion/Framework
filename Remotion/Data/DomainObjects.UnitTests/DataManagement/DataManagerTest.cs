@@ -630,22 +630,52 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void CreateUnloadCommand_WithChangedObjects ()
+    public void CreateUnloadCommand_WithChangedOrDiscardedObjects ()
     {
       _dataManager.GetDataContainerWithLazyLoad (DomainObjectIDs.Order1, true);
       var loadedDataContainer2 = _dataManager.GetDataContainerWithLazyLoad (DomainObjectIDs.Order3, true);
       var loadedDataContainer3 = _dataManager.GetDataContainerWithLazyLoad (DomainObjectIDs.Order4, true);
+      var loadedDataContainer4 = _dataManager.GetDataContainerWithLazyLoad (DomainObjectIDs.Order5, true);
 
       loadedDataContainer2.MarkAsChanged ();
       loadedDataContainer3.Delete();
+      _dataManager.Discard (loadedDataContainer4);
 
-      var result = _dataManager.CreateUnloadCommand (DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.Order4);
+      var result = _dataManager.CreateUnloadCommand (DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.Order4, DomainObjectIDs.Order5);
 
       Assert.That (result, Is.TypeOf<ExceptionCommand> ());
       var exceptionCommand = (ExceptionCommand) result;
       Assert.That (exceptionCommand.Exception.Message, Is.EqualTo (
           "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-          + "'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' (Changed), 'Order|3c0fb6ed-de1c-4e70-8d80-218e0bf58df3|System.Guid' (Deleted)."));
+          + "'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' (Changed), "
+          + "'Order|3c0fb6ed-de1c-4e70-8d80-218e0bf58df3|System.Guid' (Deleted), "
+          + "'Order|90e26c86-611f-4735-8d1b-e1d0918515c2|System.Guid' (Invalid)."));
+    }
+
+    [Test]
+    public void CreateUnloadCommand_WithUnknownObject ()
+    {
+      var loadedDataContainer = _dataManager.GetDataContainerWithLazyLoad (DomainObjectIDs.Order4, true);
+
+      var loadedObject = loadedDataContainer.DomainObject;
+
+      var result = _dataManager.CreateUnloadCommand (new ObjectID (typeof (Order), Guid.NewGuid()), DomainObjectIDs.Order4);
+
+      Assert.That (result, Is.TypeOf<UnloadCommand>());
+      var unloadCommand = (UnloadCommand) result;
+      Assert.That (unloadCommand.DomainObjects, Is.EqualTo (new[] { loadedObject }));
+      Assert.That (unloadCommand.UnloadDataCommand, Is.TypeOf<CompositeCommand> ());
+      Assert.That (unloadCommand.TransactionEventSink, Is.SameAs (_dataManager.TransactionEventSink));
+
+      var unloadDataCommandSteps = ((CompositeCommand) unloadCommand.UnloadDataCommand).GetNestedCommands();
+      Assert.That (unloadDataCommandSteps, Has.Count.EqualTo (2));
+
+      Assert.That (unloadDataCommandSteps[0], Is.TypeOf<UnregisterDataContainerCommand> ());
+      Assert.That (((UnregisterDataContainerCommand) unloadDataCommandSteps[0]).Map, Is.SameAs (_dataManager.DataContainers));
+      Assert.That (((UnregisterDataContainerCommand) unloadDataCommandSteps[0]).ObjectID, Is.EqualTo (DomainObjectIDs.Order4));
+
+      Assert.That (unloadDataCommandSteps[1], Is.TypeOf<UnregisterEndPointsCommand> ());
+      Assert.That (((UnregisterEndPointsCommand) unloadDataCommandSteps[1]).EndPoints, Has.Count.EqualTo (2));
     }
 
     [Test]
