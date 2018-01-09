@@ -443,7 +443,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
     private string GetDateValueValidationErrorsID (BocRenderingContext<IBocDateTimeValue> renderingContext)
     {
-      return renderingContext.Control.ClientID + "_DateValueValidationErros";
+      return renderingContext.Control.ClientID + "_DateValueValidationErrors";
     }
 
     private IEnumerable<string> GetTimeValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
@@ -456,7 +456,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
     private string GetTimeValueValidationErrorsID (BocRenderingContext<IBocDateTimeValue> renderingContext)
     {
-      return renderingContext.Control.ClientID + "_TimeValueValidationErros";
+      return renderingContext.Control.ClientID + "_TimeValueValidationErrors";
     }
   }
 }

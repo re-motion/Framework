@@ -310,7 +310,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
     private string GetValidationErrorsID (BocRenderingContext<IBocEnumValue> renderingContext)
     {
-      return renderingContext.Control.ClientID + "_ValidationErros";
+      return renderingContext.Control.ClientID + "_ValidationErrors";
     }
 
     public override string GetCssClassBase (IBocEnumValue control)

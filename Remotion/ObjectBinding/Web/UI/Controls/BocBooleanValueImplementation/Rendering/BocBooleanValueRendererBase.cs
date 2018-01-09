@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      return renderingContext.Control.ClientID + "_ValidationErros";
+      return renderingContext.Control.ClientID + "_ValidationErrors";
     }
   }
 }

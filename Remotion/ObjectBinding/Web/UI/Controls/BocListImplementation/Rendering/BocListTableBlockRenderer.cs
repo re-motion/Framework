@@ -301,7 +301,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private string GetValidationErrorsID (BocRenderingContext<IBocList> renderingContext)
     {
-      return renderingContext.Control.ClientID + "_ValidationErros";
+      return renderingContext.Control.ClientID + "_ValidationErrors";
     }
 
     private void RenderValidationErrors (

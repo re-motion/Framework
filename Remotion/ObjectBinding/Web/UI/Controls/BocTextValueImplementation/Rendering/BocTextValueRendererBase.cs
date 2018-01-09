@@ -140,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
 
     private string GetValidationErrorsID (BocRenderingContext<T> renderingContext)
     {
-      return renderingContext.Control.ClientID + "_ValidationErros";
+      return renderingContext.Control.ClientID + "_ValidationErrors";
     }
 
     private string CssClassContent

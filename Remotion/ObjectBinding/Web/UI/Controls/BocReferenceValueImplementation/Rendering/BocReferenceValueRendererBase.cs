@@ -408,7 +408,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      return renderingContext.Control.ClientID + "_ValidationErros";
+      return renderingContext.Control.ClientID + "_ValidationErrors";
     }
 
     private string GetCssClassInnerContent (BocRenderingContext<TControl> renderingContext)
