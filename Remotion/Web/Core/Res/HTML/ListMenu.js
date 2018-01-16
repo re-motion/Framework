@@ -199,7 +199,7 @@ function ListMenu_OnKeyDown (event, $listMenu)
           let $newMenuItem = $($menuItems[currentMenuItemIndex]);
           ListMenu_UpdateFocus ($newMenuItem, $oldMenuItem);
 
-          $newMenuItem.click();
+          $newMenuItem[0].click();
         }
 
         return;
