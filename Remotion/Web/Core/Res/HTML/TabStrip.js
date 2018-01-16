@@ -75,7 +75,7 @@ WebTabStrip.OnKeyDown = function (event, $tablist)
           let $newTab = $ ($tabs[currentTabIndex]);
           $newTab.attr ('tabIndex', 0);
           $newTab.focus();
-          if ($oldTab !== null)
+          if ($oldTab !== null && $oldTab[0] !== $newTab[0])
             $oldTab.attr ('tabIndex', -1);
 
           $newTab[0].click();
