@@ -1042,6 +1042,9 @@
 
         function moveSelect(step, updateInput) {
             var position = calculatePosition(active, step);
+            if (active === position)
+              return;
+
             setSelect (position, updateInput);
         };
 
@@ -1080,9 +1083,9 @@
         function calculatePosition(currentPosition, step) {
             currentPosition += step;
             if (currentPosition < 0) {
-                currentPosition = listItems.size() - 1;
-            } else if (currentPosition >= listItems.size()) {
                 currentPosition = 0;
+            } else if (currentPosition >= listItems.size()) {
+                currentPosition = listItems.size() - 1;
             }
             return currentPosition;
         }
