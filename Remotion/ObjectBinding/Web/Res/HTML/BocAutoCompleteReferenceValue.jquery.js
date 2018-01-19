@@ -1071,8 +1071,10 @@
                         offset += this.offsetHeight;
                     });
 
-                    if ((offset + activeItem[0].offsetHeight - resultsElement.scrollTop()) > resultsElement[0].clientHeight) {
-                        resultsElement.scrollTop(offset + activeItem[0].offsetHeight - resultsElement.innerHeight());
+                    // Calculate the offset for the current item, but use twice the item-height for the scroll's top position.
+                    // This will mitigate the risk of cutting off the current item while at the same time offering a bit of a preview for the next item.
+                    if ((offset + 2 * activeItem[0].offsetHeight - resultsElement.scrollTop()) > resultsElement[0].clientHeight) {
+                        resultsElement.scrollTop(offset + 2 * activeItem[0].offsetHeight - resultsElement[0].clientHeight);
                     } else if (offset < resultsElement.scrollTop()) {
                         resultsElement.scrollTop(offset);
                     }
