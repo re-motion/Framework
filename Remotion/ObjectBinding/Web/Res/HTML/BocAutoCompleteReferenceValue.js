@@ -101,6 +101,8 @@ BocAutoCompleteReferenceValue.Initialize = function (
           {
             return $.map(data, function (row)
             {
+              row.IsAnnotation = row.UniqueIdentifier === nullValueString;
+
               return {
                 data : row,
                 value : row.UniqueIdentifier,
@@ -123,7 +125,11 @@ BocAutoCompleteReferenceValue.Initialize = function (
             displayName.text (item.DisplayName);
             row.append ($ ('<div/>').append (displayName));
 
-            return row.html();
+            return {
+              html : row.html(),
+              class : null,
+              isAnnotation : item.IsAnnotation
+            };
           },
           formatMatch: function (item) //The value used by the cache
           {

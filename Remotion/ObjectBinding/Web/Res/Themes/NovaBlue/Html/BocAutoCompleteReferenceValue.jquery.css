@@ -68,13 +68,15 @@
   background-repeat: no-repeat;
 }
 
-.ac_even
+.ac_even,
+.ac_even.ac_over.ac_disabled
 {
   background-color: White;
   color: WindowText;
 }
 
-.ac_odd
+.ac_odd,
+.ac_odd.ac_over.ac_disabled
 {
   background-color: #f4f4f4;
   color: WindowText;
@@ -84,6 +86,11 @@
 {
   background-color: Highlight;
   color: HighlightText;
+}
+
+.ac_over.ac_disabled
+{
+  text-decoration: underline;
 }
 
 .ac_informationPopUp 

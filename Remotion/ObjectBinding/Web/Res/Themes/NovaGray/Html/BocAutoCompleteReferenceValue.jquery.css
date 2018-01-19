@@ -68,13 +68,21 @@
   background-repeat: no-repeat;
 }
 
-.ac_even
+.ac_over.ac_disabled
+{
+  text-decoration: underline;
+}
+
+.ac_even,
+.ac_even.ac_over.ac_disabled
+
 {
   background-color: White;
   color: Black;
 }
 
-.ac_odd
+.ac_odd,
+.ac_odd.ac_over.ac_disabled
 {
   background-color: #EFEFF0;
   color: Black;

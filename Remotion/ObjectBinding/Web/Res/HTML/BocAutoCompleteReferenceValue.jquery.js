@@ -313,11 +313,11 @@
                         if ($input.val() != '')
                             index = select.findItem ($input.val());
                         
-                        select.selectItem (index);
-                        
                         if (index != -1){
+                            select.selectItem (index);
+                        
                             autoFill ($input.val(), select.selected().result);
-                    }
+                        }
                 }, options.selectionUpdateDelay);
             }
         }).focus(function() {
@@ -837,7 +837,7 @@
         extraParams: {},
         // re-motion: changed selectFirst from boolean field to function
         selectFirst: function(inputValue, searchTerm) { return true; },
-        formatItem: function(row) { return row[0]; },
+        formatItem: function(row) { return { html : row[0], class : null, isAnnotation : false }; },
         formatMatch: null,
         autoFill: false,
         highlight: function(value, term) {
@@ -1001,16 +1001,24 @@
                 revertInputStatusTimeout = setTimeout(revertInputStatus, 200);
             });
 
-            list = $("<ul/>").appendTo(innerDiv).mouseover(function(event) {
-                if (target(event).nodeName && target(event).nodeName.toUpperCase() == 'LI') {
-                    active = $("li", list).removeClass(CLASSES.ACTIVE).index(target(event));
-                    $(target(event)).addClass(CLASSES.ACTIVE);
+            list = $("<ul/>")
+            .appendTo(innerDiv)
+            .mouseover(function (event) {
+                if (target(event).nodeName && target(event).nodeName.toUpperCase() === 'LI')
+                {
+                  active = $("li", list).removeClass(CLASSES.ACTIVE).index(target(event));
+                  var activeItem = $(target (event));
+                  activeItem.addClass (CLASSES.ACTIVE);
                 }
             }).click(function(event) {
-                $(target(event)).addClass(CLASSES.ACTIVE);
-                select();
-                // TODO provide option to avoid setting focus again after selection? useful for cleanup-on-focus
-                input.focus();
+                var activeItem = $(target (event));
+                activeItem.addClass (CLASSES.ACTIVE);
+                if (activeItem.data ('isAnnotation') !== 'true')
+                {
+                  select();
+                  // TODO provide option to avoid setting focus again after selection? useful for cleanup-on-focus
+                  input.focus();
+                }
                 return false;
             }).mousedown(function() {
                 config.mouseDownOnSelect = true;
@@ -1051,13 +1059,16 @@
         function setSelect(position, updateInput) {
             listItems.slice(active, active + 1).removeClass(CLASSES.ACTIVE).attr("aria-selected", "false");
             setPosition (position);
-            var activeItem = listItems.slice(active, active + 1).addClass(CLASSES.ACTIVE).attr("aria-selected", "true");
+            var activeItem = listItems.slice(active, active + 1);
+            activeItem.attr("aria-selected", "true");
+            var isAnnotation = activeItem.data('isAnnotation') === 'true';
+            activeItem.addClass(CLASSES.ACTIVE);
             if (active >= 0) {
                 var result = $.data(activeItem[0], "ac_data").result;
                 var $input = $(input);
                 $input.attr ("aria-activedescendant", activeItem.attr("id"));
 
-                if (updateInput)
+                if (updateInput && !isAnnotation)
                   $input.val(result);
 
                 // re-motion: do not select the text in the input element when moving the drop-down selection 
@@ -1120,11 +1131,18 @@
             for (var i = 0; i < max; i++) {
                 if (!data[i])
                     continue;
-                var formatted = options.formatItem(data[i].data, i + 1, max, data[i].value, term);
-                if (formatted === false)
-                    continue;
-                var li = $("<li role='option' aria-selected='false' />").html(options.highlight(formatted, term)).addClass(i % 2 == 0 ? "ac_even" : "ac_odd").appendTo(list);
-                li.attr ("id", options.selectListID + "_" + i);
+                var item = options.formatItem(data[i].data, i + 1, max, data[i].value, term);
+                var li = $ ("<li role='option' aria-selected='false' />")
+                  .html (options.highlight (item.html, term))
+                  .attr ("id", options.selectListID + "_" + i)
+                  .addClass (i % 2 === 0 ? "ac_even" : "ac_odd");
+                if (item.class != null)
+                  li.addClass(item.class);
+                if (item.isAnnotation) {
+                  li.data ('isAnnotation', 'true');
+                  li.addClass ('ac_disabled');
+                }
+                li.appendTo (list);
                 $.data(li[0], "ac_data", data[i]);
             }
             listItems = list.find("li");
@@ -1132,7 +1150,8 @@
             if (options.selectFirst($input.val(), term)) {
                 var activeItem = listItems.slice(0, 1);
                 $input.attr("aria-activedescendant", activeItem.attr("id"));
-                activeItem.addClass(CLASSES.ACTIVE).attr("aria-selected", "true");
+                activeItem.addClass (CLASSES.ACTIVE);
+                activeItem.attr ("aria-selected", "true");
                 active = 0;
             }
             element.iFrameShim({top: '0px', left: '0px', width: '100%', height: '100%'});
@@ -1146,12 +1165,18 @@
 
             var max = data.length;
             for (var i = startPosition; i < max; i++) {
+                if (data[i].data.IsAnnotation === true)
+                    return -1;
+
                 if (data[i].result.toLowerCase().indexOf(term.toLowerCase()) != -1) {
                     return i;
                 }
             }
 
             for (var i = startPosition - 1; i >= 0; i--) {
+                if (data[i].data.IsAnnotation === true)
+                    return -1;
+
                 if (data[i].result.toLowerCase().indexOf(term.toLowerCase()) != -1) {
                     return i;
                 }
@@ -1221,7 +1246,7 @@
                 return (element && element.is(":visible")) ? true : false;
             },
             current: function() {
-                return this.visible() && (listItems.filter("." + CLASSES.ACTIVE)[0] || options.selectFirst($(input).val(), null) && listItems[0]);
+                return this.visible() && (listItems.filter(".[aria-selected=true]")[0] || options.selectFirst($(input).val(), null) && listItems[0]);
             },
             show: function() {
 
@@ -1276,7 +1301,7 @@
                 // re-motion: removing the CSS class does not provide any benefits, but prevents us from highlighting the currently selected value
                 // on dropDownButton Click
                 // Original: var selected = listItems && listItems.filter("." + CLASSES.ACTIVE).removeClass(CLASSES.ACTIVE);
-                var selected = listItems && listItems.filter("." + CLASSES.ACTIVE);
+                var selected = listItems && listItems.filter(".[aria-selected=true]");
                 return selected && selected.length && $.data(selected[0], "ac_data");
             },
             emptyList: function() {

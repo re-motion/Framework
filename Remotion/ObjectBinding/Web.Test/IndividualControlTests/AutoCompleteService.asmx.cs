@@ -191,7 +191,8 @@ namespace OBWTest.IndividualControlTests
         filteredPersons = persons.FindAll (person => person.DisplayName.IndexOf (searchString, StringComparison.OrdinalIgnoreCase) != -1);
 
       filteredPersons.Sort ((left, right) => string.Compare (left.DisplayName, right.DisplayName, StringComparison.OrdinalIgnoreCase));
-
+      if (filteredPersons.Count > 10)
+        filteredPersons.Add (new BusinessObjectWithIdentityProxy { UniqueIdentifier = "==null==", DisplayName = "...", IconUrl = GetUrl (IconInfo.CreateSpacer(ResourceUrlFactory)) });
       return filteredPersons.ToArray();
     }
 
