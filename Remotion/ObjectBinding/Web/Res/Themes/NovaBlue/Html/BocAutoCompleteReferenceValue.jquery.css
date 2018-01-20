@@ -90,7 +90,31 @@
 
 .ac_over.ac_disabled
 {
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+.ac_over.ac_disabled > div
+{
+  position: relative;
+}
+
+.ac_over.ac_disabled > div:only-child::after,
+.ac_over.ac_disabled > div + div::after
+{
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  display: inline-block;
+  content: '';
+  outline: dotted black 1px;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
+.ac_over.ac_disabled > div + div::after
+{
+  left: -18px;
 }
 
 .ac_informationPopUp 
