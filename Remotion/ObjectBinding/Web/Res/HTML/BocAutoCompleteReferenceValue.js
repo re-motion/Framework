@@ -106,7 +106,7 @@ BocAutoCompleteReferenceValue.Initialize = function (
               return {
                 data : row,
                 value : row.UniqueIdentifier,
-                result : row.DisplayName
+                result : row.IsAnnotation ? '' : row.DisplayName
               };
             });
           },

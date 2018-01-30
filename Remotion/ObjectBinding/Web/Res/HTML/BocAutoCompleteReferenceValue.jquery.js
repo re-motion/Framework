@@ -311,13 +311,20 @@
                         
                         var index = -1;
                         if ($input.val() != '')
-                            index = select.findItem ($input.val());
-                        
-                        if (index != -1){
-                            select.selectItem (index);
-                        
-                            autoFill ($input.val(), select.selected().result);
+                        {
+                          index = select.findItem($input.val());
                         }
+                        else
+                        {
+                          var selected = select.selected(true);
+                          if (selected.data.IsAnnotation === true)
+                            index = select.findItemPositionWhere (function (data) { return data === selected });
+                        }
+
+                        select.selectItem (index);
+                        
+                        if (index != -1)
+                          autoFill($input.val(), select.selected(true).result);
                 }, options.selectionUpdateDelay);
             }
         }).focus(function() {
@@ -468,7 +475,7 @@
               if (itemIndex != -1)
               {
                 select.selectItem (itemIndex);
-                selectedItem = select.selected();
+                selectedItem = select.selected(false);
               }
             }
             closeDropDownListAndSetValue(term);
@@ -537,7 +544,7 @@
         }
 
         function selectCurrent() {
-            var selected = select.selected();
+            var selected = select.selected(false);
             if (!selected)
                 return false;
 
@@ -1008,11 +1015,15 @@
                 {
                   active = $("li", list).removeClass(CLASSES.ACTIVE).index(target(event));
                   var activeItem = $(target (event));
-                  activeItem.addClass (CLASSES.ACTIVE);
+                  activeItem.addClass(CLASSES.ACTIVE);
+                  // do not mark as selected.
                 }
             }).click(function(event) {
+                active = $("li", list).removeClass(CLASSES.ACTIVE).attr("aria-selected", "false").index(target(event));
                 var activeItem = $(target (event));
                 activeItem.addClass (CLASSES.ACTIVE);
+                activeItem.attr("aria-selected", "true");
+
                 if (activeItem.data ('isAnnotation') !== 'true')
                 {
                   select();
@@ -1057,18 +1068,17 @@
         };
 
         function setSelect(position, updateInput) {
-            listItems.slice(active, active + 1).removeClass(CLASSES.ACTIVE).attr("aria-selected", "false");
+            listItems.removeClass(CLASSES.ACTIVE).attr("aria-selected", "false");
             setPosition (position);
             var activeItem = listItems.slice(active, active + 1);
             activeItem.attr("aria-selected", "true");
-            var isAnnotation = activeItem.data('isAnnotation') === 'true';
             activeItem.addClass(CLASSES.ACTIVE);
             if (active >= 0) {
                 var result = $.data(activeItem[0], "ac_data").result;
                 var $input = $(input);
                 $input.attr ("aria-activedescendant", activeItem.attr("id"));
 
-                if (updateInput && !isAnnotation)
+                if (updateInput)
                   $input.val(result);
 
                 // re-motion: do not select the text in the input element when moving the drop-down selection 
@@ -1297,12 +1307,17 @@
                 }
 
             },
-            selected: function() {
+            selected: function(includeAnnoations) {
                 // re-motion: removing the CSS class does not provide any benefits, but prevents us from highlighting the currently selected value
                 // on dropDownButton Click
                 // Original: var selected = listItems && listItems.filter("." + CLASSES.ACTIVE).removeClass(CLASSES.ACTIVE);
                 var selected = listItems && listItems.filter(".[aria-selected=true]");
-                return selected && selected.length && $.data(selected[0], "ac_data");
+                if (!selected || !selected.length && selected.length === 0)
+                  return null;
+                var selectedItem = selected[0];
+                if (!includeAnnoations && $.data(selectedItem, 'isAnnotation') === 'true')
+                  return null;
+                return $.data(selectedItem, "ac_data");
             },
             emptyList: function() {
                 list && list.empty();
