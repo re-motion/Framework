@@ -49,6 +49,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private const string c_keyValueName = "MyReferenceValue_SelectedKeyValue";
     private const string c_uniqueidentifier = "uniqueidentifier";
     private const string c_labelID = "Label";
+    private const string c_validationErrors = "ValidationError";
 
     private enum OptionMenuConfiguration
     {
@@ -91,6 +92,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Stub (stub => stub.GetTextValueName()).Return (c_textValueName);
       Control.Stub (stub => stub.GetKeyValueName()).Return (c_keyValueName);
       Control.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
+      Control.Stub (mock => mock.GetValidationErrors()).Return (EnumerableUtility.Singleton (c_validationErrors));
       Control.Stub (stub => stub.BusinessObjectUniqueIdentifier).Return (c_uniqueidentifier);
       Control.Stub (stub => stub.Command).Return (new BocCommand());
       Control.Command.Type = CommandType.Event;
@@ -134,8 +136,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Stub (stub => stub.GetLabelText()).Return ("MyText");
       Control.Stub (stub => stub.ResolveClientUrl (null)).IgnoreArguments().Do ((Func<string, string>) (url => url.TrimStart ('~')));
       Control.Stub (stub => stub.GetResourceManager()).Return (NullResourceManager.Instance);
-
-      Control.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
 
       _resourceUrlFactory = new FakeResourceUrlFactory();
     }
@@ -433,6 +433,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           GlobalizationService,
           RenderingFeatures.Default,
           new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer(),
           () => new StubTextBox());
 
       Html.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "body");
@@ -455,6 +456,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           GlobalizationService,
           RenderingFeatures.Default,
           new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer(),
           () => new StubTextBox());
       Html.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "body");
       Html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
@@ -473,6 +475,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer(),
           () => TextBox);
 
       TextBox.AutoPostBack = false;
@@ -571,12 +574,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     {
       var span = parent.GetAssertedChildElement ("span", 0);
       span.AssertAttributeValueEquals ("class", "body");
-      span.AssertChildElementCount (Control.HasOptionsMenu ? 2 : 1);
+      span.AssertChildElementCount (Control.HasOptionsMenu ? 3 : 2);
 
       var commandLink = span.GetAssertedChildElement ("a", 0);
       commandLink.AssertAttributeValueEquals ("id", Control.ClientID + "_Command");
       commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      commandLink.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.ClientID + "_ValidationErrors");
+      commandLink.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
       commandLink.AssertAttributeValueEquals ("class", "command");
       commandLink.AssertChildElementCount (1);
 
@@ -612,6 +617,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       inputSpan.AssertChildElementCount (1);
       var inputField = inputSpan.GetAssertedChildElement ("input", 0);
       inputField.AssertAttributeValueEquals ("type", "stub");
+      inputField.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.ClientID + "_ValidationErrors");
+      inputField.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
 
       int hiddenFieldIndex = 1;
       if (Control.Enabled)
@@ -667,6 +674,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
         optionsMenuDiv.AssertAttributeValueEquals ("class", "optionsMenu");
         optionsMenuDiv.AssertTextNode ("DropDownMenu", 0);
       }
+
+      var validationErrors = contentSpan.GetAssertedChildElement ("fake", 3);
+      validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.ClientID + "_ValidationErrors");
+      validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
     }
 
     private XmlNode GetAssertedContainerSpan (bool withStyle)
@@ -676,6 +687,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           GlobalizationService,
           RenderingFeatures.Default,
           new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer(),
           () => TextBox);
       renderer.Render (CreateRenderingContext());
 

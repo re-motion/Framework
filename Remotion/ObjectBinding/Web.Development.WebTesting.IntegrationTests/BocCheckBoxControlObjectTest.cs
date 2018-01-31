@@ -36,6 +36,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
     [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocCheckBoxSelector, BocCheckBoxControlObject> testAction)
     {
       testAction (Helper, e => e.CheckBoxes(), "checkBox");

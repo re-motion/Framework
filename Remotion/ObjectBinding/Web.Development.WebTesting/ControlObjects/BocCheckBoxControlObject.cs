@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// <summary>
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox"/> control.
   /// </summary>
-  public class BocCheckBoxControlObject : BocControlObject, IControlObjectWithFormElements
+  public class BocCheckBoxControlObject : BocControlObject, IControlObjectWithFormElements, ISupportsValidationErrors
   {
     public BocCheckBoxControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -68,6 +68,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         new UncheckAction (this, Scope.FindChild ("Value")).Execute (actualActionOptions);
 
       return UnspecifiedPage();
+    }
+
+    public IReadOnlyList<string> GetValidationErrors ()
+    {
+      return GetValidationErrors (GetScopeWithReferenceInformation());
     }
 
     protected override ElementScope GetLabeledElementScope ()

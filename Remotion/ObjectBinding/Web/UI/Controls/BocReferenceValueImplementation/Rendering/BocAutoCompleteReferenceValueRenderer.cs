@@ -20,6 +20,7 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -67,8 +68,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
-        ILabelReferenceRenderer labelReferenceRenderer)
-        : this (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, () => new RenderOnlyTextBox())
+        ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer)
+        : this (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer, () => new RenderOnlyTextBox())
     {
     }
 
@@ -77,8 +79,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer,
         Func<TextBox> textBoxFactory)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer)
+        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
     {
       ArgumentUtility.CheckNotNull ("textBoxFactory", textBoxFactory);
       _textBoxFactory = textBoxFactory;
@@ -311,7 +314,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
       var validationErrorsID = GetValidationErrorsID (renderingContext);
 
-      SetValidationErrorOnControl (textBox, validationErrorsID, validationErrors);
+      ValidationErrorRenderer.SetValidationErrorsReferenceOnControl (textBox, validationErrorsID, validationErrors);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassInput);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
@@ -348,7 +351,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       }
       hiddenField.RenderControl (renderingContext.Writer);
 
-      RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
+      ValidationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
     private void RenderDropdownButton (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)

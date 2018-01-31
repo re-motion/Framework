@@ -19,6 +19,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 using Remotion.Web.UI.Controls;
@@ -27,6 +28,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
 {
   public abstract class ObjectBindingGenericTestPage<TOptions> : GenericTestPageBase<TOptions>
   {
+    /// <summary>
+    /// <see cref="CustomValidator"/> returns false on <see cref="CustomValidator"/>.<see cref="CustomValidator.ControlPropertiesValid"/> for the <see cref="BocList"/>.
+    /// Therefore we use this, to override the property to always return true.
+    /// </summary>
+    private class ControlPropertiesAlwaysTrueValidator : CustomValidator
+    {
+      protected override bool ControlPropertiesValid ()
+      {
+        return true;
+      }
+    }
 
     [NotNull]
     protected abstract TOptions FormGridControlOptions { get; }
@@ -66,6 +78,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
 
     [NotNull]
     protected abstract Control ReadOnlyControlPanel { get; }
+
+    [NotNull]
+    protected abstract HtmlTable FormGridValidationTable { get; }
+
+    [NotNull]
+    protected abstract TOptions CustomValidatedControlOptions { get; }
+
+    [NotNull]
+    protected abstract TOptions MultipleValidatedControlOptions { get; }
 
 
     protected override void AddControlsOnInit (GenericTestPageType pageType, IGenericTestPage<TOptions> testPage)
@@ -137,6 +158,36 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
 
         formGridMultiTable.Rows[0].Cells[3].Controls.Add (labelsControl);
       }
+
+      if (pageType.HasFlag (GenericTestPageType.EnabledValidation))
+      {
+        FormGridValidationTable.Rows[1].Cells[1].Controls.Add (testPage.CreateControl (FormGridControlOptions));
+
+        var customValidatedControl = testPage.CreateControl (CustomValidatedControlOptions);
+        FormGridValidationTable.Rows[3].Cells[1].Controls.Add (customValidatedControl);
+
+        var customValidatorForCustomValidatedControl = CreateCustomValidator (customValidatedControl, "Always false.");
+        FormGridValidationTable.Rows[3].Cells[1].Controls.Add (customValidatorForCustomValidatedControl);
+
+
+        var multipleValidatedControl = testPage.CreateControl (MultipleValidatedControlOptions);
+        FormGridValidationTable.Rows[5].Cells[1].Controls.Add (multipleValidatedControl);
+
+        var customValidatorForMultipleValidatedControl1 = CreateCustomValidator (multipleValidatedControl, "Always false.");
+        FormGridValidationTable.Rows[5].Cells[1].Controls.Add (customValidatorForMultipleValidatedControl1);
+
+        var customValidatorForMultipleValidatedControl2 = CreateCustomValidator (multipleValidatedControl, "Always false. The second.");
+        FormGridValidationTable.Rows[5].Cells[1].Controls.Add (customValidatorForMultipleValidatedControl2);
+      }
+    }
+
+    private ControlPropertiesAlwaysTrueValidator CreateCustomValidator (Control customValidatedControl, string errorMessage)
+    {
+      var customValidator =
+          new ControlPropertiesAlwaysTrueValidator { ControlToValidate = customValidatedControl.ID, ValidateEmptyText = true, ErrorMessage = errorMessage };
+
+      customValidator.ServerValidate += (source, args) => args.IsValid = false;
+      return customValidator;
     }
   }
 }

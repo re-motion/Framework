@@ -43,16 +43,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     protected const string c_designModeEmptyLabelContents = "##";
 
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+    private readonly IValidationErrorRenderer _validationErrorRenderer;
+
     protected BocTextValueRendererBase (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
-        ILabelReferenceRenderer labelReferenceRenderer)
+        ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull ("validationErrorRenderer", validationErrorRenderer);
 
       _labelReferenceRenderer = labelReferenceRenderer;
+      _validationErrorRenderer = validationErrorRenderer;
     }
 
     protected ILabelReferenceRenderer LabelReferenceRenderer
@@ -87,11 +92,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       if (!isControlHeightEmpty && isInnerControlHeightEmpty)
         renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
 
-      SetValidationErrorOnControl (innerControl, validationErrorsID, validationErrors);
+      _validationErrorRenderer.SetValidationErrorsReferenceOnControl (innerControl, validationErrorsID, validationErrors);
 
       innerControl.RenderControl (renderingContext.Writer);
 
-      RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
+      _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
 
       renderingContext.Writer.RenderEndTag (); // Content Span
       renderingContext.Writer.RenderEndTag ();
@@ -141,9 +146,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
 
     private IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<T> renderingContext)
     {
-      if (renderingContext.Control.IsReadOnly)
-        return Enumerable.Empty<string>();
-
       return renderingContext.Control.GetValidationErrors();
     }
 

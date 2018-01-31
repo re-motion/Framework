@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Web.UI;
 using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
@@ -76,37 +77,41 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Initialize (false);
       CommonInitialize();
 
-      IBocListTableBlockRenderer renderer = new BocListTableBlockRenderer (
-          _bocListCssClassDefinition,
-          new StubRowRenderer(),
-          new StubLabelReferenceRenderer());
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, _stubColumnRenderers));
+      RenderList();
 
       var document = Html.GetResultDocument();
+      var outerSpan = Html.GetAssertedChildElement (document, "span", 0);
 
-      var table = Html.GetAssertedChildElement (document, "table", 0);
+      var table = Html.GetAssertedChildElement (outerSpan, "table", 0);
       var tr = Html.GetAssertedChildElement (table, "tr", 0);
       Html.AssertAttribute (table, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
       Html.AssertAttribute (table, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute (table, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
+      Html.AssertAttribute (table, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
+
+
       var td = Html.GetAssertedChildElement (tr, "td", 0);
       Html.AssertTextNode (td, HtmlHelper.WhiteSpace, 0);
+
+      var validationErrors = Html.GetAssertedChildElement (outerSpan, "fake", 1);
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
     }
 
     private void RenderAndAssertTable (out XmlNode tbody)
     {
-      IBocListTableBlockRenderer renderer = new BocListTableBlockRenderer (
-          _bocListCssClassDefinition,
-          new StubRowRenderer(),
-          new StubLabelReferenceRenderer());
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, _stubColumnRenderers));
+      RenderList();
 
       var document = Html.GetResultDocument();
+      var outerSpan = Html.GetAssertedChildElement (document, "span", 0);
 
-      var tableContainer = Html.GetAssertedChildElement (document, "div", 0);
+      var tableContainer = Html.GetAssertedChildElement (outerSpan, "div", 0);
       Html.AssertAttribute (tableContainer, "class", _bocListCssClassDefinition.TableContainer);
       Html.AssertAttribute (tableContainer, "role", "table");
       Html.AssertAttribute (tableContainer, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
       Html.AssertAttribute (tableContainer, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute (tableContainer, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
+      Html.AssertAttribute (tableContainer, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
 
       var tableScrollContainer = Html.GetAssertedChildElement (tableContainer, "div", 0);
       Html.AssertAttribute (tableScrollContainer, "class", _bocListCssClassDefinition.TableScrollContainer);
@@ -127,6 +132,22 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (trTitle, "class", "titleStub");
 
       tbody = Html.GetAssertedChildElement (table, "tbody", 2);
+
+      var validationErrors = Html.GetAssertedChildElement (outerSpan, "fake", 1);
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
+    }
+
+    private void RenderList ()
+    {
+      Html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      IBocListTableBlockRenderer renderer = new BocListTableBlockRenderer (
+          _bocListCssClassDefinition,
+          new StubRowRenderer(),
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
+      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, _stubColumnRenderers));
+      Html.Writer.RenderEndTag();
     }
 
     private void CommonInitialize ()

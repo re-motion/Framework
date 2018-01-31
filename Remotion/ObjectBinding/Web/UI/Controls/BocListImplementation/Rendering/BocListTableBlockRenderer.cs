@@ -18,8 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
@@ -35,19 +37,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private readonly BocListCssClassDefinition _cssClasses;
     private readonly IBocRowRenderer _rowRenderer;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+    private readonly IValidationErrorRenderer _validationErrorRenderer;
 
     public BocListTableBlockRenderer (
         BocListCssClassDefinition cssClasses,
         IBocRowRenderer rowRenderer,
-        ILabelReferenceRenderer labelReferenceRenderer)
+        ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer)
     {
       ArgumentUtility.CheckNotNull ("cssClasses", cssClasses);
       ArgumentUtility.CheckNotNull ("rowRenderer", rowRenderer);
       ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull ("validationErrorRenderer", validationErrorRenderer);
 
       _cssClasses = cssClasses;
       _rowRenderer = rowRenderer;
       _labelReferenceRenderer = labelReferenceRenderer;
+      _validationErrorRenderer = validationErrorRenderer;
     }
 
     public BocListCssClassDefinition CssClasses
@@ -112,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         RenderTableClosingTag (renderingContext);
       }
 
-      RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
+      _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
     private void RenderEmptyTable (
@@ -128,11 +134,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
       _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
 
-      if (validationErrors.Any())
-      {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaDescribedBy, validationErrorsID);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaInvalid, HtmlAriaInvalidAttributeValue.True);
-      }
+      AddValidationErrorsReference (renderingContext, validationErrorsID, validationErrors);
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Table);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
@@ -204,13 +206,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableContainer);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Table);
       renderingContext.Writer.AddAttribute ("tabindex", "0");
-      if (validationErrors.Any())
-      {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaDescribedBy, validationErrorsID);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaInvalid, HtmlAriaInvalidAttributeValue.True);
-      }
+
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
       _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
+
+      AddValidationErrorsReference (renderingContext, validationErrorsID, validationErrors);
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
@@ -299,9 +299,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<IBocList> renderingContext)
     {
-      if (renderingContext.Control.IsReadOnly)
-        return Enumerable.Empty<string>();
-
       return renderingContext.Control.GetValidationErrors();
     }
 
@@ -310,25 +307,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       return renderingContext.Control.ClientID + "_ValidationErrors";
     }
 
-    private void RenderValidationErrors (
-        BocRenderingContext<IBocList> renderingContext,
-        string validationErrorsID,
-        IReadOnlyCollection<string> validationErrors)
+    private void AddValidationErrorsReference (BocListRenderingContext renderingContext, string validationErrorsID, IReadOnlyCollection<string> validationErrors)
     {
-      if (!validationErrors.Any())
-        return;
-
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, validationErrorsID);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-
-      foreach (var validationError in validationErrors)
-      {
-        renderingContext.Writer.Write (validationError);
-        renderingContext.Writer.WriteBreak();
-      }
-
-      renderingContext.Writer.RenderEndTag();
+      var attributeCollection = new AttributeCollection (new StateBag());
+      _validationErrorRenderer.AddValidationErrorsReference (attributeCollection, validationErrorsID, validationErrors);
+      attributeCollection.AddAttributes (renderingContext.Writer);
     }
   }
 }

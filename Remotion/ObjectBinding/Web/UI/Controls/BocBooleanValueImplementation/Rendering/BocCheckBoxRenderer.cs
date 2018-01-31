@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -38,6 +39,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   public class BocCheckBoxRenderer : BocBooleanValueRendererBase<IBocCheckBox>, IBocCheckBoxRenderer
   {
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+    private readonly IValidationErrorRenderer _validationErrorRenderer;
+
     private const string c_trueIcon = "CheckBoxTrue.gif";
     private const string c_falseIcon = "CheckBoxFalse.gif";
 
@@ -47,12 +50,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
-        ILabelReferenceRenderer labelReferenceRenderer)
+        ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull ("validationErrorRenderer", validationErrorRenderer);
 
       _labelReferenceRenderer = labelReferenceRenderer;
+      _validationErrorRenderer = validationErrorRenderer;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -100,8 +106,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
 
         _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
+
         if (renderingContext.Control.IsDescriptionEnabled)
-          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
+        {
+          var attributeCollection = new AttributeCollection (new StateBag());
+          attributeCollection.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
+
+          _validationErrorRenderer.AddValidationErrorsReference (attributeCollection, validationErrorsID, validationErrors);
+          attributeCollection.AddAttributes (renderingContext.Writer);
+        }
 
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
         imageControl.RenderControl (renderingContext.Writer);
@@ -129,7 +142,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         if (renderingContext.Control.IsDescriptionEnabled)
           checkBoxControl.Attributes.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
 
-        SetValidationErrorOnControl (checkBoxControl, validationErrorsID, validationErrors);
+        _validationErrorRenderer.SetValidationErrorsReferenceOnControl (checkBoxControl, validationErrorsID, validationErrors);
 
         checkBoxControl.RenderControl (renderingContext.Writer);
 
@@ -138,10 +151,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
           PrepareLabel (renderingContext, description, labelControl);
           labelControl.RenderControl (renderingContext.Writer);
         }
-
-        RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
       }
 
+      _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
       renderingContext.Writer.RenderEndTag ();
     }
 

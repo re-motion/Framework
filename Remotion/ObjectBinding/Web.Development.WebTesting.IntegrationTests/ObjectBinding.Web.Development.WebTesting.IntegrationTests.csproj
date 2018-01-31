@@ -86,6 +86,7 @@
     <Compile Include="GenericTestPageParameters\DisplayNameGenericTestPageParameter.cs" />
     <Compile Include="GenericTestPageParameters\DomainPropertyGenericTestPageParameter.cs" />
     <Compile Include="GenericTestPageParameters\LabelTestPageParameters.cs" />
+    <Compile Include="GenericTestPageParameters\ValidationErrorTestPageParameters.cs" />
     <Compile Include="IntegrationTest.cs" />
     <Compile Include="CustomWebTestConfigurationFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="TestCaseFactories\DisplayNameControlSelectorTestCaseFactory.cs" />
     <Compile Include="TestCaseFactories\DomainPropertyControlSelectorTestCaseFactory.cs" />
     <Compile Include="TestCaseFactories\DisabledTestCaseFactory.cs" />
+    <Compile Include="TestCaseFactories\ValidationErrorTestCaseFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

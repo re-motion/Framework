@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// <summary>
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue"/> control.
   /// </summary>
-  public class BocBooleanValueControlObject : BocControlObject, IControlObjectWithFormElements
+  public class BocBooleanValueControlObject : BocControlObject, IControlObjectWithFormElements, ISupportsValidationErrors
   {
     public BocBooleanValueControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -92,6 +92,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return Click (numberOfClicks, actionOptions);
     }
 
+    public IReadOnlyList<string> GetValidationErrors ()
+    {
+      return GetValidationErrors (GetLinkScope());
+    }
     protected override ElementScope GetLabeledElementScope ()
     {
       return GetLinkScope();

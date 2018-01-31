@@ -43,5 +43,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     public const string ReadOnlyTestsID = "ReadOnly";
 
     public const string LabelTestsID = "Label";
+    public const string ValidationErrorTestsID = "ValidationError";
   }
 }

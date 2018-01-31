@@ -33,7 +33,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue"/> control.
   /// </summary>
   public class BocEnumValueControlObject
-      : BocControlObject, IControlObjectWithSelectableOptions, IFluentControlObjectWithSelectableOptions, IControlObjectWithFormElements
+      : BocControlObject,
+          IControlObjectWithSelectableOptions,
+          IFluentControlObjectWithSelectableOptions,
+          IControlObjectWithFormElements,
+          ISupportsValidationErrors
   {
     private readonly IBocEnumValueControlObjectVariant _variantImpl;
 
@@ -127,6 +131,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
       return new[] { string.Format ("{0}_Value", GetHtmlID()) };
+    }
+
+    public IReadOnlyList<string> GetValidationErrors ()
+    {
+      return GetValidationErrors (GetScopeWithReferenceInformation());
     }
 
     protected override ElementScope GetLabeledElementScope ()

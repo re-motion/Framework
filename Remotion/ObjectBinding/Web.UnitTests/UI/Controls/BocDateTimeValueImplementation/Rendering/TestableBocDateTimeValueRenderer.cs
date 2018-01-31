@@ -30,8 +30,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
-        ILabelReferenceRenderer labelReferenceRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer)
+        ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer)
+        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
     {
     }
 
@@ -40,9 +41,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer,
         TextBox dateTextBox,
         TextBox timeTextBox)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, () => dateTextBox, () => timeTextBox)
+        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer, () => dateTextBox, () => timeTextBox)
     {
     }
   }

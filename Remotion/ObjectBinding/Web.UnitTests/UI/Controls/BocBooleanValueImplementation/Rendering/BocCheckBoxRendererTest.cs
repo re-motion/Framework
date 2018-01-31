@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
@@ -45,6 +46,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private const string c_clientID = "MyCheckBox";
     private const string c_valueName = "MyCheckBox_Value";
     private const string c_labelID = "Label";
+    private const string c_validationErrors = "ValidationError";
+
     private readonly string _startUpScriptKey = typeof (BocCheckBox).FullName + "_Startup";
 
     private IBocCheckBox _checkbox;
@@ -61,6 +64,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _checkbox.Stub (mock => mock.ControlType).Return ("BocCheckBox");
       _checkbox.Stub (mock => mock.GetValueName()).Return (c_valueName);
       _checkbox.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
+      _checkbox.Stub (mock => mock.GetValidationErrors()).Return (EnumerableUtility.Singleton (c_validationErrors));
       
       var clientScriptManagerMock = MockRepository.GenerateMock<IClientScriptManager>();
       _startupScript = string.Format (
@@ -89,8 +93,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _checkbox.Stub (mock => mock.Style).Return (_checkbox.Attributes.CssStyle);
       _checkbox.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
       _checkbox.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
-
-      _checkbox.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
     }
 
     [Test]
@@ -243,7 +245,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           resourceUrlFactory,
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
       _renderer.Render (new BocCheckBoxRenderingContext(HttpContext, Html.Writer, _checkbox));
       
       var document = Html.GetResultDocument();
@@ -260,7 +263,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
       _renderer.Render (new BocCheckBoxRenderingContext(HttpContext, Html.Writer, _checkbox));
 
       var document = Html.GetResultDocument();
@@ -278,11 +282,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         valueSpan.AssertAttributeValueEquals ("aria-readonly", "true");
         Html.AssertAttribute (valueSpan, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
         Html.AssertAttribute (valueSpan, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+        Html.AssertAttribute (valueSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+        Html.AssertAttribute (valueSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+
         CheckImage (value, valueSpan, spanText);
+
+        AssertValidationErrors (outerSpan);
       }
       else
       {
         CheckInput (value, outerSpan);
+
+        AssertValidationErrors (outerSpan);
       }
 
       if (_checkbox.IsDescriptionEnabled)
@@ -295,6 +306,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       {
         Html.AssertChildElementCount (outerSpan, 1);
       }
+    }
+
+    private void AssertValidationErrors (XmlNode node)
+    {
+      var validationErrorsSpan = node.GetAssertedChildElement ("fake", 2);
+
+      Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      
     }
 
     private void CheckInput (bool value, XmlNode outerSpan)
@@ -318,6 +338,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
 
       if (_checkbox.IsDescriptionEnabled)
         Html.AssertAttribute (checkbox, "aria-describedby", c_clientID + "_Description");
+
+      Html.AssertAttribute (checkbox, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute (checkbox, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
     }
 
     private void CheckImage (bool value, XmlNode outerSpan, string altText)

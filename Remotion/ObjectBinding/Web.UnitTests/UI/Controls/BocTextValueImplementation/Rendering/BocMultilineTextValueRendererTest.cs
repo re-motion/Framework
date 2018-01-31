@@ -39,6 +39,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
   {
     private const string c_textValueID = "MyTextValue_Boc_Textbox";
     private const string c_labelID = "Label";
+    private const string c_validationErrors = "ValidationError";
+
     private BocMultilineTextValueRenderer _renderer;
     
     [SetUp]
@@ -57,8 +59,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       TextValue.Stub (stub => stub.ControlType).Return ("BocMultilineTextValue");
       TextValue.Stub (stub => stub.GetValueName()).Return (c_textValueID);
       TextValue.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
+      TextValue.Stub (mock => mock.GetValidationErrors()).Return (EnumerableUtility.Singleton (c_validationErrors));
       TextValue.Stub (mock => mock.CssClass).PropertyBehavior();
-      TextValue.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
 
       var pageStub = MockRepository.GenerateStub<IPage>();
       pageStub.Stub (stub => stub.WrappedInstance).Return (new PageMock());
@@ -68,7 +70,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
     }
 
     [Test]
@@ -162,7 +165,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
       
       var span = RenderMultiLineEditable (false, false, false, false, true);
       Html.AssertAttribute (span, DiagnosticMetadataAttributes.ControlType, "BocMultilineTextValue");
@@ -176,7 +180,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
       
       var span = RenderMultiLineEditable (false, false, false, false, false);
       Html.AssertAttribute (span, DiagnosticMetadataAttributes.ControlType, "BocMultilineTextValue");
@@ -203,18 +208,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertChildElementCount (span, 1);
       var content = Html.GetAssertedChildElement (span, "span", 0);
       Html.AssertAttribute (content, "class", "content");
-      Html.AssertChildElementCount (content, 1);
+      Html.AssertChildElementCount (content, 2);
 
       var textarea = Html.GetAssertedChildElement (content, "textarea", 0);
       Html.AssertAttribute (textarea, "id", c_textValueID);
       Html.AssertAttribute (textarea, "name", c_textValueID);
       Html.AssertAttribute (textarea, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       Html.AssertAttribute (textarea, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute (textarea, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyTextValue_ValidationErrors");
+      Html.AssertAttribute (textarea, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
       if (TextValue.TextBoxStyle.AutoPostBack == true)
         Html.AssertAttribute (textarea, "onchange", string.Format("javascript:__doPostBack('{0}','')", c_textValueID));
       CheckTextAreaStyle (textarea, false, withStyle);
       Html.AssertTextNode (textarea, TextValue.Text, 0);
       Html.AssertChildElementCount (textarea, 0);
+
+      var validationErrors = Html.GetAssertedChildElement (content, "fake", 1);
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyTextValue_ValidationErrors");
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
 
       return span;
     }
@@ -237,7 +248,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertChildElementCount (span, 1);
       var content = Html.GetAssertedChildElement (span, "span", 0);
       Html.AssertAttribute (content, "class", "content");
-      Html.AssertChildElementCount (content, 1);
+      Html.AssertChildElementCount (content, 2);
 
       if (withStyle)
       {
@@ -248,11 +259,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute (label, "id", c_textValueID);
       Html.AssertAttribute (label, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       Html.AssertAttribute (label, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_textValueID);
+      Html.AssertAttribute (label, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyTextValue_ValidationErrors");
+      Html.AssertAttribute (label, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
       Html.AssertAttribute (label, "tabindex", "0");
       Html.AssertTextNode (label, BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText, 0);
       Html.GetAssertedChildElement (label, "br", 1);
       Html.AssertTextNode (label, BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText, 2);
       Html.AssertChildElementCount (label, 1);
+
+      var validationErrors = Html.GetAssertedChildElement (content, "fake", 1);
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyTextValue_ValidationErrors");
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
     }
 
     private void CheckTextAreaStyle (XmlNode textarea, bool isDisabled, bool withStyle)

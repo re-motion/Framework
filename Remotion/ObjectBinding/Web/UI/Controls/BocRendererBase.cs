@@ -115,63 +115,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    protected void SetValidationErrorOnControl (WebControl control, string validationErrorsID, IReadOnlyCollection<string> validationErrors)
-    {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorsID", validationErrorsID);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
-
-      SetValidationErrorOnControl (control.Attributes, validationErrorsID, validationErrors);
-    }
-
-    protected void SetValidationErrorOnControl (HtmlControl control, string validationErrorsID, IReadOnlyCollection<string> validationErrors)
-    {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorsID", validationErrorsID);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
-
-      SetValidationErrorOnControl (control.Attributes, validationErrorsID, validationErrors);
-    }
-
-    private void SetValidationErrorOnControl (AttributeCollection attributes, string validationErrorsID, IReadOnlyCollection<string> validationErrors)
-    {
-      if (!validationErrors.Any())
-        return;
-
-      var attributeName = HtmlTextWriterAttribute2.AriaDescribedBy;
-      var attributeValue = attributes[attributeName];
-      if (string.IsNullOrEmpty (attributeValue))
-        attributes[attributeName] = validationErrorsID;
-      else
-        attributes[attributeName] = attributeValue + " " + validationErrorsID;
-      attributes.Add (HtmlTextWriterAttribute2.AriaInvalid, HtmlAriaInvalidAttributeValue.True);
-    }
-
-    protected void RenderValidationErrors (
-        BocRenderingContext<TControl> renderingContext,
-        string validationErrorsID,
-        IReadOnlyCollection<string> validationErrors)
-    {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorsID", validationErrorsID);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
-
-      if (!validationErrors.Any())
-        return;
-
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, validationErrorsID);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-
-      foreach (var validationError in validationErrors)
-      {
-        renderingContext.Writer.Write (validationError);
-        renderingContext.Writer.WriteBreak();
-      }
-
-      renderingContext.Writer.RenderEndTag();
-    }
-
     /// <summary>
     /// Returns whether the control is bound to a business object. The default implementation checks whether the control is bound to a specific
     /// property of a business object. Derived classes may override this behavior.

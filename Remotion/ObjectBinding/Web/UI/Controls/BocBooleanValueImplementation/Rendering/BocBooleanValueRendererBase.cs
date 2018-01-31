@@ -46,9 +46,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      if (renderingContext.Control.IsReadOnly)
-        return Enumerable.Empty<string>();
-
       return renderingContext.Control.GetValidationErrors();
     }
 

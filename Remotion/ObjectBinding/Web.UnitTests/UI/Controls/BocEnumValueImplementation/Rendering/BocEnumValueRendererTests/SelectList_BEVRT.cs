@@ -49,6 +49,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     private const string c_clientID = "MyEnumValue";
     private const string c_valueName = "ListControlClientID";
     private const string c_labelID = "Label";
+    private const string c_validationErrors = "ValidationError";
     private IBocEnumValue _enumValue;
     private readonly Unit _width = Unit.Point (173);
     private readonly Unit _height = Unit.Point (17);
@@ -83,6 +84,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (stub => stub.ControlType).Return ("BocEnumValue");
       _enumValue.Stub (mock => mock.IsDesignMode).Return (false);
       _enumValue.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
+      _enumValue.Stub (mock => mock.GetValidationErrors()).Return (EnumerableUtility.Singleton (c_validationErrors));
 
       var pageStub = MockRepository.GenerateStub<IPage>();
       pageStub.Stub (stub => stub.WrappedInstance).Return (new PageMock());
@@ -105,8 +107,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (mock => mock.ListControlStyle).Return (new ListControlStyle { ControlType = ListControlType.DropDownList });
       _enumValue.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
       _enumValue.Stub (mock => mock.Enabled).Return (true);
-
-      _enumValue.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
 
       _internalControlMemberCaller = SafeServiceLocator.Current.GetInstance<IInternalControlMemberCaller>();
     }
@@ -210,7 +210,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           _internalControlMemberCaller,
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
       renderer.Render (new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue));
       
       var document = Html.GetResultDocument();
@@ -249,7 +250,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
           GlobalizationService,
           RenderingFeatures.Default,
           _internalControlMemberCaller,
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
       renderer.Render (new BocEnumValueRenderingContext (HttpContext, Html.Writer, _enumValue));
 
       var document = Html.GetResultDocument();
@@ -260,6 +262,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       Html.AssertAttribute (select, "name", c_valueName);
       Html.AssertAttribute (select, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       Html.AssertAttribute (select, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute (select, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute (select, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
 
       if (withStyle)
         Html.AssertStyleAttribute (select, "height", "100%");
@@ -276,6 +280,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
         AssertOption (select, value.ToString(), value.ToString(), index, selectedValue == value);
         ++index;
       }
+
+      var validationErrors = Html.GetAssertedChildElement (div, "fake", 1);
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
     }
 
     private void AssertOption (XmlNode select, string value, string text, int index, bool isSelected)

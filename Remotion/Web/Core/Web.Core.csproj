@@ -233,9 +233,11 @@
     <Compile Include="UI\Controls\PostBackTargets\PostBackEventHandlerEventArgs.cs" />
     <Compile Include="UI\Controls\PostBackTargets\ScalarLoadPostDataTarget.cs" />
     <Compile Include="UI\Controls\RenderingContext.cs" />
+    <Compile Include="UI\Controls\Rendering\IValidationErrorRenderer.cs" />
     <Compile Include="UI\Controls\Rendering\RenderingFeatures.cs" />
     <Compile Include="UI\Controls\Rendering\IControlWithDiagnosticMetadata.cs" />
     <Compile Include="UI\Controls\Rendering\RenderOnlyTextBox.cs" />
+    <Compile Include="UI\Controls\Rendering\ValidationErrorRenderer.cs" />
     <Compile Include="UI\Controls\SingleViewImplementation\Rendering\ISingleViewRenderer.cs" />
     <Compile Include="UI\Controls\SingleViewImplementation\Rendering\SingleViewRenderingContext.cs" />
     <Compile Include="UI\Controls\TabbedMenuImplementation\Rendering\IMenuTabRenderer.cs" />

@@ -36,7 +36,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// Common functionality of <see cref="BocListControlObject"/> and <see cref="BocListAsGridControlObject"/>.
   /// </summary>
   public abstract class BocListControlObjectBase<TRowControlObject, TCellControlObject>
-      : BocControlObject, IDropDownMenuHost, IListMenuHost, IControlObjectWithRows<TRowControlObject>, IFluentControlObjectWithRows<TRowControlObject>
+      : BocControlObject,
+          IDropDownMenuHost,
+          IListMenuHost,
+          IControlObjectWithRows<TRowControlObject>,
+          IFluentControlObjectWithRows<TRowControlObject>,
+          ISupportsValidationErrors
       where TRowControlObject : ControlObject
       where TCellControlObject : ControlObject
   {
@@ -409,6 +414,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
 
       return _columns.Where (cd => cd.Title != null).Single (cd => cd.Title.Contains (columnTitleContains));
+    }
+
+    public IReadOnlyList<string> GetValidationErrors ()
+    {
+      return GetValidationErrors (Scope.FindCss (".bocListTableBlock > .bocListTableContainer"));
     }
 
     protected override ElementScope GetLabeledElementScope ()

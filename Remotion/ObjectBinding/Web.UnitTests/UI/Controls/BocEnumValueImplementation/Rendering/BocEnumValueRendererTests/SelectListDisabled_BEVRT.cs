@@ -183,7 +183,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           _internalControlMemberCaller,
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
       renderer.Render (new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue));
       
       var document = Html.GetResultDocument();
@@ -226,7 +227,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
           GlobalizationService,
           RenderingFeatures.Default,
           _internalControlMemberCaller,
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
       renderer.Render (new BocEnumValueRenderingContext (HttpContext, Html.Writer, _enumValue));
 
       var document = Html.GetResultDocument();

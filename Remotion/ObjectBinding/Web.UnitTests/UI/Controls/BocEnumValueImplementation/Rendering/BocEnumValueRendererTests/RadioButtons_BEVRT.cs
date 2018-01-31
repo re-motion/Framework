@@ -49,6 +49,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     private const string c_clientID = "MyEnumValue";
     private const string c_valueName = "ListControlClientID";
     private const string c_labelID = "Label";
+    private const string c_validationErrors = "ValidationError";
     private IBocEnumValue _enumValue;
     private readonly Unit _width = Unit.Point (173);
     private readonly Unit _height = Unit.Point (17);
@@ -83,6 +84,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (stub => stub.ControlType).Return ("BocEnumValue");
       _enumValue.Stub (mock => mock.IsDesignMode).Return (false);
       _enumValue.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
+      _enumValue.Stub (mock => mock.GetValidationErrors()).Return (EnumerableUtility.Singleton (c_validationErrors));
 
       var pageStub = MockRepository.GenerateStub<IPage>();
       pageStub.Stub (stub => stub.WrappedInstance).Return (new PageMock());
@@ -111,8 +113,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
               });
       _enumValue.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
       _enumValue.Stub (mock => mock.Enabled).Return (true);
-
-      _enumValue.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
 
       var httpContext = HttpContextHelper.CreateHttpContext ("GET", "Page.aspx", "");
       System.Web.HttpContext.Current = httpContext;
@@ -286,7 +286,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           _internalControlMemberCaller,
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
       renderer.Render (new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue));
       
       var document = Html.GetResultDocument();
@@ -306,7 +307,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       if (string.IsNullOrEmpty (cssClass))
         cssClass = renderer.GetCssClassBase(_enumValue);
 
-      Html.AssertAttribute (div, "id", "MyEnumValue");
+      Html.AssertAttribute (div, "id", c_clientID);
       Html.AssertAttribute (div, "class", cssClass, HtmlHelperBase.AttributeValueCompareMode.Contains);
 
       if (withStyle)
@@ -325,7 +326,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
           GlobalizationService,
           RenderingFeatures.Default,
           _internalControlMemberCaller,
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
       renderer.Render (new BocEnumValueRenderingContext (HttpContext, Html.Writer, _enumValue));
 
       var document = Html.GetResultDocument();
@@ -335,6 +337,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       Html.AssertAttribute (radioGroup, "id", c_valueName);
       Html.AssertAttribute (radioGroup, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       Html.AssertAttribute (radioGroup, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute (radioGroup, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute (radioGroup, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
       Html.AssertAttribute (radioGroup, "role", "radiogroup");
 
       if (withStyle)
@@ -349,6 +353,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
         AssertRadioButton (radioGroup, value.ToString(), value.ToString(), index, selectedValue == value, autoPostBack);
         ++index;
       }
+
+      var validationErrors = Html.GetAssertedChildElement (div, "fake", 1);
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
     }
 
     private void AssertRadioButton (XmlNode table, string value, string text, int index, bool isSelected, bool autoPostBack)

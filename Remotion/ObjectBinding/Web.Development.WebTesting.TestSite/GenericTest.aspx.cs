@@ -21,6 +21,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 {
@@ -39,6 +40,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     private GenericTestOptions _formGridMultiControlOptions1;
     private GenericTestOptions _formGridMultiControlOptions2;
     private GenericTestOptions _shiftedColumnsFormGridControlOptions;
+    private GenericTestOptions _customValidatedControlOptions;
+    private GenericTestOptions _multipleValidatedControlOptions;
 
     public GenericTest ()
     {
@@ -182,6 +185,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     }
 
     /// <inheritdoc />
+    protected override HtmlTable FormGridValidationTable
+    {
+      get { return FormGridValidation; }
+    }
+
+    /// <inheritdoc />
+    protected override GenericTestOptions CustomValidatedControlOptions
+    {
+      get { return _customValidatedControlOptions; }
+    }
+
+    /// <inheritdoc />
+    protected override GenericTestOptions MultipleValidatedControlOptions
+    {
+      get { return _multipleValidatedControlOptions; }
+    }
+
+    /// <inheritdoc />
     protected override void OnInit (EventArgs e)
     {
       // Constants for all the controls on this generic page
@@ -201,6 +222,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       const string correctDomainProperty = "Remotion.ObjectBinding.Sample.Person, Remotion.ObjectBinding.Sample";
       const string incorrectDomainProperty = "Remotion.ObjectBinding.Sample.Job, Remotion.ObjectBinding.Sample";
 
+      const string customValidatedControlInFormGridID = "CustomValidatedControlInFormGrid";
+      const string multipleValidatedControlInFormGridID = "MultipleValidatedControlInFormGrid";
+
       // "Real" HTML ids of the controls
       var ambiguousHtmlID = string.Concat ("body_", ambiguousID);
       var disabledHtmlID = string.Concat ("body_", disabledID);
@@ -214,6 +238,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       var shiftedColumnsControlFormGridHtmlID = string.Concat ("body_", shiftedColumnsControlFormGridID);
       var controlInMultiFormGridIDHtml1 = string.Concat ("body_", controlInMultiFormGridID1);
       var controlInMultiFormGridIDHtml2 = string.Concat ("body_", controlInMultiFormGridID2);
+
+      var customValidatedControlInFormGridHtmlID = string.Concat ("body_", customValidatedControlInFormGridID);
+      var multipleValidatedControlInFormGridHtmlID = string.Concat ("body_", multipleValidatedControlInFormGridID);
+
 
       // Options for creating the controls
       _ambiguousControlOptions = new GenericTestOptions (
@@ -237,8 +265,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
           incorrectDomainProperty,
           EnabledState.Enabled,
           ReadOnlyState.ReadOnly);
-      _hiddenControlOptions = new GenericTestOptions (hiddenID, hiddenHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty, EnabledState.Enabled, ReadOnlyState.Editable);
-      _visibleControlOptions = new GenericTestOptions (visibleID, visibleHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty, EnabledState.Enabled, ReadOnlyState.Editable);
+      _hiddenControlOptions = new GenericTestOptions (
+          hiddenID,
+          hiddenHtmlID,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty);
+      _visibleControlOptions = new GenericTestOptions (
+          visibleID,
+          visibleHtmlID,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty);
 
       _formGridControlOptions = new GenericTestOptions (
           controlInNormalFormGridID,
@@ -284,6 +322,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
           correctDomainProperty,
           incorrectDomainProperty);
 
+      _customValidatedControlOptions = new GenericTestOptions (
+          customValidatedControlInFormGridID,
+          customValidatedControlInFormGridHtmlID,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty);
+
+      _multipleValidatedControlOptions = new GenericTestOptions (
+          multipleValidatedControlInFormGridID,
+          multipleValidatedControlInFormGridHtmlID,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty);
 
       // Parameters which will be passed to the client
       _parameters.Add (TestConstants.HtmlIDSelectorID, visibleHtmlID, hiddenHtmlID);
@@ -294,6 +345,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       _parameters.Add (TestConstants.DisabledTestsID, visibleHtmlID, disabledHtmlID);
       _parameters.Add (TestConstants.ReadOnlyTestsID, visibleHtmlID, readonlyHtmlID);
       _parameters.Add (TestConstants.LabelTestsID, controlInFormGridHtmlID, readonlyControlInFormGridHtmlID, oneControlOverMultipleRowsFormGridHtmlID, shiftedColumnsControlFormGridHtmlID, controlInMultiFormGridIDHtml1, controlInMultiFormGridIDHtml2, visibleHtmlID);
+      _parameters.Add (TestConstants.ValidationErrorTestsID, string.Concat ("body_", ValidateButton.ID), customValidatedControlInFormGridHtmlID, multipleValidatedControlInFormGridHtmlID, visibleHtmlID, controlInFormGridHtmlID, readonlyHtmlID);
+
+      ValidateButton.Click += ValidateButton_Click;
 
       base.OnInit (e);
     }
@@ -314,6 +368,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       if (master == null)
         throw new InvalidOperationException ("The master page of the generic test page is not set.");
       master.SetTestInformation (information);
+    }
+
+    private void ValidateButton_Click (object sender, EventArgs e)
+    {
+      ValidateDataSources();
+    }
+
+    private void ValidateDataSources ()
+    {
+      PrepareValidation();
+
+      FormGridManagerValidation.Validate();
     }
   }
 }

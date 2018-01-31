@@ -41,6 +41,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   {
     private readonly IBocBooleanValueResourceSetFactory _resourceSetFactory;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+    private readonly IValidationErrorRenderer _validationErrorRenderer;
+
     private const string c_nullString = "null";
 
     private static readonly string s_startUpScriptKeyPrefix = typeof (BocBooleanValueRenderer).FullName + "_Startup_";
@@ -50,14 +52,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
         IBocBooleanValueResourceSetFactory resourceSetFactory,
-        ILabelReferenceRenderer labelReferenceRenderer)
+        ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull ("resourceSetFactory", resourceSetFactory);
       ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull ("validationErrorRenderer", validationErrorRenderer);
 
       _resourceSetFactory = resourceSetFactory;
       _labelReferenceRenderer = labelReferenceRenderer;
+      _validationErrorRenderer = validationErrorRenderer;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -126,18 +131,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         dataValueReadOnlyControl.RenderControl (renderingContext.Writer);
         linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
       }
-      linkControl.Controls.Add (imageControl);
-      linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
 
-      SetValidationErrorOnControl (linkControl, validationErrorsID, validationErrors);
+      linkControl.Controls.Add (imageControl);
+
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
       _labelReferenceRenderer.SetLabelReferenceOnControl (linkControl, labelIDs);
+
+      linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
+      _validationErrorRenderer.SetValidationErrorsReferenceOnControl (linkControl, validationErrorsID, validationErrors);
 
       linkControl.RenderControl (renderingContext.Writer);
 
       labelControl.RenderControl (renderingContext.Writer);
 
-      RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
+      _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
 
       renderingContext.Writer.RenderEndTag();
     }

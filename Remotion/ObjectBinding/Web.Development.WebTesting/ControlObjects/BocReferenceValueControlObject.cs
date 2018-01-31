@@ -38,7 +38,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           IControlObjectWithSelectableOptions,
           IFluentControlObjectWithSelectableOptions,
           IControlObjectWithText,
-          IControlObjectWithFormElements
+          IControlObjectWithFormElements,
+          ISupportsValidationErrors
   {
     public BocReferenceValueControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -194,6 +195,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
       return new[] { string.Format ("{0}_Value", GetHtmlID()) };
+    }
+
+    public IReadOnlyList<string> GetValidationErrors ()
+    {
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
+      return GetValidationErrors (GetValueScope());
     }
 
     protected override ElementScope GetLabeledElementScope ()

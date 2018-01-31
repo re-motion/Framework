@@ -29,7 +29,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocTreeView"/>.
   /// </summary>
   public class BocTreeViewControlObject
-      : BocControlObject, IControlObjectWithNodes<BocTreeViewNodeControlObject>, IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>
+      : BocControlObject,
+          IControlObjectWithNodes<BocTreeViewNodeControlObject>,
+          IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>,
+          ISupportsValidationErrors
   {
     private readonly BocTreeViewNodeControlObject _metaRootNode;
 
@@ -95,6 +98,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
 
       return _metaRootNode.GetNode().WithDisplayTextContains (containsDisplayText);
+    }
+
+    public IReadOnlyList<string> GetValidationErrors ()
+    {
+      return GetValidationErrors (GetScopeWithReferenceInformation());
     }
 
     protected override ElementScope GetLabeledElementScope ()

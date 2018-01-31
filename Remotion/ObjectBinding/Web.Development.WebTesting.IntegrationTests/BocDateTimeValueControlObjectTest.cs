@@ -16,8 +16,10 @@
 // 
 using System;
 using System.Drawing;
+using System.Linq;
 using Coypu;
 using NUnit.Framework;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation;
@@ -41,6 +43,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
     [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocDateTimeValueSelector, BocDateTimeValueControlObject> testAction)
     {
       testAction (Helper, e => e.DateTimeValues(), "dateTimeValue");
@@ -319,9 +322,102 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("WithSecondsCurrentValueLabel").Text), Is.EqualTo (setWithSeconds));
     }
 
+    [Test]
+    public void TestGetDateValidationError ()
+    {
+      var home = Start();
+
+      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+
+      var dateScope = GetDateScope (bocDateTimeValue.Scope);
+      dateScope.FillInWith ("");
+
+      validateButton.Click();
+
+      var validateErrors = bocDateTimeValue.GetDateValidationErrors();
+
+      Assert.That (validateErrors.Count, Is.EqualTo (1));
+      Assert.That (validateErrors.First(), Is.EqualTo ("Enter a date."));
+    }
+
+    [Test]
+    public void TestGetTimeValidationError ()
+    {
+      var home = Start();
+
+      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+
+      var timeScope = GetTimeScope (bocDateTimeValue.Scope);
+      timeScope.FillInWith ("");
+
+      validateButton.Click();
+
+      var validateErrors = bocDateTimeValue.GetTimeValidationErrors();
+
+      Assert.That (validateErrors.Count, Is.EqualTo (1));
+      Assert.That (validateErrors.First(), Is.EqualTo ("Enter a time."));
+    }
+
+    [Test]
+    public void TestValidationErrorTimeValidationError ()
+    {
+      var home = Start();
+
+      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+
+      var timeScope = GetTimeScope (bocDateTimeValue.Scope);
+      timeScope.FillInWith ("");
+
+      validateButton.Click();
+
+      // Currently, Validation Errors are rendered on both the date and the time scope.
+      // Therefore, GetValidationErrors() only returns the ValidationError of one Field (Date) to not duplicate the validation errors.
+      // This test documents this behavior and will fail when it is changed
+      // to remind the updater to update bocDateTimeValue.GetValidationErrors () to return the errors of both Fields.
+      var validateErrors = bocDateTimeValue.GetValidationErrors();
+
+      Assert.That (validateErrors.Count, Is.EqualTo (1));
+      Assert.That (validateErrors.First(), Is.EqualTo ("Enter a time."));
+    }
+
+    [Test]
+    public void TestGetDateTimeValidationError ()
+    {
+      var home = Start();
+
+      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+
+      var dateScope = GetDateScope (bocDateTimeValue.Scope);
+      dateScope.FillInWith ("");
+
+      var timeScope = GetTimeScope (bocDateTimeValue.Scope);
+      timeScope.FillInWith ("");
+
+      validateButton.Click();
+
+      var validateErrors = bocDateTimeValue.GetValidationErrors();
+
+      Assert.That (validateErrors.Count, Is.EqualTo (1));
+      Assert.That (validateErrors.First(), Is.EqualTo ("Enter a date and time."));
+    }
+
     private WxePageObject Start ()
     {
       return Start ("BocDateTimeValue");
+    }
+
+    private ElementScope GetDateScope (ElementScope scope)
+    {
+      return scope.FindTagWithAttribute ("input", DiagnosticMetadataAttributesForObjectBinding.BocDateTimeValueDateField, "true");
+    }
+
+    private ElementScope GetTimeScope (ElementScope scope)
+    {
+      return scope.FindTagWithAttribute ("input", DiagnosticMetadataAttributesForObjectBinding.BocDateTimeValueTimeField, "true");
     }
   }
 }

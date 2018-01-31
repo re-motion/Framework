@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// <summary>
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue"/> control.
   /// </summary>
-  public class BocDateTimeValueControlObject : BocControlObject, IControlObjectWithFormElements
+  public class BocDateTimeValueControlObject : BocControlObject, IControlObjectWithFormElements, ISupportsValidationErrors
   {
     private readonly bool _hasTimeField;
 
@@ -180,6 +180,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return UnspecifiedPage();
     }
 
+    public IReadOnlyList<string> GetValidationErrors ()
+    {
+      // Currently, errors are rendered on both the date and the time field.
+      // Because of this, we do not return both errors, as the validation errors would just be duplicated.
+      // This should be changed when the behavior of BocDateTimeValue is changed.
+      return GetDateValidationErrors();
+    }
+
+    /// <summary>
+    /// Returns the validation errors for the date field.
+    /// </summary>
+    public IReadOnlyList<string> GetDateValidationErrors ()
+    {
+      return GetValidationErrors (GetDateScope());
+    }
+
+    /// <summary>
+    /// Returns the validation errors for the time field.
+    /// </summary>
+    public IReadOnlyList<string> GetTimeValidationErrors ()
+    {
+      return GetValidationErrors (GetTimeScope());
+    }
     protected override ElementScope GetLabeledElementScope ()
     {
       var dateScope = Scope.FindChild ("DateValue");

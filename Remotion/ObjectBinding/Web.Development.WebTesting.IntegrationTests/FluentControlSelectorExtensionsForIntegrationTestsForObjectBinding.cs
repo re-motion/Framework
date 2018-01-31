@@ -18,6 +18,8 @@ using System;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
@@ -84,6 +86,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public static FluentControlSelector<BocTreeViewSelector, BocTreeViewControlObject> TreeViews (this IControlHost host)
     {
       return new FluentControlSelector<BocTreeViewSelector, BocTreeViewControlObject> (host, new BocTreeViewSelector());
+    }
+
+    public static FluentControlSelector<WebButtonSelector, WebButtonControlObject> WebButtons (this IControlHost host)
+    {
+      return new FluentControlSelector<WebButtonSelector, WebButtonControlObject> (host, new WebButtonSelector());
     }
   }
 }

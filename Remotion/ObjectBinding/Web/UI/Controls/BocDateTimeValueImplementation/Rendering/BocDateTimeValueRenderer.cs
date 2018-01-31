@@ -46,6 +46,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     private const string c_designModeEmptyLabelContents = "##";
 
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+    private readonly IValidationErrorRenderer _validationErrorRenderer;
+
     private readonly Func<TextBox> _dateTextBoxFactory;
     private readonly Func<TextBox> _timeTextBoxFactory;
 
@@ -53,12 +55,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
-        ILabelReferenceRenderer labelReferenceRenderer)
+        ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer)
         : this (
             resourceUrlFactory,
             globalizationService,
             renderingFeatures,
             labelReferenceRenderer,
+            validationErrorRenderer,
             () => new RenderOnlyTextBox(),
             () => new RenderOnlyTextBox())
     {
@@ -69,17 +73,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer,
         Func<TextBox> dateTextBoxFactory,
         Func<TextBox> timeTextBoxFactory)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull ("validationErrorRenderer", validationErrorRenderer);
       ArgumentUtility.CheckNotNull ("dateTextBoxFactory", dateTextBoxFactory);
       ArgumentUtility.CheckNotNull ("timeTextBoxFactory", timeTextBoxFactory);
 
       _labelReferenceRenderer = labelReferenceRenderer;
+      _validationErrorRenderer = validationErrorRenderer;
       _dateTextBoxFactory = dateTextBoxFactory;
       _timeTextBoxFactory = timeTextBoxFactory;
+
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -207,7 +215,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
             HtmlTextWriterAttribute.Class, CssClassDateInputWrapper + " " + GetPositioningCssClass (renderingContext, DateTimeValuePart.Date));
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-        SetValidationErrorOnControl (dateTextBox, dateValueValidationErrorsID, dateValueValidationErrors);
+        _validationErrorRenderer.SetValidationErrorsReferenceOnControl (dateTextBox, dateValueValidationErrorsID, dateValueValidationErrors);
 
         dateTextBox.RenderControl (renderingContext.Writer);
 
@@ -220,7 +228,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           renderingContext.Writer.RenderEndTag();
         }
 
-        RenderValidationErrors (renderingContext, dateValueValidationErrorsID, dateValueValidationErrors);
+        _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, dateValueValidationErrorsID, dateValueValidationErrors);
 
         renderingContext.Writer.RenderEndTag();
 
@@ -235,7 +243,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
             HtmlTextWriterAttribute.Class, CssClassTimeInputWrapper + " " + GetPositioningCssClass (renderingContext, DateTimeValuePart.Time));
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-        SetValidationErrorOnControl (timeTextBox, timeValueValidationErrorsID, timeValueValidationErrors);
+        _validationErrorRenderer.SetValidationErrorsReferenceOnControl (timeTextBox, timeValueValidationErrorsID, timeValueValidationErrors);
 
         timeTextBox.RenderControl (renderingContext.Writer);
 
@@ -248,7 +256,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           renderingContext.Writer.RenderEndTag();
         }
 
-        RenderValidationErrors (renderingContext, timeValueValidationErrorsID, timeValueValidationErrors);
+        _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, timeValueValidationErrorsID, timeValueValidationErrors);
 
         renderingContext.Writer.RenderEndTag();
       }
@@ -391,15 +399,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           }
         }
       }
+
       if (hasDateField)
-        RenderLabel (dateLabel, renderingContext);
+      {
+        RenderLabel (
+            dateLabel,
+            renderingContext,
+            GetDateValueValidationErrorsID (renderingContext),
+            GetDateValueValidationErrorsToRender (renderingContext).ToArray());
+      }
+
       if (hasDateField && hasTimeField)
         renderingContext.Writer.Write (' ');
+
       if (hasTimeField)
-        RenderLabel (timeLabel, renderingContext);
+      {
+        RenderLabel (
+            timeLabel,
+            renderingContext,
+            GetTimeValueValidationErrorsID (renderingContext),
+            GetTimeValueValidationErrorsToRender (renderingContext).ToArray());
+      }
     }
 
-    private void RenderLabel (Label label, BocDateTimeValueRenderingContext renderingContext)
+    private void RenderLabel (
+        Label label,
+        BocDateTimeValueRenderingContext renderingContext,
+        string validationErrorsID,
+        IReadOnlyCollection<string> validationErrors)
     {
       label.Height = Unit.Empty;
       label.Width = Unit.Empty;
@@ -441,6 +468,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       accessibilityAnnotationIDsCollectionForLabel.Add (label.ClientID);
 
       _labelReferenceRenderer.SetLabelsReferenceOnControl (label, controlLabelIDs, accessibilityAnnotationIDsCollectionForLabel);
+      _validationErrorRenderer.SetValidationErrorsReferenceOnControl (label, validationErrorsID, validationErrors);
 
       label.RenderControl (renderingContext.Writer);
 
@@ -452,13 +480,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         renderingContext.Writer.Write (descriptionLabelText);
         renderingContext.Writer.RenderEndTag();
       }
+
+      _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
     private IEnumerable<string> GetDateValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
     {
-      if (renderingContext.Control.IsReadOnly)
-        return Enumerable.Empty<string>();
-
       return renderingContext.Control.GetDateValueValidationErrors();
     }
 
@@ -469,9 +496,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
     private IEnumerable<string> GetTimeValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
     {
-      if (renderingContext.Control.IsReadOnly)
-        return Enumerable.Empty<string>();
-
       return renderingContext.Control.GetTimeValueValidationErrors();
     }
 

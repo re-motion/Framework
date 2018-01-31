@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,19 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Collections.Generic;
 
-namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImplementation.Rendering
+namespace Remotion.Web.Development.WebTesting
 {
-  public class StubTextBox : TextBox
+  public interface ISupportsValidationErrors
   {
-    protected override void Render (HtmlTextWriter writer)
-    {
-      writer.AddAttribute (HtmlTextWriterAttribute.Type, "stub");
-      Attributes.AddAttributes (writer);
-      writer.RenderBeginTag (HtmlTextWriterTag.Input);
-      writer.RenderEndTag();
-    }
+    IReadOnlyList<string> GetValidationErrors ();
   }
 }

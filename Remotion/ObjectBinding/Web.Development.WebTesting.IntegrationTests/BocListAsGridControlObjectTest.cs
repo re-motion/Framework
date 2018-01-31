@@ -35,6 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
     [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocListAsGridSelector, BocListAsGridControlObject> testAction)
     {
       testAction (Helper, e => e.ListAsGrids(), "listAsGrid");

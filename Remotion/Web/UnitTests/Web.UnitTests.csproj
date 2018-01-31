@@ -250,8 +250,10 @@
     <Compile Include="Core\UI\Controls\ListMenuImplementation\Rendering\IListMenuRendererTest.cs" />
     <Compile Include="Core\SetUpFixture.cs" />
     <Compile Include="Core\UI\Controls\Rendering\ILabelReferenceRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\Rendering\IValidationErrorsRendererTest.cs" />
     <Compile Include="Core\UI\Controls\Rendering\LabelReferenceRendererTest.cs" />
     <Compile Include="Core\UI\Controls\Rendering\RenderingFeaturesTest.cs" />
+    <Compile Include="Core\UI\Controls\Rendering\ValidationErrorRendererTest.cs" />
     <Compile Include="Core\UI\Controls\SingleViewImplementation\Rendering\ISingleViewRendererTest.cs" />
     <Compile Include="Core\UI\Controls\StubStyleSheetElement.cs" />
     <Compile Include="Core\UI\Controls\StyleSheetBlockTest.cs" />

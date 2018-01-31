@@ -16,6 +16,7 @@
 --%>
 <%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="GenericTest.aspx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericTest" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
+
   <remotion:BindableObjectDataSourceControl ID="DataSource" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>
@@ -82,6 +83,28 @@
       <asp:PlaceHolder ID="MultipleControlsFormGridPlaceHolder" runat="server">
       </asp:PlaceHolder>
       
+      
+      <h3>Validation</h3>
+      <remotion:FormGridManager ID="FormGridManagerValidation" FormGridSuffix="Validation" runat="server"/>
+      <table id="FormGridValidation" runat="server">
+        <tr><td><span>Without Validator</span></td></tr>
+        <tr>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr><td><span>Custom Validator</span></td></tr>
+        <tr>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr><td><span>Multiple Validators</span></td></tr>
+        <tr>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+      <remotion:WebButton ID="ValidateButton" runat="server" Width="10em" Text="Validate"/>
+
       <h3>Frame test</h3>
       <iframe id="testFrame" src="FrameTestFrame.aspx">
       </iframe>

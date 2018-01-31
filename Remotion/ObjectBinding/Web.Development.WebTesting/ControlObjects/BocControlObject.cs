@@ -18,9 +18,11 @@ using System;
 using System.Collections.Generic;
 using Coypu;
 using JetBrains.Annotations;
+using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
@@ -51,6 +53,60 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public bool IsDisabled ()
     {
       return Scope[DiagnosticMetadataAttributes.IsDisabled] == "true";
+    }
+
+    /// <summary>
+    /// Returns the validation errors for the <param name="scope" />.
+    /// </summary>
+    /// <exception cref="MissingHtmlException">Thrown if the validation errors cannot be found due to faulty markup or missing validator.</exception>
+    protected IReadOnlyList<string> GetValidationErrors ([NotNull] ElementScope scope)
+    {
+      ArgumentUtility.CheckNotNull ("scope", scope);
+
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
+      if (IsValid (scope))
+        return new List<string>();
+
+      ElementScope validationErrorsScope;
+      string describedBy;
+
+      try
+      {
+        describedBy = scope["aria-describedby"];
+      }
+      catch (MissingHtmlException exception)
+      {
+        throw new MissingHtmlException (
+            "Could not find validation error field. This could be due to wrong markup or a missing validators.",
+            exception);
+      }
+
+      var validationErrorIDs = describedBy.Split (new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+      try
+      {
+        var validationErrorIndex = int.Parse (scope[DiagnosticMetadataAttributes.ValidationErrorIDIndex]);
+
+        validationErrorsScope = Scope.FindId (validationErrorIDs[validationErrorIndex]);
+      }
+      catch (MissingHtmlException exception)
+      {
+        throw new MissingHtmlException (
+            "Could not find validation error field. This could be due to wrong markup or a missing validators.",
+            exception);
+      }
+
+      // re-motion renders the delimiter as <br />, but the browser (and Selenium) show it as <br>
+      const string validationErrorDelimiter = "<br>";
+
+      return validationErrorsScope.InnerHTML.Split (new[] { validationErrorDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+    }
+
+    private static bool IsValid (ElementScope scope)
+    {
+      return scope["aria-invalid"] != "true";
     }
 
     /// <summary>

@@ -30,6 +30,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     EnabledDisabled = VisibleElements | DisabledElements,
     EnabledReadOnly = VisibleElements | ReadOnlyElements,
     EnabledFormGrid = VisibleElements | FormGridElements,
+    EnabledValidation = VisibleElements | ValidationElements | ReadOnlyElements,
     NonAmbiguous = HiddenElements | VisibleElements,
 
     /// <summary>
@@ -62,5 +63,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// </summary>
     FormGridElements = 32,
 
+    /// <summary>
+    /// Renders the validation elements.
+    /// </summary>
+    ValidationElements = 64,
   }
 }

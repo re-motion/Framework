@@ -37,6 +37,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
     {
       testAction (Helper, e => e.ReferenceValues(), "referenceValue");

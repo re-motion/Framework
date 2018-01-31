@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -30,7 +29,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.Factories;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 using Rhino.Mocks;
@@ -50,6 +48,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private const string c_keyValueName = "MyBooleanValue_Value";
     private const string c_displayValueName = "MyBooleanValue_DisplayValue";
     private const string c_labelID = "Label";
+    private const string c_validationErrors = "ValidationError";
 
     private string _startupScript;
     private string _clickScript;
@@ -82,6 +81,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Stub (mock => mock.GetValueName ()).Return (c_keyValueName);
       _booleanValue.Stub (mock => mock.GetDisplayValueName()).Return (c_displayValueName);
       _booleanValue.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
+      _booleanValue.Stub (mock => mock.GetValidationErrors()).Return (EnumerableUtility.Singleton (c_validationErrors));
       
       string startupScriptKey = typeof (BocBooleanValueRenderer).FullName + "_Startup_" + _resourceSet.ResourceKey;
       _startupScript = string.Format (
@@ -129,8 +129,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
 
       _booleanValue.Stub (stub => stub.CreateResourceSet ()).Return (_resourceSet);
-
-      _booleanValue.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
     }
 
     [Test]
@@ -282,7 +280,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           new BocBooleanValueResourceSetFactory (resourceUrlFactory),
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
       _renderer.Render (new BocBooleanValueRenderingContext(HttpContext, Html.Writer, _booleanValue));
       
       var document = Html.GetResultDocument();
@@ -300,7 +299,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           GlobalizationService,
           RenderingFeatures.Default,
           new BocBooleanValueResourceSetFactory (resourceUrlFactory),
-          new StubLabelReferenceRenderer());
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
       _renderer.Render (new BocBooleanValueRenderingContext(HttpContext, Html.Writer, _booleanValue));
       var document = Html.GetResultDocument();
       var outerSpan = Html.GetAssertedChildElement (document, "span", 0);
@@ -310,7 +310,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         CheckHiddenField (outerSpan, value);
       else
         CheckDataValueField (outerSpan, value);
-      Html.AssertChildElementCount (outerSpan, 3);
+      Html.AssertChildElementCount (outerSpan, 4);
 
       var link = Html.GetAssertedChildElement (outerSpan, "a", 1);
       CheckLinkAttributes (link, checkedState, null, _booleanValue.IsReadOnly, _booleanValue.IsRequired && value == "null");
@@ -327,9 +327,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       else
         Html.AssertAttribute (label, "hidden", "hidden");
 
-
       if (!_booleanValue.IsReadOnly)
         Html.AssertAttribute (label, "onclick", _booleanValue.Enabled ? _clickScript : _dummyScript);
+
+      AssertValidationErrors (Html.GetAssertedChildElement (outerSpan, "fake", 3));
     }
 
     private void CheckCssClass (XmlNode outerSpan)
@@ -366,6 +367,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute (link, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       Html.AssertAttribute (link, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       Html.AssertAttribute (link, "aria-describedby", c_clientID + "_Description");
+
+      AssertValidationErrors (link);
+
       Html.AssertAttribute (link, "role", "checkbox");
       Html.AssertAttribute (link, "aria-checked", checkedState);
       if (isReadOnly)
@@ -382,6 +386,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         Html.AssertNoAttribute (link, "title");
       else
         Html.AssertAttribute (link, "title", description);
+    }
+
+    private void AssertValidationErrors (XmlNode node)
+    {
+      Html.AssertAttribute (node, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute (node, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
     }
 
     private void CheckHiddenField (XmlNode outerSpan, string value)

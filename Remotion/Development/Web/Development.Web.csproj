@@ -108,6 +108,7 @@
     <Compile Include="UnitTesting\ExecutionEngine\TestFunctions\TestStep.cs" />
     <Compile Include="UnitTesting\ExecutionEngine\WxeContextMock.cs" />
     <Compile Include="UnitTesting\UI\Controls\Rendering\StubLabelReferenceRenderer.cs" />
+    <Compile Include="UnitTesting\UI\Controls\Rendering\StubValidationErrorRenderer.cs" />
     <Compile Include="UnitTesting\Utilities\FakeScriptUtility.cs" />
     <Compile Include="UnitTesting\Resources\FakeResourceUrlFactory.cs" />
     <Compile Include="UnitTesting\Resources\FakeResourcePathBuilder.cs" />

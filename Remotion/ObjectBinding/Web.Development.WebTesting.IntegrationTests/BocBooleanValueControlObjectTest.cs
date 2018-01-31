@@ -36,6 +36,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
     [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocBooleanValueSelector, BocBooleanValueControlObject> testAction)
     {
       testAction (Helper, e => e.BooleanValues(), "booleanValue");

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
@@ -61,8 +62,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
-        ILabelReferenceRenderer labelReferenceRenderer)
-        : this (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, () => new DropDownList())
+        ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer)
+        : this (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer, () => new DropDownList())
     {
     }
 
@@ -71,8 +73,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer,
         Func<DropDownList> dropDownListFactoryMethod)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer)
+        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
     {
       ArgumentUtility.CheckNotNull ("dropDownListFactoryMethod", dropDownListFactoryMethod);
       _dropDownListFactoryMethod = dropDownListFactoryMethod;
@@ -199,11 +202,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
       var validationErrorsID = GetValidationErrorsID (renderingContext);
 
-      SetValidationErrorOnControl (dropDownList, validationErrorsID, validationErrors);
+      ValidationErrorRenderer.SetValidationErrorsReferenceOnControl (dropDownList, validationErrorsID, validationErrors);
 
       dropDownList.RenderControl (renderingContext.Writer);
 
-      RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
+      ValidationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
     private DropDownList GetDropDownList (BocRenderingContext<IBocReferenceValue> renderingContext)

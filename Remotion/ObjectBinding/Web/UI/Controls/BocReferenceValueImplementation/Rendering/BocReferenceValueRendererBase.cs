@@ -23,6 +23,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -39,20 +40,31 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       where TControl: IBocReferenceValueBase
   {
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+    private readonly IValidationErrorRenderer _validationErrorRenderer;
+
     protected BocReferenceValueRendererBase (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
-        ILabelReferenceRenderer labelReferenceRenderer)
+        ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull ("validationErrorRenderer", validationErrorRenderer);
+
       _labelReferenceRenderer = labelReferenceRenderer;
+      _validationErrorRenderer = validationErrorRenderer;
     }
 
     protected ILabelReferenceRenderer LabelReferenceRenderer
     {
       get { return _labelReferenceRenderer; }
+    }
+
+    protected IValidationErrorRenderer ValidationErrorRenderer
+    {
+      get { return _validationErrorRenderer; }
     }
 
     protected abstract void RenderEditModeValueWithSeparateOptionsMenu (BocRenderingContext<TControl> renderingContext);
@@ -312,6 +324,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void RenderReadOnlyValue (BocRenderingContext<TControl> renderingContext, string postBackEvent, string onClick, string objectID)
     {
+      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID (renderingContext);
+
       Label label = GetLabel (renderingContext);
       IconInfo icon = null;
       var isIconEnabled = renderingContext.Control.IsIconEnabled();
@@ -335,6 +350,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
       LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
       
+      var attributeCollection = new AttributeCollection (new StateBag());
+      ValidationErrorRenderer.AddValidationErrorsReference (attributeCollection, validationErrorsID, validationErrors);
+      attributeCollection.AddAttributes (renderingContext.Writer);
 
       var command = GetCommand (renderingContext, isCommandEnabled);
       command.RenderBegin (renderingContext.Writer, RenderingFeatures, postBackEvent, onClick, objectID, null);
@@ -347,8 +365,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
       label.RenderControl (renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
-
       renderingContext.Control.Command.RenderEnd (renderingContext.Writer);
+
+      ValidationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
     private bool IsCommandEnabled (BocRenderingContext<TControl> renderingContext)
@@ -405,9 +424,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     protected IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-
-      if (renderingContext.Control.IsReadOnly)
-        return Enumerable.Empty<string>();
 
       return renderingContext.Control.GetValidationErrors();
     }

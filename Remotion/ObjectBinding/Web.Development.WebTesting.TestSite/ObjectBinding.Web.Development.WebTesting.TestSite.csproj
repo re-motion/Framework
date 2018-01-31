@@ -385,6 +385,10 @@
       <Project>{5F1B88F7-FAFB-45C2-A357-333245870A6B}</Project>
       <Name>ObjectBinding.Sample</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj">
+      <Project>{AB09FD88-9422-4BE7-8605-8A0EB8F9051B}</Project>
+      <Name>ObjectBinding.Web.UnitTests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj">
       <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
       <Name>ObjectBinding.Web</Name>

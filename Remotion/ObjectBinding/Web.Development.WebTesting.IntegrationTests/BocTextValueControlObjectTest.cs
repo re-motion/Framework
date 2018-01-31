@@ -36,6 +36,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocTextValueSelector, BocTextValueControlObject> testAction)
     {
       testAction (Helper, e => e.TextValues(), "textValue");

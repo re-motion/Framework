@@ -42,6 +42,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
   {
     private readonly IInternalControlMemberCaller _internalControlMemberCaller;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+    private readonly IValidationErrorRenderer _validationErrorRenderer;
 
     /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
     private const string c_designModeEmptyLabelContents = "##";
@@ -51,14 +52,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
         IInternalControlMemberCaller internalControlMemberCaller,
-        ILabelReferenceRenderer labelReferenceRenderer)
+        ILabelReferenceRenderer labelReferenceRenderer,
+        IValidationErrorRenderer validationErrorRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull ("internalControlMemberCaller", internalControlMemberCaller);
       ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull ("validationErrorRenderer", validationErrorRenderer);
       
       _internalControlMemberCaller = internalControlMemberCaller;
       _labelReferenceRenderer = labelReferenceRenderer;
+      _validationErrorRenderer = validationErrorRenderer;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -119,11 +123,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         }
       }
 
-      SetValidationErrorOnControl (innerControl, validationErrorsID, validationErrors);
+      _validationErrorRenderer.SetValidationErrorsReferenceOnControl (innerControl, validationErrorsID, validationErrors);
 
       innerControl.RenderControl (renderingContext.Writer);
 
-      RenderValidationErrors (renderingContext, validationErrorsID, validationErrors);
+      _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
 
       renderingContext.Writer.RenderEndTag();
     }
@@ -305,9 +309,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
     private IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<IBocEnumValue> renderingContext)
     {
-      if (renderingContext.Control.IsReadOnly)
-        return Enumerable.Empty<string>();
-
       return renderingContext.Control.GetValidationErrors();
     }
 

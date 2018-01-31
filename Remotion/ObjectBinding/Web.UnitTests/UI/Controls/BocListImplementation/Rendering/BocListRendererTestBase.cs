@@ -78,6 +78,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Stub (mock => mock.ControlType).Return ("BocList");
       List.Stub (list => list.HasClientScript).Return (true);
       List.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton ("Label"));
+      List.Stub (mock => mock.GetValidationErrors()).Return (EnumerableUtility.Singleton ("ValidationError"));
 
       List.Stub (list => list.DataSource).Return (MockRepository.GenerateStub<IBusinessObjectDataSource>());
       List.DataSource.BusinessObject = BusinessObject;
@@ -119,8 +120,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           GlobalizationService.GetResourceManager (typeof (ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier)));
 
       List.Stub (stub => stub.ResolveClientUrl (null)).IgnoreArguments ().Do ((Func<string, string>) (url => url.TrimStart ('~')));
-
-      List.Stub (mock => mock.GetValidationErrors()).Return (Enumerable.Empty<string>());
     }
   }
 }

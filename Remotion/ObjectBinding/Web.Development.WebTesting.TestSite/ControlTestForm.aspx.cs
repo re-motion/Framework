@@ -35,6 +35,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 
       LoadUserControl();
       LoadTestOutputUserControl();
+
+      ValidateButton.Click += new EventHandler (ValidateButton_Click);
     }
 
     protected override void OnLoad (EventArgs e)
@@ -60,6 +62,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       var testOutputControl = LoadControl (testOutputControlPath);
 
       TestOutputControlPlaceHolder.Controls.Add (testOutputControl);
+    }
+
+    private void ValidateButton_Click (object sender, EventArgs e)
+    {
+      ValidateDataSources();
     }
 
     private void PopulateDataSources ()
