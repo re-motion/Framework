@@ -35,6 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
     {
       testAction (Helper, e => e.MultilineTextValues(), "multilineText");

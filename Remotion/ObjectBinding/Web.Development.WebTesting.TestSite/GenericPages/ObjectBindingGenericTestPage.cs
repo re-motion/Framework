@@ -16,26 +16,127 @@
 // 
 using System;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages
 {
   public abstract class ObjectBindingGenericTestPage<TOptions> : GenericTestPageBase<TOptions>
   {
+
+    [NotNull]
+    protected abstract TOptions FormGridControlOptions { get; }
+
+    [NotNull]
+    protected abstract TOptions FormGridWithReadonlyControlOptions { get; }
+
+    [NotNull]
+    protected abstract HtmlTable FormGridControlTable { get; }
+
+    [NotNull]
+    protected abstract HtmlTable FormGridWithReadonlyControlTable { get; }
+
+    [NotNull]
+    protected abstract TOptions OneControlOverMultipleRowsFormGridControlOptions { get; }
+
+    [NotNull]
+    protected abstract HtmlTable OneControlOverMultipleRowsFormGridTable { get; }
+
+    [NotNull]
+    protected abstract TOptions ShiftedColumnsFormGridControlOptions { get; }
+
+    [NotNull]
+    protected abstract PlaceHolder ShiftedColumnsFormGrid { get; }
+
+    [NotNull]
+    protected abstract TOptions FormGridMultiControlOptions1 { get; }
+
+    [NotNull]
+    protected abstract TOptions FormGridMultiControlOptions2 { get; }
+
+    [NotNull]
+    protected abstract PlaceHolder MultipleControlsFormGrid { get; }
+
     [NotNull]
     protected abstract TOptions ReadOnlyControlOptions { get; }
 
     [NotNull]
     protected abstract Control ReadOnlyControlPanel { get; }
 
-    protected override void AddControls (GenericTestPageType pageType, IGenericTestPage<TOptions> testPage)
+
+    protected override void AddControlsOnInit (GenericTestPageType pageType, IGenericTestPage<TOptions> testPage)
     {
-      base.AddControls (pageType, testPage);
+      base.AddControlsOnInit (pageType, testPage);
 
       if (pageType.HasFlag (GenericTestPageType.ReadOnlyElements))
         ReadOnlyControlPanel.Controls.Add (testPage.CreateControl (ReadOnlyControlOptions));
+
+      if (pageType.HasFlag (GenericTestPageType.EnabledFormGrid))
+      {
+        var shiftedColumnsFormGridTable = new HtmlTable();
+
+        var shiftedColumnsTableRow = new HtmlTableRow();
+        shiftedColumnsTableRow.Cells.Add (new HtmlTableCell());
+        shiftedColumnsTableRow.Cells.Add (new HtmlTableCell());
+        shiftedColumnsTableRow.Cells.Add (new HtmlTableCell());
+        shiftedColumnsTableRow.Cells.Add (new HtmlTableCell());
+        shiftedColumnsFormGridTable.Rows.Add (shiftedColumnsTableRow);
+        shiftedColumnsFormGridTable.ID = "FormGridShifted";
+
+        ShiftedColumnsFormGrid.Controls.Add (shiftedColumnsFormGridTable);
+
+        var formGridManager1 = new FormGridManager();
+        ShiftedColumnsFormGrid.Controls.Add (formGridManager1);
+        formGridManager1.ID = "ShiftedFormGridManager";
+        formGridManager1.FormGridSuffix = "Shifted";
+        formGridManager1.ControlsColumn = 3;
+        formGridManager1.LabelsColumn = 2;
+
+        var formGridManager2 = new FormGridManager();
+        MultipleControlsFormGrid.Controls.Add (formGridManager2);
+        formGridManager2.ID = "MultiFormGridManager1";
+        formGridManager2.FormGridSuffix = "Multi";
+
+        var formGridManager3 = new FormGridManager();
+        MultipleControlsFormGrid.Controls.Add (formGridManager3);
+        formGridManager3.ID = "MultiFormGridManager2";
+        formGridManager3.FormGridSuffix = "Multi";
+        formGridManager3.ControlsColumn = 4;
+        formGridManager3.LabelsColumn = 3;
+
+        var formGridMultiTable = new HtmlTable();
+        var formGridMultiTableRow = new HtmlTableRow();
+        formGridMultiTableRow.Cells.Add (new HtmlTableCell());
+        formGridMultiTableRow.Cells.Add (new HtmlTableCell());
+        formGridMultiTableRow.Cells.Add (new HtmlTableCell());
+        formGridMultiTableRow.Cells.Add (new HtmlTableCell());
+        formGridMultiTableRow.Cells.Add (new HtmlTableCell());
+        formGridMultiTable.Rows.Add (formGridMultiTableRow);
+        formGridMultiTable.ID = "FormGridMulti";
+
+        MultipleControlsFormGrid.Controls.Add (formGridMultiTable);
+
+        FormGridControlTable.Rows[0].Cells[1].Controls.Add (testPage.CreateControl (FormGridControlOptions));
+        FormGridWithReadonlyControlTable.Rows[0].Cells[1].Controls.Add (testPage.CreateControl (FormGridWithReadonlyControlOptions));
+        OneControlOverMultipleRowsFormGridTable.Rows[1].Cells[0].Controls.Add (testPage.CreateControl (OneControlOverMultipleRowsFormGridControlOptions));
+        shiftedColumnsFormGridTable.Rows[0].Cells[3].Controls.Add (testPage.CreateControl (ShiftedColumnsFormGridControlOptions));
+        formGridMultiTable.Rows[0].Cells[1].Controls.Add (testPage.CreateControl (FormGridMultiControlOptions1));
+
+        var secondControlInMultiTable = testPage.CreateControl (FormGridMultiControlOptions2);
+        formGridMultiTable.Rows[0].Cells[4].Controls.Add (secondControlInMultiTable);
+
+        // Label is not created automatically
+        var labelsControl = new SmartLabel();
+        labelsControl.ForControl = secondControlInMultiTable.ID;
+        labelsControl.ID = secondControlInMultiTable.ID + "_Label";
+        labelsControl.EnableViewState = true;
+
+        formGridMultiTable.Rows[0].Cells[3].Controls.Add (labelsControl);
+      }
     }
   }
 }

@@ -29,8 +29,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     public TestableBocDateTimeValueRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
-        IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer)
+        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer)
     {
     }
 
@@ -38,9 +39,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer,
         TextBox dateTextBox,
         TextBox timeTextBox)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures, () => dateTextBox, () => timeTextBox)
+        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, () => dateTextBox, () => timeTextBox)
     {
     }
   }

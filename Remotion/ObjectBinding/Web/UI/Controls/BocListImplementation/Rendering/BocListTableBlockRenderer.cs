@@ -21,6 +21,7 @@ using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -33,14 +34,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   {
     private readonly BocListCssClassDefinition _cssClasses;
     private readonly IBocRowRenderer _rowRenderer;
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
 
-    public BocListTableBlockRenderer (BocListCssClassDefinition cssClasses, IBocRowRenderer rowRenderer)
+    public BocListTableBlockRenderer (
+        BocListCssClassDefinition cssClasses,
+        IBocRowRenderer rowRenderer,
+        ILabelReferenceRenderer labelReferenceRenderer)
     {
       ArgumentUtility.CheckNotNull ("cssClasses", cssClasses);
       ArgumentUtility.CheckNotNull ("rowRenderer", rowRenderer);
+      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
 
       _cssClasses = cssClasses;
       _rowRenderer = rowRenderer;
+      _labelReferenceRenderer = labelReferenceRenderer;
     }
 
     public BocListCssClassDefinition CssClasses
@@ -118,9 +125,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
       renderingContext.Writer.AddAttribute ("tabindex", "0");
 
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
 
       if (validationErrors.Any())
       {
@@ -198,14 +204,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableContainer);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Table);
       renderingContext.Writer.AddAttribute ("tabindex", "0");
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
       if (validationErrors.Any())
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaDescribedBy, validationErrorsID);
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaInvalid, HtmlAriaInvalidAttributeValue.True);
       }
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
+
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableScrollContainer);

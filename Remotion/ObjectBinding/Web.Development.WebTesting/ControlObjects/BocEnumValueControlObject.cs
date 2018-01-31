@@ -129,6 +129,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return new[] { string.Format ("{0}_Value", GetHtmlID()) };
     }
 
+    protected override ElementScope GetLabeledElementScope ()
+    {
+      return GetScopeWithReferenceInformation();
+    }
+
+    private ElementScope GetScopeWithReferenceInformation ()
+    {
+      return Scope.FindChild ("Value");
+    }
+
     /// <summary>
     /// Factory method, creates a <see cref="IBocEnumValueControlObjectVariant"/> from the given <paramref name="style"/>, which must be one of
     /// <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.ListControlType.ToString"/>.

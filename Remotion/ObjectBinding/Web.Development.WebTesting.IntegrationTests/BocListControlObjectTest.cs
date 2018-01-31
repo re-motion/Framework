@@ -41,6 +41,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocListSelector, BocListControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocListSelector, BocListControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocListSelector, BocListControlObject> testAction)
     {
       testAction (Helper, e => e.Lists(), "list");

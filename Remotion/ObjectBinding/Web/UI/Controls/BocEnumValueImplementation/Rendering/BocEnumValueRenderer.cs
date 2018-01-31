@@ -41,6 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
   public class BocEnumValueRenderer : BocRendererBase<IBocEnumValue>, IBocEnumValueRenderer
   {
     private readonly IInternalControlMemberCaller _internalControlMemberCaller;
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
 
     /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
     private const string c_designModeEmptyLabelContents = "##";
@@ -49,12 +50,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
-        IInternalControlMemberCaller internalControlMemberCaller)
+        IInternalControlMemberCaller internalControlMemberCaller,
+        ILabelReferenceRenderer labelReferenceRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull ("internalControlMemberCaller", internalControlMemberCaller);
+      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
       
       _internalControlMemberCaller = internalControlMemberCaller;
+      _labelReferenceRenderer = labelReferenceRenderer;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -155,9 +159,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       if (isRadioButtonList)
         listControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RadioGroup);
 
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        listControl.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      _labelReferenceRenderer.SetLabelReferenceOnControl (listControl, labelIDs);
 
       var oneBasedIndex = 1;
 
@@ -276,9 +280,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       label.ApplyStyle (renderingContext.Control.CommonStyle);
       label.ApplyStyle (renderingContext.Control.LabelStyle);
 
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        label.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      _labelReferenceRenderer.SetLabelReferenceOnControl (label, labelIDs);
 
       label.Attributes.Add ("tabindex", "0");
       switch (renderingContext.Control.ListControlStyle.ControlType)

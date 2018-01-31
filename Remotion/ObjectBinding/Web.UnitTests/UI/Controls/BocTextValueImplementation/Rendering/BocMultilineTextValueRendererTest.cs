@@ -21,6 +21,7 @@ using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
@@ -37,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
   public class BocMultilineTextValueRendererTest : BocTextValueRendererTestBase<IBocMultilineTextValue>
   {
     private const string c_textValueID = "MyTextValue_Boc_Textbox";
-    private const string c_labelID = "TheLabel";
+    private const string c_labelID = "Label";
     private BocMultilineTextValueRenderer _renderer;
     
     [SetUp]
@@ -63,7 +64,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       pageStub.Stub (stub => stub.WrappedInstance).Return (new PageMock());
       TextValue.Stub (stub => stub.Page).Return (pageStub);
 
-      _renderer = new BocMultilineTextValueRenderer (new FakeResourceUrlFactory (), GlobalizationService, RenderingFeatures.Default);
+      _renderer = new BocMultilineTextValueRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.Default,
+          new StubLabelReferenceRenderer());
     }
 
     [Test]
@@ -153,7 +158,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     [Test]
     public void TestDiagnosticMetadataRenderingWithAutoPostBack ()
     {
-      _renderer = new BocMultilineTextValueRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      _renderer = new BocMultilineTextValueRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          new StubLabelReferenceRenderer());
       
       var span = RenderMultiLineEditable (false, false, false, false, true);
       Html.AssertAttribute (span, DiagnosticMetadataAttributes.ControlType, "BocMultilineTextValue");
@@ -163,7 +172,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     [Test]
     public void TestDiagnosticMetadataRenderingWithoutAutoPostBack ()
     {
-      _renderer = new BocMultilineTextValueRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      _renderer = new BocMultilineTextValueRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          new StubLabelReferenceRenderer());
       
       var span = RenderMultiLineEditable (false, false, false, false, false);
       Html.AssertAttribute (span, DiagnosticMetadataAttributes.ControlType, "BocMultilineTextValue");
@@ -195,7 +208,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       var textarea = Html.GetAssertedChildElement (content, "textarea", 0);
       Html.AssertAttribute (textarea, "id", c_textValueID);
       Html.AssertAttribute (textarea, "name", c_textValueID);
-      Html.AssertAttribute (textarea, "aria-labelledby", c_labelID);
+      Html.AssertAttribute (textarea, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute (textarea, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       if (TextValue.TextBoxStyle.AutoPostBack == true)
         Html.AssertAttribute (textarea, "onchange", string.Format("javascript:__doPostBack('{0}','')", c_textValueID));
       CheckTextAreaStyle (textarea, false, withStyle);
@@ -232,7 +246,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       var label = Html.GetAssertedChildElement (content, "span", 0);
       Html.AssertAttribute (label, "id", c_textValueID);
-      Html.AssertAttribute (label, "aria-labelledby", c_labelID + " " + c_textValueID);
+      Html.AssertAttribute (label, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute (label, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_textValueID);
       Html.AssertAttribute (label, "tabindex", "0");
       Html.AssertTextNode (label, BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText, 0);
       Html.GetAssertedChildElement (label, "br", 1);

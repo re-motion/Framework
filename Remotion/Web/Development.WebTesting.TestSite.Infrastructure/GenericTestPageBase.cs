@@ -101,7 +101,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
       else
         pageType = GenericTestPageType.Default;
 
-      AddControls (pageType, testPage);
+      AddControlsOnInit (pageType, testPage);
 
       var parameters = Parameters.Clone();
       testPage.AddParameters (parameters, VisibleControlOptions);
@@ -109,7 +109,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
       SetTestInformation (new GenericTestPageParameterDto (GenericTestPageStatus.Ok, parameters));
     }
 
-    protected virtual void AddControls (GenericTestPageType pageType, IGenericTestPage<TOptions> testPage)
+    protected virtual void AddControlsOnInit (GenericTestPageType pageType, IGenericTestPage<TOptions> testPage)
     {
       if (pageType.HasFlag (GenericTestPageType.VisibleElements))
         VisibleControlPanel.Controls.Add (testPage.CreateControl (VisibleControlOptions));

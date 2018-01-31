@@ -15,19 +15,25 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ObjectBinding.Web.UI.Controls;
+using System.Collections.Generic;
+using System.Web.UI;
+using JetBrains.Annotations;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages
+namespace Remotion.Web.UI.Controls.Rendering
 {
-  public abstract class EditableGenericTestPage<TControl> : SimpleGenericTestPage<TControl>
-      where TControl : BusinessObjectBoundEditableWebControl, new()
+  /// <summary>
+  /// Interface for classes responsible for rendering label references.
+  /// </summary>
+  public interface ILabelReferenceRenderer
   {
-    /// <inheritdoc />
-    public override TControl CreateControl (GenericTestOptions options)
-    {
-      var control = base.CreateControl (options);
-      control.ReadOnly = options.ReadOnlyState == ReadOnlyState.ReadOnly;
-      return control;
-    }
+    void SetLabelsReferenceOnControl (
+        [NotNull] IAttributeAccessor attributeAccessor,
+        [NotNull] IReadOnlyCollection<string> labelIDs,
+        [NotNull] IReadOnlyCollection<string> accessibilityAnnotationIDs);
+
+    void AddLabelsReference (
+        [NotNull] HtmlTextWriter htmlTextWriter,
+        [NotNull] IReadOnlyCollection<string> labelIDs,
+        [NotNull] IReadOnlyCollection<string> accessibilityAnnotationIDs);
   }
 }

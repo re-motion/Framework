@@ -121,7 +121,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       _control.Stub (stub => stub.TitleText).Return (c_MenuTitle);
       PopulateMenu();
 
-      var renderer = new DropDownMenuRenderer (_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      var renderer = new DropDownMenuRenderer (_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new StubLabelReferenceRenderer());
       renderer.Render (new DropDownMenuRenderingContext (_httpContextStub, _htmlHelper.Writer, _control));
       
       var document = _htmlHelper.GetResultDocument();
@@ -155,7 +155,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       {
         buttonAnchor.AssertAttributeValueEquals ("id", _control.ClientID + "_DropDownMenuButton");
         buttonAnchor.AssertAttributeValueEquals ("role", "button");
-        buttonAnchor.AssertAttributeValueEquals ("aria-labelledby", _control.ClientID + "_DropDownMenuLabel");
+        buttonAnchor.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, _control.ClientID + "_DropDownMenuLabel");
+        buttonAnchor.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
         buttonAnchor.AssertNoAttribute ("aria-hidden");
       }
       var image = buttonAnchor.GetAssertedChildElement ("img", 0);
@@ -188,7 +189,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
 
     private XmlNode GetAssertedContainerSpan ()
     {
-      var renderer = new DropDownMenuRenderer (_resourceUrlFactory, GlobalizationService, RenderingFeatures.Default);
+      var renderer = new DropDownMenuRenderer (_resourceUrlFactory, GlobalizationService, RenderingFeatures.Default, new StubLabelReferenceRenderer());
       renderer.Render (new DropDownMenuRenderingContext (_httpContextStub, _htmlHelper.Writer, _control));
       var document = _htmlHelper.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement ("span", 0);

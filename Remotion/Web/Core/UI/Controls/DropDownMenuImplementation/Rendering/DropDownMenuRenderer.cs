@@ -34,14 +34,20 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
   [ImplementationFor (typeof (IDropDownMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DropDownMenuRenderer : RendererBase<IDropDownMenu>, IDropDownMenuRenderer
   {
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+
     private const string c_whiteSpace = "&nbsp;";
 
     public DropDownMenuRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
-        IRenderingFeatures renderingFeatures)
+        IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
+      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+
+      _labelReferenceRenderer = labelReferenceRenderer;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -161,7 +167,10 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_DropDownMenuButton");
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Button);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, renderingContext.Control.ClientID + "_DropDownMenuLabel");
+
+        var labelID = renderingContext.Control.ClientID + "_DropDownMenuLabel";
+        _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, new[] { labelID });
+
         if (renderingContext.Control.Enabled)
         {
           renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
@@ -43,6 +44,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private readonly IBocListMenuBlockRenderer _menuBlockRenderer;
     private readonly IBocListNavigationBlockRenderer _navigationBlockRenderer;
     private readonly IBocListTableBlockRenderer _tableBlockRenderer;
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private readonly BocListCssClassDefinition _cssClasses;
 
     public BocListRenderer (
@@ -52,18 +54,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         BocListCssClassDefinition cssClasses,
         IBocListTableBlockRenderer tableBlockRenderer,
         IBocListNavigationBlockRenderer navigationBlockRenderer,
-        IBocListMenuBlockRenderer menuBlockRenderer)
+        IBocListMenuBlockRenderer menuBlockRenderer,
+        ILabelReferenceRenderer labelReferenceRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull ("cssClasses", cssClasses);
       ArgumentUtility.CheckNotNull ("tableBlockRenderer", tableBlockRenderer);
       ArgumentUtility.CheckNotNull ("navigationBlockRenderer", navigationBlockRenderer);
       ArgumentUtility.CheckNotNull ("menuBlockRenderer", menuBlockRenderer);
+      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
 
       _cssClasses = cssClasses;
       _tableBlockRenderer = tableBlockRenderer;
       _navigationBlockRenderer = navigationBlockRenderer;
       _menuBlockRenderer = menuBlockRenderer;
+      _labelReferenceRenderer = labelReferenceRenderer;
     }
 
     public IBocListMenuBlockRenderer MenuBlockRenderer
@@ -156,9 +161,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       renderingContext.Writer.AddAttribute ("role", "group");
 
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
     }
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<IBocList> renderingContext)

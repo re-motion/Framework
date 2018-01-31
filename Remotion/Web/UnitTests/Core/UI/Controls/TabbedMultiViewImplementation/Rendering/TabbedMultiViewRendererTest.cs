@@ -93,7 +93,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
 
       _control.Stub (stub => stub.Page).Return (pageStub);
 
-      _renderer = new TabbedMultiViewRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default);
+      _renderer = new TabbedMultiViewRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default, new StubLabelReferenceRenderer());
     }
 
     [Test]
@@ -193,7 +193,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     {
       PopulateControl();
 
-      _renderer = new TabbedMultiViewRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      _renderer = new TabbedMultiViewRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new StubLabelReferenceRenderer());
       
       var div = AssertControl (false, false, false, false);
 
@@ -288,7 +288,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
       var divContentBorder = divActiveView.GetAssertedChildElement ("div", 0);
       divContentBorder.AssertAttributeValueEquals ("class", renderer.CssClassContentBorder);
       divContentBorder.AssertAttributeValueEquals ("role", "tabpanel");
-      divContentBorder.AssertAttributeValueEquals ("aria-labelledby", "TabStripClientID_Tab2_Command");
+      divContentBorder.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, "TabStripClientID_Tab2_Command");
+      divContentBorder.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       divContentBorder.AssertAttributeValueEquals ("tabindex", "0");
 
       var divContent = divContentBorder.GetAssertedChildElement ("div", 0);

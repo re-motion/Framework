@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
   {
     private const string c_clientID = "MyEnumValue";
     private const string c_valueName = "ListControlClientID";
-    private const string c_labelID = "TheLabel";
+    private const string c_labelID = "Label";
     private IBocEnumValue _enumValue;
     private readonly Unit _width = Unit.Point (173);
     private readonly Unit _height = Unit.Point (17);
@@ -183,7 +182,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
           resourceUrlFactory,
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
-          _internalControlMemberCaller);
+          _internalControlMemberCaller,
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue));
       
       var document = Html.GetResultDocument();
@@ -200,7 +200,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
-          _internalControlMemberCaller);
+          _internalControlMemberCaller,
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue));
 
       var document = Html.GetResultDocument();
@@ -209,7 +210,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
       var span = Html.GetAssertedChildElement (div, "span", 0);
       Html.AssertAttribute (span, "id", c_valueName);
-      Html.AssertAttribute (span, "aria-labelledby", c_labelID);
+      Html.AssertAttribute (span, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute (span, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       Html.AssertAttribute (span, "tabindex", "0");
       Html.AssertAttribute (span, "role", "combobox");
       Html.AssertAttribute (span, "aria-readonly", "true");

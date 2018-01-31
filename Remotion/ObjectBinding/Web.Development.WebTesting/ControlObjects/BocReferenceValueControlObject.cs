@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       if (IsReadOnly())
       {
-        var scope = Scope.FindChild ("Value");
+        var scope = GetValueScope();
         return scope["data-value"] == nullIdentifier;
       }
 
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public OptionDefinition GetSelectedOption ()
     {
-      var scope = Scope.FindChild ("Value");
+      var scope = GetValueScope();
       if (IsReadOnly())
         return new OptionDefinition (scope["data-value"], -1, scope.Text, true);
       else
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       return RetryUntilTimeout.Run (
-          () => Scope.FindChild("Value").FindAllCss ("option")
+          () => GetValueScope().FindAllCss ("option")
               .Select ((optionScope, i) => new OptionDefinition (optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
               .ToList());
     }
@@ -161,7 +161,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("selectAction", selectAction);
 
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      new CustomAction (this, Scope.FindChild ("Value"), "Select", selectAction).Execute (actualActionOptions);
+      new CustomAction (this, GetValueScope(), "Select", selectAction).Execute (actualActionOptions);
       return UnspecifiedPage();
     }
 
@@ -194,6 +194,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
       return new[] { string.Format ("{0}_Value", GetHtmlID()) };
+    }
+
+    protected override ElementScope GetLabeledElementScope ()
+    {
+      if (IsReadOnly())
+        return Scope.FindChild ("Command");
+
+      return GetValueScope();
+    }
+
+    private ElementScope GetValueScope ()
+    {
+      return Scope.FindChild ("Value");
     }
   }
 }

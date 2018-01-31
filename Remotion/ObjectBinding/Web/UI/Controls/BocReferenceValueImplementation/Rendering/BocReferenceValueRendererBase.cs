@@ -38,12 +38,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   public abstract class BocReferenceValueRendererBase<TControl> : BocRendererBase<TControl>
       where TControl: IBocReferenceValueBase
   {
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     protected BocReferenceValueRendererBase (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
-        IRenderingFeatures renderingFeatures)
+        IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
+      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+      _labelReferenceRenderer = labelReferenceRenderer;
+    }
+
+    protected ILabelReferenceRenderer LabelReferenceRenderer
+    {
+      get { return _labelReferenceRenderer; }
     }
 
     protected abstract void RenderEditModeValueWithSeparateOptionsMenu (BocRenderingContext<TControl> renderingContext);
@@ -282,9 +291,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       var isCommandEnabled = isIconEnabled && IsCommandEnabled (renderingContext);
 
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
 
       var command = GetCommand (renderingContext, isCommandEnabled);
       command.RenderBegin (renderingContext.Writer, RenderingFeatures, postBackEvent, onClick, objectID, null);
@@ -324,9 +332,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
       }
 
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
+      
 
       var command = GetCommand (renderingContext, isCommandEnabled);
       command.RenderBegin (renderingContext.Writer, RenderingFeatures, postBackEvent, onClick, objectID, null);

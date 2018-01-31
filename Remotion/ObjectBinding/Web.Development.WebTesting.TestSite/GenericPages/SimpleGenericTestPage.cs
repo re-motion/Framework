@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -49,6 +51,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
           options.HtmlID,
           options.CorrectDomainProperty,
           options.IncorrectDomainProperty);
+
+      //TODO: Refactor, this seems very hacky. Probably change parameterCollection to allow later addition of parameters?
+      var labelParameters = parameterCollection.First (x => x.Name == TestConstants.LabelTestsID);
+      List<string> parameterWithDisplayName = new List<string>();
+
+      foreach (var parameter in labelParameters)
+        parameterWithDisplayName.Add (parameter);
+
+      parameterWithDisplayName.Add (DisplayName);
+
+      parameterCollection.Remove (labelParameters);
+      parameterCollection.Add (TestConstants.LabelTestsID, parameterWithDisplayName.ToArray());
     }
 
     /// <inheritdoc />

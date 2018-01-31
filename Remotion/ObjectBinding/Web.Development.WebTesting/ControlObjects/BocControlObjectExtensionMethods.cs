@@ -15,19 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ObjectBinding.Web.UI.Controls;
+using System.Linq;
+using JetBrains.Annotations;
+using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 {
-  public abstract class EditableGenericTestPage<TControl> : SimpleGenericTestPage<TControl>
-      where TControl : BusinessObjectBoundEditableWebControl, new()
+  public static class BocControlObjectExtensionMethods
   {
-    /// <inheritdoc />
-    public override TControl CreateControl (GenericTestOptions options)
+    public static string GetLabelsText ([NotNull] this BocControlObject bocControlObject)
     {
-      var control = base.CreateControl (options);
-      control.ReadOnly = options.ReadOnlyState == ReadOnlyState.ReadOnly;
-      return control;
+      ArgumentUtility.CheckNotNull ("bocControlObject", bocControlObject);
+
+      return string.Join (" ", bocControlObject.GetLabels().Select (x => x.GetText()));
     }
   }
 }

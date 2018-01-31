@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private const string c_cssClass = "someCssClass";
     private const string c_clientID = "MyCheckBox";
     private const string c_valueName = "MyCheckBox_Value";
-    private const string c_labelID = "TheLabel";
+    private const string c_labelID = "Label";
     private readonly string _startUpScriptKey = typeof (BocCheckBox).FullName + "_Startup";
 
     private IBocCheckBox _checkbox;
@@ -242,7 +242,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _renderer = new BocCheckBoxRenderer (
           resourceUrlFactory,
           GlobalizationService,
-          RenderingFeatures.WithDiagnosticMetadata);
+          RenderingFeatures.WithDiagnosticMetadata,
+          new StubLabelReferenceRenderer());
       _renderer.Render (new BocCheckBoxRenderingContext(HttpContext, Html.Writer, _checkbox));
       
       var document = Html.GetResultDocument();
@@ -255,7 +256,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _checkbox.Value = value;
 
-      _renderer = new BocCheckBoxRenderer (new FakeResourceUrlFactory (), GlobalizationService, RenderingFeatures.Default);
+      _renderer = new BocCheckBoxRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.Default,
+          new StubLabelReferenceRenderer());
       _renderer.Render (new BocCheckBoxRenderingContext(HttpContext, Html.Writer, _checkbox));
 
       var document = Html.GetResultDocument();
@@ -271,6 +276,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         valueSpan.AssertAttributeValueEquals ("tabindex", "0");
         valueSpan.AssertAttributeValueEquals ("role", "checkbox");
         valueSpan.AssertAttributeValueEquals ("aria-readonly", "true");
+        Html.AssertAttribute (valueSpan, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+        Html.AssertAttribute (valueSpan, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
         CheckImage (value, valueSpan, spanText);
       }
       else
@@ -306,7 +313,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       else
         Html.AssertAttribute (checkbox, "disabled", "disabled");
 
-      Html.AssertAttribute (checkbox, "aria-labelledby", c_labelID);
+      Html.AssertAttribute (checkbox, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute (checkbox, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
 
       if (_checkbox.IsDescriptionEnabled)
         Html.AssertAttribute (checkbox, "aria-describedby", c_clientID + "_Description");

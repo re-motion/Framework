@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private const string c_clientID = "MyReferenceValue";
     private const string c_valueName = "MyReferenceValue_SelectedValue";
     private const string c_uniqueIdentifier = "uniqueidentifiert";
-    private const string c_labelID = "TheLabel";
+    private const string c_labelID = "Label";
 
     private enum OptionMenuConfiguration
     {
@@ -422,6 +422,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           _resourceUrlFactoryStub,
           GlobalizationService,
           RenderingFeatures.Default,
+          new StubLabelReferenceRenderer(),
           () => new StubDropDownList());
       Control.Stub (stub => stub.HasValueEmbeddedInsideOptionsMenu).Return (true);
       Control.Stub (stub => stub.HasOptionsMenu).Return (true);
@@ -445,6 +446,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           _resourceUrlFactoryStub,
           GlobalizationService,
           RenderingFeatures.Default,
+          new StubLabelReferenceRenderer(),
           () => new StubDropDownList());
       Html.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "body");
       Html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
@@ -460,13 +462,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     {
       Control.Stub (stub => stub.Enabled).Return (true);
 
-      var renderer = new BocReferenceValueRenderer (_resourceUrlFactoryStub, GlobalizationService, RenderingFeatures.Default);
+      var renderer = new BocReferenceValueRenderer (
+          _resourceUrlFactoryStub,
+          GlobalizationService,
+          RenderingFeatures.Default,
+          new StubLabelReferenceRenderer());
       renderer.Render (CreateRenderingContext ());
       var document = Html.GetResultDocument ();
       var select = document.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 1).GetAssertedChildElement ("select", 0);
       select.AssertAttributeValueEquals ("id", c_valueName);
       select.AssertAttributeValueEquals ("name", c_valueName);
-      Html.AssertAttribute (select, "aria-labelledby", c_labelID);
+      Html.AssertAttribute (select, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute (select, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
     }
 
     [Test]
@@ -474,7 +481,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     {
       Control.DropDownListStyle.AutoPostBack = true;
 
-      var renderer = new BocReferenceValueRenderer (_resourceUrlFactoryStub, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      var renderer = new BocReferenceValueRenderer (
+          _resourceUrlFactoryStub,
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          new StubLabelReferenceRenderer());
       renderer.Render (CreateRenderingContext ());
 
       var document = Html.GetResultDocument();
@@ -492,7 +503,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
       var commandLink = span.GetAssertedChildElement ("a", 0);
       commandLink.AssertAttributeValueEquals ("id", Control.ClientID + "_Command");
-      commandLink.AssertAttributeValueEquals ("aria-labelledby", c_labelID);
+      commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       commandLink.AssertAttributeValueEquals ("class", "command");
       commandLink.AssertChildElementCount (1);
 
@@ -552,6 +564,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           _resourceUrlFactoryStub,
           GlobalizationService,
           RenderingFeatures.Default,
+          new StubLabelReferenceRenderer(),
           () => DropDownList);
       renderer.Render (CreateRenderingContext());
       

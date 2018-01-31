@@ -18,6 +18,7 @@ using System;
 using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
@@ -75,20 +76,28 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Initialize (false);
       CommonInitialize();
 
-      IBocListTableBlockRenderer renderer = new BocListTableBlockRenderer (_bocListCssClassDefinition, new StubRowRenderer());
+      IBocListTableBlockRenderer renderer = new BocListTableBlockRenderer (
+          _bocListCssClassDefinition,
+          new StubRowRenderer(),
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, _stubColumnRenderers));
 
       var document = Html.GetResultDocument();
 
       var table = Html.GetAssertedChildElement (document, "table", 0);
       var tr = Html.GetAssertedChildElement (table, "tr", 0);
+      Html.AssertAttribute (table, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
+      Html.AssertAttribute (table, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       var td = Html.GetAssertedChildElement (tr, "td", 0);
       Html.AssertTextNode (td, HtmlHelper.WhiteSpace, 0);
     }
 
     private void RenderAndAssertTable (out XmlNode tbody)
     {
-      IBocListTableBlockRenderer renderer = new BocListTableBlockRenderer (_bocListCssClassDefinition, new StubRowRenderer());
+      IBocListTableBlockRenderer renderer = new BocListTableBlockRenderer (
+          _bocListCssClassDefinition,
+          new StubRowRenderer(),
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, _stubColumnRenderers));
 
       var document = Html.GetResultDocument();
@@ -96,6 +105,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var tableContainer = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (tableContainer, "class", _bocListCssClassDefinition.TableContainer);
       Html.AssertAttribute (tableContainer, "role", "table");
+      Html.AssertAttribute (tableContainer, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
+      Html.AssertAttribute (tableContainer, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
 
       var tableScrollContainer = Html.GetAssertedChildElement (tableContainer, "div", 0);
       Html.AssertAttribute (tableScrollContainer, "class", _bocListCssClassDefinition.TableScrollContainer);

@@ -18,6 +18,7 @@ using System;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -54,7 +55,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer ("table"),
           new StubRenderer ("navigation"),
-          new StubRenderer ("menu"));
+          new StubRenderer ("menu"),
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
 
       var document = Html.GetResultDocument();
@@ -62,7 +64,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "id", "MyList");
       Html.AssertAttribute (div, "role", "group");
-      Html.AssertAttribute (div, "aria-labelledby", "TheLabel");
+      Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
+      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
 
       var tableBlock = Html.GetAssertedChildElement (div, "div", 0);
       Html.AssertAttribute (tableBlock, "class", "bocListTableBlock");
@@ -84,7 +87,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer ("table"),
           new StubRenderer ("navigation"),
-          new StubRenderer ("menu"));
+          new StubRenderer ("menu"),
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
 
       var document = Html.GetResultDocument();
@@ -92,7 +96,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "id", "MyList");
       Html.AssertAttribute (div, "role", "group");
-      Html.AssertAttribute (div, "aria-labelledby", "TheLabel");
+      Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
+      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
 
       var menuBlock = Html.GetAssertedChildElement (div, "div", 0);
       Html.AssertAttribute (menuBlock, "class", _bocListCssClassDefinition.MenuBlock);
@@ -122,7 +127,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer ("table"),
           new StubRenderer ("navigation"),
-          new StubRenderer ("menu"));
+          new StubRenderer ("menu"),
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
 
       var document = Html.GetResultDocument();
@@ -130,7 +136,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "id", "MyList");
       Html.AssertAttribute (div, "role", "group");
-      Html.AssertAttribute (div, "aria-labelledby", "TheLabel");
+      Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
+      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
 
       var menuBlock = Html.GetAssertedChildElement (div, "div", 0);
       Html.AssertAttribute (menuBlock, "class", _bocListCssClassDefinition.MenuBlock);
@@ -156,7 +163,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer ("table"),
           new StubRenderer ("navigation"),
-          new StubRenderer ("menu"));
+          new StubRenderer ("menu"),
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
 
       var document = Html.GetResultDocument();
@@ -164,7 +172,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "id", "MyList");
       Html.AssertAttribute (div, "role", "group");
-      Html.AssertAttribute (div, "aria-labelledby", "TheLabel");
+      Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
+      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
 
       var tableBlock = Html.GetAssertedChildElement (div, "div", 0);
       Html.AssertAttribute (tableBlock, "class", "bocListTableBlock hasNavigator");
@@ -183,7 +192,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer ("table"),
           new StubRenderer ("navigation"),
-          new StubRenderer ("menu"));
+          new StubRenderer ("menu"),
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
 
       var document = Html.GetResultDocument();
@@ -202,7 +212,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer ("table"),
           new StubRenderer ("navigation"),
-          new StubRenderer ("menu"));
+          new StubRenderer ("menu"),
+          new StubLabelReferenceRenderer());
 
       List.Stub (mock => mock.HasNavigator).Return (true);
 
@@ -224,7 +235,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer ("table"),
           new StubRenderer ("navigation"),
-          new StubRenderer ("menu"));
+          new StubRenderer ("menu"),
+          new StubLabelReferenceRenderer());
 
       List.Stub (mock => mock.HasNavigator).Return (false);
 
@@ -246,7 +258,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer ("table"),
           new StubRenderer ("navigation"),
-          new StubRenderer ("menu"));
+          new StubRenderer ("menu"),
+          new StubLabelReferenceRenderer());
 
       List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (true);
       List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (true);
@@ -269,7 +282,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer ("table"),
           new StubRenderer ("navigation"),
-          new StubRenderer ("menu"));
+          new StubRenderer ("menu"),
+          new StubLabelReferenceRenderer());
 
       List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (false);
       List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (false);
@@ -292,7 +306,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer ("table"),
           new StubRenderer ("navigation"),
-          new StubRenderer ("menu"));
+          new StubRenderer ("menu"),
+          new StubLabelReferenceRenderer());
 
       List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (true);
       List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (false);
@@ -315,7 +330,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer ("table"),
           new StubRenderer ("navigation"),
-          new StubRenderer ("menu"));
+          new StubRenderer ("menu"),
+          new StubLabelReferenceRenderer());
 
       List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (false);
       List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (true);

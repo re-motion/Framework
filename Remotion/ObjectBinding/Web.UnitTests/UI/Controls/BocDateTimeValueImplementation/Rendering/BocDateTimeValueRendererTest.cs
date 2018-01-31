@@ -25,6 +25,7 @@ using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
+using Remotion.Mixins.Validation;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
@@ -50,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     private const string c_dateValueName = "MyDateTimeValue_DateValue";
     private const string c_timeValueName = "MyDateTimeValue_TimeValue";
     private const string c_dateValueID = "MyDateTimeValue";
-    private const string c_labelID = "TheLabel";
+    private const string c_labelID = "Label";
     private IBocDateTimeValue _control;
     private SingleRowTextBoxStyle _dateStyle;
     private SingleRowTextBoxStyle _timeStyle;
@@ -184,7 +185,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       _control.Stub (stub => stub.ActualValueType).Return (BocDateTimeValueType.DateTime);
       _control.Stub (stub => stub.Enabled).Return (true);
 
-      var renderer = new BocDateTimeValueRenderer (new FakeResourceUrlFactory (), GlobalizationService, RenderingFeatures.Default);
+      var renderer = new BocDateTimeValueRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.Default,
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocDateTimeValueRenderingContext (HttpContext, Html.Writer, _control));
       var document = Html.GetResultDocument ();
       var container = document.GetAssertedChildElement ("span", 0);
@@ -210,7 +215,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       _dateStyle.AutoPostBack = true;
       _timeStyle.AutoPostBack = false;
 
-      var renderer = new BocDateTimeValueRenderer (new FakeResourceUrlFactory (), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      var renderer = new BocDateTimeValueRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocDateTimeValueRenderingContext (HttpContext, Html.Writer, _control));
       
       var document = Html.GetResultDocument();
@@ -248,7 +257,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         Assert.That (_timeTextBox.CssClass, Is.EqualTo (renderer.CssClassTime));
         Assert.That (_timeTextBox.Text, Is.EqualTo (c_timeString));
         Assert.That (_timeTextBox.MaxLength, Is.EqualTo (5));
-        Assert.That (_timeTextBox.Attributes["aria-labelledby"], Is.EqualTo (c_labelID + " " + c_dateValueID + "_TimeLabel"));
+        Assert.That (_timeTextBox.Attributes[StubLabelReferenceRenderer.LabelReferenceAttribute], Is.EqualTo (c_labelID));
+        Assert.That (_timeTextBox.Attributes[StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute], Is.EqualTo (c_dateValueID + "_TimeLabel"));
       }
       else
       {
@@ -257,7 +267,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         var timeValueLabel = container.GetAssertedChildElement ("span", 2);
         timeValueLabel.AssertAttributeValueEquals ("id", c_dateValueID + "_TimeValue");
         timeValueLabel.AssertAttributeValueEquals ("data-value", c_formatedTimeString);
-        timeValueLabel.AssertAttributeValueEquals ("aria-labelledby", c_labelID + " " + c_dateValueID + "_TimeLabel "+ c_dateValueID + "_TimeValue");
+        timeValueLabel.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+        timeValueLabel.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_dateValueID + "_TimeLabel "+ c_dateValueID + "_TimeValue");
 
         var timeDescriptionLabel = container.GetAssertedChildElement ("span", 3);
         timeDescriptionLabel.AssertAttributeValueEquals ("id", c_dateValueID + "_TimeLabel");
@@ -288,10 +299,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         Assert.That (_dateTextBox.CssClass, Is.EqualTo (renderer.CssClassDate));
         Assert.That (_dateTextBox.Text, Is.EqualTo (c_dateString));
         Assert.That (_dateTextBox.MaxLength, Is.EqualTo (10));
+        Assert.That (_dateTextBox.Attributes[StubLabelReferenceRenderer.LabelReferenceAttribute], Is.EqualTo (c_labelID));
+
         if (isDateOnly)
-          Assert.That (_dateTextBox.Attributes["aria-labelledby"], Is.EqualTo (c_labelID));
+        {
+          Assert.That (_dateTextBox.Attributes[StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute], Is.EqualTo (""));
+        }
         else
-          Assert.That (_dateTextBox.Attributes["aria-labelledby"], Is.EqualTo (c_labelID + " " + c_dateValueID + "_DateLabel"));
+        {
+          Assert.That (
+              _dateTextBox.Attributes[StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute],
+              Is.EqualTo (c_dateValueID + "_DateLabel"));
+        }
       }
       else
       {
@@ -299,10 +318,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         var dateValueLabel = container.GetAssertedChildElement ("span", 0);
         dateValueLabel.AssertAttributeValueEquals ("id", c_dateValueID + "_DateValue");
         dateValueLabel.AssertAttributeValueEquals ("data-value", _dateValue.ToString ("yyyy-MM-dd"));
+        dateValueLabel.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+
         if (isDateOnly)
-          dateValueLabel.AssertAttributeValueEquals ("aria-labelledby", c_labelID + " " + c_dateValueID + "_DateValue");
+          dateValueLabel.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_dateValueID + "_DateValue");
         else
-          dateValueLabel.AssertAttributeValueEquals ("aria-labelledby", c_labelID + " " + c_dateValueID + "_DateLabel " + c_dateValueID + "_DateValue");
+          dateValueLabel.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_dateValueID + "_DateLabel " + c_dateValueID + "_DateValue");
 
         if (!isDateOnly)
         {
@@ -318,6 +339,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
+          new StubLabelReferenceRenderer(),
           _dateTextBox,
           _timeTextBox);
       renderer.Render (new BocDateTimeValueRenderingContext(HttpContext, Html.Writer, _control));

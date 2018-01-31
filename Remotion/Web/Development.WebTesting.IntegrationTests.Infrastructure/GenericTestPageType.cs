@@ -29,6 +29,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     Default = HiddenElements | VisibleElements | AmbiguousElements | DisabledElements,
     EnabledDisabled = VisibleElements | DisabledElements,
     EnabledReadOnly = VisibleElements | ReadOnlyElements,
+    EnabledFormGrid = VisibleElements | FormGridElements,
     NonAmbiguous = HiddenElements | VisibleElements,
 
     /// <summary>
@@ -55,5 +56,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// Renders the readonly elements.
     /// </summary>
     ReadOnlyElements = 16,
+
+    /// <summary>
+    /// Renders the form grid elements.
+    /// </summary>
+    FormGridElements = 32,
+
   }
 }

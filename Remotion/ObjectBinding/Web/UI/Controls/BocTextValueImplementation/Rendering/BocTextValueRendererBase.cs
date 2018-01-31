@@ -42,12 +42,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     /// <summary> Text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
     protected const string c_designModeEmptyLabelContents = "##";
 
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     protected BocTextValueRendererBase (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
-        IRenderingFeatures renderingFeatures)
+        IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
+      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+
+      _labelReferenceRenderer = labelReferenceRenderer;
+    }
+
+    protected ILabelReferenceRenderer LabelReferenceRenderer
+    {
+      get { return _labelReferenceRenderer; }
     }
 
     /// <summary>
@@ -114,9 +124,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       textBox.ApplyStyle (renderingContext.Control.CommonStyle);
       renderingContext.Control.TextBoxStyle.ApplyStyle (textBox);
 
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      _labelReferenceRenderer.SetLabelReferenceOnControl (textBox, labelIDs);
 
       if (renderingContext.Control.IsRequired)
         textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);

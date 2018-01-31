@@ -103,6 +103,7 @@
     <Compile Include="App_Packages\Remotion.Utilities.ArgumentUtility.Sources.1.25.23.0\ArgumentUtility.cs" />
     <Compile Include="App_Packages\Remotion.Utilities.Assertion.Sources.1.15.23.0\Assertion.cs" />
     <Compile Include="App_Packages\Remotion.Utilities.NullableTypeUtility.Sources.1.15.23.0\NullableTypeUtility.cs" />
+    <Compile Include="ControlObjects\BocControlObjectExtensionMethods.cs" />
     <Compile Include="ControlObjects\BocDateTimeValueControlObject.cs" />
     <Compile Include="ControlObjects\BocEnumValueControlObject.cs" />
     <Compile Include="ControlObjects\BocCheckBoxControlObject.cs" />
@@ -195,6 +196,10 @@
     <ProjectReference Include="..\..\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj">
       <Project>{712e5631-9bc0-44de-bf20-fb3bfecad9b2}</Project>
       <Name>Web.Development.WebTesting.ControlObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj">
+      <Project>{D2835D55-18C5-427B-A574-3D348A2C1DCC}</Project>
+      <Name>Web.Development.WebTesting.WebFormsControlObjects</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj">
       <Project>{5B5EC73A-B796-4D2D-A781-E889EE9EC4DF}</Project>

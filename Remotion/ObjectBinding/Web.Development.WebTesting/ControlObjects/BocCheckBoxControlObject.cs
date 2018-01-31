@@ -70,6 +70,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return UnspecifiedPage();
     }
 
+    protected override ElementScope GetLabeledElementScope ()
+    {
+      return GetScopeWithReferenceInformation();
+    }
+
     /// <summary>
     /// See <see cref="IControlObjectWithFormElements.GetFormElementNames"/>. Returns the input[type=checkbox] (value) as only element.
     /// </summary>
@@ -87,6 +92,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         return true;
 
       throw new ArgumentException ("must be either 'True' or 'False'", "state");
+    }
+
+    private ElementScope GetScopeWithReferenceInformation ()
+    {
+      return Scope.FindChild ("Value");
     }
   }
 }

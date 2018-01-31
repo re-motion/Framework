@@ -69,6 +69,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="BocControlObjectTest.cs" />
     <Compile Include="BocEnumValueControlObjectTest.cs" />
     <Compile Include="BocCheckBoxControlObjectTest.cs" />
     <Compile Include="BocListAsGridControlObjectTest.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="FluentControlSelectorExtensionsForIntegrationTestsForObjectBinding.cs" />
     <Compile Include="GenericTestPageParameters\DisplayNameGenericTestPageParameter.cs" />
     <Compile Include="GenericTestPageParameters\DomainPropertyGenericTestPageParameter.cs" />
+    <Compile Include="GenericTestPageParameters\LabelTestPageParameters.cs" />
     <Compile Include="IntegrationTest.cs" />
     <Compile Include="CustomWebTestConfigurationFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="ScreenshotCreation\ScreenshotTestingExtensions.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotTestingType.cs" />
     <Compile Include="SetUpFixture.cs" />
+    <Compile Include="TestCaseFactories\LabelTestCaseFactory.cs" />
     <Compile Include="TestCaseFactories\ReadonlyTestCaseFactory.cs" />
     <Compile Include="TestCaseFactories\DisplayNameControlSelectorTestCaseFactory.cs" />
     <Compile Include="TestCaseFactories\DomainPropertyControlSelectorTestCaseFactory.cs" />
@@ -103,6 +106,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj">
+      <Project>{B119DB72-9073-401B-8EC9-C8885A2D4800}</Project>
+      <Name>Web.Contracts.DiagnosticMetadata</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj">
       <Project>{712e5631-9bc0-44de-bf20-fb3bfecad9b2}</Project>
       <Name>Web.Development.WebTesting.ControlObjects</Name>
@@ -115,9 +122,17 @@
       <Project>{1b8f7a8a-f95c-4497-8029-9cf32b271134}</Project>
       <Name>Web.Development.WebTesting.IntegrationTests.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Web\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj">
+      <Project>{d2835d55-18c5-427b-a574-3d348a2c1dcc}</Project>
+      <Name>Web.Development.WebTesting.WebFormsControlObjects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj">
       <Project>{5B5EC73A-B796-4D2D-A781-E889EE9EC4DF}</Project>
       <Name>Web.Development.WebTesting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj">
+      <Project>{AD7D0683-130E-4064-8EB7-D9981DCB22BC}</Project>
+      <Name>ObjectBinding.Web.Contracts.DiagnosticMetadata</Name>
     </ProjectReference>
     <ProjectReference Include="..\Web.Development.WebTesting.TestSite\ObjectBinding.Web.Development.WebTesting.TestSite.csproj">
       <Project>{652e65fe-81ef-4d91-9c52-1cb781862957}</Project>

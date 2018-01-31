@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
@@ -73,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       var actualActionOptions = MergeWithDefaultActionOptions (actionOptions, finishInputWith);
-      new FillWithAction (this, Scope.FindChild ("Value"), text, finishInputWith).Execute (actualActionOptions);
+      new FillWithAction (this, GetValueScope(), text, finishInputWith).Execute (actualActionOptions);
       return UnspecifiedPage();
     }
 
@@ -83,6 +84,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
       return new[] { string.Format ("{0}_Value", GetHtmlID()) };
+    }
+
+    protected override ElementScope GetLabeledElementScope ()
+    {
+      return GetValueScope();
+    }
+
+    private ElementScope GetValueScope ()
+    {
+      return Scope.FindChild ("Value");
     }
 
     private IWebTestActionOptions MergeWithDefaultActionOptions (

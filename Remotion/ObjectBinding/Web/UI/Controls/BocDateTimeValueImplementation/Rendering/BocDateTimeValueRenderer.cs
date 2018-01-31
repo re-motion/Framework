@@ -45,14 +45,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     /// <summary> Text displayed when control is displayed in desinger and is read-only has no contents. </summary>
     private const string c_designModeEmptyLabelContents = "##";
 
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private readonly Func<TextBox> _dateTextBoxFactory;
     private readonly Func<TextBox> _timeTextBoxFactory;
 
     public BocDateTimeValueRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
-        IRenderingFeatures renderingFeatures)
-        : this (resourceUrlFactory, globalizationService, renderingFeatures, () => new RenderOnlyTextBox(), () => new RenderOnlyTextBox())
+        IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer)
+        : this (
+            resourceUrlFactory,
+            globalizationService,
+            renderingFeatures,
+            labelReferenceRenderer,
+            () => new RenderOnlyTextBox(),
+            () => new RenderOnlyTextBox())
     {
     }
 
@@ -60,13 +68,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer,
         Func<TextBox> dateTextBoxFactory,
         Func<TextBox> timeTextBoxFactory)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
+      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
       ArgumentUtility.CheckNotNull ("dateTextBoxFactory", dateTextBoxFactory);
       ArgumentUtility.CheckNotNull ("timeTextBoxFactory", timeTextBoxFactory);
 
+      _labelReferenceRenderer = labelReferenceRenderer;
       _dateTextBoxFactory = dateTextBoxFactory;
       _timeTextBoxFactory = timeTextBoxFactory;
     }
@@ -136,12 +147,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       dateTextBox.Text = renderingContext.Control.DateString;
       dateTextBox.Page = renderingContext.Control.Page.WrappedInstance;
 
-      var dateLabelIDs = renderingContext.Control.GetLabelIDs();
+      var controlDateLabelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      var accessibilityAnnotationIDsCollectionForDateTextBox = new List<string>();
+
       if (hasTimeField)
-        dateLabelIDs = dateLabelIDs.Concat (dateTextBoxLabelID);
-      var dateLabelsID = string.Join (" ", dateLabelIDs);
-      if (!string.IsNullOrEmpty (dateLabelsID))
-        dateTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, dateLabelsID);
+        accessibilityAnnotationIDsCollectionForDateTextBox.Add (dateTextBoxLabelID);
+
+      _labelReferenceRenderer.SetLabelsReferenceOnControl (
+          dateTextBox,
+          controlDateLabelIDs,
+          accessibilityAnnotationIDsCollectionForDateTextBox);
 
       if (renderingContext.Control.IsRequired)
         dateTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
@@ -157,12 +172,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       timeTextBox.Text = renderingContext.Control.TimeString;
       timeTextBox.Page = renderingContext.Control.Page.WrappedInstance;
 
-      var timeLabelIDs = renderingContext.Control.GetLabelIDs();
+      var controlTimeLabelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      var accessibilityAnnotationIDsCollectionForTimeTextBox = new List<string>();
+
       if (hasDateField)
-        timeLabelIDs = timeLabelIDs.Concat (timeTextBoxLabelID);
-      var timeLabelsID = string.Join (" ", timeLabelIDs);
-      if (!string.IsNullOrEmpty (timeLabelsID))
-        timeTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, timeLabelsID);
+        accessibilityAnnotationIDsCollectionForTimeTextBox.Add (timeTextBoxLabelID);
+
+      _labelReferenceRenderer.SetLabelsReferenceOnControl (
+          timeTextBox,
+          controlTimeLabelIDs,
+          accessibilityAnnotationIDsCollectionForTimeTextBox);
 
       if (renderingContext.Control.IsRequired)
         timeTextBox.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
@@ -380,7 +399,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         RenderLabel (timeLabel, renderingContext);
     }
 
-    private static void RenderLabel (Label label, BocDateTimeValueRenderingContext renderingContext)
+    private void RenderLabel (Label label, BocDateTimeValueRenderingContext renderingContext)
     {
       label.Height = Unit.Empty;
       label.Width = Unit.Empty;
@@ -413,13 +432,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       var descriptionLabelText = label.ToolTip;
       label.ToolTip = null;
 
-      var labelIDs = renderingContext.Control.GetLabelIDs();
+      var controlLabelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      var accessibilityAnnotationIDsCollectionForLabel = new List<string>();
+
       if (!string.IsNullOrEmpty (descriptionLabelID))
-        labelIDs = labelIDs.Concat (descriptionLabelID);
-      labelIDs = labelIDs.Concat (label.ClientID);
-      var labelsID = string.Join (" ", labelIDs);
-      if (!string.IsNullOrEmpty (labelsID))
-        label.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+        accessibilityAnnotationIDsCollectionForLabel.Add (descriptionLabelID);
+
+      accessibilityAnnotationIDsCollectionForLabel.Add (label.ClientID);
+
+      _labelReferenceRenderer.SetLabelsReferenceOnControl (label, controlLabelIDs, accessibilityAnnotationIDsCollectionForLabel);
 
       label.RenderControl (renderingContext.Writer);
 

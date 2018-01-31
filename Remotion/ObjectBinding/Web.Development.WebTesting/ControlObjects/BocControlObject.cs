@@ -15,10 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 {
@@ -31,6 +34,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         : base (context)
     {
     }
+
+    protected abstract ElementScope GetLabeledElementScope ();
 
     /// <summary>
     /// Returns whether the control is read-only.
@@ -46,6 +51,37 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public bool IsDisabled ()
     {
       return Scope[DiagnosticMetadataAttributes.IsDisabled] == "true";
+    }
+
+    /// <summary>
+    /// Returns the label for this control.
+    /// </summary>
+    public IReadOnlyList<LabelControlObject> GetLabels ()
+    {
+      var scope = GetLabeledElementScope();
+
+      var labelledBy = scope["aria-labelledby"];
+
+      if (string.IsNullOrEmpty (labelledBy))
+        return new List<LabelControlObject>();
+
+      var labelID = labelledBy.Split (new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+      var nameLabelIndex = scope[DiagnosticMetadataAttributes.LabelIDIndex];
+
+      if (string.IsNullOrEmpty (nameLabelIndex))
+        return new List<LabelControlObject>();
+
+      var nameLabelIndexes = nameLabelIndex.Split (new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+      var labels = new List<LabelControlObject>();
+      foreach (var index in nameLabelIndexes)
+      {
+        var indexAsInt = Int32.Parse (index);
+        labels.Add (new LabelControlObject (Context.CloneForControl (Context.RootScope.FindId (labelID[indexAsInt]))));
+      }
+
+      return labels;
     }
   }
 }

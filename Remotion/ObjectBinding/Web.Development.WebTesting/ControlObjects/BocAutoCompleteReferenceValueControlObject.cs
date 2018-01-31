@@ -234,6 +234,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return UnspecifiedPage();
     }
 
+    protected override ElementScope GetLabeledElementScope ()
+    {
+      if (IsReadOnly())
+        return Scope.FindChild ("Command");
+
+      return Scope.FindChild ("TextValue").FindXPath ("..");
+    }
+
     private SearchServiceResultItem GetFirstAutoCompleteResult ([NotNull] string filter)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("filter", filter);
@@ -378,6 +386,12 @@ return CallWebService();",
       return GetHtmlID() + "_TextValue";
     }
 
-    
+    private ElementScope GetScopeWithReferenceInformation ()
+    {
+      if (IsReadOnly())
+        return Scope.FindChild ("Command");
+
+      return Scope.FindChild ("TextValue").FindXPath ("..");
+    }
   }
 }

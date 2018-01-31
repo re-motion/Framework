@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
   {
     private const string c_valueName = "MyTextValue_Boc_Textbox";
     private const string c_clientID = "MyTextValue";
-    private const string c_labelID = "TheLabel";
+    private const string c_labelID = "Label";
     private BocTextValueRenderer _renderer;
 
     [SetUp]
@@ -48,7 +48,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     {
       Initialize();
       TextValue = MockRepository.GenerateMock<IBocTextValue>();
-      _renderer = new BocTextValueRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default);
+      _renderer = new BocTextValueRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.Default,
+          new StubLabelReferenceRenderer());
       TextValue.Stub (stub => stub.ClientID).Return (c_clientID);
       TextValue.Stub (stub => stub.ControlType).Return ("BocTextValue");
       TextValue.Stub (stub => stub.GetValueName()).Return (c_valueName);
@@ -221,7 +225,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     [Test]
     public void TestDiagnosticMetadataRenderingWithAutoPostBack ()
     {
-      _renderer = new BocTextValueRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      _renderer = new BocTextValueRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          new StubLabelReferenceRenderer());
       var span = RenderSingleLineEditable (true, true, true, true);
       Html.AssertAttribute (span, DiagnosticMetadataAttributes.ControlType, "BocTextValue");
       Html.AssertAttribute (span, DiagnosticMetadataAttributes.TriggersPostBack, "true");
@@ -230,7 +238,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     [Test]
     public void TestDiagnosticMetadataRenderingWithoutAutoPostBack ()
     {
-      _renderer = new BocTextValueRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      _renderer = new BocTextValueRenderer (
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          new StubLabelReferenceRenderer());
       var span = RenderSingleLineEditable (true, true, true, false);
       Html.AssertAttribute (span, DiagnosticMetadataAttributes.ControlType, "BocTextValue");
       Html.AssertAttribute (span, DiagnosticMetadataAttributes.TriggersPostBack, "false");
@@ -258,7 +270,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       var input = Html.GetAssertedChildElement (content, "input", 0);
       Html.AssertAttribute (input, "id", c_valueName);
       Html.AssertAttribute (input, "name", c_valueName);
-      Html.AssertAttribute (input, "aria-labelledby", c_labelID);
+      Html.AssertAttribute (input, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute (input, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       Html.AssertAttribute (input, "type", "text");
       Html.AssertAttribute (input, "value", c_firstLineText);
       Assert.That (TextValue.TextBoxStyle.AutoPostBack, Is.EqualTo (autoPostBack));
@@ -324,7 +337,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       var labelSpan = Html.GetAssertedChildElement (content, "span", 0);
       Html.AssertAttribute (labelSpan, "id", c_valueName);
-      Html.AssertAttribute (labelSpan, "aria-labelledby", c_labelID + " " + c_valueName);
+      Html.AssertAttribute (labelSpan, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute (labelSpan, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_valueName);
       Html.AssertAttribute (labelSpan, "tabindex", "0");
       Html.AssertTextNode (labelSpan, c_firstLineText, 0);
 

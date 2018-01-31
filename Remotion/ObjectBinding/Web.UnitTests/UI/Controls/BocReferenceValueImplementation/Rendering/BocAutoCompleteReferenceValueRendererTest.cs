@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private const string c_textValueName = "MyReferenceValue_SelectedTextValue";
     private const string c_keyValueName = "MyReferenceValue_SelectedKeyValue";
     private const string c_uniqueidentifier = "uniqueidentifier";
-    private const string c_labelID = "TheLabel";
+    private const string c_labelID = "Label";
 
     private enum OptionMenuConfiguration
     {
@@ -432,6 +432,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           _resourceUrlFactory,
           GlobalizationService,
           RenderingFeatures.Default,
+          new StubLabelReferenceRenderer(),
           () => new StubTextBox());
 
       Html.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "body");
@@ -453,6 +454,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           _resourceUrlFactory,
           GlobalizationService,
           RenderingFeatures.Default,
+          new StubLabelReferenceRenderer(),
           () => new StubTextBox());
       Html.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "body");
       Html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
@@ -470,6 +472,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           _resourceUrlFactory,
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
+          new StubLabelReferenceRenderer(),
           () => TextBox);
 
       TextBox.AutoPostBack = false;
@@ -572,7 +575,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
       var commandLink = span.GetAssertedChildElement ("a", 0);
       commandLink.AssertAttributeValueEquals ("id", Control.ClientID + "_Command");
-      commandLink.AssertAttributeValueEquals ("aria-labelledby", c_labelID);
+      commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       commandLink.AssertAttributeValueEquals ("class", "command");
       commandLink.AssertChildElementCount (1);
 
@@ -599,7 +603,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     {
       var inputSpan = contentSpan.GetAssertedChildElement ("span", 0);
       inputSpan.AssertAttributeValueEquals ("role", "combobox");
-      inputSpan.AssertAttributeValueEquals ("aria-labelledby", c_labelID);
+      inputSpan.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      inputSpan.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+
       inputSpan.AssertAttributeValueEquals ("aria-expanded", "false");
       inputSpan.AssertAttributeValueEquals ("aria-haspopup", "listbox");
       inputSpan.AssertAttributeValueEquals ("aria-owns", "");
@@ -669,6 +675,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           _resourceUrlFactory,
           GlobalizationService,
           RenderingFeatures.Default,
+          new StubLabelReferenceRenderer(),
           () => TextBox);
       renderer.Render (CreateRenderingContext());
 

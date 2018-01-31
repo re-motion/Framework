@@ -37,6 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   [ImplementationFor (typeof (IBocCheckBoxRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocCheckBoxRenderer : BocBooleanValueRendererBase<IBocCheckBox>, IBocCheckBoxRenderer
   {
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private const string c_trueIcon = "CheckBoxTrue.gif";
     private const string c_falseIcon = "CheckBoxFalse.gif";
 
@@ -45,9 +46,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     public BocCheckBoxRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
-        IRenderingFeatures renderingFeatures)
+        IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
+      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+
+      _labelReferenceRenderer = labelReferenceRenderer;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -80,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       var labelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
 
       string description = GetDescription (renderingContext);
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
 
       if (renderingContext.Control.IsReadOnly)
       {
@@ -93,8 +98,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         renderingContext.Writer.AddAttribute ("tabindex", "0");
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
-        if (!string.IsNullOrEmpty (labelsID))
-          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
+        _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
         if (renderingContext.Control.IsDescriptionEnabled)
           renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
 
@@ -118,8 +123,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
         checkBoxControl.Checked = renderingContext.Control.Value.Value;
         checkBoxControl.Disabled = !renderingContext.Control.Enabled;
-        if (!string.IsNullOrEmpty (labelsID))
-          checkBoxControl.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
+        _labelReferenceRenderer.SetLabelReferenceOnControl (checkBoxControl, labelIDs);
+
         if (renderingContext.Control.IsDescriptionEnabled)
           checkBoxControl.Attributes.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
 

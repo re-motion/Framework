@@ -18,11 +18,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.Practices.ServiceLocation;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
@@ -140,7 +142,7 @@ namespace Remotion.Web.UI.Controls
     private WebTreeNodeRenderMethod _treeNodeRenderMethod;
     private IPage _page;
     private IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;
-
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     //  construction and destruction
 
     /// <summary> Initalizes a new instance. </summary>
@@ -150,6 +152,8 @@ namespace Remotion.Web.UI.Controls
       _nodes.SetParent (this, null);
       _menuPlaceHolder = new PlaceHolder();
       _renderingFeatures = SafeServiceLocator.Current.GetInstance<IRenderingFeatures>();
+
+      _labelReferenceRenderer = SafeServiceLocator.Current.GetInstance<ILabelReferenceRenderer>();
     }
 
     /// <summary> Initalizes a new instance. </summary>
@@ -562,9 +566,8 @@ namespace Remotion.Web.UI.Controls
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassRoot);
       writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Tree);
 
-      var labelsID = string.Join (" ", GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+      var labelIDs = GetLabelIDs().ToArray();
+      _labelReferenceRenderer.AddLabelsReference (writer, labelIDs);
 
       writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin child nodes
       if (_focusededNode == null)

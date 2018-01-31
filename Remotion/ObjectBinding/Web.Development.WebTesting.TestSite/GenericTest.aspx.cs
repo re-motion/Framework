@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -31,6 +33,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     private GenericTestOptions _readOnlyControlOptions;
     private GenericTestOptions _hiddenControlOptions;
     private GenericTestOptions _visibleControlOptions;
+    private GenericTestOptions _formGridControlOptions;
+    private GenericTestOptions _formGridWithReadonlyControlOptions;
+    private GenericTestOptions _oneControlOverMultipleRowsFormGridControlOptions;
+    private GenericTestOptions _formGridMultiControlOptions1;
+    private GenericTestOptions _formGridMultiControlOptions2;
+    private GenericTestOptions _shiftedColumnsFormGridControlOptions;
 
     public GenericTest ()
     {
@@ -59,6 +67,64 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     protected override Control AmbiguousControlPanel
     {
       get { return PanelAmbiguousControl; }
+    }
+
+    /// <inheritdoc />
+    protected override GenericTestOptions FormGridControlOptions
+    {
+      get { return _formGridControlOptions; }
+    }
+
+    /// <inheritdoc />
+    protected override GenericTestOptions FormGridWithReadonlyControlOptions
+    {
+      get { return _formGridWithReadonlyControlOptions; }
+    }
+
+    /// <inheritdoc />
+    protected override HtmlTable FormGridControlTable
+    {
+      get { return FormGrid; }
+    }
+
+    protected override HtmlTable FormGridWithReadonlyControlTable
+    {
+      get { return ReadonlyControlFormGrid; }
+    }
+
+    protected override GenericTestOptions OneControlOverMultipleRowsFormGridControlOptions
+    {
+      get { return _oneControlOverMultipleRowsFormGridControlOptions; }
+    }
+
+    protected override HtmlTable OneControlOverMultipleRowsFormGridTable
+    {
+      get { return OneControlOverMultipleRowsFormGrid; }
+    }
+
+    protected override GenericTestOptions ShiftedColumnsFormGridControlOptions
+    {
+      get { return _shiftedColumnsFormGridControlOptions; }
+    }
+
+    protected override PlaceHolder ShiftedColumnsFormGrid
+    {
+      get { return ShiftedColumnsFormGridPlaceHolder; }
+    }
+
+    protected override GenericTestOptions FormGridMultiControlOptions1
+    {
+      get { return _formGridMultiControlOptions1; }
+    }
+
+    protected override GenericTestOptions FormGridMultiControlOptions2
+    {
+      get { return _formGridMultiControlOptions2; }
+    }
+
+    protected override PlaceHolder MultipleControlsFormGrid
+    {
+      get { return MultipleControlsFormGridPlaceHolder; }
     }
 
     /// <inheritdoc />
@@ -125,6 +191,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       const string hiddenID = "HiddenControl";
       const string visibleID = "VisibleControl";
       const string visibleIndex = "1", hiddenIndex = "133";
+
+      const string controlInNormalFormGridID = "ControlInFormGrid";
+      const string readonlyControlInNormalFormGridID = "ReadonlyControlInFormGrid";
+      const string oneControlOverMultipleRowsFormGridID = "ControlInSecondRowFormGrid";
+      const string shiftedColumnsControlFormGridID = "ColumnsShiftedControlFormGrid";
+      const string controlInMultiFormGridID1 = "ControlInMultiFormGridID1";
+      const string controlInMultiFormGridID2 = "ControlInMultiFormGridID2";
       const string correctDomainProperty = "Remotion.ObjectBinding.Sample.Person, Remotion.ObjectBinding.Sample";
       const string incorrectDomainProperty = "Remotion.ObjectBinding.Sample.Job, Remotion.ObjectBinding.Sample";
 
@@ -135,23 +208,27 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       var hiddenHtmlID = string.Concat ("body_", hiddenID);
       var visibleHtmlID = string.Concat ("body_", visibleID);
 
+      var controlInFormGridHtmlID = string.Concat ("body_", controlInNormalFormGridID);
+      var readonlyControlInFormGridHtmlID = string.Concat ("body_", readonlyControlInNormalFormGridID);
+      var oneControlOverMultipleRowsFormGridHtmlID = string.Concat ("body_", oneControlOverMultipleRowsFormGridID);
+      var shiftedColumnsControlFormGridHtmlID = string.Concat ("body_", shiftedColumnsControlFormGridID);
+      var controlInMultiFormGridIDHtml1 = string.Concat ("body_", controlInMultiFormGridID1);
+      var controlInMultiFormGridIDHtml2 = string.Concat ("body_", controlInMultiFormGridID2);
+
       // Options for creating the controls
       _ambiguousControlOptions = new GenericTestOptions (
           ambiguousID,
           ambiguousHtmlID,
           DataSource.ID,
           correctDomainProperty,
-          incorrectDomainProperty,
-          EnabledState.Enabled,
-          ReadOnlyState.Editable);
+          incorrectDomainProperty);
       _disabledControlOptions = new GenericTestOptions (
           disabledID,
           disabledHtmlID,
           DataSource.ID,
           correctDomainProperty,
           incorrectDomainProperty,
-          EnabledState.Disabled,
-          ReadOnlyState.Editable);
+          EnabledState.Disabled);
       _readOnlyControlOptions = new GenericTestOptions (
           readonlyID,
           readonlyHtmlID,
@@ -163,6 +240,51 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       _hiddenControlOptions = new GenericTestOptions (hiddenID, hiddenHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty, EnabledState.Enabled, ReadOnlyState.Editable);
       _visibleControlOptions = new GenericTestOptions (visibleID, visibleHtmlID, DataSource.ID, correctDomainProperty, incorrectDomainProperty, EnabledState.Enabled, ReadOnlyState.Editable);
 
+      _formGridControlOptions = new GenericTestOptions (
+          controlInNormalFormGridID,
+          controlInFormGridHtmlID,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty);
+
+      _formGridWithReadonlyControlOptions = new GenericTestOptions (
+          readonlyControlInNormalFormGridID,
+          readonlyControlInFormGridHtmlID,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty,
+          EnabledState.Enabled,
+          ReadOnlyState.ReadOnly);
+
+      _shiftedColumnsFormGridControlOptions = new GenericTestOptions (
+          shiftedColumnsControlFormGridID,
+          shiftedColumnsControlFormGridHtmlID,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty);
+
+      _oneControlOverMultipleRowsFormGridControlOptions = new GenericTestOptions (
+          oneControlOverMultipleRowsFormGridID,
+          oneControlOverMultipleRowsFormGridHtmlID,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty);
+      
+      _formGridMultiControlOptions1 = new GenericTestOptions (
+          controlInMultiFormGridID1,
+          controlInMultiFormGridIDHtml1,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty);
+
+      _formGridMultiControlOptions2 = new GenericTestOptions (
+          controlInMultiFormGridID2,
+          controlInMultiFormGridIDHtml2,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty);
+
+
       // Parameters which will be passed to the client
       _parameters.Add (TestConstants.HtmlIDSelectorID, visibleHtmlID, hiddenHtmlID);
       _parameters.Add (TestConstants.IndexSelectorID, visibleIndex, hiddenIndex, visibleHtmlID);
@@ -171,6 +293,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       _parameters.Add (TestConstants.SingleSelectorID, visibleHtmlID);
       _parameters.Add (TestConstants.DisabledTestsID, visibleHtmlID, disabledHtmlID);
       _parameters.Add (TestConstants.ReadOnlyTestsID, visibleHtmlID, readonlyHtmlID);
+      _parameters.Add (TestConstants.LabelTestsID, controlInFormGridHtmlID, readonlyControlInFormGridHtmlID, oneControlOverMultipleRowsFormGridHtmlID, shiftedColumnsControlFormGridHtmlID, controlInMultiFormGridIDHtml1, controlInMultiFormGridIDHtml2, visibleHtmlID);
 
       base.OnInit (e);
     }

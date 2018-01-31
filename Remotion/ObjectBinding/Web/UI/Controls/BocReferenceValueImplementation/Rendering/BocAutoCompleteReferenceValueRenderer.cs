@@ -66,8 +66,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     public BocAutoCompleteReferenceValueRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
-        IRenderingFeatures renderingFeatures)
-        : this (resourceUrlFactory, globalizationService, renderingFeatures, () => new RenderOnlyTextBox())
+        IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer)
+        : this (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, () => new RenderOnlyTextBox())
     {
     }
 
@@ -75,8 +76,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer,
         Func<TextBox> textBoxFactory)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer)
     {
       ArgumentUtility.CheckNotNull ("textBoxFactory", textBoxFactory);
       _textBoxFactory = textBoxFactory;
@@ -316,9 +318,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Listbox);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaOwns, "");
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
+
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       bool autoPostBack = textBox.AutoPostBack;

@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
   {
     private const string c_clientID = "MyEnumValue";
     private const string c_valueName = "ListControlClientID";
-    private const string c_labelID = "TheLabel";
+    private const string c_labelID = "Label";
     private IBocEnumValue _enumValue;
     private readonly Unit _width = Unit.Point (173);
     private readonly Unit _height = Unit.Point (17);
@@ -285,7 +285,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
           resourceUrlFactory,
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
-          _internalControlMemberCaller);
+          _internalControlMemberCaller,
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue));
       
       var document = Html.GetResultDocument();
@@ -323,7 +324,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
-          _internalControlMemberCaller);
+          _internalControlMemberCaller,
+          new StubLabelReferenceRenderer());
       renderer.Render (new BocEnumValueRenderingContext (HttpContext, Html.Writer, _enumValue));
 
       var document = Html.GetResultDocument();
@@ -331,7 +333,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
       var radioGroup = Html.GetAssertedChildElement (div, "table", 0);
       Html.AssertAttribute (radioGroup, "id", c_valueName);
-      Html.AssertAttribute (radioGroup, "aria-labelledby", c_labelID);
+      Html.AssertAttribute (radioGroup, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute (radioGroup, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       Html.AssertAttribute (radioGroup, "role", "radiogroup");
 
       if (withStyle)

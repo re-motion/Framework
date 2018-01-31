@@ -15,10 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 {
@@ -92,6 +95,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
 
       return _metaRootNode.GetNode().WithDisplayTextContains (containsDisplayText);
+    }
+
+    protected override ElementScope GetLabeledElementScope ()
+    {
+      return GetScopeWithReferenceInformation();
+    }
+
+    private ElementScope GetScopeWithReferenceInformation ()
+    {
+      return GetRootNode().Scope.FindXPath ("..");
     }
   }
 }

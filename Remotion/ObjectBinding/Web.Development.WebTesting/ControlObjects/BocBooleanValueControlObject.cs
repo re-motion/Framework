@@ -92,6 +92,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return Click (numberOfClicks, actionOptions);
     }
 
+    protected override ElementScope GetLabeledElementScope ()
+    {
+      return GetLinkScope();
+    }
+
     /// <summary>
     /// See <see cref="IControlObjectWithFormElements.GetFormElementNames"/>. Returns the input[type=hidden] (value) as only element.
     /// </summary>
@@ -102,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private UnspecifiedPageObject Click (int numberOfClicks, IWebTestActionOptions actionOptions)
     {
-      var linkScope = Scope.FindChild ("DisplayValue");
+      var linkScope = GetLinkScope();
 
       for (var i = 0; i < numberOfClicks; ++i)
       {
@@ -111,6 +116,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       }
 
       return UnspecifiedPage();
+    }
+
+    private ElementScope GetLinkScope ()
+    {
+      return Scope.FindChild ("DisplayValue");
     }
 
     private bool? ParseState (string state)

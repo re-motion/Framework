@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
@@ -119,6 +120,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
       return new[] { string.Format ("{0}_Value", GetHtmlID()) };
+    }
+
+    protected override ElementScope GetLabeledElementScope ()
+    {
+      return GetValueScope();
+    }
+
+    private ElementScope GetValueScope ()
+    {
+      return Scope.FindChild ("Value");
     }
 
     private IWebTestActionOptions MergeWithDefaultActionOptions (

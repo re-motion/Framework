@@ -411,6 +411,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return _columns.Where (cd => cd.Title != null).Single (cd => cd.Title.Contains (columnTitleContains));
     }
 
+    protected override ElementScope GetLabeledElementScope ()
+    {
+      return Scope;
+    }
+
     private bool ColumnHasDiagnosticMetadata (ElementScope scope)
     {
       if (scope[DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasDiagnosticMetadata] == null)

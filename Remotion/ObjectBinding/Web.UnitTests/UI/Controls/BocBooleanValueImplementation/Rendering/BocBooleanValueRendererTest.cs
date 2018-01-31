@@ -21,6 +21,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
@@ -48,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private const string c_clientID = "MyBooleanValue";
     private const string c_keyValueName = "MyBooleanValue_Value";
     private const string c_displayValueName = "MyBooleanValue_DisplayValue";
-    private const string c_labelID = "TheLabel";
+    private const string c_labelID = "Label";
 
     private string _startupScript;
     private string _clickScript;
@@ -280,7 +281,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           resourceUrlFactory,
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
-          new BocBooleanValueResourceSetFactory (resourceUrlFactory));
+          new BocBooleanValueResourceSetFactory (resourceUrlFactory),
+          new StubLabelReferenceRenderer());
       _renderer.Render (new BocBooleanValueRenderingContext(HttpContext, Html.Writer, _booleanValue));
       
       var document = Html.GetResultDocument();
@@ -293,7 +295,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private void CheckRendering (string checkedState, string value, string iconUrl, string description)
     {
       var resourceUrlFactory = new FakeResourceUrlFactory();
-      _renderer = new BocBooleanValueRenderer (resourceUrlFactory, GlobalizationService, RenderingFeatures.Default, new BocBooleanValueResourceSetFactory (resourceUrlFactory));
+      _renderer = new BocBooleanValueRenderer (
+          resourceUrlFactory,
+          GlobalizationService,
+          RenderingFeatures.Default,
+          new BocBooleanValueResourceSetFactory (resourceUrlFactory),
+          new StubLabelReferenceRenderer());
       _renderer.Render (new BocBooleanValueRenderingContext(HttpContext, Html.Writer, _booleanValue));
       var document = Html.GetResultDocument();
       var outerSpan = Html.GetAssertedChildElement (document, "span", 0);
@@ -356,7 +363,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private void CheckLinkAttributes (XmlNode link, string checkedState, string description, bool isReadOnly, bool isRequired)
     {
       Html.AssertAttribute (link, "id", c_displayValueName);
-      Html.AssertAttribute (link, "aria-labelledby", c_labelID);
+      Html.AssertAttribute (link, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute (link, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       Html.AssertAttribute (link, "aria-describedby", c_clientID + "_Description");
       Html.AssertAttribute (link, "role", "checkbox");
       Html.AssertAttribute (link, "aria-checked", checkedState);

@@ -44,6 +44,44 @@
         
       </asp:Panel>
 
+      <h3>FormGrid control</h3>
+
+      <h4>Standard FormGrid control</h4>
+      <remotion:FormGridManager ID="FormGridManager" runat="server" />
+      <table id="FormGrid" runat="server">
+        <tr>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+
+      <h4>FormGrid control with readonly control</h4>
+      <table id="ReadonlyControlFormGrid" runat="server">
+        <tr>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+
+      <h4>One control over multiple rows inside a FormGrid control</h4>
+      <table id="OneControlOverMultipleRowsFormGrid" runat="server">
+        <tr>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+        </tr>
+      </table>
+      
+      <h4>Form Grid Control with shifted Label and Control column </h4>
+      <asp:PlaceHolder ID="ShiftedColumnsFormGridPlaceHolder" runat="server">
+      </asp:PlaceHolder>
+
+      <h4>Multiple controls in one row FormGrid control</h4>
+      <asp:PlaceHolder ID="MultipleControlsFormGridPlaceHolder" runat="server">
+      </asp:PlaceHolder>
+      
       <h3>Frame test</h3>
       <iframe id="testFrame" src="FrameTestFrame.aspx">
       </iframe>

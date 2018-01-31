@@ -35,6 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     public void GenericTests_DropDownList (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "dropDownList");
@@ -55,6 +56,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     public void GenericTests_ListBox (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "listBox");
@@ -76,6 +78,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     public void GenericTests_RadioButtonList (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "radioButtonList");

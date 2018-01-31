@@ -40,8 +40,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
         [NotNull] string dataSource,
         [NotNull] string correctDomainProperty,
         [NotNull] string incorrectDomainProperty,
-        EnabledState enabledState,
-        ReadOnlyState readOnlyState)
+        EnabledState enabledState = EnabledState.Enabled,
+        ReadOnlyState readOnlyState = ReadOnlyState.Editable)
     {
       ArgumentUtility.CheckNotNull ("localID", localID);
       ArgumentUtility.CheckNotNull ("htmlID", htmlID);

@@ -40,6 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   public class BocBooleanValueRenderer : BocBooleanValueRendererBase<IBocBooleanValue>, IBocBooleanValueRenderer
   {
     private readonly IBocBooleanValueResourceSetFactory _resourceSetFactory;
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private const string c_nullString = "null";
 
     private static readonly string s_startUpScriptKeyPrefix = typeof (BocBooleanValueRenderer).FullName + "_Startup_";
@@ -48,12 +49,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
-        IBocBooleanValueResourceSetFactory resourceSetFactory)
+        IBocBooleanValueResourceSetFactory resourceSetFactory,
+        ILabelReferenceRenderer labelReferenceRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull ("resourceSetFactory", resourceSetFactory);
+      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
 
       _resourceSetFactory = resourceSetFactory;
+      _labelReferenceRenderer = labelReferenceRenderer;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -126,6 +130,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
 
       SetValidationErrorOnControl (linkControl, validationErrorsID, validationErrors);
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      _labelReferenceRenderer.SetLabelReferenceOnControl (linkControl, labelIDs);
 
       linkControl.RenderControl (renderingContext.Writer);
 
@@ -157,9 +163,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       // isClientScriptEnabled also includes IsReadOnly
       linkControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
       linkControl.Attributes.Add ("href", "#");
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
 
       if (!isClientScriptEnabled)
         return;

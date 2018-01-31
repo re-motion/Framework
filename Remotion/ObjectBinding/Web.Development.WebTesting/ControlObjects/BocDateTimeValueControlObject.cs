@@ -180,6 +180,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return UnspecifiedPage();
     }
 
+    protected override ElementScope GetLabeledElementScope ()
+    {
+      var dateScope = Scope.FindChild ("DateValue");
+
+      if (!dateScope.ExistsWorkaround())
+        return Scope.FindChild ("TimeValue");
+
+      return dateScope;
+    }
+
     /// <summary>
     /// See <see cref="IControlObjectWithFormElements.GetFormElementNames"/>. Returns the input[type=text] (date value) as first element, the
     /// input[type=text] (time value) as second element. Make sure to use the time value only if <see cref="HasTimeField"/> returns

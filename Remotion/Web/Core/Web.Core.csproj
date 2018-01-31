@@ -223,6 +223,9 @@
     <Compile Include="UI\Controls\Hotkey\NoneHotkeyFormatter.cs" />
     <Compile Include="UI\Controls\Hotkey\TextWithHotkey.cs" />
     <Compile Include="UI\Controls\Hotkey\UnderscoreHotkeyFormatter.cs" />
+    <Compile Include="UI\Controls\Rendering\ILabelReferenceRenderer.cs" />
+    <Compile Include="UI\Controls\Rendering\LabelReferenceRenderer.cs" />
+    <Compile Include="UI\Controls\Rendering\LabelReferenceRendererExtensions.cs" />
     <Compile Include="UI\Controls\Rendering\IRenderingFeatures.cs" />
     <Compile Include="UI\Controls\ListMenuImplementation\Rendering\IListMenuRenderer.cs" />
     <Compile Include="UI\Controls\ListMenuImplementation\Rendering\ListMenuRenderingContext.cs" />

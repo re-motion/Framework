@@ -60,8 +60,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     public BocReferenceValueRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
-        IRenderingFeatures renderingFeatures)
-        : this (resourceUrlFactory, globalizationService, renderingFeatures, () => new DropDownList())
+        IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer)
+        : this (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, () => new DropDownList())
     {
     }
 
@@ -69,8 +70,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer,
         Func<DropDownList> dropDownListFactoryMethod)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer)
     {
       ArgumentUtility.CheckNotNull ("dropDownListFactoryMethod", dropDownListFactoryMethod);
       _dropDownListFactoryMethod = dropDownListFactoryMethod;
@@ -219,9 +221,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       dropDownList.ApplyStyle (renderingContext.Control.CommonStyle);
       renderingContext.Control.DropDownListStyle.ApplyStyle (dropDownList);
 
-      var labelsID = string.Join (" ", renderingContext.Control.GetLabelIDs());
-      if (!string.IsNullOrEmpty (labelsID))
-        dropDownList.Attributes.Add (HtmlTextWriterAttribute2.AriaLabelledBy, labelsID);
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
 
       if (renderingContext.Control.IsRequired && dropDownList.Items.FindByValue (renderingContext.Control.NullValueString) != null)
         dropDownList.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);

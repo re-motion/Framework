@@ -34,12 +34,18 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
   [ImplementationFor (typeof (ITabbedMultiViewRenderer), Lifetime = LifetimeKind.Singleton)]
   public class TabbedMultiViewRenderer : RendererBase<ITabbedMultiView>, ITabbedMultiViewRenderer
   {
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+
     public TabbedMultiViewRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
-        IRenderingFeatures renderingFeatures)
+        IRenderingFeatures renderingFeatures,
+        ILabelReferenceRenderer labelReferenceRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
+      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+
+      _labelReferenceRenderer = labelReferenceRenderer;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control)
@@ -124,9 +130,8 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
       if (activeTab != null)
       {
         // Must point to an element not annotated with role=none to work consistently.
-        renderingContext.Writer.AddAttribute (
-            HtmlTextWriterAttribute2.AriaLabelledBy,
-            renderingContext.Control.TabStrip.ClientID + "_" + activeTab.ItemID + "_Command");
+        var labelID = renderingContext.Control.TabStrip.ClientID + "_" + activeTab.ItemID + "_Command";
+        _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, new[] { labelID });
       }
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Tabindex, "0");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TabPanel);
