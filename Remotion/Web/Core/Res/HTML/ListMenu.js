@@ -205,6 +205,7 @@ function ListMenu_OnKeyDown (event, $listMenu)
         return;
       }
     case 37: // left arrow
+    case 38: // up arrow
       {
         event.preventDefault();
         event.stopPropagation();
@@ -220,6 +221,7 @@ function ListMenu_OnKeyDown (event, $listMenu)
         return;
       }
     case 39: // right arrow
+    case 40: // down arrow
       {
         event.preventDefault();
         event.stopPropagation();
