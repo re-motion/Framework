@@ -185,7 +185,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53514</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:60400/trunk/Web.ExecutionEngine.CodeGenerator.TestVB</IISUrl>
+          <IISUrl>http://localhost:60400/branches/1.18/Web.ExecutionEngine.CodeGenerator.TestVB</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
