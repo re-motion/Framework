@@ -57,7 +57,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Remotion.Linq.SqlBackend, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.2.0.0-alpha-006\lib\net45\Remotion.Linq.SqlBackend.dll</HintPath>
+      <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.2.0.0\lib\net45\Remotion.Linq.SqlBackend.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
