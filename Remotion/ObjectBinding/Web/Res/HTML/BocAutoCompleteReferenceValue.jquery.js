@@ -1034,12 +1034,10 @@
                 activeItem.addClass (CLASSES.ACTIVE);
                 activeItem.attr("aria-selected", "true");
 
-                if (activeItem.data ('isAnnotation') !== 'true')
-                {
-                  select();
-                  // TODO provide option to avoid setting focus again after selection? useful for cleanup-on-focus
-                  input.focus();
-                }
+                select();
+                // TODO provide option to avoid setting focus again after selection? useful for cleanup-on-focus
+                input.focus();
+
                 return false;
             }).mousedown(function() {
                 config.mouseDownOnSelect = true;
