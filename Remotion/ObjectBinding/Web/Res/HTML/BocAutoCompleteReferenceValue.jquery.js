@@ -233,8 +233,17 @@
                     var wasVisible = select.visible();
                     state.mouseDownOnSelect = false;
 
-                    if (event.keyCode == KEY.RETURN && selectCurrent()) {
-                        //SelectCurrent already does everything that's needed.
+                    if (event.keyCode == KEY.RETURN) {
+                        var isValueSelected = selectCurrent();
+                        if (isValueSelected) {
+                            //SelectCurrent already does everything that's needed.
+                        } else {
+                            var selectedItem = select.selected(true);
+                            var isAnnotationSelected = selectedItem != null && selectedItem.data.IsAnnotation === true;
+                            if (!isAnnotationSelected) {
+                                acceptCurrent(true);
+                            }
+                        }
                     } else {
                         acceptCurrent(true);
                     }
@@ -316,9 +325,10 @@
                         }
                         else
                         {
-                          var selected = select.selected(true);
-                          if (selected.data.IsAnnotation === true)
-                            index = select.findItemPositionWhere (function (data) { return data === selected });
+                          var selectedItem = select.selected(true);
+                          var isAnnotationSelected = selectedItem != null && selectedItem.data.IsAnnotation === true;
+                          if (isAnnotationSelected)
+                            index = select.findItemPositionWhere (function (data) { return data === selectedItem });
                         }
 
                         select.selectItem (index);
