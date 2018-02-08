@@ -597,34 +597,7 @@
     <None Include="Res\HTML\BocAutoCompleteReferenceValue.js" />
     <None Include="Res\HTML\BocReferenceValue.js" />
     <None Include="Res\HTML\BocAutoCompleteReferenceValue.jquery.js" />
-    <None Include="Res\Themes\NovaBlue\Html\BocAutoCompleteReferenceValue.css" />
-    <None Include="Res\Themes\NovaBlue\Html\BocAutoCompleteReferenceValue.jquery.css" />
-    <None Include="Res\Themes\NovaBlue\Html\BocBooleanValue.css" />
-    <None Include="Res\Themes\NovaBlue\Html\BocCheckBox.css" />
-    <None Include="Res\Themes\NovaBlue\Html\BocDateTimeValue.css" />
-    <None Include="Res\Themes\NovaBlue\Html\BocEnumValue.css" />
-    <None Include="Res\Themes\NovaBlue\Html\BocList.css" />
-    <None Include="Res\Themes\NovaBlue\Html\BocMultilineTextValue.css" />
-    <None Include="Res\Themes\NovaBlue\Html\BocReferenceValue.css" />
-    <None Include="Res\Themes\NovaBlue\Html\BocTextValue.css" />
     <None Include="Res\HTML\TextBoxStyle.js" />
-    <None Include="Res\Themes\NovaBlue\Image\AutoCompleteReferenceValueDropDownButtonFace.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\AutoCompleteReferenceValueErrorIndicator.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\CheckBoxFalse.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\CheckBoxNull.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\CheckBoxTrue.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\MoveFirst.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\MoveFirstInactive.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\MoveLast.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\MoveLastInactive.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\MoveNext.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\MoveNextInactive.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\MovePrevious.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\MovePreviousInactive.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\AutoCompleteReferenceValueRequestInProgressIndicator.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\ReferenceValueErrorIndicator.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\SortAscending.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\SortDescending.gif" />
     <EmbeddedResource Include="Globalization\BocBooleanValue.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

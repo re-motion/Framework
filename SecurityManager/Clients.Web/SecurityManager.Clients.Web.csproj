@@ -88,7 +88,6 @@
       <Link>TemplateSharedForWeb.nuspec</Link>
     </None>
     <None Include="FacetManifest.xml" />
-    <None Include="res\Themes\NovaBlue\Image\ApplyButton.gif" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -100,19 +99,6 @@
     </None>
     <None Include="Global.asax" />
     <None Include="res\Html\EditPermissionsForm.js" />
-    <None Include="res\Themes\NovaBlue\Html\Style.css" />
-    <None Include="res\Themes\NovaBlue\Image\CancelButton.gif" />
-    <None Include="res\Themes\NovaBlue\Image\Collapse.gif" />
-    <None Include="res\Themes\NovaBlue\Image\DeleteItem.gif" />
-    <None Include="res\Themes\NovaBlue\Image\EditItem.gif" />
-    <None Include="res\Themes\NovaBlue\Image\Expand.gif" />
-    <None Include="res\Themes\NovaBlue\Image\HierarchyThis.gif" />
-    <None Include="res\Themes\NovaBlue\Image\HierarchyThisAndChildren.gif" />
-    <None Include="res\Themes\NovaBlue\Image\HierarchyThisAndParent.gif" />
-    <None Include="res\Themes\NovaBlue\Image\HierarchyThisAndParentAndChildren.gif" />
-    <None Include="res\Themes\NovaBlue\Image\PermissionDenied.gif" />
-    <None Include="res\Themes\NovaBlue\Image\PermissionGranted.gif" />
-    <None Include="res\Themes\NovaBlue\Image\PermissionUndefined.gif" />
     <None Include="UI\AccessControl\EditAccessControlEntryHeaderControl.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>

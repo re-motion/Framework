@@ -74,7 +74,7 @@ namespace OBWTest
       var defaultServiceLocator = DefaultServiceLocator.Create ();
 
       RegisterSwitchingValidatorFactories(defaultServiceLocator);
-      //defaultServiceLocator.RegisterSingle<ResourceTheme> (() => new ResourceTheme.NovaBlue());
+      //defaultServiceLocator.RegisterSingle<ResourceTheme> (() => new ResourceTheme.Other());
 
       ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
 

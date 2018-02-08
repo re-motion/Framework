@@ -21,15 +21,6 @@ namespace Remotion.Web
 {
   public class ResourceTheme
   {
-    [Obsolete ("NovaBlue is no longer extended with features and will be removed in a future version. (Version 1.17.5)")]
-    public class NovaBlue : ResourceTheme
-    {
-      public NovaBlue ()
-        : base ("NovaBlue")
-      {
-      }
-    }
-
     [ImplementationFor (typeof (ResourceTheme), Lifetime = LifetimeKind.Singleton)]
     public class NovaGray : ResourceTheme
     {

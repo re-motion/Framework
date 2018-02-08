@@ -855,20 +855,6 @@
     <None Include="Res\HTML\DatePicker.js" />
     <None Include="Res\HTML\ExecutionEngine.js" />
     <None Include="Res\HTML\ListMenu.js" />
-    <None Include="Res\Themes\NovaBlue\HTML\DatePicker.css" />
-    <None Include="Res\Themes\NovaBlue\HTML\DropDownMenu.css" />
-    <None Include="Res\Themes\NovaBlue\HTML\ExecutionEngine.css" />
-    <None Include="Res\Themes\NovaBlue\HTML\FormGrid.css" />
-    <None Include="Res\Themes\NovaBlue\HTML\ListMenu.css" />
-    <None Include="Res\Themes\NovaBlue\HTML\SingleView.css" />
-    <None Include="Res\Themes\NovaBlue\HTML\SmartPage.css" />
-    <None Include="Res\Themes\NovaBlue\HTML\Style.css" />
-    <None Include="Res\Themes\NovaBlue\HTML\StyleUtility.js" />
-    <None Include="Res\Themes\NovaBlue\HTML\TabbedMenu.css" />
-    <None Include="Res\Themes\NovaBlue\HTML\TabbedMultiView.css" />
-    <None Include="Res\Themes\NovaBlue\HTML\TabStrip.css" />
-    <None Include="Res\Themes\NovaBlue\HTML\TreeView.css" />
-    <None Include="Res\Themes\NovaBlue\HTML\WebButton.css" />
     <None Include="Res\HTML\SmartNavigation.js" />
     <None Include="Res\HTML\SmartPage.js" />
     <None Include="Res\HTML\DropDownMenu.js" />
@@ -876,45 +862,6 @@
     <None Include="Res\HTML\WebButton.js" />
     <None Include="Res\HTML\Utilities.js" />
     <None Include="Res\Image\Spacer.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\CornerBackgroundBlueTransparentNoBorder.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\CornerBackgroundWhiteTransparentBlackBorder.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\CornerBackgroundWhiteTransparentBlueBorder.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\CornerBackgroundWhiteTransparentNoBorder.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\DatePicker.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\DropDownMenuButton.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\DropDownMenuItemIconPane.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\DropDownMenuSeparator.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\Help.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\RequiredField.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TabbedMainMenuTabTopLeftCorner.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TabbedMainMenuTabTopRightCorner.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TabbedMenuTabBackground.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TabbedMenuTabBackgroundHover.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TabbedMultiViewTabBackground.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TabbedMultiViewTabBackgroundHover.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\transparentbackground.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewF.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewFMinus.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewFPlus.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewI.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewL.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewLMinus.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewLPlus.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewMinus.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewPlus.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewR.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewRMinus.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewRPlus.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewT.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewTMinus.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewTPlus.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\TreeViewWhite.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\ValidationError.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\WebButtonBackground.gif" />
-    <None Include="Res\Themes\NovaBlue\Image\WebButtonBackgroundHover.gif" />
-    <None Include="Res\Themes\NovaBlue\UI\DatePickerForm.aspx">
-      <SubType>ASPXCodeBehind</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
