@@ -283,6 +283,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (() => control.FillWith ("text"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
       Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
       Assert.That (() => control.ExecuteCommand(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SelectFirstMatch ("DoesntMatter"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SelectFirstMatch ("DoesntMatter", FinishInput.WithTab), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
     }
 
     [Test]
@@ -295,6 +297,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (control.IsReadOnly(), Is.True);
       Assert.That (() => control.FillWith ("text"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
       Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.SelectFirstMatch ("DoesntMatter"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.SelectFirstMatch ("DoesntMatter", FinishInput.WithTab), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
     }
 
     [Test]
