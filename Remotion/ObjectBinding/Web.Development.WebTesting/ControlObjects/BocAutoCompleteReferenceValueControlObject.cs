@@ -205,6 +205,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject SelectFirstMatch ([NotNull] string filter, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("filter", filter);
+
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
       return SelectFirstMatch (filter, FinishInput.WithTab, actionOptions);
     }
 
@@ -222,8 +229,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("filter", filter);
       ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
 
-      // todo check if disabled RM-6494
-      // todo check if readonly RM-6621
+      if (IsDisabled())
+        throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       var firstAutoCompleteResult = GetFirstAutoCompleteResult (filter);
       var textField = Scope.FindChild ("TextValue");
