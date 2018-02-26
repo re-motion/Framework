@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5B3CB3F6-DE69-41D6-8BBC-EFF4932F0F7E}"
 	ProjectSection(FolderStartupServices) = postProject
@@ -185,6 +185,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Reflection.CodeGeneration", "Remotion\Core\Reflection.CodeGeneration\Core.Reflection.CodeGeneration.csproj", "{503DCAC3-E668-41D8-AA48-176E489B8E86}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedSource", "SharedSource", "{A01E19B1-74DF-4827-B024-D06CB0D838DD}"
+	ProjectSection(SolutionItems) = preProject
+		SharedSource\directory.build.props = SharedSource\directory.build.props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSource.Core", "SharedSource\Core\SharedSource.Core.csproj", "{378885D1-5D3E-4226-9C57-AA5183BA45D5}"
 EndProject
@@ -311,6 +314,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Developme
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_SolutionItems", "{8FD13EC8-8054-47D6-A818-847C3B022C89}"
 	ProjectSection(SolutionItems) = preProject
+		directory.build.props = directory.build.props
 		NuGet.config = NuGet.config
 		packages\PackageInfo.ps1 = packages\PackageInfo.ps1
 	EndProjectSection
@@ -1411,6 +1415,9 @@ Global
 		{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{1B8F7A8A-F95C-4497-8029-9CF32B271134} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{651D3C40-63D1-4422-B2C0-67272AA1DBDF} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {26742782-2BDC-4959-9951-6D45B54A5C0D}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
