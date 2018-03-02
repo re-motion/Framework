@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Core", "Remotion\Core\Core\Core.Core.csproj", "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.MixerTools", "Remotion\Mixins\MixerTools\Mixins.MixerTools.csproj", "{152DAF45-13C9-4A73-90D0-DF774ED12528}"
