@@ -383,7 +383,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\packages\WebDriver.ChromeDriver.win32.2.33.0.0\content\chromedriver.exe">
+    <None Include="..\..\..\packages\WebDriver.ChromeDriver.win32.2.37.0\content\chromedriver.exe">
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

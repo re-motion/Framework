@@ -175,6 +175,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
       var dateTimeValue = fluentDatePicker.Target.DateTimeValue;
       var id = string.Join ("_", dateTimeValue.Scope.Id, "DatePicker");
       var result = dateTimeValue.Context.RootScope.FindId (id, Options.NoWait);
+
+      Thread.Sleep (TimeSpan.FromSeconds (2)); //Workaround. See RM-6944.
+      
       return result.Exists (Options.NoWait);
     }
 
