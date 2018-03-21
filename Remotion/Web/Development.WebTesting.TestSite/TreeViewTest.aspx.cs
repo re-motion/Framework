@@ -68,6 +68,17 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void InitializeTreeView ()
     {
+      InitializeMyTreeView();
+
+      InitializeMyTreeViewWithSpecialChildren();
+      
+      InitializeTreeViewWithOnlyRootWithSingleQuote();
+
+      InitializeTreeViewWithOnlyRootWithDoubleQuote();
+    }
+
+    private void InitializeMyTreeView ()
+    {
       var root = new TreeNode ("Root node", "RootValue", "~/Images/SampleIcon.gif");
       var child1 = new TreeNode ("Child node 1", "Child1Value");
       var child2 = new TreeNode ("Child node 2", "Child2Value");
@@ -89,6 +100,30 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       MyTreeView.CollapseAll();
       MyTreeView.ShowCheckBoxes = TreeNodeTypes.Leaf;
       MyTreeView.ShowLines = true;
+    }
+
+    private void InitializeMyTreeViewWithSpecialChildren()
+    {
+      var root = new TreeNode ("Root node 2", "RootValue2", "~/Images/SampleIcon.gif");
+
+      var child1 = new TreeNode ("With'SingleQuote", "Child1Value");
+      var child2 = new TreeNode ("With'SingleQuoteAndDouble\"Quote", "Child2Value");
+
+      root.ChildNodes.Add (child1);
+      root.ChildNodes.Add (child2);
+
+      MyTreeViewWithSpecialChildren.Nodes.Add (root);
+    }
+    private void InitializeTreeViewWithOnlyRootWithSingleQuote ()
+    {
+      var root = new TreeNode ("With'SingleQuote", "RootValue", "~/Images/SampleIcon.gif");
+      TreeViewWithOnlyRootWithSingleQuote.Nodes.Add (root);
+    }
+
+    private void InitializeTreeViewWithOnlyRootWithDoubleQuote ()
+    {
+      var root = new TreeNode ("With'SingleQuoteAndDouble\"Quote", "~/Images/SampleIcon.gif");
+      TreeViewWithOnlyRootWithDoubleQuote.Nodes.Add (root);
     }
   }
 }

@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
       var rows = bocList.GetDisplayedRows();
-      Assert.That (rows.Count, Is.EqualTo (5));
+      Assert.That (rows.Count, Is.EqualTo (8));
       Assert.That (rows[1].GetCell ("DisplayName").GetText(), Is.EqualTo ("CEO"));
     }
 
@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-      Assert.That (bocList.GetNumberOfRows(), Is.EqualTo (5));
+      Assert.That (bocList.GetNumberOfRows(), Is.EqualTo (8));
     }
 
     [Test]

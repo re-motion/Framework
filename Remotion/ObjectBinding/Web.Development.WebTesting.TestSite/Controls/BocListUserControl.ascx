@@ -280,4 +280,37 @@
     </td>
     <td>&nbsp; (no fake table header)</td>
   </tr>
+<tr>
+    <td></td>
+    <td>
+        <testsite:TestBocListWithRowMenuItems
+            ID="JobList_ColumnsWithoutDiagnosticMetadata"
+            ReadOnly="False"
+            DataSourceControl="CurrentObject"
+            PropertyIdentifier="Jobs"
+        
+            ShowAllProperties="False"
+        
+            Width="100%"
+            Height="10em"
+            runat="server">
+            <ListMenuItems>
+                <remotion:BocMenuItem ItemID="ListMenuCmd1" Text="LM cmd">
+                    <PersistedCommand>
+                        <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
+                    </PersistedCommand>
+                </remotion:BocMenuItem>
+            </ListMenuItems>
+            <FixedColumns>
+                <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" EditText="With'SingleQuote" SaveText="Save" CancelText="Cancel" Width="2em"  ColumnTitle="Edit"/>
+                <remotion:BocCommandColumnDefinition ItemID="RowCmd" Text="With'SingleQuoteAndDouble&quot;Quote" ColumnTitle="Command">
+                    <PersistedCommand>
+                        <remotion:BocListItemCommand Type="Event" CommandStateType="Remotion.ObjectBinding.Sample::PersonListItemCommandState"></remotion:BocListItemCommand>
+                    </PersistedCommand>
+                </remotion:BocCommandColumnDefinition>
+            </FixedColumns>
+        </testsite:TestBocListWithRowMenuItems>
+    </td>
+    <td>&nbsp; (without Diagnostic Metadata, with characters requiring special handling in selector)</td>
+</tr>
 </table>

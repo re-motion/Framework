@@ -166,6 +166,99 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Root node|RootValue (None)"));
     }
 
+    [Test]
+    public void TestNodeSelectByDisplayText_WithSingleQuote ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeViewWithSpecialChildren");
+      
+      var rootNode = treeView.GetRootNode();
+      var node = rootNode.GetNode().WithDisplayText ("With'SingleQuote");
+      Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuote"));
+    }
+
+    [Test]
+    public void TestNodeSelectByDisplayText_WithSingleQuoteAndDoubleQuote ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeViewWithSpecialChildren");
+      
+      var rootNode = treeView.GetRootNode();
+      var node = rootNode.GetNode().WithDisplayText ("With'SingleQuoteAndDouble\"Quote");
+      Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+    }
+    
+    [Test]
+    public void TestNodeSelectByDisplayTextContains_WithSingleQuote ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeViewWithSpecialChildren");
+      
+      var rootNode = treeView.GetRootNode();
+      var node = rootNode.GetNode().WithDisplayTextContains ("ith'SingleQuot");
+      Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuote"));
+    }
+
+    [Test]
+    public void TestNodeSelectByDisplayTextContains_WithSingleQuoteAndDoubleQuote ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeViewWithSpecialChildren");
+      
+      var rootNode = treeView.GetRootNode();
+      var node = rootNode.GetNode().WithDisplayTextContains ("ith'SingleQuoteAndDouble\"Quot");
+      Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+    }
+
+    
+    [Test]
+    public void TestTreeViewSelectByDisplayText_WithSingleQuote ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("TreeViewWithOnlyRootWithSingleQuote");
+      
+      var node = treeView.GetNode().WithDisplayText ("With'SingleQuote");
+      Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuote"));
+    }
+
+    [Test]
+    public void TestTreeViewSelectByDisplayText_WithSingleQuoteAndDoubleQuote ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("TreeViewWithOnlyRootWithDoubleQuote");
+      
+      var node = treeView.GetNode().WithDisplayText ("With'SingleQuoteAndDouble\"Quote");
+      Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+    }
+    
+    [Test]
+    public void TestTreeViewSelectByDisplayTextContains_WithSingleQuote ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("TreeViewWithOnlyRootWithSingleQuote");
+      
+      var node = treeView.GetNode().WithDisplayTextContains ("ith'SingleQuot");
+      Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuote"));
+    }
+
+    [Test]
+    public void TestTreeViewSelectByDisplayTextContains_WithSingleQuoteAndDoubleQuote ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("TreeViewWithOnlyRootWithDoubleQuote");
+      
+      var node = treeView.GetNode().WithDisplayTextContains ("ith'SingleQuoteAndDouble\"Quot");
+      Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+    }
+
     private WxePageObject Start ()
     {
       return Start<WxePageObject> ("TreeViewTest.wxe");

@@ -190,7 +190,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
 
-      var xpath = string.Format ("[normalize-space(tbody/tr/td[last()]//*)='{0}']", displayText);
+      var xpath = string.Format ("[normalize-space(tbody/tr/td[last()]//*)={0}]", DomSelectorUtility.CreateMatchValueForXPath (displayText));
       return FindAndCreateNode (xpath);
     }
 
@@ -199,7 +199,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
 
-      var xpath = string.Format ("[contains(tbody/tr/td[last()]//*, '{0}')]", containsDisplayText);
+      var xpath = string.Format ("[contains(tbody/tr/td[last()]//*, {0})]", DomSelectorUtility.CreateMatchValueForXPath (containsDisplayText));
       return FindAndCreateNode (xpath);
     }
 

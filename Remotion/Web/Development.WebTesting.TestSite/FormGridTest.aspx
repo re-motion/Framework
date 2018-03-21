@@ -47,4 +47,25 @@
       </tr>
     </table>
   </div>
+  <h3>FormGrid3 - With SingleQuote in Title</h3>
+  <table ID="My3FormGrid" runat="server">
+      <tr>
+          <td colspan="2">With'SingleQuote</td>
+      </tr>
+      <tr>
+          <td></td>
+          <td>test content</td>
+      </tr>
+  </table>
+  
+  <h3>FormGrid4 - With SingleQuote and Quotation Mark in Title</h3>
+  <table ID="My4FormGrid" runat="server">
+    <tr>
+      <td colspan="2">With'SingleQuoteAndDouble"Quote</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>test content</td>
+    </tr>
+  </table>
 </asp:Content>

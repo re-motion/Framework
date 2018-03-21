@@ -235,20 +235,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (column.HasDiagnosticMetadata)
       {
         var cssSelector = string.Format (
-            ".bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[{0}='{1}'] span[{2}='{3}']",
+            ".bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[{0}='{1}'] span[{2}={3}]",
             DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
             column.Index,
             DiagnosticMetadataAttributesForObjectBinding.BocListCellContents,
-            containsCellText);
-        var cellScope = Scope.FindCss (cssSelector).FindXPath ("../..");
+            DomSelectorUtility.CreateMatchValueForCssSelector (containsCellText));
+        var cellScope = Scope.FindCss (cssSelector);
+        cellScope = cellScope.FindXPath ("../..");
         return CreateCellControlObject (GetHtmlID(), cellScope);
       }
       else
       {
         var xPathSelector = string.Format (
-            ".//tbody{0}/tr/td[.//*='{1}']",
-            XPathUtils.CreateHasClassCheck ("bocListTableBody"),
-            containsCellText);
+            ".//tbody{0}/tr/td[.//*={1}]",
+            DomSelectorUtility.CreateHasClassCheckForXPath ("bocListTableBody"),
+            DomSelectorUtility.CreateMatchValueForXPath (containsCellText));
         var cellScope = Scope.FindXPath (xPathSelector);
         return CreateCellControlObject (GetHtmlID(), cellScope);
       }
@@ -261,20 +262,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (column.HasDiagnosticMetadata)
       {
         var cssSelector = string.Format (
-            ".bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[{0}='{1}'] span[{2}*='{3}']",
+            ".bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[{0}='{1}'] span[{2}*={3}]",
             DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
             column.Index,
             DiagnosticMetadataAttributesForObjectBinding.BocListCellContents,
-            containsCellText);
+            DomSelectorUtility.CreateMatchValueForCssSelector (containsCellText));
         var cellScope = Scope.FindCss (cssSelector).FindXPath ("../..");
         return CreateCellControlObject (GetHtmlID(), cellScope);
       }
       else
       {
         var xPathSelector = string.Format (
-            ".//tbody{0}/tr/td[contains(.//*,'{1}')]",
-            XPathUtils.CreateHasClassCheck ("bocListTableBody"),
-            containsCellText);
+            ".//tbody{0}/tr/td[contains(.//*,{1})]",
+            DomSelectorUtility.CreateHasClassCheckForXPath ("bocListTableBody"),
+            DomSelectorUtility.CreateMatchValueForXPath (containsCellText));
         var cellScope = Scope.FindXPath (xPathSelector);
         return CreateCellControlObject (GetHtmlID(), cellScope);
       }

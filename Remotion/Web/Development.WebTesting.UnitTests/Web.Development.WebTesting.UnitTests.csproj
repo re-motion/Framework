@@ -51,7 +51,8 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenshotRecorderPathUtilityTest.cs" />
+    <Compile Include="Utilities\ScreenshotRecorderPathUtilityTest.cs" />
+    <Compile Include="Utilities\DomSelectorUtilityTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Remotion LGPL.licenseheader">

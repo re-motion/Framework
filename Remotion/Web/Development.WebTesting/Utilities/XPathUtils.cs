@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -24,49 +23,22 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   /// </summary>
   public static class XPathUtils
   {
-    /// <summary>
-    /// Creates an XPath predicate, checking that a given <paramref name="attribtueName"/> has the given <paramref name="attributeValue"/>.
-    /// </summary>
-    /// <param name="attribtueName">The name of the attribute to check.</param>
-    /// <param name="attributeValue">The value, the attribute should have.</param>
-    /// <returns>The XPath predicate.</returns>
-    public static string CreateHasAttributeCheck (string attribtueName, string attributeValue)
+    [Obsolete ("Use DomSelectorUtility.CreateHasAttributeCheckForXPath (string, string) instead. (1.19.2)")]
+    public static string CreateHasAttributeCheck (string attributeName, string attributeValue)
     {
-      return string.Format ("[@{0}='{1}']", attribtueName, attributeValue);
+      return DomSelectorUtility.CreateHasAttributeCheckForXPath (attributeName, attributeValue);
     }
 
-    /// <summary>
-    /// Creates an XPath predicate, checking for a specific CSS class.
-    /// </summary>
-    /// <param name="cssClass">The CSS class to check for.</param>
-    /// <returns>The XPath predicate.</returns>
+    [Obsolete ("Use DomSelectorUtility.CreateHasClassCheck (string) instead. (1.19.2)")]
     public static string CreateHasClassCheck (string cssClass)
     {
-      return string.Format ("[{0}]", CreateClassCheckClause (cssClass));
+      return DomSelectorUtility.CreateHasClassCheckForXPath (cssClass);
     }
 
-    /// <summary>
-    /// Creates an XPath predicate, checking for "at least one" of the given CSS classes.
-    /// </summary>
-    /// <param name="cssClasses">The CSS classes to check for.</param>
-    /// <returns>The XPath predicate.</returns>
+    [Obsolete ("Use DomSelectorUtility.CreateHasOneOfClassesCheck (string[]) instead. (1.19.2)")]
     public static string CreateHasOneOfClassesCheck (params string[] cssClasses)
     {
-      var checkClauses = cssClasses.Select (CreateClassCheckClause);
-      return "[" + string.Join (" or ", checkClauses) + "]";
-    }
-
-    /// <summary>
-    /// Creates an XPath predicate clause, checking for a specific CSS class.
-    /// </summary>
-    /// <remarks>
-    /// See http://stackoverflow.com/a/9133579/1400869 for more information on the implementation.
-    /// </remarks>
-    /// <param name="cssClass">The CSS class to check for.</param>
-    /// <returns>The XPath predicate clause.</returns>
-    private static string CreateClassCheckClause (string cssClass)
-    {
-      return string.Format ("contains(concat(' ', normalize-space(@class), ' '), ' {0} ')", cssClass);
+      return DomSelectorUtility.CreateHasOneOfClassesCheckForXPath (cssClasses);
     }
   }
 }

@@ -142,6 +142,66 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("MyHtmlAnchorWithJavaScriptLink"));
     }
 
+    [Test]
+    public void TestGetByTextContent_WithSingleQuote ()
+    {
+      var home = Start();
+
+      var anchor = home.Anchors().GetByTextContent ("With'SingleQuote");
+      
+      Assert.That (anchor.GetText(), Is.EqualTo ("With'SingleQuote"));
+    }
+    
+    [Test]
+    public void TestGetByTextContentOrNull_WithSingleQuote ()
+    {
+      var home = Start();
+
+      var anchor = home.Anchors().GetByTextContentOrNull ("With'SingleQuote");
+      
+      Assert.That (anchor.GetText(), Is.EqualTo ("With'SingleQuote"));
+    }
+    
+    [Test]
+    public void TestExistsByTextContent_WithSingleQuote ()
+    {
+      var home = Start();
+
+      var anchorExists = home.Anchors().ExistsByTextContent ("With'SingleQuote");
+      
+      Assert.That (anchorExists, Is.True);
+    }
+
+    [Test]
+    public void TestGetByTextContent_WithSingleQuoteAndDoubleQuote ()
+    {
+      var home = Start();
+
+      var anchor = home.Anchors().GetByTextContent ("With'SingleQuoteAnd\"DoubleQuote");
+      
+      Assert.That (anchor.GetText(), Is.EqualTo ("With'SingleQuoteAnd\"DoubleQuote"));
+    }
+    
+    [Test]
+    public void TestGetByTextContentOrNull_WithSingleQuoteAndDoubleQuote ()
+    {
+      var home = Start();
+
+      var anchor = home.Anchors().GetByTextContentOrNull ("With'SingleQuoteAnd\"DoubleQuote");
+      
+      Assert.That (anchor.GetText(), Is.EqualTo ("With'SingleQuoteAnd\"DoubleQuote"));
+    }
+    
+    [Test]
+    public void TestExistsByTextContent_WithSingleQuoteAndDoubleQuote ()
+    {
+      var home = Start();
+
+      var anchorExists = home.Anchors().ExistsByTextContent ("With'SingleQuoteAnd\"DoubleQuote");
+      
+      Assert.That (anchorExists, Is.True);
+    }
+
     private WxePageObject Start ()
     {
       return Start<WxePageObject> ("AnchorTest.wxe");

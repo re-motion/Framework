@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var hasAttributeCheck = XPathUtils.CreateHasAttributeCheck ("type", "text");
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath ("type", "text");
       var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
       return CreateControlObject (context, scope);
@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var hasAttributeCheck = XPathUtils.CreateHasAttributeCheck ("type", "text");
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath ("type", "text");
       var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
 
@@ -110,7 +110,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var hasAttributeCheck = XPathUtils.CreateHasAttributeCheck ("type", "text");
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath ("type", "text");
       var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
 

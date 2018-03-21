@@ -143,7 +143,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
     private ElementScope FindScopePerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      var hasAttributeCheck = XPathUtils.CreateHasAttributeCheck (DiagnosticMetadataAttributes.ControlType, _controlType);
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath (DiagnosticMetadataAttributes.ControlType, _controlType);
       var scope = context.Scope.FindXPath (string.Format ("(.//*{0})[{1}]", hasAttributeCheck, oneBasedIndex));
       return scope;
     }

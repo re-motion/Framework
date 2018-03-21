@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var hasAttributeCheck = XPathUtils.CreateHasAttributeCheck ("type", "image");
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath ("type", "image");
       var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
       return CreateControlObject (context, scope);
@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var hasAttributeCheck = XPathUtils.CreateHasAttributeCheck ("type", "image");
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath ("type", "image");
       var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
 
@@ -110,7 +110,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var hasAttributeCheck = XPathUtils.CreateHasAttributeCheck ("type", "image");
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath ("type", "image");
       var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
       var scope = context.Scope.FindXPath (xPathSelector);
 

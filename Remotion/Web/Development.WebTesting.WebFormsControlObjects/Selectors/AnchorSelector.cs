@@ -19,6 +19,7 @@ using Coypu;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ControlSelection;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
 {
@@ -116,7 +117,8 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
 
-      var scope = context.Scope.FindXPath (string.Format ("(.//{0})[.='{1}']", c_htmlAnchorTag, textContent));
+      var scope = context.Scope.FindXPath (
+          string.Format ("(.//{0})[.={1}]", c_htmlAnchorTag, DomSelectorUtility.CreateMatchValueForXPath (textContent)));
       return CreateControlObject (context, scope);
     }
 
@@ -126,7 +128,8 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
 
-      var scope = context.Scope.FindXPath (string.Format ("(.//{0})[.='{1}']", c_htmlAnchorTag, textContent));
+      var scope = context.Scope.FindXPath (
+          string.Format ("(.//{0})[.={1}]", c_htmlAnchorTag, DomSelectorUtility.CreateMatchValueForXPath (textContent)));
 
       if (scope.ExistsWorkaround())
         return CreateControlObject (context, scope);
@@ -140,7 +143,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
 
-      var scope = context.Scope.FindXPath (string.Format ("(.//{0})[.='{1}']", c_htmlAnchorTag, textContent));
+      var scope = context.Scope.FindXPath (string.Format ("(.//{0})[.={1}]", c_htmlAnchorTag, DomSelectorUtility.CreateMatchValueForXPath (textContent)));
 
       return scope.ExistsWorkaround();
     }

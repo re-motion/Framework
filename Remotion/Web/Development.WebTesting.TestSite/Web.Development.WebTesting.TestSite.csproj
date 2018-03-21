@@ -20,6 +20,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -67,6 +68,7 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
+    <Content Include="CoypuElementScopeFindExtensionsTest.aspx" />
     <Content Include="PlatformTest.aspx" />
     <Content Include="Empty.aspx" />
     <Content Include="GenericTest.aspx" />
@@ -88,6 +90,8 @@
     <Content Include="FrameTestFrame.aspx" />
     <Content Include="ScreenshotTestFrame.aspx" />
     <Content Include="ScrollTest.aspx" />
+    <Content Include="TestPage.html" />
+    <Content Include="TestPageIFrame.html" />
     <Content Include="TreeViewTest.aspx" />
     <Content Include="BrowserSessionTest.aspx" />
     <Content Include="WebTreeViewTest.aspx" />
@@ -129,6 +133,14 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="CoypuElementScopeFindExtensionsTest.aspx.cs">
+      <DependentUpon>CoypuElementScopeFindExtensionsTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CoypuElementScopeFindExtensionsTest.aspx.designer.cs">
+      <DependentUpon>CoypuElementScopeFindExtensionsTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CoypuElementScopeFindExtensionsTestFunction.cs" />
     <Compile Include="ElementScopeTestFunction.cs" />
     <Compile Include="GenericPages\AnchorGenericTestPage.cs" />
     <Compile Include="GenericPages\CommandGenericTestPage.cs" />

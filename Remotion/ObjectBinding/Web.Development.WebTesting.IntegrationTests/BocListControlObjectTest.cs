@@ -281,7 +281,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (3));
+      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (4));
 
       bocList.GoToNextPage();
       Assert.That (bocList.GetCurrentPage(), Is.EqualTo (2));
@@ -290,8 +290,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
 
       bocList.GoToLastPage();
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (3));
-      Assert.That (bocList.GetNumberOfRows(), Is.EqualTo (1));
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (4));
+      Assert.That (bocList.GetNumberOfRows(), Is.EqualTo (2));
 
       bocList.GoToFirstPage();
       Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
@@ -431,6 +431,180 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       cell = bocList.GetCellWhere().ColumnWithTitleContains ("Title", "EO");
       Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+    }
+
+    [Test]
+    public void TestGetCellWhere_WithSingleQuote ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+
+      var cell = bocList.GetCellWhere ("Title", "With'SingleQuote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("Title", "With'SingleQuote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("Title", "ith'SingleQuot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (1, "With'SingleQuote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContains (1, "ith'SingleQuot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Title", "With'SingleQuote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Title", "ith'SingleQuot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+    }
+    
+    [Test]
+    public void TestGetCellWhere_WithDoubleQuote ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+
+      var cell = bocList.GetCellWhere ("Title", "With\"DoubleQuote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("Title", "With\"DoubleQuote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("Title", "ith\"DoubleQuot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (1, "With\"DoubleQuote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContains (1, "ith\"DoubleQuot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Title", "With\"DoubleQuote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Title", "ith\"DoubleQuot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+    }
+
+    [Test]
+    public void TestGetCellWhere_WithSingleQuoteAndDoubleQuote ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+
+      var cell = bocList.GetCellWhere ("Title", "With'SingleQuoteAndWith\"Double1Quote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("Title", "With'SingleQuoteAndWith\"Double1Quote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("Title", "ith'SingleQuoteAndWith\"Double1Quot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (1, "With'SingleQuoteAndWith\"Double1Quote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContains (1, "ith'SingleQuoteAndWith\"Double1Quote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Title", "With'SingleQuoteAndWith\"Double1Quote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Title", "ith'SingleQuoteAndWith\"Double1Quot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+    }
+
+    [Test]
+    public void TestGetCellWhere_WithoutDiagnosticMetadata ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      var cell = bocList.GetCellWhere ("RowCmd", "Row command");
+      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("RowCmd", "Row command");
+      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("RowCmd", "ow comman");
+      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (4, "Row command");
+      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContains (4, "ow comman");
+      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Command", "Row command");
+      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Command", "ow comman");
+      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+    }
+
+    [Test]
+    public void TestGetCellWhere_WithoutDiagnosticMetadata_WithSingleQuote ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_ColumnsWithoutDiagnosticMetadata");
+
+      var cell = bocList.GetCellWhere ("EditRow", "With'SingleQuote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("EditRow", "With'SingleQuote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("EditRow", "ith'SingleQuot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (1, "With'SingleQuote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContains (1, "ith'SingleQuot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Edit", "With'SingleQuote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Edit", "ith'SingleQuot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+    }
+
+    [Test]
+    public void TestGetCellWhere_WithoutDiagnosticMetadata_WithSingleQuoteAndDoubleQuote ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_ColumnsWithoutDiagnosticMetadata");
+      
+      var cell = bocList.GetCellWhere ("RowCmd", "With'SingleQuoteAndDouble\"Quote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("RowCmd", "With'SingleQuoteAndDouble\"Quote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("RowCmd", "ith'SingleQuoteAndDouble\"Quote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (2, "With'SingleQuoteAndDouble\"Quote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContains (2, "ith'SingleQuoteAndDouble\"Quot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Command", "With'SingleQuoteAndDouble\"Quote");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Command", "ith'SingleQuoteAndDouble\"Quot");
+      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
     }
 
     [Test]
@@ -887,7 +1061,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
 
-      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (3));
+      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (4));
     }
 
     [Test]
@@ -909,7 +1083,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       //Enter edit mode
       bocList.GetRow (2).Edit();
 
-      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (3));
+      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (4));
     }
 
     
@@ -983,13 +1157,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var pageNumberGreaterThanNumberOfPages = 4;
+      var pageNumberGreaterThanNumberOfPages = 5000;
 
 
       Assert.That (
           () => bocList.GoToSpecificPage (pageNumberGreaterThanNumberOfPages),
           Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
-              string.Format ("Unable to change page number to '{0}'. Page number must be between '1' and '3'.", pageNumberGreaterThanNumberOfPages)));
+              string.Format ("Unable to change page number to '{0}'. Page number must be between '1' and '4'.", pageNumberGreaterThanNumberOfPages)));
     }
 
     [Test]
@@ -1004,7 +1178,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (
           () => bocList.GoToSpecificPage (pageNumberLesserThanNumberOfPages),
           Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
-              string.Format ("Unable to change page number to '{0}'. Page number must be between '1' and '3'.", pageNumberLesserThanNumberOfPages)));
+              string.Format ("Unable to change page number to '{0}'. Page number must be between '1' and '4'.", pageNumberLesserThanNumberOfPages)));
     }
 
     [Test]
@@ -1171,7 +1345,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       bocList.GoToLastPage();
 
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (3));
+      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (4));
     }
 
     [Test]
@@ -1206,7 +1380,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      bocList.GoToSpecificPage (3);
+      bocList.GoToSpecificPage (4);
 
       Assert.That (
           () => bocList.GoToLastPage(),

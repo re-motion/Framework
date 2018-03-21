@@ -61,7 +61,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
       var item =
           _webTabStrip.FindCss (
-              string.Format ("span.tabStripTab[{0}='{1}'], span.tabStripTabSelected[{0}='{1}']", DiagnosticMetadataAttributes.ItemID, itemID));
+              string.Format (
+                  "span.tabStripTab[{0}={1}], span.tabStripTabSelected[{0}={1}]",
+                  DiagnosticMetadataAttributes.ItemID,
+                  DomSelectorUtility.CreateMatchValueForCssSelector (itemID)));
 
       return item.ForElementScopeScreenshot();
     }
@@ -71,7 +74,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     {
       var xPathSelector = string.Format (
           "(.//span{0})[{1}]",
-          XPathUtils.CreateHasOneOfClassesCheck ("tabStripTab", "tabStripTabSelected"),
+          DomSelectorUtility.CreateHasOneOfClassesCheckForXPath (new[] { "tabStripTab", "tabStripTabSelected" }),
           oneBasedIndex);
       var item = _webTabStrip.FindXPath (xPathSelector);
 
@@ -85,7 +88,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
       var item =
           _webTabStrip.FindCss (
-              string.Format ("span.tabStripTab[{0}='{1}'], span.tabStripTabSelected[{0}='{1}']", DiagnosticMetadataAttributes.Content, displayText));
+              string.Format (
+                  "span.tabStripTab[{0}={1}], span.tabStripTabSelected[{0}={1}]",
+                  DiagnosticMetadataAttributes.Content,
+                  DomSelectorUtility.CreateMatchValueForCssSelector (displayText)));
 
       return item.ForElementScopeScreenshot();
     }
@@ -98,9 +104,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
       var item =
           _webTabStrip.FindCss (
               string.Format (
-                  "span.tabStripTab[{0}*='{1}'], span.tabStripTabSelected[{0}*='{1}']",
+                  "span.tabStripTab[{0}*={1}], span.tabStripTabSelected[{0}*={1}]",
                   DiagnosticMetadataAttributes.Content,
-                  displayText));
+                  DomSelectorUtility.CreateMatchValueForCssSelector (displayText)));
 
       return item.ForElementScopeScreenshot();
     }

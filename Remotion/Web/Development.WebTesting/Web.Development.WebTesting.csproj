@@ -198,6 +198,7 @@
     <Compile Include="Utilities\AnnotateHelper.cs" />
     <Compile Include="ScreenshotCreation\BrowserContentLocators\ChromeBrowserContentLocator.cs" />
     <Compile Include="ScreenshotCreation\BrowserContentLocators\InternetExplorerBrowserContentLocator.cs" />
+    <Compile Include="Utilities\DomSelectorUtility.cs" />
     <Compile Include="Utilities\DataContractJsonSerializationUtility.cs" />
     <Compile Include="Utilities\ElementScopeExtensions.cs" />
     <Compile Include="ScreenshotCreation\IBrowserContentLocator.cs" />

@@ -20,5 +20,32 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TreeView MyTreeView;
+        
+        /// <summary>
+        /// MyTreeViewWithSpecialChildren control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TreeView MyTreeViewWithSpecialChildren;
+        
+        /// <summary>
+        /// TreeViewWithOnlyRootWithSingleQuote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TreeView TreeViewWithOnlyRootWithSingleQuote;
+        
+        /// <summary>
+        /// TreeViewWithOnlyRootWithDoubleQuote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TreeView TreeViewWithOnlyRootWithDoubleQuote;
     }
 }

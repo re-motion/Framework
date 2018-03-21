@@ -87,8 +87,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       //var scope = context.Scope.FindCss (string.Format ("table[{0}='{1}']", DiagnosticMetadataAttributes.FormGridTitle, title));
 
       // Note: this implementation assumes that the title cell has the CSS class formGridTitleCell.
-      var hasClassCheck = XPathUtils.CreateHasClassCheck ("formGridTitleCell");
-      var scope = context.Scope.FindXPath (string.Format (".//table[tbody/tr/td{0}='{1}']", hasClassCheck, title));
+      var hasClassCheck = DomSelectorUtility.CreateHasClassCheckForXPath ("formGridTitleCell");
+      var escapedTitleParameter = DomSelectorUtility.CreateMatchValueForXPath (title);
+      var scope = context.Scope.FindXPath (string.Format (".//table[tbody/tr/td{0}={1}]", hasClassCheck, escapedTitleParameter));
 
       // This alternative implementation assumes that the title cell is the very first row and column.
       // var scope = context.Scope.FindXPath (string.Format (".//table[tbody/tr[1]/td[1]='{0}']", title));

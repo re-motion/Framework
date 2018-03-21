@@ -74,5 +74,23 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor MyHtmlAnchorWithJavaScriptLink;
+        
+        /// <summary>
+        /// MyHtmlAnchorWithSingleQuote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor MyHtmlAnchorWithSingleQuote;
+        
+        /// <summary>
+        /// MyHtmlAnchorWithSingleQuoteAndDoubleQuote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor MyHtmlAnchorWithSingleQuoteAndDoubleQuote;
     }
 }

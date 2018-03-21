@@ -18,6 +18,7 @@ using System;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 {
@@ -82,7 +83,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
 
-      var xpath = string.Format ("./table[normalize-space(tbody/tr/td[last()])='{0}']", displayText);
+      var xpath = string.Format ("./table[normalize-space(tbody/tr/td[last()])={0}]", DomSelectorUtility.CreateMatchValueForXPath (displayText));
       return FindAndCreateNode (xpath);
     }
 
@@ -91,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
 
-      var xpath = string.Format ("./table[contains(tbody/tr/td[last()], '{0}')]", containsDisplayText);
+      var xpath = string.Format ("./table[contains(tbody/tr/td[last()], {0})]", DomSelectorUtility.CreateMatchValueForXPath (containsDisplayText));
       return FindAndCreateNode (xpath);
     }
 

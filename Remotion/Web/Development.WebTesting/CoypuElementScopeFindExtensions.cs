@@ -20,6 +20,7 @@ using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -59,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
       ArgumentUtility.CheckNotNullOrEmpty ("attributeValue", attributeValue);
 
-      var cssSelector = string.Format ("{0}[{1}='{2}']", tagSelector, attributeName, attributeValue);
+      var cssSelector = string.Format ("{0}[{1}={2}]", tagSelector, attributeName, DomSelectorUtility.CreateMatchValueForCssSelector (attributeValue));
       return scope.FindCss (cssSelector);
     }
 
@@ -85,7 +86,7 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
       ArgumentUtility.CheckNotNullOrEmpty ("attributeValue", attributeValue);
 
-      var cssSelector = string.Format ("{0}[{1}{2}'{3}']", tagSelector, attributeName, op.ToCssString(), attributeValue);
+      var cssSelector = string.Format ("{0}[{1}{2}{3}]", tagSelector, attributeName, op.ToCssString(), DomSelectorUtility.CreateMatchValueForCssSelector (attributeValue));
       return scope.FindCss (cssSelector);
     }
 
@@ -105,8 +106,9 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("tagSelector", tagSelector);
       ArgumentUtility.CheckNotNull ("attributes", attributes);
 
-      const string dmaCheckPattern = "[{0}='{1}']";
-      var dmaCheck = string.Concat (attributes.Select (dm => string.Format (dmaCheckPattern, dm.Key, dm.Value)));
+      const string dmaCheckPattern = "[{0}={1}]";
+      var dmaCheck = string.Concat (
+          attributes.Select (dm => string.Format (dmaCheckPattern, dm.Key, DomSelectorUtility.CreateMatchValueForCssSelector (dm.Value))));
       var cssSelector = tagSelector + dmaCheck;
       return scope.FindCss (cssSelector);
     }

@@ -342,9 +342,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
       var cssSelector = string.Format (
-          ".bocListTable .bocListTableBody .bocListDataRow[{0}='{1}']",
+          ".bocListTable .bocListTableBody .bocListDataRow[{0}={1}]",
           DiagnosticMetadataAttributes.ItemID,
-          itemID);
+          DomSelectorUtility.CreateMatchValueForCssSelector (itemID));
       return GetRowByCssSelector (cssSelector);
     }
 

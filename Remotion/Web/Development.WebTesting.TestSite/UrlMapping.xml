@@ -23,6 +23,7 @@
 
   <add id="AnchorTest" type="Remotion.Web.Development.WebTesting.TestSite::AnchorTestFunction" resource="~/AnchorTest.wxe" />
   <add id="CommandTest" type="Remotion.Web.Development.WebTesting.TestSite::CommandTestFunction" resource="~/CommandTest.wxe" />
+  <add id="CoypuElementScopeFindExtensionsTest" type="Remotion.Web.Development.WebTesting.TestSite::CoypuElementScopeFindExtensionsTestFunction" resource="~/CoypuElementScopeFindExtensionsTest.wxe" />
   <add id="DropDownListTest" type="Remotion.Web.Development.WebTesting.TestSite::DropDownListTestFunction" resource="~/DropDownListTest.wxe" />
   <add id="DropDownMenuTest" type="Remotion.Web.Development.WebTesting.TestSite::DropDownMenuTestFunction" resource="~/DropDownMenuTest.wxe" />
   <add id="ElementScopeTest" type="Remotion.Web.Development.WebTesting.TestSite::ElementScopeTestFunction" resource="~/ElementScopeTest.wxe" />

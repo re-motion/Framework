@@ -14,15 +14,12 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="TreeViewTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.TreeViewTest" %>
-<%@ Import Namespace="System" %>
+<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="CoypuElementScopeFindExtensionsTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.CoypuElementScopeFindExtensionsTest" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
-  <h3>TreeView</h3>
-  <asp:TreeView ID="MyTreeView" runat="server"/>
-  <h3>TreeView with SingleQuote and DoubleQuotes in Childs Display Text</h3>
-  <asp:TreeView ID="MyTreeViewWithSpecialChildren" runat="server"/>
-  <h3>TreeView with SingleQuote in root node Display Text</h3>
-  <asp:TreeView ID="TreeViewWithOnlyRootWithSingleQuote" runat="server" />  
-  <h3>TreeView with Quotation Mark in root node Display Text</h3>
-  <asp:TreeView ID="TreeViewWithOnlyRootWithDoubleQuote" runat="server"/>
+  <asp:UpdatePanel ID="UpdatePanel" runat="server">
+    <ContentTemplate>
+        <span test-attribute="WithoutSingleQuote"></span>
+        <span test-attribute="With'SingleQuote"></span>
+    </ContentTemplate>
+  </asp:UpdatePanel>
 </asp:Content>

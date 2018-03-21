@@ -38,6 +38,10 @@
       </div>
       <h3>HtmlAnchor6 - HTML a with JavaScript action</h3>
       <a id="MyHtmlAnchorWithJavaScriptLink" href="#" onclick="javascript:myClickHandler('MyHtmlAnchorWithJavaScriptLink');" runat="server">MyHtmlAnchorWithJavaScriptLink</a>
+      <h3>HtmlAnchor7 - With SingleQuote</h3>
+      <a id="MyHtmlAnchorWithSingleQuote" href="AnchorTest.wxe" runat="server">With'SingleQuote</a>
+      <h3>HtmlAnchor8 - With SingleQuote and DoubleQuote</h3>
+      <a id="MyHtmlAnchorWithSingleQuoteAndDoubleQuote" href="AnchorTest.wxe" runat="server">With'SingleQuoteAnd"DoubleQuote</a>
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

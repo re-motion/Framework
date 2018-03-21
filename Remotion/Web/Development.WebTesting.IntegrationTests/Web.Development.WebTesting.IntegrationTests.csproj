@@ -71,6 +71,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="CoypuElementScopeFindExtensionsTest.cs" />
     <Compile Include="GenericTestPageParameters\ItemIDGenericTestPageParameter.cs" />
     <Compile Include="PlatformTest.cs" />
     <Compile Include="BrowserSessionTest.cs" />

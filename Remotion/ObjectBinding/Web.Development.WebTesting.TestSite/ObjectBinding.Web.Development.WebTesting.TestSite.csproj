@@ -101,7 +101,9 @@
     <Content Include="objects\Remotion.ObjectBinding.Sample.Job\2D15EFA6-AC6C-4b35-8678-8AE55E0D8ECC" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Job\774E8412-FA31-46c6-B9F5-703DCB91CE24" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Job\89dc8cd2-30e0-4bb3-92a0-4587f32492f5" />
-    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\EFBF1D71-D05A-46c4-8E30-0287307042C3" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\EFBF1D71-D05A-46c4-8E30-0287307042C3">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-000000000001" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-000000000009" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-00000000000A" />
@@ -121,6 +123,13 @@
       <Link>Remotion LGPL.licenseheader</Link>
     </Content>
     <Content Include="packages.config" />
+    <None Include="objects\Remotion.ObjectBinding.Sample.Job\02e98644-2051-464d-96f5-0d778862a260" />
+    <None Include="objects\Remotion.ObjectBinding.Sample.Job\f5758e93-4eb6-457c-abea-038322f986cd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="objects\Remotion.ObjectBinding.Sample.Job\62187fba-be7e-4a6e-8a0c-7e3f1b696d7f">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

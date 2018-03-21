@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 
@@ -38,8 +39,47 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       testAction (Helper, e => e.FormGrids(), "formGrid");
     }
 
-    // Exists as unused member for future FormGrid tests.
-    // ReSharper disable once UnusedMember.Local
+    [Test]
+    public void TestSelectByTitle_WithSingleQuote ()
+    {
+      var home = Start();
+
+      var formGrid = home.FormGrids().GetByTitle ("With'SingleQuote");
+
+      Assert.That (formGrid.GetHtmlID(), Is.EqualTo ("body_My3FormGrid"));
+    }
+
+    [Test]
+    public void TestSelectByTitle_WithSingleQuoteAndDoubleQuote ()
+    {
+      var home = Start();
+
+      var formGrid = home.FormGrids().GetByTitle ("With'SingleQuoteAndDouble\"Quote");
+
+      Assert.That (formGrid.GetHtmlID(), Is.EqualTo ("body_My4FormGrid"));
+    }
+
+
+    [Test]
+    public void TestSelectByTitleOrNull_WithSingleQuote ()
+    {
+      var home = Start();
+
+      var formGrid = home.FormGrids().GetByTitleOrNull ("With'SingleQuote");
+
+      Assert.That (formGrid.GetHtmlID(), Is.EqualTo ("body_My3FormGrid"));
+    }
+
+    [Test]
+    public void TestSelectByTitleOrNull_WithSingleQuoteAndDoubleQuote ()
+    {
+      var home = Start();
+
+      var formGrid = home.FormGrids().GetByTitleOrNull ("With'SingleQuoteAndDouble\"Quote");
+
+      Assert.That (formGrid.GetHtmlID(), Is.EqualTo ("body_My4FormGrid"));
+    }
+
     private WebFormsTestPageObject Start ()
     {
       return Start<WebFormsTestPageObject> ("FormGridTest.aspx");
