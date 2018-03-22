@@ -121,7 +121,7 @@
     <value>Modifica gruppo</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupControl.ParentValidatorErrorMessage" xml:space="preserve">
-    <value>Impossibile utilizzare il gruppo selezionato come padre perché risulterebbe una gerarchia circolare.</value>
+    <value>Non è possibile utilizzare il gruppo selezionato come gruppo padre perché in questo modo viene creata una gerarchia circolare.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListForm.Title" xml:space="preserve">
     <value>Gestisci utenti</value>
@@ -178,16 +178,16 @@
     <value>Modifica tenant</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl.ParentValidatorErrorMessage" xml:space="preserve">
-    <value>Impossibile utilizzare il tenant selezionato come padre perché risulterebbe una gerarchia circolare.</value>
+    <value>Non è possibile utilizzare il tenant selezionato come tenant padre perché in questo modo viene creata una gerarchia circolare.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl.TenantLabelText" xml:space="preserve">
     <value>Modifica tenant</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditPositionForm.Title" xml:space="preserve">
-    <value>Modifica posizione</value>
+    <value>Modifica posto</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditPositionControl.PositionLabelText" xml:space="preserve">
-    <value>Modifica posizione</value>
+    <value>Modifica posto</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupTypeForm.Title" xml:space="preserve">
     <value>Modifica unità strutturale</value>

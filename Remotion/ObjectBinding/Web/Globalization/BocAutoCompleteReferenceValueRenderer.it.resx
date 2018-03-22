@@ -118,15 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.LoadDataFailedErrorMessage" xml:space="preserve">
-    <value>Impossibile caricare i dati relativi all’input.</value>
+    <value>Impossibile caricare i dati relativi all'input.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.LoadIconFailedErrorMessage" xml:space="preserve">
-    <value>Impossibile caricare l’icona relativa all’input.</value>
+    <value>Impossibile caricare l'icona relativa all'input.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.NoDataFoundMessage" xml:space="preserve">
-    <value>Per l’input non sono state trovate corrispondenze.</value>
+    <value>Per l'input non sono state trovate corrispondenze.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.SearchStringForDropDownDoesNotMatchRegexMessage" xml:space="preserve">
-    <value>L’input non corrisponde al formato predefinito.</value>
+    <value>L'input non corrisponde al formato predefinito.</value>
   </data>
 </root>

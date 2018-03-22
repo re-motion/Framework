@@ -127,7 +127,7 @@
     <value>Annuler</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Apply" xml:space="preserve">
-    <value>Reprendre</value>
+    <value>Appliquer</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Edit" xml:space="preserve">
     <value>Éditer</value>
@@ -154,7 +154,7 @@
     <value>Ajouter</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.Remove" xml:space="preserve">
-    <value>Supprimer</value>
+    <value>Retirer</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.AccessControl" xml:space="preserve">
     <value>Autorisations</value>

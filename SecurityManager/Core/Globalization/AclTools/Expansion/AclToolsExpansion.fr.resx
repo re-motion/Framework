@@ -130,10 +130,10 @@
     <value>Prénom</value>
   </data>
   <data name="LastNameTableHeader" xml:space="preserve">
-    <value>Nom</value>
+    <value>Nom de famille</value>
   </data>
   <data name="NoAssociatedStatesHtmlText" xml:space="preserve">
-    <value>Aucun état attribué</value>
+    <value>aucun état attribué</value>
   </data>
   <data name="NO_CLASSES_DEFINED_Text" xml:space="preserve">
     <value>_AUCUNE_CLASSE_DÉFINIE_</value>

@@ -123,4 +123,7 @@
   <data name="Remotion.Web.UI.Controls.FormGridManager.HelpTitle" xml:space="preserve">
     <value>Guida</value>
   </data>
+  <data name="Remotion.Web.UI.Controls.FormGridManager.ValidationErrorInfoTitle" xml:space="preserve">
+    <value>Input non valido</value>
+  </data>
 </root>

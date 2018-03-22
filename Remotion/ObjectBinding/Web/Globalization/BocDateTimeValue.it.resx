@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.MissingDateAndTimeErrorMessage" xml:space="preserve">
-    <value>Immettere una data e un’ora.</value>
+    <value>Immettere una data e un'ora.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.MissingDateOrTimeErrorMessage" xml:space="preserve">
-    <value>Immettere almeno una data o un’ora.</value>
+    <value>Immettere almeno una data o un'ora.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.MissingDateErrorMessage" xml:space="preserve">
     <value>Immettere una data.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.MissingTimeErrorMessage" xml:space="preserve">
-    <value>Immettere un’ora.</value>
+    <value>Immettere un'ora.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.InvalidDateAndTimeErrorMessage" xml:space="preserve">
     <value>Formato di ora o data sconosciuto.</value>

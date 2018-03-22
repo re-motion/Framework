@@ -121,7 +121,7 @@
     <value>Qualsiasi tenant</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.TenantCondition.OwningTenant" xml:space="preserve">
-    <value>Tenant dell’oggetto</value>
+    <value>Tenant dell'oggetto</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.TenantCondition.SpecificTenant" xml:space="preserve">
     <value>Tenant specifico</value>

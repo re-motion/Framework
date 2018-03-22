@@ -127,7 +127,7 @@
     <value>Qualsiasi gruppo</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.OwningGroup" xml:space="preserve">
-    <value>Gruppo dell’oggetto</value>
+    <value>Gruppo dell'oggetto</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.SpecificGroup" xml:space="preserve">
     <value>Gruppo specifico</value>

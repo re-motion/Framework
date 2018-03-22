@@ -162,4 +162,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
     <value>Si è verificato un errore in almeno una riga.</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
+    <value>Input non valido nella riga appena modificata</value>
+  </data>
 </root>

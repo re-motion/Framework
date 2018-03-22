@@ -121,7 +121,7 @@
     <value>Éditer groupe</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupControl.ParentValidatorErrorMessage" xml:space="preserve">
-    <value>Vous ne pouvez pas utiliser le groupe selectionné comme parent car cela crée une hiérachie circulaire.</value>
+    <value>Vous ne pouvez pas utiliser le groupe sélectionné comme groupe parent, car cela créerait une hiérarchie circulaire.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListForm.Title" xml:space="preserve">
     <value>Gérer utilisateur</value>
@@ -178,7 +178,7 @@
     <value>Éditer client</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl.ParentValidatorErrorMessage" xml:space="preserve">
-    <value>Vous ne pouvez pas utiliser le client selectionné comme parent car cela crée une hiérachie circulaire.</value>
+    <value>Vous ne pouvez pas utiliser les clients sélectionnés comme clients parents, car cela créerait une hiérarchie circulaire.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl.TenantLabelText" xml:space="preserve">
     <value>Éditer client</value>
