@@ -52,8 +52,7 @@
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.2\lib\net45\Remotion.TypePipe.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.3\lib\net45\Remotion.TypePipe.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>

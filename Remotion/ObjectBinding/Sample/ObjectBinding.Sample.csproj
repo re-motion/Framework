@@ -104,8 +104,7 @@
       <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.2\lib\net45\Remotion.TypePipe.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.3\lib\net45\Remotion.TypePipe.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
