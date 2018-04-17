@@ -61,9 +61,7 @@ namespace Remotion.UnitTests.Collections
       var result = CacheFactory.Create<string, int> (_comparer);
 
       Assert.That (result, Is.TypeOf (typeof (Cache<string, int>)));
-      var innerCache = PrivateInvoke.GetNonPublicField (result, "_dataStore");
-      Assert.That (innerCache, Is.TypeOf (typeof (SimpleDataStore<string, int>)));
-      Assert.That (((SimpleDataStore<string, int>) innerCache).Comparer, Is.SameAs (_comparer));
+      Assert.That (((Cache<string, int>) result).Comparer, Is.SameAs (_comparer));
     }
 
     [Test]
@@ -76,8 +74,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That (((InvalidationTokenBasedCacheDecorator<string, int>) result).InvalidationToken, Is.SameAs (cacheInvalidationToken));
       var innerCache = PrivateInvoke.GetNonPublicField (result, "_innerCache");
       Assert.That (innerCache, Is.TypeOf (typeof (Cache<string, int>)));
-      var innerDataStore = PrivateInvoke.GetNonPublicField (innerCache, "_dataStore");
-      Assert.That (((SimpleDataStore<string, int>) innerDataStore).Comparer, Is.SameAs (_comparer));
+      Assert.That (((Cache<string, int>) innerCache).Comparer, Is.SameAs (_comparer));
     }
 
     [Test]
@@ -112,8 +109,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That (result, Is.TypeOf (typeof (LockingCacheDecorator<string, int>)));
       var innerCache = PrivateInvoke.GetNonPublicField (result, "_innerCache");
       Assert.That (innerCache, Is.TypeOf (typeof (Cache<string, int>)));
-      var innerDataStore = PrivateInvoke.GetNonPublicField (innerCache, "_dataStore");
-      Assert.That (((SimpleDataStore<string, int>) innerDataStore).Comparer, Is.SameAs (_comparer));
+      Assert.That (((Cache<string, int>) innerCache).Comparer, Is.SameAs (_comparer));
     }
 
     [Test]
@@ -128,8 +124,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That (((InvalidationTokenBasedCacheDecorator<string, int>) innerCache1).InvalidationToken, Is.SameAs (cacheInvalidationToken));
       var innerCache2 = PrivateInvoke.GetNonPublicField (innerCache1, "_innerCache");
       Assert.That (innerCache2, Is.TypeOf (typeof (Cache<string, int>)));
-      var innerDataStore = PrivateInvoke.GetNonPublicField (innerCache2, "_dataStore");
-      Assert.That (((SimpleDataStore<string, int>) innerDataStore).Comparer, Is.SameAs (_comparer));
+      Assert.That (((Cache<string, int>) innerCache2).Comparer, Is.SameAs (_comparer));
     }
 
     [Test]
@@ -188,13 +183,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That (
           innerCache2,
           Is.TypeOf (typeof (Cache<string, Lazy<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
-      var underlyingDataStore = PrivateInvoke.GetNonPublicField (innerCache2, "_dataStore");
-      Assert.That (
-          underlyingDataStore,
-          Is.TypeOf (typeof (SimpleDataStore<string, Lazy<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
-      Assert.That (
-          ((SimpleDataStore<string, Lazy<LazyLockingCachingAdapter<string, object>.Wrapper>>) underlyingDataStore).Comparer,
-          Is.SameAs (_comparer));
+      Assert.That (((Cache<string, Lazy<LazyLockingCachingAdapter<string, object>.Wrapper>>) innerCache2).Comparer, Is.SameAs (_comparer));
     }
 
     [Test]
@@ -221,13 +210,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That (
           innerCache3,
           Is.TypeOf (typeof (Cache<string, Lazy<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
-      var underlyingDataStore = PrivateInvoke.GetNonPublicField (innerCache3, "_dataStore");
-      Assert.That (
-          underlyingDataStore,
-          Is.TypeOf (typeof (SimpleDataStore<string, Lazy<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
-      Assert.That (
-          ((SimpleDataStore<string, Lazy<LazyLockingCachingAdapter<string, object>.Wrapper>>) underlyingDataStore).Comparer,
-          Is.SameAs (_comparer));
+      Assert.That (((Cache<string, Lazy<LazyLockingCachingAdapter<string, object>.Wrapper>>) innerCache3).Comparer, Is.SameAs (_comparer));
     }
   }
 }
