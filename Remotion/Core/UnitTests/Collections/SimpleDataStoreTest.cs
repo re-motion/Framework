@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Development.UnitTesting;
@@ -38,11 +39,13 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void Initialize_WithCustomEqualityComparer ()
     {
-      var dataStore = new SimpleDataStore<string, int?> (StringComparer.InvariantCultureIgnoreCase);
+      var comparer = StringComparer.InvariantCultureIgnoreCase;
+      var dataStore = new SimpleDataStore<string, int?> (comparer);
       dataStore.Add ("a", 1);
 
       Assert.That (dataStore.ContainsKey ("a"));
       Assert.That (dataStore.ContainsKey ("A"));
+      Assert.That (dataStore.Comparer, Is.SameAs (comparer));
     }
 
     [Test]
@@ -81,12 +84,13 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The store already contains an element with key 'd'. " 
-        + "(Old value: '1', new value: '2')\r\nParameter name: key")]
     public void Add_Twice ()
     {
       _store.Add ("d", 1);
-      _store.Add ("d", 2);
+      Assert.That (
+          () => _store.Add ("d", 2),
+          Throws.ArgumentException.And.Message.EqualTo (
+              "The store already contains an element with key \'d\'. (Old value: \'1\', new value: \'2\')\r\nParameter name: key"));
     }
 
     [Test]
@@ -126,10 +130,11 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    [ExpectedException (typeof (KeyNotFoundException), ExpectedMessage = "There is no element with key 'c' in the store.")]
     public void GetValue_Fail ()
     {
-      Dev.Null = _store["c"];
+      Assert.That (
+          () => _store["c"],
+          Throws.Exception.TypeOf<KeyNotFoundException>().And.Message.EqualTo ("There is no element with key 'c' in the store."));
     }
 
     [Test]
@@ -202,18 +207,33 @@ namespace Remotion.UnitTests.Collections
           Is.EqualTo (7));
       Assert.That (delegateCalled);
     }
-    
+
     [Test]
-    public void GetEnumerator ()
+    public void GetEnumerator_Generic ()
     {
-      using (var enumerator = _store.GetEnumerator ())
-      {
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current.Key, Is.EqualTo ("a"));
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current.Key, Is.EqualTo ("b"));
-        Assert.That (enumerator.MoveNext(), Is.False);
-      }
+      Assert.That (
+          _store.ToArray(),
+          Is.EquivalentTo (
+              new[]
+              {
+                  new KeyValuePair<string, int?> ("a", 1),
+                  new KeyValuePair<string, int?> ("b", 2)
+              }
+              ));
+    }
+
+    [Test]
+    public void GetEnumerator_NonGeneric ()
+    {
+      Assert.That (
+          _store.ToNonGenericEnumerable(),
+          Is.EquivalentTo (
+              new[]
+              {
+                  new KeyValuePair<string, int?> ("a", 1),
+                  new KeyValuePair<string, int?> ("b", 2)
+              }
+              ));
     }
 
     [Test]

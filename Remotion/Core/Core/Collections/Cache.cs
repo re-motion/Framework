@@ -34,7 +34,7 @@ namespace Remotion.Collections
   [Serializable]
   public sealed class Cache<TKey, TValue> : ICache<TKey, TValue> 
   {
-    private readonly SimpleDataStore<TKey, TValue> _dataStore;
+    private readonly Dictionary<TKey, TValue> _innerDictionary;
 
     public Cache ()
       : this (null)
@@ -43,7 +43,12 @@ namespace Remotion.Collections
 
     public Cache (IEqualityComparer<TKey> comparer)
     {
-      _dataStore = new SimpleDataStore<TKey, TValue> (comparer);
+      _innerDictionary = new Dictionary<TKey, TValue> (comparer);
+    }
+
+    public IEqualityComparer<TKey> Comparer
+    {
+      get { return _innerDictionary.Comparer; }
     }
 
     public void Add (TKey key, TValue value)
@@ -51,14 +56,14 @@ namespace Remotion.Collections
       ArgumentUtility.DebugCheckNotNull ("key", key);
       // value can be null
 
-      _dataStore[key] = value;
+      _innerDictionary[key] = value;
     }
 
     public bool TryGetValue (TKey key, out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
       
-      return _dataStore.TryGetValue (key, out value);
+      return _innerDictionary.TryGetValue (key, out value);
     }
 
     public TValue GetOrCreateValue (TKey key, Func<TKey,TValue> valueFactory)
@@ -66,7 +71,15 @@ namespace Remotion.Collections
       ArgumentUtility.DebugCheckNotNull ("key", key);
       ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
 
-      return _dataStore.GetOrCreateValue (key, valueFactory);
+      TValue value;
+      if (!TryGetValue (key, out value))
+      {
+        ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
+
+        value = valueFactory (key);
+        Add (key, value);
+      }
+      return value;
     }
 
     IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator ()
@@ -81,12 +94,12 @@ namespace Remotion.Collections
 
     private IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator ()
     {
-      return _dataStore.GetEnumerator();
+      return _innerDictionary.GetEnumerator();
     }
 
     public void Clear ()
     {
-      _dataStore.Clear ();
+      _innerDictionary.Clear();
     }
 
     bool INullObject.IsNull

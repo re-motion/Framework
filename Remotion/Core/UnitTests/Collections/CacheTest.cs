@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -32,27 +31,19 @@ namespace Remotion.UnitTests.Collections
     [SetUp]
     public void SetUp ()
     {
-      _cache = CreateCache<string, object> ();
-    }
-
-    protected virtual ICache<TKey, TValue> CreateCache<TKey, TValue> ()
-    {
-      return new Cache<TKey, TValue> ();
-    }
-
-    private void Add (string key, object value)
-    {
-      _cache.GetOrCreateValue (key, delegate { return value; });
+      _cache = new Cache<string, object> ();
     }
 
     [Test]
     public void Initialize_WithCustomEqualityComparer ()
     {
-      var cache = new Cache<string, int?> (StringComparer.InvariantCultureIgnoreCase);
+      var comparer = StringComparer.InvariantCultureIgnoreCase;
+      var cache = new Cache<string, int?> (comparer);
       cache.Add ("a", 1);
 
       Assert.That (cache.GetOrCreateValue ("a", delegate { throw new InvalidOperationException (); }), Is.EqualTo (1));
       Assert.That (cache.GetOrCreateValue ("A", delegate { throw new InvalidOperationException (); }), Is.EqualTo (1));
+      Assert.That (cache.Comparer, Is.SameAs (comparer));
     }
 
     [Test]
@@ -67,7 +58,18 @@ namespace Remotion.UnitTests.Collections
     public void GetOrCreateValue ()
     {
       object expected = new object ();
-      Assert.That (_cache.GetOrCreateValue ("key1", delegate (string key) { return expected; }), Is.SameAs (expected));
+      bool delegateCalled = false;
+      Assert.That (
+          _cache.GetOrCreateValue (
+              "key1",
+              delegate (string key)
+              {
+                Assert.That (key, Is.EqualTo ("key1"));
+                delegateCalled = true;
+                return expected;
+              }),
+          Is.SameAs (expected));
+      Assert.That (delegateCalled, Is.True);
     }
 
     [Test]
@@ -87,7 +89,9 @@ namespace Remotion.UnitTests.Collections
       object expected = new object ();
 
       Add ("key1", expected);
-      Assert.That (_cache.GetOrCreateValue ("key1", delegate (string key) { throw new InvalidOperationException ("The valueFactory must not be invoked."); }), Is.SameAs (expected));
+      Assert.That (
+          _cache.GetOrCreateValue ("key1", delegate (string key) { throw new InvalidOperationException ("The valueFactory must not be invoked."); }),
+          Is.SameAs (expected));
     }
 
     [Test]
@@ -201,6 +205,11 @@ namespace Remotion.UnitTests.Collections
       deserializedCache.GetOrCreateValue ("whatever", delegate { return "fred"; });
       Assert.That (deserializedCache.TryGetValue ("whatever", out result), Is.True);
       Assert.That (_cache.TryGetValue ("whatever", out result), Is.False);
+    }
+
+    private void Add (string key, object value)
+    {
+      ((Cache<string, object>) _cache).Add (key, value);
     }
   }
 }
