@@ -19,7 +19,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Development.RhinoMocks.UnitTesting.Threading;
@@ -235,6 +237,62 @@ namespace Remotion.UnitTests.Collections
       Serializer.SerializeAndDeserialize (
           new LazyLockingCachingAdapter<string, string> (
               new Cache<string, Lazy<LazyLockingCachingAdapter<string, string>.Wrapper>>()));
+    }
+
+    [Test]
+    [TestCase (1, 6000)]
+    [TestCase (2, 13000)]
+    [TestCase (3, 21000)]
+    [TestCase (4, 28000)]
+    [Explicit]
+    public void Performance (int threadCount, int timeTakenExpected)
+    {
+      var cache = new LazyLockingCachingAdapter<string, object> (new Cache<string, Lazy<Wrapper>>());
+      var stopwatches = new Stopwatch[threadCount];
+      for (int i = 0; i < threadCount; i++)
+        stopwatches[i] = new Stopwatch();
+
+      var threadStart = new ParameterizedThreadStart (
+          arg =>
+          {
+            cache.GetOrCreateValue ("key", k => "value");
+            object value;
+            cache.TryGetValue ("key", out value);
+
+            var stopwatch = (Stopwatch) arg;
+            stopwatch.Start();
+
+            for (int i = 0; i < 1000; i++)
+            {
+              var key = i.ToString ("D9");
+              cache.GetOrCreateValue (key, k => k + ": value");
+
+              for (int j = 0; j < 100 * 1000; j++)
+              {
+                cache.TryGetValue (key, out value);
+              }
+            }
+
+            stopwatch.Stop();
+          });
+
+      GC.Collect();
+      GC.WaitForFullGCComplete();
+
+      var threads = new Thread[threadCount];
+      for (int i = 0; i < threadCount; i++)
+        threads[i] = new Thread (threadStart);
+
+      for (int i = 0; i < threadCount; i++)
+        threads[i].Start (stopwatches[i]);
+
+      for (int i = 0; i < threadCount; i++)
+        threads[i].Join();
+
+      var timeTakenActual = stopwatches.Sum (stopwatch => stopwatch.ElapsedMilliseconds) / stopwatches.Length;
+
+      Console.WriteLine ("Time expected: {0}ms (thread count: {1}, release build on Intel Xeon E5-1620 v2 @ 3.70GHz)", timeTakenExpected, threadCount);
+      Console.WriteLine ("Time taken: {0:D}ms", timeTakenActual);
     }
 
     private void CheckInnerCacheIsProtected ()

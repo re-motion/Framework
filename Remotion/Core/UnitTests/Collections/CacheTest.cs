@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections;
@@ -205,6 +206,32 @@ namespace Remotion.UnitTests.Collections
       deserializedCache.GetOrCreateValue ("whatever", delegate { return "fred"; });
       Assert.That (deserializedCache.TryGetValue ("whatever", out result), Is.True);
       Assert.That (_cache.TryGetValue ("whatever", out result), Is.False);
+    }
+
+    [Test]
+    [Explicit]
+    public void Performance ()
+    {
+      _cache.GetOrCreateValue ("key", k => "value");
+      object value;
+      _cache.TryGetValue ("key", out value);
+
+      var stopwatch = new Stopwatch();
+      stopwatch.Start();
+
+      for (int i = 0; i < 1000; i++)
+      {
+        var key = i.ToString ("D9");
+        _cache.GetOrCreateValue (key, k => k + ": value");
+        for (int j = 0; j < 100 * 1000; j++)
+        {
+          _cache.TryGetValue (key, out value);
+        }
+      }
+
+      stopwatch.Stop();
+      Console.WriteLine ("Time expected: 3200ms (release build on Intel Xeon E5-1620 v2 @ 3.70GHz)");
+      Console.WriteLine ("Time taken: {0:D}ms", stopwatch.ElapsedMilliseconds);
     }
 
     private void Add (string key, object value)
