@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       var windows = AutomationElement.RootElement.FindAll (
           TreeScope.Children,
           new AndCondition (
-              new PropertyCondition (AutomationElement.ControlTypeProperty, ControlType.Window),
+              new PropertyCondition (AutomationElement.ControlTypeProperty, ControlType.Pane),
               new PropertyCondition (AutomationElement.ClassNameProperty, "Chrome_WidgetWin_1")))
           .Cast<AutomationElement>()
           .Select (w => RateWindow (driver, w, (int) processID))
