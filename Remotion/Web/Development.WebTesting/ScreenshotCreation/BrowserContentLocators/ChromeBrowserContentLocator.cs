@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       var windows = AutomationElement.RootElement.FindAll (
           TreeScope.Children,
           new AndCondition (
-              new PropertyCondition (AutomationElement.ControlTypeProperty, ControlType.Pane),
+              new PropertyCondition (AutomationElement.ControlTypeProperty, ControlType.Window),
               new PropertyCondition (AutomationElement.ClassNameProperty, "Chrome_WidgetWin_1")))
           .Cast<AutomationElement>()
           .Select (w => RateWindow (driver, w, (int) processID))
@@ -68,6 +68,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
       if (windows.Length == 1)
         return ResolveBoundsFromWindow (windows[0].Value);
+      
+      if (windows.Length == 0)
+        throw new InvalidOperationException ("Could not find a Chrome window in order to resolve the bounds of the content area.");
 
       var highestRating = windows.Max (w => w.Key);
       var results = windows.Where (w => w.Key == highestRating).Take (2).ToArray();
@@ -77,8 +80,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       if (results.Length == 2)
         automationElement = ResolveByChangingWindowTitle (driver);
 
-      if (windows.Length == 0 || highestRating == 0 || results.Length == 2 && automationElement == null)
-        throw new InvalidOperationException ("Could not find a chrome window in order to resolve the bounds of the content area.");
+      if (highestRating == 0 || results.Length == 2 && automationElement == null)
+        throw new InvalidOperationException ("Could not find a Chrome window in order to resolve the bounds of the content area.");
 
       return ResolveBoundsFromWindow (automationElement ?? results[0].Value);
     }
