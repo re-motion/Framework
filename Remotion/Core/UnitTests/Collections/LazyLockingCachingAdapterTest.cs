@@ -115,6 +115,52 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
+    public void GetOrCreateValue_WithNestedTryGetValue_HasNoNestedValue ()
+    {
+      object expected = new object();
+
+      var cache = new LazyLockingCachingAdapter<string, object> (new Cache<string, Lazy<Wrapper>>());
+
+      var actualValue = cache.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => cache.TryGetValue (key, out _),
+                Throws.InvalidOperationException);
+
+            return expected;
+          });
+
+      Assert.That (actualValue, Is.SameAs (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedGetOrCreatedValue_ThrowsInvalidOperationException ()
+    {
+      object expected = new object();
+
+      var cache = new LazyLockingCachingAdapter<string, object> (new Cache<string, Lazy<Wrapper>>());
+
+      var actualValue = cache.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => cache.GetOrCreateValue (key, nestedKey => 13),
+                Throws.InvalidOperationException);
+
+            return expected;
+          });
+
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      object actualValue2;
+      Assert.That (cache.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.SameAs (expected));
+    }
+
+    [Test]
     public void TryGetValue_ValueFound ()
     {
       var value = new object ();

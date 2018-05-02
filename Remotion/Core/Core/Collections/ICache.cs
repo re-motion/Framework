@@ -38,6 +38,7 @@ namespace Remotion.Collections
     /// <param name="key">The key of the element to be retrieved. Must not be <see langword="null" />.</param>
     /// <param name="valueFactory">A delegate used for creating a new element if none exists. Must not be <see langword="null" />.</param>
     /// <returns>The value of the element that was found or created.</returns>
+    /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="GetOrCreateValue"/> from inside the factory using the <paramref name="key"/>.</exception>
     TValue GetOrCreateValue ([NotNull] TKey key, [NotNull] Func<TKey, TValue> valueFactory);
 
     /// <summary>

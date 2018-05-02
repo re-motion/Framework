@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Remotion.Utilities;
 
 namespace Remotion.Collections
@@ -30,16 +31,74 @@ namespace Remotion.Collections
   [Serializable]
   public class SimpleDataStore<TKey, TValue> : IDataStore<TKey, TValue>, IEnumerable<KeyValuePair<TKey, TValue>>
   {
-    private readonly Dictionary<TKey, TValue> _innerDictionary;
+    private sealed class Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
+    {
+      private readonly IEnumerator<KeyValuePair<TKey, Data>> _inner;
+
+      public Enumerator (IEnumerator<KeyValuePair<TKey, Data>> inner)
+      {
+        _inner = inner;
+      }
+
+      public bool MoveNext ()
+      {
+        if (!_inner.MoveNext())
+          return false;
+        if (_inner.Current.Value.IsInitialized)
+          return true;
+        return MoveNext();
+      }
+
+      public void Reset ()
+      {
+        _inner.Reset();
+      }
+
+      public KeyValuePair<TKey, TValue> Current
+      {
+        get
+        {
+          var current = _inner.Current;
+          var data = current.Value;
+          Assertion.DebugAssert (data.IsInitialized, "Uninitialized values should be skipped during MoveNext().");
+          return new KeyValuePair<TKey, TValue> (current.Key, data.Value);
+        }
+      }
+
+      object IEnumerator.Current
+      {
+        get { return Current; }
+      }
+
+      public void Dispose ()
+      {
+        _inner.Dispose();
+      }
+    }
+
+    [Serializable]
+    private struct Data
+    {
+      public readonly TValue Value;
+      public readonly bool IsInitialized;
+
+      public Data (TValue value)
+      {
+        Value = value;
+        IsInitialized = true;
+      }
+    }
+
+    private readonly Dictionary<TKey, Data> _innerDictionary;
 
     public SimpleDataStore ()
-      :this (null)
     {
+      _innerDictionary = new Dictionary<TKey, Data> ();
     }
 
     public SimpleDataStore (IEqualityComparer<TKey> comparer)
     {
-      _innerDictionary = new Dictionary<TKey, TValue> (comparer);
+      _innerDictionary = new Dictionary<TKey, Data> (comparer);
     }
 
     bool INullObject.IsNull
@@ -52,145 +111,109 @@ namespace Remotion.Collections
       get { return _innerDictionary.Comparer; }
     }
 
-    /// <summary>
-    /// Determines whether the store contains an element with the specified <paramref name="key"/>.
-    /// </summary>
-    /// <param name="key">The key to look up.</param>
-    /// <returns>
-    /// true if the store contains the specified key; otherwise, false.
-    /// </returns>
-    /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
+    /// <inheritdoc />
     public bool ContainsKey (TKey key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
-      return _innerDictionary.ContainsKey (key);
+
+      return TryGetValueInternal (key, out _);
     }
 
-    /// <summary>
-    /// Adds a new element to the store.
-    /// </summary>
-    /// <param name="key">The key of the new element.</param>
-    /// <param name="value">The value of the new element.</param>
-    /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentException">An item with an equal key already exists in the store.</exception>
+    /// <inheritdoc />
     public void Add (TKey key, TValue value)
     {
       ArgumentUtility.CheckNotNull ("key", key);
       // value can be null
 
-      try
-      {
-        _innerDictionary.Add (key, value);
-      }
-      catch (ArgumentException ex)
-      {
-        string message =
-            string.Format ("The store already contains an element with key '{0}'. (Old value: '{1}', new value: '{2}')", key, this[key], value);
-        throw new ArgumentException (message, "key", ex);
-      }
+      if (TryGetValueInternal (key, out _))
+        throw new ArgumentException (string.Format ("The store already contains an element with key '{0}'.", key), "key");
+
+      _innerDictionary.Add (key, new Data (value));
     }
 
-    /// <summary>
-    /// Removes the element with the specified key from the store, if any.
-    /// </summary>
-    /// <param name="key">The key of the element to be removed.</param>
-    /// <returns>
-    /// true if the item was found in the store; otherwise, false.
-    /// </returns>
-    /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
+    /// <inheritdoc />
     public bool Remove (TKey key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
-      return _innerDictionary.Remove (key);
+
+      if (TryGetValueInternal (key, out _))
+        return _innerDictionary.Remove (key);
+
+      return false;
     }
 
-    /// <summary>
-    /// Removes all elements from the store.
-    /// </summary>
+    /// <inheritdoc />
     public void Clear ()
     {
       _innerDictionary.Clear();
     }
 
-    /// <summary>
-    /// Gets or sets the <typeparamref name="TValue"/> with the specified key.
-    /// </summary>
-    /// <value></value>
+    /// <inheritdoc />
     public TValue this[TKey key]
     {
       get
       {
         ArgumentUtility.CheckNotNull ("key", key);
-        try
-        {
-          return _innerDictionary[key];
-        }
-        catch (KeyNotFoundException ex)
-        {
-          string message = string.Format ("There is no element with key '{0}' in the store.", key);
-          throw new KeyNotFoundException (message, ex);
-        }
+
+        if (TryGetValueInternal (key, out var value))
+          return value;
+
+        string message = string.Format ("There is no element with key '{0}' in the store.", key);
+        throw new KeyNotFoundException (message);
       }
       set 
       {
         ArgumentUtility.CheckNotNull ("key", key);
-        _innerDictionary[key] = value; 
+
+        if (TryGetValueInternal (key, out _))
+          _innerDictionary.Remove (key);
+        _innerDictionary.Add (key, new Data (value));
       }
     }
 
-    /// <summary>
-    /// Gets the value of the element with the specified key, or <typeparamref name="TValue"/>'s default value if no such element exists.
-    /// </summary>
-    /// <param name="key">The key to look up.</param>
-    /// <returns>
-    /// The value of the element, or the default value if no such element exists.
-    /// </returns>
+    /// <inheritdoc />
     public TValue GetValueOrDefault (TKey key)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
 
-      TValue value;
-      TryGetValue (key, out value);
+      TryGetValueInternal (key, out var value);
       return value;
     }
 
-    /// <summary>
-    /// Tries to get the value of the element with the specified key.
-    /// </summary>
-    /// <param name="key">The key to look up.</param>
-    /// <param name="value">The value of the element with the specified key, or <typeparamref name="TValue"/>'s default value if no such element
-    /// exists.</param>
-    /// <returns>
-    /// true if an element with the specified key was found; otherwise, false.
-    /// </returns>
+    /// <inheritdoc />
     public bool TryGetValue (TKey key, out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
 
-      return _innerDictionary.TryGetValue (key, out value);
+      return TryGetValueInternal (key, out value);
     }
 
-    /// <summary>
-    /// Gets the value of the element with the specified key, creating a new one if none exists.
-    /// </summary>
-    /// <param name="key">The key of the element to be retrieved.</param>
-    /// <param name="valueFactory">A delegate used for creating a new element if none exists.</param>
-    /// <returns>
-    /// The value of the element that was found or created.
-    /// </returns>
+    /// <inheritdoc />
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
       ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
 
       TValue value;
-      if (!TryGetValue (key, out value))
+      if (!TryGetValueInternal (key, out value))
       {
         ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
 
-        value = valueFactory (key);
-        Add (key, value);
+        _innerDictionary.Add (key, new Data());
+        try
+        {
+          value = valueFactory (key);
+        }
+        catch
+        {
+          _innerDictionary.Remove (key);
+          throw;
+        }
+        var data = new Data (value);
+        if (_innerDictionary.Remove (key))
+          _innerDictionary.Add (key, data);
       }
+
       return value;
     }
 
@@ -200,12 +223,45 @@ namespace Remotion.Collections
     /// <returns>An <see cref="IEnumerator{T}"/> that iterates through the contents of this <see cref="SimpleDataStore{TKey,TValue}"/>.</returns>
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator ()
     {
-      return _innerDictionary.GetEnumerator();
+      return new Enumerator (_innerDictionary.GetEnumerator());
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
       return GetEnumerator();
+    }
+
+    [MethodImpl (MethodImplOptions.AggressiveInlining)]
+    private bool TryGetValueInternal (TKey key, out TValue value)
+    {
+      Data data;
+      var hasData = _innerDictionary.TryGetValue (key, out data);
+
+      value = data.Value;
+
+      if (data.IsInitialized)
+        return true;
+
+      if (!hasData)
+        return false;
+
+      // Note: JIT32 (x86 platform) will not inline methods that contain throw-statements. This will incur a 10% performance penalty 
+      // for this particular method. By moving the throw-statement to the helper method, this penalty could be avoided but the readability 
+      // would suffer. Given that a) RyuJIT is expected to take over for JIT32 in a future release and that the x86 platform is not used for 
+      // high-scale (web server) applications any longer, this optimization is skipped at this point.
+      throw CreateExceptionRecursiveKeyAccess (key);
+    }
+
+    /// <remarks>
+    /// Method must be extracted into separate, non-inlined method because string-Format would otherwise incur a 20% performance overhead.
+    /// </remarks>
+    [MethodImpl (MethodImplOptions.NoInlining)]
+    private static InvalidOperationException CreateExceptionRecursiveKeyAccess (TKey key)
+    {
+      return new InvalidOperationException (
+          string.Format (
+              "An attempt was detected to access the value for key ('{0}') during the factory operation of GetOrCreateValue(key, factory).",
+              key));
     }
   }
 }

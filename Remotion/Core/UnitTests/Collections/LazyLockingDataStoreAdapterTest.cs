@@ -271,6 +271,51 @@ namespace Remotion.UnitTests.Collections
               new SimpleDataStore<string, Lazy<Wrapper>>()));
     }
 
+    [Test]
+    public void GetOrCreateValue_WithNestedTryGetValue_HasNoNestedValue ()
+    {
+      object expected = new object();
+
+      var store =  new LazyLockingDataStoreAdapter<string, object> (new SimpleDataStore<string, Lazy<Wrapper>>());
+
+      var actualValue = store.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => store.TryGetValue (key, out _),
+                Throws.InvalidOperationException);
+            return expected;
+          });
+
+      Assert.That (actualValue, Is.SameAs (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedGetOrCreatedValue_ThrowsInvalidOperationException ()
+    {
+      object expected = new object();
+
+      var store =  new LazyLockingDataStoreAdapter<string, object> (new SimpleDataStore<string, Lazy<Wrapper>>());
+
+      var actualValue = store.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => store.GetOrCreateValue (key, nestedKey => 13),
+                Throws.InvalidOperationException);
+
+            return expected;
+          });
+
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      object actualValue2;
+      Assert.That (store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.SameAs (expected));
+    }
+
     private void CheckInnerDataStoreIsProtected ()
     {
       var lockingDataStoreDecorator = GetLockingDataStoreDecorator (_store);

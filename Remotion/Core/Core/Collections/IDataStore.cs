@@ -55,6 +55,7 @@ namespace Remotion.Collections
     /// <param name="value">The value of the new element. Can be <see langword="null" /> null.</param>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">An item with an equal key already exists in the store.</exception>
+    /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="Add"/> from inside the <see cref="GetOrCreateValue"/> factory method using the <paramref name="key"/>.</exception>
     void Add ([NotNull] TKey key, [CanBeNull] TValue value);
 
     /// <summary>
@@ -63,6 +64,7 @@ namespace Remotion.Collections
     /// <param name="key">The key of the element to be removed. Must not be <see langword="null" />.</param>
     /// <returns><see langword="true" /> if the item was found in the store; otherwise, <see langword="false" />.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="Remove"/> from inside the <see cref="GetOrCreateValue"/> factory method using the <paramref name="key"/>.</exception>
     bool Remove ([NotNull] TKey key);
 
     /// <summary>
@@ -76,6 +78,7 @@ namespace Remotion.Collections
     /// <value>The value of the element.</value>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     /// <exception cref="KeyNotFoundException">The element whose value should be retrieved could not be found.</exception>
+    /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="this"/> from inside the <see cref="GetOrCreateValue"/> factory method using the <paramref name="key"/>.</exception>
     TValue this [[NotNull] TKey key] { get; set; }
 
     /// <summary>
@@ -83,6 +86,8 @@ namespace Remotion.Collections
     /// </summary>
     /// <param name="key">The key to look up. Must not be <see langword="null" />.</param>
     /// <returns>The value of the element, or the default value if no such element exists.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="GetValueOrDefault"/> from inside the <see cref="GetOrCreateValue"/> factory method using the <paramref name="key"/>.</exception>
     TValue GetValueOrDefault ([NotNull] TKey key);
 
     /// <summary>
@@ -94,6 +99,8 @@ namespace Remotion.Collections
     /// Can be <see langword="null" />.
     /// </param>
     /// <returns><see langword="true" /> if an element with the specified key was found; otherwise, <see langword="false" />.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="TryGetValue"/> from inside the <see cref="GetOrCreateValue"/> factory method using the <paramref name="key"/>.</exception>
     bool TryGetValue ([NotNull] TKey key, [CanBeNull] out TValue value);
 
     /// <summary>
@@ -102,6 +109,8 @@ namespace Remotion.Collections
     /// <param name="key">The key of the element to be retrieved. Must not be <see langword="null" />.</param>
     /// <param name="valueFactory">A delegate used for creating a new element if none exists. Must not be <see langword="null" />.</param>
     /// <returns>The value of the element that was found or created.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="GetOrCreateValue"/> from inside the factory using the <paramref name="key"/>.</exception>
     TValue GetOrCreateValue ([NotNull] TKey key, [NotNull] Func<TKey, TValue> valueFactory);
   }
 }

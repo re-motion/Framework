@@ -107,5 +107,53 @@ namespace Remotion.UnitTests.Collections
     {
       Serializer.SerializeAndDeserialize (new LockingDataStoreDecorator<string, int> (new SimpleDataStore<string, int>()));
     }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedTryGetValue_HasNoNestedValue ()
+    {
+      int expected = 13;
+
+      var store = new LockingDataStoreDecorator<string, int?> (new SimpleDataStore<string, int?>());
+
+      var actualValue = store.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => store.TryGetValue (key, out _),
+                Throws.InvalidOperationException.With.Message.StringStarting (
+                    "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+
+            return expected;
+          });
+
+      Assert.That (actualValue, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedGetOrCreatedValue_ThrowsInvalidOperationException ()
+    {
+      int expected = 13;
+
+      var store = new LockingDataStoreDecorator<string, int?> (new SimpleDataStore<string, int?>());
+
+      var actualValue = store.GetOrCreateValue (
+              "key1",
+              delegate (string key)
+              {
+                Assert.That (
+                    () => store.GetOrCreateValue (key, nestedKey => 13),
+                    Throws.InvalidOperationException.With.Message.StringStarting (
+                        "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+
+                return expected;
+          });
+
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      int? actualValue2;
+      Assert.That (store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.EqualTo (expected));
+    }
   }
 }

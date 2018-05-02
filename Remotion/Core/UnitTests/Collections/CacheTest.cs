@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Development.UnitTesting;
@@ -40,7 +41,7 @@ namespace Remotion.UnitTests.Collections
     {
       var comparer = StringComparer.InvariantCultureIgnoreCase;
       var cache = new Cache<string, int?> (comparer);
-      cache.Add ("a", 1);
+      cache.GetOrCreateValue ("a", key => 1);
 
       Assert.That (cache.GetOrCreateValue ("a", delegate { throw new InvalidOperationException (); }), Is.EqualTo (1));
       Assert.That (cache.GetOrCreateValue ("A", delegate { throw new InvalidOperationException (); }), Is.EqualTo (1));
@@ -74,6 +75,68 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
+    public void GetOrCreateValue_WithException ()
+    {
+      var exception = new Exception();
+      Assert.That (
+          () => _cache.GetOrCreateValue ("key1", key => throw exception),
+          Throws.Exception.SameAs (exception));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithException_DoesNotCacheException ()
+    {
+      var exception1 = new Exception();
+      Assert.That (
+          () => _cache.GetOrCreateValue ("key1", key => throw exception1),
+          Throws.Exception.SameAs (exception1));
+
+      var exception2 = new Exception();
+      Assert.That (
+          () => _cache.GetOrCreateValue ("key1", key => throw exception2),
+          Throws.Exception.SameAs (exception2));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithException_TryGetValue_HasNoValue ()
+    {
+      var exception = new Exception();
+      Assert.That (
+          () => _cache.GetOrCreateValue ("key1", key => throw exception),
+          Throws.Exception.SameAs (exception));
+
+      object actual;
+      Assert.That (_cache.TryGetValue ("key1", out actual), Is.False);
+      Assert.That (actual, Is.Null);
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithException_GetOrCreateValue_InsertsSecondValue ()
+    {
+      var exception = new Exception();
+      Assert.That (
+          () => _cache.GetOrCreateValue ("key1", key => throw exception),
+          Throws.Exception.SameAs (exception));
+
+      object expected = new object ();
+      object actual = _cache.GetOrCreateValue ("key1", key => expected);
+      Assert.That (actual, Is.SameAs (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_DoesNotKeepFactoryAlive ()
+    {
+      object expected = new object ();
+      Func<string, object> valueFactory = key => expected;
+      var valueFactoryReference = new WeakReference (valueFactory);
+      Assert.That (_cache.GetOrCreateValue ("key1", valueFactory),Is.SameAs (expected));
+      valueFactory = null;
+      GC.Collect();
+      GC.WaitForFullGCComplete();
+      Assert.That (valueFactoryReference.IsAlive, Is.False);
+    }
+
+    [Test]
     public void GetOrCreateValue_TryGetValue ()
     {
       object expected = new object ();
@@ -85,33 +148,22 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void Add_GetOrCreateValue ()
+    public void GetOrCreateValue_Twice ()
     {
       object expected = new object ();
 
-      Add ("key1", expected);
+      _cache.GetOrCreateValue ("key1", key => expected);
       Assert.That (
-          _cache.GetOrCreateValue ("key1", delegate (string key) { throw new InvalidOperationException ("The valueFactory must not be invoked."); }),
+          _cache.GetOrCreateValue ("key1", arg => throw new InvalidOperationException ("The valueFactory must not be invoked.")),
           Is.SameAs (expected));
     }
 
     [Test]
-    public void Add_TryGetValue ()
-    {
-      object expected = new object();
-
-      Add ("key1", expected);
-      object actual;
-      Assert.That (_cache.TryGetValue ("key1", out actual), Is.True);
-      Assert.That (actual, Is.SameAs (expected));
-    }
-
-    [Test]
-    public void Add_TryGetValue_Clear_TryGetValue ()
+    public void GetOrCreateValue_TryGetValue_Clear_TryGetValue ()
     {
       object expected = new object ();
 
-      Add ("key1", expected);
+      _cache.GetOrCreateValue ("key1", key => expected);
       object actual;
       Assert.That (_cache.TryGetValue ("key1", out actual), Is.True);
       Assert.That (actual, Is.SameAs (expected));
@@ -121,12 +173,102 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void Add_Null ()
+    public void GetOrCreateValue_WithNestedTryGetValue_ThrowsInvalidOperationException ()
     {
-      Add ("key1", null);
-      object actual;
-      Assert.That (_cache.TryGetValue ("key1", out actual), Is.True);
-      Assert.That (actual, Is.Null);
+      object expected = new object();
+
+      var actualValue = _cache.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => _cache.TryGetValue (key, out _),
+                Throws.InvalidOperationException.With.Message.StringStarting (
+                    "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+
+            return expected;
+          });
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      object actualValue2;
+      Assert.That (_cache.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.SameAs (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedGetOrCreatedValue_ThrowsInvalidOperationException ()
+    {
+      object expected = new object();
+
+      var actualValue = _cache.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => _cache.GetOrCreateValue (key, nestedKey => 13),
+                Throws.InvalidOperationException.With.Message.StringStarting (
+                    "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+
+            return expected;
+          });
+
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      object actualValue2;
+      Assert.That (_cache.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.SameAs (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedClear_RemovesValues ()
+    {
+      object expected = new object();
+
+      var actualValue = _cache.GetOrCreateValue (
+          "key1",
+          delegate
+          {
+            _cache.Clear();
+            return expected;
+          });
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      object actualValue2;
+      Assert.That (_cache.TryGetValue ("key1", out actualValue2), Is.False);
+      Assert.That (actualValue2, Is.Null);
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedEnumeration_SkipsNewItem()
+    {
+      object expected1 = new object();
+      object expected2 = new object();
+      object expected3 = new object();
+      _cache.GetOrCreateValue ("a", delegate { return expected1; });
+      _cache.GetOrCreateValue ("b", delegate { return expected2; });
+      KeyValuePair<string, object>[] nestedItems = null;
+
+      var actualValue = _cache.GetOrCreateValue (
+          "key1",
+          delegate
+          {
+            nestedItems = _cache.ToArray();
+            return expected3;
+          });
+
+      Assert.That (actualValue, Is.SameAs (expected3));
+      Assert.That (
+          nestedItems,
+          Is.EquivalentTo (
+              new[]
+              {
+                  new KeyValuePair<string, object> ("a", expected1),
+                  new KeyValuePair<string, object> ("b", expected2)
+              }));
+
+      object actualValue2;
+      Assert.That (_cache.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.SameAs (expected3));
     }
 
     [Test]
@@ -146,6 +288,26 @@ namespace Remotion.UnitTests.Collections
                   new KeyValuePair<string, object> ("key2", expected2)
               }
               ));
+    }
+
+    [Test]
+    public void GetEnumerator_Generic_Reset ()
+    {
+      object expected1 = new object();
+      object expected2 = new object();
+      _cache.GetOrCreateValue ("key1", delegate { return expected1; });
+      _cache.GetOrCreateValue ("key2", delegate { return expected2; });
+
+      using (var enumerator = _cache.GetEnumerator())
+      {
+        Assert.That (enumerator.MoveNext(), Is.True);
+        Assert.That (enumerator.Current, Is.EqualTo (new KeyValuePair<string, object> ("key1", expected1)));
+        enumerator.Reset();
+        Assert.That (enumerator.MoveNext(), Is.True);
+        Assert.That (enumerator.Current, Is.EqualTo (new KeyValuePair<string, object> ("key1", expected1)));
+        Assert.That (enumerator.MoveNext(), Is.True);
+        Assert.That (enumerator.Current, Is.EqualTo (new KeyValuePair<string, object> ("key2", expected2)));
+      }
     }
 
     [Test]
@@ -212,31 +374,30 @@ namespace Remotion.UnitTests.Collections
     [Explicit]
     public void Performance ()
     {
-      _cache.GetOrCreateValue ("key", k => "value");
+      // Use local variable instead of the field to allow for better comparison with SimpleDataStoreTest.
+      // Note that using a field would incur a 10% performance penalty in this particular test setup.
+      var cache = new Cache<string, object>();
+      cache.GetOrCreateValue ("key", k => "value");
       object value;
-      _cache.TryGetValue ("key", out value);
-
+      cache.TryGetValue ("key", out value);
+      
       var stopwatch = new Stopwatch();
       stopwatch.Start();
 
       for (int i = 0; i < 1000; i++)
       {
         var key = i.ToString ("D9");
-        _cache.GetOrCreateValue (key, k => k + ": value");
+        cache.GetOrCreateValue (key, k => k + ": value");
         for (int j = 0; j < 100 * 1000; j++)
         {
-          _cache.TryGetValue (key, out value);
+          cache.TryGetValue (key, out value);
         }
       }
 
       stopwatch.Stop();
-      Console.WriteLine ("Time expected: 3200ms (release build on Intel Xeon E5-1620 v2 @ 3.70GHz)");
+      // Note: on x64, the time taken is 3000ms instead due to use of RyuJIT
+      Console.WriteLine ("Time expected: 3250ms (release build x86, on Intel Xeon E5-1620 v2 @ 3.70GHz)");
       Console.WriteLine ("Time taken: {0:D}ms", stopwatch.ElapsedMilliseconds);
-    }
-
-    private void Add (string key, object value)
-    {
-      ((Cache<string, object>) _cache).Add (key, value);
     }
   }
 }

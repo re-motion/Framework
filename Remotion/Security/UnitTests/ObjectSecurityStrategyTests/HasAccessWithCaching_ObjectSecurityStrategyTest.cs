@@ -168,7 +168,7 @@ namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
           .IgnoreArguments()
           .Throw (new InvalidOperationException ("Should not be called."));
 
-      cache.Add (_principalStub, new[] { AccessType.Get (GeneralAccessTypes.Read) });
+      cache.GetOrCreateValue (_principalStub, key => new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       bool hasAccess = strategy.HasAccess (
           _securityProviderMock,

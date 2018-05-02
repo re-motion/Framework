@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections;
@@ -84,13 +86,12 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void Add_Twice ()
+    public void Add_Twice_ThrowsArgumentException ()
     {
       _store.Add ("d", 1);
       Assert.That (
           () => _store.Add ("d", 2),
-          Throws.ArgumentException.And.Message.EqualTo (
-              "The store already contains an element with key \'d\'. (Old value: \'1\', new value: \'2\')\r\nParameter name: key"));
+          Throws.ArgumentException.And.Message.EqualTo ("The store already contains an element with key \'d\'.\r\nParameter name: key"));
     }
 
     [Test]
@@ -209,6 +210,250 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
+    public void GetOrCreateValue_WithNestedTryGetValue_ThrowsInvalidOperationException ()
+    {
+      int expected = 13;
+
+      var actualValue = _store.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => _store.TryGetValue (key, out _),
+                Throws.InvalidOperationException.With.Message.StringStarting (
+                    "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+            return expected;
+          });
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      int? actualValue2;
+      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedGetValueOrDefault_ThrowsInvalidOperationException ()
+    {
+      int expected = 13;
+
+      var actualValue = _store.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => _store.GetValueOrDefault (key),
+                Throws.InvalidOperationException.With.Message.StringStarting (
+                    "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+            return expected;
+          });
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      int? actualValue2;
+      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedGetOrCreatedValue_ThrowsInvalidOperationException ()
+    {
+      int expected = 15;
+
+      var actualValue = _store.GetOrCreateValue (
+              "key1",
+              delegate (string key)
+              {
+                Assert.That (
+                    () => _store.GetOrCreateValue (key, nestedKey => 13),
+                    Throws.InvalidOperationException.With.Message.StringStarting (
+                        "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+
+                return expected;
+              });
+
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      int? actualValue2;
+      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedAdd_ThrowsInvalidOperationException ()
+    {
+      int expected = 15;
+
+      var actualValue = _store.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => _store.Add (key, 13),
+                Throws.InvalidOperationException.With.Message.StringStarting (
+                    "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+            return expected;
+          });
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      int? actualValue2;
+      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedContainsKey_ThrowsInvalidOperationException ()
+    {
+      int expected = 13;
+
+      var actualValue = _store.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => _store.ContainsKey (key),
+                Throws.InvalidOperationException.With.Message.StringStarting (
+                    "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+            return expected;
+          });
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      int? actualValue2;
+      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedRemove_ThrowsInvalidOperationException ()
+    {
+      int expected = 13;
+
+      var actualValue = _store.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => _store.Remove (key),
+                Throws.InvalidOperationException.With.Message.StringStarting (
+                    "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+            return expected;
+          });
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      int? actualValue2;
+      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedClear_RemovesValues ()
+    {
+      int expected = 13;
+
+      var actualValue = _store.GetOrCreateValue (
+          "key1",
+          delegate
+          {
+            _store.Clear();
+            return expected;
+          });
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      int? actualValue2;
+      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.False);
+      Assert.That (actualValue2, Is.Null);
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedEnumeration_SkipsNewItem()
+    {
+      int expected = 15;
+      KeyValuePair<string, int?>[] nestedItems = null;
+
+      var actualValue = _store.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            nestedItems = _store.ToArray();
+            return expected;
+          });
+
+      Assert.That (actualValue, Is.EqualTo (expected));
+      Assert.That (
+          nestedItems,
+          Is.EquivalentTo (
+              new[]
+              {
+                  new KeyValuePair<string, int?> ("a", 1),
+                  new KeyValuePair<string, int?> ("b", 2)
+              }));
+
+      int? actualValue2;
+      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithException ()
+    {
+      var exception = new Exception();
+      Assert.That (
+          () => _store.GetOrCreateValue ("key1", key => throw exception),
+          Throws.Exception.SameAs (exception));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithException_DoesNotCacheException ()
+    {
+      var exception1 = new Exception();
+      Assert.That (
+          () => _store.GetOrCreateValue ("key1", key => throw exception1),
+          Throws.Exception.SameAs (exception1));
+
+      var exception2 = new Exception();
+      Assert.That (
+          () => _store.GetOrCreateValue ("key1", key => throw exception2),
+          Throws.Exception.SameAs (exception2));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithException_TryGetValue_HasNoValue ()
+    {
+      var exception = new Exception();
+      Assert.That (
+          () => _store.GetOrCreateValue ("key1", key => throw exception),
+          Throws.Exception.SameAs (exception));
+
+      int? actual;
+      Assert.That (_store.TryGetValue ("key1", out actual), Is.False);
+      Assert.That (actual, Is.Null);
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithException_GetOrCreateValue_InsertsSecondValue ()
+    {
+      var exception = new Exception();
+      Assert.That (
+          () => _store.GetOrCreateValue ("key1", key => throw exception),
+          Throws.Exception.SameAs (exception));
+
+      int? expected = 14;
+      object actual = _store.GetOrCreateValue ("key1", key => expected);
+      Assert.That (actual, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_DoesNotKeepFactoryAlive ()
+    {
+      var expected = 13;
+      Func<string, int?> valueFactory = key => expected;
+      var valueFactoryReference = new WeakReference (valueFactory);
+      Assert.That (_store.GetOrCreateValue ("key1", valueFactory),Is.EqualTo (expected));
+      valueFactory = null;
+      GC.Collect();
+      GC.WaitForFullGCComplete();
+      Assert.That (valueFactoryReference.IsAlive, Is.False);
+    }
+
+    [Test]
     public void GetEnumerator_Generic ()
     {
       Assert.That (
@@ -220,6 +465,21 @@ namespace Remotion.UnitTests.Collections
                   new KeyValuePair<string, int?> ("b", 2)
               }
               ));
+    }
+
+    [Test]
+    public void GetEnumerator_Generic_Reset ()
+    {
+      using (var enumerator = _store.GetEnumerator())
+      {
+        Assert.That (enumerator.MoveNext(), Is.True);
+        Assert.That (enumerator.Current, Is.EqualTo (new KeyValuePair<string, int?> ("a", 1)));
+        enumerator.Reset();
+        Assert.That (enumerator.MoveNext(), Is.True);
+        Assert.That (enumerator.Current, Is.EqualTo (new KeyValuePair<string, int?> ("a", 1)));
+        Assert.That (enumerator.MoveNext(), Is.True);
+        Assert.That (enumerator.Current, Is.EqualTo (new KeyValuePair<string, int?> ("b", 2)));
+      }
     }
 
     [Test]
@@ -237,9 +497,66 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void Serializable ()
+    public void SerializeEmptyDataStore ()
     {
-      Serializer.SerializeAndDeserialize (_store);
+      IDataStore<string, int?> deserializedDataStore = Serializer.SerializeAndDeserialize (_store);
+      Assert.That (deserializedDataStore, Is.Not.Null);
+
+      int? result;
+      Assert.That (deserializedDataStore.TryGetValue ("bla", out result), Is.False);
+      deserializedDataStore.GetOrCreateValue ("bla", delegate { return 17; });
+      Assert.That (deserializedDataStore.TryGetValue ("bla", out result), Is.True);
+
+      Assert.That (result, Is.EqualTo (17));
+
+      Assert.That (_store.TryGetValue ("bla", out result), Is.False);
+    }
+
+    [Test]
+    public void SerializeNonEmptyDataStore ()
+    {
+      int? result;
+
+      _store.GetOrCreateValue ("bla", delegate { return 19; });
+      Assert.That (_store.TryGetValue ("bla", out result), Is.True);
+
+      IDataStore<string, int?> deserializedCache = Serializer.SerializeAndDeserialize (_store);
+      Assert.That (deserializedCache, Is.Not.Null);
+
+      Assert.That (deserializedCache.TryGetValue ("bla", out result), Is.True);
+      Assert.That (result, Is.EqualTo (19));
+
+      deserializedCache.GetOrCreateValue ("whatever", delegate { return 23; });
+      Assert.That (deserializedCache.TryGetValue ("whatever", out result), Is.True);
+      Assert.That (_store.TryGetValue ("whatever", out result), Is.False);
+    }
+
+    [Test]
+    [Explicit]
+    public void Performance ()
+    {
+      var store = new SimpleDataStore<string, object>();
+      store.GetOrCreateValue ("key", k => "value");
+      object value;
+      store.TryGetValue ("key", out value);
+
+      var stopwatch = new Stopwatch();
+      stopwatch.Start();
+
+      for (int i = 0; i < 1000; i++)
+      {
+        var key = i.ToString ("D9");
+        store.GetOrCreateValue (key, k => k + ": value");
+        for (int j = 0; j < 100 * 1000; j++)
+        {
+          store.TryGetValue (key, out value);
+        }
+      }
+
+      stopwatch.Stop();
+      // Note: on x64, the time taken is 3000ms instead due to use of RyuJIT
+      Console.WriteLine ("Time expected: 3250ms (release build x86 on Intel Xeon E5-1620 v2 @ 3.70GHz)");
+      Console.WriteLine ("Time taken: {0:D}ms", stopwatch.ElapsedMilliseconds);
     }
   }
 }

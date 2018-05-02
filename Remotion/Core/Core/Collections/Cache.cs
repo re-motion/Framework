@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Remotion.Utilities;
 
 namespace Remotion.Collections
@@ -34,16 +35,74 @@ namespace Remotion.Collections
   [Serializable]
   public sealed class Cache<TKey, TValue> : ICache<TKey, TValue> 
   {
-    private readonly Dictionary<TKey, TValue> _innerDictionary;
+    private sealed class Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
+    {
+      private readonly IEnumerator<KeyValuePair<TKey, Data>> _inner;
+
+      public Enumerator (IEnumerator<KeyValuePair<TKey, Data>> inner)
+      {
+        _inner = inner;
+      }
+
+      public bool MoveNext ()
+      {
+        if (!_inner.MoveNext())
+          return false;
+        if (_inner.Current.Value.IsInitialized)
+          return true;
+        return MoveNext();
+      }
+
+      public void Reset ()
+      {
+        _inner.Reset();
+      }
+
+      public KeyValuePair<TKey, TValue> Current
+      {
+        get
+        {
+          var current = _inner.Current;
+          var data = current.Value;
+          Assertion.DebugAssert (data.IsInitialized, "Uninitialized values should be skipped during MoveNext().");
+          return new KeyValuePair<TKey, TValue> (current.Key, data.Value);
+        }
+      }
+
+      object IEnumerator.Current
+      {
+        get { return Current; }
+      }
+
+      public void Dispose ()
+      {
+        _inner.Dispose();
+      }
+    }
+
+    [Serializable]
+    private struct Data
+    {
+      public readonly TValue Value;
+      public readonly bool IsInitialized;
+
+      public Data (TValue value)
+      {
+        Value = value;
+        IsInitialized = true;
+      }
+    }
+
+    private readonly Dictionary<TKey, Data> _innerDictionary;
 
     public Cache ()
-      : this (null)
     {
+      _innerDictionary = new Dictionary<TKey, Data>();
     }
 
     public Cache (IEqualityComparer<TKey> comparer)
     {
-      _innerDictionary = new Dictionary<TKey, TValue> (comparer);
+      _innerDictionary = new Dictionary<TKey, Data> (comparer);
     }
 
     public IEqualityComparer<TKey> Comparer
@@ -51,19 +110,11 @@ namespace Remotion.Collections
       get { return _innerDictionary.Comparer; }
     }
 
-    public void Add (TKey key, TValue value)
-    {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      // value can be null
-
-      _innerDictionary[key] = value;
-    }
-
     public bool TryGetValue (TKey key, out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
       
-      return _innerDictionary.TryGetValue (key, out value);
+      return TryGetValueInternal (key, out value);
     }
 
     public TValue GetOrCreateValue (TKey key, Func<TKey,TValue> valueFactory)
@@ -72,13 +123,25 @@ namespace Remotion.Collections
       ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
 
       TValue value;
-      if (!TryGetValue (key, out value))
+      if (!TryGetValueInternal (key, out value))
       {
         ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
 
-        value = valueFactory (key);
-        Add (key, value);
+        _innerDictionary.Add (key, new Data());
+        try
+        {
+          value = valueFactory (key);
+        }
+        catch
+        {
+          _innerDictionary.Remove (key);
+          throw;
+        }
+        var data = new Data (value);
+        if (_innerDictionary.Remove (key))
+          _innerDictionary.Add (key, data);
       }
+
       return value;
     }
 
@@ -94,7 +157,7 @@ namespace Remotion.Collections
 
     private IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator ()
     {
-      return _innerDictionary.GetEnumerator();
+      return new Enumerator (_innerDictionary.GetEnumerator());
     }
 
     public void Clear ()
@@ -105,6 +168,39 @@ namespace Remotion.Collections
     bool INullObject.IsNull
     {
       get { return false; }
+    }
+
+    [MethodImpl (MethodImplOptions.AggressiveInlining)]
+    private bool TryGetValueInternal (TKey key, out TValue value)
+    {
+      Data data;
+      var hasData = _innerDictionary.TryGetValue (key, out data);
+
+      value = data.Value;
+
+      if (data.IsInitialized)
+        return true;
+
+      if (!hasData)
+        return false;
+
+      // Note: JIT32 (x86 platform) will not inline methods that contain throw-statements. This will incur a 10% performance penalty 
+      // for this particular method. By moving the throw-statement to the helper method, this penalty could be avoided but the readability 
+      // would suffer. Given that a) RyuJIT is expected to take over for JIT32 in a future release and that the x86 platform is not used for 
+      // high-scale (web server) applications any longer, this optimization is skipped at this point.
+      throw CreateExceptionRecursiveKeyAccess (key);
+    }
+
+    /// <remarks>
+    /// Method must be extracted into separate, non-inlined method because string-Format would otherwise incur a 20% performance overhead.
+    /// </remarks>
+    [MethodImpl (MethodImplOptions.NoInlining)]
+    private static InvalidOperationException CreateExceptionRecursiveKeyAccess (TKey key)
+    {
+      return new InvalidOperationException (
+          string.Format (
+              "An attempt was detected to access the value for key ('{0}') during the factory operation of GetOrCreateValue(key, factory).",
+              key));
     }
   }
 }

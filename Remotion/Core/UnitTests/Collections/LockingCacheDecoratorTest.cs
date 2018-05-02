@@ -66,6 +66,54 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
+    public void GetOrCreateValue_WithNestedTryGetValue_HasNoNestedValue ()
+    {
+      object expected = new object();
+
+      var cache = new LockingCacheDecorator<string, object> (new Cache<string, object>());
+
+      var actualValue = cache.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => cache.TryGetValue (key, out _),
+                Throws.InvalidOperationException.With.Message.StringStarting (
+                    "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+
+            return expected;
+          });
+
+      Assert.That (actualValue, Is.SameAs (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNestedGetOrCreatedValue_ThrowsInvalidOperationException ()
+    {
+      object expected = new object();
+
+      var cache = new LockingCacheDecorator<string, object> (new Cache<string, object>());
+
+      var actualValue = cache.GetOrCreateValue (
+          "key1",
+          delegate (string key)
+          {
+            Assert.That (
+                () => cache.GetOrCreateValue (key, nestedKey => 13),
+                Throws.InvalidOperationException.With.Message.StringStarting (
+                    "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+
+            return expected;
+          });
+
+      Assert.That (actualValue, Is.EqualTo (expected));
+
+      object actualValue2;
+      Assert.That (cache.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (actualValue2, Is.SameAs (expected));
+    }
+
+    [Test]
     public void GetEnumerator_Generic ()
     {
       _helper.ExpectSynchronizedDelegation (
