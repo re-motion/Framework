@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Utilities;
 
 namespace Remotion.Collections
@@ -27,6 +28,7 @@ namespace Remotion.Collections
     private readonly ICache<TKey, TValue> _innerCache;
     private readonly InvalidationToken _invalidationToken;
     private InvalidationToken.Revision _revision;
+    private readonly object _syncObject = new object();
 
     public InvalidationTokenBasedCacheDecorator (ICache<TKey, TValue> innerCache, InvalidationToken invalidationToken)
     {
@@ -40,6 +42,7 @@ namespace Remotion.Collections
 
     public InvalidationToken InvalidationToken
     {
+      // ReSharper disable once InconsistentlySynchronizedField
       get { return _invalidationToken; }
     }
 
@@ -56,8 +59,15 @@ namespace Remotion.Collections
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
 
-      CheckRevision();
-      return _innerCache.TryGetValue (key, out value);
+      if (CheckRevision())
+      {
+        return _innerCache.TryGetValue (key, out value);
+      }
+      else
+      {
+        value = default;
+        return false;
+      }
     }
 
     IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator ()
@@ -72,14 +82,18 @@ namespace Remotion.Collections
 
     private IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator ()
     {
-      CheckRevision();
-      return _innerCache.GetEnumerator();
+      if (CheckRevision())
+        return _innerCache.GetEnumerator();
+      else
+        return Enumerable.Empty<KeyValuePair<TKey, TValue>>().GetEnumerator();
     }
 
     void ICache<TKey, TValue>.Clear ()
     {
-      _innerCache.Clear();
-      _revision = _invalidationToken.GetCurrent();
+      lock (_syncObject)
+      {
+        ClearInternal();
+      }
     }
 
     bool INullObject.IsNull
@@ -87,13 +101,34 @@ namespace Remotion.Collections
       get { return _innerCache.IsNull; }
     }
 
-    private void CheckRevision ()
+    private bool CheckRevision ()
     {
-      if (!_invalidationToken.IsCurrent (_revision))
+      // ReSharper disable InconsistentlySynchronizedField
+      if (_invalidationToken.IsCurrent (_revision))
+        return true;
+      // ReSharper restore InconsistentlySynchronizedField
+
+      lock (_syncObject)
       {
-        _innerCache.Clear();
-        _revision = _invalidationToken.GetCurrent();
+        // If the code enters the lock, a different thread may already have cleared the cache. 
+        // After the cache was successfully cleared, the revision will be up-to-date unless there has been another change in the meantime.
+        // Therefor, we can skip the cache-clear if the revision is current.
+        if (_invalidationToken.IsCurrent (_revision))
+          return true;
+
+        ClearInternal();
       }
+
+      return false;
+    }
+
+    private void ClearInternal ()
+    {
+      do
+      {
+        _revision = _invalidationToken.GetCurrent();
+        _innerCache.Clear();
+      } while (!_invalidationToken.IsCurrent (_revision));
     }
   }
 }
