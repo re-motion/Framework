@@ -46,6 +46,7 @@ namespace Remotion.Collections
     /// <see langword="true" /> if the store contains the specified key; otherwise, <see langword="false" />.
     /// </returns>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="GetOrCreateValue"/> from inside the factory using the <paramref name="key"/>.</exception>
     bool ContainsKey ([NotNull] TKey key);
 
     /// <summary>
