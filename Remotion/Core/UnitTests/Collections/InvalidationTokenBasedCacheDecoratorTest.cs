@@ -33,9 +33,9 @@ namespace Remotion.UnitTests.Collections
       var cache = new Cache<object, string>();
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
       var key = new object();
-      cache.Add (key, "Value");
+      cache.GetOrCreateValue (key, o => "Value");
 
-      var value = decorator.GetOrCreateValue (key, o => { throw new InvalidOperationException(); });
+      var value = decorator.GetOrCreateValue (key, o => throw new InvalidOperationException());
 
       Assert.That (value, Is.EqualTo ("Value"));
     }
@@ -62,7 +62,7 @@ namespace Remotion.UnitTests.Collections
       var cache = new Cache<object, string>();
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
       var key = new object();
-      cache.Add (key, "Value1");
+      cache.GetOrCreateValue (key, o => "Value1");
 
       decorator.InvalidationToken.Invalidate();
 
@@ -81,7 +81,7 @@ namespace Remotion.UnitTests.Collections
       var cache = new Cache<object, string>();
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
       var key = new object();
-      cache.Add (key, "Value1");
+      cache.GetOrCreateValue (key, o => "Value1");
 
       decorator.InvalidationToken.Invalidate();
 
@@ -98,7 +98,7 @@ namespace Remotion.UnitTests.Collections
       var cache = new Cache<object, string>();
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
       var key = new object();
-      cache.Add (key, "Value");
+      cache.GetOrCreateValue (key, o => "Value");
 
       string value;
       var result = decorator.TryGetValue (key, out value);
@@ -127,7 +127,7 @@ namespace Remotion.UnitTests.Collections
       var cache = new Cache<object, string>();
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
       var key = new object();
-      cache.Add (key, "Value");
+      cache.GetOrCreateValue (key, o => "Value");
 
       decorator.InvalidationToken.Invalidate();
 
@@ -151,13 +151,13 @@ namespace Remotion.UnitTests.Collections
 
       decorator.InvalidationToken.Invalidate();
 
-      cache.Add (key, "Value");
+      cache.GetOrCreateValue (key, o => "Value");
       string valueOnFirstCall;
       var resultOnFirstCall = decorator.TryGetValue (key, out valueOnFirstCall);
       Assert.That (resultOnFirstCall, Is.False);
       Assert.That (valueOnFirstCall, Is.Null);
 
-      cache.Add (key, "Value2");
+      cache.GetOrCreateValue (key, o => "Value2");
       string valueOnSecondCall;
       var resultOnSecondCall = decorator.TryGetValue (key, out valueOnSecondCall);
       Assert.That (resultOnSecondCall, Is.True);
@@ -172,8 +172,8 @@ namespace Remotion.UnitTests.Collections
 
       object exptected1 = new object();
       object exptected2 = new object();
-      cache.Add ("key1", exptected1);
-      cache.Add ("key2", exptected2);
+      cache.GetOrCreateValue ("key1", o => exptected1);
+      cache.GetOrCreateValue ("key2", o => exptected2);
 
       Assert.That (
           decorator.ToArray(),
@@ -193,8 +193,8 @@ namespace Remotion.UnitTests.Collections
 
       object exptected1 = new object();
       object exptected2 = new object();
-      cache.Add ("key1", exptected1);
-      cache.Add ("key2", exptected2);
+      cache.GetOrCreateValue ("key1", o => exptected1);
+      cache.GetOrCreateValue ("key2", o => exptected2);
 
       var decorated = new InvalidationTokenBasedCacheDecorator<string, object> (cache, InvalidationToken.Create());
       decorated.InvalidationToken.Invalidate();
@@ -209,8 +209,8 @@ namespace Remotion.UnitTests.Collections
 
       object exptected1 = new object();
       object exptected2 = new object();
-      cache.Add ("key1", exptected1);
-      cache.Add ("key2", exptected2);
+      cache.GetOrCreateValue ("key1", o => exptected1);
+      cache.GetOrCreateValue ("key2", o => exptected2);
 
       Assert.That (
           decorator.ToNonGenericEnumerable(),
@@ -230,8 +230,8 @@ namespace Remotion.UnitTests.Collections
 
       object exptected1 = new object();
       object exptected2 = new object();
-      cache.Add ("key1", exptected1);
-      cache.Add ("key2", exptected2);
+      cache.GetOrCreateValue ("key1", o => exptected1);
+      cache.GetOrCreateValue ("key2", o => exptected2);
 
       var decorated = new InvalidationTokenBasedCacheDecorator<string, object> (cache, InvalidationToken.Create());
       decorated.InvalidationToken.Invalidate();
@@ -244,7 +244,7 @@ namespace Remotion.UnitTests.Collections
       var cache = new Cache<object, string>();
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
       var key = new object();
-      cache.Add (key, "Value");
+      cache.GetOrCreateValue (key, o => "Value");
 
       ((ICache<object, string>) decorator).Clear();
 
@@ -275,7 +275,7 @@ namespace Remotion.UnitTests.Collections
       decorator.InvalidationToken.Invalidate();
       ((ICache<object, string>) decorator).Clear();
       var key = new object();
-      cache.Add (key, "Value");
+      cache.GetOrCreateValue (key, o => "Value");
 
       string value;
       var result = decorator.TryGetValue (key, out value);
