@@ -126,11 +126,16 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetOrCreateValue_DoesNotKeepFactoryAlive ()
     {
-      object expected = new object ();
-      Func<string, object> valueFactory = key => expected;
-      var valueFactoryReference = new WeakReference (valueFactory);
-      Assert.That (_cache.GetOrCreateValue ("key1", valueFactory),Is.SameAs (expected));
-      valueFactory = null;
+      WeakReference GetValueFactoryReference ()
+      {
+        object expected = new object();
+        Func<string, object> valueFactory = key => expected;
+        Assert.That (_cache.GetOrCreateValue ("key1", valueFactory), Is.SameAs (expected));
+        return new WeakReference (valueFactory);
+      }
+
+      // The valueFactory must be created in a separate method: The x64 JITter (DEBUG builds only) keeps the reference alive until the variable is out of scope.
+      var valueFactoryReference = GetValueFactoryReference();
       GC.Collect();
       GC.WaitForFullGCComplete();
       Assert.That (valueFactoryReference.IsAlive, Is.False);
