@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-//
+#pragma warning disable 618
 using System;
 using System.Collections;
 using System.Collections.Generic;

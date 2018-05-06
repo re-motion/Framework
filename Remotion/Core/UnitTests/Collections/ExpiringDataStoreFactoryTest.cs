@@ -50,12 +50,11 @@ namespace Remotion.UnitTests.Collections
       Assert.That (((SimpleDataStore<string, Tuple<object, DateTime>>) innerDataStore).Comparer, Is.SameAs (_comparer));
     }
 
+#pragma warning disable 618
     [Test]
     public void CreateWithLocking ()
     {
-#pragma warning disable 618
       var result = ExpiringDataStoreFactory.CreateWithLocking (_expirationPolicy, _comparer);
-#pragma warning restore 618
 
       Assert.That (result, Is.TypeOf (typeof (LockingDataStoreDecorator<string, object>)));
       var innerStore = PrivateInvoke.GetNonPublicField (result, "_innerStore");
@@ -72,9 +71,7 @@ namespace Remotion.UnitTests.Collections
     {
       var policy = MockRepository.GenerateStub<IExpirationPolicy<Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime, DateTime>> ();
 
-#pragma warning disable 618
       var result = ExpiringDataStoreFactory.CreateWithLazyLocking (policy,  _comparer);
-#pragma warning restore 618
 
       Assert.That (result, Is.TypeOf (typeof (LazyLockingDataStoreAdapter<string,  object>)));
       var innerDataStore = PrivateInvoke.GetNonPublicField (result, "_innerDataStore");
@@ -87,5 +84,6 @@ namespace Remotion.UnitTests.Collections
       Assert.That (innerInnerDataStore, Is.TypeOf (typeof (SimpleDataStore<string, Tuple<Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime>>)));
       Assert.That (((SimpleDataStore<string, Tuple<Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime>>) innerInnerDataStore).Comparer, Is.SameAs (_comparer));
     }
+#pragma warning restore 618
   }
 }

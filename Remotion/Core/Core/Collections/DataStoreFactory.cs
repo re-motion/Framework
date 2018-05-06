@@ -93,11 +93,11 @@ namespace Remotion.Collections
     /// A <see cref="LockingDataStoreDecorator{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     /// <remarks>
-    /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access. It is well-suited
-    /// for data stores in which the factory delegates passed to <see cref="IDataStore{TKey,TValue}.GetOrCreateValue"/> only take a short time to 
-    /// complete. When the factory delegates take a long time to execute, consider using <see cref="CreateWithLazyLocking{TKey,TValue}()"/> instead 
-    /// to reduce contention.
+    /// The <see cref="ConcurrentDataStore{TKey,TValue}"/> created with <see cref="CreateWithSynchronization{TKey,TValue}()"/> 
+    /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
+    /// should therefor be replaced.
     /// </remarks>
+    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ()
     {
       return new LockingDataStoreDecorator<TKey, TValue> (new SimpleDataStore<TKey, TValue>());
@@ -114,11 +114,11 @@ namespace Remotion.Collections
     /// A <see cref="LockingDataStoreDecorator{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     /// <remarks>
-    /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access. It is well-suited
-    /// for data stores in which the factory delegates passed to <see cref="IDataStore{TKey,TValue}.GetOrCreateValue"/> only take a short time to 
-    /// complete. When the factory delegates take a long time to execute, consider using <see cref="CreateWithLazyLocking{TKey,TValue}(System.Collections.Generic.IEqualityComparer{TKey})"/> instead 
-    /// to reduce contention.
+    /// The <see cref="ConcurrentDataStore{TKey,TValue}"/> created with <see cref="CreateWithSynchronization{TKey,TValue}()"/> 
+    /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
+    /// should therefor be replaced.
     /// </remarks>
+    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> (IEqualityComparer<TKey> comparer)
     {
       return new LockingDataStoreDecorator<TKey, TValue> (new SimpleDataStore<TKey, TValue> (comparer));
@@ -134,11 +134,11 @@ namespace Remotion.Collections
     /// A <see cref="LazyLockingDataStoreAdapter{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     /// <remarks>
-    /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional, 
-    /// double-checked locks (see <see cref="Lazy{T}"/>) to protect each single value. It is well-suited for data stores
-    /// in which the factory delegates passed to <see cref="IDataStore{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
-    /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue}()"/> instead to reduce the number of locks used.
+    /// The <see cref="ConcurrentDataStore{TKey,TValue}"/> created with <see cref="CreateWithSynchronization{TKey,TValue}()"/> 
+    /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
+    /// should therefor be replaced.
     /// </remarks>
+    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> () where TValue: class
     {
       return new LazyLockingDataStoreAdapter<TKey, TValue> (
@@ -156,12 +156,11 @@ namespace Remotion.Collections
     /// A <see cref="LazyLockingDataStoreAdapter{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     /// <remarks>
-    /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional,
-    /// double-checked locks (see <see cref="Lazy{T}"/>) to protect each single value. It is well-suited for data stores
-    /// in which the factory delegates passed to <see cref="IDataStore{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
-    /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue}(System.Collections.Generic.IEqualityComparer{TKey})"/>
-    /// instead to reduce the number of locks used.
+    /// The <see cref="ConcurrentDataStore{TKey,TValue}"/> created with <see cref="CreateWithSynchronization{TKey,TValue}()"/> 
+    /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
+    /// should therefor be replaced.
     /// </remarks>
+    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> (IEqualityComparer<TKey> comparer) where TValue: class
     {
       return new LazyLockingDataStoreAdapter<TKey, TValue> (

@@ -35,6 +35,7 @@ namespace Remotion.Collections
   /// <see cref="ICache{TKey,TValue}"/> thread-safe, as long as the cache is only accessed through this wrapper.
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
+  [Obsolete ("Use ConcurrentCache<TKey, TValue> instead. (Version: 1.19.3)")]
   [Serializable]
   public sealed class LockingCacheDecorator<TKey, TValue> : ICache<TKey, TValue>
   {

@@ -127,6 +127,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That (innerCache.GetOrCreateValue ("A", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
     }
 
+#pragma warning disable 618
     [Test]
     public void CreateWithLocking ()
     {
@@ -262,5 +263,6 @@ namespace Remotion.UnitTests.Collections
           Is.TypeOf (typeof (Cache<string, Lazy<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
       Assert.That (((Cache<string, Lazy<LazyLockingCachingAdapter<string, object>.Wrapper>>) innerCache3).Comparer, Is.SameAs (_comparer));
     }
+#pragma warning restore 618
   }
 }

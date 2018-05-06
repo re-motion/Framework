@@ -50,16 +50,6 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void CreateWithLocking ()
-    {
-      var result = DataStoreFactory.CreateWithLocking<string, int>();
-
-      Assert.That (result, Is.TypeOf (typeof (LockingDataStoreDecorator<string, int>)));
-      var innerStore = PrivateInvoke.GetNonPublicField (result, "_innerStore");
-      Assert.That (innerStore, Is.TypeOf (typeof (SimpleDataStore<string, int>)));
-    }
-
-    [Test]
     public void CreateWithSynchronization ()
     {
       var result = DataStoreFactory.CreateWithSynchronization<string, int>();
@@ -78,6 +68,17 @@ namespace Remotion.UnitTests.Collections
 
       Assert.That (result.GetOrCreateValue ("a", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
       Assert.That (result.GetOrCreateValue ("A", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
+    }
+
+#pragma warning disable 618
+    [Test]
+    public void CreateWithLocking ()
+    {
+      var result = DataStoreFactory.CreateWithLocking<string, int>();
+
+      Assert.That (result, Is.TypeOf (typeof (LockingDataStoreDecorator<string, int>)));
+      var innerStore = PrivateInvoke.GetNonPublicField (result, "_innerStore");
+      Assert.That (innerStore, Is.TypeOf (typeof (SimpleDataStore<string, int>)));
     }
 
     [Test]
@@ -115,5 +116,6 @@ namespace Remotion.UnitTests.Collections
       Assert.That (innerDecoratorStore, Is.TypeOf (typeof (SimpleDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
       Assert.That (((SimpleDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>) innerDecoratorStore).Comparer, Is.SameAs (_comparer));
     }
+#pragma warning restore 618
   }
 }

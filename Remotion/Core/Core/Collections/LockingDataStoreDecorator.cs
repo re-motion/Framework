@@ -31,6 +31,7 @@ namespace Remotion.Collections
   /// <see cref="IDataStore{TKey,TValue}"/> thread-safe, as long as the store is only accessed through this wrapper.
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
+  [Obsolete ("Use ConcurrentDataStore<TKey, TValue> instead. (Version: 1.19.3)")]
   [Serializable]
   public class LockingDataStoreDecorator<TKey, TValue> : IDataStore<TKey, TValue>
   {
