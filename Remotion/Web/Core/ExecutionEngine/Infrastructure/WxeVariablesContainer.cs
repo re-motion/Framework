@@ -35,8 +35,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   public class WxeVariablesContainer
   {
     private static readonly ITypeConversionProvider s_typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
-    private static readonly LockingCacheDecorator<Type, WxeParameterDeclaration[]> s_parameterDeclarations =
-        CacheFactory.CreateWithLocking<Type, WxeParameterDeclaration[]>();
+    private static readonly ICache<Type, WxeParameterDeclaration[]> s_parameterDeclarations =
+        CacheFactory.CreateWithSynchronization<Type, WxeParameterDeclaration[]>();
 
     public static WxeParameterDeclaration[] GetParameterDeclarations (Type type)
     {

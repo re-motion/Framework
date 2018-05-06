@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// </summary>
   public class BindableObjectProvider : BusinessObjectProvider
   {
-    private static readonly LockingCacheDecorator<Type, Type> s_providerAttributeTypeCache = CacheFactory.CreateWithLocking<Type, Type>();
+    private static readonly ICache<Type, Type> s_providerAttributeTypeCache = CacheFactory.CreateWithSynchronization<Type, Type>();
 
     /// <summary>
     /// Use this method as a shortcut to retrieve the <see cref="BindableObjectProvider"/> for a <see cref="Type"/> 
@@ -124,8 +124,10 @@ namespace Remotion.ObjectBinding.BindableObject
       return attribute.GetType ();
     }
 
-    private readonly IDataStore<Type, BindableObjectClass> _businessObjectClassStore = DataStoreFactory.CreateWithLocking<Type, BindableObjectClass>();
-    private readonly IDataStore<Type, IBusinessObjectService> _serviceStore = DataStoreFactory.CreateWithLocking<Type, IBusinessObjectService>();
+    private readonly IDataStore<Type, BindableObjectClass> _businessObjectClassStore =
+        DataStoreFactory.CreateWithSynchronization<Type, BindableObjectClass>();
+    private readonly IDataStore<Type, IBusinessObjectService> _serviceStore =
+        DataStoreFactory.CreateWithSynchronization<Type, IBusinessObjectService>();
     private readonly IMetadataFactory _metadataFactory;
 
     public BindableObjectProvider ()

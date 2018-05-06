@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Sample
 
     private readonly string _rootPath;
     private Hashtable _identityMap = new Hashtable();
-    private readonly LockingCacheDecorator<Type, XmlSerializer> _attributeOverridesCache = CacheFactory.CreateWithLocking<Type, XmlSerializer>();
+    private readonly ICache<Type, XmlSerializer> _attributeOverridesCache = CacheFactory.CreateWithSynchronization<Type, XmlSerializer>();
 
     public XmlReflectionBusinessObjectStorageProvider (string rootPath)
     {

@@ -30,10 +30,10 @@ namespace Remotion.Web.Services
   public static class WebServiceUtility
   {
     private static readonly ICache<Tuple<MemberInfo, Type>, Attribute> s_attributeCache =
-        CacheFactory.CreateWithLocking<Tuple<MemberInfo, Type>, Attribute>();
+        CacheFactory.CreateWithSynchronization<Tuple<MemberInfo, Type>, Attribute>();
 
     private static readonly ICache<Tuple<Type, string>, MethodInfo> s_methodInfoCache =
-        CacheFactory.CreateWithLocking<Tuple<Type, string>, MethodInfo>();
+        CacheFactory.CreateWithSynchronization<Tuple<Type, string>, MethodInfo>();
 
     /// <summary>
     /// Checks that <paramref name="type"/> and <paramref name="method"/> declare a valid web service.

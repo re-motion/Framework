@@ -42,7 +42,7 @@ namespace Remotion.Globalization.Mixins
     private MixinConfiguration _mixinConfiguration;
     private readonly IResourceManagerResolver _resourceManagerResolver;
     private readonly ICache<ITypeInformation, IResourceManager> _resourceManagerCache =
-        CacheFactory.CreateWithLocking<ITypeInformation, IResourceManager>();
+        CacheFactory.CreateWithSynchronization<ITypeInformation, IResourceManager>();
 
     public MixinGlobalizationService (IResourceManagerResolver resourceManagerResolver)
     {

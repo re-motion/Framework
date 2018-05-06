@@ -26,8 +26,8 @@ namespace Remotion.Security
   [Serializable]
   public sealed class SecurityContext : ISecurityContext, IEquatable<SecurityContext>
   {
-    private static readonly ICache<Type, bool> s_validAbstractRoleTypeCache = CacheFactory.CreateWithLocking<Type, bool>();
-    private static readonly ICache<Type, bool> s_validSecurityStateTypeCache = CacheFactory.CreateWithLocking<Type, bool>();
+    private static readonly ICache<Type, bool> s_validAbstractRoleTypeCache = CacheFactory.CreateWithSynchronization<Type, bool>();
+    private static readonly ICache<Type, bool> s_validSecurityStateTypeCache = CacheFactory.CreateWithSynchronization<Type, bool>();
 
     /// <summary>
     /// Creates a new instance of the <see cref="SecurityContext"/> type initialized for a stateless scenario, i.e. before an actual instance of the

@@ -54,8 +54,8 @@ namespace Remotion.Globalization.Implementation
 
     private readonly ConcurrentDictionary<CultureInfo, ResourceSet> _resourceSets = new ConcurrentDictionary<CultureInfo, ResourceSet>();
 
-    private readonly LockingCacheDecorator<Tuple<CultureInfo, string>, NameValueCollection> _cachedResourceSet =
-        CacheFactory.CreateWithLocking<Tuple<CultureInfo, string>, NameValueCollection>();
+    private readonly ICache<Tuple<CultureInfo, string>, NameValueCollection> _cachedResourceSet =
+        CacheFactory.CreateWithSynchronization<Tuple<CultureInfo, string>, NameValueCollection>();
 
     private readonly Func<CultureInfo, ResourceSet> _resourceSetsAddValueFactory;
     private readonly Func<CultureInfo, ResourceSet, ResourceSet> _resourceSetsUpdateValueFactory;

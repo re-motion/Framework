@@ -28,14 +28,11 @@ namespace Remotion.Reflection
   [ImplementationFor (typeof (IMemberInformationNameResolver), Lifetime = LifetimeKind.Singleton)]
   public class ReflectionBasedMemberInformationNameResolver : IMemberInformationNameResolver
   {
-    private readonly LockingCacheDecorator<IPropertyInformation, string> s_propertyNameCache =
-        CacheFactory.CreateWithLocking<IPropertyInformation, string>();
+    private readonly ICache<IPropertyInformation, string> s_propertyNameCache = CacheFactory.CreateWithSynchronization<IPropertyInformation, string>();
 
-    private readonly LockingCacheDecorator<ITypeInformation, string> s_typeNameCache =
-        CacheFactory.CreateWithLocking<ITypeInformation, string>();
+    private readonly ICache<ITypeInformation, string> s_typeNameCache = CacheFactory.CreateWithSynchronization<ITypeInformation, string>();
 
-    private readonly LockingCacheDecorator<Enum, string> s_enumCache =
-        CacheFactory.CreateWithLocking<Enum, string>();
+    private readonly ICache<Enum, string> s_enumCache = CacheFactory.CreateWithSynchronization<Enum, string>();
 
     /// <summary>
     /// Returns the mapping name for the given <paramref name="propertyInformation"/>.

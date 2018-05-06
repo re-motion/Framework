@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.SecurityProvider.Implementation
       internal Data (GuidRevisionValue revision)
           : base (revision)
       {
-        _items = CacheFactory.CreateWithLazyLocking<ISecurityContext, AccessType[]>();
+        _items = CacheFactory.CreateWithSynchronization<ISecurityContext, AccessType[]>();
       }
 
       public ICache<ISecurityContext, AccessType[]> Items
