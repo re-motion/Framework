@@ -55,6 +55,35 @@ namespace Remotion.Collections
     }
 
     /// <summary>
+    /// Creates a <see cref="ConcurrentDataStore{TKey,TValue}"/> instance that is thread-safe and uses the <see cref="EqualityComparer{T}.Default"/> 
+    /// <see cref="IEqualityComparer{T}"/>.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys.</typeparam>
+    /// <typeparam name="TValue">The type of the values.</typeparam>
+    /// <returns>
+    /// A <see cref="ConcurrentDataStore{TKey,TValue}"/> instance for storing keys and values in a thread-safe way.
+    /// </returns>
+    public static IDataStore<TKey, TValue> CreateWithSynchronization<TKey, TValue> ()
+    {
+      return new ConcurrentDataStore<TKey, TValue>();
+    }
+
+    /// <summary>
+    /// Creates a <see cref="ConcurrentDataStore{TKey,TValue}"/> instance that is thread-safe and uses the specified
+    /// <see cref="IEqualityComparer{T}"/>.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys.</typeparam>
+    /// <typeparam name="TValue">The type of the values.</typeparam>
+    /// <param name="comparer">The comparer to use for comparing keys.</param>
+    /// <returns>
+    /// A <see cref="ConcurrentDataStore{TKey,TValue}"/> instance for storing keys and values in a thread-safe way.
+    /// </returns>
+    public static IDataStore<TKey, TValue> CreateWithSynchronization<TKey, TValue> (IEqualityComparer<TKey> comparer)
+    {
+      return new ConcurrentDataStore<TKey, TValue> (comparer);
+    }
+
+    /// <summary>
     /// Creates a <see cref="LockingDataStoreDecorator{TKey,TValue}"/> instance that is thread-safe and uses the <see cref="EqualityComparer{T}.Default"/> 
     /// <see cref="IEqualityComparer{T}"/>.
     /// </summary>

@@ -15,8 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-//
-
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -94,6 +92,73 @@ namespace Remotion.Collections
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
 
       return new InvalidationTokenBasedCacheDecorator<TKey, TValue> (new Cache<TKey, TValue> (comparer), invalidationToken);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="ConcurrentCache{TKey,TValue}"/> instance that is thread-safe and uses the <see cref="EqualityComparer{T}.Default"/> 
+    /// <see cref="IEqualityComparer{T}"/>.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys.</typeparam>
+    /// <typeparam name="TValue">The type of the values.</typeparam>
+    /// <returns>
+    /// A <see cref="ConcurrentCache{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
+    /// </returns>
+    public static ICache<TKey, TValue> CreateWithSynchronization<TKey, TValue> ()
+    {
+      return new ConcurrentCache<TKey, TValue>();
+    }
+
+    /// <summary>
+    /// Creates a <see cref="ConcurrentCache{TKey,TValue}"/> instance that is thread-safe and uses the <see cref="EqualityComparer{T}.Default"/> 
+    /// <see cref="IEqualityComparer{T}"/>.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys.</typeparam>
+    /// <typeparam name="TValue">The type of the values.</typeparam>
+    /// <param name="invalidationToken">The <see cref="LockingInvalidationToken"/> that can be used to signal a cache invalidation. Must not be <see langword="null" />.</param>
+    /// <returns>
+    /// A <see cref="ConcurrentCache{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
+    /// </returns>
+    public static ICache<TKey, TValue> CreateWithSynchronization<TKey, TValue> (
+        [NotNull] LockingInvalidationToken invalidationToken)
+    {
+      ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
+
+      return new InvalidationTokenBasedCacheDecorator<TKey, TValue> (new ConcurrentCache<TKey, TValue>(), invalidationToken);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="ConcurrentCache{TKey,TValue}"/> instance that is thread-safe and uses the specified
+    /// <see cref="IEqualityComparer{T}"/>.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys.</typeparam>
+    /// <typeparam name="TValue">The type of the values.</typeparam>
+    /// <param name="comparer">The comparer to use for comparing keys.</param>
+    /// <returns>
+    /// A <see cref="ConcurrentCache{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
+    /// </returns>
+    public static ICache<TKey, TValue> CreateWithSynchronization<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey> comparer)
+    {
+      return new ConcurrentCache<TKey, TValue> (comparer);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="ConcurrentCache{TKey,TValue}"/> instance that is thread-safe and uses the specified
+    /// <see cref="IEqualityComparer{T}"/>.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys.</typeparam>
+    /// <typeparam name="TValue">The type of the values.</typeparam>
+    /// <param name="invalidationToken">The <see cref="LockingInvalidationToken"/> that can be used to signal a cache invalidation. Must not be <see langword="null" />.</param>
+    /// <param name="comparer">The comparer to use for comparing keys.</param>
+    /// <returns>
+    /// A <see cref="ConcurrentCache{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
+    /// </returns>
+    public static ICache<TKey, TValue> CreateWithSynchronization<TKey, TValue> (
+        [NotNull] LockingInvalidationToken invalidationToken,
+        [CanBeNull] IEqualityComparer<TKey> comparer)
+    {
+      ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
+
+      return new InvalidationTokenBasedCacheDecorator<TKey, TValue> (new ConcurrentCache<TKey, TValue> (comparer), invalidationToken);
     }
 
     /// <summary>

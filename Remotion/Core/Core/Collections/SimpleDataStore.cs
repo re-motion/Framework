@@ -29,7 +29,7 @@ namespace Remotion.Collections
   /// <typeparam name="TKey">The type of the keys.</typeparam>
   /// <typeparam name="TValue">The type of the values.</typeparam>
   [Serializable]
-  public class SimpleDataStore<TKey, TValue> : IDataStore<TKey, TValue>, IEnumerable<KeyValuePair<TKey, TValue>>
+  public sealed class SimpleDataStore<TKey, TValue> : IDataStore<TKey, TValue>, IEnumerable<KeyValuePair<TKey, TValue>>
   {
     private sealed class Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
     {

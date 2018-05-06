@@ -60,6 +60,27 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
+    public void CreateWithSynchronization ()
+    {
+      var result = DataStoreFactory.CreateWithSynchronization<string, int>();
+
+      Assert.That (result, Is.TypeOf (typeof (ConcurrentDataStore<string, int>)));
+    }
+
+    [Test]
+    public void CreateWithSynchronization_IEqualityComparerOverload ()
+    {
+      var result = DataStoreFactory.CreateWithSynchronization<string, int> (_comparer);
+
+      Assert.That (result, Is.TypeOf (typeof (ConcurrentDataStore<string, int>)));
+
+      result.GetOrCreateValue ("a", key => 1);
+
+      Assert.That (result.GetOrCreateValue ("a", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
+      Assert.That (result.GetOrCreateValue ("A", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
+    }
+
+    [Test]
     public void CreateWithLocking_IEqualityComparerOverload ()
     {
       var result = DataStoreFactory.CreateWithLocking<string, int> (_comparer);
