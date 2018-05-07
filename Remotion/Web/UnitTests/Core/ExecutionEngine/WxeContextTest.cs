@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Specialized;
+using System.Text;
 using System.Web;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Configuration;
@@ -248,7 +249,7 @@ public class WxeContextTest
     
     string parentUrl = _currentHttpContext.Request.Url.AbsolutePath;
     parentUrl += UrlUtility.FormatQueryString (_currentHttpContext.Request.QueryString);
-    parentUrl = UrlUtility.DeleteParameter (parentUrl, WxeHandler.Parameters.ReturnUrl);
+    parentUrl = UrlUtility.DeleteParameter (parentUrl, WxeHandler.Parameters.ReturnUrl, Encoding.UTF8);
     expectedQueryString.Add (WxeHandler.Parameters.ReturnUrl, parentUrl);
 
     string expectedUrl = UrlUtility.ResolveUrlCaseSensitive (new HttpContextWrapper (_currentHttpContext), _resource);

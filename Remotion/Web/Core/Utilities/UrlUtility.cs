@@ -234,7 +234,7 @@ namespace Remotion.Web.Utilities
     public static string AddParameter (string url, string name, string value, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull ("url", url);
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotEmpty ("name", name);
       ArgumentUtility.CheckNotNull ("value", value);
       ArgumentUtility.CheckNotNull ("encoding", encoding);
 
@@ -252,7 +252,7 @@ namespace Remotion.Web.Utilities
         delimiter = "?";
 
       value = HttpUtility.UrlEncode (value, encoding);
-      url += delimiter + name + "=" + value;
+      url += delimiter + (name != null ? name + "=" : "") + value;
 
       return url;
     }
@@ -275,7 +275,20 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull ("queryStringCollection", queryStringCollection);
 
       for (int i = 0; i < queryStringCollection.Count; i++)
-        url = AddParameter (url, queryStringCollection.GetKey (i), queryStringCollection.Get (i), encoding);
+      {
+        var key = queryStringCollection.GetKey (i);
+        var values = queryStringCollection.GetValues (i);
+        if (values == null)
+        {
+          url = AddParameter (url, key, "", encoding);
+        }
+        else
+        {
+          for (int j = 0; j < values.Length; j++)
+            url = AddParameter (url, key, values[j], encoding);
+        }
+      }
+
       return url;
     }
 
@@ -304,34 +317,35 @@ namespace Remotion.Web.Utilities
       return FormatQueryString (queryStringCollection, GetResponseEncoding());
     }
 
+    [Obsolete ("Use DeleteParameter (string, string, Encoding) instead. (Version: 1.19.3)")]
+    public static string DeleteParameter (string url, string name)
+    {
+      return DeleteParameter (url, name, GetResponseEncoding());
+    }
 
     /// <summary> Removes a <paramref name="name"/>/value pair from the <paramref name="url"/>. </summary>
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/DeleteParameter/*' />
-    public static string DeleteParameter (string url, string name)
+    public static string DeleteParameter (string url, string name, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull ("url", url);
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotEmpty ("name", name);
+      ArgumentUtility.CheckNotNull ("encoding", encoding);
 
-      int indexOfParameter = GetParameterPosition (url, name);
+      var urlParts = url.Split (new []{'?'}, 2, StringSplitOptions.None);
+      if (urlParts.Length == 1)
+        return url;
+      var urlPath = urlParts[0];
 
-      if (indexOfParameter != -1)
-      {
-        int indexOfNextDelimiter = url.IndexOf ('&', indexOfParameter + name.Length);
-        if (indexOfNextDelimiter == -1)
-        {
-          int start = indexOfParameter - 1;
-          int length = url.Length - start;
-          url = url.Remove (start, length);
-        }
-        else
-        {
-          int indexOfNextParameter = indexOfNextDelimiter + 1;
-          int length = indexOfNextParameter - indexOfParameter;
-          url = url.Remove (indexOfParameter, length);
-        }
-      }
+      var queryString = HttpUtility.ParseQueryString (urlParts[1], encoding);
+      if (queryString.Count == 0)
+        return url;
 
-      return url;
+      queryString.Remove (name);
+
+      if (queryString.Count == 0)
+        return urlPath;
+      // Cannot use queryString.ToString() because of aspnet:DontUsePercentUUrlEncoding causing the URL Parameters to always be formatted as Unicode Code Points
+      return urlPath + FormatQueryString (queryString);
     }
 
     /// <summary> Gets the decoded value of the parameter identified by <paramref name="name"/>. </summary>
@@ -339,31 +353,14 @@ namespace Remotion.Web.Utilities
     public static string GetParameter (string url, string name, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull ("url", url);
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotEmpty ("name", name);
       ArgumentUtility.CheckNotNull ("encoding", encoding);
 
-      string value = null;
-
-      int indexOfParameter = GetParameterPosition (url, name);
-      if (indexOfParameter != -1)
-      {
-        int indexOfValueDelimiter = indexOfParameter + name.Length;
-        if (indexOfValueDelimiter < url.Length && url[indexOfValueDelimiter] == '=')
-        {
-          int indexOfValue = indexOfValueDelimiter + 1;
-          int length;
-          int indexOfNextDelimiter = url.IndexOf ('&', indexOfValue);
-          if (indexOfNextDelimiter == -1)
-            length = url.Length - indexOfValue;
-          else
-            length = indexOfNextDelimiter - indexOfValue;
-
-          value = url.Substring (indexOfValue, length);
-          value = HttpUtility.UrlDecode (value, encoding);
-        }
-      }
-
-      return value;
+      var urlParts = url.Split (new []{'?'}, 2, StringSplitOptions.None);
+      if (urlParts.Length == 1)
+        return null;
+      var queryString = HttpUtility.ParseQueryString (urlParts[1], encoding);
+      return queryString[name];
     }
 
     /// <summary> Gets the decoded value of the parameter identified by <paramref name="name"/>. </summary>

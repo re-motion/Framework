@@ -23,7 +23,7 @@
       It may be empty or end with a delimiter (<c>?</c>, <c>&amp;</c>).
     </param>
     <param name="name"> 
-      The name of the url parameter to be added. Must not be <see langword="null"/> or empty. 
+      The name of the url parameter to be added. Must not be empty. 
     </param>
     <param name="value"> 
       The value of the url parameter to be added. Must not be <see langword="null"/>. 
@@ -77,6 +77,11 @@
     </param>
     <param name="name"> 
       The name of the url parameter to be removed. Must not be <see langword="null"/> or empty. 
+    </param>
+    <param name="encoding">
+      The <see cref="Encoding"/> used to encode the values in the <paramref name="url"/>. Must not be <see langword="null"/>.
+      Defaults to the <see cref="HttpResponse.ContentEncoding">HttpResponse.ContentEncoding</see> of the
+      <see cref="HttpContext.Current">Current</see> HttpContext.
     </param>
     <returns> 
       A string containing the <paramref name="url"/> minus the url parameter. 

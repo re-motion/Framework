@@ -440,7 +440,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     }
 
     [Test]
-    public void AddParameterToEmptyUrl ()
+    public void AddParameter_ToEmptyUrl ()
     {
       string url = string.Empty;
       string parameter = "Parameter1";
@@ -457,7 +457,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     }
 
     [Test]
-    public void AddParameterToUrl ()
+    public void AddParameter_ToUrl ()
     {
       string url = "http://localhost/Default.html";
       string parameter = "Parameter1";
@@ -474,7 +474,54 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     }
 
     [Test]
-    public void AddParameterToUrlWithExistingQueryString ()
+    public void AddParameter_WithParameterValueIsEmpty_ReturnsUrlWithEmptyParameterValue ()
+    {
+      string url = "http://localhost/Default.html";
+      string parameter = "Parameter1";
+
+      string expected = string.Format ("{0}?{1}=", url, parameter);
+
+      string actual = UrlUtility.AddParameter (url, parameter, "", _currentEncoding);
+      Assert.That (actual, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void AddParameter_WithParameterValueIsNull_ThrowsArgumentNullException ()
+    {
+      string url = "http://localhost/Default.html";
+      string parameter = "Parameter1";
+
+      Assert.That (() => UrlUtility.AddParameter (url, parameter, null, _currentEncoding), Throws.Exception.TypeOf<ArgumentNullException>());
+    }
+
+    [Test]
+    public void AddParameter_WithParameterNameIsNull_ReturnsUrlWithOnlyTheParameterValue ()
+    {
+      string url = "http://localhost/Default.html";
+      string value = "Value1ä#";
+
+      string expected = string.Format (
+          "{0}?{1}",
+          url,
+          HttpUtility.UrlEncode (value, _currentEncoding));
+
+      string actual = UrlUtility.AddParameter (url, null, value, _currentEncoding);
+      Assert.That (actual, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void AddParameter_WithParameterNameIsEmpty_ThrowsArgumentException ()
+    {
+      string url = "http://localhost/Default.html";
+      var value = "Value";
+
+      Assert.That (
+          () => UrlUtility.AddParameter (url, "", value, _currentEncoding),
+          Throws.ArgumentException.With.Message.EqualTo ("Parameter 'name' cannot be empty.\r\nParameter name: name"));
+    }
+
+    [Test]
+    public void AddParameter_ToUrlWithExistingQueryString ()
     {
       string url = "http://localhost/Default.html?Parameter2=Value2";
       string parameter = "Parameter1";
@@ -491,7 +538,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     }
 
     [Test]
-    public void AddParameterToUrlWithQuestionmark ()
+    public void AddParameter_ToUrlWithQuestionmark ()
     {
       string url = "http://localhost/Default.html?";
       string parameter = "Parameter1";
@@ -508,7 +555,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     }
 
     [Test]
-    public void AddParameterToUrlWithAmpersand ()
+    public void AddParameter_ToUrlWithAmpersand ()
     {
       string url = "http://localhost/Default.html?Parameter2=Value2&";
       string parameter = "Parameter1";
@@ -531,20 +578,39 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       string url = "http://localhost/Default.html";
       string parameter1 = "Parameter1";
       string parameter2 = "Parameter2";
+      string parameter3 = null;
+      string parameter4 = "Parameter4";
+      string parameter5 = "Parameter5";
       string value1 = "Value1ä#";
-      string value2 = "Value2";
+      string value2a = "Value2a";
+      string value2b = "Value2b";
+      string value3 = "Value3";
+      string value4 = string.Empty;
+      string value5 = null;
 
       NameValueCollection queryString = new NameValueCollection();
       queryString.Add (parameter1, value1);
-      queryString.Add (parameter2, value2);
+      queryString.Add (parameter2, value2a);
+      queryString.Add (parameter2, value2b);
+      queryString.Add (parameter3, value3);
+      queryString.Add (parameter4, value4);
+      queryString.Add (parameter5, value5);
 
       string expected = string.Format (
-          "{0}?{1}={2}&{3}={4}",
+          "{0}?{1}={2}&{3}={4}&{5}={6}&{8}&{9}=&{11}=",
           url,
           parameter1,
           HttpUtility.UrlEncode (value1, _currentEncoding),
           parameter2,
-          HttpUtility.UrlEncode (value2, _currentEncoding));
+          HttpUtility.UrlEncode (value2a, _currentEncoding),
+          parameter2,
+          HttpUtility.UrlEncode (value2b, _currentEncoding),
+          parameter3,
+          HttpUtility.UrlEncode (value3, _currentEncoding),
+          parameter4,
+          HttpUtility.UrlEncode (value4, _currentEncoding),
+          parameter5,
+          value5);
 
       string actual = UrlUtility.AddParameters (url, queryString, _currentEncoding);
       Assert.That (actual, Is.EqualTo (expected));
@@ -622,7 +688,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
           parameter2,
           HttpUtility.UrlEncode (value2, _currentEncoding));
 
-      string actual = UrlUtility.DeleteParameter (original, parameter2);
+      string actual = UrlUtility.DeleteParameter (original, parameter2, _currentEncoding);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -651,7 +717,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
           parameter2,
           HttpUtility.UrlEncode (value2, _currentEncoding));
 
-      string actual = UrlUtility.DeleteParameter (original, parameter1);
+      string actual = UrlUtility.DeleteParameter (original, parameter1, _currentEncoding);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -680,7 +746,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
           parameter2,
           HttpUtility.UrlEncode (value2, _currentEncoding));
 
-      string actual = UrlUtility.DeleteParameter (original, parameter1);
+      string actual = UrlUtility.DeleteParameter (original, parameter1, _currentEncoding);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -709,7 +775,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
           parameter2,
           HttpUtility.UrlEncode (value2, _currentEncoding));
 
-      string actual = UrlUtility.DeleteParameter (original, parameter2);
+      string actual = UrlUtility.DeleteParameter (original, parameter2, _currentEncoding);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -728,7 +794,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       string expected = url;
 
-      string actual = UrlUtility.DeleteParameter (original, parameter1);
+      string actual = UrlUtility.DeleteParameter (original, parameter1, _currentEncoding);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -745,7 +811,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       string expected = string.Empty;
 
-      string actual = UrlUtility.DeleteParameter (original, parameter1);
+      string actual = UrlUtility.DeleteParameter (original, parameter1, _currentEncoding);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -765,7 +831,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       string expected = original;
 
-      string actual = UrlUtility.DeleteParameter (original, parameter2);
+      string actual = UrlUtility.DeleteParameter (original, parameter2, _currentEncoding);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -794,7 +860,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
           parameter2,
           HttpUtility.UrlEncode (value2, _currentEncoding));
 
-      string actual = UrlUtility.DeleteParameter (original, parameter2);
+      string actual = UrlUtility.DeleteParameter (original, parameter2, _currentEncoding);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -823,7 +889,65 @@ namespace Remotion.Web.UnitTests.Core.Utilities
           parameter2,
           HttpUtility.UrlEncode (value2, _currentEncoding));
 
-      string actual = UrlUtility.DeleteParameter (original, parameter1);
+      string actual = UrlUtility.DeleteParameter (original, parameter1, _currentEncoding);
+      Assert.That (actual, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void DeleteParameterFromUrlWithEmptyLastParameterName ()
+    {
+      string url = "http://localhost/Default.html";
+      string parameter1 = "Parameter1";
+      string parameter2 = null;
+      string value1 = "Value1ä#";
+      string value2 = "Value2";
+
+      string original = string.Format (
+          "{0}?{1}={2}&{4}",
+          url,
+          parameter1,
+          HttpUtility.UrlEncode (value1, _currentEncoding),
+          parameter2,
+          HttpUtility.UrlEncode (value2, _currentEncoding));
+
+      string expected = string.Format (
+          "{0}?{1}={2}",
+          url,
+          parameter1,
+          HttpUtility.UrlEncode (value1, _currentEncoding),
+          parameter2,
+          HttpUtility.UrlEncode (value2, _currentEncoding));
+
+      string actual = UrlUtility.DeleteParameter (original, parameter2, _currentEncoding);
+      Assert.That (actual, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void DeleteParameterFromUrlWithEmptyFirstParameterName ()
+    {
+      string url = "http://localhost/Default.html";
+      string parameter1 = null;
+      string parameter2 = "Parameter2";
+      string value1 = "Value1ä#";
+      string value2 = "Value2";
+
+      string original = string.Format (
+          "{0}?{2}&{3}={4}",
+          url,
+          parameter1,
+          HttpUtility.UrlEncode (value1, _currentEncoding),
+          parameter2,
+          HttpUtility.UrlEncode (value2, _currentEncoding));
+
+      string expected = string.Format (
+          "{0}?{3}={4}",
+          url,
+          parameter1,
+          HttpUtility.UrlEncode (value1, _currentEncoding),
+          parameter2,
+          HttpUtility.UrlEncode (value2, _currentEncoding));
+
+      string actual = UrlUtility.DeleteParameter (original, parameter1, _currentEncoding);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -834,7 +958,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       string parameter1 = "Parameter1";
       string expected = url;
 
-      string actual = UrlUtility.DeleteParameter (url, parameter1);
+      string actual = UrlUtility.DeleteParameter (url, parameter1, _currentEncoding);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -845,8 +969,18 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       string parameter1 = "Parameter1";
       string expected = url;
 
-      string actual = UrlUtility.DeleteParameter (url, parameter1);
+      string actual = UrlUtility.DeleteParameter (url, parameter1, _currentEncoding);
       Assert.That (actual, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void DeleteParameterFromUrl_WithParameterNameIsEmpty_ThrowsArgumentException ()
+    {
+      string url = "http://localhost/Default.html";
+
+      Assert.That (
+          () => UrlUtility.DeleteParameter (url, "", _currentEncoding),
+          Throws.ArgumentException.With.Message.EqualTo ("Parameter 'name' cannot be empty.\r\nParameter name: name"));
     }
 
     [Test]
@@ -922,20 +1056,45 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     }
 
     [Test]
-    public void GetParameterFromFirstValueWithoutValueDelimiter ()
+    public void GetParameter_WithMissingParameter_ReturnsNull ()
     {
       string parameter1 = "Parameter1";
-      string parameter2 = "Parameter2";
       string value1 = "Value1ä#";
+
+      string url = string.Format (
+          "http://localhost/Default.html?{0}={1}",
+          parameter1,
+          HttpUtility.UrlEncode (value1, _currentEncoding));
+
+      string actual = UrlUtility.GetParameter (url, "SomeParameter", _currentEncoding);
+      Assert.That (actual, Is.Null);
+    }
+
+    [Test]
+    public void GetParameter_WithNullParameterName_ReturnsParameterValue ()
+    {
+      string parameter1 = "Parameter1";
+      string value1 = "Value1ä#";
+      string value2 = "Value2#ä";
 
       string url = string.Format (
           "http://localhost/Default.html?{0}={1}&{2}",
           parameter1,
           HttpUtility.UrlEncode (value1, _currentEncoding),
-          parameter2);
+          value2);
 
-      string actual = UrlUtility.GetParameter (url, parameter2, _currentEncoding);
-      Assert.That (actual, Is.Null);
+      string actual = UrlUtility.GetParameter (url, null, _currentEncoding);
+      Assert.That (actual, Is.EqualTo (value2));
+    }
+
+    [Test]
+    public void GetParameterToUrl_WithParameterNameIsEmpty_ThrowsArgumentException ()
+    {
+      string url = "http://localhost/Default.html";
+
+      Assert.That (
+          () => UrlUtility.GetParameter (url, "", _currentEncoding),
+          Throws.ArgumentException.With.Message.EqualTo ("Parameter 'name' cannot be empty.\r\nParameter name: name"));
     }
   }
 

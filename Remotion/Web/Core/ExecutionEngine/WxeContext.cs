@@ -423,7 +423,7 @@ namespace Remotion.Web.ExecutionEngine
         url = UrlUtility.GetParameter (currentUrl, WxeHandler.Parameters.ReturnUrl, _httpContext.Request.ContentEncoding);
 
         if (!string.IsNullOrEmpty (url))
-          currentUrl = UrlUtility.DeleteParameter (currentUrl, WxeHandler.Parameters.ReturnUrl);
+          currentUrl = UrlUtility.DeleteParameter (currentUrl, WxeHandler.Parameters.ReturnUrl, _httpContext.Request.ContentEncoding);
 
         returnUrls.Add (currentUrl);
       }
