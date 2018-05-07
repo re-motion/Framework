@@ -317,7 +317,7 @@ namespace Remotion.Web.Utilities
       return FormatQueryString (queryStringCollection, GetResponseEncoding());
     }
 
-    [Obsolete ("Use DeleteParameter (string, string, Encoding) instead. (Version: 1.19.3)")]
+    [Obsolete ("Use DeleteParameter (string, string, Encoding) instead. (Version: 1.18.2)")]
     public static string DeleteParameter (string url, string name)
     {
       return DeleteParameter (url, name, GetResponseEncoding());
