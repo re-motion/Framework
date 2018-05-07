@@ -463,7 +463,7 @@ namespace Remotion.UnitTests.Collections
         return new WeakReference (valueFactory);
       }
 
-      // The valueFactory must be created in a separate method: The x64 JITter (DEBUG builds only) keeps the reference alive until the variable is out of scope.
+      // The valueFactory must be created in a separate method: The x64 JITter in .NET 4.7.2 (DEBUG builds only) keeps the reference alive until the variable is out of scope.
       var valueFactoryReference = GetValueFactoryReference();
       GC.Collect();
       GC.WaitForFullGCComplete();
