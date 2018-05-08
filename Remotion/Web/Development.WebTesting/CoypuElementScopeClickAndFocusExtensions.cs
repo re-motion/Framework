@@ -61,9 +61,15 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      // This workaround is necessary, as in some cases in InternetExplorer this Property returns "true" on first access even when the scope is not disabled.
+      // This workaround is necessary, as in some cases in InternetExplorer this Property returns "true" on first couple accesses even when the scope is not disabled.
       //TODO: Remove Workaround when RM-6831 is fixed
-      var disabled = scope.Disabled;
+      for (var i = 0; i < 10; i++)
+      {
+        var disabled = scope.Disabled;
+        
+        if (!disabled)
+          break;
+      }
 
       if (scope.Disabled)
         throw AssertionExceptionUtility.CreateControlDisabledException();
