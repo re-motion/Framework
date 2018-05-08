@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 
@@ -65,12 +64,14 @@ namespace Remotion.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of the keys.</typeparam>
     /// <typeparam name="TValue">The type of the values.</typeparam>
-    /// <param name="comparer">The comparer to use for comparing keys.</param>
+    /// <param name="comparer">The comparer to use for comparing keys. Must not be <see langword="null" />.</param>
     /// <returns>
     /// A <see cref="Cache{TKey,TValue}"/> instances for storing keys and values.
     /// </returns>
-    public static ICache<TKey, TValue> Create<TKey, TValue> (IEqualityComparer<TKey> comparer)
+    public static ICache<TKey, TValue> Create<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
     {
+      ArgumentUtility.CheckNotNull ("comparer", comparer);
+
       return new Cache<TKey, TValue> (comparer);
     }
 
@@ -87,9 +88,10 @@ namespace Remotion.Collections
     /// </returns>
     public static ICache<TKey, TValue> Create<TKey, TValue> (
         [NotNull] InvalidationToken invalidationToken,
-        [CanBeNull] IEqualityComparer<TKey> comparer)
+        [NotNull] IEqualityComparer<TKey> comparer)
     {
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
+      ArgumentUtility.CheckNotNull ("comparer", comparer);
 
       return new InvalidationTokenBasedCacheDecorator<TKey, TValue> (new Cache<TKey, TValue> (comparer), invalidationToken);
     }
@@ -132,12 +134,14 @@ namespace Remotion.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of the keys.</typeparam>
     /// <typeparam name="TValue">The type of the values.</typeparam>
-    /// <param name="comparer">The comparer to use for comparing keys.</param>
+    /// <param name="comparer">The comparer to use for comparing keys. Must not be <see langword="null" />.</param>
     /// <returns>
     /// A <see cref="ConcurrentCache{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
-    public static ICache<TKey, TValue> CreateWithSynchronization<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey> comparer)
+    public static ICache<TKey, TValue> CreateWithSynchronization<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
     {
+      ArgumentUtility.CheckNotNull ("comparer", comparer);
+
       return new ConcurrentCache<TKey, TValue> (comparer);
     }
 
@@ -148,15 +152,16 @@ namespace Remotion.Collections
     /// <typeparam name="TKey">The type of the keys.</typeparam>
     /// <typeparam name="TValue">The type of the values.</typeparam>
     /// <param name="invalidationToken">The <see cref="LockingInvalidationToken"/> that can be used to signal a cache invalidation. Must not be <see langword="null" />.</param>
-    /// <param name="comparer">The comparer to use for comparing keys.</param>
+    /// <param name="comparer">The comparer to use for comparing keys. Must not be <see langword="null" />.</param>
     /// <returns>
     /// A <see cref="ConcurrentCache{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     public static ICache<TKey, TValue> CreateWithSynchronization<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken,
-        [CanBeNull] IEqualityComparer<TKey> comparer)
+        [NotNull] IEqualityComparer<TKey> comparer)
     {
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
+      ArgumentUtility.CheckNotNull ("comparer", comparer);
 
       return new InvalidationTokenBasedCacheDecorator<TKey, TValue> (new ConcurrentCache<TKey, TValue> (comparer), invalidationToken);
     }
@@ -224,7 +229,7 @@ namespace Remotion.Collections
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey> comparer)
     {
-      return new LockingCacheDecorator<TKey, TValue> (new Cache<TKey, TValue> (comparer));
+      return new LockingCacheDecorator<TKey, TValue> (new Cache<TKey, TValue> (comparer ?? EqualityComparer<TKey>.Default));
     }
 
     /// <summary>
@@ -251,7 +256,9 @@ namespace Remotion.Collections
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
 
       return new LockingCacheDecorator<TKey, TValue> (
-          new InvalidationTokenBasedCacheDecorator<TKey, TValue> (new Cache<TKey, TValue> (comparer), invalidationToken));
+          new InvalidationTokenBasedCacheDecorator<TKey, TValue> (
+              new Cache<TKey, TValue> (comparer ?? EqualityComparer<TKey>.Default),
+              invalidationToken));
     }
 
     /// <summary>
@@ -323,7 +330,7 @@ namespace Remotion.Collections
         where TValue : class
     {
       return new LazyLockingCachingAdapter<TKey, TValue> (
-          new Cache<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (comparer));
+          new Cache<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (comparer ?? EqualityComparer<TKey>.Default));
     }
 
     /// <summary>
@@ -352,7 +359,7 @@ namespace Remotion.Collections
 
       return new LazyLockingCachingAdapter<TKey, TValue> (
           new InvalidationTokenBasedCacheDecorator<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (
-              new Cache<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (comparer),
+              new Cache<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (comparer ?? EqualityComparer<TKey>.Default),
               invalidationToken));
     }
   }

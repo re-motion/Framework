@@ -17,13 +17,15 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using JetBrains.Annotations;
+using Remotion.Utilities;
 
 namespace Remotion.Collections
 {
   /// <summary>
   /// The <see cref="ExpiringDataStoreFactory"/> provides factory methods to create new expired data stores.
   /// </summary>
-  public class ExpiringDataStoreFactory
+  public static class ExpiringDataStoreFactory
   {
     /// <summary>
     /// Creates a <see cref="ExpiringDataStore{TKey,TValue,TExpirationInfo,TScanInfo}"/> instance that is not thread-safe and uses the specified
@@ -33,14 +35,18 @@ namespace Remotion.Collections
     /// <typeparam name="TValue">The type of the values.</typeparam>
     /// <typeparam name="TExpirationInfo">The type of the expiration info used by the <paramref name="policy"/>.</typeparam>
     /// <typeparam name="TScanInfo">The type of the scan info used by the <paramref name="policy"/>.</typeparam>
-    /// <param name="policy">The policy that is used to check for expired items.</param>
-    /// <param name="comparer">The comparer to use for comparing keys.</param>
+    /// <param name="policy">The policy that is used to check for expired items. Must not be <see langword="null" />.</param>
+    /// <param name="comparer">The comparer to use for comparing keys. Must not be <see langword="null" />.</param>
     /// <returns>
     /// A <see cref="ExpiringDataStore{TKey,TValue,TExpirationInfo,TScanInfo}"/> instances for storing keys and values.
     /// </returns>
     public static ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo> Create<TKey, TValue, TExpirationInfo, TScanInfo> (
-        IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy, IEqualityComparer<TKey> comparer)
+        [NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy,
+        [NotNull] IEqualityComparer<TKey> comparer)
     {
+      ArgumentUtility.CheckNotNull ("policy", policy);
+      ArgumentUtility.CheckNotNull ("comparer", comparer);
+
       return new ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo> (policy, comparer);
     }
 
@@ -52,8 +58,8 @@ namespace Remotion.Collections
     /// <typeparam name="TValue">The type of the values.</typeparam>
     /// <typeparam name="TExpirationInfo">The type of the expiration info used by the <paramref name="policy"/>.</typeparam>
     /// <typeparam name="TScanInfo">The type of the scan info used by the <paramref name="policy"/>.</typeparam>
-    /// <param name="comparer">The comparer to use for comparing keys.</param>
-    /// <param name="policy">The policy that is used to check for expired items.</param>
+    /// <param name="comparer">The comparer to use for comparing keys. Must not be <see langword="null" />.</param>
+    /// <param name="policy">The policy that is used to check for expired items. Must not be <see langword="null" />.</param>
     /// <returns>
     /// A <see cref="LockingDataStoreDecorator{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
@@ -65,8 +71,12 @@ namespace Remotion.Collections
     /// </remarks>
     [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
     public static LockingDataStoreDecorator<TKey, TValue> CreateWithLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
-        IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy, IEqualityComparer<TKey> comparer)
+        [NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy,
+        [NotNull] IEqualityComparer<TKey> comparer)
     {
+      ArgumentUtility.CheckNotNull ("policy", policy);
+      ArgumentUtility.CheckNotNull ("comparer", comparer);
+
       return new LockingDataStoreDecorator<TKey, TValue> (new ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo> (policy, comparer));
     }
 
@@ -78,8 +88,8 @@ namespace Remotion.Collections
     /// <typeparam name="TValue">The type of the values.</typeparam>
     /// <typeparam name="TExpirationInfo">The type of the expiration info used by the <paramref name="policy"/>.</typeparam>
     /// <typeparam name="TScanInfo">The type of the scan info used by the <paramref name="policy"/>.</typeparam>
-    /// <param name="comparer">The comparer to use for comparing keys.</param>
-    /// <param name="policy">The policy that is used to check for expired items.</param>
+    /// <param name="comparer">The comparer to use for comparing keys. Must not be <see langword="null" />.</param>
+    /// <param name="policy">The policy that is used to check for expired items. Must not be <see langword="null" />.</param>
     /// <returns>
     /// A <see cref="LazyLockingDataStoreAdapter{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
@@ -91,10 +101,13 @@ namespace Remotion.Collections
     /// </remarks>
     [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
     public static LazyLockingDataStoreAdapter<TKey, TValue> CreateWithLazyLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
-        IExpirationPolicy<Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> policy,
-        IEqualityComparer<TKey> comparer) 
+        [NotNull] IExpirationPolicy<Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> policy,
+        [NotNull] IEqualityComparer<TKey> comparer) 
         where TValue: class
     {
+      ArgumentUtility.CheckNotNull ("policy", policy);
+      ArgumentUtility.CheckNotNull ("comparer", comparer);
+
       return new LazyLockingDataStoreAdapter<TKey, TValue> (
           new ExpiringDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> (
               policy, 

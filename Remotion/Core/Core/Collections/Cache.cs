@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Collections
@@ -100,8 +101,10 @@ namespace Remotion.Collections
       _innerDictionary = new Dictionary<TKey, Data>();
     }
 
-    public Cache (IEqualityComparer<TKey> comparer)
+    public Cache ([NotNull] IEqualityComparer<TKey> comparer)
     {
+      ArgumentUtility.CheckNotNull ("comparer", comparer);
+
       _innerDictionary = new Dictionary<TKey, Data> (comparer);
     }
 
