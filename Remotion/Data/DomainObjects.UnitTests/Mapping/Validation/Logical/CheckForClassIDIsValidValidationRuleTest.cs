@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [TestCase ("aä")]
     [TestCase ("a_")]
     [TestCase ("a1")]
-    public void Initialize_WithValidClassID (string classID)
+    public void ValidClassID (string classID)
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (id: classID);
 
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [TestCase ("a.a")]
     [TestCase ("a a")]
     [TestCase ("a+a")]
-    public void Initialize_WithInvalidClassID_ThrowsArgumentException (string classID)
+    public void InvalidClassID (string classID)
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (id: classID);
 
