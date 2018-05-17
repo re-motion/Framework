@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -48,10 +49,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Value cannot contain '&amp;pipe;'.\r\nParameter name: value")]
-    public void Initialize_EscapedDelimiterPlaceholderInValue ()
+    public void Initialize_DelimiterInValue_IsValud ()
     {
-      Dev.Null = new ObjectID ("Official", "Arthur|Dent &pipe; &amp;pipe; Zaphod Beeblebrox");
+      Assert.That (() => new ObjectID ("Official", "Arthur" + ObjectIDStringSerializer.Delimiter + "Dent"), Throws.Nothing);
     }
 
     [Test]

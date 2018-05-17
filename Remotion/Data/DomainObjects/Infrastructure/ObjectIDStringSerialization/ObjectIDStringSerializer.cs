@@ -27,28 +27,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
   {
     public static readonly ObjectIDStringSerializer Instance = new ObjectIDStringSerializer ();
 
-    private const char c_delimiter = '|';
-    private const string c_escapedDelimiter = "&pipe;";
-    private const string c_escapedDelimiterPlaceholder = "&amp;pipe;";
+    public const char Delimiter = '|';
 
     private ObjectIDStringSerializer ()
     {
-    }
-
-    /// <summary>
-    /// Checks whether the given <paramref name="value"/> can be used as an <see cref="ObjectID"/> value if the <see cref="ObjectID"/> should
-    /// later be serialized to a <see cref="string"/>.
-    /// </summary>
-    /// <param name="value">The value.</param>
-    public void CheckSerializableStringValue (string value)
-    {
-      ArgumentUtility.CheckNotNull ("value", value);
-
-      if (value.IndexOf (c_escapedDelimiterPlaceholder) >= 0)
-      {
-        var message = string.Format ("Value cannot contain '{0}'.", c_escapedDelimiterPlaceholder);
-        throw new ArgumentException (message, "value");
-      }
     }
 
     /// <summary>
@@ -60,9 +42,21 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 
       Type valueType = objectID.Value.GetType ();
 
-      return Escape (objectID.ClassID) + c_delimiter +
-             Escape (objectID.Value.ToString ()) + c_delimiter +
-             Escape (valueType.FullName);
+#if DEBUG
+      if (objectID.ClassID.IndexOf (Delimiter) != -1)
+      {
+        throw new ArgumentException (
+            string.Format (
+                "The class id '{0}' contains the delimiter character ('{1}'). This is not allowed when serializing the ObjectID.",
+                objectID.ClassID,
+                Delimiter),
+            "objectID");
+      }
+#endif
+
+      return objectID.ClassID + Delimiter +
+             objectID.Value.ToString() + Delimiter +
+             valueType.FullName;
     }
 
     /// <summary>
@@ -71,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     public ObjectID Parse (string objectIDString)
     {
       ArgumentUtility.CheckNotNull ("objectIDString", objectIDString);
-      return ParseWithCustomErrorHandler (objectIDString, msg => { throw new FormatException (msg); });
+      return ParseWithCustomErrorHandler (objectIDString, msg => throw new FormatException (msg));
     }
 
     /// <summary>
@@ -89,55 +83,62 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     {
       ArgumentUtility.CheckNotNull ("objectIDString", objectIDString);
 
+      var indexOfClassIDDelimiter = objectIDString.IndexOf (Delimiter);
+      var indexOfValuePart = indexOfClassIDDelimiter + 1;
+      var indexOfTypeDelimiter = objectIDString.LastIndexOf (Delimiter);
+      var indexOfTypePart = indexOfTypeDelimiter + 1;
+
       if (objectIDString == string.Empty)
-      {
-        var message = string.Format ("Serialized ObjectID '{0}' is not correctly formatted: it must not be empty.", objectIDString);
-        return errorHandler (message);
-      }
+        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: it must not be empty.", objectIDString));
 
-      string[] parts = objectIDString.Split (c_delimiter);
-      if (parts.Length != 3)
-      {
-        var message = string.Format ("Serialized ObjectID '{0}' is not correctly formatted: it should have three parts.", objectIDString);
-        return errorHandler (message);
-      }
+      if (indexOfClassIDDelimiter < 0)
+        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: it must have three parts.", objectIDString));
 
-      for (int i = 0; i < parts.Length; i++)
-        parts[i] = Unescape (parts[i]);
+      if (indexOfValuePart == objectIDString.Length)
+        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: it must have three parts.", objectIDString));
 
-      Type type = TypeUtility.GetType (parts[2], false);
+      if (indexOfTypeDelimiter < indexOfValuePart)
+        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: it must have three parts.", objectIDString));
+
+      if (indexOfClassIDDelimiter < 2)
+        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: the class id must not be empty.", objectIDString));
+
+      if (indexOfTypeDelimiter < indexOfValuePart + 1)
+        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: the value must not be empty.", objectIDString));
+
+      if (indexOfTypeDelimiter > objectIDString.Length - 2)
+        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: the type must not be empty.", objectIDString));
+
+      var classIDPart = objectIDString.Substring (0, indexOfClassIDDelimiter);
+      var valuePart = objectIDString.Substring (indexOfValuePart, indexOfTypeDelimiter - indexOfValuePart);
+      var typePart = objectIDString.Substring (indexOfTypePart);
+
+      Type type = TypeUtility.GetType (typePart, false);
       if (type == null)
       {
-        var message = string.Format ("Serialized ObjectID '{0}' is invalid: '{1}' is not the name of a loadable type.", objectIDString, parts[2]);
-        return errorHandler (message);
+        return errorHandler (
+            string.Format ("Serialized ObjectID '{0}' is invalid: '{1}' is not the name of a loadable type.", objectIDString, typePart));
       }
 
       var valueParser = GetValueParser (type);
       if (valueParser == null)
-      {
-        var message = string.Format ("Serialized ObjectID '{0}' is invalid: type '{1}' is not supported.", objectIDString, parts[2]);
-        return errorHandler (message);
-      }
+        return errorHandler (string.Format ("Serialized ObjectID '{0}' is invalid: type '{1}' is not supported.", objectIDString, typePart));
 
       object value;
-      if (!valueParser.TryParse (parts[1], out value))
+      if (!valueParser.TryParse (valuePart, out value))
       {
-        var message = string.Format (
+        return errorHandler (string.Format (
             "Serialized ObjectID '{0}' is not correctly formatted: value '{1}' is not in the correct format for type '{2}'.",
             objectIDString,
-            parts[1], 
-            parts[2]);
-        return errorHandler (message);
-      }
-      
-      if (!MappingConfiguration.Current.ContainsClassDefinition (parts[0]))
-      {
-        var message = string.Format ("Serialized ObjectID '{0}' is invalid: '{1}' is not a valid class ID.", objectIDString, parts[0]);
-        return errorHandler (message);
+            valuePart, 
+            typePart));
       }
 
-      var classDefinition = MappingConfiguration.Current.GetClassDefinition (parts[0]);
-      return new ObjectID(classDefinition, value);
+      if (!MappingConfiguration.Current.ContainsClassDefinition (classIDPart))
+        return errorHandler (string.Format ("Serialized ObjectID '{0}' is invalid: '{1}' is not a valid class ID.", objectIDString, classIDPart));
+
+      var classDefinition = MappingConfiguration.Current.GetClassDefinition (classIDPart);
+      return new ObjectID (classDefinition, value);
     }
 
     private IObjectIDValueParser GetValueParser (Type type)
@@ -150,28 +151,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
         return StringObjectIDValueParser.Instance;
       else
         return null;
-    }
-
-    private string Escape (string value)
-    {
-      if (value.IndexOf (c_escapedDelimiter) >= 0)
-        value = value.Replace (c_escapedDelimiter, c_escapedDelimiterPlaceholder);
-
-      if (value.IndexOf (c_delimiter) >= 0)
-        value = value.Replace (c_delimiter.ToString(), c_escapedDelimiter);
-
-      return value;
-    }
-
-    private static string Unescape (string value)
-    {
-      if (value.IndexOf (c_escapedDelimiter) >= 0)
-        value = value.Replace (c_escapedDelimiter, c_delimiter.ToString());
-
-      if (value.IndexOf (c_escapedDelimiterPlaceholder) >= 0)
-        value = value.Replace (c_escapedDelimiterPlaceholder, c_escapedDelimiter);
-
-      return value;
     }
   }
 }
