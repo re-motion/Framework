@@ -124,13 +124,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var validator = (ClassDefinitionValidator) _mappingReflector.CreateClassDefinitionValidator();
 
-      Assert.That (validator.ValidationRules.Count, Is.EqualTo (6));
+      Assert.That (validator.ValidationRules.Count, Is.EqualTo (7));
       Assert.That (validator.ValidationRules[0], Is.TypeOf (typeof (DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule)));
       Assert.That (validator.ValidationRules[1], Is.TypeOf (typeof (DomainObjectTypeIsNotGenericValidationRule)));
       Assert.That (validator.ValidationRules[2], Is.TypeOf (typeof (InheritanceHierarchyFollowsClassHierarchyValidationRule)));
       Assert.That (validator.ValidationRules[3], Is.TypeOf (typeof (StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule)));
       Assert.That (validator.ValidationRules[4], Is.TypeOf (typeof (ClassDefinitionTypeIsSubclassOfDomainObjectValidationRule)));
       Assert.That (validator.ValidationRules[5], Is.TypeOf (typeof (StorageGroupTypesAreSameWithinInheritanceTreeRule)));
+      Assert.That (validator.ValidationRules[6], Is.TypeOf (typeof (CheckForClassIDIsValidValidationRule)));
     }
 
     [Test]

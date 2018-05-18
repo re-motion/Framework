@@ -644,9 +644,7 @@
     <Compile Include="UI\Controls\WebMenuItemCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Controls\WebTab.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="UI\Controls\WebTab.cs" />
     <Compile Include="UI\Controls\WebTabCollection.cs">
       <SubType>Code</SubType>
     </Compile>
