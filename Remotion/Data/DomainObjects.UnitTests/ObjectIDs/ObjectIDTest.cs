@@ -91,6 +91,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     }
 
     [Test]
+    public void ToString_CachesValue ()
+    {
+      var id1 = new ObjectID ("Order", new Guid ("{5D09030C-25C2-4735-B514-46333BD28AC8}"));
+      var id2 = new ObjectID ("Order", new Guid ("{5D09030C-25C2-4735-B514-46333BD28AC8}"));
+
+      // Note: two calls to ObjectID.ToString() on different threads may result in different string instanced. 
+      // For the purpose of this unit test, this detail can be safely ignored.
+      Assert.That (id1.ToString (), Is.SameAs (id1.ToString()));
+
+      Assert.That (id1.ToString (), Is.EqualTo (id2.ToString()));
+      Assert.That (id1.ToString (), Is.Not.SameAs (id2.ToString()));
+    }
+
+    [Test]
     public void SerializeGuidValue ()
     {
       var id = new ObjectID ("Order", new Guid ("{5D09030C-25C2-4735-B514-46333BD28AC8}"));
