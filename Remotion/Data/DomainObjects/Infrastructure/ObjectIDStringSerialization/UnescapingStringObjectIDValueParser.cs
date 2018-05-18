@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     private static string Unescape (string value)
     {
       if (value.IndexOf (c_escapedDelimiter) >= 0)
-        value = value.Replace (c_escapedDelimiter, ObjectIDStringSerializer.Delimiter.ToString());
+        value = value.Replace (c_escapedDelimiter, ObjectIDStringSerializer.DelimiterAsString);
 
       if (value.IndexOf (c_escapedDelimiterPlaceholder) >= 0)
         value = value.Replace (c_escapedDelimiterPlaceholder, c_escapedDelimiter);
