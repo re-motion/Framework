@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Text;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -23,11 +24,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
   /// <summary>
   /// Provides a mechanism to serialize <see cref="ObjectID"/> instances to and from strings.
   /// </summary>
+  /// <threadsafety static="true" instance="true"/>
   public class ObjectIDStringSerializer
   {
-    public static readonly ObjectIDStringSerializer Instance = new ObjectIDStringSerializer ();
-
     public const char Delimiter = '|';
+
+    public static readonly ObjectIDStringSerializer Instance = new ObjectIDStringSerializer();
+
+    private static readonly string s_delimiterAsString = Delimiter.ToString();
+    private static readonly string s_delimitedGuidTypeName = Delimiter + typeof (Guid).FullName;
+    private static readonly string s_delimitedInt32TypeName = Delimiter + typeof (Int32).FullName;
+    private static readonly string s_delimitedStringTypeName = Delimiter + typeof (String).FullName;
 
     private ObjectIDStringSerializer ()
     {
@@ -39,8 +46,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     public string Serialize (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
-
-      Type valueType = objectID.Value.GetType ();
 
 #if DEBUG
       if (objectID.ClassID.IndexOf (Delimiter) != -1)
@@ -54,9 +59,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       }
 #endif
 
-      return objectID.ClassID + Delimiter +
-             objectID.Value.ToString() + Delimiter +
-             valueType.FullName;
+      return string.Concat (
+          objectID.ClassID,
+          s_delimiterAsString,
+          objectID.Value.ToString(),
+          GetDelimitedValueTypeName (objectID.Value));
     }
 
     /// <summary>
@@ -145,12 +152,24 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     {
       if (type == typeof (Guid))
         return GuidObjectIDValueParser.Instance;
-      else if (type == typeof (int))
+      else if (type == typeof (Int32))
         return Int32ObjectIDValueParser.Instance;
-      else if (type == typeof (string))
+      else if (type == typeof (String))
         return StringObjectIDValueParser.Instance;
       else
         return null;
+    }
+
+    private string GetDelimitedValueTypeName (object value)
+    {
+      if (value is Guid)
+        return s_delimitedGuidTypeName;
+      else if (value is Int32)
+        return s_delimitedInt32TypeName;
+      else if (value is String)
+        return s_delimitedStringTypeName;
+      else
+        throw new FormatException (string.Format ("ObjectIDs with a value of type '{0}' are not supported.", value.GetType().FullName));
     }
   }
 }
