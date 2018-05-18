@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
   {
     public static readonly ObjectIDStringSerializer Instance = new ObjectIDStringSerializer ();
 
-    private const char c_delimiter = '|';
+    public const char Delimiter = '|';
     private const string c_escapedDelimiter = "&pipe;";
     private const string c_escapedDelimiterPlaceholder = "&amp;pipe;";
 
@@ -60,8 +60,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 
       Type valueType = objectID.Value.GetType ();
 
-      return Escape (objectID.ClassID) + c_delimiter +
-             Escape (objectID.Value.ToString ()) + c_delimiter +
+      return Escape (objectID.ClassID) + Delimiter +
+             Escape (objectID.Value.ToString ()) + Delimiter +
              Escape (valueType.FullName);
     }
 
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
         return errorHandler (message);
       }
 
-      string[] parts = objectIDString.Split (c_delimiter);
+      string[] parts = objectIDString.Split (Delimiter);
       if (parts.Length != 3)
       {
         var message = string.Format ("Serialized ObjectID '{0}' is not correctly formatted: it should have three parts.", objectIDString);
@@ -157,8 +157,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       if (value.IndexOf (c_escapedDelimiter) >= 0)
         value = value.Replace (c_escapedDelimiter, c_escapedDelimiterPlaceholder);
 
-      if (value.IndexOf (c_delimiter) >= 0)
-        value = value.Replace (c_delimiter.ToString(), c_escapedDelimiter);
+      if (value.IndexOf (Delimiter) >= 0)
+        value = value.Replace (Delimiter.ToString(), c_escapedDelimiter);
 
       return value;
     }
@@ -166,7 +166,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     private static string Unescape (string value)
     {
       if (value.IndexOf (c_escapedDelimiter) >= 0)
-        value = value.Replace (c_escapedDelimiter, c_delimiter.ToString());
+        value = value.Replace (c_escapedDelimiter, Delimiter.ToString());
 
       if (value.IndexOf (c_escapedDelimiterPlaceholder) >= 0)
         value = value.Replace (c_escapedDelimiterPlaceholder, c_escapedDelimiter);

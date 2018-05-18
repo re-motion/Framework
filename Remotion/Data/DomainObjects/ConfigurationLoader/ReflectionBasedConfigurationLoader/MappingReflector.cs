@@ -156,7 +156,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
           new InheritanceHierarchyFollowsClassHierarchyValidationRule(),
           new StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule(),
           new ClassDefinitionTypeIsSubclassOfDomainObjectValidationRule(),
-          new StorageGroupTypesAreSameWithinInheritanceTreeRule());
+          new StorageGroupTypesAreSameWithinInheritanceTreeRule(),
+          new CheckForClassIDIsValidValidationRule());
     }
 
     public IPropertyDefinitionValidator CreatePropertyDefinitionValidator ()
