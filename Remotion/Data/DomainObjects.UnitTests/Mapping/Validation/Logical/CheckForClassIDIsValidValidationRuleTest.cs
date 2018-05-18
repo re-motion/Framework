@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
@@ -58,6 +59,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [TestCase ("|b")]
     public void InvalidClassID (string classID)
     {
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (id: classID);
+
+      var validationResult = _validationRule.Validate (classDefinition);
+
+      var expectedMessage =
+          string.Format (
+              "The Class-ID '{0}' is not valid. Valid Class-IDs must not contain the pipe-character ('|').\r\n\r\n"
+              + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order",
+              classID);
+      AssertMappingValidationResult (validationResult, false, expectedMessage);
+    }
+
+    [Test]
+    public void IntegrationTestForObjectIDStringSerializer ()
+    {
+      var classID = "Class" + ObjectIDStringSerializer.Delimiter + "End";
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (id: classID);
 
       var validationResult = _validationRule.Validate (classDefinition);

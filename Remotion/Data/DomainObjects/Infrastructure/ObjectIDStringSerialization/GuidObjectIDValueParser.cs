@@ -34,22 +34,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     {
       ArgumentUtility.CheckNotNull ("stringValue", stringValue);
 
-      if (stringValue == string.Empty)
+      Guid guidValue;
+      if (Guid.TryParse (stringValue, out guidValue))
       {
-        resultValue = null;
-        return false;
-      }
-
-      try
-      {
-        resultValue = new Guid (stringValue);
+        resultValue = guidValue;
         return true;
       }
-      catch (FormatException) // Note: Guid does not contain a TryParse method; therefore, we have to catch the exception here.
-      {
-        resultValue = null;
-        return false;
-      }
+
+      resultValue = null;
+      return false;
     }
   }
 }
