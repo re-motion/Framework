@@ -118,6 +118,7 @@ namespace Remotion.Data.DomainObjects
     private readonly object _value;
     private readonly ClassDefinition _classDefinition;
     private int _cachedHashCode;
+    private string _cachedSerializedValue;
     
     /// <summary>
     /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
@@ -267,7 +268,14 @@ namespace Remotion.Data.DomainObjects
     /// <returns>A <see cref="String"/> that represents the current <see cref="ObjectID"/>.</returns>
     public override string ToString ()
     {
-      return ObjectIDStringSerializer.Instance.Serialize (this);
+      // Use lazy initialization because of deserialization.
+
+      // Note: The following code might result in initializing identical values on multiple threads. This is a non-issue.
+
+      if (_cachedSerializedValue == null)
+        _cachedSerializedValue = ObjectIDStringSerializer.Instance.Serialize (this);
+
+      return _cachedSerializedValue;
     }
 
     /// <summary>
