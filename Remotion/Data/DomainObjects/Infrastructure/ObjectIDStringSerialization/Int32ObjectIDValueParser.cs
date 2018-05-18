@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       ArgumentUtility.CheckNotNull ("stringValue", stringValue);
 
       int intValue;
-      if (stringValue != string.Empty && int.TryParse (stringValue, out intValue))
+      if (Int32.TryParse (stringValue, out intValue))
       {
         resultValue = intValue;
         return true;

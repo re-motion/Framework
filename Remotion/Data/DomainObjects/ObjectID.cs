@@ -359,9 +359,6 @@ namespace Remotion.Data.DomainObjects
         throw CreateArgumentException (argumentName, "Remotion.Data.DomainObjects.ObjectID does not support values of type '{0}'.", valueType);
 
       if (valueType == typeof (string))
-        ObjectIDStringSerializer.Instance.CheckSerializableStringValue ((string) value);
-
-      if (valueType == typeof (string))
         ArgumentUtility.CheckNotEmpty (argumentName, (string) value);
 
       if (valueType == typeof (Guid))
