@@ -21,6 +21,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Development.UnitTesting;
+using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Collections
 {
@@ -90,6 +91,30 @@ namespace Remotion.UnitTests.Collections
 
       var valueOnSecondCall = decorator.GetOrCreateValue (key, o => { throw new InvalidOperationException(); });
       Assert.That (valueOnSecondCall, Is.EqualTo ("Value2"));
+    }
+
+    [Test]
+    public void GetOrCreateValue_RetriesClearUntilInvalidationTokenIsCurrent ()
+    {
+      var cacheStub = MockRepository.GenerateStub<ICache<object, string>>();
+      var invalidationToken = InvalidationToken.Create();
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cacheStub, invalidationToken);
+      var key = new object();
+      var count = 0;
+      cacheStub.Stub (_ => _.Clear()).WhenCalled (
+          mi =>
+          {
+            if (count < 2)
+            {
+              invalidationToken.Invalidate();
+              count++;
+            }
+          });
+      cacheStub.Stub (_ => _.GetOrCreateValue (key, o => null)).IgnoreArguments().Return ("Value");
+
+      var value = decorator.GetOrCreateValue (key, o => null);
+
+      Assert.That (value, Is.EqualTo ("Value"));
     }
 
     [Test]
@@ -282,6 +307,26 @@ namespace Remotion.UnitTests.Collections
 
       Assert.That (result, Is.True);
       Assert.That (value, Is.EqualTo ("Value"));
+    }
+
+    [Test]
+    public void Clear_RetriesClearUntilInvalidationTokenIsCurrent ()
+    {
+      var cacheStub = MockRepository.GenerateStub<ICache<object, string>>();
+      var invalidationToken = InvalidationToken.Create();
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cacheStub, invalidationToken);
+      var count = 0;
+      cacheStub.Stub (_ => _.Clear()).WhenCalled (
+          mi =>
+          {
+            if (count < 2)
+            {
+              invalidationToken.Invalidate();
+              count++;
+            }
+          });
+
+      ((ICache<object, string>) decorator).Clear();
     }
 
     [Test]
