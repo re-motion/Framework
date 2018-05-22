@@ -73,6 +73,73 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
+    public void GetOrCreateValue_WithException ()
+    {
+      var exception = new Exception();
+      Assert.That (
+          () => _cache.GetOrCreateValue ("key1", key => { throw exception; }),
+          Throws.Exception.SameAs (exception));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithException_DoesNotCacheException ()
+    {
+      var exception1 = new Exception();
+      Assert.That (
+          () => _cache.GetOrCreateValue ("key1", key => { throw exception1; }),
+          Throws.Exception.SameAs (exception1));
+
+      var exception2 = new Exception();
+      Assert.That (
+          () => _cache.GetOrCreateValue ("key1", key => { throw exception2; }),
+          Throws.Exception.SameAs (exception2));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithException_TryGetValue_HasNoValue ()
+    {
+      var exception = new Exception();
+      Assert.That (
+          () => _cache.GetOrCreateValue ("key1", key => { throw exception; }),
+          Throws.Exception.SameAs (exception));
+
+      object actual;
+      Assert.That (_cache.TryGetValue ("key1", out actual), Is.False);
+      Assert.That (actual, Is.Null);
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithException_GetOrCreateValue_InsertsSecondValue ()
+    {
+      var exception = new Exception();
+      Assert.That (
+          () => _cache.GetOrCreateValue ("key1", key => { throw exception; }),
+          Throws.Exception.SameAs (exception));
+
+      object expected = new object ();
+      object actual = _cache.GetOrCreateValue ("key1", key => expected);
+      Assert.That (actual, Is.SameAs (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_DoesNotKeepFactoryAlive ()
+    {
+      // The valueFactory must be created in a separate method: The x64 JITter in .NET 4.7.2 (DEBUG builds only) keeps the reference alive until the variable is out of scope.
+      var valueFactoryReference = GetOrCreateValue_DoesNotKeepFactoryAlive_GetValueFactoryReference();
+      GC.Collect();
+      GC.WaitForFullGCComplete();
+      Assert.That (valueFactoryReference.IsAlive, Is.False);
+    }
+
+    private WeakReference GetOrCreateValue_DoesNotKeepFactoryAlive_GetValueFactoryReference ()
+    {
+      object expected = new object();
+      Func<string, object> valueFactory = key => expected;
+      Assert.That (_cache.GetOrCreateValue ("key1", valueFactory), Is.SameAs (expected));
+      return new WeakReference (valueFactory);
+    }
+
+    [Test]
     public void GetOrCreateValue_TryGetValue ()
     {
       object expected = new object ();
