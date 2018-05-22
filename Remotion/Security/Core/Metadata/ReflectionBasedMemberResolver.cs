@@ -72,7 +72,7 @@ namespace Remotion.Security.Metadata
       }
     }
 
-    private static readonly ICache<CacheKey, IMethodInformation> s_cache = CacheFactory.CreateWithLocking<CacheKey, IMethodInformation>();
+    private static readonly ICache<CacheKey, IMethodInformation> s_cache = CacheFactory.CreateWithSynchronization<CacheKey, IMethodInformation>();
 
     public ReflectionBasedMemberResolver ()
     {

@@ -59,7 +59,7 @@ namespace Remotion.Security.Metadata
 
     private static readonly Enum[] s_emptyPermissions = new Enum[0];
     private readonly IPermissionProvider _innerPermissionProvider;
-    private readonly ICache<CacheKey, IReadOnlyList<Enum>> _cache = CacheFactory.CreateWithLocking<CacheKey, IReadOnlyList<Enum>>();
+    private readonly ICache<CacheKey, IReadOnlyList<Enum>> _cache = CacheFactory.CreateWithSynchronization<CacheKey, IReadOnlyList<Enum>>();
     private readonly Func<CacheKey, IReadOnlyList<Enum>> _cacheValueFactory;
 
     public CachingPermissionProviderDecorator (IPermissionProvider innerPermissionProvider)

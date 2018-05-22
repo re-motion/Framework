@@ -37,7 +37,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       where TRevisionValue : IRevisionValue
   {
     private static readonly ILog s_log = LogManager.GetLogger (MethodInfo.GetCurrentMethod().DeclaringType);
-    private static readonly ICache<string, IQuery> s_queryCache = CacheFactory.CreateWithLocking<string, IQuery>();
+    private static readonly ICache<string, IQuery> s_queryCache = CacheFactory.CreateWithSynchronization<string, IQuery>();
 
     protected SecurityContextRevisionBasedCacheBase (IRevisionProvider<TRevisionKey, TRevisionValue> revisionProvider)
         : base (revisionProvider)

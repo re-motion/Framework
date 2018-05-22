@@ -32,8 +32,8 @@ namespace Remotion.Globalization.Implementation
   {
     private readonly IResourceManagerResolver _resourceManagerResolver;
 
-    private readonly ICache<ITypeInformation, IResourceManager> _resourceManagerCache =
-        CacheFactory.CreateWithLocking<ITypeInformation, IResourceManager>();
+    private readonly ICache<ITypeInformation, IResourceManager> _resourceManagerCache = 
+        CacheFactory.CreateWithSynchronization<ITypeInformation, IResourceManager>();
 
     public GlobalizationService (IResourceManagerResolver resourceManagerResolver)
     {

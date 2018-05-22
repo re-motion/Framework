@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.SecurityProvider.Implementation
       internal Data (GuidRevisionValue revision)
           : base (revision)
       {
-        _items = CacheFactory.CreateWithLocking<ISecurityPrincipal, AccessTypeCache>();
+        _items = CacheFactory.CreateWithSynchronization<ISecurityPrincipal, AccessTypeCache>();
       }
 
       public ICache<ISecurityPrincipal, AccessTypeCache> Items

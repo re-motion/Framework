@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
   public sealed class FlattenedDeserializationInfo
   {
     private static readonly ICache<Type, Func<FlattenedDeserializationInfo, object>> s_instanceFactoryCache =
-        CacheFactory.CreateWithLocking<Type, Func<FlattenedDeserializationInfo, object>>();
+        CacheFactory.CreateWithSynchronization<Type, Func<FlattenedDeserializationInfo, object>>();
 
     public event EventHandler DeserializationFinished;
 

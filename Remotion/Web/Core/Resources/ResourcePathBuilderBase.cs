@@ -26,7 +26,7 @@ namespace Remotion.Web.Resources
   /// </summary>
   public abstract class ResourcePathBuilderBase : IResourcePathBuilder
   {
-    private static readonly ICache<Assembly, AssemblyName> s_assemblyNameCache = CacheFactory.CreateWithLocking<Assembly, AssemblyName>();
+    private static readonly ICache<Assembly, AssemblyName> s_assemblyNameCache = CacheFactory.CreateWithSynchronization<Assembly, AssemblyName>();
 
     protected abstract string GetResourceRoot ();
 

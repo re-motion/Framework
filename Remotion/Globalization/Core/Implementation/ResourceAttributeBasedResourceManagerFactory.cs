@@ -37,8 +37,8 @@ namespace Remotion.Globalization.Implementation
   {
     public const int Position = 19;
 
-    private readonly LockingCacheDecorator<Tuple<Assembly, string>, ResourceManagerWrapper> _resourceManagersCache =
-        CacheFactory.CreateWithLocking<Tuple<Assembly, string>, ResourceManagerWrapper>();
+    private readonly ICache<Tuple<Assembly, string>, ResourceManagerWrapper> _resourceManagersCache =
+        CacheFactory.CreateWithSynchronization<Tuple<Assembly, string>, ResourceManagerWrapper>();
 
     public ResourceAttributeBasedResourceManagerFactory ()
     {

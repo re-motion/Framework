@@ -30,7 +30,7 @@ namespace Remotion.Security
   [Serializable]
   public struct EnumWrapper : IEquatable<EnumWrapper>
   {
-    private static readonly ICache<Enum, EnumWrapper> s_enumWrapperCache = CacheFactory.CreateWithLocking<Enum, EnumWrapper>();
+    private static readonly ICache<Enum, EnumWrapper> s_enumWrapperCache = CacheFactory.CreateWithSynchronization<Enum, EnumWrapper>();
 
     /// <summary>
     /// Gets an <see cref="EnumWrapper"/>, setting the wrapper's <see cref="Name"/> to a string of the format "valueName|typeName".

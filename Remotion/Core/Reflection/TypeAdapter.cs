@@ -33,7 +33,7 @@ namespace Remotion.Reflection
   {
     //If this is changed to an (expiring) cache, equals implementation must be updated.
     private static readonly IDataStore<Type, TypeAdapter> s_dataStore =
-        DataStoreFactory.CreateWithLocking<Type, TypeAdapter> (ReferenceEqualityComparer<Type>.Instance);
+        DataStoreFactory.CreateWithSynchronization<Type, TypeAdapter> (ReferenceEqualityComparer<Type>.Instance);
 
     private static readonly Func<Type, TypeAdapter> s_ctorFunc = t => new TypeAdapter (t);
 

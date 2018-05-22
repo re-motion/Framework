@@ -28,7 +28,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   [ImplementationFor (typeof(ExtensibleEnumDefinitionCache), Lifetime = LifetimeKind.Singleton)]
   public sealed class ExtensibleEnumDefinitionCache
   {
-    private readonly LockingCacheDecorator<Type, IExtensibleEnumDefinition> _cache = CacheFactory.CreateWithLocking<Type, IExtensibleEnumDefinition>();
+    private readonly ICache<Type, IExtensibleEnumDefinition> _cache = CacheFactory.CreateWithSynchronization<Type, IExtensibleEnumDefinition>();
     private readonly IExtensibleEnumValueDiscoveryService _valueDiscoveryService;
 
     public ExtensibleEnumDefinitionCache (IExtensibleEnumValueDiscoveryService valueDiscoveryService)
