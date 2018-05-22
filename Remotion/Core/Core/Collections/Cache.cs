@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Collections
@@ -41,7 +42,7 @@ namespace Remotion.Collections
     {
     }
 
-    public Cache (IEqualityComparer<TKey> comparer)
+    public Cache ([CanBeNull] IEqualityComparer<TKey> comparer)
     {
       _innerDictionary = new Dictionary<TKey, TValue> (comparer);
     }

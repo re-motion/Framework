@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using JetBrains.Annotations;
+using Remotion.Utilities;
 
 namespace Remotion.Collections
 {
@@ -49,9 +51,40 @@ namespace Remotion.Collections
     /// <returns>
     /// A <see cref="SimpleDataStore{TKey,TValue}"/> instances for storing keys and values.
     /// </returns>
-    public static IDataStore<TKey, TValue> Create<TKey, TValue> (IEqualityComparer<TKey> comparer)
+    public static IDataStore<TKey, TValue> Create<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey> comparer)
     {
       return new SimpleDataStore<TKey, TValue> (comparer);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="ConcurrentDataStore{TKey,TValue}"/> instance that is thread-safe and uses the <see cref="EqualityComparer{T}.Default"/> 
+    /// <see cref="IEqualityComparer{T}"/>.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys.</typeparam>
+    /// <typeparam name="TValue">The type of the values.</typeparam>
+    /// <returns>
+    /// A <see cref="ConcurrentDataStore{TKey,TValue}"/> instance for storing keys and values in a thread-safe way.
+    /// </returns>
+    public static IDataStore<TKey, TValue> CreateWithSynchronization<TKey, TValue> ()
+    {
+      return new ConcurrentDataStore<TKey, TValue>();
+    }
+
+    /// <summary>
+    /// Creates a <see cref="ConcurrentDataStore{TKey,TValue}"/> instance that is thread-safe and uses the specified
+    /// <see cref="IEqualityComparer{T}"/>.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys.</typeparam>
+    /// <typeparam name="TValue">The type of the values.</typeparam>
+    /// <param name="comparer">The comparer to use for comparing keys. Must not be <see langword="null" />.</param>
+    /// <returns>
+    /// A <see cref="ConcurrentDataStore{TKey,TValue}"/> instance for storing keys and values in a thread-safe way.
+    /// </returns>
+    public static IDataStore<TKey, TValue> CreateWithSynchronization<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
+    {
+      ArgumentUtility.CheckNotNull ("comparer", comparer);
+
+      return new ConcurrentDataStore<TKey, TValue> (comparer);
     }
 
     /// <summary>
@@ -90,7 +123,7 @@ namespace Remotion.Collections
     /// complete. When the factory delegates take a long time to execute, consider using <see cref="CreateWithLazyLocking{TKey,TValue}(System.Collections.Generic.IEqualityComparer{TKey})"/> instead 
     /// to reduce contention.
     /// </remarks>
-    public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> (IEqualityComparer<TKey> comparer)
+    public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey> comparer)
     {
       return new LockingDataStoreDecorator<TKey, TValue> (new SimpleDataStore<TKey, TValue> (comparer));
     }
@@ -133,7 +166,7 @@ namespace Remotion.Collections
     /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue}(System.Collections.Generic.IEqualityComparer{TKey})"/>
     /// instead to reduce the number of locks used.
     /// </remarks>
-    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> (IEqualityComparer<TKey> comparer) where TValue: class
+    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey> comparer) where TValue: class
     {
       return new LazyLockingDataStoreAdapter<TKey, TValue> (
           new SimpleDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>> (comparer));

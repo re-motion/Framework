@@ -78,6 +78,56 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
+    public void CreateWithSynchronization ()
+    {
+      var result = CacheFactory.CreateWithSynchronization<string, int>();
+
+      Assert.That (result, Is.TypeOf (typeof (ConcurrentCache<string, int>)));
+    }
+
+    [Test]
+    public void CreateWithSynchronization_CacheInvalidationTokenOverload ()
+    {
+      var cacheInvalidationToken = InvalidationToken.CreatWithLocking();
+      var result = CacheFactory.CreateWithSynchronization<string, int> (cacheInvalidationToken);
+
+      Assert.That (result, Is.TypeOf (typeof (InvalidationTokenBasedCacheDecorator<string, int>)));
+      Assert.That (((InvalidationTokenBasedCacheDecorator<string, int>) result).InvalidationToken, Is.SameAs (cacheInvalidationToken));
+      var innerCache = PrivateInvoke.GetNonPublicField (result, "_innerCache");
+      Assert.That (innerCache, Is.TypeOf (typeof (ConcurrentCache<string, int>)));
+    }
+
+    [Test]
+    public void CreateWithSynchronization_IEqualityComparerOverload ()
+    {
+      var result = CacheFactory.CreateWithSynchronization<string, int> (_comparer);
+
+      Assert.That (result, Is.TypeOf (typeof (ConcurrentCache<string, int>)));
+
+      result.GetOrCreateValue ("a", key => 1);
+
+      Assert.That (result.GetOrCreateValue ("a", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
+      Assert.That (result.GetOrCreateValue ("A", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void CreateWithSynchronization_CacheInvalidationTokenOverload_IEqualityComparerOverload ()
+    {
+      var cacheInvalidationToken = InvalidationToken.CreatWithLocking();
+      var result = CacheFactory.CreateWithSynchronization<string, int> (cacheInvalidationToken, _comparer);
+
+      Assert.That (result, Is.TypeOf (typeof (InvalidationTokenBasedCacheDecorator<string, int>)));
+      Assert.That (((InvalidationTokenBasedCacheDecorator<string, int>) result).InvalidationToken, Is.SameAs (cacheInvalidationToken));
+      var innerCache = (ICache<string, int>)PrivateInvoke.GetNonPublicField (result, "_innerCache");
+      Assert.That (innerCache, Is.TypeOf (typeof (ConcurrentCache<string, int>)));
+
+      innerCache.GetOrCreateValue ("a", key => 1);
+
+      Assert.That (innerCache.GetOrCreateValue ("a", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
+      Assert.That (innerCache.GetOrCreateValue ("A", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
+    }
+
+    [Test]
     public void CreateWithLocking ()
     {
       var result = CacheFactory.CreateWithLocking<string, int>();
