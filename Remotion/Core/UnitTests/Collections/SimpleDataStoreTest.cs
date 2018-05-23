@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Development.UnitTesting;
@@ -81,12 +82,13 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The store already contains an element with key 'd'. " 
-        + "(Old value: '1', new value: '2')\r\nParameter name: key")]
     public void Add_Twice ()
     {
       _store.Add ("d", 1);
-      _store.Add ("d", 2);
+      Assert.That (
+          () => _store.Add ("d", 2),
+          Throws.ArgumentException.And.Message.EqualTo (
+              "The store already contains an element with key \'d\'. (Old value: \'1\', new value: \'2\')\r\nParameter name: key"));
     }
 
     [Test]
@@ -126,10 +128,11 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    [ExpectedException (typeof (KeyNotFoundException), ExpectedMessage = "There is no element with key 'c' in the store.")]
     public void GetValue_Fail ()
     {
-      Dev.Null = _store["c"];
+      Assert.That (
+          () => _store["c"],
+          Throws.Exception.TypeOf<KeyNotFoundException>().And.Message.EqualTo ("There is no element with key 'c' in the store."));
     }
 
     [Test]
@@ -202,24 +205,135 @@ namespace Remotion.UnitTests.Collections
           Is.EqualTo (7));
       Assert.That (delegateCalled);
     }
-    
+
     [Test]
-    public void GetEnumerator ()
+    public void GetOrCreateValue_WithException ()
     {
-      using (var enumerator = _store.GetEnumerator ())
-      {
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current.Key, Is.EqualTo ("a"));
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current.Key, Is.EqualTo ("b"));
-        Assert.That (enumerator.MoveNext(), Is.False);
-      }
+      var exception = new Exception();
+      Assert.That (
+          () => _store.GetOrCreateValue ("key1", key => { throw exception; }),
+          Throws.Exception.SameAs (exception));
     }
 
     [Test]
-    public void Serializable ()
+    public void GetOrCreateValue_WithException_DoesNotCacheException ()
     {
-      Serializer.SerializeAndDeserialize (_store);
+      var exception1 = new Exception();
+      Assert.That (
+          () => _store.GetOrCreateValue ("key1", key => { throw exception1; }),
+          Throws.Exception.SameAs (exception1));
+
+      var exception2 = new Exception();
+      Assert.That (
+          () => _store.GetOrCreateValue ("key1", key => { throw exception2; }),
+          Throws.Exception.SameAs (exception2));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithException_TryGetValue_HasNoValue ()
+    {
+      var exception = new Exception();
+      Assert.That (
+          () => _store.GetOrCreateValue ("key1", key => { throw exception; }),
+          Throws.Exception.SameAs (exception));
+
+      int? actual;
+      Assert.That (_store.TryGetValue ("key1", out actual), Is.False);
+      Assert.That (actual, Is.Null);
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithException_GetOrCreateValue_InsertsSecondValue ()
+    {
+      var exception = new Exception();
+      Assert.That (
+          () => _store.GetOrCreateValue ("key1", key => { throw exception; }),
+          Throws.Exception.SameAs (exception));
+
+      int? expected = 14;
+      object actual = _store.GetOrCreateValue ("key1", key => expected);
+      Assert.That (actual, Is.EqualTo (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_DoesNotKeepFactoryAlive ()
+    {
+      // The valueFactory must be created in a separate method: The x64 JITter in .NET 4.7.2 (DEBUG builds only) keeps the reference alive until the variable is out of scope.
+      var valueFactoryReference = GetOrCreateValue_DoesNotKeepFactoryAlive_GetValueFactoryReference();
+      GC.Collect();
+      GC.WaitForFullGCComplete();
+      Assert.That (valueFactoryReference.IsAlive, Is.False);
+    }
+
+    private WeakReference GetOrCreateValue_DoesNotKeepFactoryAlive_GetValueFactoryReference ()
+    {
+      var expected = 13;
+      Func<string, int?> valueFactory = key => expected;
+      Assert.That (_store.GetOrCreateValue ("key1", valueFactory),Is.EqualTo (expected));
+      return new WeakReference (valueFactory);
+    }
+
+    [Test]
+    public void GetEnumerator_Generic ()
+    {
+      Assert.That (
+          _store.ToArray(),
+          Is.EquivalentTo (
+              new[]
+              {
+                  new KeyValuePair<string, int?> ("a", 1),
+                  new KeyValuePair<string, int?> ("b", 2)
+              }
+              ));
+    }
+
+    [Test]
+    public void GetEnumerator_NonGeneric ()
+    {
+      Assert.That (
+          _store.ToNonGenericEnumerable(),
+          Is.EquivalentTo (
+              new[]
+              {
+                  new KeyValuePair<string, int?> ("a", 1),
+                  new KeyValuePair<string, int?> ("b", 2)
+              }
+              ));
+    }
+
+    [Test]
+    public void SerializeEmptyDataStore ()
+    {
+      IDataStore<string, int?> deserializedDataStore = Serializer.SerializeAndDeserialize (_store);
+      Assert.That (deserializedDataStore, Is.Not.Null);
+
+      int? result;
+      Assert.That (deserializedDataStore.TryGetValue ("bla", out result), Is.False);
+      deserializedDataStore.GetOrCreateValue ("bla", delegate { return 17; });
+      Assert.That (deserializedDataStore.TryGetValue ("bla", out result), Is.True);
+
+      Assert.That (result, Is.EqualTo (17));
+
+      Assert.That (_store.TryGetValue ("bla", out result), Is.False);
+    }
+
+    [Test]
+    public void SerializeNonEmptyDataStore ()
+    {
+      int? result;
+
+      _store.GetOrCreateValue ("bla", delegate { return 19; });
+      Assert.That (_store.TryGetValue ("bla", out result), Is.True);
+
+      IDataStore<string, int?> deserializedCache = Serializer.SerializeAndDeserialize (_store);
+      Assert.That (deserializedCache, Is.Not.Null);
+
+      Assert.That (deserializedCache.TryGetValue ("bla", out result), Is.True);
+      Assert.That (result, Is.EqualTo (19));
+
+      deserializedCache.GetOrCreateValue ("whatever", delegate { return 23; });
+      Assert.That (deserializedCache.TryGetValue ("whatever", out result), Is.True);
+      Assert.That (_store.TryGetValue ("whatever", out result), Is.False);
     }
   }
 }
