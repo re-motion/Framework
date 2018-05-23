@@ -25,7 +25,7 @@ namespace Remotion.Collections
   /// <summary>
   /// The <see cref="ExpiringDataStoreFactory"/> provides factory methods to create new expired data stores.
   /// </summary>
-  public class ExpiringDataStoreFactory
+  public static class ExpiringDataStoreFactory
   {
     /// <summary>
     /// Creates a <see cref="ExpiringDataStore{TKey,TValue,TExpirationInfo,TScanInfo}"/> instance that is not thread-safe and uses the specified
@@ -69,7 +69,6 @@ namespace Remotion.Collections
     /// complete. When the factory delegates take a long time to execute, consider using <see cref="CreateWithLazyLocking{TKey,TValue,TExpirationInfo,TScanInfo}"/> 
     /// instead to reduce contention.
     /// </remarks>
-    [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version 1.18.3)")]
     public static LockingDataStoreDecorator<TKey, TValue> CreateWithLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy,
         [NotNull] IEqualityComparer<TKey> comparer)
@@ -99,7 +98,6 @@ namespace Remotion.Collections
     /// in which the factory delegates passed to <see cref="IDataStore{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue,TExpirationInfo,TScanInfo}"/> instead to reduce the number of locks used.
     /// </remarks>
-    [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version 1.18.3)")]
     public static LazyLockingDataStoreAdapter<TKey, TValue> CreateWithLazyLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<DoubleCheckedLockingContainer<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> policy,
         [NotNull] IEqualityComparer<TKey> comparer) 

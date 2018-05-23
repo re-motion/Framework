@@ -174,10 +174,15 @@ namespace Remotion.Collections
     /// A <see cref="LockingCacheDecorator{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     /// <remarks>
+    /// <para>
+    /// This method can be considered obsolete. Use <see cref="CreateWithSynchronization{TKey,TValue}()"/> instead for best performance.
+    /// </para>
+    /// <para>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access. It is well-suited
     /// for caches in which the factory delegates passed to <see cref="ICache{TKey,TValue}.GetOrCreateValue"/> only take a short time to 
     /// complete. When the factory delegates take a long time to execute, consider using <see cref="CreateWithLazyLocking{TKey,TValue}()"/> instead 
     /// to reduce contention.
+    /// </para>
     /// </remarks>
     public static LockingCacheDecorator<TKey, TValue> CreateWithLocking<TKey, TValue> ()
     {
@@ -195,10 +200,16 @@ namespace Remotion.Collections
     /// A <see cref="LockingCacheDecorator{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     /// <remarks>
+    /// <para>
+    /// This method can be considered obsolete. Use <see cref="CreateWithSynchronization{TKey,TValue}(LockingInvalidationToken)"/> 
+    /// instead for best performance.
+    /// </para>
+    /// <para>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access. It is well-suited
     /// for caches in which the factory delegates passed to <see cref="ICache{TKey,TValue}.GetOrCreateValue"/> only take a short time to 
     /// complete. When the factory delegates take a long time to execute, consider using <see cref="CreateWithLazyLocking{TKey,TValue}()"/> instead 
     /// to reduce contention.
+    /// </para>
     /// </remarks>
     public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken)
@@ -220,10 +231,16 @@ namespace Remotion.Collections
     /// A <see cref="LockingCacheDecorator{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     /// <remarks>
+    /// <para>
+    /// This method can be considered obsolete. Use <see cref="CreateWithSynchronization{TKey,TValue}(IEqualityComparer{TKey})"/> 
+    /// instead for best performance.
+    /// </para>
+    /// <para>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access. It is well-suited
     /// for caches in which the factory delegates passed to <see cref="ICache{TKey,TValue}.GetOrCreateValue"/> only take a short time to 
     /// complete. When the factory delegates take a long time to execute, consider using 
     /// <see cref="CreateWithLazyLocking{TKey,TValue}(System.Collections.Generic.IEqualityComparer{TKey})"/> instead to reduce contention.
+    /// </para>
     /// </remarks>
     public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey> comparer)
     {
@@ -242,10 +259,16 @@ namespace Remotion.Collections
     /// A <see cref="LockingCacheDecorator{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     /// <remarks>
+    /// <para>
+    /// This method can be considered obsolete. Use <see cref="CreateWithSynchronization{TKey,TValue}(LockingInvalidationToken, IEqualityComparer{TKey})"/> 
+    /// instead for best performance.
+    /// </para>
+    /// <para>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access. It is well-suited
     /// for caches in which the factory delegates passed to <see cref="ICache{TKey,TValue}.GetOrCreateValue"/> only take a short time to 
     /// complete. When the factory delegates take a long time to execute, consider using 
     /// <see cref="CreateWithLazyLocking{TKey,TValue}(System.Collections.Generic.IEqualityComparer{TKey})"/> instead to reduce contention.
+    /// </para>
     /// </remarks>
     public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken,
@@ -267,10 +290,16 @@ namespace Remotion.Collections
     /// A <see cref="LazyLockingCachingAdapter{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     /// <remarks>
+    /// <para>
+    /// This method can be considered obsolete. Use <see cref="CreateWithSynchronization{TKey,TValue}()"/> 
+    /// instead for best performance.
+    /// </para>
+    /// <para>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional, 
     /// double-checked locks (see <see cref="DoubleCheckedLockingContainer{T}"/>) to protect each single value. It is well-suited for caches
     /// in which the factory delegates passed to <see cref="ICache{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue}()"/> instead to reduce the number of locks used.
+    /// </para>
     /// </remarks>
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> () where TValue : class
     {
@@ -289,10 +318,16 @@ namespace Remotion.Collections
     /// A <see cref="LazyLockingCachingAdapter{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     /// <remarks>
+    /// <para>
+    /// This method can be considered obsolete. Use <see cref="CreateWithSynchronization{TKey,TValue}(LockingInvalidationToken)"/> 
+    /// instead for best performance.
+    /// </para>
+    /// <para>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional, 
     /// double-checked locks (see <see cref="DoubleCheckedLockingContainer{T}"/>) to protect each single value. It is well-suited for caches
     /// in which the factory delegates passed to <see cref="ICache{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue}()"/> instead to reduce the number of locks used.
+    /// </para>
     /// </remarks>
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken)
@@ -317,11 +352,17 @@ namespace Remotion.Collections
     /// A <see cref="LazyLockingCachingAdapter{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     /// <remarks>
+    /// <para>
+    /// This method can be considered obsolete. Use <see cref="CreateWithSynchronization{TKey,TValue}(IEqualityComparer{TKey})"/> 
+    /// instead for best performance.
+    /// </para>
+    /// <para>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional,
     /// double-checked locks (see <see cref="DoubleCheckedLockingContainer{T}"/>) to protect each single value. It is well-suited for caches
     /// in which the factory delegates passed to <see cref="ICache{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using 
     /// <see cref="CreateWithLocking{TKey,TValue}(System.Collections.Generic.IEqualityComparer{TKey})"/> instead to reduce the number of locks used.
+    /// </para>
     /// </remarks>
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey> comparer)
         where TValue : class
@@ -342,11 +383,17 @@ namespace Remotion.Collections
     /// A <see cref="LazyLockingCachingAdapter{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     /// <remarks>
+    /// <para>
+    /// This method can be considered obsolete. Use <see cref="CreateWithSynchronization{TKey,TValue}(LockingInvalidationToken, IEqualityComparer{TKey})"/> 
+    /// instead for best performance.
+    /// </para>
+    /// <para>
     /// The created instance uses a single lock (see <see cref="Monitor"/>) to guard the data store against multi-threaded access and additional,
     /// double-checked locks (see <see cref="DoubleCheckedLockingContainer{T}"/>) to protect each single value. It is well-suited for caches
     /// in which the factory delegates passed to <see cref="ICache{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using 
     /// <see cref="CreateWithLocking{TKey,TValue}(System.Collections.Generic.IEqualityComparer{TKey})"/> instead to reduce the number of locks used.
+    /// </para>
     /// </remarks>
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken,
