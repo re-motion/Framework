@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Collections
@@ -28,7 +29,7 @@ namespace Remotion.Collections
   /// <typeparam name="TKey">The type of the keys.</typeparam>
   /// <typeparam name="TValue">The type of the values.</typeparam>
   [Serializable]
-  public class SimpleDataStore<TKey, TValue> : IDataStore<TKey, TValue>, IEnumerable<KeyValuePair<TKey, TValue>>
+  public sealed class SimpleDataStore<TKey, TValue> : IDataStore<TKey, TValue>, IEnumerable<KeyValuePair<TKey, TValue>>
   {
     private readonly Dictionary<TKey, TValue> _innerDictionary;
 
@@ -37,7 +38,7 @@ namespace Remotion.Collections
     {
     }
 
-    public SimpleDataStore (IEqualityComparer<TKey> comparer)
+    public SimpleDataStore ([CanBeNull] IEqualityComparer<TKey> comparer)
     {
       _innerDictionary = new Dictionary<TKey, TValue> (comparer);
     }

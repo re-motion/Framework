@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Collections
@@ -31,7 +32,9 @@ namespace Remotion.Collections
 
     private TScanInfo _nextScanInfo;
 
-    public ExpiringDataStore (IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> expirationPolicy, IEqualityComparer<TKey> equalityComparer)
+    public ExpiringDataStore (
+        [NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> expirationPolicy,
+        [NotNull] IEqualityComparer<TKey> equalityComparer)
     {
       ArgumentUtility.CheckNotNull ("expirationPolicy", expirationPolicy);
       ArgumentUtility.CheckNotNull ("equalityComparer", equalityComparer);
