@@ -33,7 +33,7 @@ namespace Remotion.Utilities
     // (As shown by their implementation, and all used members are non-virtual.)
 
     private static readonly ICache<Tuple<Type, bool>, AttributeWithMetadata[]> s_suppressAttributesCache =
-        CacheFactory.CreateWithLocking<Tuple<Type, bool>, AttributeWithMetadata[]>();
+        CacheFactory.CreateWithSynchronization<Tuple<Type, bool>, AttributeWithMetadata[]>();
 
     private static readonly PropertyCustomAttributeRetriever s_propertyCustomAttributeRetriever = new PropertyCustomAttributeRetriever ();
     private static readonly EventCustomAttributeRetriever s_eventCustomAttributeRetriever = new EventCustomAttributeRetriever ();

@@ -35,7 +35,7 @@ namespace Remotion.Reflection
   {
     //If this is changed to an (expiring) cache, equals implementation must be updated.
     private static readonly IDataStore<MethodInfo, MethodInfoAdapter> s_dataStore =
-        DataStoreFactory.CreateWithLocking<MethodInfo, MethodInfoAdapter> (MemberInfoEqualityComparer<MethodInfo>.Instance);
+        DataStoreFactory.CreateWithSynchronization<MethodInfo, MethodInfoAdapter> (MemberInfoEqualityComparer<MethodInfo>.Instance);
 
     private static readonly Func<MethodInfo, MethodInfoAdapter> s_ctorFunc = mi => new MethodInfoAdapter (mi); 
 

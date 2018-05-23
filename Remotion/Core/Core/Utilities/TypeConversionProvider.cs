@@ -30,7 +30,7 @@ namespace Remotion.Utilities
   [ImplementationFor (typeof (ITypeConversionProvider), Lifetime = LifetimeKind.Singleton)]
   public class TypeConversionProvider : ITypeConversionProvider
   {
-    private readonly IDataStore<Type, TypeConverter> _typeConverters = DataStoreFactory.CreateWithLocking<Type, TypeConverter>();
+    private readonly IDataStore<Type, TypeConverter> _typeConverters = DataStoreFactory.CreateWithSynchronization<Type, TypeConverter>();
 
     /// <summary> Creates a new instace of the <see cref="TypeConversionProvider"/> type. </summary>
     /// <returns> An instance of the <see cref="TypeConversionProvider"/> type. </returns>

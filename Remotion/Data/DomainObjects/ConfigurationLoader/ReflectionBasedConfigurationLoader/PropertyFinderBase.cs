@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     public const BindingFlags PropertyBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
     private static readonly IDataStore<Type, HashSet<MethodInfo>> s_explicitInterfaceImplementations =
-        DataStoreFactory.CreateWithLazyLocking<Type, HashSet<MethodInfo>>();
+        DataStoreFactory.CreateWithSynchronization<Type, HashSet<MethodInfo>>();
 
     private readonly Type _type;
     private readonly bool _includeBaseProperties;

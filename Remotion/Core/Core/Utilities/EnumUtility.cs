@@ -77,7 +77,7 @@ namespace Remotion.Utilities
       }
     }
 
-    private static readonly LockingCacheDecorator<Type, EnumMetadata> s_cache = CacheFactory.CreateWithLocking<Type, EnumMetadata>();
+    private static readonly ICache<Type, EnumMetadata> s_cache = CacheFactory.CreateWithSynchronization<Type, EnumMetadata>();
 
     /// <summary>
     /// Checks whether the specified value is one of the values that the enumeration type defines.

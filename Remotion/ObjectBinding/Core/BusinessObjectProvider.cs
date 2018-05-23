@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding
   public abstract class BusinessObjectProvider : IBusinessObjectProviderWithIdentity
   {
     private static readonly IDataStore<Type, IBusinessObjectProvider> s_businessObjectProviderStore =
-        DataStoreFactory.CreateWithLocking<Type, IBusinessObjectProvider>();
+        DataStoreFactory.CreateWithSynchronization<Type, IBusinessObjectProvider>();
 
     /// <summary>
     /// Gets the <see cref="IBusinessObjectProvider"/> associated with the <see cref="BusinessObjectProviderAttribute"/> type specified.

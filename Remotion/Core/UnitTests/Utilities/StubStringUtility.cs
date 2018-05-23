@@ -46,7 +46,7 @@ public class StubStringUtility
 
   public static void ClearCache()
   {
-    var cache = (LockingCacheDecorator<Type, MethodInfo>) PrivateInvoke.GetNonPublicStaticField (typeof (StringUtility), "s_parseMethods");
+    var cache = (ICache<Type, MethodInfo>) PrivateInvoke.GetNonPublicStaticField (typeof (StringUtility), "s_parseMethods");
     cache.Clear();
   }
 }

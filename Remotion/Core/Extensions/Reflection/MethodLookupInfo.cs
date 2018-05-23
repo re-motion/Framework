@@ -23,7 +23,7 @@ namespace Remotion.Reflection
 {
   public class MethodLookupInfo : MemberLookupInfo
   {
-    private static readonly ICache<Tuple<Type, string>, Delegate> s_instanceMethodCache = CacheFactory.CreateWithLocking<Tuple<Type, string>, Delegate>();
+    private static readonly ICache<Tuple<Type, string>, Delegate> s_instanceMethodCache = CacheFactory.CreateWithSynchronization<Tuple<Type, string>, Delegate>();
 
     public MethodLookupInfo (string name, BindingFlags bindingFlags, Binder binder, CallingConventions callingConvention, ParameterModifier[] parameterModifiers)
         : base (name, bindingFlags, binder, callingConvention, parameterModifiers)

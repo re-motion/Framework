@@ -29,8 +29,8 @@ namespace Remotion.Globalization.Implementation
   [ImplementationFor (typeof (IResourceManagerResolver), Lifetime = LifetimeKind.Singleton)]
   public sealed class ResourceManagerResolver : IResourceManagerResolver
   {
-    private readonly LockingCacheDecorator<Type, ResolvedResourceManagerResult> _resourceManagerWrappersCache =
-        CacheFactory.CreateWithLocking<Type, ResolvedResourceManagerResult>();
+    private readonly ICache<Type, ResolvedResourceManagerResult> _resourceManagerWrappersCache =
+        CacheFactory.CreateWithSynchronization<Type, ResolvedResourceManagerResult>();
 
     private readonly IResourceManagerFactory _resourceManagerFactory;
 

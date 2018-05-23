@@ -26,13 +26,14 @@ namespace Remotion.Reflection
   /// </summary>
   public static class TypeExtensions
   {
-    private static readonly LockingCacheDecorator<Tuple<Type, Type>, bool> s_canAscribeCache = CacheFactory.CreateWithLocking<Tuple<Type, Type>, bool>();
-    private static readonly LockingCacheDecorator<Tuple<Type, Type>, bool> s_canAscribeInternalCache =
-        CacheFactory.CreateWithLocking<Tuple<Type, Type>, bool>();
-    private static readonly LockingCacheDecorator<Tuple<Type, Type>, Type[]> s_ascribedGenericArgumentsCache =
-        CacheFactory.CreateWithLocking<Tuple<Type, Type>, Type[]>();
-    private static readonly LockingCacheDecorator<Tuple<Type, Type, Type>, bool> s_canDirectlyAscribeToGenericTypeInternalCache =
-        CacheFactory.CreateWithLocking<Tuple<Type, Type, Type>, bool>();
+    private static readonly ICache<Tuple<Type, Type>, bool> s_canAscribeCache = 
+        CacheFactory.CreateWithSynchronization<Tuple<Type, Type>, bool>();
+    private static readonly ICache<Tuple<Type, Type>, bool> s_canAscribeInternalCache =
+        CacheFactory.CreateWithSynchronization<Tuple<Type, Type>, bool>();
+    private static readonly ICache<Tuple<Type, Type>, Type[]> s_ascribedGenericArgumentsCache =
+        CacheFactory.CreateWithSynchronization<Tuple<Type, Type>, Type[]>();
+    private static readonly ICache<Tuple<Type, Type, Type>, bool> s_canDirectlyAscribeToGenericTypeInternalCache =
+        CacheFactory.CreateWithSynchronization<Tuple<Type, Type, Type>, bool>();
 
     /// <summary>
     /// Evaluates whether the <paramref name="type"/> can be ascribed to the <paramref name="ascribeeType"/>.

@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Queries
   /// </remarks>
   public class QueryCache
   {
-    private readonly LockingCacheDecorator<string, IQuery> _cache = CacheFactory.CreateWithLocking<string, IQuery>();
+    private readonly ICache<string, IQuery> _cache = CacheFactory.CreateWithSynchronization<string, IQuery>();
 
     /// <summary>
     /// Gets a query for the given LINQ query, returning it from the cache if possible.

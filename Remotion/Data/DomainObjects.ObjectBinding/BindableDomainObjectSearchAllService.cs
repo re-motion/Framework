@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     private static readonly MethodInfo s_getQueryMethod = 
         typeof (BindableDomainObjectSearchAllService).GetMethod ("GetQuery", BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
 
-    private readonly ICache<Type, bool> _bindableObjectTypeCache = CacheFactory.CreateWithLocking<Type, bool>();
+    private readonly ICache<Type, bool> _bindableObjectTypeCache = CacheFactory.CreateWithSynchronization<Type, bool>();
 
     public bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {

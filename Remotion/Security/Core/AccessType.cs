@@ -28,7 +28,7 @@ namespace Remotion.Security
   [Serializable]
   public struct AccessType : IEquatable<AccessType>
   {
-    private static readonly ICache<Enum, AccessType> s_accessTypeByEnumCache = CacheFactory.CreateWithLocking<Enum, AccessType>();
+    private static readonly ICache<Enum, AccessType> s_accessTypeByEnumCache = CacheFactory.CreateWithSynchronization<Enum, AccessType>();
     private static readonly Func<Enum, AccessType> s_getInternalFunc = GetInternal;
 
     public static AccessType Get (EnumWrapper accessType)

@@ -28,7 +28,7 @@ namespace Remotion.Web.Services
   public class WebServiceFactory : IWebServiceFactory
   {
     private static readonly ICache<Type, Tuple<string, string[]>[]> s_serviceMethodCache =
-        CacheFactory.CreateWithLocking<Type, Tuple<string, string[]>[]>();
+        CacheFactory.CreateWithSynchronization<Type, Tuple<string, string[]>[]>();
 
     private readonly IBuildManager _buildManager;
 
