@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
@@ -35,10 +36,13 @@ namespace Remotion.Web.ExecutionEngine
   [Serializable]
   public class WxePageStep : WxeStep, IExecutionStateContext
   {
+    private const int c_estimatedLargeObjectHeapThreshold = 85000;
+    private static readonly ConcurrentBag<MemoryStream> s_viewStateSerializationBufferPool = new ConcurrentBag<MemoryStream>();
+
     private IWxePageExecutor _pageExecutor = new WxePageExecutor();
     private readonly ResourceObjectBase _page;
     private readonly string _pageToken;
-    private string _pageState;
+    private byte[] _pageState;
     private bool _isPostBack;
     private bool _isOutOfSequencePostBack;
     private bool _isExecutionStarted;
@@ -289,10 +293,32 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="state"> An <b>ASP.NET</b> viewstate object. </param>
     public void SavePageStateToPersistenceMedium (object state)
     {
-      LosFormatter formatter = new LosFormatter();
-      StringWriter writer = new StringWriter();
-      formatter.Serialize (writer, state);
-      _pageState = writer.ToString();
+      MemoryStream outputStream;
+      if (s_viewStateSerializationBufferPool.TryTake (out outputStream))
+      {
+        outputStream.Position = 0;
+      }
+      else
+      {
+        // Allocate the stream's byte-array on the LOH since the object with both long-lived an big.
+        // Note that the number of buffers will be bounded by the maximum number of concurrently executing requests in ASP.NET.
+        outputStream = new MemoryStream(2 * c_estimatedLargeObjectHeapThreshold);
+      }
+
+      try
+      {
+        var serializer = new ObjectStateFormatter();
+        serializer.Serialize (outputStream, state);
+
+        // For the finished page state, a new byte-array must be allocated, i.e. the original array cannot be used.
+        // The reason for this is that the viewstate may be deserialized more than once if a subfunction is called from the page.
+        // In this case, the buffer could not be returned to the pool after the first deserialization, making the pooling non-deterministic.
+        _pageState = outputStream.ToArray();
+      }
+      finally
+      {
+        s_viewStateSerializationBufferPool.Add (outputStream);
+      }
     }
 
     /// <summary> 
@@ -301,8 +327,11 @@ namespace Remotion.Web.ExecutionEngine
     /// <returns> An <b>ASP.NET</b> viewstate object. </returns>
     public object LoadPageStateFromPersistenceMedium ()
     {
-      LosFormatter formatter = new LosFormatter();
-      return formatter.Deserialize (_pageState);
+      using (var inputStream = new MemoryStream (_pageState, writable: false))
+      {
+        var serializer = new ObjectStateFormatter();
+        return serializer.Deserialize (inputStream);
+      }
     }
 
     /// <summary> 
