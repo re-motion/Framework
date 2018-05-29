@@ -34,10 +34,11 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.UI
 {
-  public class SecurityManagerCurrentTenantControl : UserControl
+  [FileLevelControlBuilder (typeof (CodeProcessingUserControlBuilder))]
+  public partial class SecurityManagerUserContextControl : UserControl
   {
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.SecurityManager.Clients.Web.Globalization.UI.SecurityManagerCurrentTenantControlResources")]
+    [MultiLingualResources ("Remotion.SecurityManager.Clients.Web.Globalization.UI.SecurityManagerUserContextControlResources")]
     public enum ResourceIdentifier
     {
       CurrentUserLabelText,
@@ -47,37 +48,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       CurrentTenantCommandTooltip
     }
 
-    protected virtual IResourceManager GetResourceManager ()
-    {
-      Type type = this.GetType();
-
-      return GlobalizationService.GetResourceManager (type);
-    }
-
-    protected IResourceManager GetResourceManager (Type resourceEnumType)
-    {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("resourceEnumType", resourceEnumType, typeof (Enum));
-
-      return ResourceManagerSet.Create (GlobalizationService.GetResourceManager (TypeAdapter.Create (resourceEnumType)), GetResourceManager());
-    }
-
-    protected IServiceLocator ServiceLocator
-    {
-      get { return SafeServiceLocator.Current; }
-    }
-
-    protected IGlobalizationService GlobalizationService 
-    {
-      get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
-    }
-  }
-
-  [FileLevelControlBuilder(typeof(CodeProcessingUserControlBuilder))]
-  public partial class CurrentTenantControl : SecurityManagerCurrentTenantControl
-  {
-    private static readonly string s_isTenantSelectionEnabledKey = typeof (CurrentTenantControl).FullName + "_IsTenantSelectionEnabled";
-    private static readonly string s_enableAbstractTenantsKey = typeof (CurrentTenantControl).FullName + "_EnableAbstractTenants";
-    private static readonly string s_isSubstitutionSelectionEnabledKey = typeof (CurrentTenantControl).FullName + "_IsSubstitutionSelectionEnabled";
+    private static readonly string s_isTenantSelectionEnabledKey = typeof (SecurityManagerUserContextControl).FullName + "_IsTenantSelectionEnabled";
+    private static readonly string s_enableAbstractTenantsKey = typeof (SecurityManagerUserContextControl).FullName + "_EnableAbstractTenants";
+    private static readonly string s_isSubstitutionSelectionEnabledKey = typeof (SecurityManagerUserContextControl).FullName + "_IsSubstitutionSelectionEnabled";
 
     private bool _isCurrentTenantFieldReadOnly = true;
     private bool _isCurrentSubstitutionFieldReadOnly = true;
@@ -226,6 +199,30 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       CurrentUserLabel.Visible = CurrentUserField.Visible;
       CurrentSubstitutionLabel.Visible = CurrentSubstitutionField.Visible;
       CurrentTenantLabel.Visible = CurrentTenantField.Visible;
+    }
+
+    protected virtual IResourceManager GetResourceManager ()
+    {
+      Type type = this.GetType();
+
+      return GlobalizationService.GetResourceManager (type);
+    }
+
+    protected IResourceManager GetResourceManager (Type resourceEnumType)
+    {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("resourceEnumType", resourceEnumType, typeof (Enum));
+
+      return ResourceManagerSet.Create (GlobalizationService.GetResourceManager (TypeAdapter.Create (resourceEnumType)), GetResourceManager());
+    }
+
+    protected IServiceLocator ServiceLocator
+    {
+      get { return SafeServiceLocator.Current; }
+    }
+
+    protected IGlobalizationService GlobalizationService 
+    {
+      get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
     }
 
     private bool IsTenantSelectionEnabled

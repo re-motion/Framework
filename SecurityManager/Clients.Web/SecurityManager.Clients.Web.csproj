@@ -129,7 +129,7 @@
     <None Include="UI\OrganizationalStructure\EditTenantControl.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
-    <None Include="UI\SecurityManagerCurrentTenantControl.ascx">
+    <None Include="UI\SecurityManagerUserContextControl.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
     <None Include="UI\SecurityManagerMasterPage.Master">
@@ -310,12 +310,12 @@
     <Compile Include="UI\OrganizationalStructure\EditTenantControl.ascx.designer.cs">
       <DependentUpon>EditTenantControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UI\SecurityManagerCurrentTenantControl.ascx.cs">
-      <DependentUpon>SecurityManagerCurrentTenantControl.ascx</DependentUpon>
+    <Compile Include="UI\SecurityManagerUserContextControl.ascx.cs">
+      <DependentUpon>SecurityManagerUserContextControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\SecurityManagerCurrentTenantControl.ascx.designer.cs">
-      <DependentUpon>SecurityManagerCurrentTenantControl.ascx</DependentUpon>
+    <Compile Include="UI\SecurityManagerUserContextControl.ascx.designer.cs">
+      <DependentUpon>SecurityManagerUserContextControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="UI\ErrorMessageControl.ascx.cs">
       <DependentUpon>ErrorMessageControl.ascx</DependentUpon>
@@ -535,10 +535,10 @@
     <EmbeddedResource Include="Globalization\Classes\SecurableClassDefinitionTreeViewResources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\UI\SecurityManagerCurrentTenantControlResources.fr.resx" />
-    <EmbeddedResource Include="Globalization\UI\SecurityManagerCurrentTenantControlResources.it.resx" />
-    <EmbeddedResource Include="Globalization\UI\SecurityManagerCurrentTenantControlResources.de.resx" />
-    <EmbeddedResource Include="Globalization\UI\SecurityManagerCurrentTenantControlResources.resx" />
+    <EmbeddedResource Include="Globalization\UI\SecurityManagerUserContextControlResources.fr.resx" />
+    <EmbeddedResource Include="Globalization\UI\SecurityManagerUserContextControlResources.it.resx" />
+    <EmbeddedResource Include="Globalization\UI\SecurityManagerUserContextControlResources.de.resx" />
+    <EmbeddedResource Include="Globalization\UI\SecurityManagerUserContextControlResources.resx" />
     <EmbeddedResource Include="Globalization\UI\AccessControl\AccessControlResources.fr.resx" />
     <EmbeddedResource Include="Globalization\UI\AccessControl\AccessControlResources.it.resx" />
     <EmbeddedResource Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.fr.resx" />

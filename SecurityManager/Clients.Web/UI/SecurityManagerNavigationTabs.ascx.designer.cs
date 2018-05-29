@@ -13,13 +13,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI {
     public partial class SecurityManagerNavigationTabs {
         
         /// <summary>
-        /// SecurityManagerCurrentTenantControl control.
+        /// UserContextControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Remotion.SecurityManager.Clients.Web.UI.CurrentTenantControl SecurityManagerCurrentTenantControl;
+        protected global::Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl UserContextControl;
         
         /// <summary>
         /// TabbedMenu control.

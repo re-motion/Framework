@@ -98,19 +98,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerCurrentTenantControl.CurrentUserLabelText" xml:space="preserve">
-    <value>Current user</value>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentUserLabelText" xml:space="preserve">
+    <value>Aktueller Benutzer</value>
   </data>
-  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerCurrentTenantControl.CurrentSubstitutionLabelText" xml:space="preserve">
-    <value>Current substitute</value>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentSubstitutionLabelText" xml:space="preserve">
+    <value>Aktulle Stellvertretung</value>
   </data>
-  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerCurrentTenantControl.CurrentTenantLabelText" xml:space="preserve">
-    <value>Current tenant</value>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentTenantLabelText" xml:space="preserve">
+    <value>Aktueller Mandant</value>
   </data>
-  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerCurrentTenantControl.CurrentSubstitutionCommandTooltip" xml:space="preserve">
-    <value>Click to change the substitution</value>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentSubstitutionCommandTooltip" xml:space="preserve">
+    <value>Klicken Sie um die Stellvertretung zu ändern</value>
   </data>
-  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerCurrentTenantControl.CurrentTenantCommandTooltip" xml:space="preserve">
-    <value>Click to change the tenant</value>
+  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentTenantCommandTooltip" xml:space="preserve">
+    <value>Klicken Sie um den Mandanten zu ändern</value>
   </data>
 </root>

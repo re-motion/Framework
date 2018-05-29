@@ -10,7 +10,7 @@
 namespace Remotion.SecurityManager.Clients.Web.UI {
     
     
-    public partial class CurrentTenantControl {
+    public partial class SecurityManagerUserContextControl {
         
         /// <summary>
         /// CurrentUserLabel control.

@@ -15,7 +15,7 @@
  % 
  % Additional permissions are listed in the file re-motion_exceptions.txt.
 --%>
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SecurityManagerCurrentTenantControl.ascx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.CurrentTenantControl" %>
+<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SecurityManagerUserContextControl.ascx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl" %>
 <%@ Register TagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
 <%@ Register TagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
 <div>
