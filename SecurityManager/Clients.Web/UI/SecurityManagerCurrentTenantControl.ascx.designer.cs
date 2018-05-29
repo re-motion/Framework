@@ -13,6 +13,15 @@ namespace Remotion.SecurityManager.Clients.Web.UI {
     public partial class CurrentTenantControl {
         
         /// <summary>
+        /// CurrentUserLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.SmartLabel CurrentUserLabel;
+        
+        /// <summary>
         /// CurrentUserField control.
         /// </summary>
         /// <remarks>
@@ -22,6 +31,15 @@ namespace Remotion.SecurityManager.Clients.Web.UI {
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue CurrentUserField;
         
         /// <summary>
+        /// CurrentSubstitutionLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.SmartLabel CurrentSubstitutionLabel;
+        
+        /// <summary>
         /// CurrentSubstitutionField control.
         /// </summary>
         /// <remarks>
@@ -29,6 +47,15 @@ namespace Remotion.SecurityManager.Clients.Web.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue CurrentSubstitutionField;
+        
+        /// <summary>
+        /// CurrentTenantLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.SmartLabel CurrentTenantLabel;
         
         /// <summary>
         /// CurrentTenantField control.

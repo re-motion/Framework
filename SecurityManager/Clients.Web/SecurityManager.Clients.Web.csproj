@@ -535,6 +535,10 @@
     <EmbeddedResource Include="Globalization\Classes\SecurableClassDefinitionTreeViewResources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\SecurityManagerCurrentTenantControlResources.fr.resx" />
+    <EmbeddedResource Include="Globalization\UI\SecurityManagerCurrentTenantControlResources.it.resx" />
+    <EmbeddedResource Include="Globalization\UI\SecurityManagerCurrentTenantControlResources.de.resx" />
+    <EmbeddedResource Include="Globalization\UI\SecurityManagerCurrentTenantControlResources.resx" />
     <EmbeddedResource Include="Globalization\UI\AccessControl\AccessControlResources.fr.resx" />
     <EmbeddedResource Include="Globalization\UI\AccessControl\AccessControlResources.it.resx" />
     <EmbeddedResource Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.fr.resx" />
