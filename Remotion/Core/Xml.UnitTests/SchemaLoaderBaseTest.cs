@@ -17,9 +17,8 @@
 using System;
 using System.Xml.Schema;
 using NUnit.Framework;
-using Remotion.Xml;
 
-namespace Remotion.UnitTests.Xml
+namespace Remotion.Xml.UnitTests
 {
   [TestFixture]
   public class SchemaLoaderBaseTest
@@ -41,10 +40,10 @@ namespace Remotion.UnitTests.Xml
     [Test]
     public void GetSchemaWithSchemaFile ()
     {
-      SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock ("http://www.re-motion.org/Core/Test/Xml/SchemaLoaderBaseMock");
+      SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock ("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock");
       XmlSchema xmlSchema = schemaBaseMock.LoadSchema ("SchemaLoaderBaseMock.xsd");
       Assert.That (xmlSchema, Is.Not.Null);
-      Assert.That (xmlSchema.TargetNamespace, Is.EqualTo ("http://www.re-motion.org/Core/Test/Xml/SchemaLoaderBaseMock"));
+      Assert.That (xmlSchema.TargetNamespace, Is.EqualTo ("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock"));
     }
 
     [Test]
@@ -52,7 +51,7 @@ namespace Remotion.UnitTests.Xml
     {
       try
       {
-        SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock ("http://www.re-motion.org/Core/Test/Xml/SchemaLoaderBaseMock");
+        SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock ("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock");
         schemaBaseMock.LoadSchema ("invalidSchemaFileName.xsd");
 
         Assert.Fail ("ApplicationException was expected.");
@@ -69,10 +68,10 @@ namespace Remotion.UnitTests.Xml
     [Test]
     public void GetSchemaSet ()
     {
-      SchemaLoaderBase schemaBaseMock = new SchemaLoaderBaseMock ("http://www.re-motion.org/Core/Test/Xml/SchemaLoaderBaseMock");
+      SchemaLoaderBase schemaBaseMock = new SchemaLoaderBaseMock ("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock");
       XmlSchemaSet xmlSchemaSet = schemaBaseMock.LoadSchemaSet ();
       Assert.That (xmlSchemaSet.Count, Is.EqualTo (1));
-      Assert.That (xmlSchemaSet.Contains ("http://www.re-motion.org/Core/Test/Xml/SchemaLoaderBaseMock"), Is.True);
+      Assert.That (xmlSchemaSet.Contains ("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock"), Is.True);
     }
   }
 }

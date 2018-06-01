@@ -459,14 +459,6 @@
     </Compile>
     <Compile Include="Utilities\TypeUtility.AbbreviationParser.cs" />
     <Compile Include="Utilities\UtcNowProvider.cs" />
-    <Compile Include="Xml\SchemaLoaderBase.cs" />
-    <Compile Include="Xml\XmlSchemaValidationErrorInfo.cs" />
-    <Compile Include="Xml\XmlSchemaValidationHandler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Xml\XmlSerializationUtility.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <None Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ReSharperAnnotations MIT.licenseheader">
       <Link>SharedSource\ResharperAnnotations\ReSharperAnnotations MIT.licenseheader</Link>
     </None>

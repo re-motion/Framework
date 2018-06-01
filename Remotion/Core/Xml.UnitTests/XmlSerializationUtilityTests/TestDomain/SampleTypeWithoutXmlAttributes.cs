@@ -15,12 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Xml.Serialization;
 
-namespace Remotion.UnitTests.Xml.XmlSerializationUtilityTests.TestDomain
+namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests.TestDomain
 {
-  [XmlRoot]
-  public class SampleTypeWithXmlRootWithoutNamespace
+  public class SampleTypeWithoutXmlAttributes
   {
   }
 }

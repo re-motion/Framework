@@ -44,6 +44,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
@@ -95,6 +96,10 @@
     <Compile Include="Utilities\EnumDescriptionAttribute.cs" />
     <Compile Include="Utilities\EnumDescriptionResourceAttribute.cs" />
     <Compile Include="Utilities\EnumValue.cs" />
+    <Compile Include="Xml\SchemaLoaderBase.cs" />
+    <Compile Include="Xml\XmlSchemaValidationErrorInfo.cs" />
+    <Compile Include="Xml\XmlSchemaValidationHandler.cs" />
+    <Compile Include="Xml\XmlSerializationUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

@@ -25,6 +25,7 @@
       <CreateNuGetPackageWithSymbolServerSupport>True</CreateNuGetPackageWithSymbolServerSupport>
     </ReleaseProjectFiles>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Tools\Core.Tools.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Xml\Core.Xml.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\UnitTests\Core.UnitTests.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\ExtensibleEnums.UnitTests\Core.ExtensibleEnums.UnitTests.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Extensions.UnitTests\Core.Extensions.UnitTests.csproj"/>
@@ -32,6 +33,7 @@
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration.UnitTests\Core.Reflection.CodeGeneration.UnitTests.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration.TypePipe.UnitTests\Core.Reflection.CodeGeneration.TypePipe.UnitTests.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Tools.UnitTests\Core.Tools.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Xml.UnitTests\Core.Xml.UnitTests.csproj"/>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\CodeDom\Development.CodeDom.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Core\Development.Core.csproj"/>

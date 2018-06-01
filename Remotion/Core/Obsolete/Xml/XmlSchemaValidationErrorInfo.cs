@@ -15,12 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Xml.Serialization;
 
-namespace Remotion.UnitTests.Xml.XmlSerializationUtilityTests.TestDomain
+namespace Remotion.Xml
 {
-  [XmlType (Namespace = "http://type-namespace")]
-  public class SampleTypeWithXmlType
+  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Xml.dll", true)]
+  public class XmlSchemaValidationErrorInfo
   {
   }
 }

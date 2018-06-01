@@ -147,6 +147,10 @@
       <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
       <Name>Core.Reflection</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Xml\Core.Xml.csproj">
+      <Project>{06FD65E1-C6B5-4DC7-9827-8036F71444A0}</Project>
+      <Name>Core.Xml</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
       <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
       <Name>Mixins.Core</Name>

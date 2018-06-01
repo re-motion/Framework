@@ -172,6 +172,10 @@
       <Project>{18269689-DC0F-4975-879B-A6ACBA0FA596}</Project>
       <Name>Core.Tools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Xml\Core.Xml.csproj">
+      <Project>{06FD65E1-C6B5-4DC7-9827-8036F71444A0}</Project>
+      <Name>Core.Xml</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
       <Name>Development.Core</Name>

@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,10 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
 
-namespace Remotion.UnitTests.Xml.XmlSerializationUtilityTests.TestDomain
-{
-  public class SampleTypeWithoutXmlAttributes
-  {
-  }
-}
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("Remotion XML Library")]
+[assembly: AssemblyDescription("Helper types used for interacting with XML files.")]
+[assembly: AssemblyCulture("")]
+[assembly: CLSCompliant(true)]

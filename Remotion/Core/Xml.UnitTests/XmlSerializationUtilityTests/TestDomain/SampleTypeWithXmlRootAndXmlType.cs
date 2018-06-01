@@ -17,10 +17,11 @@
 using System;
 using System.Xml.Serialization;
 
-namespace Remotion.UnitTests.Xml.XmlSerializationUtilityTests.TestDomain
+namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests.TestDomain
 {
   [XmlRoot ( Namespace = "http://root-namespace")]
-  public class SampleTypeWithXmlRoot
+  [XmlType (Namespace = "http://type-namespace")]
+  public class SampleTypeWithXmlRootAndXmlType
   {
   }
 }

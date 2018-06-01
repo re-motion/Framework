@@ -15,46 +15,39 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Xml.Schema;
-using Remotion.Utilities;
-using Remotion.Xml;
+using System.Reflection;
+using System.Xml;
+using System.Xml.Serialization;
 
-namespace Remotion.UnitTests.Xml
+namespace Remotion.Xml.UnitTests
 {
-  public class SchemaLoaderBaseMock : SchemaLoaderBase
+  [XmlType (ElementName, Namespace = SchemaUri)]
+  public class SampleClass
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    private string _schemaUri;
-
-    // construction and disposing
-
-    public SchemaLoaderBaseMock (string schemaUri)
+    public const string ElementName = "sampleClass";
+    public const string SchemaUri = "http://www.re-motion.org/core/unitTests";
+  
+    public static XmlReader GetSchemaReader ()
     {
-      ArgumentUtility.CheckNotNull ("schemaUri", schemaUri);
-
-      _schemaUri = schemaUri;
+      return new XmlTextReader (Assembly.GetExecutingAssembly ().GetManifestResourceStream (typeof (SampleClass), "SampleClass.xsd"));
     }
 
-    // methods and properties
+    private int _value;
 
-    protected override string SchemaFile
+    public SampleClass()
     {
-      get { return "SchemaLoaderBaseMock.xsd"; }
     }
 
-    public override string SchemaUri
+    [XmlElement ("value")]
+    public int Value
     {
-      get { return _schemaUri; }
-    }
-
-    public new XmlSchema LoadSchema (string schemaFileName)
-    {
-      return base.LoadSchema (schemaFileName);
+      get { return _value; }
+      set
+      {
+        if (value < 0)
+          throw new ArgumentOutOfRangeException ("Value", value, "Only positive integer values are allowed.");
+         _value = value;
+      }
     }
   }
 }
