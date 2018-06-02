@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     private static readonly MethodInfo s_getQueryMethod = 
         typeof (BindableDomainObjectSearchAllService).GetMethod ("GetQuery", BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
 
-    private readonly ICache<Type, bool> _bindableObjectTypeCache = CacheFactory.CreateWithSynchronization<Type, bool>();
+    private readonly ConcurrentDictionary<Type, bool> _bindableObjectTypeCache = new ConcurrentDictionary<Type, bool>();
 
     public bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       if (!ReflectionUtility.IsDomainObject (type))
         throw new ArgumentException ("This service only supports queries for DomainObject types.", "type");
 
-      if (!_bindableObjectTypeCache.GetOrCreateValue (type, BindableObjectProvider.IsBindableObjectImplementation))
+      if (!_bindableObjectTypeCache.GetOrAdd (type, BindableObjectProvider.IsBindableObjectImplementation))
       {
         var message = string.Format ("This service only supports queries for bindable DomainObject types, the given type '{0}' is not a bindable "
             + "type. Derive from BindableDomainObject or apply the BindableDomainObjectAttribute.", type.FullName);

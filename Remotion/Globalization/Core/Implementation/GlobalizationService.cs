@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using JetBrains.Annotations;
-using Remotion.Collections;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -32,8 +32,8 @@ namespace Remotion.Globalization.Implementation
   {
     private readonly IResourceManagerResolver _resourceManagerResolver;
 
-    private readonly ICache<ITypeInformation, IResourceManager> _resourceManagerCache = 
-        CacheFactory.CreateWithSynchronization<ITypeInformation, IResourceManager>();
+    private readonly ConcurrentDictionary<ITypeInformation, IResourceManager> _resourceManagerCache = 
+        new ConcurrentDictionary<ITypeInformation, IResourceManager>();
 
     public GlobalizationService (IResourceManagerResolver resourceManagerResolver)
     {
@@ -46,7 +46,7 @@ namespace Remotion.Globalization.Implementation
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      return _resourceManagerCache.GetOrCreateValue (typeInformation, GetResourceManagerImplementation);
+      return _resourceManagerCache.GetOrAdd (typeInformation, GetResourceManagerImplementation);
     }
 
     [NotNull]

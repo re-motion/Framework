@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Collections;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
@@ -31,13 +31,15 @@ namespace Remotion.Mixins.Context
   /// <threadsafety static="true" instance="true" />
   public class ClassContextCollection : ICollection, ICollection<ClassContext>
   {
-    private readonly Dictionary<Type, ClassContext> _values = new Dictionary<Type, ClassContext> ();
+    private readonly IReadOnlyDictionary<Type, ClassContext> _values;
     private readonly IMixinInheritancePolicy _inheritancePolicy = DefaultMixinInheritancePolicy.Instance;
 
-    private readonly ICache<Type, ClassContext> _inheritedContextCache = CacheFactory.CreateWithSynchronization<Type, ClassContext>();
+    private readonly ConcurrentDictionary<Type, ClassContext> _inheritedContextCache = new ConcurrentDictionary<Type, ClassContext>();
 
     public ClassContextCollection (IEnumerable<ClassContext> classContexts)
     {
+      ArgumentUtility.CheckNotNull ("classContexts", classContexts);
+
       _values = classContexts.ToDictionary (cc => cc.Type);
     }
 
@@ -91,7 +93,7 @@ namespace Remotion.Mixins.Context
       if (exactMatch != null)
         return exactMatch;
       else
-        return _inheritedContextCache.GetOrCreateValue (type, DeriveInheritedContext);
+        return _inheritedContextCache.GetOrAdd (type, DeriveInheritedContext);
     }
 
     private ClassContext DeriveInheritedContext (Type type)

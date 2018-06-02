@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection
@@ -26,14 +26,14 @@ namespace Remotion.Reflection
   /// </summary>
   public static class TypeExtensions
   {
-    private static readonly ICache<Tuple<Type, Type>, bool> s_canAscribeCache = 
-        CacheFactory.CreateWithSynchronization<Tuple<Type, Type>, bool>();
-    private static readonly ICache<Tuple<Type, Type>, bool> s_canAscribeInternalCache =
-        CacheFactory.CreateWithSynchronization<Tuple<Type, Type>, bool>();
-    private static readonly ICache<Tuple<Type, Type>, Type[]> s_ascribedGenericArgumentsCache =
-        CacheFactory.CreateWithSynchronization<Tuple<Type, Type>, Type[]>();
-    private static readonly ICache<Tuple<Type, Type, Type>, bool> s_canDirectlyAscribeToGenericTypeInternalCache =
-        CacheFactory.CreateWithSynchronization<Tuple<Type, Type, Type>, bool>();
+    private static readonly ConcurrentDictionary<Tuple<Type, Type>, bool> s_canAscribeCache = 
+        new ConcurrentDictionary<Tuple<Type, Type>, bool>();
+    private static readonly ConcurrentDictionary<Tuple<Type, Type>, bool> s_canAscribeInternalCache =
+        new ConcurrentDictionary<Tuple<Type, Type>, bool>();
+    private static readonly ConcurrentDictionary<Tuple<Type, Type>, Type[]> s_ascribedGenericArgumentsCache =
+        new ConcurrentDictionary<Tuple<Type, Type>, Type[]>();
+    private static readonly ConcurrentDictionary<Tuple<Type, Type, Type>, bool> s_canDirectlyAscribeToGenericTypeInternalCache =
+        new ConcurrentDictionary<Tuple<Type, Type, Type>, bool>();
 
     /// <summary>
     /// Evaluates whether the <paramref name="type"/> can be ascribed to the <paramref name="ascribeeType"/>.
@@ -49,7 +49,7 @@ namespace Remotion.Reflection
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("ascribeeType", ascribeeType);
 
-      return s_canAscribeCache.GetOrCreateValue (
+      return s_canAscribeCache.GetOrAdd (
           Tuple.Create (type, ascribeeType),
           key =>
           {
@@ -87,13 +87,13 @@ namespace Remotion.Reflection
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("ascribeeType", ascribeeType);
 
-      return s_ascribedGenericArgumentsCache.GetOrCreateValue (
+      return s_ascribedGenericArgumentsCache.GetOrAdd (
           Tuple.Create (type, ascribeeType), key => GetAscribedGenericArgumentsWithoutCache (key.Item1, key.Item2));
     }
 
     private static bool CanAscribeInternalFromCache (Type type, Type ascribeeType)
     {
-      return s_canAscribeInternalCache.GetOrCreateValue (Tuple.Create (type, ascribeeType), key => CanAscribeInternal (key.Item1, key.Item2));
+      return s_canAscribeInternalCache.GetOrAdd (Tuple.Create (type, ascribeeType), key => CanAscribeInternal (key.Item1, key.Item2));
     }
 
     private static bool CanAscribeInternal (Type type, Type ascribeeType)
@@ -183,7 +183,7 @@ namespace Remotion.Reflection
 
     private static bool CanDirectlyAscribeToGenericTypeInternalFromCache (Type type, Type ascribeeType, Type ascribeeGenericTypeDefinition)
     {
-      return s_canDirectlyAscribeToGenericTypeInternalCache.GetOrCreateValue (
+      return s_canDirectlyAscribeToGenericTypeInternalCache.GetOrAdd (
         Tuple.Create (type, ascribeeType, ascribeeGenericTypeDefinition),
         key => CanDirectlyAscribeToGenericTypeInternal (key.Item1, key.Item2, key.Item3));
     }

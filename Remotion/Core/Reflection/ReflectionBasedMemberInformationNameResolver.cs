@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using Remotion.Collections;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -28,11 +29,11 @@ namespace Remotion.Reflection
   [ImplementationFor (typeof (IMemberInformationNameResolver), Lifetime = LifetimeKind.Singleton)]
   public class ReflectionBasedMemberInformationNameResolver : IMemberInformationNameResolver
   {
-    private readonly ICache<IPropertyInformation, string> s_propertyNameCache = CacheFactory.CreateWithSynchronization<IPropertyInformation, string>();
+    private readonly ConcurrentDictionary<IPropertyInformation, string> s_propertyNameCache = new ConcurrentDictionary<IPropertyInformation, string>();
 
-    private readonly ICache<ITypeInformation, string> s_typeNameCache = CacheFactory.CreateWithSynchronization<ITypeInformation, string>();
+    private readonly ConcurrentDictionary<ITypeInformation, string> s_typeNameCache = new ConcurrentDictionary<ITypeInformation, string>();
 
-    private readonly ICache<Enum, string> s_enumCache = CacheFactory.CreateWithSynchronization<Enum, string>();
+    private readonly ConcurrentDictionary<Enum, string> s_enumCache = new ConcurrentDictionary<Enum, string>();
 
     /// <summary>
     /// Returns the mapping name for the given <paramref name="propertyInformation"/>.
@@ -43,7 +44,7 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
 
-      return s_propertyNameCache.GetOrCreateValue (
+      return s_propertyNameCache.GetOrAdd (
           propertyInformation,
           pi => GetPropertyName (pi.GetOriginalDeclaringType(), pi.Name));
     }
@@ -57,14 +58,14 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      return s_typeNameCache.GetOrCreateValue (typeInformation, GetTypeNameInternal);
+      return s_typeNameCache.GetOrAdd (typeInformation, GetTypeNameInternal);
     }
 
     public string GetEnumName (Enum enumValue)
     {
       ArgumentUtility.CheckNotNull ("enumValue", enumValue);
 
-      return s_enumCache.GetOrCreateValue (enumValue, GetEnumNameInternal);
+      return s_enumCache.GetOrAdd (enumValue, GetEnumNameInternal);
     }
 
 

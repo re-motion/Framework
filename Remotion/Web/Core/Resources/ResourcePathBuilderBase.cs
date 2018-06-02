@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Resources
@@ -26,7 +26,7 @@ namespace Remotion.Web.Resources
   /// </summary>
   public abstract class ResourcePathBuilderBase : IResourcePathBuilder
   {
-    private static readonly ICache<Assembly, AssemblyName> s_assemblyNameCache = CacheFactory.CreateWithSynchronization<Assembly, AssemblyName>();
+    private static readonly ConcurrentDictionary<Assembly, AssemblyName> s_assemblyNameCache = new ConcurrentDictionary<Assembly, AssemblyName>();
 
     protected abstract string GetResourceRoot ();
 
@@ -38,7 +38,7 @@ namespace Remotion.Web.Resources
       ArgumentUtility.CheckNotNull ("assemblyRelativePathParts", assemblyRelativePathParts);
 
       string root = GetResourceRoot();
-      string assemblyName = s_assemblyNameCache.GetOrCreateValue (assembly, key => key.GetName()).Name;
+      string assemblyName = s_assemblyNameCache.GetOrAdd (assembly, key => key.GetName()).Name;
 
       string[] completePath = ArrayUtility.Combine (new[] { root, assemblyName }, assemblyRelativePathParts);
       return BuildPath (completePath);

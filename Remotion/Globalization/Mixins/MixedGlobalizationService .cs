@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Collections;
 using Remotion.Globalization.Implementation;
 using Remotion.Mixins;
 using Remotion.Reflection;
@@ -41,8 +41,8 @@ namespace Remotion.Globalization.Mixins
     private readonly object _mixinConfigurationLockObject = new object();
     private MixinConfiguration _mixinConfiguration;
     private readonly IResourceManagerResolver _resourceManagerResolver;
-    private readonly ICache<ITypeInformation, IResourceManager> _resourceManagerCache =
-        CacheFactory.CreateWithSynchronization<ITypeInformation, IResourceManager>();
+    private readonly ConcurrentDictionary<ITypeInformation, IResourceManager> _resourceManagerCache =
+        new ConcurrentDictionary<ITypeInformation, IResourceManager>();
 
     public MixinGlobalizationService (IResourceManagerResolver resourceManagerResolver)
     {
@@ -70,7 +70,7 @@ namespace Remotion.Globalization.Mixins
         }
       }
 
-      return _resourceManagerCache.GetOrCreateValue (typeInformation, GetResourceManagerFromType);
+      return _resourceManagerCache.GetOrAdd (typeInformation, GetResourceManagerFromType);
     }
 
     [NotNull]

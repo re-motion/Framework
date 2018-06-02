@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
@@ -35,8 +36,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   public class WxeVariablesContainer
   {
     private static readonly ITypeConversionProvider s_typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
-    private static readonly ICache<Type, WxeParameterDeclaration[]> s_parameterDeclarations =
-        CacheFactory.CreateWithSynchronization<Type, WxeParameterDeclaration[]>();
+    private static readonly ConcurrentDictionary<Type, WxeParameterDeclaration[]> s_parameterDeclarations =
+        new ConcurrentDictionary<Type, WxeParameterDeclaration[]>();
 
     public static WxeParameterDeclaration[] GetParameterDeclarations (Type type)
     {
@@ -44,7 +45,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       if (!typeof (WxeFunction).IsAssignableFrom (type))
         throw new ArgumentException ("Type " + type.FullName + " is not derived from WxeFunction.", "type");
 
-      return s_parameterDeclarations.GetOrCreateValue (type, GetParameterDeclarationsUnchecked);
+      return s_parameterDeclarations.GetOrAdd (type, GetParameterDeclarationsUnchecked);
     }
 
     private static WxeParameterDeclaration[] GetParameterDeclarationsUnchecked (Type type)

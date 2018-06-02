@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Collections;
+using System.Collections.Concurrent;
 using Remotion.Utilities;
 
 namespace Remotion.Security
@@ -28,7 +28,7 @@ namespace Remotion.Security
   [Serializable]
   public struct AccessType : IEquatable<AccessType>
   {
-    private static readonly ICache<Enum, AccessType> s_accessTypeByEnumCache = CacheFactory.CreateWithSynchronization<Enum, AccessType>();
+    private static readonly ConcurrentDictionary<Enum, AccessType> s_accessTypeByEnumCache = new ConcurrentDictionary<Enum, AccessType>();
     private static readonly Func<Enum, AccessType> s_getInternalFunc = GetInternal;
 
     public static AccessType Get (EnumWrapper accessType)
@@ -40,7 +40,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull ("accessType", accessType);
 
-      return s_accessTypeByEnumCache.GetOrCreateValue (accessType, s_getInternalFunc);
+      return s_accessTypeByEnumCache.GetOrAdd (accessType, s_getInternalFunc);
     }
 
     private static AccessType GetInternal (Enum accessType)

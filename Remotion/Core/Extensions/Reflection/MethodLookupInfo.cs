@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Reflection;
 using Remotion.Collections;
 using Remotion.Utilities;
@@ -23,7 +24,7 @@ namespace Remotion.Reflection
 {
   public class MethodLookupInfo : MemberLookupInfo
   {
-    private static readonly ICache<Tuple<Type, string>, Delegate> s_instanceMethodCache = CacheFactory.CreateWithSynchronization<Tuple<Type, string>, Delegate>();
+    private static readonly ConcurrentDictionary<Tuple<Type, string>, Delegate> s_instanceMethodCache = new ConcurrentDictionary<Tuple<Type, string>, Delegate>();
 
     public MethodLookupInfo (string name, BindingFlags bindingFlags, Binder binder, CallingConventions callingConvention, ParameterModifier[] parameterModifiers)
         : base (name, bindingFlags, binder, callingConvention, parameterModifiers)
@@ -44,13 +45,9 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("delegateType", delegateType, typeof (Delegate));
 
-      Tuple<Type, string> key = new Tuple<Type, string> (delegateType, MemberName);
-      Delegate result;
-      if (! s_instanceMethodCache.TryGetValue (key, out result))
-      {
-        result = s_instanceMethodCache.GetOrCreateValue (
-            key,
-            delegate
+      return s_instanceMethodCache.GetOrAdd (
+            new Tuple<Type, string> (delegateType, MemberName),
+            key =>
             {
               var delegateTypeFromKey = key.Item1;
               Type[] parameterTypes = GetSignature (delegateTypeFromKey).Item1;
@@ -62,8 +59,6 @@ namespace Remotion.Reflection
               // TODO: verify return type
               return Delegate.CreateDelegate (delegateTypeFromKey, method);
             });
-      }
-      return result;
     }
   }
 }

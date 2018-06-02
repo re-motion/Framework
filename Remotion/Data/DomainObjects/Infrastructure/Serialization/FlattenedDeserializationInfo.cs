@@ -15,19 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Remotion.Collections;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 {
   public sealed class FlattenedDeserializationInfo
   {
-    private static readonly ICache<Type, Func<FlattenedDeserializationInfo, object>> s_instanceFactoryCache =
-        CacheFactory.CreateWithSynchronization<Type, Func<FlattenedDeserializationInfo, object>>();
+    private static readonly ConcurrentDictionary<Type, Func<FlattenedDeserializationInfo, object>> s_instanceFactoryCache =
+        new ConcurrentDictionary<Type, Func<FlattenedDeserializationInfo, object>>();
 
     public event EventHandler DeserializationFinished;
 
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       if (type == null)
         return default (T);
 
-      var instanceFactory = s_instanceFactoryCache.GetOrCreateValue (type, GetInstanceFactory);
+      var instanceFactory = s_instanceFactoryCache.GetOrAdd (type, GetInstanceFactory);
       object instance = instanceFactory (this);
       var originalPosition = _objectReader.ReadPosition;
       return CastValue<T> (instance, originalPosition, "Object");

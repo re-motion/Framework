@@ -22,7 +22,6 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Resources;
-using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Utilities;
 
@@ -54,8 +53,8 @@ namespace Remotion.Globalization.Implementation
 
     private readonly ConcurrentDictionary<CultureInfo, ResourceSet> _resourceSets = new ConcurrentDictionary<CultureInfo, ResourceSet>();
 
-    private readonly ICache<Tuple<CultureInfo, string>, NameValueCollection> _cachedResourceSet =
-        CacheFactory.CreateWithSynchronization<Tuple<CultureInfo, string>, NameValueCollection>();
+    private readonly ConcurrentDictionary<Tuple<CultureInfo, string>, NameValueCollection> _cachedResourceSet =
+        new ConcurrentDictionary<Tuple<CultureInfo, string>, NameValueCollection>();
 
     private readonly Func<CultureInfo, ResourceSet> _resourceSetsAddValueFactory;
     private readonly Func<CultureInfo, ResourceSet, ResourceSet> _resourceSetsUpdateValueFactory;
@@ -123,7 +122,7 @@ namespace Remotion.Globalization.Implementation
     /// </remarks>
     public NameValueCollection GetAllStrings (string prefix)
     {
-      return _cachedResourceSet.GetOrCreateValue (
+      return _cachedResourceSet.GetOrAdd (
           Tuple.Create (CultureInfo.CurrentUICulture, prefix ?? string.Empty),
           key =>
           {

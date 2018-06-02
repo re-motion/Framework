@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -72,7 +72,7 @@ namespace Remotion.Security.Metadata
       }
     }
 
-    private static readonly ICache<CacheKey, IMethodInformation> s_cache = CacheFactory.CreateWithSynchronization<CacheKey, IMethodInformation>();
+    private static readonly ConcurrentDictionary<CacheKey, IMethodInformation> s_cache = new ConcurrentDictionary<CacheKey, IMethodInformation>();
 
     public ReflectionBasedMemberResolver ()
     {
@@ -105,7 +105,7 @@ namespace Remotion.Security.Metadata
     private IMethodInformation GetMethodFromCache (Type type, string memberName, BindingFlags bindingFlags)
     {
       var cacheKey = new CacheKey (type, memberName, bindingFlags);
-      return s_cache.GetOrCreateValue (cacheKey, key => GetMethod (key.Type, key.MethodName, key.BindingFlags));
+      return s_cache.GetOrAdd (cacheKey, key => GetMethod (key.Type, key.MethodName, key.BindingFlags));
     }
 
     private IMethodInformation GetMethod (Type type, string methodName, BindingFlags bindingFlags)

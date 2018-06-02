@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
-using Remotion.Collections;
 using Remotion.FunctionalProgramming;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -37,8 +37,8 @@ namespace Remotion.Globalization.Implementation
   {
     public const int Position = 19;
 
-    private readonly ICache<Tuple<Assembly, string>, ResourceManagerWrapper> _resourceManagersCache =
-        CacheFactory.CreateWithSynchronization<Tuple<Assembly, string>, ResourceManagerWrapper>();
+    private readonly ConcurrentDictionary<Tuple<Assembly, string>, ResourceManagerWrapper> _resourceManagersCache =
+        new ConcurrentDictionary<Tuple<Assembly, string>, ResourceManagerWrapper>();
 
     public ResourceAttributeBasedResourceManagerFactory ()
     {
@@ -56,7 +56,7 @@ namespace Remotion.Globalization.Implementation
 
     private ResourceManagerWrapper GetResourceManagerFromCache (Assembly assembly, IResourcesAttribute resourcesAttribute)
     {
-      return _resourceManagersCache.GetOrCreateValue (
+      return _resourceManagersCache.GetOrAdd (
           Tuple.Create (resourcesAttribute.ResourceAssembly ?? assembly, resourcesAttribute.BaseName),
           GetResourceManager);
     }

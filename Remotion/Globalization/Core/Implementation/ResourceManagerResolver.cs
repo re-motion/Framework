@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Collections;
+using System.Collections.Concurrent;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -29,8 +29,8 @@ namespace Remotion.Globalization.Implementation
   [ImplementationFor (typeof (IResourceManagerResolver), Lifetime = LifetimeKind.Singleton)]
   public sealed class ResourceManagerResolver : IResourceManagerResolver
   {
-    private readonly ICache<Type, ResolvedResourceManagerResult> _resourceManagerWrappersCache =
-        CacheFactory.CreateWithSynchronization<Type, ResolvedResourceManagerResult>();
+    private readonly ConcurrentDictionary<Type, ResolvedResourceManagerResult> _resourceManagerWrappersCache =
+        new ConcurrentDictionary<Type, ResolvedResourceManagerResult>();
 
     private readonly IResourceManagerFactory _resourceManagerFactory;
 
@@ -53,7 +53,7 @@ namespace Remotion.Globalization.Implementation
       if (type == null)
         return ResolvedResourceManagerResult.Null;
 
-      return _resourceManagerWrappersCache.GetOrCreateValue (type, CreateResolvedResourceManagerResult);
+      return _resourceManagerWrappersCache.GetOrAdd (type, CreateResolvedResourceManagerResult);
     }
 
     private ResolvedResourceManagerResult CreateResolvedResourceManagerResult (Type type)

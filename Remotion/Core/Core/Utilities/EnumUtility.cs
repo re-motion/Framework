@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -77,7 +78,7 @@ namespace Remotion.Utilities
       }
     }
 
-    private static readonly ICache<Type, EnumMetadata> s_cache = CacheFactory.CreateWithSynchronization<Type, EnumMetadata>();
+    private static readonly ConcurrentDictionary<Type, EnumMetadata> s_cache = new ConcurrentDictionary<Type, EnumMetadata>();
 
     /// <summary>
     /// Checks whether the specified value is one of the values that the enumeration type defines.
@@ -195,7 +196,7 @@ namespace Remotion.Utilities
 
     public static EnumMetadata GetEnumMetadata (Type enumType)
     {
-      return s_cache.GetOrCreateValue (enumType, t => new EnumMetadata (t));
+      return s_cache.GetOrAdd (enumType, t => new EnumMetadata (t));
     }
 
     private static ulong ToUInt64 (object value)

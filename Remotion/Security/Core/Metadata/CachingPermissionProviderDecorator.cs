@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Remotion.Collections;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -59,7 +59,7 @@ namespace Remotion.Security.Metadata
 
     private static readonly Enum[] s_emptyPermissions = new Enum[0];
     private readonly IPermissionProvider _innerPermissionProvider;
-    private readonly ICache<CacheKey, IReadOnlyList<Enum>> _cache = CacheFactory.CreateWithSynchronization<CacheKey, IReadOnlyList<Enum>>();
+    private readonly ConcurrentDictionary<CacheKey, IReadOnlyList<Enum>> _cache = new ConcurrentDictionary<CacheKey, IReadOnlyList<Enum>>();
     private readonly Func<CacheKey, IReadOnlyList<Enum>> _cacheValueFactory;
 
     public CachingPermissionProviderDecorator (IPermissionProvider innerPermissionProvider)
@@ -85,7 +85,7 @@ namespace Remotion.Security.Metadata
         return s_emptyPermissions;
 
       var cacheKey = new CacheKey (type, methodInformation);
-      return _cache.GetOrCreateValue (cacheKey, _cacheValueFactory);
+      return _cache.GetOrAdd (cacheKey, _cacheValueFactory);
     }
 
     private IReadOnlyList<Enum> GetRequiredMethodPermissions (CacheKey key)

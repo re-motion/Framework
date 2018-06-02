@@ -15,17 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Utilities
 {
   public static class ReflectionUtility
   {
-    private static readonly ICache<Assembly, bool> s_isAssemblySignedCache = CacheFactory.CreateWithSynchronization<Assembly, bool>();
+    private static readonly ConcurrentDictionary<Assembly, bool> s_isAssemblySignedCache = new ConcurrentDictionary<Assembly, bool>();
 
     public static bool IsMixinType (Type type)
     {
@@ -132,7 +132,7 @@ namespace Remotion.Mixins.Utilities
     public static bool IsAssemblySigned (Assembly assembly)
     {
       ArgumentUtility.CheckNotNull ("assembly", assembly);
-      return s_isAssemblySignedCache.GetOrCreateValue (assembly, asm => IsAssemblySigned (asm.GetName ()));
+      return s_isAssemblySignedCache.GetOrAdd (assembly, asm => IsAssemblySigned (asm.GetName()));
     }
 
     public static bool IsAssemblySigned (AssemblyName assemblyName)

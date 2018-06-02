@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -23,7 +24,6 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using JetBrains.Annotations;
-using Remotion.Collections;
 
 namespace Remotion.Utilities
 {
@@ -50,7 +50,7 @@ namespace Remotion.Utilities
       public bool IsQuoted;
     }
 
-    private static readonly ICache<Type, MethodInfo> s_parseMethods = CacheFactory.CreateWithSynchronization<Type, MethodInfo>();
+    private static readonly ConcurrentDictionary<Type, MethodInfo> s_parseMethods = new ConcurrentDictionary<Type, MethodInfo>();
 
 
     public static string GetFileNameTimestamp (DateTime dt)
@@ -477,7 +477,7 @@ namespace Remotion.Utilities
     private static MethodInfo GetParseMethod (Type type, bool throwIfNotFound)
     {
       var parseMethod =
-          s_parseMethods.GetOrCreateValue (type, key => GetParseMethodWithFormatProviderFromType (type) ?? GetParseMethodFromType (type));
+          s_parseMethods.GetOrAdd (type, key => GetParseMethodWithFormatProviderFromType (type) ?? GetParseMethodFromType (type));
       if (throwIfNotFound && parseMethod == null)
         throw new ParseException (string.Format ("Type does not have method 'public static {0} Parse (string s)'.", type.Name));
 

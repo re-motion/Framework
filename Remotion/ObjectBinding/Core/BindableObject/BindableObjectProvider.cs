@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// </summary>
   public class BindableObjectProvider : BusinessObjectProvider
   {
-    private static readonly ICache<Type, Type> s_providerAttributeTypeCache = CacheFactory.CreateWithSynchronization<Type, Type>();
+    private static readonly ConcurrentDictionary<Type, Type> s_providerAttributeTypeCache = new ConcurrentDictionary<Type, Type>();
 
     /// <summary>
     /// Use this method as a shortcut to retrieve the <see cref="BindableObjectProvider"/> for a <see cref="Type"/> 
@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      var providerAttributeType = s_providerAttributeTypeCache.GetOrCreateValue (type, FindProviderAttributeType);
+      var providerAttributeType = s_providerAttributeTypeCache.GetOrAdd (type, FindProviderAttributeType);
 
       var provider = (BindableObjectProvider) GetProvider (providerAttributeType);
       Assertion.IsNotNull (provider, "GetProvider cannot return null (type '{0}').", type.FullName);

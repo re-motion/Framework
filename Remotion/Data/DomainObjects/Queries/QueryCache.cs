@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Linq;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Utilities;
 
@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Queries
   /// </remarks>
   public class QueryCache
   {
-    private readonly ICache<string, IQuery> _cache = CacheFactory.CreateWithSynchronization<string, IQuery>();
+    private readonly ConcurrentDictionary<string, IQuery> _cache = new ConcurrentDictionary<string, IQuery>();
 
     /// <summary>
     /// Gets a query for the given LINQ query, returning it from the cache if possible.
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Queries
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
       ArgumentUtility.CheckNotNull ("queryGenerator", queryGenerator);
 
-      return _cache.GetOrCreateValue (id, delegate
+      return _cache.GetOrAdd (id, delegate
                                           {
                                             var querySource = QueryFactory.CreateLinqQuery<T> ();
                                             var query = queryGenerator (querySource);

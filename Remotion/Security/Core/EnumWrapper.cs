@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Collections;
+using System.Collections.Concurrent;
 using Remotion.Utilities;
 
 namespace Remotion.Security
@@ -30,7 +30,7 @@ namespace Remotion.Security
   [Serializable]
   public struct EnumWrapper : IEquatable<EnumWrapper>
   {
-    private static readonly ICache<Enum, EnumWrapper> s_enumWrapperCache = CacheFactory.CreateWithSynchronization<Enum, EnumWrapper>();
+    private static readonly ConcurrentDictionary<Enum, EnumWrapper> s_enumWrapperCache = new ConcurrentDictionary<Enum, EnumWrapper>();
 
     /// <summary>
     /// Gets an <see cref="EnumWrapper"/>, setting the wrapper's <see cref="Name"/> to a string of the format "valueName|typeName".
@@ -64,7 +64,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull ("enumValue", enumValue);
 
-      return s_enumWrapperCache.GetOrCreateValue (enumValue, CreateEnumWrapperFromEnumValue);
+      return s_enumWrapperCache.GetOrAdd (enumValue, CreateEnumWrapperFromEnumValue);
     }
 
     private static EnumWrapper CreateEnumWrapperFromEnumValue (Enum enumValue)

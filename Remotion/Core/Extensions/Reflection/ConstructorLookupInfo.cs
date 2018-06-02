@@ -15,16 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection
 {
   public class ConstructorLookupInfo: MemberLookupInfo, IConstructorLookupInfo
   {
-    private static readonly ICache<object, Delegate> s_delegateCache = CacheFactory.CreateWithSynchronization<object, Delegate>();
+    private static readonly ConcurrentDictionary<object, Delegate> s_delegateCache = new ConcurrentDictionary<object, Delegate>();
 
     private readonly Type _definingType;
 
@@ -70,7 +70,7 @@ namespace Remotion.Reflection
 
     private Delegate GetOrCreateValueWithClosure (object key, Type delegateType)
     {
-      return s_delegateCache.GetOrCreateValue (key, arg => CreateDelegate (delegateType));
+      return s_delegateCache.GetOrAdd (key, arg => CreateDelegate (delegateType));
     }
 
     public object DynamicInvoke (Type[] parameterTypes, object[] parameterValues)

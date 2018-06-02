@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Collections;
+using System.Collections.Concurrent;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -28,7 +28,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   [ImplementationFor (typeof(ExtensibleEnumDefinitionCache), Lifetime = LifetimeKind.Singleton)]
   public sealed class ExtensibleEnumDefinitionCache
   {
-    private readonly ICache<Type, IExtensibleEnumDefinition> _cache = CacheFactory.CreateWithSynchronization<Type, IExtensibleEnumDefinition>();
+    private readonly ConcurrentDictionary<Type, IExtensibleEnumDefinition> _cache = new ConcurrentDictionary<Type, IExtensibleEnumDefinition>();
     private readonly IExtensibleEnumValueDiscoveryService _valueDiscoveryService;
 
     public ExtensibleEnumDefinitionCache (IExtensibleEnumValueDiscoveryService valueDiscoveryService)
@@ -61,7 +61,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("extensibleEnumType", extensibleEnumType);
 
-      return _cache.GetOrCreateValue (extensibleEnumType, CreateDefinition);
+      return _cache.GetOrAdd (extensibleEnumType, CreateDefinition);
     }
 
     private IExtensibleEnumDefinition CreateDefinition (Type extensibleEnumType)

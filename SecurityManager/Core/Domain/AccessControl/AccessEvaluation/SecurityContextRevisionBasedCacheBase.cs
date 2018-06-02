@@ -16,10 +16,10 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Linq.ExecutableQueries;
@@ -37,7 +37,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       where TRevisionValue : IRevisionValue
   {
     private static readonly ILog s_log = LogManager.GetLogger (MethodInfo.GetCurrentMethod().DeclaringType);
-    private static readonly ICache<string, IQuery> s_queryCache = CacheFactory.CreateWithSynchronization<string, IQuery>();
+    private static readonly ConcurrentDictionary<string, IQuery> s_queryCache = new ConcurrentDictionary<string, IQuery>();
 
     protected SecurityContextRevisionBasedCacheBase (IRevisionProvider<TRevisionKey, TRevisionValue> revisionProvider)
         : base (revisionProvider)
@@ -62,8 +62,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     protected IEnumerable<T> GetOrCreateQuery<T> (MethodBase caller, Func<IQueryable<T>> queryCreator)
     {
-      var executableQuery =
-          (IExecutableQuery<IEnumerable<T>>) s_queryCache.GetOrCreateValue (caller.Name, key => CreateExecutableQuery (key, queryCreator));
+      var executableQuery = 
+          (IExecutableQuery<IEnumerable<T>>) s_queryCache.GetOrAdd (caller.Name, key => CreateExecutableQuery (key, queryCreator));
 
       return executableQuery.Execute (ClientTransaction.Current.QueryManager);
     }

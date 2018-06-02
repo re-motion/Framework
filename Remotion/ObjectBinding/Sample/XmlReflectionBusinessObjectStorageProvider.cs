@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
-using Remotion.Collections;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.TypePipe;
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Sample
 
     private readonly string _rootPath;
     private Hashtable _identityMap = new Hashtable();
-    private readonly ICache<Type, XmlSerializer> _attributeOverridesCache = CacheFactory.CreateWithSynchronization<Type, XmlSerializer>();
+    private readonly ConcurrentDictionary<Type, XmlSerializer> _attributeOverridesCache = new ConcurrentDictionary<Type, XmlSerializer>();
 
     public XmlReflectionBusinessObjectStorageProvider (string rootPath)
     {
@@ -192,7 +192,7 @@ namespace Remotion.ObjectBinding.Sample
 
     private XmlSerializer GetXmlSerializer (Type concreteType)
     {
-      return _attributeOverridesCache.GetOrCreateValue (
+      return _attributeOverridesCache.GetOrAdd (
           concreteType,
           delegate (Type type)
           {

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Collections;
@@ -28,8 +29,8 @@ namespace Remotion.Web.Services
   /// </summary>
   public class WebServiceFactory : IWebServiceFactory
   {
-    private static readonly ICache<Type, IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>>> s_serviceMethodCache =
-        CacheFactory.CreateWithSynchronization<Type, IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>>>();
+    private static readonly ConcurrentDictionary<Type, IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>>> s_serviceMethodCache =
+        new ConcurrentDictionary<Type, IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>>>();
 
     private readonly IBuildManager _buildManager;
 
@@ -89,7 +90,7 @@ namespace Remotion.Web.Services
 
     private IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>> GetServiceMethodsFromCache<T> ()
     {
-      return s_serviceMethodCache.GetOrCreateValue (typeof (T), GetServiceMethods);
+      return s_serviceMethodCache.GetOrAdd (typeof (T), GetServiceMethods);
     }
 
     private IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>> GetServiceMethods (Type type)
