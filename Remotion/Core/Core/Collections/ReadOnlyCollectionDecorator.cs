@@ -31,7 +31,7 @@ namespace Remotion.Collections
   /// <para/>
   /// </remarks>
   [Serializable]
-  public class ReadOnlyCollectionDecorator<T> : ICollection<T>
+  public class ReadOnlyCollectionDecorator<T> : ICollection<T>, IReadOnlyCollection<T>
   {
     private readonly ICollection<T> _collection;
 
