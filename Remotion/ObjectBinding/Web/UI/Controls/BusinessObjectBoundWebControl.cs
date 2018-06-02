@@ -216,8 +216,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private readonly BusinessObjectBinding _binding;
 
-    private readonly ICache<Tuple<Type, Control>, IResourceManager> _resourceManagerCache =
-        CacheFactory.Create<Tuple<Type, Control>, IResourceManager>();
+    private readonly Dictionary<Tuple<Type, Control>, IResourceManager> _resourceManagerCache =
+        new Dictionary<Tuple<Type, Control>, IResourceManager>();
 
     private bool _controlExistedInPreviousRequest;
 

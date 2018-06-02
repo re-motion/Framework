@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
     private static readonly ILog s_log = LogManager.GetLogger (typeof (BusinessObjectPropertyPathBasedComparer));
 
     private readonly IBusinessObjectPropertyPath _propertyPath;
-    private readonly ICache<BocListRow, CacheValue> _cache = CacheFactory.Create<BocListRow, CacheValue>();
+    private readonly Dictionary<BocListRow, CacheValue> _cache = new Dictionary<BocListRow, CacheValue>();
 
     public BusinessObjectPropertyPathBasedComparer (IBusinessObjectPropertyPath propertyPath)
     {

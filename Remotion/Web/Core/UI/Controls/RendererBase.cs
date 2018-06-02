@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
+using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using Remotion.Collections;
@@ -34,8 +34,8 @@ namespace Remotion.Web.UI.Controls
   public abstract class RendererBase<TControl>
       where TControl : IStyledControl, IControlWithDiagnosticMetadata
   {
-    private readonly ICache<Tuple<Type, IResourceManager>, IResourceManager> _resourceManagerCache =
-        CacheFactory.Create<Tuple<Type, IResourceManager>, IResourceManager>();
+    private readonly Dictionary<Tuple<Type, IResourceManager>, IResourceManager> _resourceManagerCache =
+        new Dictionary<Tuple<Type, IResourceManager>, IResourceManager>();
 
     private readonly IResourceUrlFactory _resourceUrlFactory;
     private readonly IGlobalizationService _globalizationService;
