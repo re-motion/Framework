@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using Remotion.Collections;
 using Remotion.Mixins;
 using Remotion.Utilities;
@@ -124,8 +125,8 @@ namespace Remotion.ObjectBinding.BindableObject
       return attribute.GetType ();
     }
 
-    private readonly IDataStore<Type, BindableObjectClass> _businessObjectClassStore =
-        DataStoreFactory.CreateWithSynchronization<Type, BindableObjectClass>();
+    private readonly ConcurrentDictionary<Type, BindableObjectClass> _businessObjectClassStore =
+        new ConcurrentDictionary<Type, BindableObjectClass>();
     private readonly IDataStore<Type, IBusinessObjectService> _serviceStore =
         DataStoreFactory.CreateWithSynchronization<Type, IBusinessObjectService>();
     private readonly IMetadataFactory _metadataFactory;
@@ -176,7 +177,7 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return _businessObjectClassStore.GetOrCreateValue (type, CreateBindableObjectClass);
+      return _businessObjectClassStore.GetOrAdd (type, CreateBindableObjectClass);
     }
 
     private BindableObjectClass CreateBindableObjectClass (Type type)

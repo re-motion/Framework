@@ -15,13 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Remotion.Collections;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
@@ -33,16 +33,15 @@ namespace Remotion.Reflection
   [TypeConverter (typeof (PropertyInfoAdapterConverter))]
   public sealed class PropertyInfoAdapter : IPropertyInformation
   {
-    //If this is changed to an (expiring) cache, equals implementation must be updated.
-    private static readonly IDataStore<PropertyInfo, PropertyInfoAdapter> s_dataStore =
-        DataStoreFactory.CreateWithSynchronization<PropertyInfo, PropertyInfoAdapter> (MemberInfoEqualityComparer<PropertyInfo>.Instance);
+    private static readonly ConcurrentDictionary<PropertyInfo, PropertyInfoAdapter> s_dataStore =
+        new ConcurrentDictionary<PropertyInfo, PropertyInfoAdapter> (MemberInfoEqualityComparer<PropertyInfo>.Instance);
 
     private static readonly Func<PropertyInfo, PropertyInfoAdapter> s_ctorFunc = pi => new PropertyInfoAdapter (pi); 
 
     public static PropertyInfoAdapter Create (PropertyInfo propertyInfo)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      return s_dataStore.GetOrCreateValue (propertyInfo, s_ctorFunc);
+      return s_dataStore.GetOrAdd (propertyInfo, s_ctorFunc);
     }
 
     private readonly PropertyInfo _propertyInfo;

@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -31,8 +31,13 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   {
     public const BindingFlags PropertyBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
-    private static readonly IDataStore<Type, HashSet<MethodInfo>> s_explicitInterfaceImplementations =
-        DataStoreFactory.CreateWithSynchronization<Type, HashSet<MethodInfo>>();
+    /// <remarks>
+    /// Note that <see cref="HashSet{T}"/> is not documented as threadsafe for read-only access in MSDN (as of May 2018) but we only require 
+    /// the use of <see cref="HashSet{T}.Contains"/> on a non-modified <see cref="HashSet{T}"/>. By checking the source code (.NET Framework 4.7.2),
+    /// it was verified that this operation is not modifying the <see cref="HashSet{T}"/>. This is deemed sufficient in for the relevant circumstances.
+    /// </remarks>
+    private static readonly ConcurrentDictionary<Type, HashSet<IMethodInformation>> s_explicitInterfaceImplementations =
+        new ConcurrentDictionary<Type, HashSet<IMethodInformation>>();
 
     private readonly Type _type;
     private readonly bool _includeBaseProperties;
@@ -62,9 +67,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       _persistentMixinFinder = persistentMixinFinder;
       _propertyMetadataProvider = propertyMetadataProvider;
       _explicitInterfaceImplementations = new Lazy<HashSet<IMethodInformation>> (
-          () => new HashSet<IMethodInformation> (
-              s_explicitInterfaceImplementations.GetOrCreateValue (_type, GetExplicitInterfaceImplementations)
-                  .Select (MethodInfoAdapter.Create)));
+          () => s_explicitInterfaceImplementations.GetOrAdd (_type, GetExplicitInterfaceImplementations));
     }
 
     public Type Type
@@ -195,7 +198,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       return FindPropertiesFilter (PropertyInfoAdapter.Create ((PropertyInfo) member));
     }
 
-    private static HashSet<MethodInfo> GetExplicitInterfaceImplementations (Type type)
+    private static HashSet<IMethodInformation> GetExplicitInterfaceImplementations (Type type)
     {
       var explicitInterfaceImplementationSet = new HashSet<MethodInfo>();
 
@@ -208,7 +211,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         explicitInterfaceImplementationSet.UnionWith (explicitInterfaceImplementations);
       }
 
-      return explicitInterfaceImplementationSet;
+      return new HashSet<IMethodInformation> (explicitInterfaceImplementationSet.Select (MethodInfoAdapter.Create));
     }
   }
 }

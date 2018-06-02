@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using Remotion.Collections;
 using Remotion.Mixins;
 using Remotion.TypePipe;
@@ -26,8 +27,8 @@ namespace Remotion.ObjectBinding
   /// <summary>The <see langword="abstract"/> default implementation of the <see cref="IBusinessObjectProvider"/> interface.</summary>
   public abstract class BusinessObjectProvider : IBusinessObjectProviderWithIdentity
   {
-    private static readonly IDataStore<Type, IBusinessObjectProvider> s_businessObjectProviderStore =
-        DataStoreFactory.CreateWithSynchronization<Type, IBusinessObjectProvider>();
+    private static readonly ConcurrentDictionary<Type, IBusinessObjectProvider> s_businessObjectProviderStore =
+        new ConcurrentDictionary<Type, IBusinessObjectProvider>();
 
     /// <summary>
     /// Gets the <see cref="IBusinessObjectProvider"/> associated with the <see cref="BusinessObjectProviderAttribute"/> type specified.
@@ -41,7 +42,7 @@ namespace Remotion.ObjectBinding
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom (
           "businessObjectProviderAttributeType", businessObjectProviderAttributeType, typeof (BusinessObjectProviderAttribute));
 
-      return s_businessObjectProviderStore.GetOrCreateValue (businessObjectProviderAttributeType, CreateBusinessObjectProviderFromAttribute);
+      return s_businessObjectProviderStore.GetOrAdd (businessObjectProviderAttributeType, CreateBusinessObjectProviderFromAttribute);
     }
 
     /// <summary>
@@ -85,9 +86,10 @@ namespace Remotion.ObjectBinding
           ((BusinessObjectProvider) provider)._providerAttribute = attribute;
       }
 
-      s_businessObjectProviderStore.Remove (businessObjectProviderAttributeType);
-      if (provider != null)
-        s_businessObjectProviderStore.Add (businessObjectProviderAttributeType, provider);
+      if (provider == null)
+        s_businessObjectProviderStore.TryRemove (businessObjectProviderAttributeType, out _);
+      else
+        s_businessObjectProviderStore.AddOrUpdate (businessObjectProviderAttributeType, provider, (key, oldProvider) => provider);
     }
 
     /// <summary>

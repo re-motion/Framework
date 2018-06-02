@@ -15,13 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Remotion.Collections;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
@@ -33,16 +33,15 @@ namespace Remotion.Reflection
   [TypeConverter (typeof (MethodInfoAdapterConverter))]
   public sealed class MethodInfoAdapter : IMethodInformation
   {
-    //If this is changed to an (expiring) cache, equals implementation must be updated.
-    private static readonly IDataStore<MethodInfo, MethodInfoAdapter> s_dataStore =
-        DataStoreFactory.CreateWithSynchronization<MethodInfo, MethodInfoAdapter> (MemberInfoEqualityComparer<MethodInfo>.Instance);
+    private static readonly ConcurrentDictionary<MethodInfo, MethodInfoAdapter> s_dataStore =
+        new ConcurrentDictionary<MethodInfo, MethodInfoAdapter> (MemberInfoEqualityComparer<MethodInfo>.Instance);
 
     private static readonly Func<MethodInfo, MethodInfoAdapter> s_ctorFunc = mi => new MethodInfoAdapter (mi); 
 
     public static MethodInfoAdapter Create (MethodInfo methodInfo)
     {
       ArgumentUtility.CheckNotNull ("methodInfo", methodInfo);
-      return s_dataStore.GetOrCreateValue (methodInfo, s_ctorFunc);
+      return s_dataStore.GetOrAdd (methodInfo, s_ctorFunc);
     }
 
     private readonly MethodInfo _methodInfo;

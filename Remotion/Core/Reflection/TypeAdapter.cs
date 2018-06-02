@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Remotion.Collections;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
@@ -31,9 +31,8 @@ namespace Remotion.Reflection
   [TypeConverter (typeof (TypeAdapterConverter))]
   public sealed class TypeAdapter : ITypeInformation
   {
-    //If this is changed to an (expiring) cache, equals implementation must be updated.
-    private static readonly IDataStore<Type, TypeAdapter> s_dataStore =
-        DataStoreFactory.CreateWithSynchronization<Type, TypeAdapter> (ReferenceEqualityComparer<Type>.Instance);
+    private static readonly ConcurrentDictionary<Type, TypeAdapter> s_dataStore =
+        new ConcurrentDictionary<Type, TypeAdapter> (ReferenceEqualityComparer<Type>.Instance);
 
     private static readonly Func<Type, TypeAdapter> s_ctorFunc = t => new TypeAdapter (t);
 
@@ -41,7 +40,7 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return s_dataStore.GetOrCreateValue (type, s_ctorFunc);
+      return s_dataStore.GetOrAdd (type, s_ctorFunc);
     }
 
     private readonly Type _type;

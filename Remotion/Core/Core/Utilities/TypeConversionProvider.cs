@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using Remotion.Collections;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Utilities
@@ -30,9 +30,15 @@ namespace Remotion.Utilities
   [ImplementationFor (typeof (ITypeConversionProvider), Lifetime = LifetimeKind.Singleton)]
   public class TypeConversionProvider : ITypeConversionProvider
   {
-    private readonly IDataStore<Type, TypeConverter> _typeConverters = DataStoreFactory.CreateWithSynchronization<Type, TypeConverter>();
+    private readonly ConcurrentDictionary<Type, TypeConverter> _typeConverters = new ConcurrentDictionary<Type, TypeConverter>();
 
     private readonly ITypeConverterFactory _typeConverterFactory;
+
+    /// <remarks>
+    /// The <see cref="_additionalTypeConverters"/> field is only used from non-interface implementations. This means, adding and removing 
+    /// TypeConverters is not performed after the <see cref="TypeConversionProvider"/> has been registered with the IoC infrastructure.
+    /// Note that this only mitigates possible threading issues but does not eliminate them.
+    /// </remarks>
     private readonly Dictionary<Type, TypeConverter> _additionalTypeConverters = new Dictionary<Type, TypeConverter>();
     private readonly BidirectionalStringConverter _stringConverter = new BidirectionalStringConverter();
 
@@ -244,7 +250,7 @@ namespace Remotion.Utilities
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      _typeConverters[type] = converter;
+      _typeConverters.AddOrUpdate (type, converter, (key, existingConverter) => converter);
     }
 
     protected TypeConverter GetTypeConverterFromCache (Type type)
