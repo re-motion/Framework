@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
 
@@ -46,7 +46,7 @@ public class StubStringUtility
 
   public static void ClearCache()
   {
-    var cache = (ICache<Type, MethodInfo>) PrivateInvoke.GetNonPublicStaticField (typeof (StringUtility), "s_parseMethods");
+    var cache = (ConcurrentDictionary<Type, MethodInfo>) PrivateInvoke.GetNonPublicStaticField (typeof (StringUtility), "s_parseMethods");
     cache.Clear();
   }
 }

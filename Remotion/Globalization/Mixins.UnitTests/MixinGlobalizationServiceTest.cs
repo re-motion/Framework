@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Development.UnitTesting;
 using Remotion.Globalization.Implementation;
 using Remotion.Globalization.Mixins.UnitTests.TestDomain;
@@ -303,7 +303,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
         var typeInformation1 = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
         var typeInformation2 = TypeAdapter.Create (typeof (InheritedClassWithoutMultiLingualResourcesAttributes));
         var resourceManagerCache =
-            (ICache<ITypeInformation, IResourceManager>) PrivateInvoke.GetNonPublicField (_globalizationService, "_resourceManagerCache");
+            (ConcurrentDictionary<ITypeInformation, IResourceManager>) PrivateInvoke.GetNonPublicField (_globalizationService, "_resourceManagerCache");
         IResourceManager outValue;
 
         var newMasterConfiguration = MixinConfiguration.BuildNew().BuildConfiguration();
@@ -359,7 +359,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
         var typeInformation1 = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
         var typeInformation2 = TypeAdapter.Create (typeof (InheritedClassWithoutMultiLingualResourcesAttributes));
         var resourceManagerCache =
-            (ICache<ITypeInformation, IResourceManager>) PrivateInvoke.GetNonPublicField (_globalizationService, "_resourceManagerCache");
+            (ConcurrentDictionary<ITypeInformation, IResourceManager>) PrivateInvoke.GetNonPublicField (_globalizationService, "_resourceManagerCache");
         IResourceManager outValue;
 
         var newMasterConfiguration = MixinConfiguration.BuildNew().BuildConfiguration();
