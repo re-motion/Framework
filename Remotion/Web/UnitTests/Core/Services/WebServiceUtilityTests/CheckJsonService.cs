@@ -75,14 +75,14 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     [Test]
     public void CheckJsonServiceMethod_Valid ()
     {
-      Assert.That (() => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "JsonMethod"), Throws.Nothing);
+      Assert.That (() => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "JsonMethod", new string[0]), Throws.Nothing);
     }
     
     [Test]
     public void Test_BaseTypeNotWebService ()
     {
       Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestNotAWebService), "Method"),
+          () => WebServiceUtility.CheckJsonService (typeof (TestNotAWebService), "Method", new string[0]),
           Throws.ArgumentException
               .And.Message.EqualTo (
                   "Web service type 'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckJsonService+TestNotAWebService'"
@@ -93,7 +93,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     public void Test_MissingScriptServiceAttribute ()
     {
       Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestWebService), "Method"),
+          () => WebServiceUtility.CheckJsonService (typeof (TestWebService), "Method", new string[0]),
           Throws.ArgumentException
               .And.Message.EqualTo (
                   "Web service type 'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckJsonService+TestWebService'"
@@ -104,7 +104,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     public void Test_ResponseFormatNotJson ()
     {
       Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithResponeFormatNotJson"),
+          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithResponeFormatNotJson", new string[0]),
           Throws.ArgumentException
               .And.Message.EqualTo (
                   "Web method 'MethodWithResponeFormatNotJson' on web service type "
@@ -116,7 +116,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     public void Test_ParametersMatch ()
     {
       Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", "param2", "param1"),
+          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", new [] { "param2", "param1" }),
           Throws.Nothing);
     }
 
@@ -124,7 +124,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     public void Test_MissingParameter()
     {
       Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", "param1", "param3"),
+          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", new [] { "param1", "param3" }),
           Throws.ArgumentException
               .And.Message.EqualTo (
                   "Web method 'MethodWithParameters' on web service type "
@@ -136,7 +136,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     public void Test_UnexpectedParameter ()
     {
       Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", "param2"),
+          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", new [] { "param2" }),
           Throws.ArgumentException
               .And.Message.EqualTo (
                   "Web method 'MethodWithParameters' on web service type "
@@ -148,7 +148,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     public void Test_ParameterWithWrongCase()
     {
       Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", "param1", "Param2"),
+          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", new [] { "param1", "Param2" }),
           Throws.ArgumentException
               .And.Message.EqualTo (
                   "Web method 'MethodWithParameters' on web service type "

@@ -57,14 +57,14 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     [Test]
     public void Test_Valid ()
     {
-      Assert.That (() => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "ScriptMethod"), Throws.Nothing);
+      Assert.That (() => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "ScriptMethod", new string[0]), Throws.Nothing);
     }
 
     [Test]
     public void Test_BaseTypeNotWebService ()
     {
       Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestNotAWebService), "Method"),
+          () => WebServiceUtility.CheckJsonService (typeof (TestNotAWebService), "Method", new string[0]),
           Throws.ArgumentException
               .And.Message.EqualTo (
                   "Web service type 'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckScriptService+TestNotAWebService'"

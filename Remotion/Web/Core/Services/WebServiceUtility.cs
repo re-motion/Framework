@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Script.Services;
@@ -83,7 +84,7 @@ namespace Remotion.Web.Services
     /// <exception cref="ArgumentException">
     /// Thrown if the required attributes for a JSON web service are not set or the web service declaration itself is invalid.
     /// </exception>
-    public static void CheckJsonService (Type type, string method, params string[] parameters)
+    public static void CheckJsonService (Type type, string method, IReadOnlyCollection<string> parameters)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNullOrEmpty ("method", method);
@@ -155,7 +156,7 @@ namespace Remotion.Web.Services
       return attribute;
     }
 
-    private static void CheckParameters (Type type, MethodInfo methodInfo, string[] expectedParameters)
+    private static void CheckParameters (Type type, MethodInfo methodInfo, IReadOnlyCollection<string> expectedParameters)
     {
       var actualParameters = methodInfo.GetParameters().Select (pi => pi.Name).ToArray();
       var missingParameters = expectedParameters.Except (actualParameters);

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.Utilities;
@@ -27,8 +28,8 @@ namespace Remotion.Web.Services
   /// </summary>
   public class WebServiceFactory : IWebServiceFactory
   {
-    private static readonly ICache<Type, Tuple<string, string[]>[]> s_serviceMethodCache =
-        CacheFactory.CreateWithSynchronization<Type, Tuple<string, string[]>[]>();
+    private static readonly ICache<Type, IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>>> s_serviceMethodCache =
+        CacheFactory.CreateWithSynchronization<Type, IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>>>();
 
     private readonly IBuildManager _buildManager;
 
@@ -86,17 +87,17 @@ namespace Remotion.Web.Services
       return compiledType;
     }
 
-    private Tuple<string, string[]>[] GetServiceMethodsFromCache<T> ()
+    private IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>> GetServiceMethodsFromCache<T> ()
     {
       return s_serviceMethodCache.GetOrCreateValue (typeof (T), GetServiceMethods);
     }
 
-    private Tuple<string, string[]>[] GetServiceMethods (Type type)
+    private IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>> GetServiceMethods (Type type)
     {
       return type.GetMethods().Select (
-          mi => Tuple.Create (
+          mi => Tuple.Create<string, IReadOnlyCollection<string>> (
               mi.Name,
-              mi.GetParameters().Select (pi => pi.Name).ToArray())).ToArray();
+              mi.GetParameters().Select (pi => pi.Name).ToArray().AsReadOnly())).ToArray();
     }
   }
 }
