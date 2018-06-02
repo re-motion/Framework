@@ -84,6 +84,33 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
+    public void GetOrCreateValue_WithNewKey ()
+    {
+      var foundValue = _dictionary.GetOrCreateValue ("key", key => "value");
+      Assert.That (foundValue, Is.EqualTo ("value"));
+
+      Assert.That (_dictionary.ContainsKey ("key"), Is.True);
+      Assert.That (_dictionary["key"], Is.EqualTo ("value"));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithExistingKey ()
+    {
+      var foundValue = _dictionary.GetOrCreateValue ("a", key => throw new InvalidOperationException());
+      Assert.That (foundValue, Is.EqualTo ("Alpha"));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNullKey ()
+    {
+      var dictionaryStub = MockRepository.GenerateStub<IDictionary<string, string>>();
+      dictionaryStub.Stub (stub => stub.TryGetValue (Arg<string>.Is.Null, out Arg<string>.Out ("out").Dummy)).Return (true);
+
+      var foundValue = dictionaryStub.GetOrCreateValue (null, key => throw new InvalidOperationException());
+      Assert.That (foundValue, Is.EqualTo ("out"));
+    }
+
+    [Test]
     public void AsReadOnly ()
     {
       ReadOnlyDictionary<string, string> readOnlyDictionary = _dictionary.AsReadOnly ();
