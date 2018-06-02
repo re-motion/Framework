@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Script.Services;
 using System.Web.Services;
-using Remotion.Collections;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Services
@@ -30,11 +30,11 @@ namespace Remotion.Web.Services
   /// </summary>
   public static class WebServiceUtility
   {
-    private static readonly ICache<Tuple<MemberInfo, Type>, Attribute> s_attributeCache =
-        CacheFactory.CreateWithSynchronization<Tuple<MemberInfo, Type>, Attribute>();
+    private static readonly ConcurrentDictionary<Tuple<MemberInfo, Type>, Attribute> s_attributeCache =
+        new ConcurrentDictionary<Tuple<MemberInfo, Type>, Attribute>();
 
-    private static readonly ICache<Tuple<Type, string>, MethodInfo> s_methodInfoCache =
-        CacheFactory.CreateWithSynchronization<Tuple<Type, string>, MethodInfo>();
+    private static readonly ConcurrentDictionary<Tuple<Type, string>, MethodInfo> s_methodInfoCache =
+        new ConcurrentDictionary<Tuple<Type, string>, MethodInfo>();
 
     /// <summary>
     /// Checks that <paramref name="type"/> and <paramref name="method"/> declare a valid web service.
@@ -113,7 +113,7 @@ namespace Remotion.Web.Services
 
     private static MethodInfo GetCheckedMethodInfo (Type type, string method)
     {
-      var methodInfo = s_methodInfoCache.GetOrCreateValue (
+      var methodInfo = s_methodInfoCache.GetOrAdd (
           Tuple.Create (type, method),
           key => key.Item1.GetMethod (key.Item2, BindingFlags.Instance | BindingFlags.Public));
 
@@ -186,7 +186,7 @@ namespace Remotion.Web.Services
     private static T GetAttributeFromCache<T> (MemberInfo memberInfo)
         where T: Attribute
     {
-      return (T) s_attributeCache.GetOrCreateValue (
+      return (T) s_attributeCache.GetOrAdd (
           Tuple.Create (memberInfo, typeof (T)),
           key => AttributeUtility.GetCustomAttribute<T> (key.Item1, true));
     }
