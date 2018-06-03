@@ -399,6 +399,7 @@ namespace Remotion.Reflection.CodeGeneration
     {
       ArgumentUtility.CheckNotNull ("methodToBeWrapped", methodToBeWrapped);
 
+      // C# compiler 7.2 does not provide caching for delegate but during type generation there is already a significant amount of GC pressure so the delegate creation does not matter
       return _publicMethodWrappers.GetOrCreateValue (methodToBeWrapped, CreatePublicMethodWrapper).MethodBuilder;
     }
 

@@ -24,6 +24,8 @@ namespace Remotion.Mixins.Validation.Rules
   public class ContextStoreMemberIntroductionLookupUtility<TMemberIntroductionDefinition>
       where TMemberIntroductionDefinition : class, IMemberIntroductionDefinition
   {
+    // ReSharper disable once StaticMemberInGenericType
+    private static Func<object, object> s_contextStoreValueFactory;
 
     public IEnumerable<TMemberIntroductionDefinition> GetCachedPublicIntroductionsByName (IDataStore<object, object> contextStore, TargetClassDefinition targetClass, string name)
     {
@@ -31,8 +33,11 @@ namespace Remotion.Mixins.Validation.Rules
           typeof (ContextStoreMemberIntroductionLookupUtility<TMemberIntroductionDefinition>).FullName + ".GetCachedPublicIntroductionsByName",
           targetClass);
 
-      MultiDictionary<string, TMemberIntroductionDefinition> introductionDefinitions = (MultiDictionary<string, TMemberIntroductionDefinition>)
-          contextStore.GetOrCreateValue (cacheKey, delegate { return GetUncachedIntroductions (targetClass); });
+      // Optimized for memory allocations
+      if (s_contextStoreValueFactory == null)
+        s_contextStoreValueFactory = key => GetUncachedIntroductions (((Tuple<string, TargetClassDefinition>) key).Item2);
+
+      var introductionDefinitions = (MultiDictionary<string, TMemberIntroductionDefinition>) contextStore.GetOrCreateValue (cacheKey, s_contextStoreValueFactory);
       return introductionDefinitions[name];
     }
 

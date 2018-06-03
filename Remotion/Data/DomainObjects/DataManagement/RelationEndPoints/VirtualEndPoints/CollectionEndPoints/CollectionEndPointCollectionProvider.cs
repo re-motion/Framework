@@ -29,11 +29,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private readonly IAssociatedCollectionDataStrategyFactory _dataStrategyFactory;
     
     private readonly IDataStore<RelationEndPointID, DomainObjectCollection> _collections = new SimpleDataStore<RelationEndPointID, DomainObjectCollection>();
+    private readonly Func<RelationEndPointID, DomainObjectCollection> _getCollectionWithoutCacheFunc;
 
     public CollectionEndPointCollectionProvider (IAssociatedCollectionDataStrategyFactory dataStrategyFactory)
     {
       ArgumentUtility.CheckNotNull ("dataStrategyFactory", dataStrategyFactory);
       _dataStrategyFactory = dataStrategyFactory;
+
+      // Optimized for memory allocations
+      _getCollectionWithoutCacheFunc = GetCollectionWithoutCache;
     }
 
     public IAssociatedCollectionDataStrategyFactory DataStrategyFactory
@@ -44,13 +48,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public DomainObjectCollection GetCollection (RelationEndPointID endPointID)
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      var collection = _collections.GetOrCreateValue (endPointID, id =>
-      {
-        var dataStrategy = _dataStrategyFactory.CreateDataStrategyForEndPoint (id);
-        return DomainObjectCollectionFactory.Instance.CreateCollection (id.Definition.PropertyInfo.PropertyType, dataStrategy);
-      });
+      var collection = _collections.GetOrCreateValue (endPointID, _getCollectionWithoutCacheFunc);
       Assertion.IsTrue (collection.AssociatedEndPointID == endPointID);
       return collection;
+    }
+
+    private DomainObjectCollection GetCollectionWithoutCache (RelationEndPointID id)
+    {
+      var dataStrategy = _dataStrategyFactory.CreateDataStrategyForEndPoint (id);
+      return DomainObjectCollectionFactory.Instance.CreateCollection (id.Definition.PropertyInfo.PropertyType, dataStrategy);
     }
 
     public void RegisterCollection (RelationEndPointID endPointID, DomainObjectCollection collection)

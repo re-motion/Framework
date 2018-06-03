@@ -36,6 +36,7 @@ namespace Remotion.Reflection
     private static readonly ConcurrentDictionary<MethodInfo, MethodInfoAdapter> s_dataStore =
         new ConcurrentDictionary<MethodInfo, MethodInfoAdapter> (MemberInfoEqualityComparer<MethodInfo>.Instance);
 
+    ///<remarks>Optimized for memory allocations</remarks>
     private static readonly Func<MethodInfo, MethodInfoAdapter> s_ctorFunc = mi => new MethodInfoAdapter (mi); 
 
     public static MethodInfoAdapter Create (MethodInfo methodInfo)

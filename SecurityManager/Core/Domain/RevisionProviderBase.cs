@@ -28,6 +28,7 @@ namespace Remotion.SecurityManager.Domain
       where TRevisionKey : IRevisionKey
   {
     private readonly SafeContextSingleton<SimpleDataStore<TRevisionKey, GuidRevisionValue>> _cachedRevisions;
+    private readonly Func<TRevisionKey, GuidRevisionValue> _getRevisionFromDatabaseFunc;
 
     protected RevisionProviderBase ()
     {
@@ -39,6 +40,9 @@ namespace Remotion.SecurityManager.Domain
       _cachedRevisions = new SafeContextSingleton<SimpleDataStore<TRevisionKey, GuidRevisionValue>> (
           SafeContextKeys.SecurityManagerRevision + "_" + Guid.NewGuid().ToString(),
           () => new SimpleDataStore<TRevisionKey, GuidRevisionValue>());
+
+      // Optimized for memory allocations
+      _getRevisionFromDatabaseFunc = GetRevisionFromDatabase;
     }
 
     public GuidRevisionValue GetRevision (TRevisionKey key)
@@ -46,7 +50,7 @@ namespace Remotion.SecurityManager.Domain
       ArgumentUtility.CheckNotNull ("key", key);
 
       var revisions = GetCachedRevisions();
-      return revisions.GetOrCreateValue (key, GetRevisionFromDatabase);
+      return revisions.GetOrCreateValue (key, _getRevisionFromDatabaseFunc);
     }
 
     public void InvalidateRevision (TRevisionKey key)

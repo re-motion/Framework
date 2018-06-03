@@ -46,6 +46,9 @@ namespace Remotion.Globalization.Implementation
         () => CultureInfo.InvariantCulture,
         LazyThreadSafetyMode.ExecutionAndPublication);
 
+    ///<remarks>Optimized for memory allocations</remarks>
+    private static readonly Func<Assembly, Lazy<CultureInfo>> s_getAssemblyNeutralResourcesCultureFunc = GetAssemblyNeutralResourcesCulture;
+
     // ReSharper restore StaticMemberInGenericType
 
     private readonly ConcurrentDictionary<TReflectionObject, Lazy<IReadOnlyDictionary<CultureInfo, string>>> _localizedTypeNamesForTypeInformation =
@@ -166,11 +169,11 @@ namespace Remotion.Globalization.Implementation
       if (assembly == null)
         return CultureInfo.InvariantCulture;
 
-      var cachedCulture = _neutralResourcesCultureForAssembly.GetOrAdd (assembly, GetAssemblyNeutralResourcesCulture);
+      var cachedCulture = _neutralResourcesCultureForAssembly.GetOrAdd (assembly, s_getAssemblyNeutralResourcesCultureFunc);
       return cachedCulture.Value;
     }
 
-    private Lazy<CultureInfo> GetAssemblyNeutralResourcesCulture (Assembly assembly)
+    private static Lazy<CultureInfo> GetAssemblyNeutralResourcesCulture (Assembly assembly)
     {
       var attribute = assembly.GetCustomAttribute<NeutralResourcesLanguageAttribute>();
       if (attribute == null)

@@ -44,11 +44,16 @@ namespace Remotion.Globalization.Mixins
     private readonly ConcurrentDictionary<ITypeInformation, IResourceManager> _resourceManagerCache =
         new ConcurrentDictionary<ITypeInformation, IResourceManager>();
 
+    private readonly Func<ITypeInformation, IResourceManager> _getResourceManagerFromTypeFunc;
+
     public MixinGlobalizationService (IResourceManagerResolver resourceManagerResolver)
     {
       ArgumentUtility.CheckNotNull ("resourceManagerResolver", resourceManagerResolver);
 
       _resourceManagerResolver = resourceManagerResolver;
+
+      // Optimized for memory allocations
+      _getResourceManagerFromTypeFunc = GetResourceManagerFromType;
     }
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
@@ -58,7 +63,7 @@ namespace Remotion.Globalization.Mixins
       var masterConfiguration = MixinConfiguration.GetMasterConfiguration();
 
       if (masterConfiguration != MixinConfiguration.ActiveConfiguration)
-        return GetResourceManagerFromType (typeInformation);
+        return _getResourceManagerFromTypeFunc (typeInformation);
 
       // During normal operation, the lock-statement is cheap enough as to not matter when accessing the ResourceManager.
       lock (_mixinConfigurationLockObject)
@@ -70,7 +75,7 @@ namespace Remotion.Globalization.Mixins
         }
       }
 
-      return _resourceManagerCache.GetOrAdd (typeInformation, GetResourceManagerFromType);
+      return _resourceManagerCache.GetOrAdd (typeInformation, _getResourceManagerFromTypeFunc);
     }
 
     [NotNull]

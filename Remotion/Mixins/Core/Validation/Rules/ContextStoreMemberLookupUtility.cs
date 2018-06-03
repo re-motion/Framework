@@ -24,13 +24,18 @@ namespace Remotion.Mixins.Validation.Rules
   public class ContextStoreMemberLookupUtility<TMemberDefinition>
       where TMemberDefinition : MemberDefinitionBase
   {
+    private Func<object, object> _contextStoreValueFactory;
+
     public IEnumerable<TMemberDefinition> GetCachedMembersByName (IDataStore<object, object> contextStore, TargetClassDefinition targetClass, string name)
     {
       Tuple<string, TargetClassDefinition> cacheKey =
           Tuple.Create (typeof (ContextStoreMemberLookupUtility<TMemberDefinition>).FullName + ".GetCachedMembersByName", targetClass);
 
-      var methodDefinitions = (MultiDictionary<string, TMemberDefinition>)
-          contextStore.GetOrCreateValue (cacheKey, delegate { return GetUncachedMethodDefinitions (targetClass); });
+      // Optimized for memory allocations
+      if (_contextStoreValueFactory == null)
+        _contextStoreValueFactory = key => GetUncachedMethodDefinitions (((Tuple<string, TargetClassDefinition>) key).Item2);
+
+      var methodDefinitions = (MultiDictionary<string, TMemberDefinition>) contextStore.GetOrCreateValue (cacheKey, _contextStoreValueFactory);
       return methodDefinitions[name];
     }
 

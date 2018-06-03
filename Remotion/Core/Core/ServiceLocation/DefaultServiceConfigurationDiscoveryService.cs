@@ -147,6 +147,7 @@ namespace Remotion.ServiceLocation
 
     private IReadOnlyCollection<ImplementationForAttribute> GetImplementationForAttributesFromCache (Type type)
     {
+      // C# compiler 7.2 already provides caching for anonymous method.
       return _implementationForAttributesCache.GetOrAdd (
           type,
           key => AttributeUtility.GetCustomAttributes<ImplementationForAttribute> (key, false).ToArray());

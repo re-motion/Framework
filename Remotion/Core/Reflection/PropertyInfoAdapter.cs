@@ -36,6 +36,7 @@ namespace Remotion.Reflection
     private static readonly ConcurrentDictionary<PropertyInfo, PropertyInfoAdapter> s_dataStore =
         new ConcurrentDictionary<PropertyInfo, PropertyInfoAdapter> (MemberInfoEqualityComparer<PropertyInfo>.Instance);
 
+    ///<remarks>Optimized for memory allocations</remarks>
     private static readonly Func<PropertyInfo, PropertyInfoAdapter> s_ctorFunc = pi => new PropertyInfoAdapter (pi); 
 
     public static PropertyInfoAdapter Create (PropertyInfo propertyInfo)

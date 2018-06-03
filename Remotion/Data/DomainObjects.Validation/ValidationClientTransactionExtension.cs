@@ -33,6 +33,7 @@ namespace Remotion.Data.DomainObjects.Validation
   public class ValidationClientTransactionExtension : ClientTransactionExtensionBase
   {
     private readonly IValidatorBuilder _validatorBuilder;
+    private readonly Func<Type, IValidator> _validatorBuilderFunc;
 
     public static string DefaultKey
     {
@@ -50,6 +51,9 @@ namespace Remotion.Data.DomainObjects.Validation
       ArgumentUtility.CheckNotNull ("validatorBuilder", validatorBuilder);
 
       _validatorBuilder = validatorBuilder;
+
+      // Optimized for memory allocations
+      _validatorBuilderFunc = _validatorBuilder.BuildValidator;
     }
 
     public IValidatorBuilder ValidatorBuilder
@@ -129,12 +133,11 @@ namespace Remotion.Data.DomainObjects.Validation
             item.DomainObjectState != StateType.NotLoadedYet && item.DomainObjectState != StateType.Invalid,
             "No unloaded or invalid objects get this far.");
 
-        var validator = validatorCache.GetOrCreateValue (
-            item.DomainObject.GetPublicDomainObjectType(),
-            type => _validatorBuilder.BuildValidator (type));
+        var validator = validatorCache.GetOrCreateValue (item.DomainObject.GetPublicDomainObjectType(), _validatorBuilderFunc);
         
         var validationResult = validator.Validate (item.DomainObject);
 
+        // C# compiler 7.2 already provides caching for anonymous method.
         foreach (var validationFailure in validationResult.Errors.Where (vr => vr.GetValidatedInstance () == null))
           validationFailure.SetValidatedInstance (item.DomainObject);
 

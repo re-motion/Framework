@@ -56,6 +56,7 @@ namespace Remotion.Globalization.Implementation
 
     private ResourceManagerWrapper GetResourceManagerFromCache (Assembly assembly, IResourcesAttribute resourcesAttribute)
     {
+      // C# compiler 7.2 does not provide caching for delegate but when creating the ResourceManager there is already a significant amount of GC pressure so the delegate creation does not matter
       return _resourceManagersCache.GetOrAdd (
           Tuple.Create (resourcesAttribute.ResourceAssembly ?? assembly, resourcesAttribute.BaseName),
           GetResourceManager);

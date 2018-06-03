@@ -33,12 +33,16 @@ namespace Remotion.Globalization.Implementation
         new ConcurrentDictionary<Type, ResolvedResourceManagerResult>();
 
     private readonly IResourceManagerFactory _resourceManagerFactory;
+    private readonly Func<Type, ResolvedResourceManagerResult> _createResolvedResourceManagerResultFunc;
 
     public ResourceManagerResolver (IResourceManagerFactory resourceManagerFactory)
     {
       ArgumentUtility.CheckNotNull ("resourceManagerFactory", resourceManagerFactory);
 
       _resourceManagerFactory = resourceManagerFactory;
+
+      // Optimized for memory allocations
+      _createResolvedResourceManagerResultFunc = CreateResolvedResourceManagerResult;
     }
 
     public ResolvedResourceManagerResult Resolve (Type type)
@@ -53,7 +57,7 @@ namespace Remotion.Globalization.Implementation
       if (type == null)
         return ResolvedResourceManagerResult.Null;
 
-      return _resourceManagerWrappersCache.GetOrAdd (type, CreateResolvedResourceManagerResult);
+      return _resourceManagerWrappersCache.GetOrAdd (type, _createResolvedResourceManagerResultFunc);
     }
 
     private ResolvedResourceManagerResult CreateResolvedResourceManagerResult (Type type)

@@ -32,6 +32,9 @@ namespace Remotion.Security
   {
     private static readonly ConcurrentDictionary<Enum, EnumWrapper> s_enumWrapperCache = new ConcurrentDictionary<Enum, EnumWrapper>();
 
+    ///<remarks>Optimized for memory allocations</remarks>
+    private static readonly Func<Enum, EnumWrapper> s_createEnumWrapperFromEnumValueFunc = CreateEnumWrapperFromEnumValue;
+
     /// <summary>
     /// Gets an <see cref="EnumWrapper"/>, setting the wrapper's <see cref="Name"/> to a string of the format "valueName|typeName".
     /// </summary>
@@ -64,7 +67,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull ("enumValue", enumValue);
 
-      return s_enumWrapperCache.GetOrAdd (enumValue, CreateEnumWrapperFromEnumValue);
+      return s_enumWrapperCache.GetOrAdd (enumValue, s_createEnumWrapperFromEnumValueFunc);
     }
 
     private static EnumWrapper CreateEnumWrapperFromEnumValue (Enum enumValue)

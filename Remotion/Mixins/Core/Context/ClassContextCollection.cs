@@ -35,12 +35,14 @@ namespace Remotion.Mixins.Context
     private readonly IMixinInheritancePolicy _inheritancePolicy = DefaultMixinInheritancePolicy.Instance;
 
     private readonly ConcurrentDictionary<Type, ClassContext> _inheritedContextCache = new ConcurrentDictionary<Type, ClassContext>();
+    private readonly Func<Type, ClassContext> _deriveInheritedContextFunc;
 
     public ClassContextCollection (IEnumerable<ClassContext> classContexts)
     {
       ArgumentUtility.CheckNotNull ("classContexts", classContexts);
 
       _values = classContexts.ToDictionary (cc => cc.Type);
+      _deriveInheritedContextFunc = DeriveInheritedContext;
     }
 
     public ClassContextCollection (params ClassContext[] classContexts)
@@ -93,7 +95,7 @@ namespace Remotion.Mixins.Context
       if (exactMatch != null)
         return exactMatch;
       else
-        return _inheritedContextCache.GetOrAdd (type, DeriveInheritedContext);
+        return _inheritedContextCache.GetOrAdd (type, _deriveInheritedContextFunc);
     }
 
     private ClassContext DeriveInheritedContext (Type type)

@@ -30,6 +30,9 @@ namespace Remotion.ObjectBinding
     private static readonly ConcurrentDictionary<Type, IBusinessObjectProvider> s_businessObjectProviderStore =
         new ConcurrentDictionary<Type, IBusinessObjectProvider>();
 
+    ///<remarks>Optimized for memory allocations</remarks>
+    private static readonly Func<Type, IBusinessObjectProvider> s_createBusinessObjectProviderFromAttribute = CreateBusinessObjectProviderFromAttribute;
+
     /// <summary>
     /// Gets the <see cref="IBusinessObjectProvider"/> associated with the <see cref="BusinessObjectProviderAttribute"/> type specified.
     /// </summary>
@@ -42,7 +45,7 @@ namespace Remotion.ObjectBinding
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom (
           "businessObjectProviderAttributeType", businessObjectProviderAttributeType, typeof (BusinessObjectProviderAttribute));
 
-      return s_businessObjectProviderStore.GetOrAdd (businessObjectProviderAttributeType, CreateBusinessObjectProviderFromAttribute);
+      return s_businessObjectProviderStore.GetOrAdd (businessObjectProviderAttributeType, s_createBusinessObjectProviderFromAttribute);
     }
 
     /// <summary>
@@ -131,6 +134,7 @@ namespace Remotion.ObjectBinding
 
     private readonly IBusinessObjectServiceFactory _serviceFactory;
     private BusinessObjectProviderAttribute _providerAttribute;
+    private Func<Type, IBusinessObjectService> _getServiceStoreValueFactory;
 
     protected BusinessObjectProvider (IBusinessObjectServiceFactory serviceFactory)
     {
@@ -167,7 +171,11 @@ namespace Remotion.ObjectBinding
       IDataStore<Type, IBusinessObjectService> serviceStore = ServiceStore;
       Assertion.IsNotNull (serviceStore, "The ServiceStore evaluated and returned null. It should return a null object instead.");
 
-      return serviceStore.GetOrCreateValue (serviceType, delegate (Type type) { return _serviceFactory.CreateService (this, type); });
+      // Optimized for memory allocations
+      if (_getServiceStoreValueFactory == null)
+        _getServiceStoreValueFactory = type => _serviceFactory.CreateService (this, type);
+
+      return serviceStore.GetOrCreateValue (serviceType, _getServiceStoreValueFactory);
     }
 
     /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. </summary>

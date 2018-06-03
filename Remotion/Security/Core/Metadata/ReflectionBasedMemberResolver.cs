@@ -74,6 +74,9 @@ namespace Remotion.Security.Metadata
 
     private static readonly ConcurrentDictionary<CacheKey, IMethodInformation> s_cache = new ConcurrentDictionary<CacheKey, IMethodInformation>();
 
+    ///<remarks>Optimized for memory allocations</remarks>
+    private static readonly Func<CacheKey, IMethodInformation> s_getMethodFunc= key => GetMethod (key.Type, key.MethodName, key.BindingFlags);
+
     public ReflectionBasedMemberResolver ()
     {
     }
@@ -105,10 +108,10 @@ namespace Remotion.Security.Metadata
     private IMethodInformation GetMethodFromCache (Type type, string memberName, BindingFlags bindingFlags)
     {
       var cacheKey = new CacheKey (type, memberName, bindingFlags);
-      return s_cache.GetOrAdd (cacheKey, key => GetMethod (key.Type, key.MethodName, key.BindingFlags));
+      return s_cache.GetOrAdd (cacheKey, s_getMethodFunc);
     }
 
-    private IMethodInformation GetMethod (Type type, string methodName, BindingFlags bindingFlags)
+    private static IMethodInformation GetMethod (Type type, string methodName, BindingFlags bindingFlags)
     {
       if (!TypeHasMember (type, methodName, bindingFlags))
         throw new ArgumentException (string.Format ("The method '{0}' could not be found.", methodName), "methodName");
@@ -135,13 +138,13 @@ namespace Remotion.Security.Metadata
       return MethodInfoAdapter.Create(foundMethodInfo);
     }
 
-    private bool TypeHasMember (Type type, string methodName, BindingFlags bindingFlags)
+    private static bool TypeHasMember (Type type, string methodName, BindingFlags bindingFlags)
     {
       MemberInfo[] existingMembers = type.GetMember (methodName, MemberTypes.Method, bindingFlags);
       return existingMembers.Length > 0;
     }
 
-    private bool IsSecuredMethod (MemberInfo memberInfo, object filterCriteria)
+    private static bool IsSecuredMethod (MemberInfo memberInfo, object filterCriteria)
     {
       string memberName = (string) filterCriteria;
       return memberInfo.Name == memberName && memberInfo.IsDefined (typeof (DemandPermissionAttribute), false);

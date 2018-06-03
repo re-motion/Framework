@@ -48,6 +48,8 @@ namespace Remotion.Data.DomainObjects.Mapping
           BuildAccessorDataDictionary,
           LazyThreadSafetyMode.ExecutionAndPublication);
       _cachedAccessorDataByMember = new ConcurrentDictionary<IPropertyInformation, PropertyAccessorData>();
+
+      // Optimized for memory allocations
       _resolvePropertyAccessorDataWithoutCacheFunc = ResolvePropertyAccessorDataWithoutCache;
     }
 

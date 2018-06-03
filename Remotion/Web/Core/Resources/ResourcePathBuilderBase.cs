@@ -38,6 +38,7 @@ namespace Remotion.Web.Resources
       ArgumentUtility.CheckNotNull ("assemblyRelativePathParts", assemblyRelativePathParts);
 
       string root = GetResourceRoot();
+      // C# compiler 7.2 already provides caching for anonymous method.
       string assemblyName = s_assemblyNameCache.GetOrAdd (assembly, key => key.GetName()).Name;
 
       string[] completePath = ArrayUtility.Combine (new[] { root, assemblyName }, assemblyRelativePathParts);

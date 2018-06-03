@@ -84,6 +84,7 @@ namespace Remotion.Reflection.TypeDiscovery
 
       if (!excludeGlobalTypes && AssemblyTypeCache.IsGacAssembly (nonNullBaseType.Assembly))
       {
+        // C# compiler 7.2 does not provide caching for anonymous method but calls are only during application start so no caching is needed.
         return _globalTypesCache.GetOrAdd (
             nonNullBaseType,
             key =>

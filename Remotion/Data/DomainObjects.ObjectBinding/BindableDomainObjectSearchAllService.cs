@@ -86,6 +86,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       if (!ReflectionUtility.IsDomainObject (type))
         throw new ArgumentException ("This service only supports queries for DomainObject types.", "type");
 
+      // C# compiler 7.2 does not provide caching for delegate but during query execution there is already a significant amount of GC pressure so the delegate creation does not matter
       if (!_bindableObjectTypeCache.GetOrAdd (type, BindableObjectProvider.IsBindableObjectImplementation))
       {
         var message = string.Format ("This service only supports queries for bindable DomainObject types, the given type '{0}' is not a bindable "

@@ -33,6 +33,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private readonly IUserRevisionProvider _revisionProvider;
 
     private readonly ICache<string, CachedUser> _cache = CacheFactory.CreateWithSynchronization<string, CachedUser>();
+    private Func<string, CachedUser> _userCacheValueFactory;
 
     public SecurityPrincipalRepository (IUserRevisionProvider revisionProvider)
     {
@@ -45,7 +46,11 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       ArgumentUtility.CheckNotNullOrEmpty ("userName", userName);
 
-      var cacheItem = _cache.GetOrCreateValue (userName, key => new CachedUser (_revisionProvider, userName));
+      // Optimized for memory allocations
+      if (_userCacheValueFactory == null)
+        _userCacheValueFactory = key => new CachedUser (_revisionProvider, key);
+
+      var cacheItem = _cache.GetOrCreateValue (userName, _userCacheValueFactory);
       return cacheItem.GetValue();
     }
   }

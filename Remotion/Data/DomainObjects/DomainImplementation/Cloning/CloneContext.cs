@@ -26,11 +26,15 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     private readonly DomainObjectCloner _cloner;
     private readonly SimpleDataStore<DomainObject, DomainObject> _clones = new SimpleDataStore<DomainObject, DomainObject> ();
     private readonly Queue<Tuple<DomainObject, DomainObject>> _cloneHulls = new Queue<Tuple<DomainObject, DomainObject>> ();
+    private readonly Func<DomainObject, DomainObject> _getCloneInternalFunc;
 
     public CloneContext (DomainObjectCloner cloner)
     {
       ArgumentUtility.CheckNotNull ("cloner", cloner);
       _cloner = cloner;
+
+      // Optimized for memory allocations
+      _getCloneInternalFunc = GetCloneInternal;
     }
 
     public DomainObjectCloner Cloner
@@ -46,12 +50,14 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     public virtual T GetCloneFor<T> (T domainObject)
         where T : DomainObject
     {
-      return (T) _clones.GetOrCreateValue (domainObject, delegate (DomainObject cloneTemplate)
-      {
-        DomainObject clone = _cloner.CreateCloneHull (cloneTemplate);
-        CloneHulls.Enqueue (Tuple.Create (cloneTemplate, clone));
-        return clone;
-      });
+      return (T) _clones.GetOrCreateValue (domainObject, _getCloneInternalFunc);
+    }
+
+    private DomainObject GetCloneInternal (DomainObject cloneTemplate)
+    {
+      DomainObject clone = _cloner.CreateCloneHull (cloneTemplate);
+      CloneHulls.Enqueue (Tuple.Create (cloneTemplate, clone));
+      return clone;
     }
   }
 }

@@ -196,6 +196,7 @@ namespace Remotion.Utilities
 
     public static EnumMetadata GetEnumMetadata (Type enumType)
     {
+      // C# compiler 7.2 already provides caching for anonymous method.
       return s_cache.GetOrAdd (enumType, t => new EnumMetadata (t));
     }
 

@@ -36,6 +36,9 @@ namespace Remotion.Utilities
 
     private static readonly AbbreviationBuilder s_abbreviationBuilder = new AbbreviationBuilder();
 
+    ///<remarks>Optimized for memory allocations</remarks>
+    private static readonly Func<string, string> s_parseAbbreviatedTypeNameWithoutCacheFunc = ParseAbbreviatedTypeNameWithoutCache;
+
     /// <summary>
     ///   Converts abbreviated qualified type names into standard qualified type names.
     /// </summary>
@@ -53,7 +56,7 @@ namespace Remotion.Utilities
       if (typeName == null)
         return null;
 
-      return s_fullTypeNames.GetOrAdd (typeName, ParseAbbreviatedTypeNameWithoutCache);
+      return s_fullTypeNames.GetOrAdd (typeName, s_parseAbbreviatedTypeNameWithoutCacheFunc);
     }
 
     private static string ParseAbbreviatedTypeNameWithoutCache ([NotNull] string typeName)
@@ -111,6 +114,7 @@ namespace Remotion.Utilities
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
+      // C# compiler 7.2 already provides caching for anonymous method.
       return s_partialAssemblyQualifiedNameCache.GetOrAdd (type, key => key.FullName + ", " + key.Assembly.GetName ().Name);
     }
 

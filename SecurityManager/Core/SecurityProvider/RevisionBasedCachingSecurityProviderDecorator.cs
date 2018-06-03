@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using Remotion.Collections;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.SecurityProvider.Implementation;
@@ -37,6 +38,7 @@ namespace Remotion.SecurityManager.SecurityProvider
     private readonly ISecurityProvider _innerSecurityProvider;
     private readonly IUserRevisionProvider _userRevisionProvider;
     private readonly SecurityContextCache _securityContextCache;
+    private Func<ISecurityPrincipal, AccessTypeCache> _securityContextCacheValueFactory;
 
     public RevisionBasedCachingSecurityProviderDecorator (
         ISecurityProvider innerSecurityProvider,
@@ -67,9 +69,25 @@ namespace Remotion.SecurityManager.SecurityProvider
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("principal", principal);
 
-      var accessTypeCache = _securityContextCache.Items.GetOrCreateValue (principal, key => new AccessTypeCache (_userRevisionProvider, key.User));
+      // Optimized for memory allocations
+      if (_securityContextCacheValueFactory == null)
+        _securityContextCacheValueFactory = key => new AccessTypeCache (_userRevisionProvider, key.User);
 
-      return accessTypeCache.Items.GetOrCreateValue (context, key => _innerSecurityProvider.GetAccess (key, principal));
+      var accessTypeCache = _securityContextCache.Items.GetOrCreateValue (principal, _securityContextCacheValueFactory);
+
+      if (accessTypeCache.Items.TryGetValue (context, out var result))
+        return result;
+
+      // Split to prevent closure being created during the TryGetValue-operation
+      return GetOrCreateAccessTypesFromCache (accessTypeCache.Items, context, principal);
+    }
+
+    private AccessType[] GetOrCreateAccessTypesFromCache (
+        ICache<ISecurityContext, AccessType[]> accessTypeCache,
+        ISecurityContext context,
+        ISecurityPrincipal principal)
+    {
+      return accessTypeCache.GetOrCreateValue (context, key => _innerSecurityProvider.GetAccess (key, principal));
     }
   }
 }

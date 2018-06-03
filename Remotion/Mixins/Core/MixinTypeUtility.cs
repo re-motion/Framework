@@ -303,6 +303,7 @@ namespace Remotion.Mixins
     {
       ArgumentUtility.CheckNotNull ("concreteMixedType", concreteMixedType);
 
+      // C# compiler 7.2 already provides caching for anonymous method.
       return s_classContextForConcreteTypesCache.GetOrAdd (
           concreteMixedType,
           t =>

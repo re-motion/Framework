@@ -476,8 +476,8 @@ namespace Remotion.Utilities
 
     private static MethodInfo GetParseMethod (Type type, bool throwIfNotFound)
     {
-      var parseMethod =
-          s_parseMethods.GetOrAdd (type, key => GetParseMethodWithFormatProviderFromType (type) ?? GetParseMethodFromType (type));
+      // C# compiler 7.2 already provides caching for anonymous method.
+      var parseMethod = s_parseMethods.GetOrAdd (type, key => GetParseMethodWithFormatProviderFromType (key) ?? GetParseMethodFromType (key));
       if (throwIfNotFound && parseMethod == null)
         throw new ParseException (string.Format ("Type does not have method 'public static {0} Parse (string s)'.", type.Name));
 

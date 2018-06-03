@@ -66,6 +66,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       _nameResolver = nameResolver;
       _persistentMixinFinder = persistentMixinFinder;
       _propertyMetadataProvider = propertyMetadataProvider;
+      // C# compiler 7.2 does not provide caching for delegate but calls are only during application start so no caching is needed.
       _explicitInterfaceImplementations = new Lazy<HashSet<IMethodInformation>> (
           () => s_explicitInterfaceImplementations.GetOrAdd (_type, GetExplicitInterfaceImplementations));
     }

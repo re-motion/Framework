@@ -36,6 +36,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     {
       ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
 
+      // C# compiler 7.2 already provides caching for anonymous method.
       return _storageClassCache.GetOrAdd (
           propertyInformation,
           key =>

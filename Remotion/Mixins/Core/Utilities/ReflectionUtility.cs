@@ -132,6 +132,7 @@ namespace Remotion.Mixins.Utilities
     public static bool IsAssemblySigned (Assembly assembly)
     {
       ArgumentUtility.CheckNotNull ("assembly", assembly);
+      // C# compiler 7.2 already provides caching for anonymous method.
       return s_isAssemblySignedCache.GetOrAdd (assembly, asm => IsAssemblySigned (asm.GetName()));
     }
 

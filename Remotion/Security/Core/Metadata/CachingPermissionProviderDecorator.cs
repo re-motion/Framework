@@ -67,6 +67,8 @@ namespace Remotion.Security.Metadata
       ArgumentUtility.CheckNotNull ("innerPermissionProvider", innerPermissionProvider);
 
       _innerPermissionProvider = innerPermissionProvider;
+
+      // Optimized for memory allocations
       _cacheValueFactory = GetRequiredMethodPermissions;
     }
 

@@ -113,6 +113,7 @@ namespace Remotion.Web.Services
 
     private static MethodInfo GetCheckedMethodInfo (Type type, string method)
     {
+      // C# compiler 7.2 already provides caching for anonymous method.
       var methodInfo = s_methodInfoCache.GetOrAdd (
           Tuple.Create (type, method),
           key => key.Item1.GetMethod (key.Item2, BindingFlags.Instance | BindingFlags.Public));
@@ -186,6 +187,7 @@ namespace Remotion.Web.Services
     private static T GetAttributeFromCache<T> (MemberInfo memberInfo)
         where T: Attribute
     {
+      // C# compiler 7.2 already provides caching for anonymous method.
       return (T) s_attributeCache.GetOrAdd (
           Tuple.Create (memberInfo, typeof (T)),
           key => AttributeUtility.GetCustomAttribute<T> (key.Item1, true));

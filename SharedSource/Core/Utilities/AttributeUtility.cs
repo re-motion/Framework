@@ -30,6 +30,9 @@ namespace Remotion.Utilities
     private static readonly ConcurrentDictionary<Type, Lazy<AttributeUsageAttribute>> s_attributeUsageCache =
         new ConcurrentDictionary<Type, Lazy<AttributeUsageAttribute>>();
 
+    ///<remarks>Optimized for memory allocations</remarks>
+    private static readonly Func<Type, Lazy<AttributeUsageAttribute>> s_getLazyAttributeUsageFunc = GetLazyAttributeUsage;
+
     public static bool IsAttributeInherited (Type attributeType)
     {
       AttributeUsageAttribute usage = GetAttributeUsage (attributeType);
@@ -47,7 +50,7 @@ namespace Remotion.Utilities
       if (attributeType == null)
         throw new ArgumentNullException ("attributeType");
 
-      var cachedInstance = s_attributeUsageCache.GetOrAdd (attributeType, GetLazyAttributeUsage).Value;
+      var cachedInstance = s_attributeUsageCache.GetOrAdd (attributeType, s_getLazyAttributeUsageFunc).Value;
 
       var newInstance = new AttributeUsageAttribute (cachedInstance.ValidOn);
       newInstance.AllowMultiple = cachedInstance.AllowMultiple;

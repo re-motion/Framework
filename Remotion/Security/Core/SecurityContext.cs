@@ -122,6 +122,7 @@ namespace Remotion.Security
       foreach (Enum abstractRole in abstractRoles)
       {
         Type roleType = abstractRole.GetType();
+        // C# compiler 7.2 already provides caching for anonymous method.
         if (!s_validAbstractRoleTypeCache.GetOrAdd (roleType, key => AttributeUtility.IsDefined<AbstractRoleAttribute> (key, false)))
         {
           string message = string.Format (
@@ -144,6 +145,7 @@ namespace Remotion.Security
       foreach (KeyValuePair<string, Enum> valuePair in states)
       {
         Type stateType = valuePair.Value.GetType();
+        // C# compiler 7.2 already provides caching for anonymous method.
         if (!s_validSecurityStateTypeCache.GetOrAdd (stateType, key => AttributeUtility.IsDefined<SecurityStateAttribute> (key, false)))
         {
           string message = string.Format (

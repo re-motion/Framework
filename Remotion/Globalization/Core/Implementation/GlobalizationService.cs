@@ -35,18 +35,23 @@ namespace Remotion.Globalization.Implementation
     private readonly ConcurrentDictionary<ITypeInformation, IResourceManager> _resourceManagerCache = 
         new ConcurrentDictionary<ITypeInformation, IResourceManager>();
 
+    private readonly Func<ITypeInformation, IResourceManager> _getResourceManagerImplementationFunc;
+
     public GlobalizationService (IResourceManagerResolver resourceManagerResolver)
     {
       ArgumentUtility.CheckNotNull ("resourceManagerResolver", resourceManagerResolver);
 
       _resourceManagerResolver = resourceManagerResolver;
+
+      // Optimized for memory allocations
+      _getResourceManagerImplementationFunc = GetResourceManagerImplementation;
     }
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      return _resourceManagerCache.GetOrAdd (typeInformation, GetResourceManagerImplementation);
+      return _resourceManagerCache.GetOrAdd (typeInformation, _getResourceManagerImplementationFunc);
     }
 
     [NotNull]

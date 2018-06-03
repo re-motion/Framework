@@ -31,6 +31,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     public static AssemblyName GetAssemblyName (string filePath)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("filePath", filePath);
+
+      // C# compiler 7.2 does not provide caching for delegate but calls are only during application start so no caching is needed.
       return s_cache.GetOrAdd (filePath, AssemblyName.GetAssemblyName);
     }
   }

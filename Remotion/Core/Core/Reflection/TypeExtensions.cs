@@ -35,6 +35,8 @@ namespace Remotion.Reflection
     private static readonly ConcurrentDictionary<Tuple<Type, Type, Type>, bool> s_canDirectlyAscribeToGenericTypeInternalCache =
         new ConcurrentDictionary<Tuple<Type, Type, Type>, bool>();
 
+    private static Func<Tuple<Type, Type>, bool> s_canAscribeCacheValueFactory;
+
     /// <summary>
     /// Evaluates whether the <paramref name="type"/> can be ascribed to the <paramref name="ascribeeType"/>.
     /// </summary>
@@ -49,22 +51,28 @@ namespace Remotion.Reflection
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("ascribeeType", ascribeeType);
 
-      return s_canAscribeCache.GetOrAdd (
-          Tuple.Create (type, ascribeeType),
-          key =>
-          {
-            if (key.Item2.IsInterface)
-            {
-              if (key.Item1.IsInterface && CanAscribeInternalFromCache (key.Item1, key.Item2))
-                return true;
+      // C# compiler 7.2 does not provide caching for this anonymous method or local function.
+      bool ValueFactory (Tuple<Type, Type> key)
+      {
+        var type1 = key.Item1;
+        var ascribeeeType1 = key.Item2;
+        if (ascribeeeType1.IsInterface)
+        {
+          if (type1.IsInterface && CanAscribeInternalFromCache (type1, ascribeeeType1))
+            return true;
 
-              return Array.Exists (key.Item1.GetInterfaces(), current => CanAscribeInternalFromCache (current, key.Item2));
-            }
-            else
-            {
-              return CanAscribeInternalFromCache (type, ascribeeType);
-            }
-          });
+          return Array.Exists (type1.GetInterfaces(), current => CanAscribeInternalFromCache (current, ascribeeeType1));
+        }
+        else
+        {
+          return CanAscribeInternalFromCache (type1, ascribeeeType1);
+        }
+      }
+
+      if (s_canAscribeCacheValueFactory == null)
+        s_canAscribeCacheValueFactory = ValueFactory;
+
+      return s_canAscribeCache.GetOrAdd (Tuple.Create (type, ascribeeType), s_canAscribeCacheValueFactory);
     }
 
     /// <summary>
@@ -87,12 +95,14 @@ namespace Remotion.Reflection
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("ascribeeType", ascribeeType);
 
+      // C# compiler 7.2 already provides caching for anonymous method.
       return s_ascribedGenericArgumentsCache.GetOrAdd (
           Tuple.Create (type, ascribeeType), key => GetAscribedGenericArgumentsWithoutCache (key.Item1, key.Item2));
     }
 
     private static bool CanAscribeInternalFromCache (Type type, Type ascribeeType)
     {
+      // C# compiler 7.2 already provides caching for anonymous method.
       return s_canAscribeInternalCache.GetOrAdd (Tuple.Create (type, ascribeeType), key => CanAscribeInternal (key.Item1, key.Item2));
     }
 
@@ -183,6 +193,7 @@ namespace Remotion.Reflection
 
     private static bool CanDirectlyAscribeToGenericTypeInternalFromCache (Type type, Type ascribeeType, Type ascribeeGenericTypeDefinition)
     {
+      // C# compiler 7.2 already provides caching for anonymous method.
       return s_canDirectlyAscribeToGenericTypeInternalCache.GetOrAdd (
         Tuple.Create (type, ascribeeType, ascribeeGenericTypeDefinition),
         key => CanDirectlyAscribeToGenericTypeInternal (key.Item1, key.Item2, key.Item3));

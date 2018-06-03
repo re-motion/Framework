@@ -34,6 +34,9 @@ namespace Remotion.Reflection
     [CLSCompliant (false)]
     public static bool IsGacAssembly (_Assembly assembly)
     {
+      ArgumentUtility.CheckNotNull ("assembly", assembly);
+
+      // C# compiler 7.2 already provides caching for anonymous method.
       return s_typeCache.GetOrAdd (assembly, a => Tuple.Create (Array.AsReadOnly (a.GetTypes()), a.GlobalAssemblyCache)).Item2;
     }
 
@@ -41,6 +44,8 @@ namespace Remotion.Reflection
     public static ReadOnlyCollection<Type> GetTypes (_Assembly assembly)
     {
       ArgumentUtility.CheckNotNull ("assembly", assembly);
+
+      // C# compiler 7.2 already provides caching for anonymous method.
       return s_typeCache.GetOrAdd (assembly, a => Tuple.Create (Array.AsReadOnly (a.GetTypes()), a.GlobalAssemblyCache)).Item1;
     }
   }

@@ -33,6 +33,7 @@ namespace Remotion.Web.Services
         new ConcurrentDictionary<Type, IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>>>();
 
     private readonly IBuildManager _buildManager;
+    private static readonly Func<Type, IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>>> s_getServiceMethodsFunc = GetServiceMethods;
 
     public WebServiceFactory (IBuildManager buildManager)
     {
@@ -90,10 +91,10 @@ namespace Remotion.Web.Services
 
     private IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>> GetServiceMethodsFromCache<T> ()
     {
-      return s_serviceMethodCache.GetOrAdd (typeof (T), GetServiceMethods);
+      return s_serviceMethodCache.GetOrAdd (typeof (T), s_getServiceMethodsFunc);
     }
 
-    private IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>> GetServiceMethods (Type type)
+    private static IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>> GetServiceMethods (Type type)
     {
       return type.GetMethods().Select (
           mi => Tuple.Create<string, IReadOnlyCollection<string>> (

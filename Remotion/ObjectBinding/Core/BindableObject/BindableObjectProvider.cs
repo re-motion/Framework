@@ -31,6 +31,9 @@ namespace Remotion.ObjectBinding.BindableObject
   {
     private static readonly ConcurrentDictionary<Type, Type> s_providerAttributeTypeCache = new ConcurrentDictionary<Type, Type>();
 
+    ///<remarks>Optimized for memory allocations</remarks>
+    private static readonly Func<Type, Type> s_findProviderAttributeTypeFunc = FindProviderAttributeType;
+
     /// <summary>
     /// Use this method as a shortcut to retrieve the <see cref="BindableObjectProvider"/> for a <see cref="Type"/> 
     /// that has the <see cref="BindableObjectMixinBase{T}"/> applied or is derived from a bindable object base class without first retrieving the 
@@ -42,7 +45,7 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      var providerAttributeType = s_providerAttributeTypeCache.GetOrAdd (type, FindProviderAttributeType);
+      var providerAttributeType = s_providerAttributeTypeCache.GetOrAdd (type, s_findProviderAttributeTypeFunc);
 
       var provider = (BindableObjectProvider) GetProvider (providerAttributeType);
       Assertion.IsNotNull (provider, "GetProvider cannot return null (type '{0}').", type.FullName);
@@ -130,6 +133,7 @@ namespace Remotion.ObjectBinding.BindableObject
     private readonly IDataStore<Type, IBusinessObjectService> _serviceStore =
         DataStoreFactory.CreateWithSynchronization<Type, IBusinessObjectService>();
     private readonly IMetadataFactory _metadataFactory;
+    private readonly Func<Type, BindableObjectClass> _createBindableObjectClassFunc;
 
     public BindableObjectProvider ()
         : this (BindableObjectMetadataFactory.Create(), BindableObjectServiceFactory.Create())
@@ -148,6 +152,9 @@ namespace Remotion.ObjectBinding.BindableObject
       ArgumentUtility.CheckNotNull ("serviceFactory", serviceFactory);
 
       _metadataFactory = metadataFactory;
+
+      // Optimized for memory allocations
+      _createBindableObjectClassFunc = CreateBindableObjectClass;
     }
 
     /// <summary>
@@ -177,7 +184,7 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return _businessObjectClassStore.GetOrAdd (type, CreateBindableObjectClass);
+      return _businessObjectClassStore.GetOrAdd (type, _createBindableObjectClassFunc);
     }
 
     private BindableObjectClass CreateBindableObjectClass (Type type)

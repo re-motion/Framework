@@ -29,6 +29,8 @@ namespace Remotion.Security
   public struct AccessType : IEquatable<AccessType>
   {
     private static readonly ConcurrentDictionary<Enum, AccessType> s_accessTypeByEnumCache = new ConcurrentDictionary<Enum, AccessType>();
+
+    ///<remarks>Optimized for memory allocations</remarks>
     private static readonly Func<Enum, AccessType> s_getInternalFunc = GetInternal;
 
     public static AccessType Get (EnumWrapper accessType)

@@ -34,6 +34,7 @@ namespace Remotion.Reflection
     private static readonly ConcurrentDictionary<Type, TypeAdapter> s_dataStore =
         new ConcurrentDictionary<Type, TypeAdapter> (ReferenceEqualityComparer<Type>.Instance);
 
+    ///<remarks>Optimized for memory allocations</remarks>
     private static readonly Func<Type, TypeAdapter> s_ctorFunc = t => new TypeAdapter (t);
 
     public static TypeAdapter Create (Type type)

@@ -45,7 +45,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       if (!typeof (WxeFunction).IsAssignableFrom (type))
         throw new ArgumentException ("Type " + type.FullName + " is not derived from WxeFunction.", "type");
 
-      return s_parameterDeclarations.GetOrAdd (type, GetParameterDeclarationsUnchecked);
+      return s_parameterDeclarations.GetOrAdd (type, s_getParameterDeclarationsUncheckedFunc);
     }
 
     private static WxeParameterDeclaration[] GetParameterDeclarationsUnchecked (Type type)
@@ -212,6 +212,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private readonly NameObjectCollection _variables;
     private object[] _actualParameters;
     private bool _parametersInitialized;
+    private static readonly Func<Type, WxeParameterDeclaration[]> s_getParameterDeclarationsUncheckedFunc = GetParameterDeclarationsUnchecked;
 
     public WxeVariablesContainer (WxeFunction function, object[] actualParameters)
         : this (ArgumentUtility.CheckNotNull ("function", function), actualParameters, GetParameterDeclarations (function.GetType()))

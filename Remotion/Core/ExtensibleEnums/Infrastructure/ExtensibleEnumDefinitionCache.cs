@@ -29,6 +29,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   public sealed class ExtensibleEnumDefinitionCache
   {
     private readonly ConcurrentDictionary<Type, IExtensibleEnumDefinition> _cache = new ConcurrentDictionary<Type, IExtensibleEnumDefinition>();
+    private readonly Func<Type, IExtensibleEnumDefinition> _createDefinitionFunc;
     private readonly IExtensibleEnumValueDiscoveryService _valueDiscoveryService;
 
     public ExtensibleEnumDefinitionCache (IExtensibleEnumValueDiscoveryService valueDiscoveryService)
@@ -36,6 +37,9 @@ namespace Remotion.ExtensibleEnums.Infrastructure
       ArgumentUtility.CheckNotNull ("valueDiscoveryService", valueDiscoveryService);
       
       _valueDiscoveryService = valueDiscoveryService;
+
+      // Optimized for memory allocations
+      _createDefinitionFunc = CreateDefinition;
     }
 
     /// <summary>
@@ -61,7 +65,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("extensibleEnumType", extensibleEnumType);
 
-      return _cache.GetOrAdd (extensibleEnumType, CreateDefinition);
+      return _cache.GetOrAdd (extensibleEnumType, _createDefinitionFunc);
     }
 
     private IExtensibleEnumDefinition CreateDefinition (Type extensibleEnumType)

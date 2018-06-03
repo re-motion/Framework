@@ -62,6 +62,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     protected IEnumerable<T> GetOrCreateQuery<T> (MethodBase caller, Func<IQueryable<T>> queryCreator)
     {
+      // C# compiler 7.2 does not provide caching for delegate but during query execution there is already a significant amount of GC pressure so the delegate creation does not matter
       var executableQuery = 
           (IExecutableQuery<IEnumerable<T>>) s_queryCache.GetOrAdd (caller.Name, key => CreateExecutableQuery (key, queryCreator));
 

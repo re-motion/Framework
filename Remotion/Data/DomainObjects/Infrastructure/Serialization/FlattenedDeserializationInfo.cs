@@ -88,6 +88,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       if (type == null)
         return default (T);
 
+      // C# compiler 7.2 does not provide caching for delegate but during serialization there is already a significant amount of GC pressure so the delegate creation does not matter
       var instanceFactory = s_instanceFactoryCache.GetOrAdd (type, GetInstanceFactory);
       object instance = instanceFactory (this);
       var originalPosition = _objectReader.ReadPosition;

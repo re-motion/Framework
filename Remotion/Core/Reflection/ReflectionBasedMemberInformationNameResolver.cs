@@ -35,6 +35,18 @@ namespace Remotion.Reflection
 
     private readonly ConcurrentDictionary<Enum, string> s_enumCache = new ConcurrentDictionary<Enum, string>();
 
+    private readonly Func<ITypeInformation, string> _getTypeNameInternalFunc;
+    private readonly Func<Enum, string> _getEnumNameInternalFunc;
+    private readonly Func<IPropertyInformation, string> _getPropertyNameInternalFunc;
+
+    public ReflectionBasedMemberInformationNameResolver ()
+    {
+      // Optimized for memory allocations
+      _getTypeNameInternalFunc = GetTypeNameInternal;
+      _getEnumNameInternalFunc = GetEnumNameInternal;
+      _getPropertyNameInternalFunc = GetPropertyNameInternal;
+    }
+
     /// <summary>
     /// Returns the mapping name for the given <paramref name="propertyInformation"/>.
     /// </summary>
@@ -44,9 +56,7 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
 
-      return s_propertyNameCache.GetOrAdd (
-          propertyInformation,
-          pi => GetPropertyName (pi.GetOriginalDeclaringType(), pi.Name));
+      return s_propertyNameCache.GetOrAdd (propertyInformation, _getPropertyNameInternalFunc);
     }
 
     /// <summary>
@@ -58,20 +68,19 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      return s_typeNameCache.GetOrAdd (typeInformation, GetTypeNameInternal);
+      return s_typeNameCache.GetOrAdd (typeInformation, _getTypeNameInternalFunc);
     }
 
     public string GetEnumName (Enum enumValue)
     {
       ArgumentUtility.CheckNotNull ("enumValue", enumValue);
 
-      return s_enumCache.GetOrAdd (enumValue, GetEnumNameInternal);
+      return s_enumCache.GetOrAdd (enumValue, _getEnumNameInternalFunc);
     }
 
-
-    private string GetPropertyName (ITypeInformation type, string shortPropertyName)
+    private string GetPropertyNameInternal (IPropertyInformation propertyInformation)
     {
-      return GetTypeName (type) + "." + shortPropertyName;
+      return GetTypeName (propertyInformation.GetOriginalDeclaringType()) + "." + propertyInformation.Name;
     }
 
     private string GetTypeNameInternal (ITypeInformation typeInformation)
@@ -82,7 +91,7 @@ namespace Remotion.Reflection
       return typeInformation.FullName;
     }
 
-    private static string GetEnumNameInternal (Enum enumValue)
+    private string GetEnumNameInternal (Enum enumValue)
     {
       return enumValue.GetType().FullName + "." + enumValue;
     }

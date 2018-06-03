@@ -58,6 +58,7 @@ namespace Remotion.Globalization.Implementation
 
     private readonly Func<CultureInfo, ResourceSet> _resourceSetsAddValueFactory;
     private readonly Func<CultureInfo, ResourceSet, ResourceSet> _resourceSetsUpdateValueFactory;
+    private readonly Func<Tuple<CultureInfo, string>, NameValueCollection> _cachedResourceSetValueFactory;
 
     // construction and disposing
 
@@ -81,6 +82,7 @@ namespace Remotion.Globalization.Implementation
       // Optimized for memory allocations
       _resourceSetsAddValueFactory = GetResourceSet;
       _resourceSetsUpdateValueFactory = (key, value) => value;
+      _cachedResourceSetValueFactory = key => GetAllStringsInternal (key.Item1, key.Item2);
     }
 
     // methods and properties
@@ -124,36 +126,38 @@ namespace Remotion.Globalization.Implementation
     {
       return _cachedResourceSet.GetOrAdd (
           Tuple.Create (CultureInfo.CurrentUICulture, prefix ?? string.Empty),
-          key =>
+          _cachedResourceSetValueFactory);
+    }
+
+    private NameValueCollection GetAllStringsInternal (CultureInfo cultureInfo, string prefix)
+    {
+      //  Loop through all entries in the resource managers
+      CultureInfo[] cultureHierarchy = GetCultureHierarchy (cultureInfo);
+
+      // We need to load the cultures before any access to the resource manager happens because
+      // if a culture has no resources the resource manager creates a fallback resource set for this culture.
+      // This would be a problem for GetAvailableStrings() because we do not want to return fallback values.
+      CheckAndSetAvailableCultures (cultureHierarchy);
+
+      // Loop from most neutral to current UICulture
+      // Copy the resources into a collection
+      NameValueCollection result = new NameValueCollection();
+      for (int i = 0; i < cultureHierarchy.Length; i++)
+      {
+        CultureInfo culture = cultureHierarchy[i];
+        ResourceSet resourceSet = GetResourceSet (culture);
+        if (resourceSet != null)
+        {
+          foreach (DictionaryEntry entry in resourceSet)
           {
-            //  Loop through all entries in the resource managers
-            CultureInfo[] cultureHierarchy = GetCultureHierarchy (key.Item1);
+            string entryKey = (string) entry.Key;
+            if (entryKey.StartsWith (prefix))
+              result[entryKey] = (string) entry.Value;
+          }
+        }
+      }
 
-            // We need to load the cultures before any access to the resource manager happens because
-            // if a culture has no resources the resource manager creates a fallback resource set for this culture.
-            // This would be a problem for GetAvailableStrings() because we do not want to return fallback values.
-            CheckAndSetAvailableCultures (cultureHierarchy);
-
-            // Loop from most neutral to current UICulture
-            // Copy the resources into a collection
-            NameValueCollection result = new NameValueCollection ();
-            for (int i = 0; i < cultureHierarchy.Length; i++)
-            {
-              CultureInfo culture = cultureHierarchy[i];
-              ResourceSet resourceSet = GetResourceSet (culture);
-              if (resourceSet != null)
-              {
-                foreach (DictionaryEntry entry in resourceSet)
-                {
-                  string entryKey = (string) entry.Key;
-                  if (entryKey.StartsWith (key.Item2))
-                    result[entryKey] = (string) entry.Value;
-                }
-              }
-            }
-
-            return result;
-          });
+      return result;
     }
 
     /// <summary>
