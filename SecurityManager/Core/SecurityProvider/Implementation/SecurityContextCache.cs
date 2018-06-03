@@ -17,6 +17,7 @@
 // 
 using System;
 using Remotion.Collections;
+using Remotion.Collections.Caching;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;

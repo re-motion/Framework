@@ -15,15 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Collections;
+using Remotion.Collections.Caching.UnitTests.Utilities;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Collections
+namespace Remotion.Collections.Caching.UnitTests
 {
   [TestFixture]
   public class InvalidationTokenBasedCacheDecoratorTest

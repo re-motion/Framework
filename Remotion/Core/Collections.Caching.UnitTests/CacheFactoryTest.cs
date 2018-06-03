@@ -19,10 +19,9 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.UnitTests.Collections
+namespace Remotion.Collections.Caching.UnitTests
 {
   [TestFixture]
   public class CacheFactoryTest

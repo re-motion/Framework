@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Collections;
+using Remotion.Collections.Caching;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;

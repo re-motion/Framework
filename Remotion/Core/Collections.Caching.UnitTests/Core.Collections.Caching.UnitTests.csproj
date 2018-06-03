@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{70E32417-8077-4157-9FA0-337868889015}</ProjectGuid>
+    <ProjectGuid>{EDD6570E-13D6-4F77-B912-9E76A2B86665}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.ObjectBinding.Security.UnitTests</RootNamespace>
-    <AssemblyName>Remotion.ObjectBinding.Security.UnitTests</AssemblyName>
+    <RootNamespace>Remotion.Collections.Caching.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.Collections.Caching.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,16 +40,9 @@
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.3\lib\net45\Remotion.TypePipe.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
@@ -62,22 +55,17 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="BindableObject\IBindablePropertReadAccessStrategyTest.cs" />
-    <Compile Include="BindableObject\IBindablePropertyWriteAccessStrategyTest.cs" />
-    <Compile Include="BindableObject\SecurityBasedBindablePropertyReadAccessStrategyTest.cs" />
-    <Compile Include="BindableObject\SecurityBasedBindablePropertyWriteAccessStrategyTest.cs" />
-    <Compile Include="BindableObject\IntegrationTest.cs" />
-    <Compile Include="BindableObject\StubPropertyBase.cs" />
-    <Compile Include="BindableObject\TestBase.cs" />
+    <Compile Include="CacheFactoryTest.cs" />
+    <Compile Include="InvalidationTokenTest.cs" />
+    <Compile Include="CacheTest.cs" />
+    <Compile Include="ConcurrentCacheTest.cs" />
+    <Compile Include="InvalidationTokenBasedCacheDecoratorTest.cs" />
+    <Compile Include="LazyLockingCachingAdapterTest.cs" />
+    <Compile Include="LockingCacheDecoratorTest.cs" />
+    <Compile Include="LockingInvalidationTokenTest.cs" />
+    <Compile Include="NullCacheTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestDomain\ClassWithReferenceType.cs" />
-    <Compile Include="TestDomain\TestAccessTypes.cs" />
-    <Compile Include="TestDomain\DerivedSecurableClassWithProperties.cs" />
-    <Compile Include="TestDomain\IInterfaceWithReferenceType.cs" />
-    <Compile Include="TestDomain\IMixinSecurableClass.cs" />
-    <Compile Include="TestDomain\MixinSecurableClassWithProperties.cs" />
-    <Compile Include="TestDomain\SecurableClassWithProperties.cs" />
-    <Compile Include="TestDomain\SecurableClassWithReferenceType.cs" />
+    <Compile Include="Utilities\EnumerableExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">
@@ -89,37 +77,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Collections.Caching\Core.Collections.Caching.csproj">
-      <Project>{2D4D3106-4853-4D18-B80B-797A2015328F}</Project>
-      <Name>Core.Collections.Caching</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
-      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
-      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
-      <Name>Core.Reflection</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
-      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
+      <Project>{b719a305-0493-4c72-88fe-9a2fc6964578}</Project>
       <Name>Development.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
-      <Name>Mixins.Core</Name>
+    <ProjectReference Include="..\..\Development\RhinoMocks\Development.RhinoMocks.csproj">
+      <Project>{2177143e-345f-4faa-9958-1ae2b5eed242}</Project>
+      <Name>Development.RhinoMocks</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj">
-      <Project>{fbe0cbdd-82ff-4173-8536-47d3b5bc2e98}</Project>
-      <Name>Security.Core</Name>
+    <ProjectReference Include="..\Collections.Caching\Core.Collections.Caching.csproj">
+      <Project>{2d4d3106-4853-4d18-b80b-797a2015328f}</Project>
+      <Name>Core.Collections.Caching</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Core\ObjectBinding.Core.csproj">
-      <Project>{fdccdb1e-0962-41da-99a1-2db390c48748}</Project>
-      <Name>ObjectBinding.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Security\ObjectBinding.Security.csproj">
-      <Project>{89f98c4b-11e3-43ec-8776-b552574f9a9f}</Project>
-      <Name>ObjectBinding.Security</Name>
+    <ProjectReference Include="..\Core\Core.Core.csproj">
+      <Project>{2aa369ec-a4e7-4d75-9101-efa90e902625}</Project>
+      <Name>Core.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

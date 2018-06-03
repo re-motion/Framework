@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Collections;
+using Remotion.Collections.Caching;
 using Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Security;
 using Remotion.Data.DomainObjects.Security;
 using Remotion.Development.UnitTesting;

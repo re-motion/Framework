@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Collections;
+using Remotion.Collections.Caching;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 

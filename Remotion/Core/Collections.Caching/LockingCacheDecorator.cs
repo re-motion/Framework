@@ -18,10 +18,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.Caching
 {
   /// <summary>
   /// Provides a synchronization wrapper around an implementation of <see cref="ICache{TKey,TValue}"/>. Use 

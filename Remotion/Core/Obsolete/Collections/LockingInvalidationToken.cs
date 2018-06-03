@@ -19,31 +19,23 @@ using System.Threading;
 
 namespace Remotion.Collections
 {
-  /// <summary>The <see cref="LockingInvalidationToken"/> can be used as a means to commicate that the cached information is no longer current.</summary>
-  /// <remarks>
-  /// Instantiate via <see cref="InvalidationToken"/>.<see cref="InvalidationToken.CreatWithLocking"/>.
-  /// </remarks>
-  /// <threadsafety static="true" instance="true" />
+  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.Caching.dll", true)]
   [Serializable]
   public sealed class LockingInvalidationToken : InvalidationToken
   {
-    private long _currentRevisionValue;
-
     internal LockingInvalidationToken ()
     {
-      // Use the instance's hash-code as revision seed value to allow for a reasonably different number space. 
-      // The hash-code is often different between reference types and therefor adds a bit of randomness to the revisions.
-      _currentRevisionValue = Math.Abs (GetHashCode()) * -1;
+      throw new NotImplementedException();
     }
 
     public override void Invalidate ()
     {
-      Interlocked.Increment (ref _currentRevisionValue);
+      throw new NotImplementedException();
     }
 
     protected override long GetCurrentRevisionValue ()
     {
-      return Interlocked.Read (ref _currentRevisionValue);
+      throw new NotImplementedException();
     }
   }
 }

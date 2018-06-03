@@ -434,6 +434,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Remotion\Core\Collections.Caching\Core.Collections.Caching.csproj">
+      <Project>{2D4D3106-4853-4D18-B80B-797A2015328F}</Project>
+      <Name>Core.Collections.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core.Core</Name>

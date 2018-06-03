@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.Caching
 {
   /// <summary>
   /// The <see cref="CacheFactory"/> provides factory methods to create new caches.

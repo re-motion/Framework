@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.Caching
 {
   /// <summary>
   /// The <see cref="InvalidationTokenImplementation"/> is the non-threadsafe implementation of the <see cref="InvalidationToken"/> class.

@@ -252,17 +252,9 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="Collections\CacheFactory.cs" />
-    <Compile Include="Collections\InvalidationToken.cs" />
-    <Compile Include="Collections\InvalidationTokenImplementation.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
-    <Compile Include="Collections\ICache.cs" />
     <Compile Include="Collections\ImmutableSingleton.cs" />
-    <Compile Include="Collections\InvalidationTokenBasedCacheDecorator.cs" />
-    <Compile Include="Collections\LazyLockingCachingAdapter.cs" />
-    <Compile Include="Collections\ConcurrentCache.cs" />
     <Compile Include="Collections\ReadOnlyCollectionDecorator.cs" />
-    <Compile Include="Collections\LockingInvalidationToken.cs" />
     <Compile Include="Configuration\ServiceLocation\IServiceLocationConfiguration.cs" />
     <Compile Include="Configuration\ServiceLocation\ServiceLocationConfiguration.cs" />
     <Compile Include="Configuration\TypeResolution\TypeResolutionConfiguration.cs" />
@@ -371,7 +363,6 @@
     <Compile Include="Context\CallContextStorageProvider.cs" />
     <Compile Include="Collections\AutoInitDictionary.cs" />
     <Compile Include="Collections\MultiDictionary.cs" />
-    <Compile Include="Collections\LockingCacheDecorator.cs" />
     <Compile Include="Configuration\ConfigurationElementCollection.cs" />
     <Compile Include="Configuration\ConfigurationWrapper.cs" />
     <Compile Include="Configuration\ConfigurationWrapperFromConfigurationObject.cs" />
@@ -389,8 +380,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Collections\Cache.cs" />
-    <Compile Include="Collections\NullCache.cs" />
     <Compile Include="Collections\NameObjectCollection.cs">
       <SubType>Code</SubType>
     </Compile>

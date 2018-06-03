@@ -18,38 +18,37 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
-using Remotion.Collections;
-using Remotion.Development.UnitTesting;
+using Remotion.Collections.Caching.UnitTests.Utilities;
 
-namespace Remotion.UnitTests.Collections
+namespace Remotion.Collections.Caching.UnitTests
 {
   [TestFixture]
-  public class CacheTest
+  public class ConcurrentCacheTest
   {
     private ICache<string, object> _cache;
-    
+
     [SetUp]
     public void SetUp ()
     {
-      _cache = new Cache<string, object> ();
+      _cache = new ConcurrentCache<string, object>();
     }
 
     [Test]
     public void Initialize_WithCustomEqualityComparer ()
     {
       var comparer = StringComparer.InvariantCultureIgnoreCase;
-      var cache = new Cache<string, int?> (comparer);
+      var cache = new ConcurrentCache<string, int?> (comparer);
       cache.GetOrCreateValue ("a", key => 1);
 
-      Assert.That (cache.GetOrCreateValue ("a", delegate { throw new InvalidOperationException (); }), Is.EqualTo (1));
-      Assert.That (cache.GetOrCreateValue ("A", delegate { throw new InvalidOperationException (); }), Is.EqualTo (1));
-      Assert.That (cache.Comparer, Is.SameAs (comparer));
+      Assert.That (cache.GetOrCreateValue ("a", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
+      Assert.That (cache.GetOrCreateValue ("A", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
     }
 
     [Test]
-    public void TryGet_WithResultNotInCache ()
+    public void TryGetValue_WithReferenceType_WithResultNotInCache ()
     {
       object actual;
       Assert.That (_cache.TryGetValue ("key1", out actual), Is.False);
@@ -57,9 +56,18 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
+    public void TryGetValue_WithValueType_WithResultNotInCache ()
+    {
+      var cache = new ConcurrentCache<string, int>();
+      int actual;
+      Assert.That (cache.TryGetValue ("key1", out actual), Is.False);
+      Assert.That (actual, Is.EqualTo (0));
+    }
+
+    [Test]
     public void GetOrCreateValue ()
     {
-      object expected = new object ();
+      object expected = new object();
       bool delegateCalled = false;
       Assert.That (
           _cache.GetOrCreateValue (
@@ -72,6 +80,149 @@ namespace Remotion.UnitTests.Collections
               }),
           Is.SameAs (expected));
       Assert.That (delegateCalled, Is.True);
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithNull ()
+    {
+      bool delegateCalled = false;
+      Assert.That (
+          _cache.GetOrCreateValue (
+              "key1",
+              delegate (string key)
+              {
+                Assert.That (key, Is.EqualTo ("key1"));
+                delegateCalled = true;
+                return null;
+              }),
+          Is.Null);
+      Assert.That (delegateCalled, Is.True);
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithParallelThreadsInsertingDifferentKeys ()
+    {
+      var expectedThread1 = new object();
+      var expectedThread2 = new object();
+      object resultThread2 = null;
+      var waitHandleThread1a = new ManualResetEvent (false);
+      var waitHandleThread1b = new ManualResetEvent (false);
+      var waitHandleThread2 = new ManualResetEvent (false);
+
+      var thread2 = Task.Run (
+          () =>
+          {
+            resultThread2 = _cache.GetOrCreateValue (
+                "key2",
+                key =>
+                {
+                  waitHandleThread1a.Set();
+                  Assert.That (waitHandleThread2.WaitOne (TimeSpan.FromSeconds (1)), "Dead lock detected.");
+                  return expectedThread2;
+                });
+            waitHandleThread1b.Set();
+          });
+
+      Assert.That (waitHandleThread1a.WaitOne (TimeSpan.FromSeconds (1)), "Dead lock detected.");
+      var resultThread1 = _cache.GetOrCreateValue (
+          "key1",
+          key =>
+          {
+            waitHandleThread2.Set();
+            Assert.That (waitHandleThread1b.WaitOne (TimeSpan.FromSeconds (1)), "Dead lock detected.");
+            return expectedThread1;
+          });
+      Assert.That (resultThread1, Is.SameAs (expectedThread1));
+      Assert.That (thread2.Wait (TimeSpan.FromSeconds (1)), "Dead lock detected.");
+      Assert.That (resultThread2, Is.SameAs (expectedThread2));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithParallelThreadsInsertingSameKey_SecondFactoryCallWillNotBeExecuted ()
+    {
+      var expectedThread1 = "T1";
+      object resultThread2 = null;
+      var waitHandleThread2 = new ManualResetEvent (false);
+
+      var thread2 = Task.Run (
+          () =>
+          {
+            Assert.That (waitHandleThread2.WaitOne (TimeSpan.FromSeconds (1)), "Dead lock detected.");
+            resultThread2 = _cache.GetOrCreateValue ("key", key => throw new InvalidOperationException());
+          });
+
+      var resultThread1 = _cache.GetOrCreateValue (
+          "key",
+          key =>
+          {
+            waitHandleThread2.Set();
+            return expectedThread1;
+          });
+      Assert.That (resultThread1, Is.EqualTo (expectedThread1));
+      Assert.That (thread2.Wait (TimeSpan.FromSeconds (1)), "Dead lock detected.");
+      Assert.That (resultThread2, Is.EqualTo (expectedThread1));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithParallelThreadsInsertingSameKeyWithNullValue_SecondFactoryCallWillNotBeExecuted ()
+    {
+      object resultThread2 = null;
+      var waitHandleThread2 = new ManualResetEvent (false);
+
+      var thread2 = Task.Run (
+          () =>
+          {
+            Assert.That (waitHandleThread2.WaitOne (TimeSpan.FromSeconds (1)), "Dead lock detected.");
+            resultThread2 = _cache.GetOrCreateValue ("key", key => throw new InvalidOperationException());
+          });
+
+      var resultThread1 = _cache.GetOrCreateValue (
+          "key",
+          key =>
+          {
+            waitHandleThread2.Set();
+            return null;
+          });
+      Assert.That (resultThread1, Is.EqualTo (null));
+      Assert.That (thread2.Wait (TimeSpan.FromSeconds (1)), "Dead lock detected.");
+      Assert.That (resultThread2, Is.EqualTo (null));
+    }
+
+    [Test]
+    public void GetOrCreateValue_TryGetValue ()
+    {
+      object expected = new object();
+
+      _cache.GetOrCreateValue ("key1", key => expected);
+      object actual;
+      Assert.That (_cache.TryGetValue ("key1", out actual), Is.True);
+      Assert.That (actual, Is.SameAs (expected));
+    }
+
+    [Test]
+    public void GetOrCreateValue_TryGetValue_WithParallelThreadsUsingSameKey_TryGetValueDuringFactoryCallWillBlock ()
+    {
+      var expectedThread1 = "T1";
+      object resultThread2 = null;
+      var waitHandleThread2 = new ManualResetEvent (false);
+
+      var thread2 = Task.Run (
+          () =>
+          {
+            Assert.That (waitHandleThread2.WaitOne (TimeSpan.FromSeconds (1)), "Dead lock detected.");
+            _cache.TryGetValue ("key", out resultThread2);
+          });
+
+      var resultThread1 = _cache.GetOrCreateValue (
+          "key",
+          key =>
+          {
+            waitHandleThread2.Set();
+            return expectedThread1;
+          });
+      Assert.That (resultThread1, Is.EqualTo (expectedThread1));
+      Assert.That (thread2.Wait (TimeSpan.FromSeconds (1)), "Dead lock detected.");
+      Assert.That (resultThread2, Is.EqualTo (expectedThread1));
     }
 
     [Test]
@@ -118,7 +269,7 @@ namespace Remotion.UnitTests.Collections
           () => _cache.GetOrCreateValue ("key1", key => throw exception),
           Throws.Exception.SameAs (exception));
 
-      object expected = new object ();
+      object expected = new object();
       object actual = _cache.GetOrCreateValue ("key1", key => expected);
       Assert.That (actual, Is.SameAs (expected));
     }
@@ -142,37 +293,26 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void GetOrCreateValue_TryGetValue ()
+    public void GetOrCreateValue_Twice_SecondCallDoesNotUseFactory ()
     {
-      object expected = new object ();
-
-      _cache.GetOrCreateValue ("key1", delegate (string key) { return expected; });
-      object actual;
-      Assert.That (_cache.TryGetValue ("key1", out actual), Is.True);
-      Assert.That (actual, Is.SameAs (expected));
-    }
-
-    [Test]
-    public void GetOrCreateValue_Twice ()
-    {
-      object expected = new object ();
+      object expected = new object();
 
       _cache.GetOrCreateValue ("key1", key => expected);
       Assert.That (
-          _cache.GetOrCreateValue ("key1", arg => throw new InvalidOperationException ("The valueFactory must not be invoked.")),
+          _cache.GetOrCreateValue ("key1", key => throw new InvalidOperationException ("The valueFactory must not be invoked.")),
           Is.SameAs (expected));
     }
 
     [Test]
     public void GetOrCreateValue_TryGetValue_Clear_TryGetValue ()
     {
-      object expected = new object ();
+      object expected = new object();
 
       _cache.GetOrCreateValue ("key1", key => expected);
       object actual;
       Assert.That (_cache.TryGetValue ("key1", out actual), Is.True);
       Assert.That (actual, Is.SameAs (expected));
-      _cache.Clear ();
+      _cache.Clear();
       Assert.That (_cache.TryGetValue ("key1", out actual), Is.False);
       Assert.That (actual, Is.Null);
     }
@@ -190,7 +330,6 @@ namespace Remotion.UnitTests.Collections
                 () => _cache.TryGetValue (key, out _),
                 Throws.InvalidOperationException.With.Message.StringStarting (
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
-
             return expected;
           });
       Assert.That (actualValue, Is.EqualTo (expected));
@@ -206,16 +345,16 @@ namespace Remotion.UnitTests.Collections
       object expected = new object();
 
       var actualValue = _cache.GetOrCreateValue (
-          "key1",
-          delegate (string key)
-          {
-            Assert.That (
-                () => _cache.GetOrCreateValue (key, nestedKey => 13),
-                Throws.InvalidOperationException.With.Message.StringStarting (
-                    "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
+              "key1",
+              delegate (string key)
+              {
+                Assert.That (
+                    () => _cache.GetOrCreateValue (key, nestedKey => 13),
+                    Throws.InvalidOperationException.With.Message.StringStarting (
+                        "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
 
-            return expected;
-          });
+                return expected;
+              });
 
       Assert.That (actualValue, Is.EqualTo (expected));
 
@@ -277,7 +416,7 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void GetEnumerator_Generic()
+    public void GetEnumerator_Generic ()
     {
       object expected1 = new object();
       object expected2 = new object();
@@ -296,27 +435,19 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void GetEnumerator_Generic_Reset ()
+    public void GetEnumerator_Generic_Reset_ThrowsNotSupportedException ()
     {
       object expected1 = new object();
-      object expected2 = new object();
       _cache.GetOrCreateValue ("key1", delegate { return expected1; });
-      _cache.GetOrCreateValue ("key2", delegate { return expected2; });
 
       using (var enumerator = _cache.GetEnumerator())
       {
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current, Is.EqualTo (new KeyValuePair<string, object> ("key1", expected1)));
-        enumerator.Reset();
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current, Is.EqualTo (new KeyValuePair<string, object> ("key1", expected1)));
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current, Is.EqualTo (new KeyValuePair<string, object> ("key2", expected2)));
+        Assert.That (() => enumerator.Reset(), Throws.Exception.TypeOf<NotSupportedException>());
       }
     }
 
     [Test]
-    public void GetEnumerator_NonGeneric()
+    public void GetEnumerator_NonGeneric ()
     {
       object expected1 = new object();
       object expected2 = new object();
@@ -335,74 +466,67 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void GetIsNull()
+    public void GetIsNull ()
     {
       Assert.That (_cache.IsNull, Is.False);
     }
 
     [Test]
-    public void SerializeEmptyCache ()
-    {
-      ICache<string, object> deserializedCache = Serializer.SerializeAndDeserialize (_cache);
-      Assert.That (deserializedCache, Is.Not.Null);
-
-      object result;
-      Assert.That (deserializedCache.TryGetValue ("bla", out result), Is.False);
-      deserializedCache.GetOrCreateValue ("bla", delegate { return "foo"; });
-      Assert.That (deserializedCache.TryGetValue ("bla", out result), Is.True);
-
-      Assert.That (result, Is.EqualTo ("foo"));
-
-      Assert.That (_cache.TryGetValue ("bla", out result), Is.False);
-    }
-
-    [Test]
-    public void SerializeNonEmptyCache ()
-    {
-      object result;
-
-      _cache.GetOrCreateValue ("bla", delegate { return "foo"; });
-      Assert.That (_cache.TryGetValue ("bla", out result), Is.True);
-
-      ICache<string, object> deserializedCache = Serializer.SerializeAndDeserialize (_cache);
-      Assert.That (deserializedCache, Is.Not.Null);
-
-      Assert.That (deserializedCache.TryGetValue ("bla", out result), Is.True);
-      Assert.That (result, Is.EqualTo ("foo"));
-
-      deserializedCache.GetOrCreateValue ("whatever", delegate { return "fred"; });
-      Assert.That (deserializedCache.TryGetValue ("whatever", out result), Is.True);
-      Assert.That (_cache.TryGetValue ("whatever", out result), Is.False);
-    }
-
-    [Test]
+    [TestCase (1, 4900)]
+    [TestCase (2, 5400)]
+    [TestCase (3, 5700)]
+    [TestCase (4, 6100)]
     [Explicit]
-    public void Performance ()
+    public void Performance (int threadCount, int timeTakenExpected)
     {
-      // Use local variable instead of the field to allow for better comparison with SimpleDataStoreTest.
-      // Note that using a field would incur a 10% performance penalty in this particular test setup.
-      var cache = new Cache<string, object>();
-      cache.GetOrCreateValue ("key", k => "value");
-      object value;
-      cache.TryGetValue ("key", out value);
-      
-      var stopwatch = new Stopwatch();
-      stopwatch.Start();
+      var stopwatches = new Stopwatch[threadCount];
+      for (int i = 0; i < threadCount; i++)
+        stopwatches[i] = new Stopwatch();
 
-      for (int i = 0; i < 1000; i++)
-      {
-        var key = i.ToString ("D9");
-        cache.GetOrCreateValue (key, k => k + ": value");
-        for (int j = 0; j < 100 * 1000; j++)
-        {
-          cache.TryGetValue (key, out value);
-        }
-      }
+      var threadStart = new ParameterizedThreadStart (
+          arg =>
+          {
+            _cache.GetOrCreateValue ("key", k => "value");
+            object value;
+            _cache.TryGetValue ("key", out value);
 
-      stopwatch.Stop();
-      // Note: on x64, the time taken is 3000ms instead due to use of RyuJIT
-      Console.WriteLine ("Time expected: 3250ms (release build x86, on Intel Xeon E5-1620 v2 @ 3.70GHz)");
-      Console.WriteLine ("Time taken: {0:D}ms", stopwatch.ElapsedMilliseconds);
+            var stopwatch = (Stopwatch) arg;
+            stopwatch.Start();
+
+            for (int i = 0; i < 1000; i++)
+            {
+              var key = i.ToString ("D9");
+              _cache.GetOrCreateValue (key, k => k + ": value");
+
+              for (int j = 0; j < 100 * 1000; j++)
+              {
+                _cache.TryGetValue (key, out value);
+              }
+            }
+
+            stopwatch.Stop();
+          });
+
+      GC.Collect();
+      GC.WaitForFullGCComplete();
+
+      var threads = new Thread[threadCount];
+      for (int i = 0; i < threadCount; i++)
+        threads[i] = new Thread (threadStart);
+
+      for (int i = 0; i < threadCount; i++)
+        threads[i].Start (stopwatches[i]);
+
+      for (int i = 0; i < threadCount; i++)
+        threads[i].Join();
+
+      var timeTakenActual = stopwatches.Sum (stopwatch => stopwatch.ElapsedMilliseconds) / stopwatches.Length;
+
+      Console.WriteLine (
+          "Time expected: {0}ms (thread count: {1}, release build x86 on Intel Xeon E5-1620 v2 @ 3.70GHz)",
+          timeTakenExpected,
+          threadCount);
+      Console.WriteLine ("Time taken: {0:D}ms", timeTakenActual);
     }
   }
 }

@@ -17,6 +17,7 @@
 // 
 using System;
 using Remotion.Collections;
+using Remotion.Collections.Caching;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;

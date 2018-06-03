@@ -32,7 +32,7 @@ namespace Remotion.Collections.DataStore
   /// etc, so it is much simpler to implement.
   /// </para>
   /// <para>
-  /// Use this in place of <see cref="ICache{TKey,TValue}"/> if you need a reliable data store which guarantees to keep values once inserted until
+  /// Use this in place of <see cref="T:Remotion.Collections.Caching.ICache{TKey,TValue}"/> if you need a reliable data store which guarantees to keep values once inserted until
   /// they are removed.
   /// </para>
   /// </remarks>

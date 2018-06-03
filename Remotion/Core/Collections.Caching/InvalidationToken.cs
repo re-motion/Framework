@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.Caching
 {
   /// <summary>The <see cref="InvalidationToken"/> can be used as a means to commicate that the cached information is no longer current.</summary>
   /// <remarks>

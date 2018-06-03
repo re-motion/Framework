@@ -16,6 +16,7 @@
       <!-- When enabling the package for NuGet.org, the nuspec file must be TemplateSharedForNuGetOrg.nuspec to act as trigger for removing the -rtm tag on the NuGet version. -->
       <CreateDocumentationFile>True</CreateDocumentationFile>
     </ReleaseProjectFiles>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Collections.Caching\Core.Collections.Caching.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Collections.DataStore\Core.Collections.DataStore.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Extensions\Core.Extensions.csproj"/>
@@ -28,6 +29,7 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Tools\Core.Tools.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Xml\Core.Xml.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\UnitTests\Core.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Collections.Caching.UnitTests\Core.Collections.Caching.UnitTests.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Collections.DataStore.UnitTests\Core.Collections.DataStore.UnitTests.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\ExtensibleEnums.UnitTests\Core.ExtensibleEnums.UnitTests.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Extensions.UnitTests\Core.Extensions.UnitTests.csproj"/>

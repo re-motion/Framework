@@ -21,7 +21,7 @@ using System.Linq;
 using System.Threading;
 using Remotion.Utilities;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.Caching
 {
   /// <summary>
   /// Adapts an implementation of <see cref="ICache{TKey,TValue}"/> that stores <see cref="Lazy{T}"/> holding

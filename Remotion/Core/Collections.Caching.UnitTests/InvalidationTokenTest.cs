@@ -16,13 +16,12 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.UnitTests.Collections
+namespace Remotion.Collections.Caching.UnitTests
 {
   [TestFixture]
-  public class LockingCacheInvalidationTokenTest
+  public class InvalidationTokenTest
   {
 #if DEBUG
     [Ignore ("Skipped if DEBUG build")]
@@ -30,7 +29,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetCurrent_FromSameCacheInvalidationToken_ReturnsSameRevisionTwice ()
     {
-      var token = InvalidationToken.CreatWithLocking();
+      var token = InvalidationToken.Create();
 
       Assert.That (token.GetCurrent(), Is.EqualTo (token.GetCurrent()));
     }
@@ -38,8 +37,8 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetCurrent_FromDifferentCacheInvalidationTokens_ReturnsDifferentRevisions ()
     {
-      var token1 = InvalidationToken.CreatWithLocking();
-      var token2 = InvalidationToken.CreatWithLocking();
+      var token1 = InvalidationToken.Create();
+      var token2 = InvalidationToken.Create();
 
       if (token1.GetHashCode() == token2.GetHashCode())
       {
@@ -54,7 +53,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void IsCurrent_WithCurrentRevision_ReturnsTrue ()
     {
-      var token = InvalidationToken.CreatWithLocking();
+      var token = InvalidationToken.Create();
 
       var revision = token.GetCurrent();
 
@@ -64,7 +63,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void IsCurrent_WithInvalidatedRevision_ReturnsFalse ()
     {
-      var token = InvalidationToken.CreatWithLocking();
+      var token = InvalidationToken.Create();
 
       var revision = token.GetCurrent();
       token.Invalidate();
@@ -78,8 +77,8 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void IsCurrent_WithRevisionFromDifferentToken_ThrowsArgumentException ()
     {
-      var token1 = InvalidationToken.CreatWithLocking();
-      var token2 = InvalidationToken.CreatWithLocking();
+      var token1 = InvalidationToken.Create();
+      var token2 = InvalidationToken.Create();
 
       Assert.That (
           () => token2.IsCurrent (token1.GetCurrent()),
@@ -93,7 +92,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void IsCurrent_WithRevisionFromDefaultConstructor_ThrowsArgumentException ()
     {
-      var token = InvalidationToken.CreatWithLocking();
+      var token = InvalidationToken.Create();
 
       Assert.That (
           () => token.IsCurrent (new InvalidationToken.Revision()),
@@ -105,7 +104,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void Serialization ()
     {
-      var token = InvalidationToken.CreatWithLocking();
+      var token = InvalidationToken.Create();
       var revision = token.GetCurrent();
 
       var deserializedObjects = Serializer.SerializeAndDeserialize (new object[] { token, revision });

@@ -23,13 +23,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Development.RhinoMocks.UnitTesting.Threading;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
-using Wrapper = Remotion.Collections.LazyLockingCachingAdapter<string, object>.Wrapper;
+using Wrapper = Remotion.Collections.Caching.LazyLockingCachingAdapter<string, object>.Wrapper;
 
-namespace Remotion.UnitTests.Collections
+namespace Remotion.Collections.Caching.UnitTests
 {
   using InnerFactory = Func<ICache<string, Lazy<Wrapper>>, Lazy<Wrapper>>;
 

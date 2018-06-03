@@ -22,7 +22,7 @@ using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.Caching
 {
   /// <summary>
   /// Implements the <see cref="ICache{TKey,TValue}"/> interface to provide a thread-safe, <see cref="ConcurrentDictionary{TKey,TValue}"/>-based 

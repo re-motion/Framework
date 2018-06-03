@@ -139,10 +139,6 @@
       <Project>{b719a305-0493-4c72-88fe-9a2fc6964578}</Project>
       <Name>Development.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Development\RhinoMocks\Development.RhinoMocks.csproj">
-      <Project>{2177143e-345f-4faa-9958-1ae2b5eed242}</Project>
-      <Name>Development.RhinoMocks</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Core\Core.Core.csproj">
       <Name>Core.Core</Name>
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
@@ -256,21 +252,15 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Collections\EnumerableExtensions.cs" />
-    <Compile Include="Collections\ConcurrentCacheTest.cs" />
     <Compile Include="PermanentGuidAttributeTest.cs" />
     <Compile Include="Reflection\TypeDiscovery\ContextAwareTypeDiscoveryUtilityTest.cs" />
     <Compile Include="Reflection\TypeResolution\DefaultTypeResolutionServiceTest.cs" />
     <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\DelaySignAssembly\DelaySignClass.cs" />
-    <Compile Include="Collections\CacheFactoryTest.cs" />
-    <Compile Include="Collections\LockingCacheInvalidationTokenTest.cs" />
-    <Compile Include="Collections\CacheInvalidationTokenTest.cs" />
     <Compile Include="Collections\CollectionExtensionsTest.cs" />
     <Compile Include="Collections\CompoundValueEqualityComparerTest.cs" />
     <Compile Include="Collections\ComponentwiseEqualsAndHashcodeWrapperTest.cs" />
     <Compile Include="Collections\DictionaryExtensionsTest.cs" />
     <Compile Include="Collections\ImmutableSingletonTest.cs" />
-    <Compile Include="Collections\InvalidationTokenBasedCacheDecoratorTest.cs" />
-    <Compile Include="Collections\LazyLockingCachingAdapterTest.cs" />
     <Compile Include="Collections\ListAdapterTest.cs" />
     <Compile Include="Collections\ReadOnlyCollectionDecoratorTest.cs" />
     <Compile Include="Configuration\ServiceLocation\FakeServiceLocatorProvider.cs" />
@@ -415,7 +405,6 @@
     <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\FileLoadExceptionConsoleApplication\Program.cs" />
     <Compile Include="Reflection\CodeGeneration\MethodReferencingAttributeTest.cs" />
     <Compile Include="Context\CallContextStorageProviderTest.cs" />
-    <Compile Include="Collections\LockingCacheDecoratorTest.cs" />
     <Compile Include="Collections\AutoInitDictionaryTest.cs" />
     <Compile Include="Configuration\ConstructorException.cs" />
     <Compile Include="Configuration\ThrowingFakeProvider.cs" />
@@ -453,8 +442,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Collections\CacheTest.cs" />
-    <Compile Include="Collections\NullCacheTest.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AttributeAssemblyLoaderFilterTest.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\AssemblyFinderIntegrationTest.cs" />
     <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\MarkedExeAssembly\AssemblyInfo.cs" />

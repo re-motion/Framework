@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Collections;
+using Remotion.Collections.Caching;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.Security.UnitTests.TestDomain;

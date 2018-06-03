@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Utilities;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.Caching
 {
   [Serializable]
   public sealed class InvalidationTokenBasedCacheDecorator<TKey, TValue> : ICache<TKey, TValue>
