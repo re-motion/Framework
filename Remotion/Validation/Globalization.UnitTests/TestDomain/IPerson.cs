@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Validation.Attributes.Validation;
+using JetBrains.Annotations;
 
 namespace Remotion.Validation.Globalization.UnitTests.TestDomain
 {
