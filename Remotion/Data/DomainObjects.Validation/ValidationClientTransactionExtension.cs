@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Validation
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("committedData", committedData);
 
-      var validatorCache = new Cache<Type, IValidator>();
+      var validatorCache = new Dictionary<Type, IValidator>();
 
       List<ValidationResult> invariantCultureInvalidValidationResults;
       using (new CultureScope (CultureInfo.InvariantCulture, CultureInfo.InvariantCulture))
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.Validation
       return string.Format ("Validation error on object of Type '{0}':", validatedInstance.GetType ().FullName);
     }
 
-    private List<ValidationResult> Validate (ReadOnlyCollection<PersistableData> domainObjectsToValidate, Cache<Type, IValidator> validatorCache)
+    private List<ValidationResult> Validate (ReadOnlyCollection<PersistableData> domainObjectsToValidate, Dictionary<Type, IValidator> validatorCache)
     {
       ArgumentUtility.CheckNotNull ("domainObjectsToValidate", domainObjectsToValidate);
 

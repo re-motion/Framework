@@ -36,6 +36,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private static readonly MethodInfo s_getObjectDataForGeneratedTypesMethod = MemberInfoFromExpressionUtility.GetMethod (
         () => MixinSerializationHelper.GetObjectDataForGeneratedTypes(null, new StreamingContext(), null, null, false, null));
 
+    private readonly Dictionary<MethodInfo, MethodInfo> _publicMethodWrappers = new Dictionary<MethodInfo, MethodInfo>();
+
     private readonly ConcreteMixinTypeIdentifier _identifier;
     private readonly MutableType _type;
     private readonly IAttributeGenerator _attributeGenerator;
@@ -151,8 +153,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return wrappers.ToDictionary (pair => pair.Method, pair => pair.Wrapper);
     }
 
-
-    private readonly Cache<MethodInfo, MethodInfo> _publicMethodWrappers = new Cache<MethodInfo, MethodInfo>();
     private MethodInfo GetPublicMethodWrapper (MethodInfo methodToBeWrapped)
     {
       ArgumentUtility.CheckNotNull ("methodToBeWrapped", methodToBeWrapped);

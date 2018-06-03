@@ -39,7 +39,7 @@ namespace Remotion.Reflection.CodeGeneration
     }
 
     private readonly AbstractTypeEmitter _innerEmitter;
-    private readonly Cache<MethodInfo, IMethodEmitter> _publicMethodWrappers = new Cache<MethodInfo, IMethodEmitter> ();
+    private readonly Dictionary<MethodInfo, IMethodEmitter> _publicMethodWrappers = new Dictionary<MethodInfo, IMethodEmitter> ();
     private bool _hasBeenBuilt = false;
     private readonly List<CustomEventEmitter> _eventEmitters = new List<CustomEventEmitter>();
 
