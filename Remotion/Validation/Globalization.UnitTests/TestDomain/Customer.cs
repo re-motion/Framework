@@ -22,7 +22,7 @@ namespace Remotion.Validation.Globalization.UnitTests.TestDomain
   public class Customer : Person
   {
     [Length (0, 8)]
-    [JetBrains.Annotations.NotNull]
+    [NotNull]
     [NotEqual("Test", IsHardConstraint = true)]
     public virtual string UserName { get; set; }
 

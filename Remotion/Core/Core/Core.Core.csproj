@@ -54,7 +54,7 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;JETBRAINS_ANNOTATIONS</DefineConstants>
     <DocumentationFile>bin\Debug\Remotion.XML</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
@@ -99,6 +99,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
@@ -128,93 +131,6 @@
     </Compile>
     <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\Maybe.cs">
       <Link>SharedSource\FunctionalProgramming\Maybe.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\AssertionConditionAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\AssertionConditionAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\AssertionMethodAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\AssertionMethodAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\BaseTypeRequiredAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\BaseTypeRequiredAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\CanBeNullAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\CanBeNullAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\CannotApplyEqualityOperatorAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\CannotApplyEqualityOperatorAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\CollectionAccessAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\CollectionAccessAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\ContractAnnotationAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\ContractAnnotationAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\InstantHandleAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\InstantHandleAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\InvokerParameterNameAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\InvokerParameterNameAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ItemCanBeNullAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\ItemCanBeNullAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ItemNotNullAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\ItemNotNullAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\LinqTunnelAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\LinqTunnelAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\LocalizationRequiredAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\LocalizationRequiredAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\MacroAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\MacroAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\MeansImplicitUseAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\MeansImplicitUseAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\MustUseReturnValueAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\MustUseReturnValueAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\NoEnumerationAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\NoEnumerationAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\NoReorderAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\NoReorderAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\NotifyPropertyChangedInvocatorAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\NotifyPropertyChangedInvocatorAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\NotNullAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\NotNullAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\PathReferenceAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\PathReferenceAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ProvidesContextAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\ProvidesContextAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\PublicAPIAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\PublicAPIAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\PureAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\PureAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\RegexPatternAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\RegexPatternAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\SourceTemplateAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\SourceTemplateAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\StringFormatMethodAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\StringFormatMethodAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\UsedImplicitlyAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\UsedImplicitlyAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ValueProviderAttribute.cs">
-      <Link>SharedSource\ResharperAnnotations\ValueProviderAttribute.cs</Link>
     </Compile>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs">
       <Link>SharedSource\Utilities\ArgumentUtility.cs</Link>
@@ -301,10 +217,6 @@
     <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\CachingAssemblyFinderDecorator.cs" />
     <Compile Include="Reflection\ContextAwareTypeUtility.cs" />
     <Compile Include="ServiceLocation\SafeServiceLocator.cs" />
-    <Compile Include="SharedSource\ResharperAnnotations\AssertionConditionType.cs" />
-    <Compile Include="SharedSource\ResharperAnnotations\CollectionAccessType.cs" />
-    <Compile Include="SharedSource\ResharperAnnotations\ImplicitUseKindFlags.cs" />
-    <Compile Include="SharedSource\ResharperAnnotations\ImplicitUseTargetFlags.cs" />
     <Compile Include="Utilities\Assertion.Partial.cs" />
     <Compile Include="Utilities\AttributeBasedTypeConverterFactory.cs" />
     <Compile Include="Utilities\CompoundTypeConverterFactory.cs" />
@@ -317,7 +229,6 @@
     <Compile Include="Utilities\MemberInfoEqualityComparer.Partial.cs" />
     <Compile Include="Utilities\MemberInfoFromExpressionUtility.Partial.cs" />
     <Compile Include="Utilities\ReferenceEqualityComparer.Partial.cs" />
-    <Compile Include="Utilities\ReSharperAnnotations\PartialDeclarations.cs" />
     <Compile Include="SuppressAttributesAttribute.cs" />
     <Compile Include="Utilities\ArgumentUtility.Partial.cs" />
     <Compile Include="Utilities\AttributeRetrieval\EventCustomAttributeRetriever.cs" />
@@ -437,9 +348,6 @@
     </Compile>
     <Compile Include="Utilities\TypeUtility.AbbreviationParser.cs" />
     <Compile Include="Utilities\UtcNowProvider.cs" />
-    <None Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ReSharperAnnotations MIT.licenseheader">
-      <Link>SharedSource\ResharperAnnotations\ReSharperAnnotations MIT.licenseheader</Link>
-    </None>
     <None Include="..\..\..\SharedSource\SharedSource Apache-2.0.licenseheader">
       <Link>SharedSource\SharedSource Apache-2.0.licenseheader</Link>
     </None>

@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -29,7 +29,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -47,6 +47,9 @@
     <Reference Include="Coypu, Version=2.9.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Coypu.2.9.1\lib\net40\Coypu.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -85,39 +88,6 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\AssertionConditionAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\AssertionConditionType.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\AssertionMethodAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\BaseTypeRequiredAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\CanBeNullAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\CannotApplyEqualityOperatorAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\CollectionAccessAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\CollectionAccessType.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\ContractAnnotationAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\ImplicitUseKindFlags.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\ImplicitUseTargetFlags.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\InstantHandleAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\InvokerParameterNameAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\ItemCanBeNullAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\ItemNotNullAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\LinqTunnelAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\LocalizationRequiredAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\MacroAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\MeansImplicitUseAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\MustUseReturnValueAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\NoEnumerationAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\NoReorderAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\NotifyPropertyChangedInvocatorAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\NotNullAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\PathReferenceAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\ProvidesContextAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\PublicAPIAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\PureAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\RegexPatternAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\SourceTemplateAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\StringFormatMethodAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\UsedImplicitlyAttribute.cs" />
-    <Compile Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\ValueProviderAttribute.cs" />
     <Compile Include="ControlSelection\IControlExistsCommand.cs" />
     <Compile Include="ControlSelection\IControlOptionalSelectionCommand.cs" />
     <Compile Include="DownloadInfrastructure\Chrome\ChromeNamedExpectedFileNameFinderStrategy.cs" />
@@ -348,7 +318,6 @@
     <None Include="..\..\Build\NuSpec\TemplateShared.nuspec">
       <Link>TemplateShared.nuspec</Link>
     </None>
-    <None Include="App_Packages\Remotion.JetBrains.Annotations.Sources.1.17.18\ReSharperAnnotations MIT.licenseheader" />
     <None Include="FacetManifest.xml" />
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
