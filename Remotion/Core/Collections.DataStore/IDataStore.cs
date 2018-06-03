@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.DataStore
 {
   /// <summary>
   /// Provides a common interface for data structures used for storing and retrieving key/value pairs.

@@ -20,7 +20,7 @@ using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.DataStore
 {
   /// <summary>
   /// The <see cref="ExpiringDataStoreFactory"/> provides factory methods to create new expired data stores.

@@ -15,30 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Collections;
-using Remotion.Collections.DataStore;
-using Rhino.Mocks;
 
-namespace Remotion.ObjectBinding.UnitTests.TestDomain
+namespace Remotion.Utilities
 {
-  public class StubBusinessObjectProvider : BusinessObjectProvider
+  [Obsolete ("Dummy declaration for DependDB.", true)]
+  public interface IUtcNowProvider
   {
-    private readonly IDataStore<Type, IBusinessObjectService> _serviceStore = DataStoreFactory.CreateWithSynchronization<Type, IBusinessObjectService>();
-
-
-    public StubBusinessObjectProvider ()
-        : this (MockRepository.GenerateStub<IBusinessObjectServiceFactory>())
-    {
-    }
-
-    public StubBusinessObjectProvider (IBusinessObjectServiceFactory serviceFactory)
-        : base (serviceFactory)
-    {
-    }
-
-    protected override IDataStore<Type, IBusinessObjectService> ServiceStore
-    {
-      get { return _serviceStore; }
-    }
+    DateTime UtcNow { get; }
   }
 }

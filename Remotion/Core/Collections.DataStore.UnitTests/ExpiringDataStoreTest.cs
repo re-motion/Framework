@@ -17,12 +17,11 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Collections
+namespace Remotion.Collections.DataStore.UnitTests
 {
   [TestFixture]
   public class ExpiringDataStoreTest

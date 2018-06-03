@@ -255,7 +255,6 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="Collections\ConcurrentDataStoreTest.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Collections\ConcurrentCacheTest.cs" />
     <Compile Include="PermanentGuidAttributeTest.cs" />
@@ -268,17 +267,12 @@
     <Compile Include="Collections\CollectionExtensionsTest.cs" />
     <Compile Include="Collections\CompoundValueEqualityComparerTest.cs" />
     <Compile Include="Collections\ComponentwiseEqualsAndHashcodeWrapperTest.cs" />
-    <Compile Include="Collections\DataStoreFactoryTest.cs" />
     <Compile Include="Collections\DictionaryExtensionsTest.cs" />
-    <Compile Include="Collections\ExpiringDataStoreFactoryTest.cs" />
-    <Compile Include="Collections\ExpiringDataStoreTest.cs" />
     <Compile Include="Collections\ImmutableSingletonTest.cs" />
     <Compile Include="Collections\InvalidationTokenBasedCacheDecoratorTest.cs" />
     <Compile Include="Collections\LazyLockingCachingAdapterTest.cs" />
-    <Compile Include="Collections\LazyLockingDataStoreAdapterTest.cs" />
     <Compile Include="Collections\ListAdapterTest.cs" />
     <Compile Include="Collections\ReadOnlyCollectionDecoratorTest.cs" />
-    <Compile Include="Collections\TimeSpanBasedExpirationPolicyTest.cs" />
     <Compile Include="Configuration\ServiceLocation\FakeServiceLocatorProvider.cs" />
     <Compile Include="Configuration\ServiceLocation\ServiceLocationConfigurationTest.cs" />
     <Compile Include="Configuration\TypeDiscovery\IntegrationTests\SpecificRootAssemblies\SpecificRootAssembliesAreNotSubjectToApplicationFilterTest.cs" />
@@ -420,8 +414,6 @@
     <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\FilteringAssemblyLoaderTest.cs" />
     <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\FileLoadExceptionConsoleApplication\Program.cs" />
     <Compile Include="Reflection\CodeGeneration\MethodReferencingAttributeTest.cs" />
-    <Compile Include="Collections\LockingDataStoreDecoratorTest.cs" />
-    <Compile Include="Collections\SimpleDataStoreTest.cs" />
     <Compile Include="Context\CallContextStorageProviderTest.cs" />
     <Compile Include="Collections\LockingCacheDecoratorTest.cs" />
     <Compile Include="Collections\AutoInitDictionaryTest.cs" />

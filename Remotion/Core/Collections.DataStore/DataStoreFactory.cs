@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.DataStore
 {
   /// <summary>
   /// The <see cref="DataStoreFactory"/> provides factory methods to create new data stores.

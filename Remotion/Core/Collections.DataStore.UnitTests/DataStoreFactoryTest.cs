@@ -16,10 +16,9 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.UnitTests.Collections
+namespace Remotion.Collections.DataStore.UnitTests
 {
   [TestFixture]
   public class DataStoreFactoryTest

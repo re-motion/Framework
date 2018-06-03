@@ -17,7 +17,7 @@
 using System;
 using Remotion.Utilities;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.DataStore
 {
   /// <summary>
   /// The <see cref="TimeSpanBasedExpirationPolicy{TValue}"/> handles values which can be expire based on <see cref="TimeSpan"/> periods.

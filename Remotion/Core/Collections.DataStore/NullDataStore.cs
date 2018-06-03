@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.DataStore
 {
   /// <summary>
   /// This class implements a data store that doesn't actually store anything. It's part of the null object pattern.

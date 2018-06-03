@@ -18,15 +18,7 @@ using System;
 
 namespace Remotion.Collections
 {
-  /// <summary>
-  /// <see cref="IExpirationPolicy{TValue,TExpirationInfo,TScanInfo}"/> defines the API for implementations that handle value expiration. This is
-  /// used by <see cref="ExpiringDataStore{TKey,TValue,TExpirationInfo,TScanInfo}"/>. 
-  /// </summary>
-  /// <typeparam name="TValue">The type of the values that can expire.</typeparam>
-  /// <typeparam name="TExpirationInfo">The type of expiration metadata required by the concrete implementation. Implementations use expiration
-  /// metadata to decide whether a value is expired.</typeparam>
-  /// <typeparam name="TScanInfo">The type of scan metadata required by the concrete implementation. Implementations use scan metadata to decide
-  /// whether all values should be rescanned for expiration.</typeparam>
+  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
   public interface IExpirationPolicy<TValue, TExpirationInfo, TScanInfo>
   {
     TExpirationInfo GetExpirationInfo (TValue value);

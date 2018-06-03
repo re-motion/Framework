@@ -15,30 +15,36 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Collections;
-using Remotion.Collections.DataStore;
-using Rhino.Mocks;
+using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.UnitTests.TestDomain
+namespace Remotion.Collections
 {
-  public class StubBusinessObjectProvider : BusinessObjectProvider
+  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
+  public class TimeSpanBasedExpirationPolicy<TValue> : IExpirationPolicy<TValue, DateTime, DateTime>
   {
-    private readonly IDataStore<Type, IBusinessObjectService> _serviceStore = DataStoreFactory.CreateWithSynchronization<Type, IBusinessObjectService>();
-
-
-    public StubBusinessObjectProvider ()
-        : this (MockRepository.GenerateStub<IBusinessObjectServiceFactory>())
+    public TimeSpanBasedExpirationPolicy (TimeSpan period, IUtcNowProvider utcNowProvider)
     {
+      throw new NotImplementedException();
     }
 
-    public StubBusinessObjectProvider (IBusinessObjectServiceFactory serviceFactory)
-        : base (serviceFactory)
+    public DateTime GetNextScanInfo ()
     {
+      throw new NotImplementedException();
     }
 
-    protected override IDataStore<Type, IBusinessObjectService> ServiceStore
+    public DateTime GetExpirationInfo (TValue value)
     {
-      get { return _serviceStore; }
+      throw new NotImplementedException();
+    }
+
+    public bool IsExpired (TValue value, DateTime expirationInfo)
+    {
+      throw new NotImplementedException();
+    }
+
+    public bool ShouldScanForExpiredItems (DateTime nextScanInfo)
+    {
+      throw new NotImplementedException();
     }
   }
 }

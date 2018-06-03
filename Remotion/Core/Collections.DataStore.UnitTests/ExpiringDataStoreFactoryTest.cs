@@ -18,11 +18,10 @@
 //
 using System;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Collections
+namespace Remotion.Collections.DataStore.UnitTests
 {
   [TestFixture]
   public class ExpiringDataStoreFactoryTest

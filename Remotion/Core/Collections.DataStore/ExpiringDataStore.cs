@@ -20,7 +20,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.DataStore
 {
   /// <summary>
   /// The <see cref="ExpiringDataStore{TKey,TValue,TExpirationInfo,TScanInfo}"/> stores values that can be expire.

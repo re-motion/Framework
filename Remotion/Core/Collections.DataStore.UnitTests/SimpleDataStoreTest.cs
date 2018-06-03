@@ -15,15 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Collections;
+using Remotion.Collections.DataStore.UnitTests.Utilities;
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.UnitTests.Collections
+namespace Remotion.Collections.DataStore.UnitTests
 {
   [TestFixture]
   public class SimpleDataStoreTest

@@ -18,7 +18,7 @@ using System;
 using System.Threading;
 using Remotion.Utilities;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.DataStore
 {
   /// <summary>
   /// Adapts an implementation of <see cref="IDataStore{TKey,TValue}"/> that stores <see cref="Lazy{T}"/> holding

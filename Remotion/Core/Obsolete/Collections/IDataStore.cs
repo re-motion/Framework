@@ -15,30 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Collections;
-using Remotion.Collections.DataStore;
-using Rhino.Mocks;
 
-namespace Remotion.ObjectBinding.UnitTests.TestDomain
+namespace Remotion.Collections
 {
-  public class StubBusinessObjectProvider : BusinessObjectProvider
+  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
+  public interface IDataStore<TKey, TValue> : INullObject
   {
-    private readonly IDataStore<Type, IBusinessObjectService> _serviceStore = DataStoreFactory.CreateWithSynchronization<Type, IBusinessObjectService>();
+    bool ContainsKey (TKey key);
 
+    void Add (TKey key,  TValue value);
 
-    public StubBusinessObjectProvider ()
-        : this (MockRepository.GenerateStub<IBusinessObjectServiceFactory>())
-    {
-    }
+    bool Remove (TKey key);
 
-    public StubBusinessObjectProvider (IBusinessObjectServiceFactory serviceFactory)
-        : base (serviceFactory)
-    {
-    }
+    void Clear ();
 
-    protected override IDataStore<Type, IBusinessObjectService> ServiceStore
-    {
-      get { return _serviceStore; }
-    }
+    TValue this [TKey key] { get; set; }
+
+    TValue GetValueOrDefault (TKey key);
+
+    bool TryGetValue (TKey key,  out TValue value);
+
+    TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory);
   }
 }

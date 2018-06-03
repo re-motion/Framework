@@ -253,24 +253,16 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Collections\CacheFactory.cs" />
-    <Compile Include="Collections\ConcurrentDataStore.cs" />
     <Compile Include="Collections\InvalidationToken.cs" />
     <Compile Include="Collections\InvalidationTokenImplementation.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
-    <Compile Include="Collections\DataStoreFactory.cs" />
-    <Compile Include="Collections\ExpiringDataStore.cs" />
-    <Compile Include="Collections\ExpiringDataStoreFactory.cs" />
     <Compile Include="Collections\ICache.cs" />
-    <Compile Include="Collections\IDataStore.cs" />
-    <Compile Include="Collections\IExpirationPolicy.cs" />
     <Compile Include="Collections\ImmutableSingleton.cs" />
     <Compile Include="Collections\InvalidationTokenBasedCacheDecorator.cs" />
     <Compile Include="Collections\LazyLockingCachingAdapter.cs" />
-    <Compile Include="Collections\LazyLockingDataStoreAdapter.cs" />
     <Compile Include="Collections\ConcurrentCache.cs" />
     <Compile Include="Collections\ReadOnlyCollectionDecorator.cs" />
     <Compile Include="Collections\LockingInvalidationToken.cs" />
-    <Compile Include="Collections\TimeSpanBasedExpirationPolicy.cs" />
     <Compile Include="Configuration\ServiceLocation\IServiceLocationConfiguration.cs" />
     <Compile Include="Configuration\ServiceLocation\ServiceLocationConfiguration.cs" />
     <Compile Include="Configuration\TypeResolution\TypeResolutionConfiguration.cs" />
@@ -376,9 +368,6 @@
     <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AssemblyLoaderException.cs" />
     <Compile Include="Reflection\CodeGeneration\GeneratedMethodWrapperAttribute.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\FilteringAssemblyLoader.cs" />
-    <Compile Include="Collections\LockingDataStoreDecorator.cs" />
-    <Compile Include="Collections\NullDataStore.cs" />
-    <Compile Include="Collections\SimpleDataStore.cs" />
     <Compile Include="Context\CallContextStorageProvider.cs" />
     <Compile Include="Collections\AutoInitDictionary.cs" />
     <Compile Include="Collections\MultiDictionary.cs" />

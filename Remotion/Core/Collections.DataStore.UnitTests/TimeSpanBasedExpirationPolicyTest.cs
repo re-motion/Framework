@@ -16,11 +16,10 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Utilities;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Collections
+namespace Remotion.Collections.DataStore.UnitTests
 {
   [TestFixture]
   public class TimeSpanBasedExpirationPolicyTest

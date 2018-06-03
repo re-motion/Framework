@@ -21,7 +21,7 @@ using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.DataStore
 {
   /// <summary>
   /// Implements the <see cref="IDataStore{TKey,TValue}"/> interface as a simple, not thread-safe in-memory data store based on a 

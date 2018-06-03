@@ -18,14 +18,13 @@
 #pragma warning disable 618
 using System;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Development.RhinoMocks.UnitTesting.Threading;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Rhino.Mocks;
-using Wrapper = Remotion.Collections.LazyLockingDataStoreAdapter<string, object>.Wrapper;
+using Wrapper = Remotion.Collections.DataStore.LazyLockingDataStoreAdapter<string, object>.Wrapper;
 
-namespace Remotion.UnitTests.Collections
+namespace Remotion.Collections.DataStore.UnitTests
 {
   using InnerFactory = Func<IDataStore<string, Lazy<Wrapper>>, Lazy<Wrapper>>;
 

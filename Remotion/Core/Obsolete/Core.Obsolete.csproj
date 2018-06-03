@@ -50,6 +50,17 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Collections\ConcurrentDataStore.cs" />
+    <Compile Include="Collections\DataStoreFactory.cs" />
+    <Compile Include="Collections\ExpiringDataStore.cs" />
+    <Compile Include="Collections\ExpiringDataStoreFactory.cs" />
+    <Compile Include="Collections\IDataStore.cs" />
+    <Compile Include="Collections\IExpirationPolicy.cs" />
+    <Compile Include="Collections\LazyLockingDataStoreAdapter.cs" />
+    <Compile Include="Collections\LockingDataStoreDecorator.cs" />
+    <Compile Include="Collections\NullDataStore.cs" />
+    <Compile Include="Collections\SimpleDataStore.cs" />
+    <Compile Include="Collections\TimeSpanBasedExpirationPolicy.cs" />
     <Compile Include="DisposableBase.cs" />
     <Compile Include="DisposableExplicitBase.cs" />
     <Compile Include="ExtensibleEnums\ExtensibleEnum.cs" />
@@ -69,6 +80,7 @@
     <Compile Include="Globalization\ResourceIdentifiersAttribute.cs" />
     <Compile Include="Globalization\ResourceManagerSet.cs" />
     <Compile Include="Globalization\ResourceManagerWrapper.cs" />
+    <Compile Include="INullObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\DynamicMethodBasedMethodCallerFactory.cs" />
     <Compile Include="Reflection\FuncInvoker.cs" />
@@ -96,6 +108,7 @@
     <Compile Include="Utilities\EnumDescriptionAttribute.cs" />
     <Compile Include="Utilities\EnumDescriptionResourceAttribute.cs" />
     <Compile Include="Utilities\EnumValue.cs" />
+    <Compile Include="Utilities\IUtcNowProvider.cs" />
     <Compile Include="Xml\SchemaLoaderBase.cs" />
     <Compile Include="Xml\XmlSchemaValidationErrorInfo.cs" />
     <Compile Include="Xml\XmlSchemaValidationHandler.cs" />

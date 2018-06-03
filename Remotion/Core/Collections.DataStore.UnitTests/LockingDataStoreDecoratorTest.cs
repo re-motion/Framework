@@ -17,12 +17,11 @@
 #pragma warning disable 618
 using System;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Development.RhinoMocks.UnitTesting.Threading;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Collections
+namespace Remotion.Collections.DataStore.UnitTests
 {
   [TestFixture]
   public class LockingDataStoreDecoratorTest

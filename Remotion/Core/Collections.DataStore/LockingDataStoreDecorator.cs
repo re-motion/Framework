@@ -17,7 +17,7 @@
 using System;
 using Remotion.Utilities;
 
-namespace Remotion.Collections
+namespace Remotion.Collections.DataStore
 {
   /// <summary>
   /// Provides a synchronization wrapper around an implementation of <see cref="IDataStore{TKey,TValue}"/>. Use 

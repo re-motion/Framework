@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Concurrent;
 using Remotion.Collections;
+using Remotion.Collections.DataStore;
 using Remotion.Mixins;
 using Remotion.TypePipe;
 using Remotion.Utilities;

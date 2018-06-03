@@ -412,6 +412,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Collections.DataStore\Core.Collections.DataStore.csproj">
+      <Project>{4712787f-916e-4a47-88b3-92b39358ec09}</Project>
+      <Name>Core.Collections.DataStore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core.Core</Name>
