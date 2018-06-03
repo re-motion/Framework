@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Utilities;
 
@@ -28,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   {
     private readonly IAssociatedCollectionDataStrategyFactory _dataStrategyFactory;
     
-    private readonly IDataStore<RelationEndPointID, DomainObjectCollection> _collections = new SimpleDataStore<RelationEndPointID, DomainObjectCollection>();
+    private readonly Dictionary<RelationEndPointID, DomainObjectCollection> _collections = new Dictionary<RelationEndPointID, DomainObjectCollection>();
     private readonly Func<RelationEndPointID, DomainObjectCollection> _getCollectionWithoutCacheFunc;
 
     public CollectionEndPointCollectionProvider (IAssociatedCollectionDataStrategyFactory dataStrategyFactory)

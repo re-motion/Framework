@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Collections;
+using System.Collections.Generic;
 using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.Validation
@@ -30,7 +30,7 @@ namespace Remotion.Mixins.Validation
     void Fail (IValidationRule rule);
     void UnexpectedException (IValidationRule rule, Exception ex);
 
-    IDataStore<object, object> ContextStore { get; }
+    IDictionary<object, object> ContextStore { get; }
 
     ValidationLogData GetData ();
   }

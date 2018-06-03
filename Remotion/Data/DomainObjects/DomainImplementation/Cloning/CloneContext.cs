@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
   public class CloneContext
   {
     private readonly DomainObjectCloner _cloner;
-    private readonly SimpleDataStore<DomainObject, DomainObject> _clones = new SimpleDataStore<DomainObject, DomainObject> ();
+    private readonly Dictionary<DomainObject, DomainObject> _clones = new Dictionary<DomainObject, DomainObject> ();
     private readonly Queue<Tuple<DomainObject, DomainObject>> _cloneHulls = new Queue<Tuple<DomainObject, DomainObject>> ();
     private readonly Func<DomainObject, DomainObject> _getCloneInternalFunc;
 

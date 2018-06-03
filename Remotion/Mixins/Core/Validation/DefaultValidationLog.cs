@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Collections;
 using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
 
@@ -25,7 +24,7 @@ namespace Remotion.Mixins.Validation
   public class DefaultValidationLog : IValidationLog
   {
     private readonly Stack<ValidationResult> _currentData = new Stack<ValidationResult> ();
-    private readonly SimpleDataStore<object, object> _contextStore = new SimpleDataStore<object, object> ();
+    private readonly IDictionary<object, object> _contextStore = new Dictionary<object, object> ();
 
     private readonly ValidationLogData _data = new ValidationLogData();
 
@@ -95,7 +94,7 @@ namespace Remotion.Mixins.Validation
       GetCurrentResult ().Exceptions.Add (new ValidationExceptionResultItem (rule.RuleName, ex));
     }
 
-    public IDataStore<object, object> ContextStore
+    public IDictionary<object, object> ContextStore
     {
       get { return _contextStore; }
     }

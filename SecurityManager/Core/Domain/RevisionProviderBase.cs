@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Context;
 using Remotion.Data.DomainObjects;
@@ -27,7 +28,7 @@ namespace Remotion.SecurityManager.Domain
   public abstract class RevisionProviderBase<TRevisionKey> : IRevisionProvider<TRevisionKey, GuidRevisionValue>
       where TRevisionKey : IRevisionKey
   {
-    private readonly SafeContextSingleton<SimpleDataStore<TRevisionKey, GuidRevisionValue>> _cachedRevisions;
+    private readonly SafeContextSingleton<Dictionary<TRevisionKey, GuidRevisionValue>> _cachedRevisions;
     private readonly Func<TRevisionKey, GuidRevisionValue> _getRevisionFromDatabaseFunc;
 
     protected RevisionProviderBase ()
@@ -37,9 +38,9 @@ namespace Remotion.SecurityManager.Domain
       // While this is a potential memory leak, the revision providers are used with singleton-semantics anyway when instantiated via IoC,
       // so this shouldn't be an issue.
 
-      _cachedRevisions = new SafeContextSingleton<SimpleDataStore<TRevisionKey, GuidRevisionValue>> (
+      _cachedRevisions = new SafeContextSingleton<Dictionary<TRevisionKey, GuidRevisionValue>> (
           SafeContextKeys.SecurityManagerRevision + "_" + Guid.NewGuid().ToString(),
-          () => new SimpleDataStore<TRevisionKey, GuidRevisionValue>());
+          () => new Dictionary<TRevisionKey, GuidRevisionValue>());
 
       // Optimized for memory allocations
       _getRevisionFromDatabaseFunc = GetRevisionFromDatabase;
@@ -67,7 +68,7 @@ namespace Remotion.SecurityManager.Domain
       revisions.Clear();
     }
 
-    private SimpleDataStore<TRevisionKey, GuidRevisionValue> GetCachedRevisions ()
+    private Dictionary<TRevisionKey, GuidRevisionValue> GetCachedRevisions ()
     {
       return _cachedRevisions.Current;
     }

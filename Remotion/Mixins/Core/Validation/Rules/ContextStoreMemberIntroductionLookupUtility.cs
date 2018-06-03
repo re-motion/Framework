@@ -27,7 +27,7 @@ namespace Remotion.Mixins.Validation.Rules
     // ReSharper disable once StaticMemberInGenericType
     private static Func<object, object> s_contextStoreValueFactory;
 
-    public IEnumerable<TMemberIntroductionDefinition> GetCachedPublicIntroductionsByName (IDataStore<object, object> contextStore, TargetClassDefinition targetClass, string name)
+    public IEnumerable<TMemberIntroductionDefinition> GetCachedPublicIntroductionsByName (IDictionary<object, object> contextStore, TargetClassDefinition targetClass, string name)
     {
       Tuple<string, TargetClassDefinition> cacheKey = Tuple.Create (
           typeof (ContextStoreMemberIntroductionLookupUtility<TMemberIntroductionDefinition>).FullName + ".GetCachedPublicIntroductionsByName",
