@@ -43,9 +43,6 @@
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -57,6 +54,39 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionConditionAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\AssertionConditionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionConditionType.cs">
+      <Link>SharedSource\ReSharperAnnotations\AssertionConditionType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionMethodAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\AssertionMethodAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\CanBeNullAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\CanBeNullAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ImplicitUseKindFlags.cs">
+      <Link>SharedSource\ReSharperAnnotations\ImplicitUseKindFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ImplicitUseTargetFlags.cs">
+      <Link>SharedSource\ReSharperAnnotations\ImplicitUseTargetFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\InvokerParameterNameAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\InvokerParameterNameAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\MeansImplicitUseAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\MeansImplicitUseAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\NoEnumerationAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\NoEnumerationAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\NotNullAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\NotNullAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\UsedImplicitlyAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\UsedImplicitlyAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>

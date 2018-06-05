@@ -99,9 +99,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
@@ -131,6 +128,54 @@
     </Compile>
     <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\Maybe.cs">
       <Link>SharedSource\FunctionalProgramming\Maybe.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionConditionAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\AssertionConditionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionConditionType.cs">
+      <Link>SharedSource\ReSharperAnnotations\AssertionConditionType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionMethodAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\AssertionMethodAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\CanBeNullAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\CanBeNullAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ContractAnnotationAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\ContractAnnotationAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ImplicitUseKindFlags.cs">
+      <Link>SharedSource\ReSharperAnnotations\ImplicitUseKindFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ImplicitUseTargetFlags.cs">
+      <Link>SharedSource\ReSharperAnnotations\ImplicitUseTargetFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\InvokerParameterNameAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\InvokerParameterNameAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ItemCanBeNullAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\ItemCanBeNullAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ItemNotNullAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\ItemNotNullAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\MeansImplicitUseAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\MeansImplicitUseAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\MustUseReturnValueAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\MustUseReturnValueAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\NoEnumerationAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\NoEnumerationAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\NotNullAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\NotNullAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\StringFormatMethodAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\StringFormatMethodAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\UsedImplicitlyAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\UsedImplicitlyAttribute.cs</Link>
     </Compile>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs">
       <Link>SharedSource\Utilities\ArgumentUtility.cs</Link>
