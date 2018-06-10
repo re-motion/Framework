@@ -20,48 +20,46 @@ using NUnit.Framework;
 namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
 {
   [TestFixture]
-  [Ignore ("TODO 2745")]
-  public class OverridingTargetMethodsWithShadowing
+  [Ignore ("RM-2745")]
+  public class OverrideTarget_ForTargetInterfaceWithImplicitVirtualMethodShadowingVirtualMethodOnBaseClass
   {
     [Test]
-    public void OverridingShadowedMethod_WithoutTargetSpecification_ShouldOverrideMostDerived ()
+    [TestCase (typeof (MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
+    public void InstantiateTargetType_ShouldOverrideTargetMethodFromTargetType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin<MixinWithoutTargetSpecification>().EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
       {
-        var instance = ObjectFactory.Create<D>();
-        Assert.That (instance.M (), Is.EqualTo ("TheMixin.M -> D.M"));
+        var instance = ObjectFactory.Create<C>();
+        Assert.That (((Shadowed_C) instance).M(), Is.EqualTo ("Shadowed_C.M"));
+        Assert.That (instance.M(), Is.EqualTo (expectedMethodOutput));
       }
     }
 
-    [Test]
-    public void OverridingShadowedMethod_WithTargetSpecification_ShouldOverrideSpecified ()
+    public interface IC
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin<MixinWithTargetSpecification>().EnterScope())
-      {
-        var instance = ObjectFactory.Create<D> ();
-        Assert.That (instance.M (), Is.EqualTo ("TheMixin.M -> C.M"));
-      }
+      string M ();
     }
 
-    public class C
+    public class Shadowed_C
     {
       public virtual string M ()
+      {
+        return "Shadowed_C.M";
+      }
+    }
+
+    public class C : Shadowed_C, IC
+    {
+      public new virtual string M ()
       {
         return "C.M";
       }
     }
 
-    public class D : C
+    public class MixinWithImplicitTargetSpecification : Mixin<IC, MixinWithImplicitTargetSpecification.I>
     {
-      public new virtual string M ()
-      {
-        return "D.M";
-      }
-    }
-
-    public class MixinWithoutTargetSpecification : Mixin<C, MixinWithoutTargetSpecification.IC>
-    {
-      public interface IC
+      public interface I
       {
         string M ();
       }
@@ -69,13 +67,13 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       [OverrideTarget]
       public string M ()
       {
-        return "TheMixin.M -> " + Next.M ();
+        return "TheMixin.M -> " + Next.M();
       }
     }
 
-    public class MixinWithTargetSpecification : Mixin<C, MixinWithTargetSpecification.IC>
+    public class MixinWithExplicitTargetSpecification : Mixin<object, MixinWithExplicitTargetSpecification.I>
     {
-      public interface IC
+      public interface I
       {
         string M ();
       }
@@ -84,8 +82,8 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       [OverrideTarget]
       public string M ()
       {
-        return "TheMixin.M -> " + Next.M ();
+        return "TheMixin.M -> " + Next.M();
       }
-    } 
+    }
   }
 }
