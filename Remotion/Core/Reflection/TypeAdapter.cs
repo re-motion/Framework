@@ -16,7 +16,9 @@
 // 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -334,9 +336,9 @@ namespace Remotion.Reflection
       get { return false; }
     }
 
-    private ITypeInformation[] ConvertToTypeAdapters (Type[] types)
+    private ITypeInformation[] ConvertToTypeAdapters (IEnumerable<Type> types)
     {
-      return Array.ConvertAll (types, t => (ITypeInformation) TypeAdapter.Create (t));
+      return types.Select (t => (ITypeInformation) TypeAdapter.Create (t)).ToArray();
     }
 
     /*

@@ -247,7 +247,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public static Type GetObjectListTypeParameter (Type type)
     {
-      Type[] typeParameters = TypeExtensions.GetAscribedGenericArguments (type, typeof (ObjectList<>));
+      var typeParameters = TypeExtensions.GetAscribedGenericArguments (type, typeof (ObjectList<>));
       if (typeParameters == null)
         return null;
       return typeParameters[0];

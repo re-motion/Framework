@@ -16,8 +16,8 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Globalization;
+using Remotion.Collections;
 
 namespace Remotion.Globalization
 {
@@ -34,9 +34,9 @@ namespace Remotion.Globalization
     {
     }
 
-    public NameValueCollection GetAllStrings (string prefix)
+    public IReadOnlyDictionary<string, string> GetAllStrings (string prefix)
     {
-      return new NameValueCollection();
+      return new Dictionary<string, string>();
     }
 
     public bool TryGetString (string id, out string value)

@@ -32,8 +32,8 @@ namespace Remotion.Utilities
     // Caching SuppressAttributes is safe because they will never mutate through usage.
     // (As shown by their implementation, and all used members are non-virtual.)
 
-    private static readonly ConcurrentDictionary<Tuple<Type, bool>, AttributeWithMetadata[]> s_suppressAttributesCache =
-        new ConcurrentDictionary<Tuple<Type, bool>, AttributeWithMetadata[]>();
+    private static readonly ConcurrentDictionary<Tuple<Type, bool>, IReadOnlyCollection<AttributeWithMetadata>> s_suppressAttributesCache =
+        new ConcurrentDictionary<Tuple<Type, bool>, IReadOnlyCollection<AttributeWithMetadata>>();
 
     private static readonly PropertyCustomAttributeRetriever s_propertyCustomAttributeRetriever = new PropertyCustomAttributeRetriever ();
     private static readonly EventCustomAttributeRetriever s_eventCustomAttributeRetriever = new EventCustomAttributeRetriever ();
@@ -162,9 +162,9 @@ namespace Remotion.Utilities
       return (object[]) arrayList.ToArray (elementType);
     }
 
-    private static AttributeWithMetadata[] GetCachedSuppressAttributes (Type type, bool inherit)
+    private static IReadOnlyCollection<AttributeWithMetadata> GetCachedSuppressAttributes (Type type, bool inherit)
     {
-      AttributeWithMetadata[] result;
+      IReadOnlyCollection<AttributeWithMetadata> result;
       var key = Tuple.Create (type, inherit);
       if (!s_suppressAttributesCache.TryGetValue (key, out result))
       {

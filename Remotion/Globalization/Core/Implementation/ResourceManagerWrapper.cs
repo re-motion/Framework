@@ -22,6 +22,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Resources;
+using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Utilities;
 
@@ -53,12 +54,12 @@ namespace Remotion.Globalization.Implementation
 
     private readonly ConcurrentDictionary<CultureInfo, ResourceSet> _resourceSets = new ConcurrentDictionary<CultureInfo, ResourceSet>();
 
-    private readonly ConcurrentDictionary<Tuple<CultureInfo, string>, NameValueCollection> _cachedResourceSet =
-        new ConcurrentDictionary<Tuple<CultureInfo, string>, NameValueCollection>();
+    private readonly ConcurrentDictionary<Tuple<CultureInfo, string>, IReadOnlyDictionary<string, string>> _cachedResourceSet =
+        new ConcurrentDictionary<Tuple<CultureInfo, string>, IReadOnlyDictionary<string, string>>();
 
     private readonly Func<CultureInfo, ResourceSet> _resourceSetsAddValueFactory;
     private readonly Func<CultureInfo, ResourceSet, ResourceSet> _resourceSetsUpdateValueFactory;
-    private readonly Func<Tuple<CultureInfo, string>, NameValueCollection> _cachedResourceSetValueFactory;
+    private readonly Func<Tuple<CultureInfo, string>, IReadOnlyDictionary<string, string>> _cachedResourceSetValueFactory;
 
     // construction and disposing
 
@@ -122,14 +123,14 @@ namespace Remotion.Globalization.Implementation
     ///     </list>
     ///   </para>
     /// </remarks>
-    public NameValueCollection GetAllStrings (string prefix)
+    public IReadOnlyDictionary<string, string> GetAllStrings (string prefix)
     {
       return _cachedResourceSet.GetOrAdd (
           Tuple.Create (CultureInfo.CurrentUICulture, prefix ?? string.Empty),
           _cachedResourceSetValueFactory);
     }
 
-    private NameValueCollection GetAllStringsInternal (CultureInfo cultureInfo, string prefix)
+    private IReadOnlyDictionary<string, string> GetAllStringsInternal (CultureInfo cultureInfo, string prefix)
     {
       //  Loop through all entries in the resource managers
       CultureInfo[] cultureHierarchy = GetCultureHierarchy (cultureInfo);
@@ -141,7 +142,7 @@ namespace Remotion.Globalization.Implementation
 
       // Loop from most neutral to current UICulture
       // Copy the resources into a collection
-      NameValueCollection result = new NameValueCollection();
+      var result = new Dictionary<string, string>();
       for (int i = 0; i < cultureHierarchy.Length; i++)
       {
         CultureInfo culture = cultureHierarchy[i];
@@ -157,7 +158,7 @@ namespace Remotion.Globalization.Implementation
         }
       }
 
-      return result;
+      return result.AsReadOnly();
     }
 
     /// <summary>

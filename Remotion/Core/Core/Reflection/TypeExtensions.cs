@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Reflection;
 using Remotion.Utilities;
 
@@ -30,8 +31,8 @@ namespace Remotion.Reflection
         new ConcurrentDictionary<Tuple<Type, Type>, bool>();
     private static readonly ConcurrentDictionary<Tuple<Type, Type>, bool> s_canAscribeInternalCache =
         new ConcurrentDictionary<Tuple<Type, Type>, bool>();
-    private static readonly ConcurrentDictionary<Tuple<Type, Type>, Type[]> s_ascribedGenericArgumentsCache =
-        new ConcurrentDictionary<Tuple<Type, Type>, Type[]>();
+    private static readonly ConcurrentDictionary<Tuple<Type, Type>, IReadOnlyList<Type>> s_ascribedGenericArgumentsCache =
+        new ConcurrentDictionary<Tuple<Type, Type>, IReadOnlyList<Type>>();
     private static readonly ConcurrentDictionary<Tuple<Type, Type, Type>, bool> s_canDirectlyAscribeToGenericTypeInternalCache =
         new ConcurrentDictionary<Tuple<Type, Type, Type>, bool>();
 
@@ -90,7 +91,7 @@ namespace Remotion.Reflection
     /// Thrown if the <paramref name="type"/> is an interface and implements the interface <paramref name="ascribeeType"/> or its instantiations
     /// more than once.
     /// </exception>
-    public static Type[] GetAscribedGenericArguments (this Type type, Type ascribeeType)
+    public static IReadOnlyList<Type> GetAscribedGenericArguments (this Type type, Type ascribeeType)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("ascribeeType", ascribeeType);
@@ -120,7 +121,7 @@ namespace Remotion.Reflection
       return false;
     }
 
-    private static Type[] GetAscribedGenericArgumentsWithoutCache (Type type, Type ascribeeType)
+    private static IReadOnlyList<Type> GetAscribedGenericArgumentsWithoutCache (Type type, Type ascribeeType)
     {
       if (!ascribeeType.IsGenericType)
       {
@@ -135,7 +136,7 @@ namespace Remotion.Reflection
         return GetAscribedGenericClassArgumentsInternal (type, ascribeeType);
     }
 
-    private static Type[] GetAscribedGenericInterfaceArgumentsInternal (Type type, Type ascribeeType)
+    private static IReadOnlyList<Type> GetAscribedGenericInterfaceArgumentsInternal (Type type, Type ascribeeType)
     {
       Assertion.IsTrue (ascribeeType.IsGenericType);
       Assertion.IsTrue (ascribeeType.IsInterface);
@@ -170,10 +171,10 @@ namespace Remotion.Reflection
         throw ArgumentUtility.CreateArgumentTypeException ("type", type, ascribeeType);
 
       Assertion.IsTrue (conreteSpecialization.GetGenericTypeDefinition () == ascribeeType.GetGenericTypeDefinition ());
-      return conreteSpecialization.GetGenericArguments ();
+      return Array.AsReadOnly (conreteSpecialization.GetGenericArguments());
     }
 
-    private static Type[] GetAscribedGenericClassArgumentsInternal (Type type, Type ascribeeType)
+    private static IReadOnlyList<Type> GetAscribedGenericClassArgumentsInternal (Type type, Type ascribeeType)
     {
       Assertion.IsTrue (ascribeeType.IsGenericType);
       Assertion.IsTrue (!ascribeeType.IsInterface);
@@ -186,7 +187,7 @@ namespace Remotion.Reflection
         currentType = currentType.BaseType;
 
       if (currentType != null)
-        return currentType.GetGenericArguments ();
+        return Array.AsReadOnly (currentType.GetGenericArguments());
       else
         throw ArgumentUtility.CreateArgumentTypeException ("type", type, ascribeeType);
     }

@@ -187,18 +187,15 @@ public sealed class ResourceDispatcher
     // Hashtable<string elementID, IDictionary<string property, string value> elementValues>
     IDictionary elements = new Hashtable (); 
 
-    NameValueCollection resources = resourceManager.GetAllStrings (prefix);
-
-    for (int index = 0; index < resources.Count; index++)
+    var resources = resourceManager.GetAllStrings (prefix);
+    foreach (var resourceEntry in resources)
     {
       //  Compound key: "prfx:elementID:argument"
       //  The argument (including the colon) is optional
       //  resources contain only keys with the prefix "auto" because of the applied filter
 
-      string key = resources.GetKey(index);
-
       //  Remove the prefix and colon
-      key = key.Substring (prefix.Length);
+      var key = resourceEntry.Key.Substring (prefix.Length);
 
       //  Test for a second colon in the key
       int posColon = key.IndexOf (':');
@@ -225,7 +222,7 @@ public sealed class ResourceDispatcher
         }
 
         //  Insert the argument and resource's value into the dictonary for the specified element.
-        elementValues.Add (property, resources[index]);
+        elementValues.Add (property, resourceEntry.Value);
       }
     }
 

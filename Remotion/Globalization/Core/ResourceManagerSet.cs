@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
+using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Utilities;
 
@@ -82,17 +83,17 @@ namespace Remotion.Globalization
     /// <summary>
     ///   Searches for all string resources inside the resource manager whose name is prefixed with a matching tag.
     /// </summary>
-    public NameValueCollection GetAllStrings (string prefix)
+    public IReadOnlyDictionary<string, string> GetAllStrings (string prefix)
     {
-      var result = new NameValueCollection();
+      var result = new Dictionary<string, string>();
       foreach (var resourceManager in _resourceManagers)
       {
         var strings = resourceManager.GetAllStrings (prefix);
-        for (var i = 0; i < strings.Count; i++)
+        foreach (var resourceEntry in strings)
         {
-          var key = strings.Keys[i];
-          if (result[key] == null)
-            result[key] = strings[i];
+          var key = resourceEntry.Key;
+          if (!result.ContainsKey (key))
+            result.Add(key, resourceEntry.Value);
         }
       }
       return result;

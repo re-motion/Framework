@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Specialized;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Globalization.Implementation;
 using Remotion.Utilities;
@@ -34,7 +34,7 @@ namespace Remotion.Globalization
     ///   A collection of string pairs, the key being the resource's ID, the value being the string.
     /// </returns>
     [NotNull]
-    public static NameValueCollection GetAllStrings ([NotNull] this IResourceManager resourceManager)
+    public static IReadOnlyDictionary<string, string> GetAllStrings ([NotNull] this IResourceManager resourceManager)
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       return resourceManager.GetAllStrings (null);

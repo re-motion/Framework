@@ -42,16 +42,16 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     [Test]
     public void OpenGenericType ()
     {
-      Type[] types = TypeExtensions.GetAscribedGenericArguments (typeof (GenericType<>), typeof (GenericType<>));
-      Assert.That (types.Length, Is.EqualTo (1));
+      var types = TypeExtensions.GetAscribedGenericArguments (typeof (GenericType<>), typeof (GenericType<>));
+      Assert.That (types.Count, Is.EqualTo (1));
       Assert.That (types[0].Name, Is.EqualTo ("T"));
     }
 
     [Test]
     public void OpenGenericType_WithTwoTypeParameters ()
     {
-      Type[] types = TypeExtensions.GetAscribedGenericArguments (typeof (GenericType<,>), typeof (GenericType<,>));
-      Assert.That (types.Length, Is.EqualTo (2));
+      var types = TypeExtensions.GetAscribedGenericArguments (typeof (GenericType<,>), typeof (GenericType<,>));
+      Assert.That (types.Count, Is.EqualTo (2));
       Assert.That (types[0].Name, Is.EqualTo ("T1"));
       Assert.That (types[1].Name, Is.EqualTo ("T2"));
     }
@@ -59,8 +59,8 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     [Test]
     public void OpenGenericType_WithOneOpenTypeParameter ()
     {
-      Type[] types = TypeExtensions.GetAscribedGenericArguments (typeof (DerivedOpenGenericType<>), typeof (GenericType<,>));
-      Assert.That (types.Length, Is.EqualTo (2));
+      var types = TypeExtensions.GetAscribedGenericArguments (typeof (DerivedOpenGenericType<>), typeof (GenericType<,>));
+      Assert.That (types.Count, Is.EqualTo (2));
       Assert.That (types[0], Is.EqualTo (typeof (ParameterType)));
       Assert.That (types[1].Name, Is.EqualTo ("T"));
     }
@@ -76,8 +76,8 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     [Test]
     public void OpenDerivedGenericType ()
     {
-      Type[] types = TypeExtensions.GetAscribedGenericArguments (typeof (DerivedGenericType<>), typeof (GenericType<>));
-      Assert.That (types.Length, Is.EqualTo (1));
+      var types = TypeExtensions.GetAscribedGenericArguments (typeof (DerivedGenericType<>), typeof (GenericType<>));
+      Assert.That (types.Count, Is.EqualTo (1));
       Assert.That (types[0].Name, Is.EqualTo ("T"));
     }
 

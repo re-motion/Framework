@@ -43,7 +43,8 @@ namespace Remotion.Reflection.TypeDiscovery
     private readonly IAssemblyFinder _assemblyFinder;
     private readonly Lazy<BaseTypeCache> _baseTypeCache;
 
-    private readonly ConcurrentDictionary<Type, ICollection> _globalTypesCache = new ConcurrentDictionary<Type, ICollection>();
+    private readonly ConcurrentDictionary<Type, ReadOnlyCollection<Type>> _globalTypesCache =
+        new ConcurrentDictionary<Type, ReadOnlyCollection<Type>>();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AssemblyFinderTypeDiscoveryService"/> class with a specific <see cref="AssemblyFinder"/>

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using log4net;
 using log4net.Appender;
@@ -64,7 +65,7 @@ namespace Remotion.Globalization.UnitTests
     [Test]
     public void GetAllStrings ()
     {
-      var fakeResult = new NameValueCollection();
+      var fakeResult = new Dictionary<string, string>();
       _resourceManagerMock
           .Expect (mock => mock.GetAllStrings (null))
           .Return (fakeResult);

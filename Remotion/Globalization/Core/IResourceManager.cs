@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Globalization;
 using JetBrains.Annotations;
 
@@ -32,7 +31,7 @@ namespace Remotion.Globalization
     /// <param name="prefix"> The prefix all returned string resources must have. Use <see langword="null"/> to return all strings.</param>
     /// <returns>A collection of string pairs, the key being the resource's ID, the value being the string.</returns>
     [NotNull]
-    NameValueCollection GetAllStrings ([CanBeNull]string prefix);
+    IReadOnlyDictionary<string, string> GetAllStrings ([CanBeNull]string prefix);
 
     /// <summary>Tries to get the value of the specified string resource.</summary>
     /// <param name="id">The ID of the resource to get. Must not be <see langword="null" />.</param>

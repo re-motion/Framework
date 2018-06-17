@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Remotion.Utilities
 {
@@ -45,7 +46,9 @@ namespace Remotion.Utilities
       }
     }
 
-    public static IEnumerable<AttributeWithMetadata> Suppress (IEnumerable<AttributeWithMetadata> source, AttributeWithMetadata[] suppressAttributes)
+    public static IEnumerable<AttributeWithMetadata> Suppress (
+          IEnumerable<AttributeWithMetadata> source,
+          IReadOnlyCollection<AttributeWithMetadata> suppressAttributes)
     {
       ArgumentUtility.CheckNotNull ("source", source);
       ArgumentUtility.CheckNotNull ("suppressAttributes", suppressAttributes);
