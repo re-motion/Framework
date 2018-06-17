@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Remotion.Utilities;
@@ -34,6 +35,37 @@ namespace Remotion.Collections
       return GetValueOrDefault (dictionary, key, default (TValue));
     }
 
+    public static TValue GetValueOrDefault<TKey, TValue> (this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
+    {
+      ArgumentUtility.CheckNotNull ("dictionary", dictionary);
+      // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
+
+      return GetValueOrDefault (dictionary, key, default (TValue));
+    }
+
+    public static TValue GetValueOrDefault<TKey, TValue> (this Dictionary<TKey, TValue> dictionary, TKey key)
+    {
+      return ((IDictionary<TKey, TValue>) dictionary).GetValueOrDefault (key);
+    }
+
+    public static TValue GetValueOrDefault<TKey, TValue> (this ReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
+    {
+      return ((IReadOnlyDictionary<TKey, TValue>) dictionary).GetValueOrDefault (key);
+    }
+
+    public static TValue GetValueOrDefault<TKey, TValue> (this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+    {
+      ArgumentUtility.CheckNotNull ("dictionary", dictionary);
+      // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
+      // Default value may be null.
+
+      TValue value;
+      if (dictionary.TryGetValue (key, out value))
+        return value;
+      else
+        return defaultValue;
+    }
+
     public static TValue GetValueOrDefault<TKey, TValue> (this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
     {
       ArgumentUtility.CheckNotNull ("dictionary", dictionary);
@@ -45,6 +77,16 @@ namespace Remotion.Collections
         return value;
       else
         return defaultValue;
+    }
+
+    public static TValue GetValueOrDefault<TKey, TValue> (this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+    {
+      return ((IDictionary<TKey, TValue>) dictionary).GetValueOrDefault (key, defaultValue);
+    }
+
+    public static TValue GetValueOrDefault<TKey, TValue> (this ReadOnlyDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+    {
+      return ((IReadOnlyDictionary<TKey, TValue>) dictionary).GetValueOrDefault (key, defaultValue);
     }
 
     public static TValue GetOrCreateValue<TKey, TValue> (this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory)

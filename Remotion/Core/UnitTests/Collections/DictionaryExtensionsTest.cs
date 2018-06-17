@@ -26,7 +26,7 @@ namespace Remotion.UnitTests.Collections
   [TestFixture]
   public class DictionaryExtensionsTest
   {
-    private IDictionary<string, string> _dictionary;
+    private Dictionary<string, string> _dictionary;
 
     [SetUp]
     public void SetUp ()
@@ -35,19 +35,29 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void GetValueOrDefault ()
+    public void GetValueOrDefault_WithIReadOnlyDictionary ()
     {
-      var foundValue = _dictionary.GetValueOrDefault ("a");
+      var foundValue = ((IReadOnlyDictionary<string, string>) _dictionary).GetValueOrDefault ("a");
       Assert.That (foundValue, Is.EqualTo ("Alpha"));
 
-      var notFoundValue = _dictionary.GetValueOrDefault ("z");
+      var notFoundValue = ((IReadOnlyDictionary<string, string>) _dictionary).GetValueOrDefault ("z");
+      Assert.That (notFoundValue, Is.Null);
+    }
+
+    [Test]
+    public void GetValueOrDefault_WithIDictionary ()
+    {
+      var foundValue = ((IDictionary<string, string>) _dictionary).GetValueOrDefault ("a");
+      Assert.That (foundValue, Is.EqualTo ("Alpha"));
+
+      var notFoundValue = ((IDictionary<string, string>) _dictionary).GetValueOrDefault ("z");
       Assert.That (notFoundValue, Is.Null);
     }
     
     [Test]
-    public void GetValueOrDefault_ValueTypes ()
+    public void GetValueOrDefault_WithDictionary_ValueTypes ()
     {
-      var dictionary = new Dictionary<string, int> { { "a", 7 } };
+      Dictionary<string, int> dictionary = new Dictionary<string, int> { { "a", 7 } };
 
       var foundValue = dictionary.GetValueOrDefault ("a");
       Assert.That (foundValue, Is.EqualTo (7));
@@ -55,9 +65,32 @@ namespace Remotion.UnitTests.Collections
       var notFoundValue = dictionary.GetValueOrDefault ("z");
       Assert.That (notFoundValue, Is.EqualTo (0));
     }
+    
+    [Test]
+    public void GetValueOrDefault_WithReadOnlyDictionary_ValueTypes ()
+    {
+      var dictionary = new Dictionary<string, int> { { "a", 7 } };
+      ReadOnlyDictionary<string, int> readOnlyDictionary =  dictionary.AsReadOnly();
+
+      var foundValue = readOnlyDictionary.GetValueOrDefault ("a");
+      Assert.That (foundValue, Is.EqualTo (7));
+
+      var notFoundValue = readOnlyDictionary.GetValueOrDefault ("z");
+      Assert.That (notFoundValue, Is.EqualTo (0));
+    }
 
     [Test]
-    public void GetValueOrDefault_NullKey ()
+    public void GetValueOrDefault_WithIReadOnlyDictionary_NullKey ()
+    {
+      var dictionaryStub = MockRepository.GenerateStub<IReadOnlyDictionary<string, string>>();
+      dictionaryStub.Stub (stub => stub.TryGetValue (Arg<string>.Is.Null, out Arg<string>.Out ("out").Dummy)).Return (true);
+
+      var foundValue = dictionaryStub.GetValueOrDefault (null);
+      Assert.That (foundValue, Is.EqualTo ("out"));
+    }
+
+    [Test]
+    public void GetValueOrDefault_WithIDictionary_NullKey ()
     {
       var dictionaryStub = MockRepository.GenerateStub<IDictionary<string, string>>();
       dictionaryStub.Stub (stub => stub.TryGetValue (Arg<string>.Is.Null, out Arg<string>.Out ("out").Dummy)).Return (true);
@@ -67,26 +100,77 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void GetValueOrDefault_WithDefaultValue ()
+    public void GetValueOrDefault_WithIReadOnlyDictionary_WithDefaultValue ()
     {
-      var foundValue = _dictionary.GetValueOrDefault ("a", "Beta");
+      var foundValue = ((IReadOnlyDictionary<string, string>) _dictionary).GetValueOrDefault ("a", "Beta");
       Assert.That (foundValue, Is.EqualTo ("Alpha"));
 
-      var substitutedDefaultValue = _dictionary.GetValueOrDefault ("z", "Beta");
+      var substitutedDefaultValue = ((IReadOnlyDictionary<string, string>) _dictionary).GetValueOrDefault ("z", "Beta");
       Assert.That (substitutedDefaultValue, Is.EqualTo ("Beta"));
     }
 
     [Test]
-    public void GetValueOrDefault_WithDefaultValue_NullDefaultValue ()
+    public void GetValueOrDefault_WithIDictionary_WithDefaultValue ()
     {
-      var substitutedDefaultValue = _dictionary.GetValueOrDefault ("z", null);
+      var foundValue = ((IDictionary<string, string>) _dictionary).GetValueOrDefault ("a", "Beta");
+      Assert.That (foundValue, Is.EqualTo ("Alpha"));
+
+      var substitutedDefaultValue = ((IDictionary<string, string>) _dictionary).GetValueOrDefault ("z", "Beta");
+      Assert.That (substitutedDefaultValue, Is.EqualTo ("Beta"));
+    }
+
+    [Test]
+    public void GetValueOrDefault_WithDictionary_WithDefaultValue ()
+    {
+      var foundValue = ((Dictionary<string, string>) _dictionary).GetValueOrDefault ("a", "Beta");
+      Assert.That (foundValue, Is.EqualTo ("Alpha"));
+
+      var substitutedDefaultValue = ((Dictionary<string, string>) _dictionary).GetValueOrDefault ("z", "Beta");
+      Assert.That (substitutedDefaultValue, Is.EqualTo ("Beta"));
+    }
+
+    [Test]
+    public void GetValueOrDefault_WithReadOnlyDictionary_WithDefaultValue ()
+    {
+      var foundValue = ((ReadOnlyDictionary<string, string>) _dictionary.AsReadOnly()).GetValueOrDefault ("a", "Beta");
+      Assert.That (foundValue, Is.EqualTo ("Alpha"));
+
+      var substitutedDefaultValue = ((ReadOnlyDictionary<string, string>) _dictionary.AsReadOnly()).GetValueOrDefault ("z", "Beta");
+      Assert.That (substitutedDefaultValue, Is.EqualTo ("Beta"));
+    }
+
+    [Test]
+    public void GetValueOrDefault_WithIReadOnlyDictionary_WithDefaultValue_NullDefaultValue ()
+    {
+      var substitutedDefaultValue = ((IReadOnlyDictionary<string, string>) _dictionary).GetValueOrDefault ("z", null);
+      Assert.That (substitutedDefaultValue, Is.Null);
+    }
+
+    [Test]
+    public void GetValueOrDefault_WithIDictionary_WithDefaultValue_NullDefaultValue ()
+    {
+      var substitutedDefaultValue = ((IDictionary<string, string>) _dictionary).GetValueOrDefault ("z", null);
+      Assert.That (substitutedDefaultValue, Is.Null);
+    }
+
+    [Test]
+    public void GetValueOrDefault_WithDictionary_WithDefaultValue_NullDefaultValue ()
+    {
+      var substitutedDefaultValue = ((Dictionary<string, string>) _dictionary).GetValueOrDefault ("z", null);
+      Assert.That (substitutedDefaultValue, Is.Null);
+    }
+
+    [Test]
+    public void GetValueOrDefault_WithReadOnlyDictionary_WithDefaultValue_NullDefaultValue ()
+    {
+      var substitutedDefaultValue = ((ReadOnlyDictionary<string, string>) _dictionary.AsReadOnly()).GetValueOrDefault ("z", null);
       Assert.That (substitutedDefaultValue, Is.Null);
     }
 
     [Test]
     public void GetOrCreateValue_WithNewKey ()
     {
-      var foundValue = _dictionary.GetOrCreateValue ("key", key => "value");
+      var foundValue = ((IDictionary<string,string>)_dictionary).GetOrCreateValue ("key", key => "value");
       Assert.That (foundValue, Is.EqualTo ("value"));
 
       Assert.That (_dictionary.ContainsKey ("key"), Is.True);
@@ -96,7 +180,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetOrCreateValue_WithExistingKey ()
     {
-      var foundValue = _dictionary.GetOrCreateValue ("a", key => throw new InvalidOperationException());
+      var foundValue = ((IDictionary<string,string>)_dictionary).GetOrCreateValue ("a", key => throw new InvalidOperationException());
       Assert.That (foundValue, Is.EqualTo ("Alpha"));
     }
 
@@ -113,7 +197,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void AsReadOnly ()
     {
-      ReadOnlyDictionary<string, string> readOnlyDictionary = _dictionary.AsReadOnly ();
+      ReadOnlyDictionary<string, string> readOnlyDictionary = ((IDictionary<string, string>) _dictionary).AsReadOnly();
 
       Assert.That (readOnlyDictionary, Is.EqualTo (_dictionary));
     }
