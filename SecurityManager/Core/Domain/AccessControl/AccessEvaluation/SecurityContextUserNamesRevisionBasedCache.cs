@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Logging;
@@ -32,11 +33,11 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   {
     public class Data : RevisionBasedData
     {
-      public readonly Dictionary<string, IDomainObjectHandle<User>> Users;
+      public readonly IReadOnlyDictionary<string, IDomainObjectHandle<User>> Users;
 
       internal Data (
           GuidRevisionValue revision,
-          Dictionary<string, IDomainObjectHandle<User>> users)
+          IReadOnlyDictionary<string, IDomainObjectHandle<User>> users)
           : base (revision)
       {
         Users = users;
@@ -74,7 +75,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       }
     }
 
-    private Dictionary<string, IDomainObjectHandle<User>> LoadUsers ()
+    private IReadOnlyDictionary<string, IDomainObjectHandle<User>> LoadUsers ()
     {
       var result = GetOrCreateQuery (
           MethodInfo.GetCurrentMethod(),
@@ -83,7 +84,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
       using (CreateStopwatchScopeForQueryExecution ("users"))
       {
-        return result.ToDictionary (u => u.Key, u => u.Value);
+        return result.ToDictionary (u => u.Key, u => u.Value).AsReadOnly();
       }
     }
   }

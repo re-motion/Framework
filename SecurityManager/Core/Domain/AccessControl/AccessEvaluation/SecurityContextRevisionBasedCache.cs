@@ -35,21 +35,21 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   {
     public class Data : RevisionBasedData
     {
-      public readonly Dictionary<string, IDomainObjectHandle<Tenant>> Tenants;
-      public readonly Dictionary<string, IDomainObjectHandle<Group>> Groups;
-      public readonly Dictionary<string, IDomainObjectHandle<Position>> Positions;
-      public readonly Dictionary<EnumWrapper, IDomainObjectHandle<AbstractRoleDefinition>> AbstractRoles;
-      public readonly Dictionary<string, SecurableClassDefinitionData> Classes;
-      public readonly Dictionary<IDomainObjectHandle<StatePropertyDefinition>, ReadOnlyCollectionDecorator<string>> StatePropertyValues;
+      public readonly IReadOnlyDictionary<string, IDomainObjectHandle<Tenant>> Tenants;
+      public readonly IReadOnlyDictionary<string, IDomainObjectHandle<Group>> Groups;
+      public readonly IReadOnlyDictionary<string, IDomainObjectHandle<Position>> Positions;
+      public readonly IReadOnlyDictionary<EnumWrapper, IDomainObjectHandle<AbstractRoleDefinition>> AbstractRoles;
+      public readonly IReadOnlyDictionary<string, SecurableClassDefinitionData> Classes;
+      public readonly IReadOnlyDictionary<IDomainObjectHandle<StatePropertyDefinition>, IReadOnlyCollection<string>> StatePropertyValues;
 
       internal Data (
           GuidRevisionValue revision,
-          Dictionary<string, IDomainObjectHandle<Tenant>> tenants,
-          Dictionary<string, IDomainObjectHandle<Group>> groups,
-          Dictionary<string, IDomainObjectHandle<Position>> positions,
-          Dictionary<EnumWrapper, IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles,
-          Dictionary<string, SecurableClassDefinitionData> classes,
-          Dictionary<IDomainObjectHandle<StatePropertyDefinition>, ReadOnlyCollectionDecorator<string>> statePropertyValues)
+          IReadOnlyDictionary<string, IDomainObjectHandle<Tenant>> tenants,
+          IReadOnlyDictionary<string, IDomainObjectHandle<Group>> groups,
+          IReadOnlyDictionary<string, IDomainObjectHandle<Position>> positions,
+          IReadOnlyDictionary<EnumWrapper, IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles,
+          IReadOnlyDictionary<string, SecurableClassDefinitionData> classes,
+          IReadOnlyDictionary<IDomainObjectHandle<StatePropertyDefinition>, IReadOnlyCollection<string>> statePropertyValues)
           : base (revision)
       {
         Tenants = tenants;
@@ -101,7 +101,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       }
     }
 
-    private Dictionary<string, IDomainObjectHandle<Tenant>> LoadTenants ()
+    private IReadOnlyDictionary<string, IDomainObjectHandle<Tenant>> LoadTenants ()
     {
       var result = GetOrCreateQuery (
           MethodInfo.GetCurrentMethod(),
@@ -110,11 +110,11 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
       using (CreateStopwatchScopeForQueryExecution ("tenants"))
       {
-        return result.ToDictionary (t => t.Key, t => t.Value);
+        return result.ToDictionary (t => t.Key, t => t.Value).AsReadOnly();
       }
     }
 
-    private Dictionary<string, IDomainObjectHandle<Group>> LoadGroups ()
+    private IReadOnlyDictionary<string, IDomainObjectHandle<Group>> LoadGroups ()
     {
       var result = GetOrCreateQuery (
           MethodInfo.GetCurrentMethod(),
@@ -123,11 +123,11 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
       using (CreateStopwatchScopeForQueryExecution ("groups"))
       {
-        return result.ToDictionary (g => g.Key, g => g.Value);
+        return result.ToDictionary (g => g.Key, g => g.Value).AsReadOnly();
       }
     }
 
-    private Dictionary<string, IDomainObjectHandle<Position>> LoadPositions ()
+    private IReadOnlyDictionary<string, IDomainObjectHandle<Position>> LoadPositions ()
     {
       var result = GetOrCreateQuery (
           MethodInfo.GetCurrentMethod(),
@@ -136,11 +136,11 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
       using (CreateStopwatchScopeForQueryExecution ("positions"))
       {
-        return result.ToDictionary (g => g.Key, g => g.Value);
+        return result.ToDictionary (g => g.Key, g => g.Value).AsReadOnly();
       }
     }
 
-    private Dictionary<EnumWrapper, IDomainObjectHandle<AbstractRoleDefinition>> LoadAbstractRoles ()
+    private IReadOnlyDictionary<EnumWrapper, IDomainObjectHandle<AbstractRoleDefinition>> LoadAbstractRoles ()
     {
       var result = GetOrCreateQuery (
           MethodInfo.GetCurrentMethod(),
@@ -149,11 +149,11 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
       using (CreateStopwatchScopeForQueryExecution ("abstract roles"))
       {
-        return result.ToDictionary (r => EnumWrapper.Get (r.Key), r => r.Value);
+        return result.ToDictionary (r => EnumWrapper.Get (r.Key), r => r.Value).AsReadOnly();
       }
     }
 
-    private Dictionary<ObjectID, Tuple<string, ObjectID>> LoadSecurableClassDefinitions ()
+    private IReadOnlyDictionary<ObjectID, Tuple<string, ObjectID>> LoadSecurableClassDefinitions ()
     {
       var result = GetOrCreateQuery (
           MethodInfo.GetCurrentMethod(),
@@ -167,7 +167,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
       using (CreateStopwatchScopeForQueryExecution ("securable classes"))
       {
-        return result.ToDictionary (c => c.ID, c => Tuple.Create (c.Name, c.BaseClassID));
+        return result.ToDictionary (c => c.ID, c => Tuple.Create (c.Name, c.BaseClassID)).AsReadOnly();
       }
     }
 
@@ -203,7 +203,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       }
     }
 
-    private Dictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> LoadStatelessAccessControlLists ()
+    private IReadOnlyDictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> LoadStatelessAccessControlLists ()
     {
       var result = GetOrCreateQuery (
           MethodInfo.GetCurrentMethod(),
@@ -212,13 +212,13 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
       using (CreateStopwatchScopeForQueryExecution ("stateless ACLs"))
       {
-        return result.ToDictionary (o => o.Class, o => o.Acl);
+        return result.ToDictionary (o => o.Class, o => o.Acl).AsReadOnly();
       }
     }
 
-    private Dictionary<string, SecurableClassDefinitionData> BuildClassCache (
-        IDictionary<ObjectID, Tuple<string, ObjectID>> classes,
-        IDictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> statelessAcls,
+    private IReadOnlyDictionary<string, SecurableClassDefinitionData> BuildClassCache (
+        IReadOnlyDictionary<ObjectID, Tuple<string, ObjectID>> classes,
+        IReadOnlyDictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> statelessAcls,
         ILookup<ObjectID, StatefulAccessControlListData> statefulAcls)
     {
       return classes.ToDictionary (
@@ -226,10 +226,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           c => new SecurableClassDefinitionData (
                    c.Value.Item2 != null ? classes[c.Value.Item2].Item1 : null,
                    statelessAcls.GetValueOrDefault (c.Key),
-                   statefulAcls[c.Key]));
+                   statefulAcls[c.Key])).AsReadOnly();
     }
 
-    private Dictionary<IDomainObjectHandle<StatePropertyDefinition>, ReadOnlyCollectionDecorator<string>> LoadStatePropertyValues ()
+    private IReadOnlyDictionary<IDomainObjectHandle<StatePropertyDefinition>, IReadOnlyCollection<string>> LoadStatePropertyValues ()
     {
       var result = GetOrCreateQuery (
           MethodInfo.GetCurrentMethod(),
@@ -244,7 +244,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       using (CreateStopwatchScopeForQueryExecution ("state properties"))
       {
         var lookUp = result.ToLookup (o => o.PropertyHandle, o => o.PropertyValue);
-        return lookUp.ToDictionary (o => o.Key, o => o.ToArray().AsReadOnly());
+        return lookUp.ToDictionary (o => o.Key, o => (IReadOnlyCollection<string>) Array.AsReadOnly (o.ToArray())).AsReadOnly();
       }
     }
   }

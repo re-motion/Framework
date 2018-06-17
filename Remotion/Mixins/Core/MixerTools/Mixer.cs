@@ -63,7 +63,7 @@ namespace Remotion.Mixins.MixerTools
     private readonly HashSet<Type> _processedTypes = new HashSet<Type>();
     private readonly Dictionary<Type, Type> _finishedTypes = new Dictionary<Type, Type> ();
 
-    private ReadOnlyCollectionDecorator<string> _generatedFiles;
+    private IReadOnlyCollection<string> _generatedFiles;
 
     public Mixer (IMixedTypeFinder mixedTypeFinder, IMixerPipelineFactory mixerPipelineFactory, string assemblyOutputDirectory)
     {
@@ -85,17 +85,17 @@ namespace Remotion.Mixins.MixerTools
       get { return _errors.AsReadOnly(); }
     }
 
-    public ReadOnlyCollectionDecorator<Type> ProcessedTypes
+    public IReadOnlyCollection<Type> ProcessedTypes
     {
       get { return _processedTypes.AsReadOnly(); }
     }
 
-    public ReadOnlyDictionary<Type, Type> FinishedTypes
+    public IReadOnlyDictionary<Type, Type> FinishedTypes
     {
       get { return new ReadOnlyDictionary<Type, Type>(_finishedTypes); }
     }
 
-    public ReadOnlyCollectionDecorator<string> GeneratedFiles
+    public IReadOnlyCollection<string> GeneratedFiles
     {
       get { return _generatedFiles; }
     }
@@ -122,7 +122,7 @@ namespace Remotion.Mixins.MixerTools
         _errors.Clear();
         _processedTypes.Clear();
         _finishedTypes.Clear();
-        _generatedFiles = new string[0].AsReadOnly();
+        _generatedFiles = new string[0];
 
         s_log.InfoFormat ("The base directory is '{0}'.", AppDomain.CurrentDomain.BaseDirectory);
 

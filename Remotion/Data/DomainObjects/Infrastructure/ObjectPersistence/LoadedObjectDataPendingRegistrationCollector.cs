@@ -31,9 +31,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   {
     private readonly Dictionary<ObjectID, FreshlyLoadedObjectData> _dataPendingRegistration = new Dictionary<ObjectID, FreshlyLoadedObjectData> ();
 
-    public ReadOnlyCollectionDecorator<FreshlyLoadedObjectData> DataPendingRegistration
+    public IReadOnlyCollection<FreshlyLoadedObjectData> DataPendingRegistration
     {
-      get { return _dataPendingRegistration.Values.AsReadOnly(); }
+      get {
+        // Can be changed to returning _dataPendingRegistration.Values after switching the target framework to .NET 4.6.1
+        return _dataPendingRegistration.Values.AsReadOnly(); }
     }
 
     public FreshlyLoadedObjectData Add (FreshlyLoadedObjectData pendingData)

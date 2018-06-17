@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get { return _clientTransaction; }
     }
 
-    public ReadOnlyCollectionDecorator<DomainObject> RegisteredObjects
+    public IReadOnlyCollection<DomainObject> RegisteredObjects
     {
       get { return _registeredObjects.AsReadOnly (); }
     }

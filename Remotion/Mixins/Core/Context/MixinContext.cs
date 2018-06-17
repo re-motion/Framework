@@ -47,6 +47,7 @@ namespace Remotion.Mixins.Context
     private readonly Type _mixinType;
     private readonly MixinKind _mixinKind;
     private readonly MemberVisibility _introducedMemberVisibility;
+    // Must use ReadOnlyCollectionDecorator to have access to Contains-method.
     private readonly ReadOnlyCollectionDecorator<Type> _explicitDependencies;
     private readonly MixinContextOrigin _origin;
 
@@ -164,7 +165,7 @@ namespace Remotion.Mixins.Context
     /// <value>The explicit dependencies added to this <see cref="MixinContext"/>.</value>
     /// <remarks>An explicit dependency is a base call dependency which should be considered for a mixin even though it is not expressed in the
     /// mixin's class declaration. This can be used to define the ordering of mixins in specific mixin configurations.</remarks>
-    public ReadOnlyCollectionDecorator<Type> ExplicitDependencies
+    public IReadOnlyCollection<Type> ExplicitDependencies
     {
       get { return _explicitDependencies; }
     }

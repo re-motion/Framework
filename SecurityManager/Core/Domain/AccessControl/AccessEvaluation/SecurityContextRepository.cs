@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Security;
@@ -143,7 +144,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       return @class;
     }
 
-    public ReadOnlyCollectionDecorator<string> GetStatePropertyValues (IDomainObjectHandle<StatePropertyDefinition> stateProperty)
+    public IReadOnlyCollection<string> GetStatePropertyValues (IDomainObjectHandle<StatePropertyDefinition> stateProperty)
     {
       ArgumentUtility.CheckNotNull ("stateProperty", stateProperty);
 

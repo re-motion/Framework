@@ -85,7 +85,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         return classData.StatefulAccessControlLists.Where (acl => MatchesStates (context, acl.States)).Select (acl => acl.Handle).FirstOrDefault();
     }
 
-    private bool MatchesStates (ISecurityContext context, ICollection<State> states)
+    private bool MatchesStates (ISecurityContext context, IReadOnlyCollection<State> states)
     {
       if (context.GetNumberOfStates() > states.Count)
         return false;

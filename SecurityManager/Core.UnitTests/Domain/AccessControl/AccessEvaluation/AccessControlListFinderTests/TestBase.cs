@@ -82,13 +82,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     protected void StubGetStatePropertyValues ()
     {
       _securityContextRepositoryStub.Stub (_ => _.GetStatePropertyValues (s_orderStatePropertyHandle))
-                                    .Return (new[] { OrderState_Delivered.Value, OrderState_Received.Value }.AsReadOnly());
+                                    .Return (new[] { OrderState_Delivered.Value, OrderState_Received.Value });
 
       _securityContextRepositoryStub.Stub (_ => _.GetStatePropertyValues (s_paymentStatePropertyHandle))
-                                    .Return (new[] { PaymentState_None.Value, PaymentState_Paid.Value }.AsReadOnly());
+                                    .Return (new[] { PaymentState_None.Value, PaymentState_Paid.Value });
 
       _securityContextRepositoryStub.Stub (_ => _.GetStatePropertyValues (s_deliveryPropertyHandle))
-                                    .Return (new[] { Delivery_Post.Value, Delivery_Dhl.Value }.AsReadOnly());
+                                    .Return (new[] { Delivery_Post.Value, Delivery_Dhl.Value });
     }
 
     protected IDomainObjectHandle<StatelessAccessControlList> CreateStatelessAcl ()

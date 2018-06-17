@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       get { return _currentlyLoadingObjectIDs.Count != 0; }
     }
 
-    public ReadOnlyCollectionDecorator<ObjectID> CurrentlyLoadingObjectIDs
+    public IReadOnlyCollection<ObjectID> CurrentlyLoadingObjectIDs
     {
       get { return _currentlyLoadingObjectIDs.AsReadOnly(); }
     }

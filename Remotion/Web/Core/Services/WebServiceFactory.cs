@@ -18,7 +18,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Collections;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 
@@ -96,10 +95,11 @@ namespace Remotion.Web.Services
 
     private static IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>> GetServiceMethods (Type type)
     {
-      return type.GetMethods().Select (
-          mi => Tuple.Create<string, IReadOnlyCollection<string>> (
-              mi.Name,
-              mi.GetParameters().Select (pi => pi.Name).ToArray().AsReadOnly())).ToArray();
+      return Array.AsReadOnly (
+          type.GetMethods().Select (
+              mi => Tuple.Create<string, IReadOnlyCollection<string>> (
+                  mi.Name,
+                  Array.AsReadOnly (mi.GetParameters().Select (pi => pi.Name).ToArray()))).ToArray());
     }
   }
 }

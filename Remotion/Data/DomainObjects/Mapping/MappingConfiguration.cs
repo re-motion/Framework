@@ -88,9 +88,9 @@ namespace Remotion.Data.DomainObjects.Mapping
         var mappingConfigurationValidationHelper = new MappingConfigurationValidationHelper (mappingLoader, persistenceModelLoader);
 
         var typeDefinitions = mappingLoader.GetClassDefinitions();
-        _typeDefinitions = new ReadOnlyDictionary<Type, ClassDefinition> (typeDefinitions.ToDictionary (td => td.ClassType));
+        _typeDefinitions = typeDefinitions.ToDictionary (td => td.ClassType).AsReadOnly();
         mappingConfigurationValidationHelper.ValidateDuplicateClassIDs (typeDefinitions.OfType<ClassDefinition>());
-        _classDefinitions = new ReadOnlyDictionary<string, ClassDefinition> (typeDefinitions.ToDictionary (cd => cd.ID));
+        _classDefinitions = typeDefinitions.ToDictionary (cd => cd.ID).AsReadOnly();
         
         mappingConfigurationValidationHelper.ValidateClassDefinitions (_typeDefinitions.Values);
         mappingConfigurationValidationHelper.ValidatePropertyDefinitions (_typeDefinitions.Values);

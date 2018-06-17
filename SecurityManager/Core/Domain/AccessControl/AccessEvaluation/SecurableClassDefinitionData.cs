@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Utilities;
 
@@ -29,7 +28,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   {
     private readonly string _baseClass;
     private readonly IDomainObjectHandle<StatelessAccessControlList> _statelessAccessControlList;
-    private readonly ReadOnlyCollectionDecorator<StatefulAccessControlListData> _statefulAccessControlLists;
+    private readonly IReadOnlyCollection<StatefulAccessControlListData> _statefulAccessControlLists;
 
     public SecurableClassDefinitionData (
         [CanBeNull] string baseClass,
@@ -40,7 +39,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
       _baseClass = baseClass;
       _statelessAccessControlList = statelessAccessControlList;
-      _statefulAccessControlLists = statefulAccessControlLists.ToArray().AsReadOnly();
+      _statefulAccessControlLists = Array.AsReadOnly (statefulAccessControlLists.ToArray());
     }
 
     [CanBeNull]
@@ -55,7 +54,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       get { return _statelessAccessControlList; }
     }
 
-    public ReadOnlyCollectionDecorator<StatefulAccessControlListData> StatefulAccessControlLists
+    public IReadOnlyCollection<StatefulAccessControlListData> StatefulAccessControlLists
     {
       get { return _statefulAccessControlLists; }
     }

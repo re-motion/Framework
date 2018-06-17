@@ -52,7 +52,7 @@ namespace Remotion.Mixins.Context
 
     private readonly Type _type;
     private readonly MixinContextCollection _mixins;
-    private readonly ReadOnlyCollectionDecorator<Type> _composedInterfaces;
+    private readonly IReadOnlyCollection<Type> _composedInterfaces;
     private readonly int _cachedHashCode;
 
     /// <summary>
@@ -70,7 +70,7 @@ namespace Remotion.Mixins.Context
     {
     }
 
-    private ClassContext (Type type, MixinContextCollection mixins, ReadOnlyCollectionDecorator<Type> composedInterfaces)
+    private ClassContext (Type type, MixinContextCollection mixins, IReadOnlyCollection<Type> composedInterfaces)
     {
       _type = type;
       _mixins = mixins;
@@ -101,7 +101,7 @@ namespace Remotion.Mixins.Context
     /// Gets the composed interfaces associated with this <see cref="ClassContext"/>.
     /// </summary>
     /// <value>The composed interfaces associated with this context (for an explanation, see <see cref="ComposedInterfaceAttribute"/>).</value>
-    public ReadOnlyCollectionDecorator<Type> ComposedInterfaces
+    public IReadOnlyCollection<Type> ComposedInterfaces
     {
       get { return _composedInterfaces; }
     }

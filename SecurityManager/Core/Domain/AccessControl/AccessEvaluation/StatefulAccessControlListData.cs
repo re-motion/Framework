@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Utilities;
 
@@ -28,14 +27,14 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   public class StatefulAccessControlListData
   {
     private readonly IDomainObjectHandle<StatefulAccessControlList> _handle;
-    private readonly ReadOnlyCollectionDecorator<State> _states;
+    private readonly IReadOnlyCollection<State> _states;
 
     public StatefulAccessControlListData ([NotNull] IDomainObjectHandle<StatefulAccessControlList> handle, [NotNull] IEnumerable<State> states)
     {
       ArgumentUtility.CheckNotNull ("handle", handle);
       ArgumentUtility.CheckNotNull ("states", states);
 
-      var stateArray = states.ToArray().AsReadOnly();
+      var stateArray = Array.AsReadOnly (states.ToArray());
 
       if (stateArray.Select (s => s.PropertyHandle).Distinct().Count() != stateArray.Count)
         throw new ArgumentException ("Multiple state values found for a single state property.", "states");
@@ -51,7 +50,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     }
 
     [NotNull]
-    public ReadOnlyCollectionDecorator<State> States
+    public IReadOnlyCollection<State> States
     {
       get { return _states; }
     }
