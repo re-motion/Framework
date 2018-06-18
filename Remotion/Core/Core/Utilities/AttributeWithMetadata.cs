@@ -27,11 +27,7 @@ namespace Remotion.Utilities
       ArgumentUtility.CheckNotNull ("source", source);
       ArgumentUtility.CheckNotNull ("attributeType", attributeType);
 
-      foreach (AttributeWithMetadata attribute in source)
-      {
-        if (attribute.IsInstanceOfType (attributeType))
-          yield return attribute;
-      }
+      return source.Where (a => a.IsInstanceOfType (attributeType));
     }
 
     public static IEnumerable<AttributeWithMetadata> ExcludeAll (IEnumerable<AttributeWithMetadata> source, Type attributeType)
@@ -39,11 +35,7 @@ namespace Remotion.Utilities
       ArgumentUtility.CheckNotNull ("source", source);
       ArgumentUtility.CheckNotNull ("attributeType", attributeType);
 
-      foreach (AttributeWithMetadata attribute in source)
-      {
-        if (!attribute.IsInstanceOfType (attributeType))
-          yield return attribute;
-      }
+      return source.Where (a => !a.IsInstanceOfType (attributeType));
     }
 
     public static IEnumerable<AttributeWithMetadata> Suppress (
@@ -53,25 +45,25 @@ namespace Remotion.Utilities
       ArgumentUtility.CheckNotNull ("source", source);
       ArgumentUtility.CheckNotNull ("suppressAttributes", suppressAttributes);
 
-      foreach (AttributeWithMetadata attribute in source)
+      bool IsSuppressed (AttributeWithMetadata attribute)
       {
         bool suppressed = false;
         foreach (AttributeWithMetadata suppressAttribute in suppressAttributes) // assume that there are only few suppressAttributes, if any
         {
-          SuppressAttributesAttribute suppressAttributeInstance = (SuppressAttributesAttribute)suppressAttribute.AttributeInstance;
+          SuppressAttributesAttribute suppressAttributeInstance = (SuppressAttributesAttribute) suppressAttribute.AttributeInstance;
           if (suppressAttributeInstance.IsSuppressed (attribute.AttributeInstance.GetType(), attribute.DeclaringType, suppressAttribute.DeclaringType))
             suppressed = true;
         }
 
-        if (!suppressed)
-          yield return attribute;
+        return suppressed;
       }
+
+      return source.Where (a => !IsSuppressed (a));
     }
 
     public static IEnumerable<Attribute> ExtractInstances (IEnumerable<AttributeWithMetadata> source)
     {
-      foreach (AttributeWithMetadata attribute in source)
-        yield return attribute.AttributeInstance;
+      return source.Select (a => a.AttributeInstance);
     }
 
     private readonly Type _declaringType;
