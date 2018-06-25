@@ -71,7 +71,9 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="AspNetRequestErrorDetectionStrategyTest.cs" />
     <Compile Include="CoypuElementScopeFindExtensionsTest.cs" />
+    <Compile Include="AspNetRequestErrorDetectionParserTest.cs" />
     <Compile Include="GenericTestPageParameters\ItemIDGenericTestPageParameter.cs" />
     <Compile Include="PlatformTest.cs" />
     <Compile Include="BrowserSessionTest.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="MultiWindowTestPageObject.cs" />
     <Compile Include="CustomWebTestConfigurationFactory.cs" />
     <Compile Include="ElementScopeTest.cs" />
+    <Compile Include="RequestErrorDetectionStrategyTest.cs" />
     <Compile Include="ScopeControlObjectTest.cs" />
     <Compile Include="ScreenshotTest.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotTesting.cs" />
@@ -109,6 +112,7 @@
     <Compile Include="TestCaseFactories\DisabledTestCaseFactory.cs" />
     <Compile Include="TestCaseFactories\ItemIDControlSelectorTestCaseFactory.cs" />
     <Compile Include="TestExecutionScreenshotRecorderTest.cs" />
+    <Compile Include="DiagnosticInformationCollectioningRequestErrorDetectionStrategy.cs" />
     <Compile Include="WebFormsTestPageObject.cs" />
     <Compile Include="WebTabStripControlObjectTest.cs" />
     <Compile Include="AnchorControlObjectTest.cs" />

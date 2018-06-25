@@ -31,6 +31,7 @@
   <add id="ImageButtonTest" type="Remotion.Web.Development.WebTesting.TestSite::ImageButtonTestFunction" resource="~/ImageButtonTest.wxe" />
   <add id="InfrastructureTests" type="Remotion.Web.Development.WebTesting.TestSite::InfrastructureTestsFunction" resource="~/InfrastructureTests.wxe" />
   <add id="ListMenuTest" type="Remotion.Web.Development.WebTesting.TestSite::ListMenuTestFunction" resource="~/ListMenuTest.wxe" />
+  <add id="RequestErrorDetectionStrategyTest" type="Remotion.Web.Development.WebTesting.TestSite::RequestErrorDetectionStrategyTestFunction" resource="~/RequestErrorDetectionStrategyTest.wxe" />
   <add id="ScreenshotTest" type="Remotion.Web.Development.WebTesting.TestSite::ScreenshotTestFunction" resource="~/ScreenshotTest.wxe" />
   <add id="TabbedMenuTest" type="Remotion.Web.Development.WebTesting.TestSite::TabbedMenuTestFunction" resource="~/TabbedMenuTest.wxe" />
   <add id="TabbedMultiViewTest" type="Remotion.Web.Development.WebTesting.TestSite::TabbedMultiViewTestFunction" resource="~/TabbedMultiViewTest.wxe" />

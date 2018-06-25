@@ -33,16 +33,13 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
   /// </remarks>
   public class HostingConfiguration : IHostingConfiguration
   {
-    private readonly ProviderSettings _hostingProviderSettings;
+    private static readonly Dictionary<string, Type> s_wellKnownHostingStrategyTypes =
+        new Dictionary<string, Type>
+        {
+            { "IisExpress", typeof (IisExpressHostingStrategy) }
+        };
 
-    private static readonly Dictionary<string, Type> s_wellKnownHostingStrategyTypes = new Dictionary<string, Type>
-                                                                                       {
-                                                                                           {
-                                                                                               "IisExpress",
-                                                                                               typeof (
-                                                                                               IisExpressHostingStrategy)
-                                                                                           }
-                                                                                       };
+    private readonly ProviderSettings _hostingProviderSettings;
 
     public HostingConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
     {
@@ -64,12 +61,13 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
       return hostingStrategy;
     }
 
+    [CanBeNull]
     private Type GetHostingStrategyType (string hostingStrategyTypeName)
     {
       if (s_wellKnownHostingStrategyTypes.ContainsKey (hostingStrategyTypeName))
         return s_wellKnownHostingStrategyTypes [hostingStrategyTypeName];
 
-      return Type.GetType (hostingStrategyTypeName);
+      return Type.GetType (hostingStrategyTypeName, throwOnError: false, ignoreCase: false);
     }
   }
 }

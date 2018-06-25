@@ -26,6 +26,7 @@ using OpenQA.Selenium.Support.UI;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
@@ -212,8 +213,25 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("browser", browser);
 
+      return CreateInitialPageObject<TPageObject> (browser, _testInfrastructureConfiguration.RequestErrorDetectionStrategy);
+    }
+
+    /// <summary>
+    /// Returns a new <typeparamref name="TPageObject"/> for the initial page displayed by <paramref name="browser"/> with a <see cref="NullRequestErrorDetectionStrategy"/>.
+    /// </summary>
+    public TPageObject CreateInitialPageObjectWithoutRequestErrorDetection<TPageObject> ([NotNull] IBrowserSession browser)
+        where TPageObject : PageObject
+    {
+      ArgumentUtility.CheckNotNull ("browser", browser);
+
+      return CreateInitialPageObject<TPageObject> (browser, new NullRequestErrorDetectionStrategy());
+    }
+
+    private TPageObject CreateInitialPageObject<TPageObject> (IBrowserSession browser, IRequestErrorDetectionStrategy requestErrorDetectionStrategy)
+        where TPageObject : PageObject
+    {
       s_log.InfoFormat ("WebTestHelper.CreateInitialPageObject<" + typeof (TPageObject).FullName + "> has been called.");
-      var context = PageObjectContext.New (browser);
+      var context = PageObjectContext.New (browser, requestErrorDetectionStrategy);
       s_log.InfoFormat ("New PageObjectContext has been created.");
 
       var pageObject = (TPageObject) Activator.CreateInstance (typeof (TPageObject), new object[] { context });

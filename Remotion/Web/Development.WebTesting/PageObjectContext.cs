@@ -30,6 +30,7 @@ namespace Remotion.Web.Development.WebTesting
   {
     private readonly IBrowserSession _browser;
     private readonly BrowserWindow _window;
+    private readonly IRequestErrorDetectionStrategy _requestErrorDetectionStrategy;
     private readonly PageObjectContext _parentContext;
 
     /// <summary>
@@ -38,15 +39,18 @@ namespace Remotion.Web.Development.WebTesting
     internal PageObjectContext (
         [NotNull] IBrowserSession browser,
         [NotNull] BrowserWindow window,
+        [NotNull] IRequestErrorDetectionStrategy requestErrorDetectionStrategy,
         [NotNull] ElementScope scope,
         [CanBeNull] PageObjectContext parentContext)
         : base (scope)
     {
       ArgumentUtility.CheckNotNull ("browser", browser);
       ArgumentUtility.CheckNotNull ("window", window);
+      ArgumentUtility.CheckNotNull ("requestErrorDetectionStrategy", requestErrorDetectionStrategy);
 
       _browser = browser;
       _window = window;
+      _requestErrorDetectionStrategy = requestErrorDetectionStrategy;
       _parentContext = parentContext;
     }
 
@@ -54,13 +58,18 @@ namespace Remotion.Web.Development.WebTesting
     /// Returns a new root context for a <see cref="PageObject"/> without a parent (e.g. a parent frame).
     /// </summary>
     /// <param name="browser">The <see cref="IBrowserSession"/> on which the <see cref="PageObject"/> resides.</param>
+    /// <param name="requestErrorDetectionStrategy">The <see cref="IRequestErrorDetectionStrategy"/> which defines the used request error detection.</param>
     /// <returns>A new root context.</returns>
-    public static PageObjectContext New ([NotNull] IBrowserSession browser)
+    public static PageObjectContext New ([NotNull] IBrowserSession browser, [NotNull] IRequestErrorDetectionStrategy requestErrorDetectionStrategy)
     {
       ArgumentUtility.CheckNotNull ("browser", browser);
+      ArgumentUtility.CheckNotNull ("requestErrorDetectionStrategy", requestErrorDetectionStrategy);
 
       var scope = browser.Window.GetRootScope();
-      return new PageObjectContext (browser, browser.Window, scope, null);
+
+      requestErrorDetectionStrategy.CheckPageForErrors (scope);
+
+      return new PageObjectContext (browser, browser.Window, requestErrorDetectionStrategy, scope, null);
     }
 
     /// <inheritdoc/>
@@ -83,6 +92,14 @@ namespace Remotion.Web.Development.WebTesting
     {
       get { return _parentContext; }
     }
+    
+    /// <summary>
+    /// Returns the <see cref="IRequestErrorDetectionStrategy"/> implementation passed in the <see cref="PageObjectContext"/>constructor.
+    /// </summary>
+    public IRequestErrorDetectionStrategy RequestErrorDetectionStrategy
+    {
+      get { return _requestErrorDetectionStrategy; }
+    }
 
     /// <summary>
     /// Clones the context for a new <see cref="IBrowserSession"/>.
@@ -93,7 +110,12 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("browserSession", browserSession);
 
       var rootScope = browserSession.Window.GetRootScope();
-      return new PageObjectContext (browserSession, browserSession.Window, rootScope, this);
+
+      var pageObjectContext = new PageObjectContext (browserSession, browserSession.Window, RequestErrorDetectionStrategy, rootScope, this);
+
+      RequestErrorDetectionStrategy.CheckPageForErrors (rootScope);
+
+      return pageObjectContext;
     }
 
     /// <summary>
@@ -105,7 +127,12 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("frameScope", frameScope);
 
       var frameRootElement = frameScope.FindCss ("html");
-      return new PageObjectContext (Browser, Window, frameRootElement, this);
+
+      var pageObjectContext = new PageObjectContext (Browser, Window, RequestErrorDetectionStrategy, frameRootElement, this);
+
+      RequestErrorDetectionStrategy.CheckPageForErrors (frameRootElement);
+
+      return pageObjectContext;
     }
 
     /// <summary>
@@ -121,7 +148,16 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("pageObject", pageObject);
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      return new ControlObjectContext (pageObject, scope);
+      try
+      {
+        return new ControlObjectContext (pageObject, scope);
+      }
+      catch (Exception)
+      {
+        RequestErrorDetectionStrategy.CheckPageForErrors (pageObject.Context.Scope);
+
+        throw;
+      }
     }
 
     /// <summary>
@@ -130,7 +166,11 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public ControlSelectionContext CloneForControlSelection (PageObject pageObject)
     {
-      return new ControlSelectionContext (pageObject, Scope);
+      var cloneForControlSelection = new ControlSelectionContext (pageObject, Scope);
+
+      RequestErrorDetectionStrategy.CheckPageForErrors (Scope);
+
+      return cloneForControlSelection;
     }
   }
 }

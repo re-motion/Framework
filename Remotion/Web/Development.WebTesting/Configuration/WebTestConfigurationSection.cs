@@ -40,6 +40,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _logsDirectoryProperty;
     private readonly ConfigurationProperty _closeBrowserWindowsOnSetUpAndTearDownProperty;
     private readonly ConfigurationProperty _cleanUpUnmatchedDownloadedFiles;
+    private readonly ConfigurationProperty _requestErrorDetectionStrategyProperty;
     private readonly ConfigurationProperty _hostingProperty;
 
     static WebTestConfigurationSection ()
@@ -78,6 +79,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _logsDirectoryProperty = new ConfigurationProperty ("logsDirectory", typeof (string), ".");
       _closeBrowserWindowsOnSetUpAndTearDownProperty = new ConfigurationProperty ("closeBrowserWindowsOnSetUpAndTearDown", typeof (bool), false);
       _cleanUpUnmatchedDownloadedFiles = new ConfigurationProperty ("cleanUpUnmatchedDownloadedFiles", typeof (bool), false);
+      _requestErrorDetectionStrategyProperty = new ConfigurationProperty ("requestErrorDetectionStrategy", typeof (string), "None");
       _hostingProperty = new ConfigurationProperty ("hosting", typeof (ProviderSettings));
       
       _properties = new ConfigurationPropertyCollection
@@ -93,6 +95,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _logsDirectoryProperty,
                         _closeBrowserWindowsOnSetUpAndTearDownProperty,
                         _cleanUpUnmatchedDownloadedFiles,
+                        _requestErrorDetectionStrategyProperty,
                         _hostingProperty
                     };
     }
@@ -200,6 +203,17 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public bool CleanUpUnmatchedDownloadedFiles
     {
       get { return (bool) this [_cleanUpUnmatchedDownloadedFiles]; }
+    }
+
+    ///<summary>
+    /// Either a well-known identifier or the assembly-qualified type name of a <see cref="IRequestErrorDetectionStrategy"/> implementation.
+    /// </summary>
+    /// <remarks>
+    /// Use <b>None</b> to disable the request error detection (default) or <b>AspNet</b> to select error handling for the ASP.NET standard error page ("Yellow Page").
+    /// </remarks>
+    public string RequestErrorDetectionStrategyTypeName
+    {
+      get { return (string) this [_requestErrorDetectionStrategyProperty]; }
     }
 
     public ProviderSettings HostingProviderSettings

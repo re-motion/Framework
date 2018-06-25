@@ -12,7 +12,7 @@
         <xs:element name="hosting">
           <xs:complexType>
             <xs:attribute name="name" type="c:RequiredStringType" use="required" />
-            <xs:attribute name="type" type="c:RequiredStringType" use="required" />
+            <xs:attribute name="type" type="c:HostingStrategyType" use="required" />
             <xs:anyAttribute processContents="skip" />
           </xs:complexType>
         </xs:element>
@@ -28,6 +28,7 @@
       <xs:attribute name="logsDirectory" type="c:RequiredStringType" default="." />
       <xs:attribute name="closeBrowserWindowsOnSetUpAndTearDown" type="xs:boolean" default="false" />
       <xs:attribute name="cleanUpUnmatchedDownloadedFiles" type="xs:boolean" default="false" />
+      <xs:attribute name="requestErrorDetectionStrategy" type="c:ErrorDetectionStrategy" default="None" />
     </xs:complexType>
   </xs:element>
 
@@ -36,6 +37,33 @@
       <xs:enumeration value="Chrome" />
       <xs:enumeration value="InternetExplorer" />
     </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ErrorDetectionStrategy">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None" />
+          <xs:enumeration value="AspNet" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string" />
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="HostingStrategyType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="IisExpress" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string" />
+      </xs:simpleType>
+    </xs:union>
   </xs:simpleType>
 
   <xs:simpleType name="RequiredStringType">

@@ -71,6 +71,9 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
+    <Content Include="AspNetRequestErrorDetectionParserStaticPages\InvalidErrorPageWithMessageMissing.html" />
+    <Content Include="AspNetRequestErrorDetectionParserStaticPages\InvalidErrorPageWithStacktraceMissing.html" />
+    <Content Include="RequestErrorDetectionStrategyTest.aspx" />
     <Content Include="CoypuElementScopeFindExtensionsTest.aspx" />
     <Content Include="PlatformTest.aspx" />
     <Content Include="Empty.aspx" />
@@ -84,6 +87,7 @@
     <Content Include="FileDownloadTest.aspx" />
     <Content Include="ImageTest.aspx" />
     <Content Include="MouseTest.aspx" />
+    <Content Include="AspNetRequestErrorDetectionParserStaticPages\CustomErrorDefaultErrorPage.html" />
     <Content Include="SampleXmlFile.xml" />
     <Content Include="SampleFile.txt" />
     <Content Include="ElementScopeTest.aspx" />
@@ -136,6 +140,14 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="RequestErrorDetectionStrategyTest.aspx.cs">
+      <DependentUpon>RequestErrorDetectionStrategyTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RequestErrorDetectionStrategyTest.aspx.designer.cs">
+      <DependentUpon>RequestErrorDetectionStrategyTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RequestErrorDetectionStrategyTest.cs" />
     <Compile Include="CoypuElementScopeFindExtensionsTest.aspx.cs">
       <DependentUpon>CoypuElementScopeFindExtensionsTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

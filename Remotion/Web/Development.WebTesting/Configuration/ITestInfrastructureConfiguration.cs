@@ -53,5 +53,10 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// browser windows, which is why the default value is set to <see langword="false" />.
     /// </summary>
     bool CloseBrowserWindowsOnSetUpAndTearDown { get; }
+
+    /// <summary>
+    /// Gets the <see cref="IRequestErrorDetectionStrategy"/> used to detect request errors when when performing UI operations (e.g. clicking a button to submit a page).
+    /// </summary>
+    IRequestErrorDetectionStrategy RequestErrorDetectionStrategy { [NotNull] get; }
   }
 }

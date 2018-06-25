@@ -76,7 +76,16 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      return new ControlObjectContext (PageObject, scope);
+      try
+      {
+        return new ControlObjectContext (PageObject, scope);
+      }
+      catch (Exception)
+      {
+        PageObject.Context.RequestErrorDetectionStrategy.CheckPageForErrors (PageObject.Scope);
+
+        throw;
+      }
     }
 
     /// <summary>
@@ -86,7 +95,12 @@ namespace Remotion.Web.Development.WebTesting
     public PageObjectContext CloneForNewPage ()
     {
       var rootScope = Window.GetRootScope();
-      return new PageObjectContext (Browser, Window, rootScope, PageObject.Context.ParentContext);
+
+      var cloneForNewPage = new PageObjectContext (Browser, Window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context.ParentContext);
+      
+      PageObject.Context.RequestErrorDetectionStrategy.CheckPageForErrors (rootScope);
+
+      return cloneForNewPage;
     }
 
     /// <summary>
@@ -117,7 +131,12 @@ namespace Remotion.Web.Development.WebTesting
     {
       var window = Browser.FindWindow (windowLocator);
       var rootScope = window.GetRootScope();
-      return new PageObjectContext (Browser, window, rootScope, PageObject.Context);
+
+      var cloneForNewWindowInternal = new PageObjectContext (Browser, window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context);
+      
+      PageObject.Context.RequestErrorDetectionStrategy.CheckPageForErrors (rootScope);
+
+      return cloneForNewWindowInternal;
     }
 
     /// <summary>
@@ -125,7 +144,16 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public ControlSelectionContext CloneForControlSelection ()
     {
-      return new ControlSelectionContext (PageObject, Scope);
+      try
+      {
+        return new ControlSelectionContext (PageObject, Scope);
+      }
+      catch (Exception)
+      {
+        PageObject.Context.RequestErrorDetectionStrategy.CheckPageForErrors (PageObject.Scope);
+
+        throw;
+      }
     }
   }
 }

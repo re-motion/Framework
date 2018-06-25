@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
@@ -25,11 +27,18 @@ namespace Remotion.Web.Development.WebTesting.Configuration
   /// </summary>
   public class TestInfrastructureConfiguration : ITestInfrastructureConfiguration
   {
+    private static readonly Dictionary<string, Type> s_wellKnownRequestErrorDetectionStrategyTypes =
+        new Dictionary<string, Type>
+        {
+            { "AspNet", typeof (AspNetRequestErrorDetectionStrategy) },
+            { "None", typeof (NullRequestErrorDetectionStrategy) }
+        };
+
     private readonly string _webApplicationRoot;
     private readonly string _screenshotDirectory;
     private readonly TimeSpan _searchTimeout;
     private readonly TimeSpan _retryInterval;
-
+    private readonly IRequestErrorDetectionStrategy _requestErrorDetectionStrategy;
     private readonly bool _closeBrowserWindowsOnSetUpAndTearDown;
 
     public TestInfrastructureConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
@@ -42,6 +51,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _retryInterval = webTestConfigurationSection.RetryInterval;
 
       _closeBrowserWindowsOnSetUpAndTearDown = webTestConfigurationSection.CloseBrowserWindowsOnSetUpAndTearDown;
+      _requestErrorDetectionStrategy = GetRequestErrorDetectionConfiguration (webTestConfigurationSection.RequestErrorDetectionStrategyTypeName);
     }
 
     public string WebApplicationRoot
@@ -67,6 +77,30 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public bool CloseBrowserWindowsOnSetUpAndTearDown
     {
       get { return _closeBrowserWindowsOnSetUpAndTearDown; }
+    }
+
+    public IRequestErrorDetectionStrategy RequestErrorDetectionStrategy
+    {
+      get { return _requestErrorDetectionStrategy; }
+    }
+
+    private IRequestErrorDetectionStrategy GetRequestErrorDetectionConfiguration (string requestErrorDetectionStrategyName)
+    {
+      var requestErrorStrategyType = GetRequestErrorDetectionStrategyType (requestErrorDetectionStrategyName);
+      Assertion.IsNotNull (
+          requestErrorStrategyType,
+          string.Format ("Request Error Detection strategy '{0}' could not be loaded.", requestErrorDetectionStrategyName));
+
+      return (IRequestErrorDetectionStrategy) Activator.CreateInstance (requestErrorStrategyType);
+    }
+
+    [CanBeNull]
+    private Type GetRequestErrorDetectionStrategyType (string requestErrorDetectionStrategyTypeName)
+    {
+      if (s_wellKnownRequestErrorDetectionStrategyTypes.ContainsKey (requestErrorDetectionStrategyTypeName))
+        return s_wellKnownRequestErrorDetectionStrategyTypes [requestErrorDetectionStrategyTypeName];
+
+      return Type.GetType (requestErrorDetectionStrategyTypeName, throwOnError: false, ignoreCase: false);
     }
   }
 }

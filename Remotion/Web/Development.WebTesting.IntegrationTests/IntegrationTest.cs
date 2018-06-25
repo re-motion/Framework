@@ -27,6 +27,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public abstract class IntegrationTest
   {
     private WebTestHelper _webTestHelper;
+    private IDisposable _aspNetRequestErrorDetectionScope;
 
     protected virtual bool MaximizeMainBrowserSession
     {
@@ -50,6 +51,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       _webTestHelper.OnSetUp (GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
 
+      var requestErrorDetection =
+          (DiagnosticInformationCollectioningRequestErrorDetectionStrategy) Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
+
+      _aspNetRequestErrorDetectionScope = requestErrorDetection.CreateAspNetRequestErrorDetectionStrategyScope();
+
       // Prevent failing IE tests due to topmost windows
       if (_webTestHelper.BrowserConfiguration.IsInternetExplorer())
         KillAnyExistingWindowsErrorReportingProcesses();
@@ -60,6 +66,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var hasSucceeded = TestContext.CurrentContext.Result.Status != TestStatus.Failed;
       _webTestHelper.OnTearDown (hasSucceeded);
+      _aspNetRequestErrorDetectionScope.Dispose();
     }
 
     [TestFixtureTearDown]

@@ -70,6 +70,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Linq" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
     <Reference Include="UIAutomationClient" />
@@ -110,7 +111,11 @@
     <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\Win32WindowSupport\IWin32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\Win32WindowSupport\Win32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\PartialFileState.cs" />
+    <Compile Include="RequestErrorDetectionStrategies\AspNetRequestErrorDetectionParser.cs" />
+    <Compile Include="RequestErrorDetectionStrategies\AspNetRequestErrorDetectionStrategy.cs" />
+    <Compile Include="IRequestErrorDetectionStrategy.cs" />
     <Compile Include="ISupportsValidationErrors.cs" />
+    <Compile Include="RequestErrorDetectionStrategies\NullRequestErrorDetectionStrategy.cs" />
     <Compile Include="ScreenshotCreation\Annotations\ScreenshotBadgeAnnotation.cs" />
     <Compile Include="ScreenshotCreation\Annotations\ScreenshotBoxAnnotation.cs" />
     <Compile Include="ScreenshotCreation\Annotations\ScreenshotCustomAnnotation.cs" />
@@ -183,6 +188,7 @@
     <Compile Include="Utilities\DownloadResultNotFoundException.cs" />
     <Compile Include="Utilities\OptionalParameter.cs" />
     <Compile Include="Utilities\ScreenshotRecorderPathUtility.cs" />
+    <Compile Include="Utilities\ServerErrorException.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\AdvancedChromeOptions.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ExtendedChromeOptions.cs" />
     <Compile Include="BrowserSession\Chrome\ChromeBrowserSession.cs" />
