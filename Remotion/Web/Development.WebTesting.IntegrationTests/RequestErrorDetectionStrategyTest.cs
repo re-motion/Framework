@@ -87,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
       }
 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 2));
+      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
       Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
     }
 
@@ -104,7 +104,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       button.Context.CloneForNewPage ();
 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 2));
+      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
       Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
     }
 
@@ -121,7 +121,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       button.Context.CloneForNewWindow (home.Context.Window.Title);
 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 2));
+      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
       Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
     }
 
@@ -138,7 +138,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       button.Context.CloneForNewPopupWindow (home.Context.Window.Title);
 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 2));
+      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
       Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
     }
 
@@ -169,7 +169,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
       }
       
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 2));
+      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
       Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
     }
 
@@ -239,17 +239,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void PageObjectContext_CloneForControlSelection_CallsRequestErrorDetectionStrategyWithCorrectScope ()
+    public void PageObjectContext_CloneForControlSelection_DoesNotCallRequestErrorDetection ()
     {
       var home = Start();
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      var rootScope = home.Context.Window.GetRootScope();
       
       
       home.Context.CloneForControlSelection (home);
       
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+      // Note: Does not call requestErrorDetection
+      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
     }
 
     private WxePageObject Start ()

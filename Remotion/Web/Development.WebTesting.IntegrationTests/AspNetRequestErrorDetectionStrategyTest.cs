@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void Parse_PostbackError ()
     {
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionStrategy();
-      var home = StartToErrorPage ("SyncPostbackError", new AspNetRequestErrorDetectionParser());
+      var home = StartToErrorPage ("SyncPostbackError");
 
       var exception = Assert.Throws<MissingHtmlException> (() => aspNetRequestErrorDetectionParser.CheckPageForErrors (home.Scope));
 
@@ -65,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       return Start<WxePageObject> ("RequestErrorDetectionStrategyTest.wxe");
     }
 
-    private WxePageObject StartToErrorPage (string localButtonId, AspNetRequestErrorDetectionParser aspNetRequestErrorDetectionParser)
+    private WxePageObject StartToErrorPage (string localButtonId)
     {
       var home = Start ( );
       var anchor = home.Anchors().GetByLocalID (localButtonId);
@@ -73,6 +73,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       //Note: Normale completion detection does not work because of the Error Page
       anchor.Click (new WebTestActionOptions() { CompletionDetectionStrategy = new NullCompletionDetectionStrategy() });
       
+      //Call Exists workaround because scope is not updated properly
+      home.Scope.FindCss ("body > span > h1").ExistsWorkaround();
+
       //Wait for Message header to exist
       home.Scope.FindCss ("body > span > h1").Exists();
 

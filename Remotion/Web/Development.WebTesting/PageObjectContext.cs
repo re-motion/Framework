@@ -164,11 +164,16 @@ namespace Remotion.Web.Development.WebTesting
     /// Returns a <see cref="ControlSelectionContext"/> based upon the page object context at hand. As the <see cref="PageObjectContext"/> does not
     /// know about the <see cref="PageObject"/> it belongs to, the <paramref name="pageObject"/> must be specified.
     /// </summary>
+    /// <remarks>
+    /// <see cref="CloneForControlSelection"/> does not perform an error page detection via <see cref="IRequestErrorDetectionStrategy"/>
+    /// because the <see cref="PageObject"/> is only intended for use from within implementations of <see cref="IControlSelector"/>, which in turn
+    /// perform their own error page detection via <see cref="ControlObjectContext"/>.<see cref="CloneForControl"/>.
+    /// </remarks>
     public ControlSelectionContext CloneForControlSelection (PageObject pageObject)
     {
       var cloneForControlSelection = new ControlSelectionContext (pageObject, Scope);
 
-      RequestErrorDetectionStrategy.CheckPageForErrors (Scope);
+      // No error page detection. See remarks documentation on this method.
 
       return cloneForControlSelection;
     }

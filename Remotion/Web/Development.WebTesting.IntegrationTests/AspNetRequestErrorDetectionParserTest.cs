@@ -144,6 +144,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       //Note: Normale completion detection does not work because of the Error Page
       anchor.Click (new WebTestActionOptions() { CompletionDetectionStrategy = new NullCompletionDetectionStrategy() });
 
+      //Call Exists workaround because scope is not updated properly
+      home.Scope.FindCss (startSelector + " > span > h1").ExistsWorkaround();
+      
       //Wait for Message header to exist
       home.Scope.FindCss (startSelector + " > span > h1").Exists();
 
