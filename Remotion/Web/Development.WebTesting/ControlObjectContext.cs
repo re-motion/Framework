@@ -82,7 +82,7 @@ namespace Remotion.Web.Development.WebTesting
       }
       catch (MissingHtmlException)
       {
-        PageObject.Context.RequestErrorDetectionStrategy.CheckPageForErrors (PageObject.Scope);
+        PageObject.Context.RequestErrorDetectionStrategy.CheckPageForError (PageObject.Scope);
 
         throw;
       }
@@ -98,7 +98,7 @@ namespace Remotion.Web.Development.WebTesting
 
       var cloneForNewPage = new PageObjectContext (Browser, Window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context.ParentContext);
       
-      PageObject.Context.RequestErrorDetectionStrategy.CheckPageForErrors (rootScope);
+      PageObject.Context.RequestErrorDetectionStrategy.CheckPageForError (rootScope);
 
       return cloneForNewPage;
     }
@@ -150,7 +150,7 @@ namespace Remotion.Web.Development.WebTesting
 
       var cloneForNewWindowInternal = new PageObjectContext (Browser, window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context);
       
-      PageObject.Context.RequestErrorDetectionStrategy.CheckPageForErrors (rootScope);
+      PageObject.Context.RequestErrorDetectionStrategy.CheckPageForError (rootScope);
 
       return cloneForNewWindowInternal;
     }

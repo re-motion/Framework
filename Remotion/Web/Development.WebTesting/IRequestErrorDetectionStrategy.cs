@@ -29,11 +29,11 @@ namespace Remotion.Web.Development.WebTesting
   public interface IRequestErrorDetectionStrategy
   {
     /// <summary>
-    /// Checks the given <paramref name="scope"/> for request errors
+    /// Check if the given <paramref name="scope"/> contains a request error.
     /// </summary>
     /// <exception cref="MissingHtmlException">
     /// Thrown if a request error is found.
     /// </exception>
-    void CheckPageForErrors ([NotNull] ElementScope scope);
+    void CheckPageForError ([NotNull] ElementScope scope);
   }
 }

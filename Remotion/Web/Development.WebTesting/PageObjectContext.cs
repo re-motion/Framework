@@ -146,7 +146,7 @@ namespace Remotion.Web.Development.WebTesting
       }
       catch (MissingHtmlException)
       {
-        RequestErrorDetectionStrategy.CheckPageForErrors (Scope);
+        RequestErrorDetectionStrategy.CheckPageForError (Scope);
 
         throw;
       }
@@ -191,7 +191,7 @@ namespace Remotion.Web.Development.WebTesting
       }
       catch (MissingHtmlException)
       {
-        RequestErrorDetectionStrategy.CheckPageForErrors (pageObject.Context.Scope);
+        RequestErrorDetectionStrategy.CheckPageForError (pageObject.Context.Scope);
 
         throw;
       }

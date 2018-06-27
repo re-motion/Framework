@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
           // ignored
         }
 
-        context.RequestErrorDetectionStrategy.CheckPageForErrors (context.Scope);
+        context.RequestErrorDetectionStrategy.CheckPageForError (context.Scope);
 
         throw;
       }
@@ -141,7 +141,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
           // ignored
         }
         
-        context.RequestErrorDetectionStrategy.CheckPageForErrors (context.Scope);
+        context.RequestErrorDetectionStrategy.CheckPageForError (context.Scope);
 
         throw;
       }

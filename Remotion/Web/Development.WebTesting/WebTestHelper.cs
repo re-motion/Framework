@@ -306,13 +306,13 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// Uses the configured <see cref="IRequestErrorDetectionStrategy"/> to check if the given <paramref name="context"/> contains an request error.
+    /// Uses the configured <see cref="IRequestErrorDetectionStrategy"/> to check if the given <paramref name="context"/> contains a request error.
     /// </summary>
     public void CheckPageForError ([NotNull] PageObjectContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      context.RequestErrorDetectionStrategy.CheckPageForErrors (context.Scope);
+      context.RequestErrorDetectionStrategy.CheckPageForError (context.Scope);
     }
 
     private void EnsureAllBrowserWindowsAreClosed ()

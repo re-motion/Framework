@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionStrategy();
       var home = StartToErrorPage ("SyncPostbackError");
 
-      var exception = Assert.Throws<MissingHtmlException> (() => aspNetRequestErrorDetectionParser.CheckPageForErrors (home.Scope));
+      var exception = Assert.Throws<MissingHtmlException> (() => aspNetRequestErrorDetectionParser.CheckPageForError (home.Scope));
 
       Assert.That (exception.InnerException, Is.TypeOf (typeof (ServerErrorException)));
       Assert.That (exception.InnerException.Message, Is.EqualTo ("SyncPostbackError"));
