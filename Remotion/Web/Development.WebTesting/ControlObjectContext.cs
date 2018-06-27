@@ -92,13 +92,18 @@ namespace Remotion.Web.Development.WebTesting
     /// Clones the context for a new <see cref="PageObject"/> which resides within the same <see cref="IBrowserSession"/>, on the same
     /// <see cref="BrowserWindow"/> and replaces the current <see cref="PageObject"/>.
     /// </summary>
+    /// <remarks>
+    /// <see cref="CloneForNewPage"/> does not perform an error page detection via <see cref="IRequestErrorDetectionStrategy"/>
+    /// because it is only intended for use from <see cref="UnspecifiedPageObject"/>, which are normally called after <see cref="WebTestAction"/>s
+    /// which perform error page detection in the <see cref="ICompletionDetectionStrategy"/>.
+    /// </remarks>
     public PageObjectContext CloneForNewPage ()
     {
       var rootScope = Window.GetRootScope();
 
       var cloneForNewPage = new PageObjectContext (Browser, Window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context.ParentContext);
-      
-      PageObject.Context.RequestErrorDetectionStrategy.CheckPageForError (rootScope);
+
+      // No error page detection. See remarks documentation on this method.
 
       return cloneForNewPage;
     }
