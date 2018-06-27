@@ -60,11 +60,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void ControlObjectContext_CloneForNewPage_CallsRequestErrorDetectionStrategyWithCorrectScope ()
+    public void ControlObjectContext_CloneForNewPage_DoesNotCallRequestErrorDetection ()
     {
       var home = Start();
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      var rootScope = home.Context.Window.GetRootScope();
 
       //Get any control
       var button = home.Anchors().First();
@@ -72,16 +71,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       button.Context.CloneForNewPage ();
 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+      // Note: Does not call requestErrorDetection
+      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
     }
 
     [Test]
-    public void ControlObjectContext_CloneForNewWindow_CallsRequestErrorDetectionStrategyWithCorrectScope ()
+    public void ControlObjectContext_CloneForNewWindow_DoesNotCallRequestErrorDetection ()
     {
       var home = Start();
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      var rootScope = home.Context.Window.GetRootScope();
 
       //Get any control
       var button = home.Anchors().First();
@@ -89,16 +87,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       button.Context.CloneForNewWindow (home.Context.Window.Title);
 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+      // Note: Does not call requestErrorDetection
+      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
     }
 
     [Test]
-    public void ControlObjectContext_CloneForPopupWindow_CallsRequestErrorDetectionStrategyWithCorrectScope ()
+    public void ControlObjectContext_CloneForPopupWindow_DoesNotCallRequestErrorDetection ()
     {
       var home = Start();
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      var rootScope = home.Context.Window.GetRootScope();
 
       //Get any control
       var button = home.Anchors().First();
@@ -106,8 +103,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       button.Context.CloneForNewPopupWindow (home.Context.Window.Title);
 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+      // Note: Does not call requestErrorDetection
+      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
     }
 
     [Test]
