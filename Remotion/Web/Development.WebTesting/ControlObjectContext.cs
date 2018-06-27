@@ -153,11 +153,7 @@ namespace Remotion.Web.Development.WebTesting
       var window = Browser.FindWindow (windowLocator);
       var rootScope = window.GetRootScope();
 
-      var cloneForNewWindowInternal = new PageObjectContext (Browser, window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context);
-      
-      PageObject.Context.RequestErrorDetectionStrategy.CheckPageForError (rootScope);
-
-      return cloneForNewWindowInternal;
+      return new PageObjectContext (Browser, window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context);
     }
 
     /// <summary>
