@@ -35,38 +35,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void WxeCompletionDetectionHelpers_GetWxePostBackSequenceNumber_CallsRequestErrorDetectionStrategyWithCorrectScope ()
-    {
-      var home = Start();
-      var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      var rootScope = home.Context.Window.GetRootScope();
-
-      var completionDetection = new WxePostBackCompletionDetectionStrategy(1);
-
-
-      completionDetection.PrepareWaitForCompletion (home.Context);
-
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
-    }
-
-    [Test]
-    public void WxeCompletionDetectionHelpers_GetWxeFunctionToken_CallsRequestErrorDetectionStrategyWithCorrectScope ()
-    {
-      var home = Start();
-      var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      var rootScope = home.Context.Window.GetRootScope();
-
-      var completionDetection = new WxeResetCompletionDetectionStrategy();
-
-
-      completionDetection.PrepareWaitForCompletion (home.Context);
-
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
-    }
-
-    [Test]
     public void ControlObjectContext_CloneForControl_CallsRequestErrorDetectionStrategyWithCorrectScope ()
     {
       var home = Start();
@@ -143,62 +111,43 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void ControlObjectContext_CloneForControlSelection_CallsRequestErrorDetectionStrategyWithCorrectScope ()
+    public void ControlObjectContext_CloneForControlSelection_DoesNotCallRequestErrorDetection ()
     {
       var home = Start();
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      var rootScope = home.Context.Window.GetRootScope();
 
       //Get any control
       var button = home.Anchors().First();
 
-      //Switch site so button scope is invalid
-      Helper.MainBrowserSession.Window.Visit (Helper.TestInfrastructureConfiguration.WebApplicationRoot + "WebButtonTest.wxe");
+      button.Context.CloneForControlSelection();
       
-      //Workaround needed, because scope is not correctly handled on window switch
-      button.Context.Scope.ExistsWorkaround();
-
-      //Use small Timeout so we dont have to wait for exception
-      button.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
-
-      try
-      {
-        button.Context.CloneForControlSelection();
-      }
-      catch (MissingHtmlException)
-      {
-      }
-      
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+      // Note: Does not call requestErrorDetection
+      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
     }
 
     [Test]
-    public void PageObjectContext_New_CallsRequestErrorDetectionStrategyWithCorrectScope ()
+    public void PageObjectContext_New_DoesNotCallRequestErrorDetection ()
     {
-      var home = Start();
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      var rootScope = home.Context.Window.GetRootScope();
 
 
       PageObjectContext.New (Helper.MainBrowserSession, _requestErrorDetectionStrategy);
 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+      // Note: Does not call requestErrorDetection
+      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
     }
 
     [Test]
-    public void PageObjectContext_CloneForSession_CallsRequestErrorDetectionStrategyWithCorrectScope ()
+    public void PageObjectContext_CloneForSession_DoesNotCallRequestErrorDetection ()
     {
       var home = Start();
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      var rootScope = home.Context.Window.GetRootScope();
 
 
       home.Context.CloneForSession (Helper.MainBrowserSession);
 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+      // Note: Does not call requestErrorDetection
+      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
     }
 
     [Test]
@@ -208,12 +157,24 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var frameScope = home.Scope.FindFrame ("frame");
       
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
+      
+      //Navigate to error page
+      var url = Helper.TestInfrastructureConfiguration.WebApplicationRoot + "AspNetRequestErrorDetectionParserStaticPages/CustomErrorDefaultErrorPage.html";
+      Helper.MainBrowserSession.Window.Visit (url);
 
+      //Use small Timeout so we dont have to wait for exception. With TimeSpan.Zero, an ElementStaleException gets triggered.
+      frameScope.ElementFinder.Options.Timeout = TimeSpan.FromSeconds (1);
 
-      home.Context.CloneForFrame (home.Scope.FindFrame ("frame"));
+      try
+      {
+        home.Context.CloneForFrame (frameScope);
+      }
+      catch (MissingHtmlException)
+      {
+      }
 
       Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (frameScope.FindCss("html").InnerHTML));
+      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (home.Context.Window.GetRootScope().InnerHTML));
     }
 
     [Test]

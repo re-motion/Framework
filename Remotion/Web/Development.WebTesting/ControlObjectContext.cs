@@ -80,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting
       {
         return new ControlObjectContext (PageObject, scope);
       }
-      catch (Exception)
+      catch (MissingHtmlException)
       {
         PageObject.Context.RequestErrorDetectionStrategy.CheckPageForErrors (PageObject.Scope);
 
@@ -107,9 +107,17 @@ namespace Remotion.Web.Development.WebTesting
     /// Clones the context for a new <see cref="PageObject"/> which resides on a new window (specified by <paramref name="windowLocator"/>) within the
     /// same <see cref="IBrowserSession"/>.
     /// </summary>
+    /// <remarks>
+    /// <see cref="CloneForNewWindow"/> does not perform an error page detection via <see cref="IRequestErrorDetectionStrategy"/>
+    /// because the call represents a <b>GET</b> request performed before any control object for this page is created.
+    /// The error page detection is performed during the control selection. If you require an explicit error page detection
+    /// use <see cref="WebTestHelper"/>.<see cref="WebTestHelper.CheckPageForError"/>.
+    /// </remarks>
     public PageObjectContext CloneForNewWindow ([NotNull] string windowLocator)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("windowLocator", windowLocator);
+
+      // No error page detection. See remarks documentation on this method.
 
       var context = CloneForNewWindowInternal (windowLocator);
       context.Window.MaximiseWindow();
@@ -120,9 +128,17 @@ namespace Remotion.Web.Development.WebTesting
     /// Clones the context for a new <see cref="PageObject"/> which resides on a new popup window (specified by <paramref name="windowLocator"/>)
     /// within the same <see cref="IBrowserSession"/>. In contrast to <see cref="CloneForNewWindow"/>, the window is not maximized.
     /// </summary>
+    /// <remarks>
+    /// <see cref="CloneForNewPopupWindow"/> does not perform an error page detection via <see cref="IRequestErrorDetectionStrategy"/>
+    /// because the call represents a <b>GET</b> request performed before any control object for this page is created.
+    /// The error page detection is performed during the control selection. If you require an explicit error page detection
+    /// use <see cref="WebTestHelper"/>.<see cref="WebTestHelper.CheckPageForError"/>.
+    /// </remarks>
     public PageObjectContext CloneForNewPopupWindow ([NotNull] string windowLocator)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("windowLocator", windowLocator);
+
+      // No error page detection. See remarks documentation on this method.
 
       return CloneForNewWindowInternal (windowLocator);
     }
@@ -142,18 +158,16 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Returns a <see cref="ControlSelectionContext"/> based upon the control object context at hand.
     /// </summary>
+    /// <remarks>
+    /// <see cref="CloneForControlSelection"/> does not perform an error page detection via <see cref="IRequestErrorDetectionStrategy"/>
+    /// because the <see cref="PageObject"/> is only intended for use from within implementations of <see cref="IControlSelector"/>, which in turn
+    /// perform their own error page detection via <see cref="ControlObjectContext"/>.<see cref="CloneForControl"/>.
+    /// </remarks>
     public ControlSelectionContext CloneForControlSelection ()
     {
-      try
-      {
-        return new ControlSelectionContext (PageObject, Scope);
-      }
-      catch (Exception)
-      {
-        PageObject.Context.RequestErrorDetectionStrategy.CheckPageForErrors (PageObject.Scope);
+      // No error page detection. See remarks documentation on this method.
 
-        throw;
-      }
+      return new ControlSelectionContext (PageObject, Scope);
     }
   }
 }

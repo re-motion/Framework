@@ -305,6 +305,16 @@ namespace Remotion.Web.Development.WebTesting
       _browserSessions.Clear();
     }
 
+    /// <summary>
+    /// Uses the configured <see cref="IRequestErrorDetectionStrategy"/> to check if the given <paramref name="context"/> contains an request error.
+    /// </summary>
+    public void CheckPageForError ([NotNull] PageObjectContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      context.RequestErrorDetectionStrategy.CheckPageForErrors (context.Scope);
+    }
+
     private void EnsureAllBrowserWindowsAreClosed ()
     {
       if (!_testInfrastructureConfiguration.CloseBrowserWindowsOnSetUpAndTearDown)

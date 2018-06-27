@@ -60,6 +60,12 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="browser">The <see cref="IBrowserSession"/> on which the <see cref="PageObject"/> resides.</param>
     /// <param name="requestErrorDetectionStrategy">The <see cref="IRequestErrorDetectionStrategy"/> which defines the used request error detection.</param>
     /// <returns>A new root context.</returns>
+    /// <remarks>
+    /// <see cref="New"/> does not perform an error page detection via <see cref="IRequestErrorDetectionStrategy"/>
+    /// because the call represents a <b>GET</b> request performed before any control object for this page is created.
+    /// The error page detection is performed during the control selection. If you require an explicit error page detection
+    /// use <see cref="WebTestHelper"/>.<see cref="WebTestHelper.CheckPageForError"/>.
+    /// </remarks>
     public static PageObjectContext New ([NotNull] IBrowserSession browser, [NotNull] IRequestErrorDetectionStrategy requestErrorDetectionStrategy)
     {
       ArgumentUtility.CheckNotNull ("browser", browser);
@@ -67,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting
 
       var scope = browser.Window.GetRootScope();
 
-      requestErrorDetectionStrategy.CheckPageForErrors (scope);
+      // No error page detection. See remarks documentation on this method.
 
       return new PageObjectContext (browser, browser.Window, requestErrorDetectionStrategy, scope, null);
     }
@@ -105,6 +111,12 @@ namespace Remotion.Web.Development.WebTesting
     /// Clones the context for a new <see cref="IBrowserSession"/>.
     /// </summary>
     /// <param name="browserSession">The new <see cref="IBrowserSession"/>.</param>
+    /// <remarks>
+    /// <see cref="CloneForSession"/> does not perform an error page detection via <see cref="IRequestErrorDetectionStrategy"/>
+    /// because the call represents a <b>GET</b> request performed before any control object for this page is created.
+    /// The error page detection is performed during the control selection. If you require an explicit error page detection
+    /// use <see cref="WebTestHelper"/>.<see cref="WebTestHelper.CheckPageForError"/>.
+    /// </remarks>
     public PageObjectContext CloneForSession ([NotNull] IBrowserSession browserSession)
     {
       ArgumentUtility.CheckNotNull ("browserSession", browserSession);
@@ -112,8 +124,8 @@ namespace Remotion.Web.Development.WebTesting
       var rootScope = browserSession.Window.GetRootScope();
 
       var pageObjectContext = new PageObjectContext (browserSession, browserSession.Window, RequestErrorDetectionStrategy, rootScope, this);
-
-      RequestErrorDetectionStrategy.CheckPageForErrors (rootScope);
+      
+      // No error page detection. See remarks documentation on this method.
 
       return pageObjectContext;
     }
@@ -128,11 +140,36 @@ namespace Remotion.Web.Development.WebTesting
 
       var frameRootElement = frameScope.FindCss ("html");
 
-      var pageObjectContext = new PageObjectContext (Browser, Window, RequestErrorDetectionStrategy, frameRootElement, this);
+      try
+      {
+        return new PageObjectContext (Browser, Window, RequestErrorDetectionStrategy, frameRootElement, this);
+      }
+      catch (MissingHtmlException)
+      {
+        RequestErrorDetectionStrategy.CheckPageForErrors (Scope);
 
-      RequestErrorDetectionStrategy.CheckPageForErrors (frameRootElement);
+        throw;
+      }
+    }
 
-      return pageObjectContext;
+    /// <summary>
+    /// Clones the context for a new <see cref="PageObject"/> which resides within the same <see cref="IBrowserSession"/>, on the same
+    /// <see cref="BrowserWindow"/> and replaces the current <see cref="PageObject"/>.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="CloneForNewPage"/> does not perform an error page detection via <see cref="IRequestErrorDetectionStrategy"/>
+    /// because it is only intended for use from <see cref="UnspecifiedPageObject"/>, which are normally called after <see cref="WebTestAction"/>s
+    /// which perform error page detection in the <see cref="ICompletionDetectionStrategy"/>.
+    /// </remarks>
+    public PageObjectContext CloneForNewPage ()
+    {
+      var rootScope = Window.GetRootScope();
+
+      var cloneForNewPage = new PageObjectContext (Browser, Window, RequestErrorDetectionStrategy, rootScope, ParentContext);
+      
+      // No error page detection. See remarks documentation on this method.
+
+      return cloneForNewPage;
     }
 
     /// <summary>
@@ -152,7 +189,7 @@ namespace Remotion.Web.Development.WebTesting
       {
         return new ControlObjectContext (pageObject, scope);
       }
-      catch (Exception)
+      catch (MissingHtmlException)
       {
         RequestErrorDetectionStrategy.CheckPageForErrors (pageObject.Context.Scope);
 
@@ -171,11 +208,9 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public ControlSelectionContext CloneForControlSelection (PageObject pageObject)
     {
-      var cloneForControlSelection = new ControlSelectionContext (pageObject, Scope);
-
       // No error page detection. See remarks documentation on this method.
 
-      return cloneForControlSelection;
+      return new ControlSelectionContext (pageObject, Scope);
     }
   }
 }

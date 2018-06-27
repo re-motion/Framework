@@ -36,8 +36,6 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      context.RequestErrorDetectionStrategy.CheckPageForErrors (context.Scope);
-
       return int.Parse (context.Scope.FindId (c_wxePostBackSequenceNumberFieldId).Value);
     }
 
@@ -47,8 +45,6 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     public static string GetWxeFunctionToken ([NotNull] PageObjectContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-
-      context.RequestErrorDetectionStrategy.CheckPageForErrors (context.Scope);
 
       return context.Scope.FindId (c_wxeFunctionToken).Value;
     }
@@ -84,6 +80,8 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
         {
           // ignored
         }
+
+        context.RequestErrorDetectionStrategy.CheckPageForErrors (context.Scope);
 
         throw;
       }
@@ -142,6 +140,8 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
         {
           // ignored
         }
+        
+        context.RequestErrorDetectionStrategy.CheckPageForErrors (context.Scope);
 
         throw;
       }
