@@ -3,8 +3,7 @@
 
   <Target Name="After_TestBuild_Configuration" AfterTargets="TestBuild_Configuration">
     <PropertyGroup>
-      <TestCategoriesToExclude>LongRunning</TestCategoriesToExclude>
-      <TestCategoriesToExclude>ControlSelectorTest</TestCategoriesToExclude>
+      <TestCategoriesToExclude>LongRunning;ControlSelectorTest</TestCategoriesToExclude>
     </PropertyGroup>
   </Target>
 
