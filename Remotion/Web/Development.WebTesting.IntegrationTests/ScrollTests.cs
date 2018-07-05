@@ -30,6 +30,7 @@ using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
+  [TestFixture]
   public class ScrollTests : IntegrationTest
   {
     [Test]

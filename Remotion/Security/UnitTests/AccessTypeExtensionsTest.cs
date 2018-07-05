@@ -19,6 +19,7 @@ using NUnit.Framework;
 
 namespace Remotion.Security.UnitTests
 {
+  [TestFixture]
   public class AccessTypeExtensionsTest
   {
     [Test]

@@ -30,6 +30,7 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
+  [TestFixture]
   public class MouseTest : IntegrationTest
   {
     private const string c_clickDivID = "clickDiv";

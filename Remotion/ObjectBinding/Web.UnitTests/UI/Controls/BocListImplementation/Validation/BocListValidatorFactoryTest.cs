@@ -10,6 +10,7 @@ using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Validation
 {
+  [TestFixture]
   public class BocListValidatorFactoryTest
   {
     private IBocListValidatorFactory _validatorFactory;

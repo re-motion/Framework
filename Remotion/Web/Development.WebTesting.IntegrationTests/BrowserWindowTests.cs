@@ -22,6 +22,7 @@ using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
+  [TestFixture]
   public class BrowserWindowTests : IntegrationTest
   {
     protected override bool MaximizeMainBrowserSession

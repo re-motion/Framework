@@ -34,6 +34,7 @@ using Remotion.Web.Development.WebTesting.WebFormsControlObjects.FluentScreensho
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
+  [TestFixture]
   public class ScreenshotTest : IntegrationTest
   {
     private const string c_nonBreakingSpace = " ";

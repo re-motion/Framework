@@ -23,6 +23,7 @@ using Remotion.Web.Development.WebTesting.FluentControlSelection;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
+  [TestFixture]
   public class BocControlObjectTest : IntegrationTest
   {
     [Test]

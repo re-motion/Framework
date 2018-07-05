@@ -23,6 +23,7 @@ using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Loading
 {
+  [TestFixture]
   public class CanceledLoadOperationTest : ClientTransactionBaseTest
   {
     private IClientTransactionListener _listenerDynamicMock;

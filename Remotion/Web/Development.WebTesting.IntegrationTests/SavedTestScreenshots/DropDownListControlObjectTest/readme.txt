@@ -1,0 +1,1 @@
+Chrome.any.DropDownList2.png differs to Chrome.any.DropDownList0.png only through slightly different RGB border values. (Reason may be Windows version/Chrome version)

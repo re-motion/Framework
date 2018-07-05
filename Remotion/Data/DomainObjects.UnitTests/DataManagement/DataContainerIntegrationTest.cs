@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
+  [TestFixture]
   public class DataContainerIntegrationTest : ClientTransactionBaseTest
   {
     private DataContainer _existingOrderDataContainer;

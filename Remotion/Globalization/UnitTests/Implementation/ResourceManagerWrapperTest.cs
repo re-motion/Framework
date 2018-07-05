@@ -6,6 +6,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Globalization.UnitTests.Implementation
 {
+  [TestFixture]
   public class ResourceManagerWrapperTest
   {
     [Test]

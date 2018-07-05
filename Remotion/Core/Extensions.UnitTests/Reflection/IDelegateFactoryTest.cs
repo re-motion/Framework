@@ -19,8 +19,9 @@ using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.Reflection
+namespace Remotion.Extensions.UnitTests.Reflection
 {
+  [TestFixture]
   public class IDelegateFactoryTest
   {
     private DefaultServiceLocator _serviceLocator;

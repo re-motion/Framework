@@ -28,6 +28,7 @@ using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 {
+  [TestFixture]
   public class UnloadAllTest : UnloadTestBase
   {
     [Test]

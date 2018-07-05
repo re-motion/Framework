@@ -22,6 +22,7 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageTests
 {
+  [TestFixture]
   public class InfrastructureExceptionHandling_WxePageTest: WxeTest
   {
     private class ThrowingPage : Page

@@ -21,6 +21,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation
 {
+  [TestFixture]
   public class IMemberInformationNameResolverTest
   {
     private DefaultServiceLocator _serviceLocator;

@@ -8,6 +8,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Validation
 {
+  [TestFixture]
   public class IBocTextValueValidatorFactoryTest
   {
     private DefaultServiceLocator _serviceLocator;
