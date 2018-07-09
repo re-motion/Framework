@@ -60,7 +60,7 @@ function DropDownMenu_BindOpenEvent (openTarget, menuID, eventType, getSelection
   var menuButton = openTarget[0].tagName.toLowerCase() === 'a' ? openTarget : openTarget.find ('a[href]:last');
   menuButton.attr('aria-haspopup', 'menu');
   menuButton.attr('aria-expanded', 'false');
-  menuButton.attr('aria-controls', '');
+  menuButton.removeAttr('aria-expanded');
 
   openTarget.bind(
       eventType,
@@ -279,7 +279,7 @@ function DropDownMenu_ClosePopUp()
   var menuButtonID = div.attr('aria-labelledBy');
   var menuButton = document.getElementById (menuButtonID);
   menuButton.setAttribute('aria-expanded', 'false');
-  menuButton.setAttribute('aria-controls', '');
+  menuButton.removeAttribute('aria-controls');
   menuButton.focus();
 
   $("li", div).removeClass(_dropDownMenu_itemSelectedClassName);

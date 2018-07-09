@@ -170,9 +170,9 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
         if (tab.IsSelected)
         {
           attributes.Add (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.True);
-          // aria-controls will not be populated at this time. Populating the element during rendering isn't possible with the current composition graph.
+          // aria-controls will not be rendered at this time. Rendering the element isn't possible with the current composition graph.
           // Screenreaders do not depend/support aria-controls so this is not an issue at this time.
-          attributes.Add (HtmlTextWriterAttribute2.AriaControls, "");
+          //attributes.Add (HtmlTextWriterAttribute2.AriaControls, ??);
           attributes.Add ("tabindex", "0");
         }
         else
@@ -188,9 +188,9 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
         {
           command.NoneCommand.EnableFocus = true;
           attributes.Add (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.True);
-          // aria-controls will not be populated at this time. Populating the element during rendering isn't possible with the current composition graph.
+          // aria-controls will not be rendered at this time. Rendering the element isn't possible with the current composition graph.
           // Screenreaders do not depend/support aria-controls so this is not an issue at this time.
-          attributes.Add (HtmlTextWriterAttribute2.AriaControls, "");
+          //attributes.Add (HtmlTextWriterAttribute2.AriaControls, ??);
           attributes.Add ("tabindex", "0");
         }
         else
