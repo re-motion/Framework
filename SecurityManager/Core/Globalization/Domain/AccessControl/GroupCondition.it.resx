@@ -121,7 +121,7 @@
     <value>Unità strutturale</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.BranchOfOwningGroup" xml:space="preserve">
-    <value>Stessa … (unità strutturale)</value>
+    <value>Stessa ... (unità strutturale)</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.None" xml:space="preserve">
     <value>Qualsiasi gruppo</value>

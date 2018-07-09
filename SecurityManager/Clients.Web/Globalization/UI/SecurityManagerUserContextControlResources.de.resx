@@ -108,9 +108,9 @@
     <value>Aktueller Mandant</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentSubstitutionCommandTooltip" xml:space="preserve">
-    <value>Klicken Sie um die Stellvertretung zu ändern</value>
+    <value>Klicken Sie, um die Stellvertretung zu ändern</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentTenantCommandTooltip" xml:space="preserve">
-    <value>Klicken Sie um den Mandanten zu ändern</value>
+    <value>Klicken Sie, um den Mandanten zu ändern</value>
   </data>
 </root>

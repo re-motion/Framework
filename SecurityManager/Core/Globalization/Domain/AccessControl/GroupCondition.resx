@@ -121,7 +121,7 @@
     <value>Group type</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.BranchOfOwningGroup" xml:space="preserve">
-    <value>Same … (group type)</value>
+    <value>Same ... (group type)</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.None" xml:space="preserve">
     <value>Any group</value>
