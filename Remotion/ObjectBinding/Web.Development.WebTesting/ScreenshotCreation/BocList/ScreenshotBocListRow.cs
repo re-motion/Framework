@@ -41,6 +41,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       _fluentRow = fluentRow;
     }
 
+    public IFluentScreenshotElement<TRow> FluentRow
+    {
+      get { return _fluentRow; }
+    }
+
+    public IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> FluentList
+    {
+      get { return _fluentList; }
+    }
+
+    public TRow Row
+    {
+      get { return _fluentRow.Target; }
+    }
+
+    public TList List
+    {
+      get { return _fluentList.Target.List; }
+    }
+
     public ScreenshotBocListFluentRowCellSelector<TList, TRow, TCell> GetCellSelector ()
     {
       return new ScreenshotBocListFluentRowCellSelector<TList, TRow, TCell> (_fluentList, _fluentRow);

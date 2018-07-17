@@ -51,6 +51,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       _includeHeader = includeHeader;
     }
 
+    public IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> FluentList
+    {
+      get { return _fluentList; }
+    }
+
+    public TList List
+    {
+      get { return _fluentList.Target.List; }
+    }
+
     public ScreenshotBocListFluentColumnCellSelector<TList, TRow, TCell> GetCellSelector ()
     {
       return new ScreenshotBocListFluentColumnCellSelector<TList, TRow, TCell> (_fluentList, _columnIndex);

@@ -76,17 +76,42 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var derivedTableContainer = SelfResolvableFluentScreenshot.Create (
           new DerivedScreenshotBocListTableContainer<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
               fluentTableContainer.GetTarget().FluentList, fluentTableContainer.GetTarget().FluentElement));
-      Assert.That (derivedTableContainer.GetHeaderRow(), Is.Not.Null);
+      var fluentHeaderRow = derivedTableContainer.GetHeaderRow();
+      Assert.That (fluentHeaderRow, Is.Not.Null);
+      var derivedHeaderRow = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListHeaderRow<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentTableContainer.GetTarget().FluentList,
+              fluentHeaderRow.GetTarget().FluentElement),
+          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
+      Assert.That (derivedHeaderRow.GetCell(), Is.Not.Null);
+      Assert.That (derivedHeaderRow.GetCell (1), Is.Not.Null);
+      Assert.That (derivedHeaderRow.GetCell ("RowCmd"), Is.Not.Null);
       Assert.That (derivedTableContainer.GetRowCount(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn (1), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn ("RowCmd"), Is.Not.Null);
       Assert.That (derivedTableContainer.GetRow(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRow (1), Is.Not.Null);
       Assert.That (derivedTableContainer.GetRow ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
-      //Assert.That (fluentTableContainer.GetCell(), Is.Not.Null);
-      //Assert.That (fluentTableContainer.GetCell(0), Is.Not.Null);
-      //Assert.That (fluentTableContainer.GetCell(""), Is.Not.Null);
+      var fluentRow = derivedTableContainer.GetRow (1);
+      Assert.That (fluentRow, Is.Not.Null);
+      var derivedRow = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListRow<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentRow.GetTarget().FluentList,
+              fluentRow.GetTarget().FluentRow),
+          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
+      Assert.That (derivedRow.GetCell(), Is.Not.Null);
+      Assert.That (derivedRow.GetCell (1), Is.Not.Null);
+      Assert.That (derivedRow.GetCell ("RowCmd"), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetColumn(), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetColumn ("RowCmd"), Is.Not.Null);
+      var fluentColumn = derivedTableContainer.GetColumn (1);
+      Assert.That (fluentColumn, Is.Not.Null);
+      var derivedColumn = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListColumn<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentTableContainer.GetTarget().FluentList,
+              includeHeader : false,
+              columnIndex : 1),
+          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
+      Assert.That (derivedColumn.GetCell(), Is.Not.Null);
+      Assert.That (derivedColumn.GetCell (1), Is.Not.Null);
+      Assert.That (derivedColumn.GetCell ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
 
       var fluentNavigator = derivedControlObject.GetNavigator();
       Assert.That (fluentNavigator, Is.Not.Null);
@@ -132,17 +157,42 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var derivedTableContainer = SelfResolvableFluentScreenshot.Create (
           new DerivedScreenshotBocListTableContainer<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
               fluentTableContainer.GetTarget().FluentList, fluentTableContainer.GetTarget().FluentElement));
-      Assert.That (derivedTableContainer.GetHeaderRow(), Is.Not.Null);
+      var fluentHeaderRow = derivedTableContainer.GetHeaderRow();
+      Assert.That (fluentHeaderRow, Is.Not.Null);
+      var derivedHeaderRow = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListHeaderRow<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentTableContainer.GetTarget().FluentList,
+              fluentHeaderRow.GetTarget().FluentElement),
+          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
+      Assert.That (derivedHeaderRow.GetCell(), Is.Not.Null);
+      Assert.That (derivedHeaderRow.GetCell (1), Is.Not.Null);
+      Assert.That (derivedHeaderRow.GetCell ("RowCmd"), Is.Not.Null);
       Assert.That (derivedTableContainer.GetRowCount(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn (1), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn ("RowCmd"), Is.Not.Null);
       Assert.That (derivedTableContainer.GetRow(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRow (1), Is.Not.Null);
       Assert.That (derivedTableContainer.GetRow ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
-      //Assert.That (fluentTableContainer.GetCell(), Is.Not.Null);
-      //Assert.That (fluentTableContainer.GetCell(0), Is.Not.Null);
-      //Assert.That (fluentTableContainer.GetCell(""), Is.Not.Null);
+      var fluentRow = derivedTableContainer.GetRow (1);
+      Assert.That (fluentRow, Is.Not.Null);
+      var derivedRow = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListRow<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentRow.GetTarget().FluentList,
+              fluentRow.GetTarget().FluentRow),
+          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
+      Assert.That (derivedRow.GetCell(), Is.Not.Null);
+      Assert.That (derivedRow.GetCell (1), Is.Not.Null);
+      Assert.That (derivedRow.GetCell ("RowCmd"), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetColumn(), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetColumn ("RowCmd"), Is.Not.Null);
+      var fluentColumn = derivedTableContainer.GetColumn (1);
+      Assert.That (fluentColumn, Is.Not.Null);
+      var derivedColumn = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListColumn<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentTableContainer.GetTarget().FluentList,
+              includeHeader : false,
+              columnIndex : 1),
+          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
+      Assert.That (derivedColumn.GetCell(), Is.Not.Null);
+      Assert.That (derivedColumn.GetCell (1), Is.Not.Null);
+      Assert.That (derivedColumn.GetCell ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
 
       var fluentNavigator = derivedControlObject.GetNavigator();
       Assert.That (fluentNavigator, Is.Not.Null);
@@ -535,6 +585,46 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
           : base (fluentList, fluentElement)
+      {
+      }
+    }
+
+    private class DerivedScreenshotBocListHeaderRow<TList, TRow, TCell> : ScreenshotBocListHeaderRow<TList, TRow, TCell>
+        where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
+        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TCell : ControlObject
+    {
+      public DerivedScreenshotBocListHeaderRow (
+          IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
+          IFluentScreenshotElement<ElementScope> fluentElement)
+          : base (fluentList, fluentElement)
+      {
+      }
+    }
+
+    private class DerivedScreenshotBocListRow<TList, TRow, TCell> : ScreenshotBocListRow<TList, TRow, TCell>
+        where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
+        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TCell : ControlObject
+    {
+      public DerivedScreenshotBocListRow (
+          IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
+          IFluentScreenshotElement<TRow> fluentRow)
+          : base (fluentList, fluentRow)
+      {
+      }
+    }
+
+    private class DerivedScreenshotBocListColumn<TList, TRow, TCell> : ScreenshotBocListColumn<TList, TRow, TCell>
+        where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
+        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TCell : ControlObject
+    {
+      public DerivedScreenshotBocListColumn (
+          IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
+          int columnIndex,
+          bool includeHeader)
+          : base (fluentList, columnIndex, includeHeader)
       {
       }
     }
