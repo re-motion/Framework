@@ -330,8 +330,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var controlObject = new DerivedDropDownMenuControlObject (home.DropDownMenus().GetByLocalID ("MyDropDownMenu").Context);
       var fluentControlObject = controlObject.ForControlObjectScreenshot();
 
-      Assert.That (fluentControlObject.GetMenu(), Is.Not.Null);
       Assert.That (() => fluentControlObject.OpenMenu(), Throws.Nothing);
+      Assert.That (fluentControlObject.GetMenu(), Is.Not.Null);
       Assert.That (fluentControlObject.SelectItem(), Is.Not.Null);
     }
 
