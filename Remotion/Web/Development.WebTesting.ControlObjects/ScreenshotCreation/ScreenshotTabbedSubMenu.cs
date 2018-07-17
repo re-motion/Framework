@@ -29,16 +29,17 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
   /// </summary>
   public class ScreenshotTabbedSubMenu : ISelfResolvable
   {
-    private readonly IFluentScreenshotElement<TabbedMenuControlObject> _fluentTabbedMenu;
+    private readonly IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> _fluentTabbedMenu;
     private readonly IFluentScreenshotElement<ElementScope> _fluentElement;
 
     public ScreenshotTabbedSubMenu (
-        [NotNull] IFluentScreenshotElement<TabbedMenuControlObject> fluentTabbedMenu,
+        [NotNull] IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu,
         [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
       ArgumentUtility.CheckNotNull ("fluentTabbedMenu", fluentTabbedMenu);
       ArgumentUtility.CheckNotNull ("fluentElement", fluentElement);
 
+      
       _fluentTabbedMenu = fluentTabbedMenu;
       _fluentElement = fluentElement;
     }
@@ -48,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
       get { return _fluentElement; }
     }
 
-    public IFluentScreenshotElement<TabbedMenuControlObject> FluentTabbedMenu
+    public IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> FluentTabbedMenu
     {
       get { return _fluentTabbedMenu; }
     }

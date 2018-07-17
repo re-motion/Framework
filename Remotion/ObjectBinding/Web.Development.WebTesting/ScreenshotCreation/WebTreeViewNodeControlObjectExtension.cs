@@ -38,15 +38,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     {
       ArgumentUtility.CheckNotNull ("bocTreeViewNode", bocTreeViewNode);
 
-      var fluentBocTreeView = bocTreeViewNode.ForControlObjectScreenshot();
-      return SelfResolvableFluentScreenshot.Create (new ScreenshotBocTreeViewNodeControlObject (fluentBocTreeView));
+      return SelfResolvableFluentScreenshot.Create (
+          new ScreenshotBocTreeViewNodeControlObject (
+              bocTreeViewNode.ForControlObjectScreenshot(),
+              bocTreeViewNode.Scope.ForElementScopeScreenshot()));
     }
 
     /// <summary>
     /// Returns the label of the <see cref="WebTreeViewNodeControlObject"/> (image and header).
     /// </summary>
-    public static IFluentScreenshotElement<ElementScope> GetLabel (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocTreeViewNodeControlObject> fluentBocTreeView)
+    public static FluentScreenshotElement<ElementScope> GetLabel (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocTreeViewNodeControlObject> fluentBocTreeView)
     {
       var result = fluentBocTreeView.Target.BocTreeViewNode.Scope.FindCss ("span > span", Options.NoWait);
       result.EnsureExistence();
@@ -57,8 +59,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns the children of the <see cref="WebTreeViewNodeControlObject"/>.
     /// </summary>
-    public static IFluentScreenshotElement<ElementScope> GetChildren (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocTreeViewNodeControlObject> fluentBocTreeView)
+    public static FluentScreenshotElement<ElementScope> GetChildren (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocTreeViewNodeControlObject> fluentBocTreeView)
     {
       var result = fluentBocTreeView.Target.BocTreeViewNode.Scope.FindCss ("ul", Options.NoWait);
       result.EnsureExistence();

@@ -36,38 +36,54 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("list", list);
 
-      return
-          SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject> (
-                  FluentUtility.CreateFluentControlObject (list)));
+      return SelfResolvableFluentScreenshot.Create (
+          new ScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject> (
+              FluentUtility.CreateFluentControlObject (list),
+              list.Scope.ForElementScopeScreenshot()));
+    }
+
+    /// <summary>
+    /// Starts the fluent screenshot API for the specified <paramref name="list"/>.
+    /// </summary>
+    public static FluentScreenshotElement<ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListCellControlObject>> ForBocListScreenshot<TBocListControlObject, TBocListRowControlObject> (
+        [NotNull] this TBocListControlObject list)
+        where TBocListControlObject : BocListControlObject<TBocListRowControlObject>
+        where TBocListRowControlObject : BocListRowControlObject
+    {
+      ArgumentUtility.CheckNotNull ("list", list);
+
+      return SelfResolvableFluentScreenshot.Create (
+          new ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListCellControlObject> (
+              FluentUtility.CreateFluentControlObject (list),
+              list.Scope.ForElementScopeScreenshot()));
     }
 
     /// <summary>
     /// Starts the fluent screenshot API for the specified <paramref name="listAsGrid"/>
     /// </summary>
-    public static
-        FluentScreenshotElement<ScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>>
-        ForScreenshot ([NotNull] this BocListAsGridControlObject listAsGrid)
+    public static FluentScreenshotElement<ScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>> ForScreenshot (
+        [NotNull] this BocListAsGridControlObject listAsGrid)
     {
       ArgumentUtility.CheckNotNull ("listAsGrid", listAsGrid);
 
-      return
-          SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
-                  FluentUtility.CreateFluentControlObject (listAsGrid)));
+      return SelfResolvableFluentScreenshot.Create (
+          new ScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              FluentUtility.CreateFluentControlObject (listAsGrid),
+              listAsGrid.Scope.ForElementScopeScreenshot()));
     }
 
     /// <summary>
-    /// Returns the list of the specified <paramref name="fluentList"/>.
+    /// Starts the fluent screenshot API for the specified <paramref name="listAsGrid"/>.
     /// </summary>
-    public static TList GetTarget<TList, TRow, TCell> ([NotNull] this IFluentScreenshotElement<ScreenshotBocList<TList, TRow, TCell>> fluentList)
-        where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
-        where TCell : ControlObject
+    public static FluentScreenshotElement<ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListAsGridCellControlObject>> ForBocListAsGridScreenshot<TBocListControlObject, TBocListRowControlObject> (
+        [NotNull] this TBocListControlObject listAsGrid)
+        where TBocListControlObject : BocListAsGridControlObject<TBocListRowControlObject>
+        where TBocListRowControlObject : BocListAsGridRowControlObject
     {
-      return fluentList.Target.List;
+      return SelfResolvableFluentScreenshot.Create (
+          new ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListAsGridCellControlObject> (
+              FluentUtility.CreateFluentControlObject (listAsGrid),
+              listAsGrid.Scope.ForElementScopeScreenshot()));
     }
-
-    // itodo more GetTarget
   }
 }

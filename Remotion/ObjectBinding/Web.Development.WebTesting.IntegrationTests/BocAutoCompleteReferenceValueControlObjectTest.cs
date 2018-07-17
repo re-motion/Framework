@@ -272,6 +272,49 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (informationPopup.IsVisible(), Is.False);
     }
 
+    [Category ("Screenshot")]
+    [Test]
+    public void ScreenshotTest_DerivedType ()
+    {
+      var home = Start();
+      var controlObjectContext = home.AutoCompletes().GetByLocalID ("body_DataEditControl_PartnerField_NoAutoPostBack").Context;
+      var controlObject = new DerivedBocAutoCompleteReferenceValueControlObject (controlObjectContext);
+      var fluentControlObject = controlObject.ForControlObjectScreenshot();
+
+      Assert.That (fluentControlObject.GetSelectList(), Is.Not.Null);
+      var fluentInformationPopup = fluentControlObject.GetInformationPopup();
+      Assert.That (fluentInformationPopup, Is.Not.Null);
+      Assert.That (fluentControlObject.GetCommand(), Is.Not.Null);
+      Assert.That (fluentControlObject.GetDropDownButton(), Is.Not.Null);
+      Assert.That (fluentControlObject.GetOptionsMenu(), Is.Not.Null);
+      Assert.That (fluentControlObject.GetValue(), Is.Not.Null);
+      Assert.That (fluentControlObject.IsReadOnly(), Is.Not.Null);
+      Assert.That (() => fluentControlObject.SetValue (""), Throws.Nothing);
+
+      var derivedInformationPopup = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocAutoCompleteReferenceValueInformationPopup (fluentInformationPopup.GetTarget().FluentAutoComplete));
+      const string nonBreakingSpace = " ";
+      Assert.That (() => derivedInformationPopup.Display (nonBreakingSpace), Throws.Nothing);
+      Assert.That (() => derivedInformationPopup.WaitUntilVisible(), Throws.Nothing);
+      Assert.That (derivedInformationPopup.IsVisible(), Is.Not.Null);
+      Assert.That (() => derivedInformationPopup.Hide(), Throws.Nothing);
+
+      var derivedSelectList = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocAutoCompleteReferenceValueSelectList (fluentInformationPopup.GetTarget().FluentAutoComplete));
+      Assert.That (() => derivedSelectList.Hide(), Throws.Nothing);
+      fluentControlObject.SetValue (string.Empty);
+      Assert.That (() => derivedSelectList.Show (), Throws.Nothing);
+      Assert.That (() => derivedSelectList.WaitUntilVisible(), Throws.Nothing);
+      Assert.That (derivedSelectList.IsVisible(), Is.Not.Null);
+      Assert.That (() => derivedSelectList.NextItem(), Throws.Nothing);
+      Assert.That (() => derivedSelectList.PreviousItem(), Throws.Nothing);
+      Assert.That (() => derivedSelectList.NextPage(), Throws.Nothing);
+      Assert.That (() => derivedSelectList.PreviousPage(), Throws.Nothing);
+      Assert.That (() => derivedSelectList.Select(), Throws.Nothing);
+      Assert.That (() => derivedSelectList.Select(0), Throws.Nothing);
+      Assert.That (derivedSelectList.GetSelectedItem(), Is.Not.Null);
+    }
+
     [Test]
     public void TestIsDisabled_SetMethodsThrow ()
     {
@@ -511,6 +554,32 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     private WxePageObject Start ()
     {
       return Start ("BocAutoCompleteReferenceValue");
+    }
+
+    private class DerivedBocAutoCompleteReferenceValueControlObject : BocAutoCompleteReferenceValueControlObject
+    {
+      public DerivedBocAutoCompleteReferenceValueControlObject (ControlObjectContext context)
+          : base (context)
+      {
+      }
+    }
+
+    private class DerivedScreenshotBocAutoCompleteReferenceValueInformationPopup : ScreenshotBocAutoCompleteReferenceValueInformationPopup
+    {
+      public DerivedScreenshotBocAutoCompleteReferenceValueInformationPopup (
+          IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentControl)
+          : base (fluentControl)
+      {
+      }
+    }
+
+    private class DerivedScreenshotBocAutoCompleteReferenceValueSelectList : ScreenshotBocAutoCompleteReferenceValueSelectList
+    {
+      public DerivedScreenshotBocAutoCompleteReferenceValueSelectList (
+          IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
+          : base (fluentAutoComplete)
+      {
+      }
     }
   }
 }

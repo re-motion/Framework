@@ -28,17 +28,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
   /// </summary>
   public class ScreenshotBocAutoCompleteReferenceValueSelectList : ISelfResolvable
   {
-    private readonly IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> _fluentAutoComplete;
+    private readonly IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> _fluentAutoComplete;
 
     public ScreenshotBocAutoCompleteReferenceValueSelectList (
-        [NotNull] IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
+        [NotNull] IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
       ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
 
       _fluentAutoComplete = fluentAutoComplete;
     }
 
-    public IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> FluentAutoComplete
+    public IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> FluentAutoComplete
     {
       get { return _fluentAutoComplete; }
     }

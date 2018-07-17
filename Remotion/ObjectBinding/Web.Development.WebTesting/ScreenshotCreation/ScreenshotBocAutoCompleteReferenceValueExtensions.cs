@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <exception cref="InvalidOperationException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> is read-only.</exception>
     public static FluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> GetSelectList (
-        [NotNull] this IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
       ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
 
@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <exception cref="MissingHtmlException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no command.</exception>
     public static FluentScreenshotElement<CommandControlObject> GetCommand (
-        [NotNull] this IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
       ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
 
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <exception cref="MissingHtmlException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no drop-down-button as it is read-only.</exception>
     public static FluentScreenshotElement<ElementScope> GetDropDownButton (
-        [NotNull] this IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
       ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
 
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <exception cref="MissingHtmlException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no option menu.</exception>
     public static FluentScreenshotElement<DropDownMenuControlObject> GetOptionsMenu (
-        [NotNull] this IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
       ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
 
@@ -93,7 +93,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <exception cref="InvalidOperationException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> is read-only.</exception>
     public static FluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueInformationPopup> GetInformationPopup (
-        [NotNull] this IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
       ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
 
@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <see cref="BocAutoCompleteReferenceValueControlObject"/> is read-only, the text field.
     /// </summary>
     public static FluentScreenshotElement<ElementScope> GetValue (
-        [NotNull] this IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
       ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
 
@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns <see langword="true" /> if this <see cref="BocAutoCompleteReferenceValueControlObject"/> is read-only, otherwise <see langword="false" />.
     /// </summary>
-    public static bool IsReadOnly ([NotNull] this IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
+    public static bool IsReadOnly ([NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
       ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
 
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Sets the value of the specified <paramref name="fluentAutoComplete"/> and triggers the auto completion.
     /// </summary>
     public static void SetValue (
-        [NotNull] this IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete,
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete,
         [NotNull] string value)
     {
       ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);

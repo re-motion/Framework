@@ -65,6 +65,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
                                                               Trimming = StringTrimming.Word
                                                           };
 
+    [Test]
+    public void GetTarget ()
+    {
+      var home = Start();
+      var controlObject = home.DropDownLists().GetByLocalID ("MyDropDownList");
+      FluentScreenshotElement<DropDownListControlObject> fluentControlObject = controlObject.ForControlObjectScreenshot();
+
+      Assert.That (fluentControlObject.GetTarget(), Is.SameAs (controlObject));
+      Assert.That (((IFluentScreenshotElement<DropDownListControlObject>) fluentControlObject).GetTarget(), Is.SameAs (controlObject));
+      Assert.That (((IFluentScreenshotElementWithCovariance<DropDownListControlObject>) fluentControlObject).GetTarget(), Is.SameAs (controlObject));
+    }
+
     /// <summary>
     /// Tests cropping without a border.
     /// </summary>
@@ -255,7 +267,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         return;
       }
 
-      ScreenshotTestingDelegate<IFluentScreenshotElement<DropDownListControlObject>> test = (builder, target) =>
+      ScreenshotTestingDelegate<FluentScreenshotElement<DropDownListControlObject>> test = (builder, target) =>
       {
         builder.AnnotateBox (target, Pens.Red, WebPadding.Inner);
 
@@ -267,17 +279,27 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       fluentDropDownList.Open();
       Thread.Sleep (250);
 
-      Helper.RunScreenshotTest<IFluentScreenshotElement<DropDownListControlObject>, DropDownListControlObjectTest> (
+      Helper.RunScreenshotTest<FluentScreenshotElement<DropDownListControlObject>, DropDownListControlObjectTest> (
           fluentDropDownList,
           ScreenshotTestingType.Desktop,
           test);
+    }
+
+    [Test]
+    public void DropDownList_WithDerivedControlObject ()
+    {
+      var home = Start();
+      var controlObject = new DerivedDropDownListControlObject (home.DropDownMenus().GetByLocalID ("MyDropDownList").Context);
+      var fluentControlObject = controlObject.ForControlObjectScreenshot();
+
+      Assert.That (() => fluentControlObject.Open(), Throws.Nothing);
     }
 
     [Category ("Screenshot")]
     [Test]
     public void DropDownMenu ()
     {
-      ScreenshotTestingDelegate<IFluentScreenshotElement<DropDownMenuControlObject>> test = (builder, target) =>
+      ScreenshotTestingDelegate<FluentScreenshotElement<DropDownMenuControlObject>> test = (builder, target) =>
       {
         builder.AnnotateBox (target.GetMenu(), Pens.Magenta, WebPadding.Inner);
 
@@ -295,17 +317,29 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       fluentDropDownMenu.OpenMenu();
       Thread.Sleep (250);
 
-      Helper.RunScreenshotTestExact<IFluentScreenshotElement<DropDownMenuControlObject>, DropDownMenuControlObjectTest> (
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<DropDownMenuControlObject>, DropDownMenuControlObjectTest> (
           fluentDropDownMenu,
           ScreenshotTestingType.Both,
           test);
+    }
+
+    [Test]
+    public void DropDownMenu_WithDerivedControlObject ()
+    {
+      var home = Start();
+      var controlObject = new DerivedDropDownMenuControlObject (home.DropDownMenus().GetByLocalID ("MyDropDownMenu").Context);
+      var fluentControlObject = controlObject.ForControlObjectScreenshot();
+
+      Assert.That (fluentControlObject.GetMenu(), Is.Not.Null);
+      Assert.That (() => fluentControlObject.OpenMenu(), Throws.Nothing);
+      Assert.That (fluentControlObject.SelectItem(), Is.Not.Null);
     }
 
     [Category ("Screenshot")]
     [Test]
     public void ListMenu ()
     {
-      ScreenshotTestingDelegate<IFluentScreenshotElement<ListMenuControlObject>> test = (builder, target) =>
+      ScreenshotTestingDelegate<FluentScreenshotElement<ListMenuControlObject>> test = (builder, target) =>
       {
         builder.AnnotateBox (target, Pens.Magenta, WebPadding.Inner);
 
@@ -321,17 +355,27 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
       var fluentListMenu = home.ListMenus().GetByLocalID ("MyListMenu").ForControlObjectScreenshot();
 
-      Helper.RunScreenshotTestExact<IFluentScreenshotElement<ListMenuControlObject>, ListMenuControlObjectTest> (
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<ListMenuControlObject>, ListMenuControlObjectTest> (
           fluentListMenu,
           ScreenshotTestingType.Both,
           test);
+    }
+
+    [Test]
+    public void ListMenu_WithDerivedControlObject ()
+    {
+      var home = Start();
+      var controlObject = new DerivedListMenuControlObject (home.ListMenus().GetByLocalID ("MyListMenu").Context);
+      var fluentControlObject = controlObject.ForControlObjectScreenshot();
+
+      Assert.That (fluentControlObject.SelectItem(), Is.Not.Null);
     }
 
     [Category ("Screenshot")]
     [Test]
     public void TabbedMenu ()
     {
-      ScreenshotTestingDelegate<IFluentScreenshotElement<TabbedMenuControlObject>> test = (builder, target) =>
+      ScreenshotTestingDelegate<FluentScreenshotElement<TabbedMenuControlObject>> test = (builder, target) =>
       {
         builder.AnnotateBox (target, Pens.Magenta, WebPadding.Inner);
 
@@ -355,17 +399,32 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var menu = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
       var fluentTabbedMenu = menu.ForControlObjectScreenshot();
 
-      Helper.RunScreenshotTestExact<IFluentScreenshotElement<TabbedMenuControlObject>, TabbedMenuControlObjectTest> (
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<TabbedMenuControlObject>, TabbedMenuControlObjectTest> (
           fluentTabbedMenu,
           ScreenshotTestingType.Both,
           test);
+    }
+
+    [Test]
+    public void TabbedMenu_WithDerivedControlObject ()
+    {
+      var home = Start();
+      var controlObject = new DerivedTabbedMenuControlObject (home.TabbedMenus().GetByLocalID ("MyTabbedMenu").Context);
+      var fluentControlObject = controlObject.ForControlObjectScreenshot();
+
+      Assert.That (fluentControlObject.SelectItem(), Is.Not.Null);
+      var subMenu = fluentControlObject.GetSubMenu();
+      Assert.That (subMenu, Is.Not.Null);
+      var derivedSubMenu = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotTabbedSubMenu (subMenu.GetTarget().FluentTabbedMenu, subMenu.GetTarget().FluentElement));
+      Assert.That (derivedSubMenu.SelectItem(), Is.Not.Null);
     }
 
     [Category ("Screenshot")]
     [Test]
     public void WebTabStrip ()
     {
-      ScreenshotTestingDelegate<IFluentScreenshotElement<WebTabStripControlObject>> test = (builder, target) =>
+      ScreenshotTestingDelegate<FluentScreenshotElement<WebTabStripControlObject>> test = (builder, target) =>
       {
         builder.AnnotateBox (target, Pens.Magenta, WebPadding.Inner);
 
@@ -381,17 +440,27 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
       var fluentTabStrip = home.WebTabStrips().GetByLocalID ("MyTabStrip").ForControlObjectScreenshot();
 
-      Helper.RunScreenshotTestExact<IFluentScreenshotElement<WebTabStripControlObject>, WebTabStripControlObjectTest> (
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<WebTabStripControlObject>, WebTabStripControlObjectTest> (
           fluentTabStrip,
           ScreenshotTestingType.Both,
           test);
+    }
+
+    [Test]
+    public void WebTabStrip_WithDerivedControlObject ()
+    {
+      var home = Start();
+      var controlObject = new DerivedWebTabStripControlObject (home.TabbedMenus().GetByLocalID ("MyTabStrip").Context);
+      var fluentControlObject = controlObject.ForControlObjectScreenshot();
+
+      Assert.That (fluentControlObject.SelectItem(), Is.Not.Null);
     }
 
     [Category ("Screenshot")]
     [Test]
     public void WebTreeView ()
     {
-      ScreenshotTestingDelegate<IFluentScreenshotElement<ScreenshotWebTreeViewNodeControlObject>> test = (builder, target) =>
+      ScreenshotTestingDelegate<FluentScreenshotElement<ScreenshotWebTreeViewNodeControlObject>> test = (builder, target) =>
       {
         builder.AnnotateBox (target, Pens.Red, WebPadding.Inner);
         builder.AnnotateBox (target.GetLabel(), Pens.Green, WebPadding.Inner);
@@ -404,10 +473,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var webTreeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView");
       var fluentNode = webTreeView.GetNode().WithItemID ("ItemA").ForScreenshot();
 
-      Helper.RunScreenshotTestExact<IFluentScreenshotElement<ScreenshotWebTreeViewNodeControlObject>, WebTreeViewControlObjectTest> (
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<ScreenshotWebTreeViewNodeControlObject>, WebTreeViewControlObjectTest> (
           fluentNode,
           ScreenshotTestingType.Both,
           test);
+    }
+
+    [Test]
+    public void WebTreeView_WithDerivedControlObject ()
+    {
+      var home = Start();
+      var controlObject = new DerivedWebTreeViewControlObject (home.WebTreeViews().GetByLocalID ("MyWebTreeView").Context);
+      var fluentControlObject = controlObject.ForControlObjectScreenshot();
+      Assert.That (fluentControlObject, Is.Not.Null);
+
+      var fluentNode = controlObject.GetNode().WithItemID ("ItemA").ForScreenshot();
+      var derivedNode = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotWebTreeViewNodeControlObject (fluentNode.GetTarget().FluentWebTreeViewNode, fluentNode.GetTarget().FluentElement));
+
+      Assert.That (derivedNode.GetChildren(), Is.Not.Null);
+      Assert.That (derivedNode.GetLabel(), Is.Not.Null);
     }
 
     private ControlObject PrepareTest ()
@@ -424,6 +509,74 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private HtmlPageObject Start ()
     {
       return Start<HtmlPageObject> ("ScreenshotTest.wxe");
+    }
+
+    private class DerivedDropDownListControlObject : DropDownListControlObject
+    {
+      public DerivedDropDownListControlObject (ControlObjectContext context)
+          : base (context)
+      {
+      }
+    }
+
+    private class DerivedDropDownMenuControlObject : DropDownMenuControlObject
+    {
+      public DerivedDropDownMenuControlObject (ControlObjectContext context)
+          : base (context)
+      {
+      }
+    }
+
+    private class DerivedListMenuControlObject : ListMenuControlObject
+    {
+      public DerivedListMenuControlObject (ControlObjectContext context)
+          : base (context)
+      {
+      }
+    }
+
+    private class DerivedTabbedMenuControlObject : TabbedMenuControlObject
+    {
+      public DerivedTabbedMenuControlObject (ControlObjectContext context)
+          : base (context)
+      {
+      }
+    }
+
+    private class DerivedScreenshotTabbedSubMenu : ScreenshotTabbedSubMenu
+    {
+      public DerivedScreenshotTabbedSubMenu (
+          IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu,
+          IFluentScreenshotElement<ElementScope> fluentElement)
+          : base (fluentTabbedMenu, fluentElement)
+      {
+      }
+    }
+
+    private class DerivedWebTabStripControlObject : WebTabStripControlObject
+    {
+      public DerivedWebTabStripControlObject (ControlObjectContext context)
+          : base (context)
+      {
+      }
+    }
+
+    private class DerivedWebTreeViewControlObject : WebTreeViewControlObject
+    {
+      public DerivedWebTreeViewControlObject (ControlObjectContext context)
+          : base (context)
+      {
+      }
+    }
+
+    private class DerivedScreenshotWebTreeViewNodeControlObject : ScreenshotWebTreeViewNodeControlObject
+    {
+      public DerivedScreenshotWebTreeViewNodeControlObject (
+          IFluentScreenshotElementWithCovariance<WebTreeViewNodeControlObject> fluentWebTreeViewNode,
+          IFluentScreenshotElement<ElementScope> fluentElement)
+          : base (fluentWebTreeViewNode, fluentElement)
+      {
+      }
     }
   }
 }

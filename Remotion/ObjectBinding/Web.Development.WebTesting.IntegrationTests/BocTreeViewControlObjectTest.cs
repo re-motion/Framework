@@ -23,6 +23,7 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -60,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void WebTreeView ()
     {
-      ScreenshotTestingDelegate<IFluentScreenshotElement<ScreenshotBocTreeViewNodeControlObject>> test = (builder, target) =>
+      ScreenshotTestingDelegate<FluentScreenshotElement<ScreenshotBocTreeViewNodeControlObject>> test = (builder, target) =>
       {
         builder.AnnotateBox (target, Pens.Red, WebPadding.Inner);
         builder.AnnotateBox (target.GetLabel(), Pens.Green, WebPadding.Inner);
@@ -73,10 +74,44 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var webTreeView = home.TreeViews().GetByLocalID ("NoTopLevelExpander");
       var fluentNode = webTreeView.GetRootNode().ForScreenshot();
 
-      Helper.RunScreenshotTest<IFluentScreenshotElement<ScreenshotBocTreeViewNodeControlObject>, BocTreeViewControlObjectTest> (
+      Helper.RunScreenshotTest<FluentScreenshotElement<ScreenshotBocTreeViewNodeControlObject>, BocTreeViewControlObjectTest> (
           fluentNode,
           ScreenshotTestingType.Both,
           test);
+    }
+
+    [Test]
+    public void WebTreeView_WithDerivedControlObject ()
+    {
+      var home = Start();
+      var controlObject = new DerivedBocTreeViewControlObject (home.TreeViews().GetByLocalID ("NoTopLevelExpander").Context);
+      var fluentControlObject = controlObject.ForControlObjectScreenshot();
+      Assert.That (fluentControlObject, Is.Not.Null);
+
+      var fluentNode = controlObject.GetRootNode().ForScreenshot();
+      var derivedNode = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocTreeViewNodeControlObject (fluentNode.GetTarget().FluentBocTreeViewNode, fluentNode.GetTarget().FluentElement));
+
+      Assert.That (derivedNode.GetChildren(), Is.Not.Null);
+      Assert.That (derivedNode.GetLabel(), Is.Not.Null);
+    }
+
+    private class DerivedBocTreeViewControlObject : BocTreeViewControlObject
+    {
+      public DerivedBocTreeViewControlObject (ControlObjectContext context)
+          : base(context)
+      {
+      }
+    }
+
+    private class DerivedScreenshotBocTreeViewNodeControlObject : ScreenshotBocTreeViewNodeControlObject
+    {
+      public DerivedScreenshotBocTreeViewNodeControlObject (
+          IFluentScreenshotElementWithCovariance<BocTreeViewNodeControlObject> fluentBocTreeViewNode,
+          IFluentScreenshotElement<ElementScope> fluentElement)
+          : base (fluentBocTreeViewNode, fluentElement)
+      {
+      }
     }
 
     [Test]

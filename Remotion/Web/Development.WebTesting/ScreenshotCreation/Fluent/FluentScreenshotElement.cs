@@ -31,13 +31,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
   /// <item><description>and extend <see cref="IFluentScreenshotElement{T}"/></description></item>
   /// </list>
   /// </remarks>
-  public class FluentScreenshotElement<T> : IFluentScreenshotElement<T>
+  public class FluentScreenshotElement<T> : IFluentScreenshotElement<T>, IFluentScreenshotElementWithCovariance<T>
   {
-    protected readonly IScreenshotElementResolver<T> Resolver;
-    protected readonly T Target;
+    private readonly IScreenshotElementResolver<T> _resolver;
+    private readonly T _target;
 
-    protected ScreenshotTransformationCollection<T> Transformations;
-    protected ElementVisibility? MinimumElementVisibility;
+    private ScreenshotTransformationCollection<T> _transformations;
+    private ElementVisibility? _minimumElementVisibility;
 
     public FluentScreenshotElement (
         [NotNull] T target,
@@ -47,43 +47,49 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
       ArgumentUtility.CheckNotNull ("target", target);
       ArgumentUtility.CheckNotNull ("resolver", resolver);
 
-      Target = target;
-      Resolver = resolver;
+      _target = target;
+      _resolver = resolver;
 
-      Transformations = new ScreenshotTransformationCollection<T>();
-      MinimumElementVisibility = minimumElementVisibility;
+      _transformations = new ScreenshotTransformationCollection<T>();
+      _minimumElementVisibility = minimumElementVisibility;
+    }
+
+    /// <inheritdoc />
+    T IFluentScreenshotElementWithCovariance<T>.Target
+    {
+      get { return _target; }
     }
 
     /// <inheritdoc />
     ElementVisibility? IFluentScreenshotElement.MinimumElementVisibility
     {
-      get { return MinimumElementVisibility; }
-      set { MinimumElementVisibility = value; }
+      get { return _minimumElementVisibility; }
+      set { _minimumElementVisibility = value; }
     }
 
     /// <inheritdoc />
     IScreenshotElementResolver<T> IFluentScreenshotElement<T>.Resolver
     {
-      get { return Resolver; }
+      get { return _resolver; }
     }
 
     /// <inheritdoc />
     T IFluentScreenshotElement<T>.Target
     {
-      get { return Target; }
+      get { return _target; }
     }
 
     /// <inheritdoc />
     ScreenshotTransformationCollection<T> IFluentScreenshotElement<T>.Transformations
     {
-      get { return Transformations; }
-      set { Transformations = value; }
+      get { return _transformations; }
+      set { _transformations = value; }
     }
 
     /// <inheritdoc />
     ResolvedScreenshotElement IFluentScreenshotElement.ResolveBrowserCoordinates ()
     {
-      return Resolver.ResolveBrowserCoordinates (Target);
+      return _resolver.ResolveBrowserCoordinates (_target);
     }
 
     /// <inheritdoc />
@@ -91,7 +97,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     {
       ArgumentUtility.CheckNotNull ("locator", locator);
 
-      return Resolver.ResolveDesktopCoordinates (Target, locator);
+      return _resolver.ResolveDesktopCoordinates (_target, locator);
     }
   }
 }

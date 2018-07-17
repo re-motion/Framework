@@ -33,8 +33,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the text information field of the navigator.
     /// </summary>
     /// <exception cref="MissingHtmlException">Can not find the information field of the navigator.</exception>
-    public static IFluentScreenshotElement<ElementScope> GetPageInformationText<TList, TRow, TCell> (
-        this IFluentScreenshotElement<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
+    public static FluentScreenshotElement<ElementScope> GetPageInformationText<TList, TRow, TCell> (
+        this IFluentScreenshotElementWithCovariance<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject
@@ -49,8 +49,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the page number input field of the navigator.
     /// </summary>
     /// <exception cref="MissingHtmlException">Can not find the input field of the navigator.</exception>
-    public static IFluentScreenshotElement<ElementScope> GetPageNumberInput<TList, TRow, TCell> (
-        this IFluentScreenshotElement<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
+    public static FluentScreenshotElement<ElementScope> GetPageNumberInput<TList, TRow, TCell> (
+        this IFluentScreenshotElementWithCovariance<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject
@@ -65,8 +65,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the first-page button of the navigator.
     /// </summary>
     /// <exception cref="MissingHtmlException">Can not find the first-page button of the navigator.</exception>
-    public static IFluentScreenshotElement<ElementScope> GetFirstPageButton<TList, TRow, TCell> (
-        this IFluentScreenshotElement<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
+    public static FluentScreenshotElement<ElementScope> GetFirstPageButton<TList, TRow, TCell> (
+        this IFluentScreenshotElementWithCovariance<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject
@@ -82,8 +82,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the previous-page button of the navigator.
     /// </summary>
     /// <exception cref="MissingHtmlException">Can not find the previous-page button of the navigator.</exception>
-    public static IFluentScreenshotElement<ElementScope> GetPreviousPageButton<TList, TRow, TCell> (
-        this IFluentScreenshotElement<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
+    public static FluentScreenshotElement<ElementScope> GetPreviousPageButton<TList, TRow, TCell> (
+        this IFluentScreenshotElementWithCovariance<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject
@@ -99,8 +99,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the next-page button of the navigator.
     /// </summary>
     /// <exception cref="MissingHtmlException">Can not find the next-page button of the navigator.</exception>
-    public static IFluentScreenshotElement<ElementScope> GetNextPageButton<TList, TRow, TCell> (
-        this IFluentScreenshotElement<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
+    public static FluentScreenshotElement<ElementScope> GetNextPageButton<TList, TRow, TCell> (
+        this IFluentScreenshotElementWithCovariance<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject
@@ -116,8 +116,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the last-page button of the navigator.
     /// </summary>
     /// <exception cref="MissingHtmlException">Can not find the last-page button of the navigator.</exception>
-    public static IFluentScreenshotElement<ElementScope> GetLastPageButton<TList, TRow, TCell> (
-        this IFluentScreenshotElement<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
+    public static FluentScreenshotElement<ElementScope> GetLastPageButton<TList, TRow, TCell> (
+        this IFluentScreenshotElementWithCovariance<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject

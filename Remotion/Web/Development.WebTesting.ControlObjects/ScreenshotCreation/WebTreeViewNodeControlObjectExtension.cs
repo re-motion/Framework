@@ -35,15 +35,17 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     {
       ArgumentUtility.CheckNotNull ("webTreeViewNode", webTreeViewNode);
 
-      var fluentWebTreeView = webTreeViewNode.ForControlObjectScreenshot();
-      return SelfResolvableFluentScreenshot.Create (new ScreenshotWebTreeViewNodeControlObject (fluentWebTreeView));
+      return SelfResolvableFluentScreenshot.Create (
+          new ScreenshotWebTreeViewNodeControlObject (
+              webTreeViewNode.ForControlObjectScreenshot(),
+              webTreeViewNode.Scope.ForElementScopeScreenshot()));
     }
 
     /// <summary>
     /// Returns the label of the <see cref="WebTreeViewNodeControlObject"/> (image and header).
     /// </summary>
-    public static IFluentScreenshotElement<ElementScope> GetLabel (
-        [NotNull] this IFluentScreenshotElement<ScreenshotWebTreeViewNodeControlObject> fluentWebTreeViewNode)
+    public static FluentScreenshotElement<ElementScope> GetLabel (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotWebTreeViewNodeControlObject> fluentWebTreeViewNode)
     {
       var result = fluentWebTreeViewNode.Target.WebTreeViewNode.Scope.FindCss ("span > span", Options.NoWait);
       result.EnsureExistence();
@@ -54,8 +56,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <summary>
     /// Returns the children of the <see cref="WebTreeViewNodeControlObject"/>.
     /// </summary>
-    public static IFluentScreenshotElement<ElementScope> GetChildren (
-        [NotNull] this IFluentScreenshotElement<ScreenshotWebTreeViewNodeControlObject> fluentWebTreeViewNode)
+    public static FluentScreenshotElement<ElementScope> GetChildren (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotWebTreeViewNodeControlObject> fluentWebTreeViewNode)
     {
       var result = fluentWebTreeViewNode.Target.WebTreeViewNode.Scope.FindCss ("ul", Options.NoWait);
       result.EnsureExistence();

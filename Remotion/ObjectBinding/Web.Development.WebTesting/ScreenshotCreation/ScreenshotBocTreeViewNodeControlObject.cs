@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
+using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
@@ -27,27 +29,39 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
   /// </summary>
   public class ScreenshotBocTreeViewNodeControlObject : ISelfResolvable
   {
-    private readonly IFluentScreenshotElement<BocTreeViewNodeControlObject> _fluentWebTreeView;
+    private readonly IFluentScreenshotElementWithCovariance<BocTreeViewNodeControlObject> _fluentBocTreeViewNode;
+    private readonly IFluentScreenshotElement<ElementScope> _fluentElement;
 
-    public ScreenshotBocTreeViewNodeControlObject (IFluentScreenshotElement<BocTreeViewNodeControlObject> fluentWebTreeView)
+    public ScreenshotBocTreeViewNodeControlObject (
+        [NotNull] IFluentScreenshotElementWithCovariance<BocTreeViewNodeControlObject> fluentBocTreeViewNode,
+        [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
-      _fluentWebTreeView = fluentWebTreeView;
+      ArgumentUtility.CheckNotNull ("fluentBocTreeViewNode", fluentBocTreeViewNode);
+      ArgumentUtility.CheckNotNull ("fluentElement", fluentElement);
+
+      _fluentBocTreeViewNode = fluentBocTreeViewNode;
+      _fluentElement = fluentElement;
+    }
+
+    public IFluentScreenshotElement<ElementScope> FluentElement
+    {
+      get { return _fluentElement; }
     }
 
     public BocTreeViewNodeControlObject BocTreeViewNode
     {
-      get { return _fluentWebTreeView.Target; }
+      get { return _fluentBocTreeViewNode.Target; }
     }
 
-    public IFluentScreenshotElement<BocTreeViewNodeControlObject> FluentBocTreeViewNode
+    public IFluentScreenshotElementWithCovariance<BocTreeViewNodeControlObject> FluentBocTreeViewNode
     {
-      get { return _fluentWebTreeView; }
+      get { return _fluentBocTreeViewNode; }
     }
 
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveBrowserCoordinates ()
     {
-      return _fluentWebTreeView.ResolveBrowserCoordinates();
+      return _fluentElement.ResolveBrowserCoordinates();
     }
 
     /// <inheritdoc />
@@ -55,7 +69,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     {
       ArgumentUtility.CheckNotNull ("locator", locator);
 
-      return _fluentWebTreeView.ResolveDesktopCoordinates (locator);
+      return _fluentElement.ResolveDesktopCoordinates (locator);
     }
   }
 }

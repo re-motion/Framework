@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.FluentScree
     /// <summary>
     /// Opens the drop down list.
     /// </summary>
-    public static void Open ([NotNull] this IFluentScreenshotElement<DropDownListControlObject> fluentDropDownList)
+    public static void Open ([NotNull] this IFluentScreenshotElementWithCovariance<DropDownListControlObject> fluentDropDownList)
     {
       ArgumentUtility.CheckNotNull ("fluentDropDownList", fluentDropDownList);
 

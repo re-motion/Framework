@@ -118,6 +118,38 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           });
     }
 
+    [Category ("Screenshot")]
+    [Test]
+    public void ScreenshotTest_DerivedType ()
+    {
+      var home = Start();
+      var controlObjectContext = home.DateTimeValues().GetByLocalID ("body_DataEditControl_DateOfBirthField_Normal").Context;
+      var controlObject = new DerivedBocDateTimeValueControlObject (controlObjectContext);
+      var fluentControlObject = controlObject.ForControlObjectScreenshot();
+
+      Assert.That (fluentControlObject.GetDateField(), Is.Not.Null);
+      Assert.That (fluentControlObject.GetTimeField(), Is.Not.Null);
+      Assert.That (fluentControlObject.GetDatePickerIcon(), Is.Not.Null);
+      Assert.That (fluentControlObject.IsReadOnly(), Is.Not.Null);
+      Assert.That (fluentControlObject.GetDateTime(), Is.Not.Null);
+      Assert.That (fluentControlObject.GetDateTimeAsString(), Is.Not.Null);
+      Assert.That (fluentControlObject.HasTimeField(), Is.Not.Null);
+
+      var datePicker = fluentControlObject.GetDatePicker();
+      Assert.That (datePicker, Is.Not.Null);
+
+      var derivedSelectList = SelfResolvableFluentScreenshot.Create (new DerivedScreenshotBocDateTimeValuePicker (fluentControlObject));
+
+      Assert.That (() => datePicker.Open(), Throws.Nothing);
+      Assert.That (derivedSelectList.GetNavigationBar(), Is.Not.Null);
+      Assert.That (derivedSelectList.GetTitle(), Is.Not.Null);
+      Assert.That (derivedSelectList.GetNextMonthButton(), Is.Not.Null);
+      Assert.That (derivedSelectList.GetPreviousMonthButton(), Is.Not.Null);
+      Assert.That (derivedSelectList.GetWeekdayRow(), Is.Not.Null);
+      Assert.That (derivedSelectList.GetSelectedDay(), Is.Not.Null);
+      Assert.That (derivedSelectList.GetElement(), Is.Not.Null);
+    }
+
     [Test]
     public void TestIsDisabled_SetMethodsThrow ()
     {
@@ -418,6 +450,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     private ElementScope GetTimeScope (ElementScope scope)
     {
       return scope.FindTagWithAttribute ("input", DiagnosticMetadataAttributesForObjectBinding.BocDateTimeValueTimeField, "true");
+    }
+
+    private class DerivedBocDateTimeValueControlObject : BocDateTimeValueControlObject
+    {
+      public DerivedBocDateTimeValueControlObject (ControlObjectContext context)
+          : base (context)
+      {
+      }
+    }
+
+    private class DerivedScreenshotBocDateTimeValuePicker : ScreenshotBocDateTimeValuePicker
+    {
+      public DerivedScreenshotBocDateTimeValuePicker (IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
+          : base (fluentDateTimeValue)
+      {
+      }
     }
   }
 }

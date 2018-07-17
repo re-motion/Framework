@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <summary>
     /// Starts the fluent interface for selecting an item from the tabbed menu.
     /// </summary>
-    public static ScreenshotTabbedMenuSelector SelectItem ([NotNull] this IFluentScreenshotElement<TabbedMenuControlObject> fluentTabbedMenu)
+    public static ScreenshotTabbedMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu)
     {
       ArgumentUtility.CheckNotNull ("fluentTabbedMenu", fluentTabbedMenu);
 
@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <summary>
     /// Starts the fluent interface for the tabbed sub menu.
     /// </summary>
-    public static FluentScreenshotElement<ScreenshotTabbedSubMenu> GetSubMenu ([NotNull] this IFluentScreenshotElement<TabbedMenuControlObject> fluentTabbedMenu)
+    public static FluentScreenshotElement<ScreenshotTabbedSubMenu> GetSubMenu ([NotNull] this IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu)
     {
       ArgumentUtility.CheckNotNull ("fluentTabbedMenu", fluentTabbedMenu);
 
@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <summary>
     /// Starts the fluent interface for selecting an item from the tabbed sub menu.
     /// </summary>
-    public static ScreenshotTabbedMenuSelector SelectItem ([NotNull] this IFluentScreenshotElement<ScreenshotTabbedSubMenu> fluentTabbedSubMenu)
+    public static ScreenshotTabbedMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotTabbedSubMenu> fluentTabbedSubMenu)
     {
       ArgumentUtility.CheckNotNull ("fluentTabbedSubMenu", fluentTabbedSubMenu);
 

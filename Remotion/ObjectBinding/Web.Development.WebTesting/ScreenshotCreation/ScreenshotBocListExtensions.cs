@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <exception cref="InvalidOperationException">The menu-block could not be found.</exception>
     public static FluentScreenshotElement<ScreenshotBocListMenuBlock<TList, TRow, TCell>> GetMenuBlock<TList, TRow, TCell> (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocList<TList, TRow, TCell>> fluentList)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject
@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <exception cref="InvalidOperationException">The navigator could not be found.</exception>
     public static FluentScreenshotElement<ScreenshotBocListNavigator<TList, TRow, TCell>> GetNavigator<TList, TRow, TCell> (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocList<TList, TRow, TCell>> fluentList)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Starts the fluent API for controlling the table-container of the <see cref="BocListControlObjectBase{TRowControlObject,TCellControlObject}"/>.
     /// </summary>
     public static FluentScreenshotElement<ScreenshotBocListTableContainer<TList, TRow, TCell>> GetTableContainer<TList, TRow, TCell> (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocList<TList, TRow, TCell>> fluentList)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject

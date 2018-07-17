@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Starts the fluent API for controlling the DropDownMenu in the menu-block.
     /// </summary>
     public static FluentScreenshotElement<DropDownMenuControlObject> GetDropDownMenu<TList, TRow, TCell> (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Starts the fluent API for controlling the ListMenu in the menu-block.
     /// </summary>
     public static FluentScreenshotElement<ListMenuControlObject> GetListMenu<TList, TRow, TCell> (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <exception cref="MissingHtmlException">Can not find the view menu of the navigator.</exception>
     public static FluentScreenshotElement<ScreenshotBocListDropDown<TList, TRow, TCell>> GetViewsMenu<TList, TRow, TCell> (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject

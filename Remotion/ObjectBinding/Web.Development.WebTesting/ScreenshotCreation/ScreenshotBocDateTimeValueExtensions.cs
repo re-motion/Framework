@@ -32,7 +32,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns the selected <see cref="DateTime"/>.
     /// </summary>
-    public static DateTime GetDateTime ([NotNull] this IFluentScreenshotElement<BocDateTimeValueControlObject> fluentDateTimeValue)
+    public static DateTime GetDateTime (
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
       ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
 
@@ -42,7 +43,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns the selected <see cref="DateTime"/> as <see cref="string"/>.
     /// </summary>
-    public static string GetDateTimeAsString ([NotNull] this IFluentScreenshotElement<BocDateTimeValueControlObject> fluentDateTimeValue)
+    public static string GetDateTimeAsString (
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
       ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
 
@@ -52,7 +54,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns the field for the selected date.
     /// </summary>
-    public static FluentScreenshotElement<ElementScope> GetDateField ([NotNull] this IFluentScreenshotElement<BocDateTimeValueControlObject> fluentDateTimeValue)
+    public static FluentScreenshotElement<ElementScope> GetDateField (
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
       ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
 
@@ -70,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the date-picker indicator button.
     /// </summary>
     public static FluentScreenshotElement<ElementScope> GetDatePickerIcon (
-        [NotNull] this IFluentScreenshotElement<BocDateTimeValueControlObject> fluentDateTimeValue)
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
       ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
 
@@ -84,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns fluent API for controlling the date-picker.
     /// </summary>
     public static FluentScreenshotElement<ScreenshotBocDateTimeValuePicker> GetDatePicker (
-        [NotNull] this IFluentScreenshotElement<BocDateTimeValueControlObject> fluentDateTimeValue)
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
       ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
 
@@ -94,7 +97,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns the field for the selected time.
     /// </summary>
-    public static FluentScreenshotElement<ElementScope> GetTimeField ([NotNull] this IFluentScreenshotElement<BocDateTimeValueControlObject> fluentDateTimeValue)
+    public static FluentScreenshotElement<ElementScope> GetTimeField (
+        [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
       ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
 
@@ -113,7 +117,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <param name="fluentDateTimeValue"></param>
     /// <returns></returns>
-    public static bool HasTimeField ([NotNull] this IFluentScreenshotElement<BocDateTimeValueControlObject> fluentDateTimeValue)
+    public static bool HasTimeField ([NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
       ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
 
@@ -123,7 +127,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns <see langword="true" /> if the <see cref="BocDateTimeValueControlObject"/> is read-only, otherwise <see langword="false" />.
     /// </summary>
-    public static bool IsReadOnly ([NotNull] this IFluentScreenshotElement<BocDateTimeValueControlObject> fluentDateTimeValue)
+    public static bool IsReadOnly ([NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
       ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
 

@@ -28,15 +28,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
   /// </summary>
   public class ScreenshotBocAutoCompleteReferenceValueInformationPopup : ISelfResolvable
   {
-    private readonly IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> _fluentControl;
+    private readonly IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> _fluentControl;
 
     public ScreenshotBocAutoCompleteReferenceValueInformationPopup (
-        IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> fluentControl)
+        IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentControl)
     {
       _fluentControl = fluentControl;
     }
 
-    public IFluentScreenshotElement<BocAutoCompleteReferenceValueControlObject> FluentAutoComplete
+    public IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> FluentAutoComplete
     {
       get { return _fluentControl; }
     }

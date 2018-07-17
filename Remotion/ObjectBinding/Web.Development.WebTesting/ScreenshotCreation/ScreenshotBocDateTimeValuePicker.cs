@@ -16,6 +16,7 @@
 // 
 
 using System;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.Utilities;
@@ -29,17 +30,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
   /// </summary>
   public class ScreenshotBocDateTimeValuePicker : ISelfResolvable
   {
-    private readonly IFluentScreenshotElement<BocDateTimeValueControlObject> _fluentDateTimeValue;
+    private readonly IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> _fluentDateTimeValue;
 
     public ScreenshotBocDateTimeValuePicker (
-        [NotNull] IFluentScreenshotElement<BocDateTimeValueControlObject> fluentDateTimeValue)
+        [NotNull] IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
       ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
 
       _fluentDateTimeValue = fluentDateTimeValue;
     }
 
-    public IFluentScreenshotElement<BocDateTimeValueControlObject> FluentDateTimeValue
+    public IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> FluentDateTimeValue
     {
       get { return _fluentDateTimeValue; }
     }
@@ -52,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveBrowserCoordinates ()
     {
-      return _fluentDateTimeValue.GetDatePicker().GetElement().ResolveBrowserCoordinates();
+      return ((IFluentScreenshotElement<ElementScope>) _fluentDateTimeValue.GetDatePicker().GetElement()).ResolveBrowserCoordinates();
     }
 
     /// <inheritdoc />
@@ -60,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     {
       ArgumentUtility.CheckNotNull ("locator", locator);
 
-      return _fluentDateTimeValue.GetDatePicker().GetElement().ResolveDesktopCoordinates (locator);
+      return ((IFluentScreenshotElement<ElementScope>) _fluentDateTimeValue.GetDatePicker().GetElement()).ResolveDesktopCoordinates (locator);
     }
   }
 }

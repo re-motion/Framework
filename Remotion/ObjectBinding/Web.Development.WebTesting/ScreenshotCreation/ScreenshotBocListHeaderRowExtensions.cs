@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Starts the fluent selection for a specific cell in the header row.
     /// </summary>
     public static ScreenshotBocListFluentHeaderCellSelector<TList, TRow, TCell> GetCell<TList, TRow, TCell> (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentHeaderRow)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentHeaderRow)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Selects a cell in the header row with the specified <paramref name="itemID"/>.
     /// </summary>
     public static FluentScreenshotElement<ElementScope> GetCell<TList, TRow, TCell> (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentHeaderRow,
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentHeaderRow,
         [NotNull] string itemID)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Selects a cell in the header row with the specified <paramref name="oneBasedIndex"/>.
     /// </summary>
     public static FluentScreenshotElement<ElementScope> GetCell<TList, TRow, TCell> (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentHeaderRow,
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentHeaderRow,
         int oneBasedIndex)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>

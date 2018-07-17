@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     {
       ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
 
-      return Target.GetControl (controlSelectionCommand);
+      return ((IFluentScreenshotElementWithCovariance<T>) this).Target.GetControl (controlSelectionCommand);
     }
 
     /// <inheritdoc />
@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     {
       ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
 
-      return Target.GetControlOrNull (controlSelectionCommand);
+      return ((IFluentScreenshotElementWithCovariance<T>) this).Target.GetControlOrNull (controlSelectionCommand);
     }
 
     /// <inheritdoc />
@@ -65,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     {
       ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
 
-      return Target.HasControl (controlSelectionCommand);
+      return ((IFluentScreenshotElementWithCovariance<T>) this).Target.HasControl (controlSelectionCommand);
     }
   }
 }

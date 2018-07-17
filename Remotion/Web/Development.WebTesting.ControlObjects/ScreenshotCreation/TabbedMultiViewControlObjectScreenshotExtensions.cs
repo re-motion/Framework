@@ -29,8 +29,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <summary>
     /// Returns the <see cref="WebTabStripControlObject"/> associated with the specified <paramref name="fluentTabbedMultiView"/>.
     /// </summary>
-    public static IFluentScreenshotElement<WebTabStripControlObject> GetWebTabStrip (
-        [NotNull] this IFluentScreenshotElement<TabbedMultiViewControlObject> fluentTabbedMultiView)
+    public static FluentScreenshotElement<WebTabStripControlObject> GetWebTabStrip (
+        [NotNull] this IFluentScreenshotElementWithCovariance<TabbedMultiViewControlObject> fluentTabbedMultiView)
     {
       ArgumentUtility.CheckNotNull ("fluentTabbedMultiView", fluentTabbedMultiView);
 

@@ -131,6 +131,7 @@
     <Compile Include="ScreenshotCreation\Fluent\FluentUtility.cs" />
     <Compile Include="ScreenshotCreation\Fluent\IFluentScreenshotElement.cs" />
     <Compile Include="ScreenshotCreation\Fluent\IFluentScreenshotElement`.cs" />
+    <Compile Include="ScreenshotCreation\Fluent\IFluentScreenshotElementWithCovariance.cs" />
     <Compile Include="ScreenshotCreation\Fluent\IFluentSelector.cs" />
     <Compile Include="ScreenshotCreation\Fluent\ISelfResolvable.cs" />
     <Compile Include="ScreenshotCreation\Fluent\Selectors\IFluentDisplayTextContainsSelector.cs" />

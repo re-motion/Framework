@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <summary>
     /// Starts the fluent API selection of an item of the <see cref="WebTabStripControlObject"/>.
     /// </summary>
-    public static ScreenshotWebTabStripSelector SelectItem ([NotNull] this IFluentScreenshotElement<WebTabStripControlObject> fluentWebTabStrip)
+    public static ScreenshotWebTabStripSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<WebTabStripControlObject> fluentWebTabStrip)
     {
       ArgumentUtility.CheckNotNull ("fluentWebTabStrip", fluentWebTabStrip);
 

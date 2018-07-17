@@ -46,10 +46,10 @@ if (b === -1)
 a.selectItem (b); 
 return true;";
 
-    private readonly IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> _fluentAutoComplete;
+    private readonly IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> _fluentAutoComplete;
 
     public ScreenshotBocAutoCompleteReferenceValueSelectListSelector (
-        [NotNull] IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentAutoComplete)
+        [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentAutoComplete)
     {
       ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
 
@@ -74,7 +74,7 @@ return true;";
       JavaScriptExecutor.ExecuteVoidStatement (executor, c_selectWithIndex, GetInputField (_fluentAutoComplete), oneBasedIndex);
     }
 
-    private static IWebElement GetInputField (IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentPopup)
+    private static IWebElement GetInputField (IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentPopup)
     {
       return (IWebElement) fluentPopup.Target.AutoComplete.ForControlObjectScreenshot().GetValue().GetTarget().Native;
     }

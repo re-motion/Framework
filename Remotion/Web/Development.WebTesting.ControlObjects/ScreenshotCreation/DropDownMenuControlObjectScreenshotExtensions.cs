@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <summary>
     /// Returns the drop down menu.
     /// </summary>
-    public static FluentScreenshotElement<ElementScope> GetMenu ([NotNull] this IFluentScreenshotElement<DropDownMenuControlObject> fluentDropDownMenu)
+    public static FluentScreenshotElement<ElementScope> GetMenu ([NotNull] this IFluentScreenshotElementWithCovariance<DropDownMenuControlObject> fluentDropDownMenu)
     {
       ArgumentUtility.CheckNotNull ("fluentDropDownMenu", fluentDropDownMenu);
 
@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <summary>
     /// Opens the drop down menu.
     /// </summary>
-    public static void OpenMenu ([NotNull] this IFluentScreenshotElement<DropDownMenuControlObject> fluentDropDownMenu)
+    public static void OpenMenu ([NotNull] this IFluentScreenshotElementWithCovariance<DropDownMenuControlObject> fluentDropDownMenu)
     {
       ArgumentUtility.CheckNotNull ("fluentDropDownMenu", fluentDropDownMenu);
 
@@ -55,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <summary>
     /// Starts the fluent interface for selecting a drop down menu item.
     /// </summary>
-    public static ScreenshotDropDownMenuSelector SelectItem ([NotNull] this IFluentScreenshotElement<DropDownMenuControlObject> fluentDropDownMenu)
+    public static ScreenshotDropDownMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<DropDownMenuControlObject> fluentDropDownMenu)
     {
       ArgumentUtility.CheckNotNull ("fluentDropDownMenu", fluentDropDownMenu);
 

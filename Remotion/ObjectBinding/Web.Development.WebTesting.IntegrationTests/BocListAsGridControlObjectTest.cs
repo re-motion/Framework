@@ -21,10 +21,15 @@ using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList;
+using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -52,6 +57,118 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors (GenericSelectorTestAction<BocListAsGridSelector, BocListAsGridControlObject> testAction)
     {
       testAction (Helper, e => e.ListAsGrids(), "listAsGrid");
+    }
+
+    [Category ("Screenshot")]
+    [Test]
+    public void ScreenshotTest_DerivedType ()
+    {
+      var home = Start();
+      var controlObjectContext = home.ListAsGrids().GetByLocalID ("JobList_Normal").Context;
+      var controlObject = new DerivedBocListAsGridControlObject (controlObjectContext);
+      var fluentControlObject = controlObject.ForScreenshot();
+      var derivedControlObject = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentControlObject.GetTarget().FluentList, fluentControlObject.GetTarget().FluentElement));
+
+      var fluentTableContainer = derivedControlObject.GetTableContainer();
+      Assert.That (fluentTableContainer, Is.Not.Null);
+      var derivedTableContainer = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListTableContainer<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentTableContainer.GetTarget().FluentList, fluentTableContainer.GetTarget().FluentElement));
+      Assert.That (derivedTableContainer.GetHeaderRow(), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetRowCount(), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetColumn(), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetColumn (1), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetColumn ("RowCmd"), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetRow(), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetRow (1), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetRow ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
+      //Assert.That (fluentTableContainer.GetCell(), Is.Not.Null);
+      //Assert.That (fluentTableContainer.GetCell(0), Is.Not.Null);
+      //Assert.That (fluentTableContainer.GetCell(""), Is.Not.Null);
+
+      var fluentNavigator = derivedControlObject.GetNavigator();
+      Assert.That (fluentNavigator, Is.Not.Null);
+      var derivedNavigator = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListNavigator<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentNavigator.GetTarget().FluentList, fluentNavigator.GetTarget().FluentElement));
+      Assert.That (derivedNavigator.GetFirstPageButton(), Is.Not.Null);
+      Assert.That (derivedNavigator.GetLastPageButton(), Is.Not.Null);
+      Assert.That (derivedNavigator.GetNextPageButton(), Is.Not.Null);
+      Assert.That (derivedNavigator.GetPreviousPageButton(), Is.Not.Null);
+      Assert.That (derivedNavigator.GetPageInformationText(), Is.Not.Null);
+
+      var fluentMenuBlock = derivedControlObject.GetMenuBlock();
+      Assert.That (fluentMenuBlock, Is.Not.Null);
+      var derivedMenuBlock = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListMenuBlock<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentMenuBlock.GetTarget().FluentList, fluentMenuBlock.GetTarget().FluentElement));
+      Assert.That (derivedMenuBlock.GetDropDownMenu(), Is.Not.Null);
+      Assert.That (derivedMenuBlock.GetListMenu(), Is.Not.Null);
+
+      var fluentDropDown = derivedMenuBlock.GetViewsMenu();
+      Assert.That (fluentDropDown, Is.Not.Null);
+      var derivedDropDown = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListDropDown<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentDropDown.GetTarget().FluentList, fluentDropDown.GetTarget().FluentElement));
+      Assert.That (() => derivedDropDown.Open(), Throws.Nothing);
+    }
+
+    [Category ("Screenshot")]
+    [Test]
+    public void ScreenshotTest_DerivedTypeGeneric ()
+    {
+      var home = Start();
+      var controlObjectContext = home.ListAsGrids().GetByLocalID ("JobList_Normal").Context;
+      var controlObject = new DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject> (controlObjectContext);
+      var fluentControlObject = controlObject.ForBocListAsGridScreenshot<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject>();
+      var derivedControlObject = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocList<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentControlObject.GetTarget().FluentList, fluentControlObject.GetTarget().FluentElement));
+
+      var fluentTableContainer = derivedControlObject.GetTableContainer();
+      Assert.That (fluentTableContainer, Is.Not.Null);
+      var derivedTableContainer = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListTableContainer<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentTableContainer.GetTarget().FluentList, fluentTableContainer.GetTarget().FluentElement));
+      Assert.That (derivedTableContainer.GetHeaderRow(), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetRowCount(), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetColumn(), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetColumn (1), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetColumn ("RowCmd"), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetRow(), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetRow (1), Is.Not.Null);
+      Assert.That (derivedTableContainer.GetRow ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
+      //Assert.That (fluentTableContainer.GetCell(), Is.Not.Null);
+      //Assert.That (fluentTableContainer.GetCell(0), Is.Not.Null);
+      //Assert.That (fluentTableContainer.GetCell(""), Is.Not.Null);
+
+      var fluentNavigator = derivedControlObject.GetNavigator();
+      Assert.That (fluentNavigator, Is.Not.Null);
+      var derivedNavigator = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListNavigator<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentNavigator.GetTarget().FluentList, fluentNavigator.GetTarget().FluentElement));
+      Assert.That (derivedNavigator.GetFirstPageButton(), Is.Not.Null);
+      Assert.That (derivedNavigator.GetLastPageButton(), Is.Not.Null);
+      Assert.That (derivedNavigator.GetNextPageButton(), Is.Not.Null);
+      Assert.That (derivedNavigator.GetPreviousPageButton(), Is.Not.Null);
+      Assert.That (derivedNavigator.GetPageInformationText(), Is.Not.Null);
+
+      var fluentMenuBlock = derivedControlObject.GetMenuBlock();
+      Assert.That (fluentMenuBlock, Is.Not.Null);
+      var derivedMenuBlock = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListMenuBlock<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentMenuBlock.GetTarget().FluentList, fluentMenuBlock.GetTarget().FluentElement));
+      Assert.That (derivedMenuBlock.GetDropDownMenu(), Is.Not.Null);
+      Assert.That (derivedMenuBlock.GetListMenu(), Is.Not.Null);
+
+      var fluentDropDown = derivedMenuBlock.GetViewsMenu();
+      Assert.That (fluentDropDown, Is.Not.Null);
+      var derivedDropDown = SelfResolvableFluentScreenshot.Create (
+          new DerivedScreenshotBocListDropDown<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+              fluentDropDown.GetTarget().FluentList, fluentDropDown.GetTarget().FluentElement));
+      Assert.That (() => derivedDropDown.Open(), Throws.Nothing);
     }
 
     [Test]
@@ -369,6 +486,96 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     private WxePageObject Start ()
     {
       return Start ("BocListAsGrid");
+    }
+
+    private class DerivedBocListAsGridControlObject : BocListAsGridControlObject
+    {
+      public DerivedBocListAsGridControlObject (ControlObjectContext context)
+          : base (context)
+      {
+      }
+    }
+
+    private class DerivedBocListAsGridControlObject<TBocListRowControlObject> : BocListAsGridControlObject<TBocListRowControlObject>
+        where TBocListRowControlObject : BocListAsGridRowControlObject
+    {
+      public DerivedBocListAsGridControlObject (ControlObjectContext context)
+          : base (context)
+      {
+      }
+    }
+
+    private class DerivedBocListAsGridRowControlObject : BocListAsGridRowControlObject
+    {
+      public DerivedBocListAsGridRowControlObject (IBocListRowControlObjectHostAccessor accessor, ControlObjectContext context)
+          : base (accessor, context)
+      {
+      }
+    }
+
+    private class DerivedScreenshotBocList<TList, TRow, TCell> : ScreenshotBocList<TList, TRow, TCell>
+        where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
+        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TCell : ControlObject
+    {
+      public DerivedScreenshotBocList (
+          IFluentScreenshotElementWithCovariance<TList> fluentList,
+          IFluentScreenshotElement<ElementScope> fluentElement)
+          : base (fluentList, fluentElement)
+      {
+      }
+    }
+
+    private class DerivedScreenshotBocListTableContainer<TList, TRow, TCell> : ScreenshotBocListTableContainer<TList, TRow, TCell>
+        where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
+        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TCell : ControlObject
+    {
+      public DerivedScreenshotBocListTableContainer (
+          IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
+          IFluentScreenshotElement<ElementScope> fluentElement)
+          : base (fluentList, fluentElement)
+      {
+      }
+    }
+
+    private class DerivedScreenshotBocListNavigator<TList, TRow, TCell> : ScreenshotBocListNavigator<TList, TRow, TCell>
+        where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
+        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TCell : ControlObject
+    {
+      public DerivedScreenshotBocListNavigator (
+          IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
+          IFluentScreenshotElement<ElementScope> fluentElement)
+          : base (fluentList, fluentElement)
+      {
+      }
+    }
+
+    private class DerivedScreenshotBocListMenuBlock<TList, TRow, TCell> : ScreenshotBocListMenuBlock<TList, TRow, TCell>
+        where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
+        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TCell : ControlObject
+    {
+      public DerivedScreenshotBocListMenuBlock (
+          IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
+          IFluentScreenshotElement<ElementScope> fluentElement)
+          : base (fluentList, fluentElement)
+      {
+      }
+    }
+
+    private class DerivedScreenshotBocListDropDown<TList, TRow, TCell> : ScreenshotBocListDropDown<TList, TRow, TCell>
+        where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
+        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TCell : ControlObject
+    {
+      public DerivedScreenshotBocListDropDown (
+          IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
+          IFluentScreenshotElement<ElementScope> fluentElement)
+          : base (fluentList, fluentElement)
+      {
+      }
     }
   }
 }

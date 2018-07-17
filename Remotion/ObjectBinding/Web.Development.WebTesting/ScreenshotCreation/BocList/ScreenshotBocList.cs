@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
+using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
@@ -32,14 +34,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       where TRow : ControlObject, IControlObjectWithCells<TCell>
       where TCell : ControlObject
   {
-    private readonly IFluentScreenshotElement<TList> _fluentList;
+    private readonly IFluentScreenshotElementWithCovariance<TList> _fluentList;
+    private readonly IFluentScreenshotElement<ElementScope> _fluentElement;
 
-    public ScreenshotBocList (IFluentScreenshotElement<TList> fluentList)
+    public ScreenshotBocList (
+        [NotNull] IFluentScreenshotElementWithCovariance<TList> fluentList,
+        [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
+      ArgumentUtility.CheckNotNull ("fluentList", fluentList);
+      ArgumentUtility.CheckNotNull ("fluentElement", fluentElement);
+
       _fluentList = fluentList;
+      _fluentElement = fluentElement;
     }
 
-    public IFluentScreenshotElement<TList> FluentList
+    public IFluentScreenshotElement<ElementScope> FluentElement
+    {
+      get { return _fluentElement; }
+    }
+
+    public IFluentScreenshotElementWithCovariance<TList> FluentList
     {
       get { return _fluentList; }
     }
@@ -52,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveBrowserCoordinates ()
     {
-      return _fluentList.ResolveBrowserCoordinates();
+      return _fluentElement.ResolveBrowserCoordinates();
     }
 
     /// <inheritdoc />
@@ -60,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     {
       ArgumentUtility.CheckNotNull ("locator", locator);
 
-      return _fluentList.ResolveDesktopCoordinates (locator);
+      return _fluentElement.ResolveDesktopCoordinates (locator);
     }
   }
 }

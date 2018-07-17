@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Opens the drop-down.
     /// </summary>
     public static void Open<TList, TRow, TCell> (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocListDropDown<TList, TRow, TCell>> fluentDropDown)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListDropDown<TList, TRow, TCell>> fluentDropDown)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
         where TRow : ControlObject, IControlObjectWithCells<TCell>
         where TCell : ControlObject

@@ -34,18 +34,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       where TRow : ControlObject, IControlObjectWithCells<TCell>
       where TCell : ControlObject
   {
-    private readonly IFluentScreenshotElement<ScreenshotBocList<TList, TRow, TCell>> _fluentList;
+    private readonly IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> _fluentList;
     private readonly IFluentScreenshotElement<ElementScope> _fluentElement;
 
     public ScreenshotBocListTableContainer (
-        [NotNull] IFluentScreenshotElement<ScreenshotBocList<TList, TRow, TCell>> fluentList,
-        [NotNull] IFluentScreenshotElement<ElementScope> _fluentElement)
+        [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
+        [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
       ArgumentUtility.CheckNotNull ("fluentList", fluentList);
-      ArgumentUtility.CheckNotNull ("_fluentElement", _fluentElement);
+      ArgumentUtility.CheckNotNull ("fluentElement", fluentElement);
 
       _fluentList = fluentList;
-      this._fluentElement = _fluentElement;
+      _fluentElement = fluentElement;
     }
 
     public IFluentScreenshotElement<ElementScope> FluentElement
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       get { return _fluentElement; }
     }
 
-    public IFluentScreenshotElement<ScreenshotBocList<TList, TRow, TCell>> FluentList
+    public IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> FluentList
     {
       get { return _fluentList; }
     }

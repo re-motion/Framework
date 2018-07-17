@@ -94,6 +94,26 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     }
 
     /// <summary>
+    /// Returns the target element of the specified <paramref name="fluentElement"/>.
+    /// </summary>
+    public static T GetTarget<T> ([NotNull] this IFluentScreenshotElementWithCovariance<T> fluentElement)
+    {
+      ArgumentUtility.CheckNotNull ("fluentElement", fluentElement);
+
+      return fluentElement.Target;
+    }
+
+    /// <summary>
+    /// Returns the target element of the specified <paramref name="fluentElement"/>.
+    /// </summary>
+    public static T GetTarget<T> ([NotNull] this FluentScreenshotElement<T> fluentElement)
+    {
+      ArgumentUtility.CheckNotNull ("fluentElement", fluentElement);
+
+      return GetTarget ((IFluentScreenshotElementWithCovariance<T>) fluentElement);
+    }
+
+    /// <summary>
     /// Annotates the specified <paramref name="fluentTarget"/> with a <see cref="ScreenshotBoxAnnotation"/>.
     /// </summary>
     public static void AnnotateBox<T> (

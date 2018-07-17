@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns an <see cref="IWebElement"/> representing the select-list.
     /// </summary>
     internal static IFluentScreenshotElement<IWebElement> GetElement (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
       ArgumentUtility.CheckNotNull ("fluentSelectList", fluentSelectList);
 
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns an <see cref="IWebElement"/> representing the currently selected item of the select-list.
     /// </summary>
     public static FluentScreenshotElement<IWebElement> GetSelectedItem (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
       ArgumentUtility.CheckNotNull ("fluentSelectList", fluentSelectList);
 
@@ -83,7 +83,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Hides the select-list.
     /// </summary>
-    public static void Hide ([NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
+    public static void Hide (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
       ArgumentUtility.CheckNotNull ("fluentSelectList", fluentSelectList);
 
@@ -93,7 +94,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns <see langword="true" /> if the select-list is visible, otherwise <see langword="false" />.
     /// </summary>
-    public static bool IsVisible ([NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
+    public static bool IsVisible (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
       ArgumentUtility.CheckNotNull ("fluentSelectList", fluentSelectList);
 
@@ -106,7 +108,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Selects the next item of the select-list.
     /// </summary>
-    public static void NextItem ([NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
+    public static void NextItem (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
       ArgumentUtility.CheckNotNull ("fluentSelectList", fluentSelectList);
 
@@ -116,7 +119,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Selects the next page of the select-list (1 page = 8 items).
     /// </summary>
-    public static void NextPage ([NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
+    public static void NextPage (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
       ArgumentUtility.CheckNotNull ("fluentSelectList", fluentSelectList);
 
@@ -126,7 +130,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Selects the previous item of the select-list.
     /// </summary>
-    public static void PreviousItem ([NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
+    public static void PreviousItem (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
       ArgumentUtility.CheckNotNull ("fluentSelectList", fluentSelectList);
 
@@ -136,7 +141,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Selects the previous page of the select-list (1 page = 8 items).
     /// </summary>
-    public static void PreviousPage ([NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
+    public static void PreviousPage (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
       ArgumentUtility.CheckNotNull ("fluentSelectList", fluentSelectList);
 
@@ -147,7 +153,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Starts the fluent selection for a specific item of the select-list.
     /// </summary>
     public static ScreenshotBocAutoCompleteReferenceValueSelectListSelector Select (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
       ArgumentUtility.CheckNotNull ("fluentSelectList", fluentSelectList);
 
@@ -158,7 +164,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Selects the select-list item with the specified <paramref name="oneBasedIndex"/>.
     /// </summary>
     public static void Select (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList,
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList,
         int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("fluentSelectList", fluentSelectList);
@@ -173,7 +179,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// This method does not initialize nor initiate the auto-complete and will fail if the select-list is not initialized.
     /// </remarks>
     public static void Show (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
       ArgumentUtility.CheckNotNull ("fluentSelectList", fluentSelectList);
 
@@ -185,7 +191,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <exception cref="TimeoutException">The waiting time exceeded the <paramref name="timeout"/>.</exception>
     public static void WaitUntilVisible (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList,
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList,
         int timeout = 3000)
     {
       ArgumentUtility.CheckNotNull ("fluentSelectList", fluentSelectList);
@@ -205,12 +211,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
       } while (true);
     }
 
-    private static IJavaScriptExecutor GetExecutor (this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
+    private static IJavaScriptExecutor GetExecutor (
+        this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
       return JavaScriptExecutor.GetJavaScriptExecutor (fluentSelectList.Target.AutoComplete);
     }
 
-    private static IWebElement GetInputField (this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
+    private static IWebElement GetInputField (
+        this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
       return (IWebElement) fluentSelectList.Target.AutoComplete.ForControlObjectScreenshot().GetValue().GetTarget().Native;
     }

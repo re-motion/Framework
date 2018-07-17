@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <exception cref="InvalidOperationException">The popup is not visible.</exception>
     internal static FluentScreenshotElement<IWebElement> GetElement (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
       ArgumentUtility.CheckNotNull ("fluentInformationPopup", fluentInformationPopup);
 
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Displays the popup with the specified <paramref name="message"/>.
     /// </summary>
     public static void Display (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup,
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup,
         [NotNull] string message)
     {
       ArgumentUtility.CheckNotNull ("fluentInformationPopup", fluentInformationPopup);
@@ -73,7 +73,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Hides the popup.
     /// </summary>
-    public static void Hide ([NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
+    public static void Hide (
+          [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
       ArgumentUtility.CheckNotNull ("fluentInformationPopup", fluentInformationPopup);
 
@@ -83,7 +84,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns <see langword="true" /> if the popup is visible, <see langword="false" /> if otherwise.
     /// </summary>
-    public static bool IsVisible ([NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
+    public static bool IsVisible (
+          [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
       ArgumentUtility.CheckNotNull ("fluentInformationPopup", fluentInformationPopup);
 
@@ -98,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <exception cref="TimeoutException">The <paramref name="timeout"/> has been reached.</exception>
     public static void WaitUntilVisible (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup,
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup,
         int timeout = 3000)
     {
       ArgumentUtility.CheckNotNull ("fluentInformationPopup", fluentInformationPopup);
@@ -119,13 +121,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     }
 
     private static IJavaScriptExecutor GetExecutor (
-        this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
+        this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
       return JavaScriptExecutor.GetJavaScriptExecutor (fluentInformationPopup.Target.AutoComplete);
     }
 
     private static IWebElement GetInputField (
-        this IFluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
+        this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
       return (IWebElement) fluentInformationPopup.Target.AutoComplete.ForControlObjectScreenshot().GetValue().GetTarget().Native;
     }

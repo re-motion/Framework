@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <summary>
     /// Starts the fluent interface for selecting a list menu item.
     /// </summary>
-    public static ScreenshotListMenuSelector SelectItem ([NotNull] this IFluentScreenshotElement<ListMenuControlObject> fluentListMenu)
+    public static ScreenshotListMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<ListMenuControlObject> fluentListMenu)
     {
       ArgumentUtility.CheckNotNull ("fluentListMenu", fluentListMenu);
 

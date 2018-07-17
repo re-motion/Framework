@@ -32,11 +32,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       where TRow : ControlObject, IControlObjectWithCells<TCell>
       where TCell : ControlObject
   {
-    private readonly IFluentScreenshotElement<ScreenshotBocList<TList, TRow, TCell>> _fluentList;
+    private readonly IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> _fluentList;
     private readonly int _columnIndex;
 
     public ScreenshotBocListFluentColumnCellSelector (
-        [NotNull] IFluentScreenshotElement<ScreenshotBocList<TList, TRow, TCell>> fluentList,
+        [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
         int columnIndex)
     {
       ArgumentUtility.CheckNotNull ("fluentList", fluentList);

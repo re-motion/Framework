@@ -31,8 +31,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
   /// </summary>
   public static class ScreenshotBocDateTimeValuePickerExtensions
   {
-    public static IFluentScreenshotElement<ElementScope> GetElement (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
+    public static FluentScreenshotElement<ElementScope> GetElement (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
       ArgumentUtility.CheckNotNull ("fluentDatePicker", fluentDatePicker);
 
@@ -54,13 +54,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the navigation bar of the date-picker.
     /// </summary>
     public static FluentScreenshotElement<ElementScope> GetNavigationBar (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
       ArgumentUtility.CheckNotNull ("fluentDatePicker", fluentDatePicker);
 
       var root = fluentDatePicker.GetElement();
 
-      var element = root.Target.FindCss ("table");
+      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>) root).Target.FindCss ("table");
       element.EnsureExistence();
 
       return FluentUtility.CloneWith (root, element);
@@ -70,13 +70,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the next-month button of the date-picker.
     /// </summary>
     public static FluentScreenshotElement<ElementScope> GetNextMonthButton (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
       ArgumentUtility.CheckNotNull ("fluentDatePicker", fluentDatePicker);
 
       var headerBar = fluentDatePicker.GetNavigationBar();
 
-      var element = headerBar.GetTarget().FindCss ("tbody > tr > td:nth-child(3)", Options.NoWait);
+      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>) headerBar).GetTarget().FindCss ("tbody > tr > td:nth-child(3)", Options.NoWait);
       element.EnsureExistence();
 
       return FluentUtility.CloneWith (headerBar, element);
@@ -86,13 +86,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the previous-month button of the date-picker.
     /// </summary>
     public static FluentScreenshotElement<ElementScope> GetPreviousMonthButton (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
       ArgumentUtility.CheckNotNull ("fluentDatePicker", fluentDatePicker);
 
       var headerBar = fluentDatePicker.GetNavigationBar();
 
-      var element = headerBar.GetTarget().FindCss ("tbody > tr > td:nth-child(1)", Options.NoWait);
+      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>) headerBar).GetTarget().FindCss ("tbody > tr > td:nth-child(1)", Options.NoWait);
       element.EnsureExistence();
 
       return FluentUtility.CloneWith (headerBar, element);
@@ -102,13 +102,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the title element of the date-picker.
     /// </summary>
     public static FluentScreenshotElement<ElementScope> GetTitle (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
       ArgumentUtility.CheckNotNull ("fluentDatePicker", fluentDatePicker);
 
       var headerBar = fluentDatePicker.GetNavigationBar();
 
-      var element = headerBar.GetTarget().FindCss ("tbody > tr > td:nth-child(2)", Options.NoWait);
+      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>) headerBar).GetTarget().FindCss ("tbody > tr > td:nth-child(2)", Options.NoWait);
       element.EnsureExistence();
 
       return FluentUtility.CloneWith (headerBar, element);
@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the currently selected day of the date-picker.
     /// </summary>
     public static FluentScreenshotElement<ElementScope> GetSelectedDay (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
       ArgumentUtility.CheckNotNull ("fluentDatePicker", fluentDatePicker);
 
@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
       var x = GetDayOfTheWeekIndex (date);
       var y = (GetDayOfTheWeekIndex (new DateTime (date.Year, date.Month, 1)) + date.Day - 1) / 7;
 
-      var element = root.Target.FindCss (string.Format ("tbody > tr:nth-child({0}) > td:nth-child({1})", y + 3, x + 1));
+      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>) root).Target.FindCss (string.Format ("tbody > tr:nth-child({0}) > td:nth-child({1})", y + 3, x + 1));
       element.EnsureExistence();
 
       return FluentUtility.CloneWith (root, element);
@@ -138,13 +138,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the header row indicating the weekdays of the date-picker.
     /// </summary>
     public static FluentScreenshotElement<ElementScope> GetWeekdayRow (
-        [NotNull] this IFluentScreenshotElement<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
       ArgumentUtility.CheckNotNull ("fluentDatePicker", fluentDatePicker);
 
       var root = fluentDatePicker.GetElement();
 
-      var element = root.Target.FindCss ("tbody > tr:nth-child(2)");
+      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>) root).Target.FindCss ("tbody > tr:nth-child(2)");
       element.EnsureExistence();
 
       return FluentUtility.CloneWith (root, element);
@@ -153,7 +153,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Opens the date-picker.
     /// </summary>
-    public static void Open ([NotNull] this IFluentScreenshotElement<ScreenshotBocDateTimeValuePicker> fluentDatePicker, int timeout = 3000)
+    public static void Open (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker,
+        int timeout = 3000)
     {
       ArgumentUtility.CheckNotNull ("fluentDatePicker", fluentDatePicker);
 
@@ -170,7 +172,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
       return (int) date.DayOfWeek - 1;
     }
 
-    private static bool IsVisible (IFluentScreenshotElement<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
+    private static bool IsVisible (IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
       var dateTimeValue = fluentDatePicker.Target.DateTimeValue;
       var id = string.Join ("_", dateTimeValue.Scope.Id, "DatePicker");
@@ -181,7 +183,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
       return result.Exists (Options.NoWait);
     }
 
-    private static void WaitUntilVisible (IFluentScreenshotElement<ScreenshotBocDateTimeValuePicker> fluentDatePicker, int timeout)
+    private static void WaitUntilVisible (IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker, int timeout)
     {
       var watch = new Stopwatch();
       watch.Start();
