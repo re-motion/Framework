@@ -550,16 +550,17 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     MemberCaller.SaveAllState (this);
   }
 
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
-  [Obsolete ("Override ProcessRequestImplementation(HttpContext) instead.", true)]
+  /// <summary>
+  /// Use <see cref="ProcessRequestImplementation"/> instead.
+  /// </summary>
   public sealed override void ProcessRequest (HttpContext httpContext)
   {
     ArgumentUtility.CheckNotNull ("httpContext", httpContext);
     _httpContext = new HttpContextWrapper (httpContext);
     ProcessRequestImplementation (httpContext);
   }
-#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
 
+  /// <inheritdoc cref="Page.ProcessRequest"/>
   protected virtual void ProcessRequestImplementation (HttpContext httpContext)
   {
     ArgumentUtility.CheckNotNull ("httpContext", httpContext);
