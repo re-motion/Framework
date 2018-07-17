@@ -43,9 +43,6 @@ span.bocReferenceValue a[href].command
   color: #09457E;
   cursor: hand;
   cursor: pointer;
-
-  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-  position: relative;
 }
 
 span.bocReferenceValue.disabled a.command,
@@ -84,7 +81,13 @@ span.bocReferenceValue a[href].command:active
 }
 
 /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-span.bocReferenceValue a[href].command::before
+body.msie span.bocReferenceValue a[href].command
+{
+  position: relative;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+body.msie span.bocReferenceValue a[href].command::before
 {
   content: "";
   position: absolute;

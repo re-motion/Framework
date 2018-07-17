@@ -19,9 +19,6 @@ span.listMenuItem a
   padding: 2px;
   cursor: hand;
   cursor: pointer;
-
-  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-  position: relative;
 }
 
 span.listMenuItem a:focus,
@@ -45,7 +42,13 @@ span.listMenuItem a:active
 }
 
 /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-span.listMenuItem a::before
+body.msie span.listMenuItem a
+{
+  position: relative;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+body.msie span.listMenuItem a::before
 {
   content: "";
   position: absolute;

@@ -89,16 +89,16 @@
   text-decoration: none;
 }
 
-*.tabStripTab a,
-*.tabStripTabSelected a
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+body.msie *.tabStripTab a,
+body.msie *.tabStripTabSelected a
 {
-  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
   position: relative;
 }
 
 /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-*.tabStripTab a::before,
-*.tabStripTabSelected a::before
+body.msie *.tabStripTab a::before,
+body.msie *.tabStripTabSelected a::before
 {
   content: "";
   position: absolute;

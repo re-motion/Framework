@@ -235,9 +235,6 @@ ul.DropDownMenuOptions li a
   white-space: nowrap;
   color: Black;
   outline: none;
-
-  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-  position: relative;
 }
 
 ul.DropDownMenuOptions li.selected a
@@ -258,7 +255,13 @@ ul.DropDownMenuOptions li a:active
 }
 
 /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-ul.DropDownMenuOptions li a::before
+body.msie ul.DropDownMenuOptions li a
+{
+  position: relative;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+body.msie ul.DropDownMenuOptions li a::before
 {
   content: "";
   position: absolute;

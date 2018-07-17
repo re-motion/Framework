@@ -332,12 +332,6 @@ tr.bocListDataRow td.bocListDataCell a
   border: 1px solid transparent;
 }
 
-tr.bocListDataRow td.bocListDataCell > a
-{
-  /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-  position: relative;
-}
-
 /*  Style applied to the anchor tags in BocList's selected data rows.  */
 tr.bocListDataRow.selected td.bocListDataCell a
 {
@@ -361,7 +355,13 @@ tr.bocListDataRow td.bocListDataCell a:active
 }
 
 /* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-tr.bocListDataRow td.bocListDataCell > a::before
+body.msie tr.bocListDataRow td.bocListDataCell > a
+{
+  position: relative;
+}
+
+/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
+body.msie tr.bocListDataRow td.bocListDataCell > a::before
 {
   content: "";
   position: absolute;
