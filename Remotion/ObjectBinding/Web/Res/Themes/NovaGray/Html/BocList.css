@@ -161,7 +161,6 @@ div.bocListTableScrollContainer
   height: auto;
   overflow-x: auto;
   overflow-y: hidden;
-  margin: auto; /* IE9 bug fix, otherwise, the height would keep growing */
   background-color: White;
 }
 
@@ -370,8 +369,6 @@ tr.bocListDataRow td.bocListDataCell > a::before
   right: 0;
   top: 0;
   bottom: 0;
-  /* IE 9 Selection fix*/
-  background-color: rgba(0,0,0,0);
 }
 
 /*  Style applied to the disabled anchor tags during hovering in BocList's data rows.  */

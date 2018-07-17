@@ -266,8 +266,6 @@ ul.DropDownMenuOptions li a::before
   right: 0;
   top: 0;
   bottom: 0;
-  /* IE 9 Selection fix*/
-  background-color: rgba(0,0,0,0);
 }
 
 ul.DropDownMenuOptions li a img

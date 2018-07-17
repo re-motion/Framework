@@ -92,8 +92,6 @@ span.bocReferenceValue a[href].command::before
   right: 0;
   top: 0;
   bottom: 0;
-  /* IE 9 Selection fix*/
-  background-color: rgba(0,0,0,0);
 }
 
 span.bocReferenceValue span.DropDownMenuContainer a.command span
