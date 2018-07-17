@@ -288,11 +288,11 @@ namespace Remotion.Web.ExecutionEngine
     {
     }
 
-    public override void ProcessRequest (System.Web.HttpContext httpContext)
+    protected override void ProcessRequestImplementation (System.Web.HttpContext httpContext)
     {
       try
       {
-        base.ProcessRequest (httpContext);
+        base.ProcessRequestImplementation (httpContext);
       }
       catch (HttpException ex)
       {
