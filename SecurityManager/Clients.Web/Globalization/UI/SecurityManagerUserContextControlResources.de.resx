@@ -102,7 +102,7 @@
     <value>Aktueller Benutzer</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentSubstitutionLabelText" xml:space="preserve">
-    <value>Aktulle Stellvertretung</value>
+    <value>Aktuelle Stellvertretung</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentTenantLabelText" xml:space="preserve">
     <value>Aktueller Mandant</value>
