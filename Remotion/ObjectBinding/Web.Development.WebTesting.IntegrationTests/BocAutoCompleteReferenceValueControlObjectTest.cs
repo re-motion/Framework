@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void ScreenshotTest_AutoComplete ()
     {
       const string data =
-          "{data:{},result:''},{data:{},result:''},{data:{},result:''},{data:{},result:''},{data:{},result:''},{data:{DisplayText:'text'},result:''},{data:{},result:''},{data:{},result:''},{data:{},result:''},{data:{},result:''}";
+          "{data:{},result:''},{data:{},result:''},{data:{},result:''},{data:{},result:''},{data:{},result:''},{data:{DisplayName:' '},result:''},{data:{},result:''},{data:{},result:''},{data:{},result:''},{data:{},result:''}";
 
       var home = Start();
 
@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
                 target.PreviousItem();
                 builder.AnnotateBox (target.GetSelectedItem(), Pens.Pink, WebPadding.Inner);
 
-                target.Select().WithDisplayText ("text");
+                target.Select().WithDisplayText (" ");
                 builder.AnnotateBox (target.GetSelectedItem(), Pens.Chartreuse, WebPadding.Inner);
 
                 builder.Crop (target);

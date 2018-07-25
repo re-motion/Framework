@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
 var text = arguments[1]; 
 var predicate = (function (data) 
 { 
-  return data.data.DisplayText === text;
+  return data.data.DisplayName === text;
 }); 
 
 var b = a.findItemPositionWhere (predicate); 
