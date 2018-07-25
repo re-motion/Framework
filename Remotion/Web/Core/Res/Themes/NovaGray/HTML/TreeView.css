@@ -618,7 +618,12 @@ span.treeViewNodeHead a,
 span.treeViewNodeHeadSelected a
 {
   vertical-align: -0.4em;
+
   padding: 2px;
+  /* Synchronized with focus/hover */
+  padding-top: 3px;
+  padding-bottom: 3px;
+
   color: Black;
 }
 
@@ -628,6 +633,10 @@ li:focus > span.treeViewNode span.treeViewNodeHeadSelected a,
 span.treeViewNodeHeadSelected a:hover
 {
   padding: 1px;
+  /* Ensures that diacritic marks can be rendered without being cut off while not chaning the overall height of the node. */
+  padding-top: 2px;
+  padding-bottom: 2px;
+
   border: 1px solid #7CB2E6;
   background-color: #E5F0FC;
   outline: none;
@@ -650,6 +659,10 @@ span.treeViewNodeHeadSelected a,
 span.treeViewNodeHeadSelected a:active
 {
   padding: 1px;
+  /* Synchronized with focus/hover */
+  padding-top: 2px;
+  padding-bottom: 2px;
+
   border: 1px solid #569CE0;
   background-color: #C5E0FC;
 }

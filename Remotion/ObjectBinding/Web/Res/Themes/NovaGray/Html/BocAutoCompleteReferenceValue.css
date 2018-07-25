@@ -241,6 +241,31 @@ span.bocAutoCompleteReferenceValue.readOnly span.content
   position: static;
 }
 
+span.bocAutoCompleteReferenceValue.readOnly a.command
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. 
+     Using line-height instead of padding works better with BocAutoCompleteReferenceValue. When using padding, the text is not aligned with the label. */
+  height: 1.4em;
+  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
+  display: inline-block;
+}
+
+span.bocAutoCompleteReferenceValue.readOnly span.DropDownMenuContainer a.command
+{
+  /* Reset becasue embedded options menus do not require special handling to show diacritical marks */
+  height: 1.3em;
+}
+
+span.bocAutoCompleteReferenceValue.readOnly span.content.separateOptionsMenu span,
+span.bocAutoCompleteReferenceValue.readOnly span.content.withoutOptionsMenu span
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. 
+     Using line-height instead of padding works better with BocAutoCompleteReferenceValue. When using padding, the text is not aligned with the label. */
+  line-height: 1.4em;
+  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
+  display: inline-block;
+}
+
 /* has Icon */
 span.bocAutoCompleteReferenceValue a.command.hasIcon + span.content,
 span.bocAutoCompleteReferenceValue.disabled a.command.hasIcon + span.content,

@@ -9,10 +9,12 @@ span.bocMultilineTextValue
   vertical-align: middle;
   overflow: hidden;
 }
-  
+
 .bocMultilineTextValue.readOnly
 {
   min-height: 0;
+  /* Ensures that the outline is visible in Firefox. */
+  overflow: visible;
 }
 
 .bocMultilineTextValue.disabled
@@ -34,6 +36,24 @@ span.bocMultilineTextValue .content
 .bocMultilineTextValue.readOnly .content
 {
   position: static;
+}
+
+.bocMultilineTextValue.readOnly .content span
+{
+  /* Ensures that the outline is rendered as a block and outside of the space reserved for diacritic marks. */
+  display: inline-block;
+}
+
+.bocMultilineTextValue.readOnly .content span:first-child
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. */
+  padding-top: 0.2em; 
+}
+
+.bocMultilineTextValue.readOnly .content span:last-child
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. */
+  padding-bottom: 0.2em;
 }
 
 span.bocMultilineTextValue textarea

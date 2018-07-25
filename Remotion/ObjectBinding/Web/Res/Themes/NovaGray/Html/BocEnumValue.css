@@ -11,6 +11,8 @@ span.bocEnumValue
 
 .bocEnumValue.readOnly
 {
+  /* Ensures that the outline is visible in Firefox. */
+  overflow: visible;
 }
 
 .bocEnumValue.disabled
@@ -41,4 +43,25 @@ span.bocEnumValue select[size="1"]
 .bocEnumValue td label
 {
   vertical-align: text-bottom;
+}
+
+.bocEnumValue.readOnly span[tabindex]
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. 
+     Using line-height instead of padding works better with BocEnumValue. When using padding, the text is not aligned with the label. */
+  /*line-height: 1.5em;*/
+  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
+  display: inline-block;
+}
+
+.bocEnumValue.readOnly span[tabindex]:first-child
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. */
+  padding-top: 0.2em;
+}
+
+.bocEnumValue.readOnly span[tabindex]:last-child
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. */
+  padding-bottom: 0.2em;
 }

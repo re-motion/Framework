@@ -26,6 +26,8 @@ span.bocDateTimeValue.readOnly,
 span.bocDateValue.readOnly
 {
   height: inherit;
+  /* Ensures that the outline is visible in Firefox. */
+  overflow: visible;
 }
 
 span.bocDateTimeValue.disabled,
@@ -80,6 +82,30 @@ span.bocTime24Hours input,
 span.bocTime12Hours input
 {
   width: 4.5em;
+}
+
+span.bocDateTimeValue.readOnly span[tabindex],
+span.bocDateValue.readOnly span[tabindex]
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. 
+     Using line-height instead of padding works better with BocDateTimeValue. When using padding, the text is not aligned with the label. */
+  line-height: 1.5em;
+  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
+  display: inline-block;
+}
+
+span.bocDateTimeValue.readOnly span[tabindex]:first-child,
+span.bocDateValue.readOnly span[tabindex]:first-child
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. */
+  /*padding-top: 0.2em;*/
+}
+
+span.bocDateTimeValue.readOnly span[tabindex]:last-child,
+span.bocDateValue.readOnly span[tabindex]:last-child
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. */
+  /*padding-bottom: 0.2em;*/
 }
 
 a.bocPicker24HoursWithSeconds,

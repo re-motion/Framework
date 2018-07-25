@@ -9,10 +9,12 @@ span.bocTextValue
   vertical-align: middle;
   overflow: hidden;
 }
-  
+
 .bocTextValue.readOnly
 {
   min-height: 0;
+  /* Ensures that the outline is visible in Firefox. */
+  overflow: visible;
 }
 
 .bocTextValue.disabled
@@ -34,6 +36,20 @@ span.bocTextValue .content
 
 .bocTextValue.readOnly .content span
 {
+  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
+  display: inline-block;
+}
+
+.bocTextValue.readOnly .content span:first-child
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. */
+  padding-top: 0.2em;
+}
+
+.bocTextValue.readOnly .content span:last-child
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. */
+  padding-bottom: 0.2em;
 }
 
 span.bocTextValue input

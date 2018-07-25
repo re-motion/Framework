@@ -438,16 +438,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       if (!isControlHeightEmpty && isLabelHeightEmpty)
         renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
 
-      bool isControlWidthEmpty = renderingContext.Control.Width.IsEmpty && string.IsNullOrEmpty (renderingContext.Control.Style["width"]);
-      bool isLabelWidthEmpty = label.Width.IsEmpty && string.IsNullOrEmpty (label.Style["width"]);
-      if (!isControlWidthEmpty && isLabelWidthEmpty)
-      {
-        if (!renderingContext.Control.Width.IsEmpty)
-          renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, renderingContext.Control.Width.ToString());
-        else
-          renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, renderingContext.Control.Style["width"]);
-      }
-
       label.Attributes.Add ("tabindex", "0");
       // Screenreaders (JAWS v18) will not read the contents of a span with role=textbox,
       // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
