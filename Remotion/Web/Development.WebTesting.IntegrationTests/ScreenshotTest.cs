@@ -246,6 +246,51 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Helper.RunScreenshotTestExact<ElementScope, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
     }
 
+    [Category ("Screenshot")]
+    [Test]
+    public void ResolveAbsolutePositionedElement ()
+    {
+      var home = Start();
+
+      ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
+          (builder, target) =>
+          {
+            builder.AnnotateBox (target, Pens.Red, new WebPadding (1));
+            builder.Crop (target, new WebPadding (3));
+          };
+
+      var element = home.Scope.FindId ("absoluteElement").ForElementScopeScreenshot();
+
+      Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
+    }
+
+    [Category ("Screenshot")]
+    [Test]
+    public void ResolveBorderElementA ()
+    {
+      var home = Start();
+
+      ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
+          (builder, target) => { builder.Crop (target, new WebPadding (1)); };
+
+      var element = home.Scope.FindId ("borderElementA").ForElementScopeScreenshot();
+
+      Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
+    }
+
+    [Category ("Screenshot")]
+    [Test]
+    public void ResolveBorderElementB ()
+    {
+      var home = Start();
+
+      ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
+          (builder, target) => { builder.Crop (target, new WebPadding (1)); };
+
+      var element = home.Scope.FindId ("borderElementB").ForElementScopeScreenshot();
+
+      Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
+    }
 
     [Category ("Screenshot")]
     [Test]

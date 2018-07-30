@@ -115,7 +115,7 @@
 
     /* loop through all frames until we have reached the top or if we hit cross-site boundaries */
     var currentWindow = target.ownerDocument.defaultView;
-    while (currentWindow != null && currentWindow !== currentWindow.parent && currentWindow.frameElement != null)
+    while (currentWindow && currentWindow.parent && currentWindow !== currentWindow.parent && currentWindow.frameElement)
     {
       var frame = currentWindow.frameElement;
       currentWindow = currentWindow.parent;
@@ -169,7 +169,7 @@
         container = container == null ? bounds : Rectangle.Intersect (container, bounds);
     }
 
-    return container || Rectangle.FromClientRect (targetDocument.body.getBoundingClientRect());
+    return container || null;
   }
 
   /* Calculate element bounds and offset */
@@ -179,10 +179,10 @@
   var windowSize = _temp[2];
 
   /* Calculate the visible parents bounds */
-  var visibleParentBounds = GetVisibleParentBounds (element);
+  var windowBounds = new Rectangle (0, 0, windowSize.Width, windowSize.Height);
+  var visibleParentBounds = GetVisibleParentBounds(element) || windowBounds;
   visibleParentBounds.Offset(elementOffset.X, elementOffset.Y);
-  visibleParentBounds = Rectangle.Intersect (visibleParentBounds,
-    new Rectangle (0, 0, windowSize.Width, windowSize.Height));
+  visibleParentBounds = Rectangle.Intersect(visibleParentBounds, windowBounds);
 
   /* Return the result as JSON */
   var result = { ElementBounds : elementBounds, ParentBounds : visibleParentBounds };
