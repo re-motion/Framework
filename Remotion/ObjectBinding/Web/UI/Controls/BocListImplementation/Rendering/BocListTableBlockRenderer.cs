@@ -127,8 +127,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IReadOnlyCollection<string> validationErrors)
     {
       renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
       renderingContext.Writer.AddAttribute ("tabindex", "0");
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
@@ -218,8 +216,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_TableScrollContainer");
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Table);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
 

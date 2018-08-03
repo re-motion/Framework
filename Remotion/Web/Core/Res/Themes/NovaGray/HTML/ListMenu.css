@@ -1,7 +1,16 @@
 ﻿/* Style applied to the ListMenu. */
 
+table.listMenu
+{
+  border: none;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
 td.listMenuRow
 {
+  padding-left: 0;
+  padding-right: 0;
   padding-top: 1px;
   padding-bottom: 1px;
   vertical-align: middle;

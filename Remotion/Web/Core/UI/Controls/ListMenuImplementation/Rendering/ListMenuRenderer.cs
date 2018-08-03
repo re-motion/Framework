@@ -71,9 +71,6 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       RegisterMenuItems (renderingContext);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassListMenu);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Menu);
       if (IsDiagnosticMetadataRenderingEnabled)

@@ -201,9 +201,9 @@ public class ValidationStateViewer : WebControl, IControl
     _formGridManagers = new ArrayList();
     PopulateFormGridManagerList (NamingContainer);
 
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
+    writer.AddStyleAttribute ("border-spacing", "0");
+    writer.AddStyleAttribute ("border-collapse", "collapse");
+    writer.AddStyleAttribute ("border", "none");
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
     for (int idxFormGridManagers = 0; idxFormGridManagers < _formGridManagers.Count; idxFormGridManagers++)
     {

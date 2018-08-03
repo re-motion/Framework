@@ -180,9 +180,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       var table = _htmlHelper.GetAssertedChildElement (document, "table", 0);
       table.AssertAttributeValueEquals ("id", _control.ClientID);
       table.AssertAttributeValueEquals ("class", _control.CssClass);
-      table.AssertAttributeValueEquals ("cellspacing", "0");
-      table.AssertAttributeValueEquals ("cellpadding", "0");
-      table.AssertAttributeValueEquals ("border", "0");
       table.AssertAttributeValueEquals ("role", "menu");
       return table;
     }
