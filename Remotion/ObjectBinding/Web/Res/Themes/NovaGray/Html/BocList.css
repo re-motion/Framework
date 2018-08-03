@@ -231,6 +231,11 @@ th.bocListTitleCell
   white-space: nowrap;
 }
 
+thead.bocListTableHead[aria-hidden] > tr > th > *
+{
+  visibility: hidden;
+}
+
 div.bocList.hasDimensions th.bocListTitleCell
 {
   border-bottom: none;
