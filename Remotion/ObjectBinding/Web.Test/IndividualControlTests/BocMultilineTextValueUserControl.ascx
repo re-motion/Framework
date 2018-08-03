@@ -26,7 +26,7 @@
           <td colSpan=4><remotion:boctextvalue id=FirstNameField runat="server" ReadOnly="True" datasourcecontrol="CurrentObject" PropertyIdentifier="FirstName"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" ReadOnly="True" datasourcecontrol="CurrentObject" PropertyIdentifier="LastName"></remotion:boctextvalue></td></tr>
         <tr>
           <td></td>
-          <td><remotion:bocmultilinetextvalue id=CVField runat="server" datasourcecontrol="CurrentObject" PropertyIdentifier="CV" requirederrormessage="Eingabe erforderlich"  required="True">
+          <td><remotion:bocmultilinetextvalue id=CVField runat="server" datasourcecontrol="CurrentObject" PropertyIdentifier="CV" ErrorMessage="Eingabe erforderlich"  required="True">
 <textboxstyle rows="3" textmode="MultiLine" autopostback="True" maxlength="50">
 </TextBoxStyle>
             </remotion:bocmultilinetextvalue></td>
@@ -61,7 +61,7 @@
           <td style="WIDTH: 20%"><asp:label id=UnboundReadOnlyCVFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
           <td></td>
-          <td><remotion:bocmultilinetextvalue id=DisabledCVField runat="server" datasourcecontrol="CurrentObject" PropertyIdentifier="CV" requirederrormessage="Eingabe erforderlich"  required="True" enabled=false>
+          <td><remotion:bocmultilinetextvalue id=DisabledCVField runat="server" datasourcecontrol="CurrentObject" PropertyIdentifier="CV" ErrorMessage="Eingabe erforderlich"  required="True" enabled=false>
 <textboxstyle rows="3" textmode="MultiLine">
 </TextBoxStyle>
             </remotion:bocmultilinetextvalue></td>

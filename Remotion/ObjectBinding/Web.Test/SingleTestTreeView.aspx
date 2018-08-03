@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="c#" Codebehind="SingleTestTreeView.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.SingleTestTreeView" MasterPageFile="~/StandardMode.Master" %>
+<%@ Page Language="c#" Codebehind="SingleTestTreeView.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.SingleTestTreeView" Title="SingleTestTreeView" MasterPageFile="~/StandardMode.Master" %>
 
 <asp:Content ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -22,14 +22,14 @@
   <asp:ScriptManager ID="ScriptManager" runat="server" />
     <h1>
       SingleTest TreeView</h1>
-    <table width="100%">
+    <table style="width: 100%">
       <tr>
-        <td valign="top" width="33%">
+        <td style="width: 33%; vertical-align: top">
           <asp:Label ID="PersonTreeViewLabel" runat="server" hidden="hidden">Persons</asp:Label>
           <ros:PersonTreeView ID="PersonTreeView" runat="server" DataSourceControl="CurrentObject" CssClass="TreeBlock" EnableTopLevelExpander="False" EnableLookAheadEvaluation="True" />
           <asp:Button ID="RefreshPesonTreeViewButton" runat="server" Text="Refresh"></asp:Button>
         </td>
-        <td valign="top" width="33%">
+        <td style="width: 33%; vertical-align: top">
           <remotion:WebTreeView ID="WebTreeView" runat="server" CssClass="TreeBlock" Width="150px" EnableScrollBars="True" />
           <p>
             <asp:Button ID="PostBackButton" runat="server" Text="PostBack"></asp:Button></p>
@@ -38,7 +38,7 @@
           <p>
             <asp:Button ID="Node332Button" runat="server" Text="Node 332"></asp:Button></p>
         </td>
-        <td valign="top" width="33%">
+        <td style="width: 33%; vertical-align: top">
           <asp:UpdatePanel ID="UpdatePanel" runat="server">
             <ContentTemplate>
               <ros:PersonTreeView ID="PersonTreeViewWithMenus" runat="server" DataSourceControl="CurrentObject" CssClass="TreeBlock" EnableTopLevelExpander="False" EnableLookAheadEvaluation="True" />
