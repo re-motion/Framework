@@ -108,7 +108,7 @@
     <value>Current tenant</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentSubstitutionCommandTooltip" xml:space="preserve">
-    <value>Click to change the substitution</value>
+    <value>Click to change the substitute</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentTenantCommandTooltip" xml:space="preserve">
     <value>Click to change the tenant</value>
