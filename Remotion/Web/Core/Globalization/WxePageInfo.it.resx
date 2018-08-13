@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.Web.ExecutionEngine.WxePageInfo.StatusIsAbortingMessage" xml:space="preserve">
-    <value>&lt;p&gt;Stai per lasciare la pagina.&lt;/p&gt;&lt;p&gt;Non è possibile inviare altri input al server.&lt;/p&gt;</value>
+    <value>&lt;p&gt;Si sta per lasciare questa pagina.&lt;/p&gt;&lt;p&gt;Non è possibile inviare altri input al server.&lt;/p&gt;</value>
   </data>
   <data name="Remotion.Web.ExecutionEngine.WxePageInfo.StatusIsCachedMessage" xml:space="preserve">
-    <value>La navigazione con i pulsanti Avanti e Indietro non è supportata.</value>
+    <value>Non è supportata la navigazione con i pulsanti Avanti e Indietro.</value>
   </data>
 </root>

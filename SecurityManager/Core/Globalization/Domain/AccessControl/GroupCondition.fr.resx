@@ -122,6 +122,7 @@
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.BranchOfOwningGroup" xml:space="preserve">
     <value>Même ... (unité structurelle)</value>
+    <comment>"Same department", "Same team"</comment>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.None" xml:space="preserve">
     <value>N’importe quel groupe</value>

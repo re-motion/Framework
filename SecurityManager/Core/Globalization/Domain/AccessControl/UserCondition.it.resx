@@ -124,7 +124,7 @@
     <value>Proprietario dell'oggetto</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.UserCondition.SpecificPosition" xml:space="preserve">
-    <value>Utente con posizione</value>
+    <value>Utente con questo posto</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.UserCondition.SpecificUser" xml:space="preserve">
     <value>Utente specifico</value>
