@@ -22,9 +22,9 @@
       <div id="screenshotTarget" style="">
       </div>
         
-      <dív id="absoluteElement" style="position: absolute; width: 5px; height: 5px; top: 4px; left: 4px; background-color: black"></dív>
-      <dív id="borderElementA" style="position: absolute; width: 1px; height: 1px; top: 0; left: 0; background-color: black"></dív>
-      <dív id="borderElementB" style="position: absolute; width: 1px; height: 1px; bottom: 0; right: 0; background-color: black"></dív>
+      <div id="absoluteElement" style="position: absolute; width: 5px; height: 5px; top: 4px; left: 4px; background-color: black"></div>
+      <div id="borderElementA" style="position: absolute; width: 1px; height: 1px; top: 0; left: 0; background-color: black"></div>
+      <div id="borderElementB" style="position: absolute; width: 1px; height: 1px; bottom: 0; right: 0; background-color: black"></div>
       
       <table id="screenshotControlContainer" style="margin-bottom: 80px;">
         <tr>
