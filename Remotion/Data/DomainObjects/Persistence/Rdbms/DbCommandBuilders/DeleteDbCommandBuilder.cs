@@ -63,8 +63,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       var statement = new StringBuilder ();
 
       statement.Append ("DELETE FROM ");
-      AppendTableName (statement, _tableDefinition);
-      AppendWhereClause (statement, _comparedColumnsSpecification, command);
+      AppendTableName (statement, command, _tableDefinition);
+      AppendWhereClause (statement, command, _comparedColumnsSpecification);
       statement.Append (SqlDialect.StatementDelimiter);
 
       command.CommandText = statement.ToString ();

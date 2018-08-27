@@ -36,29 +36,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       throw new NotImplementedException();
     }
 
-    public new void AppendSelectClause (StringBuilder statement, ISelectedColumnsSpecification selectedColumns)
+    public new void AppendSelectClause (StringBuilder statement, IDbCommand command, ISelectedColumnsSpecification selectedColumns)
     {
-      base.AppendSelectClause (statement, selectedColumns);
+      base.AppendSelectClause (statement, command, selectedColumns);
     }
 
-    public new void AppendFromClause (StringBuilder statement, TableDefinition tableDefinition)
+    public new void AppendFromClause (StringBuilder statement, IDbCommand command, TableDefinition tableDefinition)
     {
-      base.AppendFromClause (statement, tableDefinition);
+      base.AppendFromClause (statement, command, tableDefinition);
     }
 
-    public new void AppendTableName (StringBuilder statement, TableDefinition tableDefinition)
+    public new void AppendTableName (StringBuilder statement, IDbCommand command, TableDefinition tableDefinition)
     {
-      base.AppendTableName (statement, tableDefinition);
+      base.AppendTableName (statement, command, tableDefinition);
     }
 
-    public new void AppendWhereClause (StringBuilder statement, IComparedColumnsSpecification comparedColumns, IDbCommand command)
+    public new void AppendWhereClause (StringBuilder statement, IDbCommand command, IComparedColumnsSpecification comparedColumns)
     {
-      base.AppendWhereClause (statement, comparedColumns, command);
+      base.AppendWhereClause (statement, command, comparedColumns);
     }
 
-    public new void AppendOrderByClause (StringBuilder statement, IOrderedColumnsSpecification orderedColumnsSpecification)
+    public new void AppendOrderByClause (StringBuilder statement, IDbCommand command, IOrderedColumnsSpecification orderedColumnsSpecification)
     {
-      base.AppendOrderByClause (statement, orderedColumnsSpecification);
+      base.AppendOrderByClause (statement, command, orderedColumnsSpecification);
     }
   }
 }

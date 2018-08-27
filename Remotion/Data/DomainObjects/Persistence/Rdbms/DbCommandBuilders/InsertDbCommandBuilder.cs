@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       var statement = new StringBuilder();
 
       statement.Append ("INSERT INTO ");
-      AppendTableName (statement, _tableDefinition);
+      AppendTableName (statement, command, _tableDefinition);
       statement.Append (" (");
       _insertedColumnsSpecification.AppendColumnNames (statement, command, SqlDialect);
       statement.Append (") VALUES (");

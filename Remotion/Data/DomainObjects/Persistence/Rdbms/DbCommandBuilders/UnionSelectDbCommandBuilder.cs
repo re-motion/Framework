@@ -91,8 +91,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
           statement.Append (" UNION ALL ");
 
         var adjustedProjection = fullProjection.AdjustForTable (table);
-        AppendSelectClause (statement, adjustedProjection);
-        AppendFromClause (statement, table);
+        AppendSelectClause (statement, command, adjustedProjection);
+        AppendFromClause (statement, command, table);
 
         statement.Append (" WHERE ");
         _comparedColumns.AppendComparisons (statement, command, SqlDialect);
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         first = false;
       }
 
-      AppendOrderByClause (statement, _orderedColumns);
+      AppendOrderByClause (statement, command, _orderedColumns);
 
       statement.Append (SqlDialect.StatementDelimiter);
 

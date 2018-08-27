@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
               });
       specificationMock.Replay();
 
-      _commandBuilder.AppendWhereClause (statement, specificationMock, command);
+      _commandBuilder.AppendWhereClause (statement, command, specificationMock);
 
       specificationMock.VerifyAllExpectations();
     }
@@ -65,6 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     public void AppendOrderByClause ()
     {
       var statement = new StringBuilder ();
+      var command = MockRepository.GenerateStub<IDbCommand>();
 
       var specificationMock = MockRepository.GenerateStrictMock<IOrderedColumnsSpecification> ();
       specificationMock.Expect (mock => mock.IsEmpty).Return (false);
@@ -78,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
               });
       specificationMock.Replay ();
 
-      _commandBuilder.AppendOrderByClause (statement, specificationMock);
+      _commandBuilder.AppendOrderByClause (statement, command, specificationMock);
 
       specificationMock.VerifyAllExpectations();
       Assert.That (statement.ToString (), Is.EqualTo(" ORDER BY orders..."));

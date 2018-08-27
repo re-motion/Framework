@@ -80,10 +80,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       var command = commandExecutionContext.CreateDbCommand();
 
       var statement = new StringBuilder();
-      AppendSelectClause (statement, _selectedColumns);
-      AppendFromClause (statement, _table);
-      AppendWhereClause (statement, _comparedColumns, command);
-      AppendOrderByClause (statement, _orderedColumns);
+      AppendSelectClause (statement, command, _selectedColumns);
+      AppendFromClause (statement, command, _table);
+      AppendWhereClause (statement, command, _comparedColumns);
+      AppendOrderByClause (statement, command, _orderedColumns);
       statement.Append (SqlDialect.StatementDelimiter);
 
       command.CommandText = statement.ToString();

@@ -72,16 +72,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       var statement = new StringBuilder ();
 
       statement.Append ("UPDATE ");
-      AppendTableName (statement, _tableDefinition);
-      AppendUpdateClause (statement, _updatedColumnsSpecification, command);
-      AppendWhereClause (statement, _comparedColumnsSpecification, command);
+      AppendTableName (statement, command, _tableDefinition);
+      AppendUpdateClause (statement, command, _updatedColumnsSpecification);
+      AppendWhereClause (statement, command, _comparedColumnsSpecification);
       statement.Append (SqlDialect.StatementDelimiter);
 
       command.CommandText = statement.ToString ();
       return command;
     }
 
-    private void AppendUpdateClause (StringBuilder statement, IUpdatedColumnsSpecification updatedColumnsSpecification, IDbCommand command)
+    protected virtual void AppendUpdateClause (StringBuilder statement, IDbCommand command, IUpdatedColumnsSpecification updatedColumnsSpecification)
     {
       ArgumentUtility.CheckNotNull ("statement", statement);
       ArgumentUtility.CheckNotNull ("updatedColumnsSpecification", updatedColumnsSpecification);

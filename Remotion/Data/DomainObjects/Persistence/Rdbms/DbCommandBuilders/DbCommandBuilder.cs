@@ -41,20 +41,41 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       get { return _sqlDialect; }
     }
 
-    protected void AppendSelectClause (StringBuilder statement, ISelectedColumnsSpecification selectedColumns)
+    protected virtual void AppendSelectClause (
+        StringBuilder statement,
+        IDbCommand command,
+        ISelectedColumnsSpecification selectedColumns)
     {
+      ArgumentUtility.CheckNotNull ("statement", statement);
+      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNull ("selectedColumns", selectedColumns);
+
       statement.Append ("SELECT ");
       selectedColumns.AppendProjection (statement, SqlDialect);
     }
 
-    protected void AppendFromClause (StringBuilder statement, TableDefinition tableDefinition)
+    protected virtual void AppendFromClause (
+        StringBuilder statement,
+        IDbCommand command,
+        TableDefinition tableDefinition)
     {
+      ArgumentUtility.CheckNotNull ("statement", statement);
+      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
+
       statement.Append (" FROM ");
-      AppendTableName (statement, tableDefinition);
+      AppendTableName (statement, command, tableDefinition);
     }
 
-    protected void AppendTableName (StringBuilder statement, TableDefinition tableDefinition)
+    protected void AppendTableName (
+        StringBuilder statement,
+        IDbCommand command,
+        TableDefinition tableDefinition)
     {
+      ArgumentUtility.CheckNotNull ("statement", statement);
+      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
+
       if (tableDefinition.TableName.SchemaName != null)
       {
         statement.Append (SqlDialect.DelimitIdentifier (tableDefinition.TableName.SchemaName));
@@ -63,19 +84,27 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       statement.Append (SqlDialect.DelimitIdentifier (tableDefinition.TableName.EntityName));
     }
 
-    protected void AppendWhereClause (
+    protected virtual void AppendWhereClause (
         StringBuilder statement,
-        IComparedColumnsSpecification comparedColumns,
-        IDbCommand command)
+        IDbCommand command,
+        IComparedColumnsSpecification comparedColumns)
     {
+      ArgumentUtility.CheckNotNull ("statement", statement);
+      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNull ("comparedColumns", comparedColumns);
+
       statement.Append (" WHERE ");
       comparedColumns.AddParameters (command, SqlDialect);
       comparedColumns.AppendComparisons (statement, command, SqlDialect);
     }
 
-    protected void AppendOrderByClause (StringBuilder statement, IOrderedColumnsSpecification orderedColumnsSpecification)
+    protected virtual void AppendOrderByClause (
+        StringBuilder statement,
+        IDbCommand command,
+        IOrderedColumnsSpecification orderedColumnsSpecification)
     {
       ArgumentUtility.CheckNotNull ("statement", statement);
+      ArgumentUtility.CheckNotNull ("command", command);
       ArgumentUtility.CheckNotNull ("orderedColumnsSpecification", orderedColumnsSpecification);
 
       if (!orderedColumnsSpecification.IsEmpty)
