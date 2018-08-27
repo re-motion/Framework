@@ -18,6 +18,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- Suffix used when the solution depends on pre-release packages -->
-    <FullBuild_NuGetVersionSuffix>rtm</FullBuild_NuGetVersionSuffix>
+    <FullBuild_NuGetVersionSuffix></FullBuild_NuGetVersionSuffix>
   </PropertyGroup>
 </Project>
