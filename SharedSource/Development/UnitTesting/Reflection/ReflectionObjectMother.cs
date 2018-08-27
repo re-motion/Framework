@@ -437,9 +437,9 @@ namespace Remotion.Development.UnitTesting.Reflection
     {
       static DomainType () { }
 
-      // ReSharper disable UnusedField.Compiler
+#pragma warning disable 414
       public int Field = 0;
-      // ReSharper restore UnusedField.Compiler
+#pragma warning restore 414
 
       public sealed override void FinalMethod () { }
 
