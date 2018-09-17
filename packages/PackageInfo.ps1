@@ -73,7 +73,7 @@ LicenseUrl: https://github.com/re-motion/IO/tree/develop/license/SharpZipLib-0.8
 $output +=
 "MSBuild Community Tasks
 ProjectUrl: https://github.com/loresoft/msbuildtasks/
-LicenseUrl: The MSBuild Community Tasks project is a collection of open source tasks for MSBuild.
+LicenseUrl: https://github.com/loresoft/msbuildtasks/blob/master/LICENSE
 Description: The MSBuild Community Tasks project is a collection of open source tasks for MSBuild.
 "
 
