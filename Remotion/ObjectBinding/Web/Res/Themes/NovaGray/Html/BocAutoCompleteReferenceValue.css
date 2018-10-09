@@ -241,6 +241,14 @@ span.bocAutoCompleteReferenceValue.readOnly span.content
   position: static;
 }
 
+span.bocAutoCompleteReferenceValue.readOnly span.content span:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  min-width: 2em;
+  min-height: 1.5em;
+  vertical-align: -0.2em;
+}
+
 span.bocAutoCompleteReferenceValue.readOnly a.command
 {
   /* Ensures that diacritic marks can be rendered without being cut off. 
@@ -264,6 +272,8 @@ span.bocAutoCompleteReferenceValue.readOnly span.content.withoutOptionsMenu span
   line-height: 1.4em;
   /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
   display: inline-block;
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  width: calc(100% - 17px - 4px);
 }
 
 /* has Icon */
