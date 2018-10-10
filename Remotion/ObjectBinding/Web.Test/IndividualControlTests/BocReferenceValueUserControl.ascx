@@ -57,7 +57,7 @@
 <remotion:BocCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="Event"></remotion:BocCommand>
 </PersistedCommand>
 
-<labelstyle cssclass="class">
+<labelstyle cssclass="MyLabelClass">
 </LabelStyle></remotion:bocreferencevalue></td>
     <td>bound, read-only</td>
     <td style="WIDTH: 20%"><asp:label id=ReadOnlyPartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>

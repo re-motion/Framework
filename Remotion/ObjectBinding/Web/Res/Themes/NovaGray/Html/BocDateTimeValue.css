@@ -108,6 +108,26 @@ span.bocDateValue.readOnly span[tabindex]:last-child
   /*padding-bottom: 0.2em;*/
 }
 
+span.bocDateTimeValue.readOnly span[tabindex]:empty,
+span.bocDateValue.readOnly span[tabindex]:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  min-height: 1.5em;
+  vertical-align: -0.2em;
+}
+
+span.bocDateTimeValue.readOnly span[tabindex]:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  width: calc(50% - 2px);
+}
+
+span.bocDateValue.readOnly span[tabindex]:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  width: 100%;
+}
+
 a.bocPicker24HoursWithSeconds,
 a.bocPicker12HoursWithSeconds,
 a.bocPicker24Hours,

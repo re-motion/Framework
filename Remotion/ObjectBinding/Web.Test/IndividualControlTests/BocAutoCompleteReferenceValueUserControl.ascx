@@ -48,7 +48,7 @@
 </remotion:BocMenuItem>
 </OptionsMenuItems>
 
-<labelstyle cssclass="class">
+<labelstyle cssclass="MyLabelClass">
 </LabelStyle></remotion:bocAutoCompleteReferenceValue>
 </td>
     <td>bound</td>

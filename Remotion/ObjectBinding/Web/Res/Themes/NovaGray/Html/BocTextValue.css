@@ -25,7 +25,7 @@ span.bocTextValue .content
 {
   position: absolute;
   left: 0;
-  right: 0.5em;
+  right: 6px;
   width: auto;
 }
 
@@ -50,6 +50,16 @@ span.bocTextValue .content
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
   padding-bottom: 0.2em;
+}
+
+.bocTextValue.readOnly .content span:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  width: calc(100% - 2px);
+  min-height: 1.5em;
+  padding-top: 0;
+  padding-bottom: 0;
+  vertical-align: -0.2em;
 }
 
 span.bocTextValue input

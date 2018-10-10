@@ -26,7 +26,7 @@ span.bocMultilineTextValue .content
   position: absolute;
   display: block;
   left: 0;
-  right: 0.5em;
+  right: 6px;
   width: auto;
   top: 0;
   bottom: 0.5em;
@@ -54,6 +54,16 @@ span.bocMultilineTextValue .content
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
   padding-bottom: 0.2em;
+}
+
+.bocMultilineTextValue.readOnly .content span:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  width: 100%;
+  min-height: 1.5em;
+  padding-top: 0;
+  padding-bottom: 0;
+  vertical-align: -0.2em;
 }
 
 span.bocMultilineTextValue textarea
