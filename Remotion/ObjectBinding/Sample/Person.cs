@@ -251,13 +251,30 @@ namespace Remotion.ObjectBinding.Sample
       set { _cv = value; }
     }
 
-    public string CVString
+    public string CVStringLiteral
     {
       get
       {
         if (_cv == null)
           return null;
         return string.Join ("<br/>", _cv);
+      }
+    }
+
+    public string CVString
+    {
+      get
+      {
+        if (_cv == null)
+          return null;
+        return string.Join ("\r\n", _cv);
+      }
+      set 
+      {
+        if (value == null)
+          _cv = null;
+        else
+          _cv = value.Replace ("\r", "").Split ('\n');
       }
     }
 

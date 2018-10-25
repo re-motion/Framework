@@ -104,6 +104,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestGetText_WithTrailingWhitespaceBetweenLines ()
+    {
+      var home = Start();
+
+      var shouldBeText = "<Test 1> " + Environment.NewLine + "Test 2" + Environment.NewLine + "Test 3";
+      //TODO: Remove after implementation of RM-7062
+      var shouldBeTextWithTrim = "<Test 1>" + Environment.NewLine + "Test 2" + Environment.NewLine + "Test 3";
+
+      var bocText = home.TextValues().GetByLocalID ("CVString_Normal");
+      Assert.That (bocText.GetText(), Is.EqualTo (shouldBeText));
+
+      bocText = home.TextValues().GetByLocalID ("CVString_ReadOnly");
+      Assert.That (bocText.GetText(), Is.EqualTo (shouldBeTextWithTrim));
+
+      bocText = home.TextValues().GetByLocalID ("CVString_Disabled");
+      Assert.That (bocText.GetText(), Is.EqualTo (shouldBeText));
+
+      bocText = home.TextValues().GetByLocalID ("CVString_NoAutoPostBack");
+      Assert.That (bocText.GetText(), Is.EqualTo (shouldBeText));
+    }
+
+    [Test]
     public void TestFillWith ()
     {
       var home = Start();

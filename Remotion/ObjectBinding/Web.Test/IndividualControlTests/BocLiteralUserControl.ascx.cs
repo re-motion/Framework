@@ -43,8 +43,8 @@ namespace OBWTest.IndividualControlTests
 
       Person person = (Person) CurrentObject.BusinessObject;
 
-      UnboundCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("CVString");
-      UnboundCVField.LoadUnboundValue (person.CVString, IsPostBack);
+      UnboundCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("CVStringLiteral");
+      UnboundCVField.LoadUnboundValue (person.CVStringLiteral, IsPostBack);
     }
 
     override protected void OnPreRender (EventArgs e)

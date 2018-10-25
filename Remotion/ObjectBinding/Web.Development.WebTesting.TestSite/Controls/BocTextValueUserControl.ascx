@@ -100,4 +100,62 @@
     </td>
     <td>(password, no render)</td>
   </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocTextValue
+        ID="CVString_Normal"
+        DataSourceControl="CurrentObject"
+        PropertyIdentifier="CVString"
+        TextBoxStyle-AutoPostBack="true"
+        TextBoxStyle-TextMode="MultiLine"
+        ValueType="String"
+        runat="server"/>
+    </td>
+    <td>(normal)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocTextValue
+        ID="CVString_ReadOnly"
+        DataSourceControl="CurrentObject"
+        PropertyIdentifier="CVString"
+        TextBoxStyle-AutoPostBack="true"
+        TextBoxStyle-TextMode="MultiLine"
+        ReadOnly="true"
+        ValueType="String"
+        runat="server"/>
+    </td>
+    <td>(read-only)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocTextValue
+        ID="CVString_Disabled"
+        DataSourceControl="CurrentObject"
+        PropertyIdentifier="CVString"
+        TextBoxStyle-AutoPostBack="true"
+        TextBoxStyle-TextMode="MultiLine"
+        Enabled="false"
+        ValueType="String"
+        runat="server"/>
+    </td>
+    <td>(disabled)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocTextValue
+        ID="CVString_NoAutoPostBack"
+        DataSourceControl="CurrentObject"
+        PropertyIdentifier="CVString"
+        TextBoxStyle-AutoPostBack="false"
+        TextBoxStyle-TextMode="MultiLine"
+        ValueType="String"
+        runat="server"/>
+    </td>
+    <td>(no auto postback)</td>
+  </tr>
 </table>
