@@ -127,10 +127,10 @@
     <value>Unknown date format.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.InvalidIntegerErrorMessage" xml:space="preserve">
-    <value>Enter an integer</value>
+    <value>Enter an integer.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.InvalidDoubleErrorMessage" xml:space="preserve">
-    <value>Enter a number</value>
+    <value>Enter a number.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.MaxLengthValidationMessage" xml:space="preserve">
     <value>Do not enter more than {0} characters.</value>

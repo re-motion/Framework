@@ -124,9 +124,9 @@
     <value>Could not load the icon for your input.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.NoDataFoundMessage" xml:space="preserve">
-    <value>No matches were found for your input.</value>
+    <value>No matches found for your input.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.SearchStringForDropDownDoesNotMatchRegexMessage" xml:space="preserve">
-    <value>Your input does not match the given format.</value>
+    <value>Your input does not match the specified format.</value>
   </data>
 </root>

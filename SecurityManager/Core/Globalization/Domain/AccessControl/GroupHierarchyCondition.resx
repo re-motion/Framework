@@ -118,15 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupHierarchyCondition.This" xml:space="preserve">
-    <value>only this group</value>
+    <value>this group only</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupHierarchyCondition.ThisAndChildren" xml:space="preserve">
-    <value>or children</value>
+    <value>or its children</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupHierarchyCondition.ThisAndParent" xml:space="preserve">
-    <value>or parents</value>
+    <value>or its parents</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupHierarchyCondition.ThisAndParentAndChildren" xml:space="preserve">
-    <value>or parents and children</value>
+    <value>or its parents and children</value>
   </data>
 </root>

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue.InvalidItemErrorMessage" xml:space="preserve">
-    <value>No matches were found for the entered text. Correct your input.</value>
+    <value>No matches found for the text entered. Correct your input.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue.NullItemErrorMessage" xml:space="preserve">
     <value>Select an entry.</value>

@@ -121,7 +121,7 @@
     <value>Edit group</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupControl.ParentValidatorErrorMessage" xml:space="preserve">
-    <value>You cannot use the selected group as parent group because this will create a circular hierarchy.</value>
+    <value>Cannot use the selected group as parent group because this will create a circular hierarchy.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListForm.Title" xml:space="preserve">
     <value>Manage users</value>
@@ -178,7 +178,7 @@
     <value>Edit tenant</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl.ParentValidatorErrorMessage" xml:space="preserve">
-    <value>You cannot use the selected tenant as parent because this will create a circular hierarchy.</value>
+    <value>Cannot use the selected tenant as parent tenant because this will create a circular hierarchy.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl.TenantLabelText" xml:space="preserve">
     <value>Edit tenant</value>

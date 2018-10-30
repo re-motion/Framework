@@ -121,7 +121,7 @@
     <value>Any user</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.UserCondition.Owner" xml:space="preserve">
-    <value>Owner of the object</value>
+    <value>Object owner</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.UserCondition.SpecificPosition" xml:space="preserve">
     <value>User with this position</value>

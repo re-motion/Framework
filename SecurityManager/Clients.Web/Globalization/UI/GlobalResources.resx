@@ -133,7 +133,7 @@
     <value>Edit</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.ErrorMessage" xml:space="preserve">
-    <value>The page contains invalid inputs that are marked by red exclamation points.</value>
+    <value>The page contains invalid input marked by red exclamation points.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.GlobalResources.GroupType" xml:space="preserve">
     <value>Group type</value>

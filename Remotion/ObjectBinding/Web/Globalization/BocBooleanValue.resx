@@ -127,6 +127,6 @@
     <value>Undefined</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue.NullItemValidationMessage" xml:space="preserve">
-    <value>Set the check box to "Yes" or "No".</value>
+    <value>Set the checkbox to "Yes" or "No".</value>
   </data>
 </root>

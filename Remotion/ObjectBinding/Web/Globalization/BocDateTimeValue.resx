@@ -121,7 +121,7 @@
     <value>Enter a date and time.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.MissingDateOrTimeErrorMessage" xml:space="preserve">
-    <value>Enter at least a date or time.</value>
+    <value>Enter at least one date or time.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.MissingDateErrorMessage" xml:space="preserve">
     <value>Enter a date.</value>
@@ -139,7 +139,7 @@
     <value>Unknown time format.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.DataPickerButtonAlternateText" xml:space="preserve">
-    <value>Open date picker control</value>
+    <value>Open date picker</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue.DateLabelText" xml:space="preserve">
     <value>Date</value>
