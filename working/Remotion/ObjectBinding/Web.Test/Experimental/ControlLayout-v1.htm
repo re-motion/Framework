@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <style type="text/css">
+    h1
+    {
+      font-size: 1em;
+      margin-top: 0.5em;
+      margin-bottom: 0;
+    }
+
+    .dateTimeValue input::-ms-clear
+    {
+      display: none;
+    }
+
+    .dateTimeValue input.dateField
+    {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      
+      width: 8.1em;
+      padding-right: 26px;
+    }
+    
+    .dateTimeValue input.timeField
+    {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+
+      width: 4.4em;
+    }
+    
+    .dateTimeValue a.datePicker
+    {
+      background-image: url('../res/Remotion.Web/Themes/NovaBlue/Image/DatePicker.gif');
+      background-position: left center;
+      background-repeat: no-repeat;
+      display: inline-block;
+      margin-left: -28px;
+      margin-right: 0.2em;
+      width:20px;
+      height: 1.2em;
+    }
+    
+    .referenceValue select.dropDownList
+    {
+      width: 12.8em;
+    }
+    
+    .autoCompleteReferenceValue input.textField
+    {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      
+      /*padding: 3px;*/
+      width: 12.8em;
+      padding-right: 15px;
+      /*border: 1px solid darkgrey;
+      border-radius: 3px;*/
+    }
+    
+    /*.ie9 .autoCompleteReferenceValue input.textField
+    {
+      padding-right: 3px;
+      border-right: 15px solid transparent;
+    }*/
+
+    .autoCompleteReferenceValue a.dropDownButton
+    {
+      border: solid 1px ThreeDShadow;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      background-image: url('../res/Remotion.ObjectBinding.Web/Themes/NovaBlue/Image/AutoCompleteReferenceValueDropDownButtonFace.gif');
+      background-position: -1px center;
+      background-repeat: no-repeat;
+      background-color: #F1F1F1;
+      display: inline-block;
+      margin-left: -20px;
+      margin-right: 1px;
+      width:15px;
+      height: 1.2em;
+      vertical-align: -1px;
+    }
+    
+    .autoCompleteReferenceValue a.dropDownButton:hover
+    {
+      background-position: -31px center; /*-1px for border*/
+      background-color: #A7D9F5;
+    }
+    
+    a 
+    {
+      text-decoration:none;
+    }
+
+    .bocCheckBoxStyled input[type=checkbox]
+    {
+      position: absolute;
+      left: -1000%; /*Hide from visible screen but show for screen reader*/
+    }
+    
+    .bocCheckBoxStyled input[type=checkbox]
+    {
+      /* for debugging */
+      left: 30%; 
+    }
+
+    .bocCheckBoxStyled label
+    {
+      min-width: 16px;
+      min-height: 16px;
+      padding: 0px;
+      padding-left: 20px;
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-image: url('../res/Remotion.ObjectBinding.Web/Themes/NovaBlue/Image/CheckBoxFalse.gif');
+    }
+
+    .bocCheckBoxStyled input[type=checkbox]:checked + label
+    {
+      background-image: url('../res/Remotion.ObjectBinding.Web/Themes/NovaBlue/Image/CheckBoxTrue.gif');
+    }
+
+    .bocCheckBoxStyled input[type=checkbox]:focus + label
+    {
+      outline-style: dotted;
+      outline-width: 1px;
+    }
+
+    .bocCheckBoxStyled input[type=checkbox]:checked + label::after
+    {
+      content: attr(data-text-checked);
+    }
+
+    .bocCheckBoxStyled input[type=checkbox]:not(:checked) + label::after
+    {
+      content: attr(data-text-unchecked);
+    }
+
+    .bocTriStateStyled input[type=radio]
+    {
+      position: absolute;
+      left: -1000%; /*Hide from visible screen but show for screen reader*/
+    }
+
+    .bocTriStateStyled input[type=radio][value="null"]
+    {
+       /* for debugging */
+       left: 30em;
+    }
+
+    .bocTriStateStyled input[type=radio][value="true"]
+    {
+       /* for debugging */
+      left: 31em;
+    }
+
+    .bocTriStateStyled input[type=radio][value="false"]
+    {
+       /* for debugging */
+      left: 32em;
+    }
+
+    .bocTriStateStyled label
+    {
+      width: 16px;
+      height: 16px;
+      padding: 0px;
+      padding-left: 20px;
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-image: none;
+      display: none;
+    }
+
+    .bocTriStateStyled input[type=radio][value="null"]:checked + label,
+    .bocTriStateStyled input[type=radio][value="true"]:required:not(:checked) + label + input[type=radio][value="false"]:required:not(:checked) + label
+    {
+      background-image: url('../res/Remotion.ObjectBinding.Web/Themes/NovaBlue/Image/CheckBoxNull.gif');
+      display: inline;
+    }
+
+    .bocTriStateStyled input[type=radio][value="true"]:checked + label
+    {
+      background-image: url('../res/Remotion.ObjectBinding.Web/Themes/NovaBlue/Image/CheckBoxTrue.gif');
+      display: inline;
+    }
+
+    .bocTriStateStyled input[type=radio][value="false"]:checked + label
+    {
+      background-image: url('../res/Remotion.ObjectBinding.Web/Themes/NovaBlue/Image/CheckBoxFalse.gif');
+      display: inline;
+    }
+
+    .bocTriStateStyled input[type=radio]:focus + label,
+    .bocTriStateStyled input[type=radio]:required:not(:checked):focus +label + input[type=radio]:required:not(:checked) + label
+    {
+      outline-style: dotted;
+      outline-width: 1px;
+    }
+
+    .bocTriStateStyled input[type=radio]:checked + label::after
+    {
+      content: attr(data-text);
+    }
+
+    .bocTriStateStyled input[type=radio][value="true"]:required:not(:checked) + label + input[type=radio][value="false"]:required:not(:checked) + label::after
+    {
+      content: attr(data-text-undefined);
+    }
+  </style>
+</head>
+<body>
+  <form action="/" method="post">
+    <input type="submit" />
+    <h1>Checkbox using image:</h1>
+    <span class="bocCheckBoxStyled">
+      <input id="bocCheckBoxStyled_Value" type="checkbox" />
+      <label for="bocCheckBoxStyled_Value" data-text-checked="yes" data-text-unchecked="no"></label>
+    </span>
+    M<br />
+
+    <h1>Tri-State using image:</h1>
+    <span class="bocTriStateStyled">
+      <input id="bocTriStateStyles_ValueNull" name="bocTriStateStyles_Value" type="radio" value="null" title="undefined" checked="checked" />
+      <label for="bocTriStateStyles_ValueTrue" aria-hidden="true" title="select 'yes'" data-text="undefined"></label>
+      <input id="bocTriStateStyles_ValueTrue" name="bocTriStateStyles_Value" type="radio" value="true" title="yes" />
+      <label for="bocTriStateStyles_ValueFalse" aria-hidden="true" title="select 'no'" data-text="yes"></label>
+      <input id="bocTriStateStyles_ValueFalse" name="bocTriStateStyles_Value" type="radio" value="false" title="no" />
+      <label for="bocTriStateStyles_ValueNull" aria-hidden="true" title="reset" data-text="no"></label>
+    </span>
+    M<br />
+
+    <h1>Tri-State with disabled NULL value using image:</h1>
+    TODO: Solve display of validation error once the input controls are hidden.
+    One option is to apply "novalidate" to the form or "formnovalidate" to the input element. This will disable validation globally or just for the element. 
+    Other option is to use a custom data-attribute for this instead of the html5-required attribute.<br />
+    <span class="bocTriStateStyled">
+      <input id="bocTriStateStyles2_ValueTrue" name="bocTriStateStyles2_Value" type="radio" value="true" title="yes" required="required" />
+      <label for="bocTriStateStyles2_ValueFalse" aria-hidden="true" title="select 'no'" data-text="yes"></label>
+      <input id="bocTriStateStyles2_ValueFalse" name="bocTriStateStyles2_Value" type="radio" value="false" title="no" required="required" />
+      <label for="bocTriStateStyles2_ValueTrue" aria-hidden="true" title="select 'yes'" data-text="no" data-text-undefined="undefined"></label>
+    </span>
+    M
+    <h1>Date Time Value:</h1>
+    <span class="dateTimeValue">
+      <input name="dateValue" type="text" class="dateField" maxlength="10" value="13.02.2011" />
+      <a href="#" class="datePicker" title="Open Date Picker">&nbsp;</a>
+      <input name="timeValue" type="text" class="timeField" maxlength="10" value="12:24:59" />
+    </span>
+    M<br />
+    Note: The clear-button (IE10) was disabled on the date and time input elements.
+
+    <h1>Date Value:</h1>
+    <span class="dateTimeValue">
+      <input name="dateValue" type="text" class="dateField" maxlength="10" value="13.02.2011" />
+      <a href="#" class="datePicker" title="Open Date Picker">&nbsp;</a>
+    </span>
+    M<br />
+    Note: The clear-button (IE10) was disabled on the date input element.
+
+    <h1>Reference Value:</h1>
+    <span class="referenceValue">
+      <select name="referenceValue" class="dropDownList">
+        <option value="1">Value 1</option>
+        <option value="2">Value 2</option>
+      </select>
+    </span>
+    M
+    <br/>
+    Also see http://red-team-design.com/making-html-dropdowns-not-suck/
+    <h1>Auto Complete Reference Value:</h1>
+    (Issue in IE&lt;10: text will end up behind the dropdown until IE moves back to left. Can be solved with CSS-tricks, currently commented out)<br />
+    <span class="autoCompleteReferenceValue">
+      <input name="autoCompleteReferenceValue" type="text" class="textField" />
+      <a href="#" class="dropDownButton" title="Show the value list">&nbsp;</a>
+    </span>
+    M
+    <h1>Multiline tooltip:</h1>
+    <span title="Line 1&#13&#10Line 2">The Tooltip Target</span><br />
+    <br />
+    See Chosen (http://harvesthq.github.io/chosen/) for Reference Values and Enum Values
+    <p>
+      Drop-Down-List without arrow: http://blogs.windows.com/windows_phone/b/wpdev/archive/2012/11/15/adapting-your-webkit-optimized-site-for-internet-explorer-10.aspx#step5
+    </p>
+  </form>
+</body>
+</html>

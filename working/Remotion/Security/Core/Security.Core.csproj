@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.Security</RootNamespace>
+    <AssemblyName>Remotion.Security</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Remotion.Security.XML</DocumentationFile>
+    <NoWarn>1591;0419</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Release\Remotion.Security.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591;0419</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>4.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Globalization\GeneralAccessTypes.de.resx">
+      <LastGenOutput>Delegation.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\GeneralAccessTypes.fr.resx" />
+    <EmbeddedResource Include="Globalization\GeneralAccessTypes.it.resx" />
+    <EmbeddedResource Include="Globalization\GeneralAccessTypes.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\SecurityMetadataLocalization.xsd">
+      <SubType>
+      </SubType>
+    </EmbeddedResource>
+    <None Include="..\..\Build\NuSpec\TemplateShared.nuspec">
+      <Link>TemplateShared.nuspec</Link>
+    </None>
+    <None Include="..\..\Remotion LGPL.licenseheader">
+      <Link>Remotion LGPL.licenseheader</Link>
+    </None>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="AbstractRoleAttribute.cs" />
+    <Compile Include="AccessType.cs" />
+    <Compile Include="AccessTypeAttribute.cs" />
+    <Compile Include="AccessTypeExtensions.cs" />
+    <Compile Include="DemandPermissionAttribute.cs" />
+    <Compile Include="EnumWrapper.cs" />
+    <Compile Include="IFunctionalSecurityStrategy.cs" />
+    <Compile Include="Metadata\CachingPermissionProviderDecorator.cs" />
+    <Compile Include="IObjectSecurityStrategy.cs" />
+    <Compile Include="IPrincipalProvider.cs" />
+    <Compile Include="ISecurableObject.cs" />
+    <Compile Include="ISecurityContext.cs" />
+    <Compile Include="ISecurityContextFactory.cs" />
+    <Compile Include="ISecurityPrincipal.cs" />
+    <Compile Include="ISecurityPrincipalRole.cs" />
+    <Compile Include="ISecurityProvider.cs" />
+    <Compile Include="ISecurityStrategy.cs" />
+    <Compile Include="Metadata\MemberAffiliation.cs" />
+    <Compile Include="Metadata\IMemberResolver.cs" />
+    <Compile Include="Metadata\NullMemberResolver.cs" />
+    <Compile Include="Metadata\ReflectionBasedMemberResolver.cs" />
+    <Compile Include="NullFunctionalSecurityStrategy.cs" />
+    <Compile Include="NullSecurityPrincipal.cs" />
+    <Compile Include="NullSecurityClient.cs" />
+    <Compile Include="NullSecurityProvider.cs" />
+    <Compile Include="GeneralAccessTypes.cs" />
+    <Compile Include="Configuration\SecurityConfiguration.cs" />
+    <Compile Include="FunctionalSecurityStrategy.cs" />
+    <Compile Include="Metadata\AccessTypeReflector.cs" />
+    <Compile Include="Metadata\AssemblyReflector.cs" />
+    <Compile Include="Metadata\IMetadataLocalizationConverter.cs" />
+    <Compile Include="Metadata\IPermissionProvider.cs" />
+    <Compile Include="Metadata\LocalizationFileNameStrategy.cs" />
+    <Compile Include="Metadata\LocalizedName.cs" />
+    <Compile Include="Metadata\LocalizingMetadataConverter.cs" />
+    <Compile Include="Metadata\MetadataConverterBuilder.cs" />
+    <Compile Include="Metadata\MetadataExtractor.cs" />
+    <Compile Include="Metadata\ClassReflector.cs" />
+    <Compile Include="Metadata\AbstractRoleReflector.cs" />
+    <Compile Include="Metadata\IAbstractRoleReflector.cs" />
+    <Compile Include="Metadata\EnumerationReflector.cs" />
+    <Compile Include="Metadata\IAccessTypeReflector.cs" />
+    <Compile Include="Metadata\IClassReflector.cs" />
+    <Compile Include="Metadata\EnumValueInfo.cs" />
+    <Compile Include="Metadata\IEnumerationReflector.cs" />
+    <Compile Include="Metadata\IMetadataConverter.cs" />
+    <Compile Include="Metadata\IStatePropertyReflector.cs" />
+    <Compile Include="Metadata\MetadataCache.cs" />
+    <Compile Include="Metadata\MetadataInfo.cs" />
+    <Compile Include="Metadata\MetadataLocalizationToXmlConverter.cs" />
+    <Compile Include="Metadata\MetadataToXmlConverter.cs" />
+    <Compile Include="Metadata\PermissionReflector.cs" />
+    <Compile Include="Metadata\SecurableClassInfo.cs" />
+    <Compile Include="Schemas\SecurityMetadataLocalizationSchema.cs" />
+    <Compile Include="Schemas\SecurityMetadataSchema.cs" />
+    <Compile Include="Metadata\StatePropertyInfo.cs" />
+    <Compile Include="Metadata\StatePropertyReflector.cs" />
+    <Compile Include="NullPrincipalProvider.cs" />
+    <Compile Include="InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator.cs" />
+    <Compile Include="ObjectSecurityStrategy.cs" />
+    <Compile Include="PermissionDeniedException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecurityClient.cs" />
+    <Compile Include="SecurityContext.cs" />
+    <Compile Include="SecurityFreeSection.cs" />
+    <Compile Include="SecurityPrincipal.cs" />
+    <Compile Include="SecurityPrincipalRole.cs" />
+    <Compile Include="SecurityStateAttribute.cs" />
+    <Compile Include="ThreadPrincipalProvider.cs" />
+    <EmbeddedResource Include="Schemas\SecurityConfiguration.xsd">
+      <SubType>
+      </SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\SecurityMetadata.xsd">
+      <SubType>
+      </SubType>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Collections.Caching\Core.Collections.Caching.csproj">
+      <Project>{2D4D3106-4853-4D18-B80B-797A2015328F}</Project>
+      <Name>Core.Collections.Caching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
+      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
+      <Name>Core.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Xml\Core.Xml.csproj">
+      <Project>{06FD65E1-C6B5-4DC7-9827-8036F71444A0}</Project>
+      <Name>Core.Xml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
+      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
+      <Name>Globalization.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FacetManifest.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

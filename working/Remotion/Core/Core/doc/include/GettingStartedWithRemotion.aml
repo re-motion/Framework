@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="fbb75bd0-0e66-4a3a-90aa-8202e1afedde" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <legacyBold>Getting Started With re-motion</legacyBold>
+    </introduction>
+
+
+	<section>
+        <title>
+            Remotion.Data.DomainObjects
+       	</title>
+        <content>
+          <para>
+            The <legacyBold>Remotion.Data.DomainObjects</legacyBold> namespace and its sub namespaces contain interfaces and classes to be used 
+            for building domain models that are persisted by the DomainObjects persistence framework.
+          </para>
+          <para>
+            See the <codeEntityReference qualifyhint="true">N:Remotion.Data.DomainObjects</codeEntityReference> namespace documentation for 
+            the starting points for working with the persistence framework.
+          </para>
+        </content>
+    </section>
+    
+    <section>
+        <title>
+            Remotion.ObjectBinding
+        </title>
+        <content>
+          <para>
+            The <legacyBold>Remotion.ObjectBinding</legacyBold> namespace contains interfaces 
+            for implementing a business object model with a generic data definition and data access layer.
+          </para>
+          <para>
+            See the <codeEntityReference qualifyhint="true">N:Remotion.ObjectBinding</codeEntityReference> namespace documentation for 
+            details on how to implement and use this layer.
+          </para>
+        </content>
+	</section>
+    
+    <section>
+        <title>
+            Remotion.ObjectBinding.Web
+        </title>
+        <content>
+          <para>
+            The <legacyBold>Remotion.ObjectBinding.Web</legacyBold> namespace and its sub namespaces 
+            contain interfaces, classes, and web controls to be used for displaying and editing business objects in an 
+            ASP.NET environment.
+          </para>
+          <para>
+            See the <codeEntityReference qualifyhint="true">N:Remotion.ObjectBinding.Web</codeEntityReference> namespace documentation for 
+            the starting points for working with the <legacyBold>Remotion.ObjectBinding.Web</legacyBold> namespace.
+          </para>
+        </content>
+	</section>
+    
+    <section>
+        <title>
+            Remotion.Web.UI
+        </title>
+        <content>
+          <para>
+            The <legacyBold>Remotion.Web.UI</legacyBold> namespace and its sub namespaces contain interfaces, classes, and web controls 
+            for implementing the user interface of an ASP.NET application.
+          </para>
+          <para>
+            See the <codeEntityReference qualifyhint="true">N:Remotion.Web.UI</codeEntityReference> namespace documentation for 
+            the starting points for working with the <legacyBold>Remotion.Web.UI</legacyBold> namespace.
+          </para>
+          <para>
+            The <legacyBold>Remotion.Web.UI</legacyBold> namespace documentation also provides <!-- TODO: Unknown topic link: N_Remotion_Web_UI.html -->details
+            on implementing accessible ASP.NET applications, as described in the Web Accessibility Initiative's (WAI)
+            Web Content Accessibility Guidelines 1.0 (WCAG 1.0).
+          </para>
+        </content>
+	</section>
+    
+    <section>
+        <title>
+            Remotion.Web.ExecutionEngine
+        </title>
+        <content>
+          <para>
+            The <legacyBold>Remotion.Web.ExecutionEngine</legacyBold> namespace contains interfaces and classes for implementing
+            control flow logic in an ASP.NET application. The execution engine offers cross-page sequences and
+            control flow features such as functions, parameters, and exception handling.      
+          </para>
+          <para>
+            See the <codeEntityReference qualifyhint="true">N:Remotion.Web.ExecutionEngine</codeEntityReference> namespace documentation for 
+            the starting points for working with the <legacyBold>Remotion.Web.ExecutionEngine</legacyBold> namespace.
+          </para>
+        </content>
+	</section>
+
+  </developerConceptualDocument>
+</topic>

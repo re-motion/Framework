@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Remotion.Development.AssemblyLoader.Sources</id>
+    <version>$version$</version>
+    <title>re-motion Unit Testing AssemblyLoader</title>
+    <authors>rubicon IT GmbH</authors>
+    <owners>rubicon IT GmbH</owners>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <projectUrl>http://www.re-motion.org</projectUrl>
+    <description>The re-motion AssemblyLoader is used during unit testing when an assembly needs to be loaded into memory without locking the file. Distributed as source code.</description>
+    <copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under Apache License, Version 2.0</copyright>
+    <tags>re-motion Development UnitTesting AssemblyLoader</tags>
+    <developmentDependency>true</developmentDependency>
+    <dependencies>
+      <dependency id="Remotion.Utilities.ArgumentUtility.Sources" version="[1.15.23.0,2)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="UnitTesting\IO\AssemblyLoader.cs" target="content/App_Packages/Remotion.Development.AssemblyLoader.Sources.$version$" />
+    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Development.AssemblyLoader.Sources.$version$" />
+  </files>
+</package>

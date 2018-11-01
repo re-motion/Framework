@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.File" Collapsed="true">
+    <Position X="4.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAoAAAACAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\File.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.FileSystemItem" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <AssociationLine Name="ParentFolder" Type="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.Folder" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.25" Y="0.938" />
+        <Point X="8.062" Y="0.938" />
+        <Point X="8.062" Y="2" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\FileSystemItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ParentFolder" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.Folder" Collapsed="true">
+    <Position X="6.75" Y="2" Width="1.5" />
+    <AssociationLine Name="FileSystemItems" Type="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.FileSystemItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.25" Y="2.25" />
+        <Point X="8.625" Y="2.25" />
+        <Point X="8.625" Y="0.688" />
+        <Point X="7.25" Y="0.688" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAACAAAAAAAAAAAQAAQAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\Folder.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="FileSystemItems" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain.SpecificFolder" Collapsed="true">
+    <Position X="6.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DomainObjects\Core\TableInheritance\TestDomain\SpecificFolder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

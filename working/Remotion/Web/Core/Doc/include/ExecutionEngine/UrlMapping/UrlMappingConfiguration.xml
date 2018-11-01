@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<UrlMappingConfiguration>
+  <Class>
+    <remarks> 
+      <para>
+        URL mapping provides a means of mapping a <see cref="WxeFunction"/>'s <see cref="Type"/> to one or more
+        URLs. Using such URLs allows you to refactor your application while keeping the URLs constant. Mapped
+        URLs can also be designed to be shorter and more readable than a URL containing the fully qualified type name 
+        of a <see cref="WxeFunction"/>. They are therfor also referred to as "friendly URLs".
+      </para><para>
+        Use this class's <see cref="Current"/> property to read the configuration settings from your code. 
+      </para><para>
+        In order to use URL mapping for the execution engine, you must enter the mapping in an XML file and 
+        specify the physical path of the file in the <c>executionEngine</c> element of the <c>remotion.web</c> 
+        configuration section.
+        <note>
+          See the <see cref="Remotion.Web.Configuration.WebConfiguration"/> for details on registering the 
+          <c>remotion.web</c> configuration section.
+        </note>
+        <note>
+          See the <see cref="Remotion.Web.Configuration.ExecutionEngineConfiguration"/> for details on the 
+          <c>executionEngine</c> element in the configuration section.
+        </note>
+      </para><para>
+        Should you choose to use an extension other than <c>ashx</c> for your mapped URLs, you must register the 
+        file extension with IIS. If you do not intend to use marker files, uncheck the "Verifiy that file exists"
+        flag in the application extension configuration.
+        <note>
+          The extensions can be registered in the property pages of the web site (property page "Home Directory") 
+          or the virtual directory/application (property page "Virtual Directory"). The list of registered application 
+          extensions can be accessed via the "Configuration" button. Add a new mapping between the extension and the
+          ASP.NET ISAPI dll (<c>%SystemRoot%\Microsoft.net\Framework\v1.1.4322\aspnet_isapi.dll</c>. You should enable
+          at least the following verbs: <c>GET</c>, <c>HEAD</c>, <c>POST</c>, <c>DEBUG</c>. Uncheck the 
+          "Verifiy that file exists" option.
+        </note>
+        You also have to register the <see cref="Remotion.Web.ExecutionEngine.WxeHandler"/> (or a derived version)
+        in your application's configuration file. The following code snipped shows how to register the extension
+        <c>wxe</c> for the standard <see cref="Remotion.Web.ExecutionEngine.WxeHandler"/>.
+        <code>
+<![CDATA[        
+<system.web>
+  <httpHandlers>
+    <add verb="*" path="*.wxe" type="Remotion.Web.ExecutionEngine.WxeHandler, Remotion.Web" />
+  </httpHandlers>
+</system.web>
+]]></code>
+      </para><para>
+        Place a copy of the <c>UrlMapping.xsd</c> schema file into Visual Studio's xml schema directory
+        (<c>C:\Program Files\Microsoft Visual Studio .NET 2003\Common7\Packages\schemas\xml</c>) to provide
+        IntelliSense for the mapping file.
+      </para>
+    </remarks>
+    <seealso cref="Remotion.Web.Configuration.ExecutionEngineConfiguration"/>
+    <seealso cref="Remotion.Web.Configuration.WebConfiguration"/>
+    <example>
+      An example for specifying the 
+      <see cref="Remotion.Web.Configuration.ExecutionEngineConfiguration.UrlMappingFile">urlMappingFile</see>
+      attribute with the <see cref="Remotion.Web.Configuration.ExecutionEngineConfiguration">executionEngine</see> 
+      configuration section element.
+      <code>
+<![CDATA[
+<remotion.web xmlns="http://www.re-motion.org/web/configuration"> 
+  <!-- The configuration section entries. -->
+  <executionEngine
+      urlMappingFile="C:\ProjectDirectory\UrlMapping.xml"
+      <!-- Other elements of the executionEngine section. -->
+  />
+  <!-- Other configuration section entries. -->
+</remotion.web>
+]]></code>
+    </example>
+    
+    <example>
+      The following example shows an XML file that contains the following mappings:
+      <list type="bullet">
+        <item>
+          A <see cref="WxeFunction"/> of <see cref="Type"/> <c>MyNamespace.MyFirstFunction,MyAssembly</c> mapped to
+          the URLs <c>~/first.wxe</c> and <c>~/primary.wxe</c>. The first mapping also has an ID: <c>First</c>.
+        </item>
+        <item>
+          A second <see cref="WxeFunction"/> of <see cref="Type"/> <c>MyNamespace.MySecondFunction,MyAssembly</c> 
+          mapped to the URL <c>~/second.wxe</c>. The second mapping also has an ID: <c>Second</c>.
+        </item>
+      </list>
+      <code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;urlMapping
+    xmlns="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd"&gt;
+  &lt;<see cref="UrlMappingEntry">add</see> <see cref="UrlMappingEntry.ID">id</see>="First" <see cref="UrlMappingEntry.FunctionTypeName">type</see>="MyNamespace.MyFirstFunction,MyAssembly" <see cref="UrlMappingEntry.Resource">resource</see>="first.wxe"/&gt;
+  &lt;add id="Second" type="MyNamespace.MySecondFunction,MyAssembly" resource="second.wxe"/&gt;
+  &lt;add type="MyNamespace.MyFirstFunction,MyAssembly" resource="primary.wxe"/&gt;
+&lt;/urlMapping&gt;
+</code>
+    </example>
+  </Class>
+</UrlMappingConfiguration>

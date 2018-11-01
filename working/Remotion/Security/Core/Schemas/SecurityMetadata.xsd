@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<xs:schema id="SecurityMetadata" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:sm="http://www.re-motion.org/Security/Metadata/1.0" 
+    targetNamespace="http://www.re-motion.org/Security/Metadata/1.0"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified" 
+    xml:lang="en">
+
+  <xs:element name="securityMetadata">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="classes">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="class" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="stateProperties" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="statePropertyRef" type="sm:requiredStringType" maxOccurs="unbounded" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="accessTypes" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="accessTypeRef" type="sm:requiredStringType" maxOccurs="unbounded" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+
+                  <xs:attribute name="id" use="required" type="sm:requiredStringType" />
+                  <xs:attribute name="name" use="required" type="sm:requiredStringType" />
+                  <xs:attribute name="base" use="optional" type="sm:requiredStringType" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="stateProperties">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="stateProperty" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="state" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="name" use="required" type="sm:requiredStringType" />
+                        <xs:attribute name="value" use="required" type="xs:int" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="id" use="required" type="sm:requiredStringType" />
+                  <xs:attribute name="name" use="required" type="sm:requiredStringType" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="accessTypes">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="accessType" type="sm:enumValue" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="abstractRoles">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="abstractRole" type="sm:enumValue" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:key name="classKey">
+      <xs:selector xpath="sm:classes/sm:class" />
+      <xs:field xpath="@id" />
+    </xs:key>
+
+    <xs:key name="statePropertyKey">
+      <xs:selector xpath="sm:stateProperties/sm:stateProperty" />
+      <xs:field xpath="@id" />
+    </xs:key>
+
+    <xs:key name="accessTypeKey">
+      <xs:selector xpath="sm:accessTypes/sm:accessType" />
+      <xs:field xpath="@id" />
+    </xs:key>
+
+    <xs:key name="abstractRoleKey">
+      <xs:selector xpath="sm:abstractRoles/sm:abstractRole" />
+      <xs:field xpath="@id" />
+    </xs:key>
+  </xs:element>
+
+  <xs:complexType name="enumValue">
+    <xs:attribute name="id" use="required" type="sm:requiredStringType" />
+    <xs:attribute name="name" use="required" type="sm:requiredStringType" />
+    <xs:attribute name="value" use="required" type="xs:int" />
+  </xs:complexType>
+
+  <xs:simpleType name="requiredStringType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:whiteSpace value="collapse" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="dotNetType">
+    <xs:restriction base="sm:requiredStringType">
+      <!--  Class, Assembly; Namespace.Class, Assembly; Namespace.Namespace.Class, Assembly; 
+            Class+Class, Assembly; Namespace.Class+Class, Assembly; Namespace.Namespace.Class+Class, Assembly
+            Class,Assembly; Namespace.Class,Assembly; Namespace.Namespace.Class,Assembly; 
+            Class+Class,Assembly; Namespace.Class+Class,Assembly; Namespace.Namespace.Class+Class,Assembly -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*),\s?([\p{L}\d]+\.)*([\p{L}\d]+)" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{378885D1-5D3E-4226-9C57-AA5183BA45D5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion</RootNamespace>
+    <AssemblyName>Remotion.SharedSource</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591;0419</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Debug\Remotion.SharedSource.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591;0419</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Release\Remotion.SharedSource.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FunctionalProgramming\EnumerableExtensions.cs" />
+    <Compile Include="FunctionalProgramming\EnumerableUtility.cs" />
+    <Compile Include="FunctionalProgramming\Maybe.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReSharperAnnotations\AssertionConditionAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\AssertionConditionType.cs" />
+    <Compile Include="ReSharperAnnotations\AssertionMethodAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\BaseTypeRequiredAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\CanBeNullAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\CannotApplyEqualityOperatorAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\CollectionAccessAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\CollectionAccessType.cs" />
+    <Compile Include="ReSharperAnnotations\ContractAnnotationAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\ImplicitUseKindFlags.cs" />
+    <Compile Include="ReSharperAnnotations\ImplicitUseTargetFlags.cs" />
+    <Compile Include="ReSharperAnnotations\InstantHandleAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\InvokerParameterNameAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\ItemCanBeNullAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\ItemNotNullAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\LinqTunnelAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\LocalizationRequiredAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\MacroAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\MeansImplicitUseAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\MustUseReturnValueAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\NoEnumerationAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\NoReorderAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\NotifyPropertyChangedInvocatorAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\NotNullAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\PathReferenceAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\ProvidesContextAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\PublicAPIAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\PureAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\RegexPatternAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\SourceTemplateAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\StringFormatMethodAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\UsedImplicitlyAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\ValueProviderAttribute.cs" />
+    <Compile Include="Utilities\ArgumentUtility.cs" />
+    <Compile Include="Utilities\Assertion.cs" />
+    <Compile Include="Utilities\AttributeUtility.cs" />
+    <Compile Include="Utilities\CultureScope.cs" />
+    <Compile Include="Utilities\EqualityUtility.cs" />
+    <Compile Include="Utilities\ExceptionUtility.cs" />
+    <Compile Include="Utilities\FileUtility.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparer.cs" />
+    <Compile Include="Utilities\MemberInfoFromExpressionUtility.cs" />
+    <Compile Include="Utilities\NullableTypeUtility.cs" />
+    <Compile Include="Utilities\ReferenceEqualityComparer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\SharedSource Apache-2.0.licenseheader">
+      <Link>SharedSource Apache-2.0.licenseheader</Link>
+    </None>
+    <None Include="Remotion.FunctionalProgramming.EnumerableExtensions.Sources.nuspec" />
+    <None Include="Remotion.FunctionalProgramming.EnumerableUtility.Sources.nuspec" />
+    <None Include="Remotion.FunctionalProgramming.Maybe.Sources.nuspec" />
+    <None Include="Remotion.JetBrains.Annotations.Sources.nuspec" />
+    <None Include="Remotion.Utilities.ArgumentUtility.Sources.nuspec" />
+    <None Include="Remotion.Utilities.Assertion.Sources.nuspec" />
+    <None Include="Remotion.Utilities.AttributeUtility.Sources.nuspec" />
+    <None Include="Remotion.Utilities.CultureScope.Sources.nuspec" />
+    <None Include="Remotion.Utilities.EqualityUtility.Sources.nuspec" />
+    <None Include="Remotion.Utilities.ExceptionUtility.Sources.nuspec" />
+    <None Include="Remotion.Utilities.MemberInfoEqualityComparer.Sources.nuspec" />
+    <None Include="Remotion.Utilities.MemberInfoFromExpressionUtility.Sources.nuspec" />
+    <None Include="Remotion.Utilities.NullableTypeUtility.Sources.nuspec" />
+    <None Include="Remotion.Utilities.FileUtility.Sources.nuspec" />
+    <None Include="ReSharperAnnotations\ReSharperAnnotations MIT.licenseheader" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

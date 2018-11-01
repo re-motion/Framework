@@ -1,0 +1,10 @@
+ID,ClassID,Index,StatefulAcl_ClassID,StatefulAcl_ClassIDClassID,StatelessAcl_ClassID,StatelessAcl_ClassIDClassID
+b0c2671b-5299-4654-a894-a5992c42662d,StatefulAccessControlList,0,fe3d60d6-ee68-4977-8234-c6280ea6d348,SecurableClassDefinition,,
+e2463c8f-80ac-4dea-8a88-d0625f52bc23,StatefulAccessControlList,0,c10b1942-ade9-4aeb-ab07-19c20139b3da,SecurableClassDefinition,,
+c5a532de-0a5a-4bfb-8480-344507e539d5,StatefulAccessControlList,0,ec829a7c-cf1a-461a-9fb9-27b4b4bcd018,SecurableClassDefinition,,
+ee0dc67d-a413-4906-ac64-8be169f29b23,StatefulAccessControlList,1,ec829a7c-cf1a-461a-9fb9-27b4b4bcd018,SecurableClassDefinition,,
+{813F0892-F620-4435-A6EA-58210CBE4583},StatefulAccessControlList,0,{B9526151-9BA4-417F-ABFB-0ED2E9A0D0D5},SecurableClassDefinition,,
+{951EAF90-04BB-4082-8D6B-A346FBA92A4E},StatelessAccessControlList,,,,fe3d60d6-ee68-4977-8234-c6280ea6d348,SecurableClassDefinition
+{ED9063D9-49F7-407d-BA4D-B442391D5E4A},StatelessAccessControlList,,,,c10b1942-ade9-4aeb-ab07-19c20139b3da,SecurableClassDefinition
+{409131D0-75FE-4115-BCB9-1D09665DE65C},StatelessAccessControlList,,,,ec829a7c-cf1a-461a-9fb9-27b4b4bcd018,SecurableClassDefinition
+{ED2F220A-ACC7-46dd-AEE3-E3C7EDF1873B},StatelessAccessControlList,,,,{B9526151-9BA4-417F-ABFB-0ED2E9A0D0D5},SecurableClassDefinition

@@ -1,0 +1,22 @@
+Additional permission under GNU General Public License, and the 
+GNU Affero General Public License, version 3, section 7.
+
+If you modify this Program, or any covered work, by linking or combining it 
+with libraries covered by the terms of a license listed below, the licensors 
+of this Program grant you additional permission to convey the resulting work.
+Corresponding Source for a non-source form of such a combination shall include
+the source code for the parts of that library used as well as that of the
+covered work.
+
+License                                         Version
+----------------------------------------------------------------------------
+Apache Software License                         1.0/1.1/2.0
+BSD license                                     July 22 1999
+Microsoft Public License (Ms-PL)                As approved by OSI in 2007
+Microsoft Reciprocal License (Ms-RL)            As approved by OSI in 2007
+MIT License                                     As listed in MIT-License.txt
+Mozilla Public License (MPL)                    1.0/1.1 
+X11 License                                     2001
+
+Please contact licensing at re-motion dot org if you think that additional 
+exceptions for other Open Source licenses should be made. 

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<WxeMethodStep>
+  <Class>
+    <remarks>
+      <para>
+        A <b>WxeMethodStep</b> is usually used when it is necessary to incorporate logic to be executed before or 
+        after another step is executed, e.g. before and after executing a <see cref="WxePageStep"/>.
+      </para><para>
+        A <b>WxeMethodStep</b> can be embedded in a <see cref="WxeStepList"/> or <see cref="WxeFunction"/> in the
+        form of a non-public instance method. Its signature must match either the <see cref="WxeMethod"/> or 
+        <see cref="WxeMethodWithContext"/> delegate, i.e. no parameters or a single parameter of the 
+        <see cref="WxeContext"/> type.
+      </para>
+    </remarks>
+    <example>
+      An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a <b>WxeMethodStep</b>.
+      <code escaped="true" lang="C#">
+[Serializable]
+public class MyFunction: WxeFunction
+{
+  ...
+  // Step2
+  void Step3 ()
+  {
+    // Your execution logic for this method step.
+  }
+  // Step4
+  ...
+}
+      </code>    
+    </example>
+    <example>
+      An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a <b>WxeMethodStep</b>
+      accepting a <see cref="WxeContext"/> as parameter.
+      <code escaped="true" lang="C#">
+[Serializable]
+public class MyFunction: WxeFunction
+{
+  ...
+  // Step2
+  void Step3 (WxeContext context)
+  {
+    // Your execution logic for this method step.
+  }
+  // Step4
+  ...
+}
+      </code>    
+    </example>
+  </Class>
+  <Ctor>
+    <param name="target">
+      The <see cref="WxeStepList"/> containing the <b>Method</b> executed by this <b>WxeMethodStep</b>. 
+      Must not be <see langword="null"/>.
+    </param>
+    <param name="method"> 
+      The <see cref="MethodInfo"/> of the <b>Method</b> executed by this <b>MethodStep</b>. 
+      Must not be <see langword="null"/>. The specified method must be an instance method of the 
+      <paramref name="target"/>'s type. Its signature must match either the <see cref="WxeMethod"/> or 
+      <see cref="WxeMethodWithContext"/> delegate.
+    </param>
+    <exception cref="WxeException">
+      Thrown if the <paramref name="method"/> does not meet the criteria for a <b>WxeMethodStep</b>.
+    </exception>
+  </Ctor>
+</WxeMethodStep>

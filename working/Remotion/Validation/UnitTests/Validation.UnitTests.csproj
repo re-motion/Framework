@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.Validation.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.Validation.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentValidation, Version=5.0.0.1, Culture=neutral, PublicKeyToken=a82054b837897c66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="Attributes\ApplyWithClassAttributeTest.cs" />
+    <Compile Include="Attributes\Validation\LengthAttributeTest.cs" />
+    <Compile Include="Attributes\MetaValidation\AnyRuleAppliedMetaValidationRuleAttributeTest.cs" />
+    <Compile Include="Attributes\Validation\NotEmptyAttributeTest.cs" />
+    <Compile Include="Attributes\Validation\NotEqualAttributeTest.cs" />
+    <Compile Include="Attributes\Validation\NotNullAttributeTest.cs" />
+    <Compile Include="Attributes\Validation\RemoveValidatorAttributeTest.cs" />
+    <Compile Include="Implementation\AttributeBasedComponentValidationCollectorTest.cs" />
+    <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecoratorTest.cs" />
+    <Compile Include="Implementation\CompoundCollectorValidatorTest.cs" />
+    <Compile Include="Implementation\CompoundValidationTypeFilterTest.cs" />
+    <Compile Include="Implementation\CompoundValidatorTest.cs" />
+    <Compile Include="Implementation\CompoundValidationRuleMetadataServiceTest.cs" />
+    <Compile Include="Implementation\CompoundValidatorBuilderTest.cs" />
+    <Compile Include="Implementation\ICollectorValidatorTest.cs" />
+    <Compile Include="Implementation\IValidatedTypeResolverTest.cs" />
+    <Compile Include="Implementation\IValidationCollectorReflectorTest.cs" />
+    <Compile Include="Implementation\IValidationRuleMetadataServiceTest.cs" />
+    <Compile Include="Implementation\IValidatorBuilderTest.cs" />
+    <Compile Include="Implementation\IValidatorFormatterTest.cs" />
+    <Compile Include="Implementation\NullValidatedTypeResolverTest.cs" />
+    <Compile Include="Implementation\GenericTypeAwareValidatedTypeResolverDecoratorTest.cs" />
+    <Compile Include="Implementation\IValidationTypeFilterTest.cs" />
+    <Compile Include="Implementation\IInvolvedTypeProviderTest.cs" />
+    <Compile Include="Implementation\TypedValidatorDecoratorTest.cs" />
+    <Compile Include="Implementation\DefaultLogContextTest.cs" />
+    <Compile Include="Implementation\DefaultValidatorFormatterTest.cs" />
+    <Compile Include="Implementation\FluentValidationValidatorFormatterDecoratorTest.cs" />
+    <Compile Include="Implementation\ValidatorBuilderSerializationDecoratorTest.cs" />
+    <Compile Include="Merging\DefaultPropertyValidatorExtractorTest.cs" />
+    <Compile Include="Implementation\LoadFilteredValidationTypeFilterTest.cs" />
+    <Compile Include="Implementation\LogContextInfoTest.cs" />
+    <Compile Include="Merging\IValidationCollectorMergerTest.cs" />
+    <Compile Include="Merging\IPropertyValidatorExtractorFactoryTest.cs" />
+    <Compile Include="Merging\NamespaceAwareDiagnosticOutputRuleMergeDecoratorTest.cs" />
+    <Compile Include="Merging\PropertyValidatorExtractorFactoryTest.cs" />
+    <Compile Include="Merging\OrderPrecedenceValidationCollectorMergerTest.cs" />
+    <Compile Include="Merging\DiagnosticOutputRuleMergeDecoratorTest.cs" />
+    <Compile Include="Implementation\TestDomain\TypeWithoutBaseTypeCollector1.cs" />
+    <Compile Include="Implementation\TestDomain\TypeWithoutBaseTypeCollector2.cs" />
+    <Compile Include="Implementation\TestDomain\TypeWithSeveralInterfacesAndBaseTypeReImplementingInterface.cs" />
+    <Compile Include="Implementation\TestDomain\TypeWithoutBaseType.cs" />
+    <Compile Include="Implementation\TestDomain\TypeWithSeveralInterfacesAndBaseType.cs" />
+    <Compile Include="Implementation\TestDomain\TypeWithSeveralInterfacesImplementingInterface.cs" />
+    <Compile Include="Implementation\TestDomain\TypeWithSeveralBaseTypes.cs" />
+    <Compile Include="Implementation\TestDomain\TypeWithOneInterface.cs" />
+    <Compile Include="Implementation\TestDomain\TypeWithSeveralInterfaces.cs" />
+    <Compile Include="Implementation\ValidationAttributesBasedPropertyRuleReflectorTest.cs" />
+    <Compile Include="Implementation\TestDomain\TypeWithTwoInterfacesHavingCommingBaseInterface.cs" />
+    <Compile Include="Implementation\ValidationCollectorInfoTest.cs" />
+    <Compile Include="Implementation\ValidationRuleStub.cs" />
+    <Compile Include="Implementation\ValidatorRegistrationWithContextTest.cs" />
+    <Compile Include="MetaValidation\DefaultSystemMetaValidationRulesProviderFactoryTest.cs" />
+    <Compile Include="MetaValidation\DefaultSystemMetaValidationRulesProviderTest.cs" />
+    <Compile Include="MetaValidation\DelegateMetaValidationRuleTest.cs" />
+    <Compile Include="MetaValidation\IMetaRulesValidatorFactoryTest.cs" />
+    <Compile Include="MetaValidation\ISystemMetaValidationRulesProviderFactoryTest.cs" />
+    <Compile Include="MetaValidation\MetaRulesValidatorFactoryTest.cs" />
+    <Compile Include="MetaValidation\MetaRulesValidatorTest.cs" />
+    <Compile Include="MetaValidation\Rules\Custom\AnyRuleAppliedMetaValidationRuleTest.cs" />
+    <Compile Include="MetaValidation\Rules\Custom\RemotionMaxLengthMetaValidationRuleTest.cs" />
+    <Compile Include="MetaValidation\Rules\System\LengthSystemMetaValidationRuleTest.cs" />
+    <Compile Include="Providers\AttributeBasedValidationCollectorProviderTest.cs" />
+    <Compile Include="Providers\ApiBasedComponentValidationCollectorProviderTest.cs" />
+    <Compile Include="Providers\AggregatingValidationCollectorProviderTest.cs" />
+    <Compile Include="Implementation\DiscoveryServiceBasedValidationCollectorReflectorTest.cs" />
+    <Compile Include="Providers\ComponentValidationAttributeBasedValidationCollectorProviderTest.cs" />
+    <Compile Include="Providers\IValidationCollectorProviderTest.cs" />
+    <Compile Include="Providers\TestableAttributeBasedValidationCollectorProviderBase.cs" />
+    <Compile Include="Providers\TestableValidationAttributesBasedCollectorProvider.cs" />
+    <Compile Include="Rules\AddingComponentPropertyMetaValidationRuleTest.cs" />
+    <Compile Include="TestDomain\Address.cs" />
+    <Compile Include="TestDomain\Collectors\InvalidValidationCollector2.cs" />
+    <Compile Include="TestDomain\Collectors\InvalidValidationCollector.cs" />
+    <Compile Include="TestDomain\Collectors\CustomerValidationCollector1.cs" />
+    <Compile Include="TestDomain\Collectors\CustomerValidationCollector2.cs" />
+    <Compile Include="TestDomain\Collectors\IPersonValidationCollector1.cs" />
+    <Compile Include="TestDomain\Collectors\IPersonValidationCollector2.cs" />
+    <Compile Include="TestDomain\Collectors\PersonValidationCollector1.cs" />
+    <Compile Include="TestDomain\Customer.cs" />
+    <Compile Include="TestDomain\Employee.cs" />
+    <Compile Include="TestDomain\IPerson.cs" />
+    <Compile Include="TestDomain\Person.cs" />
+    <Compile Include="TestDomain\SpecialCustomer1.cs" />
+    <Compile Include="TestDomain\SpecialCustomer2.cs" />
+    <Compile Include="TestDomain\ValidationRules\MaxLengthMetaValidationRule.cs" />
+    <Compile Include="TestDomain\ValidationRules\MaxValidatorCountRule.cs" />
+    <Compile Include="TestHelpers\TypeUtility.cs" />
+    <Compile Include="RuleBuilders\RemovingComponentRuleBuilderTest.cs" />
+    <Compile Include="Rules\AddingComponentPropertyRuleTest.cs" />
+    <Compile Include="RuleBuilders\AddingComponentRuleBuilderTest.cs" />
+    <Compile Include="ComponentValidationCollectorTest.cs" />
+    <Compile Include="Rules\RemovingComponentPropertyRuleTest.cs" />
+    <Compile Include="Rules\ValidatorRegistrationTest.cs" />
+    <Compile Include="Implementation\InvolvedTypeProviderTest.cs" />
+    <Compile Include="TestHelpers\ExpressionHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestHelpers\StubPropertyValidator.cs" />
+    <Compile Include="TestHelpers\TestableComponentValidationCollector.cs" />
+    <Compile Include="Implementation\FluentValidatorBuilderTest.cs" />
+    <Compile Include="Utilities\TopologySortLinqExtensionsTest.cs" />
+    <Compile Include="Implementation\ValidatorTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
+      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
+      <Name>Core.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
+      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
+      <Name>Development.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Validation.Core.csproj">
+      <Project>{d057d6f3-2015-4eb0-b6bd-77be8ed1571a}</Project>
+      <Name>Validation.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <None Include="..\..\Remotion LGPL.licenseheader">
+      <Link>Remotion LGPL.licenseheader</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

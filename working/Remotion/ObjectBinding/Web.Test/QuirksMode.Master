@@ -1,0 +1,23 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="QuirksMode.Master.cs" Inherits="OBWTest.QuirksMode" %>
+<%@ Import Namespace="System" %>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+
+<html>
+<head runat="server">
+    <meta http-equiv="x-ua-compatible" content="IE=5" >
+    <title>Untitled Page</title>
+    <remotion:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <asp:ContentPlaceHolder ID="body" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>

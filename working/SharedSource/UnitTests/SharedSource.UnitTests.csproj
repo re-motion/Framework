@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.SharedSource.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>0067</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>0067</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Development\Core\UnitTesting\DevNullTest.cs" />
+    <Compile Include="Development\Core\UnitTesting\Enumerables\EnumerableExtensionsTest.cs" />
+    <Compile Include="Development\Core\UnitTesting\Enumerables\OneTimeEnumerableTest.cs" />
+    <Compile Include="Development\Core\UnitTesting\IO\TempFileTest.cs" />
+    <Compile Include="Development\Core\UnitTesting\ObjectMothers\ObjectMotherTest.cs" />
+    <Compile Include="Development\Core\UnitTesting\PEVerifierTest.cs" />
+    <Compile Include="Development\Core\UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtilityTest.cs" />
+    <Compile Include="Development\Core\UnitTesting\SerializerTest.cs" />
+    <Compile Include="Development\Core\UnitTesting\ThreadRunnerTest.cs" />
+    <Compile Include="Development\RhinoMocks\UnitTesting\DecoratorTestHelperTest.cs" />
+    <Compile Include="Development\RhinoMocks\UnitTesting\ListArgExtensionsTest.cs" />
+    <Compile Include="Development\RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelperTest.cs" />
+    <Compile Include="Development\RhinoMocks\UnitTesting\Threading\LockTestHelperTest.cs" />
+    <Compile Include="FunctionalProgramming\EnumerableExtensionsTest.cs" />
+    <Compile Include="FunctionalProgramming\EnumerableUtilityTest.cs" />
+    <Compile Include="FunctionalProgramming\TestDomain\Element.cs" />
+    <Compile Include="FunctionalProgramming\TestDomain\FakeElementEqualityComparer.cs" />
+    <Compile Include="FunctionalProgramming\TestDomain\RecursiveItem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotEmpty.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\DebugCheckTypeIsAssignableFrom.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\DebugCheckNotNullAndType.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\DebugCheckNotNullOrEmpty.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\DebugCheckNotNull.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNull.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullAndType.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullAndTypeIsAssignableFrom.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullOrEmpty.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullOrEmptyOrItemsNull.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullOrItemsNull.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckType.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckType2.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckTypeIsAssignableFrom.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckTypeObsolete.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs" />
+    <Compile Include="Utilities\AssertionTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\AttributeUsageTest.cs" />
+    <Compile Include="Utilities\CultureScopeTest.cs" />
+    <Compile Include="Utilities\EqualityUtilityTest.cs" />
+    <Compile Include="Utilities\FileUtilityTest.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTest.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\ClassWithFields.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\ClassWithMethods.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\ClassWithProperties.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithFields.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithMethods.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithProperties.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\FakeMemberInfo.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\GenericClassWithMethods.cs" />
+    <Compile Include="Utilities\MemberInfoFromExpressionUtilityTest.cs" />
+    <Compile Include="Utilities\NullableTypeUtilityTest.cs" />
+    <Compile Include="Utilities\ReferenceEqualityComparerTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\SharedSource.Core.csproj">
+      <Project>{378885d1-5d3e-4226-9c57-aa5183ba45d5}</Project>
+      <Name>SharedSource.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Development\SharedSource.Development.csproj">
+      <Project>{5eb23134-3042-4b17-ad32-bdae468ce225}</Project>
+      <Name>SharedSource.Development</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\SharedSource Apache-2.0.licenseheader">
+      <Link>SharedSource Apache-2.0.licenseheader</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

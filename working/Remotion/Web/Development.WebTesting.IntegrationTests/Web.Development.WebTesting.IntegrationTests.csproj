@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5282552B-F3AB-42D3-B965-BF676E4F40F0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.Web.Development.WebTesting.IntegrationTests</RootNamespace>
+    <AssemblyName>Remotion.Web.Development.WebTesting.IntegrationTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591;0419</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591;0419</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Coypu">
+      <HintPath>..\..\..\packages\Coypu.2.9.1\lib\net40\Coypu.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WebDriver, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Selenium.WebDriver.2.48.0\lib\net40\WebDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="WebDriver.Support, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Selenium.Support.2.48.0\lib\net40\WebDriver.Support.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="WxeCompletionDetectionHelpersTest.cs" />
+    <Compile Include="AspNetRequestErrorDetectionStrategyTest.cs" />
+    <Compile Include="CoypuElementScopeFindExtensionsTest.cs" />
+    <Compile Include="AspNetRequestErrorDetectionParserTest.cs" />
+    <Compile Include="GenericTestPageParameters\ItemIDGenericTestPageParameter.cs" />
+    <Compile Include="PlatformTest.cs" />
+    <Compile Include="BrowserSessionTest.cs" />
+    <Compile Include="BrowserWindowTests.cs" />
+    <Compile Include="ControlObjectTest.cs" />
+    <Compile Include="CustomUserDirectory.cs" />
+    <Compile Include="FileDownloadTest.cs" />
+    <Compile Include="ImageControlObjectTest.cs" />
+    <Compile Include="ImageButtonControlObjectTest.cs" />
+    <Compile Include="CommandControlObjectTest.cs" />
+    <Compile Include="DropDownListControlObjectTest.cs" />
+    <Compile Include="FluentControlSelectorExtensionsForIntegrationTests.cs" />
+    <Compile Include="DropDownMenuControlObjectTest.cs" />
+    <Compile Include="InfrastructureTests.cs" />
+    <Compile Include="LabelControlObjectTest.cs" />
+    <Compile Include="MouseTest.cs" />
+    <Compile Include="MultiWindowTest.cs" />
+    <Compile Include="MultiWindowTestPageObject.cs" />
+    <Compile Include="CustomWebTestConfigurationFactory.cs" />
+    <Compile Include="ElementScopeTest.cs" />
+    <Compile Include="RequestErrorDetectionStrategyTest.cs" />
+    <Compile Include="ScopeControlObjectTest.cs" />
+    <Compile Include="ScreenshotTest.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTesting.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTestingExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTestingDelegate.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTestingType.cs" />
+    <Compile Include="ScrollTests.cs" />
+    <Compile Include="SingleViewControlObjectTest.cs" />
+    <Compile Include="FormGridControlObjectTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SetUpFixture.cs" />
+    <Compile Include="IntegrationTest.cs" />
+    <Compile Include="TabbedMenuControlObjectTest.cs" />
+    <Compile Include="TabbedMultiViewControlObjectTest.cs" />
+    <Compile Include="TestCaseFactories\DisabledTestCaseFactory.cs" />
+    <Compile Include="TestCaseFactories\ItemIDControlSelectorTestCaseFactory.cs" />
+    <Compile Include="TestExecutionScreenshotRecorderTest.cs" />
+    <Compile Include="DiagnosticInformationCollectioningRequestErrorDetectionStrategy.cs" />
+    <Compile Include="WebFormsTestPageObject.cs" />
+    <Compile Include="WebTabStripControlObjectTest.cs" />
+    <Compile Include="AnchorControlObjectTest.cs" />
+    <Compile Include="ListMenuControlObjectTest.cs" />
+    <Compile Include="TextBoxControlObjectTest.cs" />
+    <Compile Include="WebButtonControlObjectTest.cs" />
+    <Compile Include="TreeViewControlObjectTest.cs" />
+    <Compile Include="WebTestHelperTest.cs" />
+    <Compile Include="WebTreeViewControlObjectTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <None Include="SavedTestScreenshots\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj">
+      <Project>{712e5631-9bc0-44de-bf20-fb3bfecad9b2}</Project>
+      <Name>Web.Development.WebTesting.ControlObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj">
+      <Project>{febe7c1a-2cd5-4543-b0f1-de224d340f51}</Project>
+      <Name>Web.Development.WebTesting.ExecutionEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Development.WebTesting.IntegrationTests.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj">
+      <Project>{1b8f7a8a-f95c-4497-8029-9cf32b271134}</Project>
+      <Name>Web.Development.WebTesting.IntegrationTests.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Development.WebTesting.TestSite\Web.Development.WebTesting.TestSite.csproj">
+      <Project>{e660cf09-930b-4381-9ac6-7a349e899d3b}</Project>
+      <Name>Web.Development.WebTesting.TestSite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj">
+      <Project>{d2835d55-18c5-427b-a574-3d348a2c1dcc}</Project>
+      <Name>Web.Development.WebTesting.WebFormsControlObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj">
+      <Project>{5b5ec73a-b796-4d2d-a781-e889ee9ec4df}</Project>
+      <Name>Web.Development.WebTesting</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Remotion LGPL.licenseheader">
+      <Link>Remotion LGPL.licenseheader</Link>
+    </None>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\Chrome.any.DropDownList0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\Chrome.any.DropDownList1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\Chrome.any.DropDownList2.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\InternetExplorer.any.DropDownList0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\InternetExplorer.any.DropDownList1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\Chrome.any.DropDownMenu.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\InternetExplorer.any.DropDownMenu0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\InternetExplorer.any.DropDownMenu1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\Chrome.any.ListMenu0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\Chrome.any.ListMenu1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\Chrome.any.ListMenu2.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\InternetExplorer.any.ListMenu0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\InternetExplorer.any.ListMenu1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\MouseTest\Chrome.any.Test_Tooltip.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\MouseTest\InternetExplorer.any.Test_Tooltip.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\BadgeTest.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementBoxAnnotationTest.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementBoxAnnotationWithWidthTest.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementCroppingTest.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementCroppingWithPaddingTest.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementTextAnnotations0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementTextAnnotations1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ResolveAbsolutePositionedElement.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ResolveBorderElementA.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ResolveBorderElementB.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ResolveElementInFrame.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\TooltipTest.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\TabbedMenuControlObjectTest\Chrome.any.TabbedMenu.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\TabbedMenuControlObjectTest\InternetExplorer.any.TabbedMenu.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\WebTabStripControlObjectTest\Chrome.any.WebTabStrip.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\WebTabStripControlObjectTest\InternetExplorer.any.WebTabStrip.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\WebTreeViewControlObjectTest\WebTreeView.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_BottomCenter0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_BottomCenter1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_BottomLeft0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_BottomLeft1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_BottomRight0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_BottomRight1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_MiddleCenter0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_MiddleCenter1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_MiddleLeft0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_MiddleLeft1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_MiddleRight0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_MiddleRight1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_TopCenter0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_TopCenter1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_TopLeft0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_TopLeft1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_TopRight0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PaddingTest_TopRight1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_BottomCenter0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_BottomCenter1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_BottomLeft0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_BottomLeft1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_BottomRight0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_BottomRight1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_MiddleCenter0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_MiddleCenter1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_MiddleLeft0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_MiddleLeft1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_MiddleRight0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_MiddleRight1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_TopCenter0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_TopCenter1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_TopLeft0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_TopLeft1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_TopRight0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTestWithBigBlock_TopRight1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_BottomCenter0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_BottomCenter1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_BottomLeft0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_BottomLeft1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_BottomRight0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_BottomRight1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_MiddleCenter0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_MiddleCenter1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_MiddleLeft0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_MiddleLeft1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_MiddleRight0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_MiddleRight1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopCenter0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopCenter1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopLeft0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopLeft1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopRight0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopRight1.png" />
+    <None Include="SavedTestScreenshots\DropDownListControlObjectTest\readme.txt" />
+    <None Include="SavedTestScreenshots\ScrollTests\readme.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

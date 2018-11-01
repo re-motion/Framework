@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ ! 
+ ! The re-motion Core Framework is free software; you can redistribute it 
+ ! and/or modify it under the terms of the GNU Lesser General Public License 
+ ! as published by the Free Software Foundation; either version 2.1 of the 
+ ! License, or (at your option) any later version.
+ ! 
+ ! re-motion is distributed in the hope that it will be useful, 
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ ! GNU Lesser General Public License for more details.
+ ! 
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<ResourceDispatcher>
+  <Class>
+    <example>
+      Example configuration for logging the ResourceDispatcher's errors.
+      <code>
+<![CDATA[
+<?xml version="1.0" encoding="utf-8" ?>
+<log4net debug="false">
+	<appender name="FailedResourcesLogFileAppender" type="log4net.Appender.FileAppender" >
+		<param name="File" value="Failed-Resources-log.txt" />
+		<param name="AppendToFile" value="true" />
+		<layout type="log4net.Layout.PatternLayout">
+		  <!--  value="date - message newline-->
+			<param name="ConversionPattern" value="%d - %m%n" />
+		</layout>
+  </appender>
+	<logger name="Remotion.Web.UI.Globalization.ResourceDispatcher">
+		<level value="ERROR" />
+		<appender-ref ref="FailedResourcesLogFileAppender" />
+	</logger>
+</log4net>
+]]>
+      </code>
+    </example>
+  </Class>
+  <Dispatch>
+    <remarks>
+      <para> 
+        For automatic resources each key must consist of the following three parts, seperated by colons, 
+        to be dispatched:
+      </para>
+      <list type="table">
+        <listheader>
+          <term>Key Part</term>
+          <description>function</description>
+        </listheader>
+        <item>
+          <term>"auto:"</term>
+          <description>
+            Indicates all resources to be dispatched automatically.
+          </description>
+        </item>
+        <item>
+          <term>ElementID</term>
+          <description>
+            The ID of the child control inside the passed control, or "this" for the control 
+            itself.
+          </description>
+        </item>
+        <item>
+          <term>Parameter</term>
+          <description>
+            The parameter can denote a single property or contain prefixes itself.
+          </description>
+        </item>
+      </list>
+      <para>
+        If the parameter section of the key contains prefixes, the child control must implement
+        IResourceDispatchTarget for the resource to be applied. <c>Dispatch</c> itself can only 
+        handle parameters named like one of the child control's properties.
+      </para>
+    </remarks>
+  </Dispatch>
+  <DispatchMain>
+    <remarks>
+      The keys identify the elements in the control.
+      The embedded IDictonaries contain property/value pairs to be dispatched to the elements.
+      Key with a property part of this are used to refernce the <c>control</c> itself,
+      instead of a child control.
+    </remarks>
+    <param name="control">
+        The control to be dispatched.
+    </param>
+    <param name="elements">
+      The <see cref="IDictionary"/> to be dispatched. Must not be <see langname="null"/>. Type is IDictionary&lt;string, IDictionary&lt;string, string&gt;&gt;.
+    </param>  
+    <param name="resourceSource">
+      The name of the resource manager (used for logging).
+    </param>  
+  </DispatchMain>
+  <DispatchGeneric>
+    <param name="obj">
+      The object to be dispatched. Must not be <see langname="null"/>.
+    </param>
+    <param name="values">
+      A dictonary consisting of name/value pairs corresponding to property's name and value resprectively. Must not be <see langname="null"/>.
+      Type is IDictionary&lt;string, string&gt;.
+    </param>
+   </DispatchGeneric>
+</ResourceDispatcher>

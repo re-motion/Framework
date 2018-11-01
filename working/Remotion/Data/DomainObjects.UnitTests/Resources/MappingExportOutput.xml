@@ -1,0 +1,475 @@
+﻿<mapping xmlns="http://www.re-motion.org/Data/DomainObjects/Rdbms/Mapping/1.0">
+  <storageProvider name="SchemaGenerationFirstStorageProvider">
+    <class id="Company" isAbstract="true" />
+    <class id="AbstractWithoutConcreteClass" baseClass="Company" isAbstract="true" />
+    <class id="Address" isAbstract="false">
+      <table name="Address">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Address.Street" displayName="Street" type="System.String" isNullable="false" maxLength="100">
+          <column name="Street" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Address.Zip" displayName="Zip" type="System.String" isNullable="false" maxLength="10">
+          <column name="Zip" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Address.City" displayName="City" type="System.String" isNullable="false" maxLength="100">
+          <column name="City" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Address.Country" displayName="Country" type="System.String" isNullable="false" maxLength="100">
+          <column name="Country" dbType="String" />
+        </property>
+      </table>
+    </class>
+    <class id="Ceo" isAbstract="false">
+      <table name="Ceo">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Name" displayName="Name" type="System.String" isNullable="false" maxLength="100">
+          <column name="Name" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Company" displayName="Company" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Company, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="CompanyID" dbType="Guid" />
+          <column name="CompanyIDClassID" dbType="AnsiString" />
+        </property>
+      </table>
+    </class>
+    <class id="ClassWithAllDataTypes" isAbstract="false">
+      <table name="TableWithAllDataTypes">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.BooleanProperty" displayName="BooleanProperty" type="System.Boolean" isNullable="false">
+          <column name="Boolean" dbType="Boolean" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.ByteProperty" displayName="ByteProperty" type="System.Byte" isNullable="false">
+          <column name="Byte" dbType="Byte" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.DateProperty" displayName="DateProperty" type="System.DateTime" isNullable="false">
+          <column name="Date" dbType="DateTime" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.DateTimeProperty" displayName="DateTimeProperty" type="System.DateTime" isNullable="false">
+          <column name="DateTime" dbType="DateTime" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.DecimalProperty" displayName="DecimalProperty" type="System.Decimal" isNullable="false">
+          <column name="Decimal" dbType="Decimal" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.DoubleProperty" displayName="DoubleProperty" type="System.Double" isNullable="false">
+          <column name="Double" dbType="Double" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.EnumProperty" displayName="EnumProperty" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes+EnumType, Remotion.Data.DomainObjects.UnitTests" isNullable="false">
+          <column name="Enum" dbType="Int32" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty" displayName="ExtensibleEnumProperty" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Color, Remotion.Data.DomainObjects.UnitTests" isNullable="false">
+          <column name="ExtensibleEnum" dbType="AnsiString" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.GuidProperty" displayName="GuidProperty" type="System.Guid" isNullable="false">
+          <column name="Guid" dbType="Guid" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.Int16Property" displayName="Int16Property" type="System.Int16" isNullable="false">
+          <column name="Int16" dbType="Int16" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.Int32Property" displayName="Int32Property" type="System.Int32" isNullable="false">
+          <column name="Int32" dbType="Int32" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.Int64Property" displayName="Int64Property" type="System.Int64" isNullable="false">
+          <column name="Int64" dbType="Int64" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.SingleProperty" displayName="SingleProperty" type="System.Single" isNullable="false">
+          <column name="Single" dbType="Single" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.StringProperty" displayName="StringProperty" type="System.String" isNullable="false" maxLength="100">
+          <column name="String" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength" displayName="StringPropertyWithoutMaxLength" type="System.String" isNullable="false">
+          <column name="StringWithoutMaxLength" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.BinaryProperty" displayName="BinaryProperty" type="System.Byte[]" isNullable="false" maxLength="100">
+          <column name="Binary" dbType="Binary" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.BinaryWithoutMaxLengthProperty" displayName="BinaryWithoutMaxLengthProperty" type="System.Byte[]" isNullable="false">
+          <column name="BinaryWithoutMaxLength" dbType="Binary" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaBooleanProperty" displayName="NaBooleanProperty" type="System.Boolean" isNullable="true">
+          <column name="NaBoolean" dbType="Boolean" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaByteProperty" displayName="NaByteProperty" type="System.Byte" isNullable="true">
+          <column name="NaByte" dbType="Byte" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateProperty" displayName="NaDateProperty" type="System.DateTime" isNullable="true">
+          <column name="NaDate" dbType="DateTime" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateTimeProperty" displayName="NaDateTimeProperty" type="System.DateTime" isNullable="true">
+          <column name="NaDateTime" dbType="DateTime" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDecimalProperty" displayName="NaDecimalProperty" type="System.Decimal" isNullable="true">
+          <column name="NaDecimal" dbType="Decimal" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDoubleProperty" displayName="NaDoubleProperty" type="System.Double" isNullable="true">
+          <column name="NaDouble" dbType="Double" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaEnumProperty" displayName="NaEnumProperty" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes+EnumType, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="NaEnum" dbType="Int32" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaGuidProperty" displayName="NaGuidProperty" type="System.Guid" isNullable="true">
+          <column name="NaGuid" dbType="Guid" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaInt16Property" displayName="NaInt16Property" type="System.Int16" isNullable="true">
+          <column name="NaInt16" dbType="Int16" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaInt32Property" displayName="NaInt32Property" type="System.Int32" isNullable="true">
+          <column name="NaInt32" dbType="Int32" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaInt64Property" displayName="NaInt64Property" type="System.Int64" isNullable="true">
+          <column name="NaInt64" dbType="Int64" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaSingleProperty" displayName="NaSingleProperty" type="System.Single" isNullable="true">
+          <column name="NaSingle" dbType="Single" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.StringWithNullValueProperty" displayName="StringWithNullValueProperty" type="System.String" isNullable="true" maxLength="100">
+          <column name="StringWithNullValue" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.ExtensibleEnumWithNullValueProperty" displayName="ExtensibleEnumWithNullValueProperty" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Color, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="ExtensibleEnumWithNullValue" dbType="AnsiString" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaBooleanWithNullValueProperty" displayName="NaBooleanWithNullValueProperty" type="System.Boolean" isNullable="true">
+          <column name="NaBooleanWithNullValue" dbType="Boolean" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaByteWithNullValueProperty" displayName="NaByteWithNullValueProperty" type="System.Byte" isNullable="true">
+          <column name="NaByteWithNullValue" dbType="Byte" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateWithNullValueProperty" displayName="NaDateWithNullValueProperty" type="System.DateTime" isNullable="true">
+          <column name="NaDateWithNullValue" dbType="DateTime" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateTimeWithNullValueProperty" displayName="NaDateTimeWithNullValueProperty" type="System.DateTime" isNullable="true">
+          <column name="NaDateTimeWithNullValue" dbType="DateTime" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDecimalWithNullValueProperty" displayName="NaDecimalWithNullValueProperty" type="System.Decimal" isNullable="true">
+          <column name="NaDecimalWithNullValue" dbType="Decimal" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDoubleWithNullValueProperty" displayName="NaDoubleWithNullValueProperty" type="System.Double" isNullable="true">
+          <column name="NaDoubleWithNullValue" dbType="Double" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaEnumWithNullValueProperty" displayName="NaEnumWithNullValueProperty" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes+EnumType, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="NaEnumWithNullValue" dbType="Int32" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaGuidWithNullValueProperty" displayName="NaGuidWithNullValueProperty" type="System.Guid" isNullable="true">
+          <column name="NaGuidWithNullValue" dbType="Guid" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaInt16WithNullValueProperty" displayName="NaInt16WithNullValueProperty" type="System.Int16" isNullable="true">
+          <column name="NaInt16WithNullValue" dbType="Int16" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaInt32WithNullValueProperty" displayName="NaInt32WithNullValueProperty" type="System.Int32" isNullable="true">
+          <column name="NaInt32WithNullValue" dbType="Int32" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaInt64WithNullValueProperty" displayName="NaInt64WithNullValueProperty" type="System.Int64" isNullable="true">
+          <column name="NaInt64WithNullValue" dbType="Int64" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaSingleWithNullValueProperty" displayName="NaSingleWithNullValueProperty" type="System.Single" isNullable="true">
+          <column name="NaSingleWithNullValue" dbType="Single" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NullableBinaryProperty" displayName="NullableBinaryProperty" type="System.Byte[]" isNullable="true" maxLength="100">
+          <column name="NullableBinary" dbType="Binary" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NullableBinaryWithoutMaxLengthProperty" displayName="NullableBinaryWithoutMaxLengthProperty" type="System.Byte[]" isNullable="true">
+          <column name="NullableBinaryWithoutMaxLength" dbType="Binary" />
+        </property>
+      </table>
+    </class>
+    <class id="ClassWithoutProperties" isAbstract="false">
+      <table name="TableWithoutProperties" />
+    </class>
+    <class id="ClassWithRelationsBase" isAbstract="true" />
+    <class id="ClassWithRelations" baseClass="ClassWithRelationsBase" isAbstract="false">
+      <table name="TableWithRelations">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithRelations.DerivedClass" displayName="DerivedClass" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedClass, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="DerivedClassID" dbType="Guid" />
+          <column name="DerivedClassIDClassID" dbType="AnsiString" />
+        </property>
+      </table>
+    </class>
+    <class id="Customer" baseClass="Company" isAbstract="false">
+      <table name="Customer">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Customer.Type" displayName="Type" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.CustomerType, Remotion.Data.DomainObjects.UnitTests" isNullable="false">
+          <column name="CustomerType" dbType="Int32" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Customer.PropertyWithIdenticalNameInDifferentInheritanceBranches" displayName="PropertyWithIdenticalNameInDifferentInheritanceBranches" type="System.String" isNullable="false" maxLength="100">
+          <column name="CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Customer.PrimaryOfficial" displayName="PrimaryOfficial" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Official, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="PrimaryOfficialID" dbType="AnsiString" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ProductLicenseMixin.LicenseCode" displayName="LicenseCode" type="System.String" isNullable="true">
+          <column name="LicenseCode" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Company.Name" displayName="Name" type="System.String" isNullable="false" maxLength="100">
+          <column name="Name" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Company.PhoneNumber" displayName="PhoneNumber" type="System.String" isNullable="true" maxLength="100">
+          <column name="PhoneNumber" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Company.Address" displayName="Address" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Address, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="AddressID" dbType="Guid" />
+        </property>
+      </table>
+    </class>
+    <class id="AbstractClass" isAbstract="true" />
+    <class id="DerivedAbstractClass" baseClass="AbstractClass" isAbstract="true" />
+    <class id="DerivedDerivedConcreteClass" baseClass="DerivedAbstractClass" isAbstract="false">
+      <table name="AbstractClass">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedDerivedConcreteClass.PropertyInDerivedConcreteClass" displayName="PropertyInDerivedConcreteClass" type="System.String" isNullable="true">
+          <column name="PropertyInDerivedConcreteClass" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedAbstractClass.PropertyInAbstractDerivedClass" displayName="PropertyInAbstractDerivedClass" type="System.String" isNullable="true">
+          <column name="PropertyInAbstractDerivedClass" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.AbstractClass.PropertyInAbstractClass" displayName="PropertyInAbstractClass" type="System.String" isNullable="true">
+          <column name="PropertyInAbstractClass" dbType="String" />
+        </property>
+      </table>
+    </class>
+    <class id="ConcreteClass" isAbstract="false">
+      <table name="ConcreteClass">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ConcreteClass.PropertyInConcreteClass" displayName="PropertyInConcreteClass" type="System.String" isNullable="false" maxLength="100">
+          <column name="PropertyInConcreteClass" dbType="String" />
+        </property>
+      </table>
+    </class>
+    <class id="DerivedClass" baseClass="ConcreteClass" isAbstract="false">
+      <table name="ConcreteClass">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedClass.PropertyInDerivedClass" displayName="PropertyInDerivedClass" type="System.String" isNullable="false" maxLength="100">
+          <column name="PropertyInDerivedClass" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.PersistentMixin.PersistentProperty" displayName="PersistentProperty" type="System.String" isNullable="true">
+          <column name="PersistentProperty" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ConcreteClass.PropertyInConcreteClass" displayName="PropertyInConcreteClass" type="System.String" isNullable="false" maxLength="100">
+          <column name="PropertyInConcreteClass" dbType="String" />
+        </property>
+      </table>
+    </class>
+    <class id="DerivedOfDerivedClass" baseClass="DerivedClass" isAbstract="false">
+      <table name="ConcreteClass">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedOfDerivedClass.PropertyInDerivedOfDerivedClass" displayName="PropertyInDerivedOfDerivedClass" type="System.String" isNullable="false" maxLength="100">
+          <column name="PropertyInDerivedOfDerivedClass" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedOfDerivedClass.ClassWithRelationsToDerivedOfDerivedClass" displayName="ClassWithRelationsToDerivedOfDerivedClass" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithRelations, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="ClassWithRelationsInDerivedOfDerivedClassID" dbType="Guid" />
+          <column name="ClassWithRelationsInDerivedOfDerivedClassIDClassID" dbType="AnsiString" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedClass.PropertyInDerivedClass" displayName="PropertyInDerivedClass" type="System.String" isNullable="false" maxLength="100">
+          <column name="PropertyInDerivedClass" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.PersistentMixin.PersistentProperty" displayName="PersistentProperty" type="System.String" isNullable="true">
+          <column name="PersistentProperty" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ConcreteClass.PropertyInConcreteClass" displayName="PropertyInConcreteClass" type="System.String" isNullable="false" maxLength="100">
+          <column name="PropertyInConcreteClass" dbType="String" />
+        </property>
+      </table>
+    </class>
+    <class id="Partner" baseClass="Company" isAbstract="true" />
+    <class id="DevelopmentPartner" baseClass="Partner" isAbstract="false">
+      <table name="DevelopmentPartner">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DevelopmentPartner.Competences" displayName="Competences" type="System.String" isNullable="false" maxLength="255">
+          <column name="Competences" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ProductLicenseMixin.LicenseCode" displayName="LicenseCode" type="System.String" isNullable="true">
+          <column name="LicenseCode" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Partner.Description" displayName="Description" type="System.String" isNullable="false" maxLength="255">
+          <column name="Description" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Partner.PropertyWithIdenticalNameInDifferentInheritanceBranches" displayName="PropertyWithIdenticalNameInDifferentInheritanceBranches" type="System.String" isNullable="false" maxLength="100">
+          <column name="PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Company.Name" displayName="Name" type="System.String" isNullable="false" maxLength="100">
+          <column name="Name" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Company.PhoneNumber" displayName="PhoneNumber" type="System.String" isNullable="true" maxLength="100">
+          <column name="PhoneNumber" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Company.Address" displayName="Address" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Address, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="AddressID" dbType="Guid" />
+        </property>
+      </table>
+    </class>
+    <class id="Employee" isAbstract="false">
+      <table name="Employee">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Employee.Name" displayName="Name" type="System.String" isNullable="false" maxLength="100">
+          <column name="Name" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Employee.Supervisor" displayName="Supervisor" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Employee, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="SupervisorID" dbType="Guid" />
+        </property>
+      </table>
+    </class>
+    <class id="FirstClass" isAbstract="false">
+      <table name="FirstClass">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.FirstClass.SecondClass" displayName="SecondClass" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.SecondClass, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="SecondClassID" dbType="Guid" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.FirstClass.ThirdClass" displayName="ThirdClass" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ThirdClass, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="ThirdClassID" dbType="Guid" />
+        </property>
+      </table>
+    </class>
+    <class id="MixinAddedTwiceWithDifferentNullability_LayerSupertype" isAbstract="true" />
+    <class id="MixinAddedTwiceWithDifferentNullability_BaseClassWithDBTable" baseClass="MixinAddedTwiceWithDifferentNullability_LayerSupertype" isAbstract="false">
+      <table name="MixinAddedTwiceWithDifferentNullability_BaseClassWithDBTable" />
+    </class>
+    <class id="MixinAddedTwiceWithDifferentNullability_TargetClassBelowDBTable" baseClass="MixinAddedTwiceWithDifferentNullability_BaseClassWithDBTable" isAbstract="false">
+      <table name="MixinAddedTwiceWithDifferentNullability_BaseClassWithDBTable">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.MixinAddedTwiceWithDifferentNullability.PersistentMixinAddedTwice.Property" displayName="Property" type="System.Int32" isNullable="false">
+          <column name="Property" dbType="Int32" />
+        </property>
+      </table>
+    </class>
+    <class id="MixinAddedTwiceWithDifferentNullability_TargetClassWithDBTable" baseClass="MixinAddedTwiceWithDifferentNullability_LayerSupertype" isAbstract="false">
+      <table name="MixinAddedTwiceWithDifferentNullability_TargetClassWithDBTable">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.MixinAddedTwiceWithDifferentNullability.PersistentMixinAddedTwice.Property" displayName="Property" type="System.Int32" isNullable="false">
+          <column name="Property" dbType="Int32" />
+        </property>
+      </table>
+    </class>
+    <class id="Order" isAbstract="false">
+      <table name="Order">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Order.Number" displayName="Number" type="System.Int32" isNullable="false">
+          <column name="Number" dbType="Int32" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Order.Priority" displayName="Priority" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.OrderPriority, Remotion.Data.DomainObjects.UnitTests" isNullable="false">
+          <column name="Priority" dbType="Int32" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Order.Customer" displayName="Customer" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Customer, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="CustomerID" dbType="Guid" />
+          <column name="CustomerIDClassID" dbType="AnsiString" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Order.Official" displayName="Official" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Official, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="OfficialID" dbType="AnsiString" />
+        </property>
+      </table>
+    </class>
+    <class id="OrderItem" isAbstract="false">
+      <table name="OrderItem">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.OrderItem.Position" displayName="Position" type="System.Int32" isNullable="false">
+          <column name="Position" dbType="Int32" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.OrderItem.Product" displayName="Product" type="System.String" isNullable="false" maxLength="100">
+          <column name="Product" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.OrderItem.Order" displayName="Order" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Order, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="OrderID" dbType="Guid" />
+        </property>
+      </table>
+    </class>
+    <class id="SecondClass" isAbstract="false">
+      <table name="SecondClass" />
+    </class>
+    <class id="SecondDerivedClass" baseClass="ConcreteClass" isAbstract="false">
+      <table name="ConcreteClass">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.SecondDerivedClass.PropertyInSecondDerivedClass" displayName="PropertyInSecondDerivedClass" type="System.String" isNullable="false" maxLength="100">
+          <column name="PropertyInSecondDerivedClass" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.SecondDerivedClass.ClassWithRelationsToSecondDerivedClass" displayName="ClassWithRelationsToSecondDerivedClass" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithRelations, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
+          <column name="ClassWithRelationsInSecondDerivedClassID" dbType="Guid" />
+          <column name="ClassWithRelationsInSecondDerivedClassIDClassID" dbType="AnsiString" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.PersistentMixin.PersistentProperty" displayName="PersistentProperty" type="System.String" isNullable="true">
+          <column name="PersistentProperty" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ConcreteClass.PropertyInConcreteClass" displayName="PropertyInConcreteClass" type="System.String" isNullable="false" maxLength="100">
+          <column name="PropertyInConcreteClass" dbType="String" />
+        </property>
+      </table>
+    </class>
+    <class id="SiblingOfClassWithRelations" baseClass="ClassWithRelationsBase" isAbstract="false">
+      <table name="SiblingOfTableWithRelations">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.SiblingOfClassWithRelations.IntProperty" displayName="IntProperty" type="System.Int32" isNullable="false">
+          <column name="IntProperty" dbType="Int32" />
+        </property>
+      </table>
+    </class>
+    <class id="ThirdClass" isAbstract="false">
+      <table name="ThirdClass" />
+    </class>
+  </storageProvider>
+  <storageProvider name="SchemaGenerationThirdStorageProvider">
+    <class id="AboveInheritanceRoot" isAbstract="true" />
+    <class id="InheritanceRoot" baseClass="AboveInheritanceRoot" isAbstract="false">
+      <table name="InheritanceRoot">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ExtendedFileBuilder.InheritanceRoot.PropertyInheritanceRoot" displayName="PropertyInheritanceRoot" type="System.String" isNullable="true">
+          <column name="PropertyInheritanceRoot" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ExtendedFileBuilder.AboveInheritanceRoot.PropertyAboveInheritanceRoot" displayName="PropertyAboveInheritanceRoot" type="System.String" isNullable="true">
+          <column name="PropertyAboveInheritanceRoot" dbType="String" />
+        </property>
+      </table>
+    </class>
+    <class id="BelowInheritanceRoot" baseClass="InheritanceRoot" isAbstract="false">
+      <table name="InheritanceRoot">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ExtendedFileBuilder.BelowInheritanceRoot.PropertyBelowInheritanceRoot" displayName="PropertyBelowInheritanceRoot" type="System.String" isNullable="true">
+          <column name="PropertyBelowInheritanceRoot" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ExtendedFileBuilder.InheritanceRoot.PropertyInheritanceRoot" displayName="PropertyInheritanceRoot" type="System.String" isNullable="true">
+          <column name="PropertyInheritanceRoot" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ExtendedFileBuilder.AboveInheritanceRoot.PropertyAboveInheritanceRoot" displayName="PropertyAboveInheritanceRoot" type="System.String" isNullable="true">
+          <column name="PropertyAboveInheritanceRoot" dbType="String" />
+        </property>
+      </table>
+    </class>
+  </storageProvider>
+  <storageProvider name="SchemaGenerationSecondStorageProvider">
+    <class id="Official" isAbstract="false">
+      <table name="Official">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Official.Name" displayName="Name" type="System.String" isNullable="false" maxLength="100">
+          <column name="Name" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Official.ResponsibleForOrderPriority" displayName="ResponsibleForOrderPriority" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.OrderPriority, Remotion.Data.DomainObjects.UnitTests" isNullable="false">
+          <column name="ResponsibleForOrderPriority" dbType="Int32" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Official.ResponsibleForCustomerType" displayName="ResponsibleForCustomerType" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.CustomerType, Remotion.Data.DomainObjects.UnitTests" isNullable="false">
+          <column name="ResponsibleForCustomerType" dbType="Int32" />
+        </property>
+      </table>
+    </class>
+    <class id="SpecialOfficial" baseClass="Official" isAbstract="false">
+      <table name="Official">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.SpecialOfficial.Speciality" displayName="Speciality" type="System.String" isNullable="false" maxLength="255">
+          <column name="Speciality" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Official.Name" displayName="Name" type="System.String" isNullable="false" maxLength="100">
+          <column name="Name" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Official.ResponsibleForOrderPriority" displayName="ResponsibleForOrderPriority" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.OrderPriority, Remotion.Data.DomainObjects.UnitTests" isNullable="false">
+          <column name="ResponsibleForOrderPriority" dbType="Int32" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Official.ResponsibleForCustomerType" displayName="ResponsibleForCustomerType" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.CustomerType, Remotion.Data.DomainObjects.UnitTests" isNullable="false">
+          <column name="ResponsibleForCustomerType" dbType="Int32" />
+        </property>
+      </table>
+    </class>
+  </storageProvider>
+  <enumType type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Color, Remotion.Data.DomainObjects.UnitTests">
+    <value name="Blue" columnValue="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ColorExtensions.Blue" />
+    <value name="Green" columnValue="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ColorExtensions.Green" />
+    <value name="Red" columnValue="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ColorExtensions.Red" />
+  </enumType>
+  <enumType type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes+EnumType, Remotion.Data.DomainObjects.UnitTests">
+    <value name="Value0" columnValue="0" />
+    <value name="Value1" columnValue="1" />
+    <value name="Value2" columnValue="2" />
+  </enumType>
+  <enumType type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.CustomerType, Remotion.Data.DomainObjects.UnitTests">
+    <value name="Standard" columnValue="0" />
+    <value name="Premium" columnValue="1" />
+    <value name="Gold" columnValue="2" />
+  </enumType>
+  <enumType type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.OrderPriority, Remotion.Data.DomainObjects.UnitTests">
+    <value name="Low" columnValue="0" />
+    <value name="Normal" columnValue="1" />
+    <value name="High" columnValue="2" />
+  </enumType>
+  <enumType type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.OrderPriority, Remotion.Data.DomainObjects.UnitTests">
+    <value name="Low" columnValue="0" />
+    <value name="Normal" columnValue="1" />
+    <value name="High" columnValue="2" />
+  </enumType>
+  <enumType type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.CustomerType, Remotion.Data.DomainObjects.UnitTests">
+    <value name="Standard" columnValue="0" />
+    <value name="Premium" columnValue="1" />
+    <value name="Gold" columnValue="2" />
+  </enumType>
+</mapping>

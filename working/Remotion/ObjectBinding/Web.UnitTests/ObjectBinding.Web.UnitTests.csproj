@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AB09FD88-9422-4BE7-8605-8A0EB8F9051B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.ObjectBinding.Web.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.ObjectBinding.Web.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>0067</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0067</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.3\lib\net45\Remotion.TypePipe.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="BindableObjectProviderTestHelper.cs" />
+    <Compile Include="Domain\TypeWithAllDataTypes.cs" />
+    <Compile Include="Domain\TypeWithBoolean.cs" />
+    <Compile Include="Domain\TypeWithDateTime.cs" />
+    <Compile Include="Domain\TypeWithEnum.cs" />
+    <Compile Include="Domain\TypeWithNumber.cs" />
+    <Compile Include="Domain\TypeWithReference.cs" />
+    <Compile Include="Domain\TypeWithString.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SetUpFixture.cs" />
+    <Compile Include="StubDataSource.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\Validation\BocDateTimeValueValidatorTest.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTests\ReadOnly_BEVRT.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTests\SelectListDisabled_BEVRT.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTests\RadioButtons_BEVRT.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Validation\BocListValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Validation\BocAutoCompleteReferenceValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\AlwaysInvalidValidator.cs" />
+    <Compile Include="UI\Controls\BocAutoCompleteReferenceValueMock.cs" />
+    <Compile Include="UI\Controls\BocAutoCompleteReferenceValueTest.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\BocBooleanValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\BocCheckBoxRendererTest.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocBooleanValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocBooleanValueResourceSetFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocCheckBoxRendererFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\BocBooleanValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\IBocBooleanValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Validation\IBocCheckBoxValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueMock.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueTest.cs" />
+    <Compile Include="UI\Controls\BocCheckBoxMock.cs" />
+    <Compile Include="UI\Controls\BocCheckBoxTest.cs" />
+    <Compile Include="UI\Controls\BocCompundColumnDefinitionTest.cs" />
+    <Compile Include="UI\Controls\BocCustomColumnDefinitionTest.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\DateTimeFormatterTest.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\IDateTimeFormatterTest.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\BocDateTimeValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\IBocDateTimeValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\TestableBocDateTimeValueRenderer.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\Validation\BocDateTimeValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\Validation\IBocDateTimeValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueMock.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueTest.cs" />
+    <Compile Include="UI\Controls\BocDropDownMenuMock.cs" />
+    <Compile Include="UI\Controls\BocDropDownMenuTest.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueRendererTests\SelectList_BEVRT.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\IBocEnumValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Validation\BocEnumValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Validation\IBocEnumValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocEnumValueMock.cs" />
+    <Compile Include="UI\Controls\BocEnumValueTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\BocListRowTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\EditableRowSupport\EditableRowControlFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\EditableRowSupport\EditableRowDataSourceFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\EditableRowSupport\EditableRowTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\EditableRowSupport\EditModeControllerInListEditModeTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\EditableRowSupport\EditModeControllerInRowEditModeTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\EditableRowSupport\EditModeControllerTestBase.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\EditableRowSupport\EditModeControllerWithoutEditModeTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\EditableRowSupport\FakeEditModeHost.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\FakeRowIDProvider.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\IndexBasedRowIDProviderTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\ListUtilityTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\NullValueRowIDProviderTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocColumnRendererArrayBuilderTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocColumnRendererBaseTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocCommandColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocCompoundColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocCustomColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocDropDownMenuColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocIndexColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocListCssClassDefinitionTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocListMenuBlockRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocListNavigationBlockRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocListRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocListRendererTestBase.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocListTableBlockRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocRowEditModeColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocRowRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocSelectorColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocSimpleColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\ColumnRendererTestBase.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocCommandColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocCompoundColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocCustomColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocDropDownMenuColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocIndexColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocListMenuBlockRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocListNavigationBlockRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocListRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocListTableBlockRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocRowEditModeColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocRowRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocSelectorColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IBocSimpleColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\IsColumnVisible_BocColumnRendererArrayBuilderTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\NullColumnRendererTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\StubColumnDefinition.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\StubColumnRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\StubCustomCellDefinition.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\StubRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\StubRowRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\StubValueColumnDefinition.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Sorting\BusinessObjectPropertyPathBasedComparerTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\UniqueIdentifierBasedRowIDProviderTest.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Validation\IBocListValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocListManageRowsInListEditModeTest.cs" />
+    <Compile Include="UI\Controls\BocListManageRowsInUnboundListTest.cs" />
+    <Compile Include="UI\Controls\BocListMock.cs" />
+    <Compile Include="UI\Controls\BocListTest.cs" />
+    <Compile Include="UI\Controls\BocListWcagTest.cs" />
+    <Compile Include="UI\Controls\BocLiteralTest.cs" />
+    <Compile Include="UI\Controls\BocMultilineTextBoxValueMock.cs" />
+    <Compile Include="UI\Controls\BocMultilineTextValueTest.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\BusinessObjectServiceContextTest.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocAutoCompleteReferenceValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocReferenceValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\IBocAutoCompleteReferenceValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\IBocReferenceValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\StubDropDownList.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\StubDropDownMenu.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\StubTextBox.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\TestableBocAutoCompleteReferenceValueRenderer.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\TestableBocReferenceValueRenderer.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Validation\BocReferenceValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Validation\IBocReferenceValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueMock.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueTest.cs" />
+    <Compile Include="UI\Controls\BocRendererBaseTest.cs" />
+    <Compile Include="UI\Controls\BocSimpleColumnDefinitionTest.cs" />
+    <Compile Include="UI\Controls\BocTest.cs" />
+    <Compile Include="UI\Controls\BocTextBoxValueMock.cs" />
+    <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\BocMultilineTextValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\BocTextValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\BocTextValueRendererTestBase.cs" />
+    <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\IBocMultilineTextValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\IBocTextValueRendererTest.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\AllDataTypes.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\BocTextValueTest.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\Common.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\Validation\BocMultilineTextValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\Validation\BocTextValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\Validation\IBocMultilineTextValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocTextValueTests\Validation\IBocTextValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\BocTreeViewMock.cs" />
+    <Compile Include="UI\Controls\BocTreeViewTest.cs" />
+    <Compile Include="UI\Controls\BusinessObjectBoundEditableWebControlTests\SaveValueToDomainModel.cs" />
+    <Compile Include="UI\Controls\BusinessObjectBoundEditableWebControlTests\TestDomain\TestableBusinessObjectBoundEditableWebControl.cs" />
+    <Compile Include="UI\Controls\BusinessObjectReferenceDataSourceControlTests\BusinessObjectReferenceDataSourceControlTest.cs" />
+    <Compile Include="UI\Controls\BusinessObjectReferenceDataSourceControlTests\Validate.cs" />
+    <Compile Include="UI\Controls\HtmlHelper.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Validation\IBocAutoCompleteReferenceValueValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\IBusinessObjectReferenceDataSourceControlValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\IUserControlBindingValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\ReflectionBusinessObjectWebUIService.cs" />
+    <Compile Include="UI\Controls\RendererTestBase.cs" />
+    <Compile Include="UI\Controls\StubDataSource.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\StubInfrastructureResourceUrlFactory.cs" />
+    <Compile Include="UI\Controls\UserControlBindingTest.cs" />
+    <Compile Include="UI\Controls\UserControlBindingValidatorFactoryTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <None Include="..\..\Remotion LGPL.licenseheader">
+      <Link>Remotion LGPL.licenseheader</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
+      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
+      <Name>Core.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
+      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
+      <Name>Development.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Development\Web\Development.Web.csproj">
+      <Project>{44924ED6-8C12-416D-972F-F1F10417E7EF}</Project>
+      <Name>Development.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
+      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
+      <Name>Globalization.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
+      <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
+      <Name>Mixins.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj">
+      <Project>{B119DB72-9073-401B-8EC9-C8885A2D4800}</Project>
+      <Name>Web.Contracts.DiagnosticMetadata</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+      <Name>Web.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\ObjectBinding.Core.csproj">
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Name>ObjectBinding.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj">
+      <Project>{AD7D0683-130E-4064-8EB7-D9981DCB22BC}</Project>
+      <Name>ObjectBinding.Web.Contracts.DiagnosticMetadata</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web\ObjectBinding.Web.csproj">
+      <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
+      <Name>ObjectBinding.Web</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

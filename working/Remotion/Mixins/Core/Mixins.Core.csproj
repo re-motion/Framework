@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.Mixins</RootNamespace>
+    <AssemblyName>Remotion.Mixins</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Remotion.Mixins.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591</NoWarn>
+    <DocumentationFile>bin\Release\Remotion.Mixins.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.3\lib\net45\Remotion.TypePipe.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionConditionAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\AssertionConditionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionConditionType.cs">
+      <Link>SharedSource\ReSharperAnnotations\AssertionConditionType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionMethodAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\AssertionMethodAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\CanBeNullAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\CanBeNullAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ImplicitUseKindFlags.cs">
+      <Link>SharedSource\ReSharperAnnotations\ImplicitUseKindFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ImplicitUseTargetFlags.cs">
+      <Link>SharedSource\ReSharperAnnotations\ImplicitUseTargetFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\InvokerParameterNameAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\InvokerParameterNameAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\MeansImplicitUseAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\MeansImplicitUseAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\NoEnumerationAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\NoEnumerationAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\NotNullAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\NotNullAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\UsedImplicitlyAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\UsedImplicitlyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="AcceptsAlphabeticOrderingAttribute.cs" />
+    <Compile Include="AdditionalMixinDependencyAttribute.cs" />
+    <Compile Include="BindToConstraintsAttribute.cs" />
+    <Compile Include="BindToGenericTargetParameterAttribute.cs" />
+    <Compile Include="BindToTargetTypeAttribute.cs" />
+    <Compile Include="CodeGeneration\AttributeBasedMetadataImporter.cs" />
+    <Compile Include="CodeGeneration\ConcreteMixedTypeAttribute.cs" />
+    <Compile Include="CodeGeneration\ConcreteMixinType.cs" />
+    <Compile Include="CodeGeneration\ConcreteMixinTypeAttribute.cs" />
+    <Compile Include="CodeGeneration\ConcreteMixinTypeIdentifier.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ImplementedInterfaceFinder.cs" />
+    <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceMappingAttribute.cs" />
+    <Compile Include="CodeGeneration\IConcreteTypeMetadataImporter.cs" />
+    <Compile Include="CodeGeneration\IGeneratedMixinType.cs" />
+    <Compile Include="CodeGeneration\IGeneratedNextCallProxyType.cs" />
+    <Compile Include="CodeGeneration\IntroducedMemberAttribute.cs" />
+    <Compile Include="CodeGeneration\IObjectFactoryImplementation.cs" />
+    <Compile Include="CodeGeneration\ITypeFactoryImplementation.cs" />
+    <Compile Include="CodeGeneration\MixinArrayInitializer.cs" />
+    <Compile Include="CodeGeneration\ObjectFactoryImplementation.cs" />
+    <Compile Include="CodeGeneration\Serialization\AttributeConcreteMixinTypeIdentifierDeserializer.cs" />
+    <Compile Include="CodeGeneration\Serialization\AttributeConcreteMixinTypeIdentifierSerializer.cs" />
+    <Compile Include="CodeGeneration\Serialization\IConcreteMixinTypeIdentifierDeserializer.cs" />
+    <Compile Include="CodeGeneration\Serialization\IConcreteMixinTypeIdentifierSerializer.cs" />
+    <Compile Include="CodeGeneration\Serialization\SerializationInfoConcreteMixinTypeIdentifierDeserializer.cs" />
+    <Compile Include="CodeGeneration\Serialization\SerializationInfoConcreteMixinTypeIdentifierSerializer.cs" />
+    <Compile Include="CodeGeneration\TypeFactoryImplementation.cs" />
+    <Compile Include="CodeGeneration\TypeImportException.cs" />
+    <Compile Include="CodeGeneration\TypePipe\AttributeGenerator.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ClassContextSerializerBase.cs" />
+    <Compile Include="CodeGeneration\TypePipe\CodeGenerationClassContextSerializer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\CodeGenerationMixinContextOriginSerializer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\CodeGenerationMixinContextSerializer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ConcreteMixinTypeIdentifierSerializerBase.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ConfigurationProvider.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ExpressionBuilder.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ExpressionClassContextSerializer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ExpressionConcreteMixinTypeIdentifierSerializer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ExpressionMixinContextOriginSerializer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ExpressionMixinContextSerializer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\FlatClassContext.cs" />
+    <Compile Include="CodeGeneration\TypePipe\IAttributeGenerator.cs" />
+    <Compile Include="CodeGeneration\TypePipe\IExpressionBuilder.cs" />
+    <Compile Include="CodeGeneration\TypePipe\IMixinInfo.cs" />
+    <Compile Include="CodeGeneration\TypePipe\IMixinTypeProvider.cs" />
+    <Compile Include="CodeGeneration\TypePipe\IConfigurationProvider.cs" />
+    <Compile Include="CodeGeneration\TypePipe\INextCallMethodGenerator.cs" />
+    <Compile Include="CodeGeneration\TypePipe\INextCallProxy.cs" />
+    <Compile Include="CodeGeneration\TypePipe\INextCallProxyGenerator.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ITargetTypeForNextCall.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ITargetTypeModifier.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinContextOriginSerializerBase.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinContextSerializerBase.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinParticipant.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinParticipantTypeIdentifierProvider.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinSerializationHelper.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinTypeGenerator.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinTypeGeneratorFacade.cs" />
+    <Compile Include="CodeGeneration\TypePipe\NextCallMethodGenerator.cs" />
+    <Compile Include="CodeGeneration\TypePipe\NextCallProxy.cs" />
+    <Compile Include="CodeGeneration\TypePipe\NextCallProxyGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CodeGeneration\TypePipe\OverrideInterface.cs" />
+    <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceGenerator.cs" />
+    <Compile Include="CodeGeneration\TypePipe\RegularMixinInfo.cs" />
+    <Compile Include="CodeGeneration\TypePipe\SerializationImplementer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\TargetTypeForNextCall.cs" />
+    <Compile Include="CodeGeneration\TypePipe\TargetTypeGenerator.cs" />
+    <Compile Include="CodeGeneration\TypePipe\TargetTypeGeneratorFacade.cs" />
+    <Compile Include="ComposedInterfaceAttribute.cs" />
+    <Compile Include="ComposedObject.cs" />
+    <Compile Include="ConfigurationException.cs" />
+    <Compile Include="Context\ClassContext.cs" />
+    <Compile Include="Context\ClassContextCollection.cs" />
+    <Compile Include="Context\ClassContextCombiner.cs" />
+    <Compile Include="Context\ClassContextDeriver.cs" />
+    <Compile Include="Context\TypeEventArgs.cs" />
+    <Compile Include="Context\DeclarativeAnalyzers\HasComposedInterfaceMarkerAnalyzer.cs" />
+    <Compile Include="Context\DeclarativeAnalyzers\DeclarativeConfigurationAnalyzer.cs" />
+    <Compile Include="Context\DeclarativeAnalyzers\IMixinDeclarationAnalyzer.cs" />
+    <Compile Include="Context\DeclarativeAnalyzers\MixinConfigurationAttributeAnalyzer.cs" />
+    <Compile Include="Context\DeclarativeConfigurationBuilder.cs" />
+    <Compile Include="Context\DefaultMixinInheritancePolicy.cs" />
+    <Compile Include="Context\FluentBuilders\ClassContextBuilder.cs" />
+    <Compile Include="Context\FluentBuilders\InheritanceResolvingClassContextBuilder.cs" />
+    <Compile Include="Context\FluentBuilders\MixinConfigurationBuilder.cs" />
+    <Compile Include="Context\FluentBuilders\MixinContextBuilder.cs" />
+    <Compile Include="Context\MixinContextOrigin.cs" />
+    <Compile Include="Context\IMixinInheritancePolicy.cs" />
+    <Compile Include="Context\MixinContext.cs" />
+    <Compile Include="Context\MixinContextCollection.cs" />
+    <Compile Include="Context\MixinDependencySpecification.cs" />
+    <Compile Include="Context\ReadOnlyContextCollection.cs" />
+    <Compile Include="Context\Serialization\ArrayContextSerializerBase.cs" />
+    <Compile Include="Context\Serialization\ArrayClassContextDeserializer.cs" />
+    <Compile Include="Context\Serialization\ArrayClassContextSerializer.cs" />
+    <Compile Include="Context\Serialization\ArrayContextDeserializerBase.cs" />
+    <Compile Include="Context\Serialization\ArrayMixinContextDeserializer.cs" />
+    <Compile Include="Context\Serialization\ArrayMixinContextOriginSerializer.cs" />
+    <Compile Include="Context\Serialization\ArrayMixinContextSerializer.cs" />
+    <Compile Include="Context\Serialization\ArrayMixinContextOriginDeserializer.cs" />
+    <Compile Include="Context\Serialization\AttributeClassContextDeserializer.cs" />
+    <Compile Include="Context\Serialization\AttributeClassContextSerializer.cs" />
+    <Compile Include="Context\Serialization\AttributeMixinContextDeserializer.cs" />
+    <Compile Include="Context\Serialization\AttributeMixinContextOriginDeserializer.cs" />
+    <Compile Include="Context\Serialization\AttributeMixinContextOriginSerializer.cs" />
+    <Compile Include="Context\Serialization\AttributeMixinContextSerializer.cs" />
+    <Compile Include="Context\Serialization\FlatClassContextDeserializer.cs" />
+    <Compile Include="Context\Serialization\FlatClassContextSerializer.cs" />
+    <Compile Include="Context\Serialization\FlatMixinContextDeserializer.cs" />
+    <Compile Include="Context\Serialization\FlatMixinContextOriginDeserializer.cs" />
+    <Compile Include="Context\Serialization\FlatMixinContextOriginSerializer.cs" />
+    <Compile Include="Context\Serialization\FlatMixinContextSerializer.cs" />
+    <Compile Include="Context\Serialization\IClassContextDeserializer.cs" />
+    <Compile Include="Context\Serialization\IClassContextSerializer.cs" />
+    <Compile Include="Context\Serialization\IMixinContextDeserializer.cs" />
+    <Compile Include="Context\Serialization\IMixinContextOriginDeserializer.cs" />
+    <Compile Include="Context\Serialization\IMixinContextOriginSerializer.cs" />
+    <Compile Include="Context\Serialization\IMixinContextSerializer.cs" />
+    <Compile Include="Context\Suppression\IMixinSuppressionRule.cs" />
+    <Compile Include="Context\Suppression\MixinTreeReplacementSuppressionRule.cs" />
+    <Compile Include="Context\Suppression\MixinTreeSuppressionRule.cs" />
+    <Compile Include="CopyCustomAttributesAttribute.cs" />
+    <Compile Include="Definitions\AttributeDefinition.cs" />
+    <Compile Include="Definitions\AttributeIntroductionDefinition.cs" />
+    <Compile Include="Definitions\Building\AttributeDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\AttributeIntroductionDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\DependencySorting\MixinDefinitionSorter.cs" />
+    <Compile Include="Definitions\Building\DependencySorting\IMixinDefinitionSorter.cs" />
+    <Compile Include="Definitions\Building\ITargetClassDefinitionBuilder.cs" />
+    <Compile Include="Definitions\ComposedInterfaceDependencyDefinition.cs" />
+    <Compile Include="Definitions\Building\ComposedInterfaceDependencyDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\DependencyDefinitionBuilderBase.cs" />
+    <Compile Include="Definitions\Building\InterfaceIntroductionDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\MemberDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\MemberImplementationFinder.cs" />
+    <Compile Include="Definitions\Building\MemberOverridePair.cs" />
+    <Compile Include="Definitions\Building\MixinDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\MixinDependencyDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\NextDependencyDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\OverriddenMemberFilter.cs" />
+    <Compile Include="Definitions\Building\OverridesAnalyzer.cs" />
+    <Compile Include="Definitions\Building\RequiredMethodDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\RequiredMethodDefinitionBuilding\DuckTypingRequiredMethodDefinitionCollector.cs" />
+    <Compile Include="Definitions\Building\RequiredMethodDefinitionBuilding\ImplementedInterfaceRequiredMethodDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\RequiredMethodDefinitionBuilding\IntroducedInterfaceRequiredMethodDefinitionCollector.cs" />
+    <Compile Include="Definitions\Building\RequiredMethodDefinitionBuilding\IRequiredMethodDefinitionCollector.cs" />
+    <Compile Include="Definitions\Building\RequirementsAnalyzer.cs" />
+    <Compile Include="Definitions\Building\TargetClassDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\TargetDependencyDefinitionBuilder.cs" />
+    <Compile Include="Definitions\ClassDefinitionBase.cs" />
+    <Compile Include="Definitions\CovariantDefinitionCollectionWrapper.cs" />
+    <Compile Include="Definitions\DefinitionCollectionBase.cs" />
+    <Compile Include="Definitions\DependencyDefinitionBase.cs" />
+    <Compile Include="Definitions\EventDefinition.cs" />
+    <Compile Include="Definitions\EventIntroductionDefinition.cs" />
+    <Compile Include="Definitions\IAttributableDefinition.cs" />
+    <Compile Include="Definitions\IAttributeIntroductionSource.cs" />
+    <Compile Include="Definitions\IAttributeIntroductionTarget.cs" />
+    <Compile Include="Definitions\IDefinitionCollection.cs" />
+    <Compile Include="Definitions\IDefinitionVisitor.cs" />
+    <Compile Include="Definitions\IMemberIntroductionDefinition.cs" />
+    <Compile Include="Definitions\InterfaceIntroductionDefinition.cs" />
+    <Compile Include="Definitions\IVisitableDefinition.cs" />
+    <Compile Include="Definitions\MemberDefinitionBase.cs" />
+    <Compile Include="Definitions\MemberIntroductionDefinitionBase.cs" />
+    <Compile Include="Definitions\MethodDefinition.cs" />
+    <Compile Include="Definitions\MethodIntroductionDefinition.cs" />
+    <Compile Include="Definitions\MixinDefinition.cs" />
+    <Compile Include="Definitions\MixinDependencyDefinition.cs" />
+    <Compile Include="Definitions\MultiDefinitionCollection.cs" />
+    <Compile Include="Definitions\NextDependencyDefinition.cs" />
+    <Compile Include="Definitions\NonAttributeIntroductionDefinition.cs" />
+    <Compile Include="Definitions\NonInterfaceIntroductionDefinition.cs" />
+    <Compile Include="Definitions\PropertyDefinition.cs" />
+    <Compile Include="Definitions\PropertyIntroductionDefinition.cs" />
+    <Compile Include="Definitions\RequiredMethodDefinition.cs" />
+    <Compile Include="Definitions\RequiredMixinTypeDefinition.cs" />
+    <Compile Include="Definitions\RequiredNextCallTypeDefinition.cs" />
+    <Compile Include="Definitions\RequiredTargetCallTypeDefinition.cs" />
+    <Compile Include="Definitions\RequirementDefinitionBase.cs" />
+    <Compile Include="Definitions\SuppressedAttributeIntroductionDefinition.cs" />
+    <Compile Include="Definitions\TargetClassDefinition.cs" />
+    <Compile Include="Definitions\TargetClassDefinitionFactory.cs" />
+    <Compile Include="Definitions\TargetDependencyDefinition.cs" />
+    <Compile Include="Definitions\UniqueDefinitionCollection.cs" />
+    <Compile Include="ExtendsAttribute.cs" />
+    <Compile Include="IgnoreForMixinConfigurationAttribute.cs" />
+    <Compile Include="IgnoresClassAttribute.cs" />
+    <Compile Include="IgnoresMixinAttribute.cs" />
+    <Compile Include="IHasComposedInterface.cs" />
+    <Compile Include="IInitializableMixin.cs" />
+    <Compile Include="IMixinTarget.cs" />
+    <Compile Include="IOverrideAttribute.cs" />
+    <Compile Include="IMixinConfigurationAttribute.cs" />
+    <Compile Include="MemberVisibility.cs" />
+    <Compile Include="MemberVisibilityAttribute.cs" />
+    <Compile Include="MixAttribute.cs" />
+    <Compile Include="MixerTools\MixedTypeFinder.cs" />
+    <Compile Include="MixerTools\MixerPipelineFactory.cs" />
+    <Compile Include="MixerTools\ErrorEventArgs.cs" />
+    <Compile Include="MixerTools\IMixedTypeFinder.cs" />
+    <Compile Include="MixerTools\IMixerPipelineFactory.cs" />
+    <Compile Include="MixerTools\Mixer.cs" />
+    <Compile Include="MixerTools\ValidationErrorEventArgs.cs" />
+    <Compile Include="Mixin.cs" />
+    <Compile Include="MixinConfiguration.ActiveConfiguration.cs" />
+    <Compile Include="MixinConfiguration.Build.cs" />
+    <Compile Include="MixinConfiguration.cs" />
+    <Compile Include="MixinConfiguration.MasterConfiguration.cs" />
+    <Compile Include="MixinConfigurationScope.cs" />
+    <Compile Include="MixinRelationship.cs" />
+    <Compile Include="MixinRelationshipAttribute.cs" />
+    <Compile Include="MixinTargetMockUtility.cs" />
+    <Compile Include="MixinTypeUtility.cs" />
+    <Compile Include="NonIntroducedAttribute.cs" />
+    <Compile Include="ObjectFactory.cs" />
+    <Compile Include="OverrideMixinAttribute.cs" />
+    <Compile Include="OverrideTargetAttribute.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeExtensions.cs" />
+    <Compile Include="TypeFactory.cs" />
+    <Compile Include="UsesAttribute.cs" />
+    <Compile Include="Utilities\ConstraintBasedGenericParameterInstantiator.cs" />
+    <Compile Include="Utilities\MixedObjectInstantiationScope.cs" />
+    <Compile Include="Utilities\MixinGenericArgumentFinder.cs" />
+    <Compile Include="Utilities\MixinReflector.cs" />
+    <Compile Include="Utilities\MixinTypeCloser.cs" />
+    <Compile Include="Utilities\ReflectionUtility.cs" />
+    <Compile Include="Validation\DefaultValidationLog.cs" />
+    <Compile Include="Validation\DelegateRuleDescriptionAttribute.cs" />
+    <Compile Include="Validation\DelegateValidationRule.cs" />
+    <Compile Include="Validation\IValidationLog.cs" />
+    <Compile Include="Validation\IValidationResultItem.cs" />
+    <Compile Include="Validation\IValidationRule.cs" />
+    <Compile Include="Validation\Rules\ContextStoreMemberIntroductionLookupUtility.cs" />
+    <Compile Include="Validation\Rules\ContextStoreMemberLookupUtility.cs" />
+    <Compile Include="Validation\Rules\DefaultComposedInterfaceDependencyRules.cs" />
+    <Compile Include="Validation\Rules\DefaultAttributeIntroductionRules.cs" />
+    <Compile Include="Validation\Rules\DefaultAttributeRules.cs" />
+    <Compile Include="Validation\Rules\DefaultEventIntroductionRules.cs" />
+    <Compile Include="Validation\Rules\DefaultEventRules.cs" />
+    <Compile Include="Validation\Rules\DefaultInterfaceIntroductionRules.cs" />
+    <Compile Include="Validation\Rules\DefaultMethodIntroductionRules.cs" />
+    <Compile Include="Validation\Rules\DefaultMethodRules.cs" />
+    <Compile Include="Validation\Rules\DefaultMixinDependencyRules.cs" />
+    <Compile Include="Validation\Rules\DefaultMixinRules.cs" />
+    <Compile Include="Validation\Rules\DefaultNextDependencyRules.cs" />
+    <Compile Include="Validation\Rules\DefaultPropertyIntroductionRules.cs" />
+    <Compile Include="Validation\Rules\DefaultPropertyRules.cs" />
+    <Compile Include="Validation\Rules\DefaultRequiredMethodRules.cs" />
+    <Compile Include="Validation\Rules\DefaultRequiredMixinTypeRules.cs" />
+    <Compile Include="Validation\Rules\DefaultRequiredNextCallTypeRules.cs" />
+    <Compile Include="Validation\Rules\DefaultRequiredTargetCallTypeRules.cs" />
+    <Compile Include="Validation\Rules\DefaultSuppressedAttributeIntroductionRules.cs" />
+    <Compile Include="Validation\Rules\DefaultSuppressedInterfaceIntroductionRules.cs" />
+    <Compile Include="Validation\Rules\DefaultTargetClassRules.cs" />
+    <Compile Include="Validation\Rules\DefaultTargetDependencyRules.cs" />
+    <Compile Include="Validation\Rules\IRuleSet.cs" />
+    <Compile Include="Validation\Rules\RuleSetBase.cs" />
+    <Compile Include="Validation\SerializableValidationLogData.cs" />
+    <Compile Include="Validation\ValidatingVisitor.cs" />
+    <Compile Include="Validation\ValidationException.cs" />
+    <Compile Include="Validation\ValidationExceptionResultItem.cs" />
+    <Compile Include="Validation\ValidationLogData.cs" />
+    <Compile Include="Validation\ValidationResult.cs" />
+    <Compile Include="Validation\ValidationResultItem.cs" />
+    <Compile Include="Validation\Validator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <None Include="..\..\Build\NuSpec\TemplateSharedForNuGetOrg.nuspec">
+      <Link>TemplateSharedForNuGetOrg.nuspec</Link>
+    </None>
+    <None Include="..\..\Remotion LGPL.licenseheader">
+      <Link>Remotion LGPL.licenseheader</Link>
+    </None>
+    <None Include="doc\include\GettingStartedWithRemix.aml" />
+    <None Include="packages.config" />
+    <None Include="Validation\Validation.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj">
+      <Project>{EC62E06A-4AC6-48A0-8A81-69250ABC35B6}</Project>
+      <Name>Core.Reflection.CodeGeneration.TypePipe</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="FacetManifest.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

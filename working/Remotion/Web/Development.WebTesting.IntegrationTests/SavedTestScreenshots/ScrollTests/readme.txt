@@ -1,0 +1,1 @@
+﻿Screenshot variants only differ because of border RGB value. Internet Explorer and BuildServer Chrome render the red border as 255,0,0. Local Chrome renders it as 244,0,0.

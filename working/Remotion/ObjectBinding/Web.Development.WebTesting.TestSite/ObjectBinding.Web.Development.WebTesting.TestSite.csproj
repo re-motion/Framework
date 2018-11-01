@@ -1,0 +1,448 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{652E65FE-81EF-4D91-9C52-1CB781862957}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.ObjectBinding.Web.Development.WebTesting.TestSite</RootNamespace>
+    <AssemblyName>Remotion.ObjectBinding.Web.Development.WebTesting.TestSite</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>1591;0419</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591;0419</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <Content Include="Controls\AutoCompleteService.asmx" />
+    <Content Include="Controls\BocEnumValueUserControl.ascx" />
+    <Content Include="Controls\BocCheckBoxUserControl.ascx" />
+    <Content Include="Controls\BocEnumValueUserControlTestOutput.ascx" />
+    <Content Include="Controls\BocCheckBoxUserControlTestOutput.ascx" />
+    <Content Include="Controls\BocListAsGridUserControl.ascx" />
+    <Content Include="Controls\BocListAsGridUserControlTestOutput.ascx" />
+    <Content Include="Controls\BocReferenceValueUserControl.ascx" />
+    <Content Include="Controls\BocReferenceValueUserControlTestOutput.ascx" />
+    <Content Include="Controls\BocBooleanValueUserControl.ascx" />
+    <Content Include="Controls\BocBooleanValueUserControlTestOutput.ascx" />
+    <Content Include="Controls\BocMultilineTextValueUserControl.ascx" />
+    <Content Include="Controls\BocMultilineTextValueUserControlTestOutput.ascx" />
+    <Content Include="Controls\BocDateTimeValueUserControl.ascx" />
+    <Content Include="Controls\BocDateTimeValueUserControlTestOutput.ascx" />
+    <Content Include="Controls\BocTreeViewUserControlTestOutput.ascx" />
+    <Content Include="Controls\BocTreeViewUserControl.ascx" />
+    <Content Include="Controls\BocTextValueUserControlTestOutput.ascx" />
+    <Content Include="Controls\BocTextValueUserControl.ascx" />
+    <Content Include="Controls\BocListUserControlTestOutput.ascx" />
+    <Content Include="Controls\BocAutoCompleteReferenceValueUserControlTestOutput.ascx" />
+    <Content Include="Controls\BocListUserControl.ascx" />
+    <Content Include="Controls\BocAutoCompleteReferenceValueUserControl.ascx" />
+    <Content Include="Controls\IconService.asmx" />
+    <Content Include="ControlTestForm.aspx" />
+    <Content Include="Default.aspx" />
+    <Content Include="FrameTestFrame.aspx" />
+    <Content Include="GenericTest.aspx" />
+    <Content Include="Images\SampleIcon.gif" />
+    <Content Include="Images\Remotion.ObjectBinding.Sample.Job.gif" />
+    <Content Include="Images\Remotion.ObjectBinding.Sample.Person.gif" />
+    <Content Include="Layout.Master" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\2D15EFA6-AC6C-4b35-8678-8AE55E0D8ECC" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\774E8412-FA31-46c6-B9F5-703DCB91CE24" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\89dc8cd2-30e0-4bb3-92a0-4587f32492f5" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\EFBF1D71-D05A-46c4-8E30-0287307042C3">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-000000000001" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-000000000009" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-00000000000A" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\011ace7d-5149-4117-8ace-dd33d80b8f96" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\19214979-d614-4afa-b074-7b05fe37ea65" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\39aab7cd-9916-4549-a8ec-145fc9cfae2e" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\6866ca48-8957-4f26-ae5f-78a3f6dcc4de" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\88ca0bf3-2a08-4d93-bee7-0454052a922d" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\9e713934-1226-4669-880e-c07c22cdab19" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\a2752869-e46b-4cfa-b89f-0b824e42b250" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\a97d84b0-c1c9-4580-a6c1-1fed1ee8c041" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\c8ace752-55f6-4074-8890-130276ea6cd1" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\c93f1935-2d55-4b2a-9fd5-219739324cfb" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\eb94bfdb-1140-46f8-971f-e4b41dae13b8" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\ef898bb1-7095-46d2-872b-5f732a7c0036" />
+    <Content Include="..\..\Remotion LGPL.licenseheader">
+      <Link>Remotion LGPL.licenseheader</Link>
+    </Content>
+    <Content Include="packages.config" />
+    <None Include="objects\Remotion.ObjectBinding.Sample.Job\02e98644-2051-464d-96f5-0d778862a260" />
+    <None Include="objects\Remotion.ObjectBinding.Sample.Job\f5758e93-4eb6-457c-abea-038322f986cd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="objects\Remotion.ObjectBinding.Sample.Job\62187fba-be7e-4a6e-8a0c-7e3f1b696d7f">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Global.asax" />
+    <Content Include="UrlMapping.xml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="Controls\AutoCompleteService.asmx.cs">
+      <DependentUpon>AutoCompleteService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\BocEnumValueUserControl.ascx.cs">
+      <DependentUpon>BocEnumValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocEnumValueUserControl.ascx.designer.cs">
+      <DependentUpon>BocEnumValueUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocCheckBoxUserControl.ascx.cs">
+      <DependentUpon>BocCheckBoxUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocCheckBoxUserControl.ascx.designer.cs">
+      <DependentUpon>BocCheckBoxUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocEnumValueUserControlTestOutput.ascx.cs">
+      <DependentUpon>BocEnumValueUserControlTestOutput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocEnumValueUserControlTestOutput.ascx.designer.cs">
+      <DependentUpon>BocEnumValueUserControlTestOutput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocCheckBoxUserControlTestOutput.ascx.cs">
+      <DependentUpon>BocCheckBoxUserControlTestOutput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocCheckBoxUserControlTestOutput.ascx.designer.cs">
+      <DependentUpon>BocCheckBoxUserControlTestOutput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocListAsGridUserControl.ascx.cs">
+      <DependentUpon>BocListAsGridUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocListAsGridUserControl.ascx.designer.cs">
+      <DependentUpon>BocListAsGridUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocListAsGridUserControlTestOutput.ascx.cs">
+      <DependentUpon>BocListAsGridUserControlTestOutput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocListAsGridUserControlTestOutput.ascx.designer.cs">
+      <DependentUpon>BocListAsGridUserControlTestOutput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocReferenceValueUserControl.ascx.cs">
+      <DependentUpon>BocReferenceValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocReferenceValueUserControl.ascx.designer.cs">
+      <DependentUpon>BocReferenceValueUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocReferenceValueUserControlTestOutput.ascx.cs">
+      <DependentUpon>BocReferenceValueUserControlTestOutput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocReferenceValueUserControlTestOutput.ascx.designer.cs">
+      <DependentUpon>BocReferenceValueUserControlTestOutput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocBooleanValueUserControl.ascx.cs">
+      <DependentUpon>BocBooleanValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocBooleanValueUserControl.ascx.designer.cs">
+      <DependentUpon>BocBooleanValueUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocBooleanValueUserControlTestOutput.ascx.cs">
+      <DependentUpon>BocBooleanValueUserControlTestOutput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocBooleanValueUserControlTestOutput.ascx.designer.cs">
+      <DependentUpon>BocBooleanValueUserControlTestOutput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocMultilineTextValueUserControl.ascx.cs">
+      <DependentUpon>BocMultilineTextValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocMultilineTextValueUserControl.ascx.designer.cs">
+      <DependentUpon>BocMultilineTextValueUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocMultilineTextValueUserControlTestOutput.ascx.cs">
+      <DependentUpon>BocMultilineTextValueUserControlTestOutput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocMultilineTextValueUserControlTestOutput.ascx.designer.cs">
+      <DependentUpon>BocMultilineTextValueUserControlTestOutput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocDateTimeValueUserControl.ascx.cs">
+      <DependentUpon>BocDateTimeValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocDateTimeValueUserControl.ascx.designer.cs">
+      <DependentUpon>BocDateTimeValueUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocDateTimeValueUserControlTestOutput.ascx.cs">
+      <DependentUpon>BocDateTimeValueUserControlTestOutput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocDateTimeValueUserControlTestOutput.ascx.designer.cs">
+      <DependentUpon>BocDateTimeValueUserControlTestOutput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocTreeViewUserControlTestOutput.ascx.cs">
+      <DependentUpon>BocTreeViewUserControlTestOutput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocTreeViewUserControlTestOutput.ascx.designer.cs">
+      <DependentUpon>BocTreeViewUserControlTestOutput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocTreeViewUserControl.ascx.cs">
+      <DependentUpon>BocTreeViewUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocTreeViewUserControl.ascx.designer.cs">
+      <DependentUpon>BocTreeViewUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocTextValueUserControlTestOutput.ascx.cs">
+      <DependentUpon>BocTextValueUserControlTestOutput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocTextValueUserControlTestOutput.ascx.designer.cs">
+      <DependentUpon>BocTextValueUserControlTestOutput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocTextValueUserControl.ascx.cs">
+      <DependentUpon>BocTextValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocTextValueUserControl.ascx.designer.cs">
+      <DependentUpon>BocTextValueUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocListUserControlTestOutput.ascx.cs">
+      <DependentUpon>BocListUserControlTestOutput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocListUserControlTestOutput.ascx.designer.cs">
+      <DependentUpon>BocListUserControlTestOutput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocAutoCompleteReferenceValueUserControlTestOutput.ascx.cs">
+      <DependentUpon>BocAutoCompleteReferenceValueUserControlTestOutput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocAutoCompleteReferenceValueUserControlTestOutput.ascx.designer.cs">
+      <DependentUpon>BocAutoCompleteReferenceValueUserControlTestOutput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocListUserControl.ascx.cs">
+      <DependentUpon>BocListUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocListUserControl.ascx.designer.cs">
+      <DependentUpon>BocListUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocAutoCompleteReferenceValueUserControl.ascx.cs">
+      <DependentUpon>BocAutoCompleteReferenceValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BocAutoCompleteReferenceValueUserControl.ascx.designer.cs">
+      <DependentUpon>BocAutoCompleteReferenceValueUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\IBocListUserControlBaseTestOutput.cs" />
+    <Compile Include="Controls\IconService.asmx.cs">
+      <DependentUpon>IconService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TestBocListCustomCell.cs" />
+    <Compile Include="Controls\TestBocListWithRowMenuItems.cs" />
+    <Compile Include="Controls\TestBocTreeViewContextMenu.cs" />
+    <Compile Include="ControlTestForm.aspx.cs">
+      <DependentUpon>ControlTestForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ControlTestForm.aspx.designer.cs">
+      <DependentUpon>ControlTestForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EnabledState.cs" />
+    <Compile Include="FrameTestFrame.aspx.cs">
+      <DependentUpon>FrameTestFrame.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FrameTestFrame.aspx.designer.cs">
+      <DependentUpon>FrameTestFrame.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GenericPages\BocAutoCompleteReferenceValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocBooleanValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocCheckBoxValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocDateTimeValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocEnumValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\EditableGenericTestPage.cs" />
+    <Compile Include="GenericPages\ObjectBindingGenericTestPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GenericPages\BocListAsGridGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocListGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocMultilineTextValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocReferenceValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocTextValueGenericTestPage.cs" />
+    <Compile Include="GenericPages\BocTreeViewGenericTestPage.cs" />
+    <Compile Include="GenericPages\SimpleGenericTestPage.cs" />
+    <Compile Include="GenericTest.aspx.cs">
+      <DependentUpon>GenericTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GenericTest.aspx.designer.cs">
+      <DependentUpon>GenericTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GenericTestFunction.cs" />
+    <Compile Include="GenericTestOptions.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Layout.Master.cs">
+      <DependentUpon>Layout.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layout.Master.designer.cs">
+      <DependentUpon>Layout.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ControlTestFunction.cs" />
+    <Compile Include="ReadOnlyState.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Development\Web\Development.Web.csproj">
+      <Project>{44924ED6-8C12-416D-972F-F1F10417E7EF}</Project>
+      <Name>Development.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+      <Name>Web.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj">
+      <Project>{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}</Project>
+      <Name>Web.Development.WebTesting.TestSite.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\ObjectBinding.Core.csproj">
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Name>ObjectBinding.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sample\ObjectBinding.Sample.csproj">
+      <Project>{5F1B88F7-FAFB-45C2-A357-333245870A6B}</Project>
+      <Name>ObjectBinding.Sample</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj">
+      <Project>{AB09FD88-9422-4BE7-8605-8A0EB8F9051B}</Project>
+      <Name>ObjectBinding.Web.UnitTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web\ObjectBinding.Web.csproj">
+      <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
+      <Name>ObjectBinding.Web</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>52111</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:60400/branches/1.20/ObjectBinding.Web.Development.WebTesting.TestSite/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

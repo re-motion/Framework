@@ -1,0 +1,77 @@
+1.13.31
+=======
+- Clients.Web now supports theming. The default is ClassicBlue.
+  If you wish to use the Legacy theme, you need to change the SecurityManagerMasterPage to use HTML Quirksmode 
+  and the registration of the renderer-factories to register the Legacy-renderers.
+
+1.13.14
+=======
+- SecurityTokenMatcher
+  * Null-Principals no longer match for any ACE.
+
+1.11.18
+=======
+- SecurityManagerPrincipal
+  * Replaces User.Current and Tenant.Current.
+
+1.11.14
+=======
+- AccessControlEntry
+  * Introduced new column TenantHierarchyCondition.
+    Values required for data migration:
+      TenantCondition = 0: TenantHierarchyCondition = 0
+      TenantCondition = 1: TenantHierarchyCondition = 3
+      TenantCondition = 2: TenantHierarchyCondition = 1
+
+1.11.13
+=======
+- AccessControlEntry
+  * Updated column names (TenantID -> SpecificTenantID,...)
+  * Updated column names (TenantSelection -> TenantCondition,...)
+  * Introduced new column GroupHierarchyCondition:
+    Values required for data migration:
+      GroupCondition = 0: GroupHierarchyCondition = 0
+      GroupCondition = 1: GroupHierarchyCondition = 3
+  
+1.11.12
+=======
+- SecurityManager now supports explict class-based (stateless) access control lists.
+- Database-schema has changed from 1.11.11 to support class-based access control lists and must be migrated.
+
+1.7.81
+======
+- Global.asax für Clients.Web:
+  Weitere Services müssen imm ApplicationStart registriert werden:
+  * BindableObjectProvider.Current.AddService (typeof (GroupPropertiesSearchService), new GroupPropertiesSearchService());
+  * BindableObjectProvider.Current.AddService (typeof (RolePropertiesSearchService), new RolePropertiesSearchService());
+  * BindableObjectProvider.Current.AddService (typeof (UserPropertiesSearchService), new UserPropertiesSearchService ());
+
+1.7.64
+======
+- Bugfix: User.OwningGorup wurde für nicht übersetzt.
+- Web-Applikation: Die Applikation hat stets die Request-Sprache des Browsers für die CurrentCulture genommen. Diese Logik ist nun entfernt.
+
+1.7.42
+======
+- Konfiguration Clients.Web
+  Zusätzlicher Eintrag in der Compilation-Section:
+  <system.web>
+    <compilation defaultLanguage="c#" debug="true">
+      <expressionBuilders>
+        <add expressionPrefix="res" type="Rubicon.Web.Compilation.ResourceExpressionBuilder, Rubicon.Web" />
+      </expressionBuilders>
+    </compilation>
+  </system.web>
+
+1.7.41
+======
+- Konfiguration:
+  Bisher:
+  <rubicon.securityManager>
+    <customOrganizationalStructureFactory type="..." />
+  </rubicon.securityManager>
+  
+  Neu:
+  <rubicon.securityManager>
+    <organizationalStructureFactory type="..." />
+  </rubicon.securityManager>

@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+      <title>FormGrid</title>
+    <!--<base href="/trunk/ObjectBinding.Web.Test/" />-->
+    <base href="https://svn.re-motion.org/svn/Remotion/trunk/Remotion/Web/Core/Res/" />
+    <link href="Themes/NovaGray/HTML/FormGrid.css" type="text/css" rel="stylesheet" />
+    <link href="Themes/NovaGray/HTML/Style.css" type="text/css" rel="stylesheet" />
+  
+    <style type="text/css">
+    
+      /*  Style applied to the form grid table's outer structure  */
+      fieldset.formGridTable
+      {
+        display: table;
+        margin: 0;
+        padding: 0;
+
+        border-collapse: collapse;
+        border-width: 0;
+        width: 100%;
+      }
+
+      fieldset.formGridTable > ul
+      {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      fieldset.formGridTable > ul > li
+      {
+        margin: 0;
+        padding: 0;
+      }
+
+      div.formGridRow,
+      legend.formGridRow
+      {
+        display: table-row;
+      }
+
+      div.formGridCell,
+      span.formGridCell
+      {
+        display: table-cell;
+      }
+
+      span.formGridTitleCell,
+      span.formGridSubTitleCell
+      {
+        font-weight: bold;
+        font-size: 125%;
+        padding: 2px 2px 2px 2px;
+        border: none;
+      }
+
+      /*  Style applied to the cells containing the labels  */
+      div.formGridLabelsCell
+      {
+        background-color: #F0F0F0;
+        text-align: right;
+        padding: 0.3em 1em 0.3em 1em;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: solid 1px #C8C8C8;
+        width: 17%;
+      }
+
+      /*  Style applied to the cells containing the markers  */
+      div.formGridMarkersCell
+      {
+        white-space: nowrap;
+        padding: 0.3em 0.5em 0.3em 0.5em;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: solid 1px #C8C8C8;
+        width: 1%;
+      }
+
+      div.formGridMarkersCell img
+      {
+        min-width: 12px;
+        border: none;
+      }
+
+      /*  Style applied to the cells containing the controls  */
+      div.formGridControlsCell
+      {
+        padding: 0.3em 1em 0.3em 0em;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: solid 1px #C8C8C8;
+        width: auto;
+      }
+
+      /*  Style applied to the cells in the first row after the title row  */
+      div.formGridTopDataRow
+      {
+        border-top: solid 1px #AAAAAA;
+      }
+
+    </style>
+  </head>
+  <body>
+    <table class="formGridTable">
+      <tr>
+        <td colspan="3" class="formGridTitleCell">Table FormGrid</td>
+      </tr>
+      <tr>
+        <td class="formGridLabelsCell formGridTopDataRow">Label</td>
+        <td class="formGridMarkersCell formGridTopDataRow"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </td>
+        <td class="formGridControlsCell formGridTopDataRow"><input /></td>
+      </tr>
+      <tr>
+        <td class="formGridLabelsCell">Label</td>
+        <td class="formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </td>
+        <td class="formGridControlsCell"><input /></td>
+      </tr>
+      <tr>
+        <td class="formGridLabelsCell">Label</td>
+        <td class="formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </td>
+        <td class="formGridControlsCell"></td>
+      </tr>
+      <tr>
+        <td class="formGridControlsCell" colspan="3"><textarea style="width: 100%"></textarea></td>
+      </tr>
+      <tr>
+        <td class="formGridLabelsCell">Label</td>
+        <td class="formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </td>
+        <td class="formGridControlsCell"><input /></td>
+      </tr>
+    </table>
+
+    <hr />
+
+    <fieldset class="formGridTable">
+      <legend class="formGridRow">
+        <span class="formGridCell formGridTitleCell">Table using DIV</span>
+      </legend>
+      <ul>
+        <li>
+          <div class="formGridRow">
+            <div class="formGridCell formGridLabelsCell formGridTopDataRow">Label</div>
+            <div class="formGridCell formGridMarkersCell formGridTopDataRow"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
+            <div class="formGridCell formGridControlsCell formGridTopDataRow"><input /></div>
+          </div>
+        </li>
+        <li>
+          <div class="formGridRow">
+            <div class="formGridCell formGridLabelsCell">Label</div>
+            <div class="formGridCell formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
+            <div class="formGridCell formGridControlsCell"><input /></div>
+          </div>
+        </li>
+        <li>
+          <div class="formGridRow">
+            <div class="formGridCell formGridLabelsCell">Label</div>
+            <div class="formGridCell formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
+            <div class="formGridCell formGridControlsCell"><!-- Placeholder: remains blank--></div>
+          </div>
+          <!-- Note: no CSS class for formGridRow and formGridCell -->
+          <div>
+            <div class="formGridControlsCell"><textarea style="width: 100%"></textarea></div>
+          </div>
+        </li>
+        <li>
+          <div class="formGridRow">
+            <div class="formGridCell formGridLabelsCell">Label</div>
+            <div class="formGridCell formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
+            <div class="formGridCell formGridControlsCell"><!-- Placeholder: remains blank--></div>
+          </div>
+          <!-- Note: no CSS class for formGridRow and formGridCell -->
+          <div>
+            <div class="formGridControlsCell">
+              <table style="width: 100%">
+                <tr><td>Firstname</td><td>Lastname</td></tr>
+                <tr><td>John</td><td>Doe</td></tr>
+              </table>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="formGridRow">
+            <div class="formGridCell formGridLabelsCell">Label</div>
+            <div class="formGridCell formGridMarkersCell"> <img src="Themes/NovaGray/Image/RequiredField.gif" /> <img src="Themes/NovaGray/Image/Help.gif"> </div>
+            <div class="formGridCell formGridControlsCell"><input /></div>
+          </div>
+        </li>
+      </ul>
+    </fieldset>
+  </body>
+</html>

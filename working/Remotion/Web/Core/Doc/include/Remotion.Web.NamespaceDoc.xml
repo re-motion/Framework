@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
+ ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ !
+ ! The re-motion Core Framework is free software; you can redistribute it
+ ! and/or modify it under the terms of the GNU Lesser General Public License
+ ! as published by the Free Software Foundation; either version 2.1 of the
+ ! License, or (at your option) any later version.
+ !
+ ! re-motion is distributed in the hope that it will be useful,
+ ! but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ ! GNU Lesser General Public License for more details.
+ !
+ ! You should have received a copy of the GNU Lesser General Public License
+ ! along with re-motion; if not, see http://www.gnu.org/licenses.
+-->
+<doc>
+  <assembly>
+    <name>_SharedItems_</name>
+  </assembly>
+  <members>
+    <member name="N:Remotion.Web.UI">
+      <summary>
+    The <b>Remotion.Web.UI</b> namespace provides classes related the <see cref="T:System.Web.UI.Page" /> and 
+    generic user interface features.
+  
+    <h3 class="dtH3"><a name="wai">Web Content Accessibility Guidelines 1.0 (WCAG 1.0)</a></h3><!-- HTML Help requires separate anchor tag for target -->     
+    <para>
+      The <a href="http://www.w3.org/WAI/intro/wcag.php" target="_blank">Web Content Accessibility Guidelines 1.0</a> 
+      defined by the <a href="http://www.w3.org/WAI" target="_blank">Web Accessibility Initiative (WAI)</a> include a 
+      <a href="http://www.w3.org/TR/WCAG10/full-checklist.html" target="_blank">list of checkpoints</a> which must be 
+      met by a web page claiming WCAG 1.0 conformance. These checkpoints have one of three priority levels assigned. 
+    </para><para>
+      The WCAG conformance of a web page is meassured by its conformence level:
+    </para>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="25%" />
+        <col width="75%" />
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th>Conformance Level</th>
+          <th>Requirement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Conformance Level "A"</td>
+          <td>All Priority 1 checkpoints are satisfied.</td>
+        </tr>
+        <tr>
+          <td>Conformance Level "Double-A"</td>
+          <td>All Priority 1 and 2 checkpoints are satisfied.</td>
+        </tr>
+        <tr>
+          <td>Conformance Level "Triple-A"</td>
+          <td>All Priority 1, 2, and 3 checkpoints are satisfied.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <para>
+      A web application implemented with the use of the Remotion web controls can enforce WCAG 1.0 level A conformance.
+      This feature is activated by setting the <c>wcag</c> entry in the configuration file. This entry maps to an 
+      instance of the <see cref="T:Remotion.Web.Configuration.WcagConfiguration" /> type. (See the documentation of 
+      <see cref="T:Remotion.Web.Configuration.WebConfiguration">Remotion.Web.Configuration.WebConfiguration</see> for 
+      details on using the configuration file.)
+    </para><para>
+      It remains the developer's responsibility to ensure conformance with 
+      all checkpoints related to inter-control relationships and the web application's content itself.
+    </para><para>
+      A list of WCAG conform controls can be found in the 
+      <see cref="N:Remotion.Web.UI.Controls"/> and <see cref="N:Remotion.ObjectBinding.Web.UI.Controls"/> namespace documentation.
+    </para>
+  </summary>
+    </member>
+    <member name="N:Remotion.Web.UI.Controls">
+      <summary>
+    The <b>Remotion.Web.UI.Controls</b> namespace provides web controls. 
+    
+    <h3 class="dtH3">Standards Conformance Chart</h3>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="28%" />
+        <col width="18%" />
+        <col width="18%" />
+        <col width="18%" />
+        <col width="18%" />
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th rowspan="2" style="vertical-align:top; text-align:center;">Control</th>
+          <th rowspan="2" style="vertical-align:top; text-align:center;">HTML 4.01 Conformance</th>
+          <th rowspan="2" style="vertical-align:top; text-align:center;">XHTML 1.0 Conformance</th>
+          <th colspan="2" style="text-align:center;">WAI WCAG 1.0 Conformance</th>
+        </tr>
+        <tr valign="top">
+          <th style="text-align:center;">Default Settings</th>
+          <th style="text-align:center;">Possible</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><see cref="T:Remotion.Web.UI.Controls.DropDownMenu" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.Web.UI.Controls.FormGridManager" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.Web.UI.Controls.TabbedMultiView" /></td>
+          <td style="text-align:center;">-</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">-</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.Web.UI.Controls.ValidationStateViewer" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.Web.UI.Controls.WebButton" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.Web.UI.Controls.WebLinkButton" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.Web.UI.Controls.WebTabStrip" /></td>
+          <td style="text-align:center;">-</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">-</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Remotion.Web.UI.Controls.WebTreeView" /></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="10">
+            X Fully conform.<br />
+            - Not conform.<br />
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+    <para>
+      See the <see cref="N:Remotion.Web.UI" /> namespace documentation for details 
+      on enforcing WCAG conformance.
+    </para>
+  </summary>
+    </member>
+  </members>
+</doc>

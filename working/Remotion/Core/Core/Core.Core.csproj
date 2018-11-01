@@ -1,0 +1,434 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Remotion</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG;JETBRAINS_ANNOTATIONS</DefineConstants>
+    <DocumentationFile>bin\Debug\Remotion.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1591;0419</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;</DefineConstants>
+    <DocumentationFile>bin\Release\Remotion.xml</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1591;0419</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>pdbonly</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>4.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\EnumerableExtensions.cs">
+      <Link>SharedSource\FunctionalProgramming\EnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\EnumerableUtility.cs">
+      <Link>SharedSource\FunctionalProgramming\EnumerableUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\Maybe.cs">
+      <Link>SharedSource\FunctionalProgramming\Maybe.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionConditionAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\AssertionConditionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionConditionType.cs">
+      <Link>SharedSource\ReSharperAnnotations\AssertionConditionType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionMethodAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\AssertionMethodAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\CanBeNullAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\CanBeNullAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ContractAnnotationAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\ContractAnnotationAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ImplicitUseKindFlags.cs">
+      <Link>SharedSource\ReSharperAnnotations\ImplicitUseKindFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ImplicitUseTargetFlags.cs">
+      <Link>SharedSource\ReSharperAnnotations\ImplicitUseTargetFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\InvokerParameterNameAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\InvokerParameterNameAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ItemCanBeNullAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\ItemCanBeNullAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\ItemNotNullAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\ItemNotNullAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\MeansImplicitUseAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\MeansImplicitUseAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\MustUseReturnValueAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\MustUseReturnValueAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\NoEnumerationAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\NoEnumerationAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\NotNullAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\NotNullAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\StringFormatMethodAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\StringFormatMethodAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\UsedImplicitlyAttribute.cs">
+      <Link>SharedSource\ReSharperAnnotations\UsedImplicitlyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs">
+      <Link>SharedSource\Utilities\ArgumentUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\Assertion.cs">
+      <Link>SharedSource\Utilities\Assertion.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\AttributeUtility.cs">
+      <Link>SharedSource\Utilities\AttributeUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\CultureScope.cs">
+      <Link>SharedSource\Utilities\CultureScope.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\EqualityUtility.cs">
+      <Link>SharedSource\Utilities\EqualityUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\ExceptionUtility.cs">
+      <Link>SharedSource\Utilities\ExceptionUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\FileUtility.cs">
+      <Link>SharedSource\Utilities\FileUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\MemberInfoEqualityComparer.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\MemberInfoFromExpressionUtility.cs">
+      <Link>SharedSource\Utilities\MemberInfoFromExpressionUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\NullableTypeUtility.cs">
+      <Link>SharedSource\Utilities\NullableTypeUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\ReferenceEqualityComparer.cs">
+      <Link>SharedSource\Utilities\ReferenceEqualityComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="Collections\CollectionExtensions.cs" />
+    <Compile Include="Collections\ImmutableSingleton.cs" />
+    <Compile Include="Collections\ReadOnlyCollectionDecorator.cs" />
+    <Compile Include="Configuration\ServiceLocation\IServiceLocationConfiguration.cs" />
+    <Compile Include="Configuration\ServiceLocation\ServiceLocationConfiguration.cs" />
+    <Compile Include="Configuration\TypeResolution\TypeResolutionConfiguration.cs" />
+    <Compile Include="Context\ISafeContextStorageProvider.cs" />
+    <Compile Include="Context\SafeContext.cs" />
+    <Compile Include="Context\SafeContextKeys.cs" />
+    <Compile Include="Context\SafeContextSingleton.cs" />
+    <Compile Include="FunctionalProgramming\EnumerableExtensions.Partial.cs" />
+    <Compile Include="FunctionalProgramming\EnumerableUtility.Partial.cs" />
+    <Compile Include="FunctionalProgramming\Maybe.Partial.cs" />
+    <Compile Include="IHandleAttribute.cs" />
+    <Compile Include="Obsolete\Reflection\TypeDiscovery\ContextAwareTypeDiscoveryUtility.cs" />
+    <Compile Include="Reflection\MethodInfoExtensions.cs" />
+    <Compile Include="Reflection\MethodResolver.cs" />
+    <Compile Include="Reflection\PropertyInfoExtensions.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AssemblyNameCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Reflection\AssemblyTypeCache.cs" />
+    <Compile Include="Reflection\TypeDiscovery\BaseTypeCache.cs" />
+    <Compile Include="Design\IDesignModeHelper.cs" />
+    <Compile Include="Reflection\TypeResolution\DefaultTypeResolutionService.cs" />
+    <Compile Include="Reflection\TypeExtensions.cs" />
+    <Compile Include="ServiceLocation\BootstrapServiceConfiguration.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocator.Registration.cs" />
+    <Compile Include="ServiceLocation\ServiceConfigurationRegistryExtensions.cs" />
+    <Compile Include="ServiceLocation\ImplementationForAttribute.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorProvider.cs" />
+    <Compile Include="ServiceLocation\IBootstrapServiceConfiguration.cs" />
+    <Compile Include="ServiceLocation\IServiceConfigurationDiscoveryService.cs" />
+    <Compile Include="ServiceLocation\IServiceConfigurationRegistry.cs" />
+    <Compile Include="ServiceLocation\IServiceLocatorProvider.cs" />
+    <Compile Include="ServiceLocation\LifetimeKind.cs" />
+    <Compile Include="ServiceLocation\RegistrationType.cs" />
+    <Compile Include="ServiceLocation\ServiceImplementationInfo.cs" />
+    <Compile Include="INullObject.cs" />
+    <Compile Include="Logging\ILog.cs" />
+    <Compile Include="Logging\ILogManager.cs" />
+    <Compile Include="Logging\LogExtensions.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <Compile Include="Logging\LogManager.cs" />
+    <Compile Include="Logging\LogThreshold.cs" />
+    <Compile Include="PermanentGuidAttribute.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\CachingAssemblyFinderDecorator.cs" />
+    <Compile Include="Reflection\ContextAwareTypeUtility.cs" />
+    <Compile Include="ServiceLocation\SafeServiceLocator.cs" />
+    <Compile Include="Utilities\Assertion.Partial.cs" />
+    <Compile Include="Utilities\AttributeBasedTypeConverterFactory.cs" />
+    <Compile Include="Utilities\CompoundTypeConverterFactory.cs" />
+    <Compile Include="Utilities\CultureScope.partial.cs" />
+    <Compile Include="Utilities\EnumTypeConverterFactory.cs" />
+    <Compile Include="Utilities\EqualityUtility.Partial.cs" />
+    <Compile Include="Utilities\ExceptionUtility.Partial.cs" />
+    <Compile Include="Utilities\ITypeConversionProvider.cs" />
+    <Compile Include="Utilities\ITypeConverterFactory.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparer.Partial.cs" />
+    <Compile Include="Utilities\MemberInfoFromExpressionUtility.Partial.cs" />
+    <Compile Include="Utilities\ReferenceEqualityComparer.Partial.cs" />
+    <Compile Include="SuppressAttributesAttribute.cs" />
+    <Compile Include="Utilities\ArgumentUtility.Partial.cs" />
+    <Compile Include="Utilities\AttributeRetrieval\EventCustomAttributeRetriever.cs" />
+    <Compile Include="Utilities\CompoundComparer.cs" />
+    <Compile Include="Collections\CompoundValueEqualityComparer.cs" />
+    <Compile Include="Collections\ComponentwiseEqualsAndHashcodeWrapper.cs" />
+    <Compile Include="Collections\DictionaryExtensions.cs" />
+    <Compile Include="Collections\ListAdapter.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByFileIncludeRootAssemblyElement.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByNameRootAssemblyElement.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByFileRootAssemblyElement.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByNameRootAssemblyElementCollection.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByFileRootAssemblyElementCollection.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByFileExcludeRootAssemblyElement.cs" />
+    <Compile Include="Configuration\TypeDiscovery\RootAssembliesElement.cs" />
+    <Compile Include="Configuration\TypeDiscovery\TypeDiscoveryConfiguration.cs" />
+    <Compile Include="Configuration\TypeDiscovery\TypeDiscoveryMode.cs" />
+    <Compile Include="Reflection\CodeGeneration\MethodReferencingAttribute.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\AssemblyNameSpecification.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\CompositeRootAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FilePatternRootAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FilePatternSpecification.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FilePatternSpecificationKind.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FileSystemSearchService.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FixedRootAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\IAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\IFileSearchService.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\NamedRootAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\RootAssembly.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\IAssemblyLoader.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\SearchPathRootAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\IRootAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\LoadAllAssemblyLoaderFilter.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceConfigurationDiscoveryService.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocator.cs" />
+    <Compile Include="ServiceLocation\ServiceConfigurationEntry.cs" />
+    <Compile Include="Utilities\DefaultConverter.cs" />
+    <Compile Include="Utilities\DelegateBasedEqualityComparer.cs" />
+    <Compile Include="Utilities\DesignerUtility.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AssemblyLoaderException.cs" />
+    <Compile Include="Reflection\CodeGeneration\GeneratedMethodWrapperAttribute.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\FilteringAssemblyLoader.cs" />
+    <Compile Include="Context\CallContextStorageProvider.cs" />
+    <Compile Include="Collections\AutoInitDictionary.cs" />
+    <Compile Include="Collections\MultiDictionary.cs" />
+    <Compile Include="Configuration\ConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\ConfigurationWrapper.cs" />
+    <Compile Include="Configuration\ConfigurationWrapperFromConfigurationObject.cs" />
+    <Compile Include="Configuration\ConfigurationWrapperFromConfigurationManager.cs" />
+    <Compile Include="Configuration\ExtendedConfigurationSection.cs" />
+    <Compile Include="Configuration\ExtendedProviderBase.cs" />
+    <Compile Include="Configuration\ProviderDefinitionCollection.cs" />
+    <Compile Include="Configuration\ProviderHelperBase.cs" />
+    <Compile Include="Design\DesignModeHelperBase.cs" />
+    <Compile Include="Design\EnvDteDesignModeHelper.cs" />
+    <Compile Include="DoubleCheckedLockingContainer.cs" />
+    <Compile Include="Logging\Log4NetLog.cs" />
+    <Compile Include="Logging\Log4NetLogManager.cs" />
+    <Compile Include="Logging\Log4NetTraceListener.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\NameObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\TypeElement.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\AssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinderTypeDiscoveryService.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AttributeAssemblyLoaderFilter.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\IAssemblyLoaderFilter.cs" />
+    <Compile Include="Reflection\TypeDiscovery\NonApplicationAssemblyAttribute.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\RegexAssemblyLoaderFilter.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\ApplicationAssemblyLoaderFilter.cs" />
+    <Compile Include="Reflection\InheritanceHierarchyFilter.cs" />
+    <Compile Include="Utilities\AttributeUtility.Partial.cs" />
+    <Compile Include="Utilities\AttributeWithMetadata.cs" />
+    <Compile Include="Utilities\FileUtility.Partial.cs" />
+    <Compile Include="Utilities\DelegateBasedComparer.cs" />
+    <Compile Include="Utilities\InvertedComparerDecorator.cs" />
+    <Compile Include="Utilities\IUtcNowProvider.cs" />
+    <Compile Include="Utilities\AttributeRetrieval\InheritanceAwareCustomAttributeRetriever.cs" />
+    <Compile Include="Utilities\NullableTypeUtility.Partial.cs" />
+    <Compile Include="Utilities\NullComparer.cs" />
+    <Compile Include="Utilities\NullValueConverter.cs" />
+    <Compile Include="Utilities\AttributeRetrieval\PropertyCustomAttributeRetriever.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\ReflectionAPIAttribute.cs" />
+    <Compile Include="Utilities\StopwatchScope.cs" />
+    <Compile Include="Utilities\TypeConverterResult.cs" />
+    <Compile Include="Utilities\TypeConverterType.cs" />
+    <Compile Include="Utilities\TypeNameConverter.cs" />
+    <Compile Include="Utilities\AdvancedEnumConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ArrayUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\BidirectionalStringConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\EnumUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\NameValueCollectionUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Obsolete\Utilities\ReflectionUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\StringUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\TypeConversionProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\TypeUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\TypeUtility.AbbreviationParser.cs" />
+    <Compile Include="Utilities\UtcNowProvider.cs" />
+    <None Include="..\..\..\SharedSource\SharedSource Apache-2.0.licenseheader">
+      <Link>SharedSource\SharedSource Apache-2.0.licenseheader</Link>
+    </None>
+    <None Include="..\..\Build\NuSpec\TemplateSharedForNuGetOrg.nuspec">
+      <Link>TemplateSharedForNuGetOrg.nuspec</Link>
+    </None>
+    <None Include="..\..\Remotion LGPL.licenseheader">
+      <Link>Remotion LGPL.licenseheader</Link>
+    </None>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <EmbeddedResource Include="Schemas\TypeDiscoveryConfiguration.xsd" />
+    <EmbeddedResource Include="Schemas\ServiceLocationConfiguration.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="doc\include\GettingStartedWithRemotion.aml" />
+    <None Include="doc\include\Logging\LogExtensions.xml" />
+    <None Include="doc\include\Logging\Log4NetTraceListener.xml" />
+    <None Include="doc\include\Remotion.NamespaceDoc.xml" />
+    <None Include="packages.config" />
+    <Compile Include="Utilities\TypeUtility.AbbreviationBuilder.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FacetManifest.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
