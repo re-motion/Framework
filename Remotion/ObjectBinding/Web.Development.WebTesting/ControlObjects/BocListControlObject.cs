@@ -241,7 +241,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
             DiagnosticMetadataAttributesForObjectBinding.BocListCellContents,
             DomSelectorUtility.CreateMatchValueForCssSelector (containsCellText));
         var cellScope = Scope.FindCss (cssSelector);
-        cellScope = cellScope.FindXPath ("../..");
+        cellScope = cellScope.FindXPath (string.Format ("(ancestor::th[@{0}][1]|ancestor::td[@{0}][1])", DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex));
         return CreateCellControlObject (GetHtmlID(), cellScope);
       }
       else
@@ -267,7 +267,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
             column.Index,
             DiagnosticMetadataAttributesForObjectBinding.BocListCellContents,
             DomSelectorUtility.CreateMatchValueForCssSelector (containsCellText));
-        var cellScope = Scope.FindCss (cssSelector).FindXPath ("../..");
+        var cellScope = Scope.FindCss (cssSelector).FindXPath (string.Format ("(ancestor::th[@{0}][1]|ancestor::td[@{0}][1])", DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex));
         return CreateCellControlObject (GetHtmlID(), cellScope);
       }
       else
