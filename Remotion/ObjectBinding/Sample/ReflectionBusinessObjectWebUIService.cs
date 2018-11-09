@@ -64,12 +64,13 @@ namespace Remotion.ObjectBinding.Sample
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNull ("businessObjectClass", businessObjectClass);
 
-      return new ToolTipBasedHelpInfo (string.Format (
-              "{0}\r\n{1}\r\n{2}\r\n{3}",
-              control.ID,
-              businessObjectClass.Identifier,
-              (businessObjectProperty != null ? businessObjectProperty.Identifier : "prop"),
-              (businessObject is IBusinessObjectWithIdentity ? ((IBusinessObjectWithIdentity) businessObject).DisplayName : "obj")));
+      return new ToolTipBasedHelpInfo ("Help for " + (businessObjectProperty != null ? businessObjectProperty.Identifier : "prop"));
+      //return new ToolTipBasedHelpInfo (string.Format (
+      //        "{0}\r\n{1}\r\n{2}\r\n{3}",
+      //        control.ID,
+      //        businessObjectClass.Identifier,
+      //        (businessObjectProperty != null ? businessObjectProperty.Identifier : "prop"),
+      //        (businessObject is IBusinessObjectWithIdentity ? ((IBusinessObjectWithIdentity) businessObject).DisplayName : "obj")));
     }
   }
 }
