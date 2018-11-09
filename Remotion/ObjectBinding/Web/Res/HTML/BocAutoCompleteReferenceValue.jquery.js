@@ -1371,6 +1371,9 @@
             .addClass(options.informationPopUpClass)
             .css("position", "absolute")
             .appendTo(document.body);
+            if (options.combobox.attr('aria-labelledby') !== undefined) {
+              element.attr("aria-labelledby", options.combobox.attr('aria-labelledby'));
+            }
 
             element.data('originalMaxHeight', parseInt(element.css('max-height'), 10));
             element.data('originalMaxWidth', parseInt(element.css('max-width'), 10));
