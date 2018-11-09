@@ -49,6 +49,8 @@
             .attr ('src', 'javascript:""')
             .attr ('frameborder', '0')
             .attr ('tabindex', '-1')
+            .attr ('aria-hidden', 'true') // for proper annotation for ARIA
+            .attr ('aria-label', '') // overrides the reading of the src-text with a blank text
             .addClass ('bgiframe')
             .css ({
               display : 'block',
