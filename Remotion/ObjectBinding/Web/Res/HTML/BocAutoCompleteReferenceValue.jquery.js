@@ -993,6 +993,12 @@
             .css("position", "absolute")
             .appendTo(document.body);
 
+            options.combobox.attr('aria-owns', options.selectListID);
+            var isAria11 = options.combobox[0] !== input;
+            if (isAria11) {
+              options.combobox.attr('aria-controls', options.selectListID);
+          }
+
             element.data('originalMaxHeight', parseInt(element.css('max-height'), 10));
             element.data('originalMaxWidth', parseInt(element.css('max-width'), 10));
 
@@ -1153,6 +1159,8 @@
                 var li = $ ("<li role='option' aria-selected='false' />")
                   .html (options.highlight (item.html, term))
                   .attr ("id", options.selectListID + "_" + i)
+                  .attr("aria-setsize", max)
+                  .attr("aria-posinset", i + 1)
                   .addClass (i % 2 === 0 ? "ac_even" : "ac_odd");
                 if (item.class != null)
                   li.addClass(item.class);
@@ -1255,7 +1263,7 @@
                 if (repositionTimer) 
                     clearTimeout(repositionTimer);
                 options.combobox.attr("aria-expanded", "false");
-                $(input).attr("aria-activedescendant", "");
+                $(input).removeAttr("aria-activedescendant");
                 element && element.hide();
                 listItems && listItems.removeClass(CLASSES.ACTIVE).attr("aria-selected", "false");
                 active = -1;

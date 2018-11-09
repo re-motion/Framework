@@ -23,8 +23,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
+using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
@@ -347,8 +347,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
       }
 
-      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
+      var labelIDs = renderingContext.Control.GetLabelIDs();
+      if (isCommandEnabled)
+        labelIDs = labelIDs.Concat (label.ClientID);
+      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs.ToArray());
       
       var attributeCollection = new AttributeCollection (new StateBag());
       ValidationErrorRenderer.AddValidationErrorsReference (attributeCollection, validationErrorsID, validationErrors);
