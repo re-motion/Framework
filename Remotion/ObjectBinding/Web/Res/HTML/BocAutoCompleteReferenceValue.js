@@ -60,7 +60,44 @@ BocAutoCompleteReferenceValue.Initialize = function (
   var _selectListID = baseID + '_Results';
   var _informationPopUpID = baseID + '_Information';
 
-  combobox.attr('aria-owns', _selectListID + ' ' + _informationPopUpID);
+  if (BrowserUtility.GetIEVersion() > 0)
+  {
+    // For Internet Explorer + JAWS, we must use the ARIA 1.0 combobox pattern.
+    // The remaining browsers support ARIA 1.1 with NVDA.
+
+    var internetExplorerScreenReaderLabelID = baseID + '_InternetExplorerScreenReaderLabel';
+    var screenReaderLabel = $("<span hidden='hidden' />")
+      .attr("id", internetExplorerScreenReaderLabelID)
+      .html(resources.InternetExplorerScreenReaderLabel)
+      .appendTo(combobox);
+
+    textbox.attr('role', combobox.attr ('role'));
+    combobox.removeAttr('role');
+
+    textbox.attr('aria-haspopup', combobox.attr('aria-haspopup'));
+    combobox.removeAttr('aria-haspopup');
+
+    textbox.attr('aria-expanded', combobox.attr('aria-expanded'));
+    combobox.removeAttr('aria-expanded');
+
+    if (combobox.attr ('aria-labelledby') !== undefined)
+    {
+      textbox.attr ('aria-labelledby', combobox.attr ('aria-labelledby') + ' ' +internetExplorerScreenReaderLabelID);
+      combobox.removeAttr ('aria-labelledby');
+    }
+    else
+    {
+      textbox.attr('aria-labelledby', internetExplorerScreenReaderLabelID);
+    }
+
+    if (combobox.attr('aria-describedby') !== undefined)
+    {
+      textbox.attr('aria-describedby', combobox.attr('aria-describedby'));
+      combobox.removeAttr('aria-describedby');
+    }
+
+    combobox = textbox;
+  }
 
   textbox.autocomplete(searchServiceUrl, 'Search', 'SearchExact',
         {

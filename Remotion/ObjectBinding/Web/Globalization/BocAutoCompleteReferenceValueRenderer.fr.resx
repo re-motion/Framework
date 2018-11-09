@@ -129,4 +129,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.SearchStringForDropDownDoesNotMatchRegexMessage" xml:space="preserve">
     <value>Votre saisie n’est pas conforme au format prescrit.</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.InternetExplorerScreenReaderLabel" xml:space="preserve">
+    <value>Boîte combinée</value>
+  </data>
 </root>

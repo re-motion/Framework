@@ -60,6 +60,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       SearchStringForDropDownDoesNotMatchRegexMessage,
       /// <summary> The message displayed when the user input does not result in a result.</summary>
       NoDataFoundMessage,
+      /// <summary> Additional text for improved screen reader support in Internet Explorer.</summary>
+      InternetExplorerScreenReaderLabel
     }
 
     private readonly Func<TextBox> _textBoxFactory;
@@ -286,6 +288,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       jsonBuilder.Append (", ");
       jsonBuilder.Append ("NoDataFoundMessage : ");
       AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetString (ResourceIdentifier.NoDataFoundMessage));
+      jsonBuilder.Append (", ");
+      jsonBuilder.Append ("InternetExplorerScreenReaderLabel : ");
+      AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetString (ResourceIdentifier.InternetExplorerScreenReaderLabel));
       jsonBuilder.Append (" }");
 
       return jsonBuilder.ToString();
@@ -320,9 +325,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Listbox);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaOwns, "");
 
-      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      var labelIDs = renderingContext.Control.GetLabelIDs ().ToArray ();
       LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
@@ -389,8 +393,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       textBox.ApplyStyle (renderingContext.Control.CommonStyle);
       renderingContext.Control.TextBoxStyle.ApplyStyle (textBox);
       textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaAutoComplete, HtmlAriaAutoCompleteAttributeValue.Both);
-      textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaControls, "");
-      textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaActiveDescendant, "");
       textBox.Attributes.Add ("autocomplete", "off");
 
       if (renderingContext.Control.IsRequired)
