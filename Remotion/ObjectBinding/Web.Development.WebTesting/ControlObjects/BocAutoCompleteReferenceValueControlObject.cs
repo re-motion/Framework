@@ -23,6 +23,7 @@ using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
@@ -257,7 +258,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsReadOnly())
         return Scope.FindChild ("Command");
 
-      return Scope.FindChild ("TextValue").FindXPath ("..");
+      if (Scope.Browser.IsInternetExplorer())
+        return Scope.FindChild ("TextValue");
+      else
+        return Scope.FindChild ("TextValue").FindXPath ("..");
     }
 
     private SearchServiceResultItem GetFirstAutoCompleteResult ([NotNull] string filter)
