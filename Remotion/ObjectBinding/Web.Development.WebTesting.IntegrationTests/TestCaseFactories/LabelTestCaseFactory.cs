@@ -61,8 +61,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     {
       var control = Selector.GetByID (Parameter.OneControlOverMultipleRowsFormGridControlHtmlId);
 
-      Assert.That (control.GetLabels ().Count, Is.EqualTo (1));
-      Assert.That (control.GetLabels ().First ().GetText (), Is.EqualTo (Parameter.FormGridLabel));
+      Assert.That (control.GetLabels().Count, Is.EqualTo (1));
+      Assert.That (control.GetLabels().First().GetText(), Is.EqualTo (Parameter.FormGridLabel));
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
@@ -70,8 +70,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     {
       var control = Selector.GetByID (Parameter.ColumnsShiftedFormGridControlHtmlId);
 
-      Assert.That (control.GetLabels ().Count, Is.EqualTo (1));
-      Assert.That (control.GetLabels ().First ().GetText (), Is.EqualTo (Parameter.FormGridLabel));
+      Assert.That (control.GetLabels().Count, Is.EqualTo (1));
+      Assert.That (control.GetLabels().First().GetText(), Is.EqualTo (Parameter.FormGridLabel));
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
@@ -80,10 +80,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       var control1 = Selector.GetByID (Parameter.FormGridMultiControl1HtmlId);
       var control2 = Selector.GetByID (Parameter.FormGridMultiControl2HtmlId);
 
-      Assert.That (control1.GetLabels ().Count, Is.EqualTo (1));
-      Assert.That (control1.GetLabels ().First ().GetText (), Is.EqualTo (Parameter.FormGridLabel));
-      Assert.That (control2.GetLabels ().Count, Is.EqualTo (1));
-      Assert.That (control2.GetLabels ().First ().GetText (), Is.EqualTo (Parameter.FormGridLabel));
+      Assert.That (control1.GetLabels().Count, Is.EqualTo (1));
+      Assert.That (control1.GetLabels().First().GetText(), Is.EqualTo (Parameter.FormGridLabel));
+      Assert.That (control2.GetLabels().Count, Is.EqualTo (1));
+      Assert.That (control2.GetLabels().First().GetText(), Is.EqualTo (Parameter.FormGridLabel));
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
@@ -93,7 +93,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
         Assert.Ignore ("BocDateTime Value always has a label.");
 
       var control = Selector.GetByID (Parameter.ControlNotInFormGridHtmlId);
-      Assert.That (() => control.GetLabels ().Count, Is.EqualTo (0));
+      Assert.That (() => control.GetLabels().Count, Is.EqualTo (0));
     }
   }
 }
