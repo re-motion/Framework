@@ -80,10 +80,16 @@ BocAutoCompleteReferenceValue.Initialize = function (
     textbox.attr('aria-expanded', combobox.attr('aria-expanded'));
     combobox.removeAttr('aria-expanded');
 
-    if (combobox.attr ('aria-labelledby') !== undefined)
+    if (combobox.attr('aria-labelledby') !== undefined)
     {
       textbox.attr ('aria-labelledby', combobox.attr ('aria-labelledby') + ' ' +internetExplorerScreenReaderLabelID);
-      combobox.removeAttr ('aria-labelledby');
+      combobox.removeAttr('aria-labelledby');
+
+      if (combobox.attr('data-label-id-index') !== undefined)
+      {
+        textbox.attr('data-label-id-index', combobox.attr('data-label-id-index'));
+        combobox.removeAttr('data-label-id-index');
+      }
     }
     else
     {
