@@ -361,6 +361,8 @@ function DropDownMenu_CreateTextItem(itemInfo, selectionCount)
 
     icon.className = _dropDownMenu_itemIconClassName;
     icon.style.verticalAlign = 'middle';
+    icon.alt = '';
+    icon.setAttribute('aria-hidden', 'true');
     anchor.appendChild(icon);
   }
   else
