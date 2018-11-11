@@ -160,7 +160,7 @@ BocAutoCompleteReferenceValue.Initialize = function (
             if (item.IconUrl != '')
             {
               var img = $('<img/>');
-              img.attr ({ src : item.IconUrl });
+              img.attr ({ src : item.IconUrl, alt: '', 'aria-hidden': 'true' });
               row.append ($('<div/>').append (img));
             }
 
