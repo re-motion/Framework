@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Web.UI.WebControls;
+using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -29,6 +30,7 @@ using Rhino.Mocks;
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
   [TestFixture]
+  [SetUICulture ("en-US")]
   public class BocListRendererTest : BocListRendererTestBase
   {
     private static readonly Unit s_menuBlockWidth = new Unit (123, UnitType.Pixel);
@@ -61,13 +63,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var document = Html.GetResultDocument();
 
+      var controlTypeLabelID = "MyList_ControlTypeLabel";
+
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "id", "MyList");
       Html.AssertAttribute (div, "role", "group");
       Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
-      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, controlTypeLabelID);
 
-      var tableBlock = Html.GetAssertedChildElement (div, "div", 0);
+      var controlTypeLabel = Html.GetAssertedChildElement (div, "span", 0);
+      AssertControlTypeLabel(controlTypeLabel, controlTypeLabelID);
+
+      var tableBlock = Html.GetAssertedChildElement (div, "div", 1);
       Html.AssertAttribute (tableBlock, "class", "bocListTableBlock");
       Html.AssertChildElementCount (tableBlock, 1);
       Html.GetAssertedChildElement (tableBlock, "table", 0);
@@ -91,15 +98,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubLabelReferenceRenderer());
       renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
 
+      var controlTypeLabelID = "MyList_ControlTypeLabel";
+
       var document = Html.GetResultDocument();
 
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "id", "MyList");
       Html.AssertAttribute (div, "role", "group");
       Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
-      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, controlTypeLabelID);
 
-      var menuBlock = Html.GetAssertedChildElement (div, "div", 0);
+      var controlTypeLabel = Html.GetAssertedChildElement (div, "span", 0);
+      AssertControlTypeLabel(controlTypeLabel, controlTypeLabelID);
+
+      var menuBlock = Html.GetAssertedChildElement (div, "div", 1);
       Html.AssertAttribute (menuBlock, "class", _bocListCssClassDefinition.MenuBlock);
       Html.AssertStyleAttribute (menuBlock, "width", s_menuBlockWidth.ToString());
       var menuBlockContent = Html.GetAssertedChildElement (menuBlock, "div", 0);
@@ -107,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.GetAssertedChildElement (menuBlockContent, "menu", 0);
 
 
-      var tableBlock = Html.GetAssertedChildElement (div, "div", 1);
+      var tableBlock = Html.GetAssertedChildElement (div, "div", 2);
       Html.AssertAttribute (tableBlock, "class", "bocListTableBlock hasMenuBlock");
 
       Html.AssertStyleAttribute (tableBlock, "right", s_menuBlockWidth.ToString ());
@@ -131,21 +143,26 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubLabelReferenceRenderer());
       renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
 
+      var controlTypeLabelID = "MyList_ControlTypeLabel";
+
       var document = Html.GetResultDocument();
 
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "id", "MyList");
       Html.AssertAttribute (div, "role", "group");
       Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
-      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, controlTypeLabelID);
 
-      var menuBlock = Html.GetAssertedChildElement (div, "div", 0);
+      var controlTypeLabel = Html.GetAssertedChildElement (div, "span", 0);
+      AssertControlTypeLabel(controlTypeLabel, controlTypeLabelID);
+
+      var menuBlock = Html.GetAssertedChildElement (div, "div", 1);
       Html.AssertAttribute (menuBlock, "class", _bocListCssClassDefinition.MenuBlock);
       var menuBlockContent = Html.GetAssertedChildElement (menuBlock, "div", 0);
       Html.GetAssertedChildElement (menuBlockContent, "menu", 0);
 
 
-      var tableBlock = Html.GetAssertedChildElement (div, "div", 1);
+      var tableBlock = Html.GetAssertedChildElement (div, "div", 2);
       Html.AssertAttribute (tableBlock, "class", "bocListTableBlock hasMenuBlock");
 
       Html.GetAssertedChildElement (tableBlock, "table", 0);
@@ -167,15 +184,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubLabelReferenceRenderer());
       renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
 
+      var controlTypeLabelID = "MyList_ControlTypeLabel";
+
       var document = Html.GetResultDocument();
 
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "id", "MyList");
       Html.AssertAttribute (div, "role", "group");
       Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
-      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, controlTypeLabelID);
 
-      var tableBlock = Html.GetAssertedChildElement (div, "div", 0);
+      var controlTypeLabel = Html.GetAssertedChildElement (div, "span", 0);
+      AssertControlTypeLabel(controlTypeLabel, controlTypeLabelID);
+
+      var tableBlock = Html.GetAssertedChildElement (div, "div", 1);
       Html.AssertAttribute (tableBlock, "class", "bocListTableBlock hasNavigator");
       Html.AssertChildElementCount (tableBlock, 2);
       Html.GetAssertedChildElement (tableBlock, "table", 0);
@@ -342,6 +364,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "true");
+    }
+
+    private void AssertControlTypeLabel (XmlNode controlTypeLabel, string controlTypeLabelID)
+    {
+      Html.AssertAttribute (controlTypeLabel, "id", controlTypeLabelID);
+      Html.AssertAttribute (controlTypeLabel, "hidden", "hidden");
+      Html.AssertTextNode (controlTypeLabel, "Data table", 0);
     }
   }
 }

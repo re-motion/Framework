@@ -132,7 +132,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       SelectRowLabelText,
       IndexColumnTitle,
       /// <summary> The menu title text used for an automatically generated row menu column. </summary>
-      RowMenuTitle
+      RowMenuTitle,
     }
 
     public enum RowEditModeCommand
