@@ -538,7 +538,15 @@
     <EmbeddedResource Include="Globalization\BocEnumValue.it.resx" />
     <EmbeddedResource Include="Globalization\BocList.fr.resx" />
     <EmbeddedResource Include="Globalization\BocList.it.resx" />
+    <EmbeddedResource Include="Globalization\BocListRenderer.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocListRenderer.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocListRenderer.fr.resx" />
     <EmbeddedResource Include="Globalization\BocListNavigationBlockRenderer.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocListRenderer.it.resx" />
     <EmbeddedResource Include="Globalization\BocListNavigationBlockRenderer.it.resx" />
     <EmbeddedResource Include="Globalization\BocMultilineTextValue.fr.resx" />
     <EmbeddedResource Include="Globalization\BocMultilineTextValue.it.resx" />
