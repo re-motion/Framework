@@ -68,7 +68,7 @@ BocAutoCompleteReferenceValue.Initialize = function (
     var internetExplorerScreenReaderLabelID = baseID + '_InternetExplorerScreenReaderLabel';
     var screenReaderLabel = $("<span hidden='hidden' />")
       .attr("id", internetExplorerScreenReaderLabelID)
-      .html(resources.InternetExplorerScreenReaderLabel)
+      .html(resources.InternetExplorerScreenReaderLabelText)
       .appendTo(combobox);
 
     textbox.attr('role', combobox.attr ('role'));
