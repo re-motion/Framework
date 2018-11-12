@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using Remotion.Globalization;
@@ -41,6 +42,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   [ImplementationFor (typeof (IBocListRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListRenderer : BocRendererBase<IBocList>, IBocListRenderer
   {
+    [ResourceIdentifiers]
+    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocListRenderer")]
+    public enum ResourceIdentifier
+    {
+      ControlTypeScreenReaderLabelText
+    }
+
     private readonly IBocListMenuBlockRenderer _menuBlockRenderer;
     private readonly IBocListNavigationBlockRenderer _navigationBlockRenderer;
     private readonly IBocListTableBlockRenderer _tableBlockRenderer;
@@ -162,7 +170,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute ("role", "group");
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
+      var accessibilityAnnotationIDs = new []{ GetControlTypeLabelID (renderingContext) };
+      _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs, accessibilityAnnotationIDs);
     }
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<IBocList> renderingContext)
@@ -183,6 +192,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     protected virtual void RenderContents (BocListRenderingContext renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetControlTypeLabelID (renderingContext));
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      var resourceManager = GetResourceManager (renderingContext);
+      renderingContext.Writer.Write (resourceManager.GetString (ResourceIdentifier.ControlTypeScreenReaderLabelText));
+      renderingContext.Writer.RenderEndTag();
 
       //  Menu Block
       if (renderingContext.Control.HasMenuBlock)
@@ -217,6 +233,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         NavigationBlockRenderer.Render (renderingContext);
 
       renderingContext.Writer.RenderEndTag();
+    }
+
+    protected virtual IResourceManager GetResourceManager (BocListRenderingContext renderingContext)
+    {
+      return GetResourceManager (typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
     private void RegisterInitializeGlobalsScript (BocListRenderingContext renderingContext)
@@ -258,6 +279,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             typeof (BocList).FullName + "_" + renderingContext.Control.ClientID + "_InitializeListScript",
             script);
       }
+    }
+    private string GetControlTypeLabelID (RenderingContext<IBocList> renderingContext)
+    {
+      return renderingContext.Control.ClientID + "_ControlTypeLabel";
     }
   }
 }
