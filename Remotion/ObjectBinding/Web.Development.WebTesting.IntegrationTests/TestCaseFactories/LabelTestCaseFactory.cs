@@ -89,9 +89,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForControlNotInFormGrid ()
     {
-      if (typeof (TControl) == typeof (BocDateTimeValueControlObject))
-        Assert.Ignore ("BocDateTime Value always has a label.");
-
       var control = Selector.GetByID (Parameter.ControlNotInFormGridHtmlId);
       Assert.That (() => control.GetLabels().Count, Is.EqualTo (0));
     }
