@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       /// <summary> The message displayed when the user input does not result in a result.</summary>
       NoDataFoundMessage,
       /// <summary> Additional text for improved screen reader support in Internet Explorer.</summary>
-      InternetExplorerScreenReaderLabel
+      InternetExplorerScreenReaderLabelText
     }
 
     private readonly Func<TextBox> _textBoxFactory;
@@ -289,8 +289,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       jsonBuilder.Append ("NoDataFoundMessage : ");
       AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetString (ResourceIdentifier.NoDataFoundMessage));
       jsonBuilder.Append (", ");
-      jsonBuilder.Append ("InternetExplorerScreenReaderLabel : ");
-      AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetString (ResourceIdentifier.InternetExplorerScreenReaderLabel));
+      jsonBuilder.Append ("InternetExplorerScreenReaderLabelText : ");
+      AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetString (ResourceIdentifier.InternetExplorerScreenReaderLabelText));
       jsonBuilder.Append (" }");
 
       return jsonBuilder.ToString();
