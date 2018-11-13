@@ -1149,6 +1149,8 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual IEnumerable<string> GetLabelIDs ()
     {
+      if (string.IsNullOrEmpty (_assignedLabelID))
+        return Enumerable.Empty<string>();
       return EnumerableUtility.Singleton (_assignedLabelID);
     }
 
