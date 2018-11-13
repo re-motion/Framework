@@ -214,12 +214,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       var span = Html.GetAssertedChildElement (div, "span", 0);
       Html.AssertAttribute (span, "id", c_valueName);
       Html.AssertAttribute (span, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      Html.AssertAttribute (span, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute (span, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_valueName);
       Html.AssertAttribute (span, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
       Html.AssertAttribute (span, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
       Html.AssertAttribute (span, "tabindex", "0");
-      Html.AssertAttribute (span, "role", "combobox");
-      Html.AssertAttribute (span, "aria-readonly", "true");
+      //Html.AssertAttribute (span, "role", "combobox");
+      //Html.AssertAttribute (span, "aria-readonly", "true");
 
       if (_enumValue.EnumerationValueInfo == null)
         Html.AssertAttribute (span, "data-value", _enumValue.NullIdentifier);
