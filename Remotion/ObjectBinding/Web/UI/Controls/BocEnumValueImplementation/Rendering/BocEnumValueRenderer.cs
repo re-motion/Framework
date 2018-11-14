@@ -285,24 +285,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       label.ApplyStyle (renderingContext.Control.LabelStyle);
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      _labelReferenceRenderer.SetLabelReferenceOnControl (label, labelIDs);
+      _labelReferenceRenderer.SetLabelsReferenceOnControl (label, labelIDs, new[] { label.ID });
 
       label.Attributes.Add ("tabindex", "0");
-      switch (renderingContext.Control.ListControlStyle.ControlType)
-      {
-        case ListControlType.DropDownList:
-          label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
-          break;
-        case ListControlType.ListBox:
-          label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Listbox);
-          break;
-        case ListControlType.RadioButtonList:
-          label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Radio);
-          break;
-        default:
-          throw new NotImplementedException();
-      }
-      label.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
+      // Screenreaders (JAWS v18) will not read the contents of a span with role=textbox,
+      // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
+      //switch (renderingContext.Control.ListControlStyle.ControlType)
+      //{
+      //  case ListControlType.DropDownList:
+      //    label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
+      //    break;
+      //  case ListControlType.ListBox:
+      //    label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Listbox);
+      //    break;
+      //  case ListControlType.RadioButtonList:
+      //    label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Radio);
+      //    break;
+      //  default:
+      //    throw new NotImplementedException();
+      //}
+      //label.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
 
       return label;
     }
