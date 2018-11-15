@@ -388,7 +388,7 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     }
 
     [Test]
-    public void TestDownload_InternetExplorer_HandleDownloadWithoutFileExtension ()
+    public void TestDownload_HandleDownloadWithoutFileExtension ()
     {
       const string fileName = "SampleFile";
 
@@ -405,7 +405,7 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     }
 
     [Test]
-    public void TestDownload_InternetExplorer_HandleZipFileDownload ()
+    public void TestDownload_HandleZipFileDownload ()
     {
       const string fileName = "download.zip";
 
