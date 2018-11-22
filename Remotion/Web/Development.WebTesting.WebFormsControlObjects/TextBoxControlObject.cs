@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   /// Control object for <see cref="T:System.Web.UI.WebControls.TextBox"/> and all its derivatives (none in re-motion).
   /// </summary>
   public class TextBoxControlObject
-      : WebFormsControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsDisabledState
+      : WebFormsControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsDisabledState, IControlObjectWithText
   {
     public TextBoxControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       return !string.IsNullOrEmpty(Scope["readonly"]);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="IFillableControlObject" />
     public string GetText ()
     {
       return Scope.Value; // do not trim

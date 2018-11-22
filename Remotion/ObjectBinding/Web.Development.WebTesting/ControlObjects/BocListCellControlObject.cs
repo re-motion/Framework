@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// <summary>
   /// Control object representing a cell within a <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocList"/>.
   /// </summary>
-  public class BocListCellControlObject : WebFormsControlObjectWithDiagnosticMetadata, ICommandHost, IStyledControlObject
+  public class BocListCellControlObject : WebFormsControlObjectWithDiagnosticMetadata, ICommandHost, IStyledControlObject, IControlObjectWithText
   {
     private readonly BocListCellFunctionality _impl;
 
@@ -40,9 +40,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       get { return new DefaultStyleInformation (this, Scope); }
     }
 
-    /// <summary>
-    /// Returns the text content of the cell.
-    /// </summary>
+    /// <inheritdoc/>
     public string GetText ()
     {
       return _impl.GetText();

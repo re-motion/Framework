@@ -30,14 +30,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue"/>.
   /// </summary>
   public class BocMultilineTextValueControlObject
-      : BocControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsValidationErrors
+      : BocControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsValidationErrors, IControlObjectWithText
   {
     public BocMultilineTextValueControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="IFillableControlObject" />
     public string GetText ()
     {
       var valueScope = Scope.FindChild ("Value");

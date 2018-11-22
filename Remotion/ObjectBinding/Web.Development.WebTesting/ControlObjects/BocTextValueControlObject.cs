@@ -29,14 +29,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// <summary>
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocTextValue"/>.
   /// </summary>
-  public class BocTextValueControlObject : BocControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsValidationErrors
+  public class BocTextValueControlObject : BocControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsValidationErrors, IControlObjectWithText
   {
     public BocTextValueControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="IFillableControlObject" />
     public string GetText ()
     {
       var valueScope = Scope.FindChild ("Value");
