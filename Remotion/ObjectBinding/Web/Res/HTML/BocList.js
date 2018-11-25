@@ -488,8 +488,7 @@ function BocList_CreateFakeTableHead(tableContainer, scrollableContainer)
   var realTableHead = table.children('thead').first();
   var fakeTableHead = realTableHead.clone(true, true);
   realTableHead.attr({
-    'aria-hidden': 'true',
-    'visible' : 'hidden'
+    'aria-hidden': 'true'
   });
   fakeTable.append(fakeTableHead);
 
