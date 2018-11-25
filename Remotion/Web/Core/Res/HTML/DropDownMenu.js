@@ -60,7 +60,6 @@ function DropDownMenu_BindOpenEvent (openTarget, menuID, eventType, getSelection
   var menuButton = openTarget[0].tagName.toLowerCase() === 'a' ? openTarget : openTarget.find ('a[href]:last');
   menuButton.attr('aria-haspopup', 'menu');
   menuButton.attr('aria-expanded', 'false');
-  menuButton.removeAttr('aria-expanded');
 
   openTarget.bind(
       eventType,
