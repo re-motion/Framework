@@ -96,7 +96,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       //label.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      LabelReferenceRenderer.SetLabelsReferenceOnControl (label, labelIDs, new[] { label.ID });
+      LabelReferenceRenderer.SetLabelsReferenceOnControl (label, labelIDs, new[] { label.ClientID });
 
       return label;
     }
