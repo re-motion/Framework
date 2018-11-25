@@ -403,7 +403,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       {
         link.AssertAttributeValueEquals ("tabindex", "0");
         link.AssertAttributeValueEquals ("aria-selected", "true");
-        link.AssertAttributeValueEquals ("aria-controls", "");
+        //link.AssertAttributeValueEquals ("aria-controls", XX);
       }
       else
       {
