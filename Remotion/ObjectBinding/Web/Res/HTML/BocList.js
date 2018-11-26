@@ -603,18 +603,31 @@ function BocListNavigationBlock_Initialize(pageNumberField, pageIndexField)
   });
 
   pageNumberField.bind('keydown', function (event) {
+    var enterKey = 13;
     var zeroKey = 48;
     var nineKey = 57;
     var zeroKeyNumBlock = 96;
     var nineKeyNumBlock = 105;
     var f1Key = 112;
     var f12Key = 123;
+    var isEnterKey = event.keyCode == enterKey;
     var isControlKey = event.keyCode < zeroKey || event.keyCode >= f1Key && event.keyCode <= f12Key;
     var isNumericKey = event.keyCode >= zeroKey && event.keyCode <= nineKey || event.keyCode >= zeroKeyNumBlock && event.keyCode <= nineKeyNumBlock;
 
-    if (event.altKey || event.ctrlKey || isControlKey || isNumericKey)
-      return true;
-    else
+    if (isEnterKey)
+    {
+      pageNumberField.trigger("change");
+      event.cancelBubble = true;
+      event.stopPropagation();
       return false;
+    }
+    else if (event.altKey || event.ctrlKey || isControlKey || isNumericKey)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   });
 }
