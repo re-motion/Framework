@@ -262,6 +262,8 @@ span.bocAutoCompleteReferenceValue.readOnly span.DropDownMenuContainer a.command
 {
   /* Reset becasue embedded options menus do not require special handling to show diacritical marks */
   height: 1.3em;
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  width: calc(100% - 17px - 4px);
 }
 
 span.bocAutoCompleteReferenceValue.readOnly span.content.separateOptionsMenu span,
@@ -272,8 +274,6 @@ span.bocAutoCompleteReferenceValue.readOnly span.content.withoutOptionsMenu span
   line-height: 1.4em;
   /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
   display: inline-block;
-  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
-  width: calc(100% - 17px - 4px);
 }
 
 /* has Icon */
