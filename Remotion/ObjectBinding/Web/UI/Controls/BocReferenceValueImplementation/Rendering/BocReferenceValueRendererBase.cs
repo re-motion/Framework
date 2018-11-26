@@ -343,14 +343,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       if (!isCommandEnabled)
       {
         renderingContext.Writer.AddAttribute ("tabindex", "0");
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
+        // Screenreaders (JAWS v18) will not read the contents of a span with role=combobox (at least in browse-mode),
+        // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
+        //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
+        //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
       }
 
       var labelIDs = renderingContext.Control.GetLabelIDs();
-      if (isCommandEnabled)
-        labelIDs = labelIDs.Concat (label.ClientID);
-      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs.ToArray());
+      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs.ToArray(), new[] { label.ClientID });
       
       var attributeCollection = new AttributeCollection (new StateBag());
       ValidationErrorRenderer.AddValidationErrorsReference (attributeCollection, validationErrorsID, validationErrors);

@@ -285,10 +285,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       label.ApplyStyle (renderingContext.Control.LabelStyle);
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      _labelReferenceRenderer.SetLabelsReferenceOnControl (label, labelIDs, new[] { label.ID });
+      _labelReferenceRenderer.SetLabelsReferenceOnControl (label, labelIDs, new[] { label.ClientID });
 
       label.Attributes.Add ("tabindex", "0");
-      // Screenreaders (JAWS v18) will not read the contents of a span with role=textbox,
+      // Screenreaders (JAWS v18) will not read the contents of a span with role=combobox, etc,
       // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
       //switch (renderingContext.Control.ListControlStyle.ControlType)
       //{
