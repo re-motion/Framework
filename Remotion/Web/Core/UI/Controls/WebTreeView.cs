@@ -77,11 +77,25 @@ namespace Remotion.Web.UI.Controls
     /// <summary> The prefix for the click command. </summary>
     private const string c_clickCommandPrefix = "Click=";
 
+    // types
+
+    /// <summary> A list of control specific resources. </summary>
+    /// <remarks> 
+    ///   Resources will be accessed using 
+    ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+    ///   See the documentation of <b>GetString</b> for further details.
+    /// </remarks>
+    [ResourceIdentifiers]
+    [MultiLingualResources ("Remotion.Web.Globalization.WebTreeView")]
+    public enum ResourceIdentifier
+    {
+      /// <summary> Additional text for improved screen reader support in Internet Explorer.</summary>
+      ScreenReaderNodeSelectedLabelText
+    }
+
     // statics
     private static readonly object s_clickEvent = new object();
     private static readonly object s_selectionChangedEvent = new object();
-
-    // types
 
     // fields
     // The URL resolved icon paths.
@@ -143,6 +157,10 @@ namespace Remotion.Web.UI.Controls
     private IPage _page;
     private IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+
+    /// <summary> Caches the <see cref="ResourceManagerSet"/> for this <see cref="WebTreeView"/>. </summary>
+    private ResourceManagerSet _cachedResourceManager;
+
     //  construction and destruction
 
     /// <summary> Initalizes a new instance. </summary>
@@ -629,7 +647,7 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute ("tabindex", _focusededNode == node ? "0" : "-1");
         writer.RenderBeginTag (HtmlTextWriterTag.Li); // Begin node block
 
-        RenderNodeHead (writer, node, isFirstNode, isLastNode, hasExpander, nodePath, nodeID);
+        RenderNodeHead (writer, node, isFirstNode, isLastNode, hasExpander, node.IsSelected, nodePath, nodeID);
         if (hasChildren && node.IsExpanded)
           RenderNodeChildren (writer, node, isLastNode, hasExpander, nodeIDAlgorithm);
 
@@ -644,6 +662,7 @@ namespace Remotion.Web.UI.Controls
         bool isFirstNode,
         bool isLastNode,
         bool hasExpander,
+        bool isSelected,
         string nodePath,
         string nodeID)
     {
@@ -676,6 +695,17 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute ("id", menu.ClientID);
       }
       RenderNodeLabel (writer, node, nodePath, nodeID);
+
+      if (isSelected)
+      {
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
+        writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
+        var resourceManager= GetResourceManager();
+        writer.Write (resourceManager.GetString (ResourceIdentifier.ScreenReaderNodeSelectedLabelText));
+
+        writer.RenderEndTag();
+      }
 
       writer.RenderEndTag();
     }
@@ -788,6 +818,27 @@ namespace Remotion.Web.UI.Controls
       {
         RenderNodes (writer, designModeNodes, true, nodeIDAlgorithm);
       }
+    }
+
+    /// <summary> Find the <see cref="IResourceManager"/> for this <see cref="WebTreeView"/>. </summary>
+    protected IResourceManager GetResourceManager()
+    {
+      //  Provider has already been identified.
+      if (_cachedResourceManager != null)
+        return _cachedResourceManager;
+
+      //  Get the resource managers
+
+      IResourceManager localResourceManager = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier));
+      IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
+      _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
+
+      return _cachedResourceManager;
+    }
+
+    private IGlobalizationService GlobalizationService
+    {
+      get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
     }
 
     private MD5 CreateNodeIDAlgorithm ()
@@ -1355,6 +1406,13 @@ namespace Remotion.Web.UI.Controls
     protected virtual string CssClassRoot
     {
       get { return "treeViewRoot"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to elements only visible to screen readers. </summary>
+    /// <remarks> Class: <c>screenReaderText</c> </remarks>
+    protected string CssClassScreenReaderText
+    {
+      get { return "screenReaderText"; }
     }
 
     #endregion
