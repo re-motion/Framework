@@ -47,6 +47,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private const string c_clientID = "MyReferenceValue";
     private const string c_textValueName = "MyReferenceValue_SelectedTextValue";
     private const string c_keyValueName = "MyReferenceValue_SelectedKeyValue";
+    private const string c_readOnlyTextValueName = "MyReferenceValue_Value";
     private const string c_uniqueidentifier = "uniqueidentifier";
     private const string c_labelID = "Label";
     private const string c_validationErrors = "ValidationError";
@@ -579,7 +580,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var commandLink = span.GetAssertedChildElement ("a", 0);
       commandLink.AssertAttributeValueEquals ("id", Control.ClientID + "_Command");
       commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_readOnlyTextValueName);
       commandLink.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.ClientID + "_ValidationErrors");
       commandLink.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
       commandLink.AssertAttributeValueEquals ("class", "command");
@@ -590,7 +591,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       contentSpan.AssertChildElementCount (1);
       
       var innerSpan = contentSpan.GetAssertedChildElement ("span", 0);
-      innerSpan.AssertAttributeValueEquals ("id", c_clientID + "_Value");
+      innerSpan.AssertAttributeValueEquals ("id", c_readOnlyTextValueName);
       innerSpan.AssertAttributeValueEquals ("data-value", c_uniqueidentifier);
       innerSpan.AssertChildElementCount (0);
       innerSpan.AssertTextNode ("MyText", 0);
