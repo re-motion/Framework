@@ -769,7 +769,15 @@
     <EmbeddedResource Include="Globalization\FormGridManager.it.resx" />
     <EmbeddedResource Include="Globalization\SmartPageInfo.fr.resx" />
     <EmbeddedResource Include="Globalization\SmartPageInfo.it.resx" />
+    <EmbeddedResource Include="Globalization\WebTreeView.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\WebTreeView.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\WebTreeView.fr.resx" />
     <EmbeddedResource Include="Globalization\ValidationStateViewer.fr.resx" />
+    <EmbeddedResource Include="Globalization\WebTreeView.it.resx" />
     <EmbeddedResource Include="Globalization\ValidationStateViewer.it.resx" />
     <EmbeddedResource Include="Globalization\WxePageInfo.fr.resx" />
     <EmbeddedResource Include="Globalization\WxePageInfo.it.resx" />
