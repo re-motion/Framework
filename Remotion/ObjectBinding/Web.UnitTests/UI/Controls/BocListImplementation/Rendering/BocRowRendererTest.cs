@@ -92,6 +92,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
 
       var tr = Html.GetAssertedChildElement (document, "tr", 0);
+      Html.AssertAttribute (tr, "role", "row");
 
       var thIndex = Html.GetAssertedChildElement (tr, "th", 0);
       Html.AssertAttribute (thIndex, "class", _bocListCssClassDefinition.TitleCell, HtmlHelperBase.AttributeValueCompareMode.Contains);
@@ -117,6 +118,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
 
       var tr = Html.GetAssertedChildElement (document, "tr", 0);
+      Html.AssertAttribute (tr, "role", "row");
 
       Html.GetAssertedChildElement (tr, "th", 0);
 
@@ -140,6 +142,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var tr = Html.GetAssertedChildElement (document, "tr", 0);
       Html.AssertAttribute (tr, "class", _bocListCssClassDefinition.DataRow + " " + _bocListCssClassDefinition.DataRowOdd);
+      Html.AssertAttribute (tr, "role", "row");
 
       Html.GetAssertedChildElement (tr, "td", 0);
     }
@@ -164,6 +167,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           tr,
           "class",
           _bocListCssClassDefinition.DataRow + " " + _bocListCssClassDefinition.DataRowOdd + " " + _bocListCssClassDefinition.DataRowSelected);
+      Html.AssertAttribute (tr, "role", "row");
 
       Html.GetAssertedChildElement (tr, "td", 0);
     }
@@ -184,6 +188,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
 
       var tr = Html.GetAssertedChildElement (document, "tr", 0);
+      Html.AssertAttribute (tr, "role", "row");
 
       Html.GetAssertedChildElement (tr, "td", 0);
     }

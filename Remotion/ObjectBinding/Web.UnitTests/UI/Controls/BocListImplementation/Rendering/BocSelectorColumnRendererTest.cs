@@ -52,6 +52,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var th = Html.GetAssertedChildElement (document, "th", 0);
       Html.AssertAttribute (th, "class", _bocListCssClassDefinition.TitleCell + " " + _bocListCssClassDefinition.TitleCellSelector);
+      Html.AssertAttribute (th, "role", "columnheader");
 
       var input = Html.GetAssertedChildElement (th, "input", 0);
       Html.AssertAttribute (input, "type", "checkbox");
@@ -97,6 +98,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var th = Html.GetAssertedChildElement (document, "th", 0);
       Html.AssertAttribute (th, "class", _bocListCssClassDefinition.TitleCell + " " + _bocListCssClassDefinition.TitleCellSelector);
+      Html.AssertAttribute (th, "role", "columnheader");
 
       Html.AssertTextNode (th, HtmlHelper.WhiteSpace, 0);
     }
@@ -116,6 +118,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var td = Html.GetAssertedChildElement (document, "td", 0);
       Html.AssertAttribute (td, "class", "bocListTableCell bocListDataCellRowSelector");
+      Html.AssertAttribute (td, "role", "cell");
 
       var input = Html.GetAssertedChildElement (td, "input", 0);
       Html.AssertAttribute (input, "type", "radio");

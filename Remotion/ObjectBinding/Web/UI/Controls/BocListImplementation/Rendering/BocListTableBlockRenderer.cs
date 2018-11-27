@@ -128,6 +128,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       renderingContext.Writer.AddAttribute ("tabindex", "0");
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Table);
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
       _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
@@ -135,8 +136,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       AddValidationErrorsReference (renderingContext, validationErrorsID, validationErrors);
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Table);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
       renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Cell);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
       renderingContext.Writer.Write ("&nbsp;");
       renderingContext.Writer.RenderEndTag();
@@ -158,6 +161,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableHead);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RowGroup);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Thead);
       RowRenderer.RenderTitlesRow (renderingContext);
       renderingContext.Writer.RenderEndTag();
@@ -177,6 +181,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableBody);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RowGroup);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tbody);
 
       if (!renderingContext.Control.HasValue && renderingContext.Control.ShowEmptyListMessage)
@@ -202,7 +207,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IReadOnlyCollection<string> validationErrors)
     {
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableContainer);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Table);
+#pragma warning disable CS0618 // Type or member is obsolete
+      var ariaRoleForTableElement = GetAriaRoleForTableElement();
+#pragma warning restore CS0618 // Type or member is obsolete
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, ariaRoleForTableElement);
       renderingContext.Writer.AddAttribute ("tabindex", "0");
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
@@ -214,12 +222,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableScrollContainer);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_TableScrollContainer");
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Table);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
-
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Table);
+    }
+
+    [Obsolete ("RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
+    protected virtual string GetAriaRoleForTableElement ()
+    {
+      return HtmlRoleAttributeValue.Table;
     }
 
     /// <summary> Renderes the closing tag of the table. </summary>

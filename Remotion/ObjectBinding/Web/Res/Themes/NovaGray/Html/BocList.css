@@ -147,6 +147,12 @@ div.bocList.hasDimensions div.bocListTableBlock div.bocListTableContainer
   overflow: hidden;
 }
 
+div.bocList.hasDimensions div.bocListTableBlock span:focus + div.bocListTableContainer
+{
+  outline: dotted black 1px;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
 /*  Style applied to the div surrounding the BocList's table when the BocList has a defined width or height and a navigation block.  */
 div.bocList.hasDimensions div.bocListTableBlock.hasNavigator div.bocListTableContainer
 {
@@ -180,6 +186,7 @@ div.bocList.hasDimensions div.bocListTableScrollContainer table.bocListTable
   margin-top: -1.9em;
   position: relative;
 }
+
 
 /* Style applied to the fake table head used for scrolling */
 div.bocListFakeTableHead
@@ -564,4 +571,17 @@ span.bocListEditableCell .control > *
 {
   width: 100%;
   vertical-align: middle;
+}
+
+/* Shared in other CSS files */
+.screenReaderText
+{
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }

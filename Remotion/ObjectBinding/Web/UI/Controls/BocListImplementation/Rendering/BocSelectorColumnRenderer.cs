@@ -66,11 +66,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       var isChecked = rowRenderingContext.IsSelected;
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+#pragma warning disable CS0618 // Type or member is obsolete
+      var ariaRoleForTableDataElement = GetAriaRoleForTableDataElement();
+#pragma warning restore CS0618 // Type or member is obsolete
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataListCellIndex (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
       RenderDataRowSelectorControl (renderingContext, selectorControlID, selectorControlName, selectorControlValue, isChecked);
       renderingContext.Writer.RenderEndTag();
+    }
+
+    [Obsolete ("RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
+    protected virtual string GetAriaRoleForTableDataElement ()
+    {
+      return HtmlRoleAttributeValue.Cell;
     }
 
     public void RenderTitleCell (BocListRenderingContext renderingContext)
@@ -83,6 +93,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       var cssClass = CssClasses.TitleCell + " " + CssClasses.TitleCellSelector;
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataListCellIndex (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);

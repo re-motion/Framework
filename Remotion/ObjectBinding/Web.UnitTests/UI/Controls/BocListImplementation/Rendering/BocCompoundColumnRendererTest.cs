@@ -64,6 +64,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var td = Html.GetAssertedChildElement (document, "td", 0);
       Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute (td, "role", "cell");
 
       var span = Html.GetAssertedChildElement (td, "span", 0);
       Html.AssertAttribute (span, "class", _bocListCssClassDefinition.Content);
@@ -82,6 +83,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var td = Html.GetAssertedChildElement (document, "td", 0);
       Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute (td, "role", "cell");
 
       var span = Html.GetAssertedChildElement (td, "span", 0);
       Html.AssertAttribute (span, "class", _bocListCssClassDefinition.Content);
@@ -101,6 +103,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var td = Html.GetAssertedChildElement (document, "td", 0);
       Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute (td, "role", "cell");
 
       var span = Html.GetAssertedChildElement (td, "span", 0);
       Html.AssertAttribute (span, "class", _bocListCssClassDefinition.Content);
@@ -124,6 +127,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var td = Html.GetAssertedChildElement (document, "td", 0);
       Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute (td, "role", "cell");
 
       var cropSpan = Html.GetAssertedChildElement (td, "span", 0);
       Html.AssertAttribute (cropSpan, "title", "referencedObject1");
