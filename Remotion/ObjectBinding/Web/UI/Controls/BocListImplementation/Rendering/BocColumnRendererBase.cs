@@ -327,9 +327,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!string.IsNullOrEmpty (renderingContext.ColumnDefinition.CssClass))
         cssClassTableCell += " " + renderingContext.ColumnDefinition.CssClass;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable 0618 // Type or member is obsolete
       var ariaRoleForTableDataElement = GetAriaRoleForTableDataElement();
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore 0618 // Type or member is obsolete
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataAttributes (renderingContext);
