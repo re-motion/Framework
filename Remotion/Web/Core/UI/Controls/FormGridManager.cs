@@ -1820,12 +1820,21 @@ namespace Remotion.Web.UI.Controls
       }
 
       FormatFormGrid (formGrid);
+      AddAriaAnnotations (formGrid);
       if (RenderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataAttributes (formGrid);
 
       TransformationStep completedStep = TransformationStep.PostValidationTransformationCompleted;
       _completedTransformationStep[formGrid] = completedStep;
       return completedStep;
+    }
+
+    private void AddAriaAnnotations (FormGrid formGrid)
+    {
+      ArgumentUtility.CheckNotNull ("formGrid", formGrid);
+
+      if (formGrid.Table.Attributes[HtmlTextWriterAttribute2.Role] == null)
+        formGrid.Table.Attributes[HtmlTextWriterAttribute2.Role] = HtmlRoleAttributeValue.None;
     }
 
     private void AddDiagnosticMetadataAttributes (FormGrid formGrid)
