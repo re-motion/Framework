@@ -104,6 +104,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var th = Html.GetAssertedChildElement (document, "th", 0);
       Html.AssertAttribute (th, "class", _bocListCssClassDefinition.TitleCell, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute (th, "class", c_columnCssClass, HtmlHelperBase.AttributeValueCompareMode.Contains);
+      Html.AssertAttribute (th, "role", "columnheader");
 
       Assert.Less (0, th.ChildNodes.Count);
       var sortCommandLink = Html.GetAssertedChildElement (th, "a", 0);
@@ -171,6 +172,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var th = Html.GetAssertedChildElement (document, "th", 0);
       Html.AssertAttribute (th, "class", _bocListCssClassDefinition.TitleCell, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute (th, "class", c_columnCssClass, HtmlHelperBase.AttributeValueCompareMode.Contains);
+      Html.AssertAttribute (th, "role", "columnheader");
 
       Assert.Less (0, th.ChildNodes.Count);
       var sortCommandLink = Html.GetAssertedChildElement (th, "a", 0);

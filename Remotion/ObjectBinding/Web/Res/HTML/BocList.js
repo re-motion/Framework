@@ -454,7 +454,7 @@ function BocList_FixUpScrolling(bocList)
     }
   });
 
-  BocList_CreateFakeTableHead(tableContainer, scrollableContainer);
+  BocList_CreateFakeTableHead(tableContainer, scrollableContainer, bocList);
 
   var resizeInterval = 50;
   var resizeHandler = function ()
@@ -469,8 +469,24 @@ function BocList_FixUpScrolling(bocList)
   resizeHandler();
 }
 
-function BocList_CreateFakeTableHead(tableContainer, scrollableContainer)
+function BocList_CreateFakeTableHead(tableContainer, scrollableContainer, bocList)
 {
+  if (BrowserUtility.GetIEVersion() > 0)
+  {
+    // For Internet Explorer + JAWS 2018ff, the tabindex-attribute on the table root will break a table with a scrollable header part.
+    tableContainer.removeAttr('tabindex');
+    var captionLabelIDs = bocList.attr('aria-labelledby');
+    var lastCaptionLabelID = captionLabelIDs.split(' ').slice(-1)[0];
+    var captionElement = document.getElementById (lastCaptionLabelID);
+    var tableCaption = $ ('<span/>')
+      .attr ({
+        'tabindex' : 0,
+        'aria-label': captionElement.innerText,
+        'aria-hidden' : 'true'
+      })
+      .addClass ('screenReaderText');
+    tableContainer.before (tableCaption);
+  }
   // Add diganostic metadata for web testing framework (actually: should only be rendered with IRenderingFeatures.EnableDiagnosticMetadata on)
   tableContainer.attr('data-boclist-has-fake-table-head', 'true');
 
@@ -478,7 +494,7 @@ function BocList_CreateFakeTableHead(tableContainer, scrollableContainer)
 
   var fakeTable = $('<table/>');
   fakeTable.attr({
-      'role' : 'presentation',
+      'role' : 'none',
       'class' : table.attr('class'), 
       cellPadding: 0,
       cellSpacing: 0
@@ -488,14 +504,16 @@ function BocList_CreateFakeTableHead(tableContainer, scrollableContainer)
   var realTableHead = table.children('thead').first();
   var fakeTableHead = realTableHead.clone(true, true);
   realTableHead.attr({
-    'aria-hidden': 'true'
+    'aria-hidden': 'true',
+    'role': 'none'
   });
+  realTableHead.find ('*[role]').attr ({ 'role' : 'none' });
   fakeTable.append(fakeTableHead);
 
-  var fakeTableHeadWidthContainer = $('<div/>');
+  var fakeTableHeadWidthContainer = $('<div/>').attr ({ 'role' : 'none' });
   fakeTableHeadWidthContainer.append(fakeTable);
 
-  var fakeTableHeadContainer = $('<div/>').attr({ 'class': 'bocListFakeTableHead' });
+  var fakeTableHeadContainer = $('<div/>').attr({ 'role': 'none', 'class': 'bocListFakeTableHead' });
   fakeTableHeadContainer.hide();
   fakeTableHeadContainer.append (fakeTableHeadWidthContainer);
 

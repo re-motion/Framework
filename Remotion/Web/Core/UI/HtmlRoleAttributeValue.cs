@@ -24,8 +24,10 @@ namespace Remotion.Web.UI
   public static class HtmlRoleAttributeValue
   {
     public const string Button = "button";
+    public const string Cell = "cell";
     public const string Checkbox = "checkbox";
     public const string Combobox = "combobox";
+    public const string ColumnHeader = "columnheader";
     public const string Group = "group";
     public const string Listbox = "listbox";
     public const string Menu = "menu";
@@ -37,6 +39,8 @@ namespace Remotion.Web.UI
     public const string Radio = "radio";
     public const string RadioGroup = "radiogroup";
     public const string Row = "row";
+    public const string RowGroup = "rowgroup";
+    public const string RowHeader = "rowheader";
     public const string Tab = "tab";
     public const string Table = "table";
     public const string TabList = "tablist";
