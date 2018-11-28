@@ -22,6 +22,7 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
@@ -118,6 +119,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!string.IsNullOrEmpty (renderingContext.ColumnDefinition.CssClass))
         cssClassTitleCell += " " + renderingContext.ColumnDefinition.CssClass;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTitleCell);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
         var columnItemID = renderingContext.ColumnDefinition.ItemID;
@@ -325,6 +327,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!string.IsNullOrEmpty (renderingContext.ColumnDefinition.CssClass))
         cssClassTableCell += " " + renderingContext.ColumnDefinition.CssClass;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
+#pragma warning disable CS0618 // Type or member is obsolete
+      var ariaRoleForTableDataElement = GetAriaRoleForTableDataElement();
+#pragma warning restore CS0618 // Type or member is obsolete
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataAttributes (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
@@ -332,6 +338,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       RenderCellContents (renderingContext, dataRowRenderEventArgs, rowIndex, showIcon);
 
       renderingContext.Writer.RenderEndTag();
+    }
+
+    [Obsolete ("RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
+    protected virtual string GetAriaRoleForTableDataElement ()
+    {
+      return HtmlRoleAttributeValue.Cell;
     }
 
     /// <summary>

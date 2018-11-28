@@ -79,6 +79,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement (document, "td", 0);
       Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute (td, "role", "cell");
 
       var span = Html.GetAssertedChildElement (td, "span", 0);
       Html.AssertAttribute (span, "onclick", "BocList_OnCommandClick();");
@@ -96,6 +97,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement (document, "td", 0);
       Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute (td, "role", "cell");
 
       var span = Html.GetAssertedChildElement (td, "span", 0);
       Html.AssertAttribute (span, "onclick", "BocList_OnCommandClick();");
@@ -112,6 +114,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement (document, "td", 0);
       Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute (td, "role", "cell");
     }
   }
 }

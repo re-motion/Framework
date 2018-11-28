@@ -115,6 +115,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var tableScrollContainer = Html.GetAssertedChildElement (tableContainer, "div", 0);
       Html.AssertAttribute (tableScrollContainer, "class", _bocListCssClassDefinition.TableScrollContainer);
+      Html.AssertAttribute (tableScrollContainer, "role", "none");
 
       var table = Html.GetAssertedChildElement (tableScrollContainer, "table", 0);
       Html.AssertAttribute (table, "class", _bocListCssClassDefinition.Table);
@@ -127,11 +128,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.GetAssertedChildElement (colgroup, "col", 2);
 
       var thead = Html.GetAssertedChildElement (table, "thead", 1);
+      Html.AssertAttribute (thead, "role", "rowgroup");
 
       var trTitle = Html.GetAssertedChildElement (thead, "tr", 0);
       Html.AssertAttribute (trTitle, "class", "titleStub");
 
       tbody = Html.GetAssertedChildElement (table, "tbody", 2);
+      Html.AssertAttribute (tbody, "role", "rowgroup");
 
       var validationErrors = Html.GetAssertedChildElement (outerSpan, "fake", 1);
       Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
