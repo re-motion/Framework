@@ -34,6 +34,13 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
   [ImplementationFor (typeof (ITabbedMultiViewRenderer), Lifetime = LifetimeKind.Singleton)]
   public class TabbedMultiViewRenderer : RendererBase<ITabbedMultiView>, ITabbedMultiViewRenderer
   {
+    [ResourceIdentifiers]
+    [MultiLingualResources ("Remotion.Web.Globalization.TabbedMultiViewRenderer")]
+    public enum ResourceIdentifier
+    {
+      TabPanelControlTypeScreenReaderLabelText
+    }
+
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
 
     public TabbedMultiViewRenderer (
@@ -123,6 +130,15 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
       if (string.IsNullOrEmpty (renderingContext.Control.ActiveViewStyle.CssClass))
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassActiveView);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      
+      // For Internet Explorer + JAWS 2018ff, the tabindex-attribute on the table root will break a table with a scrollable header part.
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "TabPanelControlType");
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      var resourceManager = GetResourceManager (typeof (ResourceIdentifier), new ResourceManagerSet (new IResourceManager[0]));
+      renderingContext.Writer.Write (resourceManager.GetString (ResourceIdentifier.TabPanelControlTypeScreenReaderLabelText));
+      renderingContext.Writer.RenderEndTag();
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ActiveViewContentClientID);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContentBorder);
@@ -303,6 +319,11 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
     public string CssClassContentBorder
     {
       get { return "contentBorder"; }
+    }
+
+    public string CssClassScreenReaderText
+    {
+      get { return "screenReaderText"; }
     }
 
     #endregion

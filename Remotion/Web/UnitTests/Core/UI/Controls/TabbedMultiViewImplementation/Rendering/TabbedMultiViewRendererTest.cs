@@ -283,9 +283,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
 
       if( isDesignMode )
         divActiveView.AssertStyleAttribute ("border", "solid 1px black");
-      divActiveView.AssertChildElementCount (1);
+      divActiveView.AssertChildElementCount (2);
 
-      var divContentBorder = divActiveView.GetAssertedChildElement ("div", 0);
+      var divContentBorder = divActiveView.GetAssertedChildElement ("div", 1);
       divContentBorder.AssertAttributeValueEquals ("class", renderer.CssClassContentBorder);
       divContentBorder.AssertAttributeValueEquals ("role", "tabpanel");
       divContentBorder.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, "TabStripClientID_Tab2_Command");
