@@ -47,5 +47,26 @@ ViewLayout.AdjustTabbedMultiView = function(containerElement)
 {
   var viewContent = containerElement.children().eq(0).children().eq(2);
   ViewLayout.AdjustActiveViewContent(viewContent);
+
+  if (BrowserUtility.GetIEVersion() > 0) {
+    // For Internet Explorer + JAWS 2018ff, the tabindex-attribute on the table root will break a table with a scrollable header part.
+    var contentBorder = viewContent.children ('div[tabindex]').eq(0);
+    contentBorder.removeAttr('tabindex');
+    var contentLabelledBy = contentBorder.attr ('aria-labelledby') || '';
+    var caption = viewContent.children ('span[aria-hidden]').eq(0);
+    caption.attr ('tabindex', 0);
+    caption.attr('aria-labelledby', contentLabelledBy + ' ' + caption[0].id);
+
+    //var captionLabelIDs = bocList.attr('aria-labelledby');
+    //var captionElement = document.getElementById(lastCaptionLabelID);
+    //var tableCaption = $('<span/>')
+    //  .attr({
+    //    'tabindex': 0,
+    //    'aria-label': captionElement.innerText,
+    //    'aria-hidden': 'true'
+    //  })
+    //  .addClass('screenReaderText');
+    //tableContainer.before(tableCaption);
+  }
 };
 
