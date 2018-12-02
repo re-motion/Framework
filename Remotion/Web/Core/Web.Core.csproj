@@ -765,6 +765,14 @@
     <Compile Include="Utilities\WebTypeUtility.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="Globalization\TabbedMultiViewRenderer.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\TabbedMultiViewRenderer.fr.resx" />
+    <EmbeddedResource Include="Globalization\TabbedMultiViewRenderer.it.resx" />
+    <EmbeddedResource Include="Globalization\TabbedMultiViewRenderer.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\FormGridManager.fr.resx" />
     <EmbeddedResource Include="Globalization\FormGridManager.it.resx" />
     <EmbeddedResource Include="Globalization\SmartPageInfo.fr.resx" />

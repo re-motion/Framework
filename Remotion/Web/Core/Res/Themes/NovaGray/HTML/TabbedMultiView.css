@@ -38,6 +38,12 @@ div.tabbedMultiViewActiveView > div.contentBorder
   height: 60%;
 }
 
+div.tabbedMultiViewActiveView > span:focus + div.contentBorder 
+{
+  outline: dotted black 1px;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
 div.tabbedMultiViewActiveView > div.contentBorder > div.content
 {
   position: relative;
@@ -208,4 +214,17 @@ div.tabbedMultiViewTabStrip span.tabStripTabSeparator span
 div.tabbedMultiViewTabStrip div.clearingPane
 {
   clear: both;
+}
+
+/* Shared in other CSS files */
+.screenReaderText
+{
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
