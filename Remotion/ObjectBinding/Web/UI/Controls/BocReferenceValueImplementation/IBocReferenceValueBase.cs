@@ -27,6 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// </summary>
   public interface IBocReferenceValueBase : IBusinessObjectBoundEditableWebControl, IBocRenderableControl, IControlWithResourceManager
   {
+    [Obsolete("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     bool? HasValueEmbeddedInsideOptionsMenu { get; }
     bool HasOptionsMenu { get; }
     DropDownMenu OptionsMenu { get; }

@@ -157,6 +157,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Only used by control developers. </summary>
     /// <remarks>Note that setting the <see cref="ShowTitle"/> flag will override the <paramref name="renderHeadTitleMethod"/>.</remarks>
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void SetRenderHeadTitleMethodDelegate (Action<HtmlTextWriter> renderHeadTitleMethod)
     {
       _renderHeadTitleMethod = renderHeadTitleMethod;

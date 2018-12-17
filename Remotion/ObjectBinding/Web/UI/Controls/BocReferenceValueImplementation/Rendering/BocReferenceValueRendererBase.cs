@@ -207,12 +207,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
+#pragma warning disable 618
       if (IsEmbedInOptionsMenu (renderingContext))
         RenderContentsWithIntegratedOptionsMenu (renderingContext);
+#pragma warning restore 618
       else
         RenderContentsWithSeparateOptionsMenu (renderingContext);
     }
 
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     private void RenderContentsWithIntegratedOptionsMenu (BocRenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
@@ -435,6 +438,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return label;
     }
 
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     private bool IsEmbedInOptionsMenu (BocRenderingContext<TControl> renderingContext)
     {
       return renderingContext.Control.HasValueEmbeddedInsideOptionsMenu == true && renderingContext.Control.HasOptionsMenu
@@ -462,8 +466,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       if (!renderingContext.Control.HasOptionsMenu)
         cssClass += " " + CssClassWithoutOptionsMenu;
+#pragma warning disable 618
       else if (IsEmbedInOptionsMenu (renderingContext))
         cssClass += " " + CssClassEmbeddedOptionsMenu;
+#pragma warning restore 618
       else
         cssClass += " " + CssClassSeparateOptionsMenu;
 
@@ -485,6 +491,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return "separateOptionsMenu"; }
     }
 
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     private string CssClassEmbeddedOptionsMenu
     {
       get { return "embeddedOptionsMenu"; }
