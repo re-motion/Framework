@@ -92,11 +92,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI
         IsSubstitutionSelectionEnabled = substitutions.Length > 0;
       }
 
+#pragma warning disable 618
       if (!IsTenantSelectionEnabled)
         CurrentTenantField.Command.Type = CommandType.None;
 
       if (!IsSubstitutionSelectionEnabled)
         CurrentSubstitutionField.Command.Type = CommandType.None;
+#pragma warning restore 618
     }
 
     private TenantProxy[] GetPossibleTenants ()
@@ -177,8 +179,10 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       CurrentUserLabel.Text = resourceManager.GetString (ResourceIdentifier.CurrentUserLabelText);
       CurrentSubstitutionLabel.Text = resourceManager.GetString (ResourceIdentifier.CurrentSubstitutionLabelText);
       CurrentTenantLabel.Text = resourceManager.GetString (ResourceIdentifier.CurrentTenantLabelText);
+#pragma warning disable CS0618 // Type or member is obsolete
       CurrentSubstitutionField.Command.ToolTip = resourceManager.GetString (ResourceIdentifier.CurrentSubstitutionCommandTooltip);
       CurrentTenantField.Command.ToolTip  = resourceManager.GetString (ResourceIdentifier.CurrentTenantCommandTooltip);
+#pragma warning restore CS0618 // Type or member is obsolete
 
       base.OnPreRender (e);
 

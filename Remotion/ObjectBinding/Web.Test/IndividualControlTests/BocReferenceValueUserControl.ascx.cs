@@ -65,10 +65,14 @@ public class BocReferenceValueUserControl : BaseUserControl
   {
     base.RegisterEventHandlers();
 
+#pragma warning disable 618
     PartnerField.CommandClick += new BocCommandClickEventHandler (PartnerField_CommandClick);
+#pragma warning restore 618
     PartnerField.MenuItemClick += new WebMenuItemClickEventHandler (PartnerField_MenuItemClick);
     PartnerField.SelectionChanged += new EventHandler (PartnerField_SelectionChanged);
+#pragma warning disable 618
     ReadOnlyPartnerField.CommandClick += new BocCommandClickEventHandler (ReadOnlyPartnerField_CommandClick);
+#pragma warning restore 618
     PartnerTestSetNullButton.Click += new EventHandler (PartnerTestSetNullButton_Click);
     PartnerTestSetNewItemButton.Click += new EventHandler (PartnerTestSetNewItemButton_Click);
     ReadOnlyPartnerTestSetNullButton.Click += new EventHandler (ReadOnlyPartnerTestSetNullButton_Click);

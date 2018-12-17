@@ -225,9 +225,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (ShowOptionsMenu)
           WcagHelper.Instance.HandleError (1, this, "ShowOptionsMenu");
+#pragma warning disable 618
         bool hasPostBackCommand = Command != null && (Command.Type == CommandType.Event || Command.Type == CommandType.WxeFunction);
         if (hasPostBackCommand)
           WcagHelper.Instance.HandleError (1, this, "Command");
+#pragma warning restore 618
 
         if (DropDownListStyle.AutoPostBack == true)
           WcagHelper.Instance.HandleWarning (1, this, "DropDownListStyle.AutoPostBack");

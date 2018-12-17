@@ -212,8 +212,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.Append (", ");
       script.Append (GetIconContextAsJson (renderingContext.IconWebServiceContext) ?? "null");
       script.Append (", ");
+#pragma warning disable 618
       script.Append (GetCommandInfoAsJson (renderingContext) ?? "null");
       script.Append (", ");
+#pragma warning restore 618
       script.Append (GetResourcesAsJson (renderingContext));
       script.Append ("); } );");
 

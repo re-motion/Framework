@@ -31,19 +31,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
     {
       base.OnInit (e);
 
+#pragma warning disable 618
       PartnerField_Normal.CommandClick += PartnerField_CommandClick;
-      PartnerField_Normal.MenuItemClick += MenuItemClickHandler;
       PartnerField_Normal_AlternativeRendering.CommandClick += PartnerField_CommandClick;
-      PartnerField_Normal_AlternativeRendering.MenuItemClick += MenuItemClickHandler;
       PartnerField_ReadOnly.CommandClick += PartnerField_CommandClick;
-      PartnerField_ReadOnly.MenuItemClick += MenuItemClickHandler;
       PartnerField_ReadOnly_AlternativeRendering.CommandClick += PartnerField_CommandClick;
-      PartnerField_ReadOnly_AlternativeRendering.MenuItemClick += MenuItemClickHandler;
       PartnerField_Disabled.CommandClick += PartnerField_CommandClick;
-      PartnerField_Disabled.MenuItemClick += MenuItemClickHandler;
       PartnerField_NoAutoPostBack.CommandClick += PartnerField_CommandClick;
-      PartnerField_NoAutoPostBack.MenuItemClick += MenuItemClickHandler;
       PartnerField_NoCommandNoMenu.CommandClick += PartnerField_CommandClick;
+#pragma warning restore 618
+      PartnerField_Normal.MenuItemClick += MenuItemClickHandler;
+      PartnerField_Normal_AlternativeRendering.MenuItemClick += MenuItemClickHandler;
+      PartnerField_ReadOnly.MenuItemClick += MenuItemClickHandler;
+      PartnerField_ReadOnly_AlternativeRendering.MenuItemClick += MenuItemClickHandler;
+      PartnerField_Disabled.MenuItemClick += MenuItemClickHandler;
+      PartnerField_NoAutoPostBack.MenuItemClick += MenuItemClickHandler;
       PartnerField_NoCommandNoMenu.MenuItemClick += MenuItemClickHandler;
     }
 

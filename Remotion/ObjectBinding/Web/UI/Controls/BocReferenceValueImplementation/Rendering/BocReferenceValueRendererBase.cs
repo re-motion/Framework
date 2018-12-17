@@ -155,6 +155,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return jsonBuilder.ToString();
     }
 
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     protected string GetCommandInfoAsJson (BocRenderingContext<TControl> renderingContext)
     {
       var command = renderingContext.Control.Command;
@@ -301,12 +302,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         anchorClass += " " + CssClassHasIcon;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, anchorClass);
 
+#pragma warning disable 618
       var isCommandEnabled = isIconEnabled && IsCommandEnabled (renderingContext);
+#pragma warning restore 618
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
       LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
 
+#pragma warning disable 618
       var command = GetCommand (renderingContext, isCommandEnabled);
+#pragma warning restore 618
       command.RenderBegin (renderingContext.Writer, RenderingFeatures, postBackEvent, onClick, objectID, null);
 
       if (isIconEnabled)
@@ -314,12 +319,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       if (icon != null)
       {
+#pragma warning disable CS0618 // Type or member is obsolete
         if (!string.IsNullOrEmpty (command.ToolTip))
           icon.ToolTip = renderingContext.Control.Command.ToolTip;
+#pragma warning restore CS0618 // Type or member is obsolete
         icon.Render (renderingContext.Writer, renderingContext.Control);
       }
 
+#pragma warning disable 618
       renderingContext.Control.Command.RenderEnd (renderingContext.Writer);
+#pragma warning restore 618
     }
 
     private void RenderReadOnlyValue (BocRenderingContext<TControl> renderingContext, string postBackEvent, string onClick, string objectID)
@@ -333,7 +342,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       if (isIconEnabled)
         icon = GetIcon (renderingContext);
 
+#pragma warning disable 618
       var isCommandEnabled = IsCommandEnabled (renderingContext);
+#pragma warning restore 618
 
       var anchorClass = CssClassCommand;
       if (icon != null)
@@ -356,7 +367,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       ValidationErrorRenderer.AddValidationErrorsReference (attributeCollection, validationErrorsID, validationErrors);
       attributeCollection.AddAttributes (renderingContext.Writer);
 
+#pragma warning disable 618
       var command = GetCommand (renderingContext, isCommandEnabled);
+#pragma warning restore 618
       command.RenderBegin (renderingContext.Writer, RenderingFeatures, postBackEvent, onClick, objectID, null);
 
       if (icon != null)
@@ -367,16 +380,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
       label.RenderControl (renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
+#pragma warning disable 618
       renderingContext.Control.Command.RenderEnd (renderingContext.Writer);
+#pragma warning restore 618
 
       ValidationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     private bool IsCommandEnabled (BocRenderingContext<TControl> renderingContext)
     {
       return renderingContext.Control.BusinessObjectUniqueIdentifier != null && renderingContext.Control.IsCommandEnabled();
     }
 
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     private BocCommand GetCommand (BocRenderingContext<TControl> renderingContext, bool isCommandEnabled)
     {
       var command = isCommandEnabled
@@ -390,11 +407,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       var iconInfo = renderingContext.Control.GetIcon();
 
+#pragma warning disable 618
       if (iconInfo != null && renderingContext.Control.IsCommandEnabled())
       {
         if (string.IsNullOrEmpty (iconInfo.AlternateText))
           iconInfo.AlternateText = renderingContext.Control.GetLabelText();
       }
+#pragma warning restore 618
 
       return iconInfo;
     }

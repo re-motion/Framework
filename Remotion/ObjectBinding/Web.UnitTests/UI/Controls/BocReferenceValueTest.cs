@@ -66,8 +66,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocReferenceValue = new BocReferenceValueMock();
       _bocReferenceValue.ID = "BocReferenceValue";
       _bocReferenceValue.ShowOptionsMenu = false;
+#pragma warning disable 618
       _bocReferenceValue.Command.Type = CommandType.None;
       _bocReferenceValue.Command.Show = CommandShow.Always;
+#pragma warning restore 618
       _bocReferenceValue.InternalValue = Guid.Empty.ToString();
       NamingContainer.Controls.Add (_bocReferenceValue);
 
@@ -159,6 +161,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
 
     [Test]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void EvaluateWaiConformityDebugLevelAWithEventCommand ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
@@ -172,6 +175,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void IsEventCommandDisabledWithWcagOverride ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
@@ -180,6 +184,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void IsEventCommandEnabledWithoutWcagOverride ()
     {
       _businessObject.ReferenceValue = TypeWithReference.Create();
@@ -192,6 +197,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
 
     [Test]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void EvaluateWaiConformityDebugLevelAWithWxeFunctionCommand ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
@@ -205,6 +211,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void IsWxeFunctionCommandDisabledWithWcagOverride ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
@@ -213,6 +220,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void IsWxeFunctionCommandEnabledWithoutWcagOverride ()
     {
       _businessObject.ReferenceValue = TypeWithReference.Create();
@@ -225,6 +233,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
 
     [Test]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void EvaluateWaiConformityDebugLevelAWithHrefCommand ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
@@ -236,6 +245,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void EvaluateWaiConformityDebugLevelAWithoutCommand ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();

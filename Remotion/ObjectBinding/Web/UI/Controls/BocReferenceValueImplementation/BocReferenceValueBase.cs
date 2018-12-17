@@ -180,6 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     [Category ("Menu")]
     [Description ("The command rendered for this control's Value.")]
     [NotifyParentProperty (true)]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public BocCommand Command
     {
       get { return (BocCommand) _command.ControlItem; }
@@ -220,6 +221,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     [PersistenceMode (PersistenceMode.InnerProperty)]
     [Browsable (false)]
     [NotifyParentProperty (true)]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public SingleControlItemCollection PersistedCommand
     {
       get { return _command; }
@@ -451,6 +453,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <summary> This event is fired when the value's command is clicked. </summary>
     [Category ("Action")]
     [Description ("Fires when the value's command is clicked.")]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public event BocCommandClickEventHandler CommandClick
     {
       add { Events.AddHandler (CommandClickEvent, value); }
@@ -609,10 +612,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <param name="eventArgument"> an empty <see cref="String"/>. </param>
     protected virtual void RaisePostBackEvent (string eventArgument)
     {
+#pragma warning disable 618
       HandleCommand();
+#pragma warning restore 618
     }
 
     /// <summary> Handles post back events raised by the value's <see cref="Command"/>. </summary>
+    [Obsolete ("This feature has been removed. (Version 1.22.3)", false)]
     private void HandleCommand ()
     {
       switch (Command.Type)
@@ -640,6 +646,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     ///   The current <see cref="Value"/>, which corresponds to the clicked <see cref="IBusinessObjectWithIdentity"/>,
     ///   unless somebody changed the <see cref="Value"/> in the code behind before the event fired.
     /// </param>
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     protected virtual void OnCommandClick (IBusinessObjectWithIdentity businessObject)
     {
       if (Command != null)
@@ -720,8 +727,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         OptionsMenu.Visible = false;
       }
 
+#pragma warning disable 618
       if (Command != null)
         Command.RegisterForSynchronousPostBackOnDemand (this, CommandArgumentName, string.Format ("{0} '{1}', Object Command", GetType().Name, ID));
+#pragma warning restore 618
 
       CheckIconService();
     }
@@ -839,8 +848,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       ResourceDispatcher.DispatchGeneric (this, propertyValues);
 
       //  Dispatch compound element properties
+#pragma warning disable 618
       if (Command != null)
         ResourceDispatcher.DispatchGeneric (Command, commandValues);
+#pragma warning restore 618
 
       //  Dispatch to collections
       OptionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
@@ -865,8 +876,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       if (! string.IsNullOrEmpty (key))
         OptionsTitle = resourceManager.GetString (key);
 
+#pragma warning disable 618
       if (Command != null)
         Command.LoadResources (resourceManager, globalizationService);
+#pragma warning restore 618
 
       OptionsMenuItems.LoadResources (resourceManager, globalizationService);
     }
@@ -960,6 +973,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return HasOptionsMenu; }
     }
 
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     bool IBocReferenceValueBase.IsCommandEnabled ()
     {
       if (WcagHelper.Instance.IsWaiConformanceLevelARequired())

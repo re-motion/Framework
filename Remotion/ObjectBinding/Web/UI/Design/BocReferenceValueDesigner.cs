@@ -30,9 +30,11 @@ public class BocReferenceValueDesigner: WebControlDesigner
     if (ce.Member.Name == "Command")
     {
       PropertyDescriptor persistedCommand = TypeDescriptor.GetProperties (Component)["PersistedCommand"];
-      RaiseComponentChanged (persistedCommand, null, ((BocReferenceValue) Component).PersistedCommand);
+#pragma warning disable 618
+      RaiseComponentChanged(persistedCommand, null, ((BocReferenceValue) Component).PersistedCommand);
+#pragma warning restore 618
+      }
     }
-  }
 }
 
 }
