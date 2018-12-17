@@ -162,6 +162,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     [Test]
     [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void RenderNullReferenceValueWithEmbeddedOptionsMenu ()
     {
       Control.Stub (stub => stub.Enabled).Return (true);
@@ -174,6 +175,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     [Test]
     [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void RenderNullReferenceValueWithEmbeddedOptionsMenuAndStyle ()
     {
       Control.Stub (stub => stub.Enabled).Return (true);
@@ -310,6 +312,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     [Test]
     [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void RenderReferenceValueWithEmbeddedOptionsMenu ()
     {
       Control.Stub (stub => stub.Enabled).Return (true);
@@ -323,6 +326,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     [Test]
     [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void RenderReferenceValueWithEmbeddedOptionsMenuAndStyle ()
     {
       Control.Stub (stub => stub.Enabled).Return (true);
@@ -419,6 +423,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     [Test]
     [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void RenderOptions ()
     {
       var renderer = new TestableBocReferenceValueRenderer (

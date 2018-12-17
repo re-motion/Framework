@@ -299,6 +299,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     [Category ("Menu")]
     [Description ("Determines whether to use the value as the options menu's head.")]
     [DefaultValue (typeof (bool?), "")]
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public bool? HasValueEmbeddedInsideOptionsMenu
     {
       get { return _hasValueEmbeddedInsideOptionsMenu; }
