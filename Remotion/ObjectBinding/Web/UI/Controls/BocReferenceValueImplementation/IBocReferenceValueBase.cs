@@ -31,11 +31,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     bool HasOptionsMenu { get; }
     DropDownMenu OptionsMenu { get; }
     Unit OptionsMenuWidth { get; }
+
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     BocCommand Command { get; }
+
     bool IsIconEnabled ();
     new IBusinessObjectReferenceProperty Property { get; }
     new IBusinessObjectWithIdentity Value { get; }
+
+    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     bool IsCommandEnabled ();
+
     IconInfo GetIcon ();
     string IconServicePath { get; }
     string GetLabelText ();

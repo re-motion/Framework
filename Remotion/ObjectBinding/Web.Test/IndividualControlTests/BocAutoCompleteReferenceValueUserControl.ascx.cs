@@ -65,10 +65,14 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
   {
     base.RegisterEventHandlers();
 
+#pragma warning disable 618
     PartnerField.CommandClick += PartnerField_CommandClick;
+#pragma warning restore 618
     PartnerField.MenuItemClick += PartnerField_MenuItemClick;
     PartnerField.SelectionChanged += PartnerField_SelectionChanged;
+#pragma warning disable 618
     ReadOnlyPartnerField.CommandClick += ReadOnlyPartnerField_CommandClick;
+#pragma warning restore 618
     PartnerTestSetNullButton.Click += PartnerTestSetNullButton_Click;
     PartnerTestSetNewItemButton.Click += PartnerTestSetNewItemButton_Click;
     ReadOnlyPartnerTestSetNullButton.Click += ReadOnlyPartnerTestSetNullButton_Click;

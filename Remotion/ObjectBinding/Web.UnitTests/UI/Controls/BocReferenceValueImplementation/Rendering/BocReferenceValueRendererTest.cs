@@ -82,10 +82,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Stub (stub => stub.ControlType).Return ("BocReferenceValue");
       Control.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
       Control.Stub (mock => mock.GetValidationErrors()).Return (EnumerableUtility.Singleton (c_validationErrors));
-      Control.Stub (stub => stub.Command).Return (new BocCommand());
       Control.Stub (stub => stub.BusinessObjectUniqueIdentifier).Return (c_uniqueIdentifier);
+#pragma warning disable 618
+      Control.Stub (stub => stub.Command).Return (new BocCommand());
       Control.Command.Type = CommandType.Event;
       Control.Command.Show = CommandShow.Always;
+#pragma warning restore 618
 
       Control.Stub (stub => stub.OptionsMenu).Return (OptionsMenu);
 
@@ -632,7 +634,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       if (isIconEnabled)
         commandClass += " hasIcon";
 
+#pragma warning disable 618
       if (Control.IsCommandEnabled())
+#pragma warning restore 618
       {
         var link = parent.GetAssertedChildElement ("a", 0);
         link.AssertAttributeValueEquals ("id", Control.ClientID + "_Command");
