@@ -49,7 +49,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_BuildFiles", "_BuildFiles"
 		build\Remotion.build = build\Remotion.build
 		build\Remotion.Local.build = build\Remotion.Local.build
 		build\Remotion.Projects.include.build = build\Remotion.Projects.include.build
-		Build\Remotion.ReleaseNotes.include.build = Build\Remotion.ReleaseNotes.include.build
 		build\Remotion.Server.build = build\Remotion.Server.build
 		build\SecureFileLoggerRules.rules = build\SecureFileLoggerRules.rules
 		Build\Server.Jira.targets = Build\Server.Jira.targets
