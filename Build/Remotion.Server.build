@@ -15,7 +15,6 @@
     <SolutionDirectory>$(BuildRootDirectory)working\</SolutionDirectory>
     <OutputDirectory>$(BuildRootDirectory)output\</OutputDirectory>
     <TempDirectory>$(BuildRootDirectory)temp\</TempDirectory>
-    <ArchiveDirectory></ArchiveDirectory>
 
     <SolutionBuildFile>$(SolutionDirectory)build\Remotion.build</SolutionBuildFile>
 
@@ -74,10 +73,8 @@
   </Target>
 
   <Target Name="CheckBuildLocationProperties" >
-    <Error Text="The property 'ArchiveDirectory' is not set." Condition="'$(ArchiveDirectory)' == ''" />
     <Error Text="The property 'SecureNetworkShare' is not set." Condition="'$(SecureNetworkShare)' == ''" />
 
-    <Message Text="The property 'ArchiveDirectory' is set to '$(ArchiveDirectory)'." />
     <Message Text="The property 'SecureNetworkShare' is set to '$(SecureNetworkShare)'." />
   </Target>
 
