@@ -277,9 +277,9 @@ th.bocListTitleCell > a[href]:active
   background-color: #C5E0FC;
 }
 
-th.bocListTitleCell > a[href]:focus img,
-th.bocListTitleCell > a[href]:hover img,
-th.bocListTitleCell > a[href]:active img
+th.bocListTitleCell > a[href]:focus .bocListSortingOrder img,
+th.bocListTitleCell > a[href]:hover .bocListSortingOrder img,
+th.bocListTitleCell > a[href]:active .bocListSortingOrder img
 {
   -webkit-filter: brightness(0);
   filter: brightness(0);
