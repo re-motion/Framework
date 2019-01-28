@@ -51,6 +51,21 @@
     <DatabaseDirectoryMsSql2014></DatabaseDirectoryMsSql2014>
     <DatabaseDirectoryMsSql2016></DatabaseDirectoryMsSql2016>
     <DatabaseDirectoryMsSql2017></DatabaseDirectoryMsSql2017>
+
+    <IntegratedSecurityMsSql2012></IntegratedSecurityMsSql2012>
+    <IntegratedSecurityMsSql2014></IntegratedSecurityMsSql2014>
+    <IntegratedSecurityMsSql2016></IntegratedSecurityMsSql2016>
+    <IntegratedSecurityMsSql2017></IntegratedSecurityMsSql2017>
+
+    <UsernameMsSql2012></UsernameMsSql2012>
+    <UsernameMsSql2014></UsernameMsSql2014>
+    <UsernameMsSql2016></UsernameMsSql2016>
+    <UsernameMsSql2017></UsernameMsSql2017>
+
+    <PasswordMsSql2012></PasswordMsSql2012>
+    <PasswordMsSql2014></PasswordMsSql2014>
+    <PasswordMsSql2016></PasswordMsSql2016>
+    <PasswordMsSql2017></PasswordMsSql2017>
   </PropertyGroup>
 
   <!-- Check properties -->

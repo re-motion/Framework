@@ -101,7 +101,6 @@
     <Compile Include="SimpleDomainObjectTest.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="ComponentFactoryWithSpecificPersistenceStrategy.cs" />
-    <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="ObjectBindingTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchServiceTestHelper.cs" />
