@@ -146,9 +146,9 @@
   <Target Name="CreateSqlServer2008R2" Condition="'$(DatabaseSystem)' == 'SqlServer2008R2'">
     <Error Text="The property 'DataSourceMsSql2008R2' is not set." Condition="'$(DataSourceMsSql2008R2)' == ''" />
     <Error Text="The property 'DatabaseDirectoryMsSql2008R2' is not set." Condition="'$(DatabaseDirectoryMsSql2008R2)' == ''" />
-    <Error Text="The property 'IntegratedSecurityMsSql208R2' is not set." Condition="'$(IntegratedSecurityMsSql208R2)' == ''" />
-    <Error Text="The property 'UsernameMsSql208R2' is not set." Condition="'$(IntegratedSecurityMsSql208R2)' == 'false' and '$(UsernameMsSql208R2)' == ''" />
-    <Error Text="The property 'PasswordMsSql208R2' is not set." Condition="'$(IntegratedSecurityMsSql208R2)' == 'false' and '$(PasswordMsSql208R2)' == ''" />
+    <Error Text="The property 'IntegratedSecurityMsSql2008R2' is not set." Condition="'$(IntegratedSecurityMsSql2008R2)' == ''" />
+    <Error Text="The property 'UsernameMsSql2008R2' is not set." Condition="'$(IntegratedSecurityMsSql2008R2)' == 'false' and '$(UsernameMsSql2008R2)' == ''" />
+    <Error Text="The property 'PasswordMsSql2008R2' is not set." Condition="'$(IntegratedSecurityMsSql2008R2)' == 'false' and '$(PasswordMsSql2008R2)' == ''" />
 
     <Error Text="The property 'DataSource' was already set." Condition="'$(DataSource)' != ''" />
 
@@ -156,9 +156,9 @@
       <DataSource>$(DataSourceMsSql2008R2)</DataSource>
       <DatabaseDirectory>$(DatabaseDirectoryMsSql2008R2)</DatabaseDirectory>
       <DatabaseNamePrefix>$(DatabaseNamePrefix)</DatabaseNamePrefix>
-      <IntegratedSecurity>$(IntegratedSecurityMsSql208R2)</IntegratedSecurity>
-      <Username>$(UsernameMsSql208R2)</Username>
-      <Password>$(PasswordMsSql208R2)</Password>
+      <IntegratedSecurity>$(IntegratedSecurityMsSql2008R2)</IntegratedSecurity>
+      <Username>$(UsernameMsSql2008R2)</Username>
+      <Password>$(PasswordMsSql2008R2)</Password>
     </PropertyGroup>
   </Target>
 
