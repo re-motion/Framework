@@ -45,11 +45,31 @@ namespace Remotion.SecurityManager.UnitTests
       get { return ConfigurationManager.AppSettings["DatabaseNamePrefix"] + "Remotion"; }
     }
 
+    public static bool IntegratedSecurity
+    {
+      get { return Boolean.Parse (ConfigurationManager.AppSettings["IntegratedSecurity"]); }
+    }
+
+
+    public static string Username
+    {
+      get { return ConfigurationManager.AppSettings["Username"]; }
+    }
+
+
+    public static string Password
+    {
+      get { return ConfigurationManager.AppSettings["Password"]; }
+    }
+
     public static string UpdateConnectionString (string connectionString)
     {
       var sqlConnectionStringBuilder = new SqlConnectionStringBuilder (connectionString);
       sqlConnectionStringBuilder.DataSource = DataSource;
       sqlConnectionStringBuilder.InitialCatalog = sqlConnectionStringBuilder.InitialCatalog.Replace (DefaultDatabaseNamePrefix, DatabaseNamePrefix);
+      sqlConnectionStringBuilder.IntegratedSecurity = IntegratedSecurity;
+      sqlConnectionStringBuilder.UserID = Username;
+      sqlConnectionStringBuilder.Password = Password;
       return sqlConnectionStringBuilder.ConnectionString;
     }
 

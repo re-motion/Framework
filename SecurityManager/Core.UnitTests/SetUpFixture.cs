@@ -45,12 +45,12 @@ namespace Remotion.SecurityManager.UnitTests
   {
     public static string TestDomainConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Integrated Security=SSPI;Initial Catalog=RemotionSecurityManager;Data Source=."); }
+      get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=RemotionSecurityManager"); }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Integrated Security=SSPI;Initial Catalog=master;Data Source=."); }
+      get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=master"); }
     }
 
     [SetUp]
