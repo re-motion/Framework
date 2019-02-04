@@ -292,7 +292,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     }
 
     [Test]
-    public void AddDiagnosticMetadataAttributes_Href ()
+    public void AddDiagnosticMetadataAttributes_FromCreateForLink ()
     {
       var commandInfo = CommandInfo.CreateForLink ("TheTitle", null, "http://localhost/My.wxe", "TheTarget", "javascript:Foo();");
 
@@ -311,7 +311,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     }
 
     [Test]
-    public void AddDiagnosticMetadataAttributes_PostBack ()
+    public void AddDiagnosticMetadataAttributes_FromCreateForLink_WithDoPostBack ()
     {
       var commandInfo = CommandInfo.CreateForLink ("TheTitle", null, "#", "TheTarget", "FrontGarbage__doPostBackBackGarbage");
 
@@ -330,7 +330,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     }
 
     [Test]
-    public void AddDiagnosticMetadataAttributes_PureJavaScript ()
+    public void AddDiagnosticMetadataAttributes_FromCreateForLink_WithPureJavaScript ()
     {
       var commandInfo = CommandInfo.CreateForLink ("TheTitle", null, "#", "TheTarget", "javascript:Foo();");
 
@@ -349,7 +349,45 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     }
 
     [Test]
-    public void AddDiagnosticMetadataAttributes_None ()
+    public void AddDiagnosticMetadataAttributes_FromCreateForPostBack_WithDoPostBack ()
+    {
+      var commandInfo = CommandInfo.CreateForPostBack ("TheTitle", null, "Garbage__doPostBackGarbage");
+
+      var stringWriter = new StringWriter();
+      var htmlTextWriter = new HtmlTextWriter (stringWriter);
+      commandInfo.AddAttributesToRender (htmlTextWriter, RenderingFeatures.WithDiagnosticMetadata);
+
+      htmlTextWriter.RenderBeginTag (HtmlTextWriterTag.A);
+      htmlTextWriter.RenderEndTag();
+
+      var result = stringWriter.ToString();
+
+      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
+      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
+      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
+    }
+
+    [Test]
+    public void AddDiagnosticMetadataAttributes_FromCreateForPostBack_WithPureJavascript ()
+    {
+      var commandInfo = CommandInfo.CreateForPostBack ("TheTitle", null, "foo();");
+
+      var stringWriter = new StringWriter();
+      var htmlTextWriter = new HtmlTextWriter (stringWriter);
+      commandInfo.AddAttributesToRender (htmlTextWriter, RenderingFeatures.WithDiagnosticMetadata);
+
+      htmlTextWriter.RenderBeginTag (HtmlTextWriterTag.A);
+      htmlTextWriter.RenderEndTag();
+
+      var result = stringWriter.ToString();
+
+      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
+      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersPostBack + "=\"false\""));
+      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
+    }
+
+    [Test]
+    public void AddDiagnosticMetadataAttributes_FromCreateForNone ()
     {
       var commandInfo = CommandInfo.CreateForNone (false);
 

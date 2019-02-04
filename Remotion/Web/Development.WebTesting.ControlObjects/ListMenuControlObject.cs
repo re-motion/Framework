@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                                   itemScope[DiagnosticMetadataAttributes.ItemID],
                                   i + 1,
                                   itemScope.Text.Trim(),
-                                  itemScope["class"].Contains ("listMenuItemDisabled")))
+                                  FindItemCommand (itemScope).IsDisabled()))
                       .ToList());
     }
 
@@ -148,9 +148,14 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     private UnspecifiedPageObject ClickItem (ElementScope itemScope, IWebTestActionOptions actionOptions)
     {
-      var itemCommandScope = itemScope.FindLink();
-      var itemCommand = new CommandControlObject (Context.CloneForControl (itemCommandScope));
+      var itemCommand = FindItemCommand (itemScope);
       return itemCommand.Click (actionOptions);
+    }
+
+    private CommandControlObject FindItemCommand (ElementScope itemScope)
+    {
+      var itemCommandScope = itemScope.FindLink();
+      return new CommandControlObject (Context.CloneForControl (itemCommandScope));
     }
   }
 }
