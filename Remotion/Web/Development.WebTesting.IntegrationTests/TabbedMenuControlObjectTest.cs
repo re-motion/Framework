@@ -61,22 +61,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var control = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
       Assert.That (
           () => control.SelectItem().WithDisplayText ("DisabledCommandTabTitle"),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
       Assert.That (
           () => control.SelectItem().WithDisplayTextContains ("DisabledCommandTabTitle"),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
       Assert.That (
           () => control.SelectItem().WithIndex (6),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
       Assert.That (
           () => control.SelectItem().WithHtmlID ("body_MyTabbedMenu_MainMenuTabStrip_DisabledCommandTab"),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
       Assert.That (
           () => control.SelectItem().WithItemID ("DisabledCommandTab"),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
       Assert.That (
           () => control.SelectItem ("DisabledCommandTab"),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
     }
 
     [Test]
