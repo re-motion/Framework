@@ -87,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                           itemScope[DiagnosticMetadataAttributes.ItemID],
                           i + 1,
                           itemScope.Text.Trim(),
-                          itemScope["class"].Contains ("DropDownMenuItemDisabled")))
+                          FindItemCommand (itemScope).IsDisabled()))
               .ToList());
 
       Close();
@@ -212,18 +212,16 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       return dropDownMenuOptionsScope;
     }
 
-    private UnspecifiedPageObject ClickItem (ElementScope item, IWebTestActionOptions actionOptions)
+    private UnspecifiedPageObject ClickItem (ElementScope itemScope, IWebTestActionOptions actionOptions)
     {
-      if (item[DiagnosticMetadataAttributes.IsDisabled] == "true")
-      {
-        throw AssertionExceptionUtility.CreateControlDisabledException ("WebMenuItem");
-      }
+      var itemCommand = FindItemCommand (itemScope);
+      return itemCommand.Click (actionOptions);
+    }
 
-      var actualActionOptions = MergeWithDefaultActionOptions (item, actionOptions);
-
-      var anchorScope = item.FindLink();
-      new ClickAction (this, anchorScope).Execute (actualActionOptions);
-      return UnspecifiedPage();
+    private CommandControlObject FindItemCommand (ElementScope itemScope)
+    {
+      var itemCommandScope = itemScope.FindLink();
+      return new CommandControlObject (Context.CloneForControl (itemCommandScope));
     }
   }
 }

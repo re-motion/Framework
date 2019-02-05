@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject Click (IWebTestActionOptions actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException ("Command");
 
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
       new ClickAction (this, Scope).Execute (actualActionOptions);

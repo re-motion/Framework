@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var control = home.WebTabStrips().GetByLocalID ("MyTabStrip1");
 
-      Assert.That (() => control.SwitchTo().WithIndex (3), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.SwitchTo().WithIndex (3), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
     }
 
     [Test]
