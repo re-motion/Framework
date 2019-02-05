@@ -300,9 +300,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
     private string GetItemScript (int itemIndex)
     {
-      const string itemTemplate = "new ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9})";
+      const string itemTemplate = "new ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})";
       var menuItem = (WebMenuItem) _control.MenuItems[itemIndex];
       const string diagnosticMetadata = "null";
+      const string diagnosticMetadataForCommand = "null";
 
       string href;
       string target = "null";
@@ -332,7 +333,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
           (itemIndex == 4) ? "true" : "false",
           href,
           target,
-          diagnosticMetadata);
+          diagnosticMetadata,
+          diagnosticMetadataForCommand);
     }
   }
 }

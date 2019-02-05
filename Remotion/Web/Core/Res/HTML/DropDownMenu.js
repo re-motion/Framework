@@ -82,7 +82,7 @@ function DropDownMenu_BindOpenEvent (openTarget, menuID, eventType, getSelection
   }
 }
 
-function DropDownMenu_ItemInfo(id, category, text, icon, iconDisabled, requiredSelection, isDisabled, href, target, diagnosticMetadata)
+function DropDownMenu_ItemInfo(id, category, text, icon, iconDisabled, requiredSelection, isDisabled, href, target, diagnosticMetadata, diagnosticMetadataForCommand)
 {
   this.ID = id;
   this.Category = category;
@@ -94,6 +94,7 @@ function DropDownMenu_ItemInfo(id, category, text, icon, iconDisabled, requiredS
   this.Href = href;
   this.Target = target;
   this.DiagnosticMetadata = diagnosticMetadata;
+  this.DiagnosticMetadataForCommand = diagnosticMetadataForCommand;
 }
 
 function DropDownMenu_OnClick(context, menuID, getSelectionCount, evt)
@@ -383,6 +384,21 @@ function DropDownMenu_CreateTextItem(itemInfo, selectionCount)
     });
 
     $ (item).attr (itemInfo.DiagnosticMetadata);
+  }
+
+  if (itemInfo.DiagnosticMetadataForCommand)
+  {
+    // Do not render empty diagnostic metadata attributes
+    $.each(itemInfo.DiagnosticMetadataForCommand,
+      function (key, value) {
+        if (value === "" || value === null) {
+          delete itemInfo.DiagnosticMetadataForCommand[key];
+        }
+      });
+
+    itemInfo.DiagnosticMetadataForCommand['data-is-disabled'] = isEnabled ? 'false' : 'true';
+
+    $(anchor).attr(itemInfo.DiagnosticMetadataForCommand);
   }
 
   var span = document.createElement('span');

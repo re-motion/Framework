@@ -385,17 +385,22 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         var htmlID = renderingContext.Control.ClientID + "_" + menuItemIndex;
         var diagnosticMetadataDictionary = new Dictionary<string, string>();
         diagnosticMetadataDictionary.Add (HtmlTextWriterAttribute.Id.ToString(), htmlID);
-        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.TriggersNavigation, diagnosticMetadataTriggersNavigation.ToString().ToLower());
-        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.TriggersPostBack, diagnosticMetadataTriggersPostBack.ToString().ToLower());
         diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
         diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (diagnosticMetadataText ?? ""));
-        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.IsDisabled, isDisabled.ToString().ToLower());
 
         stringBuilder.WriteDictionaryAsJson (diagnosticMetadataDictionary);
+
+        stringBuilder.Append (", ");
+
+        var diagnosticMetadataDictionaryForCommand = new Dictionary<string, string>();
+        diagnosticMetadataDictionaryForCommand.Add (DiagnosticMetadataAttributes.IsDisabled, isDisabled.ToString().ToLower());
+        diagnosticMetadataDictionaryForCommand.Add (DiagnosticMetadataAttributes.TriggersNavigation, diagnosticMetadataTriggersNavigation.ToString().ToLower());
+        diagnosticMetadataDictionaryForCommand.Add (DiagnosticMetadataAttributes.TriggersPostBack, diagnosticMetadataTriggersPostBack.ToString().ToLower());
+        stringBuilder.WriteDictionaryAsJson (diagnosticMetadataDictionaryForCommand);
       }
       else
       {
-        stringBuilder.Append ("null");
+        stringBuilder.Append ("null, null");
       }
 
       stringBuilder.Append (")");

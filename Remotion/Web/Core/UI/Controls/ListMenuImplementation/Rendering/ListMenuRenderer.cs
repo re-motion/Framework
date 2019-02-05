@@ -180,14 +180,14 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       command.RenderBegin (
           renderingContext.Writer,
           RenderingFeatures,
-          "",
-          new[] { index.ToString() },
-          "",
-          null,
-          new NameValueCollection(),
-          true,
-          new Style(),
-          attributes);
+          postBackEvent: "",
+          parameters: new[] { index.ToString() },
+          onClick: null,
+          securableObject: null,
+          additionalUrlParameters: new NameValueCollection(),
+          includeNavigationUrlParameters: true,
+          style: new Style(),
+          attributes: attributes);
 
       if (showIcon && menuItem.Icon.HasRenderingInformation)
       {
@@ -253,6 +253,8 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       string href = "null";
       string target = "null";
       bool isCommandEnabled = true;
+      var diagnosticMetadataTriggersNavigation = false;
+      var diagnosticMetadataTriggersPostBack = false;
       if (menuItem.Command != null)
       {
         bool isActive = menuItem.Command.Show == CommandShow.Always
@@ -272,12 +274,16 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
             href = renderingContext.Control.Page.ClientScript.GetPostBackClientHyperlink (renderingContext.Control, argument);
             href = ScriptUtility.EscapeClientScript (href);
             href = "'" + href + "'";
+
+            diagnosticMetadataTriggersPostBack = true;
           }
           else if (menuItem.Command.Type == CommandType.Href)
           {
             href = menuItem.Command.HrefCommand.FormatHref (menuItemIndex.ToString(), menuItem.ItemID);
             href = "'" + renderingContext.Control.ResolveClientUrl (href) + "'";
             target = "'" + menuItem.Command.HrefCommand.Target + "'";
+
+            diagnosticMetadataTriggersNavigation = true;
           }
         }
       }
@@ -318,13 +324,19 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
         if (!string.IsNullOrEmpty (menuItem.Text))
           diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (menuItem.Text));
 
-        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.IsDisabled, isDisabled.ToString().ToLower());
-
         stringBuilder.WriteDictionaryAsJson (diagnosticMetadataDictionary);
+
+        stringBuilder.Append (", ");
+
+        var diagnosticMetadataDictionaryForCommand = new Dictionary<string, string>();
+        diagnosticMetadataDictionaryForCommand.Add (DiagnosticMetadataAttributes.IsDisabled, isDisabled.ToString().ToLower());
+        diagnosticMetadataDictionaryForCommand.Add (DiagnosticMetadataAttributes.TriggersNavigation, diagnosticMetadataTriggersNavigation.ToString().ToLower());
+        diagnosticMetadataDictionaryForCommand.Add (DiagnosticMetadataAttributes.TriggersPostBack, diagnosticMetadataTriggersPostBack.ToString().ToLower());
+        stringBuilder.WriteDictionaryAsJson (diagnosticMetadataDictionaryForCommand);
       }
       else
       {
-        stringBuilder.Append ("null");
+        stringBuilder.Append ("null, null");
       }
 
       stringBuilder.Append (")");

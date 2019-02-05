@@ -29,7 +29,7 @@ function ListMenu_MenuInfo(id, itemInfos)
   this.ItemInfos = itemInfos;
 }
 
-function ListMenuItemInfo (id, category, text, icon, iconDisabled, requiredSelection, isDisabled, href, target, diagnosticMetadata)
+function ListMenuItemInfo (id, category, text, icon, iconDisabled, requiredSelection, isDisabled, href, target, diagnosticMetadata, diagnosticMetadataForCommand)
 {
   this.ID = id;
   this.Category = category;
@@ -41,6 +41,7 @@ function ListMenuItemInfo (id, category, text, icon, iconDisabled, requiredSelec
   this.Href = href;
   this.Target = target;
   this.DiagnosticMetadata = diagnosticMetadata;
+  this.DiagnosticMetadataForCommand = diagnosticMetadataForCommand;
 }
 
 function ListMenu() { }
@@ -105,6 +106,7 @@ function ListMenu_Update (listMenu, getSelectionCount)
           anchor.href = '#';
           anchor.removeAttribute ('target');
           anchor.setAttribute ('javascript', itemInfo.Href);
+          anchor.removeAttribute ('onclick');
           anchor.onclick = function () { eval (this.getAttribute ('javascript')); return false; };
         }
         else
@@ -112,9 +114,9 @@ function ListMenu_Update (listMenu, getSelectionCount)
           anchor.href = itemInfo.Href;
           if (itemInfo.Target != null)
             anchor.target = itemInfo.Target;
-          anchor.onclick = null;
-          anchor.removeAttribute ('onclick');
           anchor.removeAttribute ('javascript');
+          anchor.removeAttribute ('onclick');
+          anchor.onclick = null;
         }
       }
       anchor.removeAttribute ('aria-disabled');
@@ -131,9 +133,9 @@ function ListMenu_Update (listMenu, getSelectionCount)
       item.className = _listMenu_itemDisabledClassName;
       anchor.removeAttribute ('href');
       anchor.removeAttribute ('target');
-      anchor.onclick = null;
-      anchor.removeAttribute ('onclick');
       anchor.removeAttribute ('javascript');
+      anchor.removeAttribute ('onclick');
+      anchor.onclick = null;
       anchor.setAttribute ('aria-disabled', 'true');
     }
 
@@ -149,6 +151,22 @@ function ListMenu_Update (listMenu, getSelectionCount)
       });
 
       $(item).attr(itemInfo.DiagnosticMetadata);
+    }
+
+    if (itemInfo.DiagnosticMetadataForCommand)
+    {
+      // Do not render empty diagnostic metadata attributes
+      $.each(itemInfo.DiagnosticMetadataForCommand,
+        function (key, value) {
+          if (value === "" || value === null)
+          {
+            delete itemInfo.DiagnosticMetadataForCommand[key];
+          }
+        });
+
+      itemInfo.DiagnosticMetadataForCommand['data-is-disabled'] = isEnabled ? 'false' : 'true';
+
+      $(anchor).attr(itemInfo.DiagnosticMetadataForCommand);
     }
   }
 }
