@@ -21,6 +21,7 @@ namespace Remotion.Web.Services
   /// <summary>
   /// Defines the API for a factory capable of instantiating web services
   /// </summary>
+  /// <threadsafety static="true" instance="true" />
   public interface IWebServiceFactory
   {
     /// <summary>

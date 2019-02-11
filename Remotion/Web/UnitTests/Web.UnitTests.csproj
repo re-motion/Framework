@@ -206,6 +206,7 @@
     <Compile Include="Core\Security\IPrincipalProviderTest.cs" />
     <Compile Include="Core\Security\UI\IWebSecurityAdapterTest.cs" />
     <Compile Include="Core\Services\IconProxyTest.cs" />
+    <Compile Include="Core\Services\IWebServiceFactoryTest.cs" />
     <Compile Include="Core\Services\WebServiceFactoryTests\CreateWebService.cs" />
     <Compile Include="Core\Services\WebServiceFactoryTests\CreateScriptService.cs" />
     <Compile Include="Core\Services\WebServiceFactoryTests\CreateJsonService.cs" />
