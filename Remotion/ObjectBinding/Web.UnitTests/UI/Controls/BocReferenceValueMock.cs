@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.Services;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -26,6 +27,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 public class BocReferenceValueMock: BocReferenceValue
 {
   private bool _isDesignMode = true;
+
+  public BocReferenceValueMock (IWebServiceFactory webServiceFactory)
+      : base (webServiceFactory)
+  {
+  }
 
   public new void EvaluateWaiConformity ()
   {

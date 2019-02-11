@@ -22,12 +22,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
@@ -98,6 +101,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // construction and disposing
 
     public BocReferenceValue ()
+        : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+    {
+    }
+
+    protected BocReferenceValue ([NotNull] IWebServiceFactory webServiceFactory)
+        : base (webServiceFactory)
     {
       _listItems = new ListItemCollection();
       _dropDownListStyle = new DropDownListStyle();

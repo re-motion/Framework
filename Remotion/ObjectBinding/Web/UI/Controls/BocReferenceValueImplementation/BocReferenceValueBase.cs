@@ -25,13 +25,14 @@ using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.Design;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
-using Remotion.Web.Infrastructure;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -85,16 +86,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private string[] _hiddenMenuItems;
     private string _iconServicePath;
     private string _iconServiceArguments;
-    private IWebServiceFactory _webServiceFactory;
+    protected IWebServiceFactory WebServiceFactory { get; }
 
     protected BocReferenceValueBase ()
+        : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
     {
+    }
+
+    protected BocReferenceValueBase ([NotNull] IWebServiceFactory webServiceFactory)
+    {
+      ArgumentUtility.CheckNotNull ("webServiceFactory", webServiceFactory);
+
       _optionsMenu = new DropDownMenu (this);
       _command = new SingleControlItemCollection (new BocCommand(), new[] { typeof (BocCommand) });
       _command.OwnerControl = this;
       _commonStyle = new Style();
       _labelStyle = new Style();
-      _webServiceFactory = new WebServiceFactory (new BuildManagerWrapper());
+      WebServiceFactory = webServiceFactory;
 
       EnableIcon = true;
     }
@@ -387,15 +395,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       get { return _iconServiceArguments; }
       set { _iconServiceArguments = StringUtility.EmptyToNull (value); }
-    }
-
-    [EditorBrowsable (EditorBrowsableState.Advanced)]
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IWebServiceFactory WebServiceFactory
-    {
-      get { return _webServiceFactory; }
-      set { _webServiceFactory = ArgumentUtility.CheckNotNull ("value", value); }
     }
 
     /// <summary> The <see cref="BocReferenceValue"/> supports only scalar properties. </summary>
