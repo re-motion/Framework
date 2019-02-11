@@ -18,6 +18,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 
@@ -26,6 +27,8 @@ namespace Remotion.Web.Services
   /// <summary>
   /// Default implementation of the <see cref="IWebServiceFactory"/> interface.
   /// </summary>
+  /// <threadsafety static="true" instance="true" />
+  [ImplementationFor (typeof (IWebServiceFactory), Lifetime = LifetimeKind.Singleton)]
   public class WebServiceFactory : IWebServiceFactory
   {
     private static readonly ConcurrentDictionary<Type, IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>>> s_serviceMethodCache =
