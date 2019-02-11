@@ -24,13 +24,16 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.Design;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
@@ -114,6 +117,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // construction and disposing
 
     public BocAutoCompleteReferenceValue ()
+        : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+    {
+    }
+
+    protected BocAutoCompleteReferenceValue ([NotNull] IWebServiceFactory webServiceFactory)
+        : base (webServiceFactory)
     {
       _textBoxStyle = new SingleRowTextBoxStyle();
       _searchServiceContextFromPreviousLifeCycle = SearchAvailableObjectWebServiceContext.Create (null, null, null);

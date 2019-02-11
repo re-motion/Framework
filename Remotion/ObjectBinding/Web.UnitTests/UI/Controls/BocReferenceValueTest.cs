@@ -27,6 +27,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
+using Remotion.Web.Services;
 using Remotion.Web.UI.Controls;
 using Rhino.Mocks;
 
@@ -54,6 +55,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     private TypeWithReference _businessObject;
     private IBusinessObjectDataSource _dataSource;
     private IBusinessObjectReferenceProperty _propertyReferenceValue;
+    private IWebServiceFactory _webServiceFactoryStub;
 
     public BocReferenceValueTest ()
     {
@@ -63,7 +65,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public override void SetUp ()
     {
       base.SetUp();
-      _bocReferenceValue = new BocReferenceValueMock();
+
+      _webServiceFactoryStub = MockRepository.GenerateStub<IWebServiceFactory>();
+
+      _bocReferenceValue = new BocReferenceValueMock (_webServiceFactoryStub);
       _bocReferenceValue.ID = "BocReferenceValue";
       _bocReferenceValue.ShowOptionsMenu = false;
 #pragma warning disable 618
