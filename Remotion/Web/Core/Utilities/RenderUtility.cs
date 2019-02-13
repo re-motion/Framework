@@ -70,12 +70,6 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
       ArgumentUtility.CheckNotNull ("dictionary", dictionary);
 
-      if (dictionary.Count == 0)
-      {
-        stringBuilder.Append ("null");
-        return;
-      }
-
       stringBuilder.Append ("{");
 
       foreach (var dictionaryEntry in dictionary)
@@ -92,7 +86,8 @@ namespace Remotion.Web.Utilities
       }
 
       //Remove last comma
-      stringBuilder.Remove (stringBuilder.Length - 1, 1);
+      if (stringBuilder[stringBuilder.Length -1] == ',')
+        stringBuilder.Remove (stringBuilder.Length - 1, 1);
 
       stringBuilder.Append ("}");
     }

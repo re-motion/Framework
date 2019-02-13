@@ -124,7 +124,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       
       stringBuilder.WriteDictionaryAsJson (dictionary);
 
-      Assert.That (stringBuilder.ToString(), Is.EqualTo ("null"));
+      Assert.That (stringBuilder.ToString(), Is.EqualTo ("{}"));
     }
 
     [Test]
