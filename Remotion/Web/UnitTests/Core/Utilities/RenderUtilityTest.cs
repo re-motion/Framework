@@ -117,18 +117,19 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     }
 
     [Test]
-    public void ToJson_ReturnsNullForEmpty ()
+    public void ToJson_ReturnsEmptyObjectForEmptyDictionary ()
     {
-      var dictionary = new Dictionary<string, string>();
       var stringBuilder = new StringBuilder();
-      
-      stringBuilder.WriteDictionaryAsJson (dictionary);
+
+      stringBuilder.WriteDictionaryAsJson (
+          new Dictionary<string, string>(),
+          new Dictionary<string, IReadOnlyCollection<string>>());
 
       Assert.That (stringBuilder.ToString(), Is.EqualTo ("{}"));
     }
 
     [Test]
-    public void ToJson_OneObject ()
+    public void ToJson_OneValue ()
     {
       var dictionary = new Dictionary<string, string>();
       dictionary.Add ("data-TestDiagnosticMetadata", "teststring");
@@ -140,7 +141,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     }
 
     [Test]
-    public void ToJson_MultipleObjects ()
+    public void ToJson_MultipleValues ()
     {
       var dictionary = new Dictionary<string, string>();
       dictionary.Add ("data-TestDiagnosticMetadata1", "teststring1");
@@ -152,17 +153,71 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       Assert.That (stringBuilder.ToString(), Is.EqualTo ("{\"data-TestDiagnosticMetadata1\":\"teststring1\",\"data-TestDiagnosticMetadata2\":\"teststring2\",\"data-TestDiagnosticMetadata3\":\"teststring3\"}"));
     }
-    
+
     [Test]
     public void ToJson_EncapsulatesValuesContainingDoubleQuotesIntoSingleQuotes ()
     {
       var dictionary = new Dictionary<string, string>();
-      dictionary.Add ("data-TestDiagnosticMetadata", "What\"ever");
+      dictionary.Add ("data-TestDiagnosticMetadata1", "What\"ever");
+      dictionary.Add ("data-TestDiagnosticMetadata2", "Some'thing");
       var stringBuilder = new StringBuilder();
       
       stringBuilder.WriteDictionaryAsJson (dictionary);
 
-      Assert.That (stringBuilder.ToString(), Is.EqualTo ("{\"data-TestDiagnosticMetadata\":'What\"ever'}"));
+      Assert.That (stringBuilder.ToString(), Is.EqualTo ("{\"data-TestDiagnosticMetadata1\":'What\"ever',\"data-TestDiagnosticMetadata2\":\"Some'thing\"}"));
+    }
+
+    [Test]
+    public void ToJson_OneArray ()
+    {
+      var dictionary = new Dictionary<string, IReadOnlyCollection<string>>();
+      dictionary.Add ("data-TestDiagnosticMetadata", new[] { "teststring" });
+      var stringBuilder = new StringBuilder();
+      
+      stringBuilder.WriteDictionaryAsJson (new Dictionary<string, string>(), dictionary);
+
+      Assert.That (stringBuilder.ToString(), Is.EqualTo ("{\"data-TestDiagnosticMetadata\":[\"teststring\"]}"));
+    }
+
+    [Test]
+    public void ToJson_MultipleArrays ()
+    {
+      var dictionary = new Dictionary<string, IReadOnlyCollection<string>>();
+      dictionary.Add ("data-TestDiagnosticMetadata1", new[] { "teststring1" });
+      dictionary.Add ("data-TestDiagnosticMetadata2", new string[0]);
+      dictionary.Add ("data-TestDiagnosticMetadata3", new[] { "teststring2", "teststring3" });
+      var stringBuilder = new StringBuilder();
+      
+      stringBuilder.WriteDictionaryAsJson (new Dictionary<string, string>(), dictionary);
+
+      Assert.That (stringBuilder.ToString(), Is.EqualTo ("{\"data-TestDiagnosticMetadata1\":[\"teststring1\"],\"data-TestDiagnosticMetadata2\":[],\"data-TestDiagnosticMetadata3\":[\"teststring2\",\"teststring3\"]}"));
+    }
+
+    [Test]
+    public void ToJson_EncapsulatesArrayValuesContainingDoubleQuotesIntoSingleQuotes ()
+    {
+      var dictionary = new Dictionary<string, IReadOnlyCollection<string>>();
+      dictionary.Add ("data-TestDiagnosticMetadata", new[] { "What\"ever",  "Some'thing" });
+      var stringBuilder = new StringBuilder();
+      
+      stringBuilder.WriteDictionaryAsJson (new Dictionary<string, string>(), dictionary);
+
+      Assert.That (stringBuilder.ToString(), Is.EqualTo ("{\"data-TestDiagnosticMetadata\":['What\"ever',\"Some'thing\"]}"));
+    }
+
+    [Test]
+    public void ToJson_CombinationOfStringValueAndStringArray ()
+    {
+      var dictionary1 = new Dictionary<string, string>();
+      dictionary1.Add ("data-TestDiagnosticMetadata1", "teststring1");
+
+      var dictionary2 = new Dictionary<string, IReadOnlyCollection<string>>();
+      dictionary2.Add ("data-TestDiagnosticMetadata2", new[] { "teststring2", "teststring3" });
+      var stringBuilder = new StringBuilder();
+      
+      stringBuilder.WriteDictionaryAsJson (dictionary1, dictionary2);
+
+      Assert.That (stringBuilder.ToString(), Is.EqualTo ("{\"data-TestDiagnosticMetadata1\":\"teststring1\",\"data-TestDiagnosticMetadata2\":[\"teststring2\",\"teststring3\"]}"));
     }
   }
 }
