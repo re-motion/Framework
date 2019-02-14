@@ -20,7 +20,6 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
-using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Utilities
@@ -63,33 +62,64 @@ namespace Remotion.Web.Utilities
     }
 
     /// <summary>
-    /// Writes a <paramref name="dictionary"/> as Json string to the <paramref name="stringBuilder"/>.
+    /// Writes a set of string and string-arrays as Json string to the <paramref name="stringBuilder"/>.
     /// </summary>
-    public static void WriteDictionaryAsJson (this StringBuilder stringBuilder, IReadOnlyDictionary<string, string> dictionary)
+    public static void WriteDictionaryAsJson (
+          this StringBuilder stringBuilder,
+          IReadOnlyDictionary<string, string> dictionaryOfStringValues,
+          IReadOnlyDictionary<string, IReadOnlyCollection<string>> dictionaryOfStringArrays = null)
     {
       ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
-      ArgumentUtility.CheckNotNull ("dictionary", dictionary);
+      ArgumentUtility.CheckNotNull ("dictionary", dictionaryOfStringValues);
 
-      stringBuilder.Append ("{");
+      stringBuilder.Append ('{');
 
-      foreach (var dictionaryEntry in dictionary)
+      foreach (var dictionaryEntry in dictionaryOfStringValues)
       {
-        stringBuilder.Append ("\"").Append (dictionaryEntry.Key).Append ("\"").Append (":");
-
-        if (dictionaryEntry.Value.Contains ("\""))
-          stringBuilder.Append ("'").Append (dictionaryEntry.Value).Append ("'");
-        else
-          stringBuilder.Append ("\"").Append (dictionaryEntry.Value).Append ("\"");
-
-
-        stringBuilder.Append (",");
+        stringBuilder.AppendFormattedString (dictionaryEntry.Key);
+        stringBuilder.Append (':');
+        stringBuilder.AppendFormattedString (dictionaryEntry.Value);
+        stringBuilder.Append (',');
       }
 
-      //Remove last comma
-      if (stringBuilder[stringBuilder.Length -1] == ',')
+      if (dictionaryOfStringArrays != null)
+      {
+        foreach (var dictionaryEntry in dictionaryOfStringArrays)
+        {
+          stringBuilder.AppendFormattedString (dictionaryEntry.Key);
+          stringBuilder.Append (':');
+
+          stringBuilder.Append ('[');
+          dictionaryEntry.Value.Aggregate (stringBuilder, (sb, itemID) => sb.AppendFormattedString (itemID).Append (','));
+          stringBuilder.RemoveTrailingComma();
+          stringBuilder.Append (']');
+
+          stringBuilder.Append (',');
+        }
+      }
+
+      stringBuilder.RemoveTrailingComma();
+
+      stringBuilder.Append ('}');
+    }
+
+    private static StringBuilder AppendFormattedString (this StringBuilder stringBuilder, string value)
+    {
+      var hasDoubleQuotes = value.IndexOf ('\"') >= 0;
+      if (hasDoubleQuotes)
+        stringBuilder.Append ('\'').Append (value).Append ('\'');
+      else
+        stringBuilder.Append ('\"').Append (value).Append ('\"');
+
+      return stringBuilder;
+    }
+
+    private static StringBuilder RemoveTrailingComma (this StringBuilder stringBuilder)
+    {
+      if (stringBuilder[stringBuilder.Length - 1] == ',')
         stringBuilder.Remove (stringBuilder.Length - 1, 1);
 
-      stringBuilder.Append ("}");
+      return stringBuilder;
     }
   }
 }
