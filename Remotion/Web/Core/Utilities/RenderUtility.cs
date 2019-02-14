@@ -70,7 +70,7 @@ namespace Remotion.Web.Utilities
           IReadOnlyDictionary<string, IReadOnlyCollection<string>> dictionaryOfStringArrays = null)
     {
       ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
-      ArgumentUtility.CheckNotNull ("dictionary", dictionaryOfStringValues);
+      ArgumentUtility.CheckNotNull ("dictionaryOfStringValues", dictionaryOfStringValues);
 
       stringBuilder.Append ('{');
 
@@ -88,12 +88,7 @@ namespace Remotion.Web.Utilities
         {
           stringBuilder.AppendFormattedString (dictionaryEntry.Key);
           stringBuilder.Append (':');
-
-          stringBuilder.Append ('[');
-          dictionaryEntry.Value.Aggregate (stringBuilder, (sb, itemID) => sb.AppendFormattedString (itemID).Append (','));
-          stringBuilder.RemoveTrailingComma();
-          stringBuilder.Append (']');
-
+          stringBuilder.AppendStringCollection (dictionaryEntry.Value);
           stringBuilder.Append (',');
         }
       }
@@ -105,11 +100,35 @@ namespace Remotion.Web.Utilities
 
     private static StringBuilder AppendFormattedString (this StringBuilder stringBuilder, string value)
     {
-      var hasDoubleQuotes = value.IndexOf ('\"') >= 0;
-      if (hasDoubleQuotes)
-        stringBuilder.Append ('\'').Append (value).Append ('\'');
+      if (value == null)
+      {
+        stringBuilder.Append ("null");
+      }
       else
-        stringBuilder.Append ('\"').Append (value).Append ('\"');
+      {
+        var hasDoubleQuotes = value.IndexOf ('\"') >= 0;
+        if (hasDoubleQuotes)
+          stringBuilder.Append ('\'').Append (value).Append ('\'');
+        else
+          stringBuilder.Append ('\"').Append (value).Append ('\"');
+      }
+
+      return stringBuilder;
+    }
+
+    private static StringBuilder AppendStringCollection (this StringBuilder stringBuilder, IReadOnlyCollection<string> value)
+    {
+      if (value == null)
+      {
+        stringBuilder.Append ("null");
+      }
+      else
+      {
+        stringBuilder.Append ('[');
+        value.Aggregate (stringBuilder, (sb, itemID) => sb.AppendFormattedString (itemID).Append (','));
+        stringBuilder.RemoveTrailingComma();
+        stringBuilder.Append (']');
+      }
 
       return stringBuilder;
     }
