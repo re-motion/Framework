@@ -29,7 +29,7 @@
 </remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" readonly="True" datasourcecontrol="CurrentObject" PropertyIdentifier="LastName"></remotion:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:bocAutoCompleteReferenceValue id=PartnerField runat="server" SearchServicePath="AutoCompleteService.asmx" 
+    <td><remotion:bocAutoCompleteReferenceValue id=PartnerField runat="server" SearchServicePath="AutoCompleteService.asmx" ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx" ControlServiceArguments="ControlServiceArgs"
     TextBoxStyle-AutoPostBack="true" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" CompletionSetCount="5" OnSelectionChanged="Control_SelectionChanged">
 <persistedcommand>
 <remotion:BocCommand Type="Event"></remotion:BocCommand>

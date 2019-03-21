@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
@@ -34,7 +35,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
   public class BocColumnRendererBaseTest : BocListRendererTestBase
   {
     private BocListCssClassDefinition _bocListCssClassDefinition;
-    private BocColumnRenderingContext<BocSimpleColumnDefinition> _renderingContext;
     private const string c_columnCssClass = "cssClassColumn";
 
     private BocSimpleColumnDefinition Column { get; set; }
@@ -58,9 +58,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Stub (mock => mock.IsShowSortingOrderEnabled).Return (true);
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
-
-      _renderingContext =
-          new BocColumnRenderingContext<BocSimpleColumnDefinition> (new BocColumnRenderingContext (HttpContext, Html.Writer, List, Column, 0, 0));
     }
 
     [Test]
@@ -97,7 +94,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void RenderTitleCellNoSorting ()
     {
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderTitleCell (_renderingContext, SortingDirection.None, -1);
+      var renderingContext = CreateRenderingContext();
+      renderer.RenderTitleCell (renderingContext, SortingDirection.None, -1);
 
       var document = Html.GetResultDocument();
 
@@ -125,10 +123,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           RenderingFeatures.WithDiagnosticMetadata,
           _bocListCssClassDefinition);
 
-      _renderingContext =
-          new BocColumnRenderingContext<BocSimpleColumnDefinition> (new BocColumnRenderingContext (HttpContext, Html.Writer, List, Column, 0, 6));
+      var renderingContext = CreateRenderingContext();
 
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell (renderingContext, 0, false, EventArgs);
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement (document, "td", 0);
@@ -145,10 +142,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Column.ItemID = "TestItemID";
 
-      _renderingContext =
-          new BocColumnRenderingContext<BocSimpleColumnDefinition> (new BocColumnRenderingContext (HttpContext, Html.Writer, List, Column, 0, 6));
+      var renderingContext = CreateRenderingContext();
 
-      renderer.RenderTitleCell (_renderingContext, SortingDirection.None, 0);
+      renderer.RenderTitleCell (renderingContext, SortingDirection.None, 0);
 
       var document = Html.GetResultDocument();
       var th = Html.GetAssertedChildElement (document, "th", 0);
@@ -165,7 +161,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
         string iconAltText)
     {
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderTitleCell (_renderingContext, sortDirection, sortIndex);
+      var renderingContext = CreateRenderingContext();
+      renderer.RenderTitleCell (renderingContext, sortDirection, sortIndex);
 
       var document = Html.GetResultDocument();
 
@@ -193,6 +190,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (sortIcon, "alt", iconAltText);
 
       Html.AssertTextNode (sortOrderSpan, HtmlHelper.WhiteSpace + (sortIndex + 1), 1);
+    }
+
+    private BocColumnRenderingContext<BocSimpleColumnDefinition> CreateRenderingContext ()
+    {
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (List.DataSource, List.Property, "Args");
+
+      return new BocColumnRenderingContext<BocSimpleColumnDefinition> (
+          new BocColumnRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, Column, 0, 6));
     }
   }
 }

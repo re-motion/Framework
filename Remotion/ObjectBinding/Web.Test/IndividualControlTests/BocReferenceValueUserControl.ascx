@@ -30,7 +30,8 @@
 </remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" readonly="True" datasourcecontrol="CurrentObject" PropertyIdentifier="LastName"></remotion:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:bocreferencevalue id=PartnerField runat="server" DropDownListStyle-AutoPostBack="true" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" EnableSelectStatement="True">
+    <td><remotion:bocreferencevalue id=PartnerField runat="server" DropDownListStyle-AutoPostBack="true" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" EnableSelectStatement="True"
+    ControlServicePath="BocReferenceValueWebService.asmx" ControlServiceArguments="ControlServiceArgs">
 <PersistedCommand>
 <remotion:BocCommand Type="Event"></remotion:BocCommand>
 </PersistedCommand>

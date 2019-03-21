@@ -20,6 +20,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 
@@ -137,12 +138,12 @@ public class BocListUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.Text = "Invisible Item";
     menuItem.IsVisible = false;
-    ChildrenList.ListMenuItems.Add (menuItem);
+    JobList.ListMenuItems.Add (menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.Text = "Invisible Item";
     menuItem.IsVisible = false;
-    ChildrenList.OptionsMenuItems.Add (menuItem);
+    JobList.OptionsMenuItems.Add (menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
@@ -231,6 +232,22 @@ public class BocListUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.Text = "Invisible Item";
     menuItem.IsVisible = false;
+    ChildrenList.OptionsMenuItems.Add (menuItem);
+
+    ChildrenList.OptionsMenuItems.Add (WebMenuItem.GetSeparator());
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "FilterByService";
+    menuItem.Text = "Should be filtered";
+    menuItem.IsVisible = true;
+    ChildrenList.OptionsMenuItems.Add (menuItem);
+
+    ChildrenList.OptionsMenuItems.Add (WebMenuItem.GetSeparator());
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "DisabledByService";
+    menuItem.Text = "Should be disabled";
+    menuItem.IsDisabled = false;
     ChildrenList.OptionsMenuItems.Add (menuItem);
   }
 

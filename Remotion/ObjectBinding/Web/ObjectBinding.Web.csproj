@@ -180,7 +180,12 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Services\BusinessObjectIconWebServiceContext.cs" />
+    <Compile Include="Services\BusinessObjectWebServiceContext.cs" />
     <Compile Include="Services\BusinessObjectWithIdentityProxy.cs" />
+    <Compile Include="Services\IBocDropDownMenuWebService.cs" />
+    <Compile Include="Services\IBocListWebService.cs" />
+    <Compile Include="Services\IBocReferenceValueWebService.cs" />
+    <Compile Include="Services\IBocTreeViewWebService.cs" />
     <Compile Include="Services\IBusinessObjectIconWebService.cs" />
     <Compile Include="Services\ISearchAvailableObjectWebService.cs" />
     <Compile Include="Services\SearchAvailableObjectWebServiceContext.cs" />
@@ -252,6 +257,7 @@
     <Compile Include="UI\Controls\BocReferenceValueImplementation\BocAutoCompleteReferenceValueInvalidDisplayNameValidator.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\IBocReferenceValueBase.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocAutoCompleteReferenceValueRenderingContext.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocReferenceValueBaseRenderingContext.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocReferenceValueRendererBase.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocReferenceValueRenderingContext.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\IBocAutoCompleteReferenceValueRenderer.cs" />

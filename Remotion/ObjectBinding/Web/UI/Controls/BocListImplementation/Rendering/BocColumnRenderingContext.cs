@@ -17,6 +17,7 @@
 using System;
 using System.Web;
 using System.Web.UI;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -26,6 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private readonly HttpContextBase _httpContext;
     private readonly HtmlTextWriter _writer;
     private readonly IBocList _control;
+    private readonly BusinessObjectWebServiceContext _businessObjectWebServiceContext;
     private readonly BocColumnDefinition _columnDefinition;
     private readonly int _columnIndex;
     private readonly int _visibleColumnIndex;
@@ -34,6 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         HttpContextBase httpContext,
         HtmlTextWriter writer,
         IBocList control,
+        BusinessObjectWebServiceContext businessObjectWebServiceContext,
         BocColumnDefinition columnDefinition,
         int columnIndex,
         int visibleColumnIndex)
@@ -41,11 +44,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull ("httpContext", httpContext);
       ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull ("businessObjectWebServiceContext", businessObjectWebServiceContext);
       ArgumentUtility.CheckNotNull ("columnDefinition", columnDefinition);
 
       _httpContext = httpContext;
       _writer = writer;
       _control = control;
+      _businessObjectWebServiceContext = businessObjectWebServiceContext;
       _columnDefinition = columnDefinition;
       _columnIndex = columnIndex;
       _visibleColumnIndex = visibleColumnIndex;
@@ -64,6 +69,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public IBocList Control
     {
       get { return _control; }
+    }
+
+    public BusinessObjectWebServiceContext BusinessObjectWebServiceContext
+    {
+      get { return _businessObjectWebServiceContext; }
     }
 
     public BocColumnDefinition ColumnDefinition

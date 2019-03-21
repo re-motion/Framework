@@ -157,11 +157,30 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
     referenceValue.OptionsMenuItems.Add (menuItem);
-  
+
     menuItem = new BocMenuItem();
     menuItem.Text = "Invisible Item";
     menuItem.IsVisible = false;
     referenceValue.OptionsMenuItems.Add (menuItem);
+
+    if (!string.IsNullOrEmpty (referenceValue.ControlServicePath))
+    {
+      referenceValue.OptionsMenuItems.Add (WebMenuItem.GetSeparator());
+
+      menuItem = new BocMenuItem();
+      menuItem.ItemID = "FilterByService";
+      menuItem.Text = "Should be filtered";
+      menuItem.IsVisible = true;
+      referenceValue.OptionsMenuItems.Add (menuItem);
+
+      referenceValue.OptionsMenuItems.Add (WebMenuItem.GetSeparator());
+
+      menuItem = new BocMenuItem();
+      menuItem.ItemID = "DisabledByService";
+      menuItem.Text = "Should be disabled";
+      menuItem.IsDisabled = false;
+      referenceValue.OptionsMenuItems.Add (menuItem);
+    }
   }
 
   override protected void OnLoad (EventArgs e)

@@ -83,6 +83,24 @@
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif"></remotion:WebMenuItem>
         </MenuItems>
       </remotion:DropDownMenu>
+      <h3>DropDownMenu (delayed open)</h3>
+      <remotion:DropDownMenu ID="MyDropDownMenu_Delayed" Mode="DropDownMenu" TitleText="Delayed Open" runat="server">
+        <MenuItems>
+          <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="Item"/>
+        </MenuItems>
+      </remotion:DropDownMenu>
+      <h3>DropDownMenu (delayed longer than timeout)</h3>
+      <remotion:DropDownMenu ID="MyDropDownMenu_DelayedLongerThanTimeout" Mode="DropDownMenu" TitleText="Delayed Open" runat="server">
+        <MenuItems>
+          <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="Item"/>
+        </MenuItems>
+      </remotion:DropDownMenu>
+      <h3>DropDownMenu (error on open)</h3>
+      <remotion:DropDownMenu ID="MyDropDownMenu_Error" Mode="DropDownMenu" TitleText="Delayed Open" runat="server">
+        <MenuItems>
+            <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="Item"/>
+        </MenuItems>
+      </remotion:DropDownMenu>
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

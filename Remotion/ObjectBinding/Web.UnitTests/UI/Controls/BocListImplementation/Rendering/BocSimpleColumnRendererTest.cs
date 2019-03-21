@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Web.UI;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
@@ -52,8 +53,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
 
-      _renderingContext =
-          new BocColumnRenderingContext<BocSimpleColumnDefinition> (new BocColumnRenderingContext (HttpContext, Html.Writer, List, Column, 0, 0));
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
+      _renderingContext = new BocColumnRenderingContext<BocSimpleColumnDefinition> (
+          new BocColumnRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, Column, 0, 0));
     }
 
     [Test]

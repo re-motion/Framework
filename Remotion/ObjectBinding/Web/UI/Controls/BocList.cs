@@ -24,23 +24,28 @@ using System.Drawing.Design;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Web.UI;
+using System.Web.UI.Design;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Globalization;
 using Remotion.Logging;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Infrastructure;
+using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
@@ -302,12 +307,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly IRenderingFeatures _renderingFeatures;
     private ReadOnlyCollection<BaseValidator> _validators;
 
+    private string _controlServicePath;
+    private string _controlServiceArguments;
+
     private bool _hasPreRenderCompleted;
 
     // construction and disposing
 
+    protected IWebServiceFactory WebServiceFactory { get; }
+
     public BocList ()
+        : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
     {
+    }
+
+    protected BocList ([NotNull] IWebServiceFactory webServiceFactory)
+    {
+      ArgumentUtility.CheckNotNull ("webServiceFactory", webServiceFactory);
+
       _availableViewsListPlaceHolder = new PlaceHolder();
       _editModeController = new EditModeController (new EditModeHost (this));
       _optionsMenu = new DropDownMenu (this);
@@ -317,6 +334,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _fixedColumns.CollectionChanged += delegate { OnColumnsChanged(); };
 
       _renderingFeatures = ServiceLocator.GetInstance<IRenderingFeatures>();
+      WebServiceFactory = webServiceFactory;
     }
 
     // methods and properties
@@ -1016,7 +1034,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _optionsMenu.GetSelectionCount = GetSelectionCountScript();
       }
 
+      CheckControlService();
+
       SetPreRenderComplete();
+    }
+
+    private void CheckControlService ()
+    {
+      if (IsDesignMode)
+        return;
+
+      if (string.IsNullOrEmpty (ControlServicePath))
+        return;
+
+      var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, ControlServicePath);
+      WebServiceFactory.CreateJsonService<IBocListWebService> (virtualServicePath);
     }
 
     /// <summary> Gets a <see cref="HtmlTextWriterTag.Div"/> as the <see cref="WebControl.TagKey"/>. </summary>
@@ -1101,7 +1133,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new BocListRenderingContext (Context, writer, this, columnRenderers);
+      return new BocListRenderingContext (Context, writer, this, CreateBusinessObjectWebServiceContext(), columnRenderers);
+    }
+
+    private BusinessObjectWebServiceContext CreateBusinessObjectWebServiceContext ()
+    {
+      return BusinessObjectWebServiceContext.Create (DataSource, Property, ControlServiceArguments);
     }
 
     public bool HasNavigator
@@ -3512,6 +3549,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _errorMessage = value;
         UpdateValidtaorErrorMessages<EditModeValidator> (_errorMessage);
       }
+    }
+
+    [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
+    [Category ("Behavior")]
+    [DefaultValue ("")]
+    public string ControlServicePath
+    {
+      get { return _controlServicePath; }
+      set { _controlServicePath = value ?? string.Empty; }
+    }
+
+    [Category ("Behavior")]
+    [DefaultValue ("")]
+    [Description ("Additional arguments passed to the control service.")]
+    public string ControlServiceArguments
+    {
+      get { return _controlServiceArguments; }
+      set { _controlServiceArguments = StringUtility.EmptyToNull (value); }
     }
 
     bool IBocList.HasClientScript

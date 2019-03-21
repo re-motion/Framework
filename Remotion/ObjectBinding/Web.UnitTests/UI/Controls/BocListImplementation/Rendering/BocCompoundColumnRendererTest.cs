@@ -18,6 +18,7 @@ using System;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
@@ -48,8 +49,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Column.PropertyPathBindings.Add (new PropertyPathBinding ("DisplayName"));
 
-      _renderingContext =
-          new BocColumnRenderingContext<BocCompoundColumnDefinition> (new BocColumnRenderingContext (HttpContext, Html.Writer, List, Column, 0, 0));
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
+      _renderingContext = new BocColumnRenderingContext<BocCompoundColumnDefinition> (
+          new BocColumnRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, Column, 0, 0));
     }
 
     [Test]

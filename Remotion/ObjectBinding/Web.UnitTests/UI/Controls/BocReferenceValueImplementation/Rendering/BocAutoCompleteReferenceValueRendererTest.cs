@@ -727,7 +727,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           Html.Writer,
           Control,
           SearchAvailableObjectWebServiceContext.Create (Control.DataSource, Control.Property, "SearchArgs"),
-          BusinessObjectIconWebServiceContext.Create (null, "IconArgs"));
+          BusinessObjectIconWebServiceContext.Create (null, "IconArgs"),
+          BusinessObjectWebServiceContext.Create (Control.DataSource, Control.Property, "Args"));
     }
   }
 }

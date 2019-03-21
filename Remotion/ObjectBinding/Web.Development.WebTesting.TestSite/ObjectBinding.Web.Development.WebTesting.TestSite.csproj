@@ -92,6 +92,7 @@
     <Content Include="Controls\BocAutoCompleteReferenceValueUserControlTestOutput.ascx" />
     <Content Include="Controls\BocListUserControl.ascx" />
     <Content Include="Controls\BocAutoCompleteReferenceValueUserControl.ascx" />
+    <Content Include="Controls\BocTreeViewWebService.asmx" />
     <Content Include="Controls\IconService.asmx" />
     <Content Include="ControlTestForm.aspx" />
     <Content Include="Default.aspx" />
@@ -309,6 +310,10 @@
     </Compile>
     <Compile Include="Controls\BocAutoCompleteReferenceValueUserControl.ascx.designer.cs">
       <DependentUpon>BocAutoCompleteReferenceValueUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BocTreeViewWebService.asmx.cs">
+      <DependentUpon>BocTreeViewWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\IBocListUserControlBaseTestOutput.cs" />
     <Compile Include="Controls\IconService.asmx.cs">

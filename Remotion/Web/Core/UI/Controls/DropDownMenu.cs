@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
+using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
@@ -43,6 +44,7 @@ namespace Remotion.Web.UI.Controls
 
     private Action<HtmlTextWriter> _renderHeadTitleMethod;
     private string _getSelectionCount = "";
+    private string _loadMenuItemStatus = "";
 
     public DropDownMenu (IControl ownerControl, Type[] supportedMenuItemTypes)
       :base(ownerControl, supportedMenuItemTypes)
@@ -155,6 +157,16 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
+    IResourceManager IDropDownMenu.GetResourceManager ()
+    {
+      return GetResourceManager();
+    }
+
+    protected virtual IResourceManager GetResourceManager ()
+    {
+      return NullResourceManager.Instance;
+    }
+
     /// <summary> Only used by control developers. </summary>
     /// <remarks>Note that setting the <see cref="ShowTitle"/> flag will override the <paramref name="renderHeadTitleMethod"/>.</remarks>
     [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
@@ -219,7 +231,19 @@ namespace Remotion.Web.UI.Controls
     public string GetSelectionCount
     {
       get { return _getSelectionCount; }
-      set { _getSelectionCount = value; }
+      set { _getSelectionCount = StringUtility.NullToEmpty (value); }
+    }
+
+    public string LoadMenuItemStatus
+    {
+      get { return _loadMenuItemStatus; }
+    }
+
+    public void SetLoadMenuItemStatus (string value)
+    {
+      ArgumentUtility.CheckNotEmpty ("value", value);
+
+      _loadMenuItemStatus = value; 
     }
 
     string IControlWithDiagnosticMetadata.ControlType

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -35,14 +36,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       Open();
     }
 
-    /// <inheritdoc/>
-    public override void Open ()
+    protected override void PerformOpen (ElementScope menuButtonScope)
     {
-      if (!IsOpen())
-      {
-        var dropDownMenuButtonScope = Scope.FindCss ("a.DropDownMenuButton");
-        dropDownMenuButtonScope.Click();
-      }
+      menuButtonScope.Click();
     }
   }
 }

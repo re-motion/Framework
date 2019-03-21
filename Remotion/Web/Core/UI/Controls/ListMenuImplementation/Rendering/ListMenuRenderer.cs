@@ -315,11 +315,11 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       {
         var diagnosticMetadataDictionary = new Dictionary<string, string>();
 
-        if (!string.IsNullOrEmpty (menuItem.ItemID))
-          diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
+        if (!string.IsNullOrEmpty(menuItem.ItemID))
+          diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
 
-        if (!string.IsNullOrEmpty (menuItem.Text))
-          diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (menuItem.Text));
+        if (!string.IsNullOrEmpty(menuItem.Text))
+          diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(menuItem.Text));
 
         stringBuilder.WriteDictionaryAsJson (diagnosticMetadataDictionary);
 

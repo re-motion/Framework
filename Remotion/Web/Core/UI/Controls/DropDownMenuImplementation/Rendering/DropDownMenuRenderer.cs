@@ -34,6 +34,22 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
   [ImplementationFor (typeof (IDropDownMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DropDownMenuRenderer : RendererBase<IDropDownMenu>, IDropDownMenuRenderer
   {
+    /// <summary> A list of control specific resources. </summary>
+    /// <remarks> 
+    ///   Resources will be accessed using 
+    ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+    ///   See the documentation of <b>GetString</b> for further details.
+    /// </remarks>
+    [ResourceIdentifiers]
+    [MultiLingualResources ("Remotion.Web.Globalization.DropDownMenuRenderer")]
+    public enum ResourceIdentifier
+    {
+      /// <summary> The error message displayed when the menu items could not be loaded from the server. </summary>
+      LoadFailedErrorMessage,
+      /// <summary> The status message displayed while the menu items are loaded from the server. </summary>
+      LoadingStatusMessage,
+    }
+
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
 
     private const string c_whiteSpace = "&nbsp;";
@@ -274,8 +290,10 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
           && !renderingContext.Control.Page.ClientScript.IsStartupScriptRegistered (typeof (DropDownMenuRenderer), key))
       {
         StringBuilder script = new StringBuilder();
-        script.Append ("DropDownMenu_AddMenuInfo" + " (\r\n\t");
-        script.AppendFormat ("new DropDownMenu_MenuInfo ('{0}', new Array (\r\n", renderingContext.Control.ClientID);
+        script.Append ("DropDownMenu_AddMenuInfo" + " (").AppendLine();
+        script.AppendFormat ("  new DropDownMenu_MenuInfo ('{0}', ", renderingContext.Control.ClientID);
+        script.Append ("function(onSuccess, onError) {").AppendLine();
+        script.Append ("    const unfilteredMenuItems = [").AppendLine();
         bool isFirstItem = true;
 
         WebMenuItem[] menuItems;
@@ -286,6 +304,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
         string category = null;
         bool isCategoryVisible = false;
+        List<WebMenuItem> visibleMenuItems = new List<WebMenuItem>();
         for (int i = 0; i < menuItems.Length; i++)
         {
           WebMenuItem menuItem = menuItems[i];
@@ -303,10 +322,17 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
           if (isFirstItem)
             isFirstItem = false;
           else
-            script.AppendFormat (",\r\n");
+            script.AppendFormat (",").AppendLine();
           AppendMenuItem (renderingContext, script, menuItem, renderingContext.Control.MenuItems.IndexOf (menuItem));
+          visibleMenuItems.Add (menuItem);
         }
-        script.Append (" )"); // Close Array
+        script.Append ("];").AppendLine(); // Close Array
+
+        var loadMenuItemStatus = renderingContext.Control.LoadMenuItemStatus;
+        script.Append ("    const loadMenuItemStatus = ").Append (string.IsNullOrEmpty (loadMenuItemStatus) ? "null" : loadMenuItemStatus).Append (";").AppendLine();
+        script.Append ("    DropDownMenu_LoadFilteredMenuItems (unfilteredMenuItems, loadMenuItemStatus, onSuccess, onError);").AppendLine();
+        script.Append ("  },"); // Close function body
+        script.Append (GetResourcesAsJson (renderingContext));
         script.Append (" )"); // Close new MenuInfo
         script.Append (" );"); // Close AddMenuInfo
         renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
@@ -369,8 +395,8 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       bool isDisabled = !menuItem.EvaluateEnabled() || !isCommandEnabled;
 
       stringBuilder.AppendFormat (
-          "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, ",
-          menuItemIndex,
+          "\t\tnew DropDownMenu_ItemInfo ({0}, '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, ",
+          string.IsNullOrEmpty (menuItem.ItemID) ? "null" : "'" + menuItem.ItemID + "'",
           menuItem.Category,
           text,
           icon,
@@ -427,6 +453,28 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         disabledIcon = "'" + renderingContext.Control.ResolveClientUrl (url) + "'";
       }
       return disabledIcon;
+    }
+
+    private string GetResourcesAsJson (DropDownMenuRenderingContext renderingContext)
+    {
+      var resourceManager = GetResourceManager (renderingContext);
+      var jsonBuilder = new StringBuilder (1000);
+
+      jsonBuilder.Append ("{ ");
+      jsonBuilder.Append ("LoadFailedErrorMessage : ");
+      AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetString (ResourceIdentifier.LoadFailedErrorMessage));
+      jsonBuilder.Append (", ");
+      jsonBuilder.Append ("LoadingStatusMessage : ");
+      AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetString (ResourceIdentifier.LoadingStatusMessage));
+      jsonBuilder.Append (", ");
+      jsonBuilder.Append (" }");
+
+      return jsonBuilder.ToString();
+    }
+
+    protected virtual IResourceManager GetResourceManager (DropDownMenuRenderingContext renderingContext)
+    {
+      return GetResourceManager (typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
     protected string CssClassBase

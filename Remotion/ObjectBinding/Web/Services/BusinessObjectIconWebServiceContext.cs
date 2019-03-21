@@ -15,12 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Services
 {
   public class BusinessObjectIconWebServiceContext
   {
+    [CanBeNull]
     public static BusinessObjectIconWebServiceContext Create (IBusinessObjectClassWithIdentity businessObjectClass, string arguments)
     {
       if (businessObjectClass == null)

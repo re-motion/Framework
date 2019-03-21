@@ -40,7 +40,24 @@ namespace Remotion.ObjectBinding.Sample
       wxeMenuItem.Command.Type = CommandType.WxeFunction;
       wxeMenuItem.Command.WxeFunctionCommand.TypeName = TypeUtility.GetPartialAssemblyQualifiedName (typeof (TestWxeFunction));
 
-      WebMenuItem[] menuItems = new WebMenuItem[] {eventMenuItem, wxeMenuItem};
+      WebMenuItem filteredByServiceMenuItem = new WebMenuItem();
+      filteredByServiceMenuItem.ItemID = "FilterByService";
+      filteredByServiceMenuItem.Text = "Should be filtered";
+      filteredByServiceMenuItem.IsVisible = true;
+
+      WebMenuItem disabledByServiceMenuItem = new WebMenuItem();
+      disabledByServiceMenuItem.ItemID = "DisabledByService";
+      disabledByServiceMenuItem.Text = "Should be disabled";
+      disabledByServiceMenuItem.IsDisabled = false;
+
+      WebMenuItem[] menuItems = new WebMenuItem[]
+                                {
+                                    eventMenuItem,
+                                    wxeMenuItem,
+                                    WebMenuItem.GetSeparator(),
+                                    filteredByServiceMenuItem,
+                                    disabledByServiceMenuItem
+                                };
       return menuItems;
     }
 

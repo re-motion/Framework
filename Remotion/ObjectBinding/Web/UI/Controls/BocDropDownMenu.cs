@@ -16,14 +16,23 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Web;
+using System.Drawing.Design;
 using System.Web.UI;
+using System.Web.UI.Design;
+using JetBrains.Annotations;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.DropDownMenuImplementation;
+using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -46,12 +55,24 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   private IBusinessObject _value;
   private bool _enableIcon = true;
   private string[] _hiddenMenuItems;
+  private string _controlServicePath;
+  private string _controlServiceArguments;
 
   // contruction and destruction
 
-  public BocDropDownMenu()
+  protected IWebServiceFactory WebServiceFactory { get; }
+
+  public BocDropDownMenu ()
+      : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
   {
+  }
+
+  protected BocDropDownMenu ([NotNull] IWebServiceFactory webServiceFactory)
+  {
+    ArgumentUtility.CheckNotNull ("webServiceFactory", webServiceFactory);
+
     _dropDownMenu = new DropDownMenu (this);
+    WebServiceFactory = webServiceFactory;
   }
 
   // methods and properties
@@ -87,8 +108,22 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
       PreRenderMenuItems();
 
     PreRenderDropDownMenu();
+
+    CheckControlService();
   }
-  
+
+  private void CheckControlService ()
+  {
+    if (IsDesignMode)
+      return;
+
+    if (string.IsNullOrEmpty (ControlServicePath))
+      return;
+
+    var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, ControlServicePath);
+    WebServiceFactory.CreateJsonService<IBocDropDownMenuWebService> (virtualServicePath);
+  }
+
   protected virtual void InitializeMenusItems()
   {
   }
@@ -162,7 +197,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     {
       _dropDownMenu.GetSelectionCount = "function() { return 1; }";
       var titleText = GetTitleText (businessObject);
-      _dropDownMenu.TitleText = HttpUtility.HtmlEncode (titleText);
+      _dropDownMenu.TitleText = System.Web.HttpUtility.HtmlEncode (titleText);
 
      if (_enableIcon)
      {
@@ -191,9 +226,37 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   protected override void Render (HtmlTextWriter writer)
   {
     EvaluateWaiConformity();
+
+    if (!string.IsNullOrEmpty (ControlServicePath))
+    {
+      var businessObjectWebServiceContext = CreateBusinessObjectWebServiceContext();
+
+      var stringValueParametersDictionary = new Dictionary<string, string>();
+      stringValueParametersDictionary.Add ("controlID", ID);
+      stringValueParametersDictionary.Add (
+          "controlType",
+          TypeUtility.GetPartialAssemblyQualifiedName (MixinTypeUtility.GetUnderlyingTargetType (GetType())));
+      stringValueParametersDictionary.Add ("businessObjectClass", businessObjectWebServiceContext.BusinessObjectClass);
+      stringValueParametersDictionary.Add ("businessObjectProperty", businessObjectWebServiceContext.BusinessObjectProperty);
+      stringValueParametersDictionary.Add ("businessObject", businessObjectWebServiceContext.BusinessObjectIdentifier);
+      stringValueParametersDictionary.Add ("arguments", businessObjectWebServiceContext.Arguments);
+
+      _dropDownMenu.SetLoadMenuItemStatus (
+          ControlServicePath,
+          nameof (IBocDropDownMenuWebService.GetMenuItemStatus),
+          stringValueParametersDictionary);
+    }
+
     _dropDownMenu.RenderControl (writer);
   }
 
+  private BusinessObjectWebServiceContext CreateBusinessObjectWebServiceContext ()
+  {
+    return BusinessObjectWebServiceContext.Create (
+        DataSource,
+        Property,
+        ControlServiceArguments);
+  }
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocDropDownMenu.xml' path='BocDropDownMenu/LoadValue/*' />
@@ -320,6 +383,24 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   {
     get { return _dropDownMenu.EnableGrouping; }
     set { _dropDownMenu.EnableGrouping = value; }
+  }
+
+  [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
+  [Category ("Behavior")]
+  [DefaultValue ("")]
+  public string ControlServicePath
+  {
+    get { return _controlServicePath; }
+    set { _controlServicePath = value ?? string.Empty; }
+  }
+
+  [Category ("Behavior")]
+  [DefaultValue ("")]
+  [Description ("Additional arguments passed to the control service.")]
+  public string ControlServiceArguments
+  {
+    get { return _controlServiceArguments; }
+    set { _controlServiceArguments = StringUtility.EmptyToNull (value); }
   }
 
   /// <summary> 

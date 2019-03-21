@@ -28,6 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             renderingContext.HttpContext,
             renderingContext.Writer,
             renderingContext.Control,
+            renderingContext.BusinessObjectWebServiceContext,
             renderingContext.ColumnDefinition,
             renderingContext.ColumnIndex,
             renderingContext.VisibleColumnIndex)

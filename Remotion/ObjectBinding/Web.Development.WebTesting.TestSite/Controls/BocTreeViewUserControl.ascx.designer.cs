@@ -74,5 +74,32 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTreeView NoPropertyIdentifier;
+        
+        /// <summary>
+        /// ContextMenu_Delayed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTreeView ContextMenu_Delayed;
+        
+        /// <summary>
+        /// ContextMenu_DelayedLongerThanTimeout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTreeView ContextMenu_DelayedLongerThanTimeout;
+        
+        /// <summary>
+        /// ContextMenu_Error control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTreeView ContextMenu_Error;
     }
 }

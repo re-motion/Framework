@@ -17,6 +17,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.Globalization;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.Web.UI.Controls.DropDownMenuImplementation
@@ -36,9 +37,14 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation
     string TitleText { get; }
     Unit Width { get; }
     string GetSelectionCount { get; }
+    string LoadMenuItemStatus { get; }
+    void SetLoadMenuItemStatus (string value);
+
     CssStyleCollection Style { get; }
     string MenuHeadClientID { get; }
     MenuMode Mode { get; }
     string GetBindOpenEventScript (string elementReference, string menuIDReference, bool moveToMousePosition);
+
+    IResourceManager GetResourceManager ();
   }
 }

@@ -86,6 +86,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private string[] _hiddenMenuItems;
     private string _iconServicePath;
     private string _iconServiceArguments;
+    private string _controlServicePath;
+    private string _controlServiceArguments;
     protected IWebServiceFactory WebServiceFactory { get; }
 
     protected BocReferenceValueBase ()
@@ -733,6 +735,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 #pragma warning restore 618
 
       CheckIconService();
+      CheckControlService();
     }
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
@@ -896,6 +899,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       WebServiceFactory.CreateJsonService<IBusinessObjectIconWebService> (virtualServicePath);
     }
 
+    private void CheckControlService ()
+    {
+      if (IsDesignMode)
+        return;
+
+      if (string.IsNullOrEmpty (ControlServicePath))
+        return;
+
+      var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, ControlServicePath);
+      WebServiceFactory.CreateJsonService<IBocReferenceValueWebService> (virtualServicePath);
+    }
+
     [Obsolete ("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
@@ -1013,9 +1028,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return GetIcon (Value, businessObjectClass.BusinessObjectProvider);
     }
 
+    [CanBeNull]
     protected BusinessObjectIconWebServiceContext CreateIconWebServiceContext ()
     {
       return BusinessObjectIconWebServiceContext.Create (GetBusinessObjectClass(), IconServiceArguments);
+    }
+
+    protected BusinessObjectWebServiceContext CreateBusinessObjectWebServiceContext ()
+    {
+      return BusinessObjectWebServiceContext.Create (DataSource, Property, ControlServiceArguments);
     }
 
     string IBocReferenceValueBase.NullValueString
@@ -1081,6 +1102,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     string IControlWithDiagnosticMetadata.ControlType
     {
       get { return ControlType; }
+    }
+
+    [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
+    [Category ("Behavior")]
+    [DefaultValue ("")]
+    public string ControlServicePath
+    {
+      get { return _controlServicePath; }
+      set { _controlServicePath = value ?? string.Empty; }
+    }
+
+    [Category ("Behavior")]
+    [DefaultValue ("")]
+    [Description ("Additional arguments passed to the control service.")]
+    public string ControlServiceArguments
+    {
+      get { return _controlServiceArguments; }
+      set { _controlServiceArguments = StringUtility.EmptyToNull (value); }
     }
   }
 }

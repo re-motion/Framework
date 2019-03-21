@@ -20,6 +20,7 @@ using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
@@ -149,7 +150,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubRowRenderer(),
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, _stubColumnRenderers));
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
+      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, _stubColumnRenderers));
       Html.Writer.RenderEndTag();
     }
 

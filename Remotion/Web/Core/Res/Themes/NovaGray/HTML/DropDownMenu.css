@@ -326,3 +326,41 @@ span.DropDownMenuItemIcon
   width: 16px;
   padding: 0px;
 }
+
+div.DropDownMenuStatus
+{
+  overflow: hidden;
+  z-index: 2147483647;
+  /* position and dimension are set via javascript */
+  max-height: 4em;
+  max-width: 30em;
+}
+
+div.DropDownMenuStatus > div
+{
+  width: 100%;
+  padding: 0.25em;
+  border: 1px solid Black;
+  background-color: Lightyellow;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+div.DropDownMenuStatus.loading > div
+{
+  background-image: url('../Image/DropDownMenuRequestInProgressIndicator.gif');
+  background-repeat: no-repeat;
+  background-position: 0.25em;
+  padding-left: calc(16px + 0.25em);
+  min-height: 20px;
+}
+
+div.DropDownMenuStatus.error > div
+{
+  background-image: url('../Image/DropDownMenuErrorIndicator.gif');
+  background-repeat: no-repeat;
+  background-position: 0.25em;
+  padding-left: calc(16px + 0.5em);
+  min-height: 20px;
+}

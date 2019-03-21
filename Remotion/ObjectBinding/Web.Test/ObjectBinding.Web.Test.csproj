@@ -208,6 +208,30 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IndividualControlTests\BocDropDownMenuUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>BocDropDownMenuUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocAutoCompleteReferenceValueWebService.asmx.cs">
+      <DependentUpon>BocAutoCompleteReferenceValueWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocTreeViewWebService.asmx.cs">
+      <DependentUpon>BocTreeViewWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocReferenceValueWebService.asmx.cs">
+      <DependentUpon>BocReferenceValueWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocDropDownMenuWebService.cs">
+      <SubType>Component</SubType>
+      <DependentUpon>BocDropDownMenuWebService.asmx</DependentUpon>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocListWebService.cs">
+      <SubType>Component</SubType>
+      <DependentUpon>BocListWebService.asmx</DependentUpon>
+    </Compile>
     <Compile Include="Validation\BocValidationTestForm.aspx.cs">
       <DependentUpon>BocValidationTestForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -500,6 +524,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Content Include="Experimental\FormGrid.htm" />
+    <Content Include="IndividualControlTests\BocDropDownMenuUserControl.ascx" />
+    <Content Include="IndividualControlTests\BocAutoCompleteReferenceValueWebService.asmx" />
+    <Content Include="IndividualControlTests\BocTreeViewWebService.asmx" />
+    <Content Include="IndividualControlTests\BocReferenceValueWebService.asmx" />
+    <Content Include="IndividualControlTests\BocDropDownMenuWebService.asmx" />
+    <Content Include="IndividualControlTests\BocListWebService.asmx" />
     <Content Include="Validation\BocValidationTestForm.aspx" />
     <Content Include="ClientForm.aspx">
       <SubType>Form</SubType>

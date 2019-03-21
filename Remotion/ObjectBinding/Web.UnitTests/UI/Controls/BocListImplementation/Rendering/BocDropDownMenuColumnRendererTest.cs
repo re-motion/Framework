@@ -20,6 +20,7 @@ using System.Web.UI;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls;
@@ -55,9 +56,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Menu.Stub (menuMock => menuMock.RenderControl (Html.Writer)).WhenCalled (
           invocation => ((HtmlTextWriter) invocation.Arguments[0]).Write ("mocked dropdown menu"));
 
-      _renderingContext =
-          new BocColumnRenderingContext<BocDropDownMenuColumnDefinition> (
-              new BocColumnRenderingContext (HttpContext, Html.Writer, List, Column, 0, 0));
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (List.DataSource, List.Property, "Args");
+      _renderingContext = new BocColumnRenderingContext<BocDropDownMenuColumnDefinition> (
+          new BocColumnRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, Column, 0, 0));
     }
 
     [Test]

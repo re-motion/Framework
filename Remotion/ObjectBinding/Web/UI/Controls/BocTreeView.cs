@@ -18,17 +18,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Design;
 using System.Linq;
 using System.Web.UI;
+using System.Web.UI.Design;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTreeViewImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTreeViewImplementation.Rendering;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
+using Remotion.Web.UI.Controls.DropDownMenuImplementation;
+using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -59,14 +66,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _enableTreeNodeCaching = true;
     private Pair[] _nodesControlState;
     private bool _isRebuildRequired = false;
+    private string _controlServicePath;
+    private string _controlServiceArguments;
 
     private readonly IRenderingFeatures _renderingFeatures;
 
+    protected IWebServiceFactory WebServiceFactory { get; }
+
     // construction and destruction
+
     public BocTreeView ()
+        : this (SafeServiceLocator.Current.GetInstance<IRenderingFeatures>(), SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
     {
+    }
+
+    protected BocTreeView ([NotNull] IRenderingFeatures renderingFeatures, [NotNull] IWebServiceFactory webServiceFactory)
+    {
+      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull ("webServiceFactory", webServiceFactory);
+
       _treeView = new WebTreeView (this);
-      _renderingFeatures = ServiceLocator.GetInstance<IRenderingFeatures>();
+      _renderingFeatures = renderingFeatures;
+      WebServiceFactory = webServiceFactory;
     }
 
     // methods and properties
@@ -78,6 +99,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _treeView.SelectionChanged += new WebTreeNodeEventHandler (TreeView_SelectionChanged);
       _treeView.SetEvaluateTreeNodeDelegate (new EvaluateWebTreeNode (EvaluateTreeNode));
       _treeView.SetInitializeRootTreeNodesDelegate (new InitializeRootWebTreeNodes (InitializeRootWebTreeNodes));
+      _treeView.SetTreeNodeMenuRenderMethodDelegate (RenderTreeNodeMenu);
       _treeView.EnableTreeNodeControlState = !_enableTreeNodeCaching;
       Controls.Add (_treeView);
     }
@@ -162,6 +184,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       var labelID = GetLabelIDs().FirstOrDefault();
       if (!string.IsNullOrEmpty (labelID))
         _treeView.AssignLabel (labelID);
+
+      CheckControlService();
+    }
+
+    private void CheckControlService ()
+    {
+      if (IsDesignMode)
+        return;
+
+      if (string.IsNullOrEmpty (ControlServicePath))
+        return;
+
+      var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, ControlServicePath);
+      WebServiceFactory.CreateJsonService<IBocTreeViewWebService> (virtualServicePath);
     }
 
     protected override void Render (HtmlTextWriter writer)
@@ -169,6 +205,47 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       EvaluateWaiConformity();
 
       base.Render (writer);
+    }
+
+    private void RenderTreeNodeMenu (HtmlTextWriter writer, WebTreeNode node, DropDownMenu menu)
+    {
+      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull ("node", node);
+      ArgumentUtility.CheckNotNull ("menu", menu);
+
+      if (!string.IsNullOrEmpty (ControlServicePath))
+      {
+        var businessObjectWebServiceContext = CreateBusinessObjectWebServiceContext();
+        var nodeBusinessObjectProperty = ((node as BusinessObjectTreeNode)?.Property ?? (node as BusinessObjectPropertyTreeNode)?.Property)?.Identifier;
+        var nodeBusinessObject = (node as BusinessObjectTreeNode)?.BusinessObject.UniqueIdentifier;
+
+        var stringValueParametersDictionary = new Dictionary<string, string>();
+        stringValueParametersDictionary.Add ("controlID", ID);
+        stringValueParametersDictionary.Add (
+            "controlType",
+            TypeUtility.GetPartialAssemblyQualifiedName (MixinTypeUtility.GetUnderlyingTargetType (GetType())));
+        stringValueParametersDictionary.Add ("businessObjectClass", businessObjectWebServiceContext.BusinessObjectClass);
+        stringValueParametersDictionary.Add ("businessObjectProperty", businessObjectWebServiceContext.BusinessObjectProperty);
+        stringValueParametersDictionary.Add ("businessObject", businessObjectWebServiceContext.BusinessObjectIdentifier);
+        stringValueParametersDictionary.Add ("nodeID", node.ItemID);
+        stringValueParametersDictionary.Add ("nodePath", _treeView.FormatNodePath (node));
+        stringValueParametersDictionary.Add ("nodeBusinessObjectProperty", nodeBusinessObjectProperty);
+        stringValueParametersDictionary.Add ("nodeBusinessObject", nodeBusinessObject);
+        stringValueParametersDictionary.Add ("arguments", businessObjectWebServiceContext.Arguments);
+
+        menu.SetLoadMenuItemStatus (
+            ControlServicePath,
+            nameof (IBocTreeViewWebService.GetMenuItemStatusForTreeNode),
+            stringValueParametersDictionary);
+      }
+    }
+
+    private BusinessObjectWebServiceContext CreateBusinessObjectWebServiceContext ()
+    {
+      return BusinessObjectWebServiceContext.Create (
+          DataSource,
+          Property,
+          ControlServiceArguments);
     }
 
     /// <summary>
@@ -702,6 +779,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public WebTreeView TreeView
     {
       get { return _treeView; }
+    }
+
+    [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
+    [Category ("Behavior")]
+    [DefaultValue ("")]
+    public string ControlServicePath
+    {
+      get { return _controlServicePath; }
+      set { _controlServicePath = value ?? string.Empty; }
+    }
+
+    [Category ("Behavior")]
+    [DefaultValue ("")]
+    [Description ("Additional arguments passed to the control service.")]
+    public string ControlServiceArguments
+    {
+      get { return _controlServiceArguments; }
+      set { _controlServiceArguments = StringUtility.EmptyToNull (value); }
     }
 
     /// <summary> 

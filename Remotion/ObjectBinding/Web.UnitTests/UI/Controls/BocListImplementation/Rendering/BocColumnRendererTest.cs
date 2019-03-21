@@ -18,6 +18,7 @@ using System;
 using System.Web;
 using System.Web.UI;
 using NUnit.Framework;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
@@ -45,7 +46,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       _htmlTextWriterStub = MockRepository.GenerateStub<HtmlTextWriter>();
       _httpContextStub = MockRepository.GenerateStub<HttpContextBase>();
       _bocListStub = MockRepository.GenerateStub<IBocList>();
-      _renderingContext = new BocListRenderingContext (_httpContextStub, _htmlTextWriterStub, _bocListStub, new[] { _columnRendererAdapter });
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
+      _renderingContext = new BocListRenderingContext (
+          _httpContextStub,
+          _htmlTextWriterStub,
+          _bocListStub,
+          businessObjectWebServiceContext,
+          new[] { _columnRendererAdapter });
     }
 
     [Test]

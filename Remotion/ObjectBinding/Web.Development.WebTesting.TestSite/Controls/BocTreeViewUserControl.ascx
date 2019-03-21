@@ -77,4 +77,55 @@
     </td>
     <td>(no property identifier)</td>
   </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocTreeView
+        ID="ContextMenu_Delayed"
+        DataSourceControl="CurrentObject"
+        PropertyIdentifier="Children"
+        ShowLines="True"
+        EnableTopLevelExpander="True"
+        EnableLookAheadEvaluation="True"
+        ControlServicePath="BocTreeViewWebService.asmx"
+        ControlServiceArguments="500"
+        runat="server">
+      </remotion:BocTreeView>
+    </td>
+    <td>(context menu with delay)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocTreeView
+        ID="ContextMenu_DelayedLongerThanTimeout"
+        DataSourceControl="CurrentObject"
+        PropertyIdentifier="Children"
+        ShowLines="True"
+        EnableTopLevelExpander="True"
+        EnableLookAheadEvaluation="True"
+        ControlServicePath="BocTreeViewWebService.asmx"
+        ControlServiceArguments="31000"
+        runat="server">
+      </remotion:BocTreeView>
+    </td>
+    <td>(context menu with timeout)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocTreeView
+        ID="ContextMenu_Error"
+        DataSourceControl="CurrentObject"
+        PropertyIdentifier="Children"
+        ShowLines="True"
+        EnableTopLevelExpander="True"
+        EnableLookAheadEvaluation="True"
+        ControlServicePath="BocTreeViewWebService.asmx"
+        ControlServiceArguments="error"
+        runat="server">
+      </remotion:BocTreeView>
+    </td>
+    <td>(context menu with error)</td>
+  </tr>
 </table>

@@ -26,6 +26,7 @@ using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
@@ -687,7 +688,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     private BocReferenceValueRenderingContext CreateRenderingContext ()
     {
-      return new BocReferenceValueRenderingContext (HttpContext, Html.Writer, Control, null);
+      var iconWebServiceContext = BusinessObjectIconWebServiceContext.Create (null, null);
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (Control.DataSource, Control.Property, "Args");
+
+      return new BocReferenceValueRenderingContext (HttpContext, Html.Writer, Control, iconWebServiceContext, businessObjectWebServiceContext);
     }
   }
 }

@@ -22,7 +22,6 @@ using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.Utilities;
-using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
 {
@@ -32,35 +31,30 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public abstract class DropDownMenuControlObjectBase
       : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithSelectableItems, IFluentControlObjectWithSelectableItems, ISupportsDisabledState
   {
-    private const string c_dropDownMenuOptionsCssSelector = "ul.DropDownMenuOptions";
-
     protected DropDownMenuControlObjectBase ([NotNull] ControlObjectContext context)
         : base (context)
     {
     }
 
+    protected abstract void PerformOpen (ElementScope menuButtonScope);
+
     /// <summary>
-    /// Template method for derived classes to open the drop down menu (i.e. make it visible on the page).
+    /// Opens the menu (i.e. make it visible on the page).
     /// </summary>
-    public abstract void Open ();
+    public void Open ()
+    {
+      var menuButtonScope = GetDropDownMenuButtonScope();
+      Open (menuButtonScope);
+    }
 
     /// <summary>
     /// Returns true if the drop down option menu is detected to be open.
     /// </summary>
     public bool IsOpen ()
     {
-      var dropDownMenuOptionsScope = Context.RootScope.FindCss (c_dropDownMenuOptionsCssSelector);
-
-      var exists = dropDownMenuOptionsScope.ExistsWorkaround();
-
-      // No dropdown menu exists on the screen? --> Guaranteed not open
-      if (!exists)
-        return false;
-
-      return IsDropDownMenuOfCurrentScope (dropDownMenuOptionsScope);
+      var menuButtonScope = GetDropDownMenuButtonScope();
+      return IsOpen (menuButtonScope);
     }
-
-    
 
     /// <summary>
     /// Method to close the currently open DropDown via javascript.
@@ -194,20 +188,44 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       return ClickItem (scope, actionOptions);
     }
 
-    private bool IsDropDownMenuOfCurrentScope (ElementScope dropDownMenuOptionsScope)
+    private void Open (ElementScope menuButtonScope)
     {
-      var currentID = GetHtmlID();
+      if (!IsOpen (menuButtonScope))
+      {
+        PerformOpen (menuButtonScope);
 
-      var dropDownMenuOptionsID = dropDownMenuOptionsScope.FindXPath ("..").Id;
+        RetryUntilTimeout.Run (
+            () =>
+            {
+              if (GetDropDownMenuPopupID (menuButtonScope) == null)
+                throw new MissingHtmlException ("Unable to open the menu.");
+            });
+      }
+    }
 
-      return dropDownMenuOptionsID == currentID + "_DropDownMenuOptions";
+    private bool IsOpen (ElementScope menuButtonScope)
+    {
+      return GetDropDownMenuPopupID (menuButtonScope) != null;
+    }
+
+    private ElementScope GetDropDownMenuButtonScope ()
+    {
+      return Scope.FindCss ("a[aria-haspopup='menu']");
+    }
+
+    private string GetDropDownMenuPopupID (ElementScope scope)
+    {
+      return scope["aria-controls"];
     }
 
     private ElementScope GetDropDownMenuScope ()
     {
-      Open();
+      var menuButtonScope = GetDropDownMenuButtonScope();
 
-      var dropDownMenuOptionsScope = Context.RootScope.FindCss (c_dropDownMenuOptionsCssSelector);
+      Open (menuButtonScope);
+
+      var dropDownMenuPopupID = GetDropDownMenuPopupID (menuButtonScope);
+      var dropDownMenuOptionsScope = Context.RootScope.FindCss ("#" + dropDownMenuPopupID + " > ul.DropDownMenuOptions");
 
       return dropDownMenuOptionsScope;
     }
