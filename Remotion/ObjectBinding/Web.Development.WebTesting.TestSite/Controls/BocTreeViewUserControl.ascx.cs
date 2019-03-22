@@ -30,6 +30,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
     {
       base.OnInit (e);
       Normal.MenuItemProvider = new TestBocTreeViewContextMenu();
+      ContextMenu_Delayed.MenuItemProvider = new TestBocTreeViewContextMenu();
+      ContextMenu_DelayedLongerThanTimeout.MenuItemProvider = new TestBocTreeViewContextMenu();
+      ContextMenu_Error.MenuItemProvider = new TestBocTreeViewContextMenu();
     }
 
     protected override void OnPreRender (EventArgs e)

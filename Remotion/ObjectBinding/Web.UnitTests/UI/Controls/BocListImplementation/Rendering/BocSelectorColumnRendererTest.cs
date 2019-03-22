@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
@@ -38,7 +39,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Stub (mock => mock.IsSelectionEnabled).Return (true);
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
-      _bocListRenderingContext = new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]);
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
+      _bocListRenderingContext = new BocListRenderingContext (
+          HttpContext,
+          Html.Writer,
+          List,
+          businessObjectWebServiceContext,
+          new BocColumnRenderer[0]);
     }
 
     [Test]

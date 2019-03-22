@@ -22,6 +22,7 @@ using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
+using Remotion.Globalization;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -72,6 +73,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       StateBag stateBag = new StateBag();
       _control.Stub (stub => stub.Attributes).Return (new AttributeCollection (stateBag));
       _control.Stub (stub => stub.ControlStyle).Return (new Style (stateBag));
+
+      _control.Stub (stub => stub.GetResourceManager()).Return (NullResourceManager.Instance);
 
       IClientScriptManager scriptManagerMock = MockRepository.GenerateMock<IClientScriptManager>();
       _control.Page.Stub (stub => stub.ClientScript).Return (scriptManagerMock);

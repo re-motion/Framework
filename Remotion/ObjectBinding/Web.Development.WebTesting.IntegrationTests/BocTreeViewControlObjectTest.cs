@@ -422,6 +422,49 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestContextMenuControlObject_OpenDropDownMenuWithDelay_WaitsUntilDropDownIsOpen ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("ContextMenu_Delayed");
+      var node = bocTreeView.GetRootNode();
+
+      var contextMenu = node.GetContextMenu();
+
+      contextMenu.Open();
+      Assert.That (contextMenu.IsOpen(), Is.True);
+    }
+
+    [Test]
+    [Category ("LongRunning")]
+    public void TestContextMenuControlObject_OpenDropDownMenuWithDelayGreaterThanTimeout_FailsWithException ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("ContextMenu_DelayedLongerThanTimeout");
+      var node = bocTreeView.GetRootNode();
+
+      var contextMenu = node.GetContextMenu();
+
+      Assert.That (() => contextMenu.Open(), Throws.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to open the menu."));
+      Assert.That (contextMenu.IsOpen(), Is.False);
+    }
+
+    [Test]
+    public void TestContextMenuControlObject_OpenDropDownMenuWithError_FailsWithException ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("ContextMenu_Error");
+      var node = bocTreeView.GetRootNode();
+
+      var contextMenu = node.GetContextMenu();
+
+      Assert.That (() => contextMenu.Open(), Throws.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to open the menu."));
+      Assert.That (contextMenu.IsOpen(), Is.False);
+    }
+
+    [Test]
     public void TestContextMenuControlObject_CloseDropDownMenu ()
     {
       var home = Start();

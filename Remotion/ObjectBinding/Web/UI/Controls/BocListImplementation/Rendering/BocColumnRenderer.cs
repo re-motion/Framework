@@ -90,50 +90,44 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return _orderIndex; }
     }
 
-    public void RenderTitleCell (BocRenderingContext<IBocList> renderingContext)
+    public void RenderTitleCell (BocListRenderingContext renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      var columnRenderingContext = new BocColumnRenderingContext (
-          renderingContext.HttpContext,
-          renderingContext.Writer,
-          renderingContext.Control,
-          ColumnDefinition,
-          ColumnIndex,
-          VisibleColumnIndex);
+      var columnRenderingContext = CreateBocColumnRenderingContext (renderingContext);
 
       _columnRenderer.RenderTitleCell (columnRenderingContext, _sortingDirection, _orderIndex);
     }
 
-    public void RenderDataColumnDeclaration (BocRenderingContext<IBocList> renderingContext, bool isTextXml)
+    public void RenderDataColumnDeclaration (BocListRenderingContext renderingContext, bool isTextXml)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      var columnRenderingContext = new BocColumnRenderingContext (
-          renderingContext.HttpContext,
-          renderingContext.Writer,
-          renderingContext.Control,
-          ColumnDefinition,
-          ColumnIndex,
-          VisibleColumnIndex);
+      var columnRenderingContext = CreateBocColumnRenderingContext (renderingContext);
 
       _columnRenderer.RenderDataColumnDeclaration (columnRenderingContext, isTextXml);
     }
 
-    public void RenderDataCell (BocRenderingContext<IBocList> renderingContext, int rowIndex, BocListDataRowRenderEventArgs dataRowRenderEventArgs)
+    public void RenderDataCell (BocListRenderingContext renderingContext, int rowIndex, BocListDataRowRenderEventArgs dataRowRenderEventArgs)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull ("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
-      var columnRenderingContext = new BocColumnRenderingContext (
+      var columnRenderingContext = CreateBocColumnRenderingContext (renderingContext);
+
+      _columnRenderer.RenderDataCell (columnRenderingContext, rowIndex, _showIcon, dataRowRenderEventArgs);
+    }
+
+    private BocColumnRenderingContext CreateBocColumnRenderingContext (BocListRenderingContext renderingContext)
+    {
+      return new BocColumnRenderingContext (
           renderingContext.HttpContext,
           renderingContext.Writer,
           renderingContext.Control,
+          renderingContext.BusinessObjectWebServiceContext,
           ColumnDefinition,
           ColumnIndex,
           VisibleColumnIndex);
-
-      _columnRenderer.RenderDataCell (columnRenderingContext, rowIndex, _showIcon, dataRowRenderEventArgs);
     }
   }
 }

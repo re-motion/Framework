@@ -309,7 +309,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           writer,
           this,
           CreateSearchAvailableObjectWebServiceContext(),
-          CreateIconWebServiceContext());
+          CreateIconWebServiceContext(),
+          CreateBusinessObjectWebServiceContext());
     }
 
     private SearchAvailableObjectWebServiceContext CreateSearchAvailableObjectWebServiceContext ()

@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -47,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Stub (mock => mock.Index).Return (RowIndex.InitialOrder);
 
       IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderTitleCell (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.RenderTitleCell (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -84,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Stub (mock => mock.IndexColumnTitle).Return ("My_IndexColumn");
 
       IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer (RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
-      renderer.RenderTitleCell (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.RenderTitleCell (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
       var th = Html.GetAssertedChildElement (document, "th", 0);
@@ -96,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer (RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
       const string cssClassTableCell = "bocListTableCell";
-      renderer.RenderDataCell (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]), 0, 0, cssClassTableCell);
+      renderer.RenderDataCell (CreateRenderingContext(), 0, 0, cssClassTableCell);
 
       var document = Html.GetResultDocument();
 
@@ -110,6 +111,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (label, "class", _bocListCssClassDefinition.Content);
 
       Html.AssertTextNode (label, (1 + indexOffset).ToString(), 0);
+    }
+
+    private BocListRenderingContext CreateRenderingContext ()
+    {
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
+      return new BocListRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, new BocColumnRenderer[0]);
     }
   }
 }

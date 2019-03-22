@@ -160,6 +160,7 @@
     <Compile Include="Schemas\WebConfigurationSchema.cs" />
     <Compile Include="Services\IconProxy.cs" />
     <Compile Include="Services\IWebServiceFactory.cs" />
+    <Compile Include="Services\WebMenuItemProxy.cs" />
     <Compile Include="Services\WebServiceFactory.cs" />
     <Compile Include="Services\WebServiceUtility.cs" />
     <Compile Include="Resources\StaticResourceUrl.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="UI\Controls\ControlReplacing\StateReplacingStrategy.cs" />
     <Compile Include="UI\Controls\DatePickerButtonImplementation\Rendering\DatePickerButtonRenderingContext.cs" />
     <Compile Include="UI\Controls\DatePickerButtonImplementation\Rendering\IDatePickerButtonRenderer.cs" />
+    <Compile Include="UI\Controls\DropDownMenuImplementation\DropDownMenuExtensions.cs" />
     <Compile Include="UI\Controls\HtmlHeadContentsImplementation\IHtmlHeadContents.cs" />
     <Compile Include="UI\Controls\HtmlHeadContentsImplementation\Rendering\HtmlHeadContentsRenderingContext.cs" />
     <Compile Include="UI\Controls\HtmlHeadContentsImplementation\Rendering\HtmlHeadContentsRenderer.cs" />
@@ -765,6 +767,10 @@
     <Compile Include="Utilities\WebTypeUtility.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="Globalization\DropDownMenuRenderer.de.resx" />
+    <EmbeddedResource Include="Globalization\DropDownMenuRenderer.fr.resx" />
+    <EmbeddedResource Include="Globalization\DropDownMenuRenderer.it.resx" />
+    <EmbeddedResource Include="Globalization\DropDownMenuRenderer.resx" />
     <EmbeddedResource Include="Globalization\TabbedMultiViewRenderer.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -967,6 +973,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Res\HTML\TreeView.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Res\Themes\NovaGray\Image\DropDownMenuErrorIndicator.gif" />
+    <None Include="Res\Themes\NovaGray\Image\DropDownMenuRequestInProgressIndicator.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildProjectDirectory)\..\..\Build\NuSpec\Web.Build.targets" />

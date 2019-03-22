@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -66,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new BocIndexColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
           RenderingFeatures.Default);
-      renderer.RenderTitlesRow (new BocListRenderingContext (HttpContext, Html.Writer, List, _columnRenderers));
+      renderer.RenderTitlesRow (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -87,7 +88,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new BocIndexColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
           RenderingFeatures.Default);
-      renderer.RenderTitlesRow (new BocListRenderingContext (HttpContext, Html.Writer, List, _columnRenderers));
+      renderer.RenderTitlesRow (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -112,7 +113,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new BocIndexColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
           RenderingFeatures.Default);
-      renderer.RenderTitlesRow (new BocListRenderingContext (HttpContext, Html.Writer, List, _columnRenderers));
+      renderer.RenderTitlesRow (CreateRenderingContext());
 
 
       var document = Html.GetResultDocument();
@@ -134,7 +135,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
           RenderingFeatures.Default);
       renderer.RenderDataRow (
-          new BocListRenderingContext (HttpContext, Html.Writer, List, _columnRenderers),
+          CreateRenderingContext(),
           new BocListRowRenderingContext (new BocListRow (0, BusinessObject), 1, false),
           0);
 
@@ -156,7 +157,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
           RenderingFeatures.Default);
       renderer.RenderDataRow (
-          new BocListRenderingContext (HttpContext, Html.Writer, List, _columnRenderers),
+          CreateRenderingContext(),
           new BocListRowRenderingContext (new BocListRow (0, BusinessObject), 1, true),
           0);
 
@@ -183,7 +184,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new BocIndexColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
           RenderingFeatures.Default);
-      renderer.RenderEmptyListDataRow (new BocListRenderingContext (HttpContext, Html.Writer, List, _columnRenderers));
+      renderer.RenderEmptyListDataRow (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -202,7 +203,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new BocSelectorColumnRenderer (RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition),
           RenderingFeatures.WithDiagnosticMetadata);
       renderer.RenderDataRow (
-          new BocListRenderingContext (HttpContext, Html.Writer, List, _columnRenderers),
+          CreateRenderingContext(),
           new BocListRowRenderingContext (new BocListRow (0, BusinessObject), 1, false),
           0);
 
@@ -211,6 +212,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var tr = Html.GetAssertedChildElement (document, "tr", 0);
       Html.AssertAttribute (tr, DiagnosticMetadataAttributes.ItemID, ((IBusinessObjectWithIdentity) BusinessObject).UniqueIdentifier);
       Html.AssertAttribute (tr, DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex, 1.ToString());
+    }
+
+    private BocListRenderingContext CreateRenderingContext ()
+    {
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
+      return new BocListRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, _columnRenderers);
     }
   }
 }

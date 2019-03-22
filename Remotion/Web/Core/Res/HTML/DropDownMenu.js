@@ -26,6 +26,8 @@ var _dropDownMenu_focusClassName = 'focus';
 var _dropDownMenu_nestedHoverClassName = 'nestedHover';
 var _dropDownMenu_currentMenu = null;
 var _dropDownMenu_currentPopup = null;
+var _dropDownMenu_currentStatusPopup = null;
+var _dropDownMenu_currentLoadOperation = null;
 
 var _dropDownMenu_menuItemIDPrefix = 'menuItem_';
 
@@ -38,11 +40,19 @@ var _dropDownMenu_itemClicked = false;
 
 var _dropDownMenu_repositionInterval = 200;
 var _dropDownMenu_repositionTimer = null;
+var _dropDownMenu_statusPopupDelay = 200;
+var _dropDownMenu_statusPopupRepositionTimer = null;
 
-function DropDownMenu_MenuInfo(id, itemInfos)
+function DropDownMenu_MenuInfo (id, loadMenuItems, resources)
 {
+  ArgumentUtility.CheckNotNullAndTypeIsString ('id', id);
+  ArgumentUtility.CheckNotNullAndTypeIsFunction ('loadMenuItems', loadMenuItems);
+  ArgumentUtility.CheckNotNullAndTypeIsObject ('resources', resources);
+
   this.ID = id;
-  this.ItemInfos = itemInfos;
+  this.ItemInfos = null;
+  this.LoadMenuItems = loadMenuItems;
+  this.Resources = resources;
 }
 
 function DropDownMenu_AddMenuInfo(menuInfo)
@@ -97,6 +107,70 @@ function DropDownMenu_ItemInfo(id, category, text, icon, iconDisabled, requiredS
   this.DiagnosticMetadataForCommand = diagnosticMetadataForCommand;
 }
 
+function DropDownMenu_LoadFilteredMenuItems(itemInfos, loadMenuItemStatus, onSuccess, onError)
+{
+  if (loadMenuItemStatus !== null)
+  {
+    const currentLoadOperationID = new Object();
+    const onSuccessForLoadMenuItemStatus = function (itemStatusArray)
+    {
+      if (_dropDownMenu_currentLoadOperation !== currentLoadOperationID)
+        return;
+      _dropDownMenu_currentLoadOperation = null;
+
+      const itemStatusMap = itemStatusArray.reduce(
+        function (map, itemStatus)
+        {
+          map[itemStatus.ID] = itemStatus;
+          return map;
+        },
+        {});
+
+      let previousVisibleItemIsSeparator = false;
+      for (var i = itemInfos.length - 1; i >= 0; i--)
+      {
+        const itemInfo = itemInfos[i];
+        const hasFilterOption = itemInfo.ID !== null;
+        const isSeparator = !hasFilterOption && itemInfo.Text === '-';
+        if (hasFilterOption)
+        {
+          const itemStatus = itemStatusMap[itemInfo.ID];
+          const isVisible = itemStatus !== undefined;
+          if (isVisible)
+          {
+            itemInfo.IsDisabled = itemStatus.IsDisabled;
+            previousVisibleItemIsSeparator = false;
+          }
+          else
+          {
+            itemInfos.splice (i, 1);
+          }
+        }
+        else if (isSeparator)
+        {
+          if (previousVisibleItemIsSeparator)
+            itemInfos.splice(i, 1);
+
+          previousVisibleItemIsSeparator = true;
+        }
+        else
+        {
+          previousVisibleItemIsSeparator = false;
+        }
+      }
+
+      onSuccess (itemInfos);
+    };
+
+    _dropDownMenu_currentLoadOperation = currentLoadOperationID;
+    loadMenuItemStatus (onSuccessForLoadMenuItemStatus, onError);
+  }
+  else
+  {
+    onSuccess (itemInfos);
+  }
+}
+
 function DropDownMenu_OnClick(context, menuID, getSelectionCount, evt)
 {
   ArgumentUtility.CheckNotNullAndTypeIsJQuery('context', context);
@@ -127,20 +201,133 @@ function DropDownMenu_OnClick(context, menuID, getSelectionCount, evt)
   }
 }
 
-function DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, evt)
+function DropDownMenu_OpenPopUp (menuID, context, getSelectionCount, evt)
 {
   ArgumentUtility.CheckNotNullAndTypeIsJQuery('context', context);
 
-  var itemInfos = _dropDownMenu_menuInfos[menuID].ItemInfos;
-  var selectionCount = -1;
-  if (getSelectionCount != null)
+  let selectionCount = -1;
+  if (getSelectionCount !== null)
     selectionCount = getSelectionCount();
+
+  const menuInfo = _dropDownMenu_menuInfos[menuID];
+  DropDownMenu_BeginOpenPopUp(menuID, context, evt);
+  if (menuInfo.ItemInfos === null)
+  {
+    const statusPopup = _dropDownMenu_currentStatusPopup;
+    const statusPopupTimer = setTimeout(
+      function () {
+        if (_dropDownMenu_currentStatusPopup && _dropDownMenu_currentStatusPopup === statusPopup)
+        {
+          statusPopup.setAttribute('role', 'alert');
+          statusPopup.className = 'DropDownMenuStatus loading';
+          const label = document.createElement('div');
+          label.setAttribute('aria-label', menuInfo.Resources.LoadingStatusMessage);
+          statusPopup.appendChild (label);
+          statusPopup.style.display = 'block';
+        }
+      },
+      _dropDownMenu_statusPopupDelay);
+    const onSuccess = function (itemInfos)
+    {
+      menuInfo.ItemInfos = itemInfos;
+      clearTimeout(statusPopupTimer);
+      DropDownMenu_EndOpenPopUp(menuID, context, selectionCount, evt, itemInfos);
+    };
+
+    const onError = function (error)
+    {
+      clearTimeout(statusPopupTimer);
+      if (_dropDownMenu_currentStatusPopup && _dropDownMenu_currentStatusPopup === statusPopup)
+      {
+        if (statusPopup.childElementCount > 0 && statusPopup.lastChild.tagName.toUpperCase() !== 'IFRAME')
+          statusPopup.removeChild(statusPopup.lastChild);
+        // Remove and re-add the element to force the screenreader (JAWS) to always announce the updated value immediately.
+        const statusPopupParent = statusPopup.parentElement;
+        statusPopupParent.removeChild(statusPopup);
+        statusPopupParent.appendChild(statusPopup);
+
+        statusPopup.setAttribute('role', 'alert');
+        statusPopup.className = 'DropDownMenuStatus error';
+        const label = document.createElement('div');
+        // In some instances, the screenreader will read the label after the text. 
+        // By adding space, we can ensure that trailing punctuation marks are not announced.
+        label.innerText = menuInfo.Resources.LoadFailedErrorMessage + ' ';
+        statusPopup.appendChild(label);
+        statusPopup.style.display = 'block';
+      }
+    };
+    menuInfo.LoadMenuItems(onSuccess, onError);
+  }
+  else
+  {
+    const itemInfos = menuInfo.ItemInfos;
+    DropDownMenu_EndOpenPopUp(menuID, context, selectionCount, evt, itemInfos);
+  }
+}
+
+function DropDownMenu_BeginOpenPopUp(menuID, context, evt)
+{
+  const menuButton = $('#' + menuID + ' a[aria-haspopup=menu]');
+
+  const titleDiv = $(context).children().eq(0);
+  const statusPopup = document.createElement('div');
+  statusPopup.className = 'DropDownMenuStatus';
+  statusPopup.id = menuID + '_DropDownMenuStatus';
+  statusPopup.style.position = 'absolute';
+  statusPopup.style.display = 'none';
+  statusPopup.setAttribute('aria-atomic', 'true');
+  // Do not set role=alert before it is needed prevent an alert-update during 'normal' showing of menu.
+  //statusPopup.setAttribute('role', 'alert');
+  if (menuButton.attr('aria-labelledby') !== undefined)
+    statusPopup.setAttribute('aria-labelledby', menuButton.attr('aria-labelledby'));
+  else
+    statusPopup.setAttribute('aria-labelledby', menuButton[0].id);
+  _dropDownMenu_currentStatusPopup = statusPopup;
+  $(statusPopup).iFrameShim({ top: '0px', left: '0px', width: '100%', height: '100%' });
+  document.body.appendChild(statusPopup);
+
+  DropDownMenu_ApplyPosition($(statusPopup), evt, titleDiv);
+
+  if (_dropDownMenu_statusPopupRepositionTimer)
+    clearTimeout(_dropDownMenu_statusPopupRepositionTimer);
+  const repositionHandler = function ()
+  {
+    if (_dropDownMenu_statusPopupRepositionTimer)
+      clearTimeout(_dropDownMenu_statusPopupRepositionTimer);
+
+    if (_dropDownMenu_currentStatusPopup && _dropDownMenu_currentStatusPopup === statusPopup)
+    {
+      DropDownMenu_ApplyPosition($(statusPopup), null, titleDiv);
+      _dropDownMenu_statusPopupRepositionTimer = setTimeout(repositionHandler, _dropDownMenu_repositionInterval);
+    }
+  };
+
+  // Only reposition if opened via titleDiv
+  if (evt === null)
+    _dropDownMenu_statusPopupRepositionTimer = setTimeout(repositionHandler, _dropDownMenu_repositionInterval);
+
+  setTimeout(function () { $('body').bind('click', DropDownMenu_ClosePopUp); }, 10);
+}
+
+function DropDownMenu_EndOpenPopUp (menuID, context, selectionCount, evt, itemInfos)
+{
+  var menuOptionsID = menuID + '_DropDownMenuOptions';
+  var menuButton = $('#' + menuID + ' a[aria-haspopup=menu]');
 
   if (itemInfos.length == 0)
     return;
 
-  var menuOptionsID = menuID + '_DropDownMenuOptions';
-  var menuButton = $('#' + menuID + ' a[aria-haspopup=menu]');
+  if (_dropDownMenu_statusPopupRepositionTimer)
+    clearTimeout(_dropDownMenu_statusPopupRepositionTimer);
+  if (_dropDownMenu_currentStatusPopup !== null)
+  {
+    var statusPopup = _dropDownMenu_currentStatusPopup;
+    _dropDownMenu_currentStatusPopup = null;
+    // Clear the role=alert before removing to item to prevent screenreaders (JAWS) from announcing the old value during removal.
+    statusPopup.removeAttribute('role');
+    statusPopup.parentElement.removeChild(statusPopup);
+  }
+
   menuButton.attr('aria-controls', menuOptionsID);
   menuButton.attr('aria-expanded', 'true');
 
@@ -148,8 +335,11 @@ function DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, evt)
   div.className = 'DropDownMenuOptions';
   div.id = menuOptionsID;
   div.setAttribute('role', 'menu');
-  div.setAttribute('aria-labelledby', menuButton[0].id);
   div.setAttribute('tabindex', '-1');
+  if (menuButton.attr('aria-labelledby') !== undefined)
+    div.setAttribute('aria-labelledby', menuButton.attr('aria-labelledby'));
+  else
+    div.setAttribute('aria-labelledby', menuButton[0].id);
   _dropDownMenu_currentPopup = div;
 
   var ul = document.createElement('ul');
@@ -190,9 +380,8 @@ function DropDownMenu_OpenPopUp(menuID, context, getSelectionCount, evt)
     setTimeout (function () { _dropDownMenu_itemClicked = false; }, 10);
     return false;
   };
-  setTimeout (function () { $ ('body').bind ('click', DropDownMenu_ClosePopUp); }, 10);
 
-  for (var i = 0; i < itemInfos.length; i++)
+  for (let i = 0; i < itemInfos.length; i++)
   {
     var item = DropDownMenu_CreateItem(itemInfos[i], selectionCount, true);
     if (item != null)
@@ -270,25 +459,30 @@ function DropDownMenu_ApplyPosition (popUpDiv, clickEvent, referenceElement)
   }
 }
 
-function DropDownMenu_ClosePopUp()
+function DropDownMenu_ClosePopUp ()
 {
-  if (_dropDownMenu_currentMenu == null)
-    return;
+  if (_dropDownMenu_currentPopup !== null)
+  {
+    const menuPopup = _dropDownMenu_currentPopup;
+    _dropDownMenu_currentPopup = null;
+    const menuButton = $('a[aria-controls="' + menuPopup.id + '"]')[0];
+    menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.removeAttribute('aria-controls');
+    menuButton.focus();
+    menuPopup.parentElement.removeChild(menuPopup);
+  }
 
-  var div = $(_dropDownMenu_currentPopup);
-  var menuButtonID = div.attr('aria-labelledBy');
-  var menuButton = document.getElementById (menuButtonID);
-  menuButton.setAttribute('aria-expanded', 'false');
-  menuButton.removeAttribute('aria-controls');
-  menuButton.focus();
+  if (_dropDownMenu_currentStatusPopup != null)
+  {
+    const statusPopup = _dropDownMenu_currentStatusPopup;
+    _dropDownMenu_currentStatusPopup = null;
+    // Clear the role=alert before removing to item to prevent screenreaders (JAWS) from announcing the old value during removal.
+    statusPopup.removeAttribute('role');
+    statusPopup.parentElement.removeChild(statusPopup);
+  }
 
-  $("li", div).removeClass(_dropDownMenu_itemSelectedClassName);
-
-  $('body').unbind('click', DropDownMenu_ClosePopUp);
   _dropDownMenu_currentMenu = null;
-  _dropDownMenu_currentPopup = null;
-
-  div.remove();
+  $('body').unbind('click', DropDownMenu_ClosePopUp);
 }
 
 function DropDownMenu_CreateItem(itemInfo, selectionCount)

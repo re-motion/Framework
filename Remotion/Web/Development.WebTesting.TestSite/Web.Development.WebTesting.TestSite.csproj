@@ -73,6 +73,7 @@
     </None>
     <Content Include="AspNetRequestErrorDetectionParserStaticPages\InvalidErrorPageWithMessageMissing.html" />
     <Content Include="AspNetRequestErrorDetectionParserStaticPages\InvalidErrorPageWithStacktraceMissing.html" />
+    <Content Include="DropDownMenuWebService.asmx" />
     <Content Include="RequestErrorDetectionStrategyTest.aspx" />
     <Content Include="CoypuElementScopeFindExtensionsTest.aspx" />
     <Content Include="PlatformTest.aspx" />
@@ -139,6 +140,10 @@
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="DropDownMenuWebService.asmx.cs">
+      <DependentUpon>DropDownMenuWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="RequestErrorDetectionStrategyTest.aspx.cs">
       <DependentUpon>RequestErrorDetectionStrategyTest.aspx</DependentUpon>

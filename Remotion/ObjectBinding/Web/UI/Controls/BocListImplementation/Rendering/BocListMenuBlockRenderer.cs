@@ -15,11 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.DropDownMenuImplementation;
+using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -98,6 +106,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           renderingContext.Control.OptionsMenu.Visible,
           "BocList '{0}': The OptionsMenu must remain visible if BocList.HasOptionsMenu is evaluates 'true'.",
           renderingContext.Control.ID);
+
+      if (!string.IsNullOrEmpty (renderingContext.Control.ControlServicePath))
+      {
+        var stringValueParametersDictionary = new Dictionary<string, string>();
+        stringValueParametersDictionary.Add ("controlID", renderingContext.Control.ID);
+        stringValueParametersDictionary.Add (
+            "controlType",
+            TypeUtility.GetPartialAssemblyQualifiedName (MixinTypeUtility.GetUnderlyingTargetType (renderingContext.Control.GetType())));
+        stringValueParametersDictionary.Add ("businessObjectClass", renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass);
+        stringValueParametersDictionary.Add ("businessObjectProperty", renderingContext.BusinessObjectWebServiceContext.BusinessObjectProperty);
+        stringValueParametersDictionary.Add ("businessObject", renderingContext.BusinessObjectWebServiceContext.BusinessObjectIdentifier);
+        stringValueParametersDictionary.Add ("arguments", renderingContext.BusinessObjectWebServiceContext.Arguments);
+
+        renderingContext.Control.OptionsMenu.SetLoadMenuItemStatus (
+            renderingContext.Control.ControlServicePath,
+            nameof (IBocListWebService.GetMenuItemStatusForOptionsMenu),
+            stringValueParametersDictionary);
+      }
 
       renderingContext.Control.OptionsMenu.Style.Add ("margin-bottom", menuBlockItemOffset);
       renderingContext.Control.OptionsMenu.RenderControl (renderingContext.Writer);

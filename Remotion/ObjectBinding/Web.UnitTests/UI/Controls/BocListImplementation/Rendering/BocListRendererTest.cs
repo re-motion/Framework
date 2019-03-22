@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls;
@@ -59,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubRenderer ("navigation"),
           new StubRenderer ("menu"),
           new StubLabelReferenceRenderer());
-      renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -96,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubRenderer ("navigation"),
           new StubRenderer ("menu"),
           new StubLabelReferenceRenderer());
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var controlTypeLabelID = "MyList_ControlTypeLabel";
 
@@ -141,7 +142,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubRenderer ("navigation"),
           new StubRenderer ("menu"),
           new StubLabelReferenceRenderer());
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var controlTypeLabelID = "MyList_ControlTypeLabel";
 
@@ -182,7 +183,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubRenderer ("navigation"),
           new StubRenderer ("menu"),
           new StubLabelReferenceRenderer());
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var controlTypeLabelID = "MyList_ControlTypeLabel";
 
@@ -216,7 +217,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubRenderer ("navigation"),
           new StubRenderer ("menu"),
           new StubLabelReferenceRenderer());
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -239,7 +240,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       List.Stub (mock => mock.HasNavigator).Return (true);
 
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -262,7 +263,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       List.Stub (mock => mock.HasNavigator).Return (false);
 
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -286,7 +287,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (true);
       List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (true);
 
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -310,7 +311,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (false);
       List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (false);
 
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -334,7 +335,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (true);
       List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (false);
 
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -358,7 +359,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (false);
       List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (true);
 
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -371,6 +372,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (controlTypeLabel, "id", controlTypeLabelID);
       Html.AssertAttribute (controlTypeLabel, "hidden", "hidden");
       Html.AssertTextNode (controlTypeLabel, "Data table", 0);
+    }
+
+    private BocListRenderingContext CreateRenderingContext ()
+    {
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
+      return new BocListRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, new BocColumnRenderer[0]);
     }
   }
 }

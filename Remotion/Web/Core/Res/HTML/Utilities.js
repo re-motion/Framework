@@ -283,3 +283,43 @@ function PageUtility_ResizeHandlerItem(selector, handler)
 }
 
 PageUtility.Instance = new PageUtility();
+
+function WebServiceUtility()
+{}
+
+WebServiceUtility.Execute = function (serviceUrl, serviceMethod, params, onSuccess, onError)
+{
+  ArgumentUtility.CheckNotNullAndTypeIsString ('serviceUrl', serviceUrl);
+  ArgumentUtility.CheckNotNullAndTypeIsString ('serviceMethod', serviceMethod);
+  ArgumentUtility.CheckNotNullAndTypeIsObject ('params', params);
+  ArgumentUtility.CheckNotNullAndTypeIsFunction ('onSuccess', onSuccess);
+  ArgumentUtility.CheckNotNullAndTypeIsFunction ('onError', onError);
+
+  if (Sys === undefined)
+    throw "'Sys' namespace is undefined. System.Web.ScriptManager has not been included on the page.";
+
+  // re-motion: replaced jQuery AJAX call with .NET call because of the following problem:
+  //           when extending the parameter list with the necessary arguments for the web service method call,
+  //           the JSON object is serialized to "key=value;" format, but the service expects JSON format ("{ key: value, ... }")
+  //           see http://encosia.com/2008/06/05/3-mistakes-to-avoid-when-using-jquery-with-aspnet-ajax/ 
+  //           under "JSON, objects, and strings: oh my!" for details.
+
+  let executingRequest = Sys.Net.WebServiceProxy.invoke (
+    serviceUrl,
+    serviceMethod,
+    false,
+    params,
+    function (result, context, methodName) {
+      executingRequest = null;
+      onSuccess (result);
+    },
+    function (err, context, methodName) {
+      executingRequest = null;
+      var isTimedOut = err.get_timedOut();
+      var isAborting = !isTimedOut && err.get_statusCode() === -1;
+      if (!isAborting)
+      {
+        onError (err);
+      }
+    });
+};

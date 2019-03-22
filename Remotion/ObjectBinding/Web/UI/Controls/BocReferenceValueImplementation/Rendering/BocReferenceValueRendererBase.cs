@@ -24,11 +24,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Services;
-using Remotion.FunctionalProgramming;
+using Remotion.Mixins;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering
@@ -82,7 +83,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           ResourceUrlFactory.CreateResourceUrl (typeof (BocReferenceValueRendererBase<>), ResourceType.Html, "BocReferenceValueBase.js"));
     }
 
+    [Obsolete ("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
     protected void Render (BocRenderingContext<TControl> renderingContext)
+    {
+      throw new NotSupportedException ("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)");
+    }
+
+    protected void Render (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
@@ -203,7 +210,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return jsonBuilder.ToString();
     }
 
-    protected virtual void RenderContents (BocRenderingContext<TControl> renderingContext)
+    [Obsolete ("Use RenderContents (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
+    protected void RenderContents (BocRenderingContext<TControl> renderingContext)
+    {
+      throw new NotSupportedException ("Use RenderContents (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)");
+    }
+
+    protected virtual void RenderContents (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
@@ -216,16 +229,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     }
 
     [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    private void RenderContentsWithIntegratedOptionsMenu (BocRenderingContext<TControl> renderingContext)
+    private void RenderContentsWithIntegratedOptionsMenu (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+
+      if (!string.IsNullOrEmpty (renderingContext.Control.ControlServicePath))
+      {
+        var stringValueParametersDictionary = new Dictionary<string, string>();
+        stringValueParametersDictionary.Add ("controlID", renderingContext.Control.ID);
+        stringValueParametersDictionary.Add (
+            "controlType",
+            TypeUtility.GetPartialAssemblyQualifiedName (MixinTypeUtility.GetUnderlyingTargetType (renderingContext.Control.GetType())));
+        stringValueParametersDictionary.Add ("businessObjectClass", renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass);
+        stringValueParametersDictionary.Add ("businessObjectProperty", renderingContext.BusinessObjectWebServiceContext.BusinessObjectProperty);
+        stringValueParametersDictionary.Add ("businessObject", renderingContext.BusinessObjectWebServiceContext.BusinessObjectIdentifier);
+        stringValueParametersDictionary.Add ("arguments", renderingContext.BusinessObjectWebServiceContext.Arguments);
+
+        renderingContext.Control.OptionsMenu.SetLoadMenuItemStatus (
+            renderingContext.Control.ControlServicePath,
+            nameof (IBocReferenceValueWebService.GetMenuItemStatusForOptionsMenu),
+            stringValueParametersDictionary);
+      }
 
       renderingContext.Control.OptionsMenu.SetRenderHeadTitleMethodDelegate (writer => RenderOptionsMenuTitle (renderingContext));
       renderingContext.Control.OptionsMenu.RenderControl (renderingContext.Writer);
       renderingContext.Control.OptionsMenu.SetRenderHeadTitleMethodDelegate (null);
     }
 
-    private void RenderContentsWithSeparateOptionsMenu (BocRenderingContext<TControl> renderingContext)
+    private void RenderContentsWithSeparateOptionsMenu (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
@@ -253,6 +284,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassOptionsMenu);
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
+        if (!string.IsNullOrEmpty (renderingContext.Control.ControlServicePath))
+        {
+          var stringValueParametersDictionary = new Dictionary<string, string>();
+          stringValueParametersDictionary.Add ("controlID", renderingContext.Control.ID);
+          stringValueParametersDictionary.Add (
+              "controlType",
+              TypeUtility.GetPartialAssemblyQualifiedName (MixinTypeUtility.GetUnderlyingTargetType (renderingContext.Control.GetType())));
+          stringValueParametersDictionary.Add ("businessObjectClass", renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass);
+          stringValueParametersDictionary.Add ("businessObjectProperty", renderingContext.BusinessObjectWebServiceContext.BusinessObjectProperty);
+          stringValueParametersDictionary.Add ("businessObject", renderingContext.BusinessObjectWebServiceContext.BusinessObjectIdentifier);
+          stringValueParametersDictionary.Add ("arguments", renderingContext.BusinessObjectWebServiceContext.Arguments);
+
+          renderingContext.Control.OptionsMenu.SetLoadMenuItemStatus (
+              renderingContext.Control.ControlServicePath,
+              nameof (IBocReferenceValueWebService.GetMenuItemStatusForOptionsMenu),
+              stringValueParametersDictionary);
+        }
 
         renderingContext.Control.OptionsMenu.Width = renderingContext.Control.OptionsMenuWidth;
         renderingContext.Control.OptionsMenu.RenderControl (renderingContext.Writer);

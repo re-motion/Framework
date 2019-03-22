@@ -154,6 +154,7 @@ namespace Remotion.Web.UI.Controls
 
     private InitializeRootWebTreeNodes _initializeRootTreeNodes;
     private WebTreeNodeRenderMethod _treeNodeRenderMethod;
+    private WebTreeNodeMenuRenderMethod _treeNodeMenuRenderMethod;
     private IPage _page;
     private IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
@@ -291,6 +292,11 @@ namespace Remotion.Web.UI.Controls
     public void SetTreeNodeRenderMethodDelegate (WebTreeNodeRenderMethod treeNodeRenderMethod)
     {
       _treeNodeRenderMethod = treeNodeRenderMethod;
+    }
+
+    public void SetTreeNodeMenuRenderMethodDelegate (WebTreeNodeMenuRenderMethod treeNodeMenuRenderMethod)
+    {
+      _treeNodeMenuRenderMethod = treeNodeMenuRenderMethod;
     }
 
     //  /// <summary> Collapses all nodes of this tree view. Only the root nodes will remain visible. </summary>
@@ -670,6 +676,9 @@ namespace Remotion.Web.UI.Controls
       bool isMenuVisible = false;
       if (_menus.TryGetValue (node, out menu))
       {
+        if (_treeNodeMenuRenderMethod != null)
+          _treeNodeMenuRenderMethod (writer, node, menu);
+
         for (int i = 0; i < menu.MenuItems.Count; i++)
         {
           if (menu.MenuItems[i].IsVisible)
@@ -1427,4 +1436,6 @@ namespace Remotion.Web.UI.Controls
   public delegate void InitializeRootWebTreeNodes ();
 
   public delegate void WebTreeNodeRenderMethod (HtmlTextWriter writer, WebTreeNode node);
+
+  public delegate void WebTreeNodeMenuRenderMethod (HtmlTextWriter writer, WebTreeNode node, DropDownMenu menu);
 }

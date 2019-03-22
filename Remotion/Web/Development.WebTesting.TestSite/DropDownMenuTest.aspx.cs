@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 
 namespace Remotion.Web.Development.WebTesting.TestSite
 {
@@ -28,6 +30,21 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
       MyDropDownMenu.EventCommandClick += MyDropDownMenuOnCommandClick;
       MyDropDownMenu.WxeFunctionCommandClick += MyDropDownMenuOnCommandClick;
+
+      MyDropDownMenu_Delayed.SetLoadMenuItemStatus (
+          "DropDownMenuWebService.asmx",
+          nameof (DropDownMenuWebService.GetMenuItemStatusWithDelay),
+          new Dictionary<string, string> { { "arguments", 500.ToString() } });
+
+      MyDropDownMenu_DelayedLongerThanTimeout.SetLoadMenuItemStatus (
+          "DropDownMenuWebService.asmx",
+          nameof (DropDownMenuWebService.GetMenuItemStatusWithDelay),
+          new Dictionary<string, string> { { "arguments", (31 * 1000).ToString() } });
+
+      MyDropDownMenu_Error.SetLoadMenuItemStatus (
+          "DropDownMenuWebService.asmx",
+          nameof (DropDownMenuWebService.GetMenuItemStatusWithError),
+          new Dictionary<string, string>());
     }
 
     private void MyDropDownMenuOnCommandClick (object sender, WebMenuItemClickEventArgs webMenuItemClickEventArgs)

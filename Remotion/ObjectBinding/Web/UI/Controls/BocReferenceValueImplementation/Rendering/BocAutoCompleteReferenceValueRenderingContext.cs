@@ -17,6 +17,7 @@
 using System;
 using System.Web;
 using System.Web.UI;
+using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.Utilities;
 
@@ -25,33 +26,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// <summary>
   /// Groups all arguments required for rendering a <see cref="BocAutoCompleteReferenceValue"/>.
   /// </summary>
-  public class BocAutoCompleteReferenceValueRenderingContext : BocRenderingContext<IBocAutoCompleteReferenceValue>
+  public class BocAutoCompleteReferenceValueRenderingContext : BocReferenceValueBaseRenderingContext<IBocAutoCompleteReferenceValue>
   {
     private readonly SearchAvailableObjectWebServiceContext _searchAvailableObjectWebServiceContext;
-    private readonly BusinessObjectIconWebServiceContext _iconWebServiceContext;
 
     public BocAutoCompleteReferenceValueRenderingContext (
-        HttpContextBase httpContext,
-        HtmlTextWriter writer,
-        IBocAutoCompleteReferenceValue control,
-        SearchAvailableObjectWebServiceContext searchAvailableObjectWebServiceContext,
-        BusinessObjectIconWebServiceContext iconWebServiceContext)
-        : base (httpContext, writer, control)
+        [NotNull] HttpContextBase httpContext,
+        [NotNull] HtmlTextWriter writer,
+        [NotNull] IBocAutoCompleteReferenceValue control,
+        [NotNull] SearchAvailableObjectWebServiceContext searchAvailableObjectWebServiceContext,
+        [CanBeNull] BusinessObjectIconWebServiceContext iconWebServiceContext,
+        [NotNull] BusinessObjectWebServiceContext businessObjectWebServiceContext)
+        : base (httpContext, writer, control, iconWebServiceContext, businessObjectWebServiceContext)
     {
       ArgumentUtility.CheckNotNull ("searchAvailableObjectWebServiceContext", searchAvailableObjectWebServiceContext);
 
       _searchAvailableObjectWebServiceContext = searchAvailableObjectWebServiceContext;
-      _iconWebServiceContext = iconWebServiceContext;
     }
 
     public SearchAvailableObjectWebServiceContext SearchAvailableObjectWebServiceContext
     {
       get { return _searchAvailableObjectWebServiceContext; }
-    }
-
-    public BusinessObjectIconWebServiceContext IconWebServiceContext
-    {
-      get { return _iconWebServiceContext; }
     }
   }
 }

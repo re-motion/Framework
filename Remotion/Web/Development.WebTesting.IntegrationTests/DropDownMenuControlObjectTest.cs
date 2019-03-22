@@ -176,6 +176,40 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestDropDownMenuControlObject_OpenDropDownMenuWithDelay_WaitsUntilDropDownIsOpen ()
+    {
+      var home = Start();
+
+      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_Delayed");
+
+      dropDownMenu.Open();
+      Assert.That (dropDownMenu.IsOpen(), Is.True);
+    }
+
+    [Test]
+    [Category ("LongRunning")]
+    public void TestDropDownMenuControlObject_OpenDropDownMenuWithDelayGreaterThanTimeout_FailsWithException ()
+    {
+      var home = Start();
+
+      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_DelayedLongerThanTimeout");
+
+      Assert.That (() => dropDownMenu.Open(), Throws.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to open the menu."));
+      Assert.That (dropDownMenu.IsOpen(), Is.False);
+    }
+
+    [Test]
+    public void TestDropDownMenuControlObject_OpenDropDownMenuWithError_FailsWithException ()
+    {
+      var home = Start();
+
+      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_Error");
+
+      Assert.That (() => dropDownMenu.Open(), Throws.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to open the menu."));
+      Assert.That (dropDownMenu.IsOpen(), Is.False);
+    }
+
+    [Test]
     public void TestDropDownMenuControlObject_CloseDropDownMenu ()
     {
       var home = Start();

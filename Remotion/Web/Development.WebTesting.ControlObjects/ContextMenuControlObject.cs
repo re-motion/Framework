@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -36,10 +37,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public override void Open ()
+    protected override void PerformOpen (ElementScope menuButtonScope)
     {
-      if (!IsOpen())
-        Scope.ContextClick (Context);
+      menuButtonScope.ContextClick (Context);
     }
   }
 }

@@ -30,7 +30,7 @@
     <td></td>
     <td></td></tr>
   <tr>
-    <td colSpan=2><ros:TestBocList id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" Index="InitialOrder" Selection="Multiple" Width="100%" Height="10em">
+    <td colSpan=2><ros:TestBocList id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" Index="InitialOrder" Selection="Multiple" Width="100%" Height="10em" ControlServicePath="BocListWebService.asmx" ControlServiceArguments="ControlServiceArgs">
 <fixedcolumns>
 <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></remotion:BocRowEditModeColumnDefinition>
 <remotion:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
@@ -79,7 +79,7 @@
 <remotion:BocListItemCommand></remotion:BocListItemCommand>
 </PersistedCommand>
 </remotion:BocSimpleColumnDefinition>
-<remotion:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" Width="16px" ColumnTitle="Menu"></remotion:BocDropDownMenuColumnDefinition>
+<remotion:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" ShowMenuTitle="true" Width="16px" ColumnTitle="Menu"></remotion:BocDropDownMenuColumnDefinition>
 </FixedColumns>
 </ros:TestBocList></td></tr>
 <%--  <tr>

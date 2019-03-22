@@ -18,6 +18,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Rhino.Mocks;
@@ -50,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           invocation => ((HtmlTextWriter) invocation.Arguments[0]).Write ("mocked dropdown list"));
 
       var renderer = new BocListMenuBlockRenderer (_bocListCssClassDefinition);
-      renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -84,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           invocation => ((HtmlTextWriter) invocation.Arguments[0]).Write ("mocked dropdown menu"));
 
       var renderer = new BocListMenuBlockRenderer (_bocListCssClassDefinition);
-      renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       Assert.That (Html.GetDocumentText().StartsWith ("mocked dropdown menu"));
     }
@@ -99,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Stub (mock => mock.MenuBlockItemOffset).Return (menuBlockOffset);
 
       var renderer = new BocListMenuBlockRenderer (_bocListCssClassDefinition);
-      renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
@@ -107,6 +108,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertStyleAttribute (div, "width", "100%");
       Html.AssertStyleAttribute (div, "margin-bottom", menuBlockOffset.ToString());
       Html.AssertChildElementCount (div, 0);
+    }
+
+    private BocListRenderingContext CreateRenderingContext ()
+    {
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (List.DataSource, List.Property, "Args");
+      return new BocListRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, new BocColumnRenderer[0]);
     }
   }
 }

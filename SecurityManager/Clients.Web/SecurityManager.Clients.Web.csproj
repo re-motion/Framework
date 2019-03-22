@@ -540,7 +540,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\UI\SecurityManagerUserContextControlResources.fr.resx" />
-    <EmbeddedResource Include="Globalization\UI\SecurityManagerUserContextControlResources.it.resx" />
+    <EmbeddedResource Include="Globalization\UI\SecurityManagerUserContextControlResources.it.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\UI\SecurityManagerUserContextControlResources.de.resx" />
     <EmbeddedResource Include="Globalization\UI\SecurityManagerUserContextControlResources.resx" />
     <EmbeddedResource Include="Globalization\UI\AccessControl\AccessControlResources.fr.resx" />

@@ -39,6 +39,12 @@
 </PersistedCommand>
 </remotion:submenutab>
 
+<remotion:submenutab Text="DropDown" ItemID="BocDropDownMenu">
+<persistedcommand>
+<remotion:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocDropDownMenuUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></remotion:navigationcommand>
+</PersistedCommand>
+</remotion:submenutab>
+
 <remotion:submenutab Text="Enum" ItemID="BocEnumValue">
 <persistedcommand>
 <remotion:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocEnumValueUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></remotion:navigationcommand>

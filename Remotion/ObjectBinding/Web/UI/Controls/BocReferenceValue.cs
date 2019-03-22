@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new BocReferenceValueRenderingContext (Context, writer, this, CreateIconWebServiceContext());
+      return new BocReferenceValueRenderingContext (Context, writer, this, CreateIconWebServiceContext(), CreateBusinessObjectWebServiceContext());
     }
 
     /// <remarks>
