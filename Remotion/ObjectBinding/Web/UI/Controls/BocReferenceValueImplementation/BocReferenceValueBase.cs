@@ -43,6 +43,41 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 {
   /// <summary> Base class for controls that can be used to display or select references as the value of a property. </summary>
+  public abstract class BocReferenceValueBase<TControlWebService>
+      : BocReferenceValueBase
+      where TControlWebService : class, IBocReferenceValueBaseWebService
+  {
+    protected BocReferenceValueBase ()
+        : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+    {
+    }
+
+    protected BocReferenceValueBase ([NotNull] IWebServiceFactory webServiceFactory)
+        : base (webServiceFactory)
+    {
+    }
+
+    protected override void OnPreRender (EventArgs e)
+    {
+      base.OnPreRender (e);
+      CheckControlService();
+    }
+
+    private void CheckControlService ()
+    {
+      if (IsDesignMode)
+        return;
+
+      if (string.IsNullOrEmpty (ControlServicePath))
+        return;
+
+      var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, ControlServicePath);
+      WebServiceFactory.CreateJsonService<TControlWebService> (virtualServicePath);
+    }
+  }
+
+  /// <summary> Base class for controls that can be used to display or select references as the value of a property. </summary>
+  /// <remarks>Derive types from <see cref="BocReferenceValueBase{TControl}"/></remarks>
   public abstract class BocReferenceValueBase :
       BusinessObjectBoundEditableWebControl,
       IBocReferenceValueBase,
@@ -51,8 +86,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       IBocMenuItemContainer,
       IResourceDispatchTarget
   {
-    public const string CommandArgumentName = "command";
+    #region Obsolete
 
+    [Obsolete ("Use ControlServicePath instead. (Version 1.21.3)", true)]
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    public string IconServicePath
+    {
+      get { throw new NotSupportedException ("Use ControlServicePath instead. (Version 1.21.3)"); }
+      set { throw new NotSupportedException ("Use ControlServicePath instead. (Version 1.21.3)"); }
+    }
+
+    [Obsolete ("Use ControlServiceArguments instead. (Version 1.21.3)", true)]
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    public string IconServiceArguments
+    {
+      get { throw new NotSupportedException ("Use ControlServiceArguments instead. (Version 1.21.3)"); }
+      set { throw new NotSupportedException ("Use ControlServiceArguments instead. (Version 1.21.3)"); }
+    }
+
+    #endregion
+
+    public const string CommandArgumentName = "command";
+    
     protected const string c_nullIdentifier = "==null==";
     
     /// <summary> The key identifying a options menu item resource entry. </summary>
@@ -84,18 +139,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private Unit _optionsMenuWidth = Unit.Empty;
     private bool? _hasValueEmbeddedInsideOptionsMenu;
     private string[] _hiddenMenuItems;
-    private string _iconServicePath;
-    private string _iconServiceArguments;
     private string _controlServicePath;
     private string _controlServiceArguments;
     protected IWebServiceFactory WebServiceFactory { get; }
 
-    protected BocReferenceValueBase ()
-        : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
-    {
-    }
-
-    protected BocReferenceValueBase ([NotNull] IWebServiceFactory webServiceFactory)
+    internal BocReferenceValueBase ([NotNull] IWebServiceFactory webServiceFactory)
     {
       ArgumentUtility.CheckNotNull ("webServiceFactory", webServiceFactory);
 
@@ -380,24 +428,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     [Description ("Flag that determines whether to show the icon in front of the value.")]
     [DefaultValue (true)]
     public bool EnableIcon { get; set; }
-
-    [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
-    public string IconServicePath
-    {
-      get { return _iconServicePath; }
-      set { _iconServicePath = value ?? string.Empty; }
-    }
-
-    [Category ("Appearance")]
-    [DefaultValue ("")]
-    [Description ("Additional arguments passed to the icon service.")]
-    public string IconServiceArguments
-    {
-      get { return _iconServiceArguments; }
-      set { _iconServiceArguments = StringUtility.EmptyToNull (value); }
-    }
 
     /// <summary> The <see cref="BocReferenceValue"/> supports only scalar properties. </summary>
     /// <returns> <see langword="true"/> if <paramref name="isList"/> is <see langword="false"/>. </returns>
@@ -733,9 +763,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       if (Command != null)
         Command.RegisterForSynchronousPostBackOnDemand (this, CommandArgumentName, string.Format ("{0} '{1}', Object Command", GetType().Name, ID));
 #pragma warning restore 618
-
-      CheckIconService();
-      CheckControlService();
     }
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
@@ -887,30 +914,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       OptionsMenuItems.LoadResources (resourceManager, globalizationService);
     }
 
-    private void CheckIconService ()
-    {
-      if (IsDesignMode)
-        return;
-
-      if (string.IsNullOrEmpty (IconServicePath))
-        return;
-
-      var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, IconServicePath);
-      WebServiceFactory.CreateJsonService<IBusinessObjectIconWebService> (virtualServicePath);
-    }
-
-    private void CheckControlService ()
-    {
-      if (IsDesignMode)
-        return;
-
-      if (string.IsNullOrEmpty (ControlServicePath))
-        return;
-
-      var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, ControlServicePath);
-      WebServiceFactory.CreateJsonService<IBocReferenceValueWebService> (virtualServicePath);
-    }
-
     [Obsolete ("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
@@ -970,6 +973,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected IBusinessObjectClassWithIdentity GetBusinessObjectClass ()
     {
+      // See also BocReferenceValueRendererBase.GetIconContextAsJson
       IBusinessObjectClassWithIdentity businessObjectClass = null;
       if (Property != null)
         businessObjectClass = (IBusinessObjectClassWithIdentity) Property.ReferenceClass;
@@ -1026,12 +1030,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       if (businessObjectClass == null)
         return null;
       return GetIcon (Value, businessObjectClass.BusinessObjectProvider);
-    }
-
-    [CanBeNull]
-    protected BusinessObjectIconWebServiceContext CreateIconWebServiceContext ()
-    {
-      return BusinessObjectIconWebServiceContext.Create (GetBusinessObjectClass(), IconServiceArguments);
     }
 
     protected BusinessObjectWebServiceContext CreateBusinessObjectWebServiceContext ()

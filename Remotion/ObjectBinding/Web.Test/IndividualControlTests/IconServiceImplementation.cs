@@ -15,32 +15,23 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.ComponentModel;
 using System.Web;
-using System.Web.Script.Services;
-using System.Web.Services;
+using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
-using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 using Remotion.Web.Services;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
+namespace OBWTest.IndividualControlTests
 {
-  [WebService (Namespace = "http://re-motion.org/ObjectBinding.Web/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
-  [ToolboxItem (false)]
-  [ScriptService]
-  public class IconService : WebService, IBusinessObjectIconWebService
+  public class IconServiceImplementation
   {
-    [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
-    public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
+    public IconProxy GetIcon (HttpContextBase httpContext, string businessObjectClass, string businessObject, string arguments)
     {
       if (businessObjectClass == null)
         return null;
 
-      var type = TypeUtility.GetType (businessObjectClass, true);
+      Type type = TypeUtility.GetType (businessObjectClass, true);
       var businessObjectProvider = BindableObjectProvider.GetProviderForBindableObjectType (type);
       var bindableObjectClass = businessObjectProvider.GetBindableObjectClass (type);
       IBusinessObjectWithIdentity businessObjectWithIdentity = null;
@@ -51,10 +42,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
       }
 
       var iconInfo = BusinessObjectBoundWebControl.GetIcon (businessObjectWithIdentity, bindableObjectClass.BusinessObjectProvider);
-      if (iconInfo == null)
-        return null;
+      if (iconInfo != null)
+        return IconProxy.Create (httpContext, iconInfo);
 
-      return IconProxy.Create (new HttpContextWrapper (Context), iconInfo);
+      return null;
     }
   }
 }

@@ -129,23 +129,23 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
           });
       AllPermisionsMenu.EventCommandClick += AllPermisionsMenu_EventCommandClick;
 
-      if (string.IsNullOrEmpty (SpecificTenantField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (SpecificTenantField);
+      if (string.IsNullOrEmpty (SpecificTenantField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (SpecificTenantField);
  
-      if (string.IsNullOrEmpty (SpecificGroupField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (SpecificGroupField);
+      if (string.IsNullOrEmpty (SpecificGroupField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (SpecificGroupField);
 
-      if (string.IsNullOrEmpty (SpecificUserField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (SpecificUserField);
+      if (string.IsNullOrEmpty (SpecificUserField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (SpecificUserField);
 
-      if (string.IsNullOrEmpty (SpecificGroupTypeField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (SpecificGroupTypeField);
+      if (string.IsNullOrEmpty (SpecificGroupTypeField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (SpecificGroupTypeField);
 
-      if (string.IsNullOrEmpty (SpecificPositionField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (SpecificPositionField);
+      if (string.IsNullOrEmpty (SpecificPositionField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (SpecificPositionField);
       
-      if (string.IsNullOrEmpty (SpecificAbstractRoleField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (SpecificAbstractRoleField);
+      if (string.IsNullOrEmpty (SpecificAbstractRoleField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (SpecificAbstractRoleField);
     }
 
     protected override void OnPreRender (EventArgs e)
@@ -334,7 +334,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       if (resetValue)
         SpecificGroupField.Value = null;
 
-      SpecificGroupField.Args = SpecificTenantField.BusinessObjectUniqueIdentifier ?? CurrentFunction.TenantHandle.AsArgument();
+      SpecificGroupField.ControlServiceArguments = SpecificTenantField.BusinessObjectUniqueIdentifier ?? CurrentFunction.TenantHandle.AsArgument();
 
       SpecificGroupField.Visible = (GroupCondition?) GroupConditionField.Value == GroupCondition.SpecificGroup;
     }
@@ -367,7 +367,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       if (resetValue)
         SpecificUserField.Value = null;
 
-      SpecificUserField.Args = SpecificTenantField.BusinessObjectUniqueIdentifier ?? CurrentFunction.TenantHandle.AsArgument();
+      SpecificUserField.ControlServiceArguments = SpecificTenantField.BusinessObjectUniqueIdentifier ?? CurrentFunction.TenantHandle.AsArgument();
 
       SpecificUserField.Visible = (UserCondition?) UserConditionField.Value == UserCondition.SpecificUser;
     }

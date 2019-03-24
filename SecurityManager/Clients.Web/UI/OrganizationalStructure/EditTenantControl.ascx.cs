@@ -66,8 +66,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       _parentField = GetControl<BocAutoCompleteReferenceValue> ("ParentField", "Parent");
 
-      if (string.IsNullOrEmpty (_parentField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (_parentField);
+      if (string.IsNullOrEmpty (_parentField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (_parentField);
     }
 
     protected override void OnLoad (EventArgs e)

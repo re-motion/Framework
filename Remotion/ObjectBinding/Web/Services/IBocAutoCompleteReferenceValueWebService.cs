@@ -21,10 +21,9 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.Services
 {
   /// <summary>
-  /// The <see cref="ISearchAvailableObjectWebService"/> interface defines a facade for <see cref="ISearchAvailableObjectsService"/> when accessed 
-  /// via the <see cref="BocAutoCompleteReferenceValue"/>.
+  /// The <see cref="IBocAutoCompleteReferenceValueWebService"/> interface defines the API for retrieving on-demand information required by <see cref="BocAutoCompleteReferenceValue"/>.
   /// </summary>
-  public interface ISearchAvailableObjectWebService
+  public interface IBocAutoCompleteReferenceValueWebService : IBocReferenceValueBaseWebService
   {
     /// <summary>
     /// Retrieves a list of objects based on the <paramref name="searchString"/> and the search context (i.e. the <paramref name="businessObjectClass"/> etc).
@@ -47,6 +46,7 @@ namespace Remotion.ObjectBinding.Web.Services
     /// </param>
     /// <param name="args">Additional search arguments.</param>
     /// <returns>An array of <see cref="BusinessObjectWithIdentityProxy"/> objects containing the search result.</returns>
+    /// <remarks>This method can be implemented by delegating the search to <see cref="ISearchAvailableObjectsService"/>.<see cref="ISearchAvailableObjectsService.Search"/>.</remarks>
     BusinessObjectWithIdentityProxy[] Search (
         string searchString,
         int? completionSetCount,
@@ -73,6 +73,10 @@ namespace Remotion.ObjectBinding.Web.Services
     /// </param>
     /// <param name="args">Additional search arguments.</param>
     /// <returns>A <see cref="BusinessObjectWithIdentityProxy"/> object if an exact match (i.e. a single match) is found or <see langword="null" />.</returns>
+    /// <remarks>
+    ///   This method can be implemented by delegating the search to <see cref="ISearchAvailableObjectsService"/>.<see cref="ISearchAvailableObjectsService.Search"/>
+    ///   and selecting the first result.
+    /// </remarks>
     BusinessObjectWithIdentityProxy SearchExact (
         string searchString,
         string businessObjectClass,

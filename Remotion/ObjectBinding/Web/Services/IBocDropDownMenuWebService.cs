@@ -6,7 +6,7 @@ using Remotion.Web.Services;
 namespace Remotion.ObjectBinding.Web.Services
 {
   /// <summary>
-  /// The <see cref="IBocTreeViewWebService"/> interface defines the API for retrieving on-demand information required by <see cref="BocDropDownMenu"/>.
+  /// The <see cref="IBocDropDownMenuWebService"/> interface defines the API for retrieving on-demand information required by <see cref="BocDropDownMenu"/>.
   /// </summary>
   public interface IBocDropDownMenuWebService
   {

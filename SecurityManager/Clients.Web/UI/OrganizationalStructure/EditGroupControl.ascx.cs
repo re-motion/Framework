@@ -76,11 +76,11 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       RolesList.EditModeControlFactory = ServiceLocator.GetInstance<GroupRolesListEditableRowControlFactory>();
       bocListInlineEditingConfigurator.Configure (RolesList, Role.NewObject);
 
-      if (string.IsNullOrEmpty (_parentField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (_parentField);
+      if (string.IsNullOrEmpty (_parentField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (_parentField);
 
-      if (string.IsNullOrEmpty (_groupTypeField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (_groupTypeField);
+      if (string.IsNullOrEmpty (_groupTypeField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (_groupTypeField);
     }
 
     protected override void OnLoad (EventArgs e)
@@ -110,7 +110,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       base.OnPreRender (e);
 
-      _parentField.Args = CurrentFunction.TenantHandle.AsArgument();
+      _parentField.ControlServiceArguments = CurrentFunction.TenantHandle.AsArgument();
     }
 
     protected void ParentValidator_ServerValidate (object source, ServerValidateEventArgs args)

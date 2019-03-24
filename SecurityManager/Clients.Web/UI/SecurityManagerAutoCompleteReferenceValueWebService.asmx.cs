@@ -31,27 +31,51 @@ using Remotion.SecurityManager.Domain.SearchInfrastructure;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.Services;
 
 namespace Remotion.SecurityManager.Clients.Web.UI
 {
   /// <summary>
-  /// The <see cref="SecurityManagerSearchWebService"/> is used as an interface between <see cref="BocAutoCompleteReferenceValue"/> controls and the 
+  /// The <see cref="SecurityManagerAutoCompleteReferenceValueWebService"/> is used as an interface between <see cref="BocAutoCompleteReferenceValue"/> controls and the 
   /// <see cref="ISearchAvailableObjectsService"/> implementation.
   /// </summary>
   [WebService (Namespace = "http://www.re-motion.org/SecurityManager/")]
   [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
   [ToolboxItem (false)]
   [ScriptService]
-  public class SecurityManagerSearchWebService : WebService, ISearchAvailableObjectWebService
+  public class SecurityManagerAutoCompleteReferenceValueWebService : WebService, IBocAutoCompleteReferenceValueWebService
   {
     public static void BindServiceToControl (BocAutoCompleteReferenceValue control)
     {
       ArgumentUtility.CheckNotNull ("control", control);
 
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
-      control.SearchServicePath =
-          resourceUrlFactory.CreateResourceUrl (typeof (SecurityManagerSearchWebService), ResourceType.UI, "SecurityManagerSearchWebService.asmx")
-              .GetUrl();
+      control.ControlServicePath = resourceUrlFactory.CreateResourceUrl (
+              typeof (SecurityManagerAutoCompleteReferenceValueWebService),
+              ResourceType.UI,
+              "SecurityManagerAutoCompleteReferenceValueWebService.asmx")
+          .GetUrl();
+    }
+
+    [WebMethod (EnableSession = true)]
+    [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+    public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
+    {
+      return null;
+    }
+
+    [WebMethod (EnableSession = true)]
+    [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+    public WebMenuItemProxy[] GetMenuItemStatusForOptionsMenu (
+        string controlID,
+        string controlType,
+        string businessObjectClass,
+        string businessObjectProperty,
+        string businessObject,
+        string arguments,
+        string[] itemIDs)
+    {
+      return itemIDs.Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: false)).ToArray();
     }
 
     [WebMethod (EnableSession = true)]

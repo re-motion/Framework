@@ -96,9 +96,10 @@
         list <see cref="IBusinessObjectWithIdentity"/> objects. Use this method to progammatically clear the list, e.g.
         in an event handler.
       </para><para>
-        Use the <see cref="BocReferenceValueBase.IconServicePath"/> to specify the ASP.NET web service used to retrieve the icon after a value selection
-        without requiring an auto-postback. This web service must implement the <see cref="Remotion.ObjectBinding.Web.Services.IBusinessObjectIconWebService" /> interface.
-        Additional context information can be provided using the <see cref="BocReferenceValueBase.IconServiceArguments"/> property.
+        Use the <see cref="BocReferenceValueBase.ControlServicePath"/> to specify the ASP.NET web service used to retrieve information required by the
+        control on the client without requiring a postback. This includes providing the current icon after a value selection and the enabled menu items
+        for the options menu. This web service must implement the <see cref="IBocReferenceValueWebService" /> interface.
+        Additional context information can be provided using the <see cref="BocReferenceValueBase.ControlServiceArguments"/> property.
       </para>
 
       <h4 class="dtH4">Localization Support</h4>

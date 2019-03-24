@@ -16,46 +16,47 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
-using Remotion.ObjectBinding;
-using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web.Services;
-using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
 using Remotion.Web.Services;
 
-namespace OBWTest.IndividualControlTests
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
 {
   [WebService (Namespace = "http://re-motion.org/ObjectBinding.Web/")]
   [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
   [ToolboxItem (false)]
   [ScriptService]
-  public class IconService : WebService, IBusinessObjectIconWebService
+  public class BocReferenceValueWebService : WebService, IBocReferenceValueWebService
   {
+    private readonly IconServiceImplementation _iconServiceImplementation;
+
+    public BocReferenceValueWebService ()
+    {
+      _iconServiceImplementation = new IconServiceImplementation();
+    }
+
     [WebMethod]
     [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
     public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
     {
-      if (businessObjectClass == null)
-        return null;
+      return _iconServiceImplementation.GetIcon (new HttpContextWrapper (Context), businessObjectClass, businessObject, arguments);
+    }
 
-      Type type = TypeUtility.GetType (businessObjectClass, true);
-      var businessObjectProvider = BindableObjectProvider.GetProviderForBindableObjectType (type);
-      var bindableObjectClass = businessObjectProvider.GetBindableObjectClass (type);
-      IBusinessObjectWithIdentity businessObjectWithIdentity = null;
-      if (!string.IsNullOrEmpty (businessObject))
-      {
-        var businessObjectClassWithIdentity = (IBusinessObjectClassWithIdentity) bindableObjectClass;
-        businessObjectWithIdentity = businessObjectClassWithIdentity.GetObject (businessObject);
-      }
-
-      var iconInfo = BusinessObjectBoundWebControl.GetIcon (businessObjectWithIdentity, bindableObjectClass.BusinessObjectProvider);
-      if (iconInfo != null)
-        return IconProxy.Create (new HttpContextWrapper (Context), iconInfo);
-
-      return null;
+    [WebMethod]
+    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    public WebMenuItemProxy[] GetMenuItemStatusForOptionsMenu (
+        string controlID,
+        string controlType,
+        string businessObjectClass,
+        string businessObjectProperty,
+        string businessObject,
+        string arguments,
+        string[] itemIDs)
+    {
+      return itemIDs.Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: false)).ToArray();
     }
   }
 }

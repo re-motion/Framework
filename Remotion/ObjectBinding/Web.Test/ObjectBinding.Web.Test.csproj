@@ -232,6 +232,7 @@
       <SubType>Component</SubType>
       <DependentUpon>BocListWebService.asmx</DependentUpon>
     </Compile>
+    <Compile Include="IndividualControlTests\IconServiceImplementation.cs" />
     <Compile Include="Validation\BocValidationTestForm.aspx.cs">
       <DependentUpon>BocValidationTestForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -249,20 +250,12 @@
       <DependentUpon>BocAutoCompleteReferenceValueUserControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="IndividualControlTests\IconService.asmx.cs">
-      <DependentUpon>IconService.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="QuirksMode.Master.cs">
       <DependentUpon>QuirksMode.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="QuirksMode.Master.designer.cs">
       <DependentUpon>QuirksMode.Master</DependentUpon>
-    </Compile>
-    <Compile Include="IndividualControlTests\AutoCompleteService.asmx.cs">
-      <DependentUpon>AutoCompleteService.asmx</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="IndividualControlTests\Form.aspx.designer.cs">
       <DependentUpon>Form.aspx</DependentUpon>
@@ -571,7 +564,6 @@
     <Content Include="Images\NullIcon.gif" />
     <Content Include="Images\Remotion.ObjectBinding.Sample.Job.gif" />
     <Content Include="Images\Remotion.ObjectBinding.Sample.Person.gif" />
-    <Content Include="IndividualControlTests\AutoCompleteService.asmx" />
     <Content Include="IndividualControlTests\BocBooleanValueUserControl.ascx">
       <SubType>UserControl</SubType>
     </Content>
@@ -611,7 +603,6 @@
     <Content Include="IndividualControlTests\Form.aspx">
       <SubType>Form</SubType>
     </Content>
-    <Content Include="IndividualControlTests\IconService.asmx" />
     <Content Include="LeftFrame.aspx">
       <SubType>Form</SubType>
     </Content>

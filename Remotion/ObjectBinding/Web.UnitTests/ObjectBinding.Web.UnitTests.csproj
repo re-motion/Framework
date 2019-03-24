@@ -181,7 +181,7 @@
     <Compile Include="UI\Controls\BocLiteralTest.cs" />
     <Compile Include="UI\Controls\BocMultilineTextBoxValueMock.cs" />
     <Compile Include="UI\Controls\BocMultilineTextValueTest.cs" />
-    <Compile Include="UI\Controls\BocReferenceValueImplementation\BusinessObjectServiceContextTest.cs" />
+    <Compile Include="Services\BusinessObjectWebServiceContextTest.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocAutoCompleteReferenceValueRendererTest.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocReferenceValueRendererTest.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\IBocAutoCompleteReferenceValueRendererTest.cs" />

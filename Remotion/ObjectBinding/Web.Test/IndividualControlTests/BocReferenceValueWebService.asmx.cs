@@ -32,6 +32,20 @@ namespace OBWTest.IndividualControlTests
   [ScriptService]
   public class BocReferenceValueWebService : WebService, IBocReferenceValueWebService
   {
+    private readonly IconServiceImplementation _iconServiceImplementation;
+
+    public BocReferenceValueWebService ()
+    {
+      _iconServiceImplementation = new IconServiceImplementation();
+    }
+
+    [WebMethod]
+    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
+    {
+      return _iconServiceImplementation.GetIcon (new HttpContextWrapper (Context), businessObjectClass, businessObject, arguments);
+    }
+
     [WebMethod]
     [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusForOptionsMenu (

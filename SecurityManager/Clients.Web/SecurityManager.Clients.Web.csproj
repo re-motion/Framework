@@ -105,7 +105,7 @@
     <None Include="UI\AccessControl\EditAccessControlEntryHeaderControl.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
-    <None Include="UI\SecurityManagerSearchWebService.asmx" />
+    <None Include="UI\SecurityManagerAutoCompleteReferenceValueWebService.asmx" />
     <None Include="UI\AccessControl\EditStatelessAccessControlListControl.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
@@ -240,8 +240,8 @@
     <Compile Include="Classes\OrganizationalStructure\BaseEditControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\SecurityManagerSearchWebService.asmx.cs">
-      <DependentUpon>SecurityManagerSearchWebService.asmx</DependentUpon>
+    <Compile Include="UI\SecurityManagerAutoCompleteReferenceValueWebService.asmx.cs">
+      <DependentUpon>SecurityManagerAutoCompleteReferenceValueWebService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\AccessControl\EditStatelessAccessControlListControl.ascx.cs">

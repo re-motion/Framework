@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Command.Type = CommandType.Event;
       Control.Command.Show = CommandShow.Always;
 #pragma warning restore 618
-      Control.Stub (stub=>stub.SearchServicePath).Return ("~/SearchService.asmx");
+      Control.Stub (stub=>stub.ControlServicePath).Return ("~/ControlService.asmx");
 
       Control.Stub (stub => stub.OptionsMenu).Return (OptionsMenu);
 
@@ -726,8 +726,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           HttpContext,
           Html.Writer,
           Control,
-          SearchAvailableObjectWebServiceContext.Create (Control.DataSource, Control.Property, "SearchArgs"),
-          BusinessObjectIconWebServiceContext.Create (null, "IconArgs"),
           BusinessObjectWebServiceContext.Create (Control.DataSource, Control.Property, "Args"));
     }
   }

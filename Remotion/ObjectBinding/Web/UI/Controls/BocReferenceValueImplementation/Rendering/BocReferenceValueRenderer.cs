@@ -137,6 +137,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         return;
 
       string key = renderingContext.Control.ClientID + "_InitializationScript";
+      var controlServicePath = GetControlServicePath (renderingContext);
+      var isIconUpdateEnabled = controlServicePath != null && renderingContext.Control.IsIconEnabled();
 
       var script = new StringBuilder (1000);
       script.Append ("$(document).ready( function() { BocReferenceValue.Initialize(");
@@ -150,9 +152,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.AppendFormat ("'{0}', ", renderingContext.Control.NullValueString);
       AppendBooleanValueToScript (script, renderingContext.Control.DropDownListStyle.AutoPostBack ?? false);
       script.Append (", ");
-      AppendStringValueOrNullToScript (script, GetIconServicePath (renderingContext));
+      AppendBooleanValueToScript (script, isIconUpdateEnabled );
       script.Append (", ");
-      script.Append (GetIconContextAsJson (renderingContext.IconWebServiceContext) ?? "null");
+      AppendStringValueOrNullToScript (script, controlServicePath);
+      script.Append (", ");
+      script.Append (isIconUpdateEnabled ? GetIconContextAsJson (renderingContext) : "null");
       script.Append (", ");
 #pragma warning disable 618
       script.Append (GetCommandInfoAsJson (renderingContext) ?? "null");

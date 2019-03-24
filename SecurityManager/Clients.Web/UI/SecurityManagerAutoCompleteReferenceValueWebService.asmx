@@ -1,0 +1,1 @@
+﻿<%@ WebService Language="C#" CodeBehind="SecurityManagerAutoCompleteReferenceValueWebService.asmx.cs" Class="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerAutoCompleteReferenceValueWebService" %>

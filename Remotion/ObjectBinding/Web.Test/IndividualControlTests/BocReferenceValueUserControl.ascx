@@ -64,7 +64,7 @@
     <td style="WIDTH: 20%"><asp:label id=ReadOnlyPartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
-    <td><remotion:bocreferencevalue id=UnboundPartnerField runat="server" IconServicePath="IconService.asmx" DataSourceControl="PersonDataSource" required="True" hasvalueembeddedinsideoptionsmenu="False" showoptionsmenu="False" EnableSelectStatement="False">
+    <td><remotion:bocreferencevalue id=UnboundPartnerField runat="server" ControlServicePath="BocReferenceValueWebService.asmx" DataSourceControl="PersonDataSource" required="True" hasvalueembeddedinsideoptionsmenu="False" showoptionsmenu="False" EnableSelectStatement="False">
 <PersistedCommand>
 <remotion:boccommand Type="Href" HrefCommand-Href="http://localhost/{0}" HrefCommand-Target="_blank" ToolTip="test&quot;test'test"></remotion:boccommand>
 </PersistedCommand></remotion:bocreferencevalue></td>

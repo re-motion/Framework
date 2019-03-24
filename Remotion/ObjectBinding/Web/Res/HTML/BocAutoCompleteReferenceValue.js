@@ -21,13 +21,13 @@ function BocAutoCompleteReferenceValue()
 
 BocAutoCompleteReferenceValue.Initialize = function (
     baseID,
-    combobox, textbox, hiddenField, button, command, searchServiceUrl,
+    combobox, textbox, hiddenField, button, command, controlServiceUrl,
     completionSetCount, dropDownDisplayDelay, dropDownRefreshDelay, selectionUpdateDelay,
     searchStringValidationInfo,
     nullValueString,
     isAutoPostBackEnabled,
     searchContext,
-    iconServiceUrl,
+    isIconUpdateEnabled,
     iconContext,
     commandInfo,
     resources)
@@ -38,7 +38,7 @@ BocAutoCompleteReferenceValue.Initialize = function (
   ArgumentUtility.CheckNotNullAndTypeIsObject('hiddenField', hiddenField);
   ArgumentUtility.CheckNotNullAndTypeIsObject('button', button);
   ArgumentUtility.CheckTypeIsObject('command', command);
-  ArgumentUtility.CheckNotNullAndTypeIsString('searchServiceUrl', searchServiceUrl);
+  ArgumentUtility.CheckNotNullAndTypeIsString('controlServiceUrl', controlServiceUrl);
   ArgumentUtility.CheckNotNullAndTypeIsNumber('completionSetCount', completionSetCount);
   ArgumentUtility.CheckNotNullAndTypeIsNumber('dropDownDisplayDelay', dropDownDisplayDelay);
   ArgumentUtility.CheckNotNullAndTypeIsNumber('dropDownRefreshDelay', dropDownRefreshDelay);
@@ -47,8 +47,9 @@ BocAutoCompleteReferenceValue.Initialize = function (
   ArgumentUtility.CheckNotNullAndTypeIsString('nullValueString', nullValueString);
   ArgumentUtility.CheckNotNullAndTypeIsBoolean('isAutoPostBackEnabled', isAutoPostBackEnabled);
   ArgumentUtility.CheckNotNullAndTypeIsObject('searchContext', searchContext);
-  ArgumentUtility.CheckTypeIsString('iconServiceUrl', iconServiceUrl);
-  ArgumentUtility.CheckTypeIsObject('iconContext', iconContext);
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean('isIconUpdateEnabled', isIconUpdateEnabled);
+  if (isIconUpdateEnabled)
+    ArgumentUtility.CheckNotNullAndTypeIsObject('iconContext', iconContext);
   ArgumentUtility.CheckTypeIsObject('commandInfo', commandInfo);
   ArgumentUtility.CheckNotNullAndTypeIsObject('resources', resources);
 
@@ -105,7 +106,7 @@ BocAutoCompleteReferenceValue.Initialize = function (
     combobox = textbox;
   }
 
-  textbox.autocomplete(searchServiceUrl, 'Search', 'SearchExact',
+  textbox.autocomplete(controlServiceUrl, 'Search', 'SearchExact',
         {
           extraParams: searchContext,
           isAutoPostBackEnabled: isAutoPostBackEnabled,
@@ -258,7 +259,7 @@ BocAutoCompleteReferenceValue.Initialize = function (
 
     if (isAutoPostBackEnabled)
     {
-      _command = BocReferenceValueBase.UpdateCommand(_command, null, null, null, null, function () { });
+      _command = BocReferenceValueBase.UpdateCommand(_command, null, false, null, null, null, function () { });
     }
     else
     {
@@ -271,7 +272,7 @@ BocAutoCompleteReferenceValue.Initialize = function (
         SetError (resources.LoadIconFailedErrorMessage);
       };
 
-      _command = BocReferenceValueBase.UpdateCommand(_command, businessObject, iconServiceUrl, iconContext, commandInfo, errorHandler);
+      _command = BocReferenceValueBase.UpdateCommand(_command, businessObject, isIconUpdateEnabled, controlServiceUrl, iconContext, commandInfo, errorHandler);
     }
   }
 

@@ -63,8 +63,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       _owningGroupField = GetControl<BocAutoCompleteReferenceValue> ("OwningGroupField", "OwningGroup");
 
-      if (string.IsNullOrEmpty (_owningGroupField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (_owningGroupField);
+      if (string.IsNullOrEmpty (_owningGroupField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (_owningGroupField);
 
       var bocListInlineEditingConfigurator = ServiceLocator.GetInstance<BocListInlineEditingConfigurator>();
 
@@ -96,7 +96,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       base.OnPreRender (e);
 
-      _owningGroupField.Args = CurrentFunction.TenantHandle.AsArgument();
+      _owningGroupField.ControlServiceArguments = CurrentFunction.TenantHandle.AsArgument();
     }
   }
 }

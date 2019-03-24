@@ -102,11 +102,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       RegisterInitializationScript (renderingContext);
 
-      if (!string.IsNullOrEmpty (renderingContext.Control.IconServicePath))
+      if (!string.IsNullOrEmpty (renderingContext.Control.ControlServicePath))
       {
         CheckScriptManager (
             renderingContext.Control,
-            "{0} '{1}' requires that the page contains a ScriptManager because the IconServicePath is set.",
+            "{0} '{1}' requires that the page contains a ScriptManager because the ControlServicePath is set.",
             renderingContext.Control.GetType().Name,
             renderingContext.Control.ID);
       }
@@ -130,33 +130,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           renderingContext.Control, typeof (BocReferenceValueRendererBase<>), key, script.ToString());
     }
 
-    protected string GetIconServicePath (RenderingContext<TControl> renderingContext)
+    protected string GetControlServicePath (RenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      if (!renderingContext.Control.IsIconEnabled())
-        return null;
+      var controlControlServicePath = renderingContext.Control.ControlServicePath;
 
-      var iconServicePath = renderingContext.Control.IconServicePath;
-
-      if (string.IsNullOrEmpty (iconServicePath))
+      if (string.IsNullOrEmpty (controlControlServicePath))
         return null;
-      return renderingContext.Control.ResolveClientUrl (iconServicePath);
+      return renderingContext.Control.ResolveClientUrl (controlControlServicePath);
     }
 
-    protected string GetIconContextAsJson (BusinessObjectIconWebServiceContext iconServiceContext)
+    protected string GetIconContextAsJson (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
     {
-      if (iconServiceContext == null)
-        return null;
-
       var jsonBuilder = new StringBuilder (1000);
+      // See also BocReferenceValueBase.GetBusinessObjectClass
+      var businessObjectClass = renderingContext.Control.Property?.ReferenceClass?.Identifier
+                                ?? renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass;
 
       jsonBuilder.Append ("{ ");
       jsonBuilder.Append ("businessObjectClass : ");
-      AppendStringValueOrNullToScript (jsonBuilder, iconServiceContext.BusinessObjectClass);
+      AppendStringValueOrNullToScript (jsonBuilder, businessObjectClass);
       jsonBuilder.Append (", ");
       jsonBuilder.Append ("arguments : ");
-      AppendStringValueOrNullToScript (jsonBuilder, iconServiceContext.Arguments);
+      AppendStringValueOrNullToScript (jsonBuilder, renderingContext.BusinessObjectWebServiceContext.Arguments);
       jsonBuilder.Append (" }");
 
       return jsonBuilder.ToString();

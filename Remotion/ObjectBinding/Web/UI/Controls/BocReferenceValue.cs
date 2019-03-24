@@ -24,6 +24,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Globalization;
+// ReSharper disable once RedundantUsingDirective
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
@@ -46,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   [Designer (typeof (BocReferenceValueDesigner))]
   public class BocReferenceValue
       :
-          BocReferenceValueBase,
+          BocReferenceValueBase<IBocReferenceValueWebService>,
           IBocReferenceValue,
           IFocusableControl
   {
@@ -152,7 +154,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new BocReferenceValueRenderingContext (Context, writer, this, CreateIconWebServiceContext(), CreateBusinessObjectWebServiceContext());
+      return new BocReferenceValueRenderingContext (Context, writer, this, CreateBusinessObjectWebServiceContext());
     }
 
     /// <remarks>

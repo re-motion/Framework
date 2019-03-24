@@ -70,12 +70,10 @@
         <see cref="Remotion.ObjectBinding.Web.UI.Controls.SingleRowTextBoxStyle.AutoPostBack"/> property to enable this
         behavior.
       </para><para>
-        Use the <see cref="SearchServicePath"/> to specify the ASP.NET web service used to retrieve the values. 
-        This web service must implement the <see cref="ISearchAvailableObjectWebService" /> interface.
-      </para><para>
-        Use the <see cref="BocReferenceValueBase.IconServicePath"/> to specify the ASP.NET web service used to retrieve the icon after a value selection
-        without requiring an auto-postback. This web service must implement the <see cref="IBusinessObjectIconWebService" /> interface.
-        Additional context information can be provided using the <see cref="BocReferenceValueBase.IconServiceArguments"/> property.
+        Use the <see cref="BocReferenceValueBase.ControlServicePath"/> to specify the ASP.NET web service used to retrieve information required by the 
+        control on the client without requiring a postback. This includes retrieving the list of values, providing the current icon after a value selection,
+        and the enabled menu items for the options menu. This web service must implement the <see cref="IBocAutoCompleteReferenceValueWebService" /> interface.
+        Additional context information can be provided using the <see cref="BocReferenceValueBase.ControlServiceArguments"/> property.
       </para><para>
         Before retrieving the list of options for a specific input, the search string is validated against the <see cref="ValidSearchStringRegex"/>.
         This allows for arbitrary constraints (e.g. minimum length and wildcard detection) on the search string. If the search string does not match

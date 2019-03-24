@@ -175,6 +175,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         return;
 
       string key = renderingContext.Control.ClientID + "_InitializationScript";
+      var controlServicePath = GetControlServicePath (renderingContext);
+      var isIconUpdateEnabled = controlServicePath != null && renderingContext.Control.IsIconEnabled();
 
       var script = new StringBuilder (1000);
       script.Append ("$(document).ready( function() { BocAutoCompleteReferenceValue.Initialize(");
@@ -193,7 +195,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       else
         script.Append ("null, ");
 
-      script.AppendFormat ("'{0}', ", renderingContext.Control.ResolveClientUrl (renderingContext.Control.SearchServicePath));
+      script.AppendFormat ("'{0}', ", controlServicePath);
 
       script.AppendFormat ("{0}, ", renderingContext.Control.CompletionSetCount);
       script.AppendFormat ("{0}, ", renderingContext.Control.DropDownDisplayDelay);
@@ -206,11 +208,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.AppendFormat ("'{0}', ", renderingContext.Control.NullValueString);
       AppendBooleanValueToScript (script, renderingContext.Control.TextBoxStyle.AutoPostBack ?? false);
       script.Append (", ");
-      script.Append (GetSearchContextAsJson (renderingContext.SearchAvailableObjectWebServiceContext));
+      script.Append (GetSearchContextAsJson (renderingContext.BusinessObjectWebServiceContext));
       script.Append (", ");
-      AppendStringValueOrNullToScript (script, GetIconServicePath (renderingContext));
+      AppendBooleanValueToScript (script, isIconUpdateEnabled);
       script.Append (", ");
-      script.Append (GetIconContextAsJson (renderingContext.IconWebServiceContext) ?? "null");
+      script.Append (isIconUpdateEnabled ? GetIconContextAsJson (renderingContext) : "null");
       script.Append (", ");
 #pragma warning disable 618
       script.Append (GetCommandInfoAsJson (renderingContext) ?? "null");
@@ -228,7 +230,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return renderingContext.Control.ClientID + "_DropDownButton";
     }
 
-    private string GetSearchContextAsJson (SearchAvailableObjectWebServiceContext searchContext)
+    private string GetSearchContextAsJson (BusinessObjectWebServiceContext searchContext)
     {
       var jsonBuilder = new StringBuilder (1000);
 
@@ -243,7 +245,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       AppendStringValueOrNullToScript (jsonBuilder, searchContext.BusinessObjectIdentifier);
       jsonBuilder.Append (", ");
       jsonBuilder.Append ("args : ");
-      AppendStringValueOrNullToScript (jsonBuilder, searchContext.Args);
+      AppendStringValueOrNullToScript (jsonBuilder, searchContext.Arguments);
       jsonBuilder.Append (" }");
 
       return jsonBuilder.ToString();

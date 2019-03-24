@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
     public override BocAutoCompleteReferenceValue CreateControl (GenericTestOptions options)
     {
       var control = base.CreateControl (options);
-      control.SearchServicePath = "~/Controls/AutoCompleteService.asmx";
+      control.ControlServicePath = "~/Controls/BocAutoCompleteReferenceValueWebService.asmx";
       return control;
     }
   }

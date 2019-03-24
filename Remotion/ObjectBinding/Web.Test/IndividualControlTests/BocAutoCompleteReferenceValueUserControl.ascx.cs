@@ -220,8 +220,8 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
     if (delay.HasValue)
     {
       var args = (delay.Value / 2).ToString();
-      PartnerField.Args = args;
-      UnboundPartnerField.Args = args;
+      PartnerField.ControlServiceArguments = args;
+      UnboundPartnerField.ControlServiceArguments = args;
     }
 
     SetDebugLabel (PartnerField, PartnerFieldValueLabel);

@@ -304,7 +304,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       Assert.That (stateArray[1], Is.EqualTo (_control.Value.UniqueIdentifier));
       Assert.That (stateArray[2], Is.EqualTo (_control.Value.DisplayName));
-      Assert.That (stateArray[3], Is.InstanceOf<SearchAvailableObjectWebServiceContext>());
+      Assert.That (stateArray[3], Is.InstanceOf<BusinessObjectWebServiceContext>());
     }
 
     [Test]
@@ -317,7 +317,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       state[0] = parentState;
       state[1] = uniqueIdentifier.ToString();
       state[2] = "DisplayName";
-      state[3] = SearchAvailableObjectWebServiceContext.Create (null, null, null);
+      state[3] = BusinessObjectWebServiceContext.Create (null, null, null);
 
       _control.LoadControlState (state);
       Assert.That (((IBocReferenceValueBase) _control).GetLabelText(), Is.EqualTo ("DisplayName"));
@@ -344,10 +344,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
       ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
 
-      _webServiceFactoryStub.Stub (stub => stub.CreateJsonService<ISearchAvailableObjectWebService> ("~/SearchService.asmx"))
-          .Return (MockRepository.GenerateStub<ISearchAvailableObjectWebService>());
+      _webServiceFactoryStub.Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
       _control.AppRelativeTemplateSourceDirectory = "~/";
-      _control.SearchServicePath = "~/SearchService.asmx";
+      _control.ControlServicePath = "~/ControlService.asmx";
 
       bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
       Assert.That (_control.IsDirty, Is.False);
@@ -371,10 +371,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
       ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
 
-      _webServiceFactoryStub.Stub (stub => stub.CreateJsonService<ISearchAvailableObjectWebService> ("~/SearchService.asmx"))
-          .Return (MockRepository.GenerateStub<ISearchAvailableObjectWebService>());
+      _webServiceFactoryStub.Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
       _control.AppRelativeTemplateSourceDirectory = "~/";
-      _control.SearchServicePath = "~/SearchService.asmx";
+      _control.ControlServicePath = "~/ControlService.asmx";
 
       bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
       Assert.That (_control.IsDirty, Is.False);
@@ -395,10 +395,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
       ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
 
-      _webServiceFactoryStub.Stub (stub => stub.CreateJsonService<ISearchAvailableObjectWebService> ("~/SearchService.asmx"))
-          .Return (MockRepository.GenerateStub<ISearchAvailableObjectWebService>());
+      _webServiceFactoryStub.Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/SearchService.asmx"))
+          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
       _control.AppRelativeTemplateSourceDirectory = "~/";
-      _control.SearchServicePath = "~/SearchService.asmx";
+      _control.ControlServicePath = "~/SearchService.asmx";
 
       bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
       Assert.That (_control.IsDirty, Is.True);
@@ -425,10 +425,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
 
       _webServiceFactoryStub
-          .Stub (stub => stub.CreateJsonService<ISearchAvailableObjectWebService> ("~/SearchService.asmx"))
-          .Return (MockRepository.GenerateStub<ISearchAvailableObjectWebService>());
+          .Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
       _control.AppRelativeTemplateSourceDirectory = "~/";
-      _control.SearchServicePath = "~/SearchService.asmx";
+      _control.ControlServicePath = "~/ControlService.asmx";
 
       bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
       Assert.That (_control.IsDirty, Is.True);
@@ -457,10 +457,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
 
       _webServiceFactoryStub
-          .Stub (stub => stub.CreateJsonService<ISearchAvailableObjectWebService> ("~/SearchService.asmx"))
-          .Return (MockRepository.GenerateStub<ISearchAvailableObjectWebService>());
+          .Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
       _control.AppRelativeTemplateSourceDirectory = "~/";
-      _control.SearchServicePath = "~/SearchService.asmx";
+      _control.ControlServicePath = "~/ControlService.asmx";
 
       bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
       Assert.That (_control.IsDirty, Is.False);
@@ -488,10 +488,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
 
       _webServiceFactoryStub
-          .Stub (stub => stub.CreateJsonService<ISearchAvailableObjectWebService> ("~/SearchService.asmx"))
-          .Return (MockRepository.GenerateStub<ISearchAvailableObjectWebService>());
+          .Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
       _control.AppRelativeTemplateSourceDirectory = "~/";
-      _control.SearchServicePath = "~/SearchService.asmx";
+      _control.ControlServicePath = "~/ControlService.asmx";
 
       bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
       Assert.That (_control.IsDirty, Is.True);
@@ -518,10 +518,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
 
       _webServiceFactoryStub
-          .Stub (stub => stub.CreateJsonService<ISearchAvailableObjectWebService> ("~/SearchService.asmx"))
-          .Return (MockRepository.GenerateStub<ISearchAvailableObjectWebService>());
+          .Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
       _control.AppRelativeTemplateSourceDirectory = "~/";
-      _control.SearchServicePath = "~/SearchService.asmx";
+      _control.ControlServicePath = "~/ControlService.asmx";
 
       bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
       Assert.That (_control.IsDirty, Is.True);
@@ -544,25 +544,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       _control.IsDirty = false;
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      var searchAvailableObjectWebServiceContext = SearchAvailableObjectWebServiceContext.Create (_dataSource, _propertyReferenceValue, "Args");
-      PrivateInvoke.SetNonPublicField (_control, "_searchServiceContextFromPreviousLifeCycle", searchAvailableObjectWebServiceContext);
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (_dataSource, _propertyReferenceValue, "Args");
+      PrivateInvoke.SetNonPublicField (_control, "_businessObjectWebServiceContextFromPreviousLifeCycle", businessObjectWebServiceContext);
       ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
 
-      var searchServiceStub = MockRepository.GenerateStub<ISearchAvailableObjectWebService>();
+      var searchServiceStub = MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>();
       searchServiceStub
           .Stub (
               stub => stub.SearchExact (
                   "SomeValue",
-                  searchAvailableObjectWebServiceContext.BusinessObjectClass,
-                  searchAvailableObjectWebServiceContext.BusinessObjectProperty,
-                  searchAvailableObjectWebServiceContext.BusinessObjectIdentifier,
-                  searchAvailableObjectWebServiceContext.Args))
+                  businessObjectWebServiceContext.BusinessObjectClass,
+                  businessObjectWebServiceContext.BusinessObjectProperty,
+                  businessObjectWebServiceContext.BusinessObjectIdentifier,
+                  businessObjectWebServiceContext.Arguments))
           .Return (new BusinessObjectWithIdentityProxy { DisplayName = "ValidName", UniqueIdentifier = "ValidIdentifier" });
       _webServiceFactoryStub
-          .Stub (stub => stub.CreateJsonService<ISearchAvailableObjectWebService> ("~/SearchService.asmx"))
+          .Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
           .Return (searchServiceStub);
       _control.AppRelativeTemplateSourceDirectory = "~/";
-      _control.SearchServicePath = "~/SearchService.asmx";
+      _control.ControlServicePath = "~/ControlService.asmx";
 
       bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
       Assert.That (_control.IsDirty, Is.True);

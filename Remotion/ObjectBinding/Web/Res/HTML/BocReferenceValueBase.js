@@ -26,12 +26,15 @@ BocReferenceValueBase.InitializeGlobals = function (nullIconUrl)
   BocReferenceValueBase._nullIconUrl = nullIconUrl;
 };
 
-BocReferenceValueBase.UpdateCommand = function (oldCommand, businessObject, iconServiceUrl, iconContext, commandInfo, onFailure)
+BocReferenceValueBase.UpdateCommand = function (oldCommand, businessObject, isIconUpdateEnabled, controlServiceUrl, iconContext, commandInfo, onFailure)
 {
   ArgumentUtility.CheckNotNull('oldCommand', oldCommand);
   ArgumentUtility.CheckTypeIsString('businessObject', businessObject);
-  ArgumentUtility.CheckTypeIsString('iconServiceUrl', iconServiceUrl);
-  ArgumentUtility.CheckTypeIsObject('iconContext', iconContext);
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean('isIconUpdateEnabled', isIconUpdateEnabled);
+  if (isIconUpdateEnabled)
+    ArgumentUtility.CheckNotNullAndTypeIsString('controlServiceUrl', controlServiceUrl);
+  if (isIconUpdateEnabled)
+    ArgumentUtility.CheckNotNullAndTypeIsObject('iconContext', iconContext);
   ArgumentUtility.CheckTypeIsObject('commandInfo', commandInfo);
   ArgumentUtility.CheckTypeIsFunction('onFailure', onFailure);
 
@@ -43,7 +46,7 @@ BocReferenceValueBase.UpdateCommand = function (oldCommand, businessObject, icon
 
   oldCommand.replaceWith(newCommand);
 
-  if (iconServiceUrl != null && iconContext != null)
+  if (isIconUpdateEnabled)
   {
     var pageRequestManager = Sys.WebForms.PageRequestManager.getInstance();
     if (pageRequestManager.get_isInAsyncPostBack())
@@ -54,7 +57,7 @@ BocReferenceValueBase.UpdateCommand = function (oldCommand, businessObject, icon
       params[propertyName] = iconContext[propertyName];
 
     Sys.Net.WebServiceProxy.invoke(
-        iconServiceUrl,
+        controlServiceUrl,
         'GetIcon',
         false,
         params,

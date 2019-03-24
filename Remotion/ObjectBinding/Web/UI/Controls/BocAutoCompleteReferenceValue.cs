@@ -19,10 +19,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Linq;
 using System.Web.UI;
-using System.Web.UI.Design;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Globalization;
@@ -49,10 +47,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   [Designer (typeof (BocDesigner))]
   public class BocAutoCompleteReferenceValue
       :
-          BocReferenceValueBase,
+          BocReferenceValueBase<IBocAutoCompleteReferenceValueWebService>,
           IBocAutoCompleteReferenceValue,
           IFocusableControl
   {
+    #region Obsolete
+
+    [Obsolete ("Use ControlServicePath instead. (Version 1.21.3)", true)]
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    public string SearchServicePath
+    {
+      get { throw new NotSupportedException ("Use ControlServicePath instead. (Version 1.21.3)"); }
+      set { throw new NotSupportedException ("Use ControlServicePath instead. (Version 1.21.3)"); }
+    }
+
+    [Obsolete ("Use ControlServiceArguments instead. (Version 1.21.3)", true)]
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    public string Args
+    {
+      get { throw new NotSupportedException ("Use ControlServiceArguments instead. (Version 1.21.3)"); }
+      set { throw new NotSupportedException ("Use ControlServiceArguments instead. (Version 1.21.3)"); }
+    }
+
+    #endregion
+
     // constants
 
     /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
@@ -100,8 +118,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private string _invalidItemErrorMessage;
 
-    private string _searchServicePath = string.Empty;
-    private string _args;
     private string _validSearchStringRegex;
     private string _validSearchStringForDropDownRegex;
     private string _searchStringForDropDownDoesNotMatchRegexMessage;
@@ -110,7 +126,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private int _dropDownDisplayDelay = 1000;
     private int _dropDownRefreshDelay = 2000;
     private int _selectionUpdateDelay = 200;
-    private SearchAvailableObjectWebServiceContext _searchServiceContextFromPreviousLifeCycle;
+    private BusinessObjectWebServiceContext _businessObjectWebServiceContextFromPreviousLifeCycle;
 
     private string _nullItemErrorMessage;
     private ReadOnlyCollection<BaseValidator> _validators;
@@ -125,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         : base (webServiceFactory)
     {
       _textBoxStyle = new SingleRowTextBoxStyle();
-      _searchServiceContextFromPreviousLifeCycle = SearchAvailableObjectWebServiceContext.Create (null, null, null);
+      _businessObjectWebServiceContextFromPreviousLifeCycle = BusinessObjectWebServiceContext.Create (null, null, null);
     }
 
     // methods and properties
@@ -186,10 +202,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         {
           var result = searchAvailableObjectWebService.SearchExact (
               InternalDisplayName,
-              _searchServiceContextFromPreviousLifeCycle.BusinessObjectClass,
-              _searchServiceContextFromPreviousLifeCycle.BusinessObjectProperty,
-              _searchServiceContextFromPreviousLifeCycle.BusinessObjectIdentifier,
-              _searchServiceContextFromPreviousLifeCycle.Args);
+              _businessObjectWebServiceContextFromPreviousLifeCycle.BusinessObjectClass,
+              _businessObjectWebServiceContextFromPreviousLifeCycle.BusinessObjectProperty,
+              _businessObjectWebServiceContextFromPreviousLifeCycle.BusinessObjectIdentifier,
+              _businessObjectWebServiceContextFromPreviousLifeCycle.Arguments);
 
           if (result != null)
           {
@@ -228,16 +244,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       GetSearchAvailableObjectService();
     }
 
-    private ISearchAvailableObjectWebService GetSearchAvailableObjectService ()
+    private IBocAutoCompleteReferenceValueWebService GetSearchAvailableObjectService ()
     {
       if (IsDesignMode)
         return null;
 
-      if (string.IsNullOrEmpty (SearchServicePath))
-        throw new InvalidOperationException (string.Format ("BocAutoCompleteReferenceValue '{0}' does not have a SearchServicePath set.", ID));
+      if (string.IsNullOrEmpty (ControlServicePath))
+        throw new InvalidOperationException (string.Format ("BocAutoCompleteReferenceValue '{0}' does not have a ControlServicePath set.", ID));
 
-      var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, SearchServicePath);
-      return WebServiceFactory.CreateJsonService<ISearchAvailableObjectWebService> (virtualServicePath);
+      var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, ControlServicePath);
+      return WebServiceFactory.CreateJsonService<IBocAutoCompleteReferenceValueWebService> (virtualServicePath);
     }
 
     protected override void Render (HtmlTextWriter writer)
@@ -308,14 +324,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           Context,
           writer,
           this,
-          CreateSearchAvailableObjectWebServiceContext(),
-          CreateIconWebServiceContext(),
           CreateBusinessObjectWebServiceContext());
-    }
-
-    private SearchAvailableObjectWebServiceContext CreateSearchAvailableObjectWebServiceContext ()
-    {
-      return SearchAvailableObjectWebServiceContext.Create (DataSource, Property, Args);
     }
 
     protected override void LoadControlState (object savedState)
@@ -325,7 +334,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadControlState (values[0]);
       InternalValue = (string) values[1];
       _displayName = (string) values[2];
-      _searchServiceContextFromPreviousLifeCycle = (SearchAvailableObjectWebServiceContext) values[3];
+      _businessObjectWebServiceContextFromPreviousLifeCycle = (BusinessObjectWebServiceContext) values[3];
     }
 
     protected override object SaveControlState ()
@@ -335,7 +344,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       values[0] = base.SaveControlState();
       values[1] = InternalValue;
       values[2] = _displayName;
-      values[3] = CreateSearchAvailableObjectWebServiceContext();
+      values[3] = CreateBusinessObjectWebServiceContext();
 
       return values;
     }
@@ -528,15 +537,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
-    [Category ("AutoComplete")]
-    [DefaultValue ("")]
-    public string SearchServicePath
-    {
-      get { return _searchServicePath; }
-      set { _searchServicePath = value ?? string.Empty; }
-    }
-
     [Category ("AutoComplete")]
     [DefaultValue (10)]
     public int CompletionSetCount
@@ -592,21 +592,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [Category ("AutoComplete")]
-    [DefaultValue ("")]
-    [Description ("Additional arguments passed to the search web service.")]
-    public string Args
-    {
-      get { return _args; }
-      set { _args = StringUtility.EmptyToNull (value); }
-    }
-
     /// <summary>
     /// A Javascript regular expression the user input must match in order for the search to performed upon input.
     /// </summary>
     /// <remarks>
     /// <para>If the expression is <see langword="null" /> or empty, the <see cref="BocAutoCompleteReferenceValue"/> defaults to matching all input. </para>
-    /// <para>The expression does not constrain the search for an exact match via <see cref="ISearchAvailableObjectWebService.SearchExact"/>.</para>
+    /// <para>The expression does not constrain the search for an exact match via <see cref="IBocAutoCompleteReferenceValueWebService.SearchExact"/>.</para>
     /// </remarks>
     [Category ("AutoComplete")]
     [DefaultValue ("")]

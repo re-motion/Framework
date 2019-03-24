@@ -71,14 +71,14 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
 
       var control = new BocAutoCompleteReferenceValue();
-      SecurityManagerSearchWebService.BindServiceToControl (control);
+      SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (control);
 
       if (Is<User> (propertyPath) || Is<Group> (propertyPath))
       {
         control.PreRender += delegate
         {
           BasePage page = (BasePage) control.Page;
-          control.Args = page.CurrentFunction.TenantHandle.AsArgument();
+          control.ControlServiceArguments = page.CurrentFunction.TenantHandle.AsArgument();
         };
       }
 

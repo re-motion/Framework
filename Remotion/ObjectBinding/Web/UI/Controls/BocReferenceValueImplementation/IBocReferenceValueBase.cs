@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     bool IsCommandEnabled ();
 
     IconInfo GetIcon ();
-    string IconServicePath { get; }
+
     string GetLabelText ();
 
     /// <summary>

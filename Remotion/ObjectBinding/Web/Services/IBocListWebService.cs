@@ -7,7 +7,7 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.Services
 {
   /// <summary>
-  /// The <see cref="IBocTreeViewWebService"/> interface defines the API for retrieving on-demand information required by <see cref="BocList"/>.
+  /// The <see cref="IBocListWebService"/> interface defines the API for retrieving on-demand information required by <see cref="BocList"/>.
   /// </summary>
   public interface IBocListWebService
   {

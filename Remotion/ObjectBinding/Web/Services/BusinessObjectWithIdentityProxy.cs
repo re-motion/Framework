@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.Services
   /// </summary>
   /// <remarks>
   /// This type offers setable properties and a default constructor to comply with the .NET 2.0 web service implementation.
-  /// Returning a not fully initialized objects will result in unexpected behavior by the <see cref="ISearchAvailableObjectWebService"/>.
+  /// Returning a not fully initialized objects will result in unexpected behavior by the <see cref="IBocAutoCompleteReferenceValueWebService"/>.
   /// </remarks>
   public sealed class BusinessObjectWithIdentityProxy
   {

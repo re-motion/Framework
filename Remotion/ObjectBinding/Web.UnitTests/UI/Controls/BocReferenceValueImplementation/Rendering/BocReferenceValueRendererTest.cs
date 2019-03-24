@@ -688,10 +688,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     private BocReferenceValueRenderingContext CreateRenderingContext ()
     {
-      var iconWebServiceContext = BusinessObjectIconWebServiceContext.Create (null, null);
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (Control.DataSource, Control.Property, "Args");
 
-      return new BocReferenceValueRenderingContext (HttpContext, Html.Writer, Control, iconWebServiceContext, businessObjectWebServiceContext);
+      return new BocReferenceValueRenderingContext (HttpContext, Html.Writer, Control, businessObjectWebServiceContext);
     }
   }
 }

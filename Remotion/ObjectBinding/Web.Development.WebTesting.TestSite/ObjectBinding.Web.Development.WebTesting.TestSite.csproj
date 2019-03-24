@@ -69,7 +69,7 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
-    <Content Include="Controls\AutoCompleteService.asmx" />
+    <Content Include="Controls\BocAutoCompleteReferenceValueWebService.asmx" />
     <Content Include="Controls\BocEnumValueUserControl.ascx" />
     <Content Include="Controls\BocCheckBoxUserControl.ascx" />
     <Content Include="Controls\BocEnumValueUserControlTestOutput.ascx" />
@@ -93,7 +93,7 @@
     <Content Include="Controls\BocListUserControl.ascx" />
     <Content Include="Controls\BocAutoCompleteReferenceValueUserControl.ascx" />
     <Content Include="Controls\BocTreeViewWebService.asmx" />
-    <Content Include="Controls\IconService.asmx" />
+    <Content Include="Controls\BocReferenceValueWebService.asmx" />
     <Content Include="ControlTestForm.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="FrameTestFrame.aspx" />
@@ -153,8 +153,8 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="Controls\AutoCompleteService.asmx.cs">
-      <DependentUpon>AutoCompleteService.asmx</DependentUpon>
+    <Compile Include="Controls\BocAutoCompleteReferenceValueWebService.asmx.cs">
+      <DependentUpon>BocAutoCompleteReferenceValueWebService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\BocEnumValueUserControl.ascx.cs">
@@ -316,10 +316,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\IBocListUserControlBaseTestOutput.cs" />
-    <Compile Include="Controls\IconService.asmx.cs">
-      <DependentUpon>IconService.asmx</DependentUpon>
+    <Compile Include="Controls\BocReferenceValueWebService.asmx.cs">
+      <DependentUpon>BocReferenceValueWebService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\IconServiceImplementation.cs" />
     <Compile Include="Controls\TestBocListCustomCell.cs" />
     <Compile Include="Controls\TestBocListWithRowMenuItems.cs" />
     <Compile Include="Controls\TestBocTreeViewContextMenu.cs" />

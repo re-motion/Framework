@@ -22,13 +22,12 @@
     <td></td>
     <td>
       <remotion:BocAutoCompleteReferenceValue ID="PartnerField_Normal"
-                                              SearchServicePath="AutoCompleteService.asmx"
                                               TextBoxStyle-AutoPostBack="true"
                                               ReadOnly="False"
                                               DataSourceControl="CurrentObject"
                                               PropertyIdentifier="Partner"
                                               CompletionSetCount="5"
-                                              IconServicePath="IconService.asmx"
+                                              ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
                                               runat="server">
         
         <PersistedCommand>
@@ -60,14 +59,13 @@
     <td></td>
     <td>
       <remotion:BocAutoCompleteReferenceValue ID="PartnerField_Normal_AlternativeRendering"
-                                              SearchServicePath="AutoCompleteService.asmx"
                                               TextBoxStyle-AutoPostBack="true"
                                               ReadOnly="False"
                                               HasValueEmbeddedInsideOptionsMenu="True"
                                               DataSourceControl="CurrentObject"
                                               PropertyIdentifier="Partner"
                                               CompletionSetCount="5"
-                                              IconServicePath="IconService.asmx"
+                                              ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
                                               runat="server">
         
         <PersistedCommand>
@@ -99,13 +97,12 @@
     <td></td>
     <td>
       <remotion:BocAutoCompleteReferenceValue ID="PartnerField_ReadOnly"
-                                              SearchServicePath="AutoCompleteService.asmx"
                                               TextBoxStyle-AutoPostBack="true"
                                               ReadOnly="True"
                                               DataSourceControl="CurrentObject"
                                               PropertyIdentifier="Partner"
                                               CompletionSetCount="5"
-                                              IconServicePath="IconService.asmx"
+                                              ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
                                               runat="server">
         
         <PersistedCommand>
@@ -137,14 +134,13 @@
     <td></td>
     <td>
       <remotion:BocAutoCompleteReferenceValue ID="PartnerField_ReadOnly_AlternativeRendering"
-                                              SearchServicePath="AutoCompleteService.asmx"
                                               TextBoxStyle-AutoPostBack="true"
                                               ReadOnly="True"
                                               HasValueEmbeddedInsideOptionsMenu="False"
                                               DataSourceControl="CurrentObject"
                                               PropertyIdentifier="Partner"
                                               CompletionSetCount="5"
-                                              IconServicePath="IconService.asmx"
+                                              ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
                                               runat="server">
         
         <PersistedCommand>
@@ -176,13 +172,12 @@
     <td></td>
     <td>
       <remotion:BocAutoCompleteReferenceValue ID="PartnerField_Disabled"
-                                              SearchServicePath="AutoCompleteService.asmx"
                                               TextBoxStyle-AutoPostBack="false"
                                               Enabled="False"
                                               DataSourceControl="CurrentObject"
                                               PropertyIdentifier="Partner"
                                               CompletionSetCount="5"
-                                              IconServicePath="IconService.asmx"
+                                              ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
                                               runat="server">
         
         <PersistedCommand>
@@ -214,13 +209,12 @@
     <td></td>
     <td>
       <remotion:BocAutoCompleteReferenceValue ID="PartnerField_NoAutoPostBack"
-                                              SearchServicePath="AutoCompleteService.asmx"
                                               TextBoxStyle-AutoPostBack="false"
                                               ReadOnly="False"
                                               DataSourceControl="CurrentObject"
                                               PropertyIdentifier="Partner"
                                               CompletionSetCount="5"
-                                              IconServicePath="IconService.asmx"
+                                              ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
                                               runat="server">
         
         <PersistedCommand>
@@ -252,13 +246,12 @@
     <td></td>
     <td>
       <remotion:BocAutoCompleteReferenceValue ID="PartnerField_NoCommandNoMenu"
-                                              SearchServicePath="AutoCompleteService.asmx"
                                               TextBoxStyle-AutoPostBack="false"
                                               ReadOnly="False"
                                               DataSourceControl="CurrentObject"
                                               PropertyIdentifier="Partner"
                                               CompletionSetCount="5"
-                                              IconServicePath="IconService.asmx"
+                                              ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
                                               runat="server">
       </remotion:BocAutoCompleteReferenceValue>
     </td>

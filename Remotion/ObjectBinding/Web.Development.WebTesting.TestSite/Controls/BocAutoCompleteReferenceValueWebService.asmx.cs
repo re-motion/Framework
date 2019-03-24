@@ -24,8 +24,7 @@ using System.Web.Services;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ServiceLocation;
-using Remotion.Web;
+using Remotion.Web.Services;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.Utilities;
 
@@ -35,8 +34,36 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
   [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
   [ToolboxItem (false)]
   [ScriptService]
-  public class AutoCompleteService : WebService, ISearchAvailableObjectWebService
+  public class BocAutoCompleteReferenceValueWebService : WebService, IBocAutoCompleteReferenceValueWebService
   {
+    private readonly IconServiceImplementation _iconServiceImplementation;
+
+    public BocAutoCompleteReferenceValueWebService ()
+    {
+      _iconServiceImplementation = new IconServiceImplementation();
+    }
+
+    [WebMethod]
+    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
+    {
+      return _iconServiceImplementation.GetIcon (new HttpContextWrapper (Context), businessObjectClass, businessObject, arguments);
+    }
+
+    [WebMethod]
+    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    public WebMenuItemProxy[] GetMenuItemStatusForOptionsMenu (
+        string controlID,
+        string controlType,
+        string businessObjectClass,
+        string businessObjectProperty,
+        string businessObject,
+        string arguments,
+        string[] itemIDs)
+    {
+      return itemIDs.Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: false)).ToArray();
+    }
+
     [WebMethod]
     [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public BusinessObjectWithIdentityProxy[] Search (
@@ -64,11 +91,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
       filteredPersons.Sort ((left, right) => string.Compare (left.DisplayName, right.DisplayName, StringComparison.OrdinalIgnoreCase));
 
       return filteredPersons.Take(completionSetCount ?? int.MaxValue).ToArray();
-    }
-
-    private IResourceUrlFactory ResourceUrlFactory
-    {
-      get { return SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>(); }
     }
 
     [WebMethod]

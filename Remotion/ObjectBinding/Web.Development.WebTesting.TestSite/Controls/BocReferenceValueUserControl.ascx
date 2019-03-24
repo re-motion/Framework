@@ -27,7 +27,7 @@
                                   ReadOnly="False"
                                   DataSourceControl="CurrentObject"
                                   PropertyIdentifier="Partner"
-                                  IconServicePath="IconService.asmx"
+                                  ControlServicePath="BocReferenceValueWebService.asmx"
                                   runat="server">
         
         <PersistedCommand>
@@ -64,7 +64,7 @@
                                   HasValueEmbeddedInsideOptionsMenu="True"
                                   DataSourceControl="CurrentObject"
                                   PropertyIdentifier="Partner"
-                                  IconServicePath="IconService.asmx"
+                                  ControlServicePath="BocReferenceValueWebService.asmx"
                                   runat="server">
         
         <PersistedCommand>
@@ -100,7 +100,7 @@
                                   ReadOnly="True"
                                   DataSourceControl="CurrentObject"
                                   PropertyIdentifier="Partner"
-                                  IconServicePath="IconService.asmx"
+                                  ControlServicePath="BocReferenceValueWebService.asmx"
                                   runat="server">
         
         <PersistedCommand>
@@ -148,7 +148,7 @@
                                   HasValueEmbeddedInsideOptionsMenu="False"
                                   DataSourceControl="CurrentObject"
                                   PropertyIdentifier="Partner"
-                                  IconServicePath="IconService.asmx"
+                                  ControlServicePath="BocReferenceValueWebService.asmx"
                                   runat="server">
         
         <PersistedCommand>
@@ -184,7 +184,7 @@
                                   Enabled="False"
                                   DataSourceControl="CurrentObject"
                                   PropertyIdentifier="Partner"
-                                  IconServicePath="IconService.asmx"
+                                  ControlServicePath="BocReferenceValueWebService.asmx"
                                   runat="server">
         
         <PersistedCommand>
@@ -220,7 +220,7 @@
                                   ReadOnly="False"
                                   DataSourceControl="CurrentObject"
                                   PropertyIdentifier="Partner"
-                                  IconServicePath="IconService.asmx"
+                                  ControlServicePath="BocReferenceValueWebService.asmx"
                                   runat="server">
         
         <PersistedCommand>
@@ -256,7 +256,7 @@
                                   ReadOnly="False"
                                   DataSourceControl="CurrentObject"
                                   PropertyIdentifier="Partner"
-                                  IconServicePath="IconService.asmx"
+                                  ControlServicePath="BocReferenceValueWebService.asmx"
                                   runat="server">
         
       </remotion:BocReferenceValue>

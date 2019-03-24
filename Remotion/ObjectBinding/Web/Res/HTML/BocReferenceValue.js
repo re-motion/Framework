@@ -24,7 +24,8 @@ BocReferenceValue.Initialize = function (
     command,
     nullValueString,
     isAutoPostBackEnabled,
-    iconServiceUrl,
+    isIconUpdateEnabled,
+    controlServiceUrl,
     iconContext,
     commandInfo,
     resources)
@@ -33,8 +34,11 @@ BocReferenceValue.Initialize = function (
   ArgumentUtility.CheckTypeIsObject('command', command);
   ArgumentUtility.CheckNotNullAndTypeIsString('nullValueString', nullValueString);
   ArgumentUtility.CheckNotNullAndTypeIsBoolean('isAutoPostBackEnabled', isAutoPostBackEnabled);
-  ArgumentUtility.CheckTypeIsString('iconServiceUrl', iconServiceUrl);
-  ArgumentUtility.CheckTypeIsObject('iconContext', iconContext);
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean('isIconUpdateEnabled', isIconUpdateEnabled);
+  if (isIconUpdateEnabled)
+    ArgumentUtility.CheckNotNullAndTypeIsString('controlServiceUrl', controlServiceUrl);
+  if (isIconUpdateEnabled)
+    ArgumentUtility.CheckNotNullAndTypeIsObject('iconContext', iconContext);
   ArgumentUtility.CheckTypeIsObject('commandInfo', commandInfo);
   ArgumentUtility.CheckNotNullAndTypeIsObject('resources', resources);
 
@@ -47,7 +51,7 @@ BocReferenceValue.Initialize = function (
 
     if (isAutoPostBackEnabled)
     {
-      command = BocReferenceValueBase.UpdateCommand(command, null, null, null, null, function () { });
+      command = BocReferenceValueBase.UpdateCommand(command, null, false, null, null, null, function () { });
     }
     else
     {
@@ -57,7 +61,7 @@ BocReferenceValue.Initialize = function (
       };
 
       var businessObject = BocReferenceValue.GetSelectedValue(dropDownList, nullValueString);
-      command = BocReferenceValueBase.UpdateCommand(command, businessObject, iconServiceUrl, iconContext, commandInfo, errorHandler);
+      command = BocReferenceValueBase.UpdateCommand(command, businessObject, isIconUpdateEnabled, controlServiceUrl, iconContext, commandInfo, errorHandler);
     }
   });
 };

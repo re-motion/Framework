@@ -29,27 +29,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   public abstract class BocReferenceValueBaseRenderingContext<TControl> : BocRenderingContext<TControl>
       where TControl : IBocReferenceValueBase
   {
-    private readonly BusinessObjectIconWebServiceContext _iconWebServiceContext;
     private readonly BusinessObjectWebServiceContext _businessObjectWebServiceContext;
 
     protected BocReferenceValueBaseRenderingContext (
         [NotNull] HttpContextBase httpContext,
         [NotNull] HtmlTextWriter writer,
         [NotNull] TControl control,
-        [CanBeNull] BusinessObjectIconWebServiceContext iconWebServiceContext,
         [NotNull] BusinessObjectWebServiceContext businessObjectWebServiceContext)
         : base (httpContext, writer, control)
     {
       ArgumentUtility.CheckNotNull ("businessObjectWebServiceContext", businessObjectWebServiceContext);
 
-      _iconWebServiceContext = iconWebServiceContext;
       _businessObjectWebServiceContext = businessObjectWebServiceContext;
-    }
-
-    [CanBeNull]
-    public BusinessObjectIconWebServiceContext IconWebServiceContext
-    {
-      get { return _iconWebServiceContext; }
     }
 
     [NotNull]

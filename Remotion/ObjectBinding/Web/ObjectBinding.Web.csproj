@@ -179,16 +179,14 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="Services\BusinessObjectIconWebServiceContext.cs" />
     <Compile Include="Services\BusinessObjectWebServiceContext.cs" />
     <Compile Include="Services\BusinessObjectWithIdentityProxy.cs" />
     <Compile Include="Services\IBocDropDownMenuWebService.cs" />
     <Compile Include="Services\IBocListWebService.cs" />
+    <Compile Include="Services\IBocReferenceValueBaseWebService.cs" />
     <Compile Include="Services\IBocReferenceValueWebService.cs" />
     <Compile Include="Services\IBocTreeViewWebService.cs" />
-    <Compile Include="Services\IBusinessObjectIconWebService.cs" />
-    <Compile Include="Services\ISearchAvailableObjectWebService.cs" />
-    <Compile Include="Services\SearchAvailableObjectWebServiceContext.cs" />
+    <Compile Include="Services\IBocAutoCompleteReferenceValueWebService.cs" />
     <Compile Include="UI\Controls\BaseValidatorReadOnlyCollectionExtension.cs" />
     <Compile Include="UI\Controls\BindableObjectDataSourceControl.cs">
     </Compile>
