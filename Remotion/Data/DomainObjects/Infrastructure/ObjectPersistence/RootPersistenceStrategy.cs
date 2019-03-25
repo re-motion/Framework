@@ -191,7 +191,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     }
 
-    private PersistenceManager CreatePersistenceManager ()
+    protected virtual PersistenceManager CreatePersistenceManager ()
     {
       return new PersistenceManager (CreatePersistenceExtension());
     }
@@ -201,7 +201,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return new StorageProviderManager (CreatePersistenceExtension ());
     }
 
-    private IPersistenceExtension CreatePersistenceExtension ()
+    protected IPersistenceExtension CreatePersistenceExtension ()
     {
       var listenerFactory = SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>();
       return new CompoundPersistenceExtension (listenerFactory.CreatePersistenceExtensions (_transactionID));

@@ -29,6 +29,17 @@ namespace Remotion.Data.DomainObjects.Persistence
 {
   public class PersistenceManager : IDisposable
   {
+    private class TransactionContext : IDisposable
+    {
+      public TransactionContext ()
+      {
+      }
+
+      public void Dispose ()
+      {
+      }
+    }
+
     private bool _disposed;
     private StorageProviderManager _storageProviderManager;
 
@@ -79,36 +90,40 @@ namespace Remotion.Data.DomainObjects.Persistence
       if (dataContainers.Count == 0)
         return;
 
-      var providerDefinitions = dataContainers
-          .Select (dataContainer => dataContainer.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition)
-          .Distinct().ToArray();
+      var groupedDataContainers = dataContainers
+          .ToLookup (dataContainer => dataContainer.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition)
+          .Select (group => new { Provider = _storageProviderManager.GetMandatory (group.Key.Name), DataContainers = group })
+          .ToArray();
 
-      if (providerDefinitions.Length > 1)
-        throw CreatePersistenceException ("Save does not support multiple storage providers.");
+      var providers = groupedDataContainers.Select (group => group.Provider).ToArray();
+      CheckProvidersCompatibleForSave (providers);
 
-      var provider = _storageProviderManager.GetMandatory (providerDefinitions.Single().Name);
-
-      provider.BeginTransaction();
-
-      try
-      {
-        provider.Save (dataContainers);
-        provider.UpdateTimestamps (dataContainers.Where (dc => dc.State != StateType.Deleted));
-        provider.Commit();
-      }
-      catch
+      using (var saveContext = BeginTransaction (providers))
       {
         try
         {
-          provider.Rollback();
-        }
-// ReSharper disable EmptyGeneralCatchClause
-        catch
-// ReSharper restore EmptyGeneralCatchClause
-        {
-        }
+          foreach (var group in groupedDataContainers)
+          {
+            group.Provider.Save (group.DataContainers);
+            group.Provider.UpdateTimestamps (group.DataContainers.Where (dc => dc.State != StateType.Deleted));
+          }
 
-        throw;
+          CommitTransaction (providers, saveContext);
+        }
+        catch
+        {
+          try
+          {
+            RollbackTransaction (providers, saveContext);
+          }
+          // ReSharper disable EmptyGeneralCatchClause
+          catch
+              // ReSharper restore EmptyGeneralCatchClause
+          {
+          }
+
+          throw;
+        }
       }
     }
 
@@ -181,6 +196,80 @@ namespace Remotion.Data.DomainObjects.Persistence
         throw new ArgumentException ("LoadRelatedDataContainer can only be used with virtual end points.", "relationEndPointID");
 
       return GetOppositeDataContainerForVirtualEndPoint (relationEndPointID);
+    }
+
+    /// <summary>
+    /// Extension point for supporting multiple <see cref="StorageProvider"/> with changed data during a single <see cref="Save"/> operation.
+    /// </summary>
+    /// <param name="providers">The set of <see cref="StorageProvider"/> in the current operation.</param>
+    /// <remarks>
+    /// When extending <see cref="CheckProvidersCompatibleForSave"/> to support multiple <see cref="StorageProvider"/>, also extend
+    /// <see cref="BeginTransaction"/>, <see cref="CommitTransaction"/>, and <see cref="RollbackTransaction"/> with appropriate logic.
+    /// </remarks>
+    protected virtual void CheckProvidersCompatibleForSave (IEnumerable<StorageProvider> providers)
+    {
+      ArgumentUtility.CheckNotNull ("providers", providers);
+
+      if (providers.Count() > 1)
+        throw CreatePersistenceException ("Save does not support multiple storage providers.");
+    }
+
+    /// <summary>
+    /// Extension point for beginning a transaction.
+    /// </summary>
+    /// <param name="providers">The set of <see cref="StorageProvider"/> in the current operation.</param>
+    /// <returns>
+    /// A custom context, passed back to <see cref="CommitTransaction"/> and <see cref="RollbackTransaction"/>. The <see cref="IDisposable.Dispose"/>
+    /// method is invoked at the call site.
+    /// </returns>
+    protected virtual IDisposable BeginTransaction (IEnumerable<StorageProvider> providers)
+    {
+      ArgumentUtility.CheckNotNull ("providers", providers);
+
+      foreach (var provider in providers)
+        provider.BeginTransaction();
+
+      return new TransactionContext();
+    }
+
+    /// <summary>
+    /// Extension point for committing a transaction.
+    /// </summary>
+    /// <param name="providers">The set of <see cref="StorageProvider"/> in the current operation.</param>
+    /// <param name="context">
+    /// A custom context, created by <see cref="BeginTransaction"/>. The <see cref="IDisposable.Dispose"/> method is invoked at the call site.
+    /// </param>
+    protected virtual void CommitTransaction (IEnumerable<StorageProvider> providers, IDisposable context)
+    {
+      ArgumentUtility.CheckNotNull ("providers", providers);
+
+      foreach (var provider in providers)
+        provider.Commit();
+    }
+
+    /// <summary>
+    /// Extension point for rolling a transaction back.
+    /// </summary>
+    /// <param name="providers">The set of <see cref="StorageProvider"/> in the current operation.</param>
+    /// <param name="context">
+    /// A custom context, created by <see cref="BeginTransaction"/>. The <see cref="IDisposable.Dispose"/> method is invoked at the call site.
+    /// </param>
+    protected virtual void RollbackTransaction (IEnumerable<StorageProvider> providers, IDisposable context)
+    {
+      ArgumentUtility.CheckNotNull ("providers", providers);
+
+      foreach (var provider in providers)
+      {
+        try
+        {
+          provider.Rollback();
+        }
+        // ReSharper disable EmptyGeneralCatchClause
+        catch
+            // ReSharper restore EmptyGeneralCatchClause
+        {
+        }
+      }
     }
 
     private DataContainer GetOppositeDataContainerForVirtualEndPoint (RelationEndPointID relationEndPointID)

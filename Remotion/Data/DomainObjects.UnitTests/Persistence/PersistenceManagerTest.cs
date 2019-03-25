@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -22,7 +23,9 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
+using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Rhino.Mocks;
@@ -32,6 +35,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
   [TestFixture]
   public class PersistenceManagerTest : ClientTransactionBaseTest
   {
+    private class TestablePersistenceManager : PersistenceManager
+    {
+      public Action<IEnumerable<StorageProvider>> CheckProvidersCompatibleForSaveCallback { get; set; }
+      public Func<IEnumerable<StorageProvider>, IDisposable> BeginTransactionCallback { get; set; }
+      public Action<IEnumerable<StorageProvider>, IDisposable> CommitTransactionCallback { get; set; }
+      public Action<IEnumerable<StorageProvider>, IDisposable> RollbackTransactionCallback { get; set; }
+
+      public TestablePersistenceManager (IPersistenceExtension persistenceExtension)
+          : base (persistenceExtension)
+      {
+      }
+
+      protected override void CheckProvidersCompatibleForSave (IEnumerable<StorageProvider> providers)
+      {
+        if (CheckProvidersCompatibleForSaveCallback != null)
+          CheckProvidersCompatibleForSaveCallback (providers);
+        else
+          base.CheckProvidersCompatibleForSave (providers);
+      }
+
+      protected override IDisposable BeginTransaction (IEnumerable<StorageProvider> providers)
+      {
+        if (BeginTransactionCallback != null)
+          return BeginTransactionCallback (providers);
+        else
+        {
+          return base.BeginTransaction (providers);
+        }
+      }
+
+      protected override void CommitTransaction (IEnumerable<StorageProvider> providers, IDisposable context)
+      {
+        if (CommitTransactionCallback != null)
+          CommitTransactionCallback (providers, context);
+        else
+        {
+          base.CommitTransaction (providers, context);
+        }
+      }
+
+      protected override void RollbackTransaction (IEnumerable<StorageProvider> providers, IDisposable context)
+      {
+        if (RollbackTransactionCallback != null)
+          RollbackTransactionCallback (providers, context);
+        else
+        {
+          base.RollbackTransaction (providers, context);
+        }
+      }
+    }
+
     private PersistenceManager _persistenceManager;
 
     private ObjectID _invalidOrderID1;
@@ -375,7 +429,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
     [Test]
     [ExpectedException (typeof (PersistenceException), ExpectedMessage = "Save does not support multiple storage providers.")]
-    public void SaveInDifferentStorageProviders ()
+    public void SaveInDifferentStorageProviders_WithDefaultBehavior_ThrowsPersistenceException ()
     {
       DataContainer orderContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Order1).LocatedObject;
       DataContainer officialContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Official1).LocatedObject;
@@ -389,6 +443,173 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       SetPropertyValue (officialContainer, typeof (Official), "Name", "Zaphod");
 
       _persistenceManager.Save (dataContainers);
+    }
+
+    [Test]
+    public void SaveInDifferentStorageProviders_WithOverriddenCheck_CallsSaveOnBothStorageProviders ()
+    {
+      SetDatabaseModifyable();
+
+      using (var persistenceManager = new TestablePersistenceManager (NullPersistenceExtension.Instance))
+      {
+        DataContainer orderContainer = persistenceManager.LoadDataContainer (DomainObjectIDs.Order1).LocatedObject;
+        DataContainer officialContainer1 = persistenceManager.LoadDataContainer (DomainObjectIDs.Official1).LocatedObject;
+        DataContainer officialContainer2 = persistenceManager.LoadDataContainer (DomainObjectIDs.Official2).LocatedObject;
+
+        ClientTransactionTestHelper.RegisterDataContainer (TestableClientTransaction, orderContainer);
+        ClientTransactionTestHelper.RegisterDataContainer (TestableClientTransaction, officialContainer1);
+        ClientTransactionTestHelper.RegisterDataContainer (TestableClientTransaction, officialContainer2);
+
+        SetPropertyValue (orderContainer, typeof (Order), "OrderNumber", 42);
+        SetPropertyValue (officialContainer1, typeof (Official), "Name", "Zaphod1");
+        SetPropertyValue (officialContainer2, typeof (Official), "Name", "Zaphod2");
+
+        var secondStorageProvider = new[] { officialContainer1, officialContainer2 };
+
+        var mockRepository = new MockRepository();
+        var storageProviderMock = mockRepository.StrictMock<StorageProvider>(
+            UnitTestStorageProviderDefinition,
+            NullPersistenceExtension.Instance);
+
+        storageProviderMock.Expect (mock => mock.BeginTransaction());
+        storageProviderMock
+            .Expect (mock => mock.Save (Arg<IEnumerable<DataContainer>>.Is.NotNull))
+            .WhenCalled (mi => Assert.That (mi.Arguments[0], Is.EquivalentTo (secondStorageProvider)));
+        storageProviderMock
+            .Expect (mock => mock.UpdateTimestamps (Arg<IEnumerable<DataContainer>>.Is.NotNull))
+            .WhenCalled (mi => Assert.That (mi.Arguments[0], Is.EquivalentTo (secondStorageProvider)));
+        storageProviderMock.Expect (mock => mock.Commit());
+
+        mockRepository.ReplayAll();
+
+        persistenceManager.CheckProvidersCompatibleForSaveCallback = providers =>
+        {
+          Assert.That (
+              providers.Select (p => p.GetType()),
+              Is.EquivalentTo (new[] { typeof (RdbmsProvider), typeof (UnitTestStorageProviderStub) }));
+        };
+
+        var dataContainers = new DataContainerCollection { officialContainer2, orderContainer, officialContainer1 };
+
+        using (UnitTestStorageProviderStub.EnterMockStorageProviderScope (storageProviderMock))
+        {
+          persistenceManager.Save (dataContainers);
+        }
+
+        mockRepository.VerifyAll();
+      }
+    }
+
+    [Test]
+    public void Save_WithCommit_CallsExtensionPoints ()
+    {
+      SetDatabaseModifyable();
+
+      using (var persistenceManager = new TestablePersistenceManager (NullPersistenceExtension.Instance))
+      {
+        DataContainer officialContainer = persistenceManager.LoadDataContainer (DomainObjectIDs.Official1).LocatedObject;
+
+        ClientTransactionTestHelper.RegisterDataContainer (TestableClientTransaction, officialContainer);
+
+        SetPropertyValue (officialContainer, typeof (Official), "Name", "Zaphod");
+
+        var secondStorageProvider = new[] { officialContainer };
+
+        var mockRepository = new MockRepository();
+
+        var isCommitCalled = false;
+        var contextMock = mockRepository.StrictMock<IDisposable>();
+        contextMock.Expect (mock => mock.Dispose()).WhenCalled (mi => Assert.That (isCommitCalled, Is.True));
+
+        var storageProviderMock = mockRepository.StrictMock<StorageProvider>(
+            UnitTestStorageProviderDefinition,
+            NullPersistenceExtension.Instance);
+
+        persistenceManager.BeginTransactionCallback = providers => contextMock;
+        storageProviderMock
+            .Expect (mock => mock.Save (Arg<IEnumerable<DataContainer>>.Is.NotNull))
+            .WhenCalled (mi => Assert.That (mi.Arguments[0], Is.EquivalentTo (secondStorageProvider)));
+        storageProviderMock
+            .Expect (mock => mock.UpdateTimestamps (Arg<IEnumerable<DataContainer>>.Is.NotNull))
+            .WhenCalled (mi => Assert.That (mi.Arguments[0], Is.EquivalentTo (secondStorageProvider)));
+        persistenceManager.CommitTransactionCallback = (providers, context) =>
+        {
+          Assert.That (context, Is.SameAs (contextMock));
+          isCommitCalled = true;
+        };
+
+        mockRepository.ReplayAll();
+
+        persistenceManager.CheckProvidersCompatibleForSaveCallback = providers =>
+        {
+          Assert.That (
+              providers.Select (p => p.GetType()),
+              Is.EquivalentTo (new[] { typeof (UnitTestStorageProviderStub) }));
+        };
+
+        var dataContainers = new DataContainerCollection { officialContainer };
+
+        using (UnitTestStorageProviderStub.EnterMockStorageProviderScope (storageProviderMock))
+        {
+          persistenceManager.Save (dataContainers);
+        }
+
+        mockRepository.VerifyAll();
+      }
+    }
+
+    [Test]
+    public void Save_WithRollback_CallsExtensionPoints ()
+    {
+      SetDatabaseModifyable();
+
+      using (var persistenceManager = new TestablePersistenceManager (NullPersistenceExtension.Instance))
+      {
+        DataContainer officialContainer = persistenceManager.LoadDataContainer (DomainObjectIDs.Official1).LocatedObject;
+
+        ClientTransactionTestHelper.RegisterDataContainer (TestableClientTransaction, officialContainer);
+
+        SetPropertyValue (officialContainer, typeof (Official), "Name", "Zaphod");
+
+        var mockRepository = new MockRepository();
+
+        var exception = new Exception();
+        var isRollbackCalled = false;
+        var contextMock = mockRepository.StrictMock<IDisposable>();
+        contextMock.Expect (mock => mock.Dispose()).WhenCalled (mi => Assert.That (isRollbackCalled, Is.True));
+
+        var storageProviderMock = mockRepository.StrictMock<StorageProvider>(
+            UnitTestStorageProviderDefinition,
+            NullPersistenceExtension.Instance);
+
+        persistenceManager.BeginTransactionCallback = providers => contextMock;
+        storageProviderMock
+            .Stub (mock => mock.Save (Arg<IEnumerable<DataContainer>>.Is.NotNull))
+            .Throw (exception);
+        persistenceManager.RollbackTransactionCallback = (providers, context) =>
+        {
+          Assert.That (context, Is.SameAs (contextMock));
+          isRollbackCalled = true;
+        };
+
+        mockRepository.ReplayAll();
+
+        persistenceManager.CheckProvidersCompatibleForSaveCallback = providers =>
+        {
+          Assert.That (
+              providers.Select (p => p.GetType()),
+              Is.EquivalentTo (new[] { typeof (UnitTestStorageProviderStub) }));
+        };
+
+        var dataContainers = new DataContainerCollection { officialContainer };
+
+        using (UnitTestStorageProviderStub.EnterMockStorageProviderScope (storageProviderMock))
+        {
+          Assert.That (() => persistenceManager.Save (dataContainers), Throws.Exception.SameAs (exception));
+        }
+
+        mockRepository.VerifyAll();
+      }
     }
 
     [Test]
