@@ -146,7 +146,8 @@ namespace Remotion.Web.Development.WebTesting
         return true;
       }
 
-      var isInputOkay = scope.Value == value;
+      var isInputOkay = SeleniumSendKeysToWindowsFormsSendKeysTransformer.Convert (scope.Value) == 
+                        SeleniumSendKeysToWindowsFormsSendKeysTransformer.Convert (value);
       if (!isInputOkay)
         s_log.DebugFormat ("FillInWith for InternetExplorer: value is different: '{0}' != '{1}' - retrying...", scope.Value, value);
       return isInputOkay;

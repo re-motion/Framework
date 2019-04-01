@@ -45,6 +45,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       value = EncloseSpecialCharacters (value);
       value = TransformKeys (value);
       value = TransformModifierKeys (value);
+      value = TransformNewlines (value);
       return value;
     }
 
@@ -124,6 +125,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       }
 
       return value;
+    }
+
+    private static string TransformNewlines (string value)
+    {
+      return value.Replace ("\r", string.Empty).Replace ("\n", "\r\n");
     }
   }
 }

@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
@@ -125,6 +126,30 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       bocMultilineText.FillWith ("Doe" + Environment.NewLine + "SecondLineDoe");
       Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("Doe NL SecondLineDoe"));
       Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("Blubba"));
+    }
+
+    [Test]
+    public void TestFillWithLineFeed ()
+    {
+      var home = Start();
+
+      var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
+      bocMultilineText.FillWith ("Doe" + "\n" + "SecondLineDoe");
+      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("Doe NL SecondLineDoe"));
+
+      bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
+      bocMultilineText.FillWith ("DoeAgain" + "\r\n" + "SecondLineDoeAgain");
+      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("DoeAgain NL SecondLineDoeAgain"));
+    }
+
+    [Test]
+    public void TestFillWithSpecialCharactersAndKeys ()
+    {
+      var home = Start();
+
+      var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
+      bocMultilineText.FillWith ("[{%}]" + Keys.Enter + "a");
+      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("[{%}] NL a"));
     }
 
     [Test]
