@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Concurrent;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -37,12 +36,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
 
       // C# compiler 7.2 already provides caching for anonymous method.
-      return _storageClassCache.GetOrAdd (
-          propertyInformation,
-          key =>
-              Maybe.ForValue (key.GetCustomAttribute<StorageClassAttribute> (false))
-                  .Select<StorageClass?> (a => (StorageClass?) a.StorageClass)
-                  .ValueOrDefault (null));
+      return _storageClassCache.GetOrAdd (propertyInformation, key => key.GetCustomAttribute<StorageClassAttribute> (true)?.StorageClass);
     }
   }
 }

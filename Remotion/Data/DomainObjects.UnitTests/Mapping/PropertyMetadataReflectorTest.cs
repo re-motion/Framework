@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInformationStub
-          .Stub (_ => _.GetCustomAttribute<StorageClassAttribute> (false))
+          .Stub (_ => _.GetCustomAttribute<StorageClassAttribute> (true))
           .Return (new StorageClassAttribute (StorageClass.Transaction));
 
       var reflector = new PropertyMetadataReflector();
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInformationStub
-          .Stub (_ => _.GetCustomAttribute<StorageClassAttribute> (false))
+          .Stub (_ => _.GetCustomAttribute<StorageClassAttribute> (true))
           .Return (new StorageClassNoneAttribute());
 
       var reflector = new PropertyMetadataReflector();
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInformationStub
-          .Stub (_ => _.GetCustomAttribute<StorageClassAttribute> (false))
+          .Stub (_ => _.GetCustomAttribute<StorageClassAttribute> (true))
           .Return (null);
 
       var reflector = new PropertyMetadataReflector();
