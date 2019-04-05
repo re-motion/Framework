@@ -162,6 +162,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("Line1 NL Line2 NL Line3 NL Line4 NL Line5"));
     }
 
+    [Test]
+    public void TestFillWithEmpty ()
+    {
+      var home = Start();
+
+      var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
+      bocMultilineText.FillWith ("");
+      Assert.That (bocMultilineText.GetText(), Is.EqualTo (""));
+    }
+
     private WxePageObject Start ()
     {
       return Start ("BocMultilineTextValue");

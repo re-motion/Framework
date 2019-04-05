@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </remarks>
     public static string Convert ([NotNull] string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      ArgumentUtility.CheckNotNull ("value", value);
 
       value = EncloseSpecialCharacters (value);
       value = TransformKeys (value);

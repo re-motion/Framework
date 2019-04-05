@@ -148,6 +148,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("Blubba"));
     }
 
+    [Test]
+    public void TestFillWithEmpty ()
+    {
+      var home = Start();
+
+      var bocText = home.TextValues().GetByLocalID ("LastNameField_Normal");
+      bocText.FillWith ("");
+      Assert.That (bocText.GetText(), Is.EqualTo (""));
+    }
+
     private WxePageObject Start ()
     {
       return Start ("BocTextValue");

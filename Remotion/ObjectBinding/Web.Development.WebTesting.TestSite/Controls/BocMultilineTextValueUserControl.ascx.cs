@@ -34,8 +34,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
 
     private void SetTestOutput ()
     {
-      TestOutput.SetCurrentValueNormal (string.Join (" NL ", CVField_Normal.Value));
-      TestOutput.SetCurrentValueNoAutoPostBack (string.Join (" NL ", CVField_NoAutoPostBack.Value));
+      TestOutput.SetCurrentValueNormal (string.Join (" NL ", CVField_Normal.Value ?? new string[0]));
+      TestOutput.SetCurrentValueNoAutoPostBack (string.Join (" NL ", CVField_NoAutoPostBack.Value ?? new string[0]));
     }
 
     private BocMultilineTextValueUserControlTestOutput TestOutput
