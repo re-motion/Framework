@@ -63,7 +63,7 @@
               <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
             </PersistedCommand>
           </remotion:BocMenuItem>
-          <remotion:BocMenuItem ItemID="OptCmd3" Text="Option command 3">
+          <remotion:BocMenuItem ItemID="OptCmd3" Text="Option command 3" RequiredSelection="ExactlyOne">
             <PersistedCommand>
               <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
             </PersistedCommand>
@@ -75,7 +75,7 @@
               <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
             </PersistedCommand>
           </remotion:BocMenuItem>
-          <remotion:BocMenuItem ItemID="ListMenuCmd2" Icon-Url="~/Images/SampleIcon.gif" Icon-AlternateText="SampleIcon" Icon-ToolTip="SampleIcon">
+          <remotion:BocMenuItem ItemID="ListMenuCmd2" Icon-Url="~/Images/SampleIcon.gif" Icon-AlternateText="SampleIcon" Icon-ToolTip="SampleIcon" RequiredSelection="ExactlyOne">
             <PersistedCommand>
               <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
             </PersistedCommand>

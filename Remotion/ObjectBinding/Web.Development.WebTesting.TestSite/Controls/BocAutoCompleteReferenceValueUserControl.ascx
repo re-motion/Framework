@@ -45,7 +45,7 @@
               <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
             </PersistedCommand>
           </remotion:BocMenuItem>
-          <remotion:BocMenuItem ItemID="OptCmd3" Text="My menu command 3">
+          <remotion:BocMenuItem ItemID="OptCmd3" Text="My menu command 3" RequiredSelection="ExactlyOne">
             <PersistedCommand>
               <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
             </PersistedCommand>

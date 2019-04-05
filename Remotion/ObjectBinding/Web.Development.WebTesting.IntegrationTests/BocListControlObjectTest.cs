@@ -892,6 +892,61 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestDropDownItemDisabledWithRequiredSelection ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      var dropDownMenu = bocList.GetDropDownMenu();
+
+      dropDownMenu.Open();
+      var menuItem = GetDropDownMenuItem3();
+      Assert.That (menuItem.IsDisabled, Is.True);
+
+      var row1 = bocList.GetRow (1);
+      row1.Select();
+      menuItem = GetDropDownMenuItem3();
+
+      Assert.That (menuItem.IsDisabled, Is.False);
+
+      var row2 = bocList.GetRow (2);
+      row2.Select();
+      menuItem = GetDropDownMenuItem3();
+
+      Assert.That (menuItem.IsDisabled, Is.True);
+
+      ItemDefinition GetDropDownMenuItem3 () => dropDownMenu.GetItemDefinitions().Single (x => x.ItemID == "OptCmd3");
+    }
+
+    [Test]
+    public void TestListItemDisabledWithRequiredSelection ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+
+      var listMenu = bocList.GetListMenu();
+
+      var menuItem = GetListMenuItem2();
+      Assert.That (menuItem.IsDisabled, Is.True);
+
+      var row1 = bocList.GetRow (1);
+      row1.Select();
+      menuItem = GetListMenuItem2();
+
+      Assert.That (menuItem.IsDisabled, Is.False);
+
+      var row2 = bocList.GetRow (2);
+      row2.Select();
+      menuItem = GetListMenuItem2();
+
+      Assert.That (menuItem.IsDisabled, Is.True);
+
+      ItemDefinition GetListMenuItem2 () => listMenu.GetItemDefinitions().Single (x => x.ItemID == "ListMenuCmd2");
+    }
+
+    [Test]
     public void TestGetListMenu ()
     {
       var home = Start();

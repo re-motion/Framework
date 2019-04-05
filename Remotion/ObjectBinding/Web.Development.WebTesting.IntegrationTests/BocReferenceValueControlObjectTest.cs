@@ -15,12 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -109,6 +111,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_WithoutSelectedValue");
       AssertSelectedOption (bocReferenceValue, "==null==", -1, "");
+    }
+
+    [Test]
+    public void TestDropDownItemDisabledWithRequiredSelection ()
+    {
+      var home = Start();
+
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
+      var dropDownMenu = bocReferenceValue.GetDropDownMenu();
+
+      dropDownMenu.Open();
+      var menuItem = GetDropDownMenuItem3();
+      Assert.That (menuItem.IsDisabled, Is.False);
+
+      bocReferenceValue.SelectOption ("==null==");
+      menuItem = GetDropDownMenuItem3();
+      Assert.That (menuItem.IsDisabled, Is.True);
+
+      bocReferenceValue.SelectOption().WithDisplayText ("D, A");
+      menuItem = GetDropDownMenuItem3();
+      Assert.That (menuItem.IsDisabled, Is.False);
+
+      ItemDefinition GetDropDownMenuItem3 () => dropDownMenu.GetItemDefinitions().Single (x => x.ItemID == "OptCmd3");
     }
 
     [Test]

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Drawing;
+using System.Linq;
 using Coypu;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -26,6 +27,7 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCas
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocAutoCompleteReferenceValue;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -549,6 +551,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
 
       Assert.That (() => bocAutoComplete.GetSearchServiceResults ("throw", 1), Throws.Exception.InstanceOf<WebServiceExceutionException>());
+    }
+
+    [Test]
+    public void TestDropDownItemDisabledWithRequiredSelection ()
+    {
+      var home = Start();
+
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+      var dropDownMenu = bocAutoComplete.GetDropDownMenu();
+
+      dropDownMenu.Open();
+      var menuItem = GetDropDownMenuItem3();
+      Assert.That (menuItem.IsDisabled, Is.False);
+
+      bocAutoComplete.FillWith ("");
+      menuItem = GetDropDownMenuItem3();
+      Assert.That (menuItem.IsDisabled, Is.True);
+
+      bocAutoComplete.SelectFirstMatch ("D");
+      menuItem = GetDropDownMenuItem3();
+      Assert.That (menuItem.IsDisabled, Is.False);
+
+      ItemDefinition GetDropDownMenuItem3 () => dropDownMenu.GetItemDefinitions().Single (x => x.ItemID == "OptCmd3");
     }
 
     private WxePageObject Start ()
