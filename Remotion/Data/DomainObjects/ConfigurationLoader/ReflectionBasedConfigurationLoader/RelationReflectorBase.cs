@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -30,15 +29,11 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
-        : base (propertyInfo, nameResolver, propertyMetadataProvider)
+        : base (classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-
-      ClassDefinition = classDefinition;
       BidirectionalRelationAttribute = PropertyInfo.GetCustomAttribute<T> (true);
     }
 
-    public ClassDefinition ClassDefinition { get; private set; }
     public T BidirectionalRelationAttribute { get; private set; }
 
     protected bool IsBidirectionalRelation

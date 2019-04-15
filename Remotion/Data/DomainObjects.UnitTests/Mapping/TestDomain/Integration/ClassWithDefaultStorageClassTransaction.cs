@@ -15,22 +15,29 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 
-namespace Remotion.Data.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  /// <summary>
-  /// The <see cref="DBStorageGroupAttribute"/> is the standard <see cref="StorageGroupAttribute"/> for types persisted into a database.
-  /// </summary>
-  /// <remarks>
-  /// The <see cref="DBStorageGroupAttribute"/> can be used whenever there is no need for a more granular distribution of types into different 
-  /// storage groups.
-  /// </remarks>
-  public class DBStorageGroupAttribute : StorageGroupAttribute
+  [DBTable ("TableWithDefaultStorageClassTransaction")]
+  [TestDomainWithStorageClassTransaction]
+  [Instantiable]
+  public abstract class ClassWithDefaultStorageClassTransaction : DomainObject
   {
-    public DBStorageGroupAttribute ()
-        : base (DefaultStorageClass.Persistent)
+    protected ClassWithDefaultStorageClassTransaction ()
     {
     }
+
+    public abstract int NoAttribute { get; set; }
+
+    [StorageClass (StorageClass.Persistent)]
+    public abstract int Persistent { get; set; }
+
+    [StorageClassTransaction]
+    public abstract int Transaction { get; set; }
+
+    [StorageClassNone]
+    public object None { get; set; }
   }
 }

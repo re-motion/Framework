@@ -77,13 +77,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var persistentMixinFinder = MockRepository.GenerateStub<IPersistentMixinFinder> ();
       var instanceCreator = MockRepository.GenerateStub<IDomainObjectCreator>();
 
-      var actual = new ClassDefinition ("Order", typeof (Order), false, null, null, persistentMixinFinder, instanceCreator);
+      var actual = new ClassDefinition (
+              "Order",
+              typeof (Order),
+              false,
+              null,
+              null,
+              DefaultStorageClass.Transaction,
+              persistentMixinFinder,
+              instanceCreator);
       actual.SetDerivedClasses (new ClassDefinition[0]);
 
       Assert.That (actual.ID, Is.EqualTo ("Order"));
       Assert.That (actual.StorageEntityDefinition, Is.Null);
       Assert.That (actual.ClassType, Is.SameAs (typeof (Order)));
       Assert.That (actual.BaseClass, Is.Null);
+      Assert.That (actual.DefaultStorageClass, Is.EqualTo (DefaultStorageClass.Transaction));
       //Assert.That (actual.DerivedClasses.AreResolvedTypesRequired, Is.True);
       Assert.That (actual.IsReadOnly, Is.False);
       Assert.That (actual.PersistentMixinFinder, Is.SameAs (persistentMixinFinder));
@@ -96,7 +105,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var persistentMixinFinder = MockRepository.GenerateStub<IPersistentMixinFinder> ();
       var instanceCreator = MockRepository.GenerateStub<IDomainObjectCreator> ();
 
-      var classDefinition = new ClassDefinition ("Order", typeof (Order), false, null, null, persistentMixinFinder, instanceCreator);
+      var classDefinition = new ClassDefinition (
+              "Order",
+              typeof (Order),
+              false,
+              null,
+              null,
+              DefaultStorageClass.Persistent,
+              persistentMixinFinder,
+              instanceCreator);
 
       Assert.That (classDefinition.HandleCreator, Is.Not.Null);
 
@@ -114,7 +131,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var persistentMixinFinder = MockRepository.GenerateStub<IPersistentMixinFinder> ();
       var instanceCreator = MockRepository.GenerateStub<IDomainObjectCreator> ();
 
-      var classDefinition = new ClassDefinition ("Order", typeof (string), false, null, null, persistentMixinFinder, instanceCreator);
+      var classDefinition = new ClassDefinition (
+              "Order",
+              typeof (string),
+              false,
+              null,
+              null,
+              DefaultStorageClass.Persistent,
+              persistentMixinFinder,
+              instanceCreator);
 
       Assert.That (classDefinition.HandleCreator, Is.Not.Null);
       Assert.That (
@@ -536,8 +561,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var instanceCreator = MockRepository.GenerateStub<IDomainObjectCreator> ();
 
       Assert.That (
-          () => new ClassDefinition ("id", typeof (Company), false, null, null, persistentMixinFinder, instanceCreator), 
-          Throws.Nothing);
+              () => new ClassDefinition (
+                      "id",
+                      typeof (Company),
+                      false,
+                      null,
+                      null,
+                      DefaultStorageClass.Persistent,
+                      persistentMixinFinder,
+                      instanceCreator),
+              Throws.Nothing);
     }
 
     [Test]

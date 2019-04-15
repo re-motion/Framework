@@ -17,19 +17,12 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 
-namespace Remotion.Data.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  /// <summary>
-  /// The <see cref="DBStorageGroupAttribute"/> is the standard <see cref="StorageGroupAttribute"/> for types persisted into a database.
-  /// </summary>
-  /// <remarks>
-  /// The <see cref="DBStorageGroupAttribute"/> can be used whenever there is no need for a more granular distribution of types into different 
-  /// storage groups.
-  /// </remarks>
-  public class DBStorageGroupAttribute : StorageGroupAttribute
+  public class TestDomainWithStorageClassTransactionAttribute : StorageGroupAttribute
   {
-    public DBStorageGroupAttribute ()
-        : base (DefaultStorageClass.Persistent)
+    public TestDomainWithStorageClassTransactionAttribute ()
+        : base (DefaultStorageClass.Transaction)
     {
     }
   }

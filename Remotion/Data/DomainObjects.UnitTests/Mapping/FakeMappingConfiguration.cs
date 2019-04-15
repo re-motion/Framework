@@ -127,6 +127,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       classDefinitions.Add (CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition (null));
       classDefinitions.Add (CreateClassWithAllDataTypesDefinition (null));
+      classDefinitions.Add (CreateClassWithDefaultStorageClassTransaction (null));
       classDefinitions.Add (CreateClassWithGuidKeyDefinition (null));
       classDefinitions.Add (CreateClassWithInvalidKeyTypeDefinition (null));
       classDefinitions.Add (CreateClassWithoutIDColumnDefinition (null));
@@ -529,6 +530,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return classWithAllDataTypes;
     }
 
+    private ClassDefinition CreateClassWithDefaultStorageClassTransaction (ClassDefinition baseClass)
+    {
+      ClassDefinition classDefinition = CreateClassDefinition (
+          "ClassWithDefaultStorageClassTransaction",
+          "TableWithDefaultStorageClassTransaction",
+          typeof (ClassWithDefaultStorageClassTransaction),
+          false,
+          baseClass);
+
+      var properties = new List<PropertyDefinition>();
+      properties.Add (
+          CreateTransactionPropertyDefinition (classDefinition, typeof (ClassWithDefaultStorageClassTransaction), "NoAttribute", false, null));
+      properties.Add (
+          CreatePersistentPropertyDefinition (classDefinition, typeof (ClassWithDefaultStorageClassTransaction), "Persistent", "Persistent", false, null));
+      properties.Add (
+          CreateTransactionPropertyDefinition (classDefinition, typeof (ClassWithDefaultStorageClassTransaction), "Transaction", false, null));
+      classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (properties, true));
+
+      return classDefinition;
+    }
+
     private ClassDefinition CreateClassWithGuidKeyDefinition (ClassDefinition baseClass)
     {
       ClassDefinition classDefinition = CreateClassDefinition (
@@ -821,6 +843,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           isAbstract,
           baseClass,
           null,
+          DefaultStorageClass.Persistent,
           new PersistentMixinFinderStub (classType, persistentMixins),
           MappingReflectorObjectMother.DomainObjectCreator);
       SetFakeStorageEntity (classDefinition, entityName);

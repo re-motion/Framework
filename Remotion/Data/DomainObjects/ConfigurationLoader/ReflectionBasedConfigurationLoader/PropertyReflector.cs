@@ -27,7 +27,6 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   //TODO: Test for null or empty StorageSpecificIdentifier
   public class PropertyReflector : MemberReflectorBase
   {
-    private readonly ClassDefinition _classDefinition;
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
 
     public PropertyReflector (
@@ -36,25 +35,23 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider)
-        : base (propertyInfo, nameResolver, propertyMetadataProvider)
+        : base (classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
 
-      _classDefinition = classDefinition;
       _domainModelConstraintProvider = domainModelConstraintProvider;
     }
 
     public PropertyDefinition GetMetadata ()
     {
       var propertyDefinition = new PropertyDefinition (
-          _classDefinition,
+          ClassDefinition,
           PropertyInfo,
           GetPropertyName(),
           IsDomainObject(),
           IsNullable(),
           _domainModelConstraintProvider.GetMaxLength(PropertyInfo),
-          StorageClass);
+          GetStorageClass());
       return propertyDefinition;
     }
 

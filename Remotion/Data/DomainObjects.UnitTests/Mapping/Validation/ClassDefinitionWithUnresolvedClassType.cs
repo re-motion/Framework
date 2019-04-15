@@ -27,9 +27,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
         Type classType,
         bool isAbstract,
         ClassDefinition baseClass,
-        IPersistentMixinFinder persistentMixinFinder, 
-      IDomainObjectCreator instanceCreator)
-        : base (id, classType, isAbstract, baseClass, null, persistentMixinFinder, instanceCreator)
+        IPersistentMixinFinder persistentMixinFinder,
+        IDomainObjectCreator instanceCreator)
+        : base (id, classType, isAbstract, baseClass, null, DefaultStorageClass.Persistent, persistentMixinFinder, instanceCreator)
     {
     }
 

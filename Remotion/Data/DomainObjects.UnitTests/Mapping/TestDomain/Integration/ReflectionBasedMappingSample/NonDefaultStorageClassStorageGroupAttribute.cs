@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,19 +17,14 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 
-namespace Remotion.Data.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample
 {
-  /// <summary>
-  /// The <see cref="DBStorageGroupAttribute"/> is the standard <see cref="StorageGroupAttribute"/> for types persisted into a database.
-  /// </summary>
-  /// <remarks>
-  /// The <see cref="DBStorageGroupAttribute"/> can be used whenever there is no need for a more granular distribution of types into different 
-  /// storage groups.
-  /// </remarks>
-  public class DBStorageGroupAttribute : StorageGroupAttribute
+  public class NonDefaultStorageClassStorageGroupAttribute : StorageGroupAttribute
   {
-    public DBStorageGroupAttribute ()
-        : base (DefaultStorageClass.Persistent)
+    public const DefaultStorageClass NonDefaultStorageClass = (DefaultStorageClass) (-15);
+
+    public NonDefaultStorageClassStorageGroupAttribute ()
+        : base (NonDefaultStorageClass)
     {
     }
   }

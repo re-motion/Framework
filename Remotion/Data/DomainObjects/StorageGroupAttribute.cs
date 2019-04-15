@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -25,14 +26,25 @@ namespace Remotion.Data.DomainObjects
   /// </para><para>
   /// Define the <see cref="StorageGroupAttribute"/> at the base classes of the domain layer to signify the root for the persistence hierarchy.
   /// </para><para>
-  /// If no storage group is deifned for a persistence hierarchy, the domain object classes are assigned to the default storage provider.
+  /// If no storage group is defined for a persistence hierarchy, the domain object classes are assigned to the default storage provider.
   /// </para> 
   /// </remarks>
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
   public abstract class StorageGroupAttribute: Attribute
   {
-    protected StorageGroupAttribute()
+    /// <summary>
+    /// The <see cref="T:DefaultStorageClass"/> used by <see cref="DomainObject"/> types belonging to this storage group.
+    /// </summary>
+    public DefaultStorageClass DefaultStorageClass { get; }
+
+    protected StorageGroupAttribute ()
+        : this (DefaultStorageClass.Persistent)
     {
+    }
+
+    protected StorageGroupAttribute (DefaultStorageClass defaultStorageClass)
+    {
+      DefaultStorageClass = defaultStorageClass;
     }
   }
 }

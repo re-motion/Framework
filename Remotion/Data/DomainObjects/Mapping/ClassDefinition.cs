@@ -35,6 +35,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly string _id;
     private bool _isReadOnly;
     private readonly Type _storageGroupType;
+    private readonly DefaultStorageClass _defaultStorageClass;
     private readonly PropertyAccessorDataCache _propertyAccessorDataCache;
     private readonly DoubleCheckedLockingContainer<RelationEndPointDefinitionCollection> _cachedRelationEndPointDefinitions;
     private readonly DoubleCheckedLockingContainer<PropertyDefinitionCollection> _cachedPropertyDefinitions;
@@ -55,6 +56,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         bool isAbstract,
         ClassDefinition baseClass,
         Type storageGroupType,
+        DefaultStorageClass defaultStorageClass,
         IPersistentMixinFinder persistentMixinFinder,
         IDomainObjectCreator instanceCreator)
     {
@@ -64,6 +66,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
       _id = id;
       _storageGroupType = storageGroupType;
+      _defaultStorageClass = defaultStorageClass;
 
       _classType = classType;
       _persistentMixinFinder = persistentMixinFinder;
@@ -336,6 +339,11 @@ namespace Remotion.Data.DomainObjects.Mapping
     public Type StorageGroupType
     {
       get { return _storageGroupType; }
+    }
+
+    public DefaultStorageClass DefaultStorageClass
+    {
+      get { return _defaultStorageClass; }
     }
 
     public PropertyDefinitionCollection MyPropertyDefinitions

@@ -179,6 +179,7 @@
     <Compile Include="DomainObjectHandleConverter.cs" />
     <Compile Include="IDomainObject.cs" />
     <Compile Include="Linq\FluentFetchRequest.cs" />
+    <Compile Include="Mapping\DefaultStorageClass.cs" />
     <Compile Include="Mapping\Validation\Logical\CheckForClassIDIsValidValidationRule.cs" />
     <Compile Include="Obsolete\IDomainObjectNextCallRequirements.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionExtensionFactory.cs" />

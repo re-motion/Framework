@@ -203,6 +203,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.StorageGroupType, Is.Null);
+      Assert.That (actual.DefaultStorageClass, Is.EqualTo (DefaultStorageClass.Persistent));
     }
 
     [Test]
@@ -218,6 +219,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.StorageGroupType, Is.SameAs (typeof (DBStorageGroupAttribute)));
+      Assert.That (actual.DefaultStorageClass, Is.EqualTo (DefaultStorageClass.Persistent));
+    }
+
+    [Test]
+    public void GetMetadata_ForClassWithStorageGroupAttributeSupplyingANonDefaultStorageGroup ()
+    {
+      var type = typeof (ClassWithNonDefaultStorageClass);
+      ClassIDProviderStub.Stub (stub => stub.GetClassID (type)).Return ("ClassID");
+
+      var classReflector = CreateClassReflector (type);
+
+      var actual = classReflector.GetMetadata (null);
+
+      Assert.That (actual, Is.Not.Null);
+      Assert.That (actual.StorageGroupType, Is.SameAs (typeof (NonDefaultStorageClassStorageGroupAttribute)));
+      Assert.That (actual.DefaultStorageClass, Is.Not.EqualTo (DefaultStorageClass.Persistent));
+      Assert.That (actual.DefaultStorageClass, Is.EqualTo (NonDefaultStorageClassStorageGroupAttribute.NonDefaultStorageClass));
     }
 
     [Test]
@@ -479,7 +497,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private ClassDefinition CreateClassDefinition (string id, Type classType, bool isAbstract, ClassDefinition baseClass = null)
     {
-      return new ClassDefinition (id, classType, isAbstract, baseClass, null, new PersistentMixinFinderStub (classType), DomainObjectCreatorStub);
+        return new ClassDefinition (
+                id,
+                classType,
+                isAbstract,
+                baseClass,
+                null,
+                DefaultStorageClass.Persistent,
+                new PersistentMixinFinderStub (classType),
+                DomainObjectCreatorStub);
     }
 
     private PropertyDefinition CreatePersistentPropertyDefinition (

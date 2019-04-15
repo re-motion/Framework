@@ -25,13 +25,20 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     private readonly IPropertyInformation _relationProperty;
 
-    public ClassDefinitionForUnresolvedRelationPropertyType (
-        string id, Type classType, IPropertyInformation relationProperty)
-        : base (id, classType, false, null, null, new PersistentMixinFinder (classType), new ThrowingDomainObjectCreator())
+    public ClassDefinitionForUnresolvedRelationPropertyType (string id, Type classType, IPropertyInformation relationProperty)
+            : base (
+                    id,
+                    classType,
+                    false,
+                    null,
+                    null,
+                    DefaultStorageClass.Persistent,
+                    new PersistentMixinFinder (classType),
+                    new ThrowingDomainObjectCreator())
     {
-      ArgumentUtility.CheckNotNull ("relationProperty", relationProperty);
+        ArgumentUtility.CheckNotNull ("relationProperty", relationProperty);
 
-      _relationProperty = relationProperty;
+        _relationProperty = relationProperty;
     }
 
     public IPropertyInformation RelationProperty

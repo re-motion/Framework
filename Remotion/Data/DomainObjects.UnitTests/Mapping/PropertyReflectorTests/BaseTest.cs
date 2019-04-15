@@ -30,7 +30,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       ArgumentUtility.CheckNotNullOrEmpty ("property", property);
 
       Type type = typeof (T);
-      var propertyInfo = PropertyInfoAdapter.Create(type.GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
       ClassDefinition classDefinition;
       if (ReflectionUtility.IsDomainObject (type))
       {
@@ -40,6 +39,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       {
         classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: type, isAbstract: false);
       }
+
+      return CreatePropertyReflector<T> (property, classDefinition, domainModelConstraintProvider);
+    }
+
+    protected PropertyReflector CreatePropertyReflector<T> (
+        string property,
+        ClassDefinition classDefinition,
+        IDomainModelConstraintProvider domainModelConstraintProvider)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("property", property);
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+
+      Type type = typeof (T);
+      var propertyInfo = PropertyInfoAdapter.Create (
+          type.GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
 
       return new PropertyReflector (
           classDefinition,

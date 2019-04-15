@@ -82,8 +82,18 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     public ClassDefinition GetMetadata (ClassDefinition baseClassDefinition)
     {
       var persistentMixinFinder = new PersistentMixinFinder (Type, baseClassDefinition == null);
+      var storageGroupAttribute = GetStorageGroupAttribute();
+      var storageGroupType = storageGroupAttribute?.GetType();
+      var defaultStorageClass = storageGroupAttribute?.DefaultStorageClass ?? DefaultStorageClass.Persistent;
       var classDefinition = new ClassDefinition (
-          _classIDProvider.GetClassID (Type), Type, IsAbstract(), baseClassDefinition, GetStorageGroupType(), persistentMixinFinder, _instanceCreator);
+              _classIDProvider.GetClassID (Type),
+              Type,
+              IsAbstract(),
+              baseClassDefinition,
+              storageGroupType,
+              defaultStorageClass,
+              persistentMixinFinder,
+              _instanceCreator);
 
       var properties = MappingObjectFactory.CreatePropertyDefinitionCollection (classDefinition, GetPropertyInfos (classDefinition));
       classDefinition.SetPropertyDefinitions (properties);
@@ -93,12 +103,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       return classDefinition;
     }
 
-    private Type GetStorageGroupType ()
+    private StorageGroupAttribute GetStorageGroupAttribute ()
     {
-      var storageGroupAttribute = AttributeUtility.GetCustomAttributes<StorageGroupAttribute> (Type, true).FirstOrDefault();
-      if (storageGroupAttribute != null)
-        return storageGroupAttribute.GetType();
-      return null;
+      return AttributeUtility.GetCustomAttributes<StorageGroupAttribute> (Type, true).FirstOrDefault();
     }
 
     private bool IsAbstract ()

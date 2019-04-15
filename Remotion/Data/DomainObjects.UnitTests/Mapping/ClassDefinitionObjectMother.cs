@@ -32,15 +32,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         bool isAbstract = false,
         ClassDefinition baseClass = null,
         Type storageGroupType = null,
+        DefaultStorageClass? defaultStorageClass = null,
         IPersistentMixinFinder persistentMixinFinder = null,
         IDomainObjectCreator instanceCreator = null)
     {
       id = id ?? "Test";
       classType = classType ?? typeof (Order);
+      var defaultStorageClassNotNullable = defaultStorageClass ?? DefaultStorageClass.Persistent;
       persistentMixinFinder = persistentMixinFinder ?? new PersistentMixinFinderStub (classType, Type.EmptyTypes);
       instanceCreator = instanceCreator ?? MockRepository.GenerateStrictMock<IDomainObjectCreator>();
 
-      return new ClassDefinition (id, classType, isAbstract, baseClass, storageGroupType, persistentMixinFinder, instanceCreator);
+      return new ClassDefinition (
+              id,
+              classType,
+              isAbstract,
+              baseClass,
+              storageGroupType,
+              defaultStorageClassNotNullable,
+              persistentMixinFinder,
+              instanceCreator);
     }
 
     public static ClassDefinition CreateClassDefinition_WithEmptyMembers_AndDerivedClasses (string id = null, Type classType = null, ClassDefinition baseClass = null)
@@ -61,10 +71,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         bool isAbstract = false,
         ClassDefinition baseClass = null,
         Type storageGroupType = null,
+        DefaultStorageClass? defaultStorageClass = null,
         IPersistentMixinFinder persistentMixinFinder = null,
         IDomainObjectCreator instanceCreator = null)
     {
-      var classDefinition = CreateClassDefinition (id, classType, isAbstract, baseClass, storageGroupType, persistentMixinFinder, instanceCreator);
+        var classDefinition = CreateClassDefinition (
+                id,
+                classType,
+                isAbstract,
+                baseClass,
+                storageGroupType,
+                defaultStorageClass,
+                persistentMixinFinder,
+                instanceCreator);
       classDefinition.SetStorageEntity (TableDefinitionObjectMother.Create (storageProviderDefinition));
       return classDefinition;
     }

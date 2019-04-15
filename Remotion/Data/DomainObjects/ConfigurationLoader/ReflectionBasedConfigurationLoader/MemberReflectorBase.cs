@@ -24,26 +24,31 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   /// <summary>Base class for reflecting on the properties and relations of a class.</summary>
   public abstract class MemberReflectorBase
   {
-    public const StorageClass DefaultStorageClass = StorageClass.Persistent;
-
+    private readonly ClassDefinition _classDefinition;
     private readonly IPropertyInformation _propertyInfo;
     private readonly IMemberInformationNameResolver _nameResolver;
     private readonly IPropertyMetadataProvider _propertyMetadataProvider;
-    private readonly StorageClassAttribute _storageClassAttribute;
 
     protected MemberReflectorBase (
+        ClassDefinition classDefinition,
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull ("nameResolver", nameResolver);
       ArgumentUtility.CheckNotNull ("propertyMetadataProvider", propertyMetadataProvider);
 
+      _classDefinition = classDefinition;
       _propertyInfo = propertyInfo;
       _nameResolver = nameResolver;
       _propertyMetadataProvider = propertyMetadataProvider;
-      _storageClassAttribute = PropertyInfo.GetCustomAttribute<StorageClassAttribute> (true);
+    }
+
+    public ClassDefinition ClassDefinition
+    {
+      get { return _classDefinition; }
     }
 
     public IPropertyInformation PropertyInfo
@@ -61,14 +66,22 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       get { return _propertyMetadataProvider; }
     }
 
-    public StorageClassAttribute StorageClassAttribute
+    public StorageClass GetStorageClass()
     {
-      get { return _storageClassAttribute; }
+      return _propertyMetadataProvider.GetStorageClass (_propertyInfo) ?? GetDefaultStorageClass();
     }
 
-    public StorageClass StorageClass
+    private StorageClass GetDefaultStorageClass ()
     {
-      get { return StorageClassAttribute != null ? StorageClassAttribute.StorageClass : DefaultStorageClass; }
+      switch (_classDefinition.DefaultStorageClass)
+      {
+        case DefaultStorageClass.Persistent:
+          return StorageClass.Persistent;
+        case DefaultStorageClass.Transaction:
+          return StorageClass.Transaction;
+        default:
+          throw new NotImplementedException ($"{nameof (DefaultStorageClass)} '{_classDefinition.DefaultStorageClass}' is not supported.");
+      }
     }
 
     protected string GetPropertyName ()
