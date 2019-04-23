@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       _value.AcceptModalDialog (options);
     }
 
-    public IDriver Driver
+    public Driver Driver
     {
       get { return _value.Driver; }
     }

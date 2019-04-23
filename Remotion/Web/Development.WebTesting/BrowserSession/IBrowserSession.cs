@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     BrowserWindow Window { get; }
 
     /// <inheritdoc cref="Coypu.BrowserSession.Driver"/>
-    IDriver Driver { get; }
+    Driver Driver { get; }
 
     /// <inheritdoc cref="Coypu.BrowserSession.FindWindow"/>
     /// <remarks>
