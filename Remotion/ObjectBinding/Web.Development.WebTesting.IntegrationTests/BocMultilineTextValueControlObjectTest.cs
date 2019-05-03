@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
+using System.Text;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
@@ -143,13 +145,36 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestFillWithSpecialCharactersAndKeys ()
+    public void TestFillWithMixedKeysAndCharsThrowsException ()
     {
       var home = Start();
 
       var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
-      bocMultilineText.FillWith ("[{%}]" + Keys.Enter + "a");
-      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("[{%}] NL a"));
+
+      Assert.That (
+          () => bocMultilineText.FillWith ("a" + Keys.Enter + "a"),
+          Throws.ArgumentException.With.Message.EqualTo ("Value may not contain both text and keys at the same time.\r\nParameter name: value"));
+    }
+
+    [Test]
+    public void TestFillWithLongText ()
+    {
+      var home = Start();
+
+      var builder = new StringBuilder();
+      foreach (var _ in Enumerable.Range (0, 211))
+      {
+        // IE sometimes changes the first character of a word to upper case; usually for the last word of a sentence.
+        // To prevent intermittent test failures, we are using upper case for the first character of each word.
+        builder.Append ("This String Is 29 Chars Long.");
+      }
+
+      var input = builder.ToString();
+
+      var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
+      bocMultilineText.FillWith (input);
+      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo (input));
+      Assert.That (bocMultilineText.GetText(), Is.EqualTo (input));
     }
 
     [Test]

@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
+using System.Linq;
+using System.Text;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
@@ -26,6 +28,7 @@ using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -156,6 +159,43 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocText = home.TextValues().GetByLocalID ("LastNameField_Normal");
       bocText.FillWith ("");
       Assert.That (bocText.GetText(), Is.EqualTo (""));
+    }
+
+    [Test]
+    public void TestFillWithMixedKeysAndCharsThrowsException ()
+    {
+      var home = Start();
+
+      var bocMultilineText = home.TextValues().GetByLocalID ("LastNameField_Normal");
+
+      Assert.That (
+          () => bocMultilineText.FillWith ("a" + Keys.Enter + "a"),
+          Throws.ArgumentException.With.Message.EqualTo ("Value may not contain both text and keys at the same time.\r\nParameter name: value"));
+    }
+
+    [Test]
+    public void TestFillWithLongText ()
+    {
+      // TODO: Remove when RM-7150 is fixed
+      if (Helper.BrowserConfiguration.IsChrome())
+        Assert.Ignore ("ChromeDriver currently times out when writing long texts into single line text fields (see issue RM-7150)");
+
+      var home = Start();
+
+      var builder = new StringBuilder();
+      foreach (var _ in Enumerable.Range (0, 211))
+      {
+        // IE sometimes changes the first character of a word to upper case; usually for the last word of a sentence.
+        // To prevent intermittent test failures, we are using upper case for the first character of each word.
+        builder.Append ("This String Is 29 Chars Long.");
+      }
+
+      var input = builder.ToString();
+
+      var bocText = home.TextValues().GetByLocalID ("LastNameField_Normal");
+      bocText.FillWith (input);
+      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo (input));
+      Assert.That (bocText.GetText(), Is.EqualTo (input));
     }
 
     private WxePageObject Start ()

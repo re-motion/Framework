@@ -177,7 +177,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw CreateMissingHtmlExceptionForIndexOutOfRange (oneBasedPageNumber);
 
       var currentPageTextInputScope = Scope.FindIdEndingWith ("Boc_CurrentPage_TextBox");
-      new FillWithAction (this, currentPageTextInputScope, Keys.Backspace + oneBasedPageNumber, FinishInput.WithTab).Execute (
+      new FillWithAction (this, currentPageTextInputScope, oneBasedPageNumber.ToString(), FinishInput.WithTab).Execute (
           Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
