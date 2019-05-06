@@ -28,98 +28,64 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
   {
     private const int c_parameterCount = 8;
 
-    private string _formGridControlHtmlId;
-    private string _readonlyFormGridControlHtmlId;
-    private string _oneControlOverMultipleRowsFormGridControlHtmlId;
-    private string _columnsShiftedFormGridControlHtmlId;
-    private string _formGridMultiControl1HtmlId;
-    private string _formGridMultiControl2HtmlId;
-    private string _controlNotInFormGridHtmlId;
-    private string _formGridLabel;
-
-    public LabelTestPageParameters ()
-        : base(TestConstants.LabelTestsID, c_parameterCount)
-    {
-    }
-
     /// <summary>
     /// HTML id of the control in the form grid with a label.
     /// </summary>
-    public string FormGridControlHtmlId
-    {
-      get { return _formGridControlHtmlId; }
-    }
+    public string FormGridControlHtmlId { get; private set; }
 
     /// <summary>
     /// HTML id of a readonly control in a form grid with a label.
     /// </summary>
-    public string ReadonlyFormGridControlHtmlId
-    {
-      get { return _readonlyFormGridControlHtmlId; }
-    }
+    public string ReadonlyFormGridControlHtmlId { get; private set; }
 
     /// <summary>
     /// HTML id of a control spanning multiple rows in form grid control.
     /// </summary>
-    public string OneControlOverMultipleRowsFormGridControlHtmlId
-    {
-      get { return _oneControlOverMultipleRowsFormGridControlHtmlId; }
-    }
+    public string OneControlOverMultipleRowsFormGridControlHtmlId { get; private set; }
 
     /// <summary>
     /// HTML Id of a control in a form grid where the label and control column is shifted for one position to the right.
     /// </summary>
-    public string ColumnsShiftedFormGridControlHtmlId
-    {
-      get { return _columnsShiftedFormGridControlHtmlId; }
-    }
+    public string ColumnsShiftedFormGridControlHtmlId { get; private set; }
 
     /// <summary>
     /// The form grid label of the control.
     /// </summary>
-    public string FormGridLabel
-    {
-      get { return _formGridLabel; }
-    }
+    public string FormGridLabel { get; private set; }
 
     /// <summary>
     /// HTML Id of the first control inside a form grid with multiple controls.
     /// </summary>
-    public string FormGridMultiControl1HtmlId
-    {
-      get { return _formGridMultiControl1HtmlId; }
-    }
+    public string FormGridMultiControl1HtmlId { get; private set; }
 
     /// <summary>
     /// HTML Id of the second control inside a form grid with multiple controls.
     /// </summary>
-    public string FormGridMultiControl2HtmlId
-    {
-      get { return _formGridMultiControl2HtmlId; }
-    }
+    public string FormGridMultiControl2HtmlId { get; private set; }
 
     /// <summary>
     /// HTML id of a control outside of a form grid.
     /// </summary>
-    public string ControlNotInFormGridHtmlId
-    {
-      get { return _controlNotInFormGridHtmlId; }
-    }
+    public string ControlNotInFormGridHtmlId { get; private set; }
 
+    public LabelTestPageParameters ()
+        : base (TestConstants.LabelTestsID, c_parameterCount)
+    {
+    }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
       base.Apply (data);
 
-      _formGridControlHtmlId = data[0];
-      _readonlyFormGridControlHtmlId = data[1];
-      _oneControlOverMultipleRowsFormGridControlHtmlId = data[2];
-      _columnsShiftedFormGridControlHtmlId = data[3];
-      _formGridMultiControl1HtmlId = data[4];
-      _formGridMultiControl2HtmlId = data[5];
-      _controlNotInFormGridHtmlId = data[6];
-      _formGridLabel = data[7];
+      FormGridControlHtmlId = data.Arguments[0];
+      ReadonlyFormGridControlHtmlId = data.Arguments[1];
+      OneControlOverMultipleRowsFormGridControlHtmlId = data.Arguments[2];
+      ColumnsShiftedFormGridControlHtmlId = data.Arguments[3];
+      FormGridMultiControl1HtmlId = data.Arguments[4];
+      FormGridMultiControl2HtmlId = data.Arguments[5];
+      ControlNotInFormGridHtmlId = data.Arguments[6];
+      FormGridLabel = data.Arguments[7];
     }
   }
 }

@@ -145,6 +145,7 @@
       <DependentUpon>DropDownMenuWebService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GenericTestOptionsFactory.cs" />
     <Compile Include="RequestErrorDetectionStrategyTest.aspx.cs">
       <DependentUpon>RequestErrorDetectionStrategyTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -295,6 +296,7 @@
     <Compile Include="BrowserSessionTest.aspx.designer.cs">
       <DependentUpon>BrowserSessionTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebGenericTestPageParameterFactory.cs" />
     <Compile Include="WebTreeViewGenericTestPage.cs" />
     <Compile Include="WebTreeViewTest.aspx.cs">
       <DependentUpon>WebTreeViewTest.aspx</DependentUpon>

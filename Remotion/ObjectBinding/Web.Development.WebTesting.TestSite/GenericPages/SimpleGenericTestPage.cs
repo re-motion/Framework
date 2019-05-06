@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -30,18 +29,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
   public abstract class SimpleGenericTestPage<TControl> : IGenericTestPage<GenericTestOptions>
       where TControl : BusinessObjectBoundWebControl, new()
   {
-    protected SimpleGenericTestPage ()
-    {
-    }
-
     public abstract string DisplayName { get; }
 
     public abstract string DomainProperty { get; }
 
     public abstract string PropertyIdentifier { get; }
 
+    private TestConstants TestConstants { get; } = new TestConstants();
+
+    protected SimpleGenericTestPage ()
+    {
+    }
+
     /// <inheritdoc />
-    public void AddParameters (GenericTestPageParameterCollection parameterCollection, GenericTestOptions options)
+    public void AddParameters (Dictionary<string, GenericTestPageParameter> parameterCollection, GenericTestOptions options)
     {
       parameterCollection.Add (TestConstants.DisplayNameSelectorID, DisplayName, "Hidden" + DisplayName, options.HtmlID);
       parameterCollection.Add (
@@ -52,17 +53,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
           options.CorrectDomainProperty,
           options.IncorrectDomainProperty);
 
-      //TODO: Refactor, this seems very hacky. Probably change parameterCollection to allow later addition of parameters?
-      var labelParameters = parameterCollection.First (x => x.Name == TestConstants.LabelTestsID);
-      List<string> parameterWithDisplayName = new List<string>();
-
-      foreach (var parameter in labelParameters)
-        parameterWithDisplayName.Add (parameter);
-
-      parameterWithDisplayName.Add (DisplayName);
-
-      parameterCollection.Remove (labelParameters);
-      parameterCollection.Add (TestConstants.LabelTestsID, parameterWithDisplayName.ToArray());
+      var oldLabelParameter = parameterCollection[TestConstants.LabelTestsID];
+      var newLabelParameter = oldLabelParameter.AppendArguments (DisplayName);
+      parameterCollection[TestConstants.LabelTestsID] = newLabelParameter;
     }
 
     /// <inheritdoc />

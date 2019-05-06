@@ -29,27 +29,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   public abstract class GenericTestPageTestCaseFactoryBase<TParameter> : GenericPageTestCaseFactoryBase
       where TParameter : IGenericTestPageParameter, new()
   {
-    private GenericTestPageType _pageType;
-    private TParameter _parameter;
-
-    protected GenericTestPageTestCaseFactoryBase ()
-    {
-    }
-
     /// <summary>
     /// The page type of the generic page.
     /// </summary>
-    public GenericTestPageType PageType
-    {
-      get { return _pageType; }
-    }
+    public GenericTestPageType PageType { get; private set; }
 
     /// <summary>
     /// The parameters supplied by the generic page.
     /// </summary>
-    public TParameter Parameter
+    public TParameter Parameter { get; private set; }
+
+    private TestConstants TestConstants { get; } = new TestConstants();
+
+    protected GenericTestPageTestCaseFactoryBase ()
     {
-      get { return _parameter; }
     }
 
     /// <inheritdoc />
@@ -96,27 +89,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       var argumentCount = parameter.Count;
       if (argumentCount > 0)
       {
-        var information = dto.Parameters.FirstOrDefault (p => p.Name == parameter.Name);
-        if (information == null)
+        if (!dto.Parameters.TryGetValue (parameter.Name, out var information))
         {
           throw new InvalidOperationException (
               string.Format ("The generic web page did not provide any arguments, but {0} arguments where expected.", argumentCount));
         }
 
-        if (information.ArgumentCount != argumentCount)
+        if (information.Arguments.Count != argumentCount)
         {
           throw new InvalidOperationException (
               string.Format (
                   "The generic web page provided {0} arguments, but {1} arguments where expected.",
                   argumentCount,
-                  information.ArgumentCount));
+                  information.Arguments.Count));
         }
-        
+
         parameter.Apply (information);
       }
 
-      _pageType = attribute.PageType;
-      _parameter = parameter;
+      PageType = attribute.PageType;
+      Parameter = parameter;
     }
 
     private TestCaseData CreateTestCaseData ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] MethodInfo method)

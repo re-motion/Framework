@@ -26,37 +26,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestPagePa
   /// </summary>
   public class ItemIDGenericTestPageParameter : GenericTestPageParameterBase
   {
-    private string _foundControlID;
-    private string _hiddenControlItemID;
-    private string _visibleControlItemID;
-
-    public ItemIDGenericTestPageParameter ()
-        : base (TestConstants.ItemIDSelectorID, 3)
-    {
-    }
-
-    /// <summary>
-    /// HTML if of the element with <see cref="VisibleControlItemID"/>.
-    /// </summary>
-    public string FoundControlID
-    {
-      get { return _foundControlID; }
-    }
-
-    /// <summary>
-    /// Item id of the hidden control.
-    /// </summary>
-    public string HiddenControlItemID
-    {
-      get { return _hiddenControlItemID; }
-    }
+    private const int c_parameterCount = 3;
 
     /// <summary>
     /// Item id of the visible control.
     /// </summary>
-    public string VisibleControlItemID
+    public string VisibleControlItemID { get; private set; }
+
+    /// <summary>
+    /// Item id of the hidden control.
+    /// </summary>
+    public string HiddenControlItemID { get; private set; }
+
+    /// <summary>
+    /// HTML if of the element with <see cref="VisibleControlItemID"/>.
+    /// </summary>
+    public string FoundControlID { get; private set; }
+
+    public ItemIDGenericTestPageParameter ()
+        : base (TestConstants.ItemIDSelectorID, c_parameterCount)
     {
-      get { return _visibleControlItemID; }
     }
 
     /// <inheritdoc />
@@ -64,9 +53,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestPagePa
     {
       base.Apply (data);
 
-      _visibleControlItemID = data[0];
-      _hiddenControlItemID = data[1];
-      _foundControlID = data[2];
+      VisibleControlItemID = data.Arguments[0];
+      HiddenControlItemID = data.Arguments[1];
+      FoundControlID = data.Arguments[2];
     }
   }
 }

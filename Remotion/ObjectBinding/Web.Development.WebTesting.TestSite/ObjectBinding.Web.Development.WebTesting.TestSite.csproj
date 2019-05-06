@@ -153,6 +153,9 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="..\Web.Development.WebTesting.IntegrationTests\ObjectBindingTestConstants.cs">
+      <Link>ObjectBindingTestConstants.cs</Link>
+    </Compile>
     <Compile Include="Controls\BocAutoCompleteReferenceValueWebService.asmx.cs">
       <DependentUpon>BocAutoCompleteReferenceValueWebService.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -364,6 +367,8 @@
     </Compile>
     <Compile Include="GenericTestFunction.cs" />
     <Compile Include="GenericTestOptions.cs" />
+    <Compile Include="GenericTestOptionsFactory.cs" />
+    <Compile Include="ObjectBindingGenericTestPageParameterFactory.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

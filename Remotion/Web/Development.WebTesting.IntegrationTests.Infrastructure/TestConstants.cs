@@ -16,8 +16,6 @@
 // 
 using System;
 
-// ReSharper disable once CheckNamespace
-
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
   /// <summary>
@@ -25,24 +23,49 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   /// </summary>
   public class TestConstants
   {
-    public const string GenericPageUrlTemplate = "GenericTest.wxe?control={0}&type={1}";
-    public const string GenericPageOutputID = "TestInformationOutput";
+    protected string BodyConstant => "body_";
 
-    public const string DisplayNameSelectorID = "DisplayName";
-    public const string DomainPropertySelectorID = "DomainProperty";
-    public const string FirstSelectorID = "First";
-    public const string HtmlIDSelectorID = "HtmlID";
-    public const string IndexSelectorID = "Index";
-    public const string ItemIDSelectorID = "ItemID";
-    public const string LocalIDSelectorID = "LocalID";
-    public const string SingleSelectorID = "Single";
-    public const string TextContentSelectorID = "TextContent";
-    public const string TitleSelectorID = "Title";
+    public string AmbiguousControlID => "AmbiguousControl";
+    public string DisabledControlID => "DisabledControl";
+    public string ReadOnlyControlID => "ReadOnlyControl";
+    public string HiddenControlID => "HiddenControl";
+    public string VisibleControlID => "VisibleControl";
 
-    public const string DisabledTestsID = "Disabled";
-    public const string ReadOnlyTestsID = "ReadOnly";
+    public string AmbiguousTextContentID => "AmbiguousTextContent";
+    public string DisabledTextContentID => "DisabledTextContent";
+    public string HiddenTextContentID => "HiddenTextContent";
+    public string VisibleTextContentID => "VisibleTextContent";
 
-    public const string LabelTestsID = "Label";
-    public const string ValidationErrorTestsID = "ValidationError";
+    public string AmbiguousTitleID => "AmbiguousTitle";
+    public string DisabledTitleID => "DisabledTitle";
+    public string HiddenTitleID => "HiddenTitle";
+    public string VisibleTitleID => "VisibleTitle";
+
+    public string GenericPageUrlTemplate => "GenericTest.wxe?control={0}&type={1}";
+    public string GenericPageOutputID => "TestInformationOutput";
+
+    public string DisplayNameSelectorID => "DisplayName";
+    public string DomainPropertySelectorID => "DomainProperty";
+    public string FirstSelectorID => "First";
+    public string HtmlIDSelectorID => "HtmlID";
+    public string IndexSelectorID => "Index";
+    public string ItemIDSelectorID => "ItemID";
+    public string LocalIDSelectorID => "LocalID";
+    public string SingleSelectorID => "Single";
+    public string TextContentSelectorID => "TextContent";
+    public string TitleSelectorID => "Title";
+
+    public string DisabledTestsID => "Disabled";
+    public string ReadOnlyTestsID => "ReadOnly";
+
+    public string LabelTestsID => "Label";
+    public string ValidationErrorTestsID => "ValidationError";
+
+    public string VisibleIndex => "1";
+    public string HiddenIndex => "133";
+
+    public string DisabledHtmlID => BodyConstant + DisabledControlID;
+    public string HiddenHtmlID => BodyConstant + HiddenControlID;
+    public string VisibleHtmlID => BodyConstant + VisibleControlID;
   }
 }

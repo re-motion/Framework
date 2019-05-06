@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -33,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
     }
 
     /// <inheritdoc />
-    public void AddParameters (GenericTestPageParameterCollection parameterCollection, GenericTestOptions options)
+    public void AddParameters (Dictionary<string, GenericTestPageParameter> parameterCollection, GenericTestOptions options)
     {
     }
 

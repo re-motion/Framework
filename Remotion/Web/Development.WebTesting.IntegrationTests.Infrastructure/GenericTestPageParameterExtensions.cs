@@ -15,27 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using System.Web.UI;
-using JetBrains.Annotations;
-using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using System.Linq;
+using Remotion.Utilities;
 
-namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
   /// <summary>
-  /// Represents a test page in the generic test page.
+  /// Extension methods for <see cref="GenericTestPageParameter"/>
   /// </summary>
-  public interface IGenericTestPage<in TOptions>
+  public static class GenericTestPageParameterExtensions
   {
     /// <summary>
-    /// Adds the required parameters to the specified <paramref name="parameterCollection"/>.
+    /// Creates a new <see cref="GenericTestPageParameter"/> with <paramref name="additionalArguments"/> appended to the previous ones.
     /// </summary>
-    void AddParameters ([NotNull] Dictionary<string, GenericTestPageParameter> parameterCollection, [NotNull] TOptions options);
+    /// <returns></returns>
+    public static GenericTestPageParameter AppendArguments (this GenericTestPageParameter parameter, params string[] additionalArguments)
+    {
+      ArgumentUtility.CheckNotNull ("parameter", parameter);
+      ArgumentUtility.CheckNotNullOrItemsNull ("additionalArguments", additionalArguments);
 
-    /// <summary>
-    /// Creates a new control from the specified <paramref name="options"/>.
-    /// </summary>
-    [NotNull]
-    Control CreateControl ([NotNull] TOptions options);
+      var newArguments = parameter.Arguments.Concat (additionalArguments).ToArray();
+      return new GenericTestPageParameter (parameter.Name, newArguments);
+    }
   }
 }

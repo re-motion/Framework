@@ -15,33 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 {
   public partial class GenericTest : ObjectBindingGenericTestPage<GenericTestOptions>
   {
-    private readonly GenericTestPageParameterCollection _parameters = new GenericTestPageParameterCollection();
-
-    private GenericTestOptions _ambiguousControlOptions;
-    private GenericTestOptions _disabledControlOptions;
-    private GenericTestOptions _readOnlyControlOptions;
-    private GenericTestOptions _hiddenControlOptions;
-    private GenericTestOptions _visibleControlOptions;
-    private GenericTestOptions _formGridControlOptions;
-    private GenericTestOptions _formGridWithReadonlyControlOptions;
-    private GenericTestOptions _oneControlOverMultipleRowsFormGridControlOptions;
-    private GenericTestOptions _formGridMultiControlOptions1;
-    private GenericTestOptions _formGridMultiControlOptions2;
-    private GenericTestOptions _shiftedColumnsFormGridControlOptions;
-    private GenericTestOptions _customValidatedControlOptions;
-    private GenericTestOptions _multipleValidatedControlOptions;
+    protected override Dictionary<string, GenericTestPageParameter> Parameters { get; } = new Dictionary<string, GenericTestPageParameter>();
 
     public GenericTest ()
     {
@@ -49,310 +35,73 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       Register ("booleanValue", new BocBooleanValueGenericTestPage());
       Register ("checkBox", new BocCheckBoxValueGenericTestPage());
       Register ("dateTimeValue", new BocDateTimeValueGenericTestPage());
-      Register ("dropDownList", new BocEnumValueGenericTestPage(ListControlType.DropDownList));
+      Register ("dropDownList", new BocEnumValueGenericTestPage (ListControlType.DropDownList));
       Register ("list", new BocListGenericTestPage());
       Register ("listAsGrid", new BocListAsGridGenericTestPage());
-      Register ("listBox", new BocEnumValueGenericTestPage(ListControlType.ListBox));
+      Register ("listBox", new BocEnumValueGenericTestPage (ListControlType.ListBox));
       Register ("multilineText", new BocMultilineTextValueGenericTestPage());
-      Register ("radioButtonList", new BocEnumValueGenericTestPage(ListControlType.RadioButtonList));
+      Register ("radioButtonList", new BocEnumValueGenericTestPage (ListControlType.RadioButtonList));
       Register ("referenceValue", new BocReferenceValueGenericTestPage());
       Register ("textValue", new BocTextValueGenericTestPage());
       Register ("treeView", new BocTreeViewGenericTestPage());
     }
 
-    /// <inheritdoc />
-    protected override GenericTestOptions AmbiguousControlOptions
+    protected override GenericTestOptions AmbiguousControlOptions => OptionsFactory.CreateAmbiguous();
+    protected override GenericTestOptions FormGridControlOptions => OptionsFactory.CreateFormGrid();
+    protected override GenericTestOptions FormGridWithReadonlyControlOptions => OptionsFactory.CreateFormGridWithReadOnly();
+    protected override GenericTestOptions OneControlOverMultipleRowsFormGridControlOptions => OptionsFactory.CreateOneControlOverMultipleRows();
+    protected override GenericTestOptions ShiftedColumnsFormGridControlOptions => OptionsFactory.CreateShiftedColumnsFormGrid();
+    protected override GenericTestOptions FormGridMultiControlOptions1 => OptionsFactory.CreateFormGridMulti1();
+    protected override GenericTestOptions FormGridMultiControlOptions2 => OptionsFactory.CreateFormGridMulti2();
+    protected override GenericTestOptions DisabledControlOptions => OptionsFactory.CreateDisabled();
+    protected override GenericTestOptions ReadOnlyControlOptions => OptionsFactory.CreateReadOnly();
+    protected override GenericTestOptions HiddenControlOptions => OptionsFactory.CreateHidden();
+    protected override GenericTestOptions VisibleControlOptions => OptionsFactory.CreateVisible();
+    protected override GenericTestOptions CustomValidatedControlOptions => OptionsFactory.CreateCustomValidated();
+    protected override GenericTestOptions MultipleValidatedControlOptions => OptionsFactory.CreateMultipleValidated();
+
+    protected override Control AmbiguousControlPanel => PanelAmbiguousControl;
+    protected override HtmlTable FormGridControlTable => FormGrid;
+    protected override HtmlTable FormGridWithReadonlyControlTable => ReadonlyControlFormGrid;
+    protected override HtmlTable OneControlOverMultipleRowsFormGridTable => OneControlOverMultipleRowsFormGrid;
+    protected override PlaceHolder ShiftedColumnsFormGrid => ShiftedColumnsFormGridPlaceHolder;
+    protected override PlaceHolder MultipleControlsFormGrid => MultipleControlsFormGridPlaceHolder;
+    protected override Control DisabledControlPanel => PanelDisabledControl;
+    protected override Control ReadOnlyControlPanel => PanelReadOnlyControl;
+    protected override Control HiddenControlPanel => PanelHiddenControl;
+    protected override Control VisibleControlPanel => PanelVisibleControl;
+    protected override HtmlTable FormGridValidationTable => FormGridValidation;
+
+    private GenericTestOptionsFactory OptionsFactory
     {
-      get { return _ambiguousControlOptions; }
+      get
+      {
+        if (DataSource == null)
+          throw new InvalidOperationException ("DataSource has not been initialized yet.");
+        return new GenericTestOptionsFactory (DataSource.ID);
+      }
     }
 
-    /// <inheritdoc />
-    protected override Control AmbiguousControlPanel
-    {
-      get { return PanelAmbiguousControl; }
-    }
+    private ObjectBindingGenericTestPageParameterFactory ParameterFactory => new ObjectBindingGenericTestPageParameterFactory();
 
-    /// <inheritdoc />
-    protected override GenericTestOptions FormGridControlOptions
-    {
-      get { return _formGridControlOptions; }
-    }
-
-    /// <inheritdoc />
-    protected override GenericTestOptions FormGridWithReadonlyControlOptions
-    {
-      get { return _formGridWithReadonlyControlOptions; }
-    }
-
-    /// <inheritdoc />
-    protected override HtmlTable FormGridControlTable
-    {
-      get { return FormGrid; }
-    }
-
-    protected override HtmlTable FormGridWithReadonlyControlTable
-    {
-      get { return ReadonlyControlFormGrid; }
-    }
-
-    protected override GenericTestOptions OneControlOverMultipleRowsFormGridControlOptions
-    {
-      get { return _oneControlOverMultipleRowsFormGridControlOptions; }
-    }
-
-    protected override HtmlTable OneControlOverMultipleRowsFormGridTable
-    {
-      get { return OneControlOverMultipleRowsFormGrid; }
-    }
-
-    protected override GenericTestOptions ShiftedColumnsFormGridControlOptions
-    {
-      get { return _shiftedColumnsFormGridControlOptions; }
-    }
-
-    protected override PlaceHolder ShiftedColumnsFormGrid
-    {
-      get { return ShiftedColumnsFormGridPlaceHolder; }
-    }
-
-    protected override GenericTestOptions FormGridMultiControlOptions1
-    {
-      get { return _formGridMultiControlOptions1; }
-    }
-
-    protected override GenericTestOptions FormGridMultiControlOptions2
-    {
-      get { return _formGridMultiControlOptions2; }
-    }
-
-    protected override PlaceHolder MultipleControlsFormGrid
-    {
-      get { return MultipleControlsFormGridPlaceHolder; }
-    }
-
-    /// <inheritdoc />
-    protected override GenericTestOptions DisabledControlOptions
-    {
-      get { return _disabledControlOptions; }
-    }
-
-    /// <inheritdoc />
-    protected override Control DisabledControlPanel
-    {
-      get { return PanelDisabledControl; }
-    }
-
-    /// <inheritdoc />
-    protected override GenericTestOptions ReadOnlyControlOptions
-    {
-      get { return _readOnlyControlOptions; }
-    }
-
-    /// <inheritdoc />
-    protected override Control ReadOnlyControlPanel
-    {
-      get { return PanelReadOnlyControl; }
-    }
-
-    /// <inheritdoc />
-    protected override GenericTestOptions HiddenControlOptions
-    {
-      get { return _hiddenControlOptions; }
-    }
-
-    /// <inheritdoc />
-    protected override Control HiddenControlPanel
-    {
-      get { return PanelHiddenControl; }
-    }
-
-    /// <inheritdoc />
-    protected override GenericTestPageParameterCollection Parameters
-    {
-      get { return _parameters; }
-    }
-
-    /// <inheritdoc />
-    protected override GenericTestOptions VisibleControlOptions
-    {
-      get { return _visibleControlOptions; }
-    }
-
-    /// <inheritdoc />
-    protected override Control VisibleControlPanel
-    {
-      get { return PanelVisibleControl; }
-    }
-
-    /// <inheritdoc />
-    protected override HtmlTable FormGridValidationTable
-    {
-      get { return FormGridValidation; }
-    }
-
-    /// <inheritdoc />
-    protected override GenericTestOptions CustomValidatedControlOptions
-    {
-      get { return _customValidatedControlOptions; }
-    }
-
-    /// <inheritdoc />
-    protected override GenericTestOptions MultipleValidatedControlOptions
-    {
-      get { return _multipleValidatedControlOptions; }
-    }
-
-    /// <inheritdoc />
     protected override void OnInit (EventArgs e)
     {
-      // Constants for all the controls on this generic page
-      const string ambiguousID = "AmbiguousControl";
-      const string disabledID = "DisabledControl";
-      const string readonlyID = "ReadOnlyControl";
-      const string hiddenID = "HiddenControl";
-      const string visibleID = "VisibleControl";
-      const string visibleIndex = "1", hiddenIndex = "133";
-
-      const string controlInNormalFormGridID = "ControlInFormGrid";
-      const string readonlyControlInNormalFormGridID = "ReadonlyControlInFormGrid";
-      const string oneControlOverMultipleRowsFormGridID = "ControlInSecondRowFormGrid";
-      const string shiftedColumnsControlFormGridID = "ColumnsShiftedControlFormGrid";
-      const string controlInMultiFormGridID1 = "ControlInMultiFormGridID1";
-      const string controlInMultiFormGridID2 = "ControlInMultiFormGridID2";
-      const string correctDomainProperty = "Remotion.ObjectBinding.Sample.Person, Remotion.ObjectBinding.Sample";
-      const string incorrectDomainProperty = "Remotion.ObjectBinding.Sample.Job, Remotion.ObjectBinding.Sample";
-
-      const string customValidatedControlInFormGridID = "CustomValidatedControlInFormGrid";
-      const string multipleValidatedControlInFormGridID = "MultipleValidatedControlInFormGrid";
-
-      // "Real" HTML ids of the controls
-      var ambiguousHtmlID = string.Concat ("body_", ambiguousID);
-      var disabledHtmlID = string.Concat ("body_", disabledID);
-      var readonlyHtmlID = string.Concat ("body_", readonlyID);
-      var hiddenHtmlID = string.Concat ("body_", hiddenID);
-      var visibleHtmlID = string.Concat ("body_", visibleID);
-
-      var controlInFormGridHtmlID = string.Concat ("body_", controlInNormalFormGridID);
-      var readonlyControlInFormGridHtmlID = string.Concat ("body_", readonlyControlInNormalFormGridID);
-      var oneControlOverMultipleRowsFormGridHtmlID = string.Concat ("body_", oneControlOverMultipleRowsFormGridID);
-      var shiftedColumnsControlFormGridHtmlID = string.Concat ("body_", shiftedColumnsControlFormGridID);
-      var controlInMultiFormGridIDHtml1 = string.Concat ("body_", controlInMultiFormGridID1);
-      var controlInMultiFormGridIDHtml2 = string.Concat ("body_", controlInMultiFormGridID2);
-
-      var customValidatedControlInFormGridHtmlID = string.Concat ("body_", customValidatedControlInFormGridID);
-      var multipleValidatedControlInFormGridHtmlID = string.Concat ("body_", multipleValidatedControlInFormGridID);
-
-
-      // Options for creating the controls
-      _ambiguousControlOptions = new GenericTestOptions (
-          ambiguousID,
-          ambiguousHtmlID,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty);
-      _disabledControlOptions = new GenericTestOptions (
-          disabledID,
-          disabledHtmlID,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty,
-          EnabledState.Disabled);
-      _readOnlyControlOptions = new GenericTestOptions (
-          readonlyID,
-          readonlyHtmlID,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty,
-          EnabledState.Enabled,
-          ReadOnlyState.ReadOnly);
-      _hiddenControlOptions = new GenericTestOptions (
-          hiddenID,
-          hiddenHtmlID,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty);
-      _visibleControlOptions = new GenericTestOptions (
-          visibleID,
-          visibleHtmlID,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty);
-
-      _formGridControlOptions = new GenericTestOptions (
-          controlInNormalFormGridID,
-          controlInFormGridHtmlID,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty);
-
-      _formGridWithReadonlyControlOptions = new GenericTestOptions (
-          readonlyControlInNormalFormGridID,
-          readonlyControlInFormGridHtmlID,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty,
-          EnabledState.Enabled,
-          ReadOnlyState.ReadOnly);
-
-      _shiftedColumnsFormGridControlOptions = new GenericTestOptions (
-          shiftedColumnsControlFormGridID,
-          shiftedColumnsControlFormGridHtmlID,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty);
-
-      _oneControlOverMultipleRowsFormGridControlOptions = new GenericTestOptions (
-          oneControlOverMultipleRowsFormGridID,
-          oneControlOverMultipleRowsFormGridHtmlID,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty);
-      
-      _formGridMultiControlOptions1 = new GenericTestOptions (
-          controlInMultiFormGridID1,
-          controlInMultiFormGridIDHtml1,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty);
-
-      _formGridMultiControlOptions2 = new GenericTestOptions (
-          controlInMultiFormGridID2,
-          controlInMultiFormGridIDHtml2,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty);
-
-      _customValidatedControlOptions = new GenericTestOptions (
-          customValidatedControlInFormGridID,
-          customValidatedControlInFormGridHtmlID,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty);
-
-      _multipleValidatedControlOptions = new GenericTestOptions (
-          multipleValidatedControlInFormGridID,
-          multipleValidatedControlInFormGridHtmlID,
-          DataSource.ID,
-          correctDomainProperty,
-          incorrectDomainProperty);
-
       // Parameters which will be passed to the client
-      _parameters.Add (TestConstants.HtmlIDSelectorID, visibleHtmlID, hiddenHtmlID);
-      _parameters.Add (TestConstants.IndexSelectorID, visibleIndex, hiddenIndex, visibleHtmlID);
-      _parameters.Add (TestConstants.LocalIDSelectorID, visibleID, hiddenID, visibleHtmlID);
-      _parameters.Add (TestConstants.FirstSelectorID, visibleHtmlID);
-      _parameters.Add (TestConstants.SingleSelectorID, visibleHtmlID);
-      _parameters.Add (TestConstants.DisabledTestsID, visibleHtmlID, disabledHtmlID);
-      _parameters.Add (TestConstants.ReadOnlyTestsID, visibleHtmlID, readonlyHtmlID);
-      _parameters.Add (TestConstants.LabelTestsID, controlInFormGridHtmlID, readonlyControlInFormGridHtmlID, oneControlOverMultipleRowsFormGridHtmlID, shiftedColumnsControlFormGridHtmlID, controlInMultiFormGridIDHtml1, controlInMultiFormGridIDHtml2, visibleHtmlID);
-      _parameters.Add (TestConstants.ValidationErrorTestsID, string.Concat ("body_", ValidateButton.ID), customValidatedControlInFormGridHtmlID, multipleValidatedControlInFormGridHtmlID, visibleHtmlID, controlInFormGridHtmlID, readonlyHtmlID);
+      Parameters.Add (ParameterFactory.CreateHtmlIDSelector());
+      Parameters.Add (ParameterFactory.CreateIndexSelector());
+      Parameters.Add (ParameterFactory.CreateLocalIdSelector());
+      Parameters.Add (ParameterFactory.CreateFirstSelector());
+      Parameters.Add (ParameterFactory.CreateSingleSelector());
+      Parameters.Add (ParameterFactory.CreateDisabledTests());
+      Parameters.Add (ParameterFactory.CreateReadOnlyTests());
+      Parameters.Add (ParameterFactory.CreateLabelTests());
+      Parameters.Add (ParameterFactory.CreateValidationErrorTests());
 
       ValidateButton.Click += ValidateButton_Click;
 
       base.OnInit (e);
     }
 
-    /// <inheritdoc />
     protected override void OnLoad (EventArgs e)
     {
       base.OnLoad (e);
@@ -361,7 +110,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       DataSource.LoadValues (IsReturningPostBack);
     }
 
-    /// <inheritdoc />
     protected override void SetTestInformation (string information)
     {
       var master = Master as Layout;

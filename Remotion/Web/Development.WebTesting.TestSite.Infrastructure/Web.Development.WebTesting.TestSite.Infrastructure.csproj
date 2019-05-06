@@ -56,11 +56,14 @@
     <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameter.cs">
       <Link>GenericTestPageParameter.cs</Link>
     </Compile>
-    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameterCollection.cs">
-      <Link>GenericTestPageParameterCollection.cs</Link>
+    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameterDictionaryExtensions.cs">
+      <Link>GenericTestPageParameterDictionaryExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameterDto.cs">
       <Link>GenericTestPageParameterDto.cs</Link>
+    </Compile>
+    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameterExtensions.cs">
+      <Link>GenericTestPageParameterExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageStatus.cs">
       <Link>GenericTestPageStatus.cs</Link>
@@ -77,6 +80,7 @@
     <Compile Include="GenericTestPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="GenericTestPageParameterFactory.cs" />
     <Compile Include="IGenericTestPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

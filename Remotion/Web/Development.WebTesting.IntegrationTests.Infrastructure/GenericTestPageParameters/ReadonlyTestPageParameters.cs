@@ -25,28 +25,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
   {
     private const int c_parameterCount = 2;
 
-    private string _enabledHtmlID;
-    private string _readOnlyHtmlID;
-
-    public ReadOnlyTestPageParameters ()
-        : base (TestConstants.ReadOnlyTestsID, c_parameterCount)
-    {
-    }
-
     /// <summary>
     /// HTML id of the enabled control.
     /// </summary>
-    public string EnabledHtmlID
-    {
-      get { return _enabledHtmlID; }
-    }
+    public string EnabledHtmlID { get; private set; }
 
     /// <summary>
     /// HTML id of the readonly control.
     /// </summary>
-    public string ReadOnlyHtmlID
+    public string ReadOnlyHtmlID { get; private set; }
+
+    public ReadOnlyTestPageParameters ()
+        : base (TestConstants.ReadOnlyTestsID, c_parameterCount)
     {
-      get { return _readOnlyHtmlID; }
     }
 
     /// <inheritdoc />
@@ -54,8 +45,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     {
       base.Apply (data);
 
-      _enabledHtmlID = data[0];
-      _readOnlyHtmlID = data[1];
+      EnabledHtmlID = data.Arguments[0];
+      ReadOnlyHtmlID = data.Arguments[1];
     }
   }
 }

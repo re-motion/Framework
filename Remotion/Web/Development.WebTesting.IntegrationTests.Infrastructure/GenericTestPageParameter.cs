@@ -15,8 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
+using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace
 
@@ -25,53 +26,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   /// <summary>
   /// Represents a parameter that is passed to the test client via generic test page.
   /// </summary>
-  public class GenericTestPageParameter : IEnumerable<string>
+  public class GenericTestPageParameter
   {
-    private readonly string _name;
-    private readonly string[] _arguments;
+    public string Name { get; }
 
-    public GenericTestPageParameter (string name)
-    {
-      _name = name;
-      _arguments = new string[0];
-    }
+    public IReadOnlyList<string> Arguments { get; }
 
-    public GenericTestPageParameter (string name, params string[] arguments)
+    public GenericTestPageParameter ([NotNull] string name, [NotNull] params string[] arguments)
     {
-      _name = name;
-      _arguments = arguments;
-    }
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arguments", arguments);
 
-    public int ArgumentCount
-    {
-      get { return _arguments.Length; }
-    }
-
-    public string Name
-    {
-      get { return _name; }
-    }
-
-    /// <inheritdoc />
-    public IEnumerator<string> GetEnumerator ()
-    {
-      return ((IEnumerable<string>) _arguments).GetEnumerator();
-    }
-
-    /// <inheritdoc />
-    IEnumerator IEnumerable.GetEnumerator ()
-    {
-      return GetEnumerator();
-    }
-
-    public string this [int index]
-    {
-      get
-      {
-        if (index < 0 || index >= _arguments.Length)
-          throw new ArgumentOutOfRangeException ("index");
-        return _arguments[index];
-      }
+      Name = name;
+      Arguments = arguments;
     }
   }
 }

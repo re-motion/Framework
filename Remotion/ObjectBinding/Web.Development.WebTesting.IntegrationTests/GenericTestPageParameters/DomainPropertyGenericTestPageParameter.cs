@@ -28,55 +28,34 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
   {
     private const int c_parameterCount = 5;
 
-    private string _correctDomainClass;
-    private string _foundControlID;
-    private string _hiddenDomainProperty;
-    private string _incorrectDomainClass;
-    private string _visibleDomainProperty;
-
-    public DomainPropertyGenericTestPageParameter ()
-        : base (TestConstants.DomainPropertySelectorID, c_parameterCount)
-    {
-    }
-
     /// <summary>
     /// Domain class of the correct control.
     /// </summary>
-    public string CorrectDomainClass
-    {
-      get { return _correctDomainClass; }
-    }
+    public string CorrectDomainClass { get; private set; }
 
     /// <summary>
     /// HTML id of the element with <see cref="VisibleDomainProperty"/> set to <see cref="CorrectDomainClass"/>.
     /// </summary>
-    public string FoundControlID
-    {
-      get { return _foundControlID; }
-    }
+    public string FoundControlID { get; private set; }
 
     /// <summary>
     /// Domain property of the hidden control.
     /// </summary>
-    public string HiddenDomainProperty
-    {
-      get { return _hiddenDomainProperty; }
-    }
+    public string HiddenDomainProperty { get; private set; }
 
     /// <summary>
     /// Domain class of the incorrect control.
     /// </summary>
-    public string IncorrectDomainClass
-    {
-      get { return _incorrectDomainClass; }
-    }
+    public string IncorrectDomainClass { get; private set; }
 
     /// <summary>
     /// Domain property of the visible control.
     /// </summary>
-    public string VisibleDomainProperty
+    public string VisibleDomainProperty { get; private set; }
+
+    public DomainPropertyGenericTestPageParameter ()
+        : base (TestConstants.DomainPropertySelectorID, c_parameterCount)
     {
-      get { return _visibleDomainProperty; }
     }
 
     /// <inheritdoc />
@@ -84,11 +63,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     {
       base.Apply (data);
 
-      _visibleDomainProperty = data[0];
-      _hiddenDomainProperty = data[1];
-      _foundControlID = data[2];
-      _correctDomainClass = data[3];
-      _incorrectDomainClass = data[4];
+      VisibleDomainProperty = data.Arguments[0];
+      HiddenDomainProperty = data.Arguments[1];
+      FoundControlID = data.Arguments[2];
+      CorrectDomainClass = data.Arguments[3];
+      IncorrectDomainClass = data.Arguments[4];
     }
   }
 }

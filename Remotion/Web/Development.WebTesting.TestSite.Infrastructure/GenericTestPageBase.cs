@@ -52,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
     protected abstract Control HiddenControlPanel { get; }
 
     [NotNull]
-    protected abstract GenericTestPageParameterCollection Parameters { get; }
+    protected abstract Dictionary<string, GenericTestPageParameter> Parameters { get; }
 
     [NotNull]
     protected abstract TOptions VisibleControlOptions { get; }
@@ -103,7 +103,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
 
       AddControlsOnInit (pageType, testPage);
 
-      var parameters = Parameters.Clone();
+      var parameters = new Dictionary<string, GenericTestPageParameter> (Parameters);
       testPage.AddParameters (parameters, VisibleControlOptions);
 
       SetTestInformation (new GenericTestPageParameterDto (GenericTestPageStatus.Ok, parameters));

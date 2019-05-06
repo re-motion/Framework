@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 // ReSharper disable once CheckNamespace
@@ -24,18 +25,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   /// <summary>
   /// DTO object for JSON conversion.
   /// </summary>
-#pragma warning disable 0649
   [UsedImplicitly (ImplicitUseTargetFlags.WithMembers)]
   public class GenericTestPageParameterDto
   {
-    public GenericTestPageParameterDto (GenericTestPageStatus status, GenericTestPageParameterCollection parameters)
+    public GenericTestPageStatus Status { get; }
+
+    public IReadOnlyDictionary<string, GenericTestPageParameter> Parameters { get; }
+
+    public GenericTestPageParameterDto (GenericTestPageStatus status, IReadOnlyDictionary<string, GenericTestPageParameter> parameters)
     {
       Status = status;
       Parameters = parameters;
     }
-
-    public GenericTestPageStatus Status;
-    public GenericTestPageParameterCollection Parameters;
   }
-#pragma warning restore 0649
 }

@@ -25,28 +25,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
   {
     private const int c_parameterCount = 2;
 
-    private string _enabledHtmlID;
-    private string _disabledHtmlID;
-
-    public DisabledTestPageParameters ()
-        : base (TestConstants.DisabledTestsID, c_parameterCount)
-    {
-    }
-
     /// <summary>
     /// HTML id of the enabled control.
     /// </summary>
-    public string EnabledHtmlID
-    {
-      get { return _enabledHtmlID; }
-    }
+    public string EnabledHtmlID { get; private set; }
 
     /// <summary>
     /// HTML id of the disabled control.
     /// </summary>
-    public string DisabledHtmlID
+    public string DisabledHtmlID { get; private set; }
+
+    public DisabledTestPageParameters ()
+        : base (TestConstants.DisabledTestsID, c_parameterCount)
     {
-      get { return _disabledHtmlID; }
     }
 
     /// <inheritdoc />
@@ -54,8 +45,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     {
       base.Apply (data);
 
-      _enabledHtmlID = data[0];
-      _disabledHtmlID = data[1];
+      EnabledHtmlID = data.Arguments[0];
+      DisabledHtmlID = data.Arguments[1];
     }
   }
 }

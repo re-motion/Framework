@@ -26,37 +26,24 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
   {
     private const int c_parameterCount = 3;
 
-    private string _foundControlID;
-    private string _hiddenControlTitle;
-    private string _visibleControlTitle;
-
-    public TitleGenericTestPageParameter ()
-        : base (TestConstants.TitleSelectorID, c_parameterCount)
-    {
-    }
-
     /// <summary>
-    /// HTML id of the element with the <see cref="VisibleControlTitle"/>.
+    /// Title of the visible control.
     /// </summary>
-    public string FoundControlID
-    {
-      get { return _foundControlID; }
-    }
+    public string VisibleControlTitle { get; private set; }
 
     /// <summary>
     /// Title of the hidden control.
     /// </summary>
-    public string HiddenControlTitle
-    {
-      get { return _hiddenControlTitle; }
-    }
+    public string HiddenControlTitle { get; private set; }
 
     /// <summary>
-    /// Title of the visible control.
+    /// HTML id of the element with the <see cref="VisibleControlTitle"/>.
     /// </summary>
-    public string VisibleControlTitle
+    public string FoundControlID { get; private set; }
+
+    public TitleGenericTestPageParameter ()
+        : base (TestConstants.TitleSelectorID, c_parameterCount)
     {
-      get { return _visibleControlTitle; }
     }
 
     /// <inheritdoc />
@@ -64,9 +51,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     {
       base.Apply (data);
 
-      _visibleControlTitle = data[0];
-      _hiddenControlTitle = data[1];
-      _foundControlID = data[2];
+      VisibleControlTitle = data.Arguments[0];
+      HiddenControlTitle = data.Arguments[1];
+      FoundControlID = data.Arguments[2];
     }
   }
 }

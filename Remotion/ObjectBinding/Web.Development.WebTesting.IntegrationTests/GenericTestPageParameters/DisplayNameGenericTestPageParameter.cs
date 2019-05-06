@@ -28,37 +28,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
   {
     private const int c_parameterCount = 3;
 
-    private string _foundControlID;
-    private string _hiddenDisplayName;
-    private string _visibleDisplayName;
-
-    public DisplayNameGenericTestPageParameter ()
-        : base (TestConstants.DisplayNameSelectorID, c_parameterCount)
-    {
-    }
-
     /// <summary>
     /// HTML id of the element with <see cref="VisibleDisplayName"/>.
     /// </summary>
-    public string FoundControlID
-    {
-      get { return _foundControlID; }
-    }
+    public string FoundControlID { get; private set; }
 
     /// <summary>
     /// Display name of the hidden control.
     /// </summary>
-    public string HiddenDisplayName
-    {
-      get { return _hiddenDisplayName; }
-    }
+    public string HiddenDisplayName { get; private set; }
 
     /// <summary>
     /// Display name of the visible control.
     /// </summary>
-    public string VisibleDisplayName
+    public string VisibleDisplayName { get; private set; }
+
+    public DisplayNameGenericTestPageParameter ()
+        : base (TestConstants.DisplayNameSelectorID, c_parameterCount)
     {
-      get { return _visibleDisplayName; }
     }
 
     /// <inheritdoc />
@@ -66,9 +53,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     {
       base.Apply (data);
 
-      _visibleDisplayName = data[0];
-      _hiddenDisplayName = data[1];
-      _foundControlID = data[2];
+      VisibleDisplayName = data.Arguments[0];
+      HiddenDisplayName = data.Arguments[1];
+      FoundControlID = data.Arguments[2];
     }
   }
 }

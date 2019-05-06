@@ -26,37 +26,24 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
   {
     private const int c_parameterCount = 3;
 
-    private string _foundControlID;
-    private string _hiddenControlTextContent;
-    private string _visibleControlTextContent;
-
-    public TextContentGenericTestPageParameter ()
-        : base (TestConstants.TextContentSelectorID, c_parameterCount)
-    {
-    }
-
     /// <summary>
-    /// HTML id of the control with the <see cref="VisibleControlTextContent"/>.
+    /// Text content of the visible control.
     /// </summary>
-    public string FoundControlID
-    {
-      get { return _foundControlID; }
-    }
+    public string VisibleControlTextContent { get; private set; }
 
     /// <summary>
     /// Text content of the hidden control.
     /// </summary>
-    public string HiddenControlTextContent
-    {
-      get { return _hiddenControlTextContent; }
-    }
+    public string HiddenControlTextContent { get; private set; }
 
     /// <summary>
-    /// Text content of the visible control.
+    /// HTML id of the control with the <see cref="VisibleControlTextContent"/>.
     /// </summary>
-    public string VisibleControlTextContent
+    public string FoundControlID { get; private set; }
+
+    public TextContentGenericTestPageParameter ()
+        : base (TestConstants.TextContentSelectorID, c_parameterCount)
     {
-      get { return _visibleControlTextContent; }
     }
 
     /// <inheritdoc />
@@ -64,9 +51,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     {
       base.Apply (data);
 
-      _visibleControlTextContent = data[0];
-      _hiddenControlTextContent = data[1];
-      _foundControlID = data[2];
+      VisibleControlTextContent = data.Arguments[0];
+      HiddenControlTextContent = data.Arguments[1];
+      FoundControlID = data.Arguments[2];
     }
   }
 }

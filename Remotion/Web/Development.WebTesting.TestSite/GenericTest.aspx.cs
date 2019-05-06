@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -26,12 +27,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 {
   public partial class GenericTest : GenericTestPageBase<GenericTestOptions>
   {
-    private readonly GenericTestPageParameterCollection _parameters = new GenericTestPageParameterCollection();
-
-    private GenericTestOptions _ambiguousControlOptions;
-    private GenericTestOptions _ambiguousDisabledOptions;
-    private GenericTestOptions _hiddenControlOptions;
-    private GenericTestOptions _visibleControlOptions;
+    protected override Dictionary<string, GenericTestPageParameter> Parameters { get; } = new Dictionary<string, GenericTestPageParameter>();
 
     public GenericTest ()
     {
@@ -55,91 +51,32 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       Register ("webTreeView", new WebTreeViewGenericTestPage());
     }
 
-    /// <inheritdoc />
-    protected override GenericTestOptions AmbiguousControlOptions
-    {
-      get { return _ambiguousControlOptions; }
-    }
+    protected override GenericTestOptions AmbiguousControlOptions => OptionsFactory.CreateAmbiguous();
+    protected override GenericTestOptions VisibleControlOptions => OptionsFactory.CreateVisible();
+    protected override GenericTestOptions DisabledControlOptions => OptionsFactory.CreateDisabled();
+    protected override GenericTestOptions HiddenControlOptions => OptionsFactory.CreateHidden();
 
-    /// <inheritdoc />
-    protected override Control AmbiguousControlPanel
-    {
-      get { return PanelAmbiguousControl; }
-    }
+    protected override Control AmbiguousControlPanel => PanelAmbiguousControl;
+    protected override Control DisabledControlPanel => PanelDisabledControl;
+    protected override Control HiddenControlPanel => PanelHiddenControl;
+    protected override Control VisibleControlPanel => PanelVisibleControl;
 
-    /// <inheritdoc />
-    protected override GenericTestOptions DisabledControlOptions
-    {
-      get { return _ambiguousDisabledOptions; }
-    }
-
-    /// <inheritdoc />
-    protected override Control DisabledControlPanel
-    {
-      get { return PanelDisabledControl; }
-    }
-
-    /// <inheritdoc />
-    protected override GenericTestOptions HiddenControlOptions
-    {
-      get { return _hiddenControlOptions; }
-    }
-
-    /// <inheritdoc />
-    protected override Control HiddenControlPanel
-    {
-      get { return PanelHiddenControl; }
-    }
-
-    /// <inheritdoc />
-    protected override GenericTestPageParameterCollection Parameters
-    {
-      get { return _parameters; }
-    }
-
-    /// <inheritdoc />
-    protected override GenericTestOptions VisibleControlOptions
-    {
-      get { return _visibleControlOptions; }
-    }
-
-    /// <inheritdoc />
-    protected override Control VisibleControlPanel
-    {
-      get { return PanelVisibleControl; }
-    }
+    private GenericTestOptionsFactory OptionsFactory => new GenericTestOptionsFactory();
+    private WebGenericTestPageParameterFactory ParameterFactory => new WebGenericTestPageParameterFactory();
 
     /// <inheritdoc />
     protected override void OnInit (EventArgs e)
     {
-      // Constants for all the controls on this generic page
-      const string ambiguousID = "AmbiguousControl", ambiguousTextContent = "AmbiguousTextContent", ambiguousTitle = "AmbiguousTitle";
-      const string disabledID = "DisabledControl", disabledTextContent = "DisabledTextContent", disabledTitle = "DisabledTitle";
-      const string hiddenID = "HiddenControl", hiddenTextContent = "HiddenTextContent", hiddenTitle = "HiddenTitle";
-      const string visibleID = "VisibleControl", visibleTextContent = "VisibleTextContent", visibleTitle = "AmbiguousTitle";
-      const string visibleIndex = "1", hiddenIndex = "133";
-
-      // Options for creating the controls
-      _ambiguousControlOptions = new GenericTestOptions (ambiguousID, ambiguousTextContent, ambiguousTitle, true);
-      _ambiguousDisabledOptions = new GenericTestOptions (disabledID, disabledTextContent, disabledTitle, false);
-      _hiddenControlOptions = new GenericTestOptions (hiddenID, hiddenTextContent, hiddenTitle, true);
-      _visibleControlOptions = new GenericTestOptions (visibleID, visibleTextContent, visibleTitle, true);
-
-      // "Real" HTML ids of the controls
-      var disabledHtmlID = string.Concat ("body_", disabledID);
-      var hiddenHtmlID = string.Concat ("body_", hiddenID);
-      var visibleHtmlID = string.Concat ("body_", visibleID);
-
       // Parameters which will be passed to the client
-      _parameters.Add (TestConstants.HtmlIDSelectorID, visibleHtmlID, hiddenHtmlID);
-      _parameters.Add (TestConstants.IndexSelectorID, visibleIndex, hiddenIndex, visibleHtmlID);
-      _parameters.Add (TestConstants.LocalIDSelectorID, visibleID, hiddenID, visibleHtmlID);
-      _parameters.Add (TestConstants.FirstSelectorID, visibleHtmlID);
-      _parameters.Add (TestConstants.SingleSelectorID, visibleHtmlID);
-      _parameters.Add (TestConstants.TextContentSelectorID, visibleTextContent, hiddenTextContent, visibleHtmlID);
-      _parameters.Add (TestConstants.TitleSelectorID, visibleTitle, hiddenTitle, visibleHtmlID);
-      _parameters.Add (TestConstants.ItemIDSelectorID, visibleID, hiddenID, visibleHtmlID);
-      _parameters.Add (TestConstants.DisabledTestsID, visibleHtmlID, disabledHtmlID);
+      Parameters.Add (ParameterFactory.CreateHtmlIDSelector());
+      Parameters.Add (ParameterFactory.CreateIndexSelector());
+      Parameters.Add (ParameterFactory.CreateLocalIdSelector());
+      Parameters.Add (ParameterFactory.CreateFirstSelector());
+      Parameters.Add (ParameterFactory.CreateSingleSelector());
+      Parameters.Add (ParameterFactory.CreateDisabledTests());
+      Parameters.Add (ParameterFactory.CreateTextContentSelector());
+      Parameters.Add (ParameterFactory.CreateTitleSelector());
+      Parameters.Add (ParameterFactory.CreateItemIDSelector());
 
       base.OnInit (e);
     }

@@ -26,28 +26,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
   {
     private const int c_parameterCount = 2;
 
-    private string _hiddenControlID;
-    private string _visibleControlID;
-
-    public HtmlIDGenericTestPageParameter ()
-        : base (TestConstants.HtmlIDSelectorID, c_parameterCount)
-    {
-    }
+    /// <summary>
+    /// HTML id of the visible control.
+    /// </summary>
+    public string VisibleControlID { get; private set; }
 
     /// <summary>
     /// HTML id of the hidden control.
     /// </summary>
-    public string HiddenControlID
-    {
-      get { return _hiddenControlID; }
-    }
+    public string HiddenControlID { get; private set; }
 
-    /// <summary>
-    /// HTML id of the visible control.
-    /// </summary>
-    public string VisibleControlID
+    public HtmlIDGenericTestPageParameter ()
+        : base (TestConstants.HtmlIDSelectorID, c_parameterCount)
     {
-      get { return _visibleControlID; }
     }
 
     /// <inheritdoc />
@@ -55,8 +46,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     {
       base.Apply (data);
 
-      _visibleControlID = data[0];
-      _hiddenControlID = data[1];
+      VisibleControlID = data.Arguments[0];
+      HiddenControlID = data.Arguments[1];
     }
   }
 }

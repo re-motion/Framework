@@ -26,37 +26,24 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
   {
     private const int c_parameterCount = 3;
 
-    private string _foundControlID;
-    private int _hiddenControlIndex;
-    private int _visibleControlIndex;
-
-    public IndexGenericTestPageParameter ()
-        : base (TestConstants.IndexSelectorID, c_parameterCount)
-    {
-    }
-
     /// <summary>
-    /// HTML id of the element with the <see cref="VisibleControlIndex"/>.
+    /// Index of the visible control.
     /// </summary>
-    public string FoundControlID
-    {
-      get { return _foundControlID; }
-    }
+    public int VisibleControlIndex { get; private set; }
 
     /// <summary>
     /// Index of the hidden control.
     /// </summary>
-    public int HiddenControlIndex
-    {
-      get { return _hiddenControlIndex; }
-    }
+    public int HiddenControlIndex { get; private set; }
 
     /// <summary>
-    /// Index of the visible control.
+    /// HTML id of the element with the <see cref="VisibleControlIndex"/>.
     /// </summary>
-    public int VisibleControlIndex
+    public string FoundControlID { get; private set; }
+
+    public IndexGenericTestPageParameter ()
+        : base (TestConstants.IndexSelectorID, c_parameterCount)
     {
-      get { return _visibleControlIndex; }
     }
 
     /// <inheritdoc />
@@ -64,9 +51,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     {
       base.Apply (data);
 
-      _visibleControlIndex = int.Parse (data[0]);
-      _hiddenControlIndex = int.Parse (data[1]);
-      _foundControlID = data[2];
+      VisibleControlIndex = int.Parse (data.Arguments[0]);
+      HiddenControlIndex = int.Parse (data.Arguments[1]);
+      FoundControlID = data.Arguments[2];
     }
   }
 }

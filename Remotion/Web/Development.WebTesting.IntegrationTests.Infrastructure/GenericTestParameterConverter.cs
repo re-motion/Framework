@@ -28,7 +28,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   {
     public static readonly GenericTestParameterConverter Instance = new GenericTestParameterConverter();
 
-    private static readonly Type[] s_supportedTypes = { typeof (GenericTestPageParameterDto) };
+    /// <inheritdoc />
+    public override IEnumerable<Type> SupportedTypes { get; } = new[] { typeof (GenericTestPageParameterDto) };
 
     private GenericTestParameterConverter ()
     {
@@ -38,13 +39,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     public override object Deserialize (IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
     {
       var status = (GenericTestPageStatus) (int) dictionary["status"];
-      var collection = new GenericTestPageParameterCollection();
+      var parameters = GetDeserializedParameterDictionary (dictionary["parameters"]);
 
-      var parameters = (Dictionary<string, object>) dictionary["parameters"];
-      foreach (var parameter in parameters)
-        collection.Add (parameter.Key, ((ArrayList) parameter.Value).Cast<string>().ToArray());
-
-      return new GenericTestPageParameterDto (status, collection);
+      return new GenericTestPageParameterDto (status, parameters);
     }
 
     /// <inheritdoc />
@@ -54,14 +51,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       return new Dictionary<string, object>
              {
                  { "status", (int) information.Status },
-                 { "parameters", information.Parameters.ToDictionary (p => p.Name, p => p.ToArray()) }
+                 { "parameters", information.Parameters.ToDictionary (pair => pair.Key, pair => pair.Value.Arguments) }
              };
     }
 
-    /// <inheritdoc />
-    public override IEnumerable<Type> SupportedTypes
+    private Dictionary<string, GenericTestPageParameter> GetDeserializedParameterDictionary (object serializedParameterDictionary)
     {
-      get { return s_supportedTypes; }
+      return ((IDictionary<string, object>) serializedParameterDictionary)
+          .ToDictionary (pair => pair.Key, pair => new GenericTestPageParameter (pair.Key, CastToStringArray (pair.Value)));
+    }
+
+    private string[] CastToStringArray (object x)
+    {
+      return ((ArrayList) x).Cast<string>().ToArray();
     }
   }
 }

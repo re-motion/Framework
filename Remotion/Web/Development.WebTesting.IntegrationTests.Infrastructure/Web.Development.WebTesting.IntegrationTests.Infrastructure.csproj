@@ -68,10 +68,11 @@
     </Compile>
     <Compile Include="ControlSelectorTestCaseFactoryBase.cs" />
     <Compile Include="Delegates.cs" />
+    <Compile Include="GenericTestPageParameterDictionaryExtensions.cs" />
     <Compile Include="GenericTestPageParameterDto.cs" />
     <Compile Include="GenericTestPageParameter.cs" />
-    <Compile Include="GenericTestPageParameterCollection.cs" />
-    <Compile Include="GenericTestPageParameters\ReadonlyTestPageParameters.cs" />
+    <Compile Include="GenericTestPageParameterExtensions.cs" />
+    <Compile Include="GenericTestPageParameters\ReadOnlyTestPageParameters.cs" />
     <Compile Include="GenericTestPageParameters\DisabledTestPageParameters.cs" />
     <Compile Include="GenericTestPageStatus.cs" />
     <Compile Include="GenericPageTestCaseFactoryBase.cs" />
