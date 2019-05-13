@@ -108,6 +108,7 @@
     <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\Win32WindowSupport\IWin32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\Win32WindowSupport\Win32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\PartialFileState.cs" />
+    <Compile Include="IControlObjectNotifier.cs" />
     <Compile Include="RequestErrorDetectionStrategies\AspNetRequestErrorDetectionParser.cs" />
     <Compile Include="RequestErrorDetectionStrategies\AspNetRequestErrorDetectionStrategy.cs" />
     <Compile Include="IRequestErrorDetectionStrategy.cs" />

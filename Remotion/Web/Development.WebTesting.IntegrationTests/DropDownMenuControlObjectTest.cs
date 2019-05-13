@@ -19,6 +19,7 @@ using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -123,20 +124,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (dropDownMenu);
 
       dropDownMenu.SelectItem ("ItemID5");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID5|Event"));
 
       dropDownMenu.SelectItem().WithIndex (2);
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
 
       dropDownMenu.SelectItem().WithHtmlID ("body_MyDropDownMenu_3");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID4|WxeFunction"));
 
       dropDownMenu.SelectItem().WithDisplayText ("EventItem");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID1|Event"));
 
       dropDownMenu.SelectItem().WithDisplayTextContains ("xeFun");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID4|WxeFunction"));
     }
 

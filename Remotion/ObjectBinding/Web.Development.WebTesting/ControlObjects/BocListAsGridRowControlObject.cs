@@ -37,6 +37,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         : base (context)
     {
       _impl = new BocListRowFunctionality (accessor, context);
+      ((IControlObjectNotifier) _impl).ActionExecute += OnActionExecute;
     }
 
     /// <summary>

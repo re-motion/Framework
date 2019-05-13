@@ -27,11 +27,20 @@ namespace Remotion.Web.Development.WebTesting
   /// developer and provide a semantic interface instead. In contrast to <see cref="PageObject"/>s, control objects represent a specific
   /// ASP.NET (custom) control and not a whole page.
   /// </summary>
-  public abstract class ControlObject : WebTestObject<ControlObjectContext>
+  public abstract class ControlObject : WebTestObject<ControlObjectContext>, IControlObjectNotifier
   {
+    private event Action<WebTestAction, IWebTestActionOptions> _actionExecuteEvent;
+
     protected ControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
+    }
+
+    /// <inheritdoc />
+    event Action<WebTestAction, IWebTestActionOptions> IControlObjectNotifier.ActionExecute
+    {
+      add { _actionExecuteEvent += value; }
+      remove { _actionExecuteEvent -= value; }
     }
 
     /// <summary>
@@ -81,6 +90,31 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="scope">The <see cref="ElementScope"/> with which the subsequent action is going to interact.</param>
     /// <returns>A sensible default <see cref="ICompletionDetectionStrategy"/> or <see langword="null" /> if none exists.</returns>
     protected abstract ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy ([NotNull] ElementScope scope);
+
+    /// <summary>
+    /// Wraps the execute call of the passed <paramref name="action"/> to enable invocation of
+    /// <see cref="IControlObjectNotifier.ActionExecute"/>.
+    /// </summary>
+    protected void ExecuteAction ([NotNull] WebTestAction action, [NotNull] IWebTestActionOptions actionOptions)
+    {
+      ArgumentUtility.CheckNotNull ("action", action);
+      ArgumentUtility.CheckNotNull ("actionOptions", actionOptions);
+
+      OnActionExecute (action, actionOptions);
+
+      action.Execute (actionOptions);
+    }
+
+    /// <summary>
+    /// Invokes the <see cref="IControlObjectNotifier.ActionExecute"/>.
+    /// </summary>
+    protected void OnActionExecute ([NotNull] WebTestAction action, [NotNull] IWebTestActionOptions actionOptions)
+    {
+      ArgumentUtility.CheckNotNull ("action", action);
+      ArgumentUtility.CheckNotNull ("actionOptions", actionOptions);
+
+      _actionExecuteEvent?.Invoke (action, actionOptions);
+    }
 
     /// <summary>
     /// Convenience method for creating a new <see cref="UnspecifiedPageObject"/>.

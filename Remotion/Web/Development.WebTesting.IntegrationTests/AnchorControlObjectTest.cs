@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -118,7 +119,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var webLinkButton = home.Anchors().GetByLocalID ("MyWebLinkButton");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (webLinkButton);
       home = webLinkButton.Click().Expect<WxePageObject>();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("MyWebLinkButton|MyWebLinkButtonCommand"));
 
       var smartHyperLink = home.Anchors().GetByLocalID ("MySmartHyperLink");

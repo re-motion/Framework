@@ -307,7 +307,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (HasFakeTableHead())
         sortColumnLinkScope.Hover();
 
-      new ClickAction (this, sortColumnLinkScope).Execute (
+      ExecuteAction (
+          new ClickAction (this, sortColumnLinkScope),
           Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -356,7 +357,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
       var availableViewsScope = GetAvailableViewsScope();
-      new CustomAction (this, availableViewsScope, "Select", selectAction).Execute (actualActionOptions);
+      ExecuteAction (new CustomAction (this, availableViewsScope, "Select", selectAction), actualActionOptions);
     }
 
     /// <inheritdoc/>

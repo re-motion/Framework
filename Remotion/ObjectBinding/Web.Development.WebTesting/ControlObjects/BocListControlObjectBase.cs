@@ -177,7 +177,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw CreateMissingHtmlExceptionForIndexOutOfRange (oneBasedPageNumber);
 
       var currentPageTextInputScope = Scope.FindIdEndingWith ("Boc_CurrentPage_TextBox");
-      new FillWithAction (this, currentPageTextInputScope, oneBasedPageNumber.ToString(), FinishInput.WithTab).Execute (
+      ExecuteAction (
+          new FillWithAction (this, currentPageTextInputScope, oneBasedPageNumber.ToString(), FinishInput.WithTab),
           Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -190,7 +191,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("first", "first");
 
       var firstPageLinkScope = Scope.FindChild ("Navigation_First");
-      new ClickAction (this, firstPageLinkScope).Execute (
+      ExecuteAction (
+          new ClickAction (this, firstPageLinkScope),
           Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -203,7 +205,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("previous", "first");
 
       var previousPageLinkScope = Scope.FindChild ("Navigation_Previous");
-      new ClickAction (this, previousPageLinkScope).Execute (
+      ExecuteAction (
+          new ClickAction (this, previousPageLinkScope),
           Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -216,7 +219,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("next", "last");
 
       var nextPageLinkScope = Scope.FindChild ("Navigation_Next");
-      new ClickAction (this, nextPageLinkScope).Execute (
+      ExecuteAction (
+          new ClickAction (this, nextPageLinkScope),
           Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -229,7 +233,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("last", "last");
 
       var lastPageLinkScope = Scope.FindChild ("Navigation_Last");
-      new ClickAction (this, lastPageLinkScope).Execute (
+      ExecuteAction (
+          new ClickAction (this, lastPageLinkScope),
           Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -300,7 +305,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void SelectAll ()
     {
       var scope = GetSelectAllCheckboxScope();
-      new CheckAction (this, scope).Execute (Opt.ContinueImmediately());
+      ExecuteAction (new CheckAction (this, scope), Opt.ContinueImmediately());
     }
 
     /// <summary>
@@ -309,7 +314,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void DeselectAll ()
     {
       var scope = GetSelectAllCheckboxScope();
-      new UncheckAction (this, scope).Execute (Opt.ContinueImmediately());
+      ExecuteAction (new UncheckAction (this, scope), Opt.ContinueImmediately());
     }
 
     private ElementScope GetSelectAllCheckboxScope ()

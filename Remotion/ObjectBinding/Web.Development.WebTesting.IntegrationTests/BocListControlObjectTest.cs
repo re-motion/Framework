@@ -26,7 +26,9 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCas
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -374,10 +376,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocListWithCheckboxes = home.Lists().GetByLocalID ("JobList_Normal");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (bocListWithCheckboxes);
 
       bocListWithCheckboxes.ClickOnSortColumn ("StartDate");
       bocListWithCheckboxes.ClickOnSortColumn ("Title");
 
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (bocListWithCheckboxes.GetRow (2).GetCell (6).GetText(), Is.EqualTo ("Programmer"));
       Assert.That (() => bocListWithCheckboxes.GetRow (2).Select(), Throws.Nothing);
       Assert.That (bocListWithCheckboxes.GetRow (2).IsSelected, Is.True);
@@ -389,10 +393,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocListWithRadiobuttons = home.Lists().GetByLocalID ("JobList_WithRadioButtons");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (bocListWithRadiobuttons);
 
       bocListWithRadiobuttons.ClickOnSortColumn ("StartDate");
       bocListWithRadiobuttons.ClickOnSortColumn ("Title");
 
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (bocListWithRadiobuttons.GetRow (2).GetCell (2).GetText(), Is.EqualTo ("Programmer"));
       Assert.That (() => bocListWithRadiobuttons.GetRow (2).Select(), Throws.Nothing);
       Assert.That (bocListWithRadiobuttons.GetRow (2).IsSelected, Is.True);
@@ -446,22 +452,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (bocList);
+
       Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (4));
 
       bocList.GoToNextPage();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (bocList.GetCurrentPage(), Is.EqualTo (2));
 
       bocList.GoToPreviousPage();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
 
       bocList.GoToLastPage();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (bocList.GetCurrentPage(), Is.EqualTo (4));
       Assert.That (bocList.GetNumberOfRows(), Is.EqualTo (2));
 
       bocList.GoToFirstPage();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
 
       bocList.GoToSpecificPage (3);
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (bocList.GetCurrentPage(), Is.EqualTo (3));
     }
 
@@ -471,24 +484,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-
       var firstRow = bocList.GetRow (1);
       var lastRow = bocList.GetRow (bocList.GetNumberOfRows());
+      var completionDetection = new CompletionDetectionStrategyTestHelper (bocList);
+
       Assert.That (firstRow.IsSelected, Is.False);
       Assert.That (lastRow.IsSelected, Is.False);
 
       bocList.SelectAll();
 
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (firstRow.IsSelected, Is.True);
       Assert.That (lastRow.IsSelected, Is.True);
 
       bocList.SelectAll();
 
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (firstRow.IsSelected, Is.True);
       Assert.That (lastRow.IsSelected, Is.True);
 
       bocList.DeselectAll();
 
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (firstRow.IsSelected, Is.False);
       Assert.That (lastRow.IsSelected, Is.False);
     }
@@ -846,16 +863,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (bocList);
 
       bocList.ClickOnSortColumn ("StartDate");
       bocList.ClickOnSortColumn ("Title");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (bocList.GetRow (2).GetCell (6).GetText(), Is.EqualTo ("Programmer"));
 
       bocList.ClickOnSortColumn (6);
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (bocList.GetRow (2).GetCell (6).GetText(), Is.EqualTo ("Clerk"));
 
       bocList.ClickOnSortColumnByTitle ("Title");
       bocList.ClickOnSortColumnByTitle ("StartDate");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (bocList.GetRow (2).GetCell (6).GetText(), Is.EqualTo ("Developer"));
     }
 
@@ -865,14 +886,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (bocList);
 
       bocList.ChangeViewToByLabel ("View 1");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("SelectedViewLabel").Text, Is.EqualTo ("ViewCmd1"));
 
       bocList.ChangeViewTo (2);
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("SelectedViewLabel").Text, Is.EqualTo ("ViewCmd2"));
 
       bocList.ChangeViewTo ("ViewCmd1");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("SelectedViewLabel").Text, Is.EqualTo ("ViewCmd1"));
     }
 
@@ -989,17 +1014,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocList = home.Lists().GetByLocalID ("JobList_Normal");
       var row = bocList.GetRow (2);
+      var completionDetection = new CompletionDetectionStrategyTestHelper (row);
 
       row.Select();
       row.GetCell (4).ExecuteCommand();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
 
       row.Select();
       row.GetCell (4).ExecuteCommand();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
 
       row.Deselect();
       row.GetCell (4).ExecuteCommand();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("NoneSelected"));
     }
 
@@ -1010,17 +1039,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocList = home.Lists().GetByLocalID ("JobList_WithRadioButtons");
       var row = bocList.GetRow (2);
+      var completionDetection = new CompletionDetectionStrategyTestHelper (row);
 
       row.Select();
       bocList.GetListMenu().SelectItem ("ListMenuCmd1");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo ("1"));
 
       row.Select();
       bocList.GetListMenu().SelectItem ("ListMenuCmd1");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo ("1"));
 
       row.Deselect();
       bocList.GetListMenu().SelectItem ("ListMenuCmd1");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo ("NoneSelected"));
     }
 

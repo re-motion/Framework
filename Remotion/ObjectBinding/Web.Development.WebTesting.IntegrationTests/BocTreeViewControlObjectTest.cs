@@ -24,6 +24,7 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Screens
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -230,7 +231,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
       var node = bocTreeView.GetRootNode().Expand();
-      node = node.GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Expand();
+      node = node.GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (node);
+      node.Expand();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.Empty);
 
       node.GetNode ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select();
@@ -319,7 +323,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
-      bocTreeView.GetRootNode().Expand().Collapse().Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
+      var node = bocTreeView.GetRootNode().Expand();
+      var completionDetection = new CompletionDetectionStrategyTestHelper (node);
+      node = node.Collapse();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 
       Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("c8ace752-55f6-4074-8890-130276ea6cd1|B, A"));
     }
@@ -332,9 +340,27 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
       var node = bocTreeView.GetRootNode();
+      var completionDetection = new CompletionDetectionStrategyTestHelper (node);
       Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.Empty);
 
       node.Select();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("00000000-0000-0000-0000-000000000001|Doe, John"));
+    }
+
+    [Test]
+    public void TestNodeClick ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+
+      var node = bocTreeView.GetRootNode();
+      var completionDetection = new CompletionDetectionStrategyTestHelper (node);
+      Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.Empty);
+
+      node.Click();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("00000000-0000-0000-0000-000000000001|Doe, John"));
     }
 

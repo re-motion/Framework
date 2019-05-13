@@ -21,6 +21,8 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -99,21 +101,38 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var normalBocBooleanValue = home.CheckBoxes().GetByLocalID ("DeceasedField_Normal");
-      var noAutoPostBackBocBooleanValue = home.CheckBoxes().GetByLocalID ("DeceasedField_NoAutoPostBack");
+      {
+        var normalBocBooleanValue = home.CheckBoxes().GetByLocalID ("DeceasedField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (normalBocBooleanValue);
+        normalBocBooleanValue.SetTo (true);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("True"));
+      }
 
-      normalBocBooleanValue.SetTo (true);
-      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("True"));
+      {
+        var noAutoPostBackBocBooleanValue = home.CheckBoxes().GetByLocalID ("DeceasedField_NoAutoPostBack");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (noAutoPostBackBocBooleanValue);
+        noAutoPostBackBocBooleanValue.SetTo (true);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("False"));
+      }
 
-      noAutoPostBackBocBooleanValue.SetTo (true);
-      Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("False"));
+      {
+        var normalBocBooleanValue = home.CheckBoxes().GetByLocalID ("DeceasedField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (normalBocBooleanValue);
+        normalBocBooleanValue.SetTo (true, Opt.ContinueImmediately()); // same value, does not trigger post back
+        Assert.That (completionDetection.GetAndReset(), Is.Null);
+        Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("False"));
+      }
 
-      normalBocBooleanValue.SetTo (true, Opt.ContinueImmediately()); // same value, does not trigger post back
-      Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("False"));
-
-      normalBocBooleanValue.SetTo (false);
-      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("False"));
-      Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("True"));
+      {
+        var normalBocBooleanValue = home.CheckBoxes().GetByLocalID ("DeceasedField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (normalBocBooleanValue);
+        normalBocBooleanValue.SetTo (false);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("False"));
+        Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("True"));
+      }
     }
 
     private WxePageObject Start ()

@@ -17,6 +17,8 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -95,16 +97,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       rootNode.Scope.ElementFinder.Options.Timeout = backupTimeout;
 
       var checkableNode = rootNode.Expand().GetNode (1).Expand().GetNode (1);
+      var completionDetection = new CompletionDetectionStrategyTestHelper (checkableNode);
 
       checkableNode.Check();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (checkableNode.IsChecked(), Is.True);
 
       checkableNode.Select();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (
           home.Scope.FindIdEndingWith ("TestOutputLabel").Text,
           Is.EqualTo ("Selected: Child node 11|Child11Value (Child node 11|Child11Value)"));
 
       checkableNode.Uncheck();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (checkableNode.IsChecked(), Is.False);
 
       rootNode.Select();
@@ -130,11 +136,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
-      var node = treeView.GetRootNode().Expand();
-      node = node.GetNode (1).Expand();
+
+      var rootNode = treeView.GetRootNode();
+      var rootNodeCompletionDetection = new CompletionDetectionStrategyTestHelper (rootNode);
+      rootNode.Expand();
+      Assert.That (rootNodeCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+
+      var childNode = rootNode.GetNode (1).Expand();
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Expanded: Child node 1|Child1Value (None)"));
 
-      node.GetNode (2).Select();
+      var selectableNode = childNode.GetNode (2);
+      var selectableNodeCompletionDetection = new CompletionDetectionStrategyTestHelper (selectableNode);
+      selectableNode.Select();
+      Assert.That (selectableNodeCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Child node 12|Child12Value (None)"));
     }
 
@@ -144,11 +158,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
-      var node = treeView.GetRootNode().Expand().Collapse().Expand();
-      node = node.GetNode (2).Expand().Collapse().Expand();
+
+      var expandedRootNode = treeView.GetRootNode().Expand();
+      var rootNodeCompletionDetection = new CompletionDetectionStrategyTestHelper (expandedRootNode);
+      var collapsedRootNode = expandedRootNode.Collapse();
+      Assert.That (rootNodeCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+
+      var childNode = collapsedRootNode.Expand().GetNode (2);
+      childNode.Expand().Collapse().Expand();
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Expanded: Child node 2|Child2Value (None)"));
 
-      node.GetNode (1).Select();
+      var selectableNode = childNode.GetNode (1);
+      var selectableNodeCompletionDetection = new CompletionDetectionStrategyTestHelper (selectableNode);
+      selectableNode.Select();
+      Assert.That (selectableNodeCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Child node 21|Child21Value (None)"));
     }
 
@@ -159,10 +182,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
 
-      var node = treeView.GetRootNode();
+      var rootNode = treeView.GetRootNode();
+      var completionDetection = new CompletionDetectionStrategyTestHelper (rootNode);
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.Empty);
 
-      node.Select();
+      rootNode.Select();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Root node|RootValue (None)"));
     }
 
@@ -172,7 +197,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeViewWithSpecialChildren");
-      
+
       var rootNode = treeView.GetRootNode();
       var node = rootNode.GetNode().WithDisplayText ("With'SingleQuote");
       Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuote"));
@@ -184,19 +209,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeViewWithSpecialChildren");
-      
+
       var rootNode = treeView.GetRootNode();
       var node = rootNode.GetNode().WithDisplayText ("With'SingleQuoteAndDouble\"Quote");
       Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
     }
-    
+
     [Test]
     public void TestNodeSelectByDisplayTextContains_WithSingleQuote ()
     {
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeViewWithSpecialChildren");
-      
+
       var rootNode = treeView.GetRootNode();
       var node = rootNode.GetNode().WithDisplayTextContains ("ith'SingleQuot");
       Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuote"));
@@ -208,20 +233,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeViewWithSpecialChildren");
-      
+
       var rootNode = treeView.GetRootNode();
       var node = rootNode.GetNode().WithDisplayTextContains ("ith'SingleQuoteAndDouble\"Quot");
       Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
     }
 
-    
+
     [Test]
     public void TestTreeViewSelectByDisplayText_WithSingleQuote ()
     {
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("TreeViewWithOnlyRootWithSingleQuote");
-      
+
       var node = treeView.GetNode().WithDisplayText ("With'SingleQuote");
       Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuote"));
     }
@@ -232,18 +257,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("TreeViewWithOnlyRootWithDoubleQuote");
-      
+
       var node = treeView.GetNode().WithDisplayText ("With'SingleQuoteAndDouble\"Quote");
       Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
     }
-    
+
     [Test]
     public void TestTreeViewSelectByDisplayTextContains_WithSingleQuote ()
     {
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("TreeViewWithOnlyRootWithSingleQuote");
-      
+
       var node = treeView.GetNode().WithDisplayTextContains ("ith'SingleQuot");
       Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuote"));
     }
@@ -254,7 +279,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("TreeViewWithOnlyRootWithDoubleQuote");
-      
+
       var node = treeView.GetNode().WithDisplayTextContains ("ith'SingleQuoteAndDouble\"Quot");
       Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
     }

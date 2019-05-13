@@ -26,6 +26,8 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Screens
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -257,30 +259,52 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var dateTime = new DateTime (1988, 3, 20, 4, 2, 0);
       var withSeconds = new DateTime (1988, 3, 20, 4, 2, 17);
 
-      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
-      bocDateTimeValue.SetDateTime (dateTime);
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (dateTime));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetDateTime (dateTime);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (dateTime));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_NoAutoPostBack");
-      bocDateTimeValue.SetDateTime (dateTime); // no auto post back
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (initDateTime));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_NoAutoPostBack");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetDateTime (dateTime); // no auto post back
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (initDateTime));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
-      bocDateTimeValue.SetDateTime (dateTime, Opt.ContinueImmediately()); // same value, does not trigger post back
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (initDateTime));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetDateTime (dateTime, Opt.ContinueImmediately()); // same value, does not trigger post back
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (initDateTime));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
-      bocDateTimeValue.SetDateTime (initDateTime);
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (initDateTime));
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (dateTime));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+        bocDateTimeValue.SetDateTime (initDateTime);
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (initDateTime));
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (dateTime));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_DateOnly");
-      bocDateTimeValue.SetDateTime (dateTime);
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("DateOnlyCurrentValueLabel").Text), Is.EqualTo (dateTime.Date));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_DateOnly");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetDateTime (dateTime);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("DateOnlyCurrentValueLabel").Text), Is.EqualTo (dateTime.Date));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_WithSeconds");
-      bocDateTimeValue.SetDateTime (withSeconds);
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("WithSecondsCurrentValueLabel").Text), Is.EqualTo (withSeconds));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_WithSeconds");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetDateTime (withSeconds);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("WithSecondsCurrentValueLabel").Text), Is.EqualTo (withSeconds));
+      }
     }
 
     [Test]
@@ -294,30 +318,52 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var withSeconds = new DateTime (1988, 3, 20, 4, 2, 17);
       var setWithSeconds = new DateTime (1988, 3, 20, 12, 0, 0);
 
-      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
-      bocDateTimeValue.SetDate (dateTime);
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (setDateTime));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetDate (dateTime);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (setDateTime));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_NoAutoPostBack");
-      bocDateTimeValue.SetDate (dateTime); // no auto post back
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (initDateTime));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_NoAutoPostBack");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetDate (dateTime); // no auto post back
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (initDateTime));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
-      bocDateTimeValue.SetDate (dateTime, Opt.ContinueImmediately()); // same value, does not trigger post back
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (initDateTime));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetDate (dateTime, Opt.ContinueImmediately()); // same value, does not trigger post back
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (initDateTime));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
-      bocDateTimeValue.SetDate (initDateTime);
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (initDateTime));
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (setDateTime));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+        bocDateTimeValue.SetDate (initDateTime);
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (initDateTime));
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (setDateTime));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_DateOnly");
-      bocDateTimeValue.SetDate (dateTime);
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("DateOnlyCurrentValueLabel").Text), Is.EqualTo (setDateTime.Date));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_DateOnly");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetDate (dateTime);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("DateOnlyCurrentValueLabel").Text), Is.EqualTo (setDateTime.Date));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_WithSeconds");
-      bocDateTimeValue.SetDate (withSeconds);
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("WithSecondsCurrentValueLabel").Text), Is.EqualTo (setWithSeconds));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_WithSeconds");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetDate (withSeconds);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("WithSecondsCurrentValueLabel").Text), Is.EqualTo (setWithSeconds));
+      }
     }
 
     [Test]
@@ -332,26 +378,44 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var withSeconds = new TimeSpan (4, 2, 17);
       var setWithSeconds = new DateTime (2008, 4, 4, 4, 2, 17);
 
-      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
-      bocDateTimeValue.SetTime (time);
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (setTime));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetTime (time);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (setTime));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_NoAutoPostBack");
-      bocDateTimeValue.SetTime (time); // no auto post back
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (setInitTime));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_NoAutoPostBack");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetTime (time); // no auto post back
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (setInitTime));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
-      bocDateTimeValue.SetTime (time, Opt.ContinueImmediately()); // same value, does not trigger post back
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (setInitTime));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetTime (time, Opt.ContinueImmediately()); // same value, does not trigger post back
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (setInitTime));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
-      bocDateTimeValue.SetTime (initTime);
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (setInitTime));
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (setTime));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+        bocDateTimeValue.SetTime (initTime);
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text), Is.EqualTo (setInitTime));
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text), Is.EqualTo (setTime));
+      }
 
-      bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_WithSeconds");
-      bocDateTimeValue.SetTime (withSeconds);
-      Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("WithSecondsCurrentValueLabel").Text), Is.EqualTo (setWithSeconds));
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_WithSeconds");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocDateTimeValue);
+        bocDateTimeValue.SetTime (withSeconds);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("WithSecondsCurrentValueLabel").Text), Is.EqualTo (setWithSeconds));
+      }
     }
 
     [Test]

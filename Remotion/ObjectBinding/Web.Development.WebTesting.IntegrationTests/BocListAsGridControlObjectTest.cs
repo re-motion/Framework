@@ -24,7 +24,9 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCas
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -244,6 +246,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestGetRowCellCommandDefaultCompletionDetectionStrategy ()
+    {
+      var home = Start();
+
+      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var cell = bocList.GetDisplayedRows()[1].GetCell (3);
+
+      var cellCommand = cell.GetCommand();
+      var completionDetection = new CompletionDetectionStrategyTestHelper (cellCommand);
+      cellCommand.Click();
+
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+    }
+
+    [Test]
     public void TestGetNumberOfRows ()
     {
       var home = Start();
@@ -269,24 +286,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-
       var firstRow = bocList.GetRow (1);
       var lastRow = bocList.GetRow (bocList.GetNumberOfRows());
+      var completionDetection = new CompletionDetectionStrategyTestHelper (bocList);
+
       Assert.That (firstRow.IsSelected, Is.False);
       Assert.That (lastRow.IsSelected, Is.False);
 
       bocList.SelectAll();
 
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (firstRow.IsSelected, Is.True);
       Assert.That (lastRow.IsSelected, Is.True);
 
       bocList.SelectAll();
 
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (firstRow.IsSelected, Is.True);
       Assert.That (lastRow.IsSelected, Is.True);
 
       bocList.DeselectAll();
 
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (firstRow.IsSelected, Is.False);
       Assert.That (lastRow.IsSelected, Is.False);
     }
@@ -363,8 +384,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
       var row = bocList.GetRow (2);
+      var completionDetection = new CompletionDetectionStrategyTestHelper (row);
 
       row.Select();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+
       row.GetCell (3).ExecuteCommand();
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
 
@@ -373,6 +397,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
 
       row.Deselect();
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+
       row.GetCell (3).ExecuteCommand();
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("NoneSelected"));
     }

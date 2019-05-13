@@ -79,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
         throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       var actualActionOptions = MergeWithDefaultActionOptions (actionOptions, finishInputWith);
-      new FillWithAction (this, Scope, text, finishInputWith).Execute (actualActionOptions);
+      ExecuteAction (new FillWithAction (this, Scope, text, finishInputWith), actualActionOptions);
       return UnspecifiedPage();
     }
 

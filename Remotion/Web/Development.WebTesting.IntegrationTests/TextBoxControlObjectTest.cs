@@ -17,6 +17,8 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -138,25 +140,37 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      // Check WaitFor.Nothing once before default behavior usage...
+      {
+        var aspTextBoxNoAutoPostBack = home.TextBoxes().GetByLocalID ("MyAspTextBoxNoAutoPostBack");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (aspTextBoxNoAutoPostBack);
+        aspTextBoxNoAutoPostBack.FillWith ("Blubba4", Opt.ContinueImmediately());
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (aspTextBoxNoAutoPostBack.GetText(), Is.EqualTo ("Blubba4"));
+      }
 
-      var aspTextBoxNoAutoPostback = home.TextBoxes().GetByLocalID ("MyAspTextBoxNoAutoPostBack");
-      aspTextBoxNoAutoPostback.FillWith ("Blubba4", Opt.ContinueImmediately());
-      Assert.That (aspTextBoxNoAutoPostback.GetText(), Is.EqualTo ("Blubba4"));
+      {
+        var editableTextBox = home.TextBoxes().GetByLocalID ("MyEditableTextBox");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (editableTextBox);
+        editableTextBox.FillWith ("Blubba1");
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (editableTextBox.GetText(), Is.EqualTo ("Blubba1"));
+      }
 
-      var editableTextBox = home.TextBoxes().GetByLocalID ("MyEditableTextBox");
-      editableTextBox.FillWith ("Blubba1");
-      Assert.That (editableTextBox.GetText(), Is.EqualTo ("Blubba1"));
+      {
+        var aspTextBox = home.TextBoxes().GetByLocalID ("MyAspTextBox");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (aspTextBox);
+        aspTextBox.FillWith ("Blubba2");
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (aspTextBox.GetText(), Is.EqualTo ("Blubba2"));
+      }
 
-      // ...and once afterwards
-
-      var aspTextBox = home.TextBoxes().GetByLocalID ("MyAspTextBox");
-      aspTextBox.FillWith ("Blubba2");
-      Assert.That (aspTextBox.GetText(), Is.EqualTo ("Blubba2"));
-
-      var htmlTextBox = home.TextBoxes().GetByLocalID ("MyHtmlTextBox");
-      htmlTextBox.FillWith ("Blubba3", Opt.ContinueImmediately());
-      Assert.That (htmlTextBox.GetText(), Is.EqualTo ("Blubba3"));
+      {
+        var htmlTextBox = home.TextBoxes().GetByLocalID ("MyHtmlTextBox");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (htmlTextBox);
+        htmlTextBox.FillWith ("Blubba3", Opt.ContinueImmediately());
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (htmlTextBox.GetText(), Is.EqualTo ("Blubba3"));
+      }
     }
 
     private WxePageObject Start ()

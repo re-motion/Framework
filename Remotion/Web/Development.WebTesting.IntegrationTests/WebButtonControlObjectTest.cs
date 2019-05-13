@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -76,17 +76,29 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var syncWebButton = home.WebButtons().GetByLocalID ("MyWebButton1Sync");
-      home = syncWebButton.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Sync"));
+      {
+        var syncWebButton = home.WebButtons().GetByLocalID ("MyWebButton1Sync");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (syncWebButton);
+        home = syncWebButton.Click().Expect<WxePageObject>();
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Sync"));
+      }
 
-      var asyncWebButton = home.WebButtons().GetByLocalID ("MyWebButton2Async");
-      home = asyncWebButton.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Async"));
+      {
+        var asyncWebButton = home.WebButtons().GetByLocalID ("MyWebButton2Async");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (asyncWebButton);
+        home = asyncWebButton.Click().Expect<WxePageObject>();
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Async"));
+      }
 
-      var hrefWebButton = home.WebButtons().GetByTextContent ("HrefButton");
-      home = hrefWebButton.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      {
+        var hrefWebButton = home.WebButtons().GetByTextContent ("HrefButton");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (hrefWebButton);
+        home = hrefWebButton.Click().Expect<WxePageObject>();
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      }
     }
 
     [Test]

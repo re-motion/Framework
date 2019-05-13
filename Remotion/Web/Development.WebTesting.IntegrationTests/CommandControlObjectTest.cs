@@ -19,6 +19,7 @@ using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -65,13 +66,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var command1 = home.Commands().GetByLocalID ("Command1");
-      home = command1.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Command1ItemID"));
+      {
+        var command1 = home.Commands().GetByLocalID ("Command1");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (command1);
+        home = command1.Click().Expect<WxePageObject>();
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Command1ItemID"));
+      }
 
-      var command2 = home.Commands().GetByLocalID ("Command2");
-      home = command2.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      {
+        var command2 = home.Commands().GetByLocalID ("Command2");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (command2);
+        home = command2.Click().Expect<WxePageObject>();
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      }
     }
 
     private WxePageObject Start ()

@@ -134,7 +134,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      new FillWithAction (this, Scope.FindChild ("TextValue"), text, finishInputWith).Execute (actualActionOptions);
+      ExecuteAction (new FillWithAction (this, Scope.FindChild ("TextValue"), text, finishInputWith), actualActionOptions);
       return UnspecifiedPage();
     }
 
@@ -240,7 +240,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var textField = Scope.FindChild ("TextValue");
 
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      new SelectAutoCompleteAction (this, textField, firstAutoCompleteResult, finishInputWith).Execute (actualActionOptions);
+      ExecuteAction (new SelectAutoCompleteAction (this, textField, firstAutoCompleteResult, finishInputWith), actualActionOptions);
 
       return UnspecifiedPage();
     }

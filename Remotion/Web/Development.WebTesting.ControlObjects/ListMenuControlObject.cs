@@ -149,7 +149,15 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     private UnspecifiedPageObject ClickItem (ElementScope itemScope, IWebTestActionOptions actionOptions)
     {
       var itemCommand = FindItemCommand (itemScope);
-      return itemCommand.Click (actionOptions);
+      try
+      {
+        ((IControlObjectNotifier) itemCommand).ActionExecute += OnActionExecute;
+        return itemCommand.Click (actionOptions);
+      }
+      finally
+      {
+        ((IControlObjectNotifier) itemCommand).ActionExecute -= OnActionExecute;
+      }
     }
 
     private CommandControlObject FindItemCommand (ElementScope itemScope)

@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       var actualActionOptions = MergeWithDefaultActionOptions (actionOptions, finishInputWith);
-      new FillWithAction (this, Scope.FindChild ("Value"), text, finishInputWith).Execute (actualActionOptions);
+      ExecuteAction (new FillWithAction (this, Scope.FindChild ("Value"), text, finishInputWith), actualActionOptions);
       return UnspecifiedPage();
     }
 

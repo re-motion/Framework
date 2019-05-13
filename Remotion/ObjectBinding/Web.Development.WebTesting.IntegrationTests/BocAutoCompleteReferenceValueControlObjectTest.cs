@@ -27,7 +27,9 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCas
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocAutoCompleteReferenceValue;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -381,26 +383,42 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       const string baLabel = "c8ace752-55f6-4074-8890-130276ea6cd1";
       const string daLabel = "00000000-0000-0000-0000-000000000009";
 
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      bocAutoComplete.FillWith ("Invalid");
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.Empty);
+      {
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocAutoComplete);
+        bocAutoComplete.FillWith ("Invalid");
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.Empty);
+      }
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      bocAutoComplete.FillWith ("B, A");
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (baLabel));
+      {
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+        bocAutoComplete.FillWith ("B, A");
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (baLabel));
+      }
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_NoAutoPostBack");
-      bocAutoComplete.FillWith ("B, A"); // no auto post back
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+      {
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_NoAutoPostBack");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocAutoComplete);
+        bocAutoComplete.FillWith ("B, A"); // no auto post back
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+      }
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      bocAutoComplete.FillWith ("B, A", Opt.ContinueImmediately()); // same value, does not trigger post back
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+      {
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocAutoComplete);
+        bocAutoComplete.FillWith ("B, A", Opt.ContinueImmediately()); // same value, does not trigger post back
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+      }
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      bocAutoComplete.FillWith ("D, A");
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (daLabel));
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (baLabel));
+      {
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+        bocAutoComplete.FillWith ("D, A");
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (daLabel));
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (baLabel));
+      }
     }
 
     [Test]
@@ -412,25 +430,39 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       const string daLabel = "00000000-0000-0000-0000-000000000009"; //D, D
       const string dLabel = "a2752869-e46b-4cfa-b89f-0b824e42b250"; //D, 
 
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      bocAutoComplete.SelectFirstMatch ("B,");
-      Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("B, A"));
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (baLabel));
+      {
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocAutoComplete);
+        bocAutoComplete.SelectFirstMatch ("B,");
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("B, A"));
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (baLabel));
+      }
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_NoAutoPostBack");
-      bocAutoComplete.SelectFirstMatch ("B,"); // no auto post back
-      Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("B, A"));
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+      {
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_NoAutoPostBack");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocAutoComplete);
+        bocAutoComplete.SelectFirstMatch ("B,"); // no auto post back
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("B, A"));
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+      }
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      bocAutoComplete.SelectFirstMatch ("B,", Opt.ContinueImmediately()); // same value, does not trigger post back
-      Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("B, A"));
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+      {
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocAutoComplete);
+        bocAutoComplete.SelectFirstMatch ("B,", Opt.ContinueImmediately()); // same value, does not trigger post back
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("B, A"));
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+      }
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      bocAutoComplete.SelectFirstMatch ("D");
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (dLabel));
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (baLabel));
+      {
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+        bocAutoComplete.SelectFirstMatch ("D");
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (dLabel));
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (baLabel));
+      }
     }
 
     [Test]

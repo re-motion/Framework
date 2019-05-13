@@ -46,6 +46,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       var style = Scope[DiagnosticMetadataAttributesForObjectBinding.BocEnumValueStyle];
       _variantImpl = CreateVariant (style);
+      _variantImpl.ActionExecute += OnActionExecute;
     }
 
     /// <summary>
@@ -176,7 +177,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Declares all methods a boc enum rendering variant must support.
     /// </summary>
-    private interface IBocEnumValueControlObjectVariant
+    private interface IBocEnumValueControlObjectVariant : IControlObjectNotifier
     {
       OptionDefinition GetSelectedOption ();
       IReadOnlyList<OptionDefinition> GetOptionDefinitions ();
@@ -194,6 +195,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     private class BocEnumValueSelectBasedControlObjectVariant : IBocEnumValueControlObjectVariant
     {
+      public event Action<WebTestAction, IWebTestActionOptions> ActionExecute;
+
       private readonly BocEnumValueControlObject _controlObject;
 
       public BocEnumValueSelectBasedControlObjectVariant ([NotNull] BocEnumValueControlObject controlObject)
@@ -248,7 +251,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         ArgumentUtility.CheckNotNull ("selectAction", selectAction);
 
         var actualActionOptions = _controlObject.MergeWithDefaultActionOptions (_controlObject.Scope, actionOptions);
-        new CustomAction (_controlObject, _controlObject.Scope.FindChild ("Value"), "Select", selectAction).Execute (actualActionOptions);
+
+        var customAction = new CustomAction (_controlObject, _controlObject.Scope.FindChild ("Value"), "Select", selectAction);
+        ActionExecute?.Invoke (customAction, actualActionOptions);
+        customAction.Execute (actualActionOptions);
+
         return _controlObject.UnspecifiedPage();
       }
 
@@ -265,6 +272,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     private class BocEnumValueRadioButtonBasedControlObjectVariant : IBocEnumValueControlObjectVariant
     {
+      public event Action<WebTestAction, IWebTestActionOptions> ActionExecute;
+
       private readonly BocEnumValueControlObject _controlObject;
 
       public BocEnumValueRadioButtonBasedControlObjectVariant ([NotNull] BocEnumValueControlObject controlObject)
@@ -333,7 +342,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         ArgumentUtility.CheckNotNull ("scope", scope);
 
         var actualActionOptions = _controlObject.MergeWithDefaultActionOptions (_controlObject.Scope, actionOptions);
-        new CheckAction (_controlObject, scope).Execute (actualActionOptions);
+
+        var checkAction = new CheckAction (_controlObject, scope);
+        ActionExecute?.Invoke (checkAction, actualActionOptions);
+        checkAction.Execute (actualActionOptions);
+
         return _controlObject.UnspecifiedPage();
       }
 

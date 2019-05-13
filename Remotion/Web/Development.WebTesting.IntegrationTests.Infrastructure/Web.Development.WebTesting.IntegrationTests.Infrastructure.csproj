@@ -66,6 +66,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="CompletionDetectionStrategyTestHelper.cs" />
     <Compile Include="ControlSelectorTestCaseFactoryBase.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="GenericTestPageParameterDictionaryExtensions.cs" />

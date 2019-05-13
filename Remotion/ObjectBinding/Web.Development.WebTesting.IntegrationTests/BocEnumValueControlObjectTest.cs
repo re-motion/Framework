@@ -21,6 +21,8 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -466,59 +468,80 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       const string divorced = "Divorced";
 
       var normalDropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNormal");
+      var normalDropDownListBocEnumValueCompletionDetection = new CompletionDetectionStrategyTestHelper (normalDropDownListBocEnumValue);
       var noAutoPostBackDropDownListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNoAutoPostBack");
+      var noAutoPostBackDropDownListBocEnumValueCompletionDetection =
+          new CompletionDetectionStrategyTestHelper (noAutoPostBackDropDownListBocEnumValue);
+      var normalListBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNormal");
+      var normalListBoxBocEnumValueCompletionDetection = new CompletionDetectionStrategyTestHelper (normalListBoxBocEnumValue);
+      var noAutoPostBackListBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNoAutoPostBack");
+      var noAutoPostBackListBoxBocEnumValueCompletionDetection = new CompletionDetectionStrategyTestHelper (noAutoPostBackListBoxBocEnumValue);
+      var normalRadioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNormal");
+      var normalRadioButtonListBocEnumValueCompletionDetection = new CompletionDetectionStrategyTestHelper (normalRadioButtonListBocEnumValue);
+      var noAutoPostBackRadioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNoAutoPostBack");
+      var noAutoPostBackRadioButtonListBocEnumValueCompletionDetection =
+          new CompletionDetectionStrategyTestHelper (noAutoPostBackRadioButtonListBocEnumValue);
 
       normalDropDownListBocEnumValue.SelectOption ("==null==");
+      Assert.That (normalDropDownListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNormalCurrentValueLabel").Text, Is.Empty);
 
       normalDropDownListBocEnumValue.SelectOption (single);
+      Assert.That (normalDropDownListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNormalCurrentValueLabel").Text, Is.EqualTo (single));
 
       noAutoPostBackDropDownListBocEnumValue.SelectOption (single); // no auto post back
+      Assert.That (noAutoPostBackDropDownListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (married));
 
       normalDropDownListBocEnumValue.SelectOption (single, Opt.ContinueImmediately()); // same value, does not trigger post back
+      Assert.That (normalDropDownListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (married));
 
       normalDropDownListBocEnumValue.SelectOption (divorced);
+      Assert.That (normalDropDownListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNormalCurrentValueLabel").Text, Is.EqualTo (divorced));
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (single));
 
-      var normalListBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNormal");
-      var noAutoPostBackListBoxBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNoAutoPostBack");
-
       normalListBoxBocEnumValue.SelectOption ("==null==");
+      Assert.That (normalListBoxBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNormalCurrentValueLabel").Text, Is.Empty);
 
       normalListBoxBocEnumValue.SelectOption (single);
+      Assert.That (normalListBoxBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNormalCurrentValueLabel").Text, Is.EqualTo (single));
 
       noAutoPostBackListBoxBocEnumValue.SelectOption (single); // no auto post back
+      Assert.That (noAutoPostBackListBoxBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (married));
 
       normalListBoxBocEnumValue.SelectOption (single, Opt.ContinueImmediately()); // same value, does not trigger post back
+      Assert.That (normalListBoxBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (married));
 
       normalListBoxBocEnumValue.SelectOption (divorced);
+      Assert.That (normalListBoxBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNormalCurrentValueLabel").Text, Is.EqualTo (divorced));
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (single));
 
-      var normalRadioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNormal");
-      var noAutoPostBackRadioButtonListBocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNoAutoPostBack");
-
       normalRadioButtonListBocEnumValue.SelectOption ("==null==");
+      Assert.That (normalRadioButtonListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListNormalCurrentValueLabel").Text, Is.Empty);
 
       normalRadioButtonListBocEnumValue.SelectOption (single);
+      Assert.That (normalRadioButtonListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListNormalCurrentValueLabel").Text, Is.EqualTo (single));
 
       noAutoPostBackRadioButtonListBocEnumValue.SelectOption (single); // no auto post back
+      Assert.That (noAutoPostBackRadioButtonListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (married));
 
       normalRadioButtonListBocEnumValue.SelectOption (single, Opt.ContinueImmediately()); // same value, does not trigger post back
+      Assert.That (normalRadioButtonListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (married));
 
       normalRadioButtonListBocEnumValue.SelectOption (divorced);
+      Assert.That (normalRadioButtonListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListNormalCurrentValueLabel").Text, Is.EqualTo (divorced));
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (single));
     }

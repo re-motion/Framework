@@ -23,6 +23,8 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -112,22 +114,38 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
-      bocMultilineText.FillWith ("Blubba");
-      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("Blubba"));
+      {
+        var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocMultilineText);
+        bocMultilineText.FillWith ("Blubba");
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("Blubba"));
+      }
 
-      bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_NoAutoPostBack");
-      bocMultilineText.FillWith ("Blubba"); // no auto post back
-      Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("<Test 1> NL Test 2 NL Test 3"));
+      {
+        var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_NoAutoPostBack");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocMultilineText);
+        bocMultilineText.FillWith ("Blubba"); // no auto post back
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("<Test 1> NL Test 2 NL Test 3"));
+      }
 
-      bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
-      bocMultilineText.FillWith ("Blubba", Opt.ContinueImmediately()); // same value, does not trigger post back
-      Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("<Test 1> NL Test 2 NL Test 3"));
+      {
+        var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocMultilineText);
+        bocMultilineText.FillWith ("Blubba", Opt.ContinueImmediately()); // same value, does not trigger post back
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("<Test 1> NL Test 2 NL Test 3"));
+      }
 
-      bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
-      bocMultilineText.FillWith ("Doe" + Environment.NewLine + "SecondLineDoe");
-      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("Doe NL SecondLineDoe"));
-      Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("Blubba"));
+      {
+        var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocMultilineText);
+        bocMultilineText.FillWith ("Doe" + Environment.NewLine + "SecondLineDoe");
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("Doe NL SecondLineDoe"));
+        Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("Blubba"));
+      }
     }
 
     [Test]

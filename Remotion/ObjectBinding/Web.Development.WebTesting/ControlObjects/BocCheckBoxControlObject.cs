@@ -63,9 +63,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
 
       if (newState)
-        new CheckAction (this, Scope.FindChild ("Value")).Execute (actualActionOptions);
+        ExecuteAction (new CheckAction (this, Scope.FindChild ("Value")), actualActionOptions);
       else
-        new UncheckAction (this, Scope.FindChild ("Value")).Execute (actualActionOptions);
+        ExecuteAction (new UncheckAction (this, Scope.FindChild ("Value")), actualActionOptions);
 
       return UnspecifiedPage();
     }

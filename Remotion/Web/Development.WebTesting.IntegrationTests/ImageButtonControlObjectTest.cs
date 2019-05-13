@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -74,13 +75,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var imageButton = home.ImageButtons().GetByLocalID ("MyImageButton2");
-      home = imageButton.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("MyImageButton2|MyImageButton2Command"));
+      {
+        var imageButton2 = home.ImageButtons().GetByLocalID ("MyImageButton2");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (imageButton2);
+        home = imageButton2.Click().Expect<WxePageObject>();
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("MyImageButton2|MyImageButton2Command"));
+      }
 
-      imageButton = home.ImageButtons().GetByLocalID ("MyImageButton3");
-      home = imageButton.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      {
+        var imageButton3 = home.ImageButtons().GetByLocalID ("MyImageButton3");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (imageButton3);
+        home = imageButton3.Click().Expect<WxePageObject>();
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      }
     }
 
     private WxePageObject Start ()

@@ -17,6 +17,8 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -68,14 +70,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList4");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (dropDownList);
 
       dropDownList.SelectOption().WithItemID ("B");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (dropDownList.Scope["value"], Is.EqualTo ("B"));
 
       dropDownList.SelectOption().WithIndex (3);
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (dropDownList.Scope["value"], Is.EqualTo ("C"));
 
       dropDownList.SelectOption().WithDisplayText ("A");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (dropDownList.Scope["value"], Is.EqualTo ("B"));
     }
 
@@ -139,14 +145,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (dropDownList);
 
       dropDownList.SelectOption ("Item3Value");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Item3|Item3Value"));
 
       dropDownList.SelectOption().WithIndex (2);
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Item2|Item2Value"));
 
       dropDownList.SelectOption().WithDisplayText ("Item1");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Item1|Item1Value"));
     }
 
@@ -156,14 +166,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList3");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (dropDownList);
 
       dropDownList.SelectOption ("Item3Value", Opt.ContinueImmediately());
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (dropDownList.GetSelectedOption().ItemID, Is.EqualTo ("Item3Value"));
 
       dropDownList.SelectOption().WithIndex (2, Opt.ContinueImmediately());
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (dropDownList.GetSelectedOption().ItemID, Is.EqualTo ("Item2Value"));
 
       dropDownList.SelectOption().WithDisplayText ("Item1", Opt.ContinueImmediately());
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (dropDownList.GetSelectedOption().ItemID, Is.EqualTo ("Item1Value"));
     }
 

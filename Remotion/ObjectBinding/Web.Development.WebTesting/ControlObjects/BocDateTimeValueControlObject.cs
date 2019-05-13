@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var dateScope = GetDateScope();
 
       var actualActionOptions = MergeWithDefaultActionOptions (dateScope, actionOptions);
-      new FillWithAction (this, dateScope, newDateString, FinishInput.WithTab).Execute (actualActionOptions);
+      ExecuteAction (new FillWithAction (this, dateScope, newDateString, FinishInput.WithTab), actualActionOptions);
       return UnspecifiedPage();
     }
 
@@ -158,7 +158,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var timeScope = GetTimeScope();
 
       var actualActionOptions = MergeWithDefaultActionOptions (timeScope, actionOptions);
-      new FillWithAction (this, timeScope, newTimeString, FinishInput.WithTab).Execute (actualActionOptions);
+      ExecuteAction (new FillWithAction (this, timeScope, newTimeString, FinishInput.WithTab), actualActionOptions);
       return UnspecifiedPage();
     }
 

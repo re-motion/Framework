@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void Select ()
     {
       var scope = GetRowSelectorScope();
-      new CheckAction (this, scope).Execute (Opt.ContinueImmediately());
+      ExecuteAction (new CheckAction (this, scope), Opt.ContinueImmediately());
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void Deselect ()
     {
       var scope = GetRowSelectorScope();
-      new UncheckAction (this, scope).Execute (Opt.ContinueImmediately());
+      ExecuteAction (new UncheckAction (this, scope), Opt.ContinueImmediately());
     }
 
     /// <summary>

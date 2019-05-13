@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      new ClickAction (this, Scope).Execute (actualActionOptions);
+      ExecuteAction (new ClickAction (this, Scope), actualActionOptions);
       return UnspecifiedPage();
     }
   }

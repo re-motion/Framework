@@ -19,6 +19,7 @@ using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -108,20 +109,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var listMenu = home.ListMenus().GetByLocalID ("MyListMenu");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (listMenu);
 
       listMenu.SelectItem ("ItemID5");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID5|Event"));
 
       listMenu.SelectItem().WithIndex (2);
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
 
       listMenu.SelectItem().WithHtmlID ("body_MyListMenu_3");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID4|WxeFunction"));
 
       listMenu.SelectItem().WithDisplayText ("EventItem");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID1|Event"));
 
       listMenu.SelectItem().WithDisplayTextContains ("xeFun");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID4|WxeFunction"));
     }
 

@@ -122,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      new CustomAction (this, Scope, "Select", selectAction).Execute (actualActionOptions);
+      ExecuteAction (new CustomAction (this, Scope, "Select", selectAction), actualActionOptions);
       return UnspecifiedPage();
     }
   }

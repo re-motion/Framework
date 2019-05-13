@@ -22,7 +22,9 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -291,17 +293,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       const string baValue = "c8ace752-55f6-4074-8890-130276ea6cd1";
       const string daValue = "00000000-0000-0000-0000-000000000009";
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      bocReferenceValue.SelectOption (baValue);
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (baValue));
+      {
+        var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocReferenceValue);
+        bocReferenceValue.SelectOption (baValue);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (baValue));
+      }
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      bocReferenceValue.SelectOption().WithIndex (1);
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.Empty);
+      {
+        var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocReferenceValue);
+        bocReferenceValue.SelectOption().WithIndex (1);
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.Empty);
+      }
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      bocReferenceValue.SelectOption().WithDisplayText ("D, A");
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (daValue));
+      {
+        var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper (bocReferenceValue);
+        bocReferenceValue.SelectOption().WithDisplayText ("D, A");
+        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (daValue));
+      }
     }
 
     [Test]
@@ -321,7 +335,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (baValue));
 
       bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_NoAutoPostBack");
+      var completionDetection = new CompletionDetectionStrategyTestHelper (bocReferenceValue);
       bocReferenceValue.SelectOption (baValue); // no auto post back
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daValue));
 
       bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");

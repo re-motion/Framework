@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 
       const string xpath = "./tbody/tr/td/a[contains(@href,\"','t\")]";
       var expandLinkScope = Scope.FindXPath (xpath);
-      new SimpleClickAction (this, expandLinkScope).Execute (actualCompletionDetector);
+      ExecuteAction (new SimpleClickAction (this, expandLinkScope), actualCompletionDetector);
       return this;
     }
 
@@ -99,7 +99,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     public UnspecifiedPageObject Check ([CanBeNull] IWebTestActionOptions actionOptions = null)
     {
       var actualCompletionDetector = actionOptions ?? Opt.ContinueImmediately();
-      new CheckAction (this, GetCheckboxScope()).Execute (actualCompletionDetector);
+      ExecuteAction (new CheckAction (this, GetCheckboxScope()), actualCompletionDetector);
       return UnspecifiedPage();
     }
 
@@ -109,7 +109,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     public UnspecifiedPageObject Uncheck ([CanBeNull] IWebTestActionOptions actionOptions = null)
     {
       var actualCompletionDetector = actionOptions ?? Opt.ContinueImmediately();
-      new UncheckAction (this, GetCheckboxScope()).Execute (actualCompletionDetector);
+      ExecuteAction (new UncheckAction (this, GetCheckboxScope()), actualCompletionDetector);
       return UnspecifiedPage();
     }
 
@@ -135,7 +135,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     {
       var actualCompletionDetector = MergeWithDefaultActionOptions (Scope, actionOptions);
       const string nodeClickScopeXpath = "./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]][last()]/a[last()]";
-      new ClickAction (this, Scope.FindXPath (nodeClickScopeXpath)).Execute (actualCompletionDetector);
+      ExecuteAction (new ClickAction (this, Scope.FindXPath (nodeClickScopeXpath)), actualCompletionDetector);
     }
 
     private ElementScope GetChildrenScope ()

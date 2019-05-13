@@ -19,6 +19,7 @@ using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -140,17 +141,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var tabbedMenu = home.TabbedMenus().Single();
+      var completionDetection = new CompletionDetectionStrategyTestHelper (tabbedMenu);
 
       tabbedMenu.SelectItem ("EventCommandTab");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
 
       tabbedMenu.SelectItem ("HrefCommandTab");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
 
       tabbedMenu.SelectItem ("EventCommandTab");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
 
       tabbedMenu.SelectItem ("WxeFunctionCommandTab");
+      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
     }
 
