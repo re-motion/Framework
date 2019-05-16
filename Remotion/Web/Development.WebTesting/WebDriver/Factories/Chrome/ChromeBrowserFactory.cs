@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System.IO;
 using Coypu;
 using Coypu.Drivers;
 using JetBrains.Annotations;
@@ -81,7 +82,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
 
     private ChromeDriverService CreateChromeDriverService ()
     {
-      var driverService = ChromeDriverService.CreateDefaultService();
+      var driverDirectory = Path.GetDirectoryName (_chromeConfiguration.DriverBinaryPath);
+      var driverExecutable = Path.GetFileName (_chromeConfiguration.DriverBinaryPath);
+
+      var driverService = ChromeDriverService.CreateDefaultService (driverDirectory, driverExecutable);
 
       driverService.EnableVerboseLogging = false;
       driverService.LogPath = WebDriverLogUtility.CreateLogFile (_chromeConfiguration.LogsDirectory, _chromeConfiguration.BrowserName);

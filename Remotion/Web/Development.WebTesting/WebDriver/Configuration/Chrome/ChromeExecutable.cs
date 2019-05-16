@@ -25,43 +25,48 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
   /// </summary>
   public sealed class ChromeExecutable
   {
-    public static ChromeExecutable CreateForCustomInstance ([NotNull] string binaryPath, [NotNull] string userDirectory)
+    [Obsolete ("Use constructor (string, string, string) instead. (Version 1.21.3)", true)]
+    public static ChromeExecutable CreateForCustomInstance ([NotNull] string browserBinaryPath, [NotNull] string userDirectory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("binaryPath", binaryPath);
-      ArgumentUtility.CheckNotNullOrEmpty ("userDirectory", userDirectory);
-
-      return new ChromeExecutable (binaryPath, userDirectory);
+      throw new NotSupportedException ("Use constructor (string, string, string) instead. (Version 1.21.3)");
     }
 
+    [Obsolete ("Use constructor (string, string, string) instead. (Version 1.21.3)", true)]
     public static ChromeExecutable CreateForDefaultInstance ([NotNull] string userDirectory)
     {
+      throw new NotSupportedException ("Use constructor (string, string, string) instead. (Version 1.21.3)");
+    }
+
+    /// <summary>
+    /// Gets the full path to chrome.exe.
+    /// </summary>
+    [NotNull]
+    public string BrowserBinaryPath { get; }
+
+    /// <summary>
+    /// Gets the full path to chromedriver.exe.
+    /// </summary>
+    [NotNull]
+    public string DriverBinaryPath { get; }
+
+    /// <summary>
+    /// Gets the path to the user directory used by Chrome for saving custom user data.
+    /// </summary>
+    [NotNull]
+    public string UserDirectory { get; }
+
+    /// <param name="browserBinaryPath">Path to the Chrome executable</param>
+    /// <param name="driverBinaryPath">Path to the ChromeDriver executable</param>
+    /// <param name="userDirectory">Path to the desired Chrome user data directory</param>
+    public ChromeExecutable ([NotNull] string browserBinaryPath, [NotNull] string driverBinaryPath, [NotNull] string userDirectory)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("browserBinaryPath", browserBinaryPath);
+      ArgumentUtility.CheckNotNullOrEmpty ("driverBinaryPath", driverBinaryPath);
       ArgumentUtility.CheckNotNullOrEmpty ("userDirectory", userDirectory);
 
-      return new ChromeExecutable (null, userDirectory);
-    }
-
-    [CanBeNull]
-    private readonly string _binaryPath;
-
-    [NotNull]
-    private readonly string _userDirectory;
-
-    private ChromeExecutable ([CanBeNull] string binaryPath, [NotNull] string userDirectory)
-    {
-      _binaryPath = binaryPath;
-      _userDirectory = userDirectory;
-    }
-
-    [CanBeNull]
-    public string BinaryPath
-    {
-      get { return _binaryPath; }
-    }
-
-    [NotNull]
-    public string UserDirectory
-    {
-      get { return _userDirectory; }
+      BrowserBinaryPath = browserBinaryPath;
+      DriverBinaryPath = driverBinaryPath;
+      UserDirectory = userDirectory;
     }
   }
 }

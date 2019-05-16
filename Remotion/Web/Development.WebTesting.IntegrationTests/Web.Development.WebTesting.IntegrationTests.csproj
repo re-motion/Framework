@@ -53,7 +53,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
@@ -77,7 +76,6 @@
     <Compile Include="BrowserSessionTest.cs" />
     <Compile Include="BrowserWindowTests.cs" />
     <Compile Include="ControlObjectTest.cs" />
-    <Compile Include="CustomUserDirectory.cs" />
     <Compile Include="FileDownloadTest.cs" />
     <Compile Include="ImageControlObjectTest.cs" />
     <Compile Include="ImageButtonControlObjectTest.cs" />
@@ -90,7 +88,6 @@
     <Compile Include="MouseTest.cs" />
     <Compile Include="MultiWindowTest.cs" />
     <Compile Include="MultiWindowTestPageObject.cs" />
-    <Compile Include="CustomWebTestConfigurationFactory.cs" />
     <Compile Include="ElementScopeTest.cs" />
     <Compile Include="RequestErrorDetectionStrategyTest.cs" />
     <Compile Include="ScopeControlObjectTest.cs" />

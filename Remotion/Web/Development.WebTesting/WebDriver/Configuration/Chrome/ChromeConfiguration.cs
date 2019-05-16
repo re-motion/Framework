@@ -16,6 +16,7 @@
 // 
 using System;
 using System.IO;
+using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
@@ -36,35 +37,26 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
   {
     private const string c_userDataFolderPrefix = "userdata";
 
-    private readonly IBrowserContentLocator _locator = new ChromeBrowserContentLocator();
+    private static readonly Lazy<ChromeExecutable> s_chromeExecutable =
+        new Lazy<ChromeExecutable> (() => new ChromeBinariesProvider().GetInstalledExecutable(), LazyThreadSafetyMode.ExecutionAndPublication);
 
-    private readonly string _binaryPath;
-    private readonly string _userDirectoryRoot;
-    private readonly IDownloadHelper _downloadHelper;
-    private readonly string _downloadDirectory;
-    private readonly bool _disableInfoBars;
-    private readonly bool _deleteUserDirectoryRoot;
+    public override string BrowserExecutableName { get; } = "chrome";
+    public override string WebDriverExecutableName { get; } = "chromedriver";
+    public override IBrowserContentLocator Locator { get; } = new ChromeBrowserContentLocator();
+    public override ScreenshotTooltipStyle TooltipStyle { get; } = ScreenshotTooltipStyle.Chrome;
+    public override IDownloadHelper DownloadHelper { get; }
+    public string BrowserBinaryPath { get; }
+    public string DriverBinaryPath { get; }
+    public string UserDirectoryRoot { get; }
+    public bool EnableUserDirectoryRootCleanup { get; }
+    public string DownloadDirectory { get; }
+    public bool DisableInfoBars { get; }
 
     public ChromeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection,
         [NotNull] AdvancedChromeOptions advancedChromeOptions)
-        : base (webTestConfigurationSection)
+        : this (webTestConfigurationSection, s_chromeExecutable.Value, advancedChromeOptions)
     {
-      ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
-      ArgumentUtility.CheckNotNull ("advancedChromeOptions", advancedChromeOptions);
-
-      _downloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
-
-      var downloadStartedGracePeriod = TimeSpan.FromMinutes (1);
-
-      _downloadHelper = new ChromeDownloadHelper (
-          _downloadDirectory,
-          webTestConfigurationSection.DownloadStartedTimeout,
-          webTestConfigurationSection.DownloadUpdatedTimeout,
-          downloadStartedGracePeriod,
-          webTestConfigurationSection.CleanUpUnmatchedDownloadedFiles);
-
-      _disableInfoBars = advancedChromeOptions.DisableInfoBars;
     }
 
     public ChromeConfiguration (
@@ -77,75 +69,33 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       ArgumentUtility.CheckNotNull ("chromeExecutable", chromeExecutable);
       ArgumentUtility.CheckNotNull ("advancedChromeOptions", advancedChromeOptions);
 
-      _binaryPath = chromeExecutable.BinaryPath;
-      _userDirectoryRoot = chromeExecutable.UserDirectory;
+      BrowserBinaryPath = chromeExecutable.BrowserBinaryPath;
+      DriverBinaryPath = chromeExecutable.DriverBinaryPath;
+      UserDirectoryRoot = chromeExecutable.UserDirectory;
 
-      _deleteUserDirectoryRoot = advancedChromeOptions.DeleteUserDirectoryRoot;
-      _disableInfoBars = advancedChromeOptions.DisableInfoBars;
+      EnableUserDirectoryRootCleanup = advancedChromeOptions.DeleteUserDirectoryRoot;
+      DisableInfoBars = advancedChromeOptions.DisableInfoBars;
 
-      _downloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
+      DownloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
 
       var downloadStartedGracePeriod = TimeSpan.FromMinutes (1);
 
-      _downloadHelper = new ChromeDownloadHelper (
-          _downloadDirectory,
+      DownloadHelper = new ChromeDownloadHelper (
+          DownloadDirectory,
           webTestConfigurationSection.DownloadStartedTimeout,
           webTestConfigurationSection.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,
           webTestConfigurationSection.CleanUpUnmatchedDownloadedFiles);
     }
 
-    public override string BrowserExecutableName
-    {
-      get { return "chrome"; }
-    }
-
-    public override string WebDriverExecutableName
-    {
-      get { return "chromedriver"; }
-    }
-
-    public override IBrowserFactory BrowserFactory
-    {
-      get { return new ChromeBrowserFactory (this); }
-    }
-
-    public override IDownloadHelper DownloadHelper
-    {
-      get { return _downloadHelper; }
-    }
-
-    public override IBrowserContentLocator Locator
-    {
-      get { return _locator; }
-    }
-
-    public override ScreenshotTooltipStyle TooltipStyle
-    {
-      get { return ScreenshotTooltipStyle.Chrome; }
-    }
-
-    public string BinaryPath
-    {
-      get { return _binaryPath; }
-    }
-
-    public string UserDirectoryRoot
-    {
-      get { return _userDirectoryRoot; }
-    }
-
-    public bool EnableUserDirectoryRootCleanup
-    {
-      get { return _deleteUserDirectoryRoot; }
-    }
+    public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory (this);
 
     public virtual ExtendedChromeOptions CreateChromeOptions ()
     {
       var chromeOptions = new ExtendedChromeOptions();
 
-      if (!string.IsNullOrEmpty (_binaryPath))
-        chromeOptions.BinaryLocation = _binaryPath;
+      if (!string.IsNullOrEmpty (BrowserBinaryPath))
+        chromeOptions.BinaryLocation = BrowserBinaryPath;
 
       var userDirectory = CreateUnusedUserDirectoryPath();
       chromeOptions.UserDirectory = userDirectory;
@@ -153,28 +103,24 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       if (!string.IsNullOrEmpty (userDirectory))
         chromeOptions.AddArgument (string.Format ("user-data-dir={0}", userDirectory));
 
-      if (_disableInfoBars)
+      if (DisableInfoBars)
         chromeOptions.AddArgument ("disable-infobars");
 
       chromeOptions.AddArgument ("no-first-run");
 
       chromeOptions.AddUserProfilePreference ("safebrowsing.enabled", true);
-      chromeOptions.AddUserProfilePreference ("download.default_directory", _downloadDirectory);
+      chromeOptions.AddUserProfilePreference ("download.default_directory", DownloadDirectory);
 
       return chromeOptions;
     }
 
-    [CanBeNull]
     private string CreateUnusedUserDirectoryPath ()
     {
-      if (_userDirectoryRoot == null)
-        return null;
-
       string userDirectory;
       var userDirectoryID = 0;
       do
       {
-        userDirectory = Path.Combine (_userDirectoryRoot, string.Join (c_userDataFolderPrefix, userDirectoryID));
+        userDirectory = Path.Combine (UserDirectoryRoot, string.Join (c_userDataFolderPrefix, userDirectoryID));
         userDirectoryID++;
       } while (Directory.Exists (userDirectory));
 

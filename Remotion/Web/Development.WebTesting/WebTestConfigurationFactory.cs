@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Higher Chrome versions are not guaranteed to work with the currently dependent ChromeDriver. 
     /// In order to achieve a stable testing environment a standalone Chrome with a matching version should be used.
     /// </summary>
-    protected const string LatestTestedChromeVersion = "66";
+    protected const string LatestTestedChromeVersion = "74";
     
     /// <summary>
     /// Creates a new <see cref="IBrowserConfiguration"/> from app.config.

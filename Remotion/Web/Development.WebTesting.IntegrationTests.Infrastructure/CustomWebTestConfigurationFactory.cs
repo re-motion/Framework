@@ -18,11 +18,10 @@ using System;
 using System.Configuration;
 using System.IO;
 using System.IO.Compression;
-using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
   public class CustomWebTestConfigurationFactory : WebTestConfigurationFactory
   {
@@ -34,31 +33,39 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       if (string.IsNullOrEmpty (chromeVersionArchivePath))
         return new ChromeConfiguration (configSettings, advancedChromeOptions);
 
-      var customChromeBinary = PrepareCustomChromeBinary (chromeVersionArchivePath);
+      var customChromeDirectory = PrepareChromeDirectory (chromeVersionArchivePath);
+
+      var customChromeBinary = GetBinaryPath (customChromeDirectory, "chrome");
+      var customDriverBinary = GetBinaryPath (customChromeDirectory, "chromedriver");
 
       var customUserDirectoryPath = CustomUserDirectory.GetCustomUserDirectory();
 
-      var chromeExecutable = ChromeExecutable.CreateForCustomInstance (customChromeBinary, customUserDirectoryPath);
+      var chromeExecutable = new ChromeExecutable (customChromeBinary, customDriverBinary, customUserDirectoryPath);
 
       return new ChromeConfiguration (configSettings, chromeExecutable, advancedChromeOptions);
     }
 
-    private string PrepareCustomChromeBinary (string chromeVersionArchivePath)
+    private string PrepareChromeDirectory (string chromeVersionArchivePath)
     {
       var versionedChromeFolder = string.Format ("Chrome_v{0}", LatestTestedChromeVersion);
 
-      var localChromeBinaryPath = Path.Combine (Path.GetTempPath(), versionedChromeFolder);
+      var localChromeDirectory = Path.Combine (Path.GetTempPath(), versionedChromeFolder);
 
-      if (!Directory.Exists (localChromeBinaryPath))
+      if (!Directory.Exists (localChromeDirectory))
       {
         var versionedChromeZipFile = string.Format ("Chrome_v{0}.zip", LatestTestedChromeVersion);
 
         ZipFile.ExtractToDirectory (
             Path.Combine (chromeVersionArchivePath, versionedChromeZipFile),
-            localChromeBinaryPath);
+            localChromeDirectory);
       }
 
-      return Path.Combine (localChromeBinaryPath, "chrome.exe");
+      return localChromeDirectory;
+    }
+
+    private string GetBinaryPath (string localChromeDirectory, string binaryName)
+    {
+      return Path.Combine (localChromeDirectory, binaryName + ".exe");
     }
   }
 }

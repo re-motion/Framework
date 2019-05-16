@@ -29,13 +29,19 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// <summary>
     /// Gets the full path to chrome.exe.
     /// </summary>
-    [CanBeNull]
-    string BinaryPath { get; }
+    [NotNull]
+    string BrowserBinaryPath { get; }
+
+    /// <summary>
+    /// Gets the full path to chromedriver.exe.
+    /// </summary>
+    [NotNull]
+    string DriverBinaryPath { get; }
 
     /// <summary>
     /// Gets the path to the user directories, which is used by the started Chrome. If the path does not exists, it will be automatically created at startup.
     /// </summary>
-    [CanBeNull]
+    [NotNull]
     string UserDirectoryRoot { get; }
 
     /// <summary>
