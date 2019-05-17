@@ -21,7 +21,7 @@
       <xs:attribute name="browser" type="c:BrowserType" use="required" />
       <xs:attribute name="searchTimeout" type="xs:time" use="required" />
       <xs:attribute name="downloadStartedTimeout" type="xs:time" default="00:00:10" />
-      <xs:attribute name="downloadUpdatedTimeout" type="xs:time" default="00:00:05" />
+      <xs:attribute name="downloadUpdatedTimeout" type="xs:time" default="00:00:10" />
       <xs:attribute name="retryInterval" type="xs:time" use="required" />
       <xs:attribute name="webApplicationRoot" type="c:RequiredStringType" use="required" />
       <xs:attribute name="screenshotDirectory" type="c:RequiredStringType" />

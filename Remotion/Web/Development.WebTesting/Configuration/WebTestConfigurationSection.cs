@@ -66,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
           ConfigurationPropertyOptions.IsRequired);
       _searchTimeoutProperty = new ConfigurationProperty ("searchTimeout", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
       _downloadStartedTimeoutProperty = new ConfigurationProperty ("downloadStartedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
-      _downloadUpdatedTimeoutProperty = new ConfigurationProperty ("downloadUpdatedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (5));
+      _downloadUpdatedTimeoutProperty = new ConfigurationProperty ("downloadUpdatedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
       _retryIntervalProperty = new ConfigurationProperty ("retryInterval", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
       _webApplicationRootProperty = new ConfigurationProperty (
           "webApplicationRoot",
