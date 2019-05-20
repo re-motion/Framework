@@ -73,6 +73,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           new StorageGroupElement (new StorageProviderStubAttribute(), MappingReflectionTestBase.c_unitTestStorageProviderStubID));
       _storageConfiguration.StorageGroups.Add (
           new StorageGroupElement (new TableInheritanceTestDomainAttribute(), TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
+      _storageConfiguration.StorageGroups.Add (
+          new StorageGroupElement (new NonPersistentTestDomainAttribute(), MappingReflectionTestBase.c_nonPersistentTestDomainProviderID));
 
       _mappingLoaderConfiguration = new MappingLoaderConfiguration();
       _queryConfiguration = new QueryConfiguration ("QueriesForStandardMapping.xml");

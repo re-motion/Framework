@@ -20,6 +20,7 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
@@ -80,7 +81,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
           new TableNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule(),
           new ClassAboveTableIsAbstractValidationRule(),
           new ColumnNamesAreUniqueWithinInheritanceTreeValidationRule(_rdbmsPersistenceModelProvider),
-          new PropertyTypeIsSupportedByStorageProviderValidationRule());
+          new PropertyTypeIsSupportedByStorageProviderValidationRule(),
+          new RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule());
     }
 
     public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)

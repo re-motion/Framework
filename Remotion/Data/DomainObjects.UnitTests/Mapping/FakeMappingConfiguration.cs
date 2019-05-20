@@ -21,6 +21,8 @@ using System.Linq;
 using System.Reflection;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
@@ -52,7 +54,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     // member fields
 
-    private readonly StorageProviderDefinition _storageProviderDefinition;
+    private readonly StorageProviderDefinition _defaultStorageProviderDefinition;
+    private readonly StorageProviderDefinition _nonPersistentProviderDefinition;
     private readonly ReadOnlyDictionary<Type, ClassDefinition> _typeDefinitions;
     private readonly ReadOnlyDictionary<string, RelationDefinition> _relationDefinitions;
 
@@ -60,7 +63,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private FakeMappingConfiguration ()
     {
-      _storageProviderDefinition = new UnitTestStorageProviderStubDefinition ("DefaultStorageProvider");
+      _defaultStorageProviderDefinition = new UnitTestStorageProviderStubDefinition ("DefaultStorageProvider");
+      _nonPersistentProviderDefinition =
+          new NonPersistentProviderDefinition ("NonPersistentStorageProvider", new NonPersistentStorageObjectFactory());
       _typeDefinitions = new ReadOnlyDictionary<Type, ClassDefinition> (CreateClassDefinitions ());
       _relationDefinitions = new ReadOnlyDictionary<string, RelationDefinition> (CreateRelationDefinitions());
 
@@ -70,9 +75,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     // methods and properties
 
-    public StorageProviderDefinition StorageProviderDefinition
+    public StorageProviderDefinition DefaultStorageProviderDefinition
     {
-      get { return _storageProviderDefinition; }
+      get { return _defaultStorageProviderDefinition; }
+    }
+
+    public StorageProviderDefinition NonPersistentStorageProviderDefinition
+    {
+      get { return _nonPersistentProviderDefinition; }
     }
 
     public ReadOnlyDictionary<Type, ClassDefinition> TypeDefinitions
@@ -107,6 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       classDefinitions.Add (distributor);
 
       classDefinitions.Add (CreateOrderDefinition (null));
+      classDefinitions.Add (CreateOrderViewModelDefinition (null));
       classDefinitions.Add (CreateOrderTicketDefinition (null));
       classDefinitions.Add (CreateOrderItemDefinition (null));
 
@@ -258,6 +269,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       order.SetPropertyDefinitions (new PropertyDefinitionCollection (properties, true));
 
       return order;
+    }
+
+    private ClassDefinition CreateOrderViewModelDefinition (ClassDefinition baseClass)
+    {
+      ClassDefinition orderViewModel = CreateClassDefinitionForNonPersistentProvider (
+          "OrderViewModel", typeof (OrderViewModel), false, baseClass);
+
+      var properties = new List<PropertyDefinition>();
+      properties.Add (
+          CreateTransactionPropertyDefinition (orderViewModel, typeof (OrderViewModel), "OrderSum", false, null));
+      properties.Add (
+          CreateTransactionPropertyDefinition (orderViewModel, typeof (OrderViewModel), "Object", true, null));
+      orderViewModel.SetPropertyDefinitions (new PropertyDefinitionCollection (properties, true));
+
+      return orderViewModel;
     }
 
     private ClassDefinition CreateOfficialDefinition (ClassDefinition baseClass)
@@ -850,10 +876,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return classDefinition;
     }
 
+    private ClassDefinition CreateClassDefinitionForNonPersistentProvider (
+        string id,
+        Type classType,
+        bool isAbstract,
+        ClassDefinition baseClass,
+        params Type[] persistentMixins)
+    {
+      // Don't use ClassDefinitionObjectMother: since this configuration is compared with the actual configuration, we must exactly define 
+      // the mapping objects
+      var classDefinition = new ClassDefinition (
+          id,
+          classType,
+          isAbstract,
+          baseClass,
+          null,
+          DefaultStorageClass.Transaction,
+          new PersistentMixinFinderStub (classType, persistentMixins),
+          MappingReflectorObjectMother.DomainObjectCreator);
+      classDefinition.SetStorageEntity (new NonPersistentStorageEntity (_nonPersistentProviderDefinition));
+      return classDefinition;
+    }
+
     private void SetFakeStorageEntity (ClassDefinition classDefinition, string entityName)
     {
       var tableDefinition = TableDefinitionObjectMother.Create (
-          _storageProviderDefinition,
+          _defaultStorageProviderDefinition,
           new EntityNameDefinition (null, entityName),
           new EntityNameDefinition (null, classDefinition.ID + "View"));
       classDefinition.SetStorageEntity (tableDefinition);
@@ -908,6 +956,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       relationDefinitions.Add (CreateOrderToOrderItemRelationDefinition());
       relationDefinitions.Add (CreateOrderToOrderTicketRelationDefinition());
       relationDefinitions.Add (CreateOrderToOfficialRelationDefinition());
+      relationDefinitions.Add (CreateOrderViewModelToOrderRelationDefinition());
 
       relationDefinitions.Add (CreateCompanyToCeoRelationDefinition());
       relationDefinitions.Add (CreatePartnerToPersonRelationDefinition());
@@ -1039,6 +1088,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var relation = CreateExpectedRelationDefinition ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order"
         + ":Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Official->"
         +"Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Official.Orders", endPoint1, endPoint2);
+
+      return relation;
+    }
+
+    private RelationDefinition CreateOrderViewModelToOrderRelationDefinition ()
+    {
+      var orderViewModelClass = _typeDefinitions[typeof (OrderViewModel)];
+
+      var endPoint1 = new RelationEndPointDefinition (
+          orderViewModelClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderViewModel.Object"], true);
+
+      var orderClass = _typeDefinitions[typeof (Order)];
+
+      var endPoint2 = new AnonymousRelationEndPointDefinition (orderClass);
+
+      var relation = CreateExpectedRelationDefinition ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderViewModel"
+          + ":Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderViewModel.Object", endPoint1, endPoint2);
 
       return relation;
     }

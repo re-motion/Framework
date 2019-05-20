@@ -95,6 +95,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
     {
       ValidateMapping ("NotSupportedPersistenceMapping.SameEntityNamesInInheritanceHierarchy");
     }
-  
+
+    //PropertyStorageClassIsSupportedByStorageProviderValidationRule
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "StorageClass.Persistent is not supported for properties of classes that belong to the 'NonPersistentProviderDefinition'.\r\n\r\n"
+        +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
+        +"PropertyWithUnsupportedStorageClass.NonPersistentDomainObjectWithPersistentProperty\r\n"
+        +"Property: PersistentProperty")]
+    public void PropertyWithStorageClassPersistentOnNonPersistentDomainObject ()
+    {
+      ValidateMapping ("NotSupportedPersistenceMapping.PropertyWithUnsupportedStorageClass");
+    }
+
+    // RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "The relation property is defined as persistent but the referenced type "
+        + "'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
+        + "PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject.NonPersistentRelationClass' is non-persistent. "
+        + "Persistent relation properties may only reference persistent types.\r\n\r\n"
+        +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
+        +"PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject.PersistentRelationClass\r\n"
+        +"Property: PersistentRelationProperty")]
+    public void PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject ()
+    {
+      ValidateMapping ("NotSupportedPersistenceMapping.PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject");
+    }
   }
 }

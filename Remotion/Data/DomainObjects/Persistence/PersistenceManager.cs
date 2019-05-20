@@ -21,6 +21,7 @@ using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
@@ -210,7 +211,9 @@ namespace Remotion.Data.DomainObjects.Persistence
     {
       ArgumentUtility.CheckNotNull ("providers", providers);
 
-      if (providers.Count() > 1)
+      var persistentStorageProviders = providers.Where (p => !(p is NonPersistentProvider));
+
+      if (persistentStorageProviders.Count() > 1)
         throw CreatePersistenceException ("Save does not support multiple storage providers.");
     }
 

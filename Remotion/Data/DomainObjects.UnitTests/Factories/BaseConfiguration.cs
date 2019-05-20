@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
@@ -73,6 +74,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           new StorageGroupElement (
               new TestDomainAttribute(), 
               DatabaseTest.c_testDomainProviderID));
+      _storageConfiguration.StorageGroups.Add (
+          new StorageGroupElement (
+              new NonPersistentTestDomainAttribute(), 
+              DatabaseTest.c_nonPersistentTestDomainProviderID));
       _storageConfiguration.StorageGroups.Add (
           new StorageGroupElement (
               new StorageProviderStubAttribute(), 

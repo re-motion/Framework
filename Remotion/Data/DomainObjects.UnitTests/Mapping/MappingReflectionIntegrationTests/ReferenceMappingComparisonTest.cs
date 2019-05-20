@@ -41,16 +41,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
       var inheritanceRootClasses = actualClassDefinitions.Values.Select (cd => cd.GetInheritanceRootClass()).Distinct();
 
       // Pretend that all classes have the storage provider definition used by FakeMappingConfiguration
-      var storageProviderDefinition = FakeMappingConfiguration.Current.StorageProviderDefinition;
-      var storageProviderDefinitionFinderStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder> ();
-      storageProviderDefinitionFinderStub
+      var defaultStorageProviderDefinition = FakeMappingConfiguration.Current.DefaultStorageProviderDefinition;
+      var defaultStorageProviderDefinitionFinderStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder>();
+      defaultStorageProviderDefinitionFinderStub
           .Stub (stub => stub.GetStorageProviderDefinition (Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
-          .Return (storageProviderDefinition);
+          .Return (defaultStorageProviderDefinition);
+
+      var nonPersistentStorageProviderDefinition = FakeMappingConfiguration.Current.NonPersistentStorageProviderDefinition;
+      var nonPersistentStorageProviderDefinitionFinderStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder>();
+      nonPersistentStorageProviderDefinitionFinderStub
+          .Stub (stub => stub.GetStorageProviderDefinition (Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
+          .Return (nonPersistentStorageProviderDefinition);
 
       foreach (ClassDefinition classDefinition in inheritanceRootClasses)
       {
-        var persistenceModelLoader = storageProviderDefinition.Factory.CreatePersistenceModelLoader (storageProviderDefinition, storageProviderDefinitionFinderStub);
-        persistenceModelLoader.ApplyPersistenceModelToHierarchy (classDefinition);
+        if (typeof (OrderViewModel).IsAssignableFrom (classDefinition.ClassType))
+        {
+          var persistenceModelLoader = nonPersistentStorageProviderDefinition.Factory.CreatePersistenceModelLoader (
+              nonPersistentStorageProviderDefinition,
+              nonPersistentStorageProviderDefinitionFinderStub);
+          persistenceModelLoader.ApplyPersistenceModelToHierarchy (classDefinition);
+        }
+        else
+        {
+          var persistenceModelLoader = defaultStorageProviderDefinition.Factory.CreatePersistenceModelLoader (
+              defaultStorageProviderDefinition,
+              defaultStorageProviderDefinitionFinderStub);
+          persistenceModelLoader.ApplyPersistenceModelToHierarchy (classDefinition);
+        }
       }
 
       var classDefinitionChecker = new ClassDefinitionChecker();

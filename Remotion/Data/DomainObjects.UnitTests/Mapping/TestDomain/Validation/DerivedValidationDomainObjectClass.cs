@@ -38,5 +38,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation
 
     [StorageClass (StorageClass.Persistent)]
     public OtherDerivedValidationHierarchyClass RelationPropertyWithStorageClassPersistent { get; set; }
+
+    [StorageClass (StorageClass.Transaction)]
+    public OtherDerivedValidationHierarchyClass RelationPropertyWithStorageClassTransaction { get; set; }
   }
 }

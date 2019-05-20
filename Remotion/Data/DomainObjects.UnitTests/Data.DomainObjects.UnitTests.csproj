@@ -237,6 +237,7 @@
     <Compile Include="IntegrationTests\HierarchyBoundObjects\EnterScopeTest.cs" />
     <Compile Include="IntegrationTests\HierarchyBoundObjects\HierarchyBoundObjectsTestBase.cs" />
     <Compile Include="IntegrationTests\HierarchyBoundObjects\OperationsInActivatedLeafTransactionTest.cs" />
+    <Compile Include="IntegrationTests\NonPersistentDomainObjects\NonPersistentDomainObjectTest.cs" />
     <Compile Include="IntegrationTests\Relations\LazyRelationLoadingTest.cs" />
     <Compile Include="IntegrationTests\NewObject\RecursiveNewObjectCallTest.cs" />
     <Compile Include="IntegrationTests\HierarchyBoundObjects\OperationsInRootTransactionTest.cs" />
@@ -296,6 +297,8 @@
     <Compile Include="Mapping\MappingReflectionIntegrationTests\IgnoredTypes\OnlyBaseClassNotInMapping\When_ASingleClassIsExcludedFromTheMapping.cs" />
     <Compile Include="Mapping\PropertyMetadataReflectorTest.cs" />
     <Compile Include="Mapping\PropertyReflectorTests\DomainObjectWithNonDefaultStorageClass.cs" />
+    <Compile Include="Mapping\TestDomain\Integration\NonPersistentTestDomainAttribute.cs" />
+    <Compile Include="Mapping\TestDomain\Integration\OrderViewModel.cs" />
     <Compile Include="Mapping\TestDomain\Integration\ReflectionBasedMappingSample\BaseClassWithoutStorageGroupAttribute.cs" />
     <Compile Include="Mapping\TestDomain\Integration\ReflectionBasedMappingSample\ClassInMapping.cs" />
     <Compile Include="Mapping\TestDomain\Integration\ReflectionBasedMappingSample\ClassInMappingDerivedFromClassWithIgnoreForMappingConfigurationAttribute.cs" />
@@ -311,8 +314,21 @@
     <Compile Include="Mapping\TestDomain\Integration\ReflectionBasedMappingSample\DerivedClassInMappingDerivedFromClassNotInMapping.cs" />
     <Compile Include="Mapping\TestDomain\Integration\ReflectionBasedMappingSample\NonDefaultStorageClassStorageGroupAttribute.cs" />
     <Compile Include="Mapping\TestDomain\Integration\TestDomainWithStorageClassTransactionAttribute.cs" />
+    <Compile Include="Mapping\TestDomain\Validation\Integration\NotSupportedPersistenceMapping\PropertyWithUnsupportedStorageClass\NonPersistentDomainObjectWithPersistentProperty.cs" />
+    <Compile Include="Mapping\TestDomain\Validation\Integration\NotSupportedPersistenceMapping\PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject\NonPersistentRelationClass.cs" />
+    <Compile Include="Mapping\TestDomain\Validation\Integration\NotSupportedPersistenceMapping\PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject\PersistentRelationClass.cs" />
     <Compile Include="Mapping\Validation\Logical\CheckForClassIDIsValidValidationRuleTest.cs" />
+    <Compile Include="Persistence\NonPersistent\Model\Validation\RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRuleTest.cs" />
     <Compile Include="Persistence\ConcurrencyViolationExceptionTest.cs" />
+    <Compile Include="Persistence\NonPersistent\Model\NonPersistentPersistenceModelLoaderTestDomain\BaseClass.cs" />
+    <Compile Include="Persistence\NonPersistent\Model\NonPersistentPersistenceModelLoaderTestDomain\DerivedClass.cs" />
+    <Compile Include="Persistence\NonPersistent\Model\NonPersistentStorageEntityTest.cs" />
+    <Compile Include="Persistence\NonPersistent\Model\NonPersistentStoragePropertyTest.cs" />
+    <Compile Include="Persistence\NonPersistent\Model\Validation\PropertyStorageClassIsSupportedByStorageProviderValidationRuleTest.cs" />
+    <Compile Include="Persistence\NonPersistent\NonPersistentModelLoaderTest.cs" />
+    <Compile Include="Persistence\NonPersistent\NonPersistentProviderDefinitionTest.cs" />
+    <Compile Include="Persistence\NonPersistent\NonPersistentProviderTest.cs" />
+    <Compile Include="Persistence\NonPersistent\NonPersistentStorageObjectFactoryTest.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\ClassSerializerTest.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\ColumnSerializerTest.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\ExtensibleEnumSerializerDecoratorTest.cs" />
@@ -368,6 +384,8 @@
     <Compile Include="Infrastructure\TypePipe\MutableTypeObjectMother.cs" />
     <Compile Include="IntegrationTests\RegisterForCommitTest.cs" />
     <Compile Include="TestDomain\ClassWithPropertyTypeImplementingIStructuralEquatable.cs" />
+    <Compile Include="TestDomain\NonPersistentTestDomainAttribute.cs" />
+    <Compile Include="TestDomain\OrderViewModel.cs" />
     <Compile Include="TestDomain\SpecialCustomer.cs" />
     <Compile Include="Tracing\CompoundPersistenceExtensionFactoryTest.cs" />
     <Compile Include="Tracing\IPersistenceExtensionFactoryTest.cs" />

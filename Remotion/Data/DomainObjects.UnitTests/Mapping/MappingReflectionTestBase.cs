@@ -31,6 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   {
     public const string DefaultStorageProviderID = "DefaultStorageProvider";
     public const string c_testDomainProviderID = "TestDomain";
+    public const string c_nonPersistentTestDomainProviderID = "NonPersistentTestDomain";
     public const string c_unitTestStorageProviderStubID = "UnitTestStorageProviderStub";
 
     protected IClassIDProvider ClassIDProviderStub { get; private set; }

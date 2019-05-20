@@ -20,6 +20,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Utilities;
@@ -275,13 +276,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       if (storageEntityDefinition is FakeStorageEntityDefinition)
         return ((FakeStorageEntityDefinition) storageEntityDefinition).Name;
-      else 
+      else if (storageEntityDefinition is IRdbmsStorageEntityDefinition)
         return InlineRdbmsStorageEntityDefinitionVisitor.Visit<string> (
             (IRdbmsStorageEntityDefinition) storageEntityDefinition,
             (table, continuation) => table.TableName.EntityName,
             (filterView, continuation) => continuation (filterView.BaseEntity),
             (unionView, continuation) => null,
             (emptyView, continuation) => null);
+      else
+        return null;
     }
 
     private string GetFirstColumnName (IStoragePropertyDefinition storagePropertyDefinition)

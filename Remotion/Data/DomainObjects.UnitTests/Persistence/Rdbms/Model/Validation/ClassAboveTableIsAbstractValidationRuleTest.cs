@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
@@ -51,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     }
 
     [Test]
-    public void ClassTypeUnresolved ()
+    public void ClassTypeUnresolved_UnionViewDefinition_NotAbstract ()
     {
       var classDefinition = new ClassDefinitionWithUnresolvedClassType (
           "NonAbstractClassHasEntityNameDomainObject",
@@ -60,8 +61,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
           null,
           MockRepository.GenerateStub<IPersistentMixinFinder>(),
           MockRepository.GenerateStub<IDomainObjectCreator>());
+      classDefinition.SetStorageEntity (_unionViewDefinition);
 
       var validationResult = _validationRule.Validate (classDefinition);
+
+      AssertMappingValidationResult (validationResult, true, null);
+    }
+
+    [Test]
+    public void ClassTypeResolved_NoRdbmsStorageEntity_NotAbstract ()
+    {
+      var nonRdbmsStorageEntity = MockRepository.GenerateStub<IStorageEntityDefinition>();
+      _concreteClassDefinition.SetStorageEntity (nonRdbmsStorageEntity);
+
+      var validationResult = _validationRule.Validate (_concreteClassDefinition);
 
       AssertMappingValidationResult (validationResult, true, null);
     }

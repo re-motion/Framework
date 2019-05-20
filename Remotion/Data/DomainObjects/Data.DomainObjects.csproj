@@ -181,6 +181,7 @@
     <Compile Include="Linq\FluentFetchRequest.cs" />
     <Compile Include="Mapping\DefaultStorageClass.cs" />
     <Compile Include="Mapping\Validation\Logical\CheckForClassIDIsValidValidationRule.cs" />
+    <Compile Include="Persistence\NonPersistent\Validation\RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule.cs" />
     <Compile Include="Obsolete\IDomainObjectNextCallRequirements.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionExtensionFactory.cs" />
     <Compile Include="Infrastructure\DomainObjectHandleAttribute.cs" />
@@ -312,6 +313,14 @@
     <Compile Include="Mapping\MappingConfigurationValidationHelper.cs" />
     <Compile Include="DomainObjectHandleExtensions.cs" />
     <Compile Include="Persistence\Model\IPersistenceModelValidatorFactory.cs" />
+    <Compile Include="Persistence\NonPersistent\INonPersistentStorageObjectFactory.cs" />
+    <Compile Include="Persistence\NonPersistent\Model\NonPersistentStorageEntity.cs" />
+    <Compile Include="Persistence\NonPersistent\Model\NonPersistentStorageProperty.cs" />
+    <Compile Include="Persistence\NonPersistent\NonPersistentPersistenceModelLoader.cs" />
+    <Compile Include="Persistence\NonPersistent\NonPersistentProvider.cs" />
+    <Compile Include="Persistence\NonPersistent\NonPersistentProviderDefinition.cs" />
+    <Compile Include="Persistence\NonPersistent\NonPersistentStorageObjectFactory.cs" />
+    <Compile Include="Persistence\NonPersistent\Validation\PropertyStorageClassIsSupportedByStorageProviderValidationRule.cs" />
     <Compile Include="Persistence\Rdbms\DataReaders\QueryResultRow.cs" />
     <Compile Include="Persistence\Rdbms\DataReaders\QueryResultRowReader.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\ClassSerializer.cs" />

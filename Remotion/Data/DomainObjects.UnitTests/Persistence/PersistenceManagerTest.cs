@@ -501,6 +501,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     }
 
     [Test]
+    public void SaveInDifferentStorageProviders_WithOnlyOnePersistentStorageProvider_CallsSaveOnBothStorageProviders ()
+    {
+      SetDatabaseModifyable();
+
+      DataContainer orderContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Order1).LocatedObject;
+      DataContainer orderViewModelContainer =  DataContainer.CreateNew (DomainObjectIDs.OrderViewModel1);
+
+      ClientTransactionTestHelper.RegisterDataContainer (TestableClientTransaction, orderContainer);
+      ClientTransactionTestHelper.RegisterDataContainer (TestableClientTransaction, orderViewModelContainer);
+
+      SetPropertyValue (orderContainer, typeof (Order), "OrderNumber", 42);
+      SetPropertyValue (orderViewModelContainer, typeof (OrderViewModel), "OrderSum", 42);
+      SetPropertyValue (orderViewModelContainer, typeof (OrderViewModel), "Object", orderContainer.ID);
+
+      var dataContainers = new DataContainerCollection { orderContainer, orderViewModelContainer };
+
+      var originalOrderTimestamp = orderContainer.Timestamp;
+      var originalOrderViewModleTimestamp = orderViewModelContainer.Timestamp;
+
+      _persistenceManager.Save (dataContainers);
+
+      Assert.That (orderContainer.Timestamp, Is.Not.EqualTo (originalOrderTimestamp));
+      Assert.That (orderViewModelContainer.Timestamp, Is.Not.EqualTo (originalOrderViewModleTimestamp));
+    }
+
+    [Test]
     public void Save_WithCommit_CallsExtensionPoints ()
     {
       SetDatabaseModifyable();

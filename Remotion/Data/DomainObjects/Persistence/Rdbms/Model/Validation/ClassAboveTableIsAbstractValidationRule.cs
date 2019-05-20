@@ -23,7 +23,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
 {
   /// <summary>
-  /// Validates that all concrete (non-abstract) class in the mapping have an associated table (either directly or indirectly).
+  /// Validates that all concrete (non-abstract) classes used with an RDBMS provider in the mapping have an associated table (either directly or indirectly).
   /// </summary>
   public class ClassAboveTableIsAbstractValidationRule : IPersistenceMappingValidationRule
   {
@@ -36,7 +36,23 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-      if (classDefinition.IsClassTypeResolved && !IsAssociatedWithTable(classDefinition) && !classDefinition.IsAbstract)
+      if (!classDefinition.IsClassTypeResolved)
+      {
+        yield return MappingValidationResult.CreateValidResult();
+      }
+      else if (!IsAssociatedWithRdbmsStorageEntityDefinition (classDefinition))
+      {
+        yield return MappingValidationResult.CreateValidResult();
+      }
+      else if (classDefinition.IsAbstract)
+      {
+        yield return MappingValidationResult.CreateValidResult();
+      }
+      else if (IsAssociatedWithTable (classDefinition))
+      {
+        yield return MappingValidationResult.CreateValidResult();
+      }
+      else
       {
         yield return MappingValidationResult.CreateInvalidResultForType (
             classDefinition.ClassType,
@@ -44,10 +60,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
             + "Make class '{0}' abstract or define a table for it or one of its base classes.",
             classDefinition.ClassType.Name);
       }
-      else
-      {
-        yield return MappingValidationResult.CreateValidResult ();
-      }
+    }
+
+    private bool IsAssociatedWithRdbmsStorageEntityDefinition (ClassDefinition classDefinition)
+    {
+      return classDefinition.StorageEntityDefinition is IRdbmsStorageEntityDefinition;
     }
 
     private bool IsAssociatedWithTable (ClassDefinition classDefinition)

@@ -821,6 +821,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     
     #endregion
 
+    #region OrderViewModel
+
+    // non-persistent object
+    public ObjectID OrderViewModel1
+    {
+      get { return CreateObjectID ("OrderViewModel", new Guid ("{31E2914E-19B5-4CBB-BB19-1B69BDA1ADD5}")); }
+    }
+
+    public ObjectID OrderViewModel2
+    {
+      get { return CreateObjectID ("OrderViewModel", new Guid ("{CD740A52-2A63-4AAA-86DE-5789AB7DF58C}")); }
+    }
+
+    #endregion
+
     private ObjectID CreateObjectID (string classID, object value)
     {
       return new ObjectID(_mappingConfiguration.GetClassDefinition (classID), value);

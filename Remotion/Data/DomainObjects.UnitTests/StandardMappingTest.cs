@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
@@ -87,6 +88,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
     protected RdbmsProviderDefinition TestDomainStorageProviderDefinition
     {
       get { return (RdbmsProviderDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID]; }
+    }
+
+    protected NonPersistentProviderDefinition NonPersistentStorageProviderDefinition
+    {
+      get { return (NonPersistentProviderDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_nonPersistentTestDomainProviderID]; }
     }
 
     protected UnitTestStorageProviderStubDefinition UnitTestStorageProviderDefinition
