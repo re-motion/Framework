@@ -34,45 +34,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
   {
     private class SubTestResult
     {
-      private readonly bool _isSuccess;
-      private readonly string _message;
-      private readonly string _imageSource;
-      private readonly string _resourceName;
+      public bool Success { get; }
 
-      private string _name;
+      public string Message { get; }
 
-      public SubTestResult (bool isSuccess, string message, string imageSource, string resourceName)
+      public string ImageSource { get; }
+
+      public string ResourceName { get; }
+
+      public string Name { get; }
+
+      public SubTestResult (bool isSuccess, string message, string imageSource, string resourceName, string testName)
       {
-        _isSuccess = isSuccess;
-        _message = message;
-        _imageSource = imageSource;
-        _resourceName = resourceName;
-      }
-
-      public bool Success
-      {
-        get { return _isSuccess; }
-      }
-
-      public string Message
-      {
-        get { return _message; }
-      }
-
-      public string ImageSource
-      {
-        get { return _imageSource; }
-      }
-
-      public string ResourceName
-      {
-        get { return _resourceName; }
-      }
-
-      public string Name
-      {
-        get { return _name; }
-        set { _name = value; }
+        Success = isSuccess;
+        Message = message;
+        ImageSource = imageSource;
+        ResourceName = resourceName;
+        Name = testName;
       }
     }
 
@@ -198,22 +176,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
           resourceNames.AddRange (
               Enumerable.Range (0, 10).Select (n => string.Format ("{0}{1}.png", resourcePrefix, n)).TakeWhile (s_embeddedResources.Contains));
       }
+
+      var testNameWithPrefix = string.Join (".", testPrefix, testName);
+
       if (resourceNames.Count == 0)
         return new SubTestResult (
-            false,
-            "Can not find a resource image that belongs to the specified test.",
-            path,
-            string.Join (", ", resourcePrefixes));
+               false,
+               "Can not find a resource image that belongs to the specified test.",
+               path,
+               string.Join (", ", resourcePrefixes),
+               testNameWithPrefix);
 
       var result =
           CompareScreenshots (
               resourceNames.ToArray(),
               path,
               maxVariance,
-              maxRatio);
+              maxRatio,
+              testNameWithPrefix);
       if (result.Success)
         File.Delete (path);
-      result.Name = string.Join (".", testPrefix, testName);
 
       return result;
     }
@@ -229,7 +211,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
              };
     }
 
-    private static SubTestResult CompareScreenshots (string[] resourceNames, string sourcePath, int maxVariance, double maxRatio)
+    private static SubTestResult CompareScreenshots (string[] resourceNames, string sourcePath, int maxVariance, double maxRatio, string testName)
     {
       var stringBuilder = new StringBuilder();
 
@@ -281,11 +263,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
               continue;
             }
 
-            return new SubTestResult (true, null, null, resourceName);
+            return new SubTestResult (true, null, null, resourceName, testName);
           }
         }
 
-        return new SubTestResult (false, stringBuilder.ToString(), sourcePath, string.Join (", ", resourceNames));
+        return new SubTestResult (false, stringBuilder.ToString(), sourcePath, string.Join (", ", resourceNames), testName);
       }
     }
 
