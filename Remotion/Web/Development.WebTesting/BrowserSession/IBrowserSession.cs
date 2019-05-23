@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Coypu;
 
 namespace Remotion.Web.Development.WebTesting.BrowserSession
@@ -31,6 +32,16 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
 
     /// <inheritdoc cref="Coypu.BrowserSession.Driver"/>
     Driver Driver { get; }
+
+    /// <summary>
+    /// Returns the new browser log entries of the <see cref="IBrowserSession"/> since the last call of <see cref="GetBrowserLogs"/> or
+    /// the last refresh of the page, if no <see cref="GetBrowserLogs"/> call was made.
+    /// </summary>
+    /// <remarks>
+    /// This method only works for Google Chrome v74 and higher and Microsoft Edge v76 and higher
+    /// while other browsers only return a single log entry informing that the feature is not available.
+    /// </remarks>
+    IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ();
 
     /// <inheritdoc cref="Coypu.BrowserSession.FindWindow"/>
     /// <remarks>

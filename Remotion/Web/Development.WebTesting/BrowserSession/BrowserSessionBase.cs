@@ -58,6 +58,9 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       _driverProcessID = driverProcessId;
     }
 
+    /// <inheritdoc />
+    public abstract IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ();
+
     /// <summary>
     /// Returns the <see cref="IBrowserConfiguration"/> associated with the underlying <see cref="Coypu.BrowserSession"/>.
     /// </summary>

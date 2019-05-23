@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
+using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 
 namespace Remotion.Web.Development.WebTesting.BrowserSession.InternetExplorer
@@ -28,6 +30,12 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.InternetExplorer
     public InternetExplorerBrowserSession ([NotNull] Coypu.BrowserSession value, IInternetExplorerConfiguration configuration, int driverProcessId)
         : base (value, configuration, driverProcessId)
     {
+    }
+
+    /// <inheritdoc />
+    public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
+    {
+      return new[] { new BrowserLogEntry (LogLevel.Info, "Internet Explorer does not support getting browser logs.", DateTime.Now) };
     }
   }
 }

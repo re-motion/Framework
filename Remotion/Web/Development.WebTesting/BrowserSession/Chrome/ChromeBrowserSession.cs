@@ -15,10 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using JetBrains.Annotations;
 using log4net;
+using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 
 namespace Remotion.Web.Development.WebTesting.BrowserSession.Chrome
@@ -40,6 +43,14 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Chrome
         : base (value, configuration, driverProcessID)
     {
       _userDirectory = userDirectory;
+    }
+
+    /// <inheritdoc />
+    public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
+    {
+      return ((IWebDriver) Driver.Native).Manage().Logs.GetLog (LogType.Browser)
+          .Select (logEntry => new BrowserLogEntry (logEntry))
+          .ToArray();
     }
 
     /// <summary>

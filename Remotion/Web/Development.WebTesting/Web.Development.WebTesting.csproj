@@ -87,6 +87,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="BrowserSession\BrowserLogEntry.cs" />
     <Compile Include="ControlSelection\IControlExistsCommand.cs" />
     <Compile Include="ControlSelection\IControlOptionalSelectionCommand.cs" />
     <Compile Include="DownloadInfrastructure\Chrome\ChromeNamedExpectedFileNameFinderStrategy.cs" />
