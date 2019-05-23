@@ -21,7 +21,6 @@ using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
-using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList;
@@ -32,6 +31,7 @@ using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStr
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;

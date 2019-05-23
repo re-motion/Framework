@@ -15,28 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation
 {
   /// <summary>
-  /// Specifies which screenshot input types are tested.
+  /// Test delegate that annotates <paramref name="controlObject"/> using <paramref name="screenshotBuilder"/>.
   /// </summary>
-  [Flags]
-  public enum ScreenshotTestingType
-  {
-    /// <summary>
-    /// A desktop screenshot will be tested.
-    /// </summary>
-    Desktop = 0x1,
-
-    /// <summary>
-    /// A browser screenshot will be tested.
-    /// </summary>
-    Browser = 0x2,
-
-    /// <summary>
-    /// A desktop as well as a browser screenshot will be tested.
-    /// </summary>
-    Both = 0x3
-  }
+  public delegate void ScreenshotTestingDelegate<in T> (ScreenshotBuilder screenshotBuilder, T controlObject);
 }

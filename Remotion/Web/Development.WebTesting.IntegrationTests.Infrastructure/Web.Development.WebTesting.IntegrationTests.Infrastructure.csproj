@@ -91,6 +91,10 @@
     <Compile Include="GenericTestPageParameters\TextContentGenericTestPageParameter.cs" />
     <Compile Include="GenericTestPageParameters\TitleGenericTestPageParameter.cs" />
     <Compile Include="GenericTestParameterConverter.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTesting.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTestingDelegate.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTestingExtensions.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTestingType.cs" />
     <Compile Include="SearchTimeout.cs" />
     <Compile Include="TestCaseFactories\TextContentControlSelectorTestCaseFactory.cs" />
     <Compile Include="IGenericTestPageParameter.cs" />

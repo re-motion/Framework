@@ -22,7 +22,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Coypu;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;

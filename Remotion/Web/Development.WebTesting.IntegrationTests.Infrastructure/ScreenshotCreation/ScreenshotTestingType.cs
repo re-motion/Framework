@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation
 {
   /// <summary>
   /// Specifies which screenshot input types are tested.

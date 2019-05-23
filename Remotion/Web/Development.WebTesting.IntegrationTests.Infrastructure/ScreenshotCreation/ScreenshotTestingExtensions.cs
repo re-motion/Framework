@@ -17,7 +17,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation
 {
   /// <summary>
   /// Extension methods which make using <see cref="ScreenshotTesting"/> easier.

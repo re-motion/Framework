@@ -22,10 +22,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation
 {
   /// <summary>
   /// Provides helper methods for testing the screenshot infrastructure.
@@ -34,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
   {
     private class SubTestResult
     {
-      public bool Success { get; }
+      public bool HasSucceeded { get; }
 
       public string Message { get; }
 
@@ -44,9 +43,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
 
       public string Name { get; }
 
-      public SubTestResult (bool isSuccess, string message, string imageSource, string resourceName, string testName)
+      public SubTestResult (bool hasSucceeded, string message, string imageSource, string resourceName, string testName)
       {
-        Success = isSuccess;
+        HasSucceeded = hasSucceeded;
         Message = message;
         ImageSource = imageSource;
         ResourceName = resourceName;
@@ -57,10 +56,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
     private const string c_savedScreenshotsFolder = "SavedTestScreenshots";
     private const int c_allowedPixelVariance = 10;
     private const double c_maxUnequalPixelThresholdRatio = 0.01;
-
-    private static readonly Assembly s_assembly = typeof (ScreenshotTesting).Assembly;
-    private static readonly AssemblyName s_assemblyName = new AssemblyName (s_assembly.FullName);
-    private static readonly HashSet<string> s_embeddedResources = new HashSet<string> (s_assembly.GetManifestResourceNames());
 
     /// <summary>
     /// Runs the specific <paramref name="test"/> delegate as screenshot setup and compares the resulting image with the stored image.
@@ -92,9 +87,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
       var results = new List<SubTestResult>();
 
       if (type.HasFlag (ScreenshotTestingType.Desktop))
+      {
         results.Add (
             RunSubTest<TValue, TTarget> (helper, helper.CreateDesktopScreenshot(), test, value, "Desktop", testName, savePath, maxVariance, maxRatio));
+      }
       if (type.HasFlag (ScreenshotTestingType.Browser))
+      {
         results.Add (
             RunSubTest<TValue, TTarget> (
                 helper,
@@ -106,33 +104,35 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
                 savePath,
                 maxVariance,
                 maxRatio));
+      }
 
       var stringBuilder = new StringBuilder();
-      var failed = results.Count (t => !t.Success);
+      var failed = results.Count (t => !t.HasSucceeded);
       if (failed == 0)
         stringBuilder.AppendLine (string.Format ("All {0} tests completed successfully.", results.Count));
       else
-        stringBuilder.AppendLine (string.Format ("{0} out of {1} sub tests failed:", results.Count (t => !t.Success), results.Count));
+        stringBuilder.AppendLine (string.Format ("{0} out of {1} sub tests failed:", failed, results.Count));
 
-      var fail = false;
+      var hasFailed = false;
       foreach (var testResult in results)
       {
         stringBuilder.AppendLine();
-        if (!testResult.Success)
+        if (!testResult.HasSucceeded)
         {
-          fail = true;
+          hasFailed = true;
           stringBuilder.AppendLine (string.Format ("Test '{0}' failed:", testResult.Name));
           stringBuilder.AppendLine (string.Format ("message: {0}", testResult.Message));
           stringBuilder.AppendLine (string.Format ("source: {0}", testResult.ImageSource));
         }
         else
+        {
           stringBuilder.AppendLine (string.Format ("Test '{0}' succeeded:", testResult.Name));
+        }
         stringBuilder.AppendLine (string.Format ("resource(s): {0}", testResult.ResourceName));
       }
 
-      if (fail)
+      if (hasFailed)
         Assert.Fail (stringBuilder.ToString());
-      Console.Write (stringBuilder.ToString());
     }
 
     private static SubTestResult RunSubTest<TValue, TTarget> (
@@ -151,8 +151,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
       test (screenshotBuilder, value);
 
       var typeName = typeof (TTarget).FullName;
-      if (typeName.StartsWith (s_assemblyName.Name + "."))
-        typeName = typeName.Substring (s_assemblyName.Name.Length + 1);
+      var testAssembly = test.Method.DeclaringType.Assembly;
+      var testAssemblyName = testAssembly.GetName().Name;
+      var embeddedResources = new HashSet<string> (testAssembly.GetManifestResourceNames());
+      if (typeName.StartsWith (testAssemblyName + "."))
+        typeName = typeName.Substring (testAssemblyName.Length + 1);
 
       // Save the screenshot
       string path;
@@ -164,17 +167,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
       screenshotBuilder.Save (path);
 
       // Try to find the resource which belongs to the current test
-      var resourcePrefixes = GenerateResourcePrefixes (typeName, helper.BrowserConfiguration.BrowserName, testPrefix, testName);
+      var resourcePrefixes = GenerateResourcePrefixes (typeName, testAssemblyName, helper.BrowserConfiguration.BrowserName, testPrefix, testName);
       var resourceNames = new List<string>();
       foreach (var resourcePrefix in resourcePrefixes)
       {
         // try to find a/some resource/s with that resource prefix
         var neutralName = string.Join (".", resourcePrefix, "png");
-        if (s_embeddedResources.Contains (neutralName))
+        if (embeddedResources.Contains (neutralName))
           resourceNames.Add (neutralName);
         else
           resourceNames.AddRange (
-              Enumerable.Range (0, 10).Select (n => string.Format ("{0}{1}.png", resourcePrefix, n)).TakeWhile (s_embeddedResources.Contains));
+              Enumerable.Range (0, 10).Select (n => string.Format ("{0}{1}.png", resourcePrefix, n)).TakeWhile (embeddedResources.Contains));
       }
 
       var testNameWithPrefix = string.Join (".", testPrefix, testName);
@@ -190,28 +193,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
       var result =
           CompareScreenshots (
               resourceNames.ToArray(),
+              testAssembly,
               path,
               maxVariance,
               maxRatio,
               testNameWithPrefix);
-      if (result.Success)
+      if (result.HasSucceeded)
         File.Delete (path);
 
       return result;
     }
 
-    private static string[] GenerateResourcePrefixes (string typeName, string browser, string format, string name)
+    private static string[] GenerateResourcePrefixes (string typeName, string assemblyName, string browser, string format, string name)
     {
       return new[]
              {
-                 string.Join (".", s_assemblyName.Name, c_savedScreenshotsFolder, typeName, browser, format, name),
-                 string.Join (".", s_assemblyName.Name, c_savedScreenshotsFolder, typeName, browser, "any", name),
-                 string.Join (".", s_assemblyName.Name, c_savedScreenshotsFolder, typeName, format, name),
-                 string.Join (".", s_assemblyName.Name, c_savedScreenshotsFolder, typeName, name)
+                 string.Join (".", assemblyName, c_savedScreenshotsFolder, typeName, browser, format, name),
+                 string.Join (".", assemblyName, c_savedScreenshotsFolder, typeName, browser, "any", name),
+                 string.Join (".", assemblyName, c_savedScreenshotsFolder, typeName, format, name),
+                 string.Join (".", assemblyName, c_savedScreenshotsFolder, typeName, name)
              };
     }
 
-    private static SubTestResult CompareScreenshots (string[] resourceNames, string sourcePath, int maxVariance, double maxRatio, string testName)
+    private static SubTestResult CompareScreenshots (string[] resourceNames, Assembly testAssembly, string sourcePath, int maxVariance, double maxRatio, string testName)
     {
       var stringBuilder = new StringBuilder();
 
@@ -222,7 +226,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Scr
           stringBuilder.Append ("resource: ");
           stringBuilder.AppendLine (resourceName);
 
-          using (var resourceStream = s_assembly.GetManifestResourceStream (resourceName))
+          using (var resourceStream = testAssembly.GetManifestResourceStream (resourceName))
           {
             if (resourceStream == null)
               Assert.Fail ("Could not open saved resource image: '{0}'", resourceName);
