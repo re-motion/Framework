@@ -48,7 +48,7 @@
                 </OptionsMenuItems>
               </remotion:BocReferenceValue>
               <remotion:BocAutoCompleteReferenceValue ID="Line01AutoCompleteReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
-                Width="15em" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceServicePath.asmx">
+                Width="15em" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
@@ -76,7 +76,7 @@
                 </OptionsMenuItems>
               </remotion:BocReferenceValue>
               <remotion:BocAutoCompleteReferenceValue ID="Line02AutoCompleteReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
-                Width="15em" ReadOnly="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceServicePath.asmx">
+                Width="15em" ReadOnly="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
@@ -112,7 +112,7 @@
               </remotion:BocReferenceValue>
               M
               <remotion:BocAutoCompleteReferenceValue ID="Line03AutoCompleteReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
-                Width="15em" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceServicePath.asmx">
+                Width="15em" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
@@ -150,7 +150,7 @@
               </remotion:BocReferenceValue>
               M
               <remotion:BocAutoCompleteReferenceValue ID="Line04AutoCompleteReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
-                Width="15em" ReadOnly="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceServicePath.asmx">
+                Width="15em" ReadOnly="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
@@ -261,13 +261,13 @@
             </td>
             <td>
               <remotion:BocAutoCompleteReferenceValue ID="AutoCompleteReferenceValue" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" 
-                ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceServicePath.asmx">
+                ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
               </remotion:BocAutoCompleteReferenceValue>
               <remotion:BocAutoCompleteReferenceValue ID="AutoCompleteReferenceValueReadOnly" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
-                ReadOnly="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceServicePath.asmx">
+                ReadOnly="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
@@ -331,7 +331,7 @@
           </remotion:BocReferenceValue>
           M
           <remotion:BocAutoCompleteReferenceValue ID="Line11AutoCompleteReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
-            Width="15em" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceServicePath.asmx">
+            Width="15em" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
             <OptionsMenuItems>
               <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
             </OptionsMenuItems>
