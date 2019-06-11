@@ -466,7 +466,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
 
       Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
     }
@@ -476,7 +476,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Empty");
+      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Empty");
       Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
     }
 
@@ -485,7 +485,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
 
       Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (1));
     }
@@ -495,7 +495,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Empty");
+      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Empty");
       Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (1));
     }
     
@@ -504,7 +504,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
 
       Assert.That (
           () => bocList.GoToSpecificPage (1),
@@ -516,7 +516,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
 
       Assert.That (
           () => bocList.GoToFirstPage(),
@@ -528,7 +528,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
 
       Assert.That (
           () => bocList.GoToPreviousPage(),
@@ -540,7 +540,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
 
       Assert.That (
           () => bocList.GoToNextPage(),
@@ -552,7 +552,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
 
       Assert.That (
           () => bocList.GoToLastPage(),
