@@ -19,7 +19,6 @@ using System.Drawing;
 using System.Linq;
 using Coypu;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
@@ -101,9 +100,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void ScreenshotTest_AutoComplete ()
     {
-      const string data =
-          "{data:{},result:''},{data:{},result:''},{data:{},result:''},{data:{},result:''},{data:{},result:''},{data:{DisplayName:' '},result:''},{data:{},result:''},{data:{},result:''},{data:{},result:''},{data:{},result:''}";
-
       var home = Start();
 
       var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
@@ -113,15 +109,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       if (control.IsReadOnly())
         Assert.Fail ("This test requires the control to be not read-only.");
 
-      var executor = JavaScriptExecutor.GetJavaScriptExecutor (control);
-      JavaScriptExecutor.ExecuteVoidStatement (
-          executor,
-          string.Format (
-              "$(arguments[0]).getAutoCompleteSelectList().display ([{0}],'');",
-              data),
-          (IWebElement) input.GetValue().GetTarget().Native);
-
-      selectList.Show();
+      input.SetValue (string.Empty);
       selectList.WaitUntilVisible();
 
       Helper
@@ -141,8 +129,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
                 target.NextItem();
                 builder.AnnotateBox (target.GetSelectedItem(), Pens.Red, WebPadding.Inner);
 
-                // bug currently the .PreviousPage goes back 9 items instead of only 8
-                target.NextItem();
                 target.PreviousPage();
                 builder.AnnotateBox (target.GetSelectedItem(), Pens.Yellow, WebPadding.Inner);
 
@@ -152,7 +138,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
                 target.PreviousItem();
                 builder.AnnotateBox (target.GetSelectedItem(), Pens.Pink, WebPadding.Inner);
 
-                target.Select().WithDisplayText (" ");
+                target.Select().WithDisplayText ("B, B");
                 builder.AnnotateBox (target.GetSelectedItem(), Pens.Chartreuse, WebPadding.Inner);
 
                 builder.Crop (target);

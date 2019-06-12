@@ -151,7 +151,7 @@
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\Chrome.any.ScreenshotTest_AutoComplete.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest1.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest_AutoComplete0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest_AutoComplete.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\ScreenshotTest_Popup.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\Chrome.any.ScreenshotTest_DatePicker.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\InternetExplorer.any.ScreenshotTest.png" />
@@ -189,9 +189,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest_AutoComplete1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

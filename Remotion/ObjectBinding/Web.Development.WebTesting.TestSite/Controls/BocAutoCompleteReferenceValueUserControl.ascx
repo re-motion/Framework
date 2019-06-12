@@ -213,7 +213,7 @@
                                               ReadOnly="False"
                                               DataSourceControl="CurrentObject"
                                               PropertyIdentifier="Partner"
-                                              CompletionSetCount="5"
+                                              CompletionSetCount="10"
                                               ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
                                               runat="server">
         
