@@ -42,6 +42,8 @@ var _dropDownMenu_repositionInterval = 200;
 var _dropDownMenu_repositionTimer = null;
 var _dropDownMenu_statusPopupDelay = 200;
 var _dropDownMenu_statusPopupRepositionTimer = null;
+var _dropDownMenu_blurTimer = null;
+var _dropDownMenu_updateFocus = true;
 
 function DropDownMenu_MenuInfo (id, loadMenuItems, resources)
 {
@@ -182,7 +184,7 @@ function DropDownMenu_OnClick(context, menuID, getSelectionCount, evt)
   }
   if (_dropDownMenu_currentMenu != null && _dropDownMenu_currentMenu[0] !== context[0])
   {
-    DropDownMenu_ClosePopUp();
+    DropDownMenu_ClosePopUp(!_dropDownMenu_updateFocus);
   }
   if (_dropDownMenu_currentMenu == null)
   {
@@ -306,7 +308,8 @@ function DropDownMenu_BeginOpenPopUp(menuID, context, evt)
   if (evt === null)
     _dropDownMenu_statusPopupRepositionTimer = setTimeout(repositionHandler, _dropDownMenu_repositionInterval);
 
-  setTimeout(function () { $('body').bind('click', DropDownMenu_ClosePopUp); }, 10);
+  menuButton.bind('focus', DropDownMenu_FocusHandler);
+  menuButton.bind('blur', DropDownMenu_BlurHandler);
 }
 
 function DropDownMenu_EndOpenPopUp (menuID, context, selectionCount, evt, itemInfos)
@@ -369,7 +372,7 @@ function DropDownMenu_EndOpenPopUp (menuID, context, selectionCount, evt, itemIn
       return false;
 
     _dropDownMenu_itemClicked = true;
-    DropDownMenu_ClosePopUp();
+    DropDownMenu_ClosePopUp(_dropDownMenu_updateFocus);
     try
     {
       eval(this.getAttribute('javascript'));
@@ -459,20 +462,27 @@ function DropDownMenu_ApplyPosition (popUpDiv, clickEvent, referenceElement)
   }
 }
 
-function DropDownMenu_ClosePopUp ()
+function DropDownMenu_ClosePopUp (updateFocus)
 {
+  if (_dropDownMenu_blurTimer !== null)
+    clearTimeout(_dropDownMenu_blurTimer);
+
   if (_dropDownMenu_currentPopup !== null)
   {
     const menuPopup = _dropDownMenu_currentPopup;
     _dropDownMenu_currentPopup = null;
-    const menuButton = $('a[aria-controls="' + menuPopup.id + '"]')[0];
+    const $menuButton = $('a[aria-controls="' + menuPopup.id + '"]');
+    $menuButton.unbind('focus', DropDownMenu_BlurHandler);
+    $menuButton.unbind('blur', DropDownMenu_BlurHandler);
+    const menuButton = $menuButton[0];
     menuButton.setAttribute('aria-expanded', 'false');
     menuButton.removeAttribute('aria-controls');
-    menuButton.focus();
+    if (updateFocus === _dropDownMenu_updateFocus)
+      menuButton.focus();
     menuPopup.parentElement.removeChild(menuPopup);
   }
 
-  if (_dropDownMenu_currentStatusPopup != null)
+  if (_dropDownMenu_currentStatusPopup !== null)
   {
     const statusPopup = _dropDownMenu_currentStatusPopup;
     _dropDownMenu_currentStatusPopup = null;
@@ -482,7 +492,6 @@ function DropDownMenu_ClosePopUp ()
   }
 
   _dropDownMenu_currentMenu = null;
-  $('body').unbind('click', DropDownMenu_ClosePopUp);
 }
 
 function DropDownMenu_CreateItem(itemInfo, selectionCount)
@@ -598,6 +607,9 @@ function DropDownMenu_CreateTextItem(itemInfo, selectionCount)
   var span = document.createElement('span');
   span.innerHTML = itemInfo.Text;
   anchor.appendChild(span);
+  $(anchor)
+    .bind ('focus', DropDownMenu_FocusHandler)
+    .bind ('blur', DropDownMenu_BlurHandler);
 
   return item;
 }
@@ -631,7 +643,7 @@ function DropDownMenu_OnKeyDown(event, dropDownMenu, getSelectionCount, hasDedic
   switch (event.keyCode)
   {
     case 9: // tab
-      DropDownMenu_ClosePopUp();
+      DropDownMenu_ClosePopUp(_dropDownMenu_updateFocus);
       return;
     case 13: //enter
     case 32: //space
@@ -645,13 +657,13 @@ function DropDownMenu_OnKeyDown(event, dropDownMenu, getSelectionCount, hasDedic
       }
       else
       {
-        DropDownMenu_ClosePopUp();
+        DropDownMenu_ClosePopUp(_dropDownMenu_updateFocus);
       }
       return;
     case 27: //escape
       event.preventDefault();
       event.stopPropagation();
-      DropDownMenu_ClosePopUp();
+      DropDownMenu_ClosePopUp(_dropDownMenu_updateFocus);
       return;
     case 38: // up arrow
     case 40: // down arrow
@@ -689,7 +701,7 @@ function DropDownMenu_Options_OnKeyDown(event, dropDownMenu)
   switch (event.keyCode)
   {
     case 9: // tab
-      DropDownMenu_ClosePopUp();
+      DropDownMenu_ClosePopUp(_dropDownMenu_updateFocus);
       return;
     case 13: //enter
     case 32: //space
@@ -704,7 +716,7 @@ function DropDownMenu_Options_OnKeyDown(event, dropDownMenu)
     case 27: //escape
       event.preventDefault();
       event.stopPropagation();
-      DropDownMenu_ClosePopUp();
+      DropDownMenu_ClosePopUp(_dropDownMenu_updateFocus);
       break;
     case 40: // down arrow
       event.preventDefault();
@@ -759,7 +771,9 @@ function DropDownMenu_Options_OnKeyDown(event, dropDownMenu)
       if (dropDownMenuItem.children('a').length > 0) // skip separators
       {
         dropDownMenuItem.addClass(_dropDownMenu_itemSelectedClassName);
-        dropDownMenuItem.children ('a').focus();
+        var nonJQueryAnchor = dropDownMenuItem.children ('a')[0];
+        // do not use jQuery focus() here because jQuery causes the focus/blur events to fire in the wrong order (first focus, then blur)
+        nonJQueryAnchor.focus();
       }
     }
   }
@@ -797,4 +811,18 @@ function DropDownMenu_GetTarget (event, tagName)
   if (!element)
     return [];
   return element;
+}
+
+function DropDownMenu_FocusHandler ()
+{
+  if (_dropDownMenu_blurTimer !== null)
+    clearTimeout(_dropDownMenu_blurTimer);
+}
+
+function DropDownMenu_BlurHandler ()
+{
+  if (_dropDownMenu_blurTimer !== null)
+    clearTimeout (_dropDownMenu_blurTimer);
+
+  _dropDownMenu_blurTimer = setTimeout (function () { DropDownMenu_ClosePopUp (!_dropDownMenu_updateFocus); }, 50);
 }
