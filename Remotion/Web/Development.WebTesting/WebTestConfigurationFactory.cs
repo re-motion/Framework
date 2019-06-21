@@ -39,9 +39,8 @@ namespace Remotion.Web.Development.WebTesting
   public class WebTestConfigurationFactory
   {
     /// <summary>
-    /// Represents the latest version of Chrome verified to be compatible with Selenium WebDriver.
-    /// Higher Chrome versions are not guaranteed to work with the currently dependent ChromeDriver. 
-    /// In order to achieve a stable testing environment a standalone Chrome with a matching version should be used.
+    /// Represents the latest tested version of Chrome, compatible with the framework.
+    /// In order to achieve a stable testing environment, a standalone Chrome browser with a matching ChromeDriver version should be used.
     /// </summary>
     protected const string LatestTestedChromeVersion = "74";
     
