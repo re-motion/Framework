@@ -31,20 +31,33 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public class FileDownloadTest : IntegrationTest
   {
+    private const string c_sampleZipFileName = "download_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.zip";
+    private const string c_sampleTxtFileNameWithoutExtension = "SampleFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c";
+    private const string c_sampleTxtFileName = "SampleFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.txt";
+    private const string c_sampleXmlFileName = "SampleXmlFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.xml";
+
+    [SetUp]
+    public void SetUp ()
+    {
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+      {
+        var downloadDirectory = ((InternetExplorerDownloadHelper) Helper.BrowserConfiguration.DownloadHelper).DownloadDirectory;
+        EnsureDownloadFilesAreDeleted (downloadDirectory);
+      }
+    }
+
     [Test]
     public void TestDownloadReplacesCurrentPage_WithExpectedFileName ()
     {
       if (Helper.BrowserConfiguration.IsInternetExplorer())
         Assert.Ignore ("File downloads which replace the current page are currently broken in IE. See https://github.com/SeleniumHQ/selenium/issues/1843 for more information.");
 
-      const string fileName = "SampleFile.txt";
-
       var home = Start();
       var button = home.Scope.FindId ("body_DownloadTxtReplaceSiteButton");
       button.Click();
 
       Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (fileName),
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileName),
           Throws.Nothing);
     }
 
@@ -81,8 +94,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       button.Click();
 
       var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
-      Assert.That (downloadedFile.FileName, Is.EqualTo ("SampleFile.txt"));
-      Assert.That (Path.GetFileName (downloadedFile.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+      Assert.That (downloadedFile.FileName, Is.EqualTo (c_sampleTxtFileName));
+      Assert.That (Path.GetFileName (downloadedFile.FullFilePath), Is.EqualTo (c_sampleTxtFileName));
       Assert.That (
           new FileInfo (downloadedFile.FullFilePath).Directory.Parent.FullName,
           Is.EqualTo (Path.GetTempPath().TrimEnd (Path.DirectorySeparatorChar)));
@@ -95,8 +108,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var button = home.Scope.FindId ("body_DownloadPostbackButton");
       button.Click();
 
-      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt");
-      Assert.That (Path.GetFileName (downloadedFile.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileName);
+      Assert.That (Path.GetFileName (downloadedFile.FullFilePath), Is.EqualTo (c_sampleTxtFileName));
       Assert.That (
           new FileInfo (downloadedFile.FullFilePath).Directory.Parent.FullName,
           Is.EqualTo (Path.GetTempPath().TrimEnd (Path.DirectorySeparatorChar)));
@@ -105,13 +118,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestDownloadOpensInNewWindow_WithAnchorTargetBlank ()
     {
+      // Note: test for Chrome "safebrowsing" (requires safebrowsing.enabled to be set to true in browser preferences - see Chrome configuration).
+      // This test fails if safebrowsing is set to false because downloading an XML file produces an additional user prompt.
       var home = Start();
       var anchor = home.Scope.FindId ("body_TargetBlankAnchor");
       anchor.Click();
       IDownloadedFile downloadedFile = null;
 
       Assert.That (() => downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName(), Throws.Nothing);
-      Assert.That (downloadedFile.FileName, Is.EqualTo ("SampleXmlFile.xml"));
+      Assert.That (downloadedFile.FileName, Is.EqualTo (c_sampleXmlFileName));
     }
 
     [Test]
@@ -179,7 +194,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var downloadStartedTimeout = TimeSpan.FromSeconds (10);
       var downloadUpdatedTimeout = TimeSpan.FromSeconds (3);
-      const string fileName = "SampleFile.txt";
 
       var startDownloadLambda = new Action (
           () =>
@@ -199,7 +213,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         Assert.That (
           () =>
             Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
-              fileName,
+              c_sampleTxtFileName,
               downloadStartedTimeout,
               downloadUpdatedTimeout),
           Throws.InstanceOf<DownloadResultNotFoundException>()
@@ -226,7 +240,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         Assert.That (
           () =>
             Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
-              fileName,
+              c_sampleTxtFileName,
               downloadStartedTimeout,
               downloadUpdatedTimeout),
           Throws.InstanceOf<DownloadResultNotFoundException>()
@@ -247,7 +261,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var button = home.Scope.FindId ("body_DownloadPostbackButton");
       button.Click();
 
-      const string realFileName = "SampleFile.txt"; 
       const string expectedFileName = "WrongFileName";
 
       Assert.That (
@@ -260,14 +273,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 Unmatched files in the download directory (will be cleaned up by the infrastructure):
  - {1}",
                 expectedFileName,
-                realFileName)));
+                c_sampleTxtFileName)));
 
       //InternetExplorer works in the default download directory of the user. If cleanUpUnmatchedDownloadedFiles is set to false in config, the unmatched file is not deleted by the WebTestFramework. 
       //Therefore, we have to delete these files manually.
       if (Helper.BrowserConfiguration.IsInternetExplorer())
       {
         var downloadDirectory = ((InternetExplorerDownloadHelper) Helper.BrowserConfiguration.DownloadHelper).DownloadDirectory;
-        var fullFilePath = Path.Combine (downloadDirectory, realFileName);
+        var fullFilePath = Path.Combine (downloadDirectory, c_sampleTxtFileName);
         File.Delete (fullFilePath);
       }
     }
@@ -281,7 +294,7 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       {
         Assert.That (
           () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
-            "SampleFile.txt",
+            c_sampleTxtFileName,
             TimeSpan.FromSeconds (1),
             TimeSpan.FromSeconds (1)),
           Throws.InstanceOf<DownloadResultNotFoundException>()
@@ -292,7 +305,7 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       {
         Assert.That (
           () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
-            "SampleFile.txt",
+            c_sampleTxtFileName,
             TimeSpan.FromSeconds (1),
             TimeSpan.FromSeconds (1)),
           Throws.InstanceOf<DownloadResultNotFoundException>()
@@ -305,14 +318,14 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     public void TestDownloadOpensInNewWindow_WithPostback_WithXmlFile ()
     {
       // Note: test for Chrome "safebrowsing" (requires safebrowsing.enabled to be set to true in browser preferences - see Chrome configuration).
-      const string fileName = "SampleXmlFile.xml";
+      // This test fails if safebrowsing is set to false because downloading an XML file produces an additional user prompt.
 
       var home = Start();
       var button = home.Scope.FindId ("body_DownloadXmlFile");
       button.Click();
 
       Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (fileName), Throws.Nothing);
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleXmlFileName), Throws.Nothing);
     }
 
     [Test]
@@ -323,14 +336,14 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       button.Click();
 
       var downloadedFile1 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
-      Assert.That (downloadedFile1.FileName, Is.EqualTo ("SampleFile.txt"));
-      Assert.That (Path.GetFileName (downloadedFile1.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+      Assert.That (downloadedFile1.FileName, Is.EqualTo (c_sampleTxtFileName));
+      Assert.That (Path.GetFileName (downloadedFile1.FullFilePath), Is.EqualTo (c_sampleTxtFileName));
 
       button.Click();
 
       var downloadedFile2 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
-      Assert.That (downloadedFile2.FileName, Is.EqualTo ("SampleFile.txt"));
-      Assert.That (Path.GetFileName (downloadedFile2.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+      Assert.That (downloadedFile2.FileName, Is.EqualTo (c_sampleTxtFileName));
+      Assert.That (Path.GetFileName (downloadedFile2.FullFilePath), Is.EqualTo (c_sampleTxtFileName));
 
       Assert.That (downloadedFile2.FullFilePath, Is.Not.EqualTo (downloadedFile1.FullFilePath));
     }
@@ -342,15 +355,15 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       var button = home.Scope.FindId ("body_DownloadPostbackButton");
       button.Click();
 
-      var downloadedFile1 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt");
-      Assert.That (downloadedFile1.FileName, Is.EqualTo ("SampleFile.txt"));
-      Assert.That (Path.GetFileName (downloadedFile1.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+      var downloadedFile1 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileName);
+      Assert.That (downloadedFile1.FileName, Is.EqualTo (c_sampleTxtFileName));
+      Assert.That (Path.GetFileName (downloadedFile1.FullFilePath), Is.EqualTo (c_sampleTxtFileName));
 
       button.Click();
 
-      var downloadedFile2 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt");
-      Assert.That (downloadedFile2.FileName, Is.EqualTo ("SampleFile.txt"));
-      Assert.That (Path.GetFileName (downloadedFile2.FullFilePath), Is.EqualTo ("SampleFile.txt"));
+      var downloadedFile2 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileName);
+      Assert.That (downloadedFile2.FileName, Is.EqualTo (c_sampleTxtFileName));
+      Assert.That (Path.GetFileName (downloadedFile2.FullFilePath), Is.EqualTo (c_sampleTxtFileName));
 
       Assert.That (downloadedFile2.FullFilePath, Is.Not.EqualTo (downloadedFile1.FullFilePath));
     }
@@ -378,7 +391,7 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       var button = home.Scope.FindId ("body_DownloadPostbackButton");
       button.Click();
 
-      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName ("SampleFile.txt");
+      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileName);
 
       Assert.That (File.Exists (downloadedFile.FullFilePath), Is.True);
 
@@ -390,8 +403,6 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     [Test]
     public void TestDownload_HandleDownloadWithoutFileExtension ()
     {
-      const string fileName = "SampleFile";
-
       var home = Start();
       var button = home.Scope.FindId ("body_DownloadFileWithoutFileExtension");
       button.Click();
@@ -401,14 +412,12 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       //This unit test is testing if our framework can handle the download information bar when the open-button is missing.
       //The test is not restricted to Internet Explorer, to ensure that no browser has problem with this behavior.
       Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (fileName), Throws.Nothing);
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileNameWithoutExtension), Throws.Nothing);
     }
 
     [Test]
     public void TestDownload_HandleZipFileDownload ()
     {
-      const string fileName = "download.zip";
-
       var home = Start();
 
       var button = home.Scope.FindId ("body_DownloadZipFile");
@@ -418,7 +427,7 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       //This unit test is testing if our framework can handle this special window.
       //The test is not restricted to Internet Explorer, to ensure that no browser has problem with this behavior.
       Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (fileName),
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleZipFileName),
           Throws.Nothing);
     }
 
@@ -427,12 +436,20 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       return Start<WebFormsTestPageObject> ("FileDownloadTest.aspx");
     }
 
+    private void EnsureDownloadFilesAreDeleted (string downloadDirectory)
+    {
+      Directory.EnumerateFiles (downloadDirectory)
+          .Where (file => file.EndsWith (c_sampleTxtFileName) || file.EndsWith (c_sampleXmlFileName) || file.EndsWith (c_sampleZipFileName))
+          .ToList()
+          .ForEach (File.Delete);
+    }
+
     private void CleanupPartialSampleFiles (string downloadDirectory, IEnumerable<string> filesInDownloadDirectoryBeforeDownload)
     {
       var newFilesInDownloadDirectoryAfterDownload = Directory.GetFiles (downloadDirectory).Except (filesInDownloadDirectoryBeforeDownload);
 
       var filesToBeDeleted = newFilesInDownloadDirectoryAfterDownload.Select (e => new { FullPath = e, FileName = Path.GetFileName (e) })
-          .Where (x => x.FileName.StartsWith ("SampleFile.txt.") && x.FileName.EndsWith ("partial"));
+          .Where (x => x.FileName.StartsWith ($"{c_sampleTxtFileName}.") && x.FileName.EndsWith ("partial"));
 
       foreach (var file in filesToBeDeleted)
       {

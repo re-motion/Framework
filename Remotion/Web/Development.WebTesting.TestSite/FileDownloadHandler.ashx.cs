@@ -34,13 +34,13 @@ namespace Remotion.Web.Development.WebTesting.TestSite
         case null:
           throw new HttpException (404, "FileDownloadHandler only returns files if the Parameter 'testMode' is set.");
         case "xml":
-          AddFileToResponse (context, "SampleXmlFile.xml");
+          AddFileToResponse (context, "SampleXmlFile.xml", "SampleXmlFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.xml");
           break;
         case "txt":
-          AddFileToResponse (context, "SampleFile.txt");
+          AddFileToResponse (context, "SampleFile.txt", "SampleFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.txt");
           break;
         case "withoutExtension":
-          AddFileToResponse (context, "SampleFile.txt", "SampleFile");
+          AddFileToResponse (context, "SampleFile.txt", "SampleFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c");
           break;
         case "longRunning":
           LongRunningResponse (context);
@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       response.Clear();
       response.ClearHeaders();
       response.ClearContent();
-      response.AddHeader ("Content-Disposition", "attachment; filename=SampleFile.txt");
+      response.AddHeader ("Content-Disposition", "attachment; filename=SampleFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.txt");
       BigInteger length = 1024 * 500;
       length = length * 2;
       response.AddHeader ("Content-Length", length.ToString());  //Some high number so browser does not think we are finished
@@ -105,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       response.ClearHeaders();
       response.ClearContent();
 
-      response.AddHeader ("Content-Disposition", "filename=download.zip");
+      response.AddHeader ("Content-Disposition", "filename=download_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.zip");
       response.AddHeader ("Content-Length", data.Length.ToString());
       response.ContentType = "application/x-zip-compressed";
       response.TransmitFile (fullFilePath);

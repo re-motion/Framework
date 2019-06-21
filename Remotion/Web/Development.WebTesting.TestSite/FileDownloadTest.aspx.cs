@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void DownloadButtonOnClick (object sender, EventArgs eventArgs)
     {
-      const string file = "SampleFile.txt";
+      const string file = "SampleFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.txt";
       var fullFilePath = Server.MapPath ("~/SampleFile.txt");
 
       Response.Clear();
