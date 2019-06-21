@@ -27,6 +27,12 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   public class WxeResetCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (WxeResetCompletionDetectionStrategy));
+    private readonly TimeSpan? _timeout;
+
+    public WxeResetCompletionDetectionStrategy (TimeSpan? timeout = null)
+    {
+      _timeout = timeout;
+    }
 
     /// <inheritdoc/>
     public object PrepareWaitForCompletion (PageObjectContext context)
@@ -43,10 +49,10 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       ArgumentUtility.CheckNotNull ("state", state);
 
       var oldWxeFunctionToken = (string) state;
-      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken (s_log, context, oldWxeFunctionToken);
+      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken (s_log, context, oldWxeFunctionToken, _timeout);
 
       const int expectedWxePostBackSequenceNumber = 2;
-      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber (s_log, context, expectedWxePostBackSequenceNumber);
+      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber (s_log, context, expectedWxePostBackSequenceNumber, _timeout);
     }
   }
 }

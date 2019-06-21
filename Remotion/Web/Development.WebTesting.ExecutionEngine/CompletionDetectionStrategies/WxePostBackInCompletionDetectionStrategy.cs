@@ -29,13 +29,15 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     private static readonly ILog s_log = LogManager.GetLogger (typeof (WxePostBackInCompletionDetectionStrategy));
     private readonly PageObjectContext _context;
     private readonly int _expectedWxePostBackSequenceNumberIncrease;
+    private readonly TimeSpan? _timeout;
 
-    public WxePostBackInCompletionDetectionStrategy ([NotNull] PageObjectContext context, int expectedWxePostBackSequenceNumberIncrease)
+    public WxePostBackInCompletionDetectionStrategy ([NotNull] PageObjectContext context, int expectedWxePostBackSequenceNumberIncrease, TimeSpan? timeout = null)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
       _context = context;
       _expectedWxePostBackSequenceNumberIncrease = expectedWxePostBackSequenceNumberIncrease;
+      _timeout = timeout;
     }
 
     /// <inheritdoc/>
@@ -58,7 +60,8 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
           s_log,
           _context,
           oldWxePostBackSequenceNumber,
-          _expectedWxePostBackSequenceNumberIncrease);
+          _expectedWxePostBackSequenceNumberIncrease,
+          _timeout);
     }
   }
 }

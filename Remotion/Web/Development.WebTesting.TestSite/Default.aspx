@@ -53,6 +53,7 @@
           <tr><td><a href="MultiWindowTest/Main.wxe">MultiWindowTest</a></td></tr>
           <tr><td><a href="BrowserSessionTest.wxe">BrowserSessionTest</a></td></tr>
           <tr><td><a href="PlatformTest.wxe">PlatformTest</a></td></tr>
+          <tr><td><a href="CompletionDetectionStrategyTest.wxe">CompletionDetectionStrategyTest</a></td></tr>
         </table>
         
         <label>Generic tests</label>

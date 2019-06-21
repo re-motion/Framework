@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using JetBrains.Annotations;
 using log4net;
 using Remotion.Utilities;
@@ -56,19 +57,23 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     public static void WaitForExpectedWxePostBackSequenceNumber (
         [NotNull] ILog log,
         [NotNull] PageObjectContext context,
-        int expectedWxePostBackSequenceNumber)
+        int expectedWxePostBackSequenceNumber,
+        TimeSpan? timeout = null)
     {
       ArgumentUtility.CheckNotNull ("log", log);
       ArgumentUtility.CheckNotNull ("context", context);
 
       int newWxePostBackSequenceNumber;
+      var options = timeout.HasValue ? new Options { Timeout = timeout.Value } : null;
+
       try
       {
         EnsureWindowContext (context);
 
         newWxePostBackSequenceNumber = context.Window.Query (
             () => GetWxePostBackSequenceNumber (context),
-            expectedWxePostBackSequenceNumber);
+            expectedWxePostBackSequenceNumber,
+            options);
       }
       catch (Exception)
       {
@@ -101,7 +106,8 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
         [NotNull] ILog log,
         [NotNull] PageObjectContext context,
         int oldWxePostBackSequenceNumber,
-        int expectedWxePostBackSequenceNumberIncrease)
+        int expectedWxePostBackSequenceNumberIncrease,
+        TimeSpan? timeout = null)
     {
       ArgumentUtility.CheckNotNull ("log", log);
       ArgumentUtility.CheckNotNull ("context", context);
@@ -110,25 +116,30 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
 
       log.DebugFormat ("State: previous WXE-PSN: {0}, expected WXE-PSN: {1}.", oldWxePostBackSequenceNumber, expectedWxePostBackSequenceNumber);
 
-      WaitForExpectedWxePostBackSequenceNumber (log, context, expectedWxePostBackSequenceNumber);
+      WaitForExpectedWxePostBackSequenceNumber (log, context, expectedWxePostBackSequenceNumber, timeout);
     }
 
     /// <summary>
     /// Waits for the WXE function token to change from <paramref name="oldWxeFunctionToken"/> to a new function token.
     /// </summary>
-    public static void WaitForNewWxeFunctionToken ([NotNull] ILog log, [NotNull] PageObjectContext context, [NotNull] string oldWxeFunctionToken)
+    public static void WaitForNewWxeFunctionToken (
+        [NotNull] ILog log,
+        [NotNull] PageObjectContext context,
+        [NotNull] string oldWxeFunctionToken,
+        TimeSpan? timeout = null)
     {
       ArgumentUtility.CheckNotNull ("log", log);
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("oldWxeFunctionToken", oldWxeFunctionToken);
 
       log.DebugFormat ("State: previous WXE-FT: {0}.", oldWxeFunctionToken);
+      var options = timeout.HasValue ? new Options { Timeout = timeout.Value } : null;
 
       try
       {
         EnsureWindowContext (context);
 
-        context.Window.Query (() => GetWxeFunctionToken (context) != oldWxeFunctionToken, true);
+        context.Window.Query (() => GetWxeFunctionToken (context) != oldWxeFunctionToken, true, options);
       }
       catch (Exception)
       {
