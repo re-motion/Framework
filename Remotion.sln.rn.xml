@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CustomizeVSWindowTitle>
+  <SettingsSet
+    AppendedString=" "
+    PatternIfRunningMode="Remotion - [svnDirectoryName] (Running)"
+    PatternIfBreakMode="Remotion - [svnDirectoryName] (Debugging)"
+    PatternIfDesignMode="Remotion - [svnDirectoryName]" />
+</CustomizeVSWindowTitle>
