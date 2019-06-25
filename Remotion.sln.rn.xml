@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CustomizeVSWindowTitle>
+  <SettingsSet
+    AppendedString=" "
+    PatternIfRunningMode="Remotion - v1.16 (Running)"
+    PatternIfBreakMode="Remotion - v1.16 (Debugging)"
+    PatternIfDesignMode="Remotion - v1.16" />
+</CustomizeVSWindowTitle>
