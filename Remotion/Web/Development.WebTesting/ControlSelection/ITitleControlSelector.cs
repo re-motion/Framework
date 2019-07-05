@@ -31,6 +31,8 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <summary>
     /// Selects the control within the given <paramref name="context"/> using the given <paramref name="title"/>.
     /// </summary>
+    /// <param name="context">The <see cref="ControlObjectContext"/> to select the <see cref="ControlObject"/> in. Must not be <see langword="null"/>.</param>
+    /// <param name="title">The title of the <see cref="ControlObject"/>. Must not be <see langword="null"/> or empty.</param>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
     /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
     [NotNull]
@@ -39,6 +41,8 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <summary>
     /// Selects the control, if it exists, within the given <paramref name="context"/> using the given <paramref name="title"/>.
     /// </summary>
+    /// <param name="context">The <see cref="ControlObjectContext"/> to select the <see cref="ControlObject"/> in. Must not be <see langword="null"/>.</param>
+    /// <param name="title">The title of the <see cref="ControlObject"/>. Must not be <see langword="null"/> or empty.</param>
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     [CanBeNull]
     TControlObject SelectOptionalPerTitle ([NotNull] ControlSelectionContext context, [NotNull] string title);
@@ -46,6 +50,8 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <summary>
     /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="title"/> exists.
     /// </summary>
+    /// <param name="context">The <see cref="ControlObjectContext"/> to search the <see cref="ControlObject"/> in. Must not be <see langword="null"/>.</param>
+    /// <param name="title">The title of the <see cref="ControlObject"/>. Must not be <see langword="null"/> or empty.</param>
     /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
     bool ExistsPerTitle ([NotNull] ControlSelectionContext context, [NotNull] string title);
   }

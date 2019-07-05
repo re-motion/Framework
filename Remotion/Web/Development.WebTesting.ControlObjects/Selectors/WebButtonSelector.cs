@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public WebButtonControlObject SelectPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("textContent", textContent);
+      ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
 
       var scope = FindScopePerTextContent (context, textContent);
 
@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public WebButtonControlObject SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("textContent", textContent);
+      ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
 
       var scope = FindScopePerTextContent (context, textContent);
 
@@ -65,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public bool ExistsPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("textContent", textContent);
+      ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
 
       var scope = FindScopePerTextContent (context, textContent);
 
@@ -76,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public WebButtonControlObject SelectPerItemID (ControlSelectionContext context, string itemID)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
       var scope = FindScopePerItemID (context, itemID);
 
@@ -87,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public WebButtonControlObject SelectOptionalPerItemID (ControlSelectionContext context, string itemID)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
       var scope = FindScopePerItemID (context, itemID);
 
@@ -101,7 +101,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public bool ExistsPerItemID (ControlSelectionContext context, string itemID)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
       var scope = FindScopePerItemID (context, itemID);
 
