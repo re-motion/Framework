@@ -28,9 +28,42 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   public class BocTreeViewNodeControlObject
       : WebFormsControlObjectWithDiagnosticMetadata,
           IControlObjectWithNodes<BocTreeViewNodeControlObject>,
-          IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>,
           IControlObjectWithText
   {
+    private class GetNodeImplementationForChildren : IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>
+    {
+      private readonly IFluentControlObjectWithNodes<WebTreeViewNodeControlObject> _impl;
+
+      public GetNodeImplementationForChildren (WebTreeViewNodeControlObject webTreeViewNode)
+      {
+        _impl = webTreeViewNode.GetNode();
+      }
+
+      public BocTreeViewNodeControlObject WithItemID (string itemID)
+      {
+        var webTreeViewNode = _impl.WithItemID (itemID);
+        return new BocTreeViewNodeControlObject (webTreeViewNode);
+      }
+
+      public BocTreeViewNodeControlObject WithIndex (int oneBasedIndex)
+      {
+        var webTreeViewNode = _impl.WithIndex (oneBasedIndex);
+        return new BocTreeViewNodeControlObject (webTreeViewNode);
+      }
+
+      public BocTreeViewNodeControlObject WithDisplayText (string displayText)
+      {
+        var webTreeViewNode = _impl.WithDisplayText (displayText);
+        return new BocTreeViewNodeControlObject (webTreeViewNode);
+      }
+
+      public BocTreeViewNodeControlObject WithDisplayTextContains (string containsDisplayText)
+      {
+        var webTreeViewNode = _impl.WithDisplayTextContains (containsDisplayText);
+        return new BocTreeViewNodeControlObject (webTreeViewNode);
+      }
+    }
+
     private readonly WebTreeViewNodeControlObject _webTreeViewNode;
 
     [UsedImplicitly]
@@ -138,10 +171,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return _webTreeViewNode.GetContextMenu();
     }
 
-     /// <inheritdoc/>
+    /// <inheritdoc/>
     public IFluentControlObjectWithNodes<BocTreeViewNodeControlObject> GetNode ()
     {
-      return this;
+      return new GetNodeImplementationForChildren (_webTreeViewNode);
     }
 
     /// <inheritdoc/>
@@ -156,40 +189,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public BocTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
       return GetNode().WithIndex (oneBasedIndex);
-    }
-
-    /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithItemID (string itemID)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
-
-      var webTreeViewNode = _webTreeViewNode.GetNode (itemID);
-      return new BocTreeViewNodeControlObject (webTreeViewNode);
-    }
-
-    /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
-    {
-      var webTreeViewNode = _webTreeViewNode.GetNode().WithIndex (oneBasedIndex);
-      return new BocTreeViewNodeControlObject (webTreeViewNode);
-    }
-
-    /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithDisplayText (string displayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
-
-      var webTreeViewNode = _webTreeViewNode.GetNode().WithDisplayText (displayText);
-      return new BocTreeViewNodeControlObject (webTreeViewNode);
-    }
-
-    /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithDisplayTextContains (string containsDisplayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
-
-      var webTreeViewNode = _webTreeViewNode.GetNode().WithDisplayTextContains (containsDisplayText);
-      return new BocTreeViewNodeControlObject (webTreeViewNode);
     }
   }
 }

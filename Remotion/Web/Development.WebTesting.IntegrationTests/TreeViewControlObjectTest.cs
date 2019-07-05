@@ -192,6 +192,48 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestTreeNodeSelect ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
+
+      treeView.GetNode().WithIndex (1).Select();
+      Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Root node|RootValue (None)"));
+      treeView.GetNode (1).Select();
+      Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo (""));
+      Assert.That (() => treeView.GetNode().WithDisplayText ("Root node"), Throws.Nothing);
+      Assert.That (() => treeView.GetNode().WithDisplayTextContains ("Root node"), Throws.Nothing);
+      Assert.That (() => treeView.GetNode().WithItemID ("SomeItemID"), Throws.InstanceOf<NotSupportedException>());
+      Assert.That (() => treeView.GetNode ("SomeItemID"), Throws.InstanceOf<NotSupportedException>());
+    }
+
+    [Test]
+    public void TestNodeSelectOnlyChildren ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
+      var rootNode = treeView.GetRootNode();
+
+      rootNode.Expand();
+      var firstChildOfRootNode = rootNode.GetNode().WithDisplayTextContains ("1");
+      firstChildOfRootNode.Expand();
+
+      treeView.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
+      Assert.That (() => treeView.GetNode().WithDisplayTextContains ("1").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => treeView.GetNode().WithDisplayText ("ChildNode 1").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => treeView.GetNode().WithItemID ("1").Select(), Throws.InstanceOf<NotSupportedException>());
+      Assert.That (() => treeView.GetNode ("1").Select(), Throws.InstanceOf<NotSupportedException>());
+
+      rootNode.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
+      Assert.That (() => rootNode.GetNode().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => rootNode.GetNode().WithDisplayText ("ChildNode 11").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => rootNode.GetNode().WithItemID ("11").Select(), Throws.InstanceOf<NotSupportedException>());
+      Assert.That (() => rootNode.GetNode ("11").Select(), Throws.InstanceOf<NotSupportedException>());
+    }
+
+    [Test]
     public void TestNodeSelectByDisplayText_WithSingleQuote ()
     {
       var home = Start();

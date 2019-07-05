@@ -31,9 +31,47 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   public class TreeViewNodeControlObject
       : WebFormsControlObject,
           IControlObjectWithNodes<TreeViewNodeControlObject>,
-          IFluentControlObjectWithNodes<TreeViewNodeControlObject>,
           IControlObjectWithText
   {
+    private class GetNodeImplementationForChildren : IFluentControlObjectWithNodes<TreeViewNodeControlObject>
+    {
+      private readonly TreeViewNodeControlObject _treeViewNode;
+
+      public GetNodeImplementationForChildren (TreeViewNodeControlObject treeViewNode)
+      {
+        _treeViewNode = treeViewNode;
+      }
+
+      public TreeViewNodeControlObject WithItemID (string itemID)
+      {
+        throw new NotSupportedException ("The TreeViewNodeControlObject does not support node selection by item ID.");
+      }
+
+      public TreeViewNodeControlObject WithIndex (int oneBasedIndex)
+      {
+        var xpath = string.Format ("[{0}]", oneBasedIndex);
+        return FindAndCreateNode (xpath);
+      }
+
+      public TreeViewNodeControlObject WithDisplayText (string displayText)
+      {
+        var xpath = string.Format ("[normalize-space(tbody/tr/td[last()]//*)={0}]", DomSelectorUtility.CreateMatchValueForXPath (displayText));
+        return FindAndCreateNode (xpath);
+      }
+
+      public TreeViewNodeControlObject WithDisplayTextContains (string containsDisplayText)
+      {
+        var xpath = string.Format ("[contains(tbody/tr/td[last()]//*, {0})]", DomSelectorUtility.CreateMatchValueForXPath (containsDisplayText));
+        return FindAndCreateNode (xpath);
+      }
+
+      private TreeViewNodeControlObject FindAndCreateNode (string xpathSuffix)
+      {
+        var nodeScope = GetChildrenScope (_treeViewNode.Scope).FindXPath ("./table" + xpathSuffix);
+        return new TreeViewNodeControlObject (_treeViewNode.Context.CloneForControl (nodeScope));
+      }
+    }
+
     public TreeViewNodeControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
@@ -69,7 +107,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// </summary>
     public int GetNumberOfChildren ()
     {
-      return RetryUntilTimeout.Run (() => GetChildrenScope().FindAllXPath ("./table").Count());
+      return RetryUntilTimeout.Run (() => GetChildrenScope (Scope).FindAllXPath ("./table").Count());
     }
 
     /// <summary>
@@ -138,12 +176,6 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       ExecuteAction (new ClickAction (this, Scope.FindXPath (nodeClickScopeXpath)), actualCompletionDetector);
     }
 
-    private ElementScope GetChildrenScope ()
-    {
-      const string xpath = "./following-sibling::div[1]";
-      return Scope.FindXPath (xpath);
-    }
-
     private ElementScope GetCheckboxScope ()
     {
       const string xpath = "./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]]/input[@type='checkbox']";
@@ -153,7 +185,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public IFluentControlObjectWithNodes<TreeViewNodeControlObject> GetNode ()
     {
-      return this;
+      return new GetNodeImplementationForChildren (this);
     }
 
     /// <inheritdoc/>
@@ -170,43 +202,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       return GetNode().WithIndex (oneBasedIndex);
     }
 
-    /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithItemID (string itemID)
+    private static ElementScope GetChildrenScope (ElementScope elementScope)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
-
-      throw new NotSupportedException ("The TreeViewNodeControlObject does not support node selection by item ID.");
-    }
-
-    /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
-    {
-      var xpath = string.Format ("[{0}]", oneBasedIndex);
-      return FindAndCreateNode (xpath);
-    }
-
-    /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithDisplayText (string displayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
-
-      var xpath = string.Format ("[normalize-space(tbody/tr/td[last()]//*)={0}]", DomSelectorUtility.CreateMatchValueForXPath (displayText));
-      return FindAndCreateNode (xpath);
-    }
-
-    /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithDisplayTextContains (string containsDisplayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
-
-      var xpath = string.Format ("[contains(tbody/tr/td[last()]//*, {0})]", DomSelectorUtility.CreateMatchValueForXPath (containsDisplayText));
-      return FindAndCreateNode (xpath);
-    }
-
-    private TreeViewNodeControlObject FindAndCreateNode (string xpathSuffix)
-    {
-      var nodeScope = GetChildrenScope().FindXPath ("./table" + xpathSuffix);
-      return new TreeViewNodeControlObject (Context.CloneForControl (nodeScope));
+      const string xpath = "./following-sibling::div[1]";
+      return elementScope.FindXPath (xpath);
     }
   }
 }

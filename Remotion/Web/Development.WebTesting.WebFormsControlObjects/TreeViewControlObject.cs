@@ -27,9 +27,47 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   /// </summary>
   public class TreeViewControlObject
       : WebFormsControlObject,
-          IControlObjectWithNodes<TreeViewNodeControlObject>,
-          IFluentControlObjectWithNodes<TreeViewNodeControlObject>
+          IControlObjectWithNodes<TreeViewNodeControlObject>
   {
+    private class GetNodeImplementationForChildren : IFluentControlObjectWithNodes<TreeViewNodeControlObject>
+    {
+      private readonly TreeViewControlObject _treeView;
+
+      public GetNodeImplementationForChildren (TreeViewControlObject treeView)
+      {
+        _treeView = treeView;
+      }
+
+      public TreeViewNodeControlObject WithItemID (string itemID)
+      {
+        throw new NotSupportedException ("The TreeViewControlObject does not support node selection by item ID.");
+      }
+
+      public TreeViewNodeControlObject WithIndex (int oneBasedIndex)
+      {
+        var xpath = string.Format ("./table[{0}]", oneBasedIndex);
+        return FindAndCreateNode (xpath);
+      }
+
+      public TreeViewNodeControlObject WithDisplayText (string displayText)
+      {
+        var xpath = string.Format ("./table[normalize-space(tbody/tr/td[last()])={0}]", DomSelectorUtility.CreateMatchValueForXPath (displayText));
+        return FindAndCreateNode (xpath);
+      }
+
+      public TreeViewNodeControlObject WithDisplayTextContains (string containsDisplayText)
+      {
+        var xpath = string.Format ("./table[contains(tbody/tr/td[last()], {0})]", DomSelectorUtility.CreateMatchValueForXPath (containsDisplayText));
+        return FindAndCreateNode (xpath);
+      }
+
+      private TreeViewNodeControlObject FindAndCreateNode (string xpath)
+      {
+        var nodeScope = _treeView.Scope.FindXPath (xpath);
+        return new TreeViewNodeControlObject (_treeView.Context.CloneForControl (nodeScope));
+      }
+    }
+
     public TreeViewControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
@@ -46,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public IFluentControlObjectWithNodes<TreeViewNodeControlObject> GetNode ()
     {
-      return this;
+      return new GetNodeImplementationForChildren (this);
     }
 
     /// <inheritdoc/>
@@ -61,45 +99,6 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     public TreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
       return GetNode().WithIndex (oneBasedIndex);
-    }
-
-    /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithItemID (string itemID)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
-
-      throw new NotSupportedException ("The TreeViewControlObject does not support node selection by item ID.");
-    }
-
-    /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
-    {
-      var xpath = string.Format ("./table[{0}]", oneBasedIndex);
-      return FindAndCreateNode (xpath);
-    }
-
-    /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithDisplayText (string displayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
-
-      var xpath = string.Format ("./table[normalize-space(tbody/tr/td[last()])={0}]", DomSelectorUtility.CreateMatchValueForXPath (displayText));
-      return FindAndCreateNode (xpath);
-    }
-
-    /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithDisplayTextContains (string containsDisplayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
-
-      var xpath = string.Format ("./table[contains(tbody/tr/td[last()], {0})]", DomSelectorUtility.CreateMatchValueForXPath (containsDisplayText));
-      return FindAndCreateNode (xpath);
-    }
-
-    private TreeViewNodeControlObject FindAndCreateNode (string xpath)
-    {
-      var nodeScope = Scope.FindXPath (xpath);
-      return new TreeViewNodeControlObject (Context.CloneForControl (nodeScope));
     }
   }
 }

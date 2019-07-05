@@ -19,6 +19,7 @@ using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -29,9 +30,46 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class WebTreeViewNodeControlObject
       : WebFormsControlObjectWithDiagnosticMetadata,
           IControlObjectWithNodes<WebTreeViewNodeControlObject>,
-          IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>,
           IControlObjectWithText
   {
+    private class GetNodeImplementationForChildren : IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>
+    {
+      private readonly WebTreeViewNodeControlObject _webTreeViewNode;
+
+      public GetNodeImplementationForChildren (WebTreeViewNodeControlObject webTreeViewNode)
+      {
+        _webTreeViewNode = webTreeViewNode;
+      }
+
+      public WebTreeViewNodeControlObject WithItemID (string itemID)
+      {
+        var xpath = string.Format ("((.//ul)[1])/li[@data-item-id={0}]", DomSelectorUtility.CreateMatchValueForXPath (itemID));
+        var nodeScope = _webTreeViewNode.Scope.FindXPath (xpath);
+        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+      }
+
+      public WebTreeViewNodeControlObject WithIndex (int oneBasedIndex)
+      {
+        var xpath = string.Format ("((.//ul)[1])/li[@data-index={0}]", oneBasedIndex);
+        var nodeScope = _webTreeViewNode.Scope.FindXPath (xpath);
+        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+      }
+
+      public WebTreeViewNodeControlObject WithDisplayText (string displayText)
+      {
+        var xpath = string.Format ("((.//ul)[1])/li[@data-content={0}]", DomSelectorUtility.CreateMatchValueForXPath (displayText));
+        var nodeScope = _webTreeViewNode.Scope.FindXPath (xpath);
+        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+      }
+
+      public WebTreeViewNodeControlObject WithDisplayTextContains (string containsDisplayText)
+      {
+        var xpath = string.Format ("((.//ul)[1])/li[contains(@data-content, {0})]", DomSelectorUtility.CreateMatchValueForXPath (containsDisplayText));
+        var nodeScope = _webTreeViewNode.Scope.FindXPath (xpath);
+        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+      }
+    }
+
     public WebTreeViewNodeControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
@@ -66,7 +104,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public IFluentControlObjectWithNodes<WebTreeViewNodeControlObject> GetNode ()
     {
-      return this;
+      return new GetNodeImplementationForChildren (this);
     }
 
     /// <inheritdoc/>
@@ -81,44 +119,6 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public WebTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
       return GetNode().WithIndex (oneBasedIndex);
-    }
-
-    /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithItemID (string itemID)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
-
-      var nodeScope = Scope.FindTagWithAttribute ("ul li", DiagnosticMetadataAttributes.ItemID, itemID);
-      return new WebTreeViewNodeControlObject (Context.CloneForControl (nodeScope));
-    }
-
-    /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
-    {
-      var nodeScope = Scope.FindTagWithAttribute ("ul li", DiagnosticMetadataAttributes.IndexInCollection, oneBasedIndex.ToString());
-      return new WebTreeViewNodeControlObject (Context.CloneForControl (nodeScope));
-    }
-
-    /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithDisplayText (string displayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
-
-      var nodeScope = Scope.FindTagWithAttribute ("ul li", DiagnosticMetadataAttributes.Content, displayText);
-      return new WebTreeViewNodeControlObject (Context.CloneForControl (nodeScope));
-    }
-
-    /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithDisplayTextContains (string containsDisplayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
-
-      var nodeScope = Scope.FindTagWithAttributeUsingOperator (
-          "ul li",
-          CssComparisonOperator.SubstringMatch,
-          DiagnosticMetadataAttributes.Content,
-          containsDisplayText);
-      return new WebTreeViewNodeControlObject (Context.CloneForControl (nodeScope));
     }
 
     /// <summary>

@@ -25,8 +25,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   /// </summary>
   public class WebTreeViewControlObject
       : WebFormsControlObjectWithDiagnosticMetadata,
-          IControlObjectWithNodes<WebTreeViewNodeControlObject>,
-          IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>
+          IControlObjectWithNodes<WebTreeViewNodeControlObject>
   {
     private readonly WebTreeViewNodeControlObject _metaRootNode;
 
@@ -47,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public IFluentControlObjectWithNodes<WebTreeViewNodeControlObject> GetNode ()
     {
-      return this;
+      return _metaRootNode.GetNode();
     }
 
     /// <inheritdoc/>
@@ -61,38 +60,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public WebTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
-
       return GetNode().WithIndex (oneBasedIndex);
-    }
-
-    /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithItemID (string itemID)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
-
-      return _metaRootNode.GetNode (itemID);
-    }
-
-    /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
-    {
-      return _metaRootNode.GetNode().WithIndex (oneBasedIndex);
-    }
-
-    /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithDisplayText (string displayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
-
-      return _metaRootNode.GetNode().WithDisplayText (displayText);
-    }
-
-    /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithDisplayTextContains (string containsDisplayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
-
-      return _metaRootNode.GetNode().WithDisplayTextContains (containsDisplayText);
     }
   }
 }

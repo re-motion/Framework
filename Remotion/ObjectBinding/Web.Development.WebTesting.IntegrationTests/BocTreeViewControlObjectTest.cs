@@ -154,6 +154,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestTreeGetNode ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+
+      bocTreeView.GetNode().WithIndex (1).Select();
+      Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("00000000-0000-0000-0000-000000000001|Doe, John"));
+      bocTreeView.GetNode (1).Select();
+      Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("00000000-0000-0000-0000-000000000001|Doe, John"));
+      Assert.That (() => bocTreeView.GetNode().WithDisplayText ("Doe, John").Select(), Throws.Nothing);
+      Assert.That (() => bocTreeView.GetNode().WithDisplayTextContains ("Doe").Select(), Throws.Nothing);
+      Assert.That (() => bocTreeView.GetNode().WithItemID ("00000000-0000-0000-0000-000000000001").Select(), Throws.Nothing);
+      Assert.That (() => bocTreeView.GetNode ("00000000-0000-0000-0000-000000000001").Select(), Throws.Nothing);
+    }
+
+    [Test]
     public void TestGetNodeOnNoTopLevelExpander ()
     {
       var home = Start();
@@ -176,6 +193,31 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var node = bocTreeView.GetRootNode();
 
       Assert.That (node.GetText(), Is.EqualTo ("Doe, John"));
+    }
+
+    [Test]
+    public void TestNodeSelectOnlyChildren ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+      var rootNode = bocTreeView.GetRootNode();
+
+      rootNode.Expand();
+      var firstChildOfRootNode = rootNode.GetNode().WithDisplayTextContains ("B, A");
+      firstChildOfRootNode.Expand();
+
+      bocTreeView.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
+      Assert.That (() => bocTreeView.GetNode().WithDisplayTextContains ("B, A").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => bocTreeView.GetNode().WithDisplayText ("B, A").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => bocTreeView.GetNode().WithItemID ("c8ace752-55f6-4074-8890-130276ea6cd1").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => bocTreeView.GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select(), Throws.InstanceOf<MissingHtmlException>());
+
+      rootNode.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
+      Assert.That (() => rootNode.GetNode().WithDisplayTextContains ("A, B").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => rootNode.GetNode().WithDisplayText ("A, B").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => rootNode.GetNode().WithItemID ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => rootNode.GetNode ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select(), Throws.InstanceOf<MissingHtmlException>());
     }
 
     [Test]

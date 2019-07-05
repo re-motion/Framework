@@ -21,7 +21,6 @@ using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
-using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 {
@@ -31,7 +30,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   public class BocTreeViewControlObject
       : BocControlObject,
           IControlObjectWithNodes<BocTreeViewNodeControlObject>,
-          IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>,
           ISupportsValidationErrors
   {
     private readonly BocTreeViewNodeControlObject _metaRootNode;
@@ -53,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public IFluentControlObjectWithNodes<BocTreeViewNodeControlObject> GetNode ()
     {
-      return this;
+      return _metaRootNode.GetNode();
     }
 
     /// <inheritdoc/>
@@ -68,36 +66,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public BocTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
       return GetNode().WithIndex (oneBasedIndex);
-    }
-
-    /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithItemID (string itemID)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
-
-      return _metaRootNode.GetNode (itemID);
-    }
-
-    /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
-    {
-      return _metaRootNode.GetNode().WithIndex (oneBasedIndex);
-    }
-
-    /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithDisplayText (string displayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
-
-      return _metaRootNode.GetNode().WithDisplayText (displayText);
-    }
-
-    /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithDisplayTextContains (string containsDisplayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
-
-      return _metaRootNode.GetNode().WithDisplayTextContains (containsDisplayText);
     }
 
     public IReadOnlyList<string> GetValidationErrors ()
