@@ -62,5 +62,25 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       return GetNode().WithIndex (oneBasedIndex);
     }
+
+    /// <inheritdoc/>
+    public IFluentControlObjectWithNodes<WebTreeViewNodeControlObject> GetNodeInHierarchy ()
+    {
+      return _metaRootNode.GetNodeInHierarchy();
+    }
+
+    /// <inheritdoc/>
+    public WebTreeViewNodeControlObject GetNodeInHierarchy (string itemID)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+
+      return GetNodeInHierarchy().WithItemID (itemID);
+    }
+
+    /// <inheritdoc/>
+    public WebTreeViewNodeControlObject GetNodeInHierarchy (int oneBasedIndex)
+    {
+      return GetNodeInHierarchy().WithIndex (oneBasedIndex);
+    }
   }
 }

@@ -40,6 +40,22 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// Short for explicitly implemented <see cref="IFluentControlObjectWithNodes{TNodeControlObject}.WithIndex"/>.
     /// </summary>
     TNodeControlObject GetNode (int oneBasedIndex);
+
+    /// <summary>
+    /// Start of the fluent interface for selecting a node in hierarchy.
+    /// </summary>
+    IFluentControlObjectWithNodes<TNodeControlObject> GetNodeInHierarchy ();
+
+    /// <summary>
+    /// Short for explicitly implemented <see cref="IFluentControlObjectWithNodes{TCellControlObject}.WithItemID"/>, searching through the hierarchy.
+    /// </summary>
+    TNodeControlObject GetNodeInHierarchy ([NotNull] string itemID);
+
+    /// <summary>
+    /// Short for explicitly implemented <see cref="IFluentControlObjectWithNodes{TNodeControlObject}.WithIndex"/>, searching through the hierarchy.
+    /// </summary>
+    /// <exception cref="Coypu.AmbiguousException">More than one node with the specified index was found.</exception>
+    TNodeControlObject GetNodeInHierarchy (int oneBasedIndex);
   }
 
   /// <summary>
@@ -56,6 +72,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Selects the node using the given <paramref name="oneBasedIndex"/>.
     /// </summary>
+    /// <exception cref="Coypu.AmbiguousException">More than one node with the specified index was found.</exception>
     TNodeControlObject WithIndex (int oneBasedIndex);
 
     /// <summary>

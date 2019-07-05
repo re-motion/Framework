@@ -221,6 +221,130 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestSelectNodeWithIndexInHierarchy ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("NoPropertyIdentifier");
+      var rootNode = bocTreeView.GetRootNode();
+      rootNode.Expand();
+      rootNode.GetNode ("Children").Expand();
+
+      rootNode.GetNodeInHierarchy().WithIndex (4).Select();
+      Assert.That (home.Scope.FindIdEndingWith ("NoPropertyIdentifierSelectedNodeLabel").Text, Is.EqualTo ("88ca0bf3-2a08-4d93-bee7-0454052a922d|C, A"));
+
+      Assert.That (
+          () => rootNode.GetNodeInHierarchy().WithIndex (999),
+          Throws.InstanceOf<MissingHtmlException>().With.Message.EqualTo ("No node with the index '999' was found."));
+
+      Assert.That (
+          () => rootNode.GetNodeInHierarchy().WithIndex (1),
+          Throws.InstanceOf<AmbiguousException>().With.Message.EqualTo ("Multiple nodes with the index '1' were found."));
+    }
+
+    [Test]
+    public void TestSelectNodeInHierarchy ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+      var rootNode = bocTreeView.GetRootNode();
+      rootNode.Expand();
+      var firstChildOfRootNode = rootNode.GetNode().WithDisplayTextContains ("B, A");
+      firstChildOfRootNode.Expand();
+
+      rootNode.GetNodeInHierarchy().WithDisplayTextContains ("A, B").Select();
+      Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("eb94bfdb-1140-46f8-971f-e4b41dae13b8|A, B"));
+
+      rootNode.GetNodeInHierarchy().WithDisplayText ("E, ").Select();
+      Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("6866ca48-8957-4f26-ae5f-78a3f6dcc4de|E,"));
+
+      rootNode.GetNodeInHierarchy().WithItemID ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select();
+      Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("eb94bfdb-1140-46f8-971f-e4b41dae13b8|A, B"));
+
+      rootNode.GetNodeInHierarchy ("6866ca48-8957-4f26-ae5f-78a3f6dcc4de").Select();
+      Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("6866ca48-8957-4f26-ae5f-78a3f6dcc4de|E,"));
+    }
+
+    [Test]
+    public void TestSelectNodeInHierarchyOnlyRootNodeExpanded ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+      var rootNode = bocTreeView.GetRootNode();
+      rootNode.Expand();
+
+      rootNode.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
+      Assert.That (() => rootNode.GetNodeInHierarchy().WithDisplayTextContains ("A, B").Select(), Throws.InstanceOf<StaleElementException>());
+      Assert.That (() => rootNode.GetNodeInHierarchy().WithDisplayText ("E, ").Select(), Throws.InstanceOf<StaleElementException>());
+      Assert.That (() => rootNode.GetNodeInHierarchy().WithItemID ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select(), Throws.InstanceOf<StaleElementException>());
+      Assert.That (() => rootNode.GetNodeInHierarchy ("6866ca48-8957-4f26-ae5f-78a3f6dcc4de").Select(), Throws.InstanceOf<StaleElementException>());
+    }
+
+    [Test]
+    public void TestTreeSelectNodeInHierarchy ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+      var rootNode = bocTreeView.GetRootNode();
+      rootNode.Expand();
+      var firstChildOfRootNode = rootNode.GetNode().WithDisplayTextContains ("B, A");
+      firstChildOfRootNode.Expand();
+
+      bocTreeView.GetNodeInHierarchy().WithDisplayTextContains ("A, B").Select();
+      Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("eb94bfdb-1140-46f8-971f-e4b41dae13b8|A, B"));
+
+      bocTreeView.GetNodeInHierarchy().WithDisplayText ("E, ").Select();
+      Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("6866ca48-8957-4f26-ae5f-78a3f6dcc4de|E,"));
+
+      bocTreeView.GetNodeInHierarchy().WithItemID ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select();
+      Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("eb94bfdb-1140-46f8-971f-e4b41dae13b8|A, B"));
+
+      bocTreeView.GetNodeInHierarchy ("6866ca48-8957-4f26-ae5f-78a3f6dcc4de").Select();
+      Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.EqualTo ("6866ca48-8957-4f26-ae5f-78a3f6dcc4de|E,"));
+    }
+
+    [Test]
+    public void TestTreeSelectNodeWithIndexInHierarchy ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("NoPropertyIdentifier");
+      var rootNode = bocTreeView.GetRootNode();
+      rootNode.Expand();
+      rootNode.GetNode ("Children").Expand();
+
+      bocTreeView.GetNodeInHierarchy().WithIndex (4).Select();
+      Assert.That (home.Scope.FindIdEndingWith ("NoPropertyIdentifierSelectedNodeLabel").Text, Is.EqualTo ("88ca0bf3-2a08-4d93-bee7-0454052a922d|C, A"));
+
+      Assert.That (
+          () => bocTreeView.GetNodeInHierarchy().WithIndex (999),
+          Throws.InstanceOf<MissingHtmlException>().With.Message.EqualTo ("No node with the index '999' was found."));
+
+      Assert.That (
+          () => bocTreeView.GetNodeInHierarchy().WithIndex (1),
+          Throws.InstanceOf<AmbiguousException>().With.Message.EqualTo ("Multiple nodes with the index '1' were found."));
+    }
+
+    [Test]
+    public void TestTreeSelectNodeInHierarchyOnlyRootNodeExpanded ()
+    {
+      var home = Start();
+
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+      var rootNode = bocTreeView.GetRootNode();
+      rootNode.Expand();
+
+      bocTreeView.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
+      Assert.That (() => bocTreeView.GetNodeInHierarchy().WithDisplayTextContains ("A, B").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => bocTreeView.GetNodeInHierarchy().WithDisplayText ("E, ").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => bocTreeView.GetNodeInHierarchy().WithItemID ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (() => bocTreeView.GetNodeInHierarchy ("6866ca48-8957-4f26-ae5f-78a3f6dcc4de").Select(), Throws.InstanceOf<MissingHtmlException>());
+    }
+
+    [Test]
     public void TestNodeIsSelected ()
     {
       var home = Start();
@@ -250,7 +374,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (rootNode.GetNumberOfChildren(), Is.EqualTo (6));
 
       var bANode = rootNode.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1");
-      Assert.That (bANode.GetNumberOfChildren(), Is.EqualTo (1));
+      Assert.That (bANode.GetNumberOfChildren(), Is.EqualTo (2));
     }
 
     [Test]

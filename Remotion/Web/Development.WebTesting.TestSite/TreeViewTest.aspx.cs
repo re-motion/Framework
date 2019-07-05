@@ -86,11 +86,13 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       var child12 = new TreeNode ("Child node 12", "Child12Value");
       var child21 = new TreeNode ("Child node 21", "Child21Value");
       var child22 = new TreeNode ("Child node 22", "Child22Value");
+      var child23 = new TreeNode ("Child node 23", "Child23Value");
 
       child1.ChildNodes.Add (child11);
       child1.ChildNodes.Add (child12);
       child2.ChildNodes.Add (child21);
       child2.ChildNodes.Add (child22);
+      child2.ChildNodes.Add (child23);
 
       root.ChildNodes.Add (child1);
       root.ChildNodes.Add (child2);

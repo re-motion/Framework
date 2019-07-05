@@ -21,6 +21,7 @@ using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 {
@@ -66,6 +67,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public BocTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
       return GetNode().WithIndex (oneBasedIndex);
+    }
+
+    /// <inheritdoc/>
+    public IFluentControlObjectWithNodes<BocTreeViewNodeControlObject> GetNodeInHierarchy ()
+    {
+      return _metaRootNode.GetNodeInHierarchy();
+    }
+
+    /// <inheritdoc/>
+    public BocTreeViewNodeControlObject GetNodeInHierarchy (string itemID)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+
+      return GetNodeInHierarchy().WithItemID (itemID);
+    }
+    
+    /// <inheritdoc/>
+    public BocTreeViewNodeControlObject GetNodeInHierarchy (int oneBasedIndex)
+    {
+      return GetNodeInHierarchy().WithIndex (oneBasedIndex);
     }
 
     public IReadOnlyList<string> GetValidationErrors ()

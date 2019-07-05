@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
@@ -70,6 +71,52 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       }
     }
 
+    private class GetNodeImplementationForHierarchy : IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>
+    {
+      private readonly WebTreeViewNodeControlObject _webTreeViewNode;
+
+      public GetNodeImplementationForHierarchy (WebTreeViewNodeControlObject webTreeViewNode)
+      {
+        _webTreeViewNode = webTreeViewNode;
+      }
+
+      public WebTreeViewNodeControlObject WithItemID (string itemID)
+      {
+        var nodeScope = _webTreeViewNode.Scope.FindTagWithAttribute ("ul li", DiagnosticMetadataAttributes.ItemID, itemID);
+        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+      }
+
+      public WebTreeViewNodeControlObject WithIndex (int oneBasedIndex)
+      {
+        var foundNodes = _webTreeViewNode.Scope.FindTagsWithAttribute ("ul li", DiagnosticMetadataAttributes.IndexInCollection, oneBasedIndex.ToString()).ToArray();
+        if (foundNodes.Length > 1)
+          throw new AmbiguousException ($"Multiple nodes with the index '{oneBasedIndex}' were found.");
+
+        if (foundNodes.Length == 0)
+          throw new MissingHtmlException ($"No node with the index '{oneBasedIndex}' was found.");
+
+        var nodeScope = foundNodes.Single();
+
+        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+      }
+
+      public WebTreeViewNodeControlObject WithDisplayText (string displayText)
+      {
+        var nodeScope = _webTreeViewNode.Scope.FindTagWithAttribute ("ul li", DiagnosticMetadataAttributes.Content, displayText);
+        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+      }
+
+      public WebTreeViewNodeControlObject WithDisplayTextContains (string containsDisplayText)
+      {
+        var nodeScope = _webTreeViewNode.Scope.FindTagWithAttributeUsingOperator (
+            "ul li",
+            CssComparisonOperator.SubstringMatch,
+            DiagnosticMetadataAttributes.Content,
+            containsDisplayText);
+        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+      }
+    }
+
     public WebTreeViewNodeControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
@@ -119,6 +166,26 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public WebTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
       return GetNode().WithIndex (oneBasedIndex);
+    }
+
+    /// <inheritdoc/>
+    public IFluentControlObjectWithNodes<WebTreeViewNodeControlObject> GetNodeInHierarchy ()
+    {
+      return new GetNodeImplementationForHierarchy (this);
+    }
+
+    /// <inheritdoc/>
+    public WebTreeViewNodeControlObject GetNodeInHierarchy (string itemID)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+
+      return GetNodeInHierarchy().WithItemID (itemID);
+    }
+
+    /// <inheritdoc/>
+    public WebTreeViewNodeControlObject GetNodeInHierarchy (int oneBasedIndex)
+    {
+      return GetNodeInHierarchy().WithIndex (oneBasedIndex);
     }
 
     /// <summary>

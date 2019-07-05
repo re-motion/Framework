@@ -64,6 +64,40 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       }
     }
 
+    private class GetNodeImplementationForHierarchy : IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>
+    {
+      private readonly IFluentControlObjectWithNodes<WebTreeViewNodeControlObject> _impl;
+
+      public GetNodeImplementationForHierarchy (WebTreeViewNodeControlObject webTreeViewNode)
+      {
+        _impl = webTreeViewNode.GetNodeInHierarchy();
+      }
+
+      public BocTreeViewNodeControlObject WithItemID (string itemID)
+      {
+        var webTreeViewNode = _impl.WithItemID (itemID);
+        return new BocTreeViewNodeControlObject (webTreeViewNode);
+      }
+
+      public BocTreeViewNodeControlObject WithIndex (int oneBasedIndex)
+      {
+        var webTreeViewNode = _impl.WithIndex (oneBasedIndex);
+        return new BocTreeViewNodeControlObject (webTreeViewNode);
+      }
+
+      public BocTreeViewNodeControlObject WithDisplayText (string displayText)
+      {
+        var webTreeViewNode = _impl.WithDisplayText (displayText);
+        return new BocTreeViewNodeControlObject (webTreeViewNode);
+      }
+
+      public BocTreeViewNodeControlObject WithDisplayTextContains (string containsDisplayText)
+      {
+        var webTreeViewNode = _impl.WithDisplayTextContains (containsDisplayText);
+        return new BocTreeViewNodeControlObject (webTreeViewNode);
+      }
+    }
+
     private readonly WebTreeViewNodeControlObject _webTreeViewNode;
 
     [UsedImplicitly]
@@ -189,6 +223,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public BocTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
       return GetNode().WithIndex (oneBasedIndex);
+    }
+
+    /// <inheritdoc/>
+    public IFluentControlObjectWithNodes<BocTreeViewNodeControlObject> GetNodeInHierarchy ()
+    {
+      return new GetNodeImplementationForHierarchy (_webTreeViewNode);
+    }
+
+    /// <inheritdoc/>
+    public BocTreeViewNodeControlObject GetNodeInHierarchy (string itemID)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+
+      return GetNodeInHierarchy().WithItemID (itemID);
+    }
+
+    /// <inheritdoc/>
+    public BocTreeViewNodeControlObject GetNodeInHierarchy (int oneBasedIndex)
+    {
+      return GetNodeInHierarchy().WithIndex (oneBasedIndex);
     }
   }
 }

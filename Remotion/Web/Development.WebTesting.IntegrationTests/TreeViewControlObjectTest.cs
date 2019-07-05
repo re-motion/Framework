@@ -17,12 +17,14 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
@@ -231,6 +233,135 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (() => rootNode.GetNode().WithDisplayText ("ChildNode 11").Select(), Throws.InstanceOf<MissingHtmlException>());
       Assert.That (() => rootNode.GetNode().WithItemID ("11").Select(), Throws.InstanceOf<NotSupportedException>());
       Assert.That (() => rootNode.GetNode ("11").Select(), Throws.InstanceOf<NotSupportedException>());
+    }
+
+    [Test]
+    public void TestSelectNodeInHierarchy ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
+
+      var rootNode = treeView.GetRootNode();
+      rootNode.Expand();
+      var firstChildOfRootNode = rootNode.GetNodeInHierarchy().WithDisplayTextContains ("1");
+      firstChildOfRootNode.Expand();
+
+      rootNode.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select();
+      Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Child node 12|Child12Value (None)"));
+
+      rootNode.GetNodeInHierarchy().WithDisplayTextContains ("11").Select();
+      Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Child node 11|Child11Value (None)"));
+
+      Assert.That (() => rootNode.GetNodeInHierarchy().WithItemID ("11").Select(), Throws.InstanceOf<NotSupportedException>());
+      Assert.That (() => rootNode.GetNodeInHierarchy ("11").Select(), Throws.InstanceOf<NotSupportedException>());
+    }
+
+    [Test]
+    public void TestSelectNodeWithIndexInHierarchy ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
+
+      var rootNode = treeView.GetRootNode();
+      rootNode.Expand();
+      rootNode.GetNode().WithDisplayTextContains ("2").Expand();
+
+      rootNode.GetNodeInHierarchy().WithIndex (3).Select();
+      Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Child node 23|Child23Value (None)"));
+
+      Assert.That (
+          () => rootNode.GetNodeInHierarchy().WithIndex (999),
+          Throws.InstanceOf<MissingHtmlException>().With.Message.EqualTo ("No node with the index '999' was found."));
+
+      Assert.That (
+          () => rootNode.GetNodeInHierarchy().WithIndex (1),
+          Throws.InstanceOf<AmbiguousException>().With.Message.EqualTo ("Multiple nodes with the index '1' were found."));
+    }
+
+    [Test]
+    public void TestSelectNodeInHierarchyOnlyRootNodeExpanded ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
+
+      var rootNode = treeView.GetRootNode();
+      rootNode.Expand();
+
+      rootNode.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
+      Assert.That (() => rootNode.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select(), Throws.InstanceOf<StaleElementException>());
+      Assert.That (() => rootNode.GetNodeInHierarchy().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<StaleElementException>());
+    }
+
+    [Test]
+    public void TestTreeSelectNodeInHierarchy ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
+
+      var rootNode = treeView.GetRootNode();
+      rootNode.Expand();
+      var firstChildOfRootNode = rootNode.GetNodeInHierarchy().WithDisplayTextContains ("1");
+      firstChildOfRootNode.Expand();
+
+      treeView.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select();
+      Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Child node 12|Child12Value (None)"));
+
+      treeView.GetNodeInHierarchy().WithDisplayTextContains ("11").Select();
+      Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Child node 11|Child11Value (None)"));
+
+      Assert.That (() => treeView.GetNodeInHierarchy().WithItemID ("11").Select(), Throws.InstanceOf<NotSupportedException>());
+      Assert.That (() => treeView.GetNodeInHierarchy ("11").Select(), Throws.InstanceOf<NotSupportedException>());
+    }
+
+    [Test]
+    public void TestTreeSelectNodeWithIndexInHierarchy ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
+
+      var rootNode = treeView.GetRootNode();
+      rootNode.Expand();
+      rootNode.GetNode().WithDisplayTextContains ("2").Expand();
+
+      treeView.GetNodeInHierarchy().WithIndex (3).Select();
+      Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Selected: Child node 23|Child23Value (None)"));
+
+      Assert.That (
+          () => treeView.GetNodeInHierarchy().WithIndex (999),
+          Throws.InstanceOf<MissingHtmlException>().With.Message.EqualTo ("No node with the index '999' was found."));
+
+      Assert.That (
+          () => treeView.GetNodeInHierarchy().WithIndex (1),
+          Throws.InstanceOf<AmbiguousException>().With.Message.EqualTo ("Multiple nodes with the index '1' were found."));
+    }
+
+    [Test]
+    public void TestTreeSelectNodeInHierarchyOnlyRootNodeExpanded ()
+    {
+      var home = Start();
+
+      var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
+
+      var rootNode = treeView.GetRootNode();
+      rootNode.Expand();
+
+      treeView.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
+      // IE throws a different exception for this situation. See RM-7186 for more information.
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+      {
+        Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select(), Throws.InstanceOf<ElementNotVisibleException>());
+        Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<ElementNotVisibleException>());
+      }
+      else
+      {
+        Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select(), Throws.InstanceOf<InvalidOperationException>());
+        Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<InvalidOperationException>());
+      }
     }
 
     [Test]

@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
@@ -68,6 +70,55 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       }
     }
 
+    private class GetNodeImplementationForHierarchy : IFluentControlObjectWithNodes<TreeViewNodeControlObject>
+    {
+      private readonly TreeViewControlObject _treeView;
+
+      public GetNodeImplementationForHierarchy (TreeViewControlObject treeView)
+      {
+        _treeView = treeView;
+      }
+
+      public TreeViewNodeControlObject WithIndex (int oneBasedIndex)
+      {
+        var xpath = string.Format (".//table[{0}]", oneBasedIndex);
+        var foundNodes = _treeView.Scope.FindAllXPath (xpath).ToArray();
+
+        if (foundNodes.Length > 1)
+          throw new AmbiguousException ($"Multiple nodes with the index '{oneBasedIndex}' were found.");
+
+        if (foundNodes.Length == 0)
+          throw new MissingHtmlException ($"No node with the index '{oneBasedIndex}' was found.");
+
+        var nodeScope = foundNodes.Single();
+
+        return new TreeViewNodeControlObject (_treeView.Context.CloneForControl (nodeScope));
+      }
+
+      public TreeViewNodeControlObject WithDisplayText (string displayText)
+      {
+        var xpath = string.Format ("//table[normalize-space(tbody/tr/td[last()])={0}]", DomSelectorUtility.CreateMatchValueForXPath (displayText));
+        return FindAndCreateNode (xpath);
+      }
+
+      public TreeViewNodeControlObject WithDisplayTextContains (string containsDisplayText)
+      {
+        var xpath = string.Format ("//table[contains(tbody/tr/td[last()], {0})]", DomSelectorUtility.CreateMatchValueForXPath (containsDisplayText));
+        return FindAndCreateNode (xpath);
+      }
+
+      public TreeViewNodeControlObject WithItemID (string itemID)
+      {
+        throw new NotSupportedException ("The TreeViewControlObject does not support node selection by item ID.");
+      }
+
+      private TreeViewNodeControlObject FindAndCreateNode (string xpath)
+      {
+        var nodeScope = _treeView.Scope.FindXPath (xpath);
+        return new TreeViewNodeControlObject (_treeView.Context.CloneForControl (nodeScope));
+      }
+    }
+
     public TreeViewControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
@@ -99,6 +150,26 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     public TreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
       return GetNode().WithIndex (oneBasedIndex);
+    }
+
+    /// <inheritdoc/>
+    public IFluentControlObjectWithNodes<TreeViewNodeControlObject> GetNodeInHierarchy ()
+    {
+      return new GetNodeImplementationForHierarchy (this);
+    }
+
+    /// <inheritdoc/>
+    public TreeViewNodeControlObject GetNodeInHierarchy (string itemID)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+
+      return GetNodeInHierarchy().WithItemID (itemID);
+    }
+
+    /// <inheritdoc/>
+    public TreeViewNodeControlObject GetNodeInHierarchy (int oneBaseIndex)
+    {
+      return GetNodeInHierarchy().WithIndex (oneBaseIndex);
     }
   }
 }
