@@ -66,6 +66,8 @@
     <PasswordMsSql2014></PasswordMsSql2014>
     <PasswordMsSql2016></PasswordMsSql2016>
     <PasswordMsSql2017></PasswordMsSql2017>
+    
+    <DotNetFrameworkRuntimeImageName></DotNetFrameworkRuntimeImageName>
   </PropertyGroup>
 
   <!-- Check properties -->
