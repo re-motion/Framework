@@ -217,6 +217,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return "bocListCommandText"; }
     }
 
+    /// <summary> Gets the CSS-Class applied to elements only visible to screen readers. </summary>
+    /// <remarks> Class: <c>screenReaderText</c> </remarks>
+    public string CssClassScreenReaderText
+    {
+      get { return "screenReaderText"; }
+    }
+
     /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s table block. </summary>
     /// <param name="hasMenuBlock"><see langword="true" /> if the list has a menu block, otherwise <see langword="false" />.</param>
     /// <param name="hasNavigator"><see langword="true" /> if the list has a navigation block, otherwise <see langword="false" />.</param>

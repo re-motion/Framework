@@ -221,18 +221,31 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private void RenderTitleCellText (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
-      if (renderingContext.Control.IsDesignMode && string.IsNullOrEmpty (renderingContext.ColumnDefinition.ColumnTitleDisplayValue))
+      var columnTitle = StringUtility.NullToEmpty (renderingContext.ColumnDefinition.ColumnTitleDisplayValue);
+
+      bool hasVisibleColumnTitle = renderingContext.ColumnDefinition.ShowColumnTitle && !string.IsNullOrEmpty (columnTitle);
+
+      if (renderingContext.Control.IsDesignMode && !hasVisibleColumnTitle)
       {
         renderingContext.Writer.Write (c_designModeEmptyContents);
       }
       else
       {
-        string contents = StringUtility.EmptyToNull (renderingContext.ColumnDefinition.ColumnTitleDisplayValue) ?? c_whiteSpace;
-        var clientID = GetColumnTitleID (renderingContext);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, clientID);
+        var columnTitleID = GetColumnTitleID (renderingContext);
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, columnTitleID);
+        if (!renderingContext.ColumnDefinition.ShowColumnTitle)
+          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, _cssClasses.CssClassScreenReaderText);
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-        renderingContext.Writer.Write (contents);
+        renderingContext.Writer.Write (columnTitle);
         renderingContext.Writer.RenderEndTag();
+        if (!renderingContext.ColumnDefinition.ShowColumnTitle)
+        {
+          // Render a non-breaking space to allow screen readers to highlight a visual cue for the current reading position.
+          // For sortable columns, this will push the sorting icon one space to the right, but given that a sortable should 
+          // always have a visible column title, this is can be regarded as a non-issue. The alternative of using CSS to
+          // generate a non-zero-width element does not help with screenreaders, at least JAWS 2019.
+          renderingContext.Writer.Write (c_whiteSpace);
+        }
       }
     }
 
