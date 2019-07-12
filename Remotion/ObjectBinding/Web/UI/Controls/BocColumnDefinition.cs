@@ -32,6 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public abstract class BocColumnDefinition : BusinessObjectControlItem
   {
     private string _itemID = string.Empty;
+    private bool _showColumnTitle = true;
     private string _columnTitle = string.Empty;
     private Unit _width = Unit.Empty;
     private string _cssClass = string.Empty;
@@ -85,6 +86,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public virtual string ColumnTitleDisplayValue
     {
       get { return ColumnTitle; }
+    }
+
+    /// <summary> Gets or sets a flag to show/hide the columns's title. </summary>
+    /// <value> <see langword="false" /> to hide the columns's title. </value>
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Appearance")]
+    [Description ("Set false to hide the columns's title")]
+    [DefaultValue (true)]
+    [NotifyParentProperty (true)]
+    public bool ShowColumnTitle
+    {
+      get { return _showColumnTitle; }
+      set { _showColumnTitle = value; }
     }
 
     /// <summary> Gets or sets the text displayed in the column title. </summary>

@@ -35,6 +35,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
   public class BocColumnRendererBaseTest : BocListRendererTestBase
   {
     private BocListCssClassDefinition _bocListCssClassDefinition;
+    private const string c_whitespace = "&nbsp;";
+    private const string c_screenReaderText = "screenReaderText";
     private const string c_columnCssClass = "cssClassColumn";
 
     private BocSimpleColumnDefinition Column { get; set; }
@@ -113,6 +115,59 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (titleSpan, "id", List.ClientID + "_0_Title");
       Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
       Html.AssertChildElementCount (titleSpan, 0);
+    }
+
+    [Test]
+    public void RenderSortableTitleCellWithHiddenTitleText ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      var renderingContext = CreateRenderingContext();
+      renderingContext.ColumnDefinition.ShowColumnTitle = false;
+
+      renderer.RenderTitleCell (renderingContext, SortingDirection.None, -1);
+
+      var document = Html.GetResultDocument();
+
+      var th = Html.GetAssertedChildElement (document, "th", 0);
+
+      Assert.Less (0, th.ChildNodes.Count);
+      var sortCommandLink = Html.GetAssertedChildElement (th, "a", 0);
+      Html.AssertChildElementCount (sortCommandLink, 1);
+
+      var titleSpan = Html.GetAssertedChildElement (sortCommandLink, "span", 0);
+      Html.AssertAttribute (titleSpan, "class", c_screenReaderText, HtmlHelperBase.AttributeValueCompareMode.Equal);
+      Html.AssertAttribute (titleSpan, "id", List.ClientID + "_0_Title");
+      Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
+      Html.AssertChildElementCount (titleSpan, 0);
+
+      Html.AssertTextNode (sortCommandLink, c_whitespace, 1);
+    }
+
+    [Test]
+    public void RenderNonSortableTitleCellWithHiddenTitleText ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      var renderingContext = CreateRenderingContext();
+      renderingContext.ColumnDefinition.ShowColumnTitle = false;
+      renderingContext.ColumnDefinition.IsSortable = false;
+
+      renderer.RenderTitleCell (renderingContext, SortingDirection.None, -1);
+
+      var document = Html.GetResultDocument();
+
+      var th = Html.GetAssertedChildElement (document, "th", 0);
+
+      Assert.Less (0, th.ChildNodes.Count);
+      var cellBody = Html.GetAssertedChildElement (th, "span", 0);
+      Html.AssertChildElementCount (cellBody, 1);
+
+      var titleSpan = Html.GetAssertedChildElement (cellBody, "span", 0);
+      Html.AssertAttribute (titleSpan, "class", c_screenReaderText, HtmlHelperBase.AttributeValueCompareMode.Equal);
+      Html.AssertAttribute (titleSpan, "id", List.ClientID + "_0_Title");
+      Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
+      Html.AssertChildElementCount (titleSpan, 0);
+
+      Html.AssertTextNode (cellBody, c_whitespace, 1);
     }
 
     [Test]
