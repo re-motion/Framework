@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Web.UI;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -31,6 +32,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   [ImplementationFor (typeof (IBocSimpleColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocSimpleColumnRenderer : BocValueColumnRendererBase<BocSimpleColumnDefinition>, IBocSimpleColumnRenderer
   {
+    private readonly IRenderingFeatures _renderingFeatures;
+
     /// <summary>
     /// Contructs a renderer bound to a <see cref="BocList"/> to render, an <see cref="HtmlTextWriter"/> to render to, and a
     /// <see cref="BocSimpleColumnDefinition"/> column for which to render cells.
@@ -45,6 +48,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         BocListCssClassDefinition cssClasses)
         : base (resourceUrlFactory, renderingFeatures, cssClasses)
     {
+      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+
+      _renderingFeatures = renderingFeatures;
     }
 
     /// <summary>
@@ -89,6 +95,33 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             RenderCellIcon (renderingContext, value);
         }
       }
+    }
+
+    /// <summary>
+    /// Renders a custom title cell that includes information about bound property paths of <see cref="BocSimpleColumnDefinition"/>.
+    /// </summary>
+    protected override void RenderTitleCell (BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, SortingDirection sortingDirection, int orderIndex)
+    {
+      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+
+      if (_renderingFeatures.EnableDiagnosticMetadata)
+      {
+        var boundPropertyPath = renderingContext.ColumnDefinition.PropertyPathIdentifier;
+
+        if (!string.IsNullOrEmpty (boundPropertyPath))
+        {
+          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
+          renderingContext.Writer.AddAttribute (
+              DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths,
+              boundPropertyPath);
+        }
+        else
+        {
+          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
+        }
+      }
+
+      base.RenderTitleCell (renderingContext, sortingDirection, orderIndex);
     }
 
     private void RenderEditModeControl (

@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<DropDownMenuControlObject> GetDropDownMenu<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("listMenu", listMenu);
@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ListMenuControlObject> GetListMenu<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("listMenu", listMenu);
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotBocListDropDown<TList, TRow, TCell>> GetViewsMenu<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("listMenu", listMenu);

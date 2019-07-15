@@ -113,6 +113,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return GetCellWithColumnIndex<TCellControlObject> (oneBasedIndex);
     }
 
+    /// <summary>
+    /// Gets a <typeparamref name="TCellControlObject"/> via its <paramref name="domainPropertyPaths"/>.
+    /// </summary>
+    public TCellControlObject GetCellWithColumnDomainPropertyPaths<TCellControlObject> ([NotNull] string[] domainPropertyPaths)
+    {
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("domainPropertyPaths", domainPropertyPaths);
+
+      var oneBasedIndex = _accessor.GetColumnIndexForDomainPropertyPaths (domainPropertyPaths);
+      return GetCellWithColumnIndex<TCellControlObject> (oneBasedIndex);
+    }
+
     /// <inheritdoc/>
     public DropDownMenuControlObject GetDropDownMenu ()
     {

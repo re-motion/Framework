@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotBocListMenuBlock<TList, TRow, TCell>> GetMenuBlock<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentList", fluentList);
@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotBocListNavigator<TList, TRow, TCell>> GetNavigator<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentList", fluentList);
@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotBocListTableContainer<TList, TRow, TCell>> GetTableContainer<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentList", fluentList);

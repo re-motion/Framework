@@ -80,6 +80,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         return _bocList.GetColumnByTitleContains (columnTitleContains).Index;
       }
 
+      public int GetColumnIndexForDomainPropertyPaths (string[] domainPropertyPaths)
+      {
+        ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("domainPropertyPaths", domainPropertyPaths);
+
+        return _bocList.GetColumnByDomainPropertyPaths (domainPropertyPaths).Index;
+      }
+
       public int GetZeroBasedAbsoluteRowIndexOfFirstRow ()
       {
         return int.Parse (_bocList.GetRow (1).Scope.FindCss ("input[type='checkbox'], input[type='radio']").Id.Split ('_').Last());
@@ -108,6 +115,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
                           s[DiagnosticMetadataAttributes.ItemID],
                           i + 1,
                           s[DiagnosticMetadataAttributes.Content],
+                          s[DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths] == "true",
+                          s[DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths]?.Split ('\u001e'),
                           ColumnHasDiagnosticMetadata (s)))
               .ToList());
     }
@@ -419,6 +428,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
 
       return _columns.Where (cd => cd.Title != null).Single (cd => cd.Title.Contains (columnTitleContains));
+    }
+
+    protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByDomainPropertyPaths ([NotNull] string[] domainPropertyPaths)
+    {
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("domainPropertyPaths", domainPropertyPaths);
+
+      return _columns.Where (column => column.HasDomainPropertyPaths)
+          .Single (column => column.DomainPropertyPaths.SequenceEqual (domainPropertyPaths));
     }
 
     public IReadOnlyList<string> GetValidationErrors ()

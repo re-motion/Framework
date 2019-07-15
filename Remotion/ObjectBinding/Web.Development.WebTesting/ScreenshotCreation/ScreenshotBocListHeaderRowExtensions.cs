@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static ScreenshotBocListFluentHeaderCellSelector<TList, TRow, TCell> GetCell<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentHeaderRow)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentHeaderRow", fluentHeaderRow);
@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentHeaderRow,
         [NotNull] string itemID)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentHeaderRow", fluentHeaderRow);
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentHeaderRow,
         int oneBasedIndex)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentHeaderRow", fluentHeaderRow);

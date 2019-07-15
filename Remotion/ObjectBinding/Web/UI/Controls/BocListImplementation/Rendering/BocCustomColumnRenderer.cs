@@ -19,10 +19,10 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -33,6 +33,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   [ImplementationFor (typeof (IBocCustomColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocCustomColumnRenderer : BocColumnRendererBase<BocCustomColumnDefinition>, IBocCustomColumnRenderer
   {
+    private readonly IRenderingFeatures _renderingFeatures;
+
     /// <summary>
     /// Contructs a renderer bound to a <see cref="Remotion.ObjectBinding.Web.UI.Controls.BocList"/> to render, 
     /// an <see cref="HtmlTextWriter"/> to render to, and a <see cref="BocCustomColumnDefinition"/> column for which to render cells.
@@ -47,6 +49,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         BocListCssClassDefinition cssClasses)
         : base (resourceUrlFactory, renderingFeatures, cssClasses)
     {
+      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+
+      _renderingFeatures = renderingFeatures;
     }
 
     /// <summary>
@@ -80,6 +85,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         RenderCustomCellInnerControls (renderingContext, originalRowIndex, rowIndex);
       else
         RenderCustomCellDirectly (renderingContext, businessObject, originalRowIndex);
+    }
+
+    /// <summary>
+    /// Renders a custom title cell that includes information about bound property paths of <see cref="BocCustomColumnDefinition"/>.
+    /// </summary>
+    protected override void RenderTitleCell (
+        BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext,
+        SortingDirection sortingDirection,
+        int orderIndex)
+    {
+      if (_renderingFeatures.EnableDiagnosticMetadata)
+      {
+        var boundPropertyPath = renderingContext.ColumnDefinition.PropertyPathIdentifier;
+
+        if (!string.IsNullOrEmpty (boundPropertyPath))
+        {
+          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
+          renderingContext.Writer.AddAttribute (
+              DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths,
+              boundPropertyPath);
+        }
+        else
+        {
+          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
+        }
+      }
+
+      base.RenderTitleCell (renderingContext, sortingDirection, orderIndex);
     }
 
     private void RenderCustomCellInnerControls (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, int originalRowIndex, int rowIndex)

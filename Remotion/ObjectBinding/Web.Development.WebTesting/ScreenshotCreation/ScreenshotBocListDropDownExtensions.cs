@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static void Open<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListDropDown<TList, TRow, TCell>> fluentDropDown)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentDropDown", fluentDropDown);

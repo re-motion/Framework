@@ -27,8 +27,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// </summary>
   public class BocListEditableRowControlObject
       : WebFormsControlObjectWithDiagnosticMetadata,
-          IControlObjectWithCells<BocListEditableCellControlObject>,
-          IFluentControlObjectWithCells<BocListEditableCellControlObject>
+          IBocListRowControlObject<BocListEditableCellControlObject>,
+          IFluentBocListRowControlObject<BocListEditableCellControlObject>
   {
     private readonly BocListRowFunctionality _impl;
 
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public IFluentControlObjectWithCells<BocListEditableCellControlObject> GetCell ()
+    public IFluentBocListRowControlObject<BocListEditableCellControlObject> GetCell ()
     {
       return this;
     }
@@ -102,6 +102,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
 
       return _impl.GetCellWithColumnTitleContains<BocListEditableCellControlObject> (columnTitleContains);
+    }
+
+    /// <inheritdoc />
+    BocListEditableCellControlObject IFluentBocListRowControlObject<BocListEditableCellControlObject>.WithDomainPropertyPaths (string[] domainPropertyPaths)
+    {
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("domainPropertyPaths", domainPropertyPaths);
+
+      return _impl.GetCellWithColumnDomainPropertyPaths<BocListEditableCellControlObject> (domainPropertyPaths);
     }
   }
 }

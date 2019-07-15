@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetPageInformationText<TList, TRow, TCell> (
         this IFluentScreenshotElementWithCovariance<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       var element = fluentNavigation.Target.Element.FindCss ("span", Options.NoWait);
@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetPageNumberInput<TList, TRow, TCell> (
         this IFluentScreenshotElementWithCovariance<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       var element = fluentNavigation.Target.Element.FindCss ("span > input", Options.NoWait);
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetFirstPageButton<TList, TRow, TCell> (
         this IFluentScreenshotElementWithCovariance<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       var scope = fluentNavigation.Target.List.Scope;
@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetPreviousPageButton<TList, TRow, TCell> (
         this IFluentScreenshotElementWithCovariance<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       var scope = fluentNavigation.Target.List.Scope;
@@ -102,7 +102,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetNextPageButton<TList, TRow, TCell> (
         this IFluentScreenshotElementWithCovariance<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       var scope = fluentNavigation.Target.List.Scope;
@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetLastPageButton<TList, TRow, TCell> (
         this IFluentScreenshotElementWithCovariance<ScreenshotBocListNavigator<TList, TRow, TCell>> fluentNavigation)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       var scope = fluentNavigation.Target.List.Scope;

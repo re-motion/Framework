@@ -313,4 +313,24 @@
     </td>
     <td>&nbsp; (without Diagnostic Metadata, with characters requiring special handling in selector)</td>
 </tr>
+<tr>
+  <td></td>
+  <td>
+    <testsite:TestBocListWithRowMenuItems
+      ID="NestedPropertyPathIdentifier"
+      DataSourceControl="CurrentObject"
+      ShowAllProperties="False"
+      PropertyIdentifier="Children"
+
+      Width="100%"
+      Height="13em"
+      runat="server">
+      <FixedColumns>
+        <remotion:BocSimpleColumnDefinition ColumnTitle="Partner's FirstName" PropertyPathIdentifier="Partner.FirstName">
+        </remotion:BocSimpleColumnDefinition>
+      </FixedColumns>
+    </testsite:TestBocListWithRowMenuItems>
+  </td>
+  <td>&nbsp; (Nested PropertyPathIdentifier)</td>
+</tr>
 </table>

@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -31,6 +33,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   [ImplementationFor (typeof (IBocCompoundColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocCompoundColumnRenderer : BocValueColumnRendererBase<BocCompoundColumnDefinition>, IBocCompoundColumnRenderer
   {
+    private readonly IRenderingFeatures _renderingFeatures;
+
     /// <summary>
     /// Contructs a renderer bound to a <see cref="BocList"/> to render, an <see cref="HtmlTextWriter"/> to render to, and a
     /// <see cref="BocCompoundColumnDefinition"/> column for which to render cells.
@@ -45,6 +49,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         BocListCssClassDefinition cssClasses)
         : base (resourceUrlFactory, renderingFeatures, cssClasses)
     {
+      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+
+      _renderingFeatures = renderingFeatures;
     }
 
     /// <summary>
@@ -60,6 +67,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
       RenderValueColumnCellText (renderingContext, renderingContext.ColumnDefinition.GetStringValue (businessObject));
+    }
+
+    /// <summary>
+    /// Renders a custom title cell that includes information about bound property paths of <see cref="BocCompoundColumnDefinition"/>.
+    /// </summary>
+    protected override void RenderTitleCell (BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, SortingDirection sortingDirection, int orderIndex)
+    {
+      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+
+      if (_renderingFeatures.EnableDiagnosticMetadata)
+      {
+        var boundPropertyPaths = renderingContext.ColumnDefinition.PropertyPathBindings.ToArray().Select (x => x.PropertyPathIdentifier);
+        var joinedBoundPropertyPaths = string.Join ("\u001e", boundPropertyPaths);
+
+        if (!string.IsNullOrEmpty (joinedBoundPropertyPaths))
+        {
+          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
+          renderingContext.Writer.AddAttribute (
+              DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths,
+              joinedBoundPropertyPaths);
+        }
+        else
+        {
+          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
+        }
+      }
+
+      base.RenderTitleCell (renderingContext, sortingDirection, orderIndex);
     }
   }
 }

@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static ScreenshotBocListFluentColumnCellSelector<TList, TRow, TCell> GetCell<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListColumn<TList, TRow, TCell>> fluentColumn)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentColumn", fluentColumn);
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListColumn<TList, TRow, TCell>> fluentColumn,
         [NotNull] string rowItemID)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentColumn", fluentColumn);
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListColumn<TList, TRow, TCell>> fluentColumn,
         int oneBasedRowIndex)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentColumn", fluentColumn);
@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static ScreenshotBocListFluentRowCellSelector<TList, TRow, TCell> GetCell<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListRow<TList, TRow, TCell>> fluentRow)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentRow", fluentRow);
@@ -102,7 +102,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListRow<TList, TRow, TCell>> fluentRow,
         [NotNull] string columnItemID)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentRow", fluentRow);
@@ -120,7 +120,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListRow<TList, TRow, TCell>> fluentRow,
         int oneBasedColumnIndex)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentRow", fluentRow);
@@ -137,7 +137,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListTableContainer<TList, TRow, TCell>> fluentTableContainer,
         bool includeHeader = true)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentTableContainer", fluentTableContainer);
@@ -153,7 +153,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] string columnItemID,
         bool includeHeader = true)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentTableContainer", fluentTableContainer);
@@ -170,7 +170,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         int oneBasedColumnIndex,
         bool includeHeader = true)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentTableContainer", fluentTableContainer);
@@ -184,7 +184,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotBocListHeaderRow<TList, TRow, TCell>> GetHeaderRow<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListTableContainer<TList, TRow, TCell>> fluentTableContainer)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentTableContainer", fluentTableContainer);
@@ -204,7 +204,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static ScreenshotBocListFluentRowSelector<TList, TRow, TCell> GetRow<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListTableContainer<TList, TRow, TCell>> fluentTableContainer)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentTableContainer", fluentTableContainer);
@@ -219,7 +219,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListTableContainer<TList, TRow, TCell>> fluentTableContainer,
         [NotNull] string rowItemID)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentTableContainer", fluentTableContainer);
@@ -235,7 +235,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListTableContainer<TList, TRow, TCell>> fluentTableContainer,
         int oneBasedRowIndex)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       ArgumentUtility.CheckNotNull ("fluentTableContainer", fluentTableContainer);
@@ -249,7 +249,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static int GetRowCount<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListTableContainer<TList, TRow, TCell>> fluentTableContainer)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       return fluentTableContainer.Target.List.GetNumberOfRows();

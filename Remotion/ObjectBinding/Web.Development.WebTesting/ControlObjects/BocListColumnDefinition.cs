@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Web.Development.WebTesting;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
@@ -29,13 +30,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly string _itemID;
     private readonly int _oneBasedIndex;
     private readonly string _title;
+    private readonly bool _hasDomainPropertyPaths;
+    private readonly string[] _domainPropertyPaths;
     private readonly bool _hasDiagnosticMetadata;
 
-    public BocListColumnDefinition (string itemID, int oneBasedIndex, string title, bool hasDiagnosticMetadata)
+    public BocListColumnDefinition (string itemID, int oneBasedIndex, string title, bool hasDomainPropertyPaths, string[] domainPropertyPaths, bool hasDiagnosticMetadata)
     {
       _itemID = itemID;
       _oneBasedIndex = oneBasedIndex;
       _title = title;
+      _hasDomainPropertyPaths = hasDomainPropertyPaths;
+      _domainPropertyPaths = domainPropertyPaths;
       _hasDiagnosticMetadata = hasDiagnosticMetadata;
     }
 
@@ -52,6 +57,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public string Title
     {
       get { return _title; }
+    }
+
+    public bool HasDomainPropertyPaths
+    {
+      get { return _hasDomainPropertyPaths; }
+    }
+
+    public IReadOnlyCollection<string> DomainPropertyPaths
+    {
+      get { return _domainPropertyPaths; }
     }
 
     public bool HasDiagnosticMetadata

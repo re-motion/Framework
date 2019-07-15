@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
   /// </summary>
   public class ScreenshotBocListRow<TList, TRow, TCell> : ISelfResolvable
       where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-      where TRow : ControlObject, IControlObjectWithCells<TCell>
+      where TRow : ControlObject, IBocListRowControlObject<TCell>
       where TCell : ControlObject
   {
     private readonly IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> _fluentList;

@@ -28,8 +28,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   public class BocListAsGridRowControlObject
       : WebFormsControlObjectWithDiagnosticMetadata,
           IDropDownMenuHost,
-          IControlObjectWithCells<BocListAsGridCellControlObject>,
-          IFluentControlObjectWithCells<BocListAsGridCellControlObject>
+          IBocListRowControlObject<BocListAsGridCellControlObject>,
+          IFluentBocListRowControlObject<BocListAsGridCellControlObject>
   {
     private readonly BocListRowFunctionality _impl;
 
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public IFluentControlObjectWithCells<BocListAsGridCellControlObject> GetCell ()
+    public IFluentBocListRowControlObject<BocListAsGridCellControlObject> GetCell ()
     {
       return this;
     }
@@ -112,6 +112,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
 
       return _impl.GetCellWithColumnTitleContains<BocListAsGridCellControlObject> (columnTitleContains);
+    }
+
+    /// <inheritdoc />
+    BocListAsGridCellControlObject IFluentBocListRowControlObject<BocListAsGridCellControlObject>.WithDomainPropertyPaths (string[] domainPropertyPaths)
+    {
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("domainPropertyPaths", domainPropertyPaths);
+
+      return _impl.GetCellWithColumnDomainPropertyPaths<BocListAsGridCellControlObject> (domainPropertyPaths);
     }
 
     /// <inheritdoc/>

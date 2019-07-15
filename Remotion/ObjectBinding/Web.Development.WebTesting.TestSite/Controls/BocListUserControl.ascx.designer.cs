@@ -110,5 +110,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_ColumnsWithoutDiagnosticMetadata;
+        
+        /// <summary>
+        /// NestedPropertyPathIdentifier control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems NestedPropertyPathIdentifier;
     }
 }

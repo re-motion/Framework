@@ -46,6 +46,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     int GetColumnIndexForTitleContains ([NotNull] string columnTitleContains);
 
     /// <summary>
+    /// Returns the one-based column index of the given <paramref name="domainPropertyPaths"/> within the parent control.
+    /// </summary>
+    int GetColumnIndexForDomainPropertyPaths ([NotNull] string[] domainPropertyPaths);
+
+    /// <summary>
     /// Returns the zero-based absolute row index of the first row on the current page.
     /// </summary>
     int GetZeroBasedAbsoluteRowIndexOfFirstRow ();

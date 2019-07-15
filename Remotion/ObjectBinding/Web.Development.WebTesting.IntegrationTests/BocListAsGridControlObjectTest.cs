@@ -462,6 +462,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestGetCellViaPropertyPath ()
+    {
+      var home = Start();
+
+      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var rows = bocList.GetDisplayedRows();
+      var cell = rows[0].GetCell().WithDomainPropertyPath ("DisplayName");
+
+      Assert.That (cell.GetText(), Is.EqualTo ("Programmer"));
+    }
+
+    [Test]
     public void TestGetCurrentPage ()
     {
       var home = Start();
@@ -591,7 +603,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
     private class DerivedScreenshotBocList<TList, TRow, TCell> : ScreenshotBocList<TList, TRow, TCell>
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       public DerivedScreenshotBocList (
@@ -604,7 +616,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
     private class DerivedScreenshotBocListTableContainer<TList, TRow, TCell> : ScreenshotBocListTableContainer<TList, TRow, TCell>
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       public DerivedScreenshotBocListTableContainer (
@@ -617,7 +629,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
     private class DerivedScreenshotBocListHeaderRow<TList, TRow, TCell> : ScreenshotBocListHeaderRow<TList, TRow, TCell>
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       public DerivedScreenshotBocListHeaderRow (
@@ -630,7 +642,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
     private class DerivedScreenshotBocListRow<TList, TRow, TCell> : ScreenshotBocListRow<TList, TRow, TCell>
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       public DerivedScreenshotBocListRow (
@@ -643,7 +655,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
     private class DerivedScreenshotBocListColumn<TList, TRow, TCell> : ScreenshotBocListColumn<TList, TRow, TCell>
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       public DerivedScreenshotBocListColumn (
@@ -657,7 +669,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
     private class DerivedScreenshotBocListNavigator<TList, TRow, TCell> : ScreenshotBocListNavigator<TList, TRow, TCell>
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       public DerivedScreenshotBocListNavigator (
@@ -670,7 +682,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
     private class DerivedScreenshotBocListMenuBlock<TList, TRow, TCell> : ScreenshotBocListMenuBlock<TList, TRow, TCell>
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       public DerivedScreenshotBocListMenuBlock (
@@ -683,7 +695,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
     private class DerivedScreenshotBocListDropDown<TList, TRow, TCell> : ScreenshotBocListDropDown<TList, TRow, TCell>
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
       public DerivedScreenshotBocListDropDown (

@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       : IFluentItemIDSelector<ScreenshotBocListRow<TList, TRow, TCell>>,
           IFluentIndexSelector<ScreenshotBocListRow<TList, TRow, TCell>>
       where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-      where TRow : ControlObject, IControlObjectWithCells<TCell>
+      where TRow : ControlObject, IBocListRowControlObject<TCell>
       where TCell : ControlObject
   {
     private readonly IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> _fluentList;

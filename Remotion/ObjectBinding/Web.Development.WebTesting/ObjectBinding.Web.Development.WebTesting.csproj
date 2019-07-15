@@ -94,6 +94,8 @@
     <Compile Include="ControlObjects\BocAutoCompleteReferenceValueControlObject.cs" />
     <Compile Include="ControlObjects\BocListControlObject.cs" />
     <Compile Include="ControlObjects\BocTreeViewNodeControlObject.cs" />
+    <Compile Include="ControlObjects\IBocListRowControlObject.cs" />
+    <Compile Include="ControlObjects\BocListRowControlObjectExtensions.cs" />
     <Compile Include="ControlObjects\IBocListRowControlObjectHostAccessor.cs" />
     <Compile Include="ControlObjects\SearchServiceResultItem.cs" />
     <Compile Include="ControlObjects\Selectors\BocDateTimeValueSelector.cs" />
