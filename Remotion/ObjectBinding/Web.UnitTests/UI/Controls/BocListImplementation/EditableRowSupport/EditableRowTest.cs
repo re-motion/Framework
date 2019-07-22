@@ -240,7 +240,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       ControlCollection validators0 = _editableRow.GetValidators (0);
       Assert.That (validators0, Is.Not.Null);
-      Assert.That (validators0.Count, Is.EqualTo (0));
+      Assert.That (validators0.Count, Is.EqualTo (1));
 
       ControlCollection validators6 = _editableRow.GetValidators (6);
       Assert.That (validators6, Is.Not.Null);
@@ -287,7 +287,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       ControlCollection validators0 = _editableRow.GetValidators (0);
       Assert.That (validators0, Is.Not.Null);
-      Assert.That (validators0.Count, Is.EqualTo (0));
+      Assert.That (validators0.Count, Is.EqualTo (1));
 
       ControlCollection validators6 = _editableRow.GetValidators (6);
       Assert.That (validators6, Is.Not.Null);

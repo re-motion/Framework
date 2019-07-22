@@ -135,4 +135,10 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.MaxLengthValidationMessage" xml:space="preserve">
       <value>Ne saisissez pas plus de {0} caractères.</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.InvalidCharactersForSingleLineErrorMessage" xml:space="preserve">
+    <value>La valeur contient des caractères non pris en charge: «{0}» (position: {1}).</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.InvalidCharactersForMultiLineErrorMessage" xml:space="preserve">
+    <value>La valeur contient des caractères non pris en charge: «{0}» (numéro de ligne: {2}, position de la ligne: {1}).</value>
+  </data>
 </root>

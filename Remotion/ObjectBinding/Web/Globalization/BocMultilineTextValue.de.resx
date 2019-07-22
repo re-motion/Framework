@@ -123,4 +123,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue.MaxLengthValidationMessage" xml:space="preserve">
       <value>Geben Sie nicht mehr als {0} Zeichen ein.</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue.InvalidCharactersErrorMessage" xml:space="preserve">
+    <value>Der Wert enthält nicht unterstützte Zeichen: "{0}" (Zeilennummer: {2}, Zeilenposition: {1}).</value>
+  </data>
 </root>

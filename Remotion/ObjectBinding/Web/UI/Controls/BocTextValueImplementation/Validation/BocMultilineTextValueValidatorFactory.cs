@@ -49,6 +49,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
 
       if (control.TextBoxStyle.MaxLength.HasValue)
         yield return CreateLengthValidator (control, resourceManager);
+
+      yield return CreateTypeIsStringValidator (control, resourceManager);
     }
 
     private RequiredFieldValidator CreateRequiredFieldValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
@@ -71,6 +73,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       lengthValidator.MaximumLength = maxLength.Value;
       lengthValidator.ErrorMessage = string.Format (resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.MaxLengthValidationMessage), maxLength.Value);
       return lengthValidator;
+    }
+
+    private NonPrintableCharactersValidator CreateTypeIsStringValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
+    {
+      NonPrintableCharactersValidator typeValidator = new NonPrintableCharactersValidator();
+      typeValidator.ID = control.ID + "_ValidatorType";
+      typeValidator.ControlToValidate = control.TargetControl.ID;
+      typeValidator.SampleTextLength = 5;
+      typeValidator.EnableMultilineText = true;
+      typeValidator.ErrorMessageFormat = resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.InvalidCharactersErrorMessage);
+      return typeValidator;
     }
   }
 }

@@ -25,9 +25,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
 
     [Test]
     [TestCase (true, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase (true, false, new[] { typeof (RequiredFieldValidator) }, Description = "Required/Not ReadOnly")]
+    [TestCase (true, false, new[] { typeof (RequiredFieldValidator), typeof (NonPrintableCharactersValidator) }, Description = "Required/Not ReadOnly")]
     [TestCase (false, true, new Type[0], Description = "Not Required/ReadOnly")]
-    [TestCase (false, false, new Type[0], Description = "Not Required/Not ReadOnly")]
+    [TestCase (false, false, new[] { typeof (NonPrintableCharactersValidator) }, Description = "Not Required/Not ReadOnly")]
     public void CreateValidators (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControl (isRequired);
@@ -38,9 +38,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
 
     [Test]
     [TestCase (true, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase (true, false, new[] { typeof (RequiredFieldValidator), typeof (LengthValidator) }, Description = "Required/Not ReadOnly")]
+    [TestCase (true, false, new[] { typeof (RequiredFieldValidator), typeof (LengthValidator), typeof (NonPrintableCharactersValidator)  }, Description = "Required/Not ReadOnly")]
     [TestCase (false, true, new Type[0], Description = "Not Required/ReadOnly")]
-    [TestCase (false, false, new[] { typeof (LengthValidator) }, Description = "Not Required/Not ReadOnly")]
+    [TestCase (false, false, new[] { typeof (LengthValidator), typeof (NonPrintableCharactersValidator)  }, Description = "Not Required/Not ReadOnly")]
     public void CreateValidators_WithMaxLength (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControl (isRequired);

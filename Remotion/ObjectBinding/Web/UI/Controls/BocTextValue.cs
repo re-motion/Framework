@@ -70,7 +70,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       /// <summary> The validation error message displayed when the text is no valid integer. </summary>
       InvalidIntegerErrorMessage,
       /// <summary> The validation error message displayed when the text is no valid integer. </summary>
-      InvalidDoubleErrorMessage
+      InvalidDoubleErrorMessage,
+      /// <summary> The validation error message displayed when the singleline text contains invalid characters. </summary>
+      InvalidCharactersForSingleLineErrorMessage,
+      /// <summary> The validation error message displayed when the multiline text contains invalid characters. </summary>
+      InvalidCharactersForMultiLineErrorMessage
     }
 
     // fields
