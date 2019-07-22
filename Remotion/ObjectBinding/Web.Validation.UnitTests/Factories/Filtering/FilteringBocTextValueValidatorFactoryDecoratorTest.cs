@@ -50,6 +50,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
       control.Expect (c => c.TextBoxStyle).Return (new TextBoxStyle() { MaxLength = 10 });
       control.Expect (c => c.TargetControl).Return (new Control() { ID = "ID" });
       control.Expect (c => c.Property).Return (GetPropertyStub (required, isValueType));
+      control.Expect (c => c.ActualValueType).Return (BocTextValueType.String);
 
       SetResourceManagerMock (control);
 

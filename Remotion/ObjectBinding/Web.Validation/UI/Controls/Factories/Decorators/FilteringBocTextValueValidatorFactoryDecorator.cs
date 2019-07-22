@@ -51,6 +51,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators
       if (validator is LengthValidator)
         return false;
 
+      if (validator is NonPrintableCharactersValidator)
+        return false;
+
       return true;
     }
   }
