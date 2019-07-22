@@ -363,6 +363,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private BocTextBoxMode _textMode;
     private readonly BocTextBoxMode _defaultTextMode = BocTextBoxMode.SingleLine;
     private bool? _wrap;
+    private bool _hasValidationForNonPrintableCharacters = false;
 
     public TextBoxStyle (BocTextBoxMode defaultTextMode)
     {
@@ -470,6 +471,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _wrap; }
       set { _wrap = value; }
+    }
+
+    [Obsolete ("This flag can be used to enable the validation of non-printable characters in version 1.20.x and does not exist in version 1.22.x.")]
+    public bool HasValidationForNonPrintableCharacters
+    {
+      get { return _hasValidationForNonPrintableCharacters; }
+      set { _hasValidationForNonPrintableCharacters = value; }
     }
   }
 

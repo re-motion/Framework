@@ -218,6 +218,7 @@
     <Compile Include="UI\Controls\HtmlHeadContentsImplementation\Rendering\IHtmlHeadContentsRenderer.cs" />
     <Compile Include="UI\Controls\IControlWithLabel.cs" />
     <Compile Include="UI\Controls\IControlWithResourceManager.cs" />
+    <Compile Include="UI\Controls\NonPrintableCharactersValidator.cs" />
     <Compile Include="UI\Controls\Rendering\DefaultRenderingFeatures.cs" />
     <Compile Include="UI\Controls\DropDownMenuImplementation\Rendering\DropDownMenuRenderingContext.cs" />
     <Compile Include="UI\Controls\DropDownMenuImplementation\Rendering\IDropDownMenuRenderer.cs" />

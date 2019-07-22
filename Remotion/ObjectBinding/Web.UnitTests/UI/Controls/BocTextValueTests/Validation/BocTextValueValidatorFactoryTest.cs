@@ -36,9 +36,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
 
     [Test]
     [TestCase (true, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase (true, false, new[] { typeof (RequiredFieldValidator) }, Description = "Required/Not ReadOnly")]
+    [TestCase (true, false, new[] { typeof (RequiredFieldValidator), typeof (NonPrintableCharactersValidator) }, Description = "Required/Not ReadOnly")]
     [TestCase (false, true, new Type[0], Description = "Not Required/ReadOnly")]
-    [TestCase (false, false, new Type[0], Description = "Not Required/Not ReadOnly")]
+    [TestCase (false, false, new[] { typeof (NonPrintableCharactersValidator) }, Description = "Not Required/Not ReadOnly")]
     public void CreateValidators_StringProperty (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControl (isRequired, BocTextValueType.String);
@@ -49,9 +49,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
 
     [Test]
     [TestCase (true, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase (true, false, new[] { typeof (RequiredFieldValidator), typeof (LengthValidator) }, Description = "Required/Not ReadOnly")]
+    [TestCase (true, false, new[] { typeof (RequiredFieldValidator), typeof (LengthValidator), typeof (NonPrintableCharactersValidator) }, Description = "Required/Not ReadOnly")]
     [TestCase (false, true, new Type[0], Description = "Not Required/ReadOnly")]
-    [TestCase (false, false, new[] { typeof (LengthValidator) }, Description = "Not Required/Not ReadOnly")]
+    [TestCase (false, false, new[] { typeof (LengthValidator), typeof (NonPrintableCharactersValidator) }, Description = "Not Required/Not ReadOnly")]
     public void CreateValidators_StringPropertyWithMaxLength (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControl (isRequired, BocTextValueType.String);
@@ -116,7 +116,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
       var controlMock = MockRepository.GenerateMock<IBocTextValue>();
       controlMock.Expect (c => c.ActualValueType).Return (valueType);
       controlMock.Expect (c => c.IsRequired).Return (isRequired);
-      controlMock.Expect (c => c.TextBoxStyle).Return (new TextBoxStyle());
+      var textBoxStyle = new TextBoxStyle();
+#pragma warning disable 618
+      textBoxStyle.HasValidationForNonPrintableCharacters = true;
+#pragma warning restore 618
+      controlMock.Expect (c => c.TextBoxStyle).Return (textBoxStyle);
 
       var resourceManagerMock = MockRepository.GenerateMock<IResourceManager>();
       resourceManagerMock.Expect (r => r.TryGetString (Arg<string>.Is.Anything, out Arg<string>.Out ("MockValue").Dummy))

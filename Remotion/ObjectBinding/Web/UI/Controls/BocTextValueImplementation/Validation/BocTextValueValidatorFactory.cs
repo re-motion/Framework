@@ -92,7 +92,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         case BocTextValueType.Undefined:
           return null;
         case BocTextValueType.String:
-          return null;
+        {
+#pragma warning disable 618
+          if (control.TextBoxStyle.HasValidationForNonPrintableCharacters)
+            return CreateTypeIsStringValidator (control, resourceManager);
+          else
+            return null;
+#pragma warning restore 618
+        }
         case BocTextValueType.DateTime:
           return CreateTypeIsDateTimeValidator (control, resourceManager);
         case BocTextValueType.Date:
@@ -111,6 +118,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
               "BocTextValue '" + control.ID + "': Cannot convert " + valueType + " to type " + typeof (ValidationDataType).FullName + ".");
         }
       }
+    }
+
+    private NonPrintableCharactersValidator CreateTypeIsStringValidator (IBocTextValue control, IResourceManager resourceManager)
+    {
+      NonPrintableCharactersValidator typeValidator = new NonPrintableCharactersValidator();
+      typeValidator.ID = control.ID + "_ValidatorType";
+      typeValidator.ControlToValidate = control.TargetControl.ID;
+      typeValidator.SampleTextLength = 5;
+      if (control.TextBoxStyle.TextMode == BocTextBoxMode.MultiLine)
+      {
+        typeValidator.EnableMultilineText = true;
+        typeValidator.ErrorMessageFormat = resourceManager.GetString (BocTextValue.ResourceIdentifier.InvalidCharactersForMultiLineErrorMessage);
+      }
+      else
+      {
+        typeValidator.EnableMultilineText = false;
+        typeValidator.ErrorMessageFormat = resourceManager.GetString (BocTextValue.ResourceIdentifier.InvalidCharactersForSingleLineErrorMessage);
+      }
+      return typeValidator;
     }
 
     private DateTimeValidator CreateTypeIsDateTimeValidator (IBocTextValue control, IResourceManager resourceManager)

@@ -54,7 +54,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       /// <summary> The validation error message displayed when no text is entered but input is required. </summary>
       RequiredValidationMessage,
       /// <summary> The validation error message displayed when entered text exceeds the maximum length. </summary>
-      MaxLengthValidationMessage
+      MaxLengthValidationMessage,
+      /// <summary> The validation error message displayed when the text contains invalid characters. </summary>
+      InvalidCharactersErrorMessage
     }
 
     // static members
