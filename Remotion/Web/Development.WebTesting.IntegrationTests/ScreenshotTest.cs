@@ -176,20 +176,48 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests that the <see cref="ScreenshotTooltipAnnotation"/> is drawn correctly.
     /// </summary>
-    [Category("Screenshot")]
+    [Category ("Screenshot")]
     [Test]
-    public void TooltipTest ()
+    public void DrawTooltip ()
     {
       ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
       {
-        Helper.BrowserConfiguration.AnnotateHelper.DrawTooltip (builder, target, ScreenshotTooltipStyle.Chrome);
-        Helper.BrowserConfiguration.AnnotateHelper.DrawTooltip (builder, target, ScreenshotTooltipStyle.InternetExplorer);
+        Helper.BrowserConfiguration.AnnotateHelper.DrawTooltip (builder, target, GetTooltipStyleForCurrentBrowser());
+
         builder.Crop (target.ForElementScopeScreenshot(), new WebPadding (30, 60, 30, 60));
       };
 
       var home = Start();
       var element = home.Scope.FindId ("tooltipTarget");
       Helper.RunScreenshotTestExact<ElementScope, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="ScreenshotTooltipAnnotation"/> is annotated correctly.
+    /// </summary>
+    [Category ("Screenshot")]
+    [Test]
+    public void DrawCursorTooltip ()
+    {
+      ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
+      {
+        Helper.BrowserConfiguration.AnnotateHelper.DrawCursorTooltip (builder, "title", GetTooltipStyleForCurrentBrowser());
+
+        builder.Crop (target.ForElementScopeScreenshot(), new WebPadding (30, 60, 30, 60));
+      };
+
+      var home = Start();
+      var mouseHelper = Helper.BrowserConfiguration.MouseHelper;
+      var element = home.Scope.FindId ("tooltipTarget");
+
+      // ElementScope.Hover() cannot be used due to Chromedriver not moving the cursor to trigger the hover event.
+      mouseHelper.Hover (element);
+
+      // When drawing the Cursor tooltip, only ScreenshotTestingType.Desktop is supported.
+      Helper.RunScreenshotTestExact<ElementScope, ScreenshotTest> (element, ScreenshotTestingType.Desktop, test);
+
+      // Reset the cursor to the initial position (0, 0).
+      mouseHelper.Hover (Point.Empty);
     }
 
     /// <summary>
@@ -538,6 +566,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (derivedNode.GetChildren(), Is.Not.Null);
       Assert.That (derivedNode.GetLabel(), Is.Not.Null);
+    }
+
+    private ScreenshotTooltipStyle GetTooltipStyleForCurrentBrowser ()
+    {
+      if (Helper.BrowserConfiguration.IsChrome())
+        return ScreenshotTooltipStyle.Chrome;
+
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+        return ScreenshotTooltipStyle.InternetExplorer;
+
+      throw new NotSupportedException ("No ScreenshotTooltipStyle has been specified for the current browser.");
     }
 
     private ControlObject PrepareTest ()
