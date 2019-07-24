@@ -152,7 +152,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       ArgumentUtility.CheckNotNull ("annotation", annotation);
 
-      var resolvedElement = new ResolvedScreenshotElement (_screenshot.CoordinateSystem, _imageBounds, ElementVisibility.FullyVisible, _imageBounds);
+      var resolvedElement = new ResolvedScreenshotElement (_screenshot.CoordinateSystem, _imageBounds, ElementVisibility.FullyVisible, _imageBounds, _imageBounds);
       annotation.Draw (_graphics, resolvedElement);
 
       return this;

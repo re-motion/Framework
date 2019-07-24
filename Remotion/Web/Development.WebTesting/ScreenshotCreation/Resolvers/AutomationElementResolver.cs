@@ -58,6 +58,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 
         var elementRect = target.Current.BoundingRectangle;
         var elementBounds = new Rectangle ((int) elementRect.X, (int) elementRect.Y, (int) elementRect.Width, (int) elementRect.Height);
+        var unresolvedBounds = elementBounds;
 
         var result = FindTopMostWindow (target);
         if (result == null)
@@ -66,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
         var windowRect = result.Current.BoundingRectangle;
         var windowBounds = new Rectangle ((int) windowRect.X, (int) windowRect.Y, (int) windowRect.Width, (int) windowRect.Height);
 
-        return new ResolvedScreenshotElement (CoordinateSystem.Desktop, elementBounds, visibility, windowBounds);
+        return new ResolvedScreenshotElement (CoordinateSystem.Desktop, elementBounds, visibility, windowBounds, unresolvedBounds);
       }
       catch (ElementNotAvailableException ex)
       {
@@ -118,6 +119,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 
         var elementRect = target.Current.BoundingRectangle;
         var elementBounds = new Rectangle ((int) elementRect.X, (int) elementRect.Y, (int) elementRect.Width, (int) elementRect.Height);
+        var unresolvedBounds = elementBounds;
 
         var result = FindTopMostWindow (target);
         if (result == null)
@@ -126,7 +128,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
         var windowRect = result.Current.BoundingRectangle;
         var windowBounds = new Rectangle ((int) windowRect.X, (int) windowRect.Y, (int) windowRect.Width, (int) windowRect.Height);
 
-        return new ResolvedScreenshotElement (CoordinateSystem.Desktop, elementBounds, visibility, windowBounds);
+        return new ResolvedScreenshotElement (CoordinateSystem.Desktop, elementBounds, visibility, windowBounds, unresolvedBounds);
       }
       catch (ElementNotAvailableException ex)
       {

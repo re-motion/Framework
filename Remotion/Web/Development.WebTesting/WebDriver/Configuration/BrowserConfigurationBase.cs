@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     private readonly TimeSpan _searchTimeout;
     private readonly TimeSpan _retryInterval;
     private readonly string _logsDirectory;
-    private readonly AnnotateHelper _annotateHelper;
+    private readonly BrowserAnnotateHelper _browserAnnotateHelper;
     private readonly BrowserHelper _browserHelper;
     private readonly LocatorHelper _locatorHelper;
     private readonly MouseHelper _mouseHelper;
@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
       _searchTimeout = webTestConfigurationSection.SearchTimeout;
       _retryInterval = webTestConfigurationSection.RetryInterval;
       _logsDirectory = webTestConfigurationSection.LogsDirectory;
-      _annotateHelper = new AnnotateHelper (this);
+      _browserAnnotateHelper = new BrowserAnnotateHelper (this);
       _browserHelper = new BrowserHelper (this);
       _locatorHelper = new LocatorHelper (this);
       _mouseHelper = new MouseHelper (this);
@@ -58,9 +58,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
 
     public abstract string WebDriverExecutableName { get; }
 
-    public AnnotateHelper AnnotateHelper
+    public BrowserAnnotateHelper BrowserAnnotateHelper
     {
-      get { return _annotateHelper; }
+      get { return _browserAnnotateHelper; }
     }
 
     public abstract IBrowserFactory BrowserFactory { get; }

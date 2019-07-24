@@ -112,6 +112,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
           from.ElementBounds.Y,
           to.ElementBounds.Width,
           to.ElementBounds.Y - from.ElementBounds.Y + to.ElementBounds.Height);
+      var unresolvedBounds = columnBounds;
 
       columnBounds.Offset (offset);
       if (parent.HasValue)
@@ -121,7 +122,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         parent = parentBounds;
       }
 
-      return new ResolvedScreenshotElement (coordinateSystem, columnBounds, visibility, parent);
+      return new ResolvedScreenshotElement (coordinateSystem, columnBounds, visibility, parent, unresolvedBounds);
     }
   }
 }

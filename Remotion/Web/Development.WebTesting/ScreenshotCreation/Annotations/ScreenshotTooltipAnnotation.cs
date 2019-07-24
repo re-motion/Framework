@@ -29,6 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     private readonly string _content;
     private readonly ScreenshotTooltipStyle _style;
     private readonly WebPadding _padding;
+    private Rectangle? _tooltipBounds;
 
     public ScreenshotTooltipAnnotation (
         [NotNull] string content,
@@ -57,6 +58,21 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     public ScreenshotTooltipStyle Style
     {
       get { return _style; }
+    }
+
+    /// <summary>
+    /// The bounds of the tooltip, available after the tooltip has been drawn.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">The tooltip has not been drawn before accessing <see cref="TooltipBounds"/>.</exception>
+    public Rectangle TooltipBounds
+    {
+      get
+      {
+        if (!_tooltipBounds.HasValue)
+          throw new InvalidOperationException ("The tooltip needs to be drawn before its bounds can be accessed.");
+
+        return _tooltipBounds.Value;
+      }
     }
 
     /// <inheritdoc />
@@ -105,9 +121,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       // Reposition the tooltip based on the content alignment
       tooltipBounds.Location = PositionTooltipWithAlignment (_style.Positioning, resolvedScreenshotElement.ElementBounds, tooltipBounds);
 
+      // Remember the original tooltip bounds needed to annotate the tooltip
+      var originalTooltipLocation = PositionTooltipWithAlignment (_style.Positioning, resolvedScreenshotElement.UnresolvedBounds, tooltipBounds);
+      _tooltipBounds = new Rectangle (originalTooltipLocation, tooltipBounds.Size);
+
       // Draw the box of the tooltip
       var boxAnnotation = new ScreenshotBoxAnnotation (_style.Border, WebPadding.None, _style.BackgroundBrush);
-      boxAnnotation.Draw (graphics, new ResolvedScreenshotElement (CoordinateSystem.Browser, tooltipBounds, ElementVisibility.FullyVisible, null));
+      boxAnnotation.Draw (graphics, new ResolvedScreenshotElement (CoordinateSystem.Browser, tooltipBounds, ElementVisibility.FullyVisible, null, _tooltipBounds.Value));
 
       // Draw the text content
       graphics.DrawString (

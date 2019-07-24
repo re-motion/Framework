@@ -52,7 +52,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveBrowserCoordinates (Rectangle target)
     {
-      return new ResolvedScreenshotElement (CoordinateSystem.Browser, target, ElementVisibility.FullyVisible, null);
+      var unresolvedBounds = target;
+
+      return new ResolvedScreenshotElement (CoordinateSystem.Browser, target, ElementVisibility.FullyVisible, null, unresolvedBounds);
     }
 
     /// <inheritdoc />
@@ -60,10 +62,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     {
       ArgumentUtility.CheckNotNull ("locator", locator);
 
+      var unresolvedBounds = target;
+
       if (_relative)
         target.Offset (locator.GetBrowserContentBounds (_driver).Location);
 
-      return new ResolvedScreenshotElement (CoordinateSystem.Desktop, target, ElementVisibility.FullyVisible, null);
+      return new ResolvedScreenshotElement (CoordinateSystem.Desktop, target, ElementVisibility.FullyVisible, null, unresolvedBounds);
     }
   }
 }

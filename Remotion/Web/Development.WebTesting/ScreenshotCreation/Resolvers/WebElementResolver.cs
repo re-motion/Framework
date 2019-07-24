@@ -124,6 +124,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 
       var elementBounds = result.GetElementBounds();
       var parentBounds = result.GetParentBounds();
+      var unresolvedBounds = elementBounds;
       var intersection = Rectangle.Intersect (elementBounds, parentBounds);
 
       ElementVisibility visibility;
@@ -134,7 +135,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
       else
         visibility = ElementVisibility.PartiallyVisible;
 
-      return new ResolvedScreenshotElement (CoordinateSystem.Browser, elementBounds, visibility, parentBounds);
+      return new ResolvedScreenshotElement (CoordinateSystem.Browser, elementBounds, visibility, parentBounds, unresolvedBounds);
     }
 
     /// <inheritdoc />
@@ -148,6 +149,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
       var result = DataContractJsonSerializationUtility.Deserialize<ResultDto> (rawResult);
 
       var elementBounds = result.GetElementBounds();
+      var unresolvedBounds = elementBounds;
       var parentBounds = result.GetParentBounds();
       var intersection = Rectangle.Intersect (elementBounds, parentBounds);
 
@@ -163,7 +165,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
       elementBounds.Offset (window.Location);
       parentBounds.Offset (window.Location);
 
-      return new ResolvedScreenshotElement (CoordinateSystem.Browser, elementBounds, visibility, parentBounds);
+      return new ResolvedScreenshotElement (CoordinateSystem.Browser, elementBounds, visibility, parentBounds, unresolvedBounds);
     }
   }
 }

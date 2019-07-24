@@ -178,6 +178,10 @@
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\InternetExplorer.any.DrawTooltip.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Chrome.Desktop.DrawCursorTooltip.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\InternetExplorer.Desktop.DrawCursorTooltip.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Chrome.any.DrawTooltip_WithFollowingBoxAnnotation.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\InternetExplorer.any.DrawTooltip_WithFollowingBoxAnnotation.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Chrome.any.DrawCursorTooltip_WithFollowingBoxAnnotation.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\InternetExplorer.any.DrawCursorTooltip_WithFollowingBoxAnnotation.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementBoxAnnotationTest.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementBoxAnnotationWithWidthTest.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementCroppingTest.png" />

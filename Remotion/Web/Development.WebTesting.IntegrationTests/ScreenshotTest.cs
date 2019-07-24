@@ -182,7 +182,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
       {
-        Helper.BrowserConfiguration.AnnotateHelper.DrawTooltip (builder, target, GetTooltipStyleForCurrentBrowser());
+        Helper.BrowserConfiguration.BrowserAnnotateHelper.DrawTooltip (builder, target, GetTooltipStyleForCurrentBrowser());
 
         builder.Crop (target.ForElementScopeScreenshot(), new WebPadding (30, 60, 30, 60));
       };
@@ -201,7 +201,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
       {
-        Helper.BrowserConfiguration.AnnotateHelper.DrawCursorTooltip (builder, "title", GetTooltipStyleForCurrentBrowser());
+        Helper.BrowserConfiguration.BrowserAnnotateHelper.DrawCursorTooltip (builder, Helper.MainBrowserSession, "title", GetTooltipStyleForCurrentBrowser());
 
         builder.Crop (target.ForElementScopeScreenshot(), new WebPadding (30, 60, 30, 60));
       };
@@ -218,6 +218,68 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       // Reset the cursor to the initial position (0, 0).
       mouseHelper.Hover (Point.Empty);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="ScreenshotTooltipAnnotation"/> is annotated correctly.
+    /// </summary>
+    [Category ("Screenshot")]
+    [Test]
+    public void DrawTooltip_WithFollowingBoxAnnotation ()
+    {
+      ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
+      {
+        var annotationTarget = Helper.BrowserConfiguration.BrowserAnnotateHelper.DrawTooltip (builder, target, GetTooltipStyleForCurrentBrowser());
+        builder.AnnotateBox (annotationTarget, Pens.Red);
+
+        builder.Crop (target.ForElementScopeScreenshot(), new WebPadding (30, 60, 30, 60));
+      };
+
+      var home = Start();
+      var element = home.Scope.FindId ("tooltipTarget");
+      Helper.RunScreenshotTestExact<ElementScope, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="ScreenshotTooltipAnnotation"/> is annotated correctly.
+    /// </summary>
+    [Category ("Screenshot")]
+    [Test]
+    public void DrawCursorTooltip_WithFollowingBoxAnnotation ()
+    {
+      ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
+      {
+        var annotationTarget = Helper.BrowserConfiguration.BrowserAnnotateHelper.DrawCursorTooltip (
+            builder,
+            Helper.MainBrowserSession,
+            "title",
+            GetTooltipStyleForCurrentBrowser());
+        builder.AnnotateBox (annotationTarget, Pens.Red);
+
+        builder.Crop (target.ForElementScopeScreenshot(), new WebPadding (30, 60, 30, 60));
+      };
+
+      var home = Start();
+      var mouseHelper = Helper.BrowserConfiguration.MouseHelper;
+      var element = home.Scope.FindId ("tooltipTarget");
+
+      // ElementScope.Hover() cannot be used due to Chromedriver not moving the mouse to trigger the hover event.
+      mouseHelper.Hover (element);
+
+      Helper.RunScreenshotTestExact<ElementScope, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
+
+      // Reset the cursor to the initial position (0, 0).
+      mouseHelper.Hover (Point.Empty);
+    }
+
+    [Test]
+    public void TooltipBounds_NotDrawnYet_ThrowsInvalidOperationException ()
+    {
+      var tooltipAnnotation = new ScreenshotTooltipAnnotation ("title", ScreenshotTooltipStyle.Chrome, WebPadding.None);
+
+      Assert.That (
+          () => tooltipAnnotation.TooltipBounds,
+          Throws.InstanceOf<InvalidOperationException>().With.Message.EqualTo ("The tooltip needs to be drawn before its bounds can be accessed."));
     }
 
     /// <summary>

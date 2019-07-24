@@ -29,16 +29,19 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     private readonly Rectangle _elementBounds;
     private readonly ElementVisibility _elementVisibility;
     private readonly Rectangle? _parentBounds;
+    private readonly Rectangle _unresolvedBounds;
 
     public ResolvedScreenshotElement (
         CoordinateSystem coordinateSystem,
         Rectangle elementBounds,
         ElementVisibility elementVisibility,
-        Rectangle? parentBounds)
+        Rectangle? parentBounds,
+        Rectangle unresolvedBounds)
     {
       _coordinateSystem = coordinateSystem;
       _elementBounds = elementBounds;
       _parentBounds = parentBounds;
+      _unresolvedBounds = unresolvedBounds;
       _elementVisibility = elementVisibility;
     }
 
@@ -56,6 +59,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     public Rectangle ElementBounds
     {
       get { return _elementBounds; }
+    }
+
+    /// <summary>
+    /// Unresolved bounds of the resolved element.
+    /// </summary>
+    public Rectangle UnresolvedBounds
+    {
+      get { return _unresolvedBounds; }
     }
 
     /// <summary>
@@ -83,14 +94,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     public ResolvedScreenshotElement CloneWith (
         CoordinateSystem? coordinateSystem = null,
         Rectangle? elementBounds = null,
-        OptionalParameter<Rectangle?> parentBounds = default(OptionalParameter<Rectangle?>),
+        Rectangle? unresolvedBounds = null,
+        OptionalParameter<Rectangle?> parentBounds = default (OptionalParameter<Rectangle?>),
         ElementVisibility? elementVisibility = null)
     {
       return new ResolvedScreenshotElement (
           coordinateSystem ?? _coordinateSystem,
           elementBounds ?? _elementBounds,
           elementVisibility ?? _elementVisibility,
-          parentBounds.GetValueOrDefault (_parentBounds));
+          parentBounds.GetValueOrDefault (_parentBounds),
+          unresolvedBounds ?? _unresolvedBounds);
     }
   }
 }

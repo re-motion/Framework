@@ -22,8 +22,10 @@ using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 
@@ -32,11 +34,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   /// <summary>
   /// Provides helper methods for annotating elements.
   /// </summary>
-  public class AnnotateHelper
+  public class BrowserAnnotateHelper
   {
     public readonly IBrowserConfiguration BrowserConfiguration;
 
-    public AnnotateHelper (IBrowserConfiguration configuration)
+    public BrowserAnnotateHelper (IBrowserConfiguration configuration)
     {
       BrowserConfiguration = configuration;
     }
@@ -44,8 +46,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Draws a tooltip with the specified <paramref name="content"/> at the mouse cursor position.
     /// </summary>
-    public void DrawCursorTooltip (
+    public IFluentScreenshotElement<Rectangle> DrawCursorTooltip (
         [NotNull] ScreenshotBuilder builder,
+        [NotNull] IBrowserSession browserSession,
         [NotNull] string content,
         ScreenshotTooltipStyle style = null,
         WebPadding? padding = null,
@@ -56,19 +59,28 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("content", content);
 
+      var seleniumDriver = (IWebDriver) browserSession.Driver.Native;
+
       var clonedStyle = (style ?? BrowserConfiguration.TooltipStyle).Clone (positioning: positioning, wrapLines: wrapLines, maximumSize: maximumSize);
+      var browserContentBounds = BrowserConfiguration.Locator.GetBrowserContentBounds (seleniumDriver).Location;
+
+      // Offset the position of the cursor to translate it to the browser coordinate system.
+      var cursorPosition = Cursor.Position;
+      cursorPosition.Offset (-browserContentBounds.X, -browserContentBounds.Y);
 
       var tooltipAnnotation = new ScreenshotTooltipAnnotation (
           content,
           clonedStyle,
           padding ?? new WebPadding (0, 20, 0, 25));
-      builder.Annotate (new Rectangle (Cursor.Position, new Size (1, 1)), RectangleResolver.Instance, tooltipAnnotation);
+      builder.Annotate (new Rectangle (cursorPosition, new Size (1, 1)), new RectangleResolver (seleniumDriver), tooltipAnnotation);
+
+      return new FluentScreenshotElement<Rectangle> (tooltipAnnotation.TooltipBounds, new RectangleResolver (seleniumDriver));
     }
 
     /// <summary>
     /// Draws the tooltip associated with the specified <paramref name="controlObject"/>.
     /// </summary>
-    public void DrawTooltip (
+    public IFluentScreenshotElement<Rectangle> DrawTooltip (
         [NotNull] ScreenshotBuilder builder,
         [NotNull] ControlObject controlObject,
         ScreenshotTooltipStyle style = null,
@@ -80,13 +92,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("controlObject", controlObject);
 
-      DrawTooltip (builder, (IWebElement) controlObject.Scope.Native, style, padding, positioning, wrapLines, maximumSize);
+      return DrawTooltip (builder, (IWebElement) controlObject.Scope.Native, style, padding, positioning, wrapLines, maximumSize);
     }
 
     /// <summary>
     /// Draws the tooltip associated with the specified <paramref name="element"/>.
     /// </summary>
-    public void DrawTooltip (
+    public IFluentScreenshotElement<Rectangle> DrawTooltip (
         [NotNull] ScreenshotBuilder builder,
         [NotNull] ElementScope element,
         ScreenshotTooltipStyle style = null,
@@ -98,13 +110,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("element", element);
 
-      DrawTooltip (builder, (IWebElement) element.Native, style, padding, positioning, wrapLines, maximumSize);
+      return DrawTooltip (builder, (IWebElement) element.Native, style, padding, positioning, wrapLines, maximumSize);
     }
 
     /// <summary>
     /// Draws the tooltip associated with the specified <paramref name="webElement"/>.
     /// </summary>
-    public void DrawTooltip (
+    public IFluentScreenshotElement<Rectangle> DrawTooltip (
         [NotNull] ScreenshotBuilder builder,
         [NotNull] IWebElement webElement,
         ScreenshotTooltipStyle style = null,
@@ -132,6 +144,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
               new Size (1, 1)),
           new RectangleResolver (((IWrapsDriver) webElement).WrappedDriver),
           tooltipAnnotation);
+
+      return new FluentScreenshotElement<Rectangle> (tooltipAnnotation.TooltipBounds, new RectangleResolver (((IWrapsDriver) webElement).WrappedDriver));
     }
   }
 }

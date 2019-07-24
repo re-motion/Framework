@@ -51,9 +51,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     string WebDriverExecutableName { [NotNull] get; }
 
     /// <summary>
-    /// Gets a <see cref="AnnotateHelper"/>, which simplifies annotations like tooltips.
+    /// Gets a <see cref="BrowserAnnotateHelper"/>, which simplifies annotations like tooltips.
     /// </summary>
-    AnnotateHelper AnnotateHelper { [NotNull] get; }
+    BrowserAnnotateHelper BrowserAnnotateHelper { [NotNull] get; }
 
     /// <summary>
     /// Gets a <see cref="BrowserFactory"/> responsible for creating the browser instance.

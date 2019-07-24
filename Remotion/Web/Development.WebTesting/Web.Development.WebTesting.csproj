@@ -171,7 +171,7 @@
     <Compile Include="ScreenshotCreation\Transformations\EmptyTransformation.cs" />
     <Compile Include="ScreenshotCreation\WebPadding.cs" />
     <Compile Include="Utilities\AssertionExceptionUtility.cs" />
-    <Compile Include="Utilities\AnnotateHelper.cs" />
+    <Compile Include="Utilities\BrowserAnnotateHelper.cs" />
     <Compile Include="ScreenshotCreation\BrowserContentLocators\ChromeBrowserContentLocator.cs" />
     <Compile Include="ScreenshotCreation\BrowserContentLocators\InternetExplorerBrowserContentLocator.cs" />
     <Compile Include="Utilities\DomSelectorUtility.cs" />
