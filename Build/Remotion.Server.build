@@ -27,7 +27,7 @@
     <JiraPassword></JiraPassword>
     <SvnPassword></SvnPassword>
 
-    <JiraUrl>https://www.re-motion.org/jira/rest/api/2/</JiraUrl>
+    <JiraUrl>https://re-motion.atlassian.net/rest/api/2/</JiraUrl>
     <JiraUsername>build</JiraUsername>
     <JiraProject>RM</JiraProject>
     
