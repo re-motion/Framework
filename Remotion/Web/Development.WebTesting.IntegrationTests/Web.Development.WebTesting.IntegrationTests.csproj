@@ -192,6 +192,7 @@
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ResolveBorderElementA.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ResolveBorderElementB.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ResolveElementInFrame.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ScreenshotTransformationTest.png" />
     <EmbeddedResource Include="SavedTestScreenshots\TabbedMenuControlObjectTest\Chrome.any.TabbedMenu.png" />
     <EmbeddedResource Include="SavedTestScreenshots\TabbedMenuControlObjectTest\InternetExplorer.any.TabbedMenu.png" />
     <EmbeddedResource Include="SavedTestScreenshots\WebTabStripControlObjectTest\Chrome.any.WebTabStrip.png" />
