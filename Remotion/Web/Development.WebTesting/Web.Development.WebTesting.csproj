@@ -162,11 +162,13 @@
     <Compile Include="ScreenshotCreation\Resolvers\RectangleResolver.cs" />
     <Compile Include="ScreenshotCreation\Resolvers\WebElementResolver.cs" />
     <Compile Include="ScreenshotCreation\Screenshot.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotLayer.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotManipulation.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotBuilder.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotCropping.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotTransformationContext.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotTransformationCollection.cs" />
+    <Compile Include="ScreenshotCreation\ScreenshotTransformationHelper.cs" />
     <Compile Include="ScreenshotCreation\Transformations\FluentTransformation.cs" />
     <Compile Include="ScreenshotCreation\Transformations\EmptyTransformation.cs" />
     <Compile Include="ScreenshotCreation\WebPadding.cs" />

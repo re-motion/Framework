@@ -73,6 +73,7 @@
     <Compile Include="CustomUserDirectory.cs" />
     <Compile Include="CustomWebTestConfigurationFactory.cs" />
     <Compile Include="Delegates.cs" />
+    <Compile Include="DiagnosticScreenshotBuilder.cs" />
     <Compile Include="GenericTestPageParameterDictionaryExtensions.cs" />
     <Compile Include="GenericTestPageParameterDto.cs" />
     <Compile Include="GenericTestPageParameter.cs" />

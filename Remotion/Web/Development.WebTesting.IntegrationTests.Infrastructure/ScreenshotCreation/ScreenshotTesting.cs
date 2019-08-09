@@ -88,22 +88,29 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
 
       if (type.HasFlag (ScreenshotTestingType.Desktop))
       {
-        results.Add (
-            RunSubTest<TValue, TTarget> (helper, helper.CreateDesktopScreenshot(), test, value, "Desktop", testName, savePath, maxVariance, maxRatio));
+        using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateDesktopScreenshot (helper.BrowserConfiguration.Locator))
+        {
+          results.Add (
+              RunSubTest<TValue, TTarget> (helper, diagnosticScreenshotBuilder, test, value, "Desktop", testName, savePath, maxVariance, maxRatio));
+        }
       }
+
       if (type.HasFlag (ScreenshotTestingType.Browser))
       {
-        results.Add (
-            RunSubTest<TValue, TTarget> (
-                helper,
-                helper.CreateBrowserScreenshot (helper.MainBrowserSession),
-                test,
-                value,
-                "Browser",
-                testName,
-                savePath,
-                maxVariance,
-                maxRatio));
+        using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateBrowserScreenshot (helper.BrowserConfiguration.Locator, helper.MainBrowserSession))
+        {
+          results.Add (
+              RunSubTest<TValue, TTarget> (
+                  helper,
+                  diagnosticScreenshotBuilder,
+                  test,
+                  value,
+                  "Browser",
+                  testName,
+                  savePath,
+                  maxVariance,
+                  maxRatio));
+        }
       }
 
       var stringBuilder = new StringBuilder();
@@ -137,7 +144,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
 
     private static SubTestResult RunSubTest<TValue, TTarget> (
         WebTestHelper helper,
-        ScreenshotBuilder screenshotBuilder,
+        DiagnosticScreenshotBuilder diagnosticScreenshotBuilder,
         ScreenshotTestingDelegate<TValue> test,
         TValue value,
         string testPrefix,
@@ -146,9 +153,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
         int maxVariance,
         double maxRatio)
     {
-      screenshotBuilder.DrawMouseCursor = false;
+      diagnosticScreenshotBuilder.DrawMouseCursor = false;
 
-      test (screenshotBuilder, value);
+      test (diagnosticScreenshotBuilder, value);
 
       var typeName = typeof (TTarget).FullName;
       var testAssembly = test.Method.DeclaringType.Assembly;
@@ -160,11 +167,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
       // Save the screenshot
       string path;
       if (!string.IsNullOrWhiteSpace (testPrefix))
-        path = Path.Combine (savePath, string.Join (".", typeName, helper.BrowserConfiguration.BrowserName, testPrefix, testName, "png"));
+        path = Path.Combine (savePath, string.Join (".", typeName, helper.BrowserConfiguration.BrowserName, testPrefix, testName));
       else
-        path = Path.Combine (savePath, string.Join (".", typeName, helper.BrowserConfiguration.BrowserName, testName, "png"));
+        path = Path.Combine (savePath, string.Join (".", typeName, helper.BrowserConfiguration.BrowserName, testName));
 
-      screenshotBuilder.Save (path);
+      var screenshotPath = string.Join (".", path, "png");
+      var annotationPath = string.Join (".", path, "AnnotationsOnly", "png");
+
+      diagnosticScreenshotBuilder.Save (screenshotPath);
+      diagnosticScreenshotBuilder.SaveAnnotation (annotationPath);
 
       // Try to find the resource which belongs to the current test
       var resourcePrefixes = GenerateResourcePrefixes (typeName, testAssemblyName, helper.BrowserConfiguration.BrowserName, testPrefix, testName);
@@ -184,22 +195,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
 
       if (resourceNames.Count == 0)
         return new SubTestResult (
-               false,
-               "Can not find a resource image that belongs to the specified test.",
-               path,
-               string.Join (", ", resourcePrefixes),
-               testNameWithPrefix);
+            false,
+            "Can not find a resource image that belongs to the specified test.",
+            screenshotPath,
+            string.Join (", ", resourcePrefixes),
+            testNameWithPrefix);
 
       var result =
           CompareScreenshots (
               resourceNames.ToArray(),
               testAssembly,
-              path,
+              screenshotPath,
               maxVariance,
               maxRatio,
               testNameWithPrefix);
       if (result.HasSucceeded)
-        File.Delete (path);
+      {
+        File.Delete (screenshotPath);
+        File.Delete (annotationPath);
+      }
 
       return result;
     }
