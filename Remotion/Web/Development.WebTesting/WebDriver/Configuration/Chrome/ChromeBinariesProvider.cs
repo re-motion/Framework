@@ -20,8 +20,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using JetBrains.Annotations;
-using Microsoft.Win32;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 {
@@ -32,12 +30,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
   {
     private const string c_webDriverFolderName = @"Remotion.Web.Development.WebTesting.WebDriver\chromedriver";
 
-    private const string c_chromeRegistryPath = @"Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe";
-
     private const string c_fetchChromeDriverVersionUrlFormat = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_{0}";
     private const string c_driverDownloadUrlFormat = "https://chromedriver.storage.googleapis.com/{0}/chromedriver_win32.zip";
 
     private const string c_driverExecutableName = "chromedriver.exe";
+    private const string c_chromeExecutableName = "chrome.exe";
     private const string c_zipFileName = "chromedriver.zip";
 
     /// <summary>
@@ -59,18 +56,26 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     }
 
     /// <summary>
-    /// Retrieves the path of the installed Chrome version from the registry, either from LOCAL_MACHINE, or CURRENT_USER.
+    /// Retrieves the path of the installed Chrome version from the default installation location.
     /// </summary>
     private string GetInstalledChromePath ()
     {
-      var machinePath = Registry.LocalMachine.OpenSubKey (c_chromeRegistryPath)?.GetValue ("", null);
-      var userPath = Registry.CurrentUser.OpenSubKey (c_chromeRegistryPath)?.GetValue ("", null);
+      //Even 64 bit Chrome is installed in the 32bit location
+      var defaultStableChromePath = Path.Combine (Get32BitProgramFilesPath(), "Google", "Chrome", "Application", c_chromeExecutableName);
 
-      var path = userPath ?? machinePath;
+      if (File.Exists (defaultStableChromePath))
+        return defaultStableChromePath;
 
-      Assertion.IsNotNull (path, "Installed Chrome version could not be read from the registry.");
+      throw new InvalidOperationException ($"No stable Chrome version could be found at '{defaultStableChromePath}'.");
+    }
 
-      return path.ToString();
+    private string Get32BitProgramFilesPath ()
+    {
+      var programFiles32BitFolder = Environment.Is64BitOperatingSystem
+          ? Environment.SpecialFolder.ProgramFilesX86
+          : Environment.SpecialFolder.ProgramFiles;
+
+      return Environment.GetFolderPath (programFiles32BitFolder);
     }
 
     /// <summary>
@@ -114,9 +119,19 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     {
       var chromeDriverVersionUrl = new Uri (string.Format (c_fetchChromeDriverVersionUrlFormat, chromeVersion));
 
-      using (var webClient = new WebClient())
+      try
       {
-        return webClient.DownloadString (chromeDriverVersionUrl);
+        using (var webClient = new WebClient())
+        {
+          return webClient.DownloadString (chromeDriverVersionUrl);
+        }
+      }
+      catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+      {
+        throw new InvalidOperationException (
+            $"No matching ChromeDriver could be found for the installed Chrome version {chromeVersion}."
+            + "This could mean that no corresponding ChromeDriver has been released for the version of Chrome you are using.",
+            ex);
       }
     }
 
