@@ -24,11 +24,12 @@
     <SecureNetworkShare></SecureNetworkShare>
     <SolutionKeyFile>$(SecureNetworkShare)\remotion.snk</SolutionKeyFile>
 
+    
+    <JiraUsername></JiraUsername>
     <JiraPassword></JiraPassword>
     <SvnPassword></SvnPassword>
 
     <JiraUrl>https://re-motion.atlassian.net/rest/api/2/</JiraUrl>
-    <JiraUsername>build</JiraUsername>
     <JiraProject>RM</JiraProject>
     
     <SvnBaseUri>https://svn.re-motion.org/svn/Remotion</SvnBaseUri>
