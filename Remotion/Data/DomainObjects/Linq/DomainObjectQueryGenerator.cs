@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -43,6 +44,46 @@ namespace Remotion.Data.DomainObjects.Linq
   /// </summary>
   public class DomainObjectQueryGenerator : IDomainObjectQueryGenerator
   {
+    private abstract class GenericCallHelper
+    {
+      private static readonly ConcurrentDictionary<Type, GenericCallHelper> s_cache = new ConcurrentDictionary<Type, GenericCallHelper>();
+
+      public static GenericCallHelper Create (Type classType)
+      {
+        return s_cache.GetOrAdd (
+            classType,
+            key => (GenericCallHelper) Activator.CreateInstance (typeof (GenericCallHelper<>).MakeGenericType (key)));
+      }
+
+      protected GenericCallHelper ()
+      {
+      }
+
+      public abstract IQuery CreateSequenceQuery (
+          DomainObjectQueryGenerator domainObjectQueryGenerator,
+          string id,
+          StorageProviderDefinition storageProviderDefinition,
+          QueryModel queryModel,
+          IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders);
+    }
+
+    private class GenericCallHelper<T> : GenericCallHelper
+    {
+      public GenericCallHelper ()
+      {
+      }
+
+      public override IQuery CreateSequenceQuery (
+          DomainObjectQueryGenerator domainObjectQueryGenerator,
+          string id,
+          StorageProviderDefinition storageProviderDefinition,
+          QueryModel queryModel,
+          IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
+      {
+        return domainObjectQueryGenerator.CreateSequenceQuery<T> (id, storageProviderDefinition, queryModel, fetchQueryModelBuilders);
+      }
+    }
+
     private readonly ISqlQueryGenerator _sqlQueryGenerator;
     private readonly ITypeConversionProvider _typeConversionProvider;
     private readonly IStorageTypeInformationProvider _storageTypeInformationProvider;
@@ -188,14 +229,16 @@ namespace Remotion.Data.DomainObjects.Linq
           fetchQueryModel.BodyClauses.Add (orderByClause);
         }
 
-        var fetchQuery = CreateSequenceQuery<T> (
+        var fetchedClassType = relationEndPointDefinition.GetOppositeClassDefinition().ClassType;
+        var genericCallHelper = GenericCallHelper.Create (fetchedClassType);
+        var fetchQuery = genericCallHelper.CreateSequenceQuery (
+            this,
             "<fetch query for " + fetchQueryModelBuilder.FetchRequest.RelationMember.Name + ">",
             previousClassDefinition.StorageEntityDefinition.StorageProviderDefinition,
             fetchQueryModel,
-            fetchQueryModelBuilder.CreateInnerBuilders()
-           );
+            fetchQueryModelBuilder.CreateInnerBuilders());
 
-        yield return Tuple.Create (relationEndPointDefinition, (IQuery) fetchQuery);
+        yield return Tuple.Create (relationEndPointDefinition, fetchQuery);
       }
     }
 

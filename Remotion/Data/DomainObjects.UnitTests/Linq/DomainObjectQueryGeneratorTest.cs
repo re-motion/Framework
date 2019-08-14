@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using NUnit.Framework;
@@ -181,10 +182,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQuery);
 
       var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder ((Customer o) => o.Ceo);
-      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult ("FETCH");
+      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult (commandText: "FETCH", selectedEntityType: typeof (Ceo));
 
       _sqlQueryGeneratorMock
-          .Expect (mock => mock.CreateSqlQuery (Arg<QueryModel>.Is.Anything))
+          .Expect (mock => mock.CreateSqlQuery (Arg<QueryModel>.Matches (qm => qm.SelectClause.Selector.Type == typeof (Ceo))))
           .Return (fakeFetchSqlQueryResult)
           .WhenCalled (mi =>
           {
@@ -193,10 +194,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
             CheckActualFetchQueryModel (actualQueryModel, fetchQueryModel);
           });
 
-      var result = _generator.CreateSequenceQuery<int> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
+      var result = _generator.CreateSequenceQuery<Customer> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
 
       _sqlQueryGeneratorMock.VerifyAllExpectations ();
-      CheckSingleFetchRequest (result.EagerFetchQueries, typeof (Company), "Ceo", "FETCH");
+      CheckSingleFetchRequest (result.EagerFetchQueries, typeof (Company), "Ceo", "FETCH", typeof (Ceo));
     }
 
     [Test]
@@ -223,7 +224,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
       _sqlQueryGeneratorMock.VerifyAllExpectations ();
       var expectedEndPointDefinition = GetEndPointDefinition (typeof (Partner), typeof (Partner), "ContactPerson");
-      CheckSingleFetchRequest (result.EagerFetchQueries, expectedEndPointDefinition, "FETCH");
+      CheckSingleFetchRequest (result.EagerFetchQueries, expectedEndPointDefinition, "FETCH", typeof (Person));
     }
 
     [Test]
@@ -251,7 +252,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _sqlQueryGeneratorMock.VerifyAllExpectations ();
       var expectedEndPointDefinition = GetEndPointDefinition (
           typeof (TargetClassForPersistentMixin), typeof (MixinAddingPersistentProperties), "RelationProperty");
-      CheckSingleFetchRequest (result.EagerFetchQueries, expectedEndPointDefinition, "FETCH");
+      CheckSingleFetchRequest (result.EagerFetchQueries, expectedEndPointDefinition, "FETCH", typeof (RelationTargetForPersistentMixin));
     }
 
     [Test]
@@ -424,7 +425,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _sqlQueryGeneratorMock.VerifyAllExpectations ();
 
       var fetchQuery = result.EagerFetchQueries.Single ();
-      CheckSingleFetchRequest (fetchQuery.Value.EagerFetchQueries, typeof (Ceo), "Company", "INNER FETCH");
+      CheckSingleFetchRequest (fetchQuery.Value.EagerFetchQueries, typeof (Ceo), "Company", "INNER FETCH", typeof (Company));
     }
 
     [Test]
@@ -574,19 +575,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     private void CheckSingleFetchRequest (
-        EagerFetchQueryCollection fetchQueryCollection, Type sourceType, string fetchedProperty, string expectedFetchQueryText)
+        EagerFetchQueryCollection fetchQueryCollection, Type sourceType, string fetchedProperty, string expectedFetchQueryText, Type fetchedType)
     {
       var relationEndPointDefinition = GetEndPointDefinition (sourceType, fetchedProperty);
-      CheckSingleFetchRequest (fetchQueryCollection, relationEndPointDefinition, expectedFetchQueryText);
+      CheckSingleFetchRequest (fetchQueryCollection, relationEndPointDefinition, expectedFetchQueryText, fetchedType);
     }
 
     private static void CheckSingleFetchRequest (
-        EagerFetchQueryCollection fetchQueryCollection, IRelationEndPointDefinition relationEndPointDefinition, string expectedFetchQueryText)
+        EagerFetchQueryCollection fetchQueryCollection,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        string expectedFetchQueryText,
+        Type fetchedType)
     {
       Assert.That (fetchQueryCollection.Count, Is.EqualTo (1));
       var fetchQuery = fetchQueryCollection.Single();
       Assert.That (fetchQuery.Key, Is.EqualTo (relationEndPointDefinition));
       Assert.That (fetchQuery.Value.Statement, Is.EqualTo (expectedFetchQueryText));
+      var collectionType = typeof (QueryAdapterBase<>).MakeGenericType (typeof (IEnumerable<>).MakeGenericType (fetchedType));
+      Assert.That (fetchQuery.Value, Is.InstanceOf (collectionType));
     }
 
     private int CheckScalarResultRowAdapter (IDatabaseResultRow row, string expectedScalarValue, int fakeResult)
