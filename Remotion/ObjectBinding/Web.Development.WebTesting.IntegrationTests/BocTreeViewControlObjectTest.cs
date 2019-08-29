@@ -120,7 +120,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocTreeView = home.TextValues().GetByLocalID ("Normal");
+      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
       Assert.That (bocTreeView.IsReadOnly(), Is.True);
     }
 
