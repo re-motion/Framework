@@ -67,7 +67,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       response.ClearHeaders();
       response.ClearContent();
       response.AddHeader ("Content-Disposition", "attachment; filename=" + fileName);
-      response.AddHeader ("Content-Length", file.Length.ToString());
       response.ContentType = "text/plain";
       response.Flush();
       response.TransmitFile (fullFilePath);
@@ -106,7 +105,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       response.ClearContent();
 
       response.AddHeader ("Content-Disposition", "filename=download_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.zip");
-      response.AddHeader ("Content-Length", data.Length.ToString());
       response.ContentType = "application/x-zip-compressed";
       response.TransmitFile (fullFilePath);
 
