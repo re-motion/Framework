@@ -38,7 +38,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       Response.ClearHeaders();
       Response.ClearContent();
       Response.AddHeader ("Content-Disposition", "attachment; filename=" + file);
-      Response.AddHeader ("Content-Length", file.Length.ToString());
       Response.ContentType = "text/plain";
       Response.Flush();
       Response.TransmitFile (fullFilePath);
