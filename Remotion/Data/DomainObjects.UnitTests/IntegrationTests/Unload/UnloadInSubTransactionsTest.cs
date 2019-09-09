@@ -440,7 +440,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
-    public void UnloadCollectionEndPointAndData ()
+    public void UnloadCollectionEndPointAndData_ForCollection ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
       var orderItems = order.OrderItems;
@@ -475,6 +475,69 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
       Assert.That (orderItem1.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
       Assert.That (orderItem2.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+    }
+
+    [Test]
+    public void UnloadCollectionEndPointAndData_ForObject_WithReferencedObjectBeingLoadedViaGetObject ()
+    {
+      var order = DomainObjectIDs.Order1.GetObject<Order>();
+      var orderTicket = order.OrderTicket;
+
+      UnloadService.UnloadVirtualEndPointAndItemData (ClientTransaction.Current, RelationEndPointID.Resolve (order, o => o.OrderTicket));
+
+      CheckDataContainerExists (_subTransaction, order, true);
+      CheckDataContainerExists (_subTransaction, orderTicket, false);
+
+      CheckEndPointExists (_subTransaction, order, "OrderTicket", false);
+      CheckEndPointExists (_subTransaction, orderTicket, "Order", false);
+
+      CheckDataContainerExists (_subTransaction.ParentTransaction, order, true);
+      CheckDataContainerExists (_subTransaction.ParentTransaction, orderTicket, false);
+
+      CheckEndPointExists (_subTransaction.ParentTransaction, order, "OrderTicket", false);
+      CheckEndPointExists (_subTransaction.ParentTransaction, orderTicket, "Order", false);
+
+      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket.State, Is.EqualTo (StateType.NotLoadedYet));
+
+      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+
+      // This check can likely be removed when the above assertions pass
+      Assert.That (order.OrderTicket, Is.SameAs (orderTicket));
+    }
+
+    [Test]
+    [Ignore ("RM-7236")]
+    public void UnloadCollectionEndPointAndData_ForObject_WithReferencingObjectBeingLoadedViaGetObject ()
+    {
+      // It is required to load the OrderTicket via GetObject and then the Order via OrderTicket.Order to trigger the error.
+      var orderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
+      var order = orderTicket.Order;
+      order.EnsureDataAvailable();
+
+      UnloadService.UnloadVirtualEndPointAndItemData (ClientTransaction.Current, RelationEndPointID.Resolve (order, o => o.OrderTicket));
+
+      CheckDataContainerExists (_subTransaction, order, true);
+      CheckDataContainerExists (_subTransaction, orderTicket, false);
+
+      CheckEndPointExists (_subTransaction, order, "OrderTicket", false);
+      CheckEndPointExists (_subTransaction, orderTicket, "Order", false);
+
+      CheckDataContainerExists (_subTransaction.ParentTransaction, order, true);
+      CheckDataContainerExists (_subTransaction.ParentTransaction, orderTicket, false);
+
+      CheckEndPointExists (_subTransaction.ParentTransaction, order, "OrderTicket", false);
+      CheckEndPointExists (_subTransaction.ParentTransaction, orderTicket, "Order", false);
+
+      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket.State, Is.EqualTo (StateType.NotLoadedYet));
+
+      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+
+      // This check can likely be removed when the above assertions pass
+      Assert.That (order.OrderTicket, Is.SameAs (orderTicket));
     }
 
     [Test]

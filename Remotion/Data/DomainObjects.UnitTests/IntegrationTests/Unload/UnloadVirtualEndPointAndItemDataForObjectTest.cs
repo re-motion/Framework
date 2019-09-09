@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadVirtualEndPointAndItemData_Object ()
     {
-      var order = DomainObjectIDs.Order1.GetObject<Order> ();
+      var order = DomainObjectIDs.Order1.GetObject<Order>();
       var orderTicket = order.OrderTicket;
 
       UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, RelationEndPointID.Resolve (order, o => o.OrderTicket));
