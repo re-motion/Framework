@@ -271,6 +271,7 @@
     <Compile Include="IntegrationTests\Transaction\ReadOnlyTransactions\ReadOnlyTransactionsTestBase.cs" />
     <Compile Include="IntegrationTests\Transaction\ReadOnlyTransactions\LoadEventsTest.cs" />
     <Compile Include="IntegrationTests\Transaction\ReadOnlyTransactions\RelationReadEventsTest.cs" />
+    <Compile Include="IntegrationTests\Unload\UnloadVirtualEndPointAndItemDataForObjectTest.cs" />
     <Compile Include="Linq\ExtendedSqlGeneratingOuterSelectExpressionVisitorTest.cs" />
     <Compile Include="Linq\ExtendedSqlGenerationStageTest.cs" />
     <Compile Include="Linq\IntegrationTests\SingleTableInheritanceIntegrationTest.cs" />
