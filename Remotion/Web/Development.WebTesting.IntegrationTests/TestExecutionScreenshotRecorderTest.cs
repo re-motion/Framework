@@ -286,12 +286,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         return false;
       }
-      catch (UnhandledAlertException)
-      {
-        // Since WebDriver 2.35 and Chrome 63, above code throws an UnhandledAlertException if an alert exception is present.
-        // This is just a shortcut. See RM-6943.
-        return true;
-      }
     }
 
     private MultiWindowTestPageObject Start ()
