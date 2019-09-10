@@ -248,5 +248,27 @@ namespace Remotion.Web.Development.WebTesting
 
       Cursor.Position = new Point (0, 0);
     }
+
+    /// <summary>
+    /// Gets the specified HTML attribute's value from the <paramref name="scope"/>.
+    /// </summary>
+    /// <remarks>
+    /// Accessing HTML attributes through <see cref="ElementScope.this"/> returns <see langword="null"/> if the attribute does not exist.
+    /// By using <see cref="GetAttribute"/> instead, a <see cref="MissingHtmlException"/> is thrown if the HTML attribute does not exist on the scope.
+    /// </remarks>
+    /// <exception cref="MissingHtmlException">If the attribute cannot be found.</exception>
+    [NotNull]
+    public static string GetAttribute ([NotNull] this ElementScope scope, [NotNull] string attributeName)
+    {
+      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
+
+      var result = scope[attributeName];
+
+      if (result == null)
+        throw new MissingHtmlException ($"Cannot find the attribute '{attributeName}' on the current scope.");
+
+      return result;
+    }
   }
 }

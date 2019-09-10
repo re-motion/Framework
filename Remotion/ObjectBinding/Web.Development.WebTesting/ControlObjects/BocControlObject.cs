@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public bool IsReadOnly ()
     {
-      return Scope[DiagnosticMetadataAttributes.IsReadOnly] == "true";
+      return Scope.GetAttribute (DiagnosticMetadataAttributes.IsReadOnly) == "true";
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public bool IsDisabled ()
     {
-      return Scope[DiagnosticMetadataAttributes.IsDisabled] == "true";
+      return Scope.GetAttribute (DiagnosticMetadataAttributes.IsDisabled) == "true";
     }
 
     /// <summary>
@@ -69,39 +69,40 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsValid (scope))
         return new List<string>();
 
-      ElementScope validationErrorsScope;
       string describedBy;
 
       try
       {
-        describedBy = scope["aria-describedby"];
+        describedBy = scope.GetAttribute ("aria-describedby");
       }
       catch (MissingHtmlException exception)
       {
-        throw new MissingHtmlException (
-            "Could not find validation error field. This could be due to wrong markup or a missing validators.",
-            exception);
+        throw CreateMissingValidationErrorFieldException (exception);
       }
 
       var validationErrorIDs = describedBy.Split (new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-      try
-      {
-        var validationErrorIndex = int.Parse (scope[DiagnosticMetadataAttributes.ValidationErrorIDIndex]);
-
-        validationErrorsScope = Scope.FindId (validationErrorIDs[validationErrorIndex]);
-      }
-      catch (MissingHtmlException exception)
-      {
-        throw new MissingHtmlException (
-            "Could not find validation error field. This could be due to wrong markup or a missing validators.",
-            exception);
-      }
+      var validationErrorIndex = int.Parse (scope.GetAttribute (DiagnosticMetadataAttributes.ValidationErrorIDIndex));
+      var validationErrorsScope = Scope.FindId (validationErrorIDs[validationErrorIndex]);
 
       // re-motion renders the delimiter as <br />, but the browser (and Selenium) show it as <br>
       const string validationErrorDelimiter = "<br>";
 
-      return validationErrorsScope.InnerHTML.Split (new[] { validationErrorDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+      try
+      {
+        return validationErrorsScope.InnerHTML.Split (new[] { validationErrorDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+      }
+      catch (MissingHtmlException exception)
+      {
+        throw CreateMissingValidationErrorFieldException (exception);
+      }
+    }
+
+    private MissingHtmlException CreateMissingValidationErrorFieldException (MissingHtmlException innerException)
+    {
+      return new MissingHtmlException (
+          "Could not find validation error field. This could be due to wrong markup or a missing validator.",
+          innerException);
     }
 
     private static bool IsValid (ElementScope scope)
