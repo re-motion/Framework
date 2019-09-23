@@ -34,8 +34,6 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
       var webTestConfigurationSection = CreateWebTestConfigurationSection();
       PrivateInvoke.InvokeNonPublicMethod (webTestConfigurationSection, "set_Item", "webApplicationRoot", "http://some.url:1337/");
       PrivateInvoke.InvokeNonPublicMethod (webTestConfigurationSection, "set_Item", "screenshotDirectory", @".\SomeScreenshotDirectory");
-      PrivateInvoke.InvokeNonPublicMethod (webTestConfigurationSection, "set_Item", "searchTimeout", TimeSpan.FromSeconds (43));
-      PrivateInvoke.InvokeNonPublicMethod (webTestConfigurationSection, "set_Item", "retryInterval", TimeSpan.FromMilliseconds (42));
       PrivateInvoke.InvokeNonPublicMethod (webTestConfigurationSection, "set_Item", "closeBrowserWindowsOnSetUpAndTearDown", false);
       PrivateInvoke.InvokeNonPublicMethod (
           webTestConfigurationSection,
@@ -47,8 +45,6 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
 
       Assert.That (testInfrastructureConfiguration.WebApplicationRoot, Is.EqualTo ("http://some.url:1337/"));
       Assert.That (testInfrastructureConfiguration.ScreenshotDirectory, Is.EqualTo (Path.GetFullPath (@".\SomeScreenshotDirectory")));
-      Assert.That (testInfrastructureConfiguration.SearchTimeout, Is.EqualTo (TimeSpan.FromSeconds (43)));
-      Assert.That (testInfrastructureConfiguration.RetryInterval, Is.EqualTo (TimeSpan.FromMilliseconds (42)));
       Assert.That (testInfrastructureConfiguration.CloseBrowserWindowsOnSetUpAndTearDown, Is.EqualTo (false));
       Assert.That (testInfrastructureConfiguration.RequestErrorDetectionStrategy, Is.InstanceOf<TestRequestErrorDetectionStrategy>());
     }

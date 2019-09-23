@@ -67,6 +67,19 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
+    /// Creates a new <see cref="DriverConfiguration"/> from app.config.
+    /// </summary>
+    public DriverConfiguration CreateDriverConfiguration ()
+    {
+      var configSettings = WebTestConfigurationSection.Current;
+
+      return new DriverConfiguration (
+          configSettings.CommandTimeout,
+          configSettings.SearchTimeout,
+          configSettings.RetryInterval);
+    }
+
+    /// <summary>
     /// Creates a new <see cref="ITestInfrastructureConfiguration"/> from app.config.
     /// </summary>
     public ITestInfrastructureConfiguration CreateTestInfrastructureConfiguration ()

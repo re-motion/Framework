@@ -87,6 +87,8 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Configuration\DriverConfiguration.cs" />
+    <Compile Include="DriverConfigurationOverride.cs" />
     <Compile Include="BrowserSession\BrowserLogEntry.cs" />
     <Compile Include="ControlSelection\IControlExistsCommand.cs" />
     <Compile Include="ControlSelection\IControlOptionalSelectionCommand.cs" />

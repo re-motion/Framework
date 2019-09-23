@@ -32,6 +32,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _browserProperty;
     private readonly ConfigurationProperty _searchTimeoutProperty;
+    private readonly ConfigurationProperty _commandTimeoutProperty;
     private readonly ConfigurationProperty _downloadStartedTimeoutProperty;
     private readonly ConfigurationProperty _downloadUpdatedTimeoutProperty;
     private readonly ConfigurationProperty _retryIntervalProperty;
@@ -65,6 +66,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
           new RegexStringValidator ("(InternetExplorer|Chrome)"),
           ConfigurationPropertyOptions.IsRequired);
       _searchTimeoutProperty = new ConfigurationProperty ("searchTimeout", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
+      _commandTimeoutProperty = new ConfigurationProperty ("commandTimeout", typeof (TimeSpan), TimeSpan.FromMinutes (1));
       _downloadStartedTimeoutProperty = new ConfigurationProperty ("downloadStartedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
       _downloadUpdatedTimeoutProperty = new ConfigurationProperty ("downloadUpdatedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
       _retryIntervalProperty = new ConfigurationProperty ("retryInterval", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
@@ -87,6 +89,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         xmlnsProperty,
                         _browserProperty,
                         _searchTimeoutProperty,
+                        _commandTimeoutProperty,
                         _downloadStartedTimeoutProperty,
                         _downloadUpdatedTimeoutProperty,
                         _retryIntervalProperty,
@@ -127,6 +130,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public TimeSpan SearchTimeout
     {
       get { return (TimeSpan) this [_searchTimeoutProperty]; }
+    }
+
+    /// <summary>
+    /// Specifies how long Selenium should maximally wait for issued commands before failing.
+    /// </summary>
+    public TimeSpan CommandTimeout
+    {
+      get { return (TimeSpan) this [_commandTimeoutProperty]; }
     }
 
     /// <summary>

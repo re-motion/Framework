@@ -30,6 +30,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     private const string c_fullConfigurationXml = @"
 <remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/1.0""
     browser=""Chrome""
+    commandTimeout=""00:00:41""
     searchTimeout=""00:00:43""
     retryInterval=""00:00:00.042""
     webApplicationRoot=""http://some.url:1337/""
@@ -57,6 +58,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
       DeserializeSection (c_fullConfigurationXml);
 
       Assert.That (_section.BrowserName, Is.EqualTo ("Chrome"));
+      Assert.That (_section.CommandTimeout, Is.EqualTo (TimeSpan.FromSeconds (41)));
       Assert.That (_section.SearchTimeout, Is.EqualTo (TimeSpan.FromSeconds (43)));
       Assert.That (_section.RetryInterval, Is.EqualTo (TimeSpan.FromMilliseconds (42)));
       Assert.That (_section.WebApplicationRoot, Is.EqualTo ("http://some.url:1337/"));

@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.IO;
 using Coypu;
 using Coypu.Drivers;
@@ -41,27 +42,29 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
       _chromeConfiguration = chromeConfiguration;
     }
 
-    public IBrowserSession CreateBrowser (ITestInfrastructureConfiguration testInfrastructureConfiguration)
+    public IBrowserSession CreateBrowser (DriverConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull ("testInfrastructureConfiguration", testInfrastructureConfiguration);
+      ArgumentUtility.CheckNotNull ("configuration", configuration);
 
-      var sessionConfiguration = CreateSessionConfiguration (testInfrastructureConfiguration);
+      var sessionConfiguration = CreateSessionConfiguration (configuration);
+      var commandTimeout = configuration.CommandTimeout;
+
       int driverProcessID;
       string userDirectory;
-      var driver = CreateChromeDriver (out driverProcessID, out userDirectory);
+      var driver = CreateChromeDriver (out driverProcessID, out userDirectory, commandTimeout);
 
       var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Chrome));
 
       return new ChromeBrowserSession (session, _chromeConfiguration, driverProcessID, userDirectory);
     }
 
-    private SessionConfiguration CreateSessionConfiguration (ITestInfrastructureConfiguration testInfrastructureConfiguration)
+    private SessionConfiguration CreateSessionConfiguration (DriverConfiguration configuration)
     {
       return new SessionConfiguration
              {
                  Browser = Browser.Chrome,
-                 RetryInterval = testInfrastructureConfiguration.RetryInterval,
-                 Timeout = testInfrastructureConfiguration.SearchTimeout,
+                 RetryInterval = configuration.RetryInterval,
+                 Timeout = configuration.SearchTimeout,
                  ConsiderInvisibleElements = WebTestingConstants.ShouldConsiderInvisibleElements,
                  Match = WebTestingConstants.DefaultMatchStrategy,
                  TextPrecision = WebTestingConstants.DefaultTextPrecision,
@@ -69,12 +72,12 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
              };
     }
 
-    private ChromeDriver CreateChromeDriver (out int driverProcessID, [CanBeNull] out string userDirectory)
+    private ChromeDriver CreateChromeDriver (out int driverProcessID, [CanBeNull] out string userDirectory, TimeSpan commandTimeout)
     {
       var driverService = CreateChromeDriverService();
       var chromeOptions = _chromeConfiguration.CreateChromeOptions();
 
-      var driver = new ChromeDriver (driverService, chromeOptions);
+      var driver = new ChromeDriver (driverService, chromeOptions, commandTimeout);
       driverProcessID = driverService.ProcessId;
       userDirectory = chromeOptions.UserDirectory;
       return driver;
