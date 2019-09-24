@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static void Run ([NotNull] Action action)
     {
       ArgumentUtility.CheckNotNull ("action", action);
-      var configuration = new WebTestConfigurationFactory ().CreateTestInfrastructureConfiguration();
+      var configuration = new WebTestConfigurationFactory ().CreateDriverConfiguration();
 
       var retryUntilTimeout = new RetryUntilTimeout (
           action,
@@ -70,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static TReturnType Run<TReturnType> ([NotNull] Func<TReturnType> func)
     {
       ArgumentUtility.CheckNotNull ("func", func);
-      var configuration = new WebTestConfigurationFactory ().CreateTestInfrastructureConfiguration ();
+      var configuration = new WebTestConfigurationFactory ().CreateDriverConfiguration();
 
       var retryUntilTimeout = new RetryUntilTimeout<TReturnType> (
           func,

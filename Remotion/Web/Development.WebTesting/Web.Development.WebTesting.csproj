@@ -89,6 +89,8 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Configuration\DriverConfiguration.cs" />
+    <Compile Include="DriverConfigurationOverride.cs" />
     <Compile Include="ControlSelection\IControlExistsCommand.cs" />
     <Compile Include="ControlSelection\IControlOptionalSelectionCommand.cs" />
     <Compile Include="DownloadInfrastructure\Chrome\ChromeNamedExpectedFileNameFinderStrategy.cs" />
@@ -329,9 +331,7 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
-    <None Include="Schemas\WebTestingConfiguration.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <EmbeddedResource Include="Schemas\WebTestingConfiguration.xsd" />
     <None Include="_WebTestDeveloperTools\WebTestingFramework-WebTestDeveloperTools-TampermonkeyScript.js" />
   </ItemGroup>
   <ItemGroup>

@@ -41,26 +41,28 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplor
       _internetExplorerConfiguration = internetExplorerConfiguration;
     }
 
-    public IBrowserSession CreateBrowser (ITestInfrastructureConfiguration testInfrastructureConfiguration)
+    public IBrowserSession CreateBrowser (DriverConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull ("testInfrastructureConfiguration", testInfrastructureConfiguration);
+      ArgumentUtility.CheckNotNull ("configuration", configuration);
 
-      var sessionConfiguration = CreateSessionConfiguration (testInfrastructureConfiguration);
+      var sessionConfiguration = CreateSessionConfiguration (configuration);
+      var commandTimeout = configuration.CommandTimeout;
+
       int driverProcessId;
-      var driver = CreateInternetExplorerDriver (out driverProcessId);
+      var driver = CreateInternetExplorerDriver (out driverProcessId, commandTimeout);
 
       var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.InternetExplorer));
 
       return new InternetExplorerBrowserSession (session, _internetExplorerConfiguration, driverProcessId);
     }
 
-    private SessionConfiguration CreateSessionConfiguration (ITestInfrastructureConfiguration testInfrastructureConfiguration)
+    private SessionConfiguration CreateSessionConfiguration (DriverConfiguration configuration)
     {
       return new SessionConfiguration
              {
                  Browser = Browser.InternetExplorer,
-                 RetryInterval = testInfrastructureConfiguration.RetryInterval,
-                 Timeout = testInfrastructureConfiguration.SearchTimeout,
+                 RetryInterval = configuration.RetryInterval,
+                 Timeout = configuration.SearchTimeout,
                  ConsiderInvisibleElements = WebTestingConstants.ShouldConsiderInvisibleElements,
                  Match = WebTestingConstants.DefaultMatchStrategy,
                  TextPrecision = WebTestingConstants.DefaultTextPrecision,
@@ -68,12 +70,12 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplor
              };
     }
 
-    private InternetExplorerDriver CreateInternetExplorerDriver (out int driverProcessId)
+    private InternetExplorerDriver CreateInternetExplorerDriver (out int driverProcessId, TimeSpan commandTimeout)
     {
       var driverService = CreateInternetExplorerDriverService();
       var options = _internetExplorerConfiguration.CreateInternetExplorerOptions();
 
-      var driver = new InternetExplorerDriver (driverService, options);
+      var driver = new InternetExplorerDriver (driverService, options, commandTimeout);
 
       driverProcessId = driverService.ProcessId;
 
