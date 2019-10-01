@@ -18,6 +18,7 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.WebTestActions
 {
@@ -42,7 +43,10 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      scope.FocusClick();
+      if (scope.Browser.IsInternetExplorer())
+        scope.FocusClick();
+      else
+        scope.Click();
     }
   }
 }

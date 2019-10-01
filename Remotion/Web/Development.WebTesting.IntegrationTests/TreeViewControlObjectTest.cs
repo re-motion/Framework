@@ -351,17 +351,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       rootNode.Expand();
 
       treeView.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
-      // IE throws a different exception for this situation. See RM-7186 for more information.
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-      {
-        Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select(), Throws.InstanceOf<ElementNotVisibleException>());
-        Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<ElementNotVisibleException>());
-      }
-      else
-      {
-        Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select(), Throws.InstanceOf<InvalidOperationException>());
-        Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<InvalidOperationException>());
-      }
+
+      Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select(), Throws.InstanceOf<ElementNotVisibleException>());
+      Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<ElementNotVisibleException>());
     }
 
     [Test]
