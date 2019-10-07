@@ -196,10 +196,12 @@
     <Compile Include="Utilities\ServerErrorException.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\AdvancedChromeOptions.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeBinariesProvider.cs" />
+    <Compile Include="WebDriver\Configuration\Chrome\ChromeUserDirectoryCleanUpStrategy.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ExtendedChromeOptions.cs" />
     <Compile Include="BrowserSession\Chrome\ChromeBrowserSession.cs" />
     <Compile Include="BrowserSession\IBrowserSession.cs" />
     <Compile Include="BrowserSession\InternetExplorer\InternetExplorerBrowserSession.cs" />
+    <Compile Include="WebDriver\Configuration\IBrowserSessionCleanUpStrategy.cs" />
     <Compile Include="WebDriver\Factories\Chrome\ChromeBrowserFactory.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeConfiguration.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeExecutable.cs" />
