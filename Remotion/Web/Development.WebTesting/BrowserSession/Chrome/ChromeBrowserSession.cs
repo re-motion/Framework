@@ -15,9 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using JetBrains.Annotations;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
+using log4net;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 
 namespace Remotion.Web.Development.WebTesting.BrowserSession.Chrome
@@ -27,25 +28,102 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Chrome
   /// </summary>
   public class ChromeBrowserSession : BrowserSessionBase<IChromeConfiguration>
   {
-    private readonly IReadOnlyCollection<IBrowserSessionCleanUpStrategy> _cleanUpStrategies;
+    private static readonly ILog s_log = LogManager.GetLogger (typeof (ChromeBrowserSession));
+
+    private readonly string _userDirectory;
 
     public ChromeBrowserSession (
         [NotNull] Coypu.BrowserSession value,
         [NotNull] IChromeConfiguration configuration,
         int driverProcessID,
-        [CanBeNull] [ItemNotNull] IReadOnlyCollection<IBrowserSessionCleanUpStrategy> cleanUpStrategies = null)
+        [CanBeNull] string userDirectory)
         : base (value, configuration, driverProcessID)
     {
-      _cleanUpStrategies = cleanUpStrategies ?? new IBrowserSessionCleanUpStrategy[0];
+      _userDirectory = userDirectory;
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Makes sure that any unused user data related folder are removed.
+    /// </summary>
     public override void Dispose ()
     {
       base.Dispose();
 
-      foreach (var cleanupStrategy in _cleanUpStrategies)
-        cleanupStrategy.CleanUp();
+      DeleteUserDirectory();
+      DeleteUserDirectoryRootOnDemand();
+    }
+
+    /// <summary>
+    /// Deletes the specific user directory assigned to the current browser session.
+    /// </summary>
+    private void DeleteUserDirectory ()
+    {
+      if (string.IsNullOrEmpty (_userDirectory))
+        return;
+
+      // The amount of times we try to delete the user data folder before giving up
+      const int maxTries = 5;
+
+      // Try to delete the user data folder.
+      // One of the files in the folder is still used by a process even if the driver and browser are shutdown.
+      // Therefore we retry maxTries times and increase the amount of time we wait between each tries.
+
+      var sleep = 50f;
+      var tries = 0;
+      do
+      {
+        if (!Directory.Exists (_userDirectory))
+          return;
+
+        try
+        {
+          Directory.Delete (_userDirectory, true);
+        }
+        catch (Exception ex)
+        {
+          // We only handle these exceptions, as they get thrown when trying to delete the directory 
+          // and some Chrome process is still accessing a file inside the directory.
+          if (!(ex is IOException) && !(ex is UnauthorizedAccessException))
+            throw;
+
+          if (tries == maxTries - 1)
+          {
+            s_log.InfoFormat (
+                @"Could not delete the chrome user data folder '{0}' because of an '{1}':
+{2}",
+                _userDirectory,
+                ex.GetType().Name,
+                ex.Message);
+          }
+
+          Thread.Sleep ((int) sleep);
+          sleep *= 1.25f;
+
+          tries++;
+        }
+      } while (tries < maxTries);
+    }
+
+    /// <summary>
+    /// Removes the user directory root if we are the last session to use it. 
+    /// </summary>
+    private void DeleteUserDirectoryRootOnDemand ()
+    {
+      var userDirectoryRoot = BrowserConfiguration.UserDirectoryRoot;
+
+      if (!BrowserConfiguration.EnableUserDirectoryRootCleanup)
+        return;
+
+      if (string.IsNullOrEmpty (userDirectoryRoot))
+        return;
+
+      if (!Directory.Exists (userDirectoryRoot))
+        return;
+
+      if (Directory.GetDirectories (userDirectoryRoot).Length > 0)
+        return;
+
+      Directory.Delete (userDirectoryRoot);
     }
   }
 }

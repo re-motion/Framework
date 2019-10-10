@@ -54,14 +54,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
 
       var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Chrome));
 
-      return new ChromeBrowserSession (
-          session,
-          _chromeConfiguration,
-          driverProcessID,
-          new[]
-          {
-              new ChromeUserDirectoryCleanUpStrategy (_chromeConfiguration, userDirectory)
-          });
+      return new ChromeBrowserSession (session, _chromeConfiguration, driverProcessID, userDirectory);
     }
 
     private SessionConfiguration CreateSessionConfiguration (DriverConfiguration configuration)
