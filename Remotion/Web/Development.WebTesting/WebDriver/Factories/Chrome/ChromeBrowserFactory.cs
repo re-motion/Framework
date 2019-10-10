@@ -34,17 +34,21 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
   public class ChromeBrowserFactory : IBrowserFactory
   {
     private readonly IChromeConfiguration _chromeConfiguration;
+    private readonly ChromeSecurityWarningsRegistryCleanUpStrategyFactory _securityWarningsRegistryCleanUpStrategyFactory;
 
     public ChromeBrowserFactory ([NotNull] IChromeConfiguration chromeConfiguration)
     {
       ArgumentUtility.CheckNotNull ("chromeConfiguration", chromeConfiguration);
 
       _chromeConfiguration = chromeConfiguration;
+      _securityWarningsRegistryCleanUpStrategyFactory = new ChromeSecurityWarningsRegistryCleanUpStrategyFactory (_chromeConfiguration.DisableSecurityWarningsBehavior);
     }
 
     public IBrowserSession CreateBrowser (DriverConfiguration configuration)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
+
+      var registryCleanUpStrategy = _securityWarningsRegistryCleanUpStrategyFactory.CreateCleanUpStrategy();
 
       var sessionConfiguration = CreateSessionConfiguration (configuration);
       var commandTimeout = configuration.CommandTimeout;
@@ -61,6 +65,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
           driverProcessID,
           new[]
           {
+              registryCleanUpStrategy,
               new ChromeUserDirectoryCleanUpStrategy (_chromeConfiguration, userDirectory)
           });
     }

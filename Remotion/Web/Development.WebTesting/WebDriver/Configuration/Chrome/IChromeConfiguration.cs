@@ -17,6 +17,7 @@
 using System;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 {
@@ -48,6 +49,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// Defines whether the infrastructure should delete the given <see cref="UserDirectoryRoot"/>.
     /// </summary>
     bool EnableUserDirectoryRootCleanup { get; }
+
+    /// <summary>
+    /// Defines the behavior of tests depending on the <c>CommandLineFlagSecurityWarningsEnabled</c> registry flag.
+    /// </summary>
+    ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }
 
     /// <summary>
     /// Creates the <see cref="ChromeOptions"/> used when instantiating the Chrome browser.

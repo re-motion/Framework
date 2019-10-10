@@ -87,6 +87,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Configuration\ChromiumConfigurationElement.cs" />
     <Compile Include="Configuration\DriverConfiguration.cs" />
     <Compile Include="DriverConfigurationOverride.cs" />
     <Compile Include="BrowserSession\BrowserLogEntry.cs" />
@@ -201,6 +202,8 @@
     <Compile Include="BrowserSession\Chrome\ChromeBrowserSession.cs" />
     <Compile Include="BrowserSession\IBrowserSession.cs" />
     <Compile Include="BrowserSession\InternetExplorer\InternetExplorerBrowserSession.cs" />
+    <Compile Include="WebDriver\Configuration\Chrome\ChromeSecurityWarningsRegistryCleanUpStrategyFactory.cs" />
+    <Compile Include="WebDriver\Configuration\Chromium\ChromiumDisableSecurityWarningsBehavior.cs" />
     <Compile Include="WebDriver\Configuration\IBrowserSessionCleanUpStrategy.cs" />
     <Compile Include="WebDriver\Factories\Chrome\ChromeBrowserFactory.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeConfiguration.cs" />
@@ -366,7 +369,6 @@
   <ItemGroup>
     <EmbeddedResource Include="ScreenshotCreation\Resolvers\WebElementResolverScript.js" />
   </ItemGroup>
-  <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

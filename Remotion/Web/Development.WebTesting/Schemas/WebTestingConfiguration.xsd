@@ -16,6 +16,11 @@
             <xs:anyAttribute processContents="skip" />
           </xs:complexType>
         </xs:element>
+        <xs:element name="chrome">
+          <xs:complexType>
+            <xs:attribute name="disableSecurityWarningsBehavior" type="c:ChromiumDisableSecurityWarningsBehavior" default="Ignore" />
+          </xs:complexType>
+        </xs:element>
       </xs:sequence>
 
       <xs:attribute name="browser" type="c:BrowserType" use="required" />
@@ -37,6 +42,14 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="Chrome" />
       <xs:enumeration value="InternetExplorer" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ChromiumDisableSecurityWarningsBehavior">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Ignore" />
+      <xs:enumeration value="Require" />
+      <xs:enumeration value="Automatic" />
     </xs:restriction>
   </xs:simpleType>
 

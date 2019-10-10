@@ -164,9 +164,7 @@
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest_MenuBlock1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest_Navigator0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest_Navigator1.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest_TableContainer0.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest_TableContainer1.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest_TableContainer2.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest_TableContainer.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest2.png" />

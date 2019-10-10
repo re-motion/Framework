@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Represents the latest tested version of Chrome, compatible with the framework.
     /// In order to achieve a stable testing environment, a standalone Chrome browser with a matching ChromeDriver version should be used.
     /// </summary>
-    protected const string LatestTestedChromeVersion = "74";
+    protected const string LatestTestedChromeVersion = "76";
     
     /// <summary>
     /// Creates a new <see cref="IBrowserConfiguration"/> from app.config.

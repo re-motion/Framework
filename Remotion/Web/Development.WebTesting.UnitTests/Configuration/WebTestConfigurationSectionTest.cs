@@ -21,6 +21,8 @@ using System.Xml.Schema;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.Configuration;
 using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 
 namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
 {
@@ -42,6 +44,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     cleanUpUnmatchedDownloadedFiles=""false""
     requestErrorDetectionStrategy=""requestErrorDetectionStrategy"">
   <hosting name=""IisExpress"" type=""IisExpress"" path="".\..\..\..\Development.WebTesting.TestSite"" port=""60042"" />
+  <chrome disableSecurityWarningsBehavior=""Require"" />
 </remotion.webTesting>";
 
     private WebTestConfigurationSection _section;
@@ -73,6 +76,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
       Assert.That (_section.CloseBrowserWindowsOnSetUpAndTearDown, Is.EqualTo (false));
       Assert.That (_section.CleanUpUnmatchedDownloadedFiles, Is.EqualTo (false));
       Assert.That (_section.RequestErrorDetectionStrategyTypeName, Is.EqualTo ("requestErrorDetectionStrategy"));
+      Assert.That (_section.Chrome.DisableSecurityWarningsBehavior, Is.EqualTo (ChromiumDisableSecurityWarningsBehavior.Require));
     }
 
     [Test]

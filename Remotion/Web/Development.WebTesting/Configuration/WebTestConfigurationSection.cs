@@ -19,6 +19,7 @@ using System.Configuration;
 using System.IO;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
@@ -43,6 +44,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _cleanUpUnmatchedDownloadedFiles;
     private readonly ConfigurationProperty _requestErrorDetectionStrategyProperty;
     private readonly ConfigurationProperty _hostingProperty;
+    private readonly ConfigurationProperty _chrome;
 
     static WebTestConfigurationSection ()
     {
@@ -83,6 +85,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _cleanUpUnmatchedDownloadedFiles = new ConfigurationProperty ("cleanUpUnmatchedDownloadedFiles", typeof (bool), false);
       _requestErrorDetectionStrategyProperty = new ConfigurationProperty ("requestErrorDetectionStrategy", typeof (string), "None");
       _hostingProperty = new ConfigurationProperty ("hosting", typeof (ProviderSettings));
+      _chrome = new ConfigurationProperty ("chrome", typeof (ChromiumConfigurationElement));
       
       _properties = new ConfigurationPropertyCollection
                     {
@@ -99,7 +102,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _closeBrowserWindowsOnSetUpAndTearDownProperty,
                         _cleanUpUnmatchedDownloadedFiles,
                         _requestErrorDetectionStrategyProperty,
-                        _hostingProperty
+                        _hostingProperty,
+                        _chrome
                     };
     }
 
@@ -230,6 +234,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public ProviderSettings HostingProviderSettings
     {
       get { return (ProviderSettings) this [_hostingProperty]; }
+    }
+
+    /// <summary>
+    /// Contains Chrome specific settings.
+    /// </summary>
+    public ChromiumConfigurationElement Chrome
+    {
+      get { return (ChromiumConfigurationElement) this[_chrome]; }
     }
   }
 }

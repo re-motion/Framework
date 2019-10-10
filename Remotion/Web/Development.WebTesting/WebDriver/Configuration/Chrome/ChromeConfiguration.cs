@@ -25,6 +25,7 @@ using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome;
 
@@ -50,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     public string UserDirectoryRoot { get; }
     public bool EnableUserDirectoryRootCleanup { get; }
     public string DownloadDirectory { get; }
-    public bool DisableInfoBars { get; }
+    public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }
 
     public ChromeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection,
@@ -74,7 +75,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       UserDirectoryRoot = chromeExecutable.UserDirectory;
 
       EnableUserDirectoryRootCleanup = advancedChromeOptions.DeleteUserDirectoryRoot;
-      DisableInfoBars = advancedChromeOptions.DisableInfoBars;
 
       DownloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
 
@@ -86,6 +86,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
           webTestConfigurationSection.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,
           webTestConfigurationSection.CleanUpUnmatchedDownloadedFiles);
+
+      DisableSecurityWarningsBehavior = webTestConfigurationSection.Chrome.DisableSecurityWarningsBehavior;
     }
 
     public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory (this);
@@ -102,9 +104,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
       if (!string.IsNullOrEmpty (userDirectory))
         chromeOptions.AddArgument (string.Format ("user-data-dir={0}", userDirectory));
-
-      if (DisableInfoBars)
-        chromeOptions.AddArgument ("disable-infobars");
 
       chromeOptions.AddArgument ("no-first-run");
 
