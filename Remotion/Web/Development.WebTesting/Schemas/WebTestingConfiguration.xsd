@@ -8,20 +8,20 @@
 
   <xs:element name="remotion.webTesting">
     <xs:complexType>
-      <xs:sequence>
-        <xs:element name="hosting">
+      <xs:all>
+        <xs:element name="hosting" minOccurs="1" maxOccurs="1">
           <xs:complexType>
             <xs:attribute name="name" type="c:RequiredStringType" use="required" />
             <xs:attribute name="type" type="c:HostingStrategyType" use="required" />
             <xs:anyAttribute processContents="skip" />
           </xs:complexType>
         </xs:element>
-        <xs:element name="chrome">
+        <xs:element name="chrome" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:attribute name="disableSecurityWarningsBehavior" type="c:ChromiumDisableSecurityWarningsBehavior" default="Ignore" />
           </xs:complexType>
         </xs:element>
-      </xs:sequence>
+      </xs:all>
 
       <xs:attribute name="browser" type="c:BrowserType" use="required" />
       <xs:attribute name="searchTimeout" type="xs:time" use="required" />
