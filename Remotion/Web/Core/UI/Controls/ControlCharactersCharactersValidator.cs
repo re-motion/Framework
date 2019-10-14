@@ -21,13 +21,13 @@ using System.Web.UI.WebControls;
 namespace Remotion.Web.UI.Controls
 {
   /// <summary>
-  /// Validates that the text only contains visible characters, normal whitespace (i.e. ASCII Code 0x20), and line breaks (i.e. ASCII Code 0x0A and 0x0C).
+  /// Validates that the text does not contains control characters according to the Unicode character definition.
   /// </summary>
-  public class NonPrintableCharactersValidator : BaseValidator
+  public class ControlCharactersCharactersValidator : BaseValidator
   {
     private const int c_sampleTextLengthDefaultValue = 5;
 
-    public NonPrintableCharactersValidator ()
+    public ControlCharactersCharactersValidator ()
     {
       SampleTextLength = c_sampleTextLengthDefaultValue;
     }
@@ -81,14 +81,6 @@ namespace Remotion.Web.UI.Controls
         linePosition++;
 
         var c = text[textPosition];
-        if (char.IsSeparator (c))
-        {
-          if (c == ' ')
-            continue;
-
-          return HandleError (textPosition);
-        }
-
         if (char.IsControl (c))
         {
           if (EnableMultilineText)

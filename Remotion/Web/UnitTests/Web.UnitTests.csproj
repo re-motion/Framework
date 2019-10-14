@@ -254,7 +254,7 @@
     <Compile Include="Core\UI\Controls\IClientScriptBehaviorTest.cs" />
     <Compile Include="Core\UI\Controls\ListMenuImplementation\Rendering\IListMenuRendererTest.cs" />
     <Compile Include="Core\SetUpFixture.cs" />
-    <Compile Include="Core\UI\Controls\NonPrintableCharactersValidatorTest.cs" />
+    <Compile Include="Core\UI\Controls\ControlCharactersCharactersValidatorTest.cs" />
     <Compile Include="Core\UI\Controls\Rendering\ILabelReferenceRendererTest.cs" />
     <Compile Include="Core\UI\Controls\Rendering\IValidationErrorsRendererTest.cs" />
     <Compile Include="Core\UI\Controls\Rendering\LabelReferenceRendererTest.cs" />
