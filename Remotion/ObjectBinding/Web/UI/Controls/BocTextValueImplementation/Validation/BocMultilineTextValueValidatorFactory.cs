@@ -75,9 +75,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       return lengthValidator;
     }
 
-    private NonPrintableCharactersValidator CreateTypeIsStringValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
+    private ControlCharactersCharactersValidator CreateTypeIsStringValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
     {
-      NonPrintableCharactersValidator typeValidator = new NonPrintableCharactersValidator();
+      ControlCharactersCharactersValidator typeValidator = new ControlCharactersCharactersValidator();
       typeValidator.ID = control.ID + "_ValidatorType";
       typeValidator.ControlToValidate = control.TargetControl.ID;
       typeValidator.SampleTextLength = 5;

@@ -113,9 +113,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       }
     }
 
-    private NonPrintableCharactersValidator CreateTypeIsStringValidator (IBocTextValue control, IResourceManager resourceManager)
+    private ControlCharactersCharactersValidator CreateTypeIsStringValidator (IBocTextValue control, IResourceManager resourceManager)
     {
-      NonPrintableCharactersValidator typeValidator = new NonPrintableCharactersValidator();
+      ControlCharactersCharactersValidator typeValidator = new ControlCharactersCharactersValidator();
       typeValidator.ID = control.ID + "_ValidatorType";
       typeValidator.ControlToValidate = control.TargetControl.ID;
       typeValidator.SampleTextLength = 5;
