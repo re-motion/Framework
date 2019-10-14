@@ -26,7 +26,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     public AdvancedChromeOptions()
     {
       DeleteUserDirectoryRoot = true;
-      DisableInfoBars = true;
     }
 
     /// <summary>
@@ -35,11 +34,5 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// Default is <see langword="true" />, as this is normally a temp folder.
     /// </summary>
     public bool DeleteUserDirectoryRoot { get; set; }
-
-    /// <summary>
-    /// Defines if Chrome info bars should be disabled.
-    /// Default is <see langword="true" />, as should be no relevant information and since Chrome v57, there is always a notification bar showing.
-    /// </summary>
-    public bool DisableInfoBars { get; set; }
   }
 }
