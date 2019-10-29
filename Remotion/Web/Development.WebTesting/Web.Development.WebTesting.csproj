@@ -195,7 +195,6 @@
     <Compile Include="Utilities\OptionalParameter.cs" />
     <Compile Include="Utilities\ScreenshotRecorderPathUtility.cs" />
     <Compile Include="Utilities\ServerErrorException.cs" />
-    <Compile Include="WebDriver\Configuration\Chrome\AdvancedChromeOptions.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeBinariesProvider.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeUserDirectoryCleanUpStrategy.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ExtendedChromeOptions.cs" />

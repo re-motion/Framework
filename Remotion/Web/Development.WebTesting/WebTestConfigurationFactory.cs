@@ -139,7 +139,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("configSettings", configSettings);
       
-      return new ChromeConfiguration (configSettings, new AdvancedChromeOptions());
+      return new ChromeConfiguration (configSettings);
     }
     
     /// <summary>

@@ -46,11 +46,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     string UserDirectoryRoot { get; }
 
     /// <summary>
-    /// Defines whether the infrastructure should delete the given <see cref="UserDirectoryRoot"/>.
-    /// </summary>
-    bool EnableUserDirectoryRootCleanup { get; }
-
-    /// <summary>
     /// Defines the behavior of tests depending on the <c>CommandLineFlagSecurityWarningsEnabled</c> registry flag.
     /// </summary>
     ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }

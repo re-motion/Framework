@@ -138,23 +138,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       SetupWebTestHelper (webTestHelper);
       ShutdownWebTestHelper (webTestHelper, testSuccess);
 
-      // Assert specific cleanup behavior depending if EnableUserDirectoryRootCleanup is set or not
-      if (configuration.EnableUserDirectoryRootCleanup)
-      {
-        // The user directory root should no longer exist
-        Assert.That (
-            Directory.Exists (configuration.UserDirectoryRoot),
-            Is.False,
-            string.Format ("User directory root '{0}' is not cleaned up.", configuration.UserDirectoryRoot));
-      }
-      else
-      {
-        // The user directory root should be empty
-        Assert.That (
-            Directory.GetDirectories (configuration.UserDirectoryRoot),
-            Is.Empty,
-            string.Format ("User directory root '{0}' is not cleaned up.", configuration.UserDirectoryRoot));
-      }
+      // The user directory root should no longer exist
+      Assert.That (
+          Directory.Exists (configuration.UserDirectoryRoot),
+          Is.False,
+          string.Format ("User directory root '{0}' is not cleaned up.", configuration.UserDirectoryRoot));
     }
 
     /// <summary>

@@ -49,32 +49,26 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     public string BrowserBinaryPath { get; }
     public string DriverBinaryPath { get; }
     public string UserDirectoryRoot { get; }
-    public bool EnableUserDirectoryRootCleanup { get; }
     public string DownloadDirectory { get; }
     public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }
 
     public ChromeConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection,
-        [NotNull] AdvancedChromeOptions advancedChromeOptions)
-        : this (webTestConfigurationSection, s_chromeExecutable.Value, advancedChromeOptions)
+        [NotNull] WebTestConfigurationSection webTestConfigurationSection)
+        : this (webTestConfigurationSection, s_chromeExecutable.Value)
     {
     }
 
     public ChromeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection,
-        [NotNull] ChromeExecutable chromeExecutable,
-        [NotNull] AdvancedChromeOptions advancedChromeOptions)
+        [NotNull] ChromeExecutable chromeExecutable)
         : base (webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
       ArgumentUtility.CheckNotNull ("chromeExecutable", chromeExecutable);
-      ArgumentUtility.CheckNotNull ("advancedChromeOptions", advancedChromeOptions);
 
       BrowserBinaryPath = chromeExecutable.BrowserBinaryPath;
       DriverBinaryPath = chromeExecutable.DriverBinaryPath;
       UserDirectoryRoot = chromeExecutable.UserDirectory;
-
-      EnableUserDirectoryRootCleanup = advancedChromeOptions.DeleteUserDirectoryRoot;
 
       DownloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
 

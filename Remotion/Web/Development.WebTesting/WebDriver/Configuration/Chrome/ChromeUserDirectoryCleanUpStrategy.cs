@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     public void CleanUp ()
     {
       DeleteUserDirectory();
-      DeleteUserDirectoryRootOnDemand();
+      DeleteUserDirectoryRoot();
     }
 
     /// <summary>
@@ -102,12 +102,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// <summary>
     /// Removes the user directory root if we are the last session to use it. 
     /// </summary>
-    private void DeleteUserDirectoryRootOnDemand ()
+    private void DeleteUserDirectoryRoot ()
     {
       var userDirectoryRoot = _chromeConfiguration.UserDirectoryRoot;
-
-      if (!_chromeConfiguration.EnableUserDirectoryRootCleanup)
-        return;
 
       if (string.IsNullOrEmpty (userDirectoryRoot))
         return;
@@ -118,7 +115,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       if (Directory.GetDirectories (userDirectoryRoot).Length > 0)
         return;
 
-      Directory.Delete (userDirectoryRoot);
+      try
+      {
+        Directory.Delete (userDirectoryRoot);
+      }
+      catch (IOException)
+      {
+      }
     }
   }
 }

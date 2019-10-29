@@ -26,12 +26,15 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.WebDriver.Configuration.
   public class ChromeUserDirectoryCleanUpStrategyTest
   {
     [Test]
-    public void Cleanup_NoRootDirectoryCleanUp ()
+    public void Cleanup_UserDirectoryRootContainsMultipleFolders_DeletesOnlyUserDirectory ()
     {
-      var userDirectoryPath = Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString ("N"));
-      var chromeConfigurationStub = MockRepository.GenerateStub<IChromeConfiguration>();
+      var userDirectoryRootPath = Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString ("N"));
+      var userDirectoryPath = Path.Combine (userDirectoryRootPath, "0");
+      var anotherUserDirectoryPath = Path.Combine (userDirectoryRootPath, "1");
       Directory.CreateDirectory (userDirectoryPath);
-      chromeConfigurationStub.Stub (_ => _.EnableUserDirectoryRootCleanup).Return (false);
+      Directory.CreateDirectory (anotherUserDirectoryPath);
+      var chromeConfigurationStub = MockRepository.GenerateStub<IChromeConfiguration>();
+      chromeConfigurationStub.Stub (_ => _.UserDirectoryRoot).Return (userDirectoryRootPath);
       var cleanUpStrategy = new ChromeUserDirectoryCleanUpStrategy (chromeConfigurationStub, userDirectoryPath);
 
       try
@@ -39,22 +42,22 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.WebDriver.Configuration.
         cleanUpStrategy.CleanUp();
 
         Assert.That (Directory.Exists (userDirectoryPath), Is.False);
+        Assert.That (Directory.Exists (anotherUserDirectoryPath), Is.True);
       }
       finally
       {
-        if (Directory.Exists (userDirectoryPath))
-          Directory.Delete (userDirectoryPath, true);
+        if (Directory.Exists (userDirectoryRootPath))
+          Directory.Delete (userDirectoryRootPath, true);
       }
     }
 
     [Test]
-    public void Cleanup_WithRootDirectoryCleanUp ()
+    public void Cleanup_UserDirectoryRootContainsOnlyUserDirectory_DeletesUserDirectoryRoot ()
     {
       var userDirectoryRootPath = Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString ("N"));
       var userDirectoryPath = Path.Combine (userDirectoryRootPath, "0");
       Directory.CreateDirectory (userDirectoryPath);
       var chromeConfigurationStub = MockRepository.GenerateStub<IChromeConfiguration>();
-      chromeConfigurationStub.Stub (_ => _.EnableUserDirectoryRootCleanup).Return (true);
       chromeConfigurationStub.Stub (_ => _.UserDirectoryRoot).Return (userDirectoryRootPath);
       var cleanUpStrategy = new ChromeUserDirectoryCleanUpStrategy (chromeConfigurationStub, userDirectoryPath);
 
