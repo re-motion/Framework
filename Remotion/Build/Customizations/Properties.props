@@ -21,6 +21,6 @@
     <DependDBProjectImportNotificationMailAddress></DependDBProjectImportNotificationMailAddress>
     <DependDBTrackedReferences>Remotion;Remotion.*</DependDBTrackedReferences>
     <!-- '#OutputDirectory#' and '#ConfigurationID#' will be replaced by '$(OutputDirectory)' and '$(ConfigurationID)' during DependDB processing. See Shared.Overrides.targets:BeforeCheckDependDBProperties -->
-    <DependDBNuGetSources>#OutputDirectory#..\TP\NuGetWithDebugSymbols\#ConfigurationID#;$(SolutionDirectory)packages</DependDBNuGetSources>
+    <DependDBNuGetSources>$(SolutionDirectory)packages</DependDBNuGetSources>
   </PropertyGroup>
 </Project>
