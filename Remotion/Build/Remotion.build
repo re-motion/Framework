@@ -23,13 +23,13 @@
     <PackagesDirectory Condition="'$(PackagesDirectory)' == ''">$(MSBuildProjectDirectory)\..\packages\</PackagesDirectory>
     <MSBuildExtensionPackPath Condition="'$(MSBuildExtensionPackPath)' == ''">$(PackagesDirectory)MSBuild.Extension.Pack.1.5.0\tools\net40\</MSBuildExtensionPackPath>
     <ExtensionTasksPath>$(MSBuildExtensionPackPath)</ExtensionTasksPath>
-    <DependDBBuildProcessorToolPath Condition="'$(NuGetToolPath)' == ''">$(PackagesDirectory)DependDB.BuildProcessor.1.8.1\tools\</DependDBBuildProcessorToolPath>
-    <DependDBNuGetPreProcessorToolPath Condition="'$(NuGetToolPath)' == ''">$(PackagesDirectory)DependDB.BuildProcessor.NuGetPreProcessor.1.8.1\tools\</DependDBNuGetPreProcessorToolPath>
+    <DependDBBuildProcessorToolPath Condition="'$(NuGetToolPath)' == ''">$(PackagesDirectory)DependDB.BuildProcessor.2.0.0\tools\</DependDBBuildProcessorToolPath>
+    <DependDBNuGetPreProcessorToolPath Condition="'$(NuGetToolPath)' == ''">$(PackagesDirectory)DependDB.BuildProcessor.NuGetPreProcessor.2.0.0\tools\</DependDBNuGetPreProcessorToolPath>
     <NUnitToolPath Condition="'$(NUnitToolPath)' == ''">$(PackagesDirectory)NUnit.Runners.2.6.3\tools\</NUnitToolPath>
     <NuGetToolPath Condition="'$(NuGetToolPath)' == ''">$(PackagesDirectory)NuGet.CommandLine.3.5.0\tools\</NuGetToolPath>
     <NuGetForMSBuildPath Condition="'$(NuGetForMSBuildPath)' == ''">$(PackagesDirectory)NuGet.for.MSBuild.1.4.3\build\</NuGetForMSBuildPath>
     <RemotionBuildTasksPath Condition="'$(RemotionBuildTasksPath)' == ''">$(PackagesDirectory)Remotion.BuildTools.MSBuildTasks.1.0.6862.28795\tools\</RemotionBuildTasksPath>
-    <RemotionBuildScriptPath Condition="'$(RemotionBuildScriptPath)' == ''">$(PackagesDirectory)Remotion.BuildScript.2.0.0-alpha020\BuildTargets\</RemotionBuildScriptPath>
+    <RemotionBuildScriptPath Condition="'$(RemotionBuildScriptPath)' == ''">$(PackagesDirectory)Remotion.BuildScript.2.0.0-alpha021\BuildTargets\</RemotionBuildScriptPath>
   </PropertyGroup>
 
   <Import Project="$(RemotionBuildScriptPath)*.targets" />
