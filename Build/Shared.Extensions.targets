@@ -61,21 +61,33 @@
       <AllDatabaseSystems Include="SqlServer2016" Condition="'%(DatabaseSystemsList.Identity)' == 'SqlServer2016'"/>
       <AllDatabaseSystems Include="SqlServer2017" Condition="'%(DatabaseSystemsList.Identity)' == 'SqlServer2017'"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <AllBrowsers Remove="@(AllBrowsers)"/>
+
+      <AllBrowsers Include="Chrome" Condition="'%(BrowsersList.Identity)' == 'Chrome'" />
+      <AllBrowsers Include="Firefox" Condition="'%(BrowsersList.Identity)' == 'Firefox'" />
+      <AllBrowsers Include="InternetExplorer" Condition="'%(BrowsersList.Identity)' == 'InternetExplorer'" />
+    </ItemGroup>
   </Target>
 
   <Target Name="After_BuildTestOutputFilesCrossProduct" AfterTargets="BuildTestOutputFilesCrossProduct">
     <ItemGroup>
-      <_testOutputFilesWithInternetExplorer Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'InternetExplorer'" />
+      <_testOutputFilesWithInternetExplorer Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'InternetExplorer'"/>
+      <_testOutputFilesWithFirefox Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'Firefox'"/>
+      <_testOutputFilesWithChrome Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'Chrome'"/>
     </ItemGroup>
 
     <ItemGroup Condition="'@(_testOutputFilesWithInternetExplorer->Count())' &gt; 1">
-      <_testOutputFilesWithIEFiltered Include="@(_testOutputFiles)" Condition="'%(Browser)' != 'InternetExplorer'" />
-      <_testOutputFilesWithIEFiltered Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'InternetExplorer' And '%(Platform)' == 'x86' And '$(ConfigurationID)' == 'Debug'"/>
+      <_testOutputFiles Remove="@(_testOutputFiles)" Condition="'%(Browser)' == 'InternetExplorer' And ('%(Platform)' != 'x86' Or '$(ConfigurationID)' != 'Debug')"/>
     </ItemGroup>
 
-    <ItemGroup Condition="'@(_testOutputFilesWithInternetExplorer->Count())' &gt; 1">
-      <_testOutputFiles Remove="@(_testOutputFiles)" />
-      <_testOutputFiles Include="@(_testOutputFilesWithIEFiltered)"/>
+    <ItemGroup Condition="'@(_testOutputFilesWithFirefox->Count())' &gt; 1">
+      <_testOutputFiles Remove="@(_testOutputFiles)" Condition="'%(Browser)' == 'Firefox' And ('%(Platform)' != 'x86' Or '$(ConfigurationID)' != 'Debug')"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'@(_testOutputFilesWithChrome->Count())' &gt; 1">
+      <_testOutputFiles Remove="@(_testOutputFiles)" Condition="'%(Browser)' == 'Chrome' And '%(Platform)' == 'x64' And '$(ConfigurationID)' == 'Debug'"/>
     </ItemGroup>
 
   </Target>

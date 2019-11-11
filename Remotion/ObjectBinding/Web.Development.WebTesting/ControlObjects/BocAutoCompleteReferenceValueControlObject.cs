@@ -352,7 +352,8 @@ CallWebService = function() {{
   if(returnValue.state === 'success' && !Array.isArray(returnValue.data))
     returnValue.data = [ returnValue.data ];
 
-  return returnValue;
+  // Strip methods from return object to prevent unwanted errors from Firefox Marionette.
+  return JSON.parse(JSON.stringify(returnValue));
 }};
 return CallWebService();",
           autoCompleteTextValueInputFieldId,

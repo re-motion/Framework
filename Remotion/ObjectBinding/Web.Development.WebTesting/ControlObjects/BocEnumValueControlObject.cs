@@ -25,6 +25,7 @@ using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
@@ -100,6 +101,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
 
+      // Workaround for Marionette issue. (RM-7279)
+      if (Scope.Browser.IsFirefox() && GetSelectedOption().ItemID == itemID)
+        return UnspecifiedPage();
+
       return _variantImpl.SelectOption (itemID, actionOptions);
     }
 
@@ -108,6 +113,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      // Workaround for Marionette issue. (RM-7279)
+      if (Scope.Browser.IsFirefox() && GetSelectedOption().Index == oneBasedIndex)
+        return UnspecifiedPage();
 
       return _variantImpl.SelectOption (oneBasedIndex, actionOptions);
     }
@@ -119,6 +128,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException();
+
+      // Workaround for Marionette issue. (RM-7279)
+      if (Scope.Browser.IsFirefox() && GetSelectedOption().Text == displayText)
+        return UnspecifiedPage();
 
       return _variantImpl.SelectOptionByText (displayText, actionOptions);
     }

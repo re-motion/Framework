@@ -70,6 +70,7 @@
     <Compile Include="BrowserLogEntryTest.cs" />
     <Compile Include="ChromeBinariesProviderTest.cs" />
     <Compile Include="CompletionDetectionStrategyTest.cs" />
+    <Compile Include="FirefoxBinariesProviderTest.cs" />
     <Compile Include="WxeCompletionDetectionHelpersTest.cs" />
     <Compile Include="AspNetRequestErrorDetectionStrategyTest.cs" />
     <Compile Include="CoypuElementScopeFindExtensionsTest.cs" />
@@ -177,12 +178,16 @@
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\BadgeTest.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Chrome.any.DrawTooltip.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\InternetExplorer.any.DrawTooltip.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Firefox.any.DrawTooltip.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Chrome.Desktop.DrawCursorTooltip.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\InternetExplorer.Desktop.DrawCursorTooltip.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Firefox.any.DrawCursorTooltip.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Chrome.any.DrawTooltip_WithFollowingBoxAnnotation.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\InternetExplorer.any.DrawTooltip_WithFollowingBoxAnnotation.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Firefox.any.DrawTooltip_WithFollowingBoxAnnotation.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Chrome.any.DrawCursorTooltip_WithFollowingBoxAnnotation.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\InternetExplorer.any.DrawCursorTooltip_WithFollowingBoxAnnotation.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Firefox.any.DrawCursorTooltip_WithFollowingBoxAnnotation.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementBoxAnnotationTest.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementBoxAnnotationWithWidthTest.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementCroppingTest.png" />
@@ -257,6 +262,11 @@
     <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopLeft1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopRight0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopRight1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\Firefox.any.ListMenu0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\Firefox.any.DropDownMenu.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\TabbedMenuControlObjectTest\Firefox.any.TabbedMenu.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\WebTabStripControlObjectTest\Firefox.any.WebTabStrip.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\Firefox.any.DropDownList.png" />
     <None Include="SavedTestScreenshots\DropDownListControlObjectTest\readme.txt" />
     <None Include="SavedTestScreenshots\ScrollTests\readme.txt" />
   </ItemGroup>

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -28,6 +27,7 @@ using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -458,6 +458,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListLabelLeftCurrentValueLabel").Text, Is.Empty);
     }
 
+    // Due to a workaround for a Marionette bug (RM-7279), asserting the completion detection after selecting the already selected value does not work.
     [Test]
     public void TestSelectOptionPostBack ()
     {
@@ -491,11 +492,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNormalCurrentValueLabel").Text, Is.EqualTo (single));
 
       noAutoPostBackDropDownListBocEnumValue.SelectOption (single); // no auto post back
-      Assert.That (noAutoPostBackDropDownListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      if (!Helper.BrowserConfiguration.IsFirefox())
+        Assert.That (noAutoPostBackDropDownListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (married));
 
       normalDropDownListBocEnumValue.SelectOption (single, Opt.ContinueImmediately()); // same value, does not trigger post back
-      Assert.That (normalDropDownListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      if (!Helper.BrowserConfiguration.IsFirefox())
+        Assert.That (normalDropDownListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("DropDownListNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (married));
 
       normalDropDownListBocEnumValue.SelectOption (divorced);
@@ -516,7 +519,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (married));
 
       normalListBoxBocEnumValue.SelectOption (single, Opt.ContinueImmediately()); // same value, does not trigger post back
-      Assert.That (normalListBoxBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      if (!Helper.BrowserConfiguration.IsFirefox())
+        Assert.That (normalListBoxBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("ListBoxNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (married));
 
       normalListBoxBocEnumValue.SelectOption (divorced);
@@ -537,7 +541,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (married));
 
       normalRadioButtonListBocEnumValue.SelectOption (single, Opt.ContinueImmediately()); // same value, does not trigger post back
-      Assert.That (normalRadioButtonListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      if (!Helper.BrowserConfiguration.IsFirefox())
+        Assert.That (normalRadioButtonListBocEnumValueCompletionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That (home.Scope.FindIdEndingWith ("RadioButtonListNoAutoPostBackCurrentValueLabel").Text, Is.EqualTo (married));
 
       normalRadioButtonListBocEnumValue.SelectOption (divorced);

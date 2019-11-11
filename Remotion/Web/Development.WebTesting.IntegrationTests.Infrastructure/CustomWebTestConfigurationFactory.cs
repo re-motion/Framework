@@ -20,6 +20,7 @@ using System.IO;
 using System.IO.Compression;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
@@ -32,39 +33,55 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       if (string.IsNullOrEmpty (chromeVersionArchivePath))
         return new ChromeConfiguration (configSettings);
 
-      var customChromeDirectory = PrepareChromeDirectory (chromeVersionArchivePath);
+      var versionedChromeFolder = $"Chrome_v{LatestTestedChromeVersion}";
+      var customChromeDirectory = PrepareCustomBrowserDirectory (chromeVersionArchivePath, versionedChromeFolder);
 
-      var customChromeBinary = GetBinaryPath (customChromeDirectory, "chrome");
+      var customBrowserBinary = GetBinaryPath (customChromeDirectory, "chrome");
       var customDriverBinary = GetBinaryPath (customChromeDirectory, "chromedriver");
-
       var customUserDirectoryPath = CustomUserDirectory.GetCustomUserDirectory();
 
-      var chromeExecutable = new ChromeExecutable (customChromeBinary, customDriverBinary, customUserDirectoryPath);
+      var chromeExecutable = new ChromeExecutable (customBrowserBinary, customDriverBinary, customUserDirectoryPath);
 
       return new ChromeConfiguration (configSettings, chromeExecutable);
     }
 
-    private string PrepareChromeDirectory (string chromeVersionArchivePath)
+    protected override IFirefoxConfiguration CreateFirefoxConfiguration (WebTestConfigurationSection configSettings)
     {
-      var versionedChromeFolder = string.Format ("Chrome_v{0}", LatestTestedChromeVersion);
+      var firefoxVersionArchivePath = ConfigurationManager.AppSettings["FirefoxVersionArchive"];
 
-      var localChromeDirectory = Path.Combine (Path.GetTempPath(), versionedChromeFolder);
+      if (string.IsNullOrEmpty (firefoxVersionArchivePath))
+        return new FirefoxConfiguration (configSettings);
 
-      if (!Directory.Exists (localChromeDirectory))
-      {
-        var versionedChromeZipFile = string.Format ("Chrome_v{0}.zip", LatestTestedChromeVersion);
+      var versionedFirefoxFolder = $"Firefox_v{LatestTestedFirefoxVersion}";
+      var customFirefoxDirectory = PrepareCustomBrowserDirectory (firefoxVersionArchivePath, versionedFirefoxFolder);
 
-        ZipFile.ExtractToDirectory (
-            Path.Combine (chromeVersionArchivePath, versionedChromeZipFile),
-            localChromeDirectory);
-      }
+      var customBrowserBinary = GetBinaryPath (customFirefoxDirectory, "firefox");
+      var customDriverBinary = GetBinaryPath (customFirefoxDirectory, "geckodriver");
 
-      return localChromeDirectory;
+      var firefoxExecutable = new FirefoxExecutable (customBrowserBinary, customDriverBinary);
+
+      return new FirefoxConfiguration (configSettings, firefoxExecutable);
     }
 
-    private string GetBinaryPath (string localChromeDirectory, string binaryName)
+    private string PrepareCustomBrowserDirectory (string browserVersionArchivePath, string versionedBrowserFolderName)
     {
-      return Path.Combine (localChromeDirectory, binaryName + ".exe");
+      var localBrowserBinaryFolderPath = Path.Combine (Path.GetTempPath(), versionedBrowserFolderName);
+
+      if (!Directory.Exists (localBrowserBinaryFolderPath))
+      {
+        var versionedChromeZipFile = $"{versionedBrowserFolderName}.zip";
+
+        ZipFile.ExtractToDirectory (
+            Path.Combine (browserVersionArchivePath, versionedChromeZipFile),
+            localBrowserBinaryFolderPath);
+      }
+
+      return localBrowserBinaryFolderPath;
+    }
+
+    private string GetBinaryPath (string localBrowserDirectory, string binaryName)
+    {
+      return Path.Combine (localBrowserDirectory, binaryName + ".exe");
     }
   }
 }

@@ -230,7 +230,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
       }
     }
 
-    protected override void BrowserSpecificCleanup ()
+    protected override void AdditionalCleanup ()
     {
       //No Browser specific cleanup needed, as every file gets moved from the default download directory into the temp directory.
     }

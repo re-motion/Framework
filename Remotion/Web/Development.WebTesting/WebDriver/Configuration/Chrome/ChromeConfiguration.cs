@@ -24,7 +24,7 @@ using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
-using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome;
+using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
@@ -40,6 +40,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
   public class ChromeConfiguration : BrowserConfigurationBase, IChromeConfiguration
   {
     private const string c_userDataFolderPrefix = "userdata";
+    private const string c_partialFileDownloadExtension = ".crdownload";
 
     private static readonly Lazy<ChromeExecutable> s_chromeExecutable =
         new Lazy<ChromeExecutable> (() => new ChromeBinariesProvider().GetInstalledExecutable(), LazyThreadSafetyMode.ExecutionAndPublication);
@@ -86,8 +87,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
       var downloadStartedGracePeriod = TimeSpan.FromMinutes (1);
 
-      DownloadHelper = new ChromeDownloadHelper (
+      DownloadHelper = new DefaultDownloadHelper (
           DownloadDirectory,
+          c_partialFileDownloadExtension,
           webTestConfigurationSection.DownloadStartedTimeout,
           webTestConfigurationSection.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,

@@ -21,16 +21,16 @@ using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
-namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
+namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 {
   /// <summary>
-  /// Implements the <see cref="IDownloadFileFinderStrategy"/> interface for performing a download based on an expected file name with Chrome.
+  /// Default implementation of the <see cref="IDownloadFileFinderStrategy"/> interface for performing a download based on an expected file name.
   /// </summary>
-  public class ChromeNamedExpectedFileNameFinderStrategy : IDownloadFileFinderStrategy
+  public class DefaultNamedExpectedFileNameFinderStrategy : IDownloadFileFinderStrategy
   {
     private readonly string _fileName;
 
-    public ChromeNamedExpectedFileNameFinderStrategy ([NotNull] string fileName)
+    public DefaultNamedExpectedFileNameFinderStrategy ([NotNull] string fileName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("fileName", fileName);
 

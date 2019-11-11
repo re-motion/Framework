@@ -49,6 +49,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         new Size (20, 29),
         new Size (378, 209));
 
+    public static readonly ScreenshotTooltipStyle Firefox = new ScreenshotTooltipStyle (
+        new Font ("Sans-Serif", 9, FontStyle.Regular),
+        new SolidBrush (Color.FromArgb (0x0, 0x0, 0x0)),
+        Brushes.White,
+        new Pen (Color.FromArgb (0x76, 0x76, 0x76), 1),
+        TooltipPositioning.BottomRight,
+        new WebPadding (2, 2, 2, 2),
+        true,
+        new Size (12, 18),
+        new Size (970, 110));
+
     private readonly Font _font;
     private readonly Brush _foregroundBrush;
     private readonly Brush _backgroundBrush;

@@ -20,6 +20,7 @@ using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver
@@ -52,6 +53,17 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     }
 
     /// <summary>
+    /// Gets a flag indicating if <paramref name="browserConfiguration"/> represents <b>Firefox</b> by testing if the passed object 
+    /// implements <see cref="IFirefoxConfiguration"/>.
+    /// </summary>
+    public static bool IsFirefox ([NotNull] this IBrowserConfiguration browserConfiguration)
+    {
+      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
+
+      return browserConfiguration is IFirefoxConfiguration;
+    }
+
+    /// <summary>
     /// Gets a flag indicating if <paramref name="browser"/> represents <b>Internet Explorer</b> by testing if the passed instance 
     /// is <see cref="Browser.InternetExplorer"/>.
     /// </summary>
@@ -71,6 +83,17 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
       ArgumentUtility.CheckNotNull ("browser", browser);
 
       return browser == Browser.Chrome;
+    }
+
+    /// <summary>
+    /// Gets a flag indicating if <paramref name="browser"/> represents <b>Firefox</b> by testing if the passed instance 
+    /// is <see cref="Browser.Firefox"/>.
+    /// </summary>
+    public static bool IsFirefox ([NotNull] this Browser browser)
+    {
+      ArgumentUtility.CheckNotNull ("browser", browser);
+
+      return browser == Browser.Firefox;
     }
   }
 }

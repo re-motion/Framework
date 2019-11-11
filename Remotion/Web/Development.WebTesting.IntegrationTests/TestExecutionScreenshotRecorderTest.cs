@@ -21,6 +21,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -176,6 +177,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesNotThrowWhenAlertWindowIsOpen ()
     {
+      if (Helper.BrowserConfiguration.IsFirefox())
+        Assert.Ignore ("Firefox does not show an alert dialog.");
+
       var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
       var fileName = "RandomFileName";
 

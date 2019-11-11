@@ -71,6 +71,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void GeckoDriver_DoesNotSupportBrowserLogs ()
+    {
+      if (!Helper.BrowserConfiguration.IsFirefox())
+        Assert.Ignore ("Tests if GeckoDriver behaves as expected and hence, only concerns Firefox");
+
+      var home = Start();
+
+      var selenium = (IWebDriver) home.Context.Browser.Driver.Native;
+
+      Assert.That (
+          () => selenium.Manage().Logs.GetLog (LogType.Browser),
+          Throws.InstanceOf<NullReferenceException>().With.Message
+              .EqualTo ("Object reference not set to an instance of an object."));
+    }
+
+    [Test]
     public void InternetExplorerDriver_DoesNotSupportBrowserLogs ()
     {
       if (!Helper.BrowserConfiguration.IsInternetExplorer())

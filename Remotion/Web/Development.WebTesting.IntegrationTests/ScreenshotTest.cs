@@ -391,6 +391,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         padding = new WebPadding (2, 3, 2, 53);
       }
+      else if (Helper.BrowserConfiguration.IsFirefox())
+      {
+        padding = new WebPadding (2, 1, 2, 68);
+      }
       else if (Helper.BrowserConfiguration.IsInternetExplorer())
       {
         padding = new WebPadding (1, 1, 4, 31);
@@ -661,6 +665,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       if (Helper.BrowserConfiguration.IsChrome())
         return ScreenshotTooltipStyle.Chrome;
+
+      if (Helper.BrowserConfiguration.IsFirefox())
+        return ScreenshotTooltipStyle.Firefox;
 
       if (Helper.BrowserConfiguration.IsInternetExplorer())
         return ScreenshotTooltipStyle.InternetExplorer;

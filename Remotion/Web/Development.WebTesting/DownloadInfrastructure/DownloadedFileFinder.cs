@@ -52,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     private static readonly TimeSpan s_retryInterval = TimeSpan.FromMilliseconds (250);
 
     private readonly string _downloadDirectory;
-    private readonly string _partialFileEnding;
+    private readonly string _partialFileExtension;
     private readonly IDownloadFileFinderStrategy _downloadFileFinderStrategy;
     private readonly TimeSpan _downloadStartedGracePeriod;
 
@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     /// <param name="downloadDirectory">
     /// Directory where the browser saves the downloaded files.
     /// </param>
-    /// <param name="partialFileEnding">
+    /// <param name="partialFileExtension">
     /// File ending of the partial file created by the browser.
     /// </param>
     /// <param name="downloadStartedGracePeriod">
@@ -75,16 +75,16 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     /// </param>
     public DownloadedFileFinder (
       [NotNull] string downloadDirectory,
-      [NotNull] string partialFileEnding,
+      [NotNull] string partialFileExtension,
       TimeSpan downloadStartedGracePeriod,
       [NotNull] IDownloadFileFinderStrategy downloadFileFinderStrategy)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("downloadDirectory", downloadDirectory);
-      ArgumentUtility.CheckNotNullOrEmpty ("partialFileEnding", partialFileEnding);
+      ArgumentUtility.CheckNotNullOrEmpty ("partialFileExtension", partialFileExtension);
       ArgumentUtility.CheckNotNull ("downloadFileFinderStrategy", downloadFileFinderStrategy);
 
       _downloadDirectory = downloadDirectory;
-      _partialFileEnding = partialFileEnding;
+      _partialFileExtension = partialFileExtension;
       _downloadStartedGracePeriod = downloadStartedGracePeriod;
       _downloadFileFinderStrategy = downloadFileFinderStrategy;
     }
@@ -245,7 +245,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     [CanBeNull]
     private string GetPartialFile (IEnumerable<string> newFiles)
     {
-      return newFiles.SingleOrDefault (file => file.EndsWith (_partialFileEnding));
+      return newFiles.SingleOrDefault (file => file.EndsWith (_partialFileExtension));
     }
   }
 }

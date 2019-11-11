@@ -65,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
           typeof (string),
           null,
           null,
-          new RegexStringValidator ("(InternetExplorer|Chrome)"),
+          new RegexStringValidator ("(InternetExplorer|Chrome|Firefox)"),
           ConfigurationPropertyOptions.IsRequired);
       _searchTimeoutProperty = new ConfigurationProperty ("searchTimeout", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
       _commandTimeoutProperty = new ConfigurationProperty ("commandTimeout", typeof (TimeSpan), TimeSpan.FromMinutes (1));
