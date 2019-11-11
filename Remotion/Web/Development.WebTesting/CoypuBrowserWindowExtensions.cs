@@ -65,10 +65,10 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("window", window);
       
-      var driverFieldInfo = typeof (BrowserWindow).GetField ("driver", BindingFlags.NonPublic | BindingFlags.Instance);
+      var driverFieldInfo = typeof (BrowserWindow).GetField ("_driver", BindingFlags.NonPublic | BindingFlags.Instance);
       Assertion.IsNotNull (driverFieldInfo, "Coypu has changed, please update CoypuBrowserWindowExtensions.GetWebDriver() method.");
 
-      var driver = (Driver) driverFieldInfo.GetValue (window);
+      var driver = (IDriver) driverFieldInfo.GetValue (window);
       return (IWebDriver) driver.Native;
     }
 
