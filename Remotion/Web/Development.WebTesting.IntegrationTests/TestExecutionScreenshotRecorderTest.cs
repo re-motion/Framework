@@ -43,12 +43,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TearDown]
     public void TearDown ()
     {
-      var files = Directory.GetFiles (_tempSavePath, "*.png");
+      if (Directory.Exists (_tempSavePath))
+      {
+        var files = Directory.GetFiles (_tempSavePath, "*.png");
 
-      foreach (var file in files)
-        File.Delete (file);
+        foreach (var file in files)
+          File.Delete (file);
 
-      Directory.Delete (_tempSavePath);
+        Directory.Delete (_tempSavePath);
+      }
 
       if (IsAlertDialogPresent ((IWebDriver) Helper.MainBrowserSession.Driver.Native))
         Helper.MainBrowserSession.Window.AcceptModalDialog();
