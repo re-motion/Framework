@@ -21,7 +21,6 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.Utilities;
-using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -177,9 +176,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesNotThrowWhenAlertWindowIsOpen ()
     {
-      if (Helper.BrowserConfiguration.IsChrome())
-        Assert.Ignore ("The Selenium default alert behavior for Chrome is currently not working. (RM-7278)");
-
       var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
       var fileName = "RandomFileName";
 

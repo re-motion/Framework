@@ -49,7 +49,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (allCookiesAfterDelete.Count, Is.EqualTo (0));
     }
 
-    [Ignore ("The Selenium log endpoints for Chrome are currently not working. (RM-7278)")]
     [Test]
     public void ChromeDriver_SupportsBrowserLogs ()
     {

@@ -27,7 +27,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   public class BrowserLogEntryTest : IntegrationTest
   {
-    [Ignore ("The Selenium log endpoints for Chrome are currently not working. (RM-7278)")]
     [Test]
     public void BrowserLogEntry_ShouldWrapSeleniumLogEntry ()
     {

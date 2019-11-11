@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using JetBrains.Annotations;
+using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
@@ -40,6 +43,15 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
     private static readonly Lazy<ChromeExecutable> s_chromeExecutable =
         new Lazy<ChromeExecutable> (() => new ChromeBinariesProvider().GetInstalledExecutable(), LazyThreadSafetyMode.ExecutionAndPublication);
+
+    private static readonly Lazy<FieldInfo> s_knownCapabilityNamesField = new Lazy<FieldInfo> (
+        () =>
+        {
+          var knownCapabilityNamesField = typeof (DriverOptions).GetField ("knownCapabilityNames", BindingFlags.Instance | BindingFlags.NonPublic);
+          Assertion.IsNotNull (knownCapabilityNamesField, "Selenium has changed, please update s_knownCapabilityNamesField field.");
+          return knownCapabilityNamesField;
+        },
+        LazyThreadSafetyMode.ExecutionAndPublication);
 
     public override string BrowserExecutableName { get; } = "chrome";
     public override string WebDriverExecutableName { get; } = "chromedriver";
@@ -90,6 +102,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     {
       var chromeOptions = new ExtendedChromeOptions();
 
+      DisableSpecCompliance (chromeOptions);
+
       if (!string.IsNullOrEmpty (BrowserBinaryPath))
         chromeOptions.BinaryLocation = BrowserBinaryPath;
 
@@ -105,6 +119,14 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       chromeOptions.AddUserProfilePreference ("download.default_directory", DownloadDirectory);
 
       return chromeOptions;
+    }
+
+    private void DisableSpecCompliance (ExtendedChromeOptions chromeOptions)
+    {
+      var knownCapabilityNames = (Dictionary<string, string>) s_knownCapabilityNamesField.Value.GetValue (chromeOptions);
+      knownCapabilityNames.Remove ("w3c");
+
+      chromeOptions.AddAdditionalCapability ("w3c", false);
     }
 
     private string CreateUnusedUserDirectoryPath ()
