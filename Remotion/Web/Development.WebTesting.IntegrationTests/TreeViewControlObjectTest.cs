@@ -352,8 +352,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       treeView.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
 
-      Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select(), Throws.InstanceOf<ElementNotVisibleException>());
-      Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<ElementNotVisibleException>());
+      Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select(), Throws.InstanceOf<ElementNotInteractableException>());
+      Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<ElementNotInteractableException>());
     }
 
     [Test]

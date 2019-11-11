@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     BrowserWindow Window { get; }
 
     /// <inheritdoc cref="Coypu.BrowserSession.Driver"/>
-    Driver Driver { get; }
+    IDriver Driver { get; }
 
     /// <summary>
     /// Returns the new browser log entries of the <see cref="IBrowserSession"/> since the last call of <see cref="GetBrowserLogs"/> or

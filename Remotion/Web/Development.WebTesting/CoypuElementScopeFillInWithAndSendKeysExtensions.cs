@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting
 
     private static readonly Lazy<FieldInfo> s_driverFieldInfo = new Lazy<FieldInfo> (
         () => Assertion.IsNotNull (
-            typeof (ElementScope).GetField ("driver", BindingFlags.NonPublic | BindingFlags.Instance),
+            typeof (ElementScope).GetField ("_driver", BindingFlags.NonPublic | BindingFlags.Instance),
             "Coypu has changed, please update CoypuElementScopeFillInWithAndSendKeysExtensions.GetDriver() method."),
         LazyThreadSafetyMode.ExecutionAndPublication);
 
@@ -169,11 +169,11 @@ namespace Remotion.Web.Development.WebTesting
       return ContainsChars (value) && value != "";
     }
 
-    private static Driver GetDriver ([NotNull] this ElementScope scope)
+    private static IDriver GetDriver ([NotNull] this ElementScope scope)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      return (Driver) s_driverFieldInfo.Value.GetValue (scope);
+      return (IDriver) s_driverFieldInfo.Value.GetValue (scope);
     }
   }
 }
