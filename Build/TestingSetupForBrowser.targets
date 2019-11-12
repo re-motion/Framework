@@ -32,6 +32,7 @@
 
     <Message Text="Selected Browser: '$(Browser)'" />
     <Message Text="The property 'ChromeVersionArchive' is set to '$(ChromeVersionArchive)'." />
+    <Message Text="The property 'FirefoxVersionArchive' is set to '$(FirefoxVersionArchive)'." />
 
     <MSBuild.ExtensionPack.Xml.XmlFile
         TaskAction="ReadAttribute"
@@ -89,10 +90,14 @@
       <_appConfigAttributes Include="/configuration/log4net/appender[@name='FileAppender']/file">
         <Key>value</Key>
         <Value>$(_logsDirectory)$(_logsDirectoryFileName)</Value>
-      </_appConfigAttributes>      
+      </_appConfigAttributes>
       <_appConfigAttributes Include="/configuration/appSettings/add[@key='ChromeVersionArchive']">
         <Key>value</Key>
         <Value>$(ChromeVersionArchive)</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/appSettings/add[@key='FirefoxVersionArchive']">
+        <Key>value</Key>
+        <Value>$(FirefoxVersionArchive)</Value>
       </_appConfigAttributes>
     </ItemGroup>
 

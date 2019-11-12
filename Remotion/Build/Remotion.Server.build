@@ -60,7 +60,7 @@
     <PropertyGroup>
       <Platforms>x86+x64</Platforms>
       <DatabaseSystems>SqlServer2017+SqlServer2012+SqlServer2014+SqlServer2016</DatabaseSystems>
-      <Browsers>Chrome+InternetExplorer</Browsers>
+      <Browsers>Chrome+InternetExplorer+Firefox</Browsers>
       <TestCategoriesToExclude></TestCategoriesToExclude>
     </PropertyGroup>
   </Target>

@@ -23,6 +23,7 @@ using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.HostingStrategies.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 
 namespace Remotion.Web.Development.WebTesting
@@ -44,7 +45,13 @@ namespace Remotion.Web.Development.WebTesting
     /// In order to achieve a stable testing environment a standalone Chrome with a matching version should be used.
     /// </summary>
     protected const string LatestTestedChromeVersion = "66";
-    
+
+    /// <summary>
+    /// Represents the latest version of Firefox verified to be compatible with Selenium WebDriver.
+    /// In order to achieve a stable testing environment a standalone Firefox with a matching GeckoDriver version should be used.
+    /// </summary>
+    protected const string LatestTestedFirefoxVersion = "70";
+
     /// <summary>
     /// Creates a new <see cref="IBrowserConfiguration"/> from app.config.
     /// </summary>
@@ -63,6 +70,9 @@ namespace Remotion.Web.Development.WebTesting
 
       if (configuredBrowser == Browser.InternetExplorer)
         return CreateInternetExplorerConfiguration (configSettings);
+
+      if (configuredBrowser == Browser.Firefox)
+        return CreateFirefoxConfiguration (configSettings);
 
       return CreateCustomBrowserConfiguration (configSettings);
     }
@@ -139,10 +149,17 @@ namespace Remotion.Web.Development.WebTesting
     protected virtual IChromeConfiguration CreateChromeConfiguration ([NotNull] WebTestConfigurationSection configSettings)
     {
       ArgumentUtility.CheckNotNull ("configSettings", configSettings);
-      
+
       return new ChromeConfiguration (configSettings, new AdvancedChromeOptions());
     }
-    
+
+    protected virtual IFirefoxConfiguration CreateFirefoxConfiguration (WebTestConfigurationSection configSettings)
+    {
+      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
+
+      return new FirefoxConfiguration (configSettings);
+    }
+
     /// <summary>
     /// Responsible for creating a configuration object for the hosting infrastructure.
     /// </summary>

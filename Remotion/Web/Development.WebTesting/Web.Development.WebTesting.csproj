@@ -67,6 +67,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
@@ -88,12 +89,13 @@
     </Compile>
     <Compile Include="Configuration\DriverConfiguration.cs" />
     <Compile Include="DriverConfigurationOverride.cs" />
+    <Compile Include="BrowserSession\Firefox\FirefoxBrowserSession.cs" />
     <Compile Include="ControlSelection\IControlExistsCommand.cs" />
     <Compile Include="ControlSelection\IControlOptionalSelectionCommand.cs" />
-    <Compile Include="DownloadInfrastructure\Chrome\ChromeNamedExpectedFileNameFinderStrategy.cs" />
-    <Compile Include="DownloadInfrastructure\Chrome\ChromeUnknownFileNameFinderStrategy.cs" />
+    <Compile Include="DownloadInfrastructure\Default\DefaultNamedExpectedFileNameFinderStrategy.cs" />
+    <Compile Include="DownloadInfrastructure\Default\DefaultUnknownFileNameFinderStrategy.cs" />
     <Compile Include="DownloadInfrastructure\DownloadHelperBase.cs" />
-    <Compile Include="DownloadInfrastructure\Chrome\ChromeDownloadHelper.cs" />
+    <Compile Include="DownloadInfrastructure\Default\DefaultDownloadHelper.cs" />
     <Compile Include="DownloadInfrastructure\DownloadedFile.cs" />
     <Compile Include="DownloadInfrastructure\DownloadedFileFinder.cs" />
     <Compile Include="DownloadInfrastructure\IDownloadedFile.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="ScreenshotCreation\Annotations\ScreenshotTooltipAnnotation.cs" />
     <Compile Include="ScreenshotCreation\Annotations\ScreenshotTooltipStyle.cs" />
     <Compile Include="ScreenshotCreation\Annotations\TooltipPositioning.cs" />
+    <Compile Include="ScreenshotCreation\BrowserContentLocators\FirefoxBrowserContentLocator.cs" />
     <Compile Include="ScreenshotCreation\CoordinateSystem.cs" />
     <Compile Include="ScreenshotCreation\CursorInformation.cs" />
     <Compile Include="ScreenshotCreation\Fluent\FluentControlHostScreenshotElement.cs" />
@@ -194,6 +197,10 @@
     <Compile Include="BrowserSession\Chrome\ChromeBrowserSession.cs" />
     <Compile Include="BrowserSession\IBrowserSession.cs" />
     <Compile Include="BrowserSession\InternetExplorer\InternetExplorerBrowserSession.cs" />
+    <Compile Include="WebDriver\Configuration\Firefox\FirefoxBinariesProvider.cs" />
+    <Compile Include="WebDriver\Configuration\Firefox\FirefoxConfiguration.cs" />
+    <Compile Include="WebDriver\Configuration\Firefox\FirefoxExecutable.cs" />
+    <Compile Include="WebDriver\Configuration\Firefox\IFirefoxConfiguration.cs" />
     <Compile Include="WebDriver\Factories\Chrome\ChromeBrowserFactory.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeConfiguration.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ChromeExecutable.cs" />
@@ -203,6 +210,7 @@
     <Compile Include="WebDriver\BrowserConfigurationExtensions.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\IChromeConfiguration.cs" />
     <Compile Include="WebDriver\Configuration\InternetExplorer\IInternetExplorerConfiguration.cs" />
+    <Compile Include="WebDriver\Factories\Firefox\FirefoxBrowserFactory.cs" />
     <Compile Include="WebDriver\Factories\InternetExplorer\InternetExplorerBrowserFactory.cs" />
     <Compile Include="WebDriver\Configuration\InternetExplorer\InternetExplorerConfiguration.cs" />
     <Compile Include="Configuration\ITestInfrastructureConfiguration.cs" />

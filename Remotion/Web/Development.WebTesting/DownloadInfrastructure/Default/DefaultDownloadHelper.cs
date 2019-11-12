@@ -23,25 +23,30 @@ using log4net;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
-namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
+namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 {
   /// <summary>
-  /// Responsible for handling a download with Chrome.
+  /// Responsible for default download handling.
   /// </summary>
-  public class ChromeDownloadHelper : DownloadHelperBase
+  public class DefaultDownloadHelper : DownloadHelperBase
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (ChromeDownloadHelper));
+    private static ILog Log { get; } = LogManager.GetLogger (typeof (DefaultDownloadHelper));
 
-    private const string c_partialFileEnding = ".crdownload";
-    private readonly string _downloadDirectory;
-    private readonly TimeSpan _downloadStartedGracePeriod;
-    private readonly bool _cleanUpDownloadFolderOnError;
+    [NotNull]
+    private string DownloadDirectory { get; }
+    [NotNull]
+    private string PartialFileExtension { get; }
+    public TimeSpan DownloadStartedGracePeriod { get; }
+    public bool CleanUpDownloadFolderOnError { get; }
 
     /// <summary>
-    /// Creates a new <see cref="ChromeDownloadHelper"/>.
+    /// Creates a new <see cref="DefaultDownloadHelper"/>.
     /// </summary>
     /// <param name="downloadDirectory">
     /// Directory where the browser saves the downloaded files. Must not be <see langword="null" /> or empty.
+    /// </param>
+    /// <param name="partialFileExtension">
+    /// File extension for partially downloaded files.
     /// </param>
     /// <param name="downloadStartedTimeout">
     /// Specifies how long the <see cref="DownloadHelperBase"/> should wait before looking for the downloaded file.
@@ -56,8 +61,9 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
     /// <param name="cleanUpDownloadFolderOnError">
     /// Clean up the download folder on error.
     /// </param>
-    public ChromeDownloadHelper (
+    public DefaultDownloadHelper (
         [NotNull] string downloadDirectory,
+        [NotNull] string partialFileExtension,
         TimeSpan downloadStartedTimeout,
         TimeSpan downloadUpdatedTimeout,
         TimeSpan downloadStartedGracePeriod,
@@ -65,25 +71,12 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
         : base (downloadStartedTimeout, downloadUpdatedTimeout)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("downloadDirectory", downloadDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty ("partialFileExtension", partialFileExtension);
 
-      _downloadDirectory = downloadDirectory;
-      _downloadStartedGracePeriod = downloadStartedGracePeriod;
-      _cleanUpDownloadFolderOnError = cleanUpDownloadFolderOnError;
-    }
-
-    public string DownloadDirectory
-    {
-      get { return _downloadDirectory; }
-    }
-
-    public TimeSpan DownloadStartedGracePeriod
-    {
-      get { return _downloadStartedGracePeriod; }
-    }
-
-    public bool CleanUpDownloadFolderOnError
-    {
-      get { return _cleanUpDownloadFolderOnError; }
+      DownloadDirectory = downloadDirectory;
+      PartialFileExtension = partialFileExtension;
+      DownloadStartedGracePeriod = downloadStartedGracePeriod;
+      CleanUpDownloadFolderOnError = cleanUpDownloadFolderOnError;
     }
 
     protected override IDownloadedFile HandleDownload (
@@ -93,13 +86,13 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
     {
       ArgumentUtility.CheckNotNull ("downloadedFileFinder", downloadedFileFinder);
 
-      EnsureDownloadDirectoryExists (_downloadDirectory);
+      EnsureDownloadDirectoryExists (DownloadDirectory);
 
       //Empty list, as our infrastructure should keep the download directory clean by moving downloaded files away, so we can assume the download directory is empty.
-      //We need this assumption as Chrome downloads files without prompt, making it impossible to get the directory state before the download starts. 
-      var filesInDownloadDirectoryBeforeDownload = new List<string>();
+      //We need this assumption since files are downloaded without a prompt, making it impossible to get the directory state before the download starts.
+      var filesInDownloadDirectoryBeforeDownload = new List<string>().AsReadOnly();
 
-      DownloadedFile downloadedFile = null;
+      DownloadedFile downloadedFile;
 
       try
       {
@@ -110,7 +103,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
       }
       catch (DownloadResultNotFoundException ex)
       {
-        if (_cleanUpDownloadFolderOnError)
+        if (CleanUpDownloadFolderOnError)
           CleanUpUnmatchedDownloadedFiles (ex.GetUnmatchedFilesInDownloadDirectory().ToList());
 
         throw;
@@ -124,40 +117,39 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
       ArgumentUtility.CheckNotNullOrEmpty ("fileName", fileName);
 
       return new DownloadedFileFinder (
-          _downloadDirectory,
-          c_partialFileEnding,
-          _downloadStartedGracePeriod,
-          new ChromeNamedExpectedFileNameFinderStrategy (fileName));
+          DownloadDirectory,
+          PartialFileExtension,
+          DownloadStartedGracePeriod,
+          new DefaultNamedExpectedFileNameFinderStrategy (fileName));
     }
 
     protected override DownloadedFileFinder CreateDownloadedFileFinderForUnknownFileName ()
     {
       return new DownloadedFileFinder (
-          _downloadDirectory,
-          c_partialFileEnding,
-          _downloadStartedGracePeriod,
-          new ChromeUnknownFileNameFinderStrategy (c_partialFileEnding));
+          DownloadDirectory,
+          PartialFileExtension,
+          DownloadStartedGracePeriod,
+          new DefaultUnknownFileNameFinderStrategy (PartialFileExtension));
     }
 
-    protected override void BrowserSpecificCleanup ()
+    protected override void AdditionalCleanup ()
     {
-      if (Directory.Exists (_downloadDirectory))
+      if (Directory.Exists (DownloadDirectory))
       {
         try
         {
-          Directory.Delete (_downloadDirectory, true);
+          Directory.Delete (DownloadDirectory, true);
         }
         catch (IOException ex)
         {
-          s_log.WarnFormat (
+          Log.WarnFormat (
               @"Could not delete '{0}'.
 {1}",
-              _downloadDirectory,
+              DownloadDirectory,
               ex);
         }
       }
     }
-
 
     private void EnsureDownloadDirectoryExists (string downloadDirectory)
     {
@@ -171,7 +163,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
 
       foreach (var file in unmatchedFiles)
       {
-        var fullFilePath = Path.Combine (_downloadDirectory, file);
+        var fullFilePath = Path.Combine (DownloadDirectory, file);
 
         try
         {
@@ -180,7 +172,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
         }
         catch (IOException ex)
         {
-          s_log.WarnFormat (
+          Log.WarnFormat (
               @"Could not delete '{0}'.
 {1}",
               fullFilePath,

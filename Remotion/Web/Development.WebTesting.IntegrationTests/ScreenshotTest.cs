@@ -301,6 +301,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         padding = new WebPadding (2, 3, 2, 53);
       }
+      else if (Helper.BrowserConfiguration.IsFirefox())
+      {
+        padding = new WebPadding (2, 1, 2, 68);
+      }
       else if (Helper.BrowserConfiguration.IsInternetExplorer())
       {
         padding = new WebPadding (1, 1, 4, 31);

@@ -24,6 +24,7 @@ using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
@@ -125,6 +126,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsReadOnly())
         throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
+      // Workaround for Marionette issue. (RM-7279)
+      if (Scope.Browser.IsFirefox() && GetSelectedOption().ItemID == itemID)
+        return UnspecifiedPage();
+
       Action<ElementScope> selectAction = s => s.SelectOptionByValue (itemID);
       return SelectOption (selectAction, actionOptions);
     }
@@ -137,6 +142,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       if (IsReadOnly())
         throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
+      // Workaround for Marionette issue. (RM-7279)
+      if (Scope.Browser.IsFirefox() && GetSelectedOption().Index == oneBasedIndex)
+        return UnspecifiedPage();
 
       Action<ElementScope> selectAction = s => s.SelectOptionByIndex (oneBasedIndex);
       return SelectOption (selectAction, actionOptions);
@@ -152,6 +161,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       if (IsReadOnly())
         throw AssertionExceptionUtility.CreateControlReadOnlyException();
+
+      // Workaround for Marionette issue. (RM-7279)
+      if (Scope.Browser.IsFirefox() && GetSelectedOption().Text == displayText)
+        return UnspecifiedPage();
 
       Action<ElementScope> selectAction = s => s.SelectOption (displayText);
       return SelectOption (selectAction, actionOptions);

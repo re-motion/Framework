@@ -117,7 +117,10 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
 
       // Check driver and main browser for null
       if (driverProcess != null)
+      {
         ProcessUtils.GracefulProcessShutdown (driverProcess, c_driverShutdownWaitTime);
+        driverProcess.WaitForExit (60000);
+      }
 
       if (browserProcess != null)
       {

@@ -21,16 +21,16 @@ using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
-namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
+namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 {
   /// <summary>
-  /// Implements the <see cref="IDownloadFileFinderStrategy"/> interface for performing a download with an unknown file with Chrome.
+  /// Default implementation of the <see cref="IDownloadFileFinderStrategy"/> interface for performing a download with an unknown file.
   /// </summary>
-  public class ChromeUnknownFileNameFinderStrategy : IDownloadFileFinderStrategy
+  public class DefaultUnknownFileNameFinderStrategy : IDownloadFileFinderStrategy
   {
     private readonly string _partialFileEnding;
 
-    public ChromeUnknownFileNameFinderStrategy ([NotNull] string partialFileEnding)
+    public DefaultUnknownFileNameFinderStrategy ([NotNull] string partialFileEnding)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("partialFileEnding", partialFileEnding);
 

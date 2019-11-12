@@ -75,6 +75,7 @@
           VcsUrlTemplate=$(VcsUrlTemplate);
           SvnRevision=$(SvnRevision);
           ChromeVersionArchive=$(ChromeVersionArchive);
+          FirefoxVersionArchive=$(FirefoxVersionArchive);
           DatabaseNamePrefix=$(DatabaseNamePrefix);
           DataSourceMsSql2012=$(DataSourceMsSql2012);
           DataSourceMsSql2014=$(DataSourceMsSql2014);

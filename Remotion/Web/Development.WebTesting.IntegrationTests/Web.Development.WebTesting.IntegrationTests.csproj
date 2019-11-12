@@ -68,6 +68,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="FirefoxBinariesProviderTest.cs" />
     <Compile Include="WxeCompletionDetectionHelpersTest.cs" />
     <Compile Include="AspNetRequestErrorDetectionStrategyTest.cs" />
     <Compile Include="CoypuElementScopeFindExtensionsTest.cs" />
@@ -251,6 +252,11 @@
     <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopLeft1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopRight0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScrollTests\PositioningTest_TopRight1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\Firefox.any.ListMenu0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\Firefox.any.DropDownMenu.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\TabbedMenuControlObjectTest\Firefox.any.TabbedMenu.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\WebTabStripControlObjectTest\Firefox.any.WebTabStrip.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\Firefox.any.DropDownList.png" />
     <None Include="SavedTestScreenshots\DropDownListControlObjectTest\readme.txt" />
     <None Include="SavedTestScreenshots\ScrollTests\readme.txt" />
   </ItemGroup>
