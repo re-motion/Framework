@@ -27,6 +27,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Screen
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -97,6 +98,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void Test_Focus ()
     {
+      if (Helper.BrowserConfiguration.IsFirefox())
+        Assert.Ignore ("This test is flaky in Firefox. (RM-7291)");
+
       var home = Start();
 
       var focusElement = home.Scope.FindId (c_focusDivID);
