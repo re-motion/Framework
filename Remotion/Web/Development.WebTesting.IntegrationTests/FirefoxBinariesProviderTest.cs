@@ -25,12 +25,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public class FirefoxBinariesProviderTest
   {
+    [Ignore ("This test only works on 64bit platforms (RM-7285) and requires TLS support (RM-7286).")]
     [Test]
     public void GetInstalledExecutable ()
     {
-      if (!Environment.Is64BitProcess)
-        Assert.Ignore ("This test only works on 64bit platforms. (RM-7285)");
-
       var provider = new FirefoxBinariesProvider();
 
       var result = provider.GetInstalledExecutable();
