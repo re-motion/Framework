@@ -33,9 +33,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.WebDriver.Configuration.
       var anotherUserDirectoryPath = Path.Combine (userDirectoryRootPath, "1");
       Directory.CreateDirectory (userDirectoryPath);
       Directory.CreateDirectory (anotherUserDirectoryPath);
-      var chromeConfigurationStub = MockRepository.GenerateStub<IChromeConfiguration>();
-      chromeConfigurationStub.Stub (_ => _.UserDirectoryRoot).Return (userDirectoryRootPath);
-      var cleanUpStrategy = new ChromeUserDirectoryCleanUpStrategy (chromeConfigurationStub, userDirectoryPath);
+      var cleanUpStrategy = new ChromeUserDirectoryCleanUpStrategy (userDirectoryRootPath, userDirectoryPath);
 
       try
       {
@@ -57,9 +55,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.WebDriver.Configuration.
       var userDirectoryRootPath = Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString ("N"));
       var userDirectoryPath = Path.Combine (userDirectoryRootPath, "0");
       Directory.CreateDirectory (userDirectoryPath);
-      var chromeConfigurationStub = MockRepository.GenerateStub<IChromeConfiguration>();
-      chromeConfigurationStub.Stub (_ => _.UserDirectoryRoot).Return (userDirectoryRootPath);
-      var cleanUpStrategy = new ChromeUserDirectoryCleanUpStrategy (chromeConfigurationStub, userDirectoryPath);
+      var cleanUpStrategy = new ChromeUserDirectoryCleanUpStrategy (userDirectoryRootPath, userDirectoryPath);
 
       try
       {

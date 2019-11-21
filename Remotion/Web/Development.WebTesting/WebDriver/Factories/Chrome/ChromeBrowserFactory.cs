@@ -66,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
           new[]
           {
               registryCleanUpStrategy,
-              new ChromeUserDirectoryCleanUpStrategy (_chromeConfiguration, userDirectory)
+              new ChromeUserDirectoryCleanUpStrategy (_chromeConfiguration.UserDirectoryRoot, userDirectory)
           });
     }
 

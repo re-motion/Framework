@@ -30,15 +30,15 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (ChromeUserDirectoryCleanUpStrategy));
 
-    private readonly IChromeConfiguration _chromeConfiguration;
+    private readonly string _userDirectoryRoot;
     private readonly string _userDirectory;
 
-    public ChromeUserDirectoryCleanUpStrategy ([NotNull] IChromeConfiguration chromeConfiguration, [NotNull] string userDirectory)
+    public ChromeUserDirectoryCleanUpStrategy ([NotNull] string userDirectoryRoot, [NotNull] string userDirectory)
     {
-      ArgumentUtility.CheckNotNull ("chromeConfiguration", chromeConfiguration);
+      ArgumentUtility.CheckNotNullOrEmpty ("userDirectoryRoot", userDirectoryRoot);
       ArgumentUtility.CheckNotNullOrEmpty ("userDirectory", userDirectory);
 
-      _chromeConfiguration = chromeConfiguration;
+      _userDirectoryRoot = userDirectoryRoot;
       _userDirectory = userDirectory;
     }
 
@@ -104,20 +104,15 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// </summary>
     private void DeleteUserDirectoryRoot ()
     {
-      var userDirectoryRoot = _chromeConfiguration.UserDirectoryRoot;
-
-      if (string.IsNullOrEmpty (userDirectoryRoot))
+      if (!Directory.Exists (_userDirectoryRoot))
         return;
 
-      if (!Directory.Exists (userDirectoryRoot))
-        return;
-
-      if (Directory.GetDirectories (userDirectoryRoot).Length > 0)
+      if (Directory.GetDirectories (_userDirectoryRoot).Length > 0)
         return;
 
       try
       {
-        Directory.Delete (userDirectoryRoot);
+        Directory.Delete (_userDirectoryRoot);
       }
       catch (IOException)
       {
