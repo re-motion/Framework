@@ -19,6 +19,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
+using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -143,7 +144,7 @@ namespace Remotion.Web.UI.Controls
     {
       HtmlGenericControl label = new HtmlGenericControl ("label");
 
-      label.InnerText = ValidationMessage;
+      label.Controls.Add (ToSpan (ValidationMessage));
       if (_validatedControl != null)
         label.Attributes["for"] = _validatedControl.ClientID;
 
@@ -163,7 +164,7 @@ namespace Remotion.Web.UI.Controls
     {
       HyperLink hyperLink = new HyperLink();
 
-      hyperLink.Text = ValidationMessage;
+      hyperLink.Controls.Add (ToSpan (ValidationMessage));
       if (_validatedControl != null)
         hyperLink.Attributes.Add ("href", "#" + _validatedControl.ClientID);
 
@@ -205,7 +206,7 @@ namespace Remotion.Web.UI.Controls
       HtmlGenericControl genericControl = new HtmlGenericControl (tag);
       if (!string.IsNullOrEmpty (cssClass))
         genericControl.Attributes["class"] = cssClass;
-      genericControl.InnerText = ValidationMessage;
+      genericControl.InnerHtml = HtmlUtility.HtmlEncode (ValidationMessage);
       return genericControl;
     }
   }
