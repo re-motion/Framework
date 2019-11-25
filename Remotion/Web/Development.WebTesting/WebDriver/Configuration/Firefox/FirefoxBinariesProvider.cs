@@ -60,16 +60,18 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     /// </summary>
     private string GetInstalledFirefoxPath ()
     {
+      var localMachine64BitViewKey = RegistryKey.OpenBaseKey (RegistryHive.LocalMachine, RegistryView.Registry64);
+
       // While Chrome overrides its registry entries whenever a different build of Chrome (e.g. Canary, Beta) is installed,
       // Firefox has distinct registry paths for each. In addition, all installed versions are listed with all locations,
       // meaning the newest version must be found and selected.
-      var installedFirefoxSubKeys = Registry.LocalMachine.OpenSubKey (c_firefoxRegistryPath)?.GetSubKeyNames();
+      var installedFirefoxSubKeys = localMachine64BitViewKey.OpenSubKey (c_firefoxRegistryPath)?.GetSubKeyNames();
       var latestFirefoxSubKeyName = installedFirefoxSubKeys?.OrderByDescending (x => new Version (x.Split (' ')[0])).FirstOrDefault();
 
       const string errorMessage = "Installed Firefox path could not be read from the registry ({0}).";
       Assertion.IsNotNull (latestFirefoxSubKeyName, errorMessage, c_firefoxRegistryPath);
 
-      var installedFirefoxRegistryKey = Registry.LocalMachine.OpenSubKey (Path.Combine (c_firefoxRegistryPath, latestFirefoxSubKeyName, "Main"));
+      var installedFirefoxRegistryKey = localMachine64BitViewKey.OpenSubKey (Path.Combine (c_firefoxRegistryPath, latestFirefoxSubKeyName, "Main"));
       Assertion.IsNotNull (installedFirefoxRegistryKey, errorMessage, c_firefoxRegistryPath);
 
       return installedFirefoxRegistryKey.GetValue ("PathToExe").ToString();
