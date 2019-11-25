@@ -30,6 +30,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [SetUp]
     public void SetUp ()
     {
+      AppContext.SetSwitch ("Switch.System.Net.DontEnableSchUseStrongCrypto", false);
+
       var screenshotDirectory = _setUpFixtureHelper.ScreenshotDirectory;
 
       if (Directory.Exists (screenshotDirectory))
