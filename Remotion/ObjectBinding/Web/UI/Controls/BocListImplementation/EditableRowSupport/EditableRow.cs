@@ -26,6 +26,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
 using Remotion.Web.UI;
+using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport
 {
@@ -481,7 +482,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
           else
             writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassEditModeValidationMessage);
           writer.RenderBeginTag (HtmlTextWriterTag.Div);
-          writer.Write (validator.ErrorMessage); // Do not HTML encode.
+          HtmlUtility.HtmlEncode (validator.ErrorMessage, writer);
           writer.RenderEndTag();
         }
       }
