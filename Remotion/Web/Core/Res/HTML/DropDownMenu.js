@@ -271,7 +271,7 @@ function DropDownMenu_BeginOpenPopUp(menuID, context, evt)
 {
   const menuButton = $('#' + menuID + ' a[aria-haspopup=menu]');
 
-  const titleDiv = $(context).children().eq(0);
+  const titleDivFunc = DownDownMenu_CreateTitleDivGetter(context);
   const statusPopup = document.createElement('div');
   statusPopup.className = 'DropDownMenuStatus';
   statusPopup.id = menuID + '_DropDownMenuStatus';
@@ -288,7 +288,7 @@ function DropDownMenu_BeginOpenPopUp(menuID, context, evt)
   $(statusPopup).iFrameShim({ top: '0px', left: '0px', width: '100%', height: '100%' });
   document.body.appendChild(statusPopup);
 
-  DropDownMenu_ApplyPosition($(statusPopup), evt, titleDiv);
+  DropDownMenu_ApplyPosition($(statusPopup), evt, titleDivFunc());
 
   if (_dropDownMenu_statusPopupRepositionTimer)
     clearTimeout(_dropDownMenu_statusPopupRepositionTimer);
@@ -299,7 +299,7 @@ function DropDownMenu_BeginOpenPopUp(menuID, context, evt)
 
     if (_dropDownMenu_currentStatusPopup && _dropDownMenu_currentStatusPopup === statusPopup)
     {
-      DropDownMenu_ApplyPosition($(statusPopup), null, titleDiv);
+      DropDownMenu_ApplyPosition($(statusPopup), null, titleDivFunc());
       _dropDownMenu_statusPopupRepositionTimer = setTimeout(repositionHandler, _dropDownMenu_repositionInterval);
     }
   };
@@ -391,8 +391,8 @@ function DropDownMenu_EndOpenPopUp (menuID, context, selectionCount, evt, itemIn
       ul.appendChild(item);
   }
 
-  var titleDiv = $(context).children().eq(0);
-  DropDownMenu_ApplyPosition ($(div), evt, titleDiv);
+  var titleDivFunc = DownDownMenu_CreateTitleDivGetter (context);
+  DropDownMenu_ApplyPosition ($(div), evt, titleDivFunc());
   $(div).iFrameShim({ top: '0px', left: '0px', width: '100%', height: '100%' });
 
   if (_dropDownMenu_repositionTimer) 
@@ -404,7 +404,7 @@ function DropDownMenu_EndOpenPopUp (menuID, context, selectionCount, evt, itemIn
 
     if (_dropDownMenu_currentPopup && _dropDownMenu_currentPopup == div && $(div).is (':visible'))
     {
-      DropDownMenu_ApplyPosition ($(div), null, titleDiv);
+      DropDownMenu_ApplyPosition ($(div), null, titleDivFunc());
       _dropDownMenu_repositionTimer = setTimeout (repositionHandler, _dropDownMenu_repositionInterval);
     }
   };
@@ -412,6 +412,26 @@ function DropDownMenu_EndOpenPopUp (menuID, context, selectionCount, evt, itemIn
   // Only reposition if opened via titleDiv
   if (evt == null)
     _dropDownMenu_repositionTimer = setTimeout(repositionHandler, _dropDownMenu_repositionInterval);
+}
+
+function DownDownMenu_CreateTitleDivGetter ($context)
+{
+  const context = $context[0];
+  const contextID = context.id;
+  if (contextID == null)
+  {
+    return function ()
+    {
+      return $(context.firstElementChild);
+    };
+  }
+  else
+  {
+    return function ()
+    {
+      return $(document.getElementById (contextID).firstElementChild);
+    };
+  }
 }
 
 function DropDownMenu_ApplyPosition (popUpDiv, clickEvent, referenceElement)
