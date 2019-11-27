@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public class FirefoxBinariesProviderTest
   {
-    [Ignore ("This test only works on 64bit platforms (RM-7285) and requires TLS support (RM-7286).")]
+    [Ignore ("This test only works on 64bit platforms (RM-7285).")]
     [Test]
     public void GetInstalledExecutable ()
     {
