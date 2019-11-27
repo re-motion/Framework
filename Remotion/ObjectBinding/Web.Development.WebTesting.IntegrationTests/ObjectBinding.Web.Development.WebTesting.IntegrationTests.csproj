@@ -147,24 +147,22 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\Chrome.any.ScreenshotTest.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\Chrome.any.ScreenshotTest_AutoComplete.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\ScreenshotTest.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\ScreenshotTest_AutoComplete.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest2.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest_AutoComplete.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\ScreenshotTest_Popup.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\Chrome.any.ScreenshotTest_DatePicker.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\ScreenshotTest_DatePicker.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\InternetExplorer.any.ScreenshotTest.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\InternetExplorer.any.ScreenshotTest_DatePicker.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\ScreenshotTest0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\ScreenshotTest1.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest0.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest1.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest_MenuBlock0.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest_MenuBlock1.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest_Navigator0.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest_Navigator1.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Chrome.any.ScreenshotTest_TableContainer.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest_MenuBlock.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest_Navigator.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest_TableContainer.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest2.png" />
@@ -177,10 +175,9 @@
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest_TableContainer0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest_TableContainer1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest_TableContainer2.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocTreeViewControlObjectTest\InternetExplorer.any.WebTreeView.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest_TableContainer3.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocTreeViewControlObjectTest\Chrome.any.WebTreeView.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest2.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocTreeViewControlObjectTest\InternetExplorer.any.WebTreeView.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocTreeViewControlObjectTest\WebTreeView.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\Firefox.any.ScreenshotTest.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\Firefox.any.ScreenshotTest_AutoComplete.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\Firefox.any.ScreenshotTest.png" />

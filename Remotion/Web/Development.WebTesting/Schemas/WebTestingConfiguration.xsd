@@ -16,11 +16,8 @@
             <xs:anyAttribute processContents="skip" />
           </xs:complexType>
         </xs:element>
-        <xs:element name="chrome" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:attribute name="disableSecurityWarningsBehavior" type="c:ChromiumDisableSecurityWarningsBehavior" default="Ignore" />
-          </xs:complexType>
-        </xs:element>
+        <xs:element name="chrome" type="c:ChromiumConfigurationElement" minOccurs="0" maxOccurs="1" />
+        <xs:element name="edge" type="c:ChromiumConfigurationElement" minOccurs="0" maxOccurs="1" />
       </xs:all>
 
       <xs:attribute name="browser" type="c:BrowserType" use="required" />
@@ -41,10 +38,15 @@
   <xs:simpleType name="BrowserType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Chrome" />
+      <xs:enumeration value="Edge" />
       <xs:enumeration value="InternetExplorer" />
       <xs:enumeration value="Firefox" />
     </xs:restriction>
   </xs:simpleType>
+
+  <xs:complexType name="ChromiumConfigurationElement">
+    <xs:attribute name="disableSecurityWarningsBehavior" type="c:ChromiumDisableSecurityWarningsBehavior" default="Ignore" />
+  </xs:complexType>
 
   <xs:simpleType name="ChromiumDisableSecurityWarningsBehavior">
     <xs:restriction base="xs:string">

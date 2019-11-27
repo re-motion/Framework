@@ -14,21 +14,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System.Configuration;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
+using System;
+using JetBrains.Annotations;
+using OpenQA.Selenium.Chrome;
 
-namespace Remotion.Web.Development.WebTesting.Configuration
+namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 {
-  public class ChromiumConfigurationElement : ConfigurationElement
+  /// <summary>
+  /// Extends <see cref="ChromeOptions"/> provided by Selenium with additional data used by the web testing infrastructure.
+  /// </summary>
+  public class ExtendedEdgeOptions : ChromeOptions
   {
     /// <summary>
-    /// Specifies the wanted behavior related to the <c>CommandLineFlagSecurityWarningsEnabled</c> registry flag responsible for hiding infobars
-    /// showing "Chrome is being controlled by automated test software".
+    /// The user directory of this <see cref="ChromeOptions"/>.
     /// </summary>
-    [ConfigurationProperty("disableSecurityWarningsBehavior", DefaultValue = ChromiumDisableSecurityWarningsBehavior.Ignore)]
-    public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior
-    {
-      get { return (ChromiumDisableSecurityWarningsBehavior) this["disableSecurityWarningsBehavior"]; }
-    }
+    [CanBeNull]
+    public string UserDirectory { get; set; }
   }
 }

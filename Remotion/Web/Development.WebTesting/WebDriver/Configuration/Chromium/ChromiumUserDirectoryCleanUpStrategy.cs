@@ -21,19 +21,19 @@ using JetBrains.Annotations;
 using log4net;
 using Remotion.Utilities;
 
-namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
+namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
 {
   /// <summary>
   /// Responsible for removing any files or directories added to the user directory during a test run.
   /// </summary>
-  public class ChromeUserDirectoryCleanUpStrategy : IBrowserSessionCleanUpStrategy
+  public class ChromiumUserDirectoryCleanUpStrategy : IBrowserSessionCleanUpStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (ChromeUserDirectoryCleanUpStrategy));
+    private static readonly ILog s_log = LogManager.GetLogger (typeof (ChromiumUserDirectoryCleanUpStrategy));
 
     private readonly string _userDirectoryRoot;
     private readonly string _userDirectory;
 
-    public ChromeUserDirectoryCleanUpStrategy ([NotNull] string userDirectoryRoot, [NotNull] string userDirectory)
+    public ChromiumUserDirectoryCleanUpStrategy ([NotNull] string userDirectoryRoot, [NotNull] string userDirectory)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("userDirectoryRoot", userDirectoryRoot);
       ArgumentUtility.CheckNotNullOrEmpty ("userDirectory", userDirectory);
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
           if (tries == maxTries - 1)
           {
             s_log.InfoFormat (
-                @"Could not delete the chrome user data folder '{0}' because of an '{1}':
+                @"Could not delete the user data folder '{0}' because of an '{1}':
 {2}",
                 _userDirectory,
                 ex.GetType().Name,

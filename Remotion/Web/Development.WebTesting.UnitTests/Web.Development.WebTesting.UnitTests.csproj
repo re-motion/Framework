@@ -73,7 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ScreenshotRecorderPathUtilityTest.cs" />
     <Compile Include="Utilities\DomSelectorUtilityTest.cs" />
-    <Compile Include="WebDriver\Configuration\Chrome\ChromeUserDirectoryCleanUpStrategyTest.cs" />
+    <Compile Include="WebDriver\Configuration\Chromium\ChromiumUserDirectoryCleanUpStrategyTest.cs" />
     <Compile Include="WebTestHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>

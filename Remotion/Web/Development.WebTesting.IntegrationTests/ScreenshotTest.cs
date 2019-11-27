@@ -387,7 +387,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void DropDownList ()
     {
       WebPadding padding;
-      if (Helper.BrowserConfiguration.IsChrome())
+      if (Helper.BrowserConfiguration.IsChromium())
       {
         padding = new WebPadding (2, 3, 2, 53);
       }
@@ -665,6 +665,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       if (Helper.BrowserConfiguration.IsChrome())
         return ScreenshotTooltipStyle.Chrome;
+
+      if (Helper.BrowserConfiguration.IsEdge())
+        return ScreenshotTooltipStyle.Edge;
 
       if (Helper.BrowserConfiguration.IsFirefox())
         return ScreenshotTooltipStyle.Firefox;

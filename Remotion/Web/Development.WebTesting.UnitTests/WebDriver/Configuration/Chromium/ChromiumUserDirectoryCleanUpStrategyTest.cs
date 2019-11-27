@@ -17,13 +17,12 @@
 using System;
 using System.IO;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
-using Rhino.Mocks;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 
-namespace Remotion.Web.Development.WebTesting.UnitTests.WebDriver.Configuration.Chrome
+namespace Remotion.Web.Development.WebTesting.UnitTests.WebDriver.Configuration.Chromium
 {
   [TestFixture]
-  public class ChromeUserDirectoryCleanUpStrategyTest
+  public class ChromiumUserDirectoryCleanUpStrategyTest
   {
     [Test]
     public void Cleanup_UserDirectoryRootContainsMultipleFolders_DeletesOnlyUserDirectory ()
@@ -33,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.WebDriver.Configuration.
       var anotherUserDirectoryPath = Path.Combine (userDirectoryRootPath, "1");
       Directory.CreateDirectory (userDirectoryPath);
       Directory.CreateDirectory (anotherUserDirectoryPath);
-      var cleanUpStrategy = new ChromeUserDirectoryCleanUpStrategy (userDirectoryRootPath, userDirectoryPath);
+      var cleanUpStrategy = new ChromiumUserDirectoryCleanUpStrategy (userDirectoryRootPath, userDirectoryPath);
 
       try
       {
@@ -55,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.WebDriver.Configuration.
       var userDirectoryRootPath = Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString ("N"));
       var userDirectoryPath = Path.Combine (userDirectoryRootPath, "0");
       Directory.CreateDirectory (userDirectoryPath);
-      var cleanUpStrategy = new ChromeUserDirectoryCleanUpStrategy (userDirectoryRootPath, userDirectoryPath);
+      var cleanUpStrategy = new ChromiumUserDirectoryCleanUpStrategy (userDirectoryRootPath, userDirectoryPath);
 
       try
       {

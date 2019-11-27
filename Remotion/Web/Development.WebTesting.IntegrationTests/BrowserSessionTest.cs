@@ -55,19 +55,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       if (!Helper.BrowserConfiguration.IsChrome())
         Assert.Ignore ("Tests if ChromeDriver behaves as expected and hence, only concerns Chrome");
 
-      var home = Start();
+      TestDriverSupportsBrowserLogs();
+    }
 
-      const string errorMessage = "777d20c6-58ac-4d51-bf22-625d1ab9e856";
-      const string warningMessage = "f312fad3-ad79-4f68-aee3-c741dd0e7083";
+    [Test]
+    public void MSEdgeDriver_SupportsBrowserLogs ()
+    {
+      if (!Helper.BrowserConfiguration.IsEdge())
+        Assert.Ignore ("Tests if MSEdgeDriver behaves as expected and hence, only concerns Microsoft Edge");
 
-      var js = JavaScriptExecutor.GetJavaScriptExecutor (home.Context.Browser);
-      js.ExecuteScript ($"console.error('{errorMessage}')");
-      js.ExecuteScript ($"console.warn('{warningMessage}')");
-
-      var logs = home.Context.Browser.GetBrowserLogs();
-
-      Assert.That (logs.Count (l => l.Message.Contains (errorMessage)), Is.EqualTo (1));
-      Assert.That (logs.Count (l => l.Message.Contains (warningMessage)), Is.EqualTo (1));
+      TestDriverSupportsBrowserLogs();
     }
 
     [Test]
@@ -105,6 +102,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           home.Context.Browser.GetBrowserLogs()
               .Count (l => l.Message.Contains ("Internet Explorer does not support getting browser logs.")),
           Is.EqualTo (1));
+    }
+
+    private void TestDriverSupportsBrowserLogs ()
+    {
+      var home = Start();
+
+      const string errorMessage = "777d20c6-58ac-4d51-bf22-625d1ab9e856";
+      const string warningMessage = "f312fad3-ad79-4f68-aee3-c741dd0e7083";
+
+      var js = JavaScriptExecutor.GetJavaScriptExecutor (home.Context.Browser);
+      js.ExecuteScript ($"console.error('{errorMessage}')");
+      js.ExecuteScript ($"console.warn('{warningMessage}')");
+
+      var logs = home.Context.Browser.GetBrowserLogs();
+
+      Assert.That (logs.Count (l => l.Message.Contains (errorMessage)), Is.EqualTo (1));
+      Assert.That (logs.Count (l => l.Message.Contains (warningMessage)), Is.EqualTo (1));
     }
 
     private WxePageObject Start ()

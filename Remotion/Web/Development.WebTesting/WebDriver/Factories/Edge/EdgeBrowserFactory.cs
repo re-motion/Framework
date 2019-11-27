@@ -22,30 +22,30 @@ using JetBrains.Annotations;
 using OpenQA.Selenium.Chrome;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
-using Remotion.Web.Development.WebTesting.BrowserSession.Chrome;
+using Remotion.Web.Development.WebTesting.BrowserSession.Edge;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 
-namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
+namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
 {
   /// <summary>
-  /// Responsible for creating a new Chrome browser, configured based on <see cref="IChromeConfiguration"/> and <see cref="ITestInfrastructureConfiguration"/>.
+  /// Responsible for creating a new Edge browser, configured based on <see cref="IEdgeConfiguration"/>.
   /// </summary>
-  public class ChromeBrowserFactory : IBrowserFactory
+  public class EdgeBrowserFactory : IBrowserFactory
   {
-    private readonly IChromeConfiguration _chromeConfiguration;
-    private readonly ExtendedChromeOptions _extendedChromeOptions;
+    private readonly IEdgeConfiguration _edgeConfiguration;
+    private readonly ExtendedEdgeOptions _extendedEdgeOptions;
     private readonly IBrowserSessionCleanUpStrategy _registryCleanUpStrategy;
 
-    public ChromeBrowserFactory ([NotNull] IChromeConfiguration chromeConfiguration)
+    public EdgeBrowserFactory ([NotNull] IEdgeConfiguration edgeConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("chromeConfiguration", chromeConfiguration);
+      ArgumentUtility.CheckNotNull ("edgeConfiguration", edgeConfiguration);
 
-      _chromeConfiguration = chromeConfiguration;
-      _extendedChromeOptions = _chromeConfiguration.CreateChromeOptions();
-      _registryCleanUpStrategy = ChromiumSecurityWarningsRegistryCleanUpStrategyFactory.CreateForChrome (_chromeConfiguration.DisableSecurityWarningsBehavior);
+      _edgeConfiguration = edgeConfiguration;
+      _extendedEdgeOptions = _edgeConfiguration.CreateEdgeOptions();
+      _registryCleanUpStrategy = ChromiumSecurityWarningsRegistryCleanUpStrategyFactory.CreateForEdge (_edgeConfiguration.DisableSecurityWarningsBehavior);
     }
 
     public IBrowserSession CreateBrowser (DriverConfiguration configuration)
@@ -55,18 +55,18 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
       var sessionConfiguration = CreateSessionConfiguration (configuration);
       var commandTimeout = configuration.CommandTimeout;
 
-      var driver = CreateChromeDriver (out var driverProcessID, commandTimeout);
+      var driver = CreateEdgeDriver (out var driverProcessID, commandTimeout);
 
-      var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Chrome));
+      var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Edge));
 
-      return new ChromeBrowserSession (
+      return new EdgeBrowserSession (
           session,
-          _chromeConfiguration,
+          _edgeConfiguration,
           driverProcessID,
           new[]
           {
               _registryCleanUpStrategy,
-              new ChromiumUserDirectoryCleanUpStrategy (_chromeConfiguration.UserDirectoryRoot, _extendedChromeOptions.UserDirectory)
+              new ChromiumUserDirectoryCleanUpStrategy (_edgeConfiguration.UserDirectoryRoot, _extendedEdgeOptions.UserDirectory)
           });
     }
 
@@ -74,7 +74,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
     {
       return new SessionConfiguration
              {
-                 Browser = Browser.Chrome,
+                 Browser = Browser.Edge,
                  RetryInterval = configuration.RetryInterval,
                  Timeout = configuration.SearchTimeout,
                  ConsiderInvisibleElements = WebTestingConstants.ShouldConsiderInvisibleElements,
@@ -84,25 +84,24 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
              };
     }
 
-    private ChromeDriver CreateChromeDriver (out int driverProcessID, TimeSpan commandTimeout)
+    private ChromeDriver CreateEdgeDriver (out int driverProcessID, TimeSpan commandTimeout)
     {
-      var driverService = CreateChromeDriverService();
-
-      var driver = new ChromeDriver (driverService, _extendedChromeOptions, commandTimeout);
+      var driverService = CreateEdgeDriverService();
+      var driver = new ChromeDriver (driverService, _extendedEdgeOptions, commandTimeout);
       driverProcessID = driverService.ProcessId;
 
       return driver;
     }
 
-    private ChromeDriverService CreateChromeDriverService ()
+    private ChromeDriverService CreateEdgeDriverService ()
     {
-      var driverDirectory = Path.GetDirectoryName (_chromeConfiguration.DriverBinaryPath);
-      var driverExecutable = Path.GetFileName (_chromeConfiguration.DriverBinaryPath);
+      var driverDirectory = Path.GetDirectoryName (_edgeConfiguration.DriverBinaryPath);
+      var driverExecutable = Path.GetFileName (_edgeConfiguration.DriverBinaryPath);
 
       var driverService = ChromeDriverService.CreateDefaultService (driverDirectory, driverExecutable);
 
       driverService.EnableVerboseLogging = false;
-      driverService.LogPath = WebDriverLogUtility.CreateLogFile (_chromeConfiguration.LogsDirectory, _chromeConfiguration.BrowserName);
+      driverService.LogPath = WebDriverLogUtility.CreateLogFile (_edgeConfiguration.LogsDirectory, _edgeConfiguration.BrowserName);
 
       return driverService;
     }

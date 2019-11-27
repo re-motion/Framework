@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -123,16 +124,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void WebTestHelper_OnTestFixtureTearDown_CleansUserDirectory_Chrome ([Values (true, false)] bool testSuccess)
+    public void WebTestHelper_OnTestFixtureTearDown_CleansUserDirectory_Chromium ([Values (true, false)] bool testSuccess)
     {
       var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
-      if (!webTestHelper.BrowserConfiguration.IsChrome())
-      {
-        Assert.Ignore ("This test is specific for the Chrome browser.");
-      }
+      if (!webTestHelper.BrowserConfiguration.IsChromium())
+        Assert.Ignore ("This test is specific for Chromium browsers.");
 
-      var configuration = (ChromeConfiguration) webTestHelper.BrowserConfiguration;
+      var userDirectoryRoot = (webTestHelper.BrowserConfiguration as IChromeConfiguration)?.UserDirectoryRoot
+                              ?? (webTestHelper.BrowserConfiguration as IEdgeConfiguration)?.UserDirectoryRoot;
 
       // Simulate test
       SetupWebTestHelper (webTestHelper);
@@ -140,9 +140,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       // The user directory root should no longer exist
       Assert.That (
-          Directory.Exists (configuration.UserDirectoryRoot),
+          Directory.Exists (userDirectoryRoot),
           Is.False,
-          string.Format ("User directory root '{0}' is not cleaned up.", configuration.UserDirectoryRoot));
+          string.Format ("User directory root '{0}' is not cleaned up.", userDirectoryRoot));
     }
 
     /// <summary>

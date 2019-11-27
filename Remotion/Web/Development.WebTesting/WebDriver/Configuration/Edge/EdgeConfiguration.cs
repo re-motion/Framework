@@ -30,20 +30,19 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
-using Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge;
 
-namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
+namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 {
   /// <summary>
-  /// Implements the <see cref="IBrowserConfiguration"/> interface for Chrome.
+  /// Implements the <see cref="IBrowserConfiguration"/> interface for Edge.
   /// </summary>
-  public class ChromeConfiguration : BrowserConfigurationBase, IChromeConfiguration
+  public class EdgeConfiguration : BrowserConfigurationBase, IEdgeConfiguration
   {
     private const string c_userDataFolderPrefix = "userdata";
-    private const string c_partialFileDownloadExtension = ".crdownload";
 
-    private static readonly Lazy<ChromeExecutable> s_chromeExecutable =
-        new Lazy<ChromeExecutable> (() => new ChromeBinariesProvider().GetInstalledExecutable(), LazyThreadSafetyMode.ExecutionAndPublication);
+    private static readonly Lazy<EdgeExecutable> s_edgeExecutable =
+        new Lazy<EdgeExecutable> (() => new EdgeBinariesProvider().GetInstalledExecutable(), LazyThreadSafetyMode.ExecutionAndPublication);
 
     private static readonly Lazy<FieldInfo> s_knownCapabilityNamesField = new Lazy<FieldInfo> (
         () =>
@@ -54,11 +53,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
         },
         LazyThreadSafetyMode.ExecutionAndPublication);
 
-    public override string BrowserExecutableName { get; } = "chrome";
-    public override string WebDriverExecutableName { get; } = "chromedriver";
-    public override IBrowserContentLocator Locator { get; } = new ChromiumBrowserContentLocator();
-    public override ScreenshotTooltipStyle TooltipStyle { get; } = ScreenshotTooltipStyle.Chrome;
+    public override string BrowserExecutableName { get; } = "msedge";
+    public override string WebDriverExecutableName { get; } = "msedgedriver";
     public override IDownloadHelper DownloadHelper { get; }
+    public override IBrowserContentLocator Locator { get; } = new ChromiumBrowserContentLocator();
+    public override ScreenshotTooltipStyle TooltipStyle { get; } = ScreenshotTooltipStyle.Edge;
 
     public string BrowserBinaryPath { get; }
     public string DriverBinaryPath { get; }
@@ -66,68 +65,65 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     public string DownloadDirectory { get; }
     public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }
 
-    public ChromeConfiguration (
+    public EdgeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection)
-        : this (webTestConfigurationSection, s_chromeExecutable.Value)
+        : this (webTestConfigurationSection, s_edgeExecutable.Value)
     {
     }
 
-    public ChromeConfiguration (
+    public EdgeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection,
-        [NotNull] ChromeExecutable chromeExecutable)
+        [NotNull] EdgeExecutable edgeExecutable)
         : base (webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
-      ArgumentUtility.CheckNotNull ("chromeExecutable", chromeExecutable);
+      ArgumentUtility.CheckNotNull ("edgeExecutable", edgeExecutable);
 
-      BrowserBinaryPath = chromeExecutable.BrowserBinaryPath;
-      DriverBinaryPath = chromeExecutable.DriverBinaryPath;
-      UserDirectoryRoot = chromeExecutable.UserDirectory;
+      BrowserBinaryPath = edgeExecutable.BrowserBinaryPath;
+      DriverBinaryPath = edgeExecutable.DriverBinaryPath;
+      UserDirectoryRoot = edgeExecutable.UserDirectory;
 
       DownloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
 
       var downloadStartedGracePeriod = TimeSpan.FromMinutes (1);
-
       DownloadHelper = new DefaultDownloadHelper (
           DownloadDirectory,
-          c_partialFileDownloadExtension,
+          ".crdownload",
           webTestConfigurationSection.DownloadStartedTimeout,
           webTestConfigurationSection.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,
           webTestConfigurationSection.CleanUpUnmatchedDownloadedFiles);
 
-      DisableSecurityWarningsBehavior = webTestConfigurationSection.Chrome.DisableSecurityWarningsBehavior;
+      DisableSecurityWarningsBehavior = webTestConfigurationSection.Edge.DisableSecurityWarningsBehavior;
     }
 
-    public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory (this);
-
-    public virtual ExtendedChromeOptions CreateChromeOptions ()
+    public virtual ExtendedEdgeOptions CreateEdgeOptions ()
     {
       var userDirectory = CreateUnusedUserDirectoryPath();
-      var chromeOptions = new ExtendedChromeOptions
+      var edgeOptions = new ExtendedEdgeOptions
                           {
                               BinaryLocation = BrowserBinaryPath,
                               UserDirectory = userDirectory
                           };
 
-      DisableSpecCompliance (chromeOptions);
+      DisableSpecCompliance (edgeOptions);
 
-      chromeOptions.AddArgument ($"user-data-dir={userDirectory}");
+      edgeOptions.AddArgument ($"user-data-dir={userDirectory}");
 
-      chromeOptions.AddArgument ("no-first-run");
+      edgeOptions.AddArgument ("no-first-run");
 
-      chromeOptions.AddUserProfilePreference ("safebrowsing.enabled", true);
-      chromeOptions.AddUserProfilePreference ("download.default_directory", DownloadDirectory);
+      edgeOptions.AddUserProfilePreference ("safebrowsing.enabled", true);
+      edgeOptions.AddUserProfilePreference ("download.default_directory", DownloadDirectory);
 
-      return chromeOptions;
+      return edgeOptions;
     }
 
-    private void DisableSpecCompliance (ExtendedChromeOptions chromeOptions)
+    private void DisableSpecCompliance (ExtendedEdgeOptions edgeOptions)
     {
-      var knownCapabilityNames = (Dictionary<string, string>) s_knownCapabilityNamesField.Value.GetValue (chromeOptions);
+      var knownCapabilityNames = (Dictionary<string, string>) s_knownCapabilityNamesField.Value.GetValue (edgeOptions);
       knownCapabilityNames.Remove ("w3c");
 
-      chromeOptions.AddAdditionalCapability ("w3c", false);
+      edgeOptions.AddAdditionalCapability ("w3c", false);
     }
 
     private string CreateUnusedUserDirectoryPath ()
@@ -142,5 +138,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
       return userDirectory;
     }
+
+    public override IBrowserFactory BrowserFactory => new EdgeBrowserFactory (this);
   }
 }

@@ -19,7 +19,6 @@ using System.Configuration;
 using System.IO;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
@@ -45,6 +44,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _requestErrorDetectionStrategyProperty;
     private readonly ConfigurationProperty _hostingProperty;
     private readonly ConfigurationProperty _chrome;
+    private readonly ConfigurationProperty _edge;
 
     static WebTestConfigurationSection ()
     {
@@ -65,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
           typeof (string),
           null,
           null,
-          new RegexStringValidator ("(InternetExplorer|Chrome|Firefox)"),
+          new RegexStringValidator ("(InternetExplorer|Chrome|Edge|Firefox)"),
           ConfigurationPropertyOptions.IsRequired);
       _searchTimeoutProperty = new ConfigurationProperty ("searchTimeout", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
       _commandTimeoutProperty = new ConfigurationProperty ("commandTimeout", typeof (TimeSpan), TimeSpan.FromMinutes (1));
@@ -86,7 +86,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _requestErrorDetectionStrategyProperty = new ConfigurationProperty ("requestErrorDetectionStrategy", typeof (string), "None");
       _hostingProperty = new ConfigurationProperty ("hosting", typeof (ProviderSettings));
       _chrome = new ConfigurationProperty ("chrome", typeof (ChromiumConfigurationElement));
-      
+      _edge = new ConfigurationProperty ("edge", typeof (ChromiumConfigurationElement));
+
       _properties = new ConfigurationPropertyCollection
                     {
                         xmlnsProperty,
@@ -103,7 +104,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _cleanUpUnmatchedDownloadedFiles,
                         _requestErrorDetectionStrategyProperty,
                         _hostingProperty,
-                        _chrome
+                        _chrome,
+                        _edge
                     };
     }
 
@@ -242,6 +244,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public ChromiumConfigurationElement Chrome
     {
       get { return (ChromiumConfigurationElement) this[_chrome]; }
+    }
+
+    /// <summary>
+    /// Contains Edge specific settings.
+    /// </summary>
+    public ChromiumConfigurationElement Edge
+    {
+      get { return (ChromiumConfigurationElement) this[_edge]; }
     }
   }
 }
