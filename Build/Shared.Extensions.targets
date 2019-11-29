@@ -74,7 +74,7 @@
 
   <Target Name="After_BuildTestOutputFilesCrossProduct" AfterTargets="BuildTestOutputFilesCrossProduct">
     <ItemGroup>
-      <_testOutputFilesWithWebTests Include="@(_testOutputFiles)" Condition="'%(IsWebTest)' == 'True'"/>
+      <_testOutputFilesWithWebTests Include="@(TestOutputFiles)" Condition="'%(IsWebTest)' == 'True'"/>
 
       <_testOutputFilesWithInternetExplorer Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'InternetExplorer'"/>
       <_testOutputFilesWithFirefox Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'Firefox'"/>
