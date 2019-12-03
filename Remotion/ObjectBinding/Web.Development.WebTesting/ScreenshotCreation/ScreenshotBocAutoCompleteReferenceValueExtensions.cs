@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns the command of this <see cref="BocAutoCompleteReferenceValueControlObject"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no command.</exception>
+    /// <exception cref="WebTestException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no command.</exception>
     public static FluentScreenshotElement<CommandControlObject> GetCommand (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns the drop-down-button of this <see cref="BocAutoCompleteReferenceValueControlObject"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no drop-down-button as it is read-only.</exception>
+    /// <exception cref="WebTestException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no drop-down-button as it is read-only.</exception>
     public static FluentScreenshotElement<ElementScope> GetDropDownButton (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns the command of this <see cref="BocAutoCompleteReferenceValueControlObject"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no option menu.</exception>
+    /// <exception cref="WebTestException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no option menu.</exception>
     public static FluentScreenshotElement<DropDownMenuControlObject> GetOptionsMenu (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {

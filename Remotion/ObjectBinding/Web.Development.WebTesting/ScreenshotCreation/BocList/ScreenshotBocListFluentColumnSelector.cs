@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.Utilities;
@@ -57,9 +56,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       var column = columns.Where (c => c.ItemID == itemID).Take (2).ToArray();
 
       if (column.Length == 0)
-        throw new MissingHtmlException (String.Format ("Could not find a column with the specified item ID '{0}'.", itemID));
+        throw new WebTestException (String.Format ("Could not find a column with the specified item ID '{0}'.", itemID));
       if (column.Length > 1)
-        throw new AmbiguousException (String.Format ("There are multiple columns with the same item ID '{0}'.", itemID));
+        throw new WebTestException (String.Format ("There are multiple columns with the same item ID '{0}'.", itemID));
 
       return SelfResolvableFluentScreenshot.Create (
           new ScreenshotBocListColumn<TList, TRow, TCell> (_fluentList, column[0].Index, _includeHeader),
@@ -73,9 +72,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       var column = columns.Where (c => c.Index == oneBasedIndex).Take (2).ToArray();
 
       if (column.Length == 0)
-        throw new MissingHtmlException (String.Format ("Could not find a column with the specified index '{0}'.", oneBasedIndex));
+        throw new WebTestException (String.Format ("Could not find a column with the specified index '{0}'.", oneBasedIndex));
       if (column.Length > 1)
-        throw new AmbiguousException (String.Format ("There are multiple columns with the same index '{0}'.", oneBasedIndex));
+        throw new WebTestException (String.Format ("There are multiple columns with the same index '{0}'.", oneBasedIndex));
 
       return SelfResolvableFluentScreenshot.Create (
           new ScreenshotBocListColumn<TList, TRow, TCell> (_fluentList, column[0].Index, _includeHeader),
@@ -89,9 +88,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       var column = columns.Where (c => c.Title == title).Take (2).ToArray();
 
       if (column.Length == 0)
-        throw new MissingHtmlException (String.Format ("Could not find a column with the specified title '{0}'.", title));
+        throw new WebTestException (String.Format ("Could not find a column with the specified title '{0}'.", title));
       if (column.Length > 1)
-        throw new AmbiguousException (String.Format ("There are multiple columns with the same title '{0}'.", title));
+        throw new WebTestException (String.Format ("There are multiple columns with the same title '{0}'.", title));
 
       return SelfResolvableFluentScreenshot.Create (
           new ScreenshotBocListColumn<TList, TRow, TCell> (_fluentList, column[0].Index, _includeHeader),
@@ -104,9 +103,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       var columns = _fluentList.Target.List.GetColumnDefinitions();
       var column = columns.Where (c => c.Title.Contains (content)).Take (2).ToArray();
       if (column.Length == 0)
-        throw new MissingHtmlException (String.Format ("Could not find a column where the title contains '{0}'.", content));
+        throw new WebTestException (String.Format ("Could not find a column where the title contains '{0}'.", content));
       if (column.Length > 1)
-        throw new AmbiguousException (String.Format ("There are multiple columns where the title contains '{0}'.", content));
+        throw new WebTestException (String.Format ("There are multiple columns where the title contains '{0}'.", content));
 
       return SelfResolvableFluentScreenshot.Create (
           new ScreenshotBocListColumn<TList, TRow, TCell> (_fluentList, column[0].Index, _includeHeader),

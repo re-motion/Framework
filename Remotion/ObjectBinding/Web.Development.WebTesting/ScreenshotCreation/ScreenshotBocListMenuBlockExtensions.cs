@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Starts the fluent API for controlling the ViewsMenu in the menu-block.
     /// </summary>
-    /// <exception cref="MissingHtmlException">Can not find the view menu of the navigator.</exception>
+    /// <exception cref="WebTestException">Cannot find the view menu of the navigator.</exception>
     public static FluentScreenshotElement<ScreenshotBocListDropDown<TList, TRow, TCell>> GetViewsMenu<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>

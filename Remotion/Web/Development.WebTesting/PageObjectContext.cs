@@ -36,6 +36,11 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Private constructor, use <see cref="New"/> to create a new root <see cref="PageObjectContext"/>.
     /// </summary>
+    /// <exception cref="WebTestException">
+    /// If the scope cannot be found.
+    /// <para>- or -</para>
+    /// If multiple matching scopes are found.
+    /// </exception>
     internal PageObjectContext (
         [NotNull] IBrowserSession browser,
         [NotNull] BrowserWindow window,
@@ -134,6 +139,11 @@ namespace Remotion.Web.Development.WebTesting
     /// Clones the context for a child <see cref="PageObject"/> which represents an IFRAME on the page.
     /// </summary>
     /// <param name="frameScope">The scope of the <see cref="PageObject"/> representing the IFRAME.</param>
+    /// <exception cref="WebTestException">
+    /// If the frame content cannot be found.
+    /// <para>- or -</para>
+    /// If multiple matching frame contents are found.
+    /// </exception>
     public PageObjectContext CloneForFrame ([NotNull] ElementScope frameScope)
     {
       ArgumentUtility.CheckNotNull ("frameScope", frameScope);
@@ -144,7 +154,7 @@ namespace Remotion.Web.Development.WebTesting
       {
         return new PageObjectContext (Browser, Window, RequestErrorDetectionStrategy, frameRootElement, this);
       }
-      catch (MissingHtmlException)
+      catch (WebTestException)
       {
         RequestErrorDetectionStrategy.CheckPageForError (Scope);
 
@@ -180,6 +190,11 @@ namespace Remotion.Web.Development.WebTesting
     /// be specified.
     /// </param>
     /// <param name="scope">The scope of the <see cref="ControlObject"/>.</param>
+    /// <exception cref="WebTestException">
+    /// If the control cannot be found.
+    /// <para>- or -</para>
+    /// If multiple matching controls are found.
+    /// </exception>
     public ControlObjectContext CloneForControl ([NotNull] PageObject pageObject, [NotNull] ElementScope scope)
     {
       ArgumentUtility.CheckNotNull ("pageObject", pageObject);
@@ -189,7 +204,7 @@ namespace Remotion.Web.Development.WebTesting
       {
         return new ControlObjectContext (pageObject, scope);
       }
-      catch (MissingHtmlException)
+      catch (WebTestException)
       {
         RequestErrorDetectionStrategy.CheckPageForError (pageObject.Context.Scope);
 

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
@@ -53,11 +52,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     }
 
     [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void Get_Throws_MissingHtmlException ()
+    public void Get_Throws_WebTestException ()
     {
       Assert.That (
           (TestDelegate) (() => Selector.GetByDomainProperty (Parameter.HiddenDomainProperty)),
-          Throws.InstanceOf<MissingHtmlException>());
+          Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod]
@@ -70,17 +69,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     }
 
     [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void Get_WithClass_Throws_MissingHtmlException ()
+    public void Get_WithClass_Throws_WebTestException ()
     {
       Assert.That (
           (TestDelegate) (() => Selector.GetByDomainProperty (Parameter.VisibleDomainProperty, Parameter.IncorrectDomainClass)),
-          Throws.InstanceOf<MissingHtmlException>());
+          Throws.InstanceOf<WebTestException>());
       Assert.That (
           (TestDelegate) (() => Selector.GetByDomainProperty (Parameter.HiddenDomainProperty, Parameter.IncorrectDomainClass)),
-          Throws.InstanceOf<MissingHtmlException>());
+          Throws.InstanceOf<WebTestException>());
       Assert.That (
           (TestDelegate) (() => Selector.GetByDomainProperty (Parameter.HiddenDomainProperty, Parameter.CorrectDomainClass)),
-          Throws.InstanceOf<MissingHtmlException>());
+          Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod]
@@ -110,7 +109,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     }
 
     [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void GetOrNull_WithClass_Throws_MissingHtmlException ()
+    public void GetOrNull_WithClass_Returns_Null ()
     {
       Assert.That (
           () => Selector.GetByDomainPropertyOrNull (Parameter.VisibleDomainProperty, Parameter.IncorrectDomainClass),
@@ -148,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     }
 
     [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void Exists_WithClass_Throws_MissingHtmlException ()
+    public void Exists_WithClass_Returns_False ()
     {
       Assert.That (
           () => Selector.ExistsByDomainProperty (Parameter.VisibleDomainProperty, Parameter.IncorrectDomainClass),

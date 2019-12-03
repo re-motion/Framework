@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Sets the state of the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox"/> to <paramref name="newState"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
     public UnspecifiedPageObject SetTo (bool newState, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
       if (IsDisabled())

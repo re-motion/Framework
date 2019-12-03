@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
@@ -33,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for selecting a control by <paramref name="itemID"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="ItemIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>

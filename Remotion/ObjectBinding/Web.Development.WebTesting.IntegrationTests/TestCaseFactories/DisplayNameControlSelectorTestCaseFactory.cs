@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
@@ -53,11 +52,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     }
 
     [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void Get_Throws_MissingHtmlException ()
+    public void Get_Throws_WebTestException ()
     {
       Assert.That (
           (TestDelegate) (() => Selector.GetByDisplayName (Parameter.HiddenDisplayName)),
-          Throws.InstanceOf<MissingHtmlException>());
+          Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod]

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlSelection
@@ -32,8 +31,8 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// Selects the only control within the given <paramref name="context"/> matching the type <typeparamref name="TControlObject"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="AmbiguousException">If multiple controls of type <typeparamref name="TControlObject"/> are found.</exception>
-    /// <exception cref="MissingHtmlException">If no matching control can be found.</exception>
+    /// <exception cref="WebTestException">If multiple controls of type <typeparamref name="TControlObject"/> are found.</exception>
+    /// <exception cref="WebTestException">If no matching control can be found.</exception>
     [NotNull]
     TControlObject SelectSingle ([NotNull] ControlSelectionContext context);
 
@@ -41,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// Selects a single control, if it exists, within the given <paramref name="context"/> matching the type <typeparamref name="TControlObject"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
-    /// <exception cref="AmbiguousException">If multiple controls of type <typeparamref name="TControlObject"/> are found.</exception>
+    /// <exception cref="WebTestException">If multiple controls of type <typeparamref name="TControlObject"/> are found.</exception>
     [CanBeNull]
     TControlObject SelectSingleOrNull ([NotNull] ControlSelectionContext context);
   }

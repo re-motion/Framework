@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Coypu;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -33,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// Returns all selectable items. 
     /// Warning: this method does not wait until "the element" is available but detects all available items at the moment of calling.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
     IReadOnlyList<ItemDefinition> GetItemDefinitions ();
 
     /// <summary>
@@ -44,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Short for explicitly implemented <see cref="IFluentControlObjectWithSelectableItems.WithItemID"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
     UnspecifiedPageObject SelectItem ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions actionOptions = null);
   }
 
@@ -56,31 +55,31 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Selects the item using the given <paramref name="itemID"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
     UnspecifiedPageObject WithItemID ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions actionOptions = null);
 
     /// <summary>
     /// Selects item row using the given <paramref name="oneBasedIndex"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
     UnspecifiedPageObject WithIndex (int oneBasedIndex, [CanBeNull] IWebTestActionOptions actionOptions = null);
 
     /// <summary>
     /// Selects item row using the given <paramref name="htmlID"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
     UnspecifiedPageObject WithHtmlID ([NotNull] string htmlID, [CanBeNull] IWebTestActionOptions actionOptions = null);
 
     /// <summary>
     /// Selects item row using the given <paramref name="displayText"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
     UnspecifiedPageObject WithDisplayText ([NotNull] string displayText, [CanBeNull] IWebTestActionOptions actionOptions = null);
 
     /// <summary>
     /// Selects item row using the given <paramref name="containsDisplayText"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
     UnspecifiedPageObject WithDisplayTextContains ([NotNull] string containsDisplayText, [CanBeNull] IWebTestActionOptions actionOptions = null);
   }
 }

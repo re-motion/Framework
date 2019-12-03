@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -201,7 +200,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_DelayedLongerThanTimeout");
 
-      Assert.That (() => dropDownMenu.Open(), Throws.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to open the menu."));
+      Assert.That (() => dropDownMenu.Open(), Throws.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to open the menu."));
       Assert.That (dropDownMenu.IsOpen(), Is.False);
     }
 
@@ -212,7 +211,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_Error");
 
-      Assert.That (() => dropDownMenu.Open(), Throws.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to open the menu."));
+      Assert.That (() => dropDownMenu.Open(), Throws.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to open the menu."));
       Assert.That (dropDownMenu.IsOpen(), Is.False);
     }
 

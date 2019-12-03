@@ -15,21 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using JetBrains.Annotations;
 
-namespace Remotion.Web.Development.WebTesting.ControlObjects
+namespace Remotion.Web.Development.WebTesting
 {
-  /// <summary>
-  /// Interface for all <see cref="ControlObject"/> implementations representing something clickable, e.g. a button.
-  /// </summary>
-  public interface IClickableControlObject
+  public class WebTestException : Exception
   {
-    /// <summary>
-    /// Clicks the control object.
-    /// </summary>
-    /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
-    /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
-    /// <exception cref="WebTestException">The element is currently disabled.</exception>
-    UnspecifiedPageObject Click ([CanBeNull] IWebTestActionOptions actionOptions = null);
+    public WebTestException (string message)
+        : base (message)
+    {
+    }
+
+    public WebTestException (string message, Exception inner)
+        : base (message, inner)
+    {
+    }
   }
 }

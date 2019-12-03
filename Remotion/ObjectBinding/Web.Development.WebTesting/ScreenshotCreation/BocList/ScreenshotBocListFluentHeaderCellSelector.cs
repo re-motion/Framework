@@ -60,9 +60,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       var columns = _fluentList.Target.List.GetColumnDefinitions().Where (c => c.ItemID == itemID).Take (2).ToArray();
 
       if (columns.Length == 0)
-        throw new MissingHtmlException (String.Format ("Could not find a header row with the specified item ID '{0}'.", itemID));
+        throw new WebTestException (String.Format ("Could not find a header row with the specified item ID '{0}'.", itemID));
       if (columns.Length > 1)
-        throw new AmbiguousException (String.Format ("There are multiple header rows with the same item ID '{0}'.", itemID));
+        throw new WebTestException (String.Format ("There are multiple header rows with the same item ID '{0}'.", itemID));
 
       var element = _fluentElement.Target.FindTagWithAttribute (
           "th",
@@ -91,9 +91,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       var columns = _fluentList.Target.List.GetColumnDefinitions().Where (c => c.Title == title).Take (2).ToArray();
 
       if (columns.Length == 0)
-        throw new MissingHtmlException (String.Format ("Could not find a header row with the specified title '{0}'.", title));
+        throw new WebTestException (String.Format ("Could not find a header row with the specified title '{0}'.", title));
       if (columns.Length > 1)
-        throw new AmbiguousException (String.Format ("There are multiple header rows with the same title '{0}'.", title));
+        throw new WebTestException (String.Format ("There are multiple header rows with the same title '{0}'.", title));
 
       var element = _fluentElement.Target.FindTagWithAttribute (
           "th",
@@ -111,9 +111,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       var columns = _fluentList.Target.List.GetColumnDefinitions().Where (c => c.Title.Contains (content)).Take (2).ToArray();
 
       if (columns.Length == 0)
-        throw new MissingHtmlException (String.Format ("Could not find a header row where the title contains '{0}'.", content));
+        throw new WebTestException (String.Format ("Could not find a header row where the title contains '{0}'.", content));
       if (columns.Length > 1)
-        throw new AmbiguousException (String.Format ("There are multiple header rows where title contain '{0}'.", content));
+        throw new WebTestException (String.Format ("There are multiple header rows where title contain '{0}'.", content));
 
       var element = _fluentElement.Target.FindTagWithAttribute (
           "th",

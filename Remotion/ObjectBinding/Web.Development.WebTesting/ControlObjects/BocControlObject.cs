@@ -75,9 +75,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       {
         describedBy = scope.GetAttribute ("aria-describedby");
       }
-      catch (MissingHtmlException exception)
+      catch (MissingHtmlException)
       {
-        throw CreateMissingValidationErrorFieldException (exception);
+        throw CreateMissingValidationErrorFieldException();
       }
 
       var validationErrorIDs = describedBy.Split (new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -92,17 +92,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       {
         return validationErrorsScope.InnerHTML.Split (new[] { validationErrorDelimiter }, StringSplitOptions.RemoveEmptyEntries);
       }
-      catch (MissingHtmlException exception)
+      catch (MissingHtmlException)
       {
-        throw CreateMissingValidationErrorFieldException (exception);
+        throw CreateMissingValidationErrorFieldException();
       }
     }
 
-    private MissingHtmlException CreateMissingValidationErrorFieldException (MissingHtmlException innerException)
+    private MissingHtmlException CreateMissingValidationErrorFieldException ()
     {
       return new MissingHtmlException (
-          "Could not find validation error field. This could be due to wrong markup or a missing validator.",
-          innerException);
+          $"Could not find validation error field of the control object with the ID '{GetHtmlID()}'. This could be due to wrong markup or a missing validator.");
     }
 
     private static bool IsValid (ElementScope scope)

@@ -94,7 +94,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var backupTimeout = rootNode.Scope.ElementFinder.Options.Timeout;
       rootNode.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
 
-      Assert.That (() => rootNode.IsChecked(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (
+          () => rootNode.IsChecked(),
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.EqualTo ("The checkbox could not be found: Unable to find xpath: ./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]]/input[@type='checkbox']"));
 
       rootNode.Scope.ElementFinder.Options.Timeout = backupTimeout;
 
@@ -223,16 +226,40 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       firstChildOfRootNode.Expand();
 
       treeView.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
-      Assert.That (() => treeView.GetNode().WithDisplayTextContains ("1").Select(), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => treeView.GetNode().WithDisplayText ("ChildNode 1").Select(), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => treeView.GetNode().WithItemID ("1").Select(), Throws.InstanceOf<NotSupportedException>());
-      Assert.That (() => treeView.GetNode ("1").Select(), Throws.InstanceOf<NotSupportedException>());
+      Assert.That (
+          () => treeView.GetNode().WithDisplayTextContains ("1").Select(),
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.EqualTo ("The element cannot be found: Unable to find xpath: ./table[contains(tbody/tr/td[last()], '1')]"));
+      Assert.That (
+          () => treeView.GetNode().WithDisplayText ("ChildNode 1").Select(),
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.EqualTo ("The element cannot be found: Unable to find xpath: ./table[normalize-space(tbody/tr/td[last()])='ChildNode 1']"));
+      Assert.That (
+          () => treeView.GetNode().WithItemID ("1").Select(),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("The TreeViewControlObject does not support node selection by item ID."));
+      Assert.That (
+          () => treeView.GetNode ("1").Select(),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("The TreeViewControlObject does not support node selection by item ID."));
 
       rootNode.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
-      Assert.That (() => rootNode.GetNode().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => rootNode.GetNode().WithDisplayText ("ChildNode 11").Select(), Throws.InstanceOf<MissingHtmlException>());
-      Assert.That (() => rootNode.GetNode().WithItemID ("11").Select(), Throws.InstanceOf<NotSupportedException>());
-      Assert.That (() => rootNode.GetNode ("11").Select(), Throws.InstanceOf<NotSupportedException>());
+      Assert.That (
+          () => rootNode.GetNode().WithDisplayTextContains ("11").Select(),
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.EqualTo ("The element cannot be found: Unable to find xpath: ./table[contains(tbody/tr/td[last()]//*, '11')]"));
+      Assert.That (
+          () => rootNode.GetNode().WithDisplayText ("ChildNode 11").Select(),
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.EqualTo ("The element cannot be found: Unable to find xpath: ./table[normalize-space(tbody/tr/td[last()]//*)='ChildNode 11']"));
+      Assert.That (
+          () => rootNode.GetNode().WithItemID ("11").Select(),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("The TreeViewNodeControlObject does not support node selection by item ID."));
+      Assert.That (
+          () => rootNode.GetNode ("11").Select(),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("The TreeViewNodeControlObject does not support node selection by item ID."));
     }
 
     [Test]
@@ -273,11 +300,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => rootNode.GetNodeInHierarchy().WithIndex (999),
-          Throws.InstanceOf<MissingHtmlException>().With.Message.EqualTo ("No node with the index '999' was found."));
+          Throws.InstanceOf<WebTestException>().With.Message.EqualTo ("No node with the index '999' was found."));
 
       Assert.That (
           () => rootNode.GetNodeInHierarchy().WithIndex (1),
-          Throws.InstanceOf<AmbiguousException>().With.Message.EqualTo ("Multiple nodes with the index '1' were found."));
+          Throws.InstanceOf<WebTestException>().With.Message.EqualTo ("Multiple nodes with the index '1' were found."));
     }
 
     [Test]
@@ -333,11 +360,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => treeView.GetNodeInHierarchy().WithIndex (999),
-          Throws.InstanceOf<MissingHtmlException>().With.Message.EqualTo ("No node with the index '999' was found."));
+          Throws.InstanceOf<WebTestException>().With.Message.EqualTo ("No node with the index '999' was found."));
 
       Assert.That (
           () => treeView.GetNodeInHierarchy().WithIndex (1),
-          Throws.InstanceOf<AmbiguousException>().With.Message.EqualTo ("Multiple nodes with the index '1' were found."));
+          Throws.InstanceOf<WebTestException>().With.Message.EqualTo ("Multiple nodes with the index '1' were found."));
     }
 
     [Test]

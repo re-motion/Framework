@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -50,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         button.Context.CloneForControl (home.Scope.FindId ("NotExistent"));
       }
-      catch (MissingHtmlException)
+      catch (WebTestException)
       {
       }
 
@@ -165,7 +164,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         home.Context.CloneForFrame (frameScope);
       }
-      catch (MissingHtmlException)
+      catch (WebTestException)
       {
       }
 
@@ -187,7 +186,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         home.Context.CloneForControl (home, home.Scope.FindId ("NotExistent"));
       }
-      catch (MissingHtmlException)
+      catch (WebTestException)
       {
       }
 

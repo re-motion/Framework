@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -51,19 +50,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.HiddenElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void Get_Throws_MissingHtmlException ()
+    public void Get_WithHiddenElements_Throws_WebTestException ()
     {
       Assert.That (
           () => Selector.Single(),
-          Throws.InstanceOf<MissingHtmlException>());
+          Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.AmbiguousElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void Get_Throws_AmbiguousException ()
+    public void Get_WithAmbiguousElements_Throws_WebTestException ()
     {
       Assert.That (
           () => Selector.Single(),
-          Throws.InstanceOf<AmbiguousException>());
+          Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.NonAmbiguous)]
@@ -95,11 +94,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.AmbiguousElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void GetOrNull_Throws_AmbiguousException ()
+    public void GetOrNull_Throws_WebTestException ()
     {
       Assert.That (
           () => Selector.SingleOrNull(),
-          Throws.InstanceOf<AmbiguousException>());
+          Throws.InstanceOf<WebTestException>());
     }
   }
 }

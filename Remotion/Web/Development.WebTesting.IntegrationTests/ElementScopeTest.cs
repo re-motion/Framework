@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Diagnostics;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -35,7 +34,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var disabledButton = home.Scope.FindId ("DisabledButton");
 
       Assert.That (disabledButton.Disabled, Is.True);
-      Assert.That (() => disabledButton.Focus(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (
+          () => disabledButton.Focus(),
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.EqualTo ("The control is currently in a disabled state. Therefore, the operation is not possible."));
     }
 
     [Test]

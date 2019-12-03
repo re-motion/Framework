@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlSelection;
@@ -39,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     /// <param name="domainProperty">The domain property represented by the <see cref="ControlObject"/>. Must not be <see langword="null"/> or empty.</param>
     /// <param name="domainClass">The class of the domain property represented by the <see cref="ControlObject"/>. Must not be empty.</param>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     [NotNull]
     TControlObject SelectPerDomainProperty (
         [NotNull] ControlSelectionContext context,

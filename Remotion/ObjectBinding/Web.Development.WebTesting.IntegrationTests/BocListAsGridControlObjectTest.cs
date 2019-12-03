@@ -520,7 +520,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToSpecificPage (1),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
     }
 
     [Test]
@@ -532,7 +532,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToFirstPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
     }
 
     [Test]
@@ -544,7 +544,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToPreviousPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
     }
 
     [Test]
@@ -556,7 +556,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToNextPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
     }
 
     [Test]
@@ -568,7 +568,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToLastPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
     }
 
     private WxePageObject Start ()

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 
@@ -28,26 +27,44 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   {
     [NotNull]
     [MustUseReturnValue]
-    public static Exception CreateControlDisabledException ()
+    public static WebTestException CreateControlDisabledException ()
     {
-      return new MissingHtmlException ("The control is currently in a disabled state. Therefore, the operation is not possible.");
+      return new WebTestException ("The control is currently in a disabled state. Therefore, the operation is not possible.");
     }
 
     [NotNull]
     [MustUseReturnValue]
-    public static Exception CreateControlDisabledException ([NotNull] string controlName)
+    public static WebTestException CreateControlDisabledException ([NotNull] string controlName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("controlName", controlName);
 
-      return new MissingHtmlException (
+      return new WebTestException (
           string.Format ("The '{0}' is currently in a disabled state. Therefore, the operation is not possible.", controlName));
     }
 
     [NotNull]
     [MustUseReturnValue]
-    public static Exception CreateControlReadOnlyException ()
+    public static WebTestException CreateControlReadOnlyException ()
     {
-      return new MissingHtmlException ("The control is currently in a read-only state. Therefore, the operation is not possible.");
+      return new WebTestException ("The control is currently in a read-only state. Therefore, the operation is not possible.");
+    }
+
+    [NotNull]
+    [MustUseReturnValue]
+    public static WebTestException CreateControlMissingException ([NotNull] string exceptionDetails)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("exceptionDetails", exceptionDetails);
+
+      return new WebTestException ($"The element cannot be found: {exceptionDetails}");
+    }
+
+    [NotNull]
+    [MustUseReturnValue]
+    public static WebTestException CreateControlAmbiguousException ([NotNull] string exceptionDetails)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("exceptionDetails", exceptionDetails);
+
+      return new WebTestException ($"Multiple elements were found: {exceptionDetails}");
     }
   }
 }

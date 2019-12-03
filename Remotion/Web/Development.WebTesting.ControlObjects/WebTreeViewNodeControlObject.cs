@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -90,10 +89,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       {
         var foundNodes = _webTreeViewNode.Scope.FindTagsWithAttribute ("ul li", DiagnosticMetadataAttributes.IndexInCollection, oneBasedIndex.ToString()).ToArray();
         if (foundNodes.Length > 1)
-          throw new AmbiguousException ($"Multiple nodes with the index '{oneBasedIndex}' were found.");
+          throw new WebTestException ($"Multiple nodes with the index '{oneBasedIndex}' were found.");
 
         if (foundNodes.Length == 0)
-          throw new MissingHtmlException ($"No node with the index '{oneBasedIndex}' was found.");
+          throw new WebTestException ($"No node with the index '{oneBasedIndex}' was found.");
 
         var nodeScope = foundNodes.Single();
 
@@ -143,7 +142,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       var numberChildren = Scope[DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren];
       if (numberChildren == DiagnosticMetadataAttributes.Null)
-        throw new MissingHtmlException ("TreeViewNode is not evaluated.");
+        throw new WebTestException ("TreeViewNode is not evaluated.");
 
       return int.Parse (numberChildren);
     }
@@ -224,9 +223,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public WebTreeViewNodeControlObject Expand ()
     {
       if (!IsExpandable())
-        throw new MissingHtmlException ("The WebTreeViewNode can not be expanded as it has no children.");
+        throw new WebTestException ("The WebTreeViewNode cannot be expanded as it has no children.");
       if (IsExpanded())
-        throw new MissingHtmlException ("TreeViewNode is already expanded.");
+        throw new WebTestException ("TreeViewNode is already expanded.");
 
       ToggleExpansion();
 
@@ -239,9 +238,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public WebTreeViewNodeControlObject Collapse ()
     {
       if (!IsExpandable())
-        throw new MissingHtmlException ("The WebTreeViewNode can not be collapsed as it has no children.");
+        throw new WebTestException ("The WebTreeViewNode cannot be collapsed as it has no children.");
       if (!IsExpanded())
-        throw new MissingHtmlException ("TreeViewNode is already collapsed.");
+        throw new WebTestException ("TreeViewNode is already collapsed.");
 
       ToggleExpansion();
 

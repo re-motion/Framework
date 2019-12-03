@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
@@ -31,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for selecting a control by HTML <paramref name="id"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="HtmlIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -72,6 +71,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for checking if a control with the given HTML <paramref name="id"/> exists.
     /// </summary>
     /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    /// <exception cref="WebTestException">If the control cannot be found due to ambiguity.</exception>
     /// <remarks>
     /// Uses the <see cref="HtmlIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -91,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for selecting a control by <paramref name="oneBasedIndex"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="IndexControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -130,6 +130,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for checking if a control with the given <paramref name="oneBasedIndex"/> exists.
     /// </summary>
     /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    /// <exception cref="WebTestException">If the control cannot be found due to ambiguity.</exception>
     /// <remarks>
     /// Uses the <see cref="IndexControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -150,7 +151,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// e.g. <see cref="GetByID{TControlSelector,TControlObject}"/>.
     /// </summary>
     /// <returns>The control object for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="LocalIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -195,6 +196,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// e.g. <see cref="ExistsByID{TControlSelector,TControlObject}"/>.
     /// </summary>
     /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    /// <exception cref="WebTestException">If the control cannot be found due to ambiguity.</exception>
     /// <remarks>
     /// Uses the <see cref="LocalIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -214,7 +216,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for selecting a control by <paramref name="title"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="TitleControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -255,6 +257,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for checking if a control with the given <paramref name="title"/> exists.
     /// </summary>
     /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    /// <exception cref="WebTestException">If the control cannot be found due to ambiguity.</exception>
     /// <remarks>
     /// Uses the <see cref="TitleControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -274,7 +277,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for selecting the first matching control.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="FirstControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -311,8 +314,8 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for selecting the only matching control.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="AmbiguousException">If multiple matching controls are found.</exception>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If multiple matching controls are found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="SingleControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -331,7 +334,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for selecting the only matching control.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
-    /// <exception cref="AmbiguousException">If multiple matching controls are found.</exception>
+    /// <exception cref="WebTestException">If multiple matching controls are found.</exception>
     /// <remarks>
     /// Uses the <see cref="SingleControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -350,7 +353,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for selecting a control by <paramref name="text"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="TextContentControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -391,6 +394,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for checking if a control with the given <paramref name="text"/> exists.
     /// </summary>
     /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    /// <exception cref="WebTestException">If the control cannot be found due to ambiguity.</exception>
     /// <remarks>
     /// Uses the <see cref="TextContentControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>

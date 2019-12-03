@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
 
       if (result.HasError)
       {
-        throw new MissingHtmlException ("Request has failed due to a server error", new ServerErrorException (result.Message, result.Stacktrace));
+        throw new WebTestException ("Request has failed due to a server error", new ServerErrorException (result.Message, result.Stacktrace));
       }
     }
   }

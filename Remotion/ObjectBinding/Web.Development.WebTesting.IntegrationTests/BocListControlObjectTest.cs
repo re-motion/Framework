@@ -631,7 +631,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       // Set Timeout to Zero so we don't have to wait the full timeout for the exception
       bocList.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
 
-      Assert.That (() => bocList.GetRowWhere ("Title", "EO"), Throws.Exception.InstanceOf<MissingHtmlException>());
+      Assert.That (
+          () => bocList.GetRowWhere ("Title", "EO"),
+          Throws.Exception.InstanceOf<WebTestException>()
+              .With.Message.EqualTo ("The element cannot be found: Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='6'] span[data-boclist-cell-contents='EO']"));
     }
 
     [Test]
@@ -867,7 +870,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       // Set Timeout to Zero so we don't have to wait the full timeout for the exception
       bocList.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
 
-      Assert.That (() => bocList.GetCellWhere ("Title", "EO"), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (
+          () => bocList.GetCellWhere ("Title", "EO"),
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.EqualTo ("The element cannot be found: Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='6'] span[data-boclist-cell-contents='EO']"));
     }
 
     [Test]
@@ -1157,7 +1163,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (bocList.IsReadOnly(), Is.True);
 
       var row = bocList.GetRow (2);
-      Assert.That (() => row.Edit(), Throws.InstanceOf<MissingHtmlException>());
+      Assert.That (
+          () => row.Edit(),
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.EqualTo ("The control is currently in a read-only state. Therefore, the operation is not possible."));
     }
 
     [Test]
@@ -1422,7 +1431,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
       Assert.That (
           () => bocList.GoToSpecificPage (1),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
     }
 
     [Test]
@@ -1437,7 +1446,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToSpecificPage (3),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
     }
 
     [Test]
@@ -1449,7 +1458,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToSpecificPage (1),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("List is already on page '1'."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("List is already on page '1'."));
     }
 
     [Test]
@@ -1463,8 +1472,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToSpecificPage (pageNumberGreaterThanNumberOfPages),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
-              string.Format ("Unable to change page number to '{0}'. Page number must be between '1' and '4'.", pageNumberGreaterThanNumberOfPages)));
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo ($"Unable to change page number to '{pageNumberGreaterThanNumberOfPages}'. Page number must be between '1' and '4'."));
     }
 
     [Test]
@@ -1478,8 +1487,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToSpecificPage (pageNumberLesserThanNumberOfPages),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
-              string.Format ("Unable to change page number to '{0}'. Page number must be between '1' and '4'.", pageNumberLesserThanNumberOfPages)));
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo ($"Unable to change page number to '{pageNumberLesserThanNumberOfPages}'. Page number must be between '1' and '4'."));
     }
 
     [Test]
@@ -1503,7 +1512,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
       Assert.That (
           () => bocList.GoToFirstPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
     }
 
     [Test]
@@ -1518,7 +1527,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToFirstPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
     }
 
     [Test]
@@ -1530,8 +1539,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToFirstPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
-              "Unable to change page number to the first page, as the list is already on the first page."));
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo ("Unable to change page number to the first page, as the list is already on the first page."));
     }
 
     [Test]
@@ -1555,7 +1564,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
       Assert.That (
           () => bocList.GoToPreviousPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
     }
 
     [Test]
@@ -1570,7 +1579,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToPreviousPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
     }
 
     [Test]
@@ -1582,8 +1591,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToPreviousPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
-              "Unable to change page number to the previous page, as the list is already on the first page."));
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo ("Unable to change page number to the previous page, as the list is already on the first page."));
     }
 
     [Test]
@@ -1605,7 +1614,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
       Assert.That (
           () => bocList.GoToNextPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
     }
 
     [Test]
@@ -1620,7 +1629,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToNextPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
     }
 
     [Test]
@@ -1633,8 +1642,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToNextPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
-              "Unable to change page number to the next page, as the list is already on the last page."));
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo ("Unable to change page number to the next page, as the list is already on the last page."));
     }
 
     [Test]
@@ -1657,7 +1666,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
       Assert.That (
           () => bocList.GoToLastPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List only has one page."));
     }
 
     [Test]
@@ -1672,7 +1681,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToLastPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
     }
 
     [Test]
@@ -1685,8 +1694,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToLastPage(),
-          Throws.Exception.TypeOf<MissingHtmlException>().With.Message.EqualTo (
-              "Unable to change page number to the last page, as the list is already on the last page."));
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo ("Unable to change page number to the last page, as the list is already on the last page."));
     }
 
     private WxePageObject Start ()

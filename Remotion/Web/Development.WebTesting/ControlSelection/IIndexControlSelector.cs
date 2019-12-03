@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlSelection
@@ -32,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// Selects the control within the given <paramref name="context"/> using the given <paramref name="oneBasedIndex"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     [NotNull]
     TControlObject SelectPerIndex ([NotNull] ControlSelectionContext context, int oneBasedIndex);
 

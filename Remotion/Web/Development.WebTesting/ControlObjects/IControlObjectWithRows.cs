@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Coypu;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -71,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Switches to a specific <paramref name="oneBasedPageNumber"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">
+    /// <exception cref="WebTestException">
     /// <para>Thrown if the list is currently in edit mode</para>
     /// <para>- or -</para>
     /// <para>the navigation block is missing</para>
@@ -85,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Switches to the first list page.
     /// </summary>
-    /// <exception cref="MissingHtmlException">
+    /// <exception cref="WebTestException">
     /// <para>Thrown if the list is currently in edit mode</para>
     /// <para>- or -</para>
     /// <para>the navigation block is missing</para>
@@ -97,7 +96,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Switches to the previous list page.
     /// </summary>
-    /// <exception cref="MissingHtmlException">
+    /// <exception cref="WebTestException">
     /// <para>Thrown if the list is currently in edit mode</para>
     /// <para>- or -</para>
     /// <para>the navigation block is missing</para>
@@ -109,7 +108,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Switches to the next list page.
     /// </summary>
-    /// <exception cref="MissingHtmlException">
+    /// <exception cref="WebTestException">
     /// <para>Thrown if the list is currently in edit mode</para>
     /// <para>- or -</para>
     /// <para>the navigation block is missing</para>
@@ -121,7 +120,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Switches to the last list page.
     /// </summary>
-    /// <exception cref="MissingHtmlException">
+    /// <exception cref="WebTestException">
     /// <para>Thrown if the list is currently in edit mode</para>
     /// <para>- or -</para>
     /// <para>the navigation block is missing</para>

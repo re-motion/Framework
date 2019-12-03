@@ -201,7 +201,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     /// <param name="filter">The filter used to constrain the possible options.</param>
     /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
-    /// <exception cref="MissingHtmlException"><paramref name="filter"/> cannot be matched with an auto-completion result.</exception>
+    /// <exception cref="WebTestException"><paramref name="filter"/> cannot be matched with an auto-completion result.</exception>
     /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
     public UnspecifiedPageObject SelectFirstMatch ([NotNull] string filter, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
@@ -223,7 +223,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <param name="filter">The filter used to constrain the possible options.</param>
     /// <param name="finishInputWith">What to do after the text has been filled in (see <see cref="FinishInput"/> for supported default options).</param>
     /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
-    /// <exception cref="MissingHtmlException"><paramref name="filter"/> cannot be matched with an auto-completion result.</exception>
+    /// <exception cref="WebTestException"><paramref name="filter"/> cannot be matched with an auto-completion result.</exception>
     /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
     public UnspecifiedPageObject SelectFirstMatch ([NotNull] string filter, [NotNull] FinishInputWithAction finishInputWith, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
@@ -271,7 +271,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var results = GetSearchServiceResults (filter, 2);
 
       if (results.Count == 0)
-        throw new MissingHtmlException (string.Format ("No matches were found for the specified filter: '{0}'.", filter));
+        throw new WebTestException (string.Format ("No matches were found for the specified filter: '{0}'.", filter));
 
       return results.First();
     }

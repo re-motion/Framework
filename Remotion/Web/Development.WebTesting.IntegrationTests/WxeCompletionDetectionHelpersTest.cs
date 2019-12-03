@@ -17,7 +17,6 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
@@ -52,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         completionDetection.WaitForCompletion (home.Context, 2);
       }
-      catch (MissingHtmlException)
+      catch (WebTestException)
       {
       }
  
@@ -73,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         completionDetection.WaitForCompletion (home.Context, "wxeFunctionToken");
       }
-      catch (MissingHtmlException)
+      catch (WebTestException)
       {
       }
  

@@ -17,7 +17,6 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
@@ -36,8 +35,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionStrategy();
       var home = StartToErrorPage ("SyncPostbackError");
 
-      var exception = Assert.Throws<MissingHtmlException> (() => aspNetRequestErrorDetectionParser.CheckPageForError (home.Scope));
+      var exception = Assert.Throws<WebTestException> (() => aspNetRequestErrorDetectionParser.CheckPageForError (home.Scope));
 
+      Assert.That (exception.Message, Is.EqualTo ("Request has failed due to a server error"));
       Assert.That (exception.InnerException, Is.TypeOf (typeof (ServerErrorException)));
       Assert.That (exception.InnerException.Message, Is.EqualTo ("SyncPostbackError"));
       Assert.That (exception.InnerException.StackTrace, Is.StringStarting ("\r\n[Exception: SyncPostbackError]\r\n"));

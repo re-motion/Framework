@@ -40,11 +40,27 @@ namespace Remotion.Web.Development.WebTesting
     /// where the <c>parentScope.Find*()</c> call could not be found.
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> which is asserted to exist.</param>
+    /// <exception cref="WebTestException">
+    /// If the control cannot be found.
+    /// <para>- or -</para>
+    /// If multiple matching controls are found.
+    /// </exception>
     public static void EnsureExistence ([NotNull] this ElementScope scope)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      scope.Now();
+      try
+      {
+        scope.Now();
+      }
+      catch (MissingHtmlException exception)
+      {
+        throw AssertionExceptionUtility.CreateControlMissingException (exception.Message);
+      }
+      catch (AmbiguousException exception)
+      {
+        throw AssertionExceptionUtility.CreateControlAmbiguousException (exception.Message);
+      }
     }
 
     /// <summary>
@@ -52,15 +68,34 @@ namespace Remotion.Web.Development.WebTesting
     /// <see cref="Match.Single"/> matching strategy.
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> which is asserted to match only a single DOM element.</param>
+    /// <exception cref="WebTestException">
+    /// If the control cannot be found.
+    /// <para>- or -</para>
+    /// If multiple matching controls are found.
+    /// </exception>
     public static void EnsureSingle ([NotNull] this ElementScope scope)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
       var matchBackup = scope.ElementFinder.Options.Match;
 
-      scope.ElementFinder.Options.Match = Match.Single;
-      scope.Now();
-      scope.ElementFinder.Options.Match = matchBackup;
+      try
+      {
+        scope.ElementFinder.Options.Match = Match.Single;
+        scope.Now();
+      }
+      catch (MissingHtmlException exception)
+      {
+        throw AssertionExceptionUtility.CreateControlMissingException (exception.Message);
+      }
+      catch (AmbiguousException exception)
+      {
+        throw AssertionExceptionUtility.CreateControlAmbiguousException (exception.Message);
+      }
+      finally
+      {
+        scope.ElementFinder.Options.Match = matchBackup;
+      }
     }
 
     /// <summary>
@@ -72,6 +107,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Should be removed when the issue is fixed in coypu. See RM-6773.
     /// </remarks>
     /// <param name="scope">The <see cref="ElementScope"/> which is asserted to exist.</param>
+    /// <exception cref="WebTestException">If multiple matching controls are found.</exception>
     public static bool ExistsWorkaround ([NotNull] this ElementScope scope)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
@@ -117,6 +153,10 @@ namespace Remotion.Web.Development.WebTesting
       {
         return false;
       }
+      catch (AmbiguousException exception)
+      {
+        throw AssertionExceptionUtility.CreateControlAmbiguousException (exception.Message);
+      }
       finally
       {
         scope.ElementFinder.Options.Timeout = scopeTimeoutBackup;
@@ -124,7 +164,7 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// Exists-workaround which also ensures that the element is single (e.g. throws an <see cref="AmbiguousException"/> if the element is not single).
+    /// Exists-workaround which also ensures that the element is single (e.g. throws an <see cref="WebTestException"/> if the element is not single).
     /// </summary>
     /// <remarks>
     /// This has to be done in its own function, as calling <see cref="EnsureSingle"/> after <see cref="ExistsWorkaround"/> does not throw the expected exception.

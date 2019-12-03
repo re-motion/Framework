@@ -180,10 +180,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var currentPageNumber = GetCurrentPage();
       if (currentPageNumber == oneBasedPageNumber)
-        throw new MissingHtmlException (string.Format ("List is already on page '{0}'.", currentPageNumber));
+        throw new WebTestException (string.Format ("List is already on page '{0}'.", currentPageNumber));
 
       if (oneBasedPageNumber < 1 || oneBasedPageNumber > GetNumberOfPages())
-        throw CreateMissingHtmlExceptionForIndexOutOfRange (oneBasedPageNumber);
+        throw CreateWebTestExceptionForIndexOutOfRange (oneBasedPageNumber);
 
       var currentPageTextInputScope = Scope.FindIdEndingWith ("Boc_CurrentPage_TextBox");
       ExecuteAction (
@@ -197,7 +197,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       EnsureNavigationPossible();
 
       if (GetCurrentPage() == 1)
-        throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("first", "first");
+        throw CreateWebTestExceptionForUnableToNavigateToPage ("first", "first");
 
       var firstPageLinkScope = Scope.FindChild ("Navigation_First");
       ExecuteAction (
@@ -211,7 +211,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       EnsureNavigationPossible();
 
       if (GetCurrentPage() == 1)
-        throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("previous", "first");
+        throw CreateWebTestExceptionForUnableToNavigateToPage ("previous", "first");
 
       var previousPageLinkScope = Scope.FindChild ("Navigation_Previous");
       ExecuteAction (
@@ -225,7 +225,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       EnsureNavigationPossible();
 
       if (GetCurrentPage() == GetNumberOfPages())
-        throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("next", "last");
+        throw CreateWebTestExceptionForUnableToNavigateToPage ("next", "last");
 
       var nextPageLinkScope = Scope.FindChild ("Navigation_Next");
       ExecuteAction (
@@ -239,7 +239,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       EnsureNavigationPossible();
 
       if (GetCurrentPage() == GetNumberOfPages())
-        throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("last", "last");
+        throw CreateWebTestExceptionForUnableToNavigateToPage ("last", "last");
 
       var lastPageLinkScope = Scope.FindChild ("Navigation_Last");
       ExecuteAction (
@@ -466,26 +466,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private void EnsureNavigationPossible ()
     {
       if (IsEditModeActive())
-        throw new MissingHtmlException ("Unable to change current page of the list. List is currently in edit mode.");
+        throw new WebTestException ("Unable to change current page of the list. List is currently in edit mode.");
 
       if (!HasNavigator())
-        throw new MissingHtmlException ("Unable to change current page of the list. List only has one page.");
+        throw new WebTestException ("Unable to change current page of the list. List only has one page.");
     }
 
-    private Exception CreateMissingHtmlExceptionForUnableToNavigateToPage (string pageWhichCantBeNavigatedTo, string currentPageAsString)
+    private WebTestException CreateWebTestExceptionForUnableToNavigateToPage (string pageWhichCantBeNavigatedTo, string currentPageAsString)
     {
-      return new MissingHtmlException (string.Format ("Unable to change page number to the {0} page, as the list is already on the {1} page.", pageWhichCantBeNavigatedTo, currentPageAsString));
+      return new WebTestException (string.Format ("Unable to change page number to the {0} page, as the list is already on the {1} page.", pageWhichCantBeNavigatedTo, currentPageAsString));
     }
 
-    private Exception CreateMissingHtmlExceptionForIndexOutOfRange (int pageNumberToBeNavigated)
+    private WebTestException CreateWebTestExceptionForIndexOutOfRange (int pageNumberToBeNavigated)
     {
       if (GetNumberOfPages() == 1)
       {
-        return new MissingHtmlException (
+        return new WebTestException (
             string.Format ("Unable to navigate to page number '{0}'. The list only has one page.", pageNumberToBeNavigated));
       }
 
-      return new MissingHtmlException (
+      return new WebTestException (
               string.Format (
                   "Unable to change page number to '{0}'. Page number must be between '1' and '{1}'.",
                   pageNumberToBeNavigated,

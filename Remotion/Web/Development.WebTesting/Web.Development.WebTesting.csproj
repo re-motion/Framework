@@ -334,6 +334,7 @@
     <Compile Include="UnspecifiedPageObject.cs" />
     <Compile Include="WebTestActions\SimpleClickAction.cs" />
     <Compile Include="WebTestActions\UncheckAction.cs" />
+    <Compile Include="WebTestException.cs" />
     <Compile Include="WebTestHelper.cs" />
     <Compile Include="WebTestActions\CustomAction.cs" />
     <Compile Include="WebTestObject.cs" />

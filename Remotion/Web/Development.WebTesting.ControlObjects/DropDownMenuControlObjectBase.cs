@@ -198,7 +198,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
             () =>
             {
               if (GetDropDownMenuPopupID (menuButtonScope) == null)
-                throw new MissingHtmlException ("Unable to open the menu.");
+                throw new WebTestException ("Unable to open the menu.");
             });
       }
     }

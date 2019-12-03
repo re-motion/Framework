@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Check if the given <paramref name="scope"/> contains a request error.
     /// </summary>
-    /// <exception cref="MissingHtmlException">
+    /// <exception cref="WebTestException">
     /// Thrown if a request error is found.
     /// </exception>
     void CheckPageForError ([NotNull] ElementScope scope);

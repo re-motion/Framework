@@ -56,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Focuses an element.
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
     public static void Focus ([NotNull] this ElementScope scope)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);

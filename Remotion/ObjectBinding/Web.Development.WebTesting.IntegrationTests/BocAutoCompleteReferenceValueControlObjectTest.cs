@@ -17,7 +17,6 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -452,12 +451,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestSelectFirstMatch_NoFilterMatches_ThrowsMissingHtmlException ()
+    public void TestSelectFirstMatch_NoFilterMatches_ThrowsWebTestException ()
     {
       var home = Start();
 
       var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      Assert.That (() => bocAutoComplete.SelectFirstMatch ("Invalid"), Throws.Exception.InstanceOf<MissingHtmlException>().With.Message.EqualTo ("No matches were found for the specified filter: 'Invalid'."));
+      Assert.That (
+          () => bocAutoComplete.SelectFirstMatch ("Invalid"),
+          Throws.Exception.InstanceOf<WebTestException>()
+              .With.Message.EqualTo ("No matches were found for the specified filter: 'Invalid'."));
     }
 
     [Test]

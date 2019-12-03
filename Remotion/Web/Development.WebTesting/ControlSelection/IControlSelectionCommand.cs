@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlSelection
@@ -32,8 +31,8 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// Performs the selection within the given <paramref name="context"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="AmbiguousException">If multiple matching controls are found but the specific implementation of <see cref="IControlSelectionCommand{TControlObject}"/> requires an exact match.</exception>
-    /// <exception cref="MissingHtmlException">If the element cannot be found.</exception>
+    /// <exception cref="WebTestException">If multiple matching controls are found but the specific implementation of <see cref="IControlSelectionCommand{TControlObject}"/> requires an exact match.</exception>
+    /// <exception cref="WebTestException">If the element cannot be found.</exception>
     [NotNull]
     TControlObject Select ([NotNull] ControlSelectionContext context);
   }

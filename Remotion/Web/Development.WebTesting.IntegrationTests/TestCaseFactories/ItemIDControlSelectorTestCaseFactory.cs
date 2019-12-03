@@ -52,11 +52,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories
     }
 
     [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void Get_Throws_MissingHtmlException ()
+    public void Get_Throws_WebTestException ()
     {
       Assert.That (
           () => Selector.GetByItemID (Parameter.HiddenControlItemID),
-          Throws.InstanceOf<MissingHtmlException>());
+          Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod]

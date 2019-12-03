@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
@@ -85,10 +84,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
         var foundNodes = _treeView.Scope.FindAllXPath (xpath).ToArray();
 
         if (foundNodes.Length > 1)
-          throw new AmbiguousException ($"Multiple nodes with the index '{oneBasedIndex}' were found.");
+          throw new WebTestException ($"Multiple nodes with the index '{oneBasedIndex}' were found.");
 
         if (foundNodes.Length == 0)
-          throw new MissingHtmlException ($"No node with the index '{oneBasedIndex}' was found.");
+          throw new WebTestException ($"No node with the index '{oneBasedIndex}' was found.");
 
         var nodeScope = foundNodes.Single();
 

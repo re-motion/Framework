@@ -33,6 +33,11 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Private constructor, may be obtained via a <see cref="PageObjectContext"/> or via control selection.
     /// </summary>
+    /// <exception cref="WebTestException">
+    /// If the control cannot be found.
+    /// <para>- or -</para>
+    /// If multiple matching controls are found.
+    /// </exception>
     internal ControlObjectContext ([NotNull] PageObject pageObject, [NotNull] ElementScope scope)
         : base (scope)
     {
@@ -72,6 +77,13 @@ namespace Remotion.Web.Development.WebTesting
     /// <see cref="BrowserWindow"/> and on the same page.
     /// </summary>
     /// <param name="scope">The scope of the other <see cref="ControlObject"/>.</param>
+    /// <exception cref="WebTestException">
+    /// If the control cannot be found.
+    /// <para>- or -</para>
+    /// If multiple matching controls are found.
+    /// <para>- or -</para>
+    /// If server error has occurred.
+    /// </exception>
     public ControlObjectContext CloneForControl ([NotNull] ElementScope scope)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
@@ -80,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting
       {
         return new ControlObjectContext (PageObject, scope);
       }
-      catch (MissingHtmlException)
+      catch (WebTestException)
       {
         PageObject.Context.RequestErrorDetectionStrategy.CheckPageForError (PageObject.Scope);
 

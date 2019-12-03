@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Short for explicitly implemented <see cref="IFluentControlObjectWithNodes{TNodeControlObject}.WithIndex"/>, searching through the hierarchy.
     /// </summary>
-    /// <exception cref="Coypu.AmbiguousException">More than one node with the specified index was found.</exception>
+    /// <exception cref="WebTestException">More than one node with the specified index was found.</exception>
     TNodeControlObject GetNodeInHierarchy (int oneBasedIndex);
   }
 
@@ -72,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Selects the node using the given <paramref name="oneBasedIndex"/>.
     /// </summary>
-    /// <exception cref="Coypu.AmbiguousException">More than one node with the specified index was found.</exception>
+    /// <exception cref="WebTestException">More than one node with the specified index was found.</exception>
     TNodeControlObject WithIndex (int oneBasedIndex);
 
     /// <summary>
