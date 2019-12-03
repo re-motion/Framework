@@ -29,6 +29,7 @@
     <VcsUrlTemplate>http://localost/svn/!svn/bc/$(SvnRevision)/$(SvnBranchFolder)/{0}</VcsUrlTemplate>
 
     <ChromeVersionArchive></ChromeVersionArchive>
+    <EdgeVersionArchive></EdgeVersionArchive>
     <FirefoxVersionArchive></FirefoxVersionArchive>
 
     <DatabaseNamePrefix></DatabaseNamePrefix>

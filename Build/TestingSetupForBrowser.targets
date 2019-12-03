@@ -32,6 +32,7 @@
 
     <Message Text="Selected Browser: '$(Browser)'" />
     <Message Text="The property 'ChromeVersionArchive' is set to '$(ChromeVersionArchive)'." />
+    <Message Text="The property 'EdgeVersionArchive' is set to '$(EdgeVersionArchive)'." />
     <Message Text="The property 'FirefoxVersionArchive' is set to '$(FirefoxVersionArchive)'." />
 
     <MSBuild.ExtensionPack.Xml.XmlFile
@@ -94,6 +95,10 @@
       <_appConfigAttributes Include="/configuration/appSettings/add[@key='ChromeVersionArchive']">
         <Key>value</Key>
         <Value>$(ChromeVersionArchive)</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/appSettings/add[@key='EdgeVersionArchive']">
+        <Key>value</Key>
+        <Value>$(EdgeVersionArchive)</Value>
       </_appConfigAttributes>
       <_appConfigAttributes Include="/configuration/appSettings/add[@key='FirefoxVersionArchive']">
         <Key>value</Key>

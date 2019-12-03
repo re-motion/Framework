@@ -18,11 +18,13 @@ using System;
 using Coypu.Drivers;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.HostingStrategies.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 
@@ -40,11 +42,16 @@ namespace Remotion.Web.Development.WebTesting
   public class WebTestConfigurationFactory
   {
     /// <summary>
-    /// Represents the latest version of Chrome verified to be compatible with Selenium WebDriver.
-    /// Higher Chrome versions are not guaranteed to work with the currently dependent ChromeDriver. 
-    /// In order to achieve a stable testing environment a standalone Chrome with a matching version should be used.
+    /// Represents the latest tested version of Chrome, compatible with the framework.
+    /// In order to achieve a stable testing environment, a standalone Chrome browser with a matching ChromeDriver version should be used.
     /// </summary>
     protected const string LatestTestedChromeVersion = "66";
+
+    /// <summary>
+    /// Represents the latest version of Edge verified to be compatible with the framework.
+    /// In order to achieve a stable testing environment, a standalone Edge browser with a matching MSEdgeDriver version should be used.
+    /// </summary>
+    protected const string LatestTestedEdgeVersion = "77";
 
     /// <summary>
     /// Represents the latest version of Firefox verified to be compatible with Selenium WebDriver.
@@ -67,6 +74,9 @@ namespace Remotion.Web.Development.WebTesting
 
       if (configuredBrowser == Browser.Chrome)
         return CreateChromeConfiguration (configSettings);
+
+      if (configuredBrowser == Browser.Edge)
+        return CreateEdgeConfiguration (configSettings);
 
       if (configuredBrowser == Browser.InternetExplorer)
         return CreateInternetExplorerConfiguration (configSettings);
@@ -151,6 +161,21 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("configSettings", configSettings);
 
       return new ChromeConfiguration (configSettings, new AdvancedChromeOptions());
+    }
+
+    /// <summary>
+    /// Responsible for creating an Edge specific configuration object.
+    /// </summary>
+    /// <param name="configSettings">Receives app.config settings when called in <see cref="CreateBrowserConfiguration"/></param>
+    /// <remarks>
+    /// Override this method to customize the configuration settings, e.g. the location of the msedge.exe and the user directory 
+    /// via <see cref="EdgeExecutable"/> or custom <see cref="EdgeOptions"/> by extending <see cref="EdgeConfiguration"/> itself.
+    /// </remarks>
+    protected virtual IEdgeConfiguration CreateEdgeConfiguration ([NotNull] WebTestConfigurationSection configSettings)
+    {
+      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
+
+      return new EdgeConfiguration (configSettings);
     }
 
     protected virtual IFirefoxConfiguration CreateFirefoxConfiguration (WebTestConfigurationSection configSettings)

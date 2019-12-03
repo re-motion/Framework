@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="Configuration\DriverConfiguration.cs" />
     <Compile Include="DriverConfigurationOverride.cs" />
+    <Compile Include="BrowserSession\Edge\EdgeBrowserSession.cs" />
     <Compile Include="BrowserSession\Firefox\FirefoxBrowserSession.cs" />
     <Compile Include="ControlSelection\IControlExistsCommand.cs" />
     <Compile Include="ControlSelection\IControlOptionalSelectionCommand.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="ScreenshotCreation\Annotations\ScreenshotTooltipAnnotation.cs" />
     <Compile Include="ScreenshotCreation\Annotations\ScreenshotTooltipStyle.cs" />
     <Compile Include="ScreenshotCreation\Annotations\TooltipPositioning.cs" />
+    <Compile Include="ScreenshotCreation\BrowserContentLocators\EdgeBrowserContentLocator.cs" />
     <Compile Include="ScreenshotCreation\BrowserContentLocators\FirefoxBrowserContentLocator.cs" />
     <Compile Include="ScreenshotCreation\CoordinateSystem.cs" />
     <Compile Include="ScreenshotCreation\CursorInformation.cs" />
@@ -197,6 +199,12 @@
     <Compile Include="BrowserSession\Chrome\ChromeBrowserSession.cs" />
     <Compile Include="BrowserSession\IBrowserSession.cs" />
     <Compile Include="BrowserSession\InternetExplorer\InternetExplorerBrowserSession.cs" />
+    <Compile Include="WebDriver\Configuration\Chrome\IChromeConfiguration.cs" />
+    <Compile Include="WebDriver\Configuration\Edge\EdgeBinariesProvider.cs" />
+    <Compile Include="WebDriver\Configuration\Edge\EdgeConfiguration.cs" />
+    <Compile Include="WebDriver\Configuration\Edge\EdgeExecutable.cs" />
+    <Compile Include="WebDriver\Configuration\Edge\ExtendedEdgeOptions.cs" />
+    <Compile Include="WebDriver\Configuration\Edge\IEdgeConfiguration.cs" />
     <Compile Include="WebDriver\Configuration\Firefox\FirefoxBinariesProvider.cs" />
     <Compile Include="WebDriver\Configuration\Firefox\FirefoxConfiguration.cs" />
     <Compile Include="WebDriver\Configuration\Firefox\FirefoxExecutable.cs" />
@@ -208,7 +216,7 @@
     <Compile Include="HostingStrategies\Configuration\HostingConfiguration.cs" />
     <Compile Include="HostingStrategies\Configuration\IHostingConfiguration.cs" />
     <Compile Include="WebDriver\BrowserConfigurationExtensions.cs" />
-    <Compile Include="WebDriver\Configuration\Chrome\IChromeConfiguration.cs" />
+    <Compile Include="WebDriver\Factories\Edge\EdgeBrowserFactory.cs" />
     <Compile Include="WebDriver\Configuration\InternetExplorer\IInternetExplorerConfiguration.cs" />
     <Compile Include="WebDriver\Factories\Firefox\FirefoxBrowserFactory.cs" />
     <Compile Include="WebDriver\Factories\InternetExplorer\InternetExplorerBrowserFactory.cs" />

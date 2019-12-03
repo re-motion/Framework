@@ -63,12 +63,12 @@ namespace Remotion.Web.Development.WebTesting.Configuration
           typeof (string),
           null,
           null,
-          new RegexStringValidator ("(InternetExplorer|Chrome|Firefox)"),
+          new RegexStringValidator ("(InternetExplorer|Chrome|Edge|Firefox)"),
           ConfigurationPropertyOptions.IsRequired);
       _searchTimeoutProperty = new ConfigurationProperty ("searchTimeout", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
       _commandTimeoutProperty = new ConfigurationProperty ("commandTimeout", typeof (TimeSpan), TimeSpan.FromMinutes (1));
       _downloadStartedTimeoutProperty = new ConfigurationProperty ("downloadStartedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
-      _downloadUpdatedTimeoutProperty = new ConfigurationProperty ("downloadUpdatedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (5));
+      _downloadUpdatedTimeoutProperty = new ConfigurationProperty ("downloadUpdatedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
       _retryIntervalProperty = new ConfigurationProperty ("retryInterval", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
       _webApplicationRootProperty = new ConfigurationProperty (
           "webApplicationRoot",

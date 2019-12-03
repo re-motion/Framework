@@ -38,6 +38,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         new Size (12, 18),
         new Size (970, 110));
 
+    public static readonly ScreenshotTooltipStyle Edge = new ScreenshotTooltipStyle (
+        new Font ("Arial", 9, FontStyle.Regular),
+        new SolidBrush (Color.FromArgb (0x57, 0x57, 0x57)),
+        Brushes.White,
+        new Pen (Color.FromArgb (0x76, 0x76, 0x76), 1),
+        TooltipPositioning.BottomRight,
+        new WebPadding (2, 0, 2, 0),
+        true,
+        new Size (12, 18),
+        new Size (970, 110));
+
     public static readonly ScreenshotTooltipStyle InternetExplorer = new ScreenshotTooltipStyle (
         new Font ("Arial", 9, FontStyle.Regular),
         new SolidBrush (Color.FromArgb (0x66, 0x66, 0x66)),

@@ -68,6 +68,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="EdgeBinariesProviderTest.cs" />
     <Compile Include="FirefoxBinariesProviderTest.cs" />
     <Compile Include="WxeCompletionDetectionHelpersTest.cs" />
     <Compile Include="AspNetRequestErrorDetectionStrategyTest.cs" />
@@ -164,17 +165,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\Chrome.any.DropDownList0.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\Chrome.any.DropDownList1.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\Chrome.any.DropDownList2.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\DropDownList.png" />
     <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\InternetExplorer.any.DropDownList0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\InternetExplorer.any.DropDownList1.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\Chrome.any.DropDownMenu.png" />
     <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\InternetExplorer.any.DropDownMenu0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\InternetExplorer.any.DropDownMenu1.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\Chrome.any.ListMenu0.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\Chrome.any.ListMenu1.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\Chrome.any.ListMenu2.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\ListMenu.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\InternetExplorer.any.ListMenu0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\InternetExplorer.any.ListMenu1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\MouseTest\Chrome.any.Test_Tooltip.png" />
@@ -187,13 +183,13 @@
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementTextAnnotations0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementTextAnnotations1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ResolveAbsolutePositionedElement.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Edge.any.ResolveBorderElementA.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ResolveBorderElementA.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ResolveBorderElementB.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ResolveElementInFrame.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\TooltipTest.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\TabbedMenuControlObjectTest\Chrome.any.TabbedMenu.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\TabbedMenuControlObjectTest\TabbedMenu.png" />
     <EmbeddedResource Include="SavedTestScreenshots\TabbedMenuControlObjectTest\InternetExplorer.any.TabbedMenu.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\WebTabStripControlObjectTest\Chrome.any.WebTabStrip.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\WebTabStripControlObjectTest\WebTabStrip.png" />
     <EmbeddedResource Include="SavedTestScreenshots\WebTabStripControlObjectTest\InternetExplorer.any.WebTabStrip.png" />
     <EmbeddedResource Include="SavedTestScreenshots\WebTreeViewControlObjectTest\WebTreeView.png" />
   </ItemGroup>
@@ -259,6 +255,15 @@
     <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\Firefox.any.DropDownList.png" />
     <None Include="SavedTestScreenshots\DropDownListControlObjectTest\readme.txt" />
     <None Include="SavedTestScreenshots\ScrollTests\readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\TooltipTest.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\Chrome.any.DropDownMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\Edge.any.DropDownMenu.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -297,7 +297,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void DropDownList ()
     {
       WebPadding padding;
-      if (Helper.BrowserConfiguration.IsChrome())
+      if (Helper.BrowserConfiguration.IsChrome() || Helper.BrowserConfiguration.IsEdge())
       {
         padding = new WebPadding (2, 3, 2, 53);
       }
