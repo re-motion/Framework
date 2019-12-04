@@ -32,18 +32,36 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       AppContext.SetSwitch ("Switch.System.Net.DontEnableSchUseStrongCrypto", false);
 
-      var screenshotDirectory = _setUpFixtureHelper.ScreenshotDirectory;
+      try
+      {
+        var screenshotDirectory = _setUpFixtureHelper.ScreenshotDirectory;
 
-      if (Directory.Exists (screenshotDirectory))
-        Directory.Delete (screenshotDirectory, true);
+        if (Directory.Exists (screenshotDirectory))
+          Directory.Delete (screenshotDirectory, true);
 
-      _setUpFixtureHelper.OnSetUp();
+        _setUpFixtureHelper.OnSetUp();
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine ("SetUpFixture failed: " + e);
+        Console.WriteLine();
+        throw;
+      }
     }
 
     [TearDown]
     public void TearDown ()
     {
-      _setUpFixtureHelper.OnTearDown();
+      try
+      {
+        _setUpFixtureHelper.OnTearDown();
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine ("SetUpFixture failed: " + e);
+        Console.WriteLine();
+        throw;
+      }
     }
   }
 }
