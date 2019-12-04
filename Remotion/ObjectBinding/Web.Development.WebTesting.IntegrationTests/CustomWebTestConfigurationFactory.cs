@@ -21,6 +21,7 @@ using System.IO.Compression;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
@@ -44,6 +45,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var chromeExecutable = ChromeExecutable.CreateForCustomInstance (customBrowserBinary, customUserDirectoryPath);
 
       return new ChromeConfiguration (configSettings, chromeExecutable, advancedChromeOptions);
+    }
+
+    protected override IEdgeConfiguration CreateEdgeConfiguration (WebTestConfigurationSection configSettings)
+    {
+      var edgeVersionArchivePath = ConfigurationManager.AppSettings["EdgeVersionArchive"];
+
+      if (string.IsNullOrEmpty (edgeVersionArchivePath))
+        return new EdgeConfiguration (configSettings);
+
+      var versionedEdgeFolder = $"Edge_v{LatestTestedEdgeVersion}";
+      var customEdgeDirectory = PrepareCustomBrowserDirectory (edgeVersionArchivePath, versionedEdgeFolder);
+
+      var customBrowserBinary = GetBinaryPath (customEdgeDirectory, "msedge");
+      var customDriverBinary = GetBinaryPath (customEdgeDirectory, "msedgedriver");
+      var customUserDirectoryPath = CustomUserDirectory.GetCustomUserDirectory();
+
+      var edgeExecutable = new EdgeExecutable (customBrowserBinary, customDriverBinary, customUserDirectoryPath);
+
+      return new EdgeConfiguration (configSettings, edgeExecutable);
     }
 
     protected override IFirefoxConfiguration CreateFirefoxConfiguration (WebTestConfigurationSection configSettings)
