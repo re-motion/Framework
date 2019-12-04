@@ -107,14 +107,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
         _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
 
+        var attributeCollection = new AttributeCollection (new StateBag());
+
         if (renderingContext.Control.IsDescriptionEnabled)
-        {
-          var attributeCollection = new AttributeCollection (new StateBag());
           attributeCollection.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
 
-          _validationErrorRenderer.AddValidationErrorsReference (attributeCollection, validationErrorsID, validationErrors);
-          attributeCollection.AddAttributes (renderingContext.Writer);
-        }
+        _validationErrorRenderer.AddValidationErrorsReference (attributeCollection, validationErrorsID, validationErrors);
+
+        attributeCollection.AddAttributes (renderingContext.Writer);
 
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
         imageControl.RenderControl (renderingContext.Writer);
