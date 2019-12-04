@@ -40,7 +40,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           IFluentControlObjectWithSelectableOptions,
           IControlObjectWithText,
           IControlObjectWithFormElements,
-          ISupportsValidationErrors
+          ISupportsValidationErrors,
+          ISupportsValidationErrorsForReadOnly
   {
     public BocReferenceValueControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -216,6 +217,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       return GetValidationErrors (GetValueScope());
+    }
+
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly (GetLabeledElementScope());
     }
 
     protected override ElementScope GetLabeledElementScope ()

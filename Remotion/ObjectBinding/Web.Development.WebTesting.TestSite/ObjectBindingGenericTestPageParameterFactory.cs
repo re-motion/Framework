@@ -34,6 +34,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
           TestConstants.ValidationErrorTestsID,
           TestConstants.ValidateButtonHtmlID,
           TestConstants.CustomValidatedControlInFormGridHtmlID,
+          TestConstants.CustomValidatedReadOnlyControlInFormGridHtmlID,
           TestConstants.MultipleValidatedControlInFormGridHtmlID,
           TestConstants.VisibleHtmlID,
           TestConstants.ControlInFormGridHtmlID,

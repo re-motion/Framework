@@ -166,5 +166,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
           TestConstants.CorrectDomainProperty,
           TestConstants.IncorrectDomainProperty);
     }
+
+    public GenericTestOptions CreateCustomValidatedReadOnly ()
+    {
+      return new GenericTestOptions (
+          TestConstants.CustomValidatedReadOnlyControlInFormGridID,
+          TestConstants.CustomValidatedReadOnlyControlInFormGridHtmlID,
+          DataSourceID,
+          TestConstants.CorrectDomainProperty,
+          TestConstants.IncorrectDomainProperty,
+          EnabledState.Enabled,
+          ReadOnlyState.ReadOnly);
+    }
   }
 }

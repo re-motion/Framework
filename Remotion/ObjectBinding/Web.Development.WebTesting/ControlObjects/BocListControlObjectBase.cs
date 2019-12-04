@@ -41,7 +41,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           IListMenuHost,
           IControlObjectWithRows<TRowControlObject>,
           IFluentControlObjectWithRows<TRowControlObject>,
-          ISupportsValidationErrors
+          ISupportsValidationErrors,
+          ISupportsValidationErrorsForReadOnly
       where TRowControlObject : ControlObject
       where TCellControlObject : ControlObject
   {
@@ -441,6 +442,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<string> GetValidationErrors ()
     {
       return GetValidationErrors (Scope.FindCss (".bocListTableBlock > .bocListTableContainer"));
+    }
+
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly (Scope.FindCss (".bocListTableBlock > .bocListTableContainer"));
     }
 
     protected override ElementScope GetLabeledElementScope ()

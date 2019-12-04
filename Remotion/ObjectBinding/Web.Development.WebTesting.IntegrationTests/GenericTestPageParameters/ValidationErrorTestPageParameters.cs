@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
   /// </summary>
   public class ValidationErrorTestPageParameters : GenericTestPageParameterBase
   {
-    private const int c_parameterCount = 6;
+    private const int c_parameterCount = 7;
 
     /// <summary>
     /// Html id of validate button control
@@ -37,6 +37,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     /// Html id of a control with custom validator inside a form grid.
     /// </summary>
     public string CustomValidatedControlHtmlId { get; private set; }
+
+    /// <summary>
+    /// Html id of a read-only control with custom validator inside a form grid.
+    /// </summary>
+    public string CustomValidatedReadOnlyControlHtmlId { get; private set; }
 
     /// <summary>
     /// Html id of a control with multiple validators inside a form grid.
@@ -54,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     public string ControlWithoutValidationHtmlId { get; private set; }
 
     /// <summary>
-    /// Html id of a readonly control.
+    /// Html id of a read-only control.
     /// </summary>
     public string ReadOnlyControlHtmlId { get; private set; }
 
@@ -70,10 +75,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
 
       ValidateButtonId = data.Arguments[0];
       CustomValidatedControlHtmlId = data.Arguments[1];
-      MultipleValidatorsControlHtmlId = data.Arguments[2];
-      ControlNotInFormGridHtmlId = data.Arguments[3];
-      ControlWithoutValidationHtmlId = data.Arguments[4];
-      ReadOnlyControlHtmlId = data.Arguments[5];
+      CustomValidatedReadOnlyControlHtmlId = data.Arguments[2];
+      MultipleValidatorsControlHtmlId = data.Arguments[3];
+      ControlNotInFormGridHtmlId = data.Arguments[4];
+      ControlWithoutValidationHtmlId = data.Arguments[5];
+      ReadOnlyControlHtmlId = data.Arguments[6];
     }
   }
 }

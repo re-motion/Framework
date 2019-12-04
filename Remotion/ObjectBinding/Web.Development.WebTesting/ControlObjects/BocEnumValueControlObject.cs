@@ -38,7 +38,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           IControlObjectWithSelectableOptions,
           IFluentControlObjectWithSelectableOptions,
           IControlObjectWithFormElements,
-          ISupportsValidationErrors
+          ISupportsValidationErrors,
+          ISupportsValidationErrorsForReadOnly
   {
     private readonly IBocEnumValueControlObjectVariant _variantImpl;
 
@@ -150,6 +151,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<string> GetValidationErrors ()
     {
       return GetValidationErrors (GetScopeWithReferenceInformation());
+    }
+
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly (GetScopeWithReferenceInformation());
     }
 
     protected override ElementScope GetLabeledElementScope ()

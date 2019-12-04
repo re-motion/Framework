@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestPageParameters;
@@ -35,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
   public class ValidationErrorTestCaseFactory <TControlSelector, TControl>
       : ControlSelectorTestCaseFactoryBase<TControlSelector, TControl, ValidationErrorTestPageParameters>
       where TControlSelector : IHtmlIDControlSelector<TControl>
-      where TControl : BocControlObject, ISupportsValidationErrors
+      where TControl : BocControlObject, ISupportsValidationErrors, ISupportsValidationErrorsForReadOnly
   {
     protected override string TestPrefix
     {
@@ -88,6 +89,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
           () => control.GetValidationErrors(),
           Throws.Exception.Message.EqualTo (
               AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+    }
+
+    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
+    public void GetValidationErrorsForReadOnly_ReadOnlyControl ()
+    {
+      var control = Selector.GetByID (Parameter.CustomValidatedReadOnlyControlHtmlId);
+
+      ClickValidationButton (control);
+
+      Assert.That (control.IsReadOnly(), Is.True);
+      Assert.That (control.GetValidationErrorsForReadOnly(), Is.EqualTo (new List<string> { "Always false." }));
+    }
+
+    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
+    public void GetValidationErrorsForReadOnly_EditableControl_Throws ()
+    {
+      var control = Selector.GetByID (Parameter.ControlWithoutValidationHtmlId);
+
+      Assert.That (control.IsReadOnly(), Is.False);
+      Assert.That (
+          () => control.GetValidationErrorsForReadOnly(),
+          Throws.Exception.Message.EqualTo (
+              AssertionExceptionUtility.CreateControlNotReadOnlyException().Message));
     }
 
     private void ClickValidationButton (TControl control)

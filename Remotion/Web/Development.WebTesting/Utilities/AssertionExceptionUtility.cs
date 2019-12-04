@@ -51,6 +51,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     [NotNull]
     [MustUseReturnValue]
+    public static WebTestException CreateControlNotReadOnlyException ()
+    {
+      return new WebTestException ("The control is currently not in a read-only state. Therefore, the operation is not possible.");
+    }
+
+    [NotNull]
+    [MustUseReturnValue]
     public static WebTestException CreateControlMissingException ([NotNull] string exceptionDetails)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("exceptionDetails", exceptionDetails);

@@ -58,6 +58,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     protected override GenericTestOptions HiddenControlOptions => OptionsFactory.CreateHidden();
     protected override GenericTestOptions VisibleControlOptions => OptionsFactory.CreateVisible();
     protected override GenericTestOptions CustomValidatedControlOptions => OptionsFactory.CreateCustomValidated();
+    protected override GenericTestOptions CustomValidatedReadOnlyControlOptions => OptionsFactory.CreateCustomValidatedReadOnly();
     protected override GenericTestOptions MultipleValidatedControlOptions => OptionsFactory.CreateMultipleValidated();
 
     protected override Control AmbiguousControlPanel => PanelAmbiguousControl;

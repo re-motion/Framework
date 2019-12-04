@@ -32,7 +32,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue"/>.
   /// </summary>
   public class BocAutoCompleteReferenceValueControlObject
-      : BocControlObject, IFillableControlObject, ICommandHost, IDropDownMenuHost, IControlObjectWithFormElements, ISupportsValidationErrors, IControlObjectWithText
+      : BocControlObject,
+          IFillableControlObject,
+          ICommandHost,
+          IDropDownMenuHost,
+          IControlObjectWithFormElements,
+          ISupportsValidationErrors,
+          ISupportsValidationErrorsForReadOnly,
+          IControlObjectWithText
   {
     /// <summary>
     /// Various constants shared by the script and the script-user client-code.
@@ -251,6 +258,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlReadOnlyException();
 
       return GetValidationErrors (Scope.FindChild ("TextValue"));
+    }
+
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly (GetLabeledElementScope());
     }
 
     protected override ElementScope GetLabeledElementScope ()

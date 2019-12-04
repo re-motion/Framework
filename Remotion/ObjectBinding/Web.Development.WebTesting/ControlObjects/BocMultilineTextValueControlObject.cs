@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue"/>.
   /// </summary>
   public class BocMultilineTextValueControlObject
-      : BocControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsValidationErrors, IControlObjectWithText
+      : BocControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsValidationErrors, ISupportsValidationErrorsForReadOnly, IControlObjectWithText
   {
     public BocMultilineTextValueControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -126,6 +126,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<string> GetValidationErrors ()
     {
       return GetValidationErrors (GetValueScope());
+    }
+
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly (GetValueScope());
     }
 
     protected override ElementScope GetLabeledElementScope ()

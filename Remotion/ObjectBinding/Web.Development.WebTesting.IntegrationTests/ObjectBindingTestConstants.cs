@@ -31,6 +31,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public string ControlInMultiFormGridID1 => "ControlInMultiFormGridID1";
     public string ControlInMultiFormGridID2 => "ControlInMultiFormGridID2";
     public string CustomValidatedControlInFormGridID => "CustomValidatedControlInFormGrid";
+    public string CustomValidatedReadOnlyControlInFormGridID => "CustomValidatedReadOnlyControlInFormGrid";
     public string MultipleValidatedControlInFormGridID => "MultipleValidatedControlInFormGrid";
     public string ValidateButtonID => "ValidateButton";
 
@@ -43,6 +44,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public string ControlInMultiFormGridHtmlID1 => BodyConstant + ControlInMultiFormGridID1;
     public string ControlInMultiFormGridHtmlID2 => BodyConstant + ControlInMultiFormGridID2;
     public string CustomValidatedControlInFormGridHtmlID => BodyConstant + CustomValidatedControlInFormGridID;
+    public string CustomValidatedReadOnlyControlInFormGridHtmlID => BodyConstant + CustomValidatedReadOnlyControlInFormGridID;
     public string MultipleValidatedControlInFormGridHtmlID => BodyConstant + MultipleValidatedControlInFormGridID;
     public string ValidateButtonHtmlID => BodyConstant + ValidateButtonID;
   }
