@@ -35,6 +35,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _commandTimeoutProperty;
     private readonly ConfigurationProperty _downloadStartedTimeoutProperty;
     private readonly ConfigurationProperty _downloadUpdatedTimeoutProperty;
+    private readonly ConfigurationProperty _verifyWebApplicationStartedTimeoutProperty;
     private readonly ConfigurationProperty _retryIntervalProperty;
     private readonly ConfigurationProperty _webApplicationRootProperty;
     private readonly ConfigurationProperty _screenshotDirectoryProperty;
@@ -71,6 +72,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _commandTimeoutProperty = new ConfigurationProperty ("commandTimeout", typeof (TimeSpan), TimeSpan.FromMinutes (1));
       _downloadStartedTimeoutProperty = new ConfigurationProperty ("downloadStartedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
       _downloadUpdatedTimeoutProperty = new ConfigurationProperty ("downloadUpdatedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
+      _verifyWebApplicationStartedTimeoutProperty = new ConfigurationProperty ("verifyWebApplicationStartedTimeout", typeof (TimeSpan), TimeSpan.FromMinutes (1));
       _retryIntervalProperty = new ConfigurationProperty ("retryInterval", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
       _webApplicationRootProperty = new ConfigurationProperty (
           "webApplicationRoot",
@@ -96,6 +98,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _commandTimeoutProperty,
                         _downloadStartedTimeoutProperty,
                         _downloadUpdatedTimeoutProperty,
+                        _verifyWebApplicationStartedTimeoutProperty,
                         _retryIntervalProperty,
                         _webApplicationRootProperty,
                         _screenshotDirectoryProperty,
@@ -160,6 +163,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public TimeSpan DownloadUpdatedTimeout
     {
       get { return (TimeSpan) this [_downloadUpdatedTimeoutProperty]; }
+    }
+    
+    /// <summary>
+    /// Specifies how long the <see cref="WebTestSetUpFixtureHelper"/> should wait for the WebApplication to return a 200 on <see cref="WebApplicationRoot"/>.
+    /// </summary>
+    public TimeSpan VerifyWebApplicationStartedTimeout
+    {
+      get { return (TimeSpan) this [_verifyWebApplicationStartedTimeoutProperty]; }
     }
 
     /// <summary>

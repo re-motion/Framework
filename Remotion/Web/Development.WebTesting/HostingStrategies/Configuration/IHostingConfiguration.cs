@@ -25,6 +25,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
   /// <seealso cref="HostingConfiguration"/>
   public interface IHostingConfiguration
   {
+    TimeSpan VerifyWebApplicationStartedTimeout { get; }
+
     [NotNull] IHostingStrategy GetHostingStrategy ();
   }
 }
