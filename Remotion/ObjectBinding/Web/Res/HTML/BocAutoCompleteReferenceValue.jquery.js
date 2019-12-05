@@ -1156,8 +1156,11 @@
                 if (!data[i])
                     continue;
                 var item = options.formatItem(data[i].data, i + 1, max, data[i].value, term);
+                var termElement = document.createElement("div");
+                termElement.innerText = term;
+                var termAsHtml = termElement.innerHTML;
                 var li = $ ("<li role='option' aria-selected='false' />")
-                  .html (options.highlight (item.html, term))
+                  .html (options.highlight (item.html, termAsHtml))
                   .attr ("id", options.selectListID + "_" + i)
                   .attr("aria-setsize", max)
                   .attr("aria-posinset", i + 1)
