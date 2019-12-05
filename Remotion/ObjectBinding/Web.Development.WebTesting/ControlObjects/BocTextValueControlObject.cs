@@ -29,7 +29,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// <summary>
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocTextValue"/>.
   /// </summary>
-  public class BocTextValueControlObject : BocControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsValidationErrors
+  public class BocTextValueControlObject
+      : BocControlObject,
+          IFillableControlObject,
+          IControlObjectWithFormElements,
+          ISupportsValidationErrors,
+          ISupportsValidationErrorsForReadOnly
   {
     public BocTextValueControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -89,6 +94,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<string> GetValidationErrors ()
     {
       return GetValidationErrors (GetValueScope());
+    }
+
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly (GetValueScope());
     }
 
     protected override ElementScope GetLabeledElementScope ()

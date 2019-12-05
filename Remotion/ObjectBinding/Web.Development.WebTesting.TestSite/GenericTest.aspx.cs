@@ -41,6 +41,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     private GenericTestOptions _formGridMultiControlOptions2;
     private GenericTestOptions _shiftedColumnsFormGridControlOptions;
     private GenericTestOptions _customValidatedControlOptions;
+    private GenericTestOptions _customValidatedReadOnlyControlOptions;
     private GenericTestOptions _multipleValidatedControlOptions;
 
     public GenericTest ()
@@ -197,6 +198,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     }
 
     /// <inheritdoc />
+    protected override GenericTestOptions CustomValidatedReadOnlyControlOptions
+    {
+      get { return _customValidatedReadOnlyControlOptions; }
+    }
+
+    /// <inheritdoc />
     protected override GenericTestOptions MultipleValidatedControlOptions
     {
       get { return _multipleValidatedControlOptions; }
@@ -223,6 +230,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       const string incorrectDomainProperty = "Remotion.ObjectBinding.Sample.Job, Remotion.ObjectBinding.Sample";
 
       const string customValidatedControlInFormGridID = "CustomValidatedControlInFormGrid";
+      const string customValidatedReadOnlyControlInFormGridID = "CustomValidatedReadOnlyControlInFormGrid";
       const string multipleValidatedControlInFormGridID = "MultipleValidatedControlInFormGrid";
 
       // "Real" HTML ids of the controls
@@ -240,6 +248,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       var controlInMultiFormGridIDHtml2 = string.Concat ("body_", controlInMultiFormGridID2);
 
       var customValidatedControlInFormGridHtmlID = string.Concat ("body_", customValidatedControlInFormGridID);
+      var customValidatedReadOnlyControlInFormGridHtmlID = string.Concat ("body_", customValidatedReadOnlyControlInFormGridID);
       var multipleValidatedControlInFormGridHtmlID = string.Concat ("body_", multipleValidatedControlInFormGridID);
 
 
@@ -329,6 +338,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
           correctDomainProperty,
           incorrectDomainProperty);
 
+      _customValidatedReadOnlyControlOptions = new GenericTestOptions (
+          customValidatedReadOnlyControlInFormGridID,
+          customValidatedReadOnlyControlInFormGridHtmlID,
+          DataSource.ID,
+          correctDomainProperty,
+          incorrectDomainProperty,
+          EnabledState.Enabled,
+          ReadOnlyState.ReadOnly);
+
       _multipleValidatedControlOptions = new GenericTestOptions (
           multipleValidatedControlInFormGridID,
           multipleValidatedControlInFormGridHtmlID,
@@ -345,7 +363,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       _parameters.Add (TestConstants.DisabledTestsID, visibleHtmlID, disabledHtmlID);
       _parameters.Add (TestConstants.ReadOnlyTestsID, visibleHtmlID, readonlyHtmlID);
       _parameters.Add (TestConstants.LabelTestsID, controlInFormGridHtmlID, readonlyControlInFormGridHtmlID, oneControlOverMultipleRowsFormGridHtmlID, shiftedColumnsControlFormGridHtmlID, controlInMultiFormGridIDHtml1, controlInMultiFormGridIDHtml2, visibleHtmlID);
-      _parameters.Add (TestConstants.ValidationErrorTestsID, string.Concat ("body_", ValidateButton.ID), customValidatedControlInFormGridHtmlID, multipleValidatedControlInFormGridHtmlID, visibleHtmlID, controlInFormGridHtmlID, readonlyHtmlID);
+      _parameters.Add (TestConstants.ValidationErrorTestsID, string.Concat ("body_", ValidateButton.ID), customValidatedControlInFormGridHtmlID, customValidatedReadOnlyControlInFormGridHtmlID, multipleValidatedControlInFormGridHtmlID, visibleHtmlID, controlInFormGridHtmlID, readonlyHtmlID);
 
       ValidateButton.Click += ValidateButton_Click;
 

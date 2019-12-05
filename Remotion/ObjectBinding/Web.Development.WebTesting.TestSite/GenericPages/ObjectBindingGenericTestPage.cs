@@ -86,6 +86,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
     protected abstract TOptions CustomValidatedControlOptions { get; }
 
     [NotNull]
+    protected abstract TOptions CustomValidatedReadOnlyControlOptions { get; }
+
+    [NotNull]
     protected abstract TOptions MultipleValidatedControlOptions { get; }
 
 
@@ -178,6 +181,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
 
         var customValidatorForMultipleValidatedControl2 = CreateCustomValidator (multipleValidatedControl, "Always false. The second.");
         FormGridValidationTable.Rows[5].Cells[1].Controls.Add (customValidatorForMultipleValidatedControl2);
+
+        var customValidatedReadOnlyControl = testPage.CreateControl (CustomValidatedReadOnlyControlOptions);
+        FormGridValidationTable.Rows[7].Cells[1].Controls.Add (customValidatedReadOnlyControl);
+
+        var customValidatorForCustomValidatedReadOnlyControl = CreateCustomValidator (customValidatedReadOnlyControl, "Always false.");
+        FormGridValidationTable.Rows[7].Cells[1].Controls.Add (customValidatorForCustomValidatedReadOnlyControl);
       }
     }
 

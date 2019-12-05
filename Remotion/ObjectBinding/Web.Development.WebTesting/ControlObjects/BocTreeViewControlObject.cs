@@ -32,7 +32,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       : BocControlObject,
           IControlObjectWithNodes<BocTreeViewNodeControlObject>,
           IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>,
-          ISupportsValidationErrors
+          ISupportsValidationErrors,
+          ISupportsValidationErrorsForReadOnly
   {
     private readonly BocTreeViewNodeControlObject _metaRootNode;
 
@@ -103,6 +104,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<string> GetValidationErrors ()
     {
       return GetValidationErrors (GetScopeWithReferenceInformation());
+    }
+
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly (GetScopeWithReferenceInformation());
     }
 
     protected override ElementScope GetLabeledElementScope ()

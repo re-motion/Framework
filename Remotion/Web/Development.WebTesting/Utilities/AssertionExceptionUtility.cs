@@ -49,5 +49,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       return new MissingHtmlException ("The control is currently in a read-only state. Therefore, the operation is not possible.");
     }
+
+    [NotNull]
+    [MustUseReturnValue]
+    public static Exception CreateControlNotReadOnlyException ()
+    {
+      return new MissingHtmlException ("The control is currently not in a read-only state. Therefore, the operation is not possible.");
+    }
   }
 }

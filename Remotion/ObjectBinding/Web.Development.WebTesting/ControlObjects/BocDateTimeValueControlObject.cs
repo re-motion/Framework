@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// <summary>
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue"/> control.
   /// </summary>
-  public class BocDateTimeValueControlObject : BocControlObject, IControlObjectWithFormElements, ISupportsValidationErrors
+  public class BocDateTimeValueControlObject : BocControlObject, IControlObjectWithFormElements, ISupportsValidationErrors, ISupportsValidationErrorsForReadOnly
   {
     private readonly bool _hasTimeField;
 
@@ -186,6 +186,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       // Because of this, we do not return both errors, as the validation errors would just be duplicated.
       // This should be changed when the behavior of BocDateTimeValue is changed.
       return GetDateValidationErrors();
+    }
+
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly (GetLabeledElementScope());
     }
 
     /// <summary>
