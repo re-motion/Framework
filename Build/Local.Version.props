@@ -17,6 +17,6 @@
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Version>1.21.4.20000</Version>
+    <Version>1.21.6.20000</Version>
   </PropertyGroup>
 </Project>
