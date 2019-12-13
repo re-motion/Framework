@@ -201,5 +201,15 @@ namespace Remotion.UnitTests.Collections
 
       Assert.That (readOnlyDictionary, Is.EqualTo (_dictionary));
     }
+
+    [Test]
+    public void AsReadOnly_WithReadOnlyDictionary_ReturnsSameInstance ()
+    {
+      var dictionary = new ReadOnlyDictionary<string, string> (_dictionary);
+
+      var readOnlyDictionary = dictionary.AsReadOnly();
+
+      Assert.That (readOnlyDictionary, Is.SameAs (dictionary));
+    }
   }
 }

@@ -106,6 +106,9 @@ namespace Remotion.Collections
     {
       ArgumentUtility.CheckNotNull ("dict", dict);
 
+      if (dict is ReadOnlyDictionary<TKey, TValue> readOnlyDict)
+        return readOnlyDict;
+
       return new ReadOnlyDictionary<TKey, TValue> (dict);
     }
   }
