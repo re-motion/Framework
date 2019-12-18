@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -82,7 +83,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       public WebTreeViewNodeControlObject WithItemID (string itemID)
       {
         var nodeScope = _webTreeViewNode.Scope.FindTagWithAttribute ("ul li", DiagnosticMetadataAttributes.ItemID, itemID);
-        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+        return CreateWebTreeViewNodeControlObject (nodeScope);
       }
 
       public WebTreeViewNodeControlObject WithIndex (int oneBasedIndex)
@@ -96,13 +97,13 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
         var nodeScope = foundNodes.Single();
 
-        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+        return CreateWebTreeViewNodeControlObject (nodeScope);
       }
 
       public WebTreeViewNodeControlObject WithDisplayText (string displayText)
       {
         var nodeScope = _webTreeViewNode.Scope.FindTagWithAttribute ("ul li", DiagnosticMetadataAttributes.Content, displayText);
-        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+        return CreateWebTreeViewNodeControlObject (nodeScope);
       }
 
       public WebTreeViewNodeControlObject WithDisplayTextContains (string containsDisplayText)
@@ -112,7 +113,20 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
             CssComparisonOperator.SubstringMatch,
             DiagnosticMetadataAttributes.Content,
             containsDisplayText);
-        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+
+        return CreateWebTreeViewNodeControlObject (nodeScope);
+      }
+
+      private WebTreeViewNodeControlObject CreateWebTreeViewNodeControlObject (ElementScope nodeScope)
+      {
+        try
+        {
+          return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+        }
+        catch (StaleElementException ex)
+        {
+          throw AssertionExceptionUtility.CreateControlMissingException (ex.Message);
+        }
       }
     }
 

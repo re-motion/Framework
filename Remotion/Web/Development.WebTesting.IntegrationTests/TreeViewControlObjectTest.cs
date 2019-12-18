@@ -17,14 +17,12 @@
 using System;
 using Coypu;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
-using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
@@ -310,6 +308,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestSelectNodeInHierarchyOnlyRootNodeExpanded ()
     {
+      const string expectedExceptionMessage = "The element cannot be found: This element has been removed from the DOM. Coypu will normally re-find elements using the original locators in this situation, except if you have captured a snapshot list of all matching elements using FindAllCss() or FindAllXPath()";
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
@@ -318,8 +317,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       rootNode.Expand();
 
       rootNode.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
-      Assert.That (() => rootNode.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select(), Throws.InstanceOf<StaleElementException>());
-      Assert.That (() => rootNode.GetNodeInHierarchy().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<StaleElementException>());
+      Assert.That (
+          () => rootNode.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select(), Throws.InstanceOf<WebTestException>()
+          .With.Message.EqualTo (expectedExceptionMessage));
+      Assert.That (
+          () => rootNode.GetNodeInHierarchy().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<WebTestException>()
+          .With.Message.EqualTo (expectedExceptionMessage));
     }
 
     [Test]
@@ -370,6 +373,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestTreeSelectNodeInHierarchyOnlyRootNodeExpanded ()
     {
+      const string expectedExceptionMessage = "The element cannot be found: element not interactable";
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
@@ -379,8 +383,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       treeView.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
 
-      Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select(), Throws.InstanceOf<ElementNotInteractableException>());
-      Assert.That (() => treeView.GetNodeInHierarchy().WithDisplayTextContains ("11").Select(), Throws.InstanceOf<ElementNotInteractableException>());
+      Assert.That (
+          () => treeView.GetNodeInHierarchy().WithDisplayText ("Child node 12").Select(),
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.StartsWith (expectedExceptionMessage));
+      Assert.That (
+          () => treeView.GetNodeInHierarchy().WithDisplayTextContains ("11").Select(),
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.StartsWith (expectedExceptionMessage));
     }
 
     [Test]
