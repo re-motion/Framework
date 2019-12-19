@@ -373,7 +373,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestTreeSelectNodeInHierarchyOnlyRootNodeExpanded ()
     {
-      const string expectedExceptionMessage = "The element cannot be found: element not interactable";
+      const string expectedExceptionMessage = "The element cannot be found: ";
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
