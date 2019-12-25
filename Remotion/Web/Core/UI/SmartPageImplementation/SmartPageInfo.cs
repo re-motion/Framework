@@ -449,7 +449,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     {
       foreach (IEditableControl control in _trackedControls.Values)
       {
-        if (control.Visible)
+        if (control.Page != null && control.Visible)
         {
           string[] trackedIDs = control.GetTrackedClientIDs();
           for (int i = 0; i < trackedIDs.Length; i++)
