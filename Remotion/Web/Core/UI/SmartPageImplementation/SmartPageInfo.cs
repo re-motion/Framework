@@ -121,10 +121,27 @@ namespace Remotion.Web.UI.SmartPageImplementation
             "RegisterControlForDirtyStateTracking must not be called after the PreRenderComplete method of the System.Web.UI.Page has been invoked.");
       }
 
+      // Registration is typically done during the Control's init-phase to allow the page's code-behind logic access to the complete dirty state.
       _trackedControls[control] = control;
+      control.Unload += UnregisterControlForDirtyStateTracking;
     }
 
-    /// <summary> Implements <see cref="ISmartPage.RegisterControlForClientSideDirtyStateTracking">ISmartPage.RegisterControlForClientSideDirtyStateTracking</see>. </summary>
+    private void UnregisterControlForDirtyStateTracking (object sender, EventArgs args)
+    {
+      var control = ArgumentUtility.CheckNotNullAndType<IEditableControl> ("sender", sender);
+
+      if (_isPreRenderComplete)
+      {
+        // After the PreRender phase in the page's lifecycle, controls will only get removed when the page is disposed.
+        // We no longer require cleanup for the controls at this point.
+        return;
+      }
+
+      _trackedControls.Remove (control);
+      control.Unload -= UnregisterControlForDirtyStateTracking;
+    }
+
+    /// <summary> Implements <see cref="ISmartPage.RegisterControlForDirtyStateTracking">ISmartPage.RegisterControlForDirtyStateTracking</see>. </summary>
     public void RegisterControlForDirtyStateTracking (string clientID)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("clientID", clientID);
@@ -174,6 +191,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
         var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
         if (scriptManager != null)
           scriptManager.RegisterAsyncPostBackControl (control);
+        // Do not add logic for removing the control/command from the collection upon removing the control from the page tree.
+        // The ASP.NET ScriptManager does not remove the the control either and the registration is only performed during the PreRender phase.
+        // This implies that it is unlikely the control is removed again before getting rendered.
         _synchronousPostBackCommands.Add (command);
       }
     }
@@ -571,7 +591,18 @@ namespace Remotion.Web.UI.SmartPageImplementation
     public void RegisterNavigationControl (INavigationControl control)
     {
       ArgumentUtility.CheckNotNull ("control", control);
+
+      // Registration is typically done during the Control's init-phase to allow building of navigation urls during the entire life cycle.
+      // Note: If the control is removed again, the previously built navigation urls will no longer be valid.
       _navigationControls[control] = control;
+      control.Unload += UnregisterNavigationControl;
+    }
+
+    private void UnregisterNavigationControl (object sender, EventArgs args)
+    {
+      var control = ArgumentUtility.CheckNotNullAndType<INavigationControl> ("sender", sender);
+      _navigationControls.Remove (control);
+      control.Unload -= UnregisterNavigationControl;
     }
 
     /// <summary>
