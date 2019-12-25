@@ -47,9 +47,13 @@ namespace Remotion.Web.UI
     void RegisterControlForDirtyStateTracking (IEditableControl control);
 
     /// <summary>
-    ///   Resgisters a <see cref="Control.ClientID"/> for the tracking of the controls client-side dirty state.
+    ///   Registers a <see cref="Control.ClientID"/> for the tracking of the controls client-side dirty state.
     /// </summary>
     /// <param name="clientID"> The ID of an HTML input/textarea/select element. </param>
+    /// <remarks>
+    ///   Note that this is only required for controls that do not implement <see cref="IEditableControl"/>
+    ///   and therefor cannot be registered using <see cref="RegisterControlForDirtyStateTracking"/>.
+    /// </remarks>
     void RegisterControlForClientSideDirtyStateTracking (string clientID);
 
     /// <summary> 

@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _isRenderedInCurrentLifecycle;
 
     /// <summary>
-    /// Overrides the base method to call <see cref="ISmartPage.RegisterControlForClientSideDirtyStateTracking"/>
+    /// Overrides the base method to call <see cref="ISmartPage.RegisterControlForDirtyStateTracking"/>
     /// after base initialization.
     /// </summary>
     /// <param name="e">ignored</param>
