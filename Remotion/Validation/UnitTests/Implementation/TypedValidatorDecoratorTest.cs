@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 using Remotion.Validation.Rules;
@@ -93,8 +92,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var result = _validatorDecorator.CreateDescriptor();
 
-      Assert.That (result, Is.TypeOf (typeof (ValidatorDescriptor)));
-      Assert.That (PrivateInvoke.GetNonPublicProperty (result, "Rules"), Is.EquivalentTo (new[] { _validationRuleStub1, _validationRuleStub2 }));
+      Assert.That (result.ValidationRules, Is.EquivalentTo (new[] { _validationRuleStub1, _validationRuleStub2 }));
     }
 
     [Test]
@@ -107,17 +105,6 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void CanValidateInstancesOfType_NoCustomer_False ()
     {
       Assert.That (_validatorDecorator.CanValidateInstancesOfType (typeof (Address)), Is.False);
-    }
-
-    [Test]
-    public void GetEnumerator ()
-    {
-      var enumerator = _validatorDecorator.GetEnumerator();
-      Assert.That (enumerator.MoveNext(), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (_validationRuleStub1));
-      Assert.That (enumerator.MoveNext(), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (_validationRuleStub2));
-      Assert.That (enumerator.MoveNext(), Is.False);
     }
   }
 }

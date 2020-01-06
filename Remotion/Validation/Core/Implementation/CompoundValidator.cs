@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Utilities;
@@ -61,10 +60,9 @@ namespace Remotion.Validation.Implementation
       return new ValidationResult (failures);
     }
 
-    public IValidatorDescriptor CreateDescriptor ()
+    public ValidatorDescriptor CreateDescriptor ()
     {
-      var validationRules = GetAllValidationRules();
-      return new ValidatorDescriptor (validationRules);
+      return new ValidatorDescriptor (_validators.SelectMany (v => v.CreateDescriptor().ValidationRules));
     }
 
     public bool CanValidateInstancesOfType (Type type)
@@ -88,21 +86,6 @@ namespace Remotion.Validation.Implementation
       }
 
       return Validate (instance);
-    }
-
-    IEnumerator IEnumerable.GetEnumerator ()
-    {
-      return GetEnumerator();
-    }
-
-    public IEnumerator<IValidationRule> GetEnumerator ()
-    {
-      return GetAllValidationRules().GetEnumerator();
-    }
-
-    private IEnumerable<IValidationRule> GetAllValidationRules ()
-    {
-      return _validators.SelectMany (validator => validator);
     }
   }
 }

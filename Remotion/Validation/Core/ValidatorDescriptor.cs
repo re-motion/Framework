@@ -17,26 +17,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Reflection;
+using Remotion.Utilities;
 using Remotion.Validation.Rules;
-using Remotion.Validation.Validators;
 
 namespace Remotion.Validation
 {
   /// <summary>Used for providing metadata about a validator.</summary>
-  public class ValidatorDescriptor : IValidatorDescriptor
+  public class ValidatorDescriptor
   {
-    private IEnumerable<IValidationRule> Rules { get; }
+    public IReadOnlyCollection<IValidationRule> ValidationRules { get; }
 
-    public ValidatorDescriptor (IEnumerable<IValidationRule> ruleBuilders)
+    public ValidatorDescriptor (IEnumerable<IValidationRule> validationRules)
     {
-      Rules = ruleBuilders;
-    }
+      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
 
-    public IEnumerable<IPropertyValidator> GetValidatorsForMember (IPropertyInformation property)
-    {
-      // TODO RM-5906
-      return Rules.Where (r=>r.Property.Equals (property)).SelectMany (r => r.Validators);
+      ValidationRules = validationRules.ToArray();
     }
   }
 }

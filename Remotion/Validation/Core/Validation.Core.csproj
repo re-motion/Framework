@@ -97,7 +97,6 @@
     <Compile Include="IValidator1.cs" />
     <Compile Include="IValidatorBuilder.cs" />
     <Compile Include="IValidatorBuilder1.cs" />
-    <Compile Include="IValidatorDescriptor.cs" />
     <Compile Include="Merging\PropertyValidatorExtractor.cs" />
     <Compile Include="Implementation\ILogContext.cs" />
     <Compile Include="Merging\IPropertyValidatorExtractor.cs" />

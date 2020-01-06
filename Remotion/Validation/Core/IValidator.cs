@@ -15,19 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using Remotion.Validation.Results;
-using Remotion.Validation.Rules;
 
 namespace Remotion.Validation
 {
-  public interface IValidator : IEnumerable<IValidationRule>
+  public interface IValidator
   {
     ValidationResult Validate (object instance);
 
     ValidationResult Validate (ValidationContext context);
 
-    IValidatorDescriptor CreateDescriptor ();
+    ValidatorDescriptor CreateDescriptor ();
 
     bool CanValidateInstancesOfType (Type type);
   }

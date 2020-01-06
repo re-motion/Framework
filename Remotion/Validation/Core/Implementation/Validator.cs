@@ -15,13 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Utilities;
 using Remotion.Validation.Results;
 using Remotion.Validation.Rules;
-using Remotion.Validation.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
@@ -68,7 +66,7 @@ namespace Remotion.Validation.Implementation
       return new ValidationResult (failures);
     }
 
-    public IValidatorDescriptor CreateDescriptor ()
+    public ValidatorDescriptor CreateDescriptor ()
     {
       return new ValidatorDescriptor (_validationRules);
     }
@@ -101,16 +99,6 @@ namespace Remotion.Validation.Implementation
       ArgumentUtility.CheckNotNull ("context", context);
 
       return Validate (context);
-    }
-
-    IEnumerator IEnumerable.GetEnumerator ()
-    {
-      return GetEnumerator();
-    }
-
-    public IEnumerator<IValidationRule> GetEnumerator ()
-    {
-      return _validationRules.GetEnumerator();
     }
   }
 }
