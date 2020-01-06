@@ -29,7 +29,7 @@ namespace Remotion.Validation.Attributes.Validation
   /// </summary>
   public class LengthAttribute : AddingValidationAttributeBase
   {
-    // TODO RM-5960: make max-length nullable and create specific type of length-validator based on min and max-length values
+    // TODO RM-5906: make max-length nullable and create specific type of length-validator based on min and max-length values
     private readonly int _maxLength;
     private readonly int _minLength;
 

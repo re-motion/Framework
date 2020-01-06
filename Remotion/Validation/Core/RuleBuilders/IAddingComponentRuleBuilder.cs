@@ -23,7 +23,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.RuleBuilders
 {
-  // TODO RM-5960: Rename to remove "Component". Replace with "Validation". Insert "Property"
+  // TODO RM-5906: Rename to remove "Component". Replace with "Validation". Insert "Property"
   /// <summary>
   /// Provides an API for extending a validation rule with metadata, such as whether the validation rule can be removed by another component.
   /// </summary>

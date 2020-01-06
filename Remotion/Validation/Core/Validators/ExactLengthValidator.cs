@@ -27,6 +27,6 @@ namespace Remotion.Validation.Validators
     {
     }
 
-    // TODO RM-5960: build separate validator with a dedicated message
+    // TODO RM-5906: build separate validator with a dedicated message
   }
 }

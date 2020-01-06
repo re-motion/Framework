@@ -23,25 +23,25 @@ namespace Remotion.Validation.Globalization.UnitTests
   public class ResourceManagerBasedValidationMessageTest
   {
     [Test]
-    [Ignore ("RM-5960")]
+    [Ignore ("RM-5906")]
     public void Format ()
     {
     }
 
     [Test]
-    [Ignore ("RM-5960")]
+    [Ignore ("RM-5906")]
     public void Format_UsesSuppliedFormatProviderInsteadOfCurrentCulture ()
     {
     }
 
     [Test]
-    [Ignore ("RM-5960")]
+    [Ignore ("RM-5906")]
     public void Format_UsesSuppliedCultureInsteadOfCurrentUICulture ()
     {
     }
 
     [Test]
-    [Ignore ("RM-5960")]
+    [Ignore ("RM-5906")]
     public void ToString_Override ()
     {
     }

@@ -47,7 +47,7 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
 
       Assert.That (validationFailures.Length, Is.EqualTo (1));
-      //TODO RM-5960: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
       Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must be greater than '3'."));
       Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '3'."));
     }
@@ -61,13 +61,13 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
 
       Assert.That (validationFailures.Length, Is.EqualTo (1));
-      //TODO RM-5960: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
       Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must be greater than '3'."));
       Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '3'."));
     }
 
     [Test]
-    [Ignore ("RM-5960")]
+    [Ignore ("RM-5906")]
     public void Validate_WithIComparable_CallsCompareTo ()
     {
     }

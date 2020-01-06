@@ -44,7 +44,7 @@ namespace Remotion.Validation.Implementation
       ArgumentUtility.CheckNotNull ("property", property);
       ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
 
-      // TODO RM-5960: Replace with IPropertyInformation and propagate to call and callee-site
+      // TODO RM-5906: Replace with IPropertyInformation and propagate to call and callee-site
       _propertyInfo = property;
       _property = PropertyInfoAdapter.Create (property);
       _validationMessageFactory = validationMessageFactory;
@@ -59,8 +59,8 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
 
-      // TODO RM-5960: Replace with IPropertyInformation.GetGetMethod().GetFastInvoker.
-      // TODO RM-5960: Add cache, try to unify with AddingComponentPropertyRule and DomainObjectAttributesBasedValidationPropertyRuleReflector
+      // TODO RM-5906: Replace with IPropertyInformation.GetGetMethod().GetFastInvoker.
+      // TODO RM-5906: Add cache, try to unify with AddingComponentPropertyRule and DomainObjectAttributesBasedValidationPropertyRuleReflector
       var parameterExpression = Expression.Parameter (typeof (object), "t");
 
       // object o => (object) (TheType o).TheProperty

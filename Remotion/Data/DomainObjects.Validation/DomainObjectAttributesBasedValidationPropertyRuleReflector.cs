@@ -75,9 +75,9 @@ namespace Remotion.Data.DomainObjects.Validation
             "interfaceProperty");
       }
 
-      // TODO RM-5960: Replace with IPropertyInformation and propagate to call and callee-site
+      // TODO RM-5906: Replace with IPropertyInformation and propagate to call and callee-site
       _interfaceProperty = interfaceProperty;
-      // TODO RM-5960: Replace with IPropertyInformation and propagate to call and callee-site
+      // TODO RM-5906: Replace with IPropertyInformation and propagate to call and callee-site
       _implementationProperty = implementationProperty;
       _domainModelConstraintProvider = domainModelConstraintProvider;
       _validationMessageFactory = validationMessageFactory;
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.Validation
     {
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
 
-      // TODO RM-5960: Add cache, try to unify with ValidationAttributesBasedPropertyRuleReflector and AddingComponentPropertyRule
+      // TODO RM-5906: Add cache, try to unify with ValidationAttributesBasedPropertyRuleReflector and AddingComponentPropertyRule
 
       var parameterExpression = Expression.Parameter (typeof (object), "t");
 

@@ -19,7 +19,7 @@ using JetBrains.Annotations;
 
 namespace Remotion.Validation.RuleBuilders
 {
-  // TODO RM-5960: Rename to remove "Component". Replace with "Validation".
+  // TODO RM-5906: Rename to remove "Component". Replace with "Validation".
   /// <summary>
   /// Provides an API for removing a validation rule added by another component.
   /// </summary>

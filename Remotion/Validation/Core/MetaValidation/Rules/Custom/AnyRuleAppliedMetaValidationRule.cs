@@ -36,7 +36,7 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
     {
       ArgumentUtility.CheckNotNull ("property", property);
 
-      // TODO RM-5960: Replace PropertyInfo with IPropertyInformation
+      // TODO RM-5906: Replace PropertyInfo with IPropertyInformation
       _property = property;
     }
 

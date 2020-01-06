@@ -6,7 +6,7 @@ namespace Remotion.Validation.UnitTests
   public class DefaultValidatorExtensionsTest
   {
     [Test]
-    [Ignore ("TODO: RM-5960, remaining validator types")]
+    [Ignore ("TODO: RM-5906, remaining validator types")]
     public void NotEmpty ()
     {
     }

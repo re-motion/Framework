@@ -75,7 +75,7 @@ namespace Remotion.Validation.UnitTests.Rules
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void Initialization_CollectorTypeDoesNotImplementIComponentValidationCollector_ThrowsArgumentException ()
     {
     }
@@ -104,55 +104,55 @@ namespace Remotion.Validation.UnitTests.Rules
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void Create_BuildsFuncForPropertyAccess ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void CreateValidationRule_InitializesDeferredInitializationValidationMessages ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void CreateValidationRule_WhenCalledTwice_InitializesDeferredInitializationValidationMessagesOnlyForNewlyRegisteredValidators ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void CreateValidationRule_IgnoresValidationMessagesForValidatorsWithoutADeferredInitializationValidationMessage ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void CreateValidationRule_WithValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void CreateValidationRule_WithCondition_UsesConditionForCreatedPropertyValidationRule ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void CreateValidationRule_WithoutCondition_UsesAlwaysTrueConditionForCreatedPropertyValidationRule ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void SetCondition ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void SetCondition_Twice_UsesNewCondition ()
     {
     }

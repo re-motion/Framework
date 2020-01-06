@@ -86,7 +86,7 @@ namespace Remotion.Validation.Providers
     {
       var validatedType = typeof (TValidatedType);
       var property = propertyRuleReflector.ValidatedProperty;
-      var propertyFunc = propertyRuleReflector.GetValidatedPropertyFunc (validatedType); // TODO RM-5960: change to return Func<TValidatedType, TProperty>
+      var propertyFunc = propertyRuleReflector.GetValidatedPropertyFunc (validatedType); // TODO RM-5906: change to return Func<TValidatedType, TProperty>
       var collectorType = typeof (AttributeBasedValidationRuleCollector);
 
       var addingPropertyRule = GetAddingPropertyRule<TValidatedType, TProperty> (propertyRuleReflector, property, propertyFunc, collectorType);

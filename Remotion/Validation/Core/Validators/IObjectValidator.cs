@@ -22,7 +22,7 @@ namespace Remotion.Validation.Validators
 {
   public interface IObjectValidator
   {
-    //TODO RM-5960: Introduce ID, have implementations return the ID for ToString(), ID is not guaranteed to be unique
+    //TODO RM-5906: Introduce ID, have implementations return the ID for ToString(), ID is not guaranteed to be unique
     //TODO RM-5906: Add implementation for ObjectPredicateValidator, rename PredicateValidator to PropertyPredicateValidator.
     IEnumerable<ObjectValidationFailure> Validate (ObjectValidatorContext context);
   }

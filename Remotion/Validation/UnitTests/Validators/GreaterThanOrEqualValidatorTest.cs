@@ -58,7 +58,7 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
 
       Assert.That (validationFailures.Length, Is.EqualTo (1));
-      //TODO RM-5960: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
       Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The must be greater than or equal to '3'."));
       Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '3'."));
     }

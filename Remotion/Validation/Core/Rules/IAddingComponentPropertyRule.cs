@@ -25,7 +25,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Rules
 {
-  // TODO RM-5960: Rename to remove "Component". Replace with "Validation". Since this is only a part of the AddingValidationPropertyRuleBuilder, find a name to better express this relationship, perhaps "Collector"?
+  // TODO RM-5906: Rename to remove "Component". Replace with "Validation". Since this is only a part of the AddingValidationPropertyRuleBuilder, find a name to better express this relationship, perhaps "Collector"?
   /// <summary>
   /// Defines a rule associated with a <see cref="Property"/> which can have multiple validators. The validators of this rule belong to a component via 
   /// the <see cref="CollectorType"/> and are added to the validation specification if the component is used within the application.

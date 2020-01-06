@@ -50,7 +50,7 @@ namespace Remotion.Validation.Validators
     {
       ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
 
-      // TODO RM-5960: Replace with Decimal-Validator that will validate a maximum number of integer digits and decimal digits
+      // TODO RM-5906: Replace with Decimal-Validator that will validate a maximum number of integer digits and decimal digits
 
       if (scale < 0)
         throw new ArgumentOutOfRangeException ("scale", scale, $"Scale must not be negative.");

@@ -23,19 +23,19 @@ namespace Remotion.Validation.UnitTests.Implementation
   public class DelegateBasedValidationMessageTest
   {
     [Test]
-    [Ignore ("RM-5960")]
+    [Ignore ("RM-5906")]
     public void Format_UsesSuppliedFormatProviderInsteadOfCurrentCulture ()
     {
     }
 
     [Test]
-    [Ignore ("RM-5960")]
+    [Ignore ("RM-5906")]
     public void Format_UsesSuppliedCultureInsteadOfCurrentUICulture ()
     {
     }
 
     [Test]
-    [Ignore ("RM-5960")]
+    [Ignore ("RM-5906")]
     public void ToString_Override ()
     {
     }

@@ -61,7 +61,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void GetValidatedPropertyFunc_ReturnsFuncForPropertyAccess ()
     {
     }

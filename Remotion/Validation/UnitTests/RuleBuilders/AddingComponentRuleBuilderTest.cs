@@ -142,7 +142,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void SetCondition ()
     {
     }

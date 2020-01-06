@@ -28,7 +28,7 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      //TODO RM-5960: for all tests Assert.That (((ResourceManagerBasedValidationMessage) validationMessage).ResourceIdentifier, Is.EqualTo (...));
+      //TODO RM-5906: for all tests Assert.That (((ResourceManagerBasedValidationMessage) validationMessage).ResourceIdentifier, Is.EqualTo (...));
 
       Assert.That (validationMessage.ToString(), Is.EqualTo ("Enter the value \"{0}\"."));
     }

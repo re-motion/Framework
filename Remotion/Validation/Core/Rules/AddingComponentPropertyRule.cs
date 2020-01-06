@@ -31,8 +31,8 @@ namespace Remotion.Validation.Rules
 
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("collectorType", collectorType, typeof (IValidationRuleCollector));
 
-      // TODO RM-5960: Replace with IPropertyInformation.GetGetMethod().GetFastInvoker.
-      // TODO RM-5960: Add cache, try to unify with ValidationAttributesBasedPropertyRuleReflector and DomainObjectAttributesBasedValidationPropertyRuleReflector
+      // TODO RM-5906: Replace with IPropertyInformation.GetGetMethod().GetFastInvoker.
+      // TODO RM-5906: Add cache, try to unify with ValidationAttributesBasedPropertyRuleReflector and DomainObjectAttributesBasedValidationPropertyRuleReflector
 
       var parameterExpression = Expression.Parameter (typeof (object), "t");
 

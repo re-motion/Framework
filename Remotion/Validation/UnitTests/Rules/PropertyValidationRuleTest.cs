@@ -8,13 +8,13 @@ namespace Remotion.Validation.UnitTests.Rules
   public class PropertyValidationRuleTest
   {
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void Validate ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void ToString_Overridden ()
     {
       PropertyValidationRule<Customer, string> validationRule = null;

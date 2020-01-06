@@ -69,7 +69,7 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     }
 
     [Test]
-    [Ignore ("TODO RM-5960")]
+    [Ignore ("TODO RM-5906")]
     public void GetPropertyValidator_WithValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
     }
