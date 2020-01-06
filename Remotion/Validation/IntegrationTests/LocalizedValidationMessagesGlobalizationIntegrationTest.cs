@@ -21,6 +21,7 @@ using System.Threading;
 using NUnit.Framework;
 using Remotion.Utilities;
 using Remotion.Validation.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.Results;
 
 namespace Remotion.Validation.IntegrationTests
 {
@@ -40,8 +41,9 @@ namespace Remotion.Validation.IntegrationTests
 
       Assert.That (result.IsValid, Is.False);
       Assert.That (result.Errors.Count, Is.EqualTo (2));
+      Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
       Assert.That (
-          result.Errors.Select (e => $"{e.Property.Name}: {e.LocalizedValidationMessage}"),
+          result.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
           Is.EquivalentTo (new[] { "FirstName: Enter a value.", "LastName: Enter a valid value." }));
     }
 
@@ -59,8 +61,9 @@ namespace Remotion.Validation.IntegrationTests
         var result = validator.Validate (person);
 
         Assert.That (result.IsValid, Is.False);
+        Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
         Assert.That (
-            result.Errors.Select (e => $"{e.Property.Name}: {e.LocalizedValidationMessage}"),
+            result.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
             Is.EquivalentTo (new[] { "FirstName: Geben Sie einen Wert ein." }));
       }
     }
@@ -81,8 +84,9 @@ namespace Remotion.Validation.IntegrationTests
         var result = validator.Validate (person);
 
         Assert.That (result.IsValid, Is.False);
+        Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
         Assert.That (
-            result.Errors.Select (e => $"{e.Property.Name}: {e.LocalizedValidationMessage}"),
+            result.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
             Is.EquivalentTo (new[] { "FirstName: Geben Sie einen Wert ein." }));
       }
     }
@@ -105,8 +109,9 @@ namespace Remotion.Validation.IntegrationTests
         using (new CultureScope (""))
         {
           Assert.That (result.IsValid, Is.False);
+          Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
           Assert.That (
-              result.Errors.Select (e => $"{e.Property.Name}: {e.LocalizedValidationMessage}"),
+              result.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
               Is.EquivalentTo (new[] { "FirstName: Geben Sie einen Wert ein." }));
         }
       }

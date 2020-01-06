@@ -15,8 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Validation.Results;
@@ -26,21 +24,19 @@ namespace Remotion.Data.DomainObjects.Validation
   public class ExtendedDomainObjectValidationException : DomainObjectValidationException
   {
     private readonly DomainObject[] _affectedObjects;
-    private readonly IReadOnlyCollection<ValidationFailure> _validationFailures;
+    private readonly ValidationFailure[] _validationFailures;
 
-    public ExtendedDomainObjectValidationException ([NotNull] IEnumerable<DomainObject> affectedObjects, [NotNull] IEnumerable<ValidationFailure> validationFailures, string errorMessage)
-      : this (affectedObjects, validationFailures, errorMessage, null)
-    {
-    }
-
-    public ExtendedDomainObjectValidationException ([NotNull] IEnumerable<DomainObject> affectedObjects, [NotNull] IEnumerable<ValidationFailure> validationFailures, string errorMessage, Exception inner)
-        : base (errorMessage, inner)
+    public ExtendedDomainObjectValidationException (
+        [NotNull] DomainObject[] affectedObjects,
+        [NotNull] ValidationFailure[] validationFailures,
+        string errorMessage)
+        : base (errorMessage, null)
     {
       ArgumentUtility.CheckNotNull ("affectedObjects", affectedObjects);
       ArgumentUtility.CheckNotNull ("validationFailures", validationFailures);
-      
-      _affectedObjects = affectedObjects.ToArray();
-      _validationFailures = validationFailures.ToArray();
+
+      _affectedObjects = affectedObjects;
+      _validationFailures = validationFailures;
     }
 
     public override DomainObject[] AffectedObjects
@@ -48,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Validation
       get { return _affectedObjects; }
     }
 
-    public IReadOnlyCollection<ValidationFailure> ValidationFailures
+    public ValidationFailure[] ValidationFailures
     {
       get { return _validationFailures; }
     }

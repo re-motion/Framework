@@ -19,6 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain;
 using Remotion.Validation;
+using Remotion.Validation.Results;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
 {
@@ -45,8 +46,9 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
 
         var result1 = validator.Validate (customer);
         Assert.That (result1.IsValid, Is.False);
+        Assert.That (result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
         Assert.That (
-            result1.Errors.Select (e => $"{e.Property.Name}: {e.ErrorMessage}"),
+            result1.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.ErrorMessage}"),
             Is.EquivalentTo (new[] { "Title: The value must not be equal to 'Chef1'." }));
       }
     }
@@ -64,8 +66,9 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
 
         var result1 = validator.Validate (order);
         Assert.That (result1.IsValid, Is.False);
+        Assert.That (result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
         Assert.That (
-            result1.Errors.Select (e => $"{e.Property.Name}: {e.ErrorMessage}"),
+            result1.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.ErrorMessage}"),
             Is.EquivalentTo (new[] { "Number: The value must have between 3 and 8 characters." }));
       }
     }

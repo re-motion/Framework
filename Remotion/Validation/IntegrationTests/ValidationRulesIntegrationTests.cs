@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.IntegrationTests.TestDomain.ComponentA;
 using Remotion.Validation.IntegrationTests.TestDomain.ComponentB;
+using Remotion.Validation.Results;
 
 namespace Remotion.Validation.IntegrationTests
 {
@@ -60,7 +61,8 @@ namespace Remotion.Validation.IntegrationTests
       var result2 = validator.Validate (address2);
       Assert.That (result2.IsValid, Is.False);
       Assert.That (result2.Errors.Count, Is.EqualTo (1));
-      Assert.That (result2.Errors.First().Property.Name, Is.EqualTo ("PostalCode"));
+      Assert.That (result2.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That (result2.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("PostalCode"));
       Assert.That (result2.Errors.First().ErrorMessage, Is.EqualTo ("The value must be in the correct format (^DE)."));
 
       var result3 = validator.Validate (address3);
@@ -69,7 +71,8 @@ namespace Remotion.Validation.IntegrationTests
       var result4 = validator.Validate (address4);
       Assert.That (result4.IsValid, Is.False);
       Assert.That (result4.Errors.Count, Is.EqualTo (1));
-      Assert.That (result4.Errors.First().Property.Name, Is.EqualTo ("City"));
+      Assert.That (result4.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That (result4.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("City"));
       Assert.That (result4.Errors.First().ErrorMessage, Is.EqualTo ("The value must be in the correct format (Wien)."));
 
       var result5 = validator.Validate (address5);
@@ -78,7 +81,8 @@ namespace Remotion.Validation.IntegrationTests
       var result6 = validator.Validate (address6);
       Assert.That (result6.IsValid, Is.False);
       Assert.That (result6.Errors.Count, Is.EqualTo (1));
-      Assert.That (result6.Errors.First().Property.Name, Is.EqualTo ("PostalCode"));
+      Assert.That (result6.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That (result6.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("PostalCode"));
       Assert.That (result6.Errors.First().ErrorMessage, Is.EqualTo ("The value must not be null."));
     }
 
@@ -96,8 +100,9 @@ namespace Remotion.Validation.IntegrationTests
       var result1 = validator.Validate (address1);
       Assert.That (result1.IsValid, Is.False);
       Assert.That (result1.Errors.Count, Is.EqualTo (2));
+      Assert.That (result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
       Assert.That (
-          result1.Errors.Select (e => $"{e.Property.Name}: {e.ErrorMessage}"),
+          result1.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.ErrorMessage}"),
           Is.EqualTo (new[] { "SpecialAddressIntroducedProperty: The value must not be null.", "PostalCode: The value must be in the correct format (1337)."}));
 
       var result2 = validator.Validate (address2);
@@ -106,7 +111,8 @@ namespace Remotion.Validation.IntegrationTests
       var result3 = validator.Validate (address3);
       Assert.That (result3.IsValid, Is.False);
       Assert.That (result3.Errors.Count, Is.EqualTo (1));
-      Assert.That (result3.Errors.First().Property.Name, Is.EqualTo ("PostalCode"));
+      Assert.That (result3.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That (result3.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("PostalCode"));
       Assert.That (result3.Errors.First().ErrorMessage, Is.EqualTo ("The value must not be null."));
     }
 
@@ -121,7 +127,8 @@ namespace Remotion.Validation.IntegrationTests
 
       Assert.That (result.IsValid, Is.False);
       Assert.That (result.Errors.Count, Is.EqualTo (1));
-      Assert.That (result.Errors.First().Property.Name, Is.EqualTo ("Salary"));
+      Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That (result.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("Salary"));
       Assert.That (result.Errors.First().ErrorMessage, Is.EqualTo ("The value must not be equal to '0'."));
       Assert.That (result.Errors.First().LocalizedValidationMessage, Is.EqualTo ("Conditional Message Text: Kein Gehalt definiert"));
     }

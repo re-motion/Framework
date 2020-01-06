@@ -20,14 +20,9 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  /// <summary>
-  /// A custom property validator.
-  /// This interface should not be implemented directly in your code as it is subject to change.
-  /// Please inherit from <see cref="T:PropertyValidator">PropertyValidator</see> instead.
-  /// </summary>
   public interface IPropertyValidator
   {
     //TODO RM-5960: Introduce ID, have implementations return the ID for ToString(), ID is not guaranteed to be unique
-    IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context);
+    IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context);
   }
 }

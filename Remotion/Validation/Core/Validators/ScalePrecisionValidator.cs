@@ -20,6 +20,7 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
+using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
@@ -47,6 +48,8 @@ namespace Remotion.Validation.Validators
 
     public ScalePrecisionValidator (int scale, int precision, [NotNull] ValidationMessage validationMessage)
     {
+      ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
+
       // TODO RM-5960: Replace with Decimal-Validator that will validate a maximum number of integer digits and decimal digits
 
       if (scale < 0)
@@ -64,10 +67,10 @@ namespace Remotion.Validation.Validators
       ValidationMessage = validationMessage;
     }
 
-    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
+    public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
       if (IsValid (context))
-        return Enumerable.Empty<ValidationFailure>();
+        return Enumerable.Empty<PropertyValidationFailure>();
 
       return EnumerableUtility.Singleton (CreateValidationError (context));
     }
@@ -89,7 +92,7 @@ namespace Remotion.Validation.Validators
       return scale <= Scale && precision <= Precision;
     }
 
-    private ValidationFailure CreateValidationError (PropertyValidatorContext context)
+    private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
       string localizedValidationMessage = ValidationMessage.Format (
           CultureInfo.CurrentUICulture,
@@ -97,8 +100,10 @@ namespace Remotion.Validation.Validators
           Precision,
           Scale);
 
-      return new ValidationFailure (
+      return new PropertyValidationFailure (
+          context.Instance,
           context.Property,
+          context.PropertyValue,
           errorMessage: ErrorMessage,
           localizedValidationMessage: localizedValidationMessage);
     }

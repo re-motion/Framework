@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain;
 using Remotion.Validation;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Results;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
 {
@@ -51,7 +52,8 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         var result1 = validator.Validate (orderItem1);
         Assert.That (result1.IsValid, Is.False);
         Assert.That (result1.Errors.Count, Is.EqualTo (1));
-        Assert.That (result1.Errors.First().Property.Name, Is.EqualTo ("Order"));
+        Assert.That (result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+        Assert.That (result1.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("Order"));
         Assert.That (result1.Errors.First().ErrorMessage, Is.EqualTo ("The value must not be null."));
 
         var result2 = validator.Validate (orderItem2);
@@ -73,7 +75,8 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         var result1 = validator.Validate (customer1);
         Assert.That (result1.IsValid, Is.False);
         Assert.That (result1.Errors.Count, Is.EqualTo (1));
-        Assert.That (result1.Errors.First().Property.Name, Is.EqualTo ("Address"));
+        Assert.That (result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+        Assert.That (result1.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("Address"));
         Assert.That (result1.Errors.First().ErrorMessage, Is.EqualTo ("The value must not be null."));
 
         var result2 = validator.Validate (customer2);
@@ -113,7 +116,8 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
           var result1 = validator.Validate (order1);
           Assert.That (result1.IsValid, Is.False);
           Assert.That (result1.Errors.Count, Is.EqualTo (1));
-          Assert.That (result1.Errors.First().Property.Name, Is.EqualTo ("OrderItems"));
+          Assert.That (result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+          Assert.That (result1.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("OrderItems"));
           Assert.That (result1.Errors.First().ErrorMessage, Is.EqualTo ("The value must not be empty."));
           Assert.That (order1.OrderItems.IsDataComplete, Is.True);
 
@@ -151,7 +155,8 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
           var result1 = validator.Validate (productReference1);
           Assert.That (result1.IsValid, Is.False);
           Assert.That (result1.Errors.Count, Is.EqualTo (1));
-          Assert.That (result1.Errors.First().Property.Name, Is.EqualTo ("OrderItem"));
+          Assert.That (result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+          Assert.That (result1.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("OrderItem"));
           Assert.That (result1.Errors.First().ErrorMessage, Is.EqualTo ("The value must not be null."));
           Assert.That (product1.State, Is.EqualTo (StateType.NotLoadedYet));
 

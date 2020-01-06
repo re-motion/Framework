@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using Remotion.Collections;
@@ -25,7 +24,6 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Utilities;
 using Remotion.Validation;
 using Remotion.Validation.Results;
-using Remotion.Validation.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -67,44 +65,36 @@ namespace Remotion.Data.DomainObjects.Validation
 
       var validatorCache = new Dictionary<Type, IValidator>();
 
-      List<ValidationResult> invariantCultureInvalidValidationResults;
-      using (new CultureScope (CultureInfo.InvariantCulture, CultureInfo.InvariantCulture))
-      {
-        invariantCultureInvalidValidationResults = Validate (committedData, validatorCache);
-      }
-
-      if (!invariantCultureInvalidValidationResults.Any())
+      var validationResults = Validate (committedData, validatorCache);
+      if (!validationResults.Any())
         return;
 
-      var invalidDomainObjects =
-          invariantCultureInvalidValidationResults.SelectMany (vr => vr.Errors)
-              .Select (err => err.GetValidatedInstance())
-              .Distinct()
-              .Cast<DomainObject>();
-
-      var objectsToRevalidate = committedData.Where (cd => invalidDomainObjects.Contains (cd.DomainObject)).ToList().AsReadOnly();
-      var localizedInvalidValidationResults = Validate (objectsToRevalidate, validatorCache);
-      var invariantErrorMessage = BuildErrorMesage (invariantCultureInvalidValidationResults.SelectMany (vr => vr.Errors));
+      var validationFailures = validationResults.SelectMany (vr => vr.Errors).ToArray();
+      var invalidDomainObjects = validationFailures.Select (err => err.ValidatedObject).Distinct().Cast<DomainObject>().ToArray();
+      var invariantErrorMessage = BuildErrorMessage (validationFailures);
 
       throw new ExtendedDomainObjectValidationException (
           invalidDomainObjects,
-          localizedInvalidValidationResults.SelectMany (e => e.Errors),
+          validationFailures,
           invariantErrorMessage);
     }
 
-    private static string BuildErrorMesage (IEnumerable<ValidationFailure> errors)
+    private static string BuildErrorMessage (IEnumerable<ValidationFailure> errors)
     {
-      var errorsByValidatedObjects = errors.ToLookup (e => e.GetValidatedInstance ());
+      var errorsByValidatedObjects = errors.ToLookup (e => e.ValidatedObject);
 
-      var errorMessage = new StringBuilder ("One or more DomainObject contain inconsistent data:\r\n\r\n");
+      var errorMessage = new StringBuilder ("One or more DomainObject contain inconsistent data:");
+      errorMessage.AppendLine();
       foreach (var errorByValidatedObject in errorsByValidatedObjects)
       {
+        errorMessage.AppendLine();
         errorMessage.AppendLine (GetKeyText (errorByValidatedObject.Key));
-        errorMessage.AppendLine (
-            string.Join (
-                "\r\n",
-                errorByValidatedObject.Select (t => " -- " + t.Property.Name + ": " + t.ErrorMessage)));
-        errorMessage.AppendLine ();
+        errorByValidatedObject
+            .OfType<ObjectValidationFailure>()
+            .Aggregate (errorMessage, (sb, f) => sb.Append (" -- ").Append (f.ErrorMessage).AppendLine());
+        errorByValidatedObject
+            .OfType<PropertyValidationFailure>().OrderBy(f=>f.ValidatedProperty.Name)
+            .Aggregate (errorMessage, (sb, f) => sb.Append (" -- ").Append(f.ValidatedProperty.Name).Append (": " ).Append (f.ErrorMessage).AppendLine());
       }
       return errorMessage.ToString ();
     }
@@ -135,10 +125,6 @@ namespace Remotion.Data.DomainObjects.Validation
         var validator = validatorCache.GetOrCreateValue (item.DomainObject.GetPublicDomainObjectType(), _validatorBuilderFunc);
         
         var validationResult = validator.Validate (item.DomainObject);
-
-        // C# compiler 7.2 already provides caching for anonymous method.
-        foreach (var validationFailure in validationResult.Errors.Where (vr => vr.GetValidatedInstance () == null))
-          validationFailure.SetValidatedInstance (item.DomainObject);
 
         if (!validationResult.IsValid)
           invalidValidationResults.Add (validationResult);

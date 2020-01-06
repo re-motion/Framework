@@ -39,10 +39,12 @@ namespace Remotion.Validation.UnitTests.Implementation
     private ValidationResult _validationResult2;
     private IValidationRule _validationRuleStub1;
     private IValidationRule _validationRuleStub2;
+    private Customer _validatedObject;
 
     [SetUp]
     public void SetUp ()
     {
+      _validatedObject = new Customer();
       var propertyStub1 = MockRepository.GenerateStub<IPropertyInformation>();
       propertyStub1.Stub (_ => _.Name).Return ("PropertyStub1");
       var propertyStub2 = MockRepository.GenerateStub<IPropertyInformation>();
@@ -58,9 +60,9 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _compoundValidator = new CompoundValidator (new[] { _validatorStub1, _validatorStub2 }, typeof (Customer));
 
-      _validationFailure1 = new ValidationFailure (propertyStub1, "Error1", "ValidationMessage1");
-      _validationFailure2 = new ValidationFailure (propertyStub2, "Error2", "ValidationMessage2");
-      _validationFailure3 = new ValidationFailure (propertyStub3, "Error3", "ValidationMessage3");
+      _validationFailure1 = new ObjectValidationFailure (_validatedObject, "Error1", "ValidationMessage1");
+      _validationFailure2 = new PropertyValidationFailure (_validatedObject, propertyStub2, "value2", "Error2", "ValidationMessage2");
+      _validationFailure3 = new PropertyValidationFailure (_validatedObject, propertyStub3, null, "Error3", "ValidationMessage3");
 
       _validationResult1 = new ValidationResult (new[] { _validationFailure1, _validationFailure2 });
       _validationResult2 = new ValidationResult (new[] { _validationFailure3 });
@@ -75,12 +77,10 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void Validate ()
     {
-      var customer = new Customer();
-
       _validatorStub1.Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull)).Return (_validationResult1);
       _validatorStub2.Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull)).Return (_validationResult2);
 
-      var result = _compoundValidator.Validate (customer);
+      var result = _compoundValidator.Validate (_validatedObject);
 
       Assert.That (result.Errors, Is.EquivalentTo (new[] { _validationFailure1, _validationFailure2, _validationFailure3 }));
     }

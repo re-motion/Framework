@@ -115,6 +115,7 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
 
       Assert.That (validationFailures.Length, Is.EqualTo (1));
+      //TODO RM-5960: Assert ValidatedObject, ValidatedProperty, ValidatedValue
       Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must be between '2' and '4'."));
       Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '2', '4'."));
     }
@@ -128,6 +129,7 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
 
       Assert.That (validationFailures.Length, Is.EqualTo (1));
+      //TODO RM-5960: Assert ValidatedObject, ValidatedProperty, ValidatedValue
       Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must be between '2' and '4'."));
       Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '2', '4'."));
     }

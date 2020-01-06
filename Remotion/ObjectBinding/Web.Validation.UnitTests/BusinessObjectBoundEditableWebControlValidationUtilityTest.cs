@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.Validation.UI.Controls;
 using Remotion.Reflection;
@@ -34,10 +33,30 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests
       var control = MockRepository.GenerateMock<IBusinessObjectBoundEditableWebControl>();
       control.Expect (c => c.HasValidBinding).Return (false);
 
+      var validatedObject = MockRepository.GenerateMock<IBusinessObject>();
+
       var property = MockRepository.GenerateStub<IPropertyInformation>();
       property.Stub (_ => _.Name).Return ("PropertyStub");
 
-      var failure = new ValidationFailure (property, "Error", "ValidationMessage");
+      var failure = new PropertyValidationFailure (validatedObject, property, "value", "Error", "ValidationMessage");
+      var isMatching = BusinessObjectBoundEditableWebControlValidationUtility.IsMatchingControl (control, failure);
+
+      Assert.That (isMatching, Is.False);
+      control.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void IsMatchingControl_NotPropertyValidationFailure_False ()
+    {
+      var control = MockRepository.GenerateMock<IBusinessObjectBoundEditableWebControl>();
+      control.Expect (c => c.HasValidBinding).Return (false);
+
+      var validatedObject = MockRepository.GenerateMock<IBusinessObject>();
+
+      var property = MockRepository.GenerateStub<IPropertyInformation>();
+      property.Stub (_ => _.Name).Return ("PropertyStub");
+
+      var failure = new ObjectValidationFailure (validatedObject, "Error", "ValidationMessage");
       var isMatching = BusinessObjectBoundEditableWebControlValidationUtility.IsMatchingControl (control, failure);
 
       Assert.That (isMatching, Is.False);
@@ -50,13 +69,15 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests
       var control = MockRepository.GenerateMock<IBusinessObjectBoundEditableWebControl>();
       control.Expect (c => c.HasValidBinding).Return (true);
       control.DataSource = MockRepository.GenerateMock<IBusinessObjectDataSource>();
-      control.Expect (c => c.DataSource.BusinessObject).Return (MockRepository.GenerateMock<IBusinessObject>());
+      var otherBusinessObject = MockRepository.GenerateMock<IBusinessObject>();
+      control.Expect (c => c.DataSource.BusinessObject).Return (otherBusinessObject);
+
+      var validatedObject = MockRepository.GenerateStub<IBusinessObject>();
 
       var property = MockRepository.GenerateStub<IPropertyInformation>();
       property.Stub (_ => _.Name).Return ("PropertyStub");
 
-      var failure = new ValidationFailure (property, "Error", "ValidationMessage");
-      failure.CustomState = new BindableObjectDataSource();
+      var failure = new PropertyValidationFailure (validatedObject, property, "value", "Error", "ValidationMessage");
 
       var isMatching = BusinessObjectBoundEditableWebControlValidationUtility.IsMatchingControl (control, failure);
 
@@ -71,8 +92,8 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests
       control.Expect (c => c.HasValidBinding).Return (true);
 
       control.DataSource = MockRepository.GenerateMock<IBusinessObjectDataSource>();
-      var businessObject = MockRepository.GenerateMock<IBusinessObject>();
-      control.Expect (c => c.DataSource.BusinessObject).Return (businessObject);
+      var validatedObject = MockRepository.GenerateMock<IBusinessObject>();
+      control.Expect (c => c.DataSource.BusinessObject).Return (validatedObject);
 
       var property = MockRepository.GenerateStub<IPropertyInformation>();
       property.Stub (_ => _.Name).Return ("PropertyStub");
@@ -81,8 +102,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests
       businessObjectProperty.Expect (p => p.Identifier).Return ("PropertyIdentifier");
       control.Expect (c => c.Property).Return (businessObjectProperty);
 
-      var failure = new ValidationFailure (property, "Error", "ValidationMessage");
-      failure.CustomState = businessObject;
+      var failure = new PropertyValidationFailure (validatedObject, property, "value", "Error", "ValidationMessage");
 
       var isMatching = BusinessObjectBoundEditableWebControlValidationUtility.IsMatchingControl (control, failure);
 
@@ -91,14 +111,14 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests
     }
 
     [Test]
-    [TestCase (false, false, true)]
-    [TestCase (false, true, true)]
-    [TestCase (true, false, false)]
-    [TestCase (true, true, true)]
-    public void IsMatchingControl_PropertyMatch (bool shouldBusinessObjectBeNull, bool shouldValidatedInstanceBeNull, bool isMatch)
+    [TestCase (false, true)]
+    [TestCase (true, false)]
+    public void IsMatchingControl_PropertyMatch (bool shouldBusinessObjectBeNull, bool isMatch)
     {
       var control = MockRepository.GenerateMock<IBusinessObjectBoundEditableWebControl>();
       control.Expect (c => c.HasValidBinding).Return (true);
+
+      var validatedObject = MockRepository.GenerateMock<IBusinessObject>();
 
       var businessObjectProperty = MockRepository.GenerateMock<IBusinessObjectStringProperty>();
       businessObjectProperty.Expect (p => p.Identifier).Return ("PropertyStub");
@@ -107,9 +127,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests
       var property = MockRepository.GenerateStub<IPropertyInformation>();
       property.Stub (_ => _.Name).Return ("PropertyStub");
 
-      var failure = new ValidationFailure (property, "Error", "ValidationMessage");
+      var failure = new PropertyValidationFailure (validatedObject, property, "value", "Error", "ValidationMessage");
 
-      SetDataSource (shouldBusinessObjectBeNull, shouldValidatedInstanceBeNull, control, failure);
+      SetDataSource (shouldBusinessObjectBeNull, control, validatedObject);
 
       var isMatching = BusinessObjectBoundEditableWebControlValidationUtility.IsMatchingControl (control, failure);
 
@@ -118,14 +138,14 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests
     }
 
     [Test]
-    [TestCase (false, false, true)]
-    [TestCase (false, true, true)]
-    [TestCase (true, false, false)]
-    [TestCase (true, true, true)]
-    public void IsMatchingControl_PropertyMatchShort (bool shouldBusinessObjectBeNull, bool shouldValidatedInstanceBeNull, bool isMatch)
+    [TestCase (false, true)]
+    [TestCase (true, false)]
+    public void IsMatchingControl_PropertyMatchShort (bool shouldBusinessObjectBeNull, bool isMatch)
     {
       var control = MockRepository.GenerateMock<IBusinessObjectBoundEditableWebControl>();
       control.Expect (c => c.HasValidBinding).Return (true);
+
+      var validatedObject = MockRepository.GenerateMock<IBusinessObject>();
 
       var businessObjectProperty = MockRepository.GenerateMock<IBusinessObjectStringProperty>();
       businessObjectProperty.Expect (p => p.Identifier).Return ("PropertyStub");
@@ -134,9 +154,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests
       var property = MockRepository.GenerateStub<IPropertyInformation>();
       property.Stub (_ => _.Name).Return ("PropertyStub");
 
-      var failure = new ValidationFailure (property, "Error", "ValidationMessage");
+      var failure = new PropertyValidationFailure (validatedObject, property, "value", "Error", "ValidationMessage");
 
-      SetDataSource (shouldBusinessObjectBeNull, shouldValidatedInstanceBeNull, control, failure);
+      SetDataSource (shouldBusinessObjectBeNull, control, validatedObject);
 
       var isMatching = BusinessObjectBoundEditableWebControlValidationUtility.IsMatchingControl (control, failure);
 
@@ -146,12 +166,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests
 
     private static void SetDataSource (
         bool shouldBusinessObjectBeNull,
-        bool shouldValidatedInstanceBeNull,
         IBusinessObjectBoundEditableWebControl control,
-        ValidationFailure failure)
+        IBusinessObject businessObject)
     {
-      var businessObject = MockRepository.GenerateMock<IBusinessObject>();
-
       if (shouldBusinessObjectBeNull)
         control.Expect (c => c.DataSource).Return (null);
       else
@@ -160,11 +177,6 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests
         dataSource.Expect (c => c.BusinessObject).Return (businessObject);
         control.Expect (c => c.DataSource).Return (dataSource);
       }
-
-      if (shouldValidatedInstanceBeNull)
-        failure.CustomState = null;
-      else
-        failure.CustomState = businessObject;
     }
   }
 }

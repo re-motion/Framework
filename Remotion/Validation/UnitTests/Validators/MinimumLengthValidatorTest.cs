@@ -68,6 +68,7 @@ namespace Remotion.Validation.UnitTests.Validators
 
       // TODO RM-5906: Fix ErrorMessage not displaying a max value.
       Assert.That (validationFailures.Length, Is.EqualTo (1));
+      //TODO RM-5960: Assert ValidatedObject, ValidatedProperty, ValidatedValue
       Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must have at least 6 characters."));
       Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '6', ''."));
     }

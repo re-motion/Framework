@@ -19,7 +19,6 @@ using System.Linq;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 using Remotion.Validation.Results;
-using Remotion.Validation.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
@@ -33,28 +32,31 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
       if (!bocControl.HasValidBinding)
         return false;
 
-      var validatedInstance = failure.GetValidatedInstance();
+      if (!(failure is PropertyValidationFailure propertyValidationFailure))
+        return false;
+
+      var validatedInstance = propertyValidationFailure.ValidatedObject;
       var businessObject = bocControl.DataSource != null ? bocControl.DataSource.BusinessObject : null;
 
-      if (validatedInstance != null && businessObject != null
+      if (businessObject != null
           && validatedInstance != businessObject)
         return false;
 
-      bool isMatchingProperty = failure.Property.Name == bocControl.Property.Identifier;
+      bool isMatchingProperty = propertyValidationFailure.ValidatedProperty.Name == bocControl.Property.Identifier;
       if (!isMatchingProperty)
-        isMatchingProperty = GetShortPropertyName (failure) == bocControl.Property.Identifier;
+        isMatchingProperty = GetShortPropertyName (propertyValidationFailure) == bocControl.Property.Identifier;
 
-      bool isMatchinInstance = validatedInstance == null || validatedInstance == businessObject;
+      bool isMatchingInstance = validatedInstance == businessObject;
 
-      if (isMatchingProperty && isMatchinInstance)
+      if (isMatchingProperty && isMatchingInstance)
         return true;
 
       return false;
     }
 
-    private static string GetShortPropertyName (ValidationFailure failure)
+    private static string GetShortPropertyName (PropertyValidationFailure failure)
     {
-      return failure.Property.Name.Split ('.').Last();
+      return failure.ValidatedProperty.Name.Split ('.').Last();
     }
   }
 }

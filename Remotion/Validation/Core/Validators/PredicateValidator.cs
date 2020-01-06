@@ -38,16 +38,17 @@ namespace Remotion.Validation.Validators
     public PredicateValidator ([NotNull] Predicate predicate, [NotNull] ValidationMessage validationMessage)
     {
       ArgumentUtility.CheckNotNull ("predicate", predicate);
+      ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
 
       _predicate = predicate;
       ErrorMessage = "The value must meet the specified condition.";
       ValidationMessage = validationMessage;
     }
 
-    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
+    public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
       if (IsValid (context))
-        return Enumerable.Empty<ValidationFailure>();
+        return Enumerable.Empty<PropertyValidationFailure>();
 
       return EnumerableUtility.Singleton (CreateValidationError (context));
     }
@@ -57,10 +58,12 @@ namespace Remotion.Validation.Validators
       return _predicate (context.Instance, context.PropertyValue, context);
     }
 
-    private ValidationFailure CreateValidationError (PropertyValidatorContext context)
+    private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
-      return new ValidationFailure (
+      return new PropertyValidationFailure (
+          context.Instance,
           context.Property,
+          context.PropertyValue,
           errorMessage: ErrorMessage,
           localizedValidationMessage: ValidationMessage.Format (CultureInfo.CurrentUICulture, null, Array.Empty<object>()));
     }

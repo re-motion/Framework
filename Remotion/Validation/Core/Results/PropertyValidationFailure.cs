@@ -16,27 +16,31 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Remotion.Reflection;
 using Remotion.Utilities;
-using Remotion.Validation.Results;
 
-namespace Remotion.Validation.Utilities
+namespace Remotion.Validation.Results
 {
-  public static class ValidationFailureExtensions
+  public class PropertyValidationFailure : ValidationFailure
   {
-    public static void SetValidatedInstance (this ValidationFailure validationFailure, object instance)
-    {
-      ArgumentUtility.CheckNotNull ("validationFailure", validationFailure);
-      ArgumentUtility.CheckNotNull ("instance", instance);
-
-      validationFailure.CustomState = instance;
-    }
+    [NotNull]
+    public IPropertyInformation ValidatedProperty { get; }
 
     [CanBeNull]
-    public static object GetValidatedInstance (this ValidationFailure validationFailure)
+    object ValidatedPropertyValue { get; }
+
+    public PropertyValidationFailure (
+        [NotNull] object validatedObject,
+        [NotNull] IPropertyInformation validatedProperty,
+        [CanBeNull] object validatedPropertyValue,
+        [NotNull] string errorMessage,
+        [NotNull] string localizedValidationMessage)
+        :base (validatedObject, errorMessage, localizedValidationMessage)
     {
-      ArgumentUtility.CheckNotNull ("validationFailure", validationFailure);
-      
-      return validationFailure.CustomState;
+      ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
+
+      ValidatedProperty = validatedProperty;
+      ValidatedPropertyValue = validatedPropertyValue;
     }
   }
 }

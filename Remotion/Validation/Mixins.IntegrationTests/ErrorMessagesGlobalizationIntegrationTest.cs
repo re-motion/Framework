@@ -21,6 +21,7 @@ using Remotion.Mixins;
 using Remotion.TypePipe;
 using Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA;
 using Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentB;
+using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Mixins.IntegrationTests
 {
@@ -41,7 +42,8 @@ namespace Remotion.Validation.Mixins.IntegrationTests
 
       Assert.That (result.IsValid, Is.False);
       Assert.That (result.Errors.Count, Is.EqualTo (1));
-      Assert.That (result.Errors.First().Property.Name, Is.EqualTo ("FirstName"));
+      Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That (result.Errors.Cast<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("FirstName"));
       Assert.That (result.Errors.First().LocalizedValidationMessage, Is.EqualTo ("Enter a valid value."));
     }
 
@@ -58,7 +60,8 @@ namespace Remotion.Validation.Mixins.IntegrationTests
       var result = validator.Validate (specialCustomer);
 
       Assert.That (result.IsValid, Is.False);
-      Assert.That (result.Errors.First().Property.Name, Is.EqualTo ("LastName"));
+      Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That (result.Errors.Cast<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("LastName"));
       Assert.That (result.Errors.First().LocalizedValidationMessage, Is.EqualTo ("Enter at least 2 and no more than 8 characters."));
     }
 
@@ -74,8 +77,9 @@ namespace Remotion.Validation.Mixins.IntegrationTests
       var result = validator.Validate (customer);
 
       Assert.That (result.IsValid, Is.False);
+      Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
       Assert.That (
-          result.Errors.Select (e => $"{e.Property.Name}: {e.LocalizedValidationMessage}"),
+          result.Errors.Cast<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
           Is.EquivalentTo (new[] { "FirstName: Enter a value.", "UserName: Enter a valid value." }));
     }
 
@@ -94,7 +98,8 @@ namespace Remotion.Validation.Mixins.IntegrationTests
 
       Assert.That (result.IsValid, Is.False);
       Assert.That (result.Errors.Count, Is.EqualTo (1));
-      Assert.That (result.Errors.First().Property.Name, Is.EqualTo ("Title"));
+      Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That (result.Errors.Cast<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("Title"));
       Assert.That (result.Errors.First().LocalizedValidationMessage, Is.EqualTo ("Enter a valid value."));
     }
   }

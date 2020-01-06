@@ -68,7 +68,10 @@ namespace Remotion.Validation.Rules
       return Validators.SelectMany (validator => ValidatePropertyValidator (context, propertyValue, validator));
     }
 
-    private IEnumerable<ValidationFailure> ValidatePropertyValidator (ValidationContext context, object propertyValue, IPropertyValidator validator)
+    private IEnumerable<PropertyValidationFailure> ValidatePropertyValidator (
+        ValidationContext context,
+        object propertyValue,
+        IPropertyValidator validator)
     {
       var propertyValidatorContext = new PropertyValidatorContext (context, Property, propertyValue);
       return validator.Validate (propertyValidatorContext);

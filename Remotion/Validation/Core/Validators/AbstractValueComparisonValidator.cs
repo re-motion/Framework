@@ -55,10 +55,10 @@ namespace Remotion.Validation.Validators
 
     object IValueComparisonValidator.ValueToCompare => ComparisonValue;
 
-    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
+    public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
       if (IsValid (context))
-        return Enumerable.Empty<ValidationFailure>();
+        return Enumerable.Empty<PropertyValidationFailure>();
 
       return EnumerableUtility.Singleton (CreateValidationError (context));
     }
@@ -96,15 +96,17 @@ namespace Remotion.Validation.Validators
       }
     }
 
-    private ValidationFailure CreateValidationError (PropertyValidatorContext context)
+    private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
       string localizedValidationMessage = ValidationMessage.Format (
           CultureInfo.CurrentUICulture,
           (IFormatProvider) CultureInfo.CurrentCulture,
           ComparisonValue);
 
-      return new ValidationFailure (
+      return new PropertyValidationFailure (
+          context.Instance,
           context.Property,
+          context.PropertyValue,
           errorMessage: ErrorMessage,
           localizedValidationMessage: localizedValidationMessage);
     }

@@ -20,6 +20,7 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
+using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
@@ -40,6 +41,8 @@ namespace Remotion.Validation.Validators
 
     protected LengthValidator (int min, int? max, [NotNull] string errorMessage, [NotNull] ValidationMessage validationMessage)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("errorMessage", errorMessage);
+      ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
       if (max != null && max < min)
         throw new ArgumentOutOfRangeException ("max", "Max should be larger than min.");
 
@@ -49,10 +52,10 @@ namespace Remotion.Validation.Validators
       ValidationMessage = validationMessage;
     }
 
-    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
+    public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
       if (IsValid (context))
-        return Enumerable.Empty<ValidationFailure>();
+        return Enumerable.Empty<PropertyValidationFailure>();
 
       return EnumerableUtility.Singleton (CreateValidationError (context));
     }
@@ -69,7 +72,7 @@ namespace Remotion.Validation.Validators
       return stringValue.Length >= Min && (Max == null || !(stringValue.Length > Max));
     }
 
-    private ValidationFailure CreateValidationError (PropertyValidatorContext context)
+    private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
       string localizedValidationMessage = ValidationMessage.Format (
           CultureInfo.CurrentUICulture,
@@ -77,8 +80,10 @@ namespace Remotion.Validation.Validators
           Min,
           Max);
 
-      return new ValidationFailure (
+      return new PropertyValidationFailure (
+          context.Instance,
           context.Property,
+          context.PropertyValue,
           errorMessage: ErrorMessage,
           localizedValidationMessage: localizedValidationMessage);
     }

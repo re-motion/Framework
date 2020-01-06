@@ -44,6 +44,7 @@ namespace Remotion.Validation.Validators
     {
       ArgumentUtility.CheckNotNull ("from", from);
       ArgumentUtility.CheckNotNull ("to", to);
+      ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
 
       if (from.GetType() != to.GetType())
         throw new ArgumentException ("'from' must have the same type as 'to'.", "to");
@@ -58,10 +59,10 @@ namespace Remotion.Validation.Validators
       ValidationMessage = validationMessage;
     }
 
-    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
+    public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
       if (IsValid (context))
-        return Enumerable.Empty<ValidationFailure>();
+        return Enumerable.Empty<PropertyValidationFailure>();
 
       return EnumerableUtility.Singleton (CreateValidationError (context));
     }
@@ -82,7 +83,7 @@ namespace Remotion.Validation.Validators
       return ((IComparable) propertyValue).CompareTo (From) > 0 && ((IComparable) propertyValue).CompareTo (To) < 0;
     }
 
-    private ValidationFailure CreateValidationError (PropertyValidatorContext context)
+    private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
       string localizedValidationMessage = ValidationMessage.Format (
           CultureInfo.CurrentUICulture,
@@ -90,8 +91,10 @@ namespace Remotion.Validation.Validators
           From,
           To);
 
-      return new ValidationFailure (
+      return new PropertyValidationFailure (
+          context.Instance,
           context.Property,
+          context.PropertyValue,
           errorMessage: ErrorMessage,
           localizedValidationMessage: localizedValidationMessage);
     }

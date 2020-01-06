@@ -29,9 +29,9 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Val
     {
     }
 
-    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
+    public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
-      return Enumerable.Empty<ValidationFailure>();
+      return Enumerable.Empty<PropertyValidationFailure>();
     }
   }
 }

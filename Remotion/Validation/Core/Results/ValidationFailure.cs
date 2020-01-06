@@ -16,14 +16,14 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Results
 {
-  public class ValidationFailure
+  public abstract class ValidationFailure
   {
-    public IPropertyInformation Property { get; }
+    [NotNull]
+    public object ValidatedObject { get; }
 
     /// <summary>The technical representation of this validation error. Intended for logging.</summary>
     [NotNull]
@@ -33,19 +33,16 @@ namespace Remotion.Validation.Results
     [NotNull]
     public string LocalizedValidationMessage { get; }
 
-    /// <summary>Custom state associated with the failure.</summary>
-    public object CustomState { get; set; }
-
-    public ValidationFailure (
-        [NotNull] IPropertyInformation property,
+    protected ValidationFailure (
+        [NotNull] object validatedObject,
         [NotNull] string errorMessage,
         [NotNull] string localizedValidationMessage)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull ("validatedObject", validatedObject);
       ArgumentUtility.CheckNotNullOrEmpty ("errorMessage", errorMessage);
       ArgumentUtility.CheckNotNullOrEmpty ("localizedValidationMessage", localizedValidationMessage);
 
-      Property = property;
+      ValidatedObject = validatedObject;
       ErrorMessage = errorMessage;
       LocalizedValidationMessage = localizedValidationMessage;
     }

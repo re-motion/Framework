@@ -68,6 +68,7 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
 
       Assert.That (validationFailures.Length, Is.EqualTo (1));
+      //TODO RM-5960: Assert ValidatedObject, ValidatedProperty, ValidatedValue
       Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must have exactly 5 characters."));
       Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '5'."));
     }
@@ -81,6 +82,7 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
 
       Assert.That (validationFailures.Length, Is.EqualTo (1));
+      //TODO RM-5960: Assert ValidatedObject, ValidatedProperty, ValidatedValue
       Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must have exactly 3 characters."));
       Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '3'."));
     }

@@ -83,6 +83,8 @@
     <Compile Include="Implementation\DefaultLogContext.cs" />
     <Compile Include="Implementation\NullValidatedTypeResolver.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatter.cs" />
+    <Compile Include="Results\ObjectValidationFailure.cs" />
+    <Compile Include="Results\PropertyValidationFailure.cs" />
     <Compile Include="ValidatorBuilderExtensions.cs" />
     <Compile Include="Implementation\DiagnosticInformationValidatorFormatterDecorator.cs" />
     <Compile Include="Implementation\GenericTypeAwareValidatedTypeResolverDecorator.cs" />
@@ -181,7 +183,6 @@
     <Compile Include="Providers\ApiBasedValidationRuleCollectorProvider.cs" />
     <Compile Include="Implementation\InvolvedTypeProvider.cs" />
     <Compile Include="Implementation\Validator.cs" />
-    <Compile Include="Utilities\ValidationFailureExtensions.cs" />
     <Compile Include="ValidationContext.cs" />
     <Compile Include="Validators\ILengthValidator.cs" />
     <Compile Include="Validators\IPropertyValidator.cs" />

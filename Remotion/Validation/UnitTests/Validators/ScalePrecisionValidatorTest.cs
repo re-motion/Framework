@@ -108,6 +108,7 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
 
       Assert.That (validationFailures.Length, Is.EqualTo (1));
+      //TODO RM-5960: Assert ValidatedObject, ValidatedProperty, ValidatedValue
       Assert.That (
           validationFailures[0].ErrorMessage,
           Is.EqualTo ("The value must not have more than 5 digits in total, with allowance for 2 decimals."));
@@ -126,6 +127,7 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
 
       Assert.That (validationFailures.Length, Is.EqualTo (1));
+      //TODO RM-5960: Assert ValidatedObject, ValidatedProperty, ValidatedValue
       Assert.That (
           validationFailures[0].ErrorMessage,
           Is.EqualTo ("The value must not have more than 4 digits in total, with allowance for 3 decimals."));

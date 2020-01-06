@@ -20,6 +20,7 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
+using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
@@ -32,14 +33,16 @@ namespace Remotion.Validation.Validators
 
     public NotNullValidator ([NotNull] ValidationMessage validationMessage)
     {
+      ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
+
       ErrorMessage = "The value must not be null.";
       ValidationMessage = validationMessage;
     }
 
-    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
+    public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
       if (IsValid (context))
-        return Enumerable.Empty<ValidationFailure>();
+        return Enumerable.Empty<PropertyValidationFailure>();
 
       return EnumerableUtility.Singleton (CreateValidationError (context));
     }
@@ -49,10 +52,12 @@ namespace Remotion.Validation.Validators
       return !object.Equals (null, context.PropertyValue);
     }
 
-    private ValidationFailure CreateValidationError (PropertyValidatorContext context)
+    private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
-      return new ValidationFailure (
+      return new PropertyValidationFailure (
+          context.Instance,
           context.Property,
+          context.PropertyValue,
           errorMessage: ErrorMessage,
           localizedValidationMessage: ValidationMessage.Format (CultureInfo.CurrentUICulture, null, Array.Empty<object>()));
     }
