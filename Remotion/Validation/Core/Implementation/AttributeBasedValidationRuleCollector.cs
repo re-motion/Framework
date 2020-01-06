@@ -31,15 +31,15 @@ namespace Remotion.Validation.Implementation
   public class AttributeBasedValidationRuleCollector : IValidationRuleCollector
   {
     private readonly Type _validatedType;
-    private readonly IReadOnlyCollection<IAddingComponentPropertyRule> _addedPropertyRules;
-    private readonly IReadOnlyCollection<IAddingComponentPropertyMetaValidationRule> _addedPropertyMetaValidationRules;
-    private readonly IReadOnlyCollection<IRemovingComponentPropertyRule> _removedPropertyRules;
+    private readonly IReadOnlyCollection<IAddingPropertyValidationRuleCollector> _addedPropertyRules;
+    private readonly IReadOnlyCollection<IPropertyMetaValidationRuleCollector> _addedPropertyMetaValidationRules;
+    private readonly IReadOnlyCollection<IRemovingPropertyValidationRuleCollector> _removedPropertyRules;
 
     public AttributeBasedValidationRuleCollector (
         Type validatedType,
-        IEnumerable<IAddingComponentPropertyRule> addedPropertyRules,
-        IEnumerable<IAddingComponentPropertyMetaValidationRule> addedPropertyMetaValidationRules,
-        IEnumerable<IRemovingComponentPropertyRule> removedPropertyRules)
+        IEnumerable<IAddingPropertyValidationRuleCollector> addedPropertyRules,
+        IEnumerable<IPropertyMetaValidationRuleCollector> addedPropertyMetaValidationRules,
+        IEnumerable<IRemovingPropertyValidationRuleCollector> removedPropertyRules)
     {
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
       ArgumentUtility.CheckNotNull ("addedPropertyRules", addedPropertyRules);
@@ -57,17 +57,17 @@ namespace Remotion.Validation.Implementation
       get { return _validatedType; }
     }
 
-    public IReadOnlyCollection<IAddingComponentPropertyRule> AddedPropertyRules
+    public IReadOnlyCollection<IAddingPropertyValidationRuleCollector> AddedPropertyRules
     {
       get { return _addedPropertyRules; }
     }
 
-    public IReadOnlyCollection<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules
+    public IReadOnlyCollection<IPropertyMetaValidationRuleCollector> PropertyMetaValidationRules
     {
       get { return _addedPropertyMetaValidationRules; }
     }
 
-    public IReadOnlyCollection<IRemovingComponentPropertyRule> RemovedPropertyRules
+    public IReadOnlyCollection<IRemovingPropertyValidationRuleCollector> RemovedPropertyRules
     {
       get { return _removedPropertyRules; }
     }

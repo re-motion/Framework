@@ -119,7 +119,7 @@ namespace Remotion.Validation.Merging
       return sb.ToString();
     }
 
-    private string GetLogAfter (IEnumerable<IAddingComponentPropertyRule> mergedRules, ILogContext logContext)
+    private string GetLogAfter (IEnumerable<IAddingPropertyValidationRuleCollector> mergedRules, ILogContext logContext)
     {
       var sb = new StringBuilder();
       sb.AppendLine();
@@ -155,7 +155,7 @@ namespace Remotion.Validation.Merging
           var addedSoftValidators = validationRuleCollectorInfo.Collector.AddedPropertyRules
               .Where (pr => !pr.IsHardConstraint && pr.Property.Equals(actualProperty))
               .SelectMany (pr => pr.Validators).ToArray();
-          var addedMetaValidations = validationRuleCollectorInfo.Collector.AddedPropertyMetaValidationRules
+          var addedMetaValidations = validationRuleCollectorInfo.Collector.PropertyMetaValidationRules
               .Where (pr => pr.Property.Equals(actualProperty))
               .SelectMany (pr => pr.MetaValidationRules).ToArray();
 
@@ -203,7 +203,7 @@ namespace Remotion.Validation.Merging
       foreach (var logContextInfo in logContextInfos)
       {
         var removingCollectors =
-            logContextInfo.RemovingValidatorRegistrationsWithContext.Select (ci => ci.RemovingComponentPropertyRule.CollectorType.Name)
+            logContextInfo.RemovingValidatorRegistrationsWithContext.Select (ci => ci.RemovingPropertyValidationRuleCollector.CollectorType.Name)
                 .Distinct()
                 .ToArray();
         var logEntry = string.Format (
@@ -256,7 +256,7 @@ namespace Remotion.Validation.Merging
     {
       return validationRuleCollectorInfo.Collector.RemovedPropertyRules.Select (pr => pr.Property)
           .Concat (validationRuleCollectorInfo.Collector.AddedPropertyRules.Select (pr => pr.Property))
-          .Concat (validationRuleCollectorInfo.Collector.AddedPropertyMetaValidationRules.Select (pr => pr.Property))
+          .Concat (validationRuleCollectorInfo.Collector.PropertyMetaValidationRules.Select (pr => pr.Property))
           .Distinct ();
     }
 

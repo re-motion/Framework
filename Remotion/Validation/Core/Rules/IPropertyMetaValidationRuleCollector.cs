@@ -23,13 +23,12 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Rules
 {
-  // TODO RM-5906: Rename to remove "Component". Replace with "Validation". Since this is only a part of the AddingValidationPropertyRuleBuilder, find a name to better express this relationship, perhaps "Collector"?
   /// <summary>
   /// Defines a rule which ensures the consistency of the merged set of <see cref="IPropertyValidator"/>s for the <see cref="Property"/>. 
   /// The rules belong to a component via the <see cref="CollectorType"/> and are applied to the validation specification if the component is used within the application.
   /// </summary>
-  /// <seealso cref="AddingComponentPropertyMetaValidationRule"/>
-  public interface IAddingComponentPropertyMetaValidationRule
+  /// <seealso cref="PropertyMetaValidationRuleCollector"/>
+  public interface IPropertyMetaValidationRuleCollector
   {
     /// <summary>
     /// Gets the <see cref="Type"/> of the <see cref="IValidationRuleCollector"/> with which the rule is associated.

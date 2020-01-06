@@ -32,7 +32,7 @@ namespace Remotion.Validation
     /// <param name="propertySelector">Specifies the property for which the validation rule is added.</param>
     /// <returns>A builder object used for specifying the validation rules of the property.</returns>
     /// <remarks>TODO RM-5906: usage sample</remarks>
-    IConditionalAddingComponentRuleBuilder<TValidatedType, TProperty> AddRule<TProperty> (Expression<Func<TValidatedType, TProperty>> propertySelector);
+    IConditionalAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddRule<TProperty> (Expression<Func<TValidatedType, TProperty>> propertySelector);
 
     /// <summary>
     /// Registers which validation rules should be removed from the property. This is used to remove validation rules introduced by other validation 
@@ -42,6 +42,6 @@ namespace Remotion.Validation
     /// <param name="propertySelector">Specifies the property for which a specific validation rule should be removed.</param>
     /// <returns>A builder object used for specifying the validation rules to be removed from the property.</returns>
     /// <remarks>TODO RM-5906: usage sample</remarks>
-    IRemovingComponentRuleBuilder<TValidatedType, TProperty> RemoveRule<TProperty> (Expression<Func<TValidatedType, TProperty>> propertySelector);
+    IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> RemoveRule<TProperty> (Expression<Func<TValidatedType, TProperty>> propertySelector);
   }
 }

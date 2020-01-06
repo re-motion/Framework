@@ -25,67 +25,67 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.RuleBuilders
 {
   /// <summary>
-  /// Default implementation of the <see cref="IAddingComponentRuleBuilder{TValidatedType,TProperty}"/>.
+  /// Default implementation of the <see cref="IAddingPropertyValidationRuleBuilder{TValidatedType,TProperty}"/>.
   /// </summary>
-  public class AddingComponentRuleBuilder<TValidatedType, TProperty> : IConditionalAddingComponentRuleBuilder<TValidatedType, TProperty>
+  public class AddingPropertyValidationRuleBuilder<TValidatedType, TProperty> : IConditionalAddingPropertyValidationRuleBuilder<TValidatedType, TProperty>
   {
-    private readonly IAddingComponentPropertyRule _addingComponentPropertyRule;
-    private readonly IAddingComponentPropertyMetaValidationRule _addingMetaValidationPropertyRule;
+    private readonly IAddingPropertyValidationRuleCollector _addingPropertyValidationRuleCollector;
+    private readonly IPropertyMetaValidationRuleCollector _propertyMetaValidationRuleCollector;
 
-    public AddingComponentRuleBuilder (
-        IAddingComponentPropertyRule addingComponentPropertyPropertyRule,
-        IAddingComponentPropertyMetaValidationRule addingMetaValidationPropertyRule)
+    public AddingPropertyValidationRuleBuilder (
+        IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector,
+        IPropertyMetaValidationRuleCollector propertyMetaValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("addingComponentPropertyPropertyRule", addingComponentPropertyPropertyRule);
-      ArgumentUtility.CheckNotNull ("addingMetaValidationPropertyRule", addingMetaValidationPropertyRule);
+      ArgumentUtility.CheckNotNull ("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
+      ArgumentUtility.CheckNotNull ("propertyMetaValidationRuleCollector", propertyMetaValidationRuleCollector);
 
-      _addingComponentPropertyRule = addingComponentPropertyPropertyRule;
-      _addingMetaValidationPropertyRule = addingMetaValidationPropertyRule;
+      _addingPropertyValidationRuleCollector = addingPropertyValidationRuleCollector;
+      _propertyMetaValidationRuleCollector = propertyMetaValidationRuleCollector;
     }
 
-    public IAddingComponentPropertyRule AddingComponentPropertyRule
+    public IAddingPropertyValidationRuleCollector AddingPropertyValidationRuleCollector
     {
-      get { return _addingComponentPropertyRule; }
+      get { return _addingPropertyValidationRuleCollector; }
     }
 
-    public IAddingComponentPropertyMetaValidationRule AddingMetaValidationPropertyRule
+    public IPropertyMetaValidationRuleCollector PropertyMetaValidationRuleCollector
     {
-      get { return _addingMetaValidationPropertyRule; }
+      get { return _propertyMetaValidationRuleCollector; }
     }
 
-    public IAddingComponentRuleBuilder<TValidatedType, TProperty> SetCondition (Func<TValidatedType, bool> predicate)
+    public IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> SetCondition (Func<TValidatedType, bool> predicate)
     {
       ArgumentUtility.CheckNotNull ("predicate", predicate);
 
-      _addingComponentPropertyRule.SetCondition (predicate);
+      _addingPropertyValidationRuleCollector.SetCondition (predicate);
       return this;
     }
 
-    public IAddingComponentRuleBuilder<TValidatedType, TProperty> NotRemovable ()
+    public IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> NotRemovable ()
     {
-      _addingComponentPropertyRule.SetHardConstraint();
+      _addingPropertyValidationRuleCollector.SetHardConstraint();
       return this;
     }
 
-    public IAddingComponentRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule (IMetaValidationRule metaValidationRule)
+    public IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule (IMetaValidationRule metaValidationRule)
     {
       ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
 
-      _addingMetaValidationPropertyRule.RegisterMetaValidationRule (metaValidationRule);
+      _propertyMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);
       return this;
     }
 
-    public IAddingComponentRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule (
+    public IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule (
         Func<IEnumerable<IPropertyValidator>, MetaValidationRuleValidationResult> rule)
     {
       ArgumentUtility.CheckNotNull ("rule", rule);
 
       var metaValidationRule = new DelegateMetaValidationRule<IPropertyValidator> (rule);
-      _addingMetaValidationPropertyRule.RegisterMetaValidationRule (metaValidationRule);
+      _propertyMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);
       return this;
     }
 
-    public IAddingComponentRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (
+    public IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (
         Expression<Func<IEnumerable<TValidator>, bool>> metaValidationRuleExpression)
         where TValidator: IPropertyValidator
     {
@@ -104,20 +104,20 @@ namespace Remotion.Validation.RuleBuilders
                 "Meta validation rule '{0}' failed for validator '{1}' on property '{2}.{3}'.",
                 metaValidationRuleExpression,
                 typeof (TValidator).FullName,
-                _addingComponentPropertyRule.Property.DeclaringType.FullName,
-                _addingComponentPropertyRule.Property.Name);
+                _addingPropertyValidationRuleCollector.Property.DeclaringType.FullName,
+                _addingPropertyValidationRuleCollector.Property.Name);
           });
 
-      _addingMetaValidationPropertyRule.RegisterMetaValidationRule (metaValidationRule);
+      _propertyMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);
       return this;
     }
 
-    public IAddingComponentRuleBuilder<TValidatedType, TProperty> SetValidator (
+    public IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> SetValidator (
         Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory)
     {
       ArgumentUtility.CheckNotNull ("validatorFactory", validatorFactory);
 
-      _addingComponentPropertyRule.RegisterValidator (validatorFactory);
+      _addingPropertyValidationRuleCollector.RegisterValidator (validatorFactory);
       return this;
     }
   }

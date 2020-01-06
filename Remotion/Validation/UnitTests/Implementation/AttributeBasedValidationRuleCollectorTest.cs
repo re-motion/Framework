@@ -26,33 +26,33 @@ namespace Remotion.Validation.UnitTests.Implementation
   public class AttributeBasedValidationRuleCollectorTest
   {
     private Type _validatedType;
-    private IAddingComponentPropertyRule[] _addingPropertyRules;
-    private IAddingComponentPropertyMetaValidationRule[] _addingMetaPropertyRules;
-    private IRemovingComponentPropertyRule[] _removingPropertyRegistration;
+    private IAddingPropertyValidationRuleCollector[] _addingPropertyValidationRuleCollector;
+    private IPropertyMetaValidationRuleCollector[] _propertyMetaValidationRuleCollector;
+    private IRemovingPropertyValidationRuleCollector[] _removingPropertyValidationRuleCollector;
     private AttributeBasedValidationRuleCollector _collector;
 
     [SetUp]
     public void SetUp ()
     {
       _validatedType = typeof (Customer);
-      _addingPropertyRules = new IAddingComponentPropertyRule[0];
-      _addingMetaPropertyRules = new IAddingComponentPropertyMetaValidationRule[0];
-      _removingPropertyRegistration = new IRemovingComponentPropertyRule[0];
+      _addingPropertyValidationRuleCollector = new IAddingPropertyValidationRuleCollector[0];
+      _propertyMetaValidationRuleCollector = new IPropertyMetaValidationRuleCollector[0];
+      _removingPropertyValidationRuleCollector = new IRemovingPropertyValidationRuleCollector[0];
 
       _collector = new AttributeBasedValidationRuleCollector (
           _validatedType,
-          _addingPropertyRules,
-          _addingMetaPropertyRules,
-          _removingPropertyRegistration);
+          _addingPropertyValidationRuleCollector,
+          _propertyMetaValidationRuleCollector,
+          _removingPropertyValidationRuleCollector);
     }
 
     [Test]
     public void Initialization ()
     {
       Assert.That (_collector.ValidatedType, Is.SameAs (_validatedType));
-      Assert.That (_collector.AddedPropertyRules, Is.EqualTo (_addingPropertyRules));
-      Assert.That (_collector.AddedPropertyMetaValidationRules, Is.EqualTo (_addingMetaPropertyRules));
-      Assert.That (_collector.RemovedPropertyRules, Is.EqualTo (_removingPropertyRegistration));
+      Assert.That (_collector.AddedPropertyRules, Is.EqualTo (_addingPropertyValidationRuleCollector));
+      Assert.That (_collector.PropertyMetaValidationRules, Is.EqualTo (_propertyMetaValidationRuleCollector));
+      Assert.That (_collector.RemovedPropertyRules, Is.EqualTo (_removingPropertyValidationRuleCollector));
     }
   }
 }

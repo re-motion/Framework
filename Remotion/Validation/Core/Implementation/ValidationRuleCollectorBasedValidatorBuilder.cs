@@ -87,10 +87,10 @@ namespace Remotion.Validation.Implementation
 
     private void ValidateMetaRules (
         IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> allCollectors,
-        IEnumerable<IAddingComponentPropertyRule> allRules)
+        IEnumerable<IAddingPropertyValidationRuleCollector> allRules)
     {
       var addingComponentPropertyMetaValidationRules =
-          allCollectors.SelectMany (cg => cg).Select (ci => ci.Collector).SelectMany (c => c.AddedPropertyMetaValidationRules);
+          allCollectors.SelectMany (cg => cg).Select (ci => ci.Collector).SelectMany (c => c.PropertyMetaValidationRules);
       var metaRulesValidator = MetaRulesValidatorFactory.CreateMetaRuleValidator (addingComponentPropertyMetaValidationRules);
 
       var metaValidationResults = metaRulesValidator.Validate (allRules.ToArray()).Where (r => !r.IsValid).ToArray();

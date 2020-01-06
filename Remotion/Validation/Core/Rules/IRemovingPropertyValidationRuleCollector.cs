@@ -21,13 +21,12 @@ using Remotion.Reflection;
 
 namespace Remotion.Validation.Rules
 {
-  // TODO RM-5906: Rename to remove "Component". Replace with "Validation". Since this is only a part of the RemovingValidationPropertyRuleBuilder, find a name to better express this relationship, perhaps "Collector"?
   /// <summary>
   /// Defines a rule associated with a <see cref="Property"/> which specifies the validators to remove from the validation specification. The rule belongs to a component 
   /// via the <see cref="CollectorType"/> and is applied to the validation specification if the component is used within the application.
   /// </summary>
-  /// <seealso cref="RemovingComponentPropertyRule"/>
-  public interface IRemovingComponentPropertyRule
+  /// <seealso cref="RemovingPropertyValidationRuleCollector"/>
+  public interface IRemovingPropertyValidationRuleCollector
   {
     /// <summary>
     /// Gets the <see cref="Type"/> of the <see cref="IValidationRuleCollector"/> with which the rule is associated.
@@ -46,14 +45,14 @@ namespace Remotion.Validation.Rules
 
     /// <summary>
     /// Specifies that all validators of <paramref name="validatorType"/> should be removed.
-    /// Note: It is not supported to remove validators which are registered with the <see cref="IAddingComponentPropertyRule.IsHardConstraint"/> flag set to <see langword="true" />.
+    /// Note: It is not supported to remove validators which are registered with the <see cref="IAddingPropertyValidationRuleCollector.IsHardConstraint"/> flag set to <see langword="true" />.
     /// Attempting to do so will result in an exception when the validation rules aggregated.
     /// </summary>
     void RegisterValidator ([NotNull] Type validatorType);
 
     /// <summary>
     /// Specifies that all validators of <paramref name="validatorType"/> registered by <paramref name="collectorTypeToRemoveFrom"/> should be removed.
-    /// Note: It is not supported to remove validators which are registered with the <see cref="IAddingComponentPropertyRule.IsHardConstraint"/> flag set to <see langword="true" />.
+    /// Note: It is not supported to remove validators which are registered with the <see cref="IAddingPropertyValidationRuleCollector.IsHardConstraint"/> flag set to <see langword="true" />.
     /// Attempting to do so will result in an exception when the validation rules aggregated.
     /// </summary>
     void RegisterValidator ([NotNull] Type validatorType, [CanBeNull] Type collectorTypeToRemoveFrom);

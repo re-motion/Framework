@@ -27,25 +27,21 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
-  public class AddingComponentPropertyRuleStub : IAddingComponentPropertyRule
+  public class AddingPropertyValidationRuleCollectorStub : IAddingPropertyValidationRuleCollector
   {
     private class Collector : IValidationRuleCollector<DomainType>
     {
       public Type ValidatedType => throw new NotImplementedException();
 
-      public IReadOnlyCollection<IAddingComponentPropertyRule> AddedPropertyRules => throw new NotImplementedException();
+      public IReadOnlyCollection<IAddingPropertyValidationRuleCollector> AddedPropertyRules => throw new NotImplementedException();
 
-      public IReadOnlyCollection<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules => throw new NotImplementedException();
+      public IReadOnlyCollection<IPropertyMetaValidationRuleCollector> PropertyMetaValidationRules => throw new NotImplementedException();
 
-      public IReadOnlyCollection<IRemovingComponentPropertyRule> RemovedPropertyRules => throw new NotImplementedException();
+      public IReadOnlyCollection<IRemovingPropertyValidationRuleCollector> RemovedPropertyRules => throw new NotImplementedException();
 
-      public IConditionalAddingComponentRuleBuilder<DomainType, TProperty> AddRule<TProperty> (Expression<Func<DomainType, TProperty>> propertySelector) => throw new NotImplementedException();
+      public IConditionalAddingPropertyValidationRuleBuilder<DomainType, TProperty> AddRule<TProperty> (Expression<Func<DomainType, TProperty>> propertySelector) => throw new NotImplementedException();
 
-      public IRemovingComponentRuleBuilder<DomainType, TProperty> RemoveRule<TProperty> (Expression<Func<DomainType, TProperty>> propertySelector) => throw new NotImplementedException();
-
-      public void When (Func<DomainType, bool> predicate, Action action) => throw new NotImplementedException();
-
-      public void Unless (Func<DomainType, bool> predicate, Action action) => throw new NotImplementedException();
+      public IRemovingPropertyValidationRuleBuilder<DomainType, TProperty> RemoveRule<TProperty> (Expression<Func<DomainType, TProperty>> propertySelector) => throw new NotImplementedException();
     }
 
     public class DomainType
@@ -55,7 +51,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
     private readonly List<IPropertyValidator> _validators = new List<IPropertyValidator>();
 
-    public AddingComponentPropertyRuleStub ()
+    public AddingPropertyValidationRuleCollectorStub ()
     {
     }
 

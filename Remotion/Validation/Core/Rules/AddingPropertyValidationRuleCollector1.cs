@@ -13,9 +13,9 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.Rules
 {
   /// <summary>
-  /// Default implementation of the <see cref="IAddingComponentPropertyRule"/> interface.
+  /// Default implementation of the <see cref="IAddingPropertyValidationRuleCollector"/> interface.
   /// </summary>
-  public sealed class AddingComponentPropertyRule<TValidatedType, TProperty> : IAddingComponentPropertyRule
+  public sealed class AddingPropertyValidationRuleCollector<TValidatedType, TProperty> : IAddingPropertyValidationRuleCollector
   {
     private sealed class DeferredInitializationValidationMessage : ValidationMessage
     {
@@ -74,7 +74,7 @@ namespace Remotion.Validation.Rules
     private readonly List<(DeferredInitializationValidationMessage ValidationMessage, IPropertyValidator Validator)> _uninitializedValidationMessages =
         new List<(DeferredInitializationValidationMessage, IPropertyValidator)>();
 
-    public AddingComponentPropertyRule (
+    public AddingPropertyValidationRuleCollector (
        [NotNull] IPropertyInformation property,
        [NotNull]Func<object, object> propertyFunc,
        [NotNull]Type collectorType)
@@ -90,7 +90,7 @@ namespace Remotion.Validation.Rules
       IsHardConstraint = false; 
     }
 
-    IValidationRule IAddingComponentPropertyRule.CreateValidationRule (IValidationMessageFactory validationMessageFactory)
+    IValidationRule IAddingPropertyValidationRuleCollector.CreateValidationRule (IValidationMessageFactory validationMessageFactory)
     {
       ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
 
@@ -174,7 +174,7 @@ namespace Remotion.Validation.Rules
 
     public override string ToString ()
     {
-      var sb = new StringBuilder (nameof (AddingComponentPropertyRule));
+      var sb = new StringBuilder (nameof (AddingPropertyValidationRuleCollector));
 
       var hasCondition = Condition != null;
       if (hasCondition || IsHardConstraint)

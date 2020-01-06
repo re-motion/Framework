@@ -25,10 +25,10 @@ namespace Remotion.Validation.Merging
 {
   public class ValidationCollectorMergeResult
   {
-    private readonly IReadOnlyCollection<IAddingComponentPropertyRule> _collectedRules;
+    private readonly IReadOnlyCollection<IAddingPropertyValidationRuleCollector> _collectedRules;
     private readonly ILogContext _logContext;
 
-    public ValidationCollectorMergeResult (IEnumerable<IAddingComponentPropertyRule> collectedRules, ILogContext logContext)
+    public ValidationCollectorMergeResult (IEnumerable<IAddingPropertyValidationRuleCollector> collectedRules, ILogContext logContext)
     {
       ArgumentUtility.CheckNotNull ("collectedRules", collectedRules);
       ArgumentUtility.CheckNotNull ("logContext", logContext);
@@ -37,7 +37,7 @@ namespace Remotion.Validation.Merging
       _logContext = logContext;
     }
 
-    public IReadOnlyCollection<IAddingComponentPropertyRule> CollectedRules
+    public IReadOnlyCollection<IAddingPropertyValidationRuleCollector> CollectedRules
     {
       get
       {

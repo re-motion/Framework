@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Validation.RuleBuilders
 {
-  public interface IConditionalAddingComponentRuleBuilder<TValidatedType, out TProperty> : IAddingComponentRuleBuilder<TValidatedType, TProperty>
+  public interface IConditionalAddingPropertyValidationRuleBuilder<TValidatedType, out TProperty> : IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty>
   {
-    IAddingComponentRuleBuilder<TValidatedType, TProperty> SetCondition (Func<TValidatedType, bool> predicate);
+    IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> SetCondition (Func<TValidatedType, bool> predicate);
   }
 }

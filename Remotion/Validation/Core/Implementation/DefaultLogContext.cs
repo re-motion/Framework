@@ -27,30 +27,30 @@ namespace Remotion.Validation.Implementation
   /// </summary>
   public class DefaultLogContext : ILogContext
   {
-    private readonly MultiDictionary<IAddingComponentPropertyRule, LogContextInfo> _removingLogEntries;
+    private readonly MultiDictionary<IAddingPropertyValidationRuleCollector, LogContextInfo> _removingLogEntries;
 
     public DefaultLogContext ()
     {
-      _removingLogEntries = new MultiDictionary<IAddingComponentPropertyRule, LogContextInfo>();
+      _removingLogEntries = new MultiDictionary<IAddingPropertyValidationRuleCollector, LogContextInfo>();
     }
 
     public void ValidatorRemoved (
         IPropertyValidator removedvalidator,
         ValidatorRegistrationWithContext[] removingValidatorRegistrationsWithContext,
-        IAddingComponentPropertyRule addingComponentPropertyRule)
+        IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("addingComponentPropertyRule", addingComponentPropertyRule);
+      ArgumentUtility.CheckNotNull ("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
       ArgumentUtility.CheckNotNull ("removingValidatorRegistrationsWithContext", removingValidatorRegistrationsWithContext);
-      ArgumentUtility.CheckNotNull ("addingComponentPropertyRule", addingComponentPropertyRule);
+      ArgumentUtility.CheckNotNull ("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
 
-      _removingLogEntries[addingComponentPropertyRule].Add (new LogContextInfo (removedvalidator, removingValidatorRegistrationsWithContext));
+      _removingLogEntries[addingPropertyValidationRuleCollector].Add (new LogContextInfo (removedvalidator, removingValidatorRegistrationsWithContext));
     }
 
-    public IEnumerable<LogContextInfo> GetLogContextInfos (IAddingComponentPropertyRule validationRule)
+    public IEnumerable<LogContextInfo> GetLogContextInfos (IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("validationRule", validationRule);
+      ArgumentUtility.CheckNotNull ("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
 
-      return _removingLogEntries[validationRule];
+      return _removingLogEntries[addingPropertyValidationRuleCollector];
     }
   }
 }

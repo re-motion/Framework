@@ -62,9 +62,9 @@ namespace Remotion.Validation.UnitTests.Providers
 
       var addingComponentPropertyRules = collectors.SelectMany (c => c.ToArray()).SelectMany (c => c.Collector.AddedPropertyRules).ToArray();
       Assert.That (addingComponentPropertyRules, Is.Not.Empty);
-      Assert.That (addingComponentPropertyRules.OfType<AddingComponentPropertyRule<Customer, string>>().Count(), Is.EqualTo (2));
-      Assert.That (addingComponentPropertyRules.OfType<AddingComponentPropertyRule<Customer, Address>>(), Is.Empty);
-      Assert.That (addingComponentPropertyRules.OfType<AddingComponentPropertyRule<Customer, ICollection<Address>>>(), Is.Empty);
+      Assert.That (addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, string>>().Count(), Is.EqualTo (2));
+      Assert.That (addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, Address>>(), Is.Empty);
+      Assert.That (addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, ICollection<Address>>>(), Is.Empty);
 
       var validators = addingComponentPropertyRules.SelectMany (r => r.Validators).ToArray();
       Assert.That (validators, Is.Not.Empty);

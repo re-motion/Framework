@@ -33,14 +33,14 @@ namespace Remotion.Validation.Merging
     }
 
     protected abstract ILogContext CreateNewLogContext ();
-    protected abstract void MergeRules (IEnumerable<ValidationRuleCollectorInfo> collectorGroup, List<IAddingComponentPropertyRule> collectedRules, ILogContext logContext);
+    protected abstract void MergeRules (IEnumerable<ValidationRuleCollectorInfo> collectorGroup, List<IAddingPropertyValidationRuleCollector> collectedRules, ILogContext logContext);
 
     public ValidationCollectorMergeResult Merge (IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> validationCollectorInfos)
     {
       ArgumentUtility.CheckNotNull ("validationCollectorInfos", validationCollectorInfos);
 
       var logContext = CreateNewLogContext();
-      var collectedRules = new List<IAddingComponentPropertyRule>();
+      var collectedRules = new List<IAddingPropertyValidationRuleCollector>();
       foreach (var validationCollectorGroup in validationCollectorInfos)
         MergeRules (validationCollectorGroup, collectedRules, logContext);
 

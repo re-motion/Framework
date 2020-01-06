@@ -43,7 +43,7 @@ namespace Remotion.Validation.Merging
       return new DefaultLogContext ();
     }
 
-    protected override void MergeRules (IEnumerable<ValidationRuleCollectorInfo> collectorGroup, List<IAddingComponentPropertyRule> collectedRules, ILogContext logContext)
+    protected override void MergeRules (IEnumerable<ValidationRuleCollectorInfo> collectorGroup, List<IAddingPropertyValidationRuleCollector> collectedRules, ILogContext logContext)
     {
       var collectorInfos = collectorGroup.ToArray();
 

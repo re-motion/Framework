@@ -25,8 +25,8 @@ namespace Remotion.Validation.UnitTests.TestDomain.Collectors
   public class InvalidValidationRuleRuleCollector2 : IValidationRuleCollector
   {
     public Type ValidatedType { get; private set; }
-    public IReadOnlyCollection<IAddingComponentPropertyRule> AddedPropertyRules { get; private set; }
-    public IReadOnlyCollection<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules { get; private set; }
-    public IReadOnlyCollection<IRemovingComponentPropertyRule> RemovedPropertyRules { get; private set; }
+    public IReadOnlyCollection<IAddingPropertyValidationRuleCollector> AddedPropertyRules { get; private set; }
+    public IReadOnlyCollection<IPropertyMetaValidationRuleCollector> PropertyMetaValidationRules { get; private set; }
+    public IReadOnlyCollection<IRemovingPropertyValidationRuleCollector> RemovedPropertyRules { get; private set; }
   }
 }

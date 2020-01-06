@@ -28,21 +28,21 @@ namespace Remotion.Validation.UnitTests.Implementation
   {
     private ValidatorRegistration _validatorRegistration;
     private ValidatorRegistrationWithContext _registrationWithContext;
-    private IRemovingComponentPropertyRule _removingPropertyRuleStub;
+    private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollectorStub;
 
     [SetUp]
     public void SetUp ()
     {
       _validatorRegistration = new ValidatorRegistration (typeof (NotEqualValidator), null);
-      _removingPropertyRuleStub = MockRepository.GenerateStub<IRemovingComponentPropertyRule>();
-      _registrationWithContext = new ValidatorRegistrationWithContext (_validatorRegistration, _removingPropertyRuleStub);
+      _removingPropertyValidationRuleCollectorStub = MockRepository.GenerateStub<IRemovingPropertyValidationRuleCollector>();
+      _registrationWithContext = new ValidatorRegistrationWithContext (_validatorRegistration, _removingPropertyValidationRuleCollectorStub);
     }
 
     [Test]
     public void Initialization ()
     {
       Assert.That (_registrationWithContext.ValidatorRegistration, Is.SameAs (_validatorRegistration));
-      Assert.That (_registrationWithContext.RemovingComponentPropertyRule, Is.SameAs(_removingPropertyRuleStub));
+      Assert.That (_registrationWithContext.RemovingPropertyValidationRuleCollector, Is.SameAs(_removingPropertyValidationRuleCollectorStub));
     }
   }
 }

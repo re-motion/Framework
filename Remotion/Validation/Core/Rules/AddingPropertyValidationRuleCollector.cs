@@ -21,9 +21,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Rules
 {
-  public static class AddingComponentPropertyRule
+  public static class AddingPropertyValidationRuleCollector
   {
-    public static AddingComponentPropertyRule<TValidatedType, TProperty> Create<TValidatedType, TProperty> (
+    public static AddingPropertyValidationRuleCollector<TValidatedType, TProperty> Create<TValidatedType, TProperty> (
         Expression<Func<TValidatedType, TProperty>> expression,
         Type collectorType)
     {
@@ -45,7 +45,7 @@ namespace Remotion.Validation.Rules
               typeof (object)),
           parameterExpression);
 
-      return new AddingComponentPropertyRule<TValidatedType, TProperty> (
+      return new AddingPropertyValidationRuleCollector<TValidatedType, TProperty> (
           PropertyInfoAdapter.Create (propertyInfo),
           propertyExpression.Compile(),
           collectorType);

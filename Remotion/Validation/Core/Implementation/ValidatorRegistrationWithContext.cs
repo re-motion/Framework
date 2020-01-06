@@ -26,17 +26,17 @@ namespace Remotion.Validation.Implementation
   public class ValidatorRegistrationWithContext
   {
     private readonly ValidatorRegistration _validatorRegistration;
-    private readonly IRemovingComponentPropertyRule _removingComponentPropertyRule;
+    private readonly IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollector;
 
     public ValidatorRegistrationWithContext (
         ValidatorRegistration validatorRegistration,
-        IRemovingComponentPropertyRule removingComponentPropertyRule)
+        IRemovingPropertyValidationRuleCollector removingPropertyValidationRuleCollector)
     {
       ArgumentUtility.CheckNotNull ("validatorRegistration", validatorRegistration);
-      ArgumentUtility.CheckNotNull ("removingComponentPropertyRule", removingComponentPropertyRule);
+      ArgumentUtility.CheckNotNull ("removingPropertyValidationRuleCollector", removingPropertyValidationRuleCollector);
 
       _validatorRegistration = validatorRegistration;
-      _removingComponentPropertyRule = removingComponentPropertyRule;
+      _removingPropertyValidationRuleCollector = removingPropertyValidationRuleCollector;
     }
 
     public ValidatorRegistration ValidatorRegistration
@@ -44,9 +44,9 @@ namespace Remotion.Validation.Implementation
       get { return _validatorRegistration; }
     }
 
-    public IRemovingComponentPropertyRule RemovingComponentPropertyRule
+    public IRemovingPropertyValidationRuleCollector RemovingPropertyValidationRuleCollector
     {
-      get { return _removingComponentPropertyRule; }
+      get { return _removingPropertyValidationRuleCollector; }
     }
   }
 }

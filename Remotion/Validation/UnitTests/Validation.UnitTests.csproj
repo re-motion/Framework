@@ -111,7 +111,7 @@
     <Compile Include="Implementation\ValidationAttributesBasedPropertyRuleReflectorTest.cs" />
     <Compile Include="Implementation\TestDomain\TypeWithTwoInterfacesHavingCommingBaseInterface.cs" />
     <Compile Include="Implementation\ValidationRuleCollectorInfoTest.cs" />
-    <Compile Include="Implementation\AddingComponentPropertyRuleStub.cs" />
+    <Compile Include="Implementation\AddingPropertyValidationRuleCollectorStub.cs" />
     <Compile Include="Implementation\ValidatorRegistrationWithContextTest.cs" />
     <Compile Include="MetaValidation\DefaultSystemMetaValidationRulesProviderFactoryTest.cs" />
     <Compile Include="MetaValidation\DefaultSystemMetaValidationRulesProviderTest.cs" />
@@ -131,7 +131,7 @@
     <Compile Include="Providers\IValidationRuleCollectorProviderTest.cs" />
     <Compile Include="Providers\TestableAttributeBasedValidationRuleCollectorProviderBase.cs" />
     <Compile Include="Providers\TestableValidationAttributesBasedValidationRuleCollectorProvider.cs" />
-    <Compile Include="Rules\AddingComponentPropertyMetaValidationRuleTest.cs" />
+    <Compile Include="Rules\PropertyMetaValidationRuleCollectorTest.cs" />
     <Compile Include="Rules\ObjectValidationRuleTest.cs" />
     <Compile Include="Rules\PropertyValidationRuleTest.cs" />
     <Compile Include="TestDomain\Address.cs" />
@@ -153,11 +153,11 @@
     <Compile Include="TestDomain\Validators\FakeCreditCardValidator.cs" />
     <Compile Include="TestDomain\Validators\FakeEmailValidator.cs" />
     <Compile Include="TestHelpers\TypeUtility.cs" />
-    <Compile Include="RuleBuilders\RemovingComponentRuleBuilderTest.cs" />
-    <Compile Include="Rules\AddingComponentPropertyRule1Test.cs" />
-    <Compile Include="RuleBuilders\AddingComponentRuleBuilderTest.cs" />
+    <Compile Include="RuleBuilders\RemovingPropertyValidationRuleBuilderTest.cs" />
+    <Compile Include="Rules\AddingPropertyValidationRuleCollector1Test.cs" />
+    <Compile Include="RuleBuilders\AddingPropertyValidationRuleBuilderTest.cs" />
     <Compile Include="ValidationRuleCollectorBaseTest.cs" />
-    <Compile Include="Rules\RemovingComponentPropertyRuleTest.cs" />
+    <Compile Include="Rules\RemovingPropertyValidationRuleCollectorTest.cs" />
     <Compile Include="Rules\ValidatorRegistrationTest.cs" />
     <Compile Include="Implementation\InvolvedTypeProviderTest.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />

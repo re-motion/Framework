@@ -26,64 +26,64 @@ using Rhino.Mocks;
 namespace Remotion.Validation.UnitTests.RuleBuilders
 {
   [TestFixture]
-  public class RemovingComponentRuleBuilderTest
+  public class RemovingPropertyValidationRuleBuilderTest
   {
-    private IRemovingComponentPropertyRule _removingComponentPropertyRuleMock;
-    private RemovingComponentRuleBuilder<Customer, string> _addingComponentBuilder;
+    private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollectorMock;
+    private RemovingPropertyValidationRuleBuilder<Customer, string> _addingPropertyValidationBuilder;
 
     [SetUp]
     public void SetUp ()
     {
-      _removingComponentPropertyRuleMock = MockRepository.GenerateStrictMock<IRemovingComponentPropertyRule>();
-      _addingComponentBuilder = new RemovingComponentRuleBuilder<Customer, string> (_removingComponentPropertyRuleMock);
+      _removingPropertyValidationRuleCollectorMock = MockRepository.GenerateStrictMock<IRemovingPropertyValidationRuleCollector>();
+      _addingPropertyValidationBuilder = new RemovingPropertyValidationRuleBuilder<Customer, string> (_removingPropertyValidationRuleCollectorMock);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_addingComponentBuilder.RemovingComponentPropertyRule, Is.SameAs (_removingComponentPropertyRuleMock));
+      Assert.That (_addingPropertyValidationBuilder.RemovingPropertyValidationRuleCollector, Is.SameAs (_removingPropertyValidationRuleCollectorMock));
     }
 
     [Test]
     public void RemoveValidator ()
     {
-      _removingComponentPropertyRuleMock.Expect (mock => mock.RegisterValidator (typeof (StubPropertyValidator), null));
+      _removingPropertyValidationRuleCollectorMock.Expect (mock => mock.RegisterValidator (typeof (StubPropertyValidator), null));
 
-      _addingComponentBuilder.Validator (typeof (StubPropertyValidator));
+      _addingPropertyValidationBuilder.Validator (typeof (StubPropertyValidator));
 
-      _removingComponentPropertyRuleMock.VerifyAllExpectations();
+      _removingPropertyValidationRuleCollectorMock.VerifyAllExpectations();
     }
 
     [Test]
     public void RemoveValidator_Generic ()
     {
-      _removingComponentPropertyRuleMock.Expect (mock => mock.RegisterValidator (typeof (StubPropertyValidator), null));
+      _removingPropertyValidationRuleCollectorMock.Expect (mock => mock.RegisterValidator (typeof (StubPropertyValidator), null));
 
-      _addingComponentBuilder.Validator<StubPropertyValidator>();
+      _addingPropertyValidationBuilder.Validator<StubPropertyValidator>();
 
-      _removingComponentPropertyRuleMock.VerifyAllExpectations();
+      _removingPropertyValidationRuleCollectorMock.VerifyAllExpectations();
     }
 
     [Test]
     public void RemoveValidator_CollectorTypeOverload ()
     {
-      _removingComponentPropertyRuleMock.Expect (
+      _removingPropertyValidationRuleCollectorMock.Expect (
           mock => mock.RegisterValidator (typeof (StubPropertyValidator), typeof (CustomerValidationRuleCollector1)));
 
-      _addingComponentBuilder.Validator (typeof (StubPropertyValidator), typeof (CustomerValidationRuleCollector1));
+      _addingPropertyValidationBuilder.Validator (typeof (StubPropertyValidator), typeof (CustomerValidationRuleCollector1));
 
-      _removingComponentPropertyRuleMock.VerifyAllExpectations();
+      _removingPropertyValidationRuleCollectorMock.VerifyAllExpectations();
     }
 
     [Test]
     public void RemoveValidator_CollectorTypeOverload_Generic ()
     {
-      _removingComponentPropertyRuleMock.Expect (
+      _removingPropertyValidationRuleCollectorMock.Expect (
           mock => mock.RegisterValidator (typeof (StubPropertyValidator), typeof (CustomerValidationRuleCollector1)));
 
-      _addingComponentBuilder.Validator<StubPropertyValidator, CustomerValidationRuleCollector1>();
+      _addingPropertyValidationBuilder.Validator<StubPropertyValidator, CustomerValidationRuleCollector1>();
 
-      _removingComponentPropertyRuleMock.VerifyAllExpectations();
+      _removingPropertyValidationRuleCollectorMock.VerifyAllExpectations();
     }
   }
 }

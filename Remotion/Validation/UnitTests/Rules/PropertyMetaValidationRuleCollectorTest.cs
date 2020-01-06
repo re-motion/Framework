@@ -29,27 +29,27 @@ using Rhino.Mocks;
 namespace Remotion.Validation.UnitTests.Rules
 {
   [TestFixture]
-  public class AddingComponentPropertyMetaValidationRuleTest
+  public class PropertyMetaValidationRuleCollectorTest
   {
     private IPropertyInformation _property;
     private Expression<Func<Customer, string>> _userNameExpression;
-    private AddingComponentPropertyMetaValidationRule _rule;
+    private PropertyMetaValidationRuleCollector _ruleCollector;
 
     [SetUp]
     public void SetUp ()
     {
       _property = PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName"));
       _userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.UserName);
-      _rule = AddingComponentPropertyMetaValidationRule.Create (_userNameExpression, typeof (RemovingComponentPropertyRuleTest));
+      _ruleCollector = PropertyMetaValidationRuleCollector.Create (_userNameExpression, typeof (RemovingPropertyValidationRuleCollectorTest));
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_rule.Property.Equals(_property), Is.True);
-      Assert.That (_rule.Property, Is.EqualTo (_property));
-      Assert.That (_rule.CollectorType, Is.EqualTo (typeof (RemovingComponentPropertyRuleTest)));
-      Assert.That (_rule.MetaValidationRules.Any(), Is.False);
+      Assert.That (_ruleCollector.Property.Equals(_property), Is.True);
+      Assert.That (_ruleCollector.Property, Is.EqualTo (_property));
+      Assert.That (_ruleCollector.CollectorType, Is.EqualTo (typeof (RemovingPropertyValidationRuleCollectorTest)));
+      Assert.That (_ruleCollector.MetaValidationRules.Any(), Is.False);
     }
 
     [Test]
@@ -58,7 +58,7 @@ namespace Remotion.Validation.UnitTests.Rules
       var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy ());
 
       Assert.That (
-          () => AddingComponentPropertyMetaValidationRule.Create (dummyExpression, typeof (CustomerValidationRuleCollector1)),
+          () => PropertyMetaValidationRuleCollector.Create (dummyExpression, typeof (CustomerValidationRuleCollector1)),
           Throws.ArgumentException.With.Message.EqualTo ("Must be a MemberExpression.\r\nParameter name: expression"));
     }
 
@@ -67,26 +67,26 @@ namespace Remotion.Validation.UnitTests.Rules
     {
       var metaValidationRuleStub1 = MockRepository.GenerateStub<IMetaValidationRule>();
       var metaValidationRuleStub2 = MockRepository.GenerateStub<IMetaValidationRule>();
-      Assert.That (_rule.MetaValidationRules.Count(), Is.EqualTo (0));
+      Assert.That (_ruleCollector.MetaValidationRules.Count(), Is.EqualTo (0));
 
-      _rule.RegisterMetaValidationRule (metaValidationRuleStub1);
-      _rule.RegisterMetaValidationRule (metaValidationRuleStub2);
+      _ruleCollector.RegisterMetaValidationRule (metaValidationRuleStub1);
+      _ruleCollector.RegisterMetaValidationRule (metaValidationRuleStub2);
 
-      Assert.That (_rule.MetaValidationRules.Count(), Is.EqualTo (2));
+      Assert.That (_ruleCollector.MetaValidationRules.Count(), Is.EqualTo (2));
       Assert.That (
-          _rule.MetaValidationRules,
+          _ruleCollector.MetaValidationRules,
           Is.EquivalentTo (new[] { metaValidationRuleStub1, metaValidationRuleStub2 }));
     }
 
     [Test]
     public void To_String ()
     {
-      var result = _rule.ToString();
+      var result = _ruleCollector.ToString();
 
       Assert.That (
           result,
           Is.EqualTo (
-              "AddingComponentPropertyMetaValidationRule: Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
+              "PropertyMetaValidationRuleCollector: Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
   }
 }

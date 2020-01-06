@@ -25,13 +25,12 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Rules
 {
-  // TODO RM-5906: Rename to remove "Component". Replace with "Validation". Since this is only a part of the AddingValidationPropertyRuleBuilder, find a name to better express this relationship, perhaps "Collector"?
   /// <summary>
   /// Defines a rule associated with a <see cref="Property"/> which can have multiple validators. The validators of this rule belong to a component via 
   /// the <see cref="CollectorType"/> and are added to the validation specification if the component is used within the application.
   /// </summary>
-  /// <seealso cref="AddingComponentPropertyRule"/>
-  public interface IAddingComponentPropertyRule
+  /// <seealso cref="AddingPropertyValidationRuleCollector"/>
+  public interface IAddingPropertyValidationRuleCollector
   {
     /// <summary>The validators that are grouped under this rule.</summary>
     IEnumerable<IPropertyValidator> Validators { get; }
@@ -47,7 +46,7 @@ namespace Remotion.Validation.Rules
     IPropertyInformation Property { get; }
 
     /// <summary>
-    /// Gets a flag whether the rule can be removed via an <see cref="IRemovingComponentPropertyRule"/>. 
+    /// Gets a flag whether the rule can be removed via an <see cref="IRemovingPropertyValidationRuleCollector"/>. 
     /// </summary>
     bool IsHardConstraint { get; }
 
@@ -57,7 +56,7 @@ namespace Remotion.Validation.Rules
     void SetCondition<TValidatedType> (Func<TValidatedType, bool> predicate);
 
     /// <summary>
-    /// Registers a validator with this <see cref="IAddingComponentPropertyRule"/>.
+    /// Registers a validator with this <see cref="IAddingPropertyValidationRuleCollector"/>.
     /// </summary>
     void RegisterValidator ([NotNull] Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory);
 

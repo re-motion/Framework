@@ -38,7 +38,7 @@ namespace Remotion.Validation.MetaValidation
       _systemMetaValidationRulesProviderFactory = systemMetaValidationRulesProviderFactory;
     }
 
-    public IMetaRuleValidator CreateMetaRuleValidator (IEnumerable<IAddingComponentPropertyMetaValidationRule> addingComponentPropertyMetaValidationRules)
+    public IMetaRuleValidator CreateMetaRuleValidator (IEnumerable<IPropertyMetaValidationRuleCollector> addingComponentPropertyMetaValidationRules)
     {
       ArgumentUtility.CheckNotNull ("addingComponentPropertyMetaValidationRules", addingComponentPropertyMetaValidationRules);
 

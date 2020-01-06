@@ -106,7 +106,7 @@ namespace Remotion.Validation.UnitTests.Providers
       Assert.That (
           addingPropertyRuleValidators,
           Is.EquivalentTo (new[] { _propertyValidatorStub1, _propertyValidatorStub2, _propertyValidatorStub3 }));
-      Assert.That (result[0].Collector.AddedPropertyMetaValidationRules.ToArray().SelectMany (pr => pr.MetaValidationRules).Any(), Is.False);
+      Assert.That (result[0].Collector.PropertyMetaValidationRules.ToArray().SelectMany (pr => pr.MetaValidationRules).Any(), Is.False);
 
       var removedPropertyRuleRegistrations =
           result[0].Collector.RemovedPropertyRules.ToArray().SelectMany (pr => pr.Validators.Select (v => v.ValidatorType));
@@ -125,7 +125,7 @@ namespace Remotion.Validation.UnitTests.Providers
           addingPropertyRuleValidators,
           Is.EquivalentTo (new[] { _propertyValidatorStub4, _propertyValidatorStub5, _propertyValidatorStub6 }));
       var addingPropertyRuleMetaValidationRules =
-          result[1].Collector.AddedPropertyMetaValidationRules.ToArray().SelectMany (pr => pr.MetaValidationRules);
+          result[1].Collector.PropertyMetaValidationRules.ToArray().SelectMany (pr => pr.MetaValidationRules);
       Assert.That (
           addingPropertyRuleMetaValidationRules,
           Is.EquivalentTo (new IMetaValidationRule[] { _metaValidationRule1, _metaValidationRule3, _metaValidationRule2 }));

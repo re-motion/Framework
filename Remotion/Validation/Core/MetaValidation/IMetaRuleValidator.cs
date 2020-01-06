@@ -22,11 +22,11 @@ namespace Remotion.Validation.MetaValidation
 {
   /// <summary>
   /// Implementations of the <see cref="IMetaRuleValidator"/> interface can be used to validate the consistency of a 
-  /// set of <see cref="IAddingComponentPropertyRule"/>s.
+  /// set of <see cref="IAddingPropertyValidationRuleCollector"/>s.
   /// </summary>
   /// <seealso cref="MetaRulesValidator"/>
   public interface IMetaRuleValidator
   {
-    IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingComponentPropertyRule[] addingComponentPropertyRules);
+    IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingPropertyValidationRuleCollector[] addingPropertyValidationRulesCollector);
   }
 }

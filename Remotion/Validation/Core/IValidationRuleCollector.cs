@@ -31,20 +31,20 @@ namespace Remotion.Validation
     Type ValidatedType { get; }
 
     /// <summary>
-    /// Gets the <see cref="IAddingComponentPropertyRule"/>s added to the validation semtantic of the <see cref="ValidatedType"/>.
+    /// Gets the <see cref="IAddingPropertyValidationRuleCollector"/>s added to the validation semtantic of the <see cref="ValidatedType"/>.
     /// </summary>
-    IReadOnlyCollection<IAddingComponentPropertyRule> AddedPropertyRules { get; }
+    IReadOnlyCollection<IAddingPropertyValidationRuleCollector> AddedPropertyRules { get; }
 
     /// <summary>
-    /// Gets the <see cref="IAddingComponentPropertyMetaValidationRule"/>s added to the validation semtantic of the <see cref="ValidatedType"/>.
+    /// Gets the <see cref="IPropertyMetaValidationRuleCollector"/>s added to the validation semtantic of the <see cref="ValidatedType"/>.
     /// Meta validation rules are used to ensure that the validation semantic of the type is still consistent after all valiation rules 
     /// from all components are applied.
     /// </summary>
-    IReadOnlyCollection<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules { get; }
+    IReadOnlyCollection<IPropertyMetaValidationRuleCollector> PropertyMetaValidationRules { get; }
 
     /// <summary>
-    /// Gets the <see cref="IRemovingComponentPropertyRule"/>s used to remove validation rules from the <see cref="ValidatedType"/>.
+    /// Gets the <see cref="IRemovingPropertyValidationRuleCollector"/>s used to remove validation rules from the <see cref="ValidatedType"/>.
     /// </summary>
-    IReadOnlyCollection<IRemovingComponentPropertyRule> RemovedPropertyRules { get; }
+    IReadOnlyCollection<IRemovingPropertyValidationRuleCollector> RemovedPropertyRules { get; }
   }
 }

@@ -36,9 +36,9 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     private IValidationRuleCollector _collectorStub1;
     private IValidationRuleCollector _collectorStub2;
     private MetaRulesValidator _validator;
-    private IAddingComponentPropertyMetaValidationRule _propertyMetaValidationRuleStub1;
-    private IAddingComponentPropertyMetaValidationRule _propertyMetaValidationRuleStub2;
-    private IAddingComponentPropertyMetaValidationRule _propertyMetaValidationRuleStub3;
+    private IPropertyMetaValidationRuleCollector _propertyMetaValidationRuleCollectorStub1;
+    private IPropertyMetaValidationRuleCollector _propertyMetaValidationRuleCollectorStub2;
+    private IPropertyMetaValidationRuleCollector _propertyMetaValidationRuleCollectorStub3;
     private IPropertyValidator _propertyValidatorStub1;
     private IPropertyValidator _propertyValidatorStub2;
     private IPropertyValidator _propertyValidatorStub3;
@@ -53,13 +53,13 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       _collectorStub1 = MockRepository.GenerateStub<IValidationRuleCollector>();
       _collectorStub2 = MockRepository.GenerateStub<IValidationRuleCollector>();
 
-      _propertyMetaValidationRuleStub1 = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>();
-      _propertyMetaValidationRuleStub2 = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>();
-      _propertyMetaValidationRuleStub3 = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>();
+      _propertyMetaValidationRuleCollectorStub1 = MockRepository.GenerateStub<IPropertyMetaValidationRuleCollector>();
+      _propertyMetaValidationRuleCollectorStub2 = MockRepository.GenerateStub<IPropertyMetaValidationRuleCollector>();
+      _propertyMetaValidationRuleCollectorStub3 = MockRepository.GenerateStub<IPropertyMetaValidationRuleCollector>();
 
-      _collectorStub1.Stub (stub => stub.AddedPropertyMetaValidationRules)
-          .Return (new[] { _propertyMetaValidationRuleStub1, _propertyMetaValidationRuleStub2 });
-      _collectorStub2.Stub (stub => stub.AddedPropertyMetaValidationRules).Return (new[] { _propertyMetaValidationRuleStub3 });
+      _collectorStub1.Stub (stub => stub.PropertyMetaValidationRules)
+          .Return (new[] { _propertyMetaValidationRuleCollectorStub1, _propertyMetaValidationRuleCollectorStub2 });
+      _collectorStub2.Stub (stub => stub.PropertyMetaValidationRules).Return (new[] { _propertyMetaValidationRuleCollectorStub3 });
 
       _propertyValidatorStub1 = MockRepository.GenerateStub<IPropertyValidator>();
       _propertyValidatorStub2 = MockRepository.GenerateStub<IPropertyValidator>();
@@ -72,7 +72,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
 
       _validator =
           new MetaRulesValidator (
-              new[] { _propertyMetaValidationRuleStub1, _propertyMetaValidationRuleStub2, _propertyMetaValidationRuleStub3 },
+              new[] { _propertyMetaValidationRuleCollectorStub1, _propertyMetaValidationRuleCollectorStub2, _propertyMetaValidationRuleCollectorStub3 },
               _systemMetaRulesProviderFactoryStub);
     }
 
@@ -82,10 +82,10 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.UserName);
       var lastNameExpression = ExpressionHelper.GetTypedMemberExpression<Person, string> (c => c.LastName);
 
-      var propertyRule1 = AddingComponentPropertyRule.Create (userNameExpression, typeof (CustomerValidationRuleCollector1));
-      var propertyRule2 = AddingComponentPropertyRule.Create (lastNameExpression, typeof (CustomerValidationRuleCollector1));
-      var propertyRule3 = AddingComponentPropertyRule.Create (lastNameExpression, typeof (CustomerValidationRuleCollector2));
-      var filteredPropertyRule = MockRepository.GenerateStub<IAddingComponentPropertyRule>();
+      var propertyRule1 = AddingPropertyValidationRuleCollector.Create (userNameExpression, typeof (CustomerValidationRuleCollector1));
+      var propertyRule2 = AddingPropertyValidationRuleCollector.Create (lastNameExpression, typeof (CustomerValidationRuleCollector1));
+      var propertyRule3 = AddingPropertyValidationRuleCollector.Create (lastNameExpression, typeof (CustomerValidationRuleCollector2));
+      var filteredPropertyRule = MockRepository.GenerateStub<IAddingPropertyValidationRuleCollector>();
 
       propertyRule1.RegisterValidator (_ => _propertyValidatorStub1);
       propertyRule1.RegisterValidator (_ => _propertyValidatorStub2);
@@ -104,14 +104,14 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var metaValidationRuleMock2 = MockRepository.GenerateStrictMock<IMetaValidationRule>();
       var metaValidationRuleMock3 = MockRepository.GenerateStrictMock<IMetaValidationRule>();
 
-      _propertyMetaValidationRuleStub1.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty (userNameExpression)));
-      _propertyMetaValidationRuleStub1.Stub (stub => stub.MetaValidationRules).Return (new[] { metaValidationRuleMock1, metaValidationRuleMock2 });
+      _propertyMetaValidationRuleCollectorStub1.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty (userNameExpression)));
+      _propertyMetaValidationRuleCollectorStub1.Stub (stub => stub.MetaValidationRules).Return (new[] { metaValidationRuleMock1, metaValidationRuleMock2 });
 
-      _propertyMetaValidationRuleStub2.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty (lastNameExpression)));
-      _propertyMetaValidationRuleStub2.Stub (stub => stub.MetaValidationRules).Return (new[] { metaValidationRuleMock3 });
+      _propertyMetaValidationRuleCollectorStub2.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty (lastNameExpression)));
+      _propertyMetaValidationRuleCollectorStub2.Stub (stub => stub.MetaValidationRules).Return (new[] { metaValidationRuleMock3 });
 
-      _propertyMetaValidationRuleStub3.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty (lastNameExpression)));
-      _propertyMetaValidationRuleStub3.Stub (stub => stub.MetaValidationRules).Return (new IMetaValidationRule[0]);
+      _propertyMetaValidationRuleCollectorStub3.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty (lastNameExpression)));
+      _propertyMetaValidationRuleCollectorStub3.Stub (stub => stub.MetaValidationRules).Return (new IMetaValidationRule[0]);
 
       systemMetaValidationRuleMock1
           .Expect (

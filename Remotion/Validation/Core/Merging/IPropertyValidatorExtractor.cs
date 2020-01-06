@@ -27,6 +27,6 @@ namespace Remotion.Validation.Merging
   /// <seealso cref="PropertyValidatorExtractor"/>
   public interface IPropertyValidatorExtractor
   {
-    IEnumerable<IPropertyValidator> ExtractPropertyValidatorsToRemove (IAddingComponentPropertyRule addingComponentPropertyRule);
+    IEnumerable<IPropertyValidator> ExtractPropertyValidatorsToRemove (IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector);
   }
 }

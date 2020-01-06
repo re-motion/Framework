@@ -20,57 +20,62 @@ using System.Linq.Expressions;
 using System.Text;
 using Remotion.Reflection;
 using Remotion.Utilities;
-using Remotion.Validation.MetaValidation;
 
 namespace Remotion.Validation.Rules
 {
   /// <summary>
-  /// Default implementation of the <see cref="IAddingComponentPropertyMetaValidationRule"/> interface.
+  /// Default implementation of the <see cref="IRemovingPropertyValidationRuleCollector"/> interface.
   /// </summary>
-  public sealed class AddingComponentPropertyMetaValidationRule : IAddingComponentPropertyMetaValidationRule
+  public sealed class RemovingPropertyValidationRuleCollector : IRemovingPropertyValidationRuleCollector
   {
-    public static AddingComponentPropertyMetaValidationRule Create<TValidatedType, TProperty> (Expression<Func<TValidatedType, TProperty>> expression, Type collectorType)
+
+    public static RemovingPropertyValidationRuleCollector Create<TValidatedType, TProperty> (Expression<Func<TValidatedType, TProperty>> expression, Type collectorType)
     {
       var propertyInfo = MemberInfoFromExpressionUtility.GetProperty (expression);
 
-      return new AddingComponentPropertyMetaValidationRule (PropertyInfoAdapter.Create (propertyInfo), collectorType);
+      return new RemovingPropertyValidationRuleCollector (PropertyInfoAdapter.Create (propertyInfo), collectorType);
     }
 
     public IPropertyInformation Property { get; }
     public Type CollectorType { get; }
-    private readonly List<IMetaValidationRule> _metaValidationRules;
 
-    public AddingComponentPropertyMetaValidationRule (IPropertyInformation property, Type collectorType)
+    private readonly List<ValidatorRegistration> _registeredValidators;
+
+    public RemovingPropertyValidationRuleCollector (IPropertyInformation property, Type collectorType)
     {
       ArgumentUtility.CheckNotNull ("property", property);
       ArgumentUtility.CheckNotNull ("collectorType", collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
 
       Property = property;
       CollectorType = collectorType;
-      _metaValidationRules = new List<IMetaValidationRule> ();
+      _registeredValidators = new List<ValidatorRegistration>();
     }
 
-    public IEnumerable<IMetaValidationRule> MetaValidationRules
+    public IEnumerable<ValidatorRegistration> Validators
     {
-      get { return _metaValidationRules.AsReadOnly(); }
+      get { return _registeredValidators.AsReadOnly(); }
     }
 
-    public void RegisterMetaValidationRule (IMetaValidationRule metaValidationRule)
+    public void RegisterValidator (Type validatorType)
     {
-      ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
+      RegisterValidator (validatorType, null);
+    }
 
-      _metaValidationRules.Add (metaValidationRule);
+    public void RegisterValidator (Type validatorType, Type collectorTypeToRemoveFrom)
+    {
+      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
+
+      _registeredValidators.Add (new ValidatorRegistration (validatorType, collectorTypeToRemoveFrom));
     }
 
     public override string ToString ()
     {
-      var sb = new StringBuilder (GetType ().Name);
+      var sb = new StringBuilder (GetType().Name);
       sb.Append (": ");
       sb.Append (Property.DeclaringType != null ? Property.DeclaringType.FullName + "#" : string.Empty);
       sb.Append (Property.Name);
 
-      return sb.ToString ();
+      return sb.ToString();
     }
-
   }
 }

@@ -33,11 +33,11 @@ using Rhino.Mocks;
 namespace Remotion.Validation.UnitTests.Rules
 {
   [TestFixture]
-  public class AddingComponentPropertyRule1Test
+  public class AddingPropertyValidationRuleCollector1Test
   {
     private Expression<Func<Customer, string>> _userNameExpression;
     private Expression<Func<Customer, string>> _lastNameExpression;
-    private IAddingComponentPropertyRule _addingComponentPropertyRule;
+    private IAddingPropertyValidationRuleCollector _addingPropertyValidationRuleCollector;
     private IPropertyInformation _property;
     private IPropertyValidatorExtractor _propertyValidatorExtractorMock;
     private StubPropertyValidator _stubPropertyValidator1;
@@ -58,20 +58,20 @@ namespace Remotion.Validation.UnitTests.Rules
 
       _propertyValidatorExtractorMock = MockRepository.GenerateStrictMock<IPropertyValidatorExtractor>();
 
-      _addingComponentPropertyRule = AddingComponentPropertyRule.Create (_userNameExpression, typeof (CustomerValidationRuleCollector1));
+      _addingPropertyValidationRuleCollector = AddingPropertyValidationRuleCollector.Create (_userNameExpression, typeof (CustomerValidationRuleCollector1));
     }
 
     [Test]
     public void Initialization_PropertyDeclaredInSameClass ()
     {
-      var propertyInfo = ((PropertyInfoAdapter) _addingComponentPropertyRule.Property).PropertyInfo;
-      Assert.That (_addingComponentPropertyRule.Property.Equals(_property), Is.True);
-      Assert.That (_addingComponentPropertyRule.Property, Is.EqualTo (_property));
+      var propertyInfo = ((PropertyInfoAdapter) _addingPropertyValidationRuleCollector.Property).PropertyInfo;
+      Assert.That (_addingPropertyValidationRuleCollector.Property.Equals(_property), Is.True);
+      Assert.That (_addingPropertyValidationRuleCollector.Property, Is.EqualTo (_property));
       Assert.That (propertyInfo.DeclaringType, Is.EqualTo (typeof (Customer)));
       Assert.That (propertyInfo.ReflectedType, Is.EqualTo (typeof (Customer)));
-      Assert.That (_addingComponentPropertyRule.CollectorType, Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
-      Assert.That (_addingComponentPropertyRule.Validators.Any(), Is.False);
-      Assert.That (_addingComponentPropertyRule.IsHardConstraint, Is.False);
+      Assert.That (_addingPropertyValidationRuleCollector.CollectorType, Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
+      Assert.That (_addingPropertyValidationRuleCollector.Validators.Any(), Is.False);
+      Assert.That (_addingPropertyValidationRuleCollector.IsHardConstraint, Is.False);
     }
 
     [Test]
@@ -86,14 +86,14 @@ namespace Remotion.Validation.UnitTests.Rules
       var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy());
 
       Assert.That (
-          () => AddingComponentPropertyRule.Create (dummyExpression, typeof (CustomerValidationRuleCollector1)),
+          () => AddingPropertyValidationRuleCollector.Create (dummyExpression, typeof (CustomerValidationRuleCollector1)),
           Throws.ArgumentException.With.Message.EqualTo ("Must be a MemberExpression.\r\nParameter name: expression"));
     }
 
     [Test]
     public void Create_PropertyDeclaredInBaseClass ()
     {
-      var componentPropertyRule = AddingComponentPropertyRule.Create (_lastNameExpression, typeof (CustomerValidationRuleCollector1));
+      var componentPropertyRule = AddingPropertyValidationRuleCollector.Create (_lastNameExpression, typeof (CustomerValidationRuleCollector1));
       var propertyInfo = ((PropertyInfoAdapter) componentPropertyRule.Property).PropertyInfo;
 
       //TODO-5906 simplify assertion with PropertyInfoAdapter compare
@@ -160,68 +160,68 @@ namespace Remotion.Validation.UnitTests.Rules
     [Test]
     public void RegisterValidator ()
     {
-      _addingComponentPropertyRule.RegisterValidator (_ => _stubPropertyValidator1);
-      _addingComponentPropertyRule.RegisterValidator (_ => _stubPropertyValidator2);
+      _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator1);
+      _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator2);
 
-      Assert.That (_addingComponentPropertyRule.Validators.Count(), Is.EqualTo (2));
+      Assert.That (_addingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (2));
       Assert.That (
-          _addingComponentPropertyRule.Validators,
+          _addingPropertyValidationRuleCollector.Validators,
           Is.EquivalentTo (new IPropertyValidator[] { _stubPropertyValidator1, _stubPropertyValidator2 }));
     }
 
     [Test]
     public void ApplyRemoveValidatorRegistrations_NoHardConstraint ()
     {
-      _addingComponentPropertyRule.RegisterValidator (_ => _stubPropertyValidator1);
-      _addingComponentPropertyRule.RegisterValidator (_ => _stubPropertyValidator2);
-      _addingComponentPropertyRule.RegisterValidator (_ => _stubPropertyValidator3);
-      Assert.That (_addingComponentPropertyRule.Validators.Count(), Is.EqualTo (3));
+      _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator1);
+      _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator2);
+      _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator3);
+      Assert.That (_addingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (3));
 
       _propertyValidatorExtractorMock
           .Expect (
-              mock => mock.ExtractPropertyValidatorsToRemove (_addingComponentPropertyRule))
+              mock => mock.ExtractPropertyValidatorsToRemove (_addingPropertyValidationRuleCollector))
           .Return (new IPropertyValidator[] { _stubPropertyValidator1, _stubPropertyValidator3 });
 
-      _addingComponentPropertyRule.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock);
+      _addingPropertyValidationRuleCollector.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock);
 
       _propertyValidatorExtractorMock.VerifyAllExpectations();
-      Assert.That (_addingComponentPropertyRule.Validators, Is.EqualTo (new[] { _stubPropertyValidator2 }));
+      Assert.That (_addingPropertyValidationRuleCollector.Validators, Is.EqualTo (new[] { _stubPropertyValidator2 }));
     }
 
     [Test]
     public void ApplyRemoveValidatorRegistrations_HardConstraintAndNoValidatorsToRemove_NoExceptionIsThrown ()
     {
-      _addingComponentPropertyRule.SetHardConstraint();
-      Assert.That (_addingComponentPropertyRule.IsHardConstraint, Is.True);
-      _addingComponentPropertyRule.RegisterValidator (_ => _stubPropertyValidator1);
-      Assert.That (_addingComponentPropertyRule.Validators.Count(), Is.EqualTo (1));
+      _addingPropertyValidationRuleCollector.SetHardConstraint();
+      Assert.That (_addingPropertyValidationRuleCollector.IsHardConstraint, Is.True);
+      _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator1);
+      Assert.That (_addingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
 
       _propertyValidatorExtractorMock
           .Stub (
-              stub => stub.ExtractPropertyValidatorsToRemove (_addingComponentPropertyRule))
+              stub => stub.ExtractPropertyValidatorsToRemove (_addingPropertyValidationRuleCollector))
           .Return (new IPropertyValidator[0]);
 
-      _addingComponentPropertyRule.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock);
+      _addingPropertyValidationRuleCollector.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock);
 
-      Assert.That (_addingComponentPropertyRule.Validators.Count(), Is.EqualTo (1));
+      Assert.That (_addingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
     }
 
     [Test]
     public void ApplyRemoveValidatorRegistrations_HardConstraintAndValidatorsToRemove ()
     {
-      _addingComponentPropertyRule.SetHardConstraint();
-      _addingComponentPropertyRule.RegisterValidator (_ => _stubPropertyValidator1);
-      _addingComponentPropertyRule.RegisterValidator (_ => _stubPropertyValidator2);
-      _addingComponentPropertyRule.RegisterValidator (_ => _stubPropertyValidator3);
-      Assert.That (_addingComponentPropertyRule.Validators.Count(), Is.EqualTo (3));
+      _addingPropertyValidationRuleCollector.SetHardConstraint();
+      _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator1);
+      _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator2);
+      _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator3);
+      Assert.That (_addingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (3));
 
       _propertyValidatorExtractorMock
           .Stub (
-              stub => stub.ExtractPropertyValidatorsToRemove (_addingComponentPropertyRule))
+              stub => stub.ExtractPropertyValidatorsToRemove (_addingPropertyValidationRuleCollector))
           .Return (new IPropertyValidator[] { _stubPropertyValidator1, _stubPropertyValidator3 });
 
       Assert.That (
-          () => _addingComponentPropertyRule.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock),
+          () => _addingPropertyValidationRuleCollector.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock),
           Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo (
               "Hard constraint validator(s) 'StubPropertyValidator, NotEqualValidator' on property "
               + "'Remotion.Validation.UnitTests.TestDomain.Customer.UserName' cannot be removed."));
@@ -230,59 +230,59 @@ namespace Remotion.Validation.UnitTests.Rules
     [Test]
     public void ToString_NoHardConstraint ()
     {
-      var result = _addingComponentPropertyRule.ToString();
+      var result = _addingPropertyValidationRuleCollector.ToString();
 
       Assert.That (
           result,
-          Is.EqualTo ("AddingComponentPropertyRule: Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
+          Is.EqualTo ("AddingPropertyValidationRuleCollector: Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
 
     [Test]
     public void ToString_HardConstraint ()
     {
-      _addingComponentPropertyRule.SetHardConstraint();
-      var result = _addingComponentPropertyRule.ToString();
+      _addingPropertyValidationRuleCollector.SetHardConstraint();
+      var result = _addingPropertyValidationRuleCollector.ToString();
 
       Assert.That (
           result,
           Is.EqualTo (
-              "AddingComponentPropertyRule (HARD CONSTRAINT): Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
+              "AddingPropertyValidationRuleCollector (HARD CONSTRAINT): Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
 
     [Test]
     public void ToString_WithoutCondition ()
     {
-      var result = _addingComponentPropertyRule.ToString();
+      var result = _addingPropertyValidationRuleCollector.ToString();
 
       Assert.That (
           result,
           Is.EqualTo (
-              "AddingComponentPropertyRule: Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
+              "AddingPropertyValidationRuleCollector: Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
 
     [Test]
     public void ToString_WithCondition ()
     {
-      _addingComponentPropertyRule.SetCondition ((Customer o) => true);
-      var result = _addingComponentPropertyRule.ToString();
+      _addingPropertyValidationRuleCollector.SetCondition ((Customer o) => true);
+      var result = _addingPropertyValidationRuleCollector.ToString();
 
       Assert.That (
           result,
           Is.EqualTo (
-              "AddingComponentPropertyRule (CONDITIONAL): Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
+              "AddingPropertyValidationRuleCollector (CONDITIONAL): Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
 
     [Test]
     public void ToString_WithConditionAndHardConstraint ()
     {
-      _addingComponentPropertyRule.SetCondition ((Customer o) => true);
-      _addingComponentPropertyRule.SetHardConstraint();
-      var result = _addingComponentPropertyRule.ToString();
+      _addingPropertyValidationRuleCollector.SetCondition ((Customer o) => true);
+      _addingPropertyValidationRuleCollector.SetHardConstraint();
+      var result = _addingPropertyValidationRuleCollector.ToString();
 
       Assert.That (
           result,
           Is.EqualTo (
-              "AddingComponentPropertyRule (CONDITIONAL, HARD CONSTRAINT): Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
+              "AddingPropertyValidationRuleCollector (CONDITIONAL, HARD CONSTRAINT): Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
   }
 }

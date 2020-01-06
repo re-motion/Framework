@@ -32,7 +32,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
 
       var factory = new MetaRulesValidatorFactory (systemMetaRulesProviderFactoryStub);
       
-      var result = factory.CreateMetaRuleValidator (new IAddingComponentPropertyMetaValidationRule[0]);
+      var result = factory.CreateMetaRuleValidator (new IPropertyMetaValidationRuleCollector[0]);
 
       Assert.That (result, Is.TypeOf (typeof (MetaRulesValidator)));
     }
