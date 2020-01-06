@@ -65,7 +65,7 @@
     <Compile Include="Attributes\Validation\NotNullAttribute.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttribute.cs" />
     <Compile Include="Attributes\Validation\AddingValidationAttributeBase.cs" />
-    <Compile Include="ComponentValidationCollector.cs" />
+    <Compile Include="ComponentValidationCollector.obsolete.cs" />
     <Compile Include="DefaultValidatorExtensions.cs" />
     <Compile Include="Implementation\AttributeBasedValidationRuleCollector.cs" />
     <Compile Include="Implementation\Comparison.cs" />
@@ -174,7 +174,7 @@
     <Compile Include="RuleBuilders\RemovingComponentRuleBuilder.cs" />
     <Compile Include="Rules\AddingComponentPropertyRule.cs" />
     <Compile Include="RuleBuilders\AddingComponentRuleBuilder.cs" />
-    <Compile Include="ValidationRuleCollector.obsolete.cs" />
+    <Compile Include="ValidationRuleCollector.cs" />
     <Compile Include="RuleBuilders\IAddingComponentRuleBuilder.cs" />
     <Compile Include="RuleBuilders\IRemovingComponentRuleBuilder.cs" />
     <Compile Include="Rules\IAddingComponentPropertyRule.cs" />
