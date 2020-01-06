@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
   [ImplementationFor (typeof (IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocDateTimeValueValidatorFactory)]
   [ImplementationFor (typeof (IBocEnumValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocEnumValueValidatorFactory)]
   [ImplementationFor (typeof (IBocMultilineTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocMultilineTextValueValidatorFactory)]
-  public class FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory
+  public class ValidationBusinessObjectBoundEditableWebControlValidatorFactory
       : IBocTextValueValidatorFactory,
         IBocReferenceValueValidatorFactory,
         IBocAutoCompleteReferenceValueValidatorFactory,
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
     public const int Position_BocEnumValueValidatorFactory = BocEnumValueValidatorFactory.Position + 1;
     public const int Position_BocMultilineTextValueValidatorFactory = BocMultilineTextValueValidatorFactory.Position + 1;
 
-    public FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory ()
+    public ValidationBusinessObjectBoundEditableWebControlValidatorFactory ()
     {
     }
 

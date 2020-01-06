@@ -30,12 +30,11 @@ using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
-  //TODO RM-5960: Rename to CollectorBasedValidatorBuilderTest
   [TestFixture]
-  public class FluentValidatorBuilderTest
+  public class CollectorBasedValidatorBuilderTest
   {
     private IValidationCollectorProvider _validationCollectorProviderMock;
-    private FluentValidatorBuilder _validatorBuilder;
+    private CollectorBasedValidatorBuilder _validatorBuilder;
     private IComponentValidationCollector _componentValidationCollectorStub1;
     private IComponentValidationCollector _componentValidationCollectorStub2;
     private IValidationCollectorMerger _validationCollectorMergerMock;
@@ -117,7 +116,7 @@ namespace Remotion.Validation.UnitTests.Implementation
           _fakeAddingComponentPropertyRulesResult,
           MockRepository.GenerateStub<ILogContext>());
 
-      _validatorBuilder = new FluentValidatorBuilder (
+      _validatorBuilder = new CollectorBasedValidatorBuilder (
           _validationCollectorProviderMock,
           _validationCollectorMergerMock,
           _metaRulesValidatorFactoryStub,

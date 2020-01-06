@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Validation
       var localizedInvalidValidationResults = Validate (objectsToRevalidate, validatorCache);
       var invariantErrorMessage = BuildErrorMesage (invariantCultureInvalidValidationResults.SelectMany (vr => vr.Errors));
 
-      throw new DomainObjectFluentValidationException (
+      throw new ExtendedDomainObjectValidationException (
           invalidDomainObjects,
           localizedInvalidValidationResults.SelectMany (e => e.Errors),
           invariantErrorMessage);

@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         {
           Assert.That (
               () => ClientTransaction.Current.Commit(),
-              Throws.TypeOf<DomainObjectFluentValidationException>().And.Message.Matches (
+              Throws.TypeOf<ExtendedDomainObjectValidationException>().And.Message.Matches (
                   "One or more DomainObject contain inconsistent data:\r\n\r\n"
                   + "Object 'Order.*':\r\n"
                   + " -- Number: The value must have between 3 and 8 characters.\r\n\r\n"

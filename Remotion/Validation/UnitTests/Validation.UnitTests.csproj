@@ -88,7 +88,7 @@
     <Compile Include="Implementation\TypedValidatorDecoratorTest.cs" />
     <Compile Include="Implementation\DefaultLogContextTest.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatterTest.cs" />
-    <Compile Include="Implementation\FluentValidationValidatorFormatterDecoratorTest.cs" />
+    <Compile Include="Implementation\DiagnosticInformationValidatorFormatterDecoratorTest.cs" />
     <Compile Include="Implementation\ValidatorBuilderSerializationDecoratorTest.cs" />
     <Compile Include="Merging\DefaultPropertyValidatorExtractorTest.cs" />
     <Compile Include="Implementation\LoadFilteredValidationTypeFilterTest.cs" />
@@ -164,7 +164,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelpers\StubPropertyValidator.cs" />
     <Compile Include="TestHelpers\TestableComponentValidationCollector.cs" />
-    <Compile Include="Implementation\FluentValidatorBuilderTest.cs" />
+    <Compile Include="Implementation\CollectorBasedValidatorBuilderTest.cs" />
     <Compile Include="Utilities\TopologySortLinqExtensionsTest.cs" />
     <Compile Include="Implementation\ValidatorTest.cs" />
     <Compile Include="Validators\EqualValidatorTest.cs" />

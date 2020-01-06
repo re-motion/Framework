@@ -56,7 +56,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="DomainObjectFluentValidationException.cs" />
+    <Compile Include="ExtendedDomainObjectValidationException.cs" />
     <Compile Include="EnsureValidationSupportForDomainObjectsAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DomainObjectAttributesBasedValidationCollectorProvider.cs" />

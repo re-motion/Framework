@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
       var compoundFactory =
           new CompoundBocMultilineTextValueValidatorFactory (
               new IBocMultilineTextValueValidatorFactory[]
-              { new BocMultilineTextValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
+              { new BocMultilineTextValueValidatorFactory(), new ValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
       var factory = new FilteringBocMultilineTextValueValidatorFactoryDecorator (compoundFactory);
 
       var control = MockRepository.GenerateMock<IBocMultilineTextValue>();

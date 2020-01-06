@@ -28,12 +28,11 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Implementation
 {
-  //TODO RM-5960: Rename to CollectorBasedValidatorBuilder
   /// <summary>
   /// Collector-based validator builder.  
   /// </summary>
   [ImplementationFor (typeof (IValidatorBuilder), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
-  public class FluentValidatorBuilder : IValidatorBuilder
+  public class CollectorBasedValidatorBuilder : IValidatorBuilder
   {
     public IValidationCollectorProvider ComponentValidationCollectorProvider { get; }
     public IValidationCollectorMerger ValidationCollectorMerger { get; }
@@ -42,7 +41,7 @@ namespace Remotion.Validation.Implementation
     public IMemberInformationNameResolver MemberInformationNameResolver { get; }
     public ICollectorValidator CollectorValidator { get; }
 
-    public FluentValidatorBuilder (
+    public CollectorBasedValidatorBuilder (
         IValidationCollectorProvider validationCollectorProvider,
         IValidationCollectorMerger validationCollectorMerger,
         IMetaRulesValidatorFactory metaRuleValidatorFactory,

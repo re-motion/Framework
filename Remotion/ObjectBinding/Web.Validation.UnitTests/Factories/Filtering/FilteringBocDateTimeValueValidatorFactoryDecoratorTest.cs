@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
       var compoundFactory =
           new CompoundBocDateTimeValueValidatorFactory (
               new IBocDateTimeValueValidatorFactory[]
-              { new BocDateTimeValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
+              { new BocDateTimeValueValidatorFactory(), new ValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
       var factory = new FilteringBocDateTimeValueValidatorFactoryDecorator (compoundFactory);
 
       var control = MockRepository.GenerateMock<IBocDateTimeValue>();

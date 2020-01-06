@@ -82,8 +82,8 @@
     <Compile Include="Implementation\DefaultLogContext.cs" />
     <Compile Include="Implementation\NullValidatedTypeResolver.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatter.cs" />
-    <Compile Include="FluentValidationBuilderExtensions.cs" />
-    <Compile Include="Implementation\FluentValidationValidatorFormatterDecorator.cs" />
+    <Compile Include="ValidatorBuilderExtensions.cs" />
+    <Compile Include="Implementation\DiagnosticInformationValidatorFormatterDecorator.cs" />
     <Compile Include="Implementation\GenericTypeAwareValidatedTypeResolverDecorator.cs" />
     <Compile Include="Implementation\ICollectorValidator.cs" />
     <Compile Include="Implementation\IValidatedTypeResolver.cs" />
@@ -175,7 +175,7 @@
     <Compile Include="Rules\IRemovingComponentPropertyRule.cs" />
     <Compile Include="Rules\RemovingComponentPropertyRule.cs" />
     <Compile Include="Rules\ValidatorRegistration.cs" />
-    <Compile Include="Implementation\FluentValidatorBuilder.cs" />
+    <Compile Include="Implementation\CollectorBasedValidatorBuilder.cs" />
     <Compile Include="Providers\IValidationCollectorProvider.cs" />
     <Compile Include="Providers\ApiBasedComponentValidationCollectorProvider.cs" />
     <Compile Include="Implementation\InvolvedTypeProvider.cs" />

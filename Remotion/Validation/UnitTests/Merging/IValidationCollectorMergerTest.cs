@@ -41,7 +41,7 @@ namespace Remotion.Validation.UnitTests.Merging
       Assert.That (factory, Is.Not.Null);
       Assert.That (factory, Is.TypeOf<DiagnosticOutputRuleMergeDecorator> ());
       Assert.That (((DiagnosticOutputRuleMergeDecorator) factory).ValidationCollectorMerger, Is.TypeOf<OrderPrecedenceValidationCollectorMerger> ());
-      Assert.That (((DiagnosticOutputRuleMergeDecorator) factory).ValidatorFormatter, Is.TypeOf<FluentValidationValidatorFormatterDecorator> ());
+      Assert.That (((DiagnosticOutputRuleMergeDecorator) factory).ValidatorFormatter, Is.TypeOf<DiagnosticInformationValidatorFormatterDecorator> ());
     }
 
     [Test]

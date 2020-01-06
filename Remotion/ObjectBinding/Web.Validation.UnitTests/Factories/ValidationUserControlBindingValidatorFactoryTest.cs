@@ -10,7 +10,7 @@ using Rhino.Mocks;
 namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
 {
   [TestFixture]
-  public class FluentValidationUserControlBindingValidatorFactoryTest
+  public class ValidationUserControlBindingValidatorFactoryTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -28,9 +28,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<UserControlBinding>>());
 
       var factories = ((CompoundValidatorFactory<UserControlBinding>) instance).VlidatorFactories.Select (f => f.GetType()).ToList();
-      Assert.That (factories, Has.Member (typeof (FluentValidationUserControlBindingValidatorFactory)));
-      Assert.That (factories, Has.Member (typeof (UserControlBindingValidatorFactory)));
-      Assert.That (factories.IndexOf (typeof (UserControlBindingValidatorFactory)), Is.LessThan (factories.IndexOf (typeof (FluentValidationUserControlBindingValidatorFactory))));
+      Assert.That (factories, Has.Member (typeof (ValidationUserControlBindingValidatorFactory)));
+      Assert.That (factories, Has.Member (typeof (Web.UI.Controls.UserControlBindingValidatorFactory)));
+      Assert.That (factories.IndexOf (typeof (Web.UI.Controls.UserControlBindingValidatorFactory)), Is.LessThan (factories.IndexOf (typeof (ValidationUserControlBindingValidatorFactory))));
       Assert.That (factories.Count, Is.EqualTo (2));
     }
 
@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       var mock = MockRepository.GenerateMock<UserControlBinding>();
       mock.Expect (m => m.ID).Return ("ID");
 
-      var factory = new FluentValidationUserControlBindingValidatorFactory();
+      var factory = new ValidationUserControlBindingValidatorFactory();
       var validators = factory.CreateValidators (mock, isReadOnly);
 
       if (isReadOnly)

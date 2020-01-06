@@ -12,7 +12,7 @@ using Rhino.Mocks;
 namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
 {
   [TestFixture]
-  public class FluentValidationBocListValidatorFactoryTest
+  public class ValidationBocListValidatorFactoryTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -31,8 +31,8 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
 
       var factories = ((CompoundValidatorFactory<IBocList>) instance).VlidatorFactories.Select (f => f.GetType()).ToList();
       Assert.That (factories, Has.Member (typeof (BocListValidatorFactory)));
-      Assert.That (factories, Has.Member (typeof (FluentValidationBocListValidatorFactory)));
-      Assert.That (factories.IndexOf (typeof (BocListValidatorFactory)), Is.LessThan (factories.IndexOf (typeof (FluentValidationBocListValidatorFactory))));
+      Assert.That (factories, Has.Member (typeof (ValidationBocListValidatorFactory)));
+      Assert.That (factories.IndexOf (typeof (BocListValidatorFactory)), Is.LessThan (factories.IndexOf (typeof (ValidationBocListValidatorFactory))));
       Assert.That (factories.Count, Is.EqualTo (2));
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       var mock = MockRepository.GenerateMock<IBocList>();
       mock.Expect (m => m.ID).Return ("ID");
 
-      var factory = new FluentValidationBocListValidatorFactory();
+      var factory = new ValidationBocListValidatorFactory();
       var validators = factory.CreateValidators (mock, isReadOnly);
 
       if (isReadOnly)

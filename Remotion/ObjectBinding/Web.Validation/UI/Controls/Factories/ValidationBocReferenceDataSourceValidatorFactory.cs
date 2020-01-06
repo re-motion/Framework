@@ -25,34 +25,34 @@ using Remotion.Validation.Results;
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 {
   /// <summary>
-  /// Implements various <see cref="IUserControlBindingValidatorFactory"/> intefaces and creates validators 
+  /// Implements various <see cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/> intefaces and creates validators 
   /// that can apply the fluent validation <see cref="ValidationFailure"/> results to the respective control.
   /// </summary>
-  /// <seealso cref="IUserControlBindingValidatorFactory"/>
-  [ImplementationFor (typeof (IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
-  public class FluentValidationUserControlBindingValidatorFactory : IUserControlBindingValidatorFactory
+  /// <seealso cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/>
+  [ImplementationFor (typeof (IBusinessObjectReferenceDataSourceControlValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
+  public class ValidationBocReferenceDataSourceValidatorFactory : IBusinessObjectReferenceDataSourceControlValidatorFactory
   {
-    public const int Position = UserControlBindingValidatorFactory.Position + 1;
+    public const int Position = 0;
 
-    public FluentValidationUserControlBindingValidatorFactory ()
+    public ValidationBocReferenceDataSourceValidatorFactory ()
     {
     }
 
-    public IEnumerable<BaseValidator> CreateValidators (UserControlBinding control, bool isReadOnly)
+    public IEnumerable<BaseValidator> CreateValidators (BusinessObjectReferenceDataSourceControl control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull ("control", control);
 
       if (isReadOnly)
         yield break;
 
-      yield return CreateBocListValidator (control);
+      yield return CreateBocReferenceDataSourceValidator (control);
     }
 
-    private BaseValidator CreateBocListValidator (UserControlBinding control)
+    private BocReferenceDataSourceValidationFailureDisptachingValidator CreateBocReferenceDataSourceValidator (BusinessObjectReferenceDataSourceControl control)
     {
-      var bocValidator = new UserControlBindingValidationFailureDisptacher();
+      var bocValidator = new BocReferenceDataSourceValidationFailureDisptachingValidator();
       bocValidator.ControlToValidate = control.ID;
-      bocValidator.ID = control.ID + "_BocListValidator";
+      bocValidator.ID = control.ID + "_BocReferenceDataSourceValidator";
       return bocValidator;
     }
   }

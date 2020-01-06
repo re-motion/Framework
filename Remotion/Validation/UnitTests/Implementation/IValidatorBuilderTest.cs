@@ -39,7 +39,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       Assert.That (factory, Is.Not.Null);
       Assert.That (factory, Is.TypeOf (typeof (ValidatorBuilderSerializationDecorator)));
-      Assert.That (((ValidatorBuilderSerializationDecorator) factory).InnerValidatorBuilder, Is.TypeOf (typeof (FluentValidatorBuilder)));
+      Assert.That (((ValidatorBuilderSerializationDecorator) factory).InnerValidatorBuilder, Is.TypeOf (typeof (CollectorBasedValidatorBuilder)));
     }
 
     [Test]

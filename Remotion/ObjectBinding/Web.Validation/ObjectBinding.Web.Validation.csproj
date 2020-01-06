@@ -166,10 +166,10 @@
     <Compile Include="UI\Controls\Factories\Decorators\FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator.cs" />
     <Compile Include="UI\Controls\Factories\Decorators\FilteringUserControlBindingValidatorFactoryDecorator.cs" />
     <Compile Include="UI\Controls\Factories\Decorators\FilteringValidatorFactoryDecorator.cs" />
-    <Compile Include="UI\Controls\Factories\FluentValidationBocListValidatorFactory.cs" />
-    <Compile Include="UI\Controls\Factories\FluentValidationBocReferenceDataSourceValidatorFactory.cs" />
-    <Compile Include="UI\Controls\Factories\FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory.cs" />
-    <Compile Include="UI\Controls\Factories\FluentValidationUserControlBindingValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Factories\ValidationBocListValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Factories\ValidationBocReferenceDataSourceValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Factories\ValidationBusinessObjectBoundEditableWebControlValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Factories\ValidationUserControlBindingValidatorFactory.cs" />
     <Compile Include="UI\Controls\IBusinessObjectBoundEditableWebControlValidationFailureDispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

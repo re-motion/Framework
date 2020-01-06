@@ -10,7 +10,7 @@ using Rhino.Mocks;
 namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
 {
   [TestFixture]
-  public class FluentValidationBocReferenceDataSourceValidatorFactoryTest
+  public class ValidationBocReferenceDataSourceValidatorFactoryTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
 
       var factories =
           ((CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>) instance).VlidatorFactories.Select (f => f.GetType()).ToList();
-      Assert.That (factories, Has.Member (typeof (FluentValidationBocReferenceDataSourceValidatorFactory)));
+      Assert.That (factories, Has.Member (typeof (ValidationBocReferenceDataSourceValidatorFactory)));
       Assert.That (factories.Count, Is.EqualTo (1));
     }
 
@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       var mock = MockRepository.GenerateMock<BusinessObjectReferenceDataSourceControl>();
       mock.Expect (m => m.ID).Return ("ID");
 
-      var factory = new FluentValidationBocReferenceDataSourceValidatorFactory();
+      var factory = new ValidationBocReferenceDataSourceValidatorFactory();
       var validators = factory.CreateValidators (mock, isReadOnly);
 
       if (isReadOnly)

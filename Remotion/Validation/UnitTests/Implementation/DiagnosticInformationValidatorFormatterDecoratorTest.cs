@@ -25,10 +25,10 @@ using Rhino.Mocks;
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class FluentValidationValidatorFormatterDecoratorTest
+  public class DiagnosticInformationValidatorFormatterDecoratorTest
   {
     private IValidatorFormatter _fallBackValidatorFormatterMock;
-    private FluentValidationValidatorFormatterDecorator _formatter;
+    private DiagnosticInformationValidatorFormatterDecorator _formatter;
     private Func<Type, string> _typeNameFormatter;
 
     [SetUp]
@@ -37,7 +37,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _fallBackValidatorFormatterMock = MockRepository.GenerateStrictMock<IValidatorFormatter>();
       _typeNameFormatter = t => t.Name;
 
-      _formatter = new FluentValidationValidatorFormatterDecorator (_fallBackValidatorFormatterMock);
+      _formatter = new DiagnosticInformationValidatorFormatterDecorator (_fallBackValidatorFormatterMock);
     }
 
     [Test]

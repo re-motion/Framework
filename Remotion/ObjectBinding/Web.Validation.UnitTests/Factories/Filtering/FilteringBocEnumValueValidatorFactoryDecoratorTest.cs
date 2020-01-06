@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
       var compoundFactory =
           new CompoundBocEnumValueValidatorFactory (
               new IBocEnumValueValidatorFactory[]
-              { new BocEnumValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
+              { new BocEnumValueValidatorFactory(), new ValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
       var factory = new FilteringBocEnumValueValidatorFactoryDecorator (compoundFactory);
 
       var control = MockRepository.GenerateMock<IBocEnumValue>();

@@ -28,11 +28,11 @@ namespace Remotion.Validation.Implementation
   /// and adds additional available metadata for <see cref="IPropertyValidator"/> implementations from the <b>FluentValidation</b> library.
   /// </summary>
   [ImplementationFor (typeof (IValidatorFormatter), RegistrationType = RegistrationType.Decorator)]
-  public class FluentValidationValidatorFormatterDecorator : IValidatorFormatter
+  public class DiagnosticInformationValidatorFormatterDecorator : IValidatorFormatter
   {
     private readonly IValidatorFormatter _fallBackValidatorFormatter;
 
-    public FluentValidationValidatorFormatterDecorator (IValidatorFormatter fallBackValidatorFormatter)
+    public DiagnosticInformationValidatorFormatterDecorator (IValidatorFormatter fallBackValidatorFormatter)
     {
       ArgumentUtility.CheckNotNull ("fallBackValidatorFormatter", fallBackValidatorFormatter);
 

@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
       var compoundFactory =
           new CompoundBocReferenceValueValidatorFactory (
               new IBocReferenceValueValidatorFactory[]
-              { new BocReferenceValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
+              { new BocReferenceValueValidatorFactory(), new ValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
       var factory = new FilteringBocReferenceValueValidatorFactoryDecorator (compoundFactory);
 
       var control = MockRepository.GenerateStub<IBocReferenceValue>();

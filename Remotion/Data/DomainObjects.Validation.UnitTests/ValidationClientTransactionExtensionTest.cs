@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
             .Repeat.Twice()
             .Return (new ValidationResult (new[] { validationFailure2, validationFailure3 }));
 
-        var exception = Assert.Throws<DomainObjectFluentValidationException> (
+        var exception = Assert.Throws<ExtendedDomainObjectValidationException> (
             () => _extension.CommitValidate (
                 ClientTransaction.Current,
                 Array.AsReadOnly (new[] { persistableData1, persistableData2, persistableData3 })));
@@ -222,7 +222,7 @@ Object 'TestDomainObject' with ID '.*':
         using (new CultureScope ("de"))
         {
 
-          var exception = Assert.Throws<DomainObjectFluentValidationException> (
+          var exception = Assert.Throws<ExtendedDomainObjectValidationException> (
               () => _extension.CommitValidate (ClientTransaction.Current, Array.AsReadOnly (new[] { persistableData1 })));
 
 

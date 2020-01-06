@@ -23,17 +23,17 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
-  public class DomainObjectFluentValidationException : DomainObjectValidationException
+  public class ExtendedDomainObjectValidationException : DomainObjectValidationException
   {
     private readonly DomainObject[] _affectedObjects;
     private readonly IReadOnlyCollection<ValidationFailure> _validationFailures;
 
-    public DomainObjectFluentValidationException ([NotNull] IEnumerable<DomainObject> affectedObjects, [NotNull] IEnumerable<ValidationFailure> validationFailures, string errorMessage)
+    public ExtendedDomainObjectValidationException ([NotNull] IEnumerable<DomainObject> affectedObjects, [NotNull] IEnumerable<ValidationFailure> validationFailures, string errorMessage)
       : this (affectedObjects, validationFailures, errorMessage, null)
     {
     }
 
-    public DomainObjectFluentValidationException ([NotNull] IEnumerable<DomainObject> affectedObjects, [NotNull] IEnumerable<ValidationFailure> validationFailures, string errorMessage, Exception inner)
+    public ExtendedDomainObjectValidationException ([NotNull] IEnumerable<DomainObject> affectedObjects, [NotNull] IEnumerable<ValidationFailure> validationFailures, string errorMessage, Exception inner)
         : base (errorMessage, inner)
     {
       ArgumentUtility.CheckNotNull ("affectedObjects", affectedObjects);

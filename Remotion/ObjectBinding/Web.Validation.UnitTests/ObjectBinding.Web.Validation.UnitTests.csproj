@@ -67,9 +67,9 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="BusinessObjectBoundEditableWebControlValidationUtilityTest.cs" />
-    <Compile Include="Factories\FluentValidationBocListValidatorFactoryTest.cs" />
-    <Compile Include="Factories\FluentValidationBusinessObjectBoundEditableWebControlValidatorFactoryTest.cs" />
-    <Compile Include="Factories\FluentValidationBocReferenceDataSourceValidatorFactoryTest.cs" />
+    <Compile Include="Factories\ValidationBocListValidatorFactoryTest.cs" />
+    <Compile Include="Factories\ValidationBusinessObjectBoundEditableWebControlValidatorFactoryTest.cs" />
+    <Compile Include="Factories\ValidationBocReferenceDataSourceValidatorFactoryTest.cs" />
     <Compile Include="Factories\Filtering\FilteringBocAutoCompleteReferenceValueValidatorFactoryDecoratorTest.cs" />
     <Compile Include="Factories\Filtering\FilteringBocBooleanValueValidatorFactoryDecoratorTest.cs" />
     <Compile Include="Factories\Filtering\FilteringBocCheckBoxValidatorFactoryDecoratorTest.cs" />
@@ -82,7 +82,7 @@
     <Compile Include="Factories\Filtering\FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecoratorTest.cs" />
     <Compile Include="Factories\Filtering\FilteringUserControlBindingValidatorFactoryDecoratorTest.cs" />
     <Compile Include="Factories\Filtering\FilteringValidatorFactoryDecoraterBaseTest.cs" />
-    <Compile Include="Factories\FluentValidationUserControlBindingValidatorFactoryTest.cs" />
+    <Compile Include="Factories\ValidationUserControlBindingValidatorFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

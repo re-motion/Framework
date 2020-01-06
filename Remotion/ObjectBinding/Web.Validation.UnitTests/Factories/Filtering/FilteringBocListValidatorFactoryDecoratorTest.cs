@@ -19,7 +19,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
     {
       var compoundFactory =
           new CompoundBocListValidatorFactory (
-              new IBocListValidatorFactory[] { new BocListValidatorFactory(), new FluentValidationBocListValidatorFactory() });
+              new IBocListValidatorFactory[] { new BocListValidatorFactory(), new ValidationBocListValidatorFactory() });
       var factory = new FilteringBocListValidatorFactoryDecorator (compoundFactory);
 
       var control = MockRepository.GenerateMock<IBocList>();
