@@ -29,7 +29,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 {
   public class AddingComponentPropertyRuleStub : IAddingComponentPropertyRule
   {
-    private class Collector : IComponentValidationCollector<DomainType>
+    private class Collector : IValidationRuleCollector<DomainType>
     {
       public Type ValidatedType => throw new NotImplementedException();
 

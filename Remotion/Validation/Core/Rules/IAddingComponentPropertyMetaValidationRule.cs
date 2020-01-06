@@ -32,7 +32,7 @@ namespace Remotion.Validation.Rules
   public interface IAddingComponentPropertyMetaValidationRule
   {
     /// <summary>
-    /// Gets the <see cref="Type"/> of the <see cref="IComponentValidationCollector"/> with which the rule is associated.
+    /// Gets the <see cref="Type"/> of the <see cref="IValidationRuleCollector"/> with which the rule is associated.
     /// </summary>
     Type CollectorType { get; }
 

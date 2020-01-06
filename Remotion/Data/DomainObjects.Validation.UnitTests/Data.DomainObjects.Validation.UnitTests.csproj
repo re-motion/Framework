@@ -69,10 +69,10 @@
     </Compile>
     <Compile Include="DataContainerObjectMother.cs" />
     <Compile Include="DomainObjectAttributesBasedValidationPropertyRuleReflectorTests\DomainObjectMixin_DOABCPRRTest.cs" />
-    <Compile Include="DomainObjectAttributesBasedValidationCollectorProviderTest.cs" />
+    <Compile Include="DomainObjectAttributesBasedValidationRuleCollectorProviderTest.cs" />
     <Compile Include="DomainObjectAttributesBasedValidationPropertyRuleReflectorTests\DomainObject_DOABCPRRTest.cs" />
     <Compile Include="IClientTransactionExtensionFactoryTest.cs" />
-    <Compile Include="IValidationCollectorProviderTest.cs" />
+    <Compile Include="IValidationRuleCollectorProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetupFixture.cs" />
     <Compile Include="Testdomain\MixinTarget_AnnotatedPropertiesNotPartOfMixin.cs" />

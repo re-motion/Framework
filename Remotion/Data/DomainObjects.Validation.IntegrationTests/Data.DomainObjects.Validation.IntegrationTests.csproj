@@ -95,9 +95,9 @@
     </Compile>
     <Compile Include="Testdomain\StubStorageFactory.cs" />
     <Compile Include="Testdomain\StubStorageProvider.cs" />
-    <Compile Include="Testdomain\ValidationCollectors\CustomerValidationCollector1.cs" />
-    <Compile Include="Testdomain\ValidationCollectors\OrderValidationCollector1.cs" />
-    <Compile Include="Testdomain\ValidationCollectors\InvalidOrderValidationCollector1.cs" />
+    <Compile Include="Testdomain\ValidationCollectors\CustomerValidationRuleCollector1.cs" />
+    <Compile Include="Testdomain\ValidationCollectors\OrderValidationRuleCollector1.cs" />
+    <Compile Include="Testdomain\ValidationCollectors\InvalidOrderValidationRuleCollector1.cs" />
     <Compile Include="Testdomain\Validators\FakeEmailValidator.cs" />
     <Compile Include="ValidationRulesIntegrationTests.cs" />
   </ItemGroup>

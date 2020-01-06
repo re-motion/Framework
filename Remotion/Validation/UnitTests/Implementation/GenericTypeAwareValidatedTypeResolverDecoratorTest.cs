@@ -39,9 +39,9 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetValidatedType_CollectorWithoutGenericArgument ()
     {
-      _decoratedResolverMock.Expect (mock => mock.GetValidatedType (typeof (IComponentValidationCollector))).Return (typeof (string));
+      _decoratedResolverMock.Expect (mock => mock.GetValidatedType (typeof (IValidationRuleCollector))).Return (typeof (string));
 
-      var result = _resolver.GetValidatedType (typeof (IComponentValidationCollector));
+      var result = _resolver.GetValidatedType (typeof (IValidationRuleCollector));
 
       _decoratedResolverMock.VerifyAllExpectations();
       Assert.That (result, Is.EqualTo (typeof (string)));
@@ -50,7 +50,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetValidatedType_CollectorWithGenericArgument ()
     {
-      var collectorTypeWithApplyWithClassAttribute = typeof (IPersonValidationCollector2);
+      var collectorTypeWithApplyWithClassAttribute = typeof (PersonValidationRuleCollector2);
 
       var result = _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
 

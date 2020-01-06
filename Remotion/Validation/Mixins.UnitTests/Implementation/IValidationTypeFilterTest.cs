@@ -48,8 +48,8 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<ICollectorValidator> ();
-      var factory2 = _serviceLocator.GetInstance<ICollectorValidator> ();
+      var factory1 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator> ();
+      var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator> ();
 
       Assert.That (factory1, Is.SameAs (factory2));
     }

@@ -20,9 +20,9 @@ using Remotion.Validation.Providers;
 namespace Remotion.Validation.Attributes
 {
   /// <summary>
-  /// The <see cref="ApplyProgrammaticallyAttribute"/> can be applied to an <see cref="IComponentValidationCollector"/> to exclude it from the
+  /// The <see cref="ApplyProgrammaticallyAttribute"/> can be applied to an <see cref="IValidationRuleCollector"/> to exclude it from the
   /// automatic discovery. Collectors annotated with this attribute must be registered 
-  /// via a custom implemenation of the <see cref="IValidationCollectorProvider"/> interface.
+  /// via a custom implemenation of the <see cref="IValidationRuleCollectorProvider"/> interface.
   /// </summary>
   [AttributeUsage (AttributeTargets.Class)]
   public class ApplyProgrammaticallyAttribute : Attribute

@@ -59,7 +59,7 @@
     <Compile Include="ExtendedDomainObjectValidationException.cs" />
     <Compile Include="EnsureValidationSupportForDomainObjectsAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DomainObjectAttributesBasedValidationCollectorProvider.cs" />
+    <Compile Include="DomainObjectAttributesBasedValidationRuleCollectorProvider.cs" />
     <Compile Include="DomainObjectAttributesBasedValidationPropertyRuleReflector.cs" />
     <Compile Include="ValidationClientTransactionExtension.cs" />
     <Compile Include="ValidationClientTransactionExtensionFactory.cs" />

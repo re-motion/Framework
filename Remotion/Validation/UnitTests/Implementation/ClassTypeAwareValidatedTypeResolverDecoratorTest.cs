@@ -39,7 +39,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetValidatedType_CollectorWitApplyWithClassAttribute ()
     {
-      var collectorTypeWithApplyWithClassAttribute = typeof (IPersonValidationCollector2);
+      var collectorTypeWithApplyWithClassAttribute = typeof (PersonValidationRuleCollector2);
 
       var result = _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
 
@@ -49,11 +49,11 @@ namespace Remotion.Validation.UnitTests.Implementation
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-      "Invalid 'ApplyWithClassAttribute'-definition for collector 'Remotion.Validation.UnitTests.TestDomain.Collectors.InvalidValidationCollector': "
+      "Invalid 'ApplyWithClassAttribute'-definition for collector 'Remotion.Validation.UnitTests.TestDomain.Collectors.InvalidValidationRuleCollector': "
       + "type 'Remotion.Validation.UnitTests.TestDomain.Address' is not assignable from 'Remotion.Validation.UnitTests.TestDomain.Customer'.")]
     public void GetValidatedType_CollectorWitApplyWithClassAttribute_ReturnedTypeNotAssignableToGenericType ()
     {
-      var collectorTypeWithApplyWithClassAttribute = typeof (InvalidValidationCollector);
+      var collectorTypeWithApplyWithClassAttribute = typeof (InvalidValidationRuleCollector);
 
       _decoratedResolverMock.Expect (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Return (typeof (Customer));
 
@@ -63,7 +63,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetValidatedType_CollectorWitApplyWithClassAttribute_WithoutGenericType ()
     {
-      var collectorTypeWithApplyWithClassAttribute = typeof (InvalidValidationCollector2);
+      var collectorTypeWithApplyWithClassAttribute = typeof (InvalidValidationRuleRuleCollector2);
 
       _decoratedResolverMock.Expect (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Return (typeof (Customer));
 
@@ -75,7 +75,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetValidatedType_CollectorWithoutApplyWithClassAttribute ()
     {
-      var collectorTypeWithApplyWithClassAttribute = typeof (PersonValidationCollector1);
+      var collectorTypeWithApplyWithClassAttribute = typeof (PersonValidationRuleCollector1);
 
       _decoratedResolverMock.Expect (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Return (typeof (Person));
 

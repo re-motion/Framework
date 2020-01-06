@@ -29,7 +29,7 @@ namespace Remotion.Validation.Rules
     {
       var propertyInfo = MemberInfoFromExpressionUtility.GetProperty (expression);
 
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("collectorType", collectorType, typeof (IComponentValidationCollector));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("collectorType", collectorType, typeof (IValidationRuleCollector));
 
       // TODO RM-5960: Replace with IPropertyInformation.GetGetMethod().GetFastInvoker.
       // TODO RM-5960: Add cache, try to unify with ValidationAttributesBasedPropertyRuleReflector and DomainObjectAttributesBasedValidationPropertyRuleReflector

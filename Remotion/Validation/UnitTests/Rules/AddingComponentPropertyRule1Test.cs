@@ -58,7 +58,7 @@ namespace Remotion.Validation.UnitTests.Rules
 
       _propertyValidatorExtractorMock = MockRepository.GenerateStrictMock<IPropertyValidatorExtractor>();
 
-      _addingComponentPropertyRule = AddingComponentPropertyRule.Create (_userNameExpression, typeof (CustomerValidationCollector1));
+      _addingComponentPropertyRule = AddingComponentPropertyRule.Create (_userNameExpression, typeof (CustomerValidationRuleCollector1));
     }
 
     [Test]
@@ -69,7 +69,7 @@ namespace Remotion.Validation.UnitTests.Rules
       Assert.That (_addingComponentPropertyRule.Property, Is.EqualTo (_property));
       Assert.That (propertyInfo.DeclaringType, Is.EqualTo (typeof (Customer)));
       Assert.That (propertyInfo.ReflectedType, Is.EqualTo (typeof (Customer)));
-      Assert.That (_addingComponentPropertyRule.CollectorType, Is.EqualTo (typeof (CustomerValidationCollector1)));
+      Assert.That (_addingComponentPropertyRule.CollectorType, Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
       Assert.That (_addingComponentPropertyRule.Validators.Any(), Is.False);
       Assert.That (_addingComponentPropertyRule.IsHardConstraint, Is.False);
     }
@@ -86,14 +86,14 @@ namespace Remotion.Validation.UnitTests.Rules
       var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy());
 
       Assert.That (
-          () => AddingComponentPropertyRule.Create (dummyExpression, typeof (CustomerValidationCollector1)),
+          () => AddingComponentPropertyRule.Create (dummyExpression, typeof (CustomerValidationRuleCollector1)),
           Throws.ArgumentException.With.Message.EqualTo ("Must be a MemberExpression.\r\nParameter name: expression"));
     }
 
     [Test]
     public void Create_PropertyDeclaredInBaseClass ()
     {
-      var componentPropertyRule = AddingComponentPropertyRule.Create (_lastNameExpression, typeof (CustomerValidationCollector1));
+      var componentPropertyRule = AddingComponentPropertyRule.Create (_lastNameExpression, typeof (CustomerValidationRuleCollector1));
       var propertyInfo = ((PropertyInfoAdapter) componentPropertyRule.Property).PropertyInfo;
 
       //TODO-5906 simplify assertion with PropertyInfoAdapter compare

@@ -33,8 +33,8 @@ namespace Remotion.Validation.UnitTests.MetaValidation
   [TestFixture]
   public class MetaRulesValidatorTest
   {
-    private IComponentValidationCollector _collectorStub1;
-    private IComponentValidationCollector _collectorStub2;
+    private IValidationRuleCollector _collectorStub1;
+    private IValidationRuleCollector _collectorStub2;
     private MetaRulesValidator _validator;
     private IAddingComponentPropertyMetaValidationRule _propertyMetaValidationRuleStub1;
     private IAddingComponentPropertyMetaValidationRule _propertyMetaValidationRuleStub2;
@@ -50,8 +50,8 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     [SetUp]
     public void SetUp ()
     {
-      _collectorStub1 = MockRepository.GenerateStub<IComponentValidationCollector>();
-      _collectorStub2 = MockRepository.GenerateStub<IComponentValidationCollector>();
+      _collectorStub1 = MockRepository.GenerateStub<IValidationRuleCollector>();
+      _collectorStub2 = MockRepository.GenerateStub<IValidationRuleCollector>();
 
       _propertyMetaValidationRuleStub1 = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>();
       _propertyMetaValidationRuleStub2 = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>();
@@ -82,9 +82,9 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.UserName);
       var lastNameExpression = ExpressionHelper.GetTypedMemberExpression<Person, string> (c => c.LastName);
 
-      var propertyRule1 = AddingComponentPropertyRule.Create (userNameExpression, typeof (CustomerValidationCollector1));
-      var propertyRule2 = AddingComponentPropertyRule.Create (lastNameExpression, typeof (CustomerValidationCollector1));
-      var propertyRule3 = AddingComponentPropertyRule.Create (lastNameExpression, typeof (CustomerValidationCollector2));
+      var propertyRule1 = AddingComponentPropertyRule.Create (userNameExpression, typeof (CustomerValidationRuleCollector1));
+      var propertyRule2 = AddingComponentPropertyRule.Create (lastNameExpression, typeof (CustomerValidationRuleCollector1));
+      var propertyRule3 = AddingComponentPropertyRule.Create (lastNameExpression, typeof (CustomerValidationRuleCollector2));
       var filteredPropertyRule = MockRepository.GenerateStub<IAddingComponentPropertyRule>();
 
       propertyRule1.RegisterValidator (_ => _propertyValidatorStub1);

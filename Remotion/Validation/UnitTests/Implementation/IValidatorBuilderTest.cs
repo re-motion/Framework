@@ -39,14 +39,14 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       Assert.That (factory, Is.Not.Null);
       Assert.That (factory, Is.TypeOf (typeof (ValidatorBuilderSerializationDecorator)));
-      Assert.That (((ValidatorBuilderSerializationDecorator) factory).InnerValidatorBuilder, Is.TypeOf (typeof (CollectorBasedValidatorBuilder)));
+      Assert.That (((ValidatorBuilderSerializationDecorator) factory).InnerValidatorBuilder, Is.TypeOf (typeof (ValidationRuleCollectorBasedValidatorBuilder)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<ICollectorValidator>();
-      var factory2 = _serviceLocator.GetInstance<ICollectorValidator>();
+      var factory1 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
+      var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
 
       Assert.That (factory1, Is.SameAs (factory2));
     }

@@ -68,9 +68,9 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     public void RemoveValidator_CollectorTypeOverload ()
     {
       _removingComponentPropertyRuleMock.Expect (
-          mock => mock.RegisterValidator (typeof (StubPropertyValidator), typeof (CustomerValidationCollector1)));
+          mock => mock.RegisterValidator (typeof (StubPropertyValidator), typeof (CustomerValidationRuleCollector1)));
 
-      _addingComponentBuilder.Validator (typeof (StubPropertyValidator), typeof (CustomerValidationCollector1));
+      _addingComponentBuilder.Validator (typeof (StubPropertyValidator), typeof (CustomerValidationRuleCollector1));
 
       _removingComponentPropertyRuleMock.VerifyAllExpectations();
     }
@@ -79,9 +79,9 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     public void RemoveValidator_CollectorTypeOverload_Generic ()
     {
       _removingComponentPropertyRuleMock.Expect (
-          mock => mock.RegisterValidator (typeof (StubPropertyValidator), typeof (CustomerValidationCollector1)));
+          mock => mock.RegisterValidator (typeof (StubPropertyValidator), typeof (CustomerValidationRuleCollector1)));
 
-      _addingComponentBuilder.Validator<StubPropertyValidator, CustomerValidationCollector1>();
+      _addingComponentBuilder.Validator<StubPropertyValidator, CustomerValidationRuleCollector1>();
 
       _removingComponentPropertyRuleMock.VerifyAllExpectations();
     }

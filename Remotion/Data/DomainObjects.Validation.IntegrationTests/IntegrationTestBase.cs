@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
       LogManager.ResetConfiguration();
       _serviceLocatorScope.Dispose();
 
-      Assert.That (LogManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator)).IsDebugEnabled, Is.False);
+      Assert.That (LogManager.GetLogger (typeof (DiagnosticOutputValidationRuleMergeDecorator)).IsDebugEnabled, Is.False);
     }
   }
 }

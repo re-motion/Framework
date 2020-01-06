@@ -19,7 +19,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.Implementation.TestDomain
 {
-  public class TypeWithoutBaseTypeCollector2 : ComponentValidationCollector<TypeWithoutBaseType>
+  public class TypeWithoutBaseTypeCollector2 : ValidationRuleCollectorBase<TypeWithoutBaseType>
   {
     public TypeWithoutBaseTypeCollector2 ()
     {

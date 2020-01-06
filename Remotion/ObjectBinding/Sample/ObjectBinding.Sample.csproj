@@ -200,8 +200,8 @@
     <Compile Include="TestBocTreeViewMenuItemProvider.cs" />
     <Compile Include="TestWebTreeViewMenuItemProvider.cs" />
     <Compile Include="TestWxeFunction.cs" />
-    <Compile Include="ValidationCollectors\JobValidationCollector.cs" />
-    <Compile Include="ValidationCollectors\PersonValidationCollector.cs" />
+    <Compile Include="ValidationCollectors\JobValidationRuleCollector.cs" />
+    <Compile Include="ValidationCollectors\PersonValidationRuleCollector.cs" />
     <Compile Include="XmlReflectionBusinessObjectStorageProvider.cs" />
   </ItemGroup>
   <ItemGroup>

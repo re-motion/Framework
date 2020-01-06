@@ -61,10 +61,10 @@ namespace Remotion.Validation.UnitTests.Merging
     public void SetUp ()
     {
       _validatorRegistration1 = new ValidatorRegistration (typeof (NotEmptyValidator), null);
-      _validatorRegistration2 = new ValidatorRegistration (typeof (NotEqualValidator), typeof (CustomerValidationCollector1));
+      _validatorRegistration2 = new ValidatorRegistration (typeof (NotEqualValidator), typeof (CustomerValidationRuleCollector1));
       _validatorRegistration3 = new ValidatorRegistration (typeof (NotNullValidator), null);
-      _validatorRegistration4 = new ValidatorRegistration (typeof (LengthValidator), typeof (CustomerValidationCollector2));
-      _validatorRegistration5 = new ValidatorRegistration (typeof (NotEqualValidator), typeof (CustomerValidationCollector2));
+      _validatorRegistration4 = new ValidatorRegistration (typeof (LengthValidator), typeof (CustomerValidationRuleCollector2));
+      _validatorRegistration5 = new ValidatorRegistration (typeof (NotEqualValidator), typeof (CustomerValidationRuleCollector2));
       _validatorRegistration6 = new ValidatorRegistration (typeof (LengthValidator), null);
 
       _removingPropertyRuleStub1 = MockRepository.GenerateStub<IRemovingComponentPropertyRule>();
@@ -111,7 +111,7 @@ namespace Remotion.Validation.UnitTests.Merging
           .Return (
               new IPropertyValidator[]
               { _stubPropertyValidator1, _stubPropertyValidator2, _stubPropertyValidator3, _stubPropertyValidator4 });
-      addingComponentPropertyRule.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationCollector1));
+      addingComponentPropertyRule.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationRuleCollector1));
       addingComponentPropertyRule.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("LastName")));
 
       _logContextMock.Expect (
@@ -140,7 +140,7 @@ namespace Remotion.Validation.UnitTests.Merging
       addingComponentPropertyRule.Stub (stub => stub.Validators)
           .Return (
               new IPropertyValidator[] { _stubPropertyValidator1, _stubPropertyValidator2, _stubPropertyValidator3, _stubPropertyValidator4 });
-      addingComponentPropertyRule.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationCollector2));
+      addingComponentPropertyRule.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationRuleCollector2));
       addingComponentPropertyRule.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create (typeof (SpecialCustomer2).GetProperty ("LastName")));
 
       _logContextMock.Expect (

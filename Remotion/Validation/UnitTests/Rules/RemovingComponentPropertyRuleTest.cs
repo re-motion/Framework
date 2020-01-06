@@ -63,14 +63,14 @@ namespace Remotion.Validation.UnitTests.Rules
       var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy ());
 
       Assert.That (
-          () => RemovingComponentPropertyRule.Create (dummyExpression, typeof (CustomerValidationCollector1)),
+          () => RemovingComponentPropertyRule.Create (dummyExpression, typeof (CustomerValidationRuleCollector1)),
           Throws.ArgumentException.With.Message.EqualTo ("Must be a MemberExpression.\r\nParameter name: expression"));
     }
 
     [Test]
     public void Create_PropertyDeclaredInBaseClass ()
     {
-      var componentPropertyRule = AddingComponentPropertyRule.Create (_lastNameExpression, typeof (CustomerValidationCollector1));
+      var componentPropertyRule = AddingComponentPropertyRule.Create (_lastNameExpression, typeof (CustomerValidationRuleCollector1));
       var propertyInfo = ((PropertyInfoAdapter) componentPropertyRule.Property).PropertyInfo;
 
       //TODO-5906 simplify assertion with PropertyInfoAdapter compare
@@ -83,7 +83,7 @@ namespace Remotion.Validation.UnitTests.Rules
     public void RegisterValidator ()
     {
       _removingComponentPropertyRule.RegisterValidator (typeof (StubPropertyValidator));
-      _removingComponentPropertyRule.RegisterValidator (typeof (NotEmptyValidator), typeof (CustomerValidationCollector1));
+      _removingComponentPropertyRule.RegisterValidator (typeof (NotEmptyValidator), typeof (CustomerValidationRuleCollector1));
 
       Assert.That (_removingComponentPropertyRule.Validators.Count(), Is.EqualTo (2));
 
@@ -93,7 +93,7 @@ namespace Remotion.Validation.UnitTests.Rules
       Assert.That (_removingComponentPropertyRule.Validators.ElementAt (1).ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
       Assert.That (
           _removingComponentPropertyRule.Validators.ElementAt (1).CollectorTypeToRemoveFrom,
-          Is.EqualTo (typeof (CustomerValidationCollector1)));
+          Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
     }
 
     [Test]

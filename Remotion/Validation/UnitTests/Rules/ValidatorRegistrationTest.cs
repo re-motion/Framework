@@ -37,10 +37,10 @@ namespace Remotion.Validation.UnitTests.Rules
     [Test]
     public void Initialization_TwoParameters ()
     {
-      var validatorRegistration = new ValidatorRegistration (typeof (NotEmptyValidator), typeof (CustomerValidationCollector1));
+      var validatorRegistration = new ValidatorRegistration (typeof (NotEmptyValidator), typeof (CustomerValidationRuleCollector1));
 
       Assert.That (validatorRegistration.ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
-      Assert.That (validatorRegistration.CollectorTypeToRemoveFrom, Is.EqualTo (typeof (CustomerValidationCollector1)));
+      Assert.That (validatorRegistration.CollectorTypeToRemoveFrom, Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
     }
   }
 }

@@ -20,14 +20,14 @@ using JetBrains.Annotations;
 namespace Remotion.Validation.Implementation
 {
   /// <summary>
-  /// Defines an API for retrieving the validated <see cref="Type"/> associated with the <see cref="IComponentValidationCollector"/> type.
+  /// Defines an API for retrieving the validated <see cref="Type"/> associated with the <see cref="IValidationRuleCollector"/> type.
   /// </summary>
   public interface IValidatedTypeResolver
   {
     /// <summary>
     /// Retrieves the validated <see cref="Type"/> from the <paramref name="collectorType"/>.
     /// </summary>
-    /// <param name="collectorType">The <see cref="Type"/> of the <see cref="IComponentValidationCollector"/> to analyze. Must not be <see langword="null" />.</param>
+    /// <param name="collectorType">The <see cref="Type"/> of the <see cref="IValidationRuleCollector"/> to analyze. Must not be <see langword="null" />.</param>
     /// <returns>A <see cref="Type"/> or <see langword="null" /> if no validated type could be identified.</returns>
     [CanBeNull]
     Type GetValidatedType ([NotNull] Type collectorType);

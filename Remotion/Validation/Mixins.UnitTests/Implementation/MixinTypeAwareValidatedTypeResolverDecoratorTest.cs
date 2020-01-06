@@ -40,7 +40,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [Test]
     public void GetValidatedType_CollectorWitApplyWithMixinAttribute ()
     {
-      var result = _resolver.GetValidatedType (typeof (CustomerMixinIntroducedValidationCollector1));
+      var result = _resolver.GetValidatedType (typeof (CustomerMixinIntroducedValidationRuleCollector1));
 
       _decoratedResolverMock.VerifyAllExpectations ();
       Assert.That (result, Is.EqualTo (typeof (CustomerMixin)));
@@ -49,7 +49,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [Test]
     public void GetValidatedType_CollectorWithoutApplyWithMixinAttribute ()
     {
-      var collectorTypeWithApplyWithClassAttribute = typeof (PersonValidationCollector1);
+      var collectorTypeWithApplyWithClassAttribute = typeof (PersonValidationRuleCollector1);
 
       _decoratedResolverMock.Expect (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Return (typeof (Person));
 

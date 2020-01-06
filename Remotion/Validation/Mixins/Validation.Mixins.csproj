@@ -52,7 +52,7 @@
     <Compile Include="EnsureValidationSupportForMixinsAttribute.cs" />
     <Compile Include="Implementation\MixinTypeAwareValidatedTypeResolverDecorator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Implementation\CheckNoMixinCollectorValidator.cs" />
+    <Compile Include="Implementation\CheckNoMixinValidationRuleCollectorValidator.cs" />
     <Compile Include="Implementation\MixedInvolvedTypeProviderDecorator.cs" />
     <Compile Include="Implementation\MixedLoadFilteredValidationTypeFilter.cs" />
   </ItemGroup>

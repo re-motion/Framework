@@ -81,7 +81,7 @@ namespace Remotion.Validation.Rules
     {
       ArgumentUtility.CheckNotNull ("property", property);
       ArgumentUtility.CheckNotNull ("propertyFunc", propertyFunc);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("collectorType", collectorType, typeof (IComponentValidationCollector));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("collectorType", collectorType, typeof (IValidationRuleCollector));
 
       CollectorType = collectorType;
       ValidatedType = typeof (TValidatedType);

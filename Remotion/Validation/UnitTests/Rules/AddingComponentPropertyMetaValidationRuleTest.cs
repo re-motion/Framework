@@ -58,7 +58,7 @@ namespace Remotion.Validation.UnitTests.Rules
       var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy ());
 
       Assert.That (
-          () => AddingComponentPropertyMetaValidationRule.Create (dummyExpression, typeof (CustomerValidationCollector1)),
+          () => AddingComponentPropertyMetaValidationRule.Create (dummyExpression, typeof (CustomerValidationRuleCollector1)),
           Throws.ArgumentException.With.Message.EqualTo ("Must be a MemberExpression.\r\nParameter name: expression"));
     }
 
