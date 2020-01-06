@@ -167,8 +167,8 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That (validationRules.Length, Is.EqualTo (4));
       Assert.That (validationRules[0], Is.SameAs (validationRuleStub1));
       Assert.That (validationRules[1], Is.SameAs (validationRuleStub2));
-      Assert.That (validationRules[2].Property, Is.SameAs (_addingComponentPropertyRuleStub3.Property));
-      Assert.That (validationRules[3].Property, Is.SameAs (_addingComponentPropertyRuleStub4.Property));
+      Assert.That (((IPropertyValidationRule) validationRules[2]).Property, Is.SameAs (_addingComponentPropertyRuleStub3.Property));
+      Assert.That (((IPropertyValidationRule) validationRules[3]).Property, Is.SameAs (_addingComponentPropertyRuleStub4.Property));
     }
 
     [Test]

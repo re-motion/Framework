@@ -16,20 +16,14 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Validation.Results;
+using Remotion.Reflection;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Rules
 {
-  /// <summary>
-  /// Defines a rule associated with a property which can have multiple validators.
-  /// </summary>
-  public interface IValidationRule
+  public interface IPropertyValidationRule : IValidationRule
   {
-    /// <summary>
-    /// Performs validation using a validation context and returns a collection of Validation Failures.
-    /// </summary>
-    /// <param name="context">Validation Context</param>
-    /// <returns>A collection of validation failures</returns>
-    IEnumerable<ValidationFailure> Validate (ValidationContext context);
+    IPropertyInformation Property { get; }
+    IReadOnlyCollection<IPropertyValidator> Validators { get; }
   }
 }

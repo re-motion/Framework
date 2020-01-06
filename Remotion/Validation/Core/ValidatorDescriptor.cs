@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Remotion.Utilities;
 using Remotion.Validation.Rules;
 
@@ -27,11 +26,11 @@ namespace Remotion.Validation
   {
     public IReadOnlyCollection<IValidationRule> ValidationRules { get; }
 
-    public ValidatorDescriptor (IEnumerable<IValidationRule> validationRules)
+    public ValidatorDescriptor (IReadOnlyCollection<IValidationRule> validationRules)
     {
       ArgumentUtility.CheckNotNull ("validationRules", validationRules);
 
-      ValidationRules = validationRules.ToArray();
+      ValidationRules = validationRules;
     }
   }
 }

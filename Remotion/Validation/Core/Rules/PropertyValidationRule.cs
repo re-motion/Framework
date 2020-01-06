@@ -25,8 +25,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Rules
 {
-  /// <summary>Associates a set of <see cref="IPropertyValidator"/> implementations with an <see cref="IPropertyInformation"/> object.</summary>
-  public class PropertyValidationRule<TValidatedType, TProperty> : IValidationRule
+  public class PropertyValidationRule<TValidatedType, TProperty> : IPropertyValidationRule
   {
     [NotNull]
     public IPropertyInformation Property { get; }

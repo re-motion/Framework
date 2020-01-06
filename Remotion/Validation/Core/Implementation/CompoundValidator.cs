@@ -62,7 +62,7 @@ namespace Remotion.Validation.Implementation
 
     public ValidatorDescriptor CreateDescriptor ()
     {
-      return new ValidatorDescriptor (_validators.SelectMany (v => v.CreateDescriptor().ValidationRules));
+      return new ValidatorDescriptor (_validators.SelectMany (v => v.CreateDescriptor().ValidationRules).ToArray());
     }
 
     public bool CanValidateInstancesOfType (Type type)

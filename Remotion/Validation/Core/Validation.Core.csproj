@@ -85,6 +85,7 @@
     <Compile Include="Implementation\DefaultValidatorFormatter.cs" />
     <Compile Include="Results\ObjectValidationFailure.cs" />
     <Compile Include="Results\PropertyValidationFailure.cs" />
+    <Compile Include="Rules\IPropertyValidationRule.cs" />
     <Compile Include="ValidatorBuilderExtensions.cs" />
     <Compile Include="Implementation\DiagnosticInformationValidatorFormatterDecorator.cs" />
     <Compile Include="Implementation\GenericTypeAwareValidatedTypeResolverDecorator.cs" />

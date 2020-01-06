@@ -67,7 +67,7 @@ namespace Remotion.Validation.Rules
     void SetHardConstraint ();
 
     /// <summary>
-    /// Applies the <paramref name="propertyValidatorExtractor"/> to the registered <see cref="IValidationRule.Validators"/>.
+    /// Applies the <paramref name="propertyValidatorExtractor"/> to the registered <see cref="Validators"/>.
     /// </summary>
     [EditorBrowsable (EditorBrowsableState.Never)]
     void ApplyRemoveValidatorRegistrations ([NotNull] IPropertyValidatorExtractor propertyValidatorExtractor);
