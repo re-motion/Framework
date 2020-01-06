@@ -18,40 +18,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Results;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Rules
 {
-  public class PropertyValidationRule<TValidatedType, TProperty> : IPropertyValidationRule
+  public class ObjectValidationRule<TValidatedType> : IObjectValidationRule
   {
-    [NotNull]
-    public IPropertyInformation Property { get; }
-
-    [NotNull]
-    public Func<object, object> PropertyFunc { get; }
-
     [NotNull]
     public Func<TValidatedType, bool> Condition { get; }
 
     [NotNull]
-    public IReadOnlyCollection<IPropertyValidator> Validators { get; }
+    public IReadOnlyCollection<IObjectValidator> Validators { get; }
 
-    public PropertyValidationRule (
-        [NotNull] IPropertyInformation property,
-        [NotNull] Func<object, object> propertyFunc,
+    public ObjectValidationRule (
         [NotNull] Func<TValidatedType, bool> condition,
-        [NotNull] IReadOnlyCollection<IPropertyValidator> validators)
+        [NotNull] IReadOnlyCollection<IObjectValidator> validators)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      ArgumentUtility.CheckNotNull ("condition", condition);
-      ArgumentUtility.CheckNotNull ("propertyFunc", propertyFunc);
       ArgumentUtility.CheckNotNull ("validators", validators);
 
-      Property = property;
-      PropertyFunc = propertyFunc;
       Condition = condition;
       Validators = validators;
     }
@@ -60,20 +46,16 @@ namespace Remotion.Validation.Rules
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var instanceToValidate = (TValidatedType)context.InstanceToValidate;
+      var instanceToValidate = (TValidatedType) context.InstanceToValidate;
       if (!Condition (instanceToValidate))
         return Enumerable.Empty<ValidationFailure>();
 
-      var propertyValue = PropertyFunc (instanceToValidate);
-      return Validators.SelectMany (validator => ValidatePropertyValidator (context, propertyValue, validator));
+      return Validators.SelectMany (validator => ValidateObjectValidator (context, validator));
     }
 
-    private IEnumerable<PropertyValidationFailure> ValidatePropertyValidator (
-        ValidationContext context,
-        object propertyValue,
-        IPropertyValidator validator)
+    private IEnumerable<ObjectValidationFailure> ValidateObjectValidator (ValidationContext context, IObjectValidator validator)
     {
-      var propertyValidatorContext = new PropertyValidatorContext (context, Property, propertyValue);
+      var propertyValidatorContext = new ObjectValidatorContext (context);
       return validator.Validate (propertyValidatorContext);
     }
   }

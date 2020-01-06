@@ -132,6 +132,7 @@
     <Compile Include="Providers\TestableAttributeBasedValidationRuleCollectorProviderBase.cs" />
     <Compile Include="Providers\TestableValidationAttributesBasedValidationRuleCollectorProvider.cs" />
     <Compile Include="Rules\AddingComponentPropertyMetaValidationRuleTest.cs" />
+    <Compile Include="Rules\ObjectValidationRuleTest.cs" />
     <Compile Include="Rules\PropertyValidationRuleTest.cs" />
     <Compile Include="TestDomain\Address.cs" />
     <Compile Include="TestDomain\Collectors\InvalidValidationRuleCollector2.cs" />
