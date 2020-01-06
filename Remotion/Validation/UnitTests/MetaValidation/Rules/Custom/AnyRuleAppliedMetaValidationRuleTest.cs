@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Linq;
-using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom

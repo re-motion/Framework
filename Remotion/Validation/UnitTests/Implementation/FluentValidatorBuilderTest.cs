@@ -17,8 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidation;
-using FluentValidation.Internal;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
@@ -32,21 +30,22 @@ using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
+  //TODO RM-5960: Rename to CollectorBasedValidatorBuilderTest
   [TestFixture]
   public class FluentValidatorBuilderTest
   {
     private IValidationCollectorProvider _validationCollectorProviderMock;
-    private FluentValidatorBuilder _fluentValidationBuilder;
-    private IComponentValidationCollector _componenValidationCollectorStub1;
-    private IComponentValidationCollector _componenValidationCollectorStub2;
+    private FluentValidatorBuilder _validatorBuilder;
+    private IComponentValidationCollector _componentValidationCollectorStub1;
+    private IComponentValidationCollector _componentValidationCollectorStub2;
     private IValidationCollectorMerger _validationCollectorMergerMock;
-    private IComponentValidationCollector _componenValidationCollectorStub3;
+    private IComponentValidationCollector _componentValidationCollectorStub3;
 
-    private IValidationRule[] _fakeValidationRuleResult;
-    private IValidationRule _validationRuleStub1;
-    private IValidationRule _validationRuleStub2;
-    private PropertyRule _validationRuleStub3;
-    private PropertyRule _validationRuleStub4;
+    private IAddingComponentPropertyRule[] _fakeAddingComponentPropertyRulesResult;
+    private IAddingComponentPropertyRule _addingComponentPropertyRuleStub1;
+    private IAddingComponentPropertyRule _addingComponentPropertyRuleStub2;
+    private IAddingComponentPropertyRule _addingComponentPropertyRuleStub3;
+    private IAddingComponentPropertyRule _addingComponentPropertyRuleStub4;
     private ValidationCollectorInfo _validationCollectorInfo1;
     private ValidationCollectorInfo _validationCollectorInfo2;
     private ValidationCollectorInfo _validationCollectorInfo3;
@@ -59,10 +58,10 @@ namespace Remotion.Validation.UnitTests.Implementation
     private IAddingComponentPropertyMetaValidationRule _metaValidationRule1Stub;
     private IAddingComponentPropertyMetaValidationRule _metaValidationRule2Stub;
     private IAddingComponentPropertyMetaValidationRule _metaValidationRule3Stub;
-    private IValidationRuleMetadataService _validationRuleGlobalizationServiceMock;
     private IMemberInformationNameResolver _memberInformationNameResolverMock;
     private ICollectorValidator _collectorValidatorMock;
     private ValidationCollectorMergeResult _fakeValidationCollectorMergeResult;
+    private IValidationMessageFactory _validationMessageFactoryStub;
 
     [SetUp]
     public void SetUp ()
@@ -71,46 +70,58 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validationCollectorMergerMock = MockRepository.GenerateStrictMock<IValidationCollectorMerger>();
       _metaRulesValidatorFactoryStub = MockRepository.GenerateStub<IMetaRulesValidatorFactory>();
       _metaRuleValidatorMock = MockRepository.GenerateStrictMock<IMetaRuleValidator>();
-      _validationRuleGlobalizationServiceMock = MockRepository.GenerateStrictMock<IValidationRuleMetadataService>();
       _memberInformationNameResolverMock = MockRepository.GenerateStrictMock<IMemberInformationNameResolver>();
       _collectorValidatorMock = MockRepository.GenerateStrictMock<ICollectorValidator> ();
+      _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
 
       _metaValidationRule1Stub = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>();
       _metaValidationRule2Stub = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>();
       _metaValidationRule3Stub = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>();
 
-      _componenValidationCollectorStub1 = MockRepository.GenerateStub<IComponentValidationCollector>();
-      _componenValidationCollectorStub1.Stub (stub => stub.AddedPropertyMetaValidationRules).Return (new[] { _metaValidationRule1Stub });
-      _componenValidationCollectorStub2 = MockRepository.GenerateStub<IComponentValidationCollector>();
-      _componenValidationCollectorStub2.Stub (stub => stub.AddedPropertyMetaValidationRules)
+      _componentValidationCollectorStub1 = MockRepository.GenerateStub<IComponentValidationCollector>();
+      _componentValidationCollectorStub1.Stub (stub => stub.AddedPropertyMetaValidationRules).Return (new[] { _metaValidationRule1Stub });
+      _componentValidationCollectorStub2 = MockRepository.GenerateStub<IComponentValidationCollector>();
+      _componentValidationCollectorStub2.Stub (stub => stub.AddedPropertyMetaValidationRules)
           .Return (new[] { _metaValidationRule2Stub, _metaValidationRule3Stub });
-      _componenValidationCollectorStub3 = MockRepository.GenerateStub<IComponentValidationCollector>();
-      _componenValidationCollectorStub3.Stub (stub => stub.AddedPropertyMetaValidationRules)
+      _componentValidationCollectorStub3 = MockRepository.GenerateStub<IComponentValidationCollector>();
+      _componentValidationCollectorStub3.Stub (stub => stub.AddedPropertyMetaValidationRules)
           .Return (new IAddingComponentPropertyMetaValidationRule[0]);
 
       _validationCollectorInfo1 = new ValidationCollectorInfo (
-          _componenValidationCollectorStub1,
+          _componentValidationCollectorStub1,
           typeof (ApiBasedComponentValidationCollectorProvider));
       _validationCollectorInfo2 = new ValidationCollectorInfo (
-          _componenValidationCollectorStub2,
+          _componentValidationCollectorStub2,
           typeof (ApiBasedComponentValidationCollectorProvider));
       _validationCollectorInfo3 = new ValidationCollectorInfo (
-          _componenValidationCollectorStub3,
+          _componentValidationCollectorStub3,
           typeof (ApiBasedComponentValidationCollectorProvider));
 
-      _validationRuleStub1 = MockRepository.GenerateStub<IValidationRule>();
-      _validationRuleStub2 = MockRepository.GenerateStub<IValidationRule>();
-      _validationRuleStub3 = PropertyRule.Create (ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.FirstName));
-      _validationRuleStub4 = PropertyRule.Create (ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.LastName));
+      _addingComponentPropertyRuleStub1 = MockRepository.GenerateStub<IAddingComponentPropertyRule>();
+      _addingComponentPropertyRuleStub2 = MockRepository.GenerateStub<IAddingComponentPropertyRule>();
+      _addingComponentPropertyRuleStub3 = AddingComponentPropertyRule.Create (
+          ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.FirstName),
+          typeof (IComponentValidationCollector));
+      _addingComponentPropertyRuleStub4 = AddingComponentPropertyRule.Create (
+          ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.LastName),
+          typeof (IComponentValidationCollector));
 
-      _fakeValidationRuleResult = new[] { _validationRuleStub1, _validationRuleStub2, _validationRuleStub3, _validationRuleStub4 };
-      _fakeValidationCollectorMergeResult = new ValidationCollectorMergeResult (_fakeValidationRuleResult, MockRepository.GenerateStub<ILogContext>());
+      _fakeAddingComponentPropertyRulesResult = new[]
+                                  {
+                                      _addingComponentPropertyRuleStub1,
+                                      _addingComponentPropertyRuleStub2,
+                                      _addingComponentPropertyRuleStub3,
+                                      _addingComponentPropertyRuleStub4
+                                  };
+      _fakeValidationCollectorMergeResult = new ValidationCollectorMergeResult (
+          _fakeAddingComponentPropertyRulesResult,
+          MockRepository.GenerateStub<ILogContext>());
 
-      _fluentValidationBuilder = new FluentValidatorBuilder (
+      _validatorBuilder = new FluentValidatorBuilder (
           _validationCollectorProviderMock,
           _validationCollectorMergerMock,
           _metaRulesValidatorFactoryStub,
-          _validationRuleGlobalizationServiceMock,
+          _validationMessageFactoryStub,
           _memberInformationNameResolverMock,
           _collectorValidatorMock);
 
@@ -123,8 +134,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void Initialization ()
     {
-      Assert.That (_fluentValidationBuilder.ComponentValidationCollectorProvider, Is.SameAs (_validationCollectorProviderMock));
-      Assert.That (_fluentValidationBuilder.ValidationCollectorMerger, Is.SameAs (_validationCollectorMergerMock));
+      Assert.That (_validatorBuilder.ComponentValidationCollectorProvider, Is.SameAs (_validationCollectorProviderMock));
+      Assert.That (_validatorBuilder.ValidationCollectorMerger, Is.SameAs (_validationCollectorMergerMock));
     }
 
     [Test]
@@ -132,42 +143,33 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       ExpectMocks();
 
-      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componenValidationCollectorStub1)).Repeat.Once ();
-      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componenValidationCollectorStub2)).Repeat.Once ();
-      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componenValidationCollectorStub3)).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componentValidationCollectorStub1)).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componentValidationCollectorStub2)).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componentValidationCollectorStub3)).Repeat.Once ();
 
       _metaRuleValidatorMock
-          .Expect (mock => mock.Validate (Arg<IValidationRule[]>.List.Equal (_fakeValidationRuleResult)))
+          .Expect (mock => mock.Validate (Arg<IAddingComponentPropertyRule[]>.List.Equal (_fakeAddingComponentPropertyRulesResult)))
           .Return (new[] { _validMetaValidationResult1, _validMetaValidationResult2 });
 
-      _memberInformationNameResolverMock
-          .Expect (mock => mock.GetPropertyName (Arg<IPropertyInformation>.Matches (pi => pi.Name == "FirstName")))
-          .Return ("FakeTechnicalPropertyName1");
-      _memberInformationNameResolverMock
-          .Expect (mock => mock.GetPropertyName (Arg<IPropertyInformation>.Matches (pi => pi.Name == "LastName")))
-          .Return ("FakeTechnicalPropertyName2");
+      var validationRuleStub1 = MockRepository.GenerateStub<IValidationRule>();
+      var validationRuleStub2 = MockRepository.GenerateStub<IValidationRule>();
+      _addingComponentPropertyRuleStub1.Stub (_ => _.CreateValidationRule (_validationMessageFactoryStub)).Return (validationRuleStub1);
+      _addingComponentPropertyRuleStub2.Stub (_ => _.CreateValidationRule (_validationMessageFactoryStub)).Return (validationRuleStub2);
 
-      _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyMetadata (_validationRuleStub1, typeof (SpecialCustomer1)));
-      _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyMetadata (_validationRuleStub2, typeof (SpecialCustomer1)));
-      _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyMetadata (_validationRuleStub3, typeof (SpecialCustomer1)));
-      _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyMetadata (_validationRuleStub4, typeof (SpecialCustomer1)));
-
-      var result = _fluentValidationBuilder.BuildValidator (typeof (SpecialCustomer1));
+      var result = _validatorBuilder.BuildValidator (typeof (SpecialCustomer1));
 
       _validationCollectorProviderMock.VerifyAllExpectations();
       _validationCollectorMergerMock.VerifyAllExpectations();
       _metaRuleValidatorMock.VerifyAllExpectations();
       _memberInformationNameResolverMock.VerifyAllExpectations();
-      _validationRuleGlobalizationServiceMock.VerifyAllExpectations();
       Assert.That (result, Is.TypeOf (typeof (Validator)));
       var validator = (Validator) result;
-      Assert.That (validator.ValidationRules, Is.EqualTo (_fakeValidationRuleResult));
-      Assert.That (_validationRuleStub3.PropertyName, Is.EqualTo ("FakeTechnicalPropertyName1"));
-      Assert.That (_validationRuleStub4.PropertyName, Is.EqualTo ("FakeTechnicalPropertyName2"));
+      var validationRules = validator.ValidationRules.ToArray();
+      Assert.That (validationRules.Length, Is.EqualTo (4));
+      Assert.That (validationRules[0], Is.SameAs (validationRuleStub1));
+      Assert.That (validationRules[1], Is.SameAs (validationRuleStub2));
+      Assert.That (validationRules[2].Property, Is.SameAs (_addingComponentPropertyRuleStub3.Property));
+      Assert.That (validationRules[3].Property, Is.SameAs (_addingComponentPropertyRuleStub4.Property));
     }
 
     [Test]
@@ -175,40 +177,21 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       ExpectMocks();
 
-      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componenValidationCollectorStub1)).Repeat.Once ();
-      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componenValidationCollectorStub2)).Repeat.Once ();
-      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componenValidationCollectorStub3)).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componentValidationCollectorStub1)).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componentValidationCollectorStub2)).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componentValidationCollectorStub3)).Repeat.Once ();
 
       _metaRuleValidatorMock
-          .Expect (mock => mock.Validate (Arg<IValidationRule[]>.List.Equal (_fakeValidationRuleResult)))
+          .Expect (mock => mock.Validate (Arg<IAddingComponentPropertyRule[]>.List.Equal (_fakeAddingComponentPropertyRulesResult)))
           .Return (new[] { _validMetaValidationResult1, _validMetaValidationResult2 });
 
-      _memberInformationNameResolverMock
-          .Expect (mock => mock.GetPropertyName (Arg<IPropertyInformation>.Matches (pi => pi.Name == "FirstName")))
-          .Return ("FakeTechnicalPropertyName1");
-      _memberInformationNameResolverMock
-          .Expect (mock => mock.GetPropertyName (Arg<IPropertyInformation>.Matches (pi => pi.Name == "LastName")))
-          .Return ("FakeTechnicalPropertyName2");
-
-      _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyMetadata (_validationRuleStub1, typeof (SpecialCustomer1)));
-      _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyMetadata (_validationRuleStub2, typeof (SpecialCustomer1)));
-      _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyMetadata (_validationRuleStub3, typeof (SpecialCustomer1)));
-      _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyMetadata (_validationRuleStub4, typeof (SpecialCustomer1)));
-
-      var result = _fluentValidationBuilder.BuildValidator<SpecialCustomer1>();
+      var result = _validatorBuilder.BuildValidator<SpecialCustomer1>();
 
       _validationCollectorProviderMock.VerifyAllExpectations();
       _validationCollectorMergerMock.VerifyAllExpectations();
       _metaRuleValidatorMock.VerifyAllExpectations();
       _memberInformationNameResolverMock.VerifyAllExpectations();
-      _validationRuleGlobalizationServiceMock.VerifyAllExpectations();
       Assert.That (result, Is.TypeOf (typeof (TypedValidatorDecorator<SpecialCustomer1>)));
-      Assert.That (_validationRuleStub3.PropertyName, Is.EqualTo ("FakeTechnicalPropertyName1"));
-      Assert.That (_validationRuleStub4.PropertyName, Is.EqualTo ("FakeTechnicalPropertyName2"));
     }
 
     [Test]
@@ -216,16 +199,16 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       ExpectMocks();
 
-      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componenValidationCollectorStub1)).Repeat.Once ();
-      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componenValidationCollectorStub2)).Repeat.Once ();
-      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componenValidationCollectorStub3)).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componentValidationCollectorStub1)).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componentValidationCollectorStub2)).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.CheckValid (_componentValidationCollectorStub3)).Repeat.Once ();
 
       _metaRuleValidatorMock
-          .Expect (mock => mock.Validate (_fakeValidationRuleResult))
+          .Expect (mock => mock.Validate (_fakeAddingComponentPropertyRulesResult))
           .Return (new[] { _validMetaValidationResult1, _invalidMetaValidationResult1, _validMetaValidationResult2, _invalidMetaValidationResult2 });
 
       Assert.That (
-          () => _fluentValidationBuilder.BuildValidator<SpecialCustomer1>(),
+          () => _validatorBuilder.BuildValidator<SpecialCustomer1>(),
           Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo ("Error1\r\n----------\r\nError2"));
     }
 

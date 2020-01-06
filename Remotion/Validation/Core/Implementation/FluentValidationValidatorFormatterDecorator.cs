@@ -17,9 +17,9 @@
 using System;
 using System.Reflection;
 using System.Text;
-using FluentValidation.Validators;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
 {
@@ -52,17 +52,16 @@ namespace Remotion.Validation.Implementation
       var validatorType = validator.GetType();
       var typeName = typeNameFormatter (validatorType);
 
-      if (typeof (INotNullValidator).IsAssignableFrom (validatorType) || typeof (INotEmptyValidator).IsAssignableFrom (validatorType)
-          || typeof (IEmailValidator).IsAssignableFrom (validatorType) || typeof (CreditCardValidator).IsAssignableFrom (validatorType))
+      if (typeof (INotNullValidator).IsAssignableFrom (validatorType) || typeof (INotEmptyValidator).IsAssignableFrom (validatorType))
         return typeName;
 
       if (typeof (ILengthValidator).IsAssignableFrom (validatorType))
         return FormatLengthValidator (validator, typeName);
 
-      if (typeof (IBetweenValidator).IsAssignableFrom (validatorType))
-        return FormatBetweenValidator (validator, typeName);
+      if (typeof (IRangeValidator).IsAssignableFrom (validatorType))
+        return FormatRangeValidator (validator, typeName);
 
-      if (typeof (IComparisonValidator).IsAssignableFrom (validatorType))
+      if (typeof (IValueComparisonValidator).IsAssignableFrom (validatorType))
         return FormatComparisonValidator (validator, typeNameFormatter, typeName);
 
       if (typeof (IRegularExpressionValidator).IsAssignableFrom (validatorType))
@@ -81,39 +80,32 @@ namespace Remotion.Validation.Implementation
       return string.Format ("{0} {{ MinLength = '{1}', MaxLength = '{2}' }}", typeName, lengthValidator.Min, lengthValidator.Max);
     }
 
-    private string FormatBetweenValidator (IPropertyValidator validator, string typeName)
+    private string FormatRangeValidator (IPropertyValidator validator, string typeName)
     {
-      var betweenValidator = (IBetweenValidator) validator;
+      var betweenValidator = (IRangeValidator) validator;
       return string.Format ("{0} {{ From = '{1}', To = '{2}' }}", typeName, betweenValidator.From, betweenValidator.To);
     }
 
     private string FormatComparisonValidator (IPropertyValidator validator, Func<Type, string> typeNameFormatter, string typeName)
     {
-      var comparisonValidator = (IComparisonValidator) validator;
-      if (comparisonValidator.MemberToCompare != null)
-      {
-        return string.Format (
-            "{0} {{ MemberToCompare = '{1}' }}", typeName, FormatMemberInfo (comparisonValidator.MemberToCompare, typeNameFormatter));
-      }
-      else
-        return string.Format ("{0} {{ ValueToCompare = '{1}' }}", typeName, comparisonValidator.ValueToCompare);
+      var comparisonValidator = (IValueComparisonValidator) validator;
+      return string.Format ("{0} {{ ValueToCompare = '{1}' }}", typeName, comparisonValidator.ValueToCompare);
     }
 
     private string FormatRegularExpressionValidator (IPropertyValidator validator, string typeName)
     {
       var regularExpressionValidator = (IRegularExpressionValidator) validator;
-      return string.Format ("{0} {{ Expression = '{1}' }}", typeName, regularExpressionValidator.Expression);
+      return string.Format ("{0} {{ Expression = '{1}' }}", typeName, regularExpressionValidator.Regex);
     }
 
     private string FormatScalePrecisionValidator (ScalePrecisionValidator precisionValidator, string typeName)
     {
       var scalePrecisionValidator = precisionValidator;
       return string.Format (
-          "{0} {{ Scale = '{1}', Precision = '{2}', IgnoreTrailingZeros = '{3}' }}",
+          "{0} {{ Scale = '{1}', Precision = '{2}' }}",
           typeName,
           scalePrecisionValidator.Scale,
-          scalePrecisionValidator.Precision,
-          scalePrecisionValidator.IgnoreTrailingZeros);
+          scalePrecisionValidator.Precision);
     }
 
     private string FormatMemberInfo (MemberInfo memberInfo, Func<Type, string> typeNameFormatter)

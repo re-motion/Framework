@@ -16,11 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using FluentValidation.Resources;
-using FluentValidation.Validators;
-using System.Linq;
+using Remotion.Reflection;
 using Remotion.Utilities;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Attributes.Validation
 {
@@ -40,21 +39,14 @@ namespace Remotion.Validation.Attributes.Validation
     /// </summary>
     public string ErrorMessage { get; set; }
 
-    protected abstract IEnumerable<IPropertyValidator> GetValidators (PropertyInfo property); 
+    protected abstract IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory); 
 
-    public IEnumerable<IPropertyValidator> GetPropertyValidators (PropertyInfo property)
+    public IEnumerable<IPropertyValidator> GetPropertyValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
       ArgumentUtility.CheckNotNull ("property", property);
-      
-      var validators = GetValidators(property).ToArray();
+      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
 
-      if (!string.IsNullOrEmpty (ErrorMessage))
-      {
-        foreach (var validator in validators)
-          validator.ErrorMessageSource = new StaticStringSource (ErrorMessage); //Note: currently only static error messages are supported!
-      }
-
-      return validators;
+      return GetValidators (property, validationMessageFactory);
     }
   }
 }

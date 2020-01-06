@@ -17,10 +17,8 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using NUnit.Framework;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
@@ -59,9 +57,9 @@ namespace Remotion.Validation.UnitTests.Rules
     {
       var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy ());
 
-      Assert.Throws<InvalidOperationException> (
+      Assert.That (
           () => AddingComponentPropertyMetaValidationRule.Create (dummyExpression, typeof (CustomerValidationCollector1)),
-          "An 'AddingComponentPropertyMetaValidationRule' can only created for property members.");
+          Throws.ArgumentException.With.Message.EqualTo ("Must be a MemberExpression.\r\nParameter name: expression"));
     }
 
     [Test]

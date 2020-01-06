@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
-using FluentValidation.Results;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Reflection;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Results;
+using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
 
@@ -32,14 +33,18 @@ namespace Remotion.Validation.UnitTests.Implementation
     private IValidationRule _validationRuleStub2;
     private Validator _validator;
     private ValidationFailure _validationFailure;
+    private IPropertyInformation _propertyStub;
 
     [SetUp]
     public void SetUp ()
     {
+      _propertyStub = MockRepository.GenerateStub<IPropertyInformation>();
+      _propertyStub.Stub (_ => _.Name).Return ("PropertyStub");
+
       _validationRuleStub1 = MockRepository.GenerateStub<IValidationRule>();
       _validationRuleStub2 = MockRepository.GenerateStub<IValidationRule>();
 
-      _validationFailure = new ValidationFailure ("PropertyName", "Failes");
+      _validationFailure = new ValidationFailure (_propertyStub, "Error", "ValidationMessage");
 
       _validator = new Validator (new[] { _validationRuleStub1, _validationRuleStub2 }, typeof (Customer));
     }
@@ -89,7 +94,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var result = _validator.CreateDescriptor();
 
-      Assert.That (result, Is.TypeOf (typeof (ValidatorDescriptor<Customer>)));
+      Assert.That (result, Is.TypeOf (typeof (ValidatorDescriptor)));
       Assert.That (PrivateInvoke.GetNonPublicProperty (result, "Rules"), Is.EquivalentTo (new[] { _validationRuleStub1, _validationRuleStub2 }));
     }
 

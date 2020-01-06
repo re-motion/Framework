@@ -29,13 +29,13 @@ namespace Remotion.Validation.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create ();
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
     [Test]
     public void GetInstance ()
     {
-      var factory = _serviceLocator.GetInstance<IValidationCollectorReflector> ();
+      var factory = _serviceLocator.GetInstance<IValidationCollectorReflector>();
 
       Assert.That (factory, Is.Not.Null);
       Assert.That (factory, Is.TypeOf (typeof (DiscoveryServiceBasedValidationCollectorReflector)));
@@ -44,8 +44,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IValidationRuleMetadataService> ();
-      var factory2 = _serviceLocator.GetInstance<IValidationRuleMetadataService> ();
+      var factory1 = _serviceLocator.GetInstance<IValidationCollectorReflector>();
+      var factory2 = _serviceLocator.GetInstance<IValidationCollectorReflector>();
 
       Assert.That (factory1, Is.SameAs (factory2));
     }

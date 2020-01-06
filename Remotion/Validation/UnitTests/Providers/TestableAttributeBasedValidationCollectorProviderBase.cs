@@ -18,12 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using FluentValidation.Validators;
+using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Providers;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Providers
@@ -84,12 +85,11 @@ namespace Remotion.Validation.UnitTests.Providers
       {
         foreach (var property in type.GetProperties (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
         {
-          _validationPropertyRuleReflectorMocks[type].Stub (stub => stub.ValidatedProperty).Return (property);
+          _validationPropertyRuleReflectorMocks[type].Stub (stub => stub.ValidatedProperty).Return (PropertyInfoAdapter.Create (property));
 
           if (property.Name == "Position")
           {
-            _validationPropertyRuleReflectorMocks[type]
-                .Expect (mock => mock.GetPropertyAccessExpression (typeof (Employee)))
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetValidatedPropertyFunc (typeof (Employee)))
                 .Return (e => ((Employee) e).Position);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetAddingPropertyValidators ()).Return (new[] { _propertyValidatorStub1 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetHardConstraintPropertyValidators ())
@@ -99,8 +99,7 @@ namespace Remotion.Validation.UnitTests.Providers
           }
           else if (property.Name == "Notes")
           {
-            _validationPropertyRuleReflectorMocks[type]
-                .Expect (mock => mock.GetPropertyAccessExpression (typeof (Employee)))
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetValidatedPropertyFunc (typeof (Employee)))
                 .Return (e => ((Employee) e).Notes);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetAddingPropertyValidators ()).Return (new[] { _propertyValidatorStub3 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetHardConstraintPropertyValidators ()).Return (new IPropertyValidator[0]);
@@ -110,8 +109,8 @@ namespace Remotion.Validation.UnitTests.Providers
           }
           else if (property.Name == "LastName")
           {
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetPropertyAccessExpression(typeof(SpecialCustomer1))).Return (c =>
-                ((SpecialCustomer1) c).LastName);
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetValidatedPropertyFunc (typeof (SpecialCustomer1)))
+                .Return (c => ((SpecialCustomer1) c).LastName);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetAddingPropertyValidators ())
                 .Return (new[] { _propertyValidatorStub4, _propertyValidatorStub5 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetHardConstraintPropertyValidators ()).Return (new IPropertyValidator[0]);
@@ -121,8 +120,8 @@ namespace Remotion.Validation.UnitTests.Providers
           }
           else if (property.Name == "UserName")
           {
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetPropertyAccessExpression (typeof(SpecialCustomer1))).Return (c =>
-                ((SpecialCustomer1) c).UserName);
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetValidatedPropertyFunc (typeof (SpecialCustomer1)))
+                .Return (c => ((SpecialCustomer1) c).UserName);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetAddingPropertyValidators ()).Return (new[] { _propertyValidatorStub6 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetHardConstraintPropertyValidators ()).Return (new IPropertyValidator[0]);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingPropertyRegistrations ())

@@ -21,7 +21,6 @@ using log4net.Config;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
-using Remotion.Validation.Globalization;
 using Remotion.Validation.Merging;
 using LogManager = log4net.LogManager;
 
@@ -38,7 +37,6 @@ namespace Remotion.Validation.Mixins.IntegrationTests
     public virtual void SetUp ()
     {
       var serviceLocator = DefaultServiceLocator.Create ();
-      serviceLocator.RegisterSingle<IErrorMessageGlobalizationService> (GetValidatorGlobalizationService);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
       
       MemoryAppender = new MemoryAppender();
@@ -62,11 +60,6 @@ namespace Remotion.Validation.Mixins.IntegrationTests
       _serviceLocatorScope.Dispose ();
 
       Assert.That (LogManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator)).IsDebugEnabled, Is.False);
-    }
-
-    protected virtual IErrorMessageGlobalizationService GetValidatorGlobalizationService ()
-    {
-      return new NullErrorMessageGlobalizationService();
     }
   }
 }

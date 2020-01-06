@@ -41,7 +41,6 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     public virtual void SetUp ()
     {
       var serviceLocator = DefaultServiceLocator.Create ();
-      serviceLocator.RegisterSingle<IErrorMessageGlobalizationService> (GetValidatorGlobalizationService);
       serviceLocator.RegisterSingle<IClientTransactionExtensionFactory> (
           () => new ValidationClientTransactionExtensionFactory (serviceLocator.GetInstance<IValidatorBuilder>()));
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
@@ -67,11 +66,6 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
       _serviceLocatorScope.Dispose();
 
       Assert.That (LogManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator)).IsDebugEnabled, Is.False);
-    }
-
-    protected virtual IErrorMessageGlobalizationService GetValidatorGlobalizationService ()
-    {
-      return new NullErrorMessageGlobalizationService();
     }
   }
 }

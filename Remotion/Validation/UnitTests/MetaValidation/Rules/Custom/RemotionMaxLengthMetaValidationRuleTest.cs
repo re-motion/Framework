@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Linq;
-using FluentValidation.Validators;
 using NUnit.Framework;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
 {
@@ -49,7 +50,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
     [Test]
     public void Validate_MaxLengthExceeds ()
     {
-      var result = _rule.Validate (new[] { new MaximumLengthValidator (60) }).ToArray().Single();
+      var result = _rule.Validate (new[] { new MaximumLengthValidator (60, new InvariantValidationMessage ("Fake Message")) }).Single();
 
       Assert.That (result.IsValid, Is.False);
       Assert.That (
@@ -62,7 +63,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
     [Test]
     public void Validate_ValidMaxLength ()
     {
-      var result = _rule.Validate (new[] { new MaximumLengthValidator (40) }).ToArray().Single();
+      var result = _rule.Validate (new[] { new MaximumLengthValidator (40, new InvariantValidationMessage ("Fake Message")) }).Single();
 
       Assert.That (result.IsValid, Is.True);
     }

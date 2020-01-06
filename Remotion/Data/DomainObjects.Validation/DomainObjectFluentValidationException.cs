@@ -17,14 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using FluentValidation.Results;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Validation.Results;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
-  [Serializable]
   public class DomainObjectFluentValidationException : DomainObjectValidationException
   {
     private readonly DomainObject[] _affectedObjects;
@@ -43,20 +41,6 @@ namespace Remotion.Data.DomainObjects.Validation
       
       _affectedObjects = affectedObjects.ToArray();
       _validationFailures = validationFailures.ToArray();
-    }
-
-    protected DomainObjectFluentValidationException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
-    {
-      _affectedObjects = (DomainObject[]) info.GetValue ("_affectedObjects", typeof (DomainObject[]));
-      _validationFailures = (IReadOnlyCollection<ValidationFailure>) info.GetValue ("_validationFailures", typeof (IReadOnlyCollection<ValidationFailure>));
-    }
-
-    public override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData (info, context);
-      info.AddValue ("_affectedObjects", _affectedObjects);
-      info.AddValue ("_validationFailures", _validationFailures);
     }
 
     public override DomainObject[] AffectedObjects

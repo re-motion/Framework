@@ -37,10 +37,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation, Version=5.0.0.1, Culture=neutral, PublicKeyToken=a82054b837897c66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
@@ -70,17 +66,19 @@
     <Compile Include="Attributes\Validation\NotEqualAttributeTest.cs" />
     <Compile Include="Attributes\Validation\NotNullAttributeTest.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttributeTest.cs" />
+    <Compile Include="DefaultValidatorExtensionsTest.cs" />
     <Compile Include="Implementation\AttributeBasedComponentValidationCollectorTest.cs" />
     <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecoratorTest.cs" />
     <Compile Include="Implementation\CompoundCollectorValidatorTest.cs" />
     <Compile Include="Implementation\CompoundValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\CompoundValidatorTest.cs" />
-    <Compile Include="Implementation\CompoundValidationRuleMetadataServiceTest.cs" />
     <Compile Include="Implementation\CompoundValidatorBuilderTest.cs" />
+    <Compile Include="Implementation\DelegateBasedValidationMessageTest.cs" />
     <Compile Include="Implementation\ICollectorValidatorTest.cs" />
+    <Compile Include="Implementation\InvariantValidationMessageTest.cs" />
     <Compile Include="Implementation\IValidatedTypeResolverTest.cs" />
     <Compile Include="Implementation\IValidationCollectorReflectorTest.cs" />
-    <Compile Include="Implementation\IValidationRuleMetadataServiceTest.cs" />
+    <Compile Include="Implementation\IValidationMessageFactoryTest.cs" />
     <Compile Include="Implementation\IValidatorBuilderTest.cs" />
     <Compile Include="Implementation\IValidatorFormatterTest.cs" />
     <Compile Include="Implementation\NullValidatedTypeResolverTest.cs" />
@@ -113,7 +111,7 @@
     <Compile Include="Implementation\ValidationAttributesBasedPropertyRuleReflectorTest.cs" />
     <Compile Include="Implementation\TestDomain\TypeWithTwoInterfacesHavingCommingBaseInterface.cs" />
     <Compile Include="Implementation\ValidationCollectorInfoTest.cs" />
-    <Compile Include="Implementation\ValidationRuleStub.cs" />
+    <Compile Include="Implementation\AddingComponentPropertyRuleStub.cs" />
     <Compile Include="Implementation\ValidatorRegistrationWithContextTest.cs" />
     <Compile Include="MetaValidation\DefaultSystemMetaValidationRulesProviderFactoryTest.cs" />
     <Compile Include="MetaValidation\DefaultSystemMetaValidationRulesProviderTest.cs" />
@@ -133,7 +131,9 @@
     <Compile Include="Providers\IValidationCollectorProviderTest.cs" />
     <Compile Include="Providers\TestableAttributeBasedValidationCollectorProviderBase.cs" />
     <Compile Include="Providers\TestableValidationAttributesBasedCollectorProvider.cs" />
+    <Compile Include="Providers\ValidationAttributesBasedCollectorProviderTest.cs" />
     <Compile Include="Rules\AddingComponentPropertyMetaValidationRuleTest.cs" />
+    <Compile Include="Rules\PropertyValidationRuleTest.cs" />
     <Compile Include="TestDomain\Address.cs" />
     <Compile Include="TestDomain\Collectors\InvalidValidationCollector2.cs" />
     <Compile Include="TestDomain\Collectors\InvalidValidationCollector.cs" />
@@ -150,9 +150,11 @@
     <Compile Include="TestDomain\SpecialCustomer2.cs" />
     <Compile Include="TestDomain\ValidationRules\MaxLengthMetaValidationRule.cs" />
     <Compile Include="TestDomain\ValidationRules\MaxValidatorCountRule.cs" />
+    <Compile Include="TestDomain\Validators\FakeCreditCardValidator.cs" />
+    <Compile Include="TestDomain\Validators\FakeEmailValidator.cs" />
     <Compile Include="TestHelpers\TypeUtility.cs" />
     <Compile Include="RuleBuilders\RemovingComponentRuleBuilderTest.cs" />
-    <Compile Include="Rules\AddingComponentPropertyRuleTest.cs" />
+    <Compile Include="Rules\AddingComponentPropertyRule1Test.cs" />
     <Compile Include="RuleBuilders\AddingComponentRuleBuilderTest.cs" />
     <Compile Include="ComponentValidationCollectorTest.cs" />
     <Compile Include="Rules\RemovingComponentPropertyRuleTest.cs" />
@@ -165,6 +167,24 @@
     <Compile Include="Implementation\FluentValidatorBuilderTest.cs" />
     <Compile Include="Utilities\TopologySortLinqExtensionsTest.cs" />
     <Compile Include="Implementation\ValidatorTest.cs" />
+    <Compile Include="Validators\EqualValidatorTest.cs" />
+    <Compile Include="Validators\ExactLengthValidatorTest.cs" />
+    <Compile Include="Validators\ExclusiveRangeValidatorTest.cs" />
+    <Compile Include="Validators\GreaterThanOrEqualValidatorTest.cs" />
+    <Compile Include="Validators\GreaterThanValidatorTest.cs" />
+    <Compile Include="Validators\InclusiveRangeValidatorTest.cs" />
+    <Compile Include="Validators\LengthValidatorTest.cs" />
+    <Compile Include="Validators\LessThanOrEqualValidatorTest.cs" />
+    <Compile Include="Validators\LessThanValidatorTest.cs" />
+    <Compile Include="Validators\MaximumLengthValidatorTest.cs" />
+    <Compile Include="Validators\MinimumLengthValidatorTest.cs" />
+    <Compile Include="Validators\NotEmptyValidatorTest.cs" />
+    <Compile Include="Validators\NotEqualValidatorTest.cs" />
+    <Compile Include="Validators\NotNullValidatorTest.cs" />
+    <Compile Include="Validators\PredicateValidatorTest.cs" />
+    <Compile Include="Validators\RegularExpressionValidatorTest.cs" />
+    <Compile Include="Validators\ScalePrecisionValidatorTest.cs" />
+    <Compile Include="Validators\ValidatorTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
@@ -193,7 +213,6 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

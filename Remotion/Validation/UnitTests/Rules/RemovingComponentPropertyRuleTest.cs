@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -26,6 +25,7 @@ using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.Rules
 {
@@ -62,21 +62,21 @@ namespace Remotion.Validation.UnitTests.Rules
     {
       var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy ());
 
-      Assert.Throws<InvalidOperationException> (
+      Assert.That (
           () => RemovingComponentPropertyRule.Create (dummyExpression, typeof (CustomerValidationCollector1)),
-          "An 'RemovingComponentPropertyRule' can only created for property members.");
+          Throws.ArgumentException.With.Message.EqualTo ("Must be a MemberExpression.\r\nParameter name: expression"));
     }
 
     [Test]
     public void Create_PropertyDeclaredInBaseClass ()
     {
-      var componentPropertyRule = AddingComponentPropertyRule.Create (_lastNameExpression, typeof (RemovingComponentPropertyRuleTest));
+      var componentPropertyRule = AddingComponentPropertyRule.Create (_lastNameExpression, typeof (CustomerValidationCollector1));
+      var propertyInfo = ((PropertyInfoAdapter) componentPropertyRule.Property).PropertyInfo;
 
+      //TODO-5906 simplify assertion with PropertyInfoAdapter compare
       Assert.That (
-          MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (componentPropertyRule.Member, typeof (Customer).GetMember ("LastName")[0]),
+          MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (propertyInfo, typeof (Customer).GetMember ("LastName")[0]),
           Is.True);
-      Assert.That (componentPropertyRule.PropertyName, Is.EqualTo ("LastName"));
-      Assert.That (componentPropertyRule.Expression, Is.SameAs (_lastNameExpression));
     }
 
     [Test]

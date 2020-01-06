@@ -16,13 +16,14 @@
 // 
 using System;
 using System.Collections.Generic;
-using FluentValidation.Validators;
 using JetBrains.Annotations;
 using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Rules
 {
+  // TODO RM-5960: Rename to remove "Component". Replace with "Validation". Since this is only a part of the AddingValidationPropertyRuleBuilder, find a name to better express this relationship, perhaps "Collector"?
   /// <summary>
   /// Defines a rule which ensures the consistency of the merged set of <see cref="IPropertyValidator"/>s for the <see cref="Property"/>. 
   /// The rules belong to a component via the <see cref="CollectorType"/> and are applied to the validation specification if the component is used within the application.

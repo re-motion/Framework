@@ -1,5 +1,4 @@
 ﻿using System;
-using FluentValidation;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;

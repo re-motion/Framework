@@ -20,7 +20,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using FluentValidation.Results;
 using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Collections;
 using Remotion.ObjectBinding;
@@ -30,6 +29,7 @@ using Remotion.ObjectBinding.Web.Validation.UI.Controls;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation;
+using Remotion.Validation.Results;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest.Validation

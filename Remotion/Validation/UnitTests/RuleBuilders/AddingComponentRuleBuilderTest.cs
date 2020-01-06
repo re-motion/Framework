@@ -16,14 +16,13 @@
 // 
 using System;
 using System.Linq;
-using FluentValidation;
-using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleBuilders;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.RuleBuilders
@@ -62,9 +61,10 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void SetValidator ()
     {
-      _addingComponentPropertyRuleMock.Expect (mock => mock.RegisterValidator (_propertyValidatorStub));
+      Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory = _ => _propertyValidatorStub;
+      _addingComponentPropertyRuleMock.Expect (mock => mock.RegisterValidator (validatorFactory));
 
-      ((IRuleBuilder<Customer, string>) _addingComponentBuilder).SetValidator (_propertyValidatorStub);
+      ((IAddingComponentRuleBuilder<Customer, string>) _addingComponentBuilder).SetValidator (validatorFactory);
 
       _addingComponentPropertyRuleMock.VerifyAllExpectations();
     }
@@ -133,12 +133,18 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
                       rule.GetType() == typeof (DelegateMetaValidationRule<IPropertyValidator>) &&
                       !rule.Validate (new IPropertyValidator[0]).First().IsValid &&
                       rule.Validate (new IPropertyValidator[0]).First().Message
-                      == "Meta validation rule 'v => False' failed for validator 'FluentValidation.Validators.IPropertyValidator' "
+                      == "Meta validation rule 'v => False' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
                       + "on property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName'.")));
 
       _addingComponentBuilder.AddMetaValidationRule<IPropertyValidator> (v => false);
 
       _addingComponentPropertyMetaValidationRuleMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    [Ignore ("TODO RM-5960")]
+    public void SetCondition ()
+    {
     }
   }
 }

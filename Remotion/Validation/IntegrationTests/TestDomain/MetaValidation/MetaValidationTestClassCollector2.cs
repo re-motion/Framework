@@ -15,8 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
-using FluentValidation.Validators;
 using Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.Rules;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation

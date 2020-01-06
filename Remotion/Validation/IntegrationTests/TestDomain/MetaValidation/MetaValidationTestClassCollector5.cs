@@ -16,8 +16,7 @@
 // 
 using System;
 using System.Linq;
-using FluentValidation;
-using FluentValidation.Validators;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation
 {

@@ -17,19 +17,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using FluentValidation;
-using FluentValidation.Internal;
-using FluentValidation.Validators;
 using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Rules;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.RuleBuilders
 {
   /// <summary>
   /// Default implementation of the <see cref="IAddingComponentRuleBuilder{TValidatedType,TProperty}"/>.
   /// </summary>
-  public class AddingComponentRuleBuilder<TValidatedType, TProperty> : IAddingComponentRuleBuilderOptions<TValidatedType, TProperty>
+  public class AddingComponentRuleBuilder<TValidatedType, TProperty> : IConditionalAddingComponentRuleBuilder<TValidatedType, TProperty>
   {
     private readonly IAddingComponentPropertyRule _addingComponentPropertyRule;
     private readonly IAddingComponentPropertyMetaValidationRule _addingMetaValidationPropertyRule;
@@ -55,13 +53,21 @@ namespace Remotion.Validation.RuleBuilders
       get { return _addingMetaValidationPropertyRule; }
     }
 
-    public IRuleBuilderOptions<TValidatedType, TProperty> NotRemovable ()
+    public IAddingComponentRuleBuilder<TValidatedType, TProperty> SetCondition (Func<TValidatedType, bool> predicate)
+    {
+      ArgumentUtility.CheckNotNull ("predicate", predicate);
+
+      _addingComponentPropertyRule.SetCondition (predicate);
+      return this;
+    }
+
+    public IAddingComponentRuleBuilder<TValidatedType, TProperty> NotRemovable ()
     {
       _addingComponentPropertyRule.SetHardConstraint();
       return this;
     }
 
-    public IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule (IMetaValidationRule metaValidationRule)
+    public IAddingComponentRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule (IMetaValidationRule metaValidationRule)
     {
       ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
 
@@ -69,7 +75,7 @@ namespace Remotion.Validation.RuleBuilders
       return this;
     }
 
-    public IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule (
+    public IAddingComponentRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule (
         Func<IEnumerable<IPropertyValidator>, MetaValidationRuleValidationResult> rule)
     {
       ArgumentUtility.CheckNotNull ("rule", rule);
@@ -79,7 +85,7 @@ namespace Remotion.Validation.RuleBuilders
       return this;
     }
 
-    public IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (
+    public IAddingComponentRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (
         Expression<Func<IEnumerable<TValidator>, bool>> metaValidationRuleExpression)
         where TValidator: IPropertyValidator
     {
@@ -106,38 +112,13 @@ namespace Remotion.Validation.RuleBuilders
       return this;
     }
 
-    public IRuleBuilderOptions<TValidatedType, TProperty> SetValidator (IPropertyValidator validator)
+    public IAddingComponentRuleBuilder<TValidatedType, TProperty> SetValidator (
+        Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
+      ArgumentUtility.CheckNotNull ("validatorFactory", validatorFactory);
 
-      AddValidator (validator);
+      _addingComponentPropertyRule.RegisterValidator (validatorFactory);
       return this;
-    }
-
-    IRuleBuilderOptions<TValidatedType, TProperty> IRuleBuilder<TValidatedType, TProperty>.SetValidator (IValidator<TProperty> validator)
-        //called from FluentValidation ExtensionMethod
-    {
-      AddValidator (new ChildValidatorAdaptor (validator));
-      return this;
-    }
-
-    IRuleBuilderOptions<TValidatedType, TProperty> IConfigurable<PropertyRule, IRuleBuilderOptions<TValidatedType, TProperty>>.Configure (Action<PropertyRule> configurator)
-    {
-      ArgumentUtility.CheckNotNull ("configurator", configurator);
-
-      configurator ((PropertyRule) _addingComponentPropertyRule);
-      return this;
-    }
-
-    private void AddValidator (IPropertyValidator validator)
-    {
-      _addingComponentPropertyRule.RegisterValidator (validator);
-    }
-
-    IRuleBuilderOptions<TValidatedType, TProperty> IRuleBuilder<TValidatedType, TProperty>.SetValidator (IValidator validator)
-    {
-      throw new NotSupportedException (
-          "This overload of SetValidator is no longer used. If you are trying to set a child validator for a collection, use SetCollectionValidator instead.");
     }
   }
 }

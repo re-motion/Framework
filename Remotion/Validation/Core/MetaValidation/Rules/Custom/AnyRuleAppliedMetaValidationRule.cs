@@ -18,9 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using FluentValidation.Validators;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes.MetaValidation;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.MetaValidation.Rules.Custom
 {
@@ -36,6 +36,7 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
     {
       ArgumentUtility.CheckNotNull ("property", property);
 
+      // TODO RM-5960: Replace PropertyInfo with IPropertyInformation
       _property = property;
     }
 

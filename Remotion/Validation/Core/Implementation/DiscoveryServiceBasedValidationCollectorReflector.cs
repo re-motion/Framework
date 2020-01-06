@@ -20,7 +20,6 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading;
 using Remotion.Reflection;
-using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes;

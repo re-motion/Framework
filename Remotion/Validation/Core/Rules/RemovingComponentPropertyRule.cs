@@ -17,9 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Text;
-using FluentValidation.Internal;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -30,37 +28,27 @@ namespace Remotion.Validation.Rules
   /// </summary>
   public sealed class RemovingComponentPropertyRule : IRemovingComponentPropertyRule
   {
-    private readonly IPropertyInformation _property;
-    private readonly Type _collectorType;
-    private readonly List<ValidatorRegistration> _registeredValidators;
 
     public static RemovingComponentPropertyRule Create<TValidatedType, TProperty> (Expression<Func<TValidatedType, TProperty>> expression, Type collectorType)
     {
-      var member = expression.GetMember() as PropertyInfo;
-      if (member == null)
-        throw new InvalidOperationException (string.Format ("A '{0}' can only created for property members.", typeof(RemovingComponentPropertyRule).Name));
+      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty (expression);
 
-      return new RemovingComponentPropertyRule (member, collectorType);
+      return new RemovingComponentPropertyRule (PropertyInfoAdapter.Create (propertyInfo), collectorType);
     }
 
-    public RemovingComponentPropertyRule (PropertyInfo member, Type collectorType)
-    {
-      ArgumentUtility.CheckNotNull ("member", member);
-      ArgumentUtility.CheckNotNull ("collectorType", collectorType);
+    public IPropertyInformation Property { get; }
+    public Type CollectorType { get; }
 
-      _property = PropertyInfoAdapter.Create(member);
-      _collectorType = collectorType;
+    private readonly List<ValidatorRegistration> _registeredValidators;
+
+    public RemovingComponentPropertyRule (IPropertyInformation property, Type collectorType)
+    {
+      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull ("collectorType", collectorType); // TODO RM-5960: Add type check for IComponentValidationCollector
+
+      Property = property;
+      CollectorType = collectorType;
       _registeredValidators = new List<ValidatorRegistration>();
-    }
-
-    public IPropertyInformation Property
-    {
-      get { return _property; }
-    }
-
-    public Type CollectorType
-    {
-      get { return _collectorType; }
     }
 
     public IEnumerable<ValidatorRegistration> Validators

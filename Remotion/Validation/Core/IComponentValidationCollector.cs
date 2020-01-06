@@ -20,6 +20,7 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Validation
 {
+  // TODO RM-5960: Rename to remove "Component". Rename "Validation" to "Validator"
   /// <summary>
   /// Defines an API to retrieve the component-specific rules for providing the validation semantic of a <see cref="Type"/>.
   /// </summary>

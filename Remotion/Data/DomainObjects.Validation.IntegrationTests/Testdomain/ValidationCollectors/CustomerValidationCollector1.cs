@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation.Validators;
+using Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Validators;
 using Remotion.Validation;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.ValidationCollectors
@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Val
   {
     public CustomerValidationCollector1 ()
     {
-      AddRule (c => c.Email).SetValidator (new EmailValidator());
+      AddRule (c => c.Email).SetValidator (_ => new FakeEmailValidator());
     }
   }
 }

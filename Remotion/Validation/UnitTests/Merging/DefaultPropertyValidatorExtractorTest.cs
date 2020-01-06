@@ -16,8 +16,6 @@
 // 
 using System;
 using System.Linq;
-using FluentValidation;
-using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
@@ -26,6 +24,7 @@ using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
+using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Merging
@@ -88,9 +87,9 @@ namespace Remotion.Validation.UnitTests.Merging
       //other property -> filtered!
 
       _stubPropertyValidator1 = new StubPropertyValidator(); //not extracted
-      _stubPropertyValidator2 = new NotEmptyValidator (null); //extracted
-      _stubPropertyValidator3 = new NotEqualValidator ("gfsf"); //extracted
-      _stubPropertyValidator4 = new LengthValidator (0, 10); //not extracted
+      _stubPropertyValidator2 = new NotEmptyValidator (new InvariantValidationMessage ("Fake Message")); //extracted
+      _stubPropertyValidator3 = new NotEqualValidator ("gfsf", new InvariantValidationMessage ("Fake Message")); //extracted
+      _stubPropertyValidator4 = new LengthValidator (0, 10, new InvariantValidationMessage ("Fake Message")); //not extracted
 
       _logContextMock = MockRepository.GenerateStrictMock<ILogContext>();
 
@@ -120,13 +119,13 @@ namespace Remotion.Validation.UnitTests.Merging
               mock.ValidatorRemoved (
                   Arg<IPropertyValidator>.Is.Same (_stubPropertyValidator2),
                   Arg<ValidatorRegistrationWithContext[]>.List.Equal (new[] { _registrationWithContext1, _registrationWithContext6 }),
-                  Arg<IValidationRule>.Is.Same (addingComponentPropertyRule))).Repeat.Once();
+                  Arg<IAddingComponentPropertyRule>.Is.Same (addingComponentPropertyRule))).Repeat.Once();
       _logContextMock.Expect (
           mock =>
               mock.ValidatorRemoved (
                   Arg<IPropertyValidator>.Is.Same (_stubPropertyValidator3),
                   Arg<ValidatorRegistrationWithContext[]>.List.Equal (new[] { _registrationWithContext2 }),
-                  Arg<IValidationRule>.Is.Same (addingComponentPropertyRule))).Repeat.Once();
+                  Arg<IAddingComponentPropertyRule>.Is.Same (addingComponentPropertyRule))).Repeat.Once();
 
       var result = _extractor.ExtractPropertyValidatorsToRemove (addingComponentPropertyRule).ToArray();
 
@@ -149,7 +148,7 @@ namespace Remotion.Validation.UnitTests.Merging
               mock.ValidatorRemoved (
                   Arg<IPropertyValidator>.Is.Same (_stubPropertyValidator4),
                   Arg<ValidatorRegistrationWithContext[]>.List.Equal (new[] { _registrationWithContext8 }),
-                  Arg<IValidationRule>.Is.Same (addingComponentPropertyRule))).Repeat.Once ();
+                  Arg<IAddingComponentPropertyRule>.Is.Same (addingComponentPropertyRule))).Repeat.Once ();
 
       var result = _extractor.ExtractPropertyValidatorsToRemove (addingComponentPropertyRule).ToArray ();
       _logContextMock.VerifyAllExpectations ();

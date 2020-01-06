@@ -15,9 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
-using FluentValidation.Validators;
 using Remotion.Validation;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.ValidationCollectors
 {

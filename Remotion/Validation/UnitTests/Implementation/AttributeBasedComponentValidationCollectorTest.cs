@@ -26,18 +26,18 @@ namespace Remotion.Validation.UnitTests.Implementation
   public class AttributeBasedComponentValidationCollectorTest
   {
     private Type _validatedType;
-    private AddingComponentPropertyRule[] _addingPropertyRules;
-    private AddingComponentPropertyMetaValidationRule[] _addingMetaPropertyRules;
-    private RemovingComponentPropertyRule[] _removingPropertyRegistration;
+    private IAddingComponentPropertyRule[] _addingPropertyRules;
+    private IAddingComponentPropertyMetaValidationRule[] _addingMetaPropertyRules;
+    private IRemovingComponentPropertyRule[] _removingPropertyRegistration;
     private AttributeBasedComponentValidationCollector _collector;
 
     [SetUp]
     public void SetUp ()
     {
       _validatedType = typeof (Customer);
-      _addingPropertyRules = new AddingComponentPropertyRule[0];
-      _addingMetaPropertyRules = new AddingComponentPropertyMetaValidationRule[0];
-      _removingPropertyRegistration = new RemovingComponentPropertyRule[0];
+      _addingPropertyRules = new IAddingComponentPropertyRule[0];
+      _addingMetaPropertyRules = new IAddingComponentPropertyMetaValidationRule[0];
+      _removingPropertyRegistration = new IRemovingComponentPropertyRule[0];
 
       _collector = new AttributeBasedComponentValidationCollector (
           _validatedType,

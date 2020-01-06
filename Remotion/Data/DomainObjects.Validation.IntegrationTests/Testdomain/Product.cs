@@ -26,9 +26,6 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
       return NewObject<Product> ();
     }
 
-    [Mandatory]
-    public virtual Order Order { get; set; }
-
     public virtual decimal Price { get; set; }
   }
 }

@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation.Validators;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
 {
   /// <summary>
-  /// The <see cref="ICollectorValidator"/> interface defines an API for validating <see cref="IComparisonValidator"/> instances. 
+  /// The <see cref="ICollectorValidator"/> interface defines an API for validating <see cref="IValueComparisonValidator"/> instances. 
   /// </summary>
   public interface ICollectorValidator
   {

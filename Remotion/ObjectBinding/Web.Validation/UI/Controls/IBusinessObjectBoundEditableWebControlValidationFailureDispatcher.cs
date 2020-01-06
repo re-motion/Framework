@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using FluentValidation.Results;
+using Remotion.Validation.Results;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {

@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using FluentValidation.Validators;
+using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -31,6 +31,7 @@ using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 using Remotion.Validation.Rules;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -50,16 +51,20 @@ namespace Remotion.Data.DomainObjects.Validation
     private readonly PropertyInfo _implementationProperty;
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
     private readonly IPropertyInformation _implementationPropertyInformation;
+    private readonly IValidationMessageFactory _validationMessageFactory;
+    private readonly PropertyInfoAdapter _interfacePropertyInformation;
 
     public DomainObjectAttributesBasedValidationPropertyRuleReflector (
         PropertyInfo interfaceProperty,
         PropertyInfo implementationProperty,
-        IDomainModelConstraintProvider domainModelConstraintProvider)
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        IValidationMessageFactory validationMessageFactory)
     {
       ArgumentUtility.CheckNotNull ("interfaceProperty", interfaceProperty);
       ArgumentUtility.CheckNotNull ("implementationProperty", implementationProperty);
       ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
-      
+      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
+
       if (Mixins.Utilities.ReflectionUtility.IsMixinType (implementationProperty.DeclaringType) && !interfaceProperty.DeclaringType.IsInterface)
       {
         throw new ArgumentException (
@@ -70,20 +75,26 @@ namespace Remotion.Data.DomainObjects.Validation
             "interfaceProperty");
       }
 
+      // TODO RM-5960: Replace with IPropertyInformation and propagate to call and callee-site
       _interfaceProperty = interfaceProperty;
+      // TODO RM-5960: Replace with IPropertyInformation and propagate to call and callee-site
       _implementationProperty = implementationProperty;
       _domainModelConstraintProvider = domainModelConstraintProvider;
+      _validationMessageFactory = validationMessageFactory;
+      _interfacePropertyInformation = PropertyInfoAdapter.Create (_interfaceProperty);
       _implementationPropertyInformation = PropertyInfoAdapter.Create (_implementationProperty);
     }
 
-    public PropertyInfo ValidatedProperty
+    public IPropertyInformation ValidatedProperty
     {
-      get { return _interfaceProperty; }
+      get { return _interfacePropertyInformation; }
     }
 
-    public Expression<Func<object, object>> GetPropertyAccessExpression (Type validatedType)
+    public Func<object, object> GetValidatedPropertyFunc (Type validatedType)
     {
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+
+      // TODO RM-5960: Add cache, try to unify with ValidationAttributesBasedPropertyRuleReflector and AddingComponentPropertyRule
 
       var parameterExpression = Expression.Parameter (typeof (object), "t");
 
@@ -108,9 +119,11 @@ namespace Remotion.Data.DomainObjects.Validation
           : (object) FakeDomainObject.SingleValue;
       var nonEmptyDummyValueExpression = Expression.Constant (nonEmptyDummyValue, typeof (object));
 
-      return Expression.Lambda<Func<object, object>> (
+      var accessorExpression = Expression.Lambda<Func<object, object>> (
           Expression.Condition (conditionExpression, domainObjectPropertyAccessExpression, nonEmptyDummyValueExpression),
           parameterExpression);
+
+      return accessorExpression.Compile();
     }
 
     [ReflectionAPI]
@@ -133,14 +146,16 @@ namespace Remotion.Data.DomainObjects.Validation
       var maxLength = _domainModelConstraintProvider.GetMaxLength (_implementationPropertyInformation);
       if (maxLength.HasValue)
       {
-        yield return new LengthValidator (0, maxLength.Value);
+        var validationMessage = CreateValidationMessageForPropertyValidator (typeof (LengthValidator), _implementationPropertyInformation);
+        yield return new LengthValidator (0, maxLength.Value, validationMessage);
       }
 
       if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation) 
           && typeof (IEnumerable).IsAssignableFrom (_implementationProperty.PropertyType)
           && !ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
       {
-        yield return new NotEmptyValidator (GetDefaultValue (_implementationProperty.PropertyType));
+        var validationMessage = CreateValidationMessageForPropertyValidator (typeof (NotEmptyValidator),_implementationPropertyInformation);
+        yield return new NotEmptyValidator (validationMessage);
       }
     }
 
@@ -148,9 +163,14 @@ namespace Remotion.Data.DomainObjects.Validation
     {
       if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation))
       {
-        yield return new NotNullValidator();
+        var notNullValidationMessage = CreateValidationMessageForPropertyValidator (typeof (NotNullValidator), _implementationPropertyInformation);
+        yield return new NotNullValidator (notNullValidationMessage);
+
         if (ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
-          yield return new NotEmptyValidator (GetDefaultValue (_implementationProperty.PropertyType));
+        {
+          var notEmptyValidationMessage = CreateValidationMessageForPropertyValidator (typeof (NotEmptyValidator), _implementationPropertyInformation);
+          yield return new NotEmptyValidator (notEmptyValidationMessage);
+        }
       }
     }
 
@@ -166,16 +186,17 @@ namespace Remotion.Data.DomainObjects.Validation
         yield return new RemotionMaxLengthMetaValidationRule (_implementationProperty, maxLength.Value);
     }
 
-    private object GetDefaultValue (Type type)
+    [NotNull]
+    private ValidationMessage CreateValidationMessageForPropertyValidator (Type validatorType, IPropertyInformation property)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      var validationMessage = _validationMessageFactory.CreateValidationMessageForPropertyValidator (validatorType, property);
+      if (validationMessage == null)
+      {
+        throw new InvalidOperationException (
+            $"The {nameof (IValidationMessageFactory)} did not return a result for {validatorType.Name} applied to property '{property.Name}' on type '{property.GetOriginalDeclaringType().FullName}'.");
+      }
 
-      object output = null;
-
-      if (type.IsValueType)
-        output = Activator.CreateInstance (type);
-
-      return output;
+      return validationMessage;
     }
   }
 }

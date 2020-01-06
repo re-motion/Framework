@@ -19,6 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestDomain;
+using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Providers
 {
@@ -26,11 +27,13 @@ namespace Remotion.Validation.UnitTests.Providers
   public class ComponentValidationAttributeBasedValidationCollectorProviderTest
   {
     private TestableValidationAttributesBasedCollectorProvider _provider;
+    private IValidationMessageFactory _validationMessageFactoryStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _provider = new TestableValidationAttributesBasedCollectorProvider();
+      _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
+      _provider = new TestableValidationAttributesBasedCollectorProvider(_validationMessageFactoryStub);
     }
 
     [Test]

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
 using Remotion.Validation.Attributes;
 using Remotion.Validation.IntegrationTests.TestDomain.ComponentA;
 

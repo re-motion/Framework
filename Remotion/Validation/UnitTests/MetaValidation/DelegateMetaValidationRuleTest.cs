@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.MetaValidation;
 using System.Linq;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.MetaValidation
 {

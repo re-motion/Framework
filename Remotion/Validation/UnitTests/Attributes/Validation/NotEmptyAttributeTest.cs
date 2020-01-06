@@ -16,10 +16,13 @@
 // 
 using System;
 using System.Linq;
-using FluentValidation.Validators;
 using NUnit.Framework;
+using Remotion.Reflection;
 using Remotion.Validation.Attributes.Validation;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.Validators;
+using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Attributes.Validation
 {
@@ -27,32 +30,48 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
   public class NotEmptyAttributeTest
   {
     private NotEmptyAttribute _attribute;
+    private IValidationMessageFactory _validationMessageFactoryStub;
 
     [SetUp]
     public void SetUp ()
     {
       _attribute = new NotEmptyAttribute();
+      _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
     }
 
     [Test]
     public void GetPropertyValidator ()
     {
-      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray();
+      var propertyInformation = PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("LastName"));
+      var invariantValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Stub (_ => _.CreateValidationMessageForPropertyValidator (typeof (NotEmptyValidator), propertyInformation))
+          .Return (invariantValidationMessageStub);
 
-      Assert.That (result.Count(), Is.EqualTo (1));
+      var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub).ToArray();
+
+      Assert.That (result.Length, Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (NotEmptyValidator)));
-      Assert.That (result[0].ErrorMessageSource.GetString(), Is.EqualTo ("'{PropertyName}' should not be empty."));
+      Assert.That (((NotEmptyValidator) result[0]).ValidationMessage, Is.SameAs (invariantValidationMessageStub));
     }
 
     [Test]
     public void GetPropertyValidator_CustomErrorMessage ()
     {
+      var propertyInformation = PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("LastName"));
       _attribute.ErrorMessage = "CustomMessage";
 
-      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray();
+      var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub).ToArray();
 
-      Assert.That (result.Count(), Is.EqualTo (1));
-      Assert.That (result[0].ErrorMessageSource.GetString(), Is.EqualTo ("CustomMessage"));
+      Assert.That (result.Length, Is.EqualTo (1));
+      Assert.That (((NotEmptyValidator) result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
+      Assert.That (((NotEmptyValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("CustomMessage"));
+    }
+
+    [Test]
+    [Ignore ("TODO RM-5960")]
+    public void GetPropertyValidator_WithValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
+    {
     }
   }
 }

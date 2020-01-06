@@ -41,13 +41,15 @@ namespace Remotion.Validation.Mixins.IntegrationTests
 
       Assert.That (result.IsValid, Is.False);
       Assert.That (result.Errors.Count, Is.EqualTo (1));
-      Assert.That (result.Errors[0].ErrorMessage, Is.EqualTo ("'LocalizedFirstName' should not be equal to 'something'."));
+      Assert.That (result.Errors.First().Property.Name, Is.EqualTo ("FirstName"));
+      Assert.That (result.Errors.First().LocalizedValidationMessage, Is.EqualTo ("Enter a valid value."));
     }
 
     [Test]
     public void BuildSpecialCustomerValidator_InvalidCustomerLastName_LengthValidatorFailed ()
-    //HardConstraintLengthValidator defined in CustomerValidationCollector1 not removed by SpecialCustomerValidationCollector1!
     {
+      //HardConstraintLengthValidator defined in CustomerValidationCollector1 not removed by SpecialCustomerValidationCollector1!
+
       var specialCustomer = ObjectFactory.Create<SpecialCustomer1> (ParamList.Empty);
       specialCustomer.UserName = "Test123456";
       specialCustomer.LastName = "LastNameTooLong";
@@ -56,7 +58,8 @@ namespace Remotion.Validation.Mixins.IntegrationTests
       var result = validator.Validate (specialCustomer);
 
       Assert.That (result.IsValid, Is.False);
-      Assert.That (result.Errors[0].ErrorMessage, Is.EqualTo ("'LocalizedLastName' must be between 2 and 8 characters. You entered 15 characters."));
+      Assert.That (result.Errors.First().Property.Name, Is.EqualTo ("LastName"));
+      Assert.That (result.Errors.First().LocalizedValidationMessage, Is.EqualTo ("Enter at least 2 and no more than 8 characters."));
     }
 
     [Test]
@@ -71,10 +74,9 @@ namespace Remotion.Validation.Mixins.IntegrationTests
       var result = validator.Validate (customer);
 
       Assert.That (result.IsValid, Is.False);
-      Assert.That (result.Errors.Count (), Is.EqualTo (2));
       Assert.That (
-          result.Errors.Select (e => e.ErrorMessage),
-          Is.EquivalentTo (new[] { "'UserName' should not be equal to 'Test'.", "'LocalizedFirstName' must not be empty." }));
+          result.Errors.Select (e => $"{e.Property.Name}: {e.LocalizedValidationMessage}"),
+          Is.EquivalentTo (new[] { "FirstName: Enter a value.", "UserName: Enter a valid value." }));
     }
 
     [Test]
@@ -92,7 +94,8 @@ namespace Remotion.Validation.Mixins.IntegrationTests
 
       Assert.That (result.IsValid, Is.False);
       Assert.That (result.Errors.Count, Is.EqualTo (1));
-      Assert.That (result.Errors[0].ErrorMessage, Is.EqualTo ("'LocalizedTitle' should not be equal to 'Chef1'."));
+      Assert.That (result.Errors.First().Property.Name, Is.EqualTo ("Title"));
+      Assert.That (result.Errors.First().LocalizedValidationMessage, Is.EqualTo ("Enter a valid value."));
     }
   }
 }

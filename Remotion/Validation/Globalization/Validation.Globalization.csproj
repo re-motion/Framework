@@ -38,10 +38,6 @@
     <DocumentationFile>bin\Release\Remotion.Validation.Globalization.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation, Version=5.0.0.1, Culture=neutral, PublicKeyToken=a82054b837897c66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
-    </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
@@ -52,16 +48,11 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="DefaultMessageEvaluator.cs" />
     <Compile Include="EnsureValidationSupportForGlobalizationAttribute.cs" />
-    <Compile Include="ErrorMessageStringSource.cs" />
-    <Compile Include="IDefaultMessageEvaluator.cs" />
-    <Compile Include="IErrorMessageGlobalizationService.cs" />
-    <Compile Include="NullErrorMessageGlobalizationService.cs" />
+    <Compile Include="ResourceManagerBasedValidationMessage.cs" />
+    <Compile Include="TypeBasedValidationMessageFactory.cs" />
+    <Compile Include="LocalizedValidationMessageFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyDisplayNameGlobalizationService.cs" />
-    <Compile Include="PropertyRuleDisplayNameStringSource.cs" />
-    <Compile Include="ValidationRuleGlobalizationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">
@@ -95,6 +86,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FacetManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Globalization\LocalizedValidationMessageFactory.de.resx" />
+    <EmbeddedResource Include="Globalization\LocalizedValidationMessageFactory.fr.resx" />
+    <EmbeddedResource Include="Globalization\LocalizedValidationMessageFactory.it.resx" />
+    <EmbeddedResource Include="Globalization\LocalizedValidationMessageFactory.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

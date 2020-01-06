@@ -17,9 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Text;
-using FluentValidation.Internal;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
@@ -31,37 +29,25 @@ namespace Remotion.Validation.Rules
   /// </summary>
   public sealed class AddingComponentPropertyMetaValidationRule : IAddingComponentPropertyMetaValidationRule
   {
-    private readonly IPropertyInformation _property;
-    private readonly Type _collectorType;
-    private readonly List<IMetaValidationRule> _metaValidationRules;
-
     public static AddingComponentPropertyMetaValidationRule Create<TValidatedType, TProperty> (Expression<Func<TValidatedType, TProperty>> expression, Type collectorType)
     {
-      var member = expression.GetMember () as PropertyInfo;
-      if (member == null)
-        throw new InvalidOperationException (string.Format ("A '{0}' can only created for property members.", typeof (AddingComponentPropertyMetaValidationRule).Name));
+      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty (expression);
 
-      return new AddingComponentPropertyMetaValidationRule (member, collectorType);
+      return new AddingComponentPropertyMetaValidationRule (PropertyInfoAdapter.Create (propertyInfo), collectorType);
     }
 
-    public AddingComponentPropertyMetaValidationRule (PropertyInfo member, Type collectorType)
-    {
-      ArgumentUtility.CheckNotNull ("member", member);
-      ArgumentUtility.CheckNotNull ("collectorType", collectorType);
+    public IPropertyInformation Property { get; }
+    public Type CollectorType { get; }
+    private readonly List<IMetaValidationRule> _metaValidationRules;
 
-      _property = PropertyInfoAdapter.Create(member);
-      _collectorType = collectorType;
+    public AddingComponentPropertyMetaValidationRule (IPropertyInformation property, Type collectorType)
+    {
+      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull ("collectorType", collectorType); // TODO RM-5960: Add type check for IComponentValidationCollector
+
+      Property = property;
+      CollectorType = collectorType;
       _metaValidationRules = new List<IMetaValidationRule> ();
-    }
-
-    public IPropertyInformation Property
-    {
-      get { return _property; }
-    }
-
-    public Type CollectorType
-    {
-      get { return _collectorType; }
     }
 
     public IEnumerable<IMetaValidationRule> MetaValidationRules

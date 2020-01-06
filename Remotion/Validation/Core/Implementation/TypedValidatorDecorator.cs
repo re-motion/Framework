@@ -17,9 +17,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using FluentValidation;
-using FluentValidation.Results;
 using Remotion.Utilities;
+using Remotion.Validation.Results;
+using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Implementation
 {
@@ -56,13 +56,6 @@ namespace Remotion.Validation.Implementation
       return _validator.Validate (instance);
     }
 
-    public ValidationResult Validate (ValidationContext<T> context)
-    {
-      ArgumentUtility.CheckNotNull ("context", context);
-
-      return _validator.Validate (context);
-    }
-
     public IValidatorDescriptor CreateDescriptor ()
     {
       return _validator.CreateDescriptor();
@@ -97,18 +90,6 @@ namespace Remotion.Validation.Implementation
     public IEnumerator<IValidationRule> GetEnumerator ()
     {
       return _validator.GetEnumerator();
-    }
-
-    CascadeMode IValidator<T>.CascadeMode
-    {
-      get
-      {
-        throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (TypedValidatorDecorator<>).FullName));
-      }
-      set
-      {
-        throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (TypedValidatorDecorator<>).FullName));
-      }
     }
   }
 }

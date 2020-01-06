@@ -30,5 +30,9 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
 
     [StringProperty(IsNullable = false, MaximumLength = 10)]
     public virtual string Number { get; set; }
+
+    [DBBidirectionalRelation ("Order")]
+    [Mandatory]
+    public virtual ObjectList<OrderItem> OrderItems { get; }
   }
 }

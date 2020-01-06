@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using FluentValidation.Validators;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Mixins;
 using Remotion.Reflection;
@@ -26,6 +25,7 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -37,6 +37,7 @@ namespace Remotion.Data.DomainObjects.Validation
   public class DomainObjectAttributesBasedValidationCollectorProvider : AttributeBasedValidationCollectorProviderBase
   {
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
+    private readonly IValidationMessageFactory _validationMessageFactory;
 
     private interface IDummyInterface
     {
@@ -47,11 +48,15 @@ namespace Remotion.Data.DomainObjects.Validation
 
     private static readonly PropertyInfo s_dummyProperty = MemberInfoFromExpressionUtility.GetProperty (((IDummyInterface o) => o.DummyProperty));
 
-    public DomainObjectAttributesBasedValidationCollectorProvider (IDomainModelConstraintProvider domainModelConstraintProvider)
+    public DomainObjectAttributesBasedValidationCollectorProvider (
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        IValidationMessageFactory validationMessageFactory)
     {
       ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
 
       _domainModelConstraintProvider = domainModelConstraintProvider;
+      _validationMessageFactory = validationMessageFactory;
     }
 
     protected override ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
@@ -75,7 +80,7 @@ namespace Remotion.Data.DomainObjects.Validation
             .Select (
                 p => new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector> (
                     annotatedType,
-                    new DomainObjectAttributesBasedValidationPropertyRuleReflector (p, p, _domainModelConstraintProvider)));
+                    new DomainObjectAttributesBasedValidationPropertyRuleReflector (p, p, _domainModelConstraintProvider, _validationMessageFactory)));
       }
 
       if (typeof (IDomainObjectMixin).IsAssignableFrom (annotatedType) && !annotatedType.IsInterface)
@@ -108,7 +113,8 @@ namespace Remotion.Data.DomainObjects.Validation
                 new DomainObjectAttributesBasedValidationPropertyRuleReflector (
                     mapping.InterfaceProperty.AsRuntimePropertyInfo(),
                     mapping.ImplementationProperty.AsRuntimePropertyInfo(),
-                    _domainModelConstraintProvider)));
+                    _domainModelConstraintProvider,
+                    _validationMessageFactory)));
       }
 
       return Enumerable.Empty<Tuple<Type, IAttributesBasedValidationPropertyRuleReflector>>();
@@ -117,7 +123,11 @@ namespace Remotion.Data.DomainObjects.Validation
     private bool HasValidationRulesOnProperty (PropertyInfo property)
     {
       // The interface property does not matter in this particular instance, so any property could be passed into the reflector.
-      var reflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (s_dummyProperty, property, _domainModelConstraintProvider);
+      var reflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+          s_dummyProperty,
+          property,
+          _domainModelConstraintProvider,
+          _validationMessageFactory);
 
       return reflector.GetAddingPropertyValidators().Any() 
         || reflector.GetHardConstraintPropertyValidators().Any()

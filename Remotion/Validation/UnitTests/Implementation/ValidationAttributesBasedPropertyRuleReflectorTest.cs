@@ -17,11 +17,13 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using FluentValidation.Validators;
 using NUnit.Framework;
+using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.Validators;
+using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
@@ -34,48 +36,97 @@ namespace Remotion.Validation.UnitTests.Implementation
     private ValidationAttributesBasedPropertyRuleReflector _specialCustomerPropertyReflector;
     private PropertyInfo _addressPostalCodeProperty;
     private ValidationAttributesBasedPropertyRuleReflector _addressPropertyReflector;
+    private IValidationMessageFactory _validationMessageFactory;
 
     [SetUp]
     public void SetUp ()
     {
+      _validationMessageFactory = MockRepository.GenerateStub<IValidationMessageFactory>();
+
       _customerLastNameProperty = typeof (Customer).GetProperty ("UserName");
       _specialCustomerLastNameProperty = typeof (SpecialCustomer1).GetProperty ("UserName");
       _addressPostalCodeProperty = typeof (Address).GetProperty ("PostalCode");
 
-      _customerPropertyReflector = new ValidationAttributesBasedPropertyRuleReflector (_customerLastNameProperty);
-      _specialCustomerPropertyReflector = new ValidationAttributesBasedPropertyRuleReflector (_specialCustomerLastNameProperty);
-      _addressPropertyReflector = new ValidationAttributesBasedPropertyRuleReflector (_addressPostalCodeProperty);
+      _customerPropertyReflector = new ValidationAttributesBasedPropertyRuleReflector (
+          _customerLastNameProperty,
+          _validationMessageFactory);
+
+      _specialCustomerPropertyReflector = new ValidationAttributesBasedPropertyRuleReflector (
+          _specialCustomerLastNameProperty,
+          _validationMessageFactory);
+
+      _addressPropertyReflector = new ValidationAttributesBasedPropertyRuleReflector (
+          _addressPostalCodeProperty,
+          _validationMessageFactory);
+    }
+
+    [Test]
+    [Ignore ("TODO RM-5960")]
+    public void GetValidatedPropertyFunc_ReturnsFuncForPropertyAccess ()
+    {
     }
 
     [Test]
     public void GetAddingPropertyValidators_Customer ()
     {
+      var validationMessage = new InvariantValidationMessage ("Fake Message");
+      _validationMessageFactory
+          .Stub (
+              _ => _.CreateValidationMessageForPropertyValidator (
+                  Arg<Type>.Is.NotNull,
+                  Arg.Is (PropertyInfoAdapter.Create (_customerLastNameProperty))))
+          .Return (validationMessage);
+
       var addingPropertyValidators = _customerPropertyReflector.GetAddingPropertyValidators().ToArray();
 
-      Assert.That (addingPropertyValidators.Count(), Is.EqualTo (2));
+      Assert.That (addingPropertyValidators.Length, Is.EqualTo (2));
       Assert.That (
           addingPropertyValidators.Select (v => v.GetType()),
           Is.EquivalentTo (new[] { typeof (LengthValidator), typeof (NotNullValidator) }));
+
+      Assert.That (addingPropertyValidators.OfType<LengthValidator>().Single().ValidationMessage, Is.SameAs (validationMessage));
+      Assert.That (addingPropertyValidators.OfType<NotNullValidator>().Single().ValidationMessage, Is.SameAs (validationMessage));
     }
 
     [Test]
     public void GetAddingPropertyValidators_SpecialCustomer ()
     {
+      var validationMessage = new InvariantValidationMessage ("Fake Message");
+      _validationMessageFactory
+          .Stub (
+              _ => _.CreateValidationMessageForPropertyValidator (
+                  Arg<Type>.Is.NotNull,
+                  Arg.Is (PropertyInfoAdapter.Create (_specialCustomerLastNameProperty))))
+          .Return (validationMessage);
+
       var addingPropertyValidators = _specialCustomerPropertyReflector.GetAddingPropertyValidators().ToArray();
 
-      Assert.That (addingPropertyValidators.Count(), Is.EqualTo (2));
+      Assert.That (addingPropertyValidators.Length, Is.EqualTo (2));
       Assert.That (
           addingPropertyValidators.Select (v => v.GetType()),
           Is.EquivalentTo (new[] { typeof (LengthValidator), typeof (NotNullValidator) }));
+
+      Assert.That (addingPropertyValidators.OfType<LengthValidator>().Single().ValidationMessage, Is.SameAs (validationMessage));
+      Assert.That (addingPropertyValidators.OfType<NotNullValidator>().Single().ValidationMessage, Is.SameAs (validationMessage));
     }
 
     [Test]
     public void GetHardConstraintPropertyValidators_Customer ()
     {
+      var validationMessage = new InvariantValidationMessage ("Fake Message");
+      _validationMessageFactory
+          .Stub (
+              _ => _.CreateValidationMessageForPropertyValidator (
+                  Arg<Type>.Is.NotNull,
+                  Arg.Is (PropertyInfoAdapter.Create (_customerLastNameProperty))))
+          .Return (validationMessage);
+
       var hardConstraintPropertyValidators = _customerPropertyReflector.GetHardConstraintPropertyValidators().ToArray();
 
-      Assert.That (hardConstraintPropertyValidators.Count(), Is.EqualTo (1));
+      Assert.That (hardConstraintPropertyValidators.Length, Is.EqualTo (1));
       Assert.That (hardConstraintPropertyValidators[0].GetType(), Is.EqualTo (typeof (NotEqualValidator)));
+
+      Assert.That (((NotEqualValidator)hardConstraintPropertyValidators[0]).ValidationMessage, Is.SameAs (validationMessage));
     }
 
     [Test]
@@ -83,7 +134,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var hardConstraintPropertyValidators = _specialCustomerPropertyReflector.GetHardConstraintPropertyValidators().ToArray();
 
-      Assert.That (hardConstraintPropertyValidators.Count(), Is.EqualTo (0));
+      Assert.That (hardConstraintPropertyValidators.Length, Is.EqualTo (0));
     }
 
     [Test]
@@ -91,7 +142,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var removingPropertyRegistrations = _customerPropertyReflector.GetRemovingPropertyRegistrations().ToArray();
 
-      Assert.That (removingPropertyRegistrations.Count(), Is.EqualTo (0));
+      Assert.That (removingPropertyRegistrations.Length, Is.EqualTo (0));
     }
 
     [Test]
@@ -99,7 +150,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var removingPropertyRegistrations = _specialCustomerPropertyReflector.GetRemovingPropertyRegistrations().ToArray();
 
-      Assert.That (removingPropertyRegistrations.Count(), Is.EqualTo (1));
+      Assert.That (removingPropertyRegistrations.Length, Is.EqualTo (1));
       Assert.That (removingPropertyRegistrations[0].ValidatorType, Is.EqualTo (typeof (LengthValidator)));
     }
 
@@ -114,7 +165,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var result = _addressPropertyReflector.GetMetaValidationRules().ToArray();
 
-      Assert.That (result.Count(), Is.EqualTo (1));
+      Assert.That (result.Length, Is.EqualTo (1));
       Assert.That (result.Select (r => r.GetType()), Is.EquivalentTo (new[] { typeof (AnyRuleAppliedMetaValidationRule) }));
     }
   }

@@ -37,10 +37,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation, Version=5.0.0.1, Culture=neutral, PublicKeyToken=a82054b837897c66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -59,21 +55,16 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="DefaultMessageEvaluatorTest.cs" />
-    <Compile Include="ErrorMessageStringSourceTest.cs" />
-    <Compile Include="IDefaultMessageEvaluatorTest.cs" />
-    <Compile Include="IErrorMessageGlobalizationServiceTest.cs" />
-    <Compile Include="IValidationRuleMetadataServiceTest.cs" />
-    <Compile Include="NullErrorMessageGlobalizationServiceTest.cs" />
+    <Compile Include="IValidationMessageFactoryTest.cs" />
+    <Compile Include="LocalizedValidationMessageFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyDisplayNameGlobalizationServiceTest.cs" />
-    <Compile Include="PropertyRuleDisplayNameStringSourceTest.cs" />
+    <Compile Include="ResourceManagerBasedValidationMessageTest.cs" />
     <Compile Include="TestDomain\Customer.cs" />
     <Compile Include="TestDomain\IPerson.cs" />
     <Compile Include="TestDomain\Person.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
     <Compile Include="TestHelpers\StubPropertyValidator.cs" />
-    <Compile Include="ValidationRuleGlobalizationServiceTest.cs" />
+    <Compile Include="TypeBasedValidationMessageFactoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">

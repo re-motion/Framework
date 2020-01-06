@@ -38,7 +38,6 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var customer = Customer.NewObject();
-        customer.Email = "InvalidMail";
         ((ICustomerIntroduced) customer).Address = Address.NewObject();
         ((ICustomerIntroduced) customer).Title = "Chef1";
 
@@ -47,8 +46,8 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         var result1 = validator.Validate (customer);
         Assert.That (result1.IsValid, Is.False);
         Assert.That (
-            result1.Errors.Select (e => e.ErrorMessage),
-            Is.EquivalentTo (new[] { "'LocalizedTitle' should not be equal to 'Chef1'.", "'LocalizedMail' is not a valid email address." }));
+            result1.Errors.Select (e => $"{e.Property.Name}: {e.ErrorMessage}"),
+            Is.EquivalentTo (new[] { "Title: The value must not be equal to 'Chef1'." }));
       }
     }
 
@@ -59,14 +58,15 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
       {
         var order = Order.NewObject ();
         order.Number = "er";
+        order.OrderItems.Add (OrderItem.NewObject());
 
         var validator = ValidationBuilder.BuildValidator<Order> ();
 
         var result1 = validator.Validate (order);
         Assert.That (result1.IsValid, Is.False);
         Assert.That (
-            result1.Errors.Select (e => e.ErrorMessage),
-            Is.EquivalentTo (new[] { "'LocalizedNumber' must be between 3 and 8 characters. You entered 2 characters." }));
+            result1.Errors.Select (e => $"{e.Property.Name}: {e.ErrorMessage}"),
+            Is.EquivalentTo (new[] { "Number: The value must have between 3 and 8 characters." }));
       }
     }
   }

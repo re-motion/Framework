@@ -15,23 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reflection;
-using FluentValidation;
-using FluentValidation.Validators;
 using JetBrains.Annotations;
 using Remotion.Reflection;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Rules
 {
+  // TODO RM-5960: Rename to remove "Component". Replace with "Validation". Since this is only a part of the AddingValidationPropertyRuleBuilder, find a name to better express this relationship, perhaps "Collector"?
   /// <summary>
   /// Defines a rule associated with a <see cref="Property"/> which can have multiple validators. The validators of this rule belong to a component via 
   /// the <see cref="CollectorType"/> and are added to the validation specification if the component is used within the application.
   /// </summary>
   /// <seealso cref="AddingComponentPropertyRule"/>
-  public interface IAddingComponentPropertyRule : IValidationRule
+  public interface IAddingComponentPropertyRule
   {
+    /// <summary>The validators that are grouped under this rule.</summary>
+    IEnumerable<IPropertyValidator> Validators { get; }
+
     /// <summary>
     /// Gets the <see cref="Type"/> of the <see cref="IComponentValidationCollector"/> with which the rule is associated.
     /// </summary>
@@ -48,9 +52,14 @@ namespace Remotion.Validation.Rules
     bool IsHardConstraint { get; }
 
     /// <summary>
+    /// Sets the condition for evaluating the registered validators.
+    /// </summary>
+    void SetCondition<TValidatedType> (Func<TValidatedType, bool> predicate);
+
+    /// <summary>
     /// Registers a validator with this <see cref="IAddingComponentPropertyRule"/>.
     /// </summary>
-    void RegisterValidator ([NotNull] IPropertyValidator validator);
+    void RegisterValidator ([NotNull] Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory);
 
     /// <summary>
     /// Sets the <see cref="IsHardConstraint"/> flag, making the rule non-removeable.
@@ -62,5 +71,10 @@ namespace Remotion.Validation.Rules
     /// </summary>
     [EditorBrowsable (EditorBrowsableState.Never)]
     void ApplyRemoveValidatorRegistrations ([NotNull] IPropertyValidatorExtractor propertyValidatorExtractor);
+
+    /// <summary>
+    /// Creates the <see cref="IValidationRule"/> for this <see cref="Property"/>.
+    /// </summary>
+    IValidationRule CreateValidationRule ([NotNull] IValidationMessageFactory validationMessageFactory);
   }
 }

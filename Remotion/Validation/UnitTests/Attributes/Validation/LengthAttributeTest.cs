@@ -16,10 +16,13 @@
 // 
 using System;
 using System.Linq;
-using FluentValidation.Validators;
 using NUnit.Framework;
+using Remotion.Reflection;
 using Remotion.Validation.Attributes.Validation;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.Validators;
+using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Attributes.Validation
 {
@@ -27,11 +30,13 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
   public class LengthAttributeTest
   {
     private LengthAttribute _attribute;
+    private IValidationMessageFactory _validationMessageFactoryStub;
 
     [SetUp]
     public void SetUp ()
     {
       _attribute = new LengthAttribute (10, 20);
+      _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
     }
 
     [Test]
@@ -44,14 +49,17 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [Test]
     public void GetPropertyValidator ()
     {
-      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray();
+      var propertyInformation = PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("LastName"));
+      var invariantValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Stub (_ => _.CreateValidationMessageForPropertyValidator (typeof (LengthValidator), propertyInformation))
+          .Return (invariantValidationMessageStub);
 
-      Assert.That (result.Count(), Is.EqualTo (1));
+      var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub).ToArray();
+
+      Assert.That (result.Length, Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (LengthValidator)));
-      Assert.That (
-          result[0].ErrorMessageSource.GetString(),
-          Is.EqualTo (
-              "'{PropertyName}' must be between {MinLength} and {MaxLength} characters. You entered {TotalLength} characters."));
+      Assert.That (((LengthValidator) result[0]).ValidationMessage, Is.SameAs (invariantValidationMessageStub));
       Assert.That (((LengthValidator) result[0]).Min, Is.EqualTo (10));
       Assert.That (((LengthValidator) result[0]).Max, Is.EqualTo (20));
     }
@@ -59,12 +67,20 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [Test]
     public void GetPropertyValidator_CustomMessage ()
     {
+      var propertyInformation = PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("LastName"));
       _attribute.ErrorMessage = "CustomMessage";
 
-      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray();
+      var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub).ToArray();
 
-      Assert.That (result.Count(), Is.EqualTo (1));
-      Assert.That (result[0].ErrorMessageSource.GetString(), Is.EqualTo ("CustomMessage"));
+      Assert.That (result.Length, Is.EqualTo (1));
+      Assert.That (((LengthValidator) result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
+      Assert.That (((LengthValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("CustomMessage"));
+    }
+
+    [Test]
+    [Ignore ("TODO RM-5960")]
+    public void GetPropertyValidator_WithValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
+    {
     }
   }
 }

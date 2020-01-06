@@ -16,9 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using FluentValidation.Validators;
+using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.Utilities;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Attributes.Validation
 {
@@ -36,7 +38,7 @@ namespace Remotion.Validation.Attributes.Validation
     public NotEqualAttribute (string value)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      
+
       _value = value;
     }
 
@@ -45,11 +47,29 @@ namespace Remotion.Validation.Attributes.Validation
       get { return _value; }
     }
 
-    protected override IEnumerable<IPropertyValidator> GetValidators (PropertyInfo property)
+    protected override IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
       ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
 
-      return new[] { new NotEqualValidator (Value) };
+      NotEqualValidator validator;
+      if (string.IsNullOrEmpty (ErrorMessage))
+      {
+        var validatorType = typeof (NotEqualValidator);
+        var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator (validatorType, property);
+        if (validationMessage == null)
+        {
+          throw new InvalidOperationException (
+              $"The {nameof (IValidationMessageFactory)} did not return a result for {validatorType.Name} applied to property '{property.Name}' on type '{property.GetOriginalDeclaringType().FullName}'.");
+        }
+        validator = new NotEqualValidator (Value, validationMessage);
+      }
+      else
+      {
+        validator = new NotEqualValidator (Value, new InvariantValidationMessage (ErrorMessage));
+      }
+
+      return EnumerableUtility.Singleton (validator);
     }
   }
 }

@@ -37,10 +37,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation, Version=5.0.0.1, Culture=neutral, PublicKeyToken=a82054b837897c66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
@@ -61,11 +57,9 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CustomImplementations\FakeMessageValidatorGlobalizationService.cs" />
-    <Compile Include="FluentValidationGlobalizationIntegrationTests.cs" />
     <Compile Include="IntegrationTestBase.cs" />
     <Compile Include="MetaValidationRulesIntegrationTests.cs" />
-    <Compile Include="ErrorMessagesGlobalizationIntegrationTest.cs" />
+    <Compile Include="LocalizedValidationMessagesGlobalizationIntegrationTest.cs" />
     <Compile Include="TestDomain\ComponentA\Address.cs" />
     <Compile Include="TestDomain\ComponentA\Customer.cs" />
     <Compile Include="TestDomain\ComponentA\Employee.cs" />
@@ -87,6 +81,9 @@
     <Compile Include="TestDomain\ComponentB\ValidationCollectors\CustomerValidationCollector2.cs" />
     <Compile Include="TestDomain\ComponentB\ValidationCollectors\IPersonValidationCollector2.cs" />
     <Compile Include="TestDomain\ComponentB\ValidationCollectors\SpecialCustomerValidationCollector1.cs" />
+    <Compile Include="TestDomain\MetaValidation\MetaValidationTestClassCollector3.cs" />
+    <Compile Include="TestDomain\Validators\FakeCreditCardValidator.cs" />
+    <Compile Include="TestDomain\Validators\FakeEmailValidator.cs" />
     <Compile Include="TestDomain\MetaValidation\BaseMetaValidationTestClass1.cs" />
     <Compile Include="TestDomain\MetaValidation\BaseMetaValidationTestClassCollector1.cs" />
     <Compile Include="TestDomain\MetaValidation\DerivedMetaValidationTestClass1.cs" />
@@ -99,19 +96,21 @@
     <Compile Include="TestDomain\MetaValidation\MetaValidationTestClass5.cs" />
     <Compile Include="TestDomain\MetaValidation\MetaValidationTestClassCollector1.cs" />
     <Compile Include="TestDomain\MetaValidation\MetaValidationTestClassCollector2.cs" />
-    <Compile Include="TestDomain\MetaValidation\MetaValidationTestClassCollector3.cs" />
     <Compile Include="TestDomain\MetaValidation\MetaValidationTestClassCollector4.cs" />
     <Compile Include="TestDomain\MetaValidation\MetaValidationTestClassCollector5.cs" />
     <Compile Include="TestDomain\MetaValidation\Rules\MaxLengthMetaValidationRule.cs" />
     <Compile Include="TestDomain\MetaValidation\Rules\MaxValidatorCountRule.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
-    <Compile Include="ValidatorGlobalizationServiceIntegrationTest.cs" />
     <Compile Include="ValidationRulesIntegrationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
+      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
+      <Name>Core.Reflection</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
@@ -144,6 +143,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

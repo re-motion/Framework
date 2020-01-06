@@ -31,15 +31,15 @@ namespace Remotion.Validation.Implementation
   public class AttributeBasedComponentValidationCollector : IComponentValidationCollector
   {
     private readonly Type _validatedType;
-    private readonly IReadOnlyCollection<AddingComponentPropertyRule> _addedPropertyRules;
-    private readonly IReadOnlyCollection<AddingComponentPropertyMetaValidationRule> _addedPropertyMetaValidationRules;
-    private readonly IReadOnlyCollection<RemovingComponentPropertyRule> _removedPropertyRules;
+    private readonly IReadOnlyCollection<IAddingComponentPropertyRule> _addedPropertyRules;
+    private readonly IReadOnlyCollection<IAddingComponentPropertyMetaValidationRule> _addedPropertyMetaValidationRules;
+    private readonly IReadOnlyCollection<IRemovingComponentPropertyRule> _removedPropertyRules;
 
     public AttributeBasedComponentValidationCollector (
         Type validatedType,
-        IEnumerable<AddingComponentPropertyRule> addedPropertyRules,
-        IEnumerable<AddingComponentPropertyMetaValidationRule> addedPropertyMetaValidationRules,
-        IEnumerable<RemovingComponentPropertyRule> removedPropertyRules)
+        IEnumerable<IAddingComponentPropertyRule> addedPropertyRules,
+        IEnumerable<IAddingComponentPropertyMetaValidationRule> addedPropertyMetaValidationRules,
+        IEnumerable<IRemovingComponentPropertyRule> removedPropertyRules)
     {
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
       ArgumentUtility.CheckNotNull ("addedPropertyRules", addedPropertyRules);

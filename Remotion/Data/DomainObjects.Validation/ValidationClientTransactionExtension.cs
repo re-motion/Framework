@@ -20,12 +20,11 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using FluentValidation;
-using FluentValidation.Results;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Utilities;
 using Remotion.Validation;
+using Remotion.Validation.Results;
 using Remotion.Validation.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
@@ -104,7 +103,7 @@ namespace Remotion.Data.DomainObjects.Validation
         errorMessage.AppendLine (
             string.Join (
                 "\r\n",
-                errorByValidatedObject.Select (t => " -- " + t.PropertyName + ": " + t.ErrorMessage)));
+                errorByValidatedObject.Select (t => " -- " + t.Property.Name + ": " + t.ErrorMessage)));
         errorMessage.AppendLine ();
       }
       return errorMessage.ToString ();

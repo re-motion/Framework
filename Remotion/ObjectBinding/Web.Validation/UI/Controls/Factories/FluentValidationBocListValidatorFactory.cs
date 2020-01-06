@@ -17,11 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-using FluentValidation.Results;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Validation.Results;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 {

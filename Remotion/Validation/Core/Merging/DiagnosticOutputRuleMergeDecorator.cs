@@ -17,11 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using FluentValidation;
-using FluentValidation.Internal;
-using FluentValidation.Validators;
 using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -29,6 +25,7 @@ using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Rules;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Merging
 {
@@ -122,25 +119,18 @@ namespace Remotion.Validation.Merging
       return sb.ToString();
     }
 
-    private string GetLogAfter (IEnumerable<IValidationRule> mergedRules, ILogContext logContext)
+    private string GetLogAfter (IEnumerable<IAddingComponentPropertyRule> mergedRules, ILogContext logContext)
     {
       var sb = new StringBuilder();
       sb.AppendLine();
       sb.Append ("AFTER MERGE:");
 
-      var propertyRules = mergedRules.OfType<PropertyRule>().ToArray();
-      var allProperties = propertyRules.Select (mr => (PropertyInfo) mr.Member).Distinct ();
-      foreach (var property in allProperties)
+      foreach (var propertyRulesForMember in mergedRules.ToLookup (pr => pr.Property))
       {
-        IPropertyInformation actualProperty = PropertyInfoAdapter.Create(property);
-        var propertyRulesForMember = propertyRules.Where (pr =>(PropertyInfoAdapter.Create( (PropertyInfo) pr.Member)).Equals(actualProperty)).ToArray();
         var validators = propertyRulesForMember.SelectMany (pr => pr.Validators).ToArray();
         var logContextInfos = propertyRulesForMember.SelectMany (logContext.GetLogContextInfos).ToArray();
-        AppendPropertyRuleOutput (actualProperty, validators, logContextInfos, sb);
+        AppendPropertyRuleOutput (propertyRulesForMember.Key, validators, logContextInfos, sb);
       }
-
-      foreach (var validationRule in mergedRules.Except (propertyRules))
-        AppendValidationRuleOutput (validationRule, sb, logContext);
 
       return sb.ToString();
     }
@@ -201,16 +191,6 @@ namespace Remotion.Validation.Merging
       AppendPropertyName (actualProperty, sb);
       AppendGroupedValidatorsOutput (validators, "VALIDATORS:", sb);
       AppendMergeOutput (logContextInfos, sb);
-    }
-
-    private void AppendValidationRuleOutput (IValidationRule validationRule, StringBuilder sb, ILogContext logContext)
-    {
-      sb.AppendLine().AppendLine();
-      sb.Append (new string (' ', 4) + "-> ");
-      sb.Append (GetTypeName (validationRule.GetType()));
-
-      AppendGroupedValidatorsOutput (validationRule.Validators.ToArray(), "VALIDATORS:", sb);
-      AppendMergeOutput (logContext.GetLogContextInfos (validationRule).ToArray(), sb);
     }
 
     private void AppendMergeOutput (LogContextInfo[] logContextInfos, StringBuilder sb)

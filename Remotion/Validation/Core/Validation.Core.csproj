@@ -38,10 +38,6 @@
     <DocumentationFile>bin\Release\Remotion.Validation.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation">
-      <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
@@ -51,6 +47,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
@@ -66,9 +65,15 @@
     <Compile Include="Attributes\Validation\NotNullAttribute.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttribute.cs" />
     <Compile Include="Attributes\Validation\AddingValidationAttributeBase.cs" />
+    <Compile Include="DefaultValidatorExtensions.cs" />
     <Compile Include="Implementation\AttributeBasedComponentValidationCollector.cs" />
-    <Compile Include="Implementation\CompoundValidationRuleMetadataService.cs" />
-    <Compile Include="Implementation\IValidationRuleMetadataService.cs" />
+    <Compile Include="Implementation\Comparison.cs" />
+    <Compile Include="Implementation\DelegateBasedValidationMessage.cs" />
+    <Compile Include="Implementation\FallbackValidationMessageFactory.cs" />
+    <Compile Include="Implementation\InvariantValidationMessage.cs" />
+    <Compile Include="Implementation\CompoundValidationMessageFactory.cs" />
+    <Compile Include="Implementation\ValidationMessage.cs" />
+    <Compile Include="Implementation\IValidationMessageFactory.cs" />
     <Compile Include="IComponentValidationCollector1.cs" />
     <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecorator.cs" />
     <Compile Include="Implementation\CompoundCollectorValidator.cs" />
@@ -85,8 +90,11 @@
     <Compile Include="Implementation\IValidatorFormatter.cs" />
     <Compile Include="Implementation\TypedValidatorDecorator.cs" />
     <Compile Include="Implementation\ValidatorBuilderSerializationDecorator.cs" />
+    <Compile Include="IValidator.cs" />
+    <Compile Include="IValidator1.cs" />
     <Compile Include="IValidatorBuilder.cs" />
     <Compile Include="IValidatorBuilder1.cs" />
+    <Compile Include="IValidatorDescriptor.cs" />
     <Compile Include="Merging\PropertyValidatorExtractor.cs" />
     <Compile Include="Implementation\ILogContext.cs" />
     <Compile Include="Merging\IPropertyValidatorExtractor.cs" />
@@ -99,8 +107,10 @@
     <Compile Include="MetaValidation\DefaultSystemMetaValidationRulesProviderFactory.cs" />
     <Compile Include="MetaValidation\ISystemMetaValidationRulesProviderFactory.cs" />
     <Compile Include="MetaValidation\Rules\Custom\AnyRuleAppliedMetaValidationRule.cs" />
+    <Compile Include="PropertyValidatorContext.cs" />
     <Compile Include="Providers\ValidationAttributesBasedCollectorProvider.cs" />
     <Compile Include="Rules\AddingComponentPropertyMetaValidationRule.cs" />
+    <Compile Include="Rules\AddingComponentPropertyRule1.cs" />
     <Compile Include="Rules\IAddingComponentPropertyMetaValidationRule.cs" />
     <Compile Include="Implementation\CompoundValidator.cs" />
     <Compile Include="IComponentValidationCollector.cs" />
@@ -129,7 +139,26 @@
     <Compile Include="MetaValidation\SystemMetaValidationRuleBase.cs" />
     <Compile Include="Implementation\DiscoveryServiceBasedValidationCollectorReflector.cs" />
     <Compile Include="Implementation\IValidationCollectorReflector.cs" />
-    <Compile Include="Utilities\PropertyRuleExtensions.cs" />
+    <Compile Include="RuleBuilders\IConditionalAddingComponentRuleBuilder.cs" />
+    <Compile Include="Rules\PropertyRuleInitializationParameters.cs" />
+    <Compile Include="Rules\IValidationRule.cs" />
+    <Compile Include="Results\ValidationFailure.cs" />
+    <Compile Include="Results\ValidationResult.cs" />
+    <Compile Include="ValidatorDescriptor.cs" />
+    <Compile Include="Validators\AbstractValueComparisonValidator.cs" />
+    <Compile Include="Validators\EqualValidator.cs" />
+    <Compile Include="Validators\ExactLengthValidator.cs" />
+    <Compile Include="Validators\ExclusiveRangeValidator.cs" />
+    <Compile Include="Validators\InclusiveRangeValidator.cs" />
+    <Compile Include="Validators\GreaterThanOrEqualValidator.cs" />
+    <Compile Include="Validators\GreaterThanValidator.cs" />
+    <Compile Include="Validators\IRangeValidator.cs" />
+    <Compile Include="Validators\IValueComparisonValidator.cs" />
+    <Compile Include="Validators\INotEmptyValidator.cs" />
+    <Compile Include="Validators\INotNullValidator.cs" />
+    <Compile Include="Validators\IPredicateValidator.cs" />
+    <Compile Include="Validators\IRegularExpressionValidator.cs" />
+    <Compile Include="Rules\PropertyValidationRule.cs" />
     <Compile Include="Utilities\TopologySortExtensions.cs" />
     <Compile Include="Utilities\TopologySortMissingDependencyBehavior.cs" />
     <Compile Include="Implementation\ValidationCollectorInfo.cs" />
@@ -141,8 +170,6 @@
     <Compile Include="ComponentValidationCollector.cs" />
     <Compile Include="RuleBuilders\IAddingComponentRuleBuilder.cs" />
     <Compile Include="RuleBuilders\IRemovingComponentRuleBuilder.cs" />
-    <Compile Include="RuleBuilders\IAddingComponentRuleBuilderOptions.cs" />
-    <Compile Include="RuleBuilders\IRemovingComponentRuleBuilderOptions.cs" />
     <Compile Include="Rules\IAddingComponentPropertyRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\IRemovingComponentPropertyRule.cs" />
@@ -154,6 +181,20 @@
     <Compile Include="Implementation\InvolvedTypeProvider.cs" />
     <Compile Include="Implementation\Validator.cs" />
     <Compile Include="Utilities\ValidationFailureExtensions.cs" />
+    <Compile Include="ValidationContext.cs" />
+    <Compile Include="Validators\ILengthValidator.cs" />
+    <Compile Include="Validators\IPropertyValidator.cs" />
+    <Compile Include="Validators\LengthValidator.cs" />
+    <Compile Include="Validators\LessThanOrEqualValidator.cs" />
+    <Compile Include="Validators\LessThanValidator.cs" />
+    <Compile Include="Validators\MaximumLengthValidator.cs" />
+    <Compile Include="Validators\MinimumLengthValidator.cs" />
+    <Compile Include="Validators\NotEmptyValidator.cs" />
+    <Compile Include="Validators\NotEqualValidator.cs" />
+    <Compile Include="Validators\PredicateValidator.cs" />
+    <Compile Include="Validators\NotNullValidator.cs" />
+    <Compile Include="Validators\RegularExpressionValidator.cs" />
+    <Compile Include="Validators\ScalePrecisionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

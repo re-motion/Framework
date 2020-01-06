@@ -20,6 +20,9 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
 using Remotion.Mixins;
+using Remotion.Reflection;
+using Remotion.Validation.Implementation;
+using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests
 {
@@ -27,11 +30,17 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
   public class DomainObjectAttributesBasedValidationCollectorProviderTest
   {
     private DomainObjectAttributesBasedValidationCollectorProvider _provider;
+    private IValidationMessageFactory _validationMessageFactoryStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _provider = new DomainObjectAttributesBasedValidationCollectorProvider(new DomainModelConstraintProvider());
+      _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
+      _validationMessageFactoryStub
+          .Stub (_ => _.CreateValidationMessageForPropertyValidator (Arg<Type>.Is.NotNull, Arg<IPropertyInformation>.Is.NotNull))
+          .Return (new InvariantValidationMessage ("Fake Message"));
+
+      _provider = new DomainObjectAttributesBasedValidationCollectorProvider(new DomainModelConstraintProvider(), _validationMessageFactoryStub);
     }
 
     [Test]

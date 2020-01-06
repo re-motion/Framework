@@ -16,9 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using FluentValidation.Validators;
+using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.Utilities;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Attributes.Validation
 {
@@ -27,11 +29,12 @@ namespace Remotion.Validation.Attributes.Validation
   /// </summary>
   public class LengthAttribute : AddingValidationAttributeBase
   {
+    // TODO RM-5960: make max-length nullable and create specific type of length-validator based on min and max-length values
     private readonly int _maxLength;
     private readonly int _minLength;
 
     /// <summary>
-    /// Instantiats a new <see cref="LengthAttribute"/>.
+    /// Instantiates a new <see cref="LengthAttribute"/>.
     /// </summary>
     /// <param name="minLength">The minimum number of characters required.</param>
     /// <param name="maxLength">The maximum number of characters allowed.</param>
@@ -51,11 +54,29 @@ namespace Remotion.Validation.Attributes.Validation
       get { return _maxLength; }
     }
 
-    protected override IEnumerable<IPropertyValidator> GetValidators (PropertyInfo property)
+    protected override IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
       ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
 
-      yield return new LengthValidator (MinLength, MaxLength);
+      LengthValidator validator;
+      if (string.IsNullOrEmpty (ErrorMessage))
+      {
+        var validatorType = typeof (LengthValidator);
+        var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator (validatorType, property);
+        if (validationMessage == null)
+        {
+          throw new InvalidOperationException (
+              $"The {nameof (IValidationMessageFactory)} did not return a result for {validatorType.Name} applied to property '{property.Name}' on type '{property.GetOriginalDeclaringType().FullName}'.");
+        }
+        validator = new LengthValidator (MinLength, MaxLength, validationMessage);
+      }
+      else
+      {
+        validator = new LengthValidator (MinLength, MaxLength, new InvariantValidationMessage (ErrorMessage));
+      }
+
+      return EnumerableUtility.Singleton (validator);
     }
   }
 }

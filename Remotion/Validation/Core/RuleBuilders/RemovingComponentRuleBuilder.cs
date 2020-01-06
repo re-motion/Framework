@@ -23,7 +23,7 @@ namespace Remotion.Validation.RuleBuilders
   /// <summary>
   /// Default implementation of the <see cref="IRemovingComponentRuleBuilder{TValidatedType,TProperty}"/>.
   /// </summary>
-  public class RemovingComponentRuleBuilder<TValidatedType, TProperty> : IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty>
+  public class RemovingComponentRuleBuilder<TValidatedType, TProperty> : IRemovingComponentRuleBuilder<TValidatedType, TProperty>
   {
     private readonly IRemovingComponentPropertyRule _removingComponentPropertyRule;
     
@@ -39,25 +39,24 @@ namespace Remotion.Validation.RuleBuilders
       get { return _removingComponentPropertyRule; }
     }
 
-    public IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> Validator<TValidatorType> ()
+    public IRemovingComponentRuleBuilder<TValidatedType, TProperty> Validator<TValidatorType> ()
     {
-      return Validator (typeof (TValidatorType));
+      return Validator (typeof (TValidatorType), null);
     }
 
-    public IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> Validator<TValidatorType, TCollectorTypeToRemoveFrom> ()
+    public IRemovingComponentRuleBuilder<TValidatedType, TProperty> Validator<TValidatorType, TCollectorTypeToRemoveFrom> ()
     {
       return Validator (typeof (TValidatorType), typeof(TCollectorTypeToRemoveFrom));
     }
 
-    public IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> Validator (Type validatorType)
+    public IRemovingComponentRuleBuilder<TValidatedType, TProperty> Validator (Type validatorType)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
 
-      Validator (validatorType, null);
-      return this;
+      return Validator (validatorType, null);
     }
 
-    public IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> Validator (Type validatorType, Type collectorTypeToRemoveFrom)
+    public IRemovingComponentRuleBuilder<TValidatedType, TProperty> Validator (Type validatorType, Type collectorTypeToRemoveFrom)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
       

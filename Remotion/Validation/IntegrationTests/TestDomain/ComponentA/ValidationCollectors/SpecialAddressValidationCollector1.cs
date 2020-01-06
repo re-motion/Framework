@@ -1,6 +1,4 @@
 using System;
-using FluentValidation;
-using FluentValidation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationCollectors
 {

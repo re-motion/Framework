@@ -16,9 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using FluentValidation.Internal;
 using Remotion.Utilities;
 using Remotion.Validation.RuleBuilders;
 using Remotion.Validation.Rules;
@@ -32,15 +30,15 @@ namespace Remotion.Validation
   /// <threadsafety static="true" instance="false" />
   public abstract class ComponentValidationCollector<TValidatedType> : IComponentValidationCollector<TValidatedType>
   {
-    private readonly TrackingCollection<IAddingComponentPropertyRule> _addedPropertyRules;
-    private readonly TrackingCollection<IAddingComponentPropertyMetaValidationRule> _addedPropertyMetaValidationRules;
-    private readonly TrackingCollection<IRemovingComponentPropertyRule> _removedPropertyRules;
+    private readonly List<IAddingComponentPropertyRule> _addedPropertyRules;
+    private readonly List<IAddingComponentPropertyMetaValidationRule> _addedPropertyMetaValidationRules;
+    private readonly List<IRemovingComponentPropertyRule> _removedPropertyRules;
 
     protected ComponentValidationCollector ()
     {
-      _addedPropertyRules = new TrackingCollection<IAddingComponentPropertyRule>();
-      _addedPropertyMetaValidationRules = new TrackingCollection<IAddingComponentPropertyMetaValidationRule>();
-      _removedPropertyRules = new TrackingCollection<IRemovingComponentPropertyRule>();
+      _addedPropertyRules = new List<IAddingComponentPropertyRule>();
+      _addedPropertyMetaValidationRules = new List<IAddingComponentPropertyMetaValidationRule>();
+      _removedPropertyRules = new List<IRemovingComponentPropertyRule>();
     }
 
     public Type ValidatedType
@@ -51,73 +49,46 @@ namespace Remotion.Validation
     /// <inheritdoc />
     public IReadOnlyCollection<IAddingComponentPropertyRule> AddedPropertyRules
     {
-      get { return _addedPropertyRules.ToList().AsReadOnly(); }
+      get { return _addedPropertyRules.AsReadOnly(); }
     }
 
     /// <inheritdoc />
     public IReadOnlyCollection<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules
     {
-      get { return _addedPropertyMetaValidationRules.ToList().AsReadOnly(); }
+      get { return _addedPropertyMetaValidationRules.AsReadOnly(); }
     }
 
     /// <inheritdoc />
     public IReadOnlyCollection<IRemovingComponentPropertyRule> RemovedPropertyRules
     {
-      get { return _removedPropertyRules.ToList().AsReadOnly(); }
+      get { return _removedPropertyRules.AsReadOnly(); }
     }
 
     /// <inheritdoc />
-    public IAddingComponentRuleBuilderOptions<TValidatedType, TProperty> AddRule<TProperty> (
+    public IConditionalAddingComponentRuleBuilder<TValidatedType, TProperty> AddRule<TProperty> (
         Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
       
-      var componentPropertyRule = AddingComponentPropertyRule.Create (propertySelector, GetType());
-      _addedPropertyRules.Add (componentPropertyRule);
+      var propertyRule = AddingComponentPropertyRule.Create (propertySelector, GetType());
+      _addedPropertyRules.Add (propertyRule);
 
       var metaValidationPropertyRule = AddingComponentPropertyMetaValidationRule.Create (propertySelector, GetType());
       _addedPropertyMetaValidationRules.Add (metaValidationPropertyRule);
 
-      return new AddingComponentRuleBuilder<TValidatedType, TProperty> (componentPropertyRule, metaValidationPropertyRule);
+      return new AddingComponentRuleBuilder<TValidatedType, TProperty> (propertyRule, metaValidationPropertyRule);
     }
 
     /// <inheritdoc />
-    public IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> RemoveRule<TProperty> (
+    public IRemovingComponentRuleBuilder<TValidatedType, TProperty> RemoveRule<TProperty> (
         Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
       
-      var componentPropertyRule = RemovingComponentPropertyRule.Create (propertySelector, GetType());
-      _removedPropertyRules.Add (componentPropertyRule);
+      var propertyRule = RemovingComponentPropertyRule.Create (propertySelector, GetType());
+      _removedPropertyRules.Add (propertyRule);
 
-      return new RemovingComponentRuleBuilder<TValidatedType, TProperty> (componentPropertyRule);
+      return new RemovingComponentRuleBuilder<TValidatedType, TProperty> (propertyRule);
     }
-
-    /// <inheritdoc />
-    public void When (Func<TValidatedType, bool> predicate, Action action)
-    {
-      var addedPropertyRules = new List<IAddingComponentPropertyRule>();
-      Action<IAddingComponentPropertyRule> onRuleAdded = addedPropertyRules.Add;
-      Action<IRemovingComponentPropertyRule> onRuleRemoved =
-          a => { throw new InvalidOperationException ("Conditions are not allowed for removing validation rules registrations."); };
-
-      using (_addedPropertyRules.OnItemAdded (onRuleAdded))
-      {
-        using (_removedPropertyRules.OnItemAdded (onRuleRemoved))
-        {
-          action();
-        }
-      }
-
-      // Must apply the predictae after the rule has been fully created to ensure any rules-specific conditions have already been applied.
-      addedPropertyRules.ForEach (x => x.ApplyCondition (predicate.CoerceToNonGeneric()));
-    }
-
-    /// <inheritdoc />
-    public void Unless (Func<TValidatedType, bool> predicate, Action action)
-    {
-      When (x => !predicate (x), action);
-    }
-   
   }
 }

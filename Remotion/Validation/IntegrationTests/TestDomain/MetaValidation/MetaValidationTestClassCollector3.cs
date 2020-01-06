@@ -15,8 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
-using FluentValidation.Validators;
 using Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.Rules;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation
@@ -25,11 +23,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation
   {
     public MetaValidationTestClassCollector3 ()
     {
-      When (
-          c => c.Property1 == "Test1",
-          () => AddRule (o => o.Property1).AddMetaValidationRule(new MaxLengthMetaValidationRule()).Length(0, 100));
-
-     
+      AddRule (o => o.Property1).SetCondition (c => c.Property1 == "Test1").AddMetaValidationRule (new MaxLengthMetaValidationRule()).Length (0, 100);
     }
   }
 }

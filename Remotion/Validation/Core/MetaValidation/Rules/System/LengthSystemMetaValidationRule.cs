@@ -17,13 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidation.Validators;
 using Remotion.Reflection;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.MetaValidation.Rules.System
 {
   /// <summary>
-  /// Implements the <see cref="IMetaValidationRule"/> interface to verify that there no more than a single (distinct) mininum 
+  /// Implements the <see cref="IMetaValidationRule"/> interface to verify that there no more than a single (distinct) minimum 
   /// and a single (distinct) maximum length constraint applied to each property.
   /// </summary>
   public class LengthSystemMetaValidationRule : SystemMetaValidationRuleBase<LengthValidator>

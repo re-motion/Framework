@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
-using FluentValidation.Results;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Reflection;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Results;
+using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
 
@@ -42,6 +43,13 @@ namespace Remotion.Validation.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
+      var propertyStub1 = MockRepository.GenerateStub<IPropertyInformation>();
+      propertyStub1.Stub (_ => _.Name).Return ("PropertyStub1");
+      var propertyStub2 = MockRepository.GenerateStub<IPropertyInformation>();
+      propertyStub2.Stub (_ => _.Name).Return ("PropertyStub3");
+      var propertyStub3 = MockRepository.GenerateStub<IPropertyInformation>();
+      propertyStub3.Stub (_ => _.Name).Return ("PropertyStub3");
+
       _validationRuleStub1 = MockRepository.GenerateStub<IValidationRule>();
       _validationRuleStub2 = MockRepository.GenerateStub<IValidationRule>();
 
@@ -50,9 +58,9 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _compoundValidator = new CompoundValidator (new[] { _validatorStub1, _validatorStub2 }, typeof (Customer));
 
-      _validationFailure1 = new ValidationFailure ("PropertyName1", "Failes");
-      _validationFailure2 = new ValidationFailure ("PropertyName2", "Failes");
-      _validationFailure3 = new ValidationFailure ("PropertyName3", "Failes");
+      _validationFailure1 = new ValidationFailure (propertyStub1, "Error1", "ValidationMessage1");
+      _validationFailure2 = new ValidationFailure (propertyStub2, "Error2", "ValidationMessage2");
+      _validationFailure3 = new ValidationFailure (propertyStub3, "Error3", "ValidationMessage3");
 
       _validationResult1 = new ValidationResult (new[] { _validationFailure1, _validationFailure2 });
       _validationResult2 = new ValidationResult (new[] { _validationFailure3 });
@@ -69,8 +77,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var customer = new Customer();
 
-      _validatorStub1.Stub (stub => stub.Validate (Arg<ValidationContext<Customer>>.Is.NotNull)).Return (_validationResult1);
-      _validatorStub2.Stub (stub => stub.Validate (Arg<ValidationContext<Customer>>.Is.NotNull)).Return (_validationResult2);
+      _validatorStub1.Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull)).Return (_validationResult1);
+      _validatorStub2.Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull)).Return (_validationResult2);
 
       var result = _compoundValidator.Validate (customer);
 
@@ -95,7 +103,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       var result = compositeValidator.CreateDescriptor();
 
-      Assert.That (result, Is.TypeOf (typeof (ValidatorDescriptor<Customer>)));
+      Assert.That (result, Is.TypeOf (typeof (ValidatorDescriptor)));
       Assert.That (PrivateInvoke.GetNonPublicProperty (result, "Rules"), Is.EquivalentTo (new[] { _validationRuleStub1, _validationRuleStub2 }));
     }
 

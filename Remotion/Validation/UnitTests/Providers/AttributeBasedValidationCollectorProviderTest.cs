@@ -17,15 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
-using Remotion.Validation.Providers;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.ValidationRules;
+using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Providers

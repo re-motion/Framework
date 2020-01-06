@@ -15,7 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationCollectors
 {
@@ -24,8 +25,10 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
     public EmployeeValidationCollector1 ()
     {
       AddRule (e => e.Salary)
-          .GreaterThan (500)
-          .WithMessage ("Conditional Message Test: {0}", e => e.Salary == 0 ? "Kein Gehalt definiert" : "Gehalt zu gering");
+          .SetValidator (_ => new NotEqualValidator (0m, new InvariantValidationMessage ("Conditional Message Text: Kein Gehalt definiert")));
+      AddRule (e => e.Salary)
+          .SetCondition (e => e.Salary > 0)
+          .SetValidator (_ => new GreaterThanValidator (500m, new InvariantValidationMessage ("Conditional Message Text: Gehalt zu gering")));
     }
   }
 }

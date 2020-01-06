@@ -17,18 +17,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Merging
 {
   public class ValidationCollectorMergeResult
   {
-    private readonly IReadOnlyCollection<IValidationRule> _collectedRules;
+    private readonly IReadOnlyCollection<IAddingComponentPropertyRule> _collectedRules;
     private readonly ILogContext _logContext;
 
-    public ValidationCollectorMergeResult (IEnumerable<IValidationRule> collectedRules, ILogContext logContext)
+    public ValidationCollectorMergeResult (IEnumerable<IAddingComponentPropertyRule> collectedRules, ILogContext logContext)
     {
       ArgumentUtility.CheckNotNull ("collectedRules", collectedRules);
       ArgumentUtility.CheckNotNull ("logContext", logContext);
@@ -37,7 +37,7 @@ namespace Remotion.Validation.Merging
       _logContext = logContext;
     }
 
-    public IReadOnlyCollection<IValidationRule> CollectedRules
+    public IReadOnlyCollection<IAddingComponentPropertyRule> CollectedRules
     {
       get
       {

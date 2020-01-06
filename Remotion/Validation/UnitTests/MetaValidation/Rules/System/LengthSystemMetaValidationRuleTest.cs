@@ -16,11 +16,12 @@
 // 
 using System;
 using System.Linq;
-using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Reflection;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation.Rules.System;
 using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.MetaValidation.Rules.System
 {
@@ -36,11 +37,11 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.System
     [SetUp]
     public void SetUp ()
     {
-      _maxLengthValidator1 = new MaximumLengthValidator (50);
-      _maxLengthValidator2 = new MaximumLengthValidator (60);
+      _maxLengthValidator1 = new MaximumLengthValidator (50, new InvariantValidationMessage ("Fake Message"));
+      _maxLengthValidator2 = new MaximumLengthValidator (60, new InvariantValidationMessage ("Fake Message"));
 
-      _minLengthValidator1 = new MinimumLengthValidator (10);
-      _minLengthValidator2 = new MinimumLengthValidator (20);
+      _minLengthValidator1 = new MinimumLengthValidator (10, new InvariantValidationMessage ("Fake Message"));
+      _minLengthValidator2 = new MinimumLengthValidator (20, new InvariantValidationMessage ("Fake Message"));
 
       _rule = new LengthSystemMetaValidationRule (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
     }

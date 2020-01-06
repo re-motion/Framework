@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Linq;
-using FluentValidation.Results;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
+using Remotion.Validation.Results;
 using Remotion.Validation.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
           && validatedInstance != businessObject)
         return false;
 
-      bool isMatchingProperty = failure.PropertyName == bocControl.Property.Identifier;
+      bool isMatchingProperty = failure.Property.Name == bocControl.Property.Identifier;
       if (!isMatchingProperty)
         isMatchingProperty = GetShortPropertyName (failure) == bocControl.Property.Identifier;
 
@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 
     private static string GetShortPropertyName (ValidationFailure failure)
     {
-      return failure.PropertyName.Split ('.').Last();
+      return failure.Property.Name.Split ('.').Last();
     }
   }
 }

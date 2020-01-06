@@ -29,11 +29,17 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
+        var product = Product.NewObject();
+
         var order = Order.NewObject();
         order.Number = "O2345";
 
-        var product = Product.NewObject();
-        product.Order = order;
+        var orderItem = OrderItem.NewObject();
+        orderItem.Order = order;
+
+        var productReference = ProductReference.NewObject();
+        productReference.OrderItem = orderItem;
+        productReference.Product = product;
 
         var customer = Customer.NewObject();
         ((ICustomerIntroduced) customer).Address = Address.NewObject();
@@ -47,11 +53,17 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
+        var product = Product.NewObject();
+
         var order = Order.NewObject();
         order.Number = "er";
 
-        var product = Product.NewObject();
-        product.Order = order;
+        var orderItem = OrderItem.NewObject();
+        orderItem.Order = order;
+
+        var productReference = ProductReference.NewObject();
+        productReference.OrderItem = orderItem;
+        productReference.Product = product;
 
         var customer = Customer.NewObject();
         ((ICustomerIntroduced) customer).Address = Address.NewObject();
@@ -63,10 +75,10 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
               () => ClientTransaction.Current.Commit(),
               Throws.TypeOf<DomainObjectFluentValidationException>().And.Message.Matches (
                   "One or more DomainObject contain inconsistent data:\r\n\r\n"
-                  + "Object '.*':\r\n"
-                  + " -- Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Order.Number: 'LocalizedNumber' must be between 3 and 8 characters. You entered 2 characters.\r\n\r\n"
-                  + "Object '.*':\r\n"
-                  + " -- Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.ICustomerIntroduced.Title: 'LocalizedTitle' should not be equal to 'Chef1'."));
+                  + "Object 'Order.*':\r\n"
+                  + " -- Number: The value must have between 3 and 8 characters.\r\n\r\n"
+                  + "Object 'Customer.*':\r\n"
+                  + " -- Title: The value must not be equal to 'Chef1'."));
         }
       }
     }

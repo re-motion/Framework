@@ -33,6 +33,15 @@ namespace Remotion.Validation.Providers
   {
     private const BindingFlags PropertyBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
+    public IValidationMessageFactory ValidationMessageFactory { get; }
+
+    public ValidationAttributesBasedCollectorProvider (IValidationMessageFactory validationMessageFactory)
+    {
+      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
+
+      ValidationMessageFactory = validationMessageFactory;
+    }
+
     protected override ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
     {
       ArgumentUtility.CheckNotNull ("types", types);
@@ -41,13 +50,13 @@ namespace Remotion.Validation.Providers
           t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
               .Where (HasValidationRulesOnProperty)
               .Select (p => new { Type = t, Property = p }))
-          .Select (r => new { r.Type, Reflector = new ValidationAttributesBasedPropertyRuleReflector (r.Property) })
+          .Select (r => new { r.Type, Reflector = new ValidationAttributesBasedPropertyRuleReflector (r.Property, ValidationMessageFactory) })
           .ToLookup (r => r.Type, c => (IAttributesBasedValidationPropertyRuleReflector) c.Reflector);
     }
 
     private bool HasValidationRulesOnProperty (PropertyInfo property)
     {
-      var reflector = new ValidationAttributesBasedPropertyRuleReflector (property);
+      var reflector = new ValidationAttributesBasedPropertyRuleReflector (property, ValidationMessageFactory);
       return reflector.GetAddingPropertyValidators().Any()
              || reflector.GetHardConstraintPropertyValidators().Any()
              || reflector.GetRemovingPropertyRegistrations().Any();

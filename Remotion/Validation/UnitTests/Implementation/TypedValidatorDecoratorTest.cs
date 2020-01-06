@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
-using FluentValidation.Results;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Reflection;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Results;
+using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
 
@@ -33,14 +34,18 @@ namespace Remotion.Validation.UnitTests.Implementation
     private Validator _validator;
     private TypedValidatorDecorator<Customer> _validatorDecorator;
     private ValidationFailure _validationFailure;
+    private IPropertyInformation _propertyStub;
 
     [SetUp]
     public void SetUp ()
     {
+      _propertyStub = MockRepository.GenerateStub<IPropertyInformation>();
+      _propertyStub.Stub (_ => _.Name).Return ("PropertyStub");
+
       _validationRuleStub1 = MockRepository.GenerateStub<IValidationRule>();
       _validationRuleStub2 = MockRepository.GenerateStub<IValidationRule>();
 
-      _validationFailure = new ValidationFailure ("PropertyName", "Failes");
+      _validationFailure = new ValidationFailure (_propertyStub, "Error", "ValidationMessage");
 
       _validator = new Validator (new[] { _validationRuleStub1, _validationRuleStub2 }, typeof (Customer));
       _validatorDecorator = new TypedValidatorDecorator<Customer> (_validator);
@@ -65,10 +70,10 @@ namespace Remotion.Validation.UnitTests.Implementation
       var customer = new Customer();
 
       _validationRuleStub1
-          .Stub (stub => stub.Validate (Arg<ValidationContext<Customer>>.Is.NotNull))
+          .Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull))
           .Return (new[] { _validationFailure });
       _validationRuleStub2
-          .Stub (stub => stub.Validate (Arg<ValidationContext<Customer>>.Is.NotNull))
+          .Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull))
           .Return (new ValidationFailure[0]);
 
       var result = _validatorDecorator.Validate (customer);
@@ -90,7 +95,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var result = _validatorDecorator.CreateDescriptor();
 
-      Assert.That (result, Is.TypeOf (typeof (ValidatorDescriptor<Customer>)));
+      Assert.That (result, Is.TypeOf (typeof (ValidatorDescriptor)));
       Assert.That (PrivateInvoke.GetNonPublicProperty (result, "Rules"), Is.EquivalentTo (new[] { _validationRuleStub1, _validationRuleStub2 }));
     }
 
@@ -115,24 +120,6 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That (enumerator.MoveNext(), Is.True);
       Assert.That (enumerator.Current, Is.SameAs (_validationRuleStub2));
       Assert.That (enumerator.MoveNext(), Is.False);
-    }
-
-    [Test]
-    public void CascadeMode_Setter ()
-    {
-      Assert.That (
-          () => ((IValidator<Customer>) _validatorDecorator).CascadeMode = CascadeMode.StopOnFirstFailure,
-          Throws.TypeOf<NotSupportedException>()
-              .And.Message.EqualTo ("CascadeMode is not supported for a 'Remotion.Validation.Implementation.TypedValidatorDecorator`1'"));
-    }
-
-    [Test]
-    public void CascadeMode_Getter ()
-    {
-      Assert.That (
-          () => ((IValidator<Customer>) _validatorDecorator).CascadeMode,
-          Throws.TypeOf<NotSupportedException>()
-              .And.Message.EqualTo ("CascadeMode is not supported for a 'Remotion.Validation.Implementation.TypedValidatorDecorator`1'"));
     }
   }
 }

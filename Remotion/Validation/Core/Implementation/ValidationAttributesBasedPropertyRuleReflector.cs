@@ -19,12 +19,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using FluentValidation.Validators;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes.MetaValidation;
 using Remotion.Validation.Attributes.Validation;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Rules;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
 {
@@ -34,65 +35,70 @@ namespace Remotion.Validation.Implementation
   /// <threadsafety static="true" instance="true" />
   public class ValidationAttributesBasedPropertyRuleReflector : IAttributesBasedValidationPropertyRuleReflector
   {
-    private readonly PropertyInfo _property;
+    private readonly PropertyInfo _propertyInfo;
+    private readonly PropertyInfoAdapter _property;
+    private readonly IValidationMessageFactory _validationMessageFactory;
 
-    public ValidationAttributesBasedPropertyRuleReflector (PropertyInfo property)
+    public ValidationAttributesBasedPropertyRuleReflector (PropertyInfo property, IValidationMessageFactory validationMessageFactory)
     {
       ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
 
-      _property = property;
+      // TODO RM-5960: Replace with IPropertyInformation and propagate to call and callee-site
+      _propertyInfo = property;
+      _property = PropertyInfoAdapter.Create (property);
+      _validationMessageFactory = validationMessageFactory;
     }
 
-    public PropertyInfo ValidatedProperty
+    public IPropertyInformation ValidatedProperty
     {
       get { return _property; }
     }
 
-    public Expression<Func<object, object>> GetPropertyAccessExpression (Type validatedType)
+    public Func<object, object> GetValidatedPropertyFunc (Type validatedType)
     {
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
 
+      // TODO RM-5960: Replace with IPropertyInformation.GetGetMethod().GetFastInvoker.
+      // TODO RM-5960: Add cache, try to unify with AddingComponentPropertyRule and DomainObjectAttributesBasedValidationPropertyRuleReflector
       var parameterExpression = Expression.Parameter (typeof (object), "t");
 
       // object o => (object) (TheType o).TheProperty
-      return Expression.Lambda<Func<object, object>> (
+      var accessorExpression = Expression.Lambda<Func<object, object>> (
           Expression.Convert (
               Expression.MakeMemberAccess (
                   Expression.Convert (parameterExpression, validatedType),
-                  _property),
+                  _propertyInfo),
               typeof (object)),
           parameterExpression);
+
+      return accessorExpression.Compile();
     }
 
     public IEnumerable<IPropertyValidator> GetAddingPropertyValidators ()
     {
-      var addingValidationAttributes =
-          _property.GetCustomAttributes (typeof (AddingValidationAttributeBase), false)
-              .Cast<AddingValidationAttributeBase>()
-              .Where (a => !a.IsHardConstraint);
-      return addingValidationAttributes.SelectMany (a => a.GetPropertyValidators (_property));
+      var addingValidationAttributes = _property.GetCustomAttributes<AddingValidationAttributeBase> (false)
+          .Where (a => !a.IsHardConstraint);
+      return addingValidationAttributes.SelectMany (a => a.GetPropertyValidators (_property, _validationMessageFactory));
     }
 
     public IEnumerable<IPropertyValidator> GetHardConstraintPropertyValidators ()
     {
-      var addingValidationAttributes =
-          _property.GetCustomAttributes (typeof (AddingValidationAttributeBase), false)
-              .Cast<AddingValidationAttributeBase>()
-              .Where (a => a.IsHardConstraint);
-      return addingValidationAttributes.SelectMany (a => a.GetPropertyValidators (_property));
+      var addingValidationAttributes = _property.GetCustomAttributes<AddingValidationAttributeBase> (false)
+          .Where (a => a.IsHardConstraint);
+      return addingValidationAttributes.SelectMany (a => a.GetPropertyValidators (_property, _validationMessageFactory));
     }
 
     public IEnumerable<ValidatorRegistration> GetRemovingPropertyRegistrations ()
     {
-      var removingValidationAttributes = _property.GetCustomAttributes (typeof (RemoveValidatorAttribute), false).Cast<RemoveValidatorAttribute>();
+      var removingValidationAttributes = _property.GetCustomAttributes<RemoveValidatorAttribute> (false);
       return removingValidationAttributes.Select (a => new ValidatorRegistration (a.ValidatorType, a.CollectorTypeToRemoveFrom));
     }
 
     public IEnumerable<IMetaValidationRule> GetMetaValidationRules ()
     {
-      var metaValidationAttributes =
-          _property.GetCustomAttributes (typeof (AddingMetaValidationRuleAttributeBase), false).Cast<AddingMetaValidationRuleAttributeBase>();
-      return metaValidationAttributes.Select (mvr => mvr.GetMetaValidationRule (_property));
+      var metaValidationAttributes = _property.GetCustomAttributes<AddingMetaValidationRuleAttributeBase> (false);
+      return metaValidationAttributes.Select (mvr => mvr.GetMetaValidationRule (_propertyInfo));
     }
   }
 }

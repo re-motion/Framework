@@ -17,18 +17,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidation;
-using FluentValidation.Internal;
-using FluentValidation.Results;
-using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Results;
+using Remotion.Validation.Rules;
 using Remotion.Validation.Utilities;
+using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests
@@ -145,11 +145,18 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
             .Expect (mock => mock.BuildValidator (typeof (TestDomainObject)))
             .Return (_validatorMock2);
 
-        var validationFailure1 = new ValidationFailure ("Test1", "Error1");
+        var propertyStub1 = MockRepository.GenerateStub<IPropertyInformation>();
+        propertyStub1.Stub (_ => _.Name).Return ("PropertyStub1");
+        var propertyStub2 = MockRepository.GenerateStub<IPropertyInformation>();
+        propertyStub2.Stub (_ => _.Name).Return ("PropertyStub3");
+        var propertyStub3 = MockRepository.GenerateStub<IPropertyInformation>();
+        propertyStub3.Stub (_ => _.Name).Return ("PropertyStub3");
+
+        var validationFailure1 = new ValidationFailure (propertyStub1, "Error1", "ValidationMessage1");
         validationFailure1.SetValidatedInstance (domainObject1);
-        var validationFailure2 = new ValidationFailure ("Test2", "Error2");
+        var validationFailure2 = new ValidationFailure (propertyStub2, "Error2", "ValidationMessage2");
         validationFailure2.SetValidatedInstance (domainObject1);
-        var validationFailure3 = new ValidationFailure ("Test3", "Error3");
+        var validationFailure3 = new ValidationFailure (propertyStub3, "Error3", "ValidationMessage3");
 
         _validatorMock1.Expect (mock => mock.Validate (domainObject1)).Repeat.Twice().Return (new ValidationResult (new[] { validationFailure1 }));
         _validatorMock2.Expect (mock => mock.Validate (domainObject2))
@@ -164,11 +171,11 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
         string expectedMessage = @"One or more DomainObject contain inconsistent data:
 
 Object 'DomainObjectWithoutAnnotatedProperties' with ID '.*':
- -- Test1: Error1
- -- Test2: Error2
+ -- PropertyStub1: Error1
+ -- PropertyStub3: Error2
 
 Object 'TestDomainObject' with ID '.*':
- -- Test3: Error3
+ -- PropertyStub3: Error3
 
 ";
         Assert.That (exception.Message, Is.StringMatching (expectedMessage));
@@ -197,8 +204,11 @@ Object 'TestDomainObject' with ID '.*':
             DataContainerObjectMother.Create (domainObject1),
             new IRelationEndPoint[0]);
 
-        var propertyRule = PropertyRule.Create<DomainObjectWithoutAnnotatedProperties, string> (p => p.Name);
-        propertyRule.AddValidator (new NotNullValidator());
+        var propertyRule = new PropertyValidationRule<DomainObjectWithoutAnnotatedProperties, string> (
+            PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty ((DomainObjectWithoutAnnotatedProperties p) => p.Name)),
+            o => ((DomainObjectWithoutAnnotatedProperties) o).Name,
+            _ => true,
+            new[] { new NotNullValidator (new InvariantValidationMessage ("Fake Message")) });
 
         var rules = new List<IValidationRule>();
         rules.Add (propertyRule);
@@ -219,7 +229,7 @@ Object 'TestDomainObject' with ID '.*':
           string expectedMessage = @"One or more DomainObject contain inconsistent data:
 
 Object 'DomainObjectWithoutAnnotatedProperties' with ID '.*':
- -- Name: 'Name' must not be empty.
+ -- Name: The value must not be null.
 ";
 
           Assert.That (exception.Message, Is.StringMatching (expectedMessage));
@@ -228,7 +238,10 @@ Object 'DomainObjectWithoutAnnotatedProperties' with ID '.*':
           Assert.That (exception.AffectedObjects[0], Is.EqualTo (domainObject1));
 
           Assert.That (exception.ValidationFailures.Count, Is.EqualTo (1));
-          Assert.That (exception.ValidationFailures.ToArray()[0].ErrorMessage, Is.EqualTo ("'Name' darf keinen Null-Wert aufweisen."));
+
+          var validationFailures = exception.ValidationFailures.ToArray();
+          Assert.That (validationFailures[0].Property.Name, Is.EqualTo ("Name"));
+          Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must not be null."));
         }
       }
     }

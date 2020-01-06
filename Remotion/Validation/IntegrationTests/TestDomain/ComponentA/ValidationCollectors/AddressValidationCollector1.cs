@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationCollectors
 {
@@ -23,23 +22,18 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
   {
     public AddressValidationCollector1 ()
     {
-      When (
-          a => a.Country=="Deutschland",
-          () => AddRule (o => o.PostalCode).Matches ("^DE"));
+      AddRule (o => o.PostalCode).SetCondition (IsCountryEqualToDeutschland).Matches ("^DE");
 
-      When (
-          a => a.Street == "Maria Hilferstrasse 145",
-          () =>
-          {
-            AddRule (a => a.City).Matches ("Wien");
-            AddRule (a => a.PostalCode).Matches ("1090");
-          });
+      AddRule (a => a.City).SetCondition (IsStreetEqualToMariaHilferstrasse145).Matches ("Wien");
+      AddRule (a => a.PostalCode).SetCondition (IsStreetEqualToMariaHilferstrasse145).Matches ("1090");
 
-      Unless (
-          a => a.Country == "Brunei",
-          () => AddRule (a => a.PostalCode).NotNull());
+      AddRule (a => a.PostalCode).NotNull();
 
       AddRule (a => a.Street).Length (0, 25);
+
+      bool IsCountryEqualToDeutschland (Address o) => o.Country == "Deutschland";
+
+      bool IsStreetEqualToMariaHilferstrasse145 (Address o) => o.Street == "Maria Hilferstrasse 145";
     }
   }
 }

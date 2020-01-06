@@ -25,6 +25,11 @@ namespace Remotion.Validation.UnitTests.Providers
 {
   public class TestableValidationAttributesBasedCollectorProvider : ValidationAttributesBasedCollectorProvider
   {
+    public TestableValidationAttributesBasedCollectorProvider (IValidationMessageFactory validationMessageFactory)
+        : base (validationMessageFactory)
+    {
+    }
+
     public new ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
     {
       return
@@ -34,7 +39,7 @@ namespace Remotion.Validation.UnitTests.Providers
                   t =>
                       new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector> (
                           t.Type,
-                          new ValidationAttributesBasedPropertyRuleReflector (t.Property)))
+                          new ValidationAttributesBasedPropertyRuleReflector (t.Property, ValidationMessageFactory)))
               .ToLookup (c => c.Item1, c => c.Item2);
     }
   }

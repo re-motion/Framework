@@ -18,10 +18,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidation;
-using FluentValidation.Internal;
-using FluentValidation.Results;
 using Remotion.Utilities;
+using Remotion.Validation.Results;
+using Remotion.Validation.Rules;
 using Remotion.Validation.Utilities;
 
 namespace Remotion.Validation.Implementation
@@ -57,7 +56,7 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
-      return Validate (new ValidationContext (instance, new PropertyChain(), new DefaultValidatorSelector()));
+      return Validate (new ValidationContext (instance));
     }
 
     public ValidationResult Validate (ValidationContext context)
@@ -73,8 +72,7 @@ namespace Remotion.Validation.Implementation
 
     public IValidatorDescriptor CreateDescriptor ()
     {
-      var typeToInstantiate = typeof (ValidatorDescriptor<>).MakeGenericType (_validatedType);
-      return (IValidatorDescriptor) Activator.CreateInstance (typeToInstantiate, _validationRules);
+      return new ValidatorDescriptor (_validationRules);
     }
 
     public bool CanValidateInstancesOfType (Type type)

@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
+using Remotion.Validation.UnitTests.TestDomain.Validators;
 
 namespace Remotion.Validation.UnitTests.TestDomain.Collectors
 {
@@ -23,9 +23,8 @@ namespace Remotion.Validation.UnitTests.TestDomain.Collectors
   {
     public CustomerValidationCollector2 ()
     {
-      AddRule (c => c.Email).NotRemovable().EmailAddress();
-
-      AddRule (c => c.CreditcardNumber).NotRemovable().CreditCard();
+      AddRule (c => c.Email).NotRemovable().SetValidator (_ => new FakeEmailValidator());
+      AddRule (c => c.CreditcardNumber).NotRemovable().SetValidator (_ => new FakeCreditCardValidator());
     }
   }
 }

@@ -16,9 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using FluentValidation.Validators;
+using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.Utilities;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Attributes.Validation
 {
@@ -29,14 +31,31 @@ namespace Remotion.Validation.Attributes.Validation
   {
     public NotNullAttribute ()
     {
-      
     }
 
-    protected override IEnumerable<IPropertyValidator> GetValidators (PropertyInfo property)
+    protected override IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
       ArgumentUtility.CheckNotNull ("property", property);
-      
-      return new[] { new NotNullValidator() };
+      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
+
+      NotNullValidator validator;
+      if (string.IsNullOrEmpty (ErrorMessage))
+      {
+        var validatorType = typeof (NotNullValidator);
+        var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator (validatorType, property);
+        if (validationMessage == null)
+        {
+          throw new InvalidOperationException (
+              $"The {nameof (IValidationMessageFactory)} did not return a result for {validatorType.Name} applied to property '{property.Name}' on type '{property.GetOriginalDeclaringType().FullName}'.");
+        }
+        validator = new NotNullValidator (validationMessage);
+      }
+      else
+      {
+        validator = new NotNullValidator (new InvariantValidationMessage (ErrorMessage));
+      }
+
+      return EnumerableUtility.Singleton (validator);
     }
   }
 }
