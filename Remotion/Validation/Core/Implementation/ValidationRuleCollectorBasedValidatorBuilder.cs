@@ -24,7 +24,7 @@ using Remotion.Utilities;
 using Remotion.Validation.Merging;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Providers;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.Implementation
 {

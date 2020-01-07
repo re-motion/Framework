@@ -20,7 +20,7 @@ using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;

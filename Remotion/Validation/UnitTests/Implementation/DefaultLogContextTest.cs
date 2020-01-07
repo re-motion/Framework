@@ -19,7 +19,7 @@ using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Rhino.Mocks;
 using System.Linq;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.Implementation

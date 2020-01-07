@@ -19,7 +19,7 @@ using System.Linq.Expressions;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
-namespace Remotion.Validation.Rules
+namespace Remotion.Validation.RuleCollectors
 {
   public static class AddingPropertyValidationRuleCollector
   {

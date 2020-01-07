@@ -24,7 +24,7 @@ using Remotion.Utilities;
 using Remotion.Validation.Attributes.MetaValidation;
 using Remotion.Validation.Attributes.Validation;
 using Remotion.Validation.MetaValidation;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation

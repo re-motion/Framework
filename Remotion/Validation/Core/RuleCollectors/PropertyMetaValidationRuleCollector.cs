@@ -22,7 +22,7 @@ using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
 
-namespace Remotion.Validation.Rules
+namespace Remotion.Validation.RuleCollectors
 {
   /// <summary>
   /// Default implementation of the <see cref="IPropertyMetaValidationRuleCollector"/> interface.

@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Remotion.Utilities;
 using Remotion.Validation.RuleBuilders;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation
 {

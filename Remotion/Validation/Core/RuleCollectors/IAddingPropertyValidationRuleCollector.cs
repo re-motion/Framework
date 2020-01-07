@@ -21,9 +21,10 @@ using JetBrains.Annotations;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
+using Remotion.Validation.Rules;
 using Remotion.Validation.Validators;
 
-namespace Remotion.Validation.Rules
+namespace Remotion.Validation.RuleCollectors
 {
   /// <summary>
   /// Defines a rule associated with a <see cref="Property"/> which can have multiple validators. The validators of this rule belong to a component via 

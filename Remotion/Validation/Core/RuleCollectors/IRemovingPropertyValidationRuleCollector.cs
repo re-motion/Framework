@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Reflection;
 
-namespace Remotion.Validation.Rules
+namespace Remotion.Validation.RuleCollectors
 {
   /// <summary>
   /// Defines a rule associated with a <see cref="Property"/> which specifies the validators to remove from the validation specification. The rule belongs to a component 

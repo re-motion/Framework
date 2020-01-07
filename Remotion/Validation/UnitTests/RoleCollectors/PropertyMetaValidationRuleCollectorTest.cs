@@ -20,13 +20,13 @@ using System.Linq.Expressions;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
 
-namespace Remotion.Validation.UnitTests.Rules
+namespace Remotion.Validation.UnitTests.RoleCollectors
 {
   [TestFixture]
   public class PropertyMetaValidationRuleCollectorTest

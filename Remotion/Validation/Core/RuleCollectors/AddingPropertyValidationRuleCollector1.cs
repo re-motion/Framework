@@ -8,9 +8,10 @@ using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
+using Remotion.Validation.Rules;
 using Remotion.Validation.Validators;
 
-namespace Remotion.Validation.Rules
+namespace Remotion.Validation.RuleCollectors
 {
   /// <summary>
   /// Default implementation of the <see cref="IAddingPropertyValidationRuleCollector"/> interface.

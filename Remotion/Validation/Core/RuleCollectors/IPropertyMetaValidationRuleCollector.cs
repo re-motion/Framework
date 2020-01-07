@@ -21,7 +21,7 @@ using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Validators;
 
-namespace Remotion.Validation.Rules
+namespace Remotion.Validation.RuleCollectors
 {
   /// <summary>
   /// Defines a rule which ensures the consistency of the merged set of <see cref="IPropertyValidator"/>s for the <see cref="Property"/>. 

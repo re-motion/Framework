@@ -16,12 +16,12 @@
 // 
 using System;
 using Remotion.Utilities;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.Implementation
 {
   /// <summary>
-  /// Extends a <see cref="Rules.ValidatorRegistration"/> with information about the property for which it applies.
+  /// Extends a <see cref="RuleCollectors.ValidatorRegistration"/> with information about the property for which it applies.
   /// </summary>
   public class ValidatorRegistrationWithContext
   {

@@ -131,7 +131,7 @@
     <Compile Include="Providers\IValidationRuleCollectorProviderTest.cs" />
     <Compile Include="Providers\TestableAttributeBasedValidationRuleCollectorProviderBase.cs" />
     <Compile Include="Providers\TestableValidationAttributesBasedValidationRuleCollectorProvider.cs" />
-    <Compile Include="Rules\PropertyMetaValidationRuleCollectorTest.cs" />
+    <Compile Include="RoleCollectors\PropertyMetaValidationRuleCollectorTest.cs" />
     <Compile Include="Rules\ObjectValidationRuleTest.cs" />
     <Compile Include="Rules\PropertyValidationRuleTest.cs" />
     <Compile Include="TestDomain\Address.cs" />
@@ -154,11 +154,11 @@
     <Compile Include="TestDomain\Validators\FakeEmailValidator.cs" />
     <Compile Include="TestHelpers\TypeUtility.cs" />
     <Compile Include="RuleBuilders\RemovingPropertyValidationRuleBuilderTest.cs" />
-    <Compile Include="Rules\AddingPropertyValidationRuleCollector1Test.cs" />
+    <Compile Include="RoleCollectors\AddingPropertyValidationRuleCollector1Test.cs" />
     <Compile Include="RuleBuilders\AddingPropertyValidationRuleBuilderTest.cs" />
     <Compile Include="ValidationRuleCollectorBaseTest.cs" />
-    <Compile Include="Rules\RemovingPropertyValidationRuleCollectorTest.cs" />
-    <Compile Include="Rules\ValidatorRegistrationTest.cs" />
+    <Compile Include="RoleCollectors\RemovingPropertyValidationRuleCollectorTest.cs" />
+    <Compile Include="RoleCollectors\ValidatorRegistrationTest.cs" />
     <Compile Include="Implementation\InvolvedTypeProviderTest.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

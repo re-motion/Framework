@@ -26,7 +26,7 @@ using Remotion.Logging;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.Providers;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.Implementation;
 using Remotion.Validation.UnitTests.Implementation.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain;

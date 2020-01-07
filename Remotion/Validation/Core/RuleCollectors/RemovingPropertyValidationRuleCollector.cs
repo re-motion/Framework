@@ -21,7 +21,7 @@ using System.Text;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
-namespace Remotion.Validation.Rules
+namespace Remotion.Validation.RuleCollectors
 {
   /// <summary>
   /// Default implementation of the <see cref="IRemovingPropertyValidationRuleCollector"/> interface.

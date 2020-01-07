@@ -21,13 +21,13 @@ using System.Reflection;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Utilities;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Remotion.Validation.Validators;
 
-namespace Remotion.Validation.UnitTests.Rules
+namespace Remotion.Validation.UnitTests.RoleCollectors
 {
   [TestFixture]
   public class RemovingPropertyValidationRuleCollectorTest

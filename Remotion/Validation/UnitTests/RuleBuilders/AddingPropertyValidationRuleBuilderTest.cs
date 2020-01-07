@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleBuilders;
+using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.Validators;

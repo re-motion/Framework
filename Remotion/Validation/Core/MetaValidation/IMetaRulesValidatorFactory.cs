@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.MetaValidation
 {

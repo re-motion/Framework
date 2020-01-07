@@ -17,7 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Validation.MetaValidation;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.MetaValidation

@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Validation.Attributes;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.UnitTests.TestDomain.Collectors
 {

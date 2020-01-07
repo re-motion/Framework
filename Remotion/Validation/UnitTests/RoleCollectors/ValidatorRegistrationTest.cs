@@ -16,11 +16,11 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.Validators;
 
-namespace Remotion.Validation.UnitTests.Rules
+namespace Remotion.Validation.UnitTests.RoleCollectors
 {
   [TestFixture]
   public class ValidatorRegistrationTest

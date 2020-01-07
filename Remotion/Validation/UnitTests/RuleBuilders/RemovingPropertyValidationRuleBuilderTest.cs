@@ -17,7 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Validation.RuleBuilders;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
