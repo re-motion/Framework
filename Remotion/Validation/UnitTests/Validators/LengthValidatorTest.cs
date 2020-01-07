@@ -27,6 +27,18 @@ namespace Remotion.Validation.UnitTests.Validators
   public class LengthValidatorTest : ValidatorTestBase
   {
     [Test]
+    public void Ctor_WithMinNegative_ThrowsArgumentOutOfRangeException ()
+    {
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        Assert.That (
+            () => new LengthValidator (-1, 3, new InvariantValidationMessage ("Fake Message")),
+            Throws.InstanceOf<ArgumentOutOfRangeException>()
+                .With.Message.EqualTo ($"Value cannot be less than zero.{Environment.NewLine}Parameter name: min"));
+      }
+    }
+
+    [Test]
     public void Ctor_WithMinGreaterThanMax_ThrowsArgumentOutOfRangeException ()
     {
       using (CultureScope.CreateInvariantCultureScope())

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Reflection;
+using Remotion.Utilities;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.MetaValidation.Rules.System
@@ -28,9 +29,6 @@ namespace Remotion.Validation.MetaValidation.Rules.System
   /// </summary>
   public class LengthSystemMetaValidationRule : SystemMetaValidationRuleBase<LengthValidator>
   {
-    private const int c_defaultMin = 0;
-    private const int c_defaultMax = -1;
-
     public LengthSystemMetaValidationRule (IPropertyInformation propertyInfo)
         : base (propertyInfo)
     {
@@ -38,12 +36,14 @@ namespace Remotion.Validation.MetaValidation.Rules.System
 
     public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<LengthValidator> validationRules)
     {
+      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
+
       var rules = validationRules.ToArray();
 
       yield return
           GetValidationResult (
-              rules.Select (r => r.Min).Where (min => min > c_defaultMin).Distinct().Count() <= 1
-              && rules.Select (r => r.Max).Where (max => max > c_defaultMax).Distinct().Count() <= 1);
+              rules.Select (r => r.Min).Where (min => min > 0).Distinct().Count() <= 1
+              && rules.Select (r => r.Max).Where (max => max != null).Distinct().Count() <= 1);
     }
   }
 }

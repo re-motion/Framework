@@ -146,8 +146,8 @@ namespace Remotion.Data.DomainObjects.Validation
       var maxLength = _domainModelConstraintProvider.GetMaxLength (_implementationPropertyInformation);
       if (maxLength.HasValue)
       {
-        var validationMessage = CreateValidationMessageForPropertyValidator (typeof (LengthValidator), _implementationPropertyInformation);
-        yield return new LengthValidator (0, maxLength.Value, validationMessage);
+        var validationMessage = CreateValidationMessageForPropertyValidator (typeof (MaximumLengthValidator), _implementationPropertyInformation);
+        yield return new MaximumLengthValidator (maxLength.Value, validationMessage);
       }
 
       if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation) 

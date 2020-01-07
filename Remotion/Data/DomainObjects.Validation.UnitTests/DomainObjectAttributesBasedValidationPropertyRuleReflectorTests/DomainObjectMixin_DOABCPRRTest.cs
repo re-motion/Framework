@@ -316,16 +316,16 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _validationMessageFactoryStub
           .Stub (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  typeof (LengthValidator),
+                  typeof (MaximumLengthValidator),
                   PropertyInfoAdapter.Create (_mixinPropertyWithNullableStringPropertyAttribute)))
           .Return (validationMessageStub);
 
       var result = _propertyWithNullableStringPropertyAttributeReflector.GetRemovablePropertyValidators().ToArray();
 
       Assert.That (result.Count(), Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (LengthValidator)));
-      Assert.That (((LengthValidator) result[0]).Max, Is.EqualTo (10));
-      Assert.That (((LengthValidator) result[0]).ValidationMessage, Is.SameAs (validationMessageStub));
+      Assert.That (result[0], Is.TypeOf (typeof (MaximumLengthValidator)));
+      Assert.That (((MaximumLengthValidator) result[0]).Max, Is.EqualTo (10));
+      Assert.That (((MaximumLengthValidator) result[0]).ValidationMessage, Is.SameAs (validationMessageStub));
     }
 
     [Test]
@@ -341,7 +341,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _validationMessageFactoryStub
           .Stub (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  typeof (LengthValidator),
+                  typeof (MaximumLengthValidator),
                   PropertyInfoAdapter.Create (_mixinPropertyWithMandatoryStringPropertyAttribute)))
           .Return (lengthValidationMessageStub);
 
@@ -356,9 +356,9 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetRemovablePropertyValidators().ToArray();
 
       Assert.That (result.Count(), Is.EqualTo (2));
-      Assert.That (result[0], Is.TypeOf (typeof (LengthValidator)));
-      Assert.That (((LengthValidator) result[0]).Max, Is.EqualTo (20));
-      Assert.That (((LengthValidator) result[0]).ValidationMessage, Is.SameAs (lengthValidationMessageStub));
+      Assert.That (result[0], Is.TypeOf (typeof (MaximumLengthValidator)));
+      Assert.That (((MaximumLengthValidator) result[0]).Max, Is.EqualTo (20));
+      Assert.That (((MaximumLengthValidator) result[0]).ValidationMessage, Is.SameAs (lengthValidationMessageStub));
 
       Assert.That (result[1], Is.TypeOf (typeof (NotEmptyValidator)));
       Assert.That (((NotEmptyValidator) result[1]).ValidationMessage, Is.SameAs (notEmptyValidationMessageStub));

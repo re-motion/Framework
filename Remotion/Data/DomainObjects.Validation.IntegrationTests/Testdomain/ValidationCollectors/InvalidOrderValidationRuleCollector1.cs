@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Val
   {
     public InvalidOrderValidationRuleCollector1 ()
     {
-      RemoveRule (o => o.Number).Validator<LengthValidator>();
+      RemoveRule (o => o.Number).Validator<MaximumLengthValidator>();
 
       AddRule (o => o.Number).Length (3, 15);
     }
