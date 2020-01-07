@@ -65,6 +65,13 @@ namespace Remotion.Validation
     }
 
     /// <inheritdoc />
+    /// <summary>
+    /// Registers a new validation rule for a property. 
+    /// </summary>
+    /// <typeparam name="TProperty">The <see cref="Type"/> of the validated property (used only for syntactical sugar).</typeparam>
+    /// <param name="propertySelector">Specifies the property for which the validation rule is added.</param>
+    /// <returns>A builder object used for specifying the validation rules of the property.</returns>
+    /// <remarks>TODO RM-5906: usage sample</remarks>
     public IConditionalAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddRule<TProperty> (
         Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
@@ -79,7 +86,14 @@ namespace Remotion.Validation
       return new AddingPropertyValidationRuleBuilder<TValidatedType, TProperty> (propertyRule, metaValidationPropertyRule);
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Registers which validation rules should be removed from the property. This is used to remove validation rules introduced by other validation 
+    /// collectors of <typeparamref name="TValidatedType"/>.
+    /// </summary>
+    /// <typeparam name="TProperty">The <see cref="Type"/> of the validated property (used only for syntactical sugar).</typeparam>
+    /// <param name="propertySelector">Specifies the property for which a specific validation rule should be removed.</param>
+    /// <returns>A builder object used for specifying the validation rules to be removed from the property.</returns>
+    /// <remarks>TODO RM-5906: usage sample</remarks>
     public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> RemoveRule<TProperty> (
         Expression<Func<TValidatedType, TProperty>> propertySelector)
     {

@@ -75,7 +75,7 @@
     <Compile Include="Implementation\CompoundValidationMessageFactory.cs" />
     <Compile Include="Implementation\ValidationMessage.cs" />
     <Compile Include="Implementation\IValidationMessageFactory.cs" />
-    <Compile Include="IValidationRuleCollectorValidator1.cs" />
+    <Compile Include="IValidationRuleCollector1.cs" />
     <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecorator.cs" />
     <Compile Include="Implementation\CompoundValidationRuleCollectorValidator.cs" />
     <Compile Include="Implementation\CompoundValidationTypeFilter.cs" />
