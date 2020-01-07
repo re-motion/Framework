@@ -71,7 +71,7 @@ namespace Remotion.Validation.UnitTests.Rules
       Assert.That (propertyInfo.ReflectedType, Is.EqualTo (typeof (Customer)));
       Assert.That (_addingPropertyValidationRuleCollector.CollectorType, Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
       Assert.That (_addingPropertyValidationRuleCollector.Validators.Any(), Is.False);
-      Assert.That (_addingPropertyValidationRuleCollector.IsHardConstraint, Is.False);
+      Assert.That (_addingPropertyValidationRuleCollector.IsRemovable, Is.False);
     }
 
     [Test]
@@ -170,8 +170,10 @@ namespace Remotion.Validation.UnitTests.Rules
     }
 
     [Test]
-    public void ApplyRemoveValidatorRegistrations_NoHardConstraint ()
+    public void ApplyRemoveValidatorRegistrations_IsRemovableTrue ()
     {
+      _addingPropertyValidationRuleCollector.SetRemovable();
+      Assert.That (_addingPropertyValidationRuleCollector.IsRemovable, Is.True);
       _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator1);
       _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator2);
       _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator3);
@@ -189,10 +191,9 @@ namespace Remotion.Validation.UnitTests.Rules
     }
 
     [Test]
-    public void ApplyRemoveValidatorRegistrations_HardConstraintAndNoValidatorsToRemove_NoExceptionIsThrown ()
+    public void ApplyRemoveValidatorRegistrations_IsRemovableFalseAndNoValidatorsToRemove_NoExceptionIsThrown ()
     {
-      _addingPropertyValidationRuleCollector.SetHardConstraint();
-      Assert.That (_addingPropertyValidationRuleCollector.IsHardConstraint, Is.True);
+      Assert.That (_addingPropertyValidationRuleCollector.IsRemovable, Is.False);
       _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator1);
       Assert.That (_addingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
 
@@ -207,9 +208,8 @@ namespace Remotion.Validation.UnitTests.Rules
     }
 
     [Test]
-    public void ApplyRemoveValidatorRegistrations_HardConstraintAndValidatorsToRemove ()
+    public void ApplyRemoveValidatorRegistrations_IsRemovableFalseAndValidatorsToRemove_ExceptionIsThrown ()
     {
-      _addingPropertyValidationRuleCollector.SetHardConstraint();
       _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator1);
       _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator2);
       _addingPropertyValidationRuleCollector.RegisterValidator (_ => _stubPropertyValidator3);
@@ -223,12 +223,12 @@ namespace Remotion.Validation.UnitTests.Rules
       Assert.That (
           () => _addingPropertyValidationRuleCollector.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock),
           Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo (
-              "Hard constraint validator(s) 'StubPropertyValidator, NotEqualValidator' on property "
-              + "'Remotion.Validation.UnitTests.TestDomain.Customer.UserName' cannot be removed."));
+              "Attempted to remove non-removable validator(s) 'StubPropertyValidator, NotEqualValidator' on property "
+              + "'Remotion.Validation.UnitTests.TestDomain.Customer.UserName'."));
     }
 
     [Test]
-    public void ToString_NoHardConstraint ()
+    public void ToString_NotRemovable ()
     {
       var result = _addingPropertyValidationRuleCollector.ToString();
 
@@ -238,15 +238,15 @@ namespace Remotion.Validation.UnitTests.Rules
     }
 
     [Test]
-    public void ToString_HardConstraint ()
+    public void ToString_IsRemovable ()
     {
-      _addingPropertyValidationRuleCollector.SetHardConstraint();
+      _addingPropertyValidationRuleCollector.SetRemovable();
       var result = _addingPropertyValidationRuleCollector.ToString();
 
       Assert.That (
           result,
           Is.EqualTo (
-              "AddingPropertyValidationRuleCollector (HARD CONSTRAINT): Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
+              "AddingPropertyValidationRuleCollector (REMOVABLE): Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
 
     [Test]
@@ -273,16 +273,16 @@ namespace Remotion.Validation.UnitTests.Rules
     }
 
     [Test]
-    public void ToString_WithConditionAndHardConstraint ()
+    public void ToString_WithConditionAndIsRemovable ()
     {
       _addingPropertyValidationRuleCollector.SetCondition ((Customer o) => true);
-      _addingPropertyValidationRuleCollector.SetHardConstraint();
+      _addingPropertyValidationRuleCollector.SetRemovable();
       var result = _addingPropertyValidationRuleCollector.ToString();
 
       Assert.That (
           result,
           Is.EqualTo (
-              "AddingPropertyValidationRuleCollector (CONDITIONAL, HARD CONSTRAINT): Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
+              "AddingPropertyValidationRuleCollector (CONDITIONAL, REMOVABLE): Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
   }
 }

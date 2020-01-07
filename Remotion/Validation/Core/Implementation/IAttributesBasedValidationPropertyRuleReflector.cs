@@ -33,8 +33,8 @@ namespace Remotion.Validation.Implementation
   {
     IPropertyInformation ValidatedProperty { get; }
     Func<object, object> GetValidatedPropertyFunc (Type validatedType);
-    IEnumerable<IPropertyValidator> GetAddingPropertyValidators ();
-    IEnumerable<IPropertyValidator> GetHardConstraintPropertyValidators ();
+    IEnumerable<IPropertyValidator> GetRemovablePropertyValidators ();
+    IEnumerable<IPropertyValidator> GetNonRemovablePropertyValidators ();
     IEnumerable<ValidatorRegistration> GetRemovingPropertyRegistrations ();
     IEnumerable<IMetaValidationRule> GetMetaValidationRules ();
   }

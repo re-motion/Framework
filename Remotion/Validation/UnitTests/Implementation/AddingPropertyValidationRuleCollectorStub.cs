@@ -71,10 +71,10 @@ namespace Remotion.Validation.UnitTests.Implementation
       get { return PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty ((DomainType _) => _.DomainProperty)); }
     }
 
-    public bool IsHardConstraint => throw new NotImplementedException();
+    public bool IsRemovable => throw new NotImplementedException();
 
 
-    public void SetHardConstraint ()
+    public void SetRemovable ()
     {
       throw new NotImplementedException();
     }

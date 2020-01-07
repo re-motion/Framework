@@ -22,7 +22,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA.Coll
   {
     public PersonValidationRuleCollector1 ()
     {
-      AddRule (p => p.LastName).NotNull().NotEqual("Test");
+      AddRule (p => p.LastName).CanBeRemoved().NotNull().NotEqual("Test");
     }
   }
 }

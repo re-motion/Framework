@@ -32,7 +32,7 @@ namespace Remotion.Validation.Attributes.Validation
     /// <summary>
     /// Gets or sets a flag whether the constraint can be removed by an other component.
     /// </summary>
-    public bool IsHardConstraint { get; set; }
+    public bool IsRemovable { get; set; }
 
     /// <summary>
     /// Gets or sets the error message displayed when the validation fails.

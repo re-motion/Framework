@@ -24,8 +24,8 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentB.ValidationC
   {
     public CustomerValidationRuleCollector2 ()
     {
-      AddRule (c => c.Email).NotRemovable().SetValidator(_ => new FakeEmailValidator());
-      AddRule (c => c.CreditcardNumber).NotRemovable().SetValidator(_ => new FakeCreditCardValidator());
+      AddRule (c => c.Email).SetValidator(_ => new FakeEmailValidator());
+      AddRule (c => c.CreditcardNumber).SetValidator(_ => new FakeCreditCardValidator());
     }
   }
 }

@@ -89,8 +89,8 @@ namespace Remotion.Validation.Providers
       var propertyFunc = propertyRuleReflector.GetValidatedPropertyFunc (validatedType); // TODO RM-5906: change to return Func<TValidatedType, TProperty>
       var collectorType = typeof (AttributeBasedValidationRuleCollector);
 
-      var addingPropertyRule = GetAddingPropertyRule<TValidatedType, TProperty> (propertyRuleReflector, property, propertyFunc, collectorType);
-      var addingHardConstraintPropertyRule = GetAddingHardConstraintPropertyRule<TValidatedType, TProperty> (
+      var addingPropertyRule = GetAddingPropertyRuleForRemovableValidators<TValidatedType, TProperty> (propertyRuleReflector, property, propertyFunc, collectorType);
+      var addingHardConstraintPropertyRule = GetAddingPropertyRuleForNonRemovableValidators<TValidatedType, TProperty> (
           propertyRuleReflector,
           property,
           propertyFunc,
@@ -105,7 +105,7 @@ namespace Remotion.Validation.Providers
           removingPropertyRule);
     }
 
-    private static IAddingPropertyValidationRuleCollector GetAddingPropertyRule<TValidatedType, TProperty> (
+    private static IAddingPropertyValidationRuleCollector GetAddingPropertyRuleForRemovableValidators<TValidatedType, TProperty> (
         IAttributesBasedValidationPropertyRuleReflector propertyRuleReflector,
         IPropertyInformation property,
         Func<object, object> propertyFunc,
@@ -113,13 +113,14 @@ namespace Remotion.Validation.Providers
     {
       IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector = new AddingPropertyValidationRuleCollector<TValidatedType, TProperty> (property, propertyFunc, collectorType);
 
-      foreach (var validator in propertyRuleReflector.GetAddingPropertyValidators())
+      addingPropertyValidationRuleCollector.SetRemovable();
+      foreach (var validator in propertyRuleReflector.GetRemovablePropertyValidators())
         addingPropertyValidationRuleCollector.RegisterValidator (_ => validator);
 
       return addingPropertyValidationRuleCollector;
     }
 
-    private static IAddingPropertyValidationRuleCollector GetAddingHardConstraintPropertyRule<TValidatedType, TProperty> (
+    private static IAddingPropertyValidationRuleCollector GetAddingPropertyRuleForNonRemovableValidators<TValidatedType, TProperty> (
         IAttributesBasedValidationPropertyRuleReflector propertyRuleReflector,
         IPropertyInformation property,
         Func<object, object> propertyFunc,
@@ -127,8 +128,7 @@ namespace Remotion.Validation.Providers
     {
       IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector = new AddingPropertyValidationRuleCollector<TValidatedType, TProperty> (property, propertyFunc, collectorType);
 
-      addingPropertyValidationRuleCollector.SetHardConstraint ();
-      foreach (var validator in propertyRuleReflector.GetHardConstraintPropertyValidators ())
+      foreach (var validator in propertyRuleReflector.GetNonRemovablePropertyValidators ())
         addingPropertyValidationRuleCollector.RegisterValidator (_ => validator);
 
       return addingPropertyValidationRuleCollector;

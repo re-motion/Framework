@@ -64,7 +64,7 @@ namespace Remotion.Validation.Rules
     [NotNull]
     public Func<object, object> PropertyFunc { get; }
 
-    public bool IsHardConstraint { get; private set; }
+    public bool IsRemovable { get; private set; }
 
     [CanBeNull]
     public Func<TValidatedType, bool> Condition { get; private set; }
@@ -87,7 +87,7 @@ namespace Remotion.Validation.Rules
       ValidatedType = typeof (TValidatedType);
       Property = property;
       PropertyFunc = propertyFunc;
-      IsHardConstraint = false; 
+      IsRemovable = false; 
     }
 
     IValidationRule IAddingPropertyValidationRuleCollector.CreateValidationRule (IValidationMessageFactory validationMessageFactory)
@@ -127,9 +127,9 @@ namespace Remotion.Validation.Rules
       Condition = (Func<TValidatedType, bool>) (object) predicate;
     }
 
-    public void SetHardConstraint ()
+    public void SetRemovable ()
     {
-      IsHardConstraint = true;
+      IsRemovable = true;
     }
 
     public void RegisterValidator (Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory)
@@ -151,7 +151,7 @@ namespace Remotion.Validation.Rules
       ArgumentUtility.CheckNotNull ("propertyValidatorExtractor", propertyValidatorExtractor);
 
       var validatorsToRemove = propertyValidatorExtractor.ExtractPropertyValidatorsToRemove (this).ToArray();
-      CheckForHardConstraintViolation (validatorsToRemove);
+      CheckForNonRemovablePropertyValidatorViolation (validatorsToRemove);
       foreach (var validator in validatorsToRemove)
       {
         // TODO RM-5906: test
@@ -160,12 +160,12 @@ namespace Remotion.Validation.Rules
       }
     }
 
-    private void CheckForHardConstraintViolation (IPropertyValidator[] validatorsToRemove)
+    private void CheckForNonRemovablePropertyValidatorViolation (IPropertyValidator[] validatorsToRemove)
     {
-      if (IsHardConstraint && validatorsToRemove.Any())
+      if (!IsRemovable && validatorsToRemove.Any())
       {
         throw new ValidationConfigurationException (
-            string.Format ("Hard constraint validator(s) '{0}' on property '{1}.{2}' cannot be removed.",
+            string.Format ("Attempted to remove non-removable validator(s) '{0}' on property '{1}.{2}'.",
                 string.Join (", ", validatorsToRemove.Select (v => v.GetType().Name).ToArray()),
                 Property.DeclaringType.FullName,
                 Property.Name));
@@ -177,19 +177,19 @@ namespace Remotion.Validation.Rules
       var sb = new StringBuilder (nameof (AddingPropertyValidationRuleCollector));
 
       var hasCondition = Condition != null;
-      if (hasCondition || IsHardConstraint)
+      if (hasCondition || IsRemovable)
         sb.Append (" (");
 
       if (hasCondition)
         sb.Append ("CONDITIONAL");
 
-      if (hasCondition && IsHardConstraint)
+      if (hasCondition && IsRemovable)
         sb.Append (", ");
 
-      if (IsHardConstraint)
-        sb.Append ("HARD CONSTRAINT");
+      if (IsRemovable)
+        sb.Append ("REMOVABLE");
 
-      if (hasCondition || IsHardConstraint)
+      if (hasCondition || IsRemovable)
         sb.Append (")");
 
       sb.Append (": ");

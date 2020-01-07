@@ -22,9 +22,9 @@ namespace Remotion.Validation.UnitTests.TestDomain
 {
   public class Customer : Person
   {
-    [Length (0, 8)]
-    [NotNull]
-    [NotEqual("Test", IsHardConstraint = true)]
+    [Length (0, 8, IsRemovable = true)]
+    [NotNull (IsRemovable = true)]
+    [NotEqual ("Test")]
     public virtual string UserName { get; set; }
 
     public virtual string Email { get; set; }

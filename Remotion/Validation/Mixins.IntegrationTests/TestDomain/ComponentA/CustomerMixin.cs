@@ -23,7 +23,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA
 {
   public interface ICustomerIntroduced
   {
-    [NotEqual("Chef1")]
+    [NotEqual ("Chef1")]
     string Title { get; set; }
   }
 

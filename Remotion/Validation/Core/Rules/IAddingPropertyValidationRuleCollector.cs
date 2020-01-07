@@ -48,12 +48,12 @@ namespace Remotion.Validation.Rules
     /// <summary>
     /// Gets a flag whether the rule can be removed via an <see cref="IRemovingPropertyValidationRuleCollector"/>. 
     /// </summary>
-    bool IsHardConstraint { get; }
+    bool IsRemovable { get; }
 
     /// <summary>
     /// Sets the condition for evaluating the registered validators.
     /// </summary>
-    void SetCondition<TValidatedType> (Func<TValidatedType, bool> predicate);
+    void SetCondition<TValidatedType> ([NotNull] Func<TValidatedType, bool> predicate);
 
     /// <summary>
     /// Registers a validator with this <see cref="IAddingPropertyValidationRuleCollector"/>.
@@ -61,9 +61,9 @@ namespace Remotion.Validation.Rules
     void RegisterValidator ([NotNull] Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory);
 
     /// <summary>
-    /// Sets the <see cref="IsHardConstraint"/> flag, making the rule non-removeable.
+    /// Sets the <see cref="IsRemovable"/> flag, making the rule removable.
     /// </summary>
-    void SetHardConstraint ();
+    void SetRemovable ();
 
     /// <summary>
     /// Applies the <paramref name="propertyValidatorExtractor"/> to the registered <see cref="Validators"/>.

@@ -75,17 +75,17 @@ namespace Remotion.Validation.Implementation
       return accessorExpression.Compile();
     }
 
-    public IEnumerable<IPropertyValidator> GetAddingPropertyValidators ()
+    public IEnumerable<IPropertyValidator> GetRemovablePropertyValidators ()
     {
       var addingValidationAttributes = _property.GetCustomAttributes<AddingValidationAttributeBase> (false)
-          .Where (a => !a.IsHardConstraint);
+          .Where (a => a.IsRemovable);
       return addingValidationAttributes.SelectMany (a => a.GetPropertyValidators (_property, _validationMessageFactory));
     }
 
-    public IEnumerable<IPropertyValidator> GetHardConstraintPropertyValidators ()
+    public IEnumerable<IPropertyValidator> GetNonRemovablePropertyValidators ()
     {
       var addingValidationAttributes = _property.GetCustomAttributes<AddingValidationAttributeBase> (false)
-          .Where (a => a.IsHardConstraint);
+          .Where (a => !a.IsRemovable);
       return addingValidationAttributes.SelectMany (a => a.GetPropertyValidators (_property, _validationMessageFactory));
     }
 

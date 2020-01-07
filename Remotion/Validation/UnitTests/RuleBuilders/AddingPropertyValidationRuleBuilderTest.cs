@@ -70,11 +70,11 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     }
 
     [Test]
-    public void NotRemovable ()
+    public void CanBeRemoved ()
     {
-      _addingPropertyValidationRuleCollectorMock.Expect (mock => mock.SetHardConstraint());
+      _addingPropertyValidationRuleCollectorMock.Expect (mock => mock.SetRemovable());
 
-      _addingPropertyValidationBuilder.NotRemovable();
+      _addingPropertyValidationBuilder.CanBeRemoved();
 
       _addingPropertyValidationRuleCollectorMock.VerifyAllExpectations();
     }

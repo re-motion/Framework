@@ -22,8 +22,8 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA
 {
   public class Customer : Person
   {
-    [Length(0, 8, IsHardConstraint = true)]
-    [NotEqual("Test", IsHardConstraint = true)]
+    [Length (0, 8)]
+    [NotEqual ("Test")]
     public virtual string UserName { get; set; }
 
     public virtual string Email { get; set; }

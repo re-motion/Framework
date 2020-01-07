@@ -21,7 +21,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA
 {
   public class Employee : Person
   {
-    [Length(0, 20)]
+    [Length (0, 20, IsRemovable = true)]
     public virtual string Position { get; set; }
 
     public virtual decimal Salary { get; set; }

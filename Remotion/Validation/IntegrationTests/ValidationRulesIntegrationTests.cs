@@ -39,8 +39,8 @@ namespace Remotion.Validation.IntegrationTests
     {
       Assert.That (() => ValidationBuilder.BuildValidator<SpecialCustomer2> (), 
         Throws.TypeOf<ValidationConfigurationException> ().And.Message.EqualTo (
-        "Hard constraint validator(s) 'LengthValidator' on property "
-        + "'Remotion.Validation.IntegrationTests.TestDomain.ComponentA.Person.LastName' cannot be removed."));
+        "Attempted to remove non-removable validator(s) 'LengthValidator' on property "
+        + "'Remotion.Validation.IntegrationTests.TestDomain.ComponentA.Person.LastName'."));
     }
 
     [Test]

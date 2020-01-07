@@ -39,10 +39,10 @@ namespace Remotion.Validation.RuleBuilders
         Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory);
 
     /// <summary>
-    /// Declares that the registered validation rule cannot be removed by another component.
+    /// Declares that the registered validation rule can be removed by another component.
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
-    IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> NotRemovable ();
+    IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> CanBeRemoved ();
 
     /// <summary>
     /// Registers an <see cref="IMetaValidationRule"/> for the given validators.

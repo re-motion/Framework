@@ -149,18 +149,18 @@ namespace Remotion.Validation.Merging
           var removedRegistrations = validationRuleCollectorInfo.Collector.RemovedPropertyRules
               .Where (pr => pr.Property.Equals(actualProperty))
               .SelectMany (pr => pr.Validators).ToArray();
-          var addedHardValidators = validationRuleCollectorInfo.Collector.AddedPropertyRules
-              .Where (pr => pr.IsHardConstraint && pr.Property.Equals(actualProperty))
+          var addedNonRemovableValidators = validationRuleCollectorInfo.Collector.AddedPropertyRules
+              .Where (pr => !pr.IsRemovable && pr.Property.Equals(actualProperty))
               .SelectMany (pr => pr.Validators).ToArray();
-          var addedSoftValidators = validationRuleCollectorInfo.Collector.AddedPropertyRules
-              .Where (pr => !pr.IsHardConstraint && pr.Property.Equals(actualProperty))
+          var addedRemovableValidators = validationRuleCollectorInfo.Collector.AddedPropertyRules
+              .Where (pr => pr.IsRemovable && pr.Property.Equals(actualProperty))
               .SelectMany (pr => pr.Validators).ToArray();
           var addedMetaValidations = validationRuleCollectorInfo.Collector.PropertyMetaValidationRules
               .Where (pr => pr.Property.Equals(actualProperty))
               .SelectMany (pr => pr.MetaValidationRules).ToArray();
 
-          if (removedRegistrations.Any() || addedHardValidators.Any() || addedSoftValidators.Any() || addedMetaValidations.Any())
-            AppendPropertyOutput (actualProperty, removedRegistrations, addedHardValidators, addedSoftValidators, addedMetaValidations, sb);
+          if (removedRegistrations.Any() || addedNonRemovableValidators.Any() || addedRemovableValidators.Any() || addedMetaValidations.Any())
+            AppendPropertyOutput (actualProperty, removedRegistrations, addedNonRemovableValidators, addedRemovableValidators, addedMetaValidations, sb);
 
           loggedProperties[property] = true;
         }
@@ -170,15 +170,15 @@ namespace Remotion.Validation.Merging
     private void AppendPropertyOutput (
         IPropertyInformation actualProperty,
         ValidatorRegistration[] removedRegistrations,
-        IPropertyValidator[] addedHardValidators,
-        IPropertyValidator[] addedSoftValidators,
+        IPropertyValidator[] addedNonRemovableValidators,
+        IPropertyValidator[] addedRemovableValidators,
         IMetaValidationRule[] addedMetaValidations,
         StringBuilder sb)
     {
       AppendPropertyName (actualProperty, sb);
       AppendGroupedValidatorRegistrationsOutput (removedRegistrations, "REMOVED VALIDATORS:", sb);
-      AppendGroupedValidatorsOutput (addedHardValidators, "ADDED HARD CONSTRAINT VALIDATORS:", sb);
-      AppendGroupedValidatorsOutput (addedSoftValidators, "ADDED SOFT CONSTRAINT VALIDATORS:", sb);
+      AppendGroupedValidatorsOutput (addedNonRemovableValidators, "ADDED NON-REMOVABLE VALIDATORS:", sb);
+      AppendGroupedValidatorsOutput (addedRemovableValidators, "ADDED REMOVABLE VALIDATORS:", sb);
       AppendCollectionData (sb, addedMetaValidations, "ADDED META VALIDATION RULES:", i => GetTypeName (i.GetType()));
     }
 

@@ -91,8 +91,8 @@ namespace Remotion.Validation.UnitTests.Providers
           {
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetValidatedPropertyFunc (typeof (Employee)))
                 .Return (e => ((Employee) e).Position);
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetAddingPropertyValidators ()).Return (new[] { _propertyValidatorStub1 });
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetHardConstraintPropertyValidators ())
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovablePropertyValidators ()).Return (new[] { _propertyValidatorStub1 });
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetNonRemovablePropertyValidators ())
                 .Return (new[] { _propertyValidatorStub2 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingPropertyRegistrations ()).Return (new ValidatorRegistration[0]);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetMetaValidationRules ()).Return (new IMetaValidationRule[0]);
@@ -101,8 +101,8 @@ namespace Remotion.Validation.UnitTests.Providers
           {
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetValidatedPropertyFunc (typeof (Employee)))
                 .Return (e => ((Employee) e).Notes);
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetAddingPropertyValidators ()).Return (new[] { _propertyValidatorStub3 });
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetHardConstraintPropertyValidators ()).Return (new IPropertyValidator[0]);
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovablePropertyValidators ()).Return (new[] { _propertyValidatorStub3 });
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetNonRemovablePropertyValidators ()).Return (new IPropertyValidator[0]);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingPropertyRegistrations ())
                 .Return (new[] { _validatorRegistration1, _validatorRegistration2 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetMetaValidationRules ()).Return (new IMetaValidationRule[0]);
@@ -111,9 +111,9 @@ namespace Remotion.Validation.UnitTests.Providers
           {
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetValidatedPropertyFunc (typeof (SpecialCustomer1)))
                 .Return (c => ((SpecialCustomer1) c).LastName);
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetAddingPropertyValidators ())
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovablePropertyValidators ())
                 .Return (new[] { _propertyValidatorStub4, _propertyValidatorStub5 });
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetHardConstraintPropertyValidators ()).Return (new IPropertyValidator[0]);
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetNonRemovablePropertyValidators ()).Return (new IPropertyValidator[0]);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingPropertyRegistrations ()).Return (new ValidatorRegistration[0]);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetMetaValidationRules ())
                 .Return (new[] { _metaValidationRule1, _metaValidationRule3 });
@@ -122,8 +122,8 @@ namespace Remotion.Validation.UnitTests.Providers
           {
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetValidatedPropertyFunc (typeof (SpecialCustomer1)))
                 .Return (c => ((SpecialCustomer1) c).UserName);
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetAddingPropertyValidators ()).Return (new[] { _propertyValidatorStub6 });
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetHardConstraintPropertyValidators ()).Return (new IPropertyValidator[0]);
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovablePropertyValidators ()).Return (new[] { _propertyValidatorStub6 });
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetNonRemovablePropertyValidators ()).Return (new IPropertyValidator[0]);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingPropertyRegistrations ())
                 .Return (new[] { _validatorRegistration3, _validatorRegistration4 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetMetaValidationRules ()).Return (new[] { _metaValidationRule2 });

@@ -67,7 +67,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    public void GetAddingPropertyValidators_Customer ()
+    public void GetRemovablePropertyValidators_Customer ()
     {
       var validationMessage = new InvariantValidationMessage ("Fake Message");
       _validationMessageFactory
@@ -77,7 +77,7 @@ namespace Remotion.Validation.UnitTests.Implementation
                   Arg.Is (PropertyInfoAdapter.Create (_customerLastNameProperty))))
           .Return (validationMessage);
 
-      var addingPropertyValidators = _customerPropertyReflector.GetAddingPropertyValidators().ToArray();
+      var addingPropertyValidators = _customerPropertyReflector.GetRemovablePropertyValidators().ToArray();
 
       Assert.That (addingPropertyValidators.Length, Is.EqualTo (2));
       Assert.That (
@@ -89,7 +89,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    public void GetAddingPropertyValidators_SpecialCustomer ()
+    public void GetRemovablePropertyValidators_SpecialCustomer ()
     {
       var validationMessage = new InvariantValidationMessage ("Fake Message");
       _validationMessageFactory
@@ -99,7 +99,7 @@ namespace Remotion.Validation.UnitTests.Implementation
                   Arg.Is (PropertyInfoAdapter.Create (_specialCustomerLastNameProperty))))
           .Return (validationMessage);
 
-      var addingPropertyValidators = _specialCustomerPropertyReflector.GetAddingPropertyValidators().ToArray();
+      var addingPropertyValidators = _specialCustomerPropertyReflector.GetRemovablePropertyValidators().ToArray();
 
       Assert.That (addingPropertyValidators.Length, Is.EqualTo (2));
       Assert.That (
@@ -111,7 +111,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    public void GetHardConstraintPropertyValidators_Customer ()
+    public void GetNonRemovablePropertyValidators_Customer ()
     {
       var validationMessage = new InvariantValidationMessage ("Fake Message");
       _validationMessageFactory
@@ -121,7 +121,7 @@ namespace Remotion.Validation.UnitTests.Implementation
                   Arg.Is (PropertyInfoAdapter.Create (_customerLastNameProperty))))
           .Return (validationMessage);
 
-      var hardConstraintPropertyValidators = _customerPropertyReflector.GetHardConstraintPropertyValidators().ToArray();
+      var hardConstraintPropertyValidators = _customerPropertyReflector.GetNonRemovablePropertyValidators().ToArray();
 
       Assert.That (hardConstraintPropertyValidators.Length, Is.EqualTo (1));
       Assert.That (hardConstraintPropertyValidators[0].GetType(), Is.EqualTo (typeof (NotEqualValidator)));
@@ -130,9 +130,9 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    public void GetHardConstraintPropertyValidators_SpecialCustomer ()
+    public void GetNonRemovablePropertyValidators_SpecialCustomer ()
     {
-      var hardConstraintPropertyValidators = _specialCustomerPropertyReflector.GetHardConstraintPropertyValidators().ToArray();
+      var hardConstraintPropertyValidators = _specialCustomerPropertyReflector.GetNonRemovablePropertyValidators().ToArray();
 
       Assert.That (hardConstraintPropertyValidators.Length, Is.EqualTo (0));
     }

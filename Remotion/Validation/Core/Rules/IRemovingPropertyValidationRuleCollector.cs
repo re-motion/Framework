@@ -45,14 +45,14 @@ namespace Remotion.Validation.Rules
 
     /// <summary>
     /// Specifies that all validators of <paramref name="validatorType"/> should be removed.
-    /// Note: It is not supported to remove validators which are registered with the <see cref="IAddingPropertyValidationRuleCollector.IsHardConstraint"/> flag set to <see langword="true" />.
+    /// Note: It is only supported to remove validators which are registered with the <see cref="IAddingPropertyValidationRuleCollector.IsRemovable"/> flag set to <see langword="true" />.
     /// Attempting to do so will result in an exception when the validation rules aggregated.
     /// </summary>
     void RegisterValidator ([NotNull] Type validatorType);
 
     /// <summary>
     /// Specifies that all validators of <paramref name="validatorType"/> registered by <paramref name="collectorTypeToRemoveFrom"/> should be removed.
-    /// Note: It is not supported to remove validators which are registered with the <see cref="IAddingPropertyValidationRuleCollector.IsHardConstraint"/> flag set to <see langword="true" />.
+    /// Note: It is only supported to remove validators which are registered with the <see cref="IAddingPropertyValidationRuleCollector.IsRemovable"/> flag set to <see langword="true" />.
     /// Attempting to do so will result in an exception when the validation rules aggregated.
     /// </summary>
     void RegisterValidator ([NotNull] Type validatorType, [CanBeNull] Type collectorTypeToRemoveFrom);

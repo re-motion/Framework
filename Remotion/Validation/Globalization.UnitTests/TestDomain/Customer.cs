@@ -23,7 +23,7 @@ namespace Remotion.Validation.Globalization.UnitTests.TestDomain
   {
     [Length (0, 8)]
     [NotNull]
-    [NotEqual("Test", IsHardConstraint = true)]
+    [NotEqual ("Test")]
     public virtual string UserName { get; set; }
 
     public virtual string Email { get; set; }

@@ -279,14 +279,14 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     [Test]
     public void NoAttributes ()
     {
-      Assert.That (_propertyWithoutAttributeReflector.GetAddingPropertyValidators().Any(), Is.False);
-      Assert.That (_propertyWithoutAttributeReflector.GetHardConstraintPropertyValidators().Any(), Is.False);
+      Assert.That (_propertyWithoutAttributeReflector.GetRemovablePropertyValidators().Any(), Is.False);
+      Assert.That (_propertyWithoutAttributeReflector.GetNonRemovablePropertyValidators().Any(), Is.False);
       Assert.That (_propertyWithoutAttributeReflector.GetRemovingPropertyRegistrations().Any(), Is.False);
       Assert.That (_propertyWithoutAttributeReflector.GetMetaValidationRules().Any(), Is.False);
     }
 
     [Test]
-    public void GetHardConstraintPropertyValidators_MandatoryAttribute ()
+    public void GetNonRemovablePropertyValidators_MandatoryAttribute ()
     {
       var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
@@ -296,7 +296,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
                   PropertyInfoAdapter.Create (_mixinPropertyWithMandatoryAttribute)))
           .Return (validationMessageStub);
 
-      var result = _propertyWithMandatoryAttributeReflector.GetHardConstraintPropertyValidators().ToArray();
+      var result = _propertyWithMandatoryAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
 
       Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
@@ -305,12 +305,12 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
     [Test]
     [Ignore ("TODO RM-5906")]
-    public void GetAddingPropertyValidators_MandatoryAttributeAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
+    public void GetRemovablePropertyValidators_MandatoryAttributeAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
     }
 
     [Test]
-    public void GetAddingPropertyValidators_NullableStringPropertyAttribute ()
+    public void GetRemovablePropertyValidators_NullableStringPropertyAttribute ()
     {
       var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
@@ -320,7 +320,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
                   PropertyInfoAdapter.Create (_mixinPropertyWithNullableStringPropertyAttribute)))
           .Return (validationMessageStub);
 
-      var result = _propertyWithNullableStringPropertyAttributeReflector.GetAddingPropertyValidators().ToArray();
+      var result = _propertyWithNullableStringPropertyAttributeReflector.GetRemovablePropertyValidators().ToArray();
 
       Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (LengthValidator)));
@@ -330,12 +330,12 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
     [Test]
     [Ignore ("TODO RM-5906")]
-    public void GetAddingPropertyValidators_NullableStringPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
+    public void GetRemovablePropertyValidators_NullableStringPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
     }
 
     [Test]
-    public void GetAddingPropertyValidators_MandatoryStringPropertyAttribute ()
+    public void GetRemovablePropertyValidators_MandatoryStringPropertyAttribute ()
     {
       var lengthValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
@@ -353,7 +353,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
                   PropertyInfoAdapter.Create (_mixinPropertyWithMandatoryStringPropertyAttribute)))
           .Return (notEmptyValidationMessageStub);
 
-      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetAddingPropertyValidators().ToArray();
+      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetRemovablePropertyValidators().ToArray();
 
       Assert.That (result.Count(), Is.EqualTo (2));
       Assert.That (result[0], Is.TypeOf (typeof (LengthValidator)));
@@ -366,20 +366,20 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
     [Test]
     [Ignore ("TODO RM-5906")]
-    public void GetAddingPropertyValidators_MandatoryStringPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
+    public void GetRemovablePropertyValidators_MandatoryStringPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
     }
 
     [Test]
-    public void GetHardConstraintPropertyValidators_NullableStringPropertyAttribute ()
+    public void GetNonRemovablePropertyValidators_NullableStringPropertyAttribute ()
     {
-      var result = _propertyWithNullableStringPropertyAttributeReflector.GetHardConstraintPropertyValidators().ToArray();
+      var result = _propertyWithNullableStringPropertyAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
 
       Assert.That (result.Any(), Is.False);
     }
 
     [Test]
-    public void GetHardConstraintPropertyValidators_MandatoryStringPropertyAttribute ()
+    public void GetNonRemovablePropertyValidators_MandatoryStringPropertyAttribute ()
     {
       var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
@@ -389,7 +389,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
                   PropertyInfoAdapter.Create (_mixinPropertyWithMandatoryStringPropertyAttribute)))
           .Return (validationMessageStub);
 
-      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetHardConstraintPropertyValidators().ToArray();
+      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
 
       Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));

@@ -61,9 +61,9 @@ namespace Remotion.Validation.RuleBuilders
       return this;
     }
 
-    public IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> NotRemovable ()
+    public IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> CanBeRemoved ()
     {
-      _addingPropertyValidationRuleCollector.SetHardConstraint();
+      _addingPropertyValidationRuleCollector.SetRemovable();
       return this;
     }
 

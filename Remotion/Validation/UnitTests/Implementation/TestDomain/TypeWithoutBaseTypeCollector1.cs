@@ -23,8 +23,8 @@ namespace Remotion.Validation.UnitTests.Implementation.TestDomain
   {
     public TypeWithoutBaseTypeCollector1 ()
     {
-      AddRule (t => t.Property1).NotRemovable().NotNull().NotEqual ("test");
-      AddRule (t => t.Property2).AddMetaValidationRule (new MaxLengthMetaValidationRule()).Length (0, 20);
+      AddRule (t => t.Property1).NotNull().NotEqual ("test");
+      AddRule (t => t.Property2).CanBeRemoved().AddMetaValidationRule (new MaxLengthMetaValidationRule()).Length (0, 20);
     }
   }
 }

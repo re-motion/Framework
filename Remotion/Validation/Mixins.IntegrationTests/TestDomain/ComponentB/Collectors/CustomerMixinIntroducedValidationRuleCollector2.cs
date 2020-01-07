@@ -23,7 +23,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentB.Coll
   {
     public CustomerMixinIntroducedValidationRuleCollector2 ()
     {
-      AddRule (c => c.Title).NotEqual ("Chef3");
+      AddRule (c => c.Title).CanBeRemoved().NotEqual ("Chef3");
     }
   }
 }

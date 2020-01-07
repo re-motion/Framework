@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.Validation
       return endPoint.IsDataComplete;
     }
 
-    public IEnumerable<IPropertyValidator> GetAddingPropertyValidators ()
+    public IEnumerable<IPropertyValidator> GetRemovablePropertyValidators ()
     {
       var maxLength = _domainModelConstraintProvider.GetMaxLength (_implementationPropertyInformation);
       if (maxLength.HasValue)
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.Validation
       }
     }
 
-    public IEnumerable<IPropertyValidator> GetHardConstraintPropertyValidators ()
+    public IEnumerable<IPropertyValidator> GetNonRemovablePropertyValidators ()
     {
       if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation))
       {
