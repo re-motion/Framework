@@ -16,20 +16,33 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
-namespace Remotion.Validation
+namespace Remotion.Validation.Validators
 {
-  public class ObjectValidatorContext
+  public class PropertyValidatorContext
   {
     [NotNull]
     public ValidationContext ParentContext { get; }
 
-    public ObjectValidatorContext ([NotNull] ValidationContext parentContext)
+    [NotNull]
+    public IPropertyInformation Property { get; }
+
+    [CanBeNull]
+    public object PropertyValue { get; }
+
+    public PropertyValidatorContext (
+        [NotNull] ValidationContext parentContext,
+        [NotNull] IPropertyInformation property,
+        [CanBeNull] object propertyValue)
     {
       ArgumentUtility.CheckNotNull ("parentContext", parentContext);
+      ArgumentUtility.CheckNotNull ("property", property);
 
       ParentContext = parentContext;
+      Property = property;
+      PropertyValue = propertyValue;
     }
 
     [NotNull]

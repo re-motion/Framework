@@ -83,7 +83,7 @@
     <Compile Include="Implementation\DefaultLogContext.cs" />
     <Compile Include="Implementation\NullValidatedTypeResolver.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatter.cs" />
-    <Compile Include="ObjectValidatorContext.cs" />
+    <Compile Include="Validators\ObjectValidatorContext.cs" />
     <Compile Include="Results\ObjectValidationFailure.cs" />
     <Compile Include="Results\PropertyValidationFailure.cs" />
     <Compile Include="Rules\IObjectValidationRule.cs" />
@@ -113,7 +113,7 @@
     <Compile Include="MetaValidation\DefaultSystemMetaValidationRulesProviderFactory.cs" />
     <Compile Include="MetaValidation\ISystemMetaValidationRulesProviderFactory.cs" />
     <Compile Include="MetaValidation\Rules\Custom\AnyRuleAppliedMetaValidationRule.cs" />
-    <Compile Include="PropertyValidatorContext.cs" />
+    <Compile Include="Validators\PropertyValidatorContext.cs" />
     <Compile Include="Providers\ValidationAttributesBasedValidationRuleCollectorProvider.cs" />
     <Compile Include="RuleCollectors\PropertyMetaValidationRuleCollector.cs" />
     <Compile Include="RuleCollectors\AddingPropertyValidationRuleCollector1.cs" />

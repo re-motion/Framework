@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Reflection;
+using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Validators
