@@ -16,29 +16,31 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.RuleBuilders
 {
-  // TODO RM-5906: Rename to remove "Component". Replace with "Validation".
   /// <summary>
   /// Provides an API for removing a validation rule added by another component.
   /// </summary>
   /// <seealso cref="RemovingPropertyValidationRuleBuilder{TValidatedType,TProperty}"/>
-  public interface IRemovingPropertyValidationRuleBuilder<TValidatedType, out TProperty>
+  public interface IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty>
   {
     /// <summary>
     /// Removes validators of type <typeparamref name="TValidator"/>.
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
     [NotNull]
-    IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator> ();
+    IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator> ()
+        where TValidator : IPropertyValidator;
 
     /// <summary>
     /// Removes validators of type <typeparamref name="TValidator"/> registered by the specified collector <typeparamref name="TCollectorTypeToRemoveFrom"/>.
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
     [NotNull]
-    IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator, TCollectorTypeToRemoveFrom> ();
+    IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator, TCollectorTypeToRemoveFrom> ()
+        where TValidator : IPropertyValidator;
 
     /// <summary>
     /// Removes validators of type <paramref name="validatorType"/>.

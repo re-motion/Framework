@@ -25,32 +25,37 @@ namespace Remotion.Validation.Merging
 {
   public class ValidationCollectorMergeResult
   {
-    private readonly IReadOnlyCollection<IAddingPropertyValidationRuleCollector> _collectedRules;
+    private readonly IReadOnlyCollection<IAddingPropertyValidationRuleCollector> _collectedPropertyValidationRules;
+    private readonly IReadOnlyCollection<IAddingObjectValidationRuleCollector> _collectedObjectValidationRules;
     private readonly ILogContext _logContext;
 
-    public ValidationCollectorMergeResult (IEnumerable<IAddingPropertyValidationRuleCollector> collectedRules, ILogContext logContext)
+    public ValidationCollectorMergeResult (
+        IEnumerable<IAddingPropertyValidationRuleCollector> collectedPropertyValidationRules,
+        IEnumerable<IAddingObjectValidationRuleCollector> collectedObjectValidationRules,
+        ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull ("collectedRules", collectedRules);
+      ArgumentUtility.CheckNotNull ("collectedPropertyValidationRules", collectedPropertyValidationRules);
+      ArgumentUtility.CheckNotNull ("collectedObjectValidationRules", collectedObjectValidationRules);
       ArgumentUtility.CheckNotNull ("logContext", logContext);
 
-      _collectedRules = collectedRules.ToList().AsReadOnly();
+      _collectedPropertyValidationRules = collectedPropertyValidationRules.ToList().AsReadOnly();
+      _collectedObjectValidationRules = collectedObjectValidationRules.ToList().AsReadOnly();
       _logContext = logContext;
     }
 
-    public IReadOnlyCollection<IAddingPropertyValidationRuleCollector> CollectedRules
+    public IReadOnlyCollection<IAddingPropertyValidationRuleCollector> CollectedPropertyValidationRules
     {
-      get
-      {
-        return _collectedRules;
-      }
+      get { return _collectedPropertyValidationRules; }
+    }
+
+    public IReadOnlyCollection<IAddingObjectValidationRuleCollector> CollectedObjectValidationRules
+    {
+      get { return _collectedObjectValidationRules; }
     }
 
     public ILogContext LogContext
     {
-      get
-      {
-        return _logContext;
-      }
+      get { return _logContext; }
     }
   }
 }

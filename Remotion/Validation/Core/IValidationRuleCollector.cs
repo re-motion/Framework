@@ -31,13 +31,13 @@ namespace Remotion.Validation
     Type ValidatedType { get; }
 
     /// <summary>
-    /// Gets the <see cref="IAddingPropertyValidationRuleCollector"/>s added to the validation semtantic of the <see cref="ValidatedType"/>.
+    /// Gets the <see cref="IAddingPropertyValidationRuleCollector"/>s added to the validation semantic of the <see cref="ValidatedType"/>.
     /// </summary>
     IReadOnlyCollection<IAddingPropertyValidationRuleCollector> AddedPropertyRules { get; }
 
     /// <summary>
-    /// Gets the <see cref="IPropertyMetaValidationRuleCollector"/>s added to the validation semtantic of the <see cref="ValidatedType"/>.
-    /// Meta validation rules are used to ensure that the validation semantic of the type is still consistent after all valiation rules 
+    /// Gets the <see cref="IPropertyMetaValidationRuleCollector"/>s added to the validation semantic of the <see cref="ValidatedType"/>.
+    /// Meta validation rules are used to ensure that the validation semantic of the type is still consistent after all validation rules 
     /// from all components are applied.
     /// </summary>
     IReadOnlyCollection<IPropertyMetaValidationRuleCollector> PropertyMetaValidationRules { get; }
@@ -46,5 +46,22 @@ namespace Remotion.Validation
     /// Gets the <see cref="IRemovingPropertyValidationRuleCollector"/>s used to remove validation rules from the <see cref="ValidatedType"/>.
     /// </summary>
     IReadOnlyCollection<IRemovingPropertyValidationRuleCollector> RemovedPropertyRules { get; }
+
+    /// <summary>
+    /// Gets the <see cref="IAddingObjectValidationRuleCollector"/>s added to the validation semantic of the <see cref="ValidatedType"/>.
+    /// </summary>
+    IReadOnlyCollection<IAddingObjectValidationRuleCollector> AddedObjectRules { get; }
+
+    /// <summary>
+    /// Gets the <see cref="IObjectMetaValidationRuleCollector"/>s added to the validation semantic of the <see cref="ValidatedType"/>.
+    /// Meta validation rules are used to ensure that the validation semantic of the type is still consistent after all validation rules 
+    /// from all components are applied.
+    /// </summary>
+    IReadOnlyCollection<IObjectMetaValidationRuleCollector> ObjectMetaValidationRules { get; }
+
+    /// <summary>
+    /// Gets the <see cref="IRemovingObjectValidationRuleCollector"/>s used to remove validation rules from the <see cref="ValidatedType"/>.
+    /// </summary>
+    IReadOnlyCollection<IRemovingObjectValidationRuleCollector> RemovedObjectRules { get; }
   }
 }

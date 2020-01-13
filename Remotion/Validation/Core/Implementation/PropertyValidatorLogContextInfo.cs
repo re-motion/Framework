@@ -23,28 +23,28 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Aggregates information about removed validators during merging of the collectors.
   /// </summary>
-  public sealed class LogContextInfo
+  public sealed class PropertyValidatorLogContextInfo
   {
-    private readonly IPropertyValidator _remvovedValidator;
-    private readonly ValidatorRegistrationWithContext[] _removingValidatorRegistrationsWithContext;
+    private readonly IPropertyValidator _removedValidator;
+    private readonly PropertyValidatorRegistrationWithContext[] _removingPropertyValidatorRegistrationsWithContext;
 
-    public LogContextInfo (IPropertyValidator removedValidator, ValidatorRegistrationWithContext[] removingValidatorRegistrationsWithContext)
+    public PropertyValidatorLogContextInfo (IPropertyValidator removedValidator, PropertyValidatorRegistrationWithContext[] removingPropertyValidatorRegistrationsWithContext)
     {
       ArgumentUtility.CheckNotNull ("removedValidator", removedValidator);
-      ArgumentUtility.CheckNotNull ("removingValidatorRegistrationsWithContext", removingValidatorRegistrationsWithContext);
+      ArgumentUtility.CheckNotNull ("removingPropertyValidatorRegistrationsWithContext", removingPropertyValidatorRegistrationsWithContext);
 
-      _remvovedValidator = removedValidator;
-      _removingValidatorRegistrationsWithContext = removingValidatorRegistrationsWithContext;
+      _removedValidator = removedValidator;
+      _removingPropertyValidatorRegistrationsWithContext = removingPropertyValidatorRegistrationsWithContext;
     }
 
-    public IPropertyValidator RemvovedValidator
+    public IPropertyValidator RemovedValidator
     {
-      get { return _remvovedValidator; }
+      get { return _removedValidator; }
     }
 
-    public ValidatorRegistrationWithContext[] RemovingValidatorRegistrationsWithContext
+    public PropertyValidatorRegistrationWithContext[] RemovingPropertyValidatorRegistrationsWithContext
     {
-      get { return _removingValidatorRegistrationsWithContext; }
+      get { return _removingPropertyValidatorRegistrationsWithContext; }
     }
   }
 }

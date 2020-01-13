@@ -48,5 +48,14 @@ namespace Remotion.Validation.Implementation
           .Select (f => f.CreateValidationMessageForPropertyValidator (validatorType, validatedProperty))
           .FirstOrDefault (m => m != null);
     }
+    public ValidationMessage CreateValidationMessageForObjectValidator (Type validatorType, ITypeInformation validatedType)
+    {
+      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
+      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+
+      return ValidationMessageFactories
+          .Select (f => f.CreateValidationMessageForObjectValidator (validatorType, validatedType))
+          .FirstOrDefault (m => m != null);
+    }
   }
 }

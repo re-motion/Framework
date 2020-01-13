@@ -77,7 +77,10 @@ namespace Remotion.Validation.Merging
 
       var afterMergeLog = string.Empty;
       if (_logger.IsInfoEnabled())
-        afterMergeLog = GetLogAfter (validationCollectorMergeResult.CollectedRules, validationCollectorMergeResult.LogContext);
+        afterMergeLog = GetLogAfter (
+            validationCollectorMergeResult.CollectedPropertyValidationRules,
+            validationCollectorMergeResult.CollectedObjectValidationRules,
+            validationCollectorMergeResult.LogContext);
 
       if (_logger.IsInfoEnabled())
       {
@@ -115,21 +118,33 @@ namespace Remotion.Validation.Merging
         sb.Append ("-> " + GetTypeName (validationCollectorInfo.ProviderType) + "#" + DisplayCollectorType (validationCollectorInfo));
 
         AppendPropertyCollectionOutput (allProperties, validationCollectorInfo, sb);
+        //AppendObjectCollectionOutput (allProperties, validationCollectorInfo, sb);
+        //TODO RM-5906 implement diagnostic output for object rules
       }
       return sb.ToString();
     }
 
-    private string GetLogAfter (IEnumerable<IAddingPropertyValidationRuleCollector> mergedRules, ILogContext logContext)
+    private string GetLogAfter (
+        IEnumerable<IAddingPropertyValidationRuleCollector> mergedPropertyRules,
+        IEnumerable<IAddingObjectValidationRuleCollector> mergedObjectRules,
+        ILogContext logContext)
     {
       var sb = new StringBuilder();
       sb.AppendLine();
       sb.Append ("AFTER MERGE:");
 
-      foreach (var propertyRulesForMember in mergedRules.ToLookup (pr => pr.Property))
+      foreach (var propertyRulesForMember in mergedPropertyRules.ToLookup (pr => pr.Property))
       {
         var validators = propertyRulesForMember.SelectMany (pr => pr.Validators).ToArray();
         var logContextInfos = propertyRulesForMember.SelectMany (logContext.GetLogContextInfos).ToArray();
         AppendPropertyRuleOutput (propertyRulesForMember.Key, validators, logContextInfos, sb);
+      }
+
+      {
+        var validators = mergedObjectRules.SelectMany (pr => pr.Validators).ToArray();
+        var logContextInfos = mergedObjectRules.SelectMany (logContext.GetLogContextInfos).ToArray();
+        //AppendObjectRuleOutput (mergedObjectRules.Key, validators, logContextInfos, sb);
+        //TODO RM-5906 implement diagnostic output for object rules
       }
 
       return sb.ToString();
@@ -185,7 +200,7 @@ namespace Remotion.Validation.Merging
     private void AppendPropertyRuleOutput (
         IPropertyInformation actualProperty,
         IPropertyValidator[] validators,
-        LogContextInfo[] logContextInfos,
+        PropertyValidatorLogContextInfo[] logContextInfos,
         StringBuilder sb)
     {
       AppendPropertyName (actualProperty, sb);
@@ -193,7 +208,7 @@ namespace Remotion.Validation.Merging
       AppendMergeOutput (logContextInfos, sb);
     }
 
-    private void AppendMergeOutput (LogContextInfo[] logContextInfos, StringBuilder sb)
+    private void AppendMergeOutput (PropertyValidatorLogContextInfo[] logContextInfos, StringBuilder sb)
     {
       if (!logContextInfos.Any())
         return;
@@ -203,12 +218,12 @@ namespace Remotion.Validation.Merging
       foreach (var logContextInfo in logContextInfos)
       {
         var removingCollectors =
-            logContextInfo.RemovingValidatorRegistrationsWithContext.Select (ci => ci.RemovingPropertyValidationRuleCollector.CollectorType.Name)
+            logContextInfo.RemovingPropertyValidatorRegistrationsWithContext.Select (ci => ci.RemovingPropertyValidationRuleCollector.CollectorType.Name)
                 .Distinct()
                 .ToArray();
         var logEntry = string.Format (
             "'{0}' was removed from {1} '{2}'",
-            GetTypeName (logContextInfo.RemvovedValidator.GetType()),
+            GetTypeName (logContextInfo.RemovedValidator.GetType()),
             removingCollectors.Count() > 1 ? "collectors" : "collector",
             string.Join (", ", removingCollectors));
         sb.AppendLine();

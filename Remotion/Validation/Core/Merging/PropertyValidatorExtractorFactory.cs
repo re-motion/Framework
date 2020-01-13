@@ -28,8 +28,12 @@ namespace Remotion.Validation.Merging
   [ImplementationFor (typeof (IPropertyValidatorExtractorFactory), Lifetime = LifetimeKind.Singleton)]
   public class PropertyValidatorExtractorFactory : IPropertyValidatorExtractorFactory
   {
+    public PropertyValidatorExtractorFactory ()
+    {
+    }
+
     public IPropertyValidatorExtractor Create (
-        IEnumerable<ValidatorRegistrationWithContext> validatorRegistrationWithContexts, ILogContext logContext)
+        IEnumerable<PropertyValidatorRegistrationWithContext> validatorRegistrationWithContexts, ILogContext logContext)
     {
       ArgumentUtility.CheckNotNull ("validatorRegistrationWithContexts", validatorRegistrationWithContexts);
       ArgumentUtility.CheckNotNull ("logContext", logContext);

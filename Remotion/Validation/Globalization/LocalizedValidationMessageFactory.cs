@@ -75,6 +75,14 @@ namespace Remotion.Validation.Globalization
       return new ResourceManagerBasedValidationMessage (_resourceManager.Value, resourceIdentifier);
     }
 
+    public ValidationMessage CreateValidationMessageForObjectValidator (Type validatorType, ITypeInformation validatedType)
+    {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("validatorType", validatorType, typeof (IObjectValidator));
+      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+
+      return null;
+    }
+
     private ResourceIdentifier? GetResourceIdentifierOrNull (Type validatorType)
     {
       if (validatorType == typeof (EqualValidator))

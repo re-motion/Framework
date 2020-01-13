@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Validation.IntegrationTests.TestDomain.Validators;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationCollectors
@@ -26,8 +27,10 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
       AddRule (c => c.LastName).CanBeRemoved().NotNull();
       AddRule (c => c.LastName).NotEmpty().Length (2, 8);
       AddRule (c => c.PhoneNumber).CanBeRemoved().Length (0, 20);
+      AddRule().SetValidator (p => new FakeCustomerValidator());
 
       RemoveRule (c => c.LastName).Validator<NotEqualValidator, PersonValidationRuleCollector1>();
+      RemoveRule ().Validator<RealPersonValidator, PersonValidationRuleCollector1>();
     }
   }
 }

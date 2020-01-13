@@ -71,5 +71,11 @@ namespace Remotion.Validation.Implementation
     {
       get { return _removedPropertyRules; }
     }
+
+    public IReadOnlyCollection<IAddingObjectValidationRuleCollector> AddedObjectRules => Array.Empty<IAddingObjectValidationRuleCollector>();
+
+    public IReadOnlyCollection<IObjectMetaValidationRuleCollector> ObjectMetaValidationRules => Array.Empty<IObjectMetaValidationRuleCollector>();
+
+    public IReadOnlyCollection<IRemovingObjectValidationRuleCollector> RemovedObjectRules => Array.Empty<IRemovingObjectValidationRuleCollector>();
   }
 }

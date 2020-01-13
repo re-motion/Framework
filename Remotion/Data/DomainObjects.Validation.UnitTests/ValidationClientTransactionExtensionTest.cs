@@ -173,10 +173,10 @@ Object 'DomainObjectWithoutAnnotatedProperties' with ID '.*':
  -- PropertyStub2: Error2
 
 Object 'TestDomainObject' with ID '.*':
- -- Error3
  -- PropertyStub1: Error1
  -- PropertyStub1: Error5
  -- PropertyStub4: Error4
+ -- Error3
 ";
         Assert.That (exception.Message, Is.StringMatching (expectedMessage));
 

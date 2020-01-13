@@ -34,5 +34,17 @@ namespace Remotion.Validation.Implementation
     /// </returns>
     [CanBeNull]
     ValidationMessage CreateValidationMessageForPropertyValidator ([NotNull] Type validatorType, [NotNull] IPropertyInformation validatedProperty);
+
+    /// <summary>
+    /// Returns the <see cref="ValidationMessage"/> for a given <see cref="Type"/> that implements the <see cref="IObjectValidator"/> interface.
+    /// </summary>
+    /// <param name="validatorType">The <see cref="Type"/> of the <see cref="IObjectValidator"/> to get the <see cref="ValidationMessage"/> for.</param>
+    /// <param name="validatedType">The <see cref="ITypeInformation"/> for which the <see cref="ValidationMessage"/> is created.</param>
+    /// <returns>
+    /// The <see cref="ValidationMessage"/> for the <see cref="IObjectValidator"/>.
+    /// Please note that the method can return <see langword="null"/> if no <see cref="ValidationMessage"/> is defined for the <paramref name="validatorType"/>.
+    /// </returns>
+    [CanBeNull]
+    ValidationMessage CreateValidationMessageForObjectValidator ([NotNull] Type validatorType, [NotNull] ITypeInformation validatedType);
   }
 }

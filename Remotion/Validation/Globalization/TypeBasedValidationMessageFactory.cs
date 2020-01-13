@@ -52,5 +52,20 @@ namespace Remotion.Validation.Globalization
       return new DelegateBasedValidationMessage (
           () => _memberInformationGlobalizationService.GetTypeDisplayName (typeInformation, typeInformationForResourceResolution));
     }
+
+    public ValidationMessage CreateValidationMessageForObjectValidator (Type validatorType, ITypeInformation validatedType)
+    {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("validatorType", validatorType, typeof (IObjectValidator));
+      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+
+      var typeInformation = TypeAdapter.Create (validatorType);
+      var typeInformationForResourceResolution = TypeAdapter.Create (validatorType);
+
+      if (!_memberInformationGlobalizationService.ContainsTypeDisplayName (typeInformation, typeInformationForResourceResolution))
+        return null;
+
+      return new DelegateBasedValidationMessage (
+          () => _memberInformationGlobalizationService.GetTypeDisplayName (typeInformation, typeInformationForResourceResolution));
+    }
   }
 }

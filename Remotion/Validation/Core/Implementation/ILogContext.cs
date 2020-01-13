@@ -29,9 +29,16 @@ namespace Remotion.Validation.Implementation
   {
     void ValidatorRemoved (
         IPropertyValidator removedValidator,
-        ValidatorRegistrationWithContext[] removingValidatorRegistrationsWithContext,
+        PropertyValidatorRegistrationWithContext[] removingPropertyValidatorRegistrationsWithContext,
         IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector);
 
-    IEnumerable<LogContextInfo> GetLogContextInfos (IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector);
+    IEnumerable<PropertyValidatorLogContextInfo> GetLogContextInfos (IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector);
+
+    void ValidatorRemoved (
+        IObjectValidator removedValidator,
+        ObjectValidatorRegistrationWithContext[] removingObjectValidatorRegistrationsWithContext,
+        IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector);
+
+    IEnumerable<ObjectValidatorLogContextInfo> GetLogContextInfos (IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector);
   }
 }

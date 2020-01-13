@@ -23,12 +23,12 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Extends a <see cref="RuleCollectors.ValidatorRegistration"/> with information about the property for which it applies.
   /// </summary>
-  public class ValidatorRegistrationWithContext
+  public class PropertyValidatorRegistrationWithContext
   {
     private readonly ValidatorRegistration _validatorRegistration;
     private readonly IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollector;
 
-    public ValidatorRegistrationWithContext (
+    public PropertyValidatorRegistrationWithContext (
         ValidatorRegistration validatorRegistration,
         IRemovingPropertyValidationRuleCollector removingPropertyValidationRuleCollector)
     {

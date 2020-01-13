@@ -71,7 +71,13 @@ namespace Remotion.Validation.UnitTests.Merging
     public void Merge_NoValidationCollectors ()
     {
       var collectors = Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>();
-      _wrappedMergerStub.Stub (stub => stub.Merge (collectors)).Return (new ValidationCollectorMergeResult (new IAddingPropertyValidationRuleCollector[0], _logContextStub));
+      _wrappedMergerStub
+          .Stub (stub => stub.Merge (collectors))
+          .Return (
+              new ValidationCollectorMergeResult (
+                  new IAddingPropertyValidationRuleCollector[0],
+                  new IAddingObjectValidationRuleCollector[0],
+                  _logContextStub));
 
       CheckLoggingMethod (() => _diagnosticOutputValidationRuleMergeDecorator.Merge (collectors), "\r\nAFTER MERGE:", 0);
       CheckLoggingMethod (() => _diagnosticOutputValidationRuleMergeDecorator.Merge (collectors), "\r\nBEFORE MERGE:", 1);
@@ -132,30 +138,30 @@ namespace Remotion.Validation.UnitTests.Merging
       var removingPropertyRuleStub2 = MockRepository.GenerateStub<IRemovingPropertyValidationRuleCollector>();
       removingPropertyRuleStub2.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationRuleCollector2));
 
-      var logContextInfo1 = new LogContextInfo (
+      var logContextInfo1 = new PropertyValidatorLogContextInfo (
           stubValidator2,
           new[]
           {
-              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub1),
-              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub1),
-              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub2)
+              new PropertyValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub1),
+              new PropertyValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub1),
+              new PropertyValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub2)
           });
-      var logContextInfo2 = new LogContextInfo (
+      var logContextInfo2 = new PropertyValidatorLogContextInfo (
           stubValidator1,
-          new[] { new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotNullValidator), null), removingPropertyRuleStub2) });
-      var logContextInfo3 = new LogContextInfo (
+          new[] { new PropertyValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotNullValidator), null), removingPropertyRuleStub2) });
+      var logContextInfo3 = new PropertyValidatorLogContextInfo (
           stubValidator3,
-          new[] { new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEqualValidator), null), removingPropertyRuleStub1) });
+          new[] { new PropertyValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEqualValidator), null), removingPropertyRuleStub1) });
 
       _logContextStub.Stub (stub => stub.GetLogContextInfos (userNamePropertyRule)).Return (new[] { logContextInfo1, logContextInfo2 });
       _logContextStub.Stub (stub => stub.GetLogContextInfos (lastNamePropertyRule)).Return (new[] { logContextInfo3 });
-      _logContextStub.Stub (stub => stub.GetLogContextInfos (noPropertyRuleStub)).Return (new LogContextInfo[0]);
+      _logContextStub.Stub (stub => stub.GetLogContextInfos (noPropertyRuleStub)).Return (new PropertyValidatorLogContextInfo[0]);
 
       var addingComponentPropertyRules = new IAddingPropertyValidationRuleCollector[] { userNamePropertyRule, lastNamePropertyRule, noPropertyRuleStub };
-      _wrappedMergerStub.Stub (
-          stub =>
-              stub.Merge (
-                  validationCollectorInfos)).Return (new ValidationCollectorMergeResult(addingComponentPropertyRules, _logContextStub));
+      var addingObjectValidationRuleCollectors = new IAddingObjectValidationRuleCollector[] { /* TODO RM-5906: test object rules */ };
+      _wrappedMergerStub
+          .Stub (stub => stub.Merge (validationCollectorInfos))
+          .Return (new ValidationCollectorMergeResult (addingComponentPropertyRules, addingObjectValidationRuleCollectors, _logContextStub));
 
       var expectedAfterMerge =
           "\r\nAFTER MERGE:"
@@ -177,6 +183,7 @@ namespace Remotion.Validation.UnitTests.Merging
           + "\r\n    -> Remotion.Validation.UnitTests.Implementation.AddingPropertyValidationRuleCollectorStub+DomainType#DomainProperty"
           + "\r\n        VALIDATORS:"
           + "\r\n        -> Remotion.Validation.UnitTests.TestHelpers.StubPropertyValidator (x1)";
+      //TODO RM-5906: test IObjectValidator
       CheckLoggingMethod (() => _diagnosticOutputValidationRuleMergeDecorator.Merge (validationCollectorInfos), expectedAfterMerge, 0);
 
       var expectedBeforeMerge =
@@ -201,6 +208,7 @@ namespace Remotion.Validation.UnitTests.Merging
           + "\r\n        REMOVED VALIDATORS:"
           + "\r\n        -> Remotion.Validation.Validators.NotEmptyValidator (x1)"
           + "\r\n        -> Remotion.Validation.Validators.MaximumLengthValidator#Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseTypeCollector1 (x1)";
+      //TODO RM-5906: test IObjectValidator
       CheckLoggingMethod (() => _diagnosticOutputValidationRuleMergeDecorator.Merge (validationCollectorInfos), expectedBeforeMerge, 1);
     }
 

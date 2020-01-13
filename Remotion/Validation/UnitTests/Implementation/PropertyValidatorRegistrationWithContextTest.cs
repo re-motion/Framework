@@ -24,10 +24,10 @@ using Rhino.Mocks;
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class ValidatorRegistrationWithContextTest
+  public class PropertyValidatorRegistrationWithContextTest
   {
     private ValidatorRegistration _validatorRegistration;
-    private ValidatorRegistrationWithContext _registrationWithContext;
+    private PropertyValidatorRegistrationWithContext _registrationWithContext;
     private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollectorStub;
 
     [SetUp]
@@ -35,7 +35,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       _validatorRegistration = new ValidatorRegistration (typeof (NotEqualValidator), null);
       _removingPropertyValidationRuleCollectorStub = MockRepository.GenerateStub<IRemovingPropertyValidationRuleCollector>();
-      _registrationWithContext = new ValidatorRegistrationWithContext (_validatorRegistration, _removingPropertyValidationRuleCollectorStub);
+      _registrationWithContext = new PropertyValidatorRegistrationWithContext (_validatorRegistration, _removingPropertyValidationRuleCollectorStub);
     }
 
     [Test]

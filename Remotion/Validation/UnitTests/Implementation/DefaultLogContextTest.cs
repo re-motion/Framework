@@ -33,22 +33,34 @@ namespace Remotion.Validation.UnitTests.Implementation
     private IPropertyValidator _propertyValidatorStub1;
     private IPropertyValidator _propertyValidatorStub2;
     private IPropertyValidator _propertyValidatorStub3;
+    private IAddingObjectValidationRuleCollector _addedObjectValidationRuleCollectorStub1;
+    private IAddingObjectValidationRuleCollector _addedObjectValidationRuleCollectorStub2;
+    private IObjectValidator _objectValidatorStub1;
+    private IObjectValidator _objectValidatorStub2;
+    private IObjectValidator _objectValidatorStub3;
 
     [SetUp]
     public void SetUp ()
     {
       _addedPropertyValidationRuleCollectorStub1 = MockRepository.GenerateStub<IAddingPropertyValidationRuleCollector>();
-      _addedPropertyValidationRuleCollectorStub2 = MockRepository.GenerateStub<IAddingPropertyValidationRuleCollector> ();
-      
+      _addedPropertyValidationRuleCollectorStub2 = MockRepository.GenerateStub<IAddingPropertyValidationRuleCollector>();
+
       _propertyValidatorStub1 = MockRepository.GenerateStub<IPropertyValidator>();
-      _propertyValidatorStub2 = MockRepository.GenerateStub<IPropertyValidator> ();
-      _propertyValidatorStub3 = MockRepository.GenerateStub<IPropertyValidator> ();
+      _propertyValidatorStub2 = MockRepository.GenerateStub<IPropertyValidator>();
+      _propertyValidatorStub3 = MockRepository.GenerateStub<IPropertyValidator>();
+
+      _addedObjectValidationRuleCollectorStub1 = MockRepository.GenerateStub<IAddingObjectValidationRuleCollector>();
+      _addedObjectValidationRuleCollectorStub2 = MockRepository.GenerateStub<IAddingObjectValidationRuleCollector>();
+
+      _objectValidatorStub1 = MockRepository.GenerateStub<IObjectValidator>();
+      _objectValidatorStub2 = MockRepository.GenerateStub<IObjectValidator>();
+      _objectValidatorStub3 = MockRepository.GenerateStub<IObjectValidator>();
 
       _logContext = new DefaultLogContext();
     }
 
     [Test]
-    public void GetLogContextInfos_NoLogContextInfoAdded ()
+    public void GetLogContextInfos_WithPropertyAndNoLogContextInfoAdded ()
     {
       var result = _logContext.GetLogContextInfos (_addedPropertyValidationRuleCollectorStub1);
 
@@ -56,11 +68,11 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    public void GetLogContextInfos_LogContextInfoAdded ()
+    public void GetLogContextInfos_WithPropertyAndLogContextInfoAdded ()
     {
-      var validatorRegistrationWithContext1 = new ValidatorRegistrationWithContext[0];
-      var validatorRegistrationWithContext2 = new ValidatorRegistrationWithContext[0];
-      var validatorRegistrationWithContext3 = new ValidatorRegistrationWithContext[0];
+      var validatorRegistrationWithContext1 = new PropertyValidatorRegistrationWithContext[0];
+      var validatorRegistrationWithContext2 = new PropertyValidatorRegistrationWithContext[0];
+      var validatorRegistrationWithContext3 = new PropertyValidatorRegistrationWithContext[0];
 
       _logContext.ValidatorRemoved (_propertyValidatorStub1, validatorRegistrationWithContext1, _addedPropertyValidationRuleCollectorStub1);
       _logContext.ValidatorRemoved (_propertyValidatorStub2, validatorRegistrationWithContext2, _addedPropertyValidationRuleCollectorStub1);
@@ -68,15 +80,47 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       var result1 = _logContext.GetLogContextInfos (_addedPropertyValidationRuleCollectorStub1).ToArray();
       Assert.That (result1.Count(), Is.EqualTo (2));
-      Assert.That (result1[0].RemvovedValidator, Is.SameAs (_propertyValidatorStub1));
-      Assert.That (result1[0].RemovingValidatorRegistrationsWithContext, Is.SameAs (validatorRegistrationWithContext1));
-      Assert.That (result1[1].RemvovedValidator, Is.SameAs (_propertyValidatorStub2));
-      Assert.That (result1[1].RemovingValidatorRegistrationsWithContext, Is.SameAs (validatorRegistrationWithContext2));
+      Assert.That (result1[0].RemovedValidator, Is.SameAs (_propertyValidatorStub1));
+      Assert.That (result1[0].RemovingPropertyValidatorRegistrationsWithContext, Is.SameAs (validatorRegistrationWithContext1));
+      Assert.That (result1[1].RemovedValidator, Is.SameAs (_propertyValidatorStub2));
+      Assert.That (result1[1].RemovingPropertyValidatorRegistrationsWithContext, Is.SameAs (validatorRegistrationWithContext2));
 
       var result2 = _logContext.GetLogContextInfos (_addedPropertyValidationRuleCollectorStub2).ToArray();
       Assert.That (result2.Count (), Is.EqualTo (1));
-      Assert.That (result2[0].RemvovedValidator, Is.SameAs (_propertyValidatorStub3));
-      Assert.That (result2[0].RemovingValidatorRegistrationsWithContext, Is.SameAs (validatorRegistrationWithContext3));
+      Assert.That (result2[0].RemovedValidator, Is.SameAs (_propertyValidatorStub3));
+      Assert.That (result2[0].RemovingPropertyValidatorRegistrationsWithContext, Is.SameAs (validatorRegistrationWithContext3));
+    }
+
+    [Test]
+    public void GetLogContextInfos_WithObjectAndNoLogContextInfoAdded ()
+    {
+      var result = _logContext.GetLogContextInfos (_addedObjectValidationRuleCollectorStub1);
+
+      Assert.That (result.Any(), Is.False);
+    }
+
+    [Test]
+    public void GetLogContextInfos_WithObjectAndLogContextInfoAdded ()
+    {
+      var validatorRegistrationWithContext1 = new ObjectValidatorRegistrationWithContext[0];
+      var validatorRegistrationWithContext2 = new ObjectValidatorRegistrationWithContext[0];
+      var validatorRegistrationWithContext3 = new ObjectValidatorRegistrationWithContext[0];
+
+      _logContext.ValidatorRemoved (_objectValidatorStub1, validatorRegistrationWithContext1, _addedObjectValidationRuleCollectorStub1);
+      _logContext.ValidatorRemoved (_objectValidatorStub2, validatorRegistrationWithContext2, _addedObjectValidationRuleCollectorStub1);
+      _logContext.ValidatorRemoved (_objectValidatorStub3, validatorRegistrationWithContext3, _addedObjectValidationRuleCollectorStub2);
+
+      var result1 = _logContext.GetLogContextInfos (_addedObjectValidationRuleCollectorStub1).ToArray();
+      Assert.That (result1.Count(), Is.EqualTo (2));
+      Assert.That (result1[0].RemovedValidator, Is.SameAs (_objectValidatorStub1));
+      Assert.That (result1[0].RemovingObjectValidatorRegistrationsWithContext, Is.SameAs (validatorRegistrationWithContext1));
+      Assert.That (result1[1].RemovedValidator, Is.SameAs (_objectValidatorStub2));
+      Assert.That (result1[1].RemovingObjectValidatorRegistrationsWithContext, Is.SameAs (validatorRegistrationWithContext2));
+
+      var result2 = _logContext.GetLogContextInfos (_addedObjectValidationRuleCollectorStub2).ToArray();
+      Assert.That (result2.Count (), Is.EqualTo (1));
+      Assert.That (result2[0].RemovedValidator, Is.SameAs (_objectValidatorStub3));
+      Assert.That (result2[0].RemovingObjectValidatorRegistrationsWithContext, Is.SameAs (validatorRegistrationWithContext3));
     }
   }
 }

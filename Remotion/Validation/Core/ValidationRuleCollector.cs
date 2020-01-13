@@ -33,38 +33,40 @@ namespace Remotion.Validation
     private readonly List<IAddingPropertyValidationRuleCollector> _addedPropertyRules;
     private readonly List<IPropertyMetaValidationRuleCollector> _propertyMetaValidationRules;
     private readonly List<IRemovingPropertyValidationRuleCollector> _removedPropertyRules;
+    private readonly List<IAddingObjectValidationRuleCollector> _addedObjectRules;
+    private readonly List<IObjectMetaValidationRuleCollector> _objectMetaValidationRules;
+    private readonly List<IRemovingObjectValidationRuleCollector> _removedObjectRules;
 
     protected ValidationRuleCollectorBase ()
     {
       _addedPropertyRules = new List<IAddingPropertyValidationRuleCollector>();
       _propertyMetaValidationRules = new List<IPropertyMetaValidationRuleCollector>();
       _removedPropertyRules = new List<IRemovingPropertyValidationRuleCollector>();
+      _addedObjectRules = new List<IAddingObjectValidationRuleCollector>();
+      _objectMetaValidationRules = new List<IObjectMetaValidationRuleCollector>();
+      _removedObjectRules = new List<IRemovingObjectValidationRuleCollector>();
     }
 
-    public Type ValidatedType
-    {
-      get { return typeof (TValidatedType); }
-    }
-
-    /// <inheritdoc />
-    public IReadOnlyCollection<IAddingPropertyValidationRuleCollector> AddedPropertyRules
-    {
-      get { return _addedPropertyRules.AsReadOnly(); }
-    }
+    public Type ValidatedType => typeof (TValidatedType);
 
     /// <inheritdoc />
-    public IReadOnlyCollection<IPropertyMetaValidationRuleCollector> PropertyMetaValidationRules
-    {
-      get { return _propertyMetaValidationRules.AsReadOnly(); }
-    }
+    public IReadOnlyCollection<IAddingPropertyValidationRuleCollector> AddedPropertyRules => _addedPropertyRules.AsReadOnly();
 
     /// <inheritdoc />
-    public IReadOnlyCollection<IRemovingPropertyValidationRuleCollector> RemovedPropertyRules
-    {
-      get { return _removedPropertyRules.AsReadOnly(); }
-    }
+    public IReadOnlyCollection<IPropertyMetaValidationRuleCollector> PropertyMetaValidationRules => _propertyMetaValidationRules.AsReadOnly();
 
     /// <inheritdoc />
+    public IReadOnlyCollection<IRemovingPropertyValidationRuleCollector> RemovedPropertyRules => _removedPropertyRules.AsReadOnly();
+
+    /// <inheritdoc />
+    public IReadOnlyCollection<IAddingObjectValidationRuleCollector> AddedObjectRules => _addedObjectRules.AsReadOnly();
+
+    /// <inheritdoc />
+    public IReadOnlyCollection<IObjectMetaValidationRuleCollector> ObjectMetaValidationRules => _objectMetaValidationRules.AsReadOnly();
+
+    /// <inheritdoc />
+    public IReadOnlyCollection<IRemovingObjectValidationRuleCollector> RemovedObjectRules => _removedObjectRules.AsReadOnly();
+
     /// <summary>
     /// Registers a new validation rule for a property. 
     /// </summary>
@@ -103,6 +105,36 @@ namespace Remotion.Validation
       _removedPropertyRules.Add (propertyRule);
 
       return new RemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> (propertyRule);
+    }
+
+    /// <summary>
+    /// Registers a new validation rule for an object of type <typeparamref name="TValidatedType"/>.
+    /// </summary>
+    /// <returns>A builder object used for specifying the validation rules of the type <typeparamref name="TValidatedType"/>.</returns>
+    /// <remarks>TODO RM-5906: usage sample</remarks>
+    public IConditionalAddingObjectValidationRuleBuilder<TValidatedType> AddRule ()
+    {
+      var objectRule = AddingObjectValidationRuleCollector.Create<TValidatedType> (GetType());
+      _addedObjectRules.Add (objectRule);
+
+      var metaValidationRule = ObjectMetaValidationRuleCollector.Create<TValidatedType> (GetType());
+      _objectMetaValidationRules.Add (metaValidationRule);
+
+      return new AddingObjectValidationRuleBuilder<TValidatedType> (objectRule, metaValidationRule);
+    }
+
+    /// <summary>
+    /// Registers which validation rules should be removed from the type <typeparamref name="TValidatedType"/>.
+    /// This is used to remove validation rules introduced by other validation collectors of <typeparamref name="TValidatedType"/>.
+    /// </summary>
+    /// <returns>A builder object used for specifying the validation rules to be removed from the type <typeparamref name="TValidatedType"/>.</returns>
+    /// <remarks>TODO RM-5906: usage sample</remarks>
+    public IRemovingObjectValidationRuleBuilder<TValidatedType> RemoveRule ()
+    {
+      var objectRule = RemovingObjectValidationRuleCollector.Create<TValidatedType> (GetType());
+      _removedObjectRules.Add (objectRule);
+
+      return new RemovingObjectValidationRuleBuilder<TValidatedType> (objectRule);
     }
   }
 }

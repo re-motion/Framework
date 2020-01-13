@@ -17,6 +17,7 @@
 using System;
 using Remotion.Utilities;
 using Remotion.Validation.RuleCollectors;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.RuleBuilders
 {
@@ -39,14 +40,16 @@ namespace Remotion.Validation.RuleBuilders
       get { return _removingPropertyValidationRuleCollector; }
     }
 
-    public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidatorType> ()
+    public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator> ()
+        where TValidator : IPropertyValidator
     {
-      return Validator (typeof (TValidatorType), null);
+      return Validator (typeof (TValidator), null);
     }
 
-    public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidatorType, TCollectorTypeToRemoveFrom> ()
+    public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator, TCollectorTypeToRemoveFrom> ()
+        where TValidator : IPropertyValidator
     {
-      return Validator (typeof (TValidatorType), typeof(TCollectorTypeToRemoveFrom));
+      return Validator (typeof (TValidator), typeof(TCollectorTypeToRemoveFrom));
     }
 
     public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator (Type validatorType)

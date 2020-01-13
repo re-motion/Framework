@@ -21,6 +21,12 @@ namespace Remotion.Validation.Globalization.UnitTests
     }
 
     [Test]
+    [Ignore ("TODO RM-5906")]
+    public void CreateValidationMessageForPropertyValidator_WithTypeNotIPropertyValidator_ThrowsArgumentException ()
+    {
+    }
+
+    [Test]
     public void CreateValidationMessageForPropertyValidator_WithEqualValidator_ReturnsLocalizedValidationMessage ()
     {
       var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (EqualValidator), _propertyStub);
@@ -208,6 +214,18 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That (validationMessage.ToString(), Is.StringStarting ("Enter a decimal number"));
+    }
+
+    [Test]
+    [Ignore ("TODO RM-5906")]
+    public void CreateValidationMessageForObjectValidator_NoLocalizationsAvailableForObjectValidators_ReturnsNull ()
+    {
+    }
+
+    [Test]
+    [Ignore ("TODO RM-5906")]
+    public void CreateValidationMessageForObjectValidator_WithLocalizedType_ReturnsLocalizedValidationMessage ()
+    {
     }
   }
 }

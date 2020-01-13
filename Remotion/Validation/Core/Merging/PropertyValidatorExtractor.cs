@@ -29,10 +29,10 @@ namespace Remotion.Validation.Merging
   /// </summary>
   public class PropertyValidatorExtractor : IPropertyValidatorExtractor
   {
-    private readonly ILookup<Type, ValidatorRegistrationWithContext> _validatorTypesToRemove;
+    private readonly ILookup<Type, PropertyValidatorRegistrationWithContext> _validatorTypesToRemove;
     private readonly ILogContext _logContext;
 
-    public PropertyValidatorExtractor (IEnumerable<ValidatorRegistrationWithContext> removedPropertyRuleRegistrations, ILogContext logContext)
+    public PropertyValidatorExtractor (IEnumerable<PropertyValidatorRegistrationWithContext> removedPropertyRuleRegistrations, ILogContext logContext)
     {
       ArgumentUtility.CheckNotNull ("removedPropertyRuleRegistrations", removedPropertyRuleRegistrations);
       ArgumentUtility.CheckNotNull ("logContext", logContext);
@@ -57,7 +57,7 @@ namespace Remotion.Validation.Merging
     }
 
     //TODO RM-5906: add integration test for redefined (new) property in derived class for that a validator should be removed
-    private IEnumerable<ValidatorRegistrationWithContext> GetRemovingPropertyRegistrations (
+    private IEnumerable<PropertyValidatorRegistrationWithContext> GetRemovingPropertyRegistrations (
         IPropertyValidator validator, IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector)
     {
       return

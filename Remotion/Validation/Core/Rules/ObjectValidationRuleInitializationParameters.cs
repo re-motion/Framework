@@ -21,12 +21,12 @@ using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Rules
 {
-  public class PropertyRuleInitializationParameters
+  public class ObjectValidationRuleInitializationParameters
   {
     [NotNull]
     public ValidationMessage ValidationMessage { get; }
 
-    public PropertyRuleInitializationParameters ([NotNull] ValidationMessage validationMessage)
+    public ObjectValidationRuleInitializationParameters ([NotNull] ValidationMessage validationMessage)
     {
       ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
 

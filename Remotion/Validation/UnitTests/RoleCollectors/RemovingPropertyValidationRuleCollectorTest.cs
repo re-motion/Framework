@@ -97,6 +97,18 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     }
 
     [Test]
+    [Ignore ("TODO RM-5906")]
+    public void RegisterValidator_ValidatorTypeDoesNotImplementIPropertyValidator_ThrowsArgumentException ()
+    {
+    }
+
+    [Test]
+    [Ignore ("TODO RM-5906")]
+    public void RegisterValidator_CollectorTypeDoesNotImplementIValidationRuleCollector_ThrowsArgumentException ()
+    {
+    }
+
+    [Test]
     public void To_String ()
     {
       var result = _removingPropertyValidationRuleCollector.ToString();

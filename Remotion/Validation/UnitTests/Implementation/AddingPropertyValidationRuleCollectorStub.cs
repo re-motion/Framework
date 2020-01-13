@@ -16,12 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
-using Remotion.Validation.RuleBuilders;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Rules;
 using Remotion.Validation.Validators;
@@ -40,9 +38,11 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       public IReadOnlyCollection<IRemovingPropertyValidationRuleCollector> RemovedPropertyRules => throw new NotImplementedException();
 
-      public IConditionalAddingPropertyValidationRuleBuilder<DomainType, TProperty> AddRule<TProperty> (Expression<Func<DomainType, TProperty>> propertySelector) => throw new NotImplementedException();
+      public IReadOnlyCollection<IAddingObjectValidationRuleCollector> AddedObjectRules => throw new NotImplementedException();
 
-      public IRemovingPropertyValidationRuleBuilder<DomainType, TProperty> RemoveRule<TProperty> (Expression<Func<DomainType, TProperty>> propertySelector) => throw new NotImplementedException();
+      public IReadOnlyCollection<IObjectMetaValidationRuleCollector> ObjectMetaValidationRules => throw new NotImplementedException();
+
+      public IReadOnlyCollection<IRemovingObjectValidationRuleCollector> RemovedObjectRules => throw new NotImplementedException();
     }
 
     public class DomainType
@@ -60,8 +60,8 @@ namespace Remotion.Validation.UnitTests.Implementation
 
     public void SetCondition<TValidatedType> (Func<TValidatedType, bool> predicate) => throw new NotImplementedException();
 
-    public void RegisterValidator (Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory)
-      => _validators.Add (validatorFactory (new PropertyRuleInitializationParameters (new InvariantValidationMessage ("Fake Message"))));
+    public void RegisterValidator (Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory)
+      => _validators.Add (validatorFactory (new PropertyValidationRuleInitializationParameters (new InvariantValidationMessage ("Fake Message"))));
 
     public string RuleSet => throw new NotImplementedException();
 

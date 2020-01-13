@@ -28,5 +28,8 @@ namespace Remotion.Validation.UnitTests.TestDomain.Collectors
     public IReadOnlyCollection<IAddingPropertyValidationRuleCollector> AddedPropertyRules { get; private set; }
     public IReadOnlyCollection<IPropertyMetaValidationRuleCollector> PropertyMetaValidationRules { get; private set; }
     public IReadOnlyCollection<IRemovingPropertyValidationRuleCollector> RemovedPropertyRules { get; private set; }
+    public IReadOnlyCollection<IAddingObjectValidationRuleCollector> AddedObjectRules { get; private set; }
+    public IReadOnlyCollection<IObjectMetaValidationRuleCollector> ObjectMetaValidationRules { get; private set; }
+    public IReadOnlyCollection<IRemovingObjectValidationRuleCollector> RemovedObjectRules { get; private set; }
   }
 }

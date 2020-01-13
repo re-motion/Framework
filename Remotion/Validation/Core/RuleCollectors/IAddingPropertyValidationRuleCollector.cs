@@ -31,6 +31,7 @@ namespace Remotion.Validation.RuleCollectors
   /// the <see cref="CollectorType"/> and are added to the validation specification if the component is used within the application.
   /// </summary>
   /// <seealso cref="AddingPropertyValidationRuleCollector"/>
+  /// <seealso cref="AddingPropertyValidationRuleCollector{TValidatedType,TProperty}"/>
   public interface IAddingPropertyValidationRuleCollector
   {
     /// <summary>The validators that are grouped under this rule.</summary>
@@ -59,7 +60,7 @@ namespace Remotion.Validation.RuleCollectors
     /// <summary>
     /// Registers a validator with this <see cref="IAddingPropertyValidationRuleCollector"/>.
     /// </summary>
-    void RegisterValidator ([NotNull] Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory);
+    void RegisterValidator ([NotNull] Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory);
 
     /// <summary>
     /// Sets the <see cref="IsRemovable"/> flag, making the rule removable.

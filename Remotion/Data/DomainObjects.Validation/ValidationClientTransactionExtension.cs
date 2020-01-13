@@ -90,11 +90,11 @@ namespace Remotion.Data.DomainObjects.Validation
         errorMessage.AppendLine();
         errorMessage.AppendLine (GetKeyText (errorByValidatedObject.Key));
         errorByValidatedObject
-            .OfType<ObjectValidationFailure>()
-            .Aggregate (errorMessage, (sb, f) => sb.Append (" -- ").Append (f.ErrorMessage).AppendLine());
-        errorByValidatedObject
             .OfType<PropertyValidationFailure>().OrderBy(f=>f.ValidatedProperty.Name)
             .Aggregate (errorMessage, (sb, f) => sb.Append (" -- ").Append(f.ValidatedProperty.Name).Append (": " ).Append (f.ErrorMessage).AppendLine());
+        errorByValidatedObject
+            .OfType<ObjectValidationFailure>()
+            .Aggregate (errorMessage, (sb, f) => sb.Append (" -- ").Append (f.ErrorMessage).AppendLine());
       }
       return errorMessage.ToString ();
     }

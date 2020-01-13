@@ -23,12 +23,11 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.RuleBuilders
 {
-  // TODO RM-5906: Rename to remove "Component". Replace with "Validation". Insert "Property"
   /// <summary>
   /// Provides an API for extending a validation rule with metadata, such as whether the validation rule can be removed by another component.
   /// </summary>
   ///<seealso cref="AddingPropertyValidationRuleBuilder{TValidatedType,TProperty}"/>
-  public interface IAddingPropertyValidationRuleBuilder<TValidatedType, out TProperty>
+  public interface IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty>
   {
     /// <summary>
     /// Associates a validator with this the property for this rule builder.
@@ -36,7 +35,7 @@ namespace Remotion.Validation.RuleBuilders
     /// <param name="validatorFactory">A factory delegate that returns the validator to set.</param>
     /// <returns></returns>
     IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> SetValidator (
-        Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory);
+        Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory);
 
     /// <summary>
     /// Declares that the registered validation rule can be removed by another component.

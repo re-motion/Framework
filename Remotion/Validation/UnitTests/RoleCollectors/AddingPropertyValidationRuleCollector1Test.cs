@@ -76,7 +76,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
 
     [Test]
     [Ignore ("TODO RM-5906")]
-    public void Initialization_CollectorTypeDoesNotImplementIComponentValidationCollector_ThrowsArgumentException ()
+    public void Initialization_CollectorTypeDoesNotImplementIValidationRuleCollector_ThrowsArgumentException ()
     {
     }
 

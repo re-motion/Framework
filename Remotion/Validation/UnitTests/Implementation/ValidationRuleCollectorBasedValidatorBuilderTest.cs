@@ -46,6 +46,11 @@ namespace Remotion.Validation.UnitTests.Implementation
     private IAddingPropertyValidationRuleCollector _addingPropertyValidationRuleCollectorStub2;
     private IAddingPropertyValidationRuleCollector _addingPropertyValidationRuleCollectorStub3;
     private IAddingPropertyValidationRuleCollector _addingPropertyValidationRuleCollectorStub4;
+    private IAddingObjectValidationRuleCollector[] _fakeAddingObjectValidationRulesCollectorResult;
+    private IAddingObjectValidationRuleCollector _addingObjectValidationRuleCollectorStub1;
+    private IAddingObjectValidationRuleCollector _addingObjectValidationRuleCollectorStub2;
+    private IAddingObjectValidationRuleCollector _addingObjectValidationRuleCollectorStub3;
+    private IAddingObjectValidationRuleCollector _addingObjectValidationRuleCollectorStub4;
     private ValidationRuleCollectorInfo _validationRuleCollectorInfo1;
     private ValidationRuleCollectorInfo _validationRuleCollectorInfo2;
     private ValidationRuleCollectorInfo _validationRuleCollectorInfo3;
@@ -106,15 +111,30 @@ namespace Remotion.Validation.UnitTests.Implementation
           ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.LastName),
           typeof (IValidationRuleCollector));
 
-      _fakeAddingPropertyValidationRulesCollectorResult = new[]
-                                  {
-                                      _addingPropertyValidationRuleCollectorStub1,
-                                      _addingPropertyValidationRuleCollectorStub2,
-                                      _addingPropertyValidationRuleCollectorStub3,
-                                      _addingPropertyValidationRuleCollectorStub4
-                                  };
+      _addingObjectValidationRuleCollectorStub1 = MockRepository.GenerateStub<IAddingObjectValidationRuleCollector>();
+      _addingObjectValidationRuleCollectorStub2 = MockRepository.GenerateStub<IAddingObjectValidationRuleCollector>();
+      _addingObjectValidationRuleCollectorStub3 = AddingObjectValidationRuleCollector.Create<Customer> (typeof (IValidationRuleCollector));
+      _addingObjectValidationRuleCollectorStub4 = AddingObjectValidationRuleCollector.Create<Customer> (typeof (IValidationRuleCollector));
+
+      _fakeAddingPropertyValidationRulesCollectorResult =
+          new[]
+          {
+              _addingPropertyValidationRuleCollectorStub1,
+              _addingPropertyValidationRuleCollectorStub2,
+              _addingPropertyValidationRuleCollectorStub3,
+              _addingPropertyValidationRuleCollectorStub4
+          };
+      _fakeAddingObjectValidationRulesCollectorResult =
+          new[]
+          {
+              _addingObjectValidationRuleCollectorStub1,
+              _addingObjectValidationRuleCollectorStub2,
+              _addingObjectValidationRuleCollectorStub3,
+              _addingObjectValidationRuleCollectorStub4
+          };
       _fakeValidationCollectorMergeResult = new ValidationCollectorMergeResult (
           _fakeAddingPropertyValidationRulesCollectorResult,
+          _fakeAddingObjectValidationRulesCollectorResult,
           MockRepository.GenerateStub<ILogContext>());
 
       _validatorBuilder = new ValidationRuleCollectorBasedValidatorBuilder (
@@ -153,8 +173,12 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       var validationRuleStub1 = MockRepository.GenerateStub<IValidationRule>();
       var validationRuleStub2 = MockRepository.GenerateStub<IValidationRule>();
+      var validationRuleStub4 = MockRepository.GenerateStub<IValidationRule>();
+      var validationRuleStub5 = MockRepository.GenerateStub<IValidationRule>();
       _addingPropertyValidationRuleCollectorStub1.Stub (_ => _.CreateValidationRule (_validationMessageFactoryStub)).Return (validationRuleStub1);
       _addingPropertyValidationRuleCollectorStub2.Stub (_ => _.CreateValidationRule (_validationMessageFactoryStub)).Return (validationRuleStub2);
+      _addingObjectValidationRuleCollectorStub1.Stub (_ => _.CreateValidationRule (_validationMessageFactoryStub)).Return (validationRuleStub4);
+      _addingObjectValidationRuleCollectorStub2.Stub (_ => _.CreateValidationRule (_validationMessageFactoryStub)).Return (validationRuleStub5);
 
       var result = _validatorBuilder.BuildValidator (typeof (SpecialCustomer1));
 
@@ -165,11 +189,17 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That (result, Is.TypeOf (typeof (Validator)));
       var validator = (Validator) result;
       var validationRules = validator.ValidationRules.ToArray();
-      Assert.That (validationRules.Length, Is.EqualTo (4));
+      Assert.That (validationRules.Length, Is.EqualTo (8));
       Assert.That (validationRules[0], Is.SameAs (validationRuleStub1));
       Assert.That (validationRules[1], Is.SameAs (validationRuleStub2));
+      Assert.That (validationRules[2], Is.InstanceOf<PropertyValidationRule<Customer, string>>());
       Assert.That (((IPropertyValidationRule) validationRules[2]).Property, Is.SameAs (_addingPropertyValidationRuleCollectorStub3.Property));
+      Assert.That (validationRules[3], Is.InstanceOf<PropertyValidationRule<Customer, string>>());
       Assert.That (((IPropertyValidationRule) validationRules[3]).Property, Is.SameAs (_addingPropertyValidationRuleCollectorStub4.Property));
+      Assert.That (validationRules[4], Is.SameAs (validationRuleStub4));
+      Assert.That (validationRules[5], Is.SameAs (validationRuleStub5));
+      Assert.That (validationRules[6], Is.InstanceOf<ObjectValidationRule<Customer>>());
+      Assert.That (validationRules[7], Is.InstanceOf<ObjectValidationRule<Customer>>());
     }
 
     [Test]

@@ -62,7 +62,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void SetValidator ()
     {
-      Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory = _ => _propertyValidatorStub;
+      Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = _ => _propertyValidatorStub;
       _addingPropertyValidationRuleCollectorMock.Expect (mock => mock.RegisterValidator (validatorFactory));
 
       ((IAddingPropertyValidationRuleBuilder<Customer, string>) _addingPropertyValidationBuilder).SetValidator (validatorFactory);

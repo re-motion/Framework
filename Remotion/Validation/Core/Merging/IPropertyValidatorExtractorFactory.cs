@@ -26,6 +26,6 @@ namespace Remotion.Validation.Merging
   /// <seealso cref="PropertyValidatorExtractorFactory"/>
   public interface IPropertyValidatorExtractorFactory
   {
-    IPropertyValidatorExtractor Create (IEnumerable<ValidatorRegistrationWithContext> validatorRegistrationWithContexts, ILogContext logContext);
+    IPropertyValidatorExtractor Create (IEnumerable<PropertyValidatorRegistrationWithContext> validatorRegistrationWithContexts, ILogContext logContext);
   }
 }

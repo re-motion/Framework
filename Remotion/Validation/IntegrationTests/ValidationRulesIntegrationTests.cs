@@ -44,6 +44,16 @@ namespace Remotion.Validation.IntegrationTests
     }
 
     [Test]
+    public void BuildSpecialCustomer_RemoveObjectValidatorHardConstraint_ThrowsException ()
+    {
+      Assert.That (
+          () => ValidationBuilder.BuildValidator<SpecialCustomer3>(),
+          Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo (
+              "Attempted to remove non-removable validator(s) 'FakeCustomerValidator' on type "
+              + "'Remotion.Validation.IntegrationTests.TestDomain.ComponentA.Customer'."));
+    }
+
+    [Test]
     public void BuildAddressValidator_WithConditionApplied ()
     {
       var address1 = new Address { Country = "Deutschland", PostalCode = "DE - 432134" };
@@ -147,6 +157,96 @@ namespace Remotion.Validation.IntegrationTests
       Assert.That (result.IsValid, Is.False);
       Assert.That (result.Errors.Count, Is.EqualTo (1));
       Assert.That (result.Errors.First().ErrorMessage, Is.EqualTo ("Enter a value."));
+    }
+
+    [Test]
+    public void BuildPersonValidator_ObjectValidatorApplied ()
+    {
+      var person1 = new Person { FirstName = null, LastName = "LastName" };
+      var person2 = new Person { FirstName = "FirstName", LastName = null };
+      var person3 = new Person { FirstName = "FirstName", LastName = "LastName" };
+
+      var validator = ValidationBuilder.BuildValidator<Person>();
+
+      var result1 = validator.Validate (person1);
+
+      Assert.That (result1.IsValid, Is.False);
+      Assert.That (result1.Errors.OfType<ObjectValidationFailure>().Count(), Is.EqualTo (1));
+      Assert.That (
+          result1.Errors.OfType<ObjectValidationFailure>().First().ErrorMessage,
+          Is.EqualTo ("Person must have 'FirstName' and 'LastName' properties set."));
+      Assert.That (
+          result1.Errors.OfType<ObjectValidationFailure>().First().LocalizedValidationMessage,
+          Is.EqualTo ("Localized validation message for 'RealPersonValidator': 'FirstName' or 'LastName' property is null or empty."));
+
+      var result2 = validator.Validate (person2);
+
+      Assert.That (result2.IsValid, Is.False);
+      Assert.That (result2.Errors.OfType<ObjectValidationFailure>().Count(), Is.EqualTo (1));
+      Assert.That (
+          result2.Errors.OfType<ObjectValidationFailure>().First().ErrorMessage,
+          Is.EqualTo ("Person must have 'FirstName' and 'LastName' properties set."));
+      Assert.That (
+          result2.Errors.OfType<ObjectValidationFailure>().First().LocalizedValidationMessage,
+          Is.EqualTo ("Localized validation message for 'RealPersonValidator': 'FirstName' or 'LastName' property is null or empty."));
+
+      var result3 = validator.Validate (person3);
+
+      Assert.That (result3.IsValid, Is.True);
+    }
+
+    [Test]
+    public void BuildEmployeeValidator_ObjectValidatorApplied ()
+    {
+      var employee1 = new Employee { FirstName = null, LastName = "LastName" };
+      var employee2 = new Employee { FirstName = "FirstName", LastName = null };
+      var employee3 = new Employee { FirstName = "FirstName", LastName = "LastName" };
+
+      var validator = ValidationBuilder.BuildValidator<Employee>();
+
+      var result1 = validator.Validate (employee1);
+
+      Assert.That (result1.IsValid, Is.False);
+      Assert.That (result1.Errors.OfType<ObjectValidationFailure>().Count(), Is.EqualTo (1));
+      Assert.That (
+          result1.Errors.OfType<ObjectValidationFailure>().First().ErrorMessage,
+          Is.EqualTo ("Person must have 'FirstName' and 'LastName' properties set."));
+      Assert.That (
+          result1.Errors.OfType<ObjectValidationFailure>().First().LocalizedValidationMessage,
+          Is.EqualTo ("Localized validation message for 'RealPersonValidator': 'FirstName' or 'LastName' property is null or empty."));
+
+      var result2 = validator.Validate (employee2);
+
+      Assert.That (result2.IsValid, Is.False);
+      Assert.That (result2.Errors.OfType<ObjectValidationFailure>().Count(), Is.EqualTo (1));
+      Assert.That (
+          result2.Errors.OfType<ObjectValidationFailure>().First().ErrorMessage,
+          Is.EqualTo ("Person must have 'FirstName' and 'LastName' properties set."));
+      Assert.That (
+          result2.Errors.OfType<ObjectValidationFailure>().First().LocalizedValidationMessage,
+          Is.EqualTo ("Localized validation message for 'RealPersonValidator': 'FirstName' or 'LastName' property is null or empty."));
+
+      var result3 = validator.Validate (employee3);
+      Assert.That (result3.Errors.OfType<ObjectValidationFailure>(), Is.Empty);
+    }
+
+    [Test]
+    public void BuildCustomerValidator_ObjectValidatorRemoved ()
+    {
+      var customer1 = new Customer { FirstName = null, LastName = "LastName" };
+      var customer2 = new Customer { FirstName = "FirstName", LastName = null };
+      var customer3 = new Customer { FirstName = "FirstName", LastName = "LastName" };
+
+      var validator = ValidationBuilder.BuildValidator<Customer>();
+
+      var result1 = validator.Validate (customer1);
+      Assert.That (result1.Errors.OfType<ObjectValidationFailure>(), Is.Empty);
+
+      var result2 = validator.Validate (customer2);
+      Assert.That (result1.Errors.OfType<ObjectValidationFailure>(), Is.Empty);
+
+      var result3 = validator.Validate (customer3);
+      Assert.That (result3.IsValid, Is.True);
     }
   }
 }

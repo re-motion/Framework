@@ -37,5 +37,13 @@ namespace Remotion.Validation.Implementation
 
       return new InvariantValidationMessage ($"{validatorType.Name}: Validation error.");
     }
+
+    public ValidationMessage CreateValidationMessageForObjectValidator (Type validatorType, ITypeInformation validatedType)
+    {
+      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
+      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+
+      return new InvariantValidationMessage ($"{validatorType.Name}: Validation error.");
+    }
   }
 }

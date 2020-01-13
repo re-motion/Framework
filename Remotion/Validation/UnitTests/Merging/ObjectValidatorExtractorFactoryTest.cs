@@ -17,32 +17,28 @@
 using System;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Validators;
+using Remotion.Validation.Merging;
 using Rhino.Mocks;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.UnitTests.Merging
 {
   [TestFixture]
-  public class LogContextInfoTest
+  public class ObjectValidatorExtractorFactoryTest
   {
-    private IPropertyValidator _propertyValidatorStub1;
-    private ValidatorRegistrationWithContext[] _validatorRegistrationWithContext;
-    private LogContextInfo _logContextInfo;
+    private ObjectValidatorExtractorFactory _factory;
 
     [SetUp]
     public void SetUp ()
     {
-      _propertyValidatorStub1 = MockRepository.GenerateStub<IPropertyValidator>();
-      _validatorRegistrationWithContext = new ValidatorRegistrationWithContext[0];
-
-      _logContextInfo = new LogContextInfo (_propertyValidatorStub1, _validatorRegistrationWithContext);
+      _factory = new ObjectValidatorExtractorFactory ();
     }
 
     [Test]
-    public void Initialization ()
+    public void Create ()
     {
-      Assert.That (_logContextInfo.RemvovedValidator, Is.SameAs (_propertyValidatorStub1));
-      Assert.That (_logContextInfo.RemovingValidatorRegistrationsWithContext, Is.SameAs (_validatorRegistrationWithContext));
+      var result = _factory.Create (new ObjectValidatorRegistrationWithContext[0], MockRepository.GenerateStub<ILogContext>());
+
+      Assert.That (result, Is.TypeOf (typeof (ObjectValidatorExtractor)));
     }
   }
 }

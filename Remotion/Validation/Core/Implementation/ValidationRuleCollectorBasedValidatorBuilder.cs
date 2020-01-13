@@ -72,9 +72,13 @@ namespace Remotion.Validation.Implementation
       var allCollectors = ValidationRuleCollectorProvider.GetValidationRuleCollectors (new[] { validatedType }).Select (c => c.ToArray()).ToArray();
       ValidateCollectors (allCollectors.SelectMany (c => c));
       var validationCollectorMergeResult = ValidationRuleCollectorMerger.Merge (allCollectors);
-      ValidateMetaRules (allCollectors, validationCollectorMergeResult.CollectedRules);
+      ValidateMetaRules (allCollectors, validationCollectorMergeResult.CollectedPropertyValidationRules);
 
-      var validationRules = validationCollectorMergeResult.CollectedRules.Select (r => r.CreateValidationRule(ValidationMessageFactory));
+      var propertyValidationRules = validationCollectorMergeResult.CollectedPropertyValidationRules
+          .Select (r => r.CreateValidationRule (ValidationMessageFactory));
+      var objectValidationRules = validationCollectorMergeResult.CollectedObjectValidationRules
+          .Select (r => r.CreateValidationRule (ValidationMessageFactory));
+      var validationRules = propertyValidationRules.Concat (objectValidationRules);
 
       return new Validator (validationRules, validatedType);
     }

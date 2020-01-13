@@ -18,39 +18,6 @@ namespace Remotion.Validation.RuleCollectors
   /// </summary>
   public sealed class AddingPropertyValidationRuleCollector<TValidatedType, TProperty> : IAddingPropertyValidationRuleCollector
   {
-    private sealed class DeferredInitializationValidationMessage : ValidationMessage
-    {
-      private ValidationMessage _validationMessage;
-
-      public DeferredInitializationValidationMessage ()
-      {
-      }
-
-      public void Initialize (ValidationMessage validationMessage)
-      {
-        if (_validationMessage != null)
-          throw new InvalidOperationException ("Validation message has already been initialized.");
-
-        _validationMessage = validationMessage;
-      }
-
-      public override string Format (CultureInfo culture, IFormatProvider formatProvider, params object[] parameters)
-      {
-        if (_validationMessage == null)
-          throw new InvalidOperationException ("Validation message has not been initialized.");
-
-        return _validationMessage.Format (culture, formatProvider, parameters);
-      }
-
-      public override string ToString ()
-      {
-        if (_validationMessage == null)
-          return nameof (DeferredInitializationValidationMessage);
-
-        return _validationMessage.ToString();
-      }
-    }
-
     private static readonly Func<TValidatedType, bool> s_trueCondition = _ => true;
 
     [NotNull]
@@ -123,7 +90,7 @@ namespace Remotion.Validation.RuleCollectors
 
       if (typeof (TValidatedTypeForCondition) != typeof (TValidatedType))
         throw new ArgumentException (
-            $"The type '{typeof (TValidatedTypeForCondition).FullName}' of the predicate does not match the type '{typeof (TValidatedType).FullName}' of the property rule.");
+            $"The type '{typeof (TValidatedTypeForCondition).FullName}' of the predicate does not match the type '{typeof (TValidatedType).FullName}' of the validation rule.");
 
       Condition = (Func<TValidatedType, bool>) (object) predicate;
     }
@@ -133,12 +100,12 @@ namespace Remotion.Validation.RuleCollectors
       IsRemovable = true;
     }
 
-    public void RegisterValidator (Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory)
+    public void RegisterValidator (Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory)
     {
       ArgumentUtility.CheckNotNull ("validatorFactory", validatorFactory);
 
       var deferredInitializationValidationMessage = new DeferredInitializationValidationMessage();
-      var initializationParameters = new PropertyRuleInitializationParameters (deferredInitializationValidationMessage);
+      var initializationParameters = new PropertyValidationRuleInitializationParameters (deferredInitializationValidationMessage);
       var validator = validatorFactory (initializationParameters);
       Assertion.IsNotNull (validator, "validatorFactory evaluated and returned null.");
 

@@ -114,7 +114,7 @@ namespace Remotion.Validation.RuleBuilders
     }
 
     public IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> SetValidator (
-        Func<PropertyRuleInitializationParameters, IPropertyValidator> validatorFactory)
+        Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory)
     {
       ArgumentUtility.CheckNotNull ("validatorFactory", validatorFactory);
 

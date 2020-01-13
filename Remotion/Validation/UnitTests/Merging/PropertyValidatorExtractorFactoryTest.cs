@@ -36,7 +36,7 @@ namespace Remotion.Validation.UnitTests.Merging
     [Test]
     public void Create ()
     {
-      var result = _factory.Create (new ValidatorRegistrationWithContext[0], MockRepository.GenerateStub<ILogContext>());
+      var result = _factory.Create (new PropertyValidatorRegistrationWithContext[0], MockRepository.GenerateStub<ILogContext>());
 
       Assert.That (result, Is.TypeOf (typeof (PropertyValidatorExtractor)));
     }
