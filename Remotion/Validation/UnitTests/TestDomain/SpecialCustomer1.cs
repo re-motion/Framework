@@ -24,8 +24,8 @@ namespace Remotion.Validation.UnitTests.TestDomain
   {
     public override string LastName { get; set; }
 
-    [Length (0, 10, IsRemovable = true)]
-    [NotNull (IsRemovable = true)]
+    [LengthValidation (0, 10, IsRemovable = true)]
+    [NotNullValidation (IsRemovable = true)]
     [RemoveValidator (typeof (LengthValidator))]
     public override string UserName { get; set; }
   }

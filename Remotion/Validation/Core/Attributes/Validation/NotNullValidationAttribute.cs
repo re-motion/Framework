@@ -25,11 +25,11 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.Attributes.Validation
 {
   /// <summary>
-  /// Apply the <see cref="NotEmptyAttribute"/> to introduce a <see cref="NotEmptyValidator"/> constraint for a property.
+  /// Apply the <see cref="NotNullValidationAttribute"/> to introduce a <see cref="NotNullValidator"/> constraint for a property.
   /// </summary>
-  public class NotEmptyAttribute : AddingValidationAttributeBase
+  public class NotNullValidationAttribute : AddingValidationAttributeBase
   {
-    public NotEmptyAttribute ()
+    public NotNullValidationAttribute ()
     {
     }
 
@@ -38,25 +38,24 @@ namespace Remotion.Validation.Attributes.Validation
       ArgumentUtility.CheckNotNull ("property", property);
       ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
 
-      NotEmptyValidator validator;
+      NotNullValidator validator;
       if (string.IsNullOrEmpty (ErrorMessage))
       {
-        var validatorType = typeof (NotEmptyValidator);
+        var validatorType = typeof (NotNullValidator);
         var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator (validatorType, property);
         if (validationMessage == null)
         {
           throw new InvalidOperationException (
               $"The {nameof (IValidationMessageFactory)} did not return a result for {validatorType.Name} applied to property '{property.Name}' on type '{property.GetOriginalDeclaringType().FullName}'.");
         }
-        validator = new NotEmptyValidator (validationMessage);
+        validator = new NotNullValidator (validationMessage);
       }
       else
       {
-        validator = new NotEmptyValidator (new InvariantValidationMessage (ErrorMessage));
+        validator = new NotNullValidator (new InvariantValidationMessage (ErrorMessage));
       }
 
       return EnumerableUtility.Singleton (validator);
     }
   }
 }
-

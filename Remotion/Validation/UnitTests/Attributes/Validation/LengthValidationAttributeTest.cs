@@ -27,15 +27,15 @@ using Rhino.Mocks;
 namespace Remotion.Validation.UnitTests.Attributes.Validation
 {
   [TestFixture]
-  public class LengthAttributeTest
+  public class LengthValidationAttributeTest
   {
-    private LengthAttribute _attribute;
+    private LengthValidationAttribute _attribute;
     private IValidationMessageFactory _validationMessageFactoryStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _attribute = new LengthAttribute (10, 20);
+      _attribute = new LengthValidationAttribute (10, 20);
       _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
     }
 

@@ -21,7 +21,7 @@ namespace Remotion.Validation.UnitTests.TestDomain
 {
   public class Employee : Person
   {
-    [Length(0, 20)]
+    [LengthValidation(0, 20)]
     public virtual string Position { get; set; }
 
     public virtual string Notes { get; set; }

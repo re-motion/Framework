@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
 {
   public interface ICustomerIntroduced
   {
-    [NotEqual ("Chef1")]
+    [NotEqualValidation ("Chef1")]
     string Title { get; set; }
 
     Address Address { get; set; }

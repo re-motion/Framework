@@ -22,8 +22,8 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA
 {
   public class Customer : Person
   {
-    [Length (0, 8)]
-    [NotEqual ("Test")]
+    [LengthValidation (0, 8)]
+    [NotEqualValidation ("Test")]
     public virtual string UserName { get; set; }
 
     public virtual string Email { get; set; }

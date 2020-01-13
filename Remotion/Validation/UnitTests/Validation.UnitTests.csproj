@@ -60,11 +60,11 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Attributes\ApplyWithClassAttributeTest.cs" />
-    <Compile Include="Attributes\Validation\LengthAttributeTest.cs" />
+    <Compile Include="Attributes\Validation\LengthValidationAttributeTest.cs" />
     <Compile Include="Attributes\MetaValidation\AnyRuleAppliedMetaValidationRuleAttributeTest.cs" />
-    <Compile Include="Attributes\Validation\NotEmptyAttributeTest.cs" />
-    <Compile Include="Attributes\Validation\NotEqualAttributeTest.cs" />
-    <Compile Include="Attributes\Validation\NotNullAttributeTest.cs" />
+    <Compile Include="Attributes\Validation\NotEmptyValidationAttributeTest.cs" />
+    <Compile Include="Attributes\Validation\NotEqualValidationAttributeTest.cs" />
+    <Compile Include="Attributes\Validation\NotNullValidationAttributeTest.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttributeTest.cs" />
     <Compile Include="DefaultValidatorExtensionsTest.cs" />
     <Compile Include="Implementation\AttributeBasedValidationRuleCollectorTest.cs" />

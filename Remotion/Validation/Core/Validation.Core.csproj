@@ -58,11 +58,11 @@
     <Compile Include="Attributes\ApplyProgrammaticallyAttribute.cs" />
     <Compile Include="Attributes\ApplyWithClassAttribute.cs" />
     <Compile Include="Attributes\MetaValidation\AnyRuleAppliedMetaValidationRuleAttribute.cs" />
-    <Compile Include="Attributes\Validation\LengthAttribute.cs" />
+    <Compile Include="Attributes\Validation\LengthValidationAttribute.cs" />
     <Compile Include="Attributes\MetaValidation\AddingMetaValidationRuleAttributeBase.cs" />
-    <Compile Include="Attributes\Validation\NotEmptyAttribute.cs" />
-    <Compile Include="Attributes\Validation\NotEqualAttribute.cs" />
-    <Compile Include="Attributes\Validation\NotNullAttribute.cs" />
+    <Compile Include="Attributes\Validation\NotEmptyValidationAttribute.cs" />
+    <Compile Include="Attributes\Validation\NotEqualValidationAttribute.cs" />
+    <Compile Include="Attributes\Validation\NotNullValidationAttribute.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttribute.cs" />
     <Compile Include="Attributes\Validation\AddingValidationAttributeBase.cs" />
     <Compile Include="ComponentValidationCollector.obsolete.cs" />

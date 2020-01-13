@@ -27,15 +27,15 @@ using Rhino.Mocks;
 namespace Remotion.Validation.UnitTests.Attributes.Validation
 {
   [TestFixture]
-  public class NotNullAttributeTest
+  public class NotNullValidationAttributeTest
   {
-    private NotNullAttribute _attribute;
+    private NotNullValidationAttribute _attribute;
     private IValidationMessageFactory _validationMessageFactoryStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _attribute = new NotNullAttribute();
+      _attribute = new NotNullValidationAttribute();
       _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
     }
 

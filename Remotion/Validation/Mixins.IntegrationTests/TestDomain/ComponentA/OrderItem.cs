@@ -24,7 +24,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA
   {
     public virtual Product Product { get; set; }
 
-    [NotEmpty]
+    [NotEmptyValidation]
     public virtual int Quantity { get; set; }
   }
 }

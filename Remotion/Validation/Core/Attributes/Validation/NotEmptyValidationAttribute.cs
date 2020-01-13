@@ -25,26 +25,12 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.Attributes.Validation
 {
   /// <summary>
-  /// Apply the <see cref="NotEqualAttribute"/> to introduce a <see cref="NotEqualValidator"/> constraint for a string property.
+  /// Apply the <see cref="NotEmptyValidationAttribute"/> to introduce a <see cref="NotEmptyValidator"/> constraint for a property.
   /// </summary>
-  public class NotEqualAttribute : AddingValidationAttributeBase
+  public class NotEmptyValidationAttribute : AddingValidationAttributeBase
   {
-    private readonly string _value;
-
-    /// <summary>
-    /// Instantiates a new <see cref="NotEqualValidator"/>.
-    /// </summary>
-    /// <param name="value">The value the string property must not be equal to. Must not be <see langword="null" /> or empty.</param>
-    public NotEqualAttribute (string value)
+    public NotEmptyValidationAttribute ()
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-
-      _value = value;
-    }
-
-    public string Value
-    {
-      get { return _value; }
     }
 
     protected override IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
@@ -52,24 +38,25 @@ namespace Remotion.Validation.Attributes.Validation
       ArgumentUtility.CheckNotNull ("property", property);
       ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
 
-      NotEqualValidator validator;
+      NotEmptyValidator validator;
       if (string.IsNullOrEmpty (ErrorMessage))
       {
-        var validatorType = typeof (NotEqualValidator);
+        var validatorType = typeof (NotEmptyValidator);
         var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator (validatorType, property);
         if (validationMessage == null)
         {
           throw new InvalidOperationException (
               $"The {nameof (IValidationMessageFactory)} did not return a result for {validatorType.Name} applied to property '{property.Name}' on type '{property.GetOriginalDeclaringType().FullName}'.");
         }
-        validator = new NotEqualValidator (Value, validationMessage);
+        validator = new NotEmptyValidator (validationMessage);
       }
       else
       {
-        validator = new NotEqualValidator (Value, new InvariantValidationMessage (ErrorMessage));
+        validator = new NotEmptyValidator (new InvariantValidationMessage (ErrorMessage));
       }
 
       return EnumerableUtility.Singleton (validator);
     }
   }
 }
+

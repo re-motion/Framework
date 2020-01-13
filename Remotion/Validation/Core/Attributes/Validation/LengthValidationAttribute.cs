@@ -25,20 +25,20 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.Attributes.Validation
 {
   /// <summary>
-  /// Apply the <see cref="LengthAttribute"/> to introduce a <see cref="LengthValidator"/> constraint for a string property.
+  /// Apply the <see cref="LengthValidationAttribute"/> to introduce a <see cref="LengthValidator"/> constraint for a string property.
   /// </summary>
-  public class LengthAttribute : AddingValidationAttributeBase
+  public class LengthValidationAttribute : AddingValidationAttributeBase
   {
     // TODO RM-5906: make max-length nullable and create specific type of length-validator based on min and max-length values
     private readonly int _maxLength;
     private readonly int _minLength;
 
     /// <summary>
-    /// Instantiates a new <see cref="LengthAttribute"/>.
+    /// Instantiates a new <see cref="LengthValidationAttribute"/>.
     /// </summary>
     /// <param name="minLength">The minimum number of characters required.</param>
     /// <param name="maxLength">The maximum number of characters allowed.</param>
-    public LengthAttribute (int minLength, int maxLength)
+    public LengthValidationAttribute (int minLength, int maxLength)
     {
       _minLength = minLength;
       _maxLength = maxLength;

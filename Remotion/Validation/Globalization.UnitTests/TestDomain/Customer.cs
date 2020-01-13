@@ -21,9 +21,9 @@ namespace Remotion.Validation.Globalization.UnitTests.TestDomain
 {
   public class Customer : Person
   {
-    [Length (0, 8)]
-    [NotNull]
-    [NotEqual ("Test")]
+    [LengthValidation (0, 8)]
+    [NotNullValidation]
+    [NotEqualValidation ("Test")]
     public virtual string UserName { get; set; }
 
     public virtual string Email { get; set; }

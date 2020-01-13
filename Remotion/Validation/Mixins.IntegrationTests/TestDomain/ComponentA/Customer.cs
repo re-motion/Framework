@@ -22,8 +22,8 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA
 {
   public class Customer : Person
   {
-    [Length (0, 8, IsRemovable = true)]
-    [NotEqual ("Test")]
+    [LengthValidation (0, 8, IsRemovable = true)]
+    [NotEqualValidation ("Test")]
     public virtual string UserName { get; set; }
 
     public virtual string Email { get; set; }
