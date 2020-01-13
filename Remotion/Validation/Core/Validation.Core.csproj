@@ -195,7 +195,7 @@
     <Compile Include="RuleBuilders\RemovingPropertyValidationRuleBuilder.cs" />
     <Compile Include="RuleCollectors\AddingPropertyValidationRuleCollector.cs" />
     <Compile Include="RuleBuilders\AddingPropertyValidationRuleBuilder.cs" />
-    <Compile Include="ValidationRuleCollector.cs" />
+    <Compile Include="ValidationRuleCollectorBase.cs" />
     <Compile Include="RuleBuilders\IAddingPropertyValidationRuleBuilder.cs" />
     <Compile Include="RuleBuilders\IRemovingPropertyValidationRuleBuilder.cs" />
     <Compile Include="RuleCollectors\IAddingPropertyValidationRuleCollector.cs" />
