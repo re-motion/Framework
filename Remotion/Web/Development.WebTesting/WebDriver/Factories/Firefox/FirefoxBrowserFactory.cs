@@ -48,9 +48,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox
       ArgumentUtility.CheckNotNull ("driverConfiguration", driverConfiguration);
 
       var sessionConfiguration = CreateSessionConfiguration (driverConfiguration);
+      var commandTimeout = driverConfiguration.CommandTimeout;
 
       var firefoxDriverService = GetFirefoxDriverService();
-      var driver = new FirefoxDriver (firefoxDriverService, _firefoxConfiguration.CreateFirefoxOptions(), TimeSpan.FromSeconds (10));
+      var driver = new FirefoxDriver (firefoxDriverService, _firefoxConfiguration.CreateFirefoxOptions(), commandTimeout);
       var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Firefox));
 
       return new FirefoxBrowserSession (session, _firefoxConfiguration, firefoxDriverService.ProcessId);
