@@ -23,12 +23,12 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.MetaValidation.Rules.Custom
 {
-  public class RemotionMaxLengthMetaValidationRule : MetaValidationRuleBase<LengthValidator>
+  public class RemotionMaxLengthPropertyMetaValidationRule : PropertyMetaValidationRuleBase<LengthValidator>
   {
     private readonly int _maxLength;
     private readonly PropertyInfo _propertyInfo;
 
-    public RemotionMaxLengthMetaValidationRule (PropertyInfo propertyInfo, int maxLength)
+    public RemotionMaxLengthPropertyMetaValidationRule (PropertyInfo propertyInfo, int maxLength)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 

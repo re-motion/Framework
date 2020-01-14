@@ -16,17 +16,16 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Validation.RuleCollectors;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.MetaValidation
 {
   /// <summary>
-  /// Implementations of the <see cref="IMetaRuleValidator"/> interface can be used to validate the consistency of a 
-  /// set of <see cref="IAddingPropertyValidationRuleCollector"/>s.
+  /// Implementations of the <see cref="IPropertyMetaValidationRule"/> interface are used to verify the consistency 
+  /// of the merged set of <see cref="IPropertyValidator"/>s for a property. 
   /// </summary>
-  /// <seealso cref="MetaRulesValidator"/>
-  public interface IMetaRuleValidator
+  public interface IPropertyMetaValidationRule
   {
-    IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingPropertyValidationRuleCollector[] addingPropertyValidationRulesCollector);
+    IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<IPropertyValidator> validationRules);
   }
 }

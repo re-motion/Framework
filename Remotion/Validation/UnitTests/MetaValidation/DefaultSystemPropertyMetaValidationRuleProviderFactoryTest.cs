@@ -16,25 +16,32 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
-using Remotion.Validation.RuleCollectors;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.MetaValidation
 {
   [TestFixture]
-  public class MetaRulesValidatorFactoryTest
+  public class DefaultSystemPropertyMetaValidationRuleProviderFactoryTest
   {
-    [Test]
-    public void CreateMetaRuleValidator ()
+    private DefaultSystemPropertyMetaValidationRuleProviderFactory _factory;
+
+    [SetUp]
+    public void SetUp ()
     {
-      var systemMetaRulesProviderFactoryStub = MockRepository.GenerateStub<ISystemMetaValidationRulesProviderFactory>();
+      _factory = new DefaultSystemPropertyMetaValidationRuleProviderFactory();
+    }
 
-      var factory = new MetaRulesValidatorFactory (systemMetaRulesProviderFactoryStub);
-      
-      var result = factory.CreateMetaRuleValidator (new IPropertyMetaValidationRuleCollector[0]);
+    [Test]
+    public void Create ()
+    {
+      var fakePropertyInformation = MockRepository.GenerateStub<IPropertyInformation>();
 
-      Assert.That (result, Is.TypeOf (typeof (MetaRulesValidator)));
+      var result = _factory.Create (fakePropertyInformation);
+
+      Assert.That (result, Is.TypeOf<DefaultSystemPropertyMetaValidationRuleProvider>());
+      Assert.That (((DefaultSystemPropertyMetaValidationRuleProvider) result).PropertyInformation, Is.SameAs (fakePropertyInformation));
     }
   }
 }

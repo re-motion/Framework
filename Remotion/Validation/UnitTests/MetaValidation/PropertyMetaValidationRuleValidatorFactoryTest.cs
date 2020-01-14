@@ -15,18 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
+using NUnit.Framework;
+using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleCollectors;
+using Rhino.Mocks;
 
-namespace Remotion.Validation.MetaValidation
+namespace Remotion.Validation.UnitTests.MetaValidation
 {
-  /// <summary>
-  /// Defines a API for instantiating an implementation of the <see cref="IMetaRuleValidator"/> interface based on a set of 
-  /// <see cref="IPropertyMetaValidationRuleCollector"/>s.
-  /// </summary>
-  /// <seealso cref="MetaRulesValidatorFactory"/>
-  public interface IMetaRulesValidatorFactory
+  [TestFixture]
+  public class PropertyMetaValidationRuleValidatorFactoryTest
   {
-    IMetaRuleValidator CreateMetaRuleValidator (IEnumerable<IPropertyMetaValidationRuleCollector> metaValidatorRules);
+    [Test]
+    public void CreatePropertyMetaValidationRuleValidator ()
+    {
+      var systemMetaRulesProviderFactoryStub = MockRepository.GenerateStub<ISystemPropertyMetaValidationRuleProviderFactory>();
+
+      var factory = new PropertyMetaValidationRuleValidatorFactory (systemMetaRulesProviderFactoryStub);
+      
+      var result = factory.CreatePropertyMetaValidationRuleValidator (new IPropertyMetaValidationRuleCollector[0]);
+
+      Assert.That (result, Is.TypeOf (typeof (PropertyMetaValidationRuleValidator)));
+    }
   }
 }

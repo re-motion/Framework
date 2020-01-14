@@ -25,14 +25,14 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.MetaValidation.Rules.Custom
 {
   /// <summary>
-  /// Implements the <see cref="IMetaValidationRule"/> interface to verify that there is at least one rule applied to a property.
+  /// Implements the <see cref="IPropertyMetaValidationRule"/> interface to verify that there is at least one rule applied to a property.
   /// </summary>
   /// <seealso cref="AnyRuleAppliedMetaValidationRuleAttribute"/>
-  public class AnyRuleAppliedMetaValidationRule : MetaValidationRuleBase<IPropertyValidator>
+  public class AnyRuleAppliedPropertyMetaValidationRule : PropertyMetaValidationRuleBase<IPropertyValidator>
   {
     private readonly PropertyInfo _property;
 
-    public AnyRuleAppliedMetaValidationRule (PropertyInfo property)
+    public AnyRuleAppliedPropertyMetaValidationRule (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
 

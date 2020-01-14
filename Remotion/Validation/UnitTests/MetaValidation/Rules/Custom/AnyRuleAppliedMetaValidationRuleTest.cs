@@ -27,7 +27,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
   [TestFixture]
   public class AnyRuleAppliedMetaValidationRuleTest
   {
-    private AnyRuleAppliedMetaValidationRule _rule;
+    private AnyRuleAppliedPropertyMetaValidationRule _rule;
     private IPropertyValidator _propertyValidatorStub1;
     private IPropertyValidator _propertyValidatorStub2;
 
@@ -37,7 +37,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
       _propertyValidatorStub1 = MockRepository.GenerateStub<IPropertyValidator>();
       _propertyValidatorStub2 = MockRepository.GenerateStub<IPropertyValidator>();
 
-      _rule = new AnyRuleAppliedMetaValidationRule (typeof (Customer).GetProperty ("UserName"));
+      _rule = new AnyRuleAppliedPropertyMetaValidationRule (typeof (Customer).GetProperty ("UserName"));
     }
 
     [Test]
@@ -49,7 +49,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
       Assert.That (
           result.Message,
           Is.EqualTo (
-              "'AnyRuleAppliedMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': "
+              "'AnyRuleAppliedPropertyMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': "
               + "No validation rules defined."));
     }
 

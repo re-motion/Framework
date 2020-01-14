@@ -15,33 +15,31 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
-using Rhino.Mocks;
+using Remotion.Validation.UnitTests.TestDomain;
 
 namespace Remotion.Validation.UnitTests.MetaValidation
 {
   [TestFixture]
-  public class DefaultSystemMetaValidationRulesProviderFactoryTest
+  public class DefaultSystemPropertyMetaValidationRuleProviderTest
   {
-    private DefaultSystemMetaValidationRulesProviderFactory _factory;
+    private DefaultSystemPropertyMetaValidationRuleProvider _provider;
 
     [SetUp]
     public void SetUp ()
     {
-      _factory = new DefaultSystemMetaValidationRulesProviderFactory();
+      _provider = new DefaultSystemPropertyMetaValidationRuleProvider (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
     }
 
     [Test]
-    public void Create ()
+    public void GetSystemMetaValidationRules ()
     {
-      var fakePropertyInformation = MockRepository.GenerateStub<IPropertyInformation>();
+      var result = _provider.GetSystemPropertyMetaValidationRules();
 
-      var result = _factory.Create (fakePropertyInformation);
-
-      Assert.That (result, Is.TypeOf<DefaultSystemMetaValidationRulesProvider>());
-      Assert.That (((DefaultSystemMetaValidationRulesProvider) result).PropertyInformation, Is.SameAs (fakePropertyInformation));
+      Assert.That (result.Any(), Is.True);
     }
   }
 }

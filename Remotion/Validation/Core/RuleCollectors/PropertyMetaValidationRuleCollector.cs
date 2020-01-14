@@ -38,7 +38,7 @@ namespace Remotion.Validation.RuleCollectors
 
     public IPropertyInformation Property { get; }
     public Type CollectorType { get; }
-    private readonly List<IMetaValidationRule> _metaValidationRules;
+    private readonly List<IPropertyMetaValidationRule> _metaValidationRules;
 
     public PropertyMetaValidationRuleCollector (IPropertyInformation property, Type collectorType)
     {
@@ -47,19 +47,19 @@ namespace Remotion.Validation.RuleCollectors
 
       Property = property;
       CollectorType = collectorType;
-      _metaValidationRules = new List<IMetaValidationRule> ();
+      _metaValidationRules = new List<IPropertyMetaValidationRule> ();
     }
 
-    public IEnumerable<IMetaValidationRule> MetaValidationRules
+    public IEnumerable<IPropertyMetaValidationRule> MetaValidationRules
     {
       get { return _metaValidationRules.AsReadOnly(); }
     }
 
-    public void RegisterMetaValidationRule (IMetaValidationRule metaValidationRule)
+    public void RegisterMetaValidationRule (IPropertyMetaValidationRule propertyMetaValidationRule)
     {
-      ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
+      ArgumentUtility.CheckNotNull ("propertyMetaValidationRule", propertyMetaValidationRule);
 
-      _metaValidationRules.Add (metaValidationRule);
+      _metaValidationRules.Add (propertyMetaValidationRule);
     }
 
     public override string ToString ()

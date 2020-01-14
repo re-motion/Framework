@@ -16,26 +16,34 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Remotion.Reflection;
 using Remotion.Utilities;
-using Remotion.Validation.Validators;
+using Remotion.Validation.MetaValidation.Rules.System;
 
 namespace Remotion.Validation.MetaValidation
 {
   /// <summary>
-  /// Base class for implementations of the <see cref="IMetaValidationRule"/> interface which are constrained to a specific <see cref="IPropertyValidator"/> type.
+  /// Default implementation of the <see cref="ISystemPropertyMetaValidationRuleProvider"/> interface. Provides a <see cref="LengthSystemPropertyMetaValidationRule"/>.
   /// </summary>
-  /// <typeparam name="TValidator">The type of the <see cref="IPropertyValidator"/> validated by this meta validator.</typeparam>
-  public abstract class MetaValidationRuleBase<TValidator> : IMetaValidationRule
-      where TValidator: IPropertyValidator
+  public class DefaultSystemPropertyMetaValidationRuleProvider : ISystemPropertyMetaValidationRuleProvider
   {
-    public abstract IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<TValidator> validationRules);
+    private readonly IPropertyInformation _propertyInformation;
 
-    IEnumerable<MetaValidationRuleValidationResult> IMetaValidationRule.Validate (IEnumerable<IPropertyValidator> validationRules)
+    public DefaultSystemPropertyMetaValidationRuleProvider (IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
+      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
 
-      return Validate (validationRules.OfType<TValidator>());
+      _propertyInformation = propertyInformation;
+    }
+
+    public IPropertyInformation PropertyInformation
+    {
+      get { return _propertyInformation; }
+    }
+
+    public IEnumerable<IPropertyMetaValidationRule> GetSystemPropertyMetaValidationRules ()
+    {
+      yield return new LengthSystemPropertyMetaValidationRule (_propertyInformation);
     }
   }
 }

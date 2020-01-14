@@ -16,16 +16,28 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Validators;
 
-namespace Remotion.Validation.MetaValidation
+namespace Remotion.Validation.UnitTests.TestDomain.ValidationRules
 {
-  /// <summary>
-  /// Implementations of the <see cref="IMetaValidationRule"/> interface are used to verify the consistency 
-  /// of the merged set of <see cref="IPropertyValidator"/>s for a property. 
-  /// </summary>
-  public interface IMetaValidationRule
+  public class MaxLengthPropertyMetaValidationRule : PropertyMetaValidationRuleBase<LengthValidator>
   {
-    IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<IPropertyValidator> validationRules);
+    public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<LengthValidator> validationRules)
+    {
+      var invalidValidators = validationRules.Where (lengthValidator => lengthValidator.Max > 50).ToArray();
+      if (invalidValidators.Any())
+      {
+        foreach (var lengthValidator in invalidValidators)
+        {
+          yield return
+              MetaValidationRuleValidationResult.CreateInvalidResult (
+                  "MaxLength-Constraints greater 50 not allowed for validator '{0}'!", lengthValidator.GetType().Name);
+        }
+      }
+      else
+        yield return MetaValidationRuleValidationResult.CreateValidResult();
+    }
   }
 }

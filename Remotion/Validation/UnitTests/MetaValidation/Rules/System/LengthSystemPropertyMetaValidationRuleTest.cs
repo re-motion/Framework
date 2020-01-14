@@ -26,9 +26,9 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.UnitTests.MetaValidation.Rules.System
 {
   [TestFixture]
-  public class LengthSystemMetaValidationRuleTest
+  public class LengthSystemPropertyMetaValidationRuleTest
   {
-    private LengthSystemMetaValidationRule _rule;
+    private LengthSystemPropertyMetaValidationRule _rule;
     private MaximumLengthValidator _maxLengthValidator1;
     private MaximumLengthValidator _maxLengthValidator2;
     private MinimumLengthValidator _minLengthValidator1;
@@ -43,7 +43,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.System
       _minLengthValidator1 = new MinimumLengthValidator (10, new InvariantValidationMessage ("Fake Message"));
       _minLengthValidator2 = new MinimumLengthValidator (20, new InvariantValidationMessage ("Fake Message"));
 
-      _rule = new LengthSystemMetaValidationRule (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
+      _rule = new LengthSystemPropertyMetaValidationRule (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.System
       Assert.That (
           result.Message,
           Is.EqualTo (
-              "'LengthSystemMetaValidationRule' failed for member 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName'."));
+              "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName'."));
     }
   }
 }

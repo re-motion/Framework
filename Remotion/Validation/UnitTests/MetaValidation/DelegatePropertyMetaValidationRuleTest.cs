@@ -14,20 +14,26 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Reflection;
-using Remotion.ServiceLocation;
-using Remotion.Utilities;
+using System;
+using NUnit.Framework;
+using Remotion.Validation.MetaValidation;
+using System.Linq;
+using Remotion.Validation.Validators;
 
-namespace Remotion.Validation.MetaValidation
+namespace Remotion.Validation.UnitTests.MetaValidation
 {
-  [ImplementationFor (typeof (ISystemMetaValidationRulesProviderFactory), Lifetime = LifetimeKind.Singleton)]
-  public class DefaultSystemMetaValidationRulesProviderFactory : ISystemMetaValidationRulesProviderFactory
+  [TestFixture]
+  public class DelegatePropertyMetaValidationRuleTest
   {
-    public ISystemMetaValidationRulesProvider Create (IPropertyInformation propertyInformation)
+    [Test]
+    public void Validate ()
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
+      var fakeResult = MetaValidationRuleValidationResult.CreateValidResult();
+      var delegateRule = new DelegatePropertyMetaValidationRule<IPropertyValidator> (v => fakeResult);
 
-      return new DefaultSystemMetaValidationRulesProvider (propertyInformation);
+      var result = delegateRule.Validate (new IPropertyValidator[0]).First();
+
+      Assert.That (result, Is.SameAs (fakeResult));
     }
   }
 }

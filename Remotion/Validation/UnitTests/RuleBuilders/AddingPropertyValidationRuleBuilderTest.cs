@@ -83,7 +83,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void AddMetaValidationRule ()
     {
-      var metaValidationRuleStub = MockRepository.GenerateStub<IMetaValidationRule>();
+      var metaValidationRuleStub = MockRepository.GenerateStub<IPropertyMetaValidationRule>();
 
       _propertyMetaValidationRuleCollectorMock.Expect (mock => mock.RegisterMetaValidationRule (metaValidationRuleStub));
 
@@ -99,9 +99,9 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
 
       _propertyMetaValidationRuleCollectorMock.Expect (
           mock => mock.RegisterMetaValidationRule (
-              Arg<IMetaValidationRule>.Matches (
+              Arg<IPropertyMetaValidationRule>.Matches (
                   rule =>
-                      rule.GetType() == typeof (DelegateMetaValidationRule<IPropertyValidator>) &&
+                      rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>) &&
                       rule.Validate (new IPropertyValidator[0]).First() == fakeValidationResult)));
 
       _addingPropertyValidationBuilder.AddMetaValidationRule (v => fakeValidationResult);
@@ -114,9 +114,9 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     {
       _propertyMetaValidationRuleCollectorMock.Expect (
           mock => mock.RegisterMetaValidationRule (
-              Arg<IMetaValidationRule>.Matches (
+              Arg<IPropertyMetaValidationRule>.Matches (
                   rule =>
-                      rule.GetType() == typeof (DelegateMetaValidationRule<IPropertyValidator>)
+                      rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>)
                       && rule.Validate (new IPropertyValidator[0]).First().IsValid)));
 
       _addingPropertyValidationBuilder.AddMetaValidationRule<IPropertyValidator> (v => true);
@@ -129,9 +129,9 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     {
       _propertyMetaValidationRuleCollectorMock.Expect (
           mock => mock.RegisterMetaValidationRule (
-              Arg<IMetaValidationRule>.Matches (
+              Arg<IPropertyMetaValidationRule>.Matches (
                   rule =>
-                      rule.GetType() == typeof (DelegateMetaValidationRule<IPropertyValidator>) &&
+                      rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>) &&
                       !rule.Validate (new IPropertyValidator[0]).First().IsValid &&
                       rule.Validate (new IPropertyValidator[0]).First().Message
                       == "Meta validation rule 'v => False' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "

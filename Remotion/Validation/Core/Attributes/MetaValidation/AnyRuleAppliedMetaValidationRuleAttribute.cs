@@ -29,11 +29,11 @@ namespace Remotion.Validation.Attributes.MetaValidation
   /// </summary>
   public class AnyRuleAppliedMetaValidationRuleAttribute : AddingMetaValidationRuleAttributeBase
   {
-    public override IMetaValidationRule GetMetaValidationRule (PropertyInfo property)
+    public override IPropertyMetaValidationRule GetMetaValidationRule (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
       
-      return new AnyRuleAppliedMetaValidationRule (property);
+      return new AnyRuleAppliedPropertyMetaValidationRule (property);
     }
   }
 }

@@ -42,9 +42,9 @@ namespace Remotion.Validation.UnitTests.Providers
     private IPropertyValidator _propertyValidatorStub4;
     private IPropertyValidator _propertyValidatorStub5;
     private IPropertyValidator _propertyValidatorStub6;
-    private MaxLengthMetaValidationRule _metaValidationRule1;
+    private MaxLengthPropertyMetaValidationRule _propertyMetaValidationRule1;
     private MaxValidatorCountRule _metaValidationRule2;
-    private MaxLengthMetaValidationRule _metaValidationRule3;
+    private MaxLengthPropertyMetaValidationRule _propertyMetaValidationRule3;
     private IAttributesBasedValidationPropertyRuleReflector _validationPropertyRuleReflectorMock2;
 
     [SetUp]
@@ -57,9 +57,9 @@ namespace Remotion.Validation.UnitTests.Providers
       _propertyValidatorStub5 = MockRepository.GenerateStub<IPropertyValidator>();
       _propertyValidatorStub6 = MockRepository.GenerateStub<IPropertyValidator>();
 
-      _metaValidationRule1 = new MaxLengthMetaValidationRule();
+      _propertyMetaValidationRule1 = new MaxLengthPropertyMetaValidationRule();
       _metaValidationRule2 = new MaxValidatorCountRule();
-      _metaValidationRule3 = new MaxLengthMetaValidationRule();
+      _propertyMetaValidationRule3 = new MaxLengthPropertyMetaValidationRule();
 
       _validatorRegistration1 = new ValidatorRegistration (typeof (NotNullValidator), null);
       _validatorRegistration2 = new ValidatorRegistration (typeof (NotEmptyValidator), null);
@@ -90,9 +90,9 @@ namespace Remotion.Validation.UnitTests.Providers
               _validatorRegistration2,
               _validatorRegistration3,
               _validatorRegistration4,
-              _metaValidationRule1,
+              _propertyMetaValidationRule1,
               _metaValidationRule2,
-              _metaValidationRule3);
+              _propertyMetaValidationRule3);
 
       var result = collectorProvider.GetValidationRuleCollectors (new[] { typeof (Employee), typeof (SpecialCustomer1) }).SelectMany (g => g).ToArray();
 
@@ -128,7 +128,7 @@ namespace Remotion.Validation.UnitTests.Providers
           result[1].Collector.PropertyMetaValidationRules.ToArray().SelectMany (pr => pr.MetaValidationRules);
       Assert.That (
           addingPropertyRuleMetaValidationRules,
-          Is.EquivalentTo (new IMetaValidationRule[] { _metaValidationRule1, _metaValidationRule3, _metaValidationRule2 }));
+          Is.EquivalentTo (new IPropertyMetaValidationRule[] { _propertyMetaValidationRule1, _propertyMetaValidationRule3, _metaValidationRule2 }));
 
       removedPropertyRuleRegistrations =
           result[1].Collector.RemovedPropertyRules.ToArray().SelectMany (pr => pr.Validators.Select (v => v.ValidatorType));

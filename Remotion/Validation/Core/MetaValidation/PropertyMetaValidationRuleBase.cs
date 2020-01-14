@@ -15,43 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Reflection;
+using System.Collections.Generic;
+using System.Linq;
 using Remotion.Utilities;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.MetaValidation
 {
   /// <summary>
-  /// Base class for implementations of the <see cref="IMetaValidationRule"/> interface which are inherent to the validation specification of any given any application.
+  /// Base class for implementations of the <see cref="IPropertyMetaValidationRule"/> interface which are constrained to a specific <see cref="IPropertyValidator"/> type.
   /// </summary>
   /// <typeparam name="TValidator">The type of the <see cref="IPropertyValidator"/> validated by this meta validator.</typeparam>
-  public abstract class SystemMetaValidationRuleBase<TValidator> : MetaValidationRuleBase<TValidator>
+  public abstract class PropertyMetaValidationRuleBase<TValidator> : IPropertyMetaValidationRule
       where TValidator: IPropertyValidator
   {
-    private readonly IPropertyInformation _propertyInfo;
+    public abstract IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<TValidator> validationRules);
 
-    protected SystemMetaValidationRuleBase (IPropertyInformation propertyInfo)
+    IEnumerable<MetaValidationRuleValidationResult> IPropertyMetaValidationRule.Validate (IEnumerable<IPropertyValidator> validationRules)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
 
-      _propertyInfo = propertyInfo;
-    }
-
-    public IPropertyInformation PropertyInfo
-    {
-      get { return _propertyInfo; }
-    }
-
-    protected MetaValidationRuleValidationResult GetValidationResult (bool isValid)
-    {
-      if (isValid)
-        return MetaValidationRuleValidationResult.CreateValidResult();
-
-      return MetaValidationRuleValidationResult.CreateInvalidResult (
-          "'{0}' failed for member '{1}.{2}'.",
-          GetType().Name,
-          PropertyInfo.DeclaringType.FullName,
-          PropertyInfo.Name);
+      return Validate (validationRules.OfType<TValidator>());
     }
   }
 }

@@ -24,12 +24,12 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.MetaValidation.Rules.System
 {
   /// <summary>
-  /// Implements the <see cref="IMetaValidationRule"/> interface to verify that there no more than a single (distinct) minimum 
+  /// Implements the <see cref="IPropertyMetaValidationRule"/> interface to verify that there no more than a single (distinct) minimum 
   /// and a single (distinct) maximum length constraint applied to each property.
   /// </summary>
-  public class LengthSystemMetaValidationRule : SystemMetaValidationRuleBase<LengthValidator>
+  public class LengthSystemPropertyMetaValidationRule : SystemPropertyMetaValidationRuleBase<LengthValidator>
   {
-    public LengthSystemMetaValidationRule (IPropertyInformation propertyInfo)
+    public LengthSystemPropertyMetaValidationRule (IPropertyInformation propertyInfo)
         : base (propertyInfo)
     {
     }

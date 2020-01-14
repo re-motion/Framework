@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
+using Remotion.Reflection;
 
 namespace Remotion.Validation.MetaValidation
 {
-  public interface ISystemMetaValidationRulesProvider
+  public interface ISystemPropertyMetaValidationRuleProviderFactory
   {
-    IEnumerable<IMetaValidationRule> GetSystemMetaValidationRules ();
+    ISystemPropertyMetaValidationRuleProvider Create (IPropertyInformation propertyInformation);
   }
 }

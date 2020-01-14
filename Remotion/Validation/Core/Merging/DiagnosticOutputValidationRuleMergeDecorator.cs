@@ -187,14 +187,14 @@ namespace Remotion.Validation.Merging
         ValidatorRegistration[] removedRegistrations,
         IPropertyValidator[] addedNonRemovableValidators,
         IPropertyValidator[] addedRemovableValidators,
-        IMetaValidationRule[] addedMetaValidations,
+        IPropertyMetaValidationRule[] addedPropertyMetaValidationRules,
         StringBuilder sb)
     {
       AppendPropertyName (actualProperty, sb);
       AppendGroupedValidatorRegistrationsOutput (removedRegistrations, "REMOVED VALIDATORS:", sb);
       AppendGroupedValidatorsOutput (addedNonRemovableValidators, "ADDED NON-REMOVABLE VALIDATORS:", sb);
       AppendGroupedValidatorsOutput (addedRemovableValidators, "ADDED REMOVABLE VALIDATORS:", sb);
-      AppendCollectionData (sb, addedMetaValidations, "ADDED META VALIDATION RULES:", i => GetTypeName (i.GetType()));
+      AppendCollectionData (sb, addedPropertyMetaValidationRules, "ADDED META VALIDATION RULES:", i => GetTypeName (i.GetType()));
     }
 
     private void AppendPropertyRuleOutput (

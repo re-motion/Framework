@@ -166,7 +166,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       var result = _addressPropertyReflector.GetMetaValidationRules().ToArray();
 
       Assert.That (result.Length, Is.EqualTo (1));
-      Assert.That (result.Select (r => r.GetType()), Is.EquivalentTo (new[] { typeof (AnyRuleAppliedMetaValidationRule) }));
+      Assert.That (result.Select (r => r.GetType()), Is.EquivalentTo (new[] { typeof (AnyRuleAppliedPropertyMetaValidationRule) }));
     }
   }
 }

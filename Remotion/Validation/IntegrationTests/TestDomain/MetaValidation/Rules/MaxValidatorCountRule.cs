@@ -22,7 +22,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.Rules
 {
-  public class MaxValidatorCountRule : MetaValidationRuleBase<IPropertyValidator>
+  public class MaxValidatorCountRule : PropertyMetaValidationRuleBase<IPropertyValidator>
   {
     public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<IPropertyValidator> validationRules)
     {

@@ -200,7 +200,7 @@ namespace Remotion.Validation.UnitTests.Merging
           + "\r\n        ADDED REMOVABLE VALIDATORS:"
           + "\r\n        -> Remotion.Validation.Validators.LengthValidator (x1)"
           + "\r\n        ADDED META VALIDATION RULES:"
-          + "\r\n        -> Remotion.Validation.UnitTests.TestDomain.ValidationRules.MaxLengthMetaValidationRule"
+          + "\r\n        -> Remotion.Validation.UnitTests.TestDomain.ValidationRules.MaxLengthPropertyMetaValidationRule"
           + "\r\n"
           + "\r\n-> Remotion.Validation.Providers.ApiBasedValidationRuleCollectorProvider#Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseTypeCollector2"
           + "\r\n"

@@ -41,13 +41,13 @@ namespace Remotion.Validation.RuleCollectors
     IPropertyInformation Property { get; }
 
     /// <summary>
-    /// Gets the set of <see cref="IMetaValidationRule"/>s registered for the <see cref="Property"/> by the <see cref="CollectorType"/>.
+    /// Gets the set of <see cref="IPropertyMetaValidationRule"/>s registered for the <see cref="Property"/> by the <see cref="CollectorType"/>.
     /// </summary>
-    IEnumerable<IMetaValidationRule> MetaValidationRules { get; }
+    IEnumerable<IPropertyMetaValidationRule> MetaValidationRules { get; }
 
     /// <summary>
-    /// Registers a <see cref="IMetaValidationRule"/> for the <see cref="Property"/> by the <see cref="CollectorType"/>.
+    /// Registers a <see cref="IPropertyMetaValidationRule"/> for the <see cref="Property"/> by the <see cref="CollectorType"/>.
     /// </summary>
-    void RegisterMetaValidationRule ([NotNull] IMetaValidationRule metaValidationRule);
+    void RegisterMetaValidationRule ([NotNull] IPropertyMetaValidationRule propertyMetaValidationRule);
   }
 }

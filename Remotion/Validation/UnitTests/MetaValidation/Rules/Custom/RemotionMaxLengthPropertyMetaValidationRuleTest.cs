@@ -25,14 +25,14 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
 {
   [TestFixture]
-  public class RemotionMaxLengthMetaValidationRuleTest
+  public class RemotionMaxLengthPropertyMetaValidationRuleTest
   {
-    private RemotionMaxLengthMetaValidationRule _rule;
+    private RemotionMaxLengthPropertyMetaValidationRule _rule;
 
     [SetUp]
     public void SetUp ()
     {
-      _rule = new RemotionMaxLengthMetaValidationRule (typeof (Customer).GetProperty ("UserName"), 50);
+      _rule = new RemotionMaxLengthPropertyMetaValidationRule (typeof (Customer).GetProperty ("UserName"), 50);
     }
 
     [Test]
@@ -44,7 +44,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
       Assert.That (
           result.Message,
           Is.EqualTo (
-              "'RemotionMaxLengthMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': No max-length validation rules defined."));
+              "'RemotionMaxLengthPropertyMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': No max-length validation rules defined."));
     }
 
     [Test]
@@ -56,7 +56,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
       Assert.That (
           result.Message,
           Is.EqualTo (
-              "'RemotionMaxLengthMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': "
+              "'RemotionMaxLengthPropertyMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': "
               + "Max-length validation rule value '60' exceeds meta validation rule max-length value of '50'."));
     }
 

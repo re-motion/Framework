@@ -26,6 +26,6 @@ namespace Remotion.Validation.Attributes.MetaValidation
   [AttributeUsage (AttributeTargets.Property, AllowMultiple = true)]
   public abstract class AddingMetaValidationRuleAttributeBase : Attribute
   {
-    public abstract IMetaValidationRule GetMetaValidationRule (PropertyInfo property);
+    public abstract IPropertyMetaValidationRule GetMetaValidationRule (PropertyInfo property);
   }
 }

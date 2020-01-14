@@ -24,22 +24,22 @@ using Remotion.Validation.RuleCollectors;
 namespace Remotion.Validation.MetaValidation
 {
   /// <summary>
-  /// Default implementation of the <see cref="IMetaRuleValidator"/> interface based on <see cref="IMetaValidationRule"/>s.
+  /// Default implementation of the <see cref="IPropertyMetaValidationRuleValidator"/> interface based on <see cref="IPropertyMetaValidationRule"/>s.
   /// </summary>
-  public class MetaRulesValidator : IMetaRuleValidator
+  public class PropertyMetaValidationRuleValidator : IPropertyMetaValidationRuleValidator
   {
     private readonly IPropertyMetaValidationRuleCollector[] _addedPropertyMetaValidationRuleCollector;
-    private readonly ISystemMetaValidationRulesProviderFactory _systemMetaValidationRulesProviderFactory;
+    private readonly ISystemPropertyMetaValidationRuleProviderFactory _systemPropertyMetaValidationRuleProviderFactory;
 
-    public MetaRulesValidator (
+    public PropertyMetaValidationRuleValidator (
         IPropertyMetaValidationRuleCollector[] propertyMetaValidationRuleCollector,
-        ISystemMetaValidationRulesProviderFactory systemMetaValidationRulesProviderFactory)
+        ISystemPropertyMetaValidationRuleProviderFactory systemPropertyMetaValidationRuleProviderFactory)
     {
       ArgumentUtility.CheckNotNull ("propertyMetaValidationRuleCollector", propertyMetaValidationRuleCollector);
-      ArgumentUtility.CheckNotNull ("systemMetaValidationRulesProviderFactory", systemMetaValidationRulesProviderFactory);
+      ArgumentUtility.CheckNotNull ("systemPropertyMetaValidationRuleProviderFactory", systemPropertyMetaValidationRuleProviderFactory);
 
       _addedPropertyMetaValidationRuleCollector = propertyMetaValidationRuleCollector;
-      _systemMetaValidationRulesProviderFactory = systemMetaValidationRulesProviderFactory;
+      _systemPropertyMetaValidationRuleProviderFactory = systemPropertyMetaValidationRuleProviderFactory;
     }
 
     public IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingPropertyValidationRuleCollector[] addingPropertyValidationRulesCollector)
@@ -55,12 +55,12 @@ namespace Remotion.Validation.MetaValidation
              select metaValidationRule;
     }
 
-    private IEnumerable<IMetaValidationRule> GetAllMetaValidationRules (IGrouping<IPropertyInformation, IPropertyMetaValidationRuleCollector> propertyRuleGroup)
+    private IEnumerable<IPropertyMetaValidationRule> GetAllMetaValidationRules (
+        IGrouping<IPropertyInformation, IPropertyMetaValidationRuleCollector> propertyRuleGroup)
     {
-      return
-          _systemMetaValidationRulesProviderFactory.Create (propertyRuleGroup.Key)
-              .GetSystemMetaValidationRules()
-              .Concat (propertyRuleGroup.SelectMany (pr => pr.MetaValidationRules));
+      return _systemPropertyMetaValidationRuleProviderFactory.Create (propertyRuleGroup.Key)
+          .GetSystemPropertyMetaValidationRules()
+          .Concat (propertyRuleGroup.SelectMany (pr => pr.MetaValidationRules));
     }
   }
 }

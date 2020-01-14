@@ -36,6 +36,6 @@ namespace Remotion.Validation.Implementation
     IEnumerable<IPropertyValidator> GetRemovablePropertyValidators ();
     IEnumerable<IPropertyValidator> GetNonRemovablePropertyValidators ();
     IEnumerable<ValidatorRegistration> GetRemovingPropertyRegistrations ();
-    IEnumerable<IMetaValidationRule> GetMetaValidationRules ();
+    IEnumerable<IPropertyMetaValidationRule> GetMetaValidationRules ();
   }
 }

@@ -68,11 +68,11 @@ namespace Remotion.Validation.RuleBuilders
       return this;
     }
 
-    public IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule (IMetaValidationRule metaValidationRule)
+    public IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule (IPropertyMetaValidationRule propertyMetaValidationRule)
     {
-      ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
+      ArgumentUtility.CheckNotNull ("propertyMetaValidationRule", propertyMetaValidationRule);
 
-      _propertyMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);
+      _propertyMetaValidationRuleCollector.RegisterMetaValidationRule (propertyMetaValidationRule);
       return this;
     }
 
@@ -81,7 +81,7 @@ namespace Remotion.Validation.RuleBuilders
     {
       ArgumentUtility.CheckNotNull ("rule", rule);
 
-      var metaValidationRule = new DelegateMetaValidationRule<IPropertyValidator> (rule);
+      var metaValidationRule = new DelegatePropertyMetaValidationRule<IPropertyValidator> (rule);
       _propertyMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);
       return this;
     }
@@ -94,7 +94,7 @@ namespace Remotion.Validation.RuleBuilders
 
       var metaValidationRuleExecutor = metaValidationRuleExpression.Compile();
 
-      var metaValidationRule = new DelegateMetaValidationRule<TValidator> (
+      var metaValidationRule = new DelegatePropertyMetaValidationRule<TValidator> (
           validationRules =>
           {
             var isValid = metaValidationRuleExecutor (validationRules);

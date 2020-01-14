@@ -15,31 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
-using NUnit.Framework;
-using Remotion.Reflection;
-using Remotion.Validation.MetaValidation;
-using Remotion.Validation.UnitTests.TestDomain;
+using System.Collections.Generic;
+using Remotion.Validation.RuleCollectors;
 
-namespace Remotion.Validation.UnitTests.MetaValidation
+namespace Remotion.Validation.MetaValidation
 {
-  [TestFixture]
-  public class DefaultSystemMetaValidationRulesProviderTest
+  /// <summary>
+  /// Implementations of the <see cref="IPropertyMetaValidationRuleValidator"/> interface can be used to validate the consistency of a 
+  /// set of <see cref="IAddingPropertyValidationRuleCollector"/>s.
+  /// </summary>
+  /// <seealso cref="PropertyMetaValidationRuleValidator"/>
+  public interface IPropertyMetaValidationRuleValidator
   {
-    private DefaultSystemMetaValidationRulesProvider _provider;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _provider = new DefaultSystemMetaValidationRulesProvider (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
-    }
-
-    [Test]
-    public void GetSystemMetaValidationRules ()
-    {
-      var result = _provider.GetSystemMetaValidationRules();
-
-      Assert.That (result.Any(), Is.True);
-    }
+    IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingPropertyValidationRuleCollector[] addingPropertyValidationRulesCollector);
   }
 }

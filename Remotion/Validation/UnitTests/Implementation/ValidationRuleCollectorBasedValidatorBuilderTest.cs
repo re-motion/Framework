@@ -54,8 +54,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     private ValidationRuleCollectorInfo _validationRuleCollectorInfo1;
     private ValidationRuleCollectorInfo _validationRuleCollectorInfo2;
     private ValidationRuleCollectorInfo _validationRuleCollectorInfo3;
-    private IMetaRulesValidatorFactory _metaRulesValidatorFactoryStub;
-    private IMetaRuleValidator _metaRuleValidatorMock;
+    private IPropertyMetaValidationRuleValidatorFactory _propertyMetaValidationRuleValidatorFactoryStub;
+    private IPropertyMetaValidationRuleValidator _propertyMetaValidationRuleValidatorMock;
     private MetaValidationRuleValidationResult _validMetaValidationResult1;
     private MetaValidationRuleValidationResult _validMetaValidationResult2;
     private MetaValidationRuleValidationResult _invalidMetaValidationResult1;
@@ -73,8 +73,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       _validationRuleCollectorProviderMock = MockRepository.GenerateStrictMock<IValidationRuleCollectorProvider>();
       _validationRuleCollectorMergerMock = MockRepository.GenerateStrictMock<IValidationRuleCollectorMerger>();
-      _metaRulesValidatorFactoryStub = MockRepository.GenerateStub<IMetaRulesValidatorFactory>();
-      _metaRuleValidatorMock = MockRepository.GenerateStrictMock<IMetaRuleValidator>();
+      _propertyMetaValidationRuleValidatorFactoryStub = MockRepository.GenerateStub<IPropertyMetaValidationRuleValidatorFactory>();
+      _propertyMetaValidationRuleValidatorMock = MockRepository.GenerateStrictMock<IPropertyMetaValidationRuleValidator>();
       _memberInformationNameResolverMock = MockRepository.GenerateStrictMock<IMemberInformationNameResolver>();
       _collectorValidatorMock = MockRepository.GenerateStrictMock<IValidationRuleCollectorValidator> ();
       _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
@@ -140,7 +140,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validatorBuilder = new ValidationRuleCollectorBasedValidatorBuilder (
           _validationRuleCollectorProviderMock,
           _validationRuleCollectorMergerMock,
-          _metaRulesValidatorFactoryStub,
+          _propertyMetaValidationRuleValidatorFactoryStub,
           _validationMessageFactoryStub,
           _memberInformationNameResolverMock,
           _collectorValidatorMock);
@@ -167,7 +167,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _collectorValidatorMock.Expect (mock => mock.CheckValid (_validationRuleCollectorStub2)).Repeat.Once ();
       _collectorValidatorMock.Expect (mock => mock.CheckValid (_validationRuleCollectorStub3)).Repeat.Once ();
 
-      _metaRuleValidatorMock
+      _propertyMetaValidationRuleValidatorMock
           .Expect (mock => mock.Validate (Arg<IAddingPropertyValidationRuleCollector[]>.List.Equal (_fakeAddingPropertyValidationRulesCollectorResult)))
           .Return (new[] { _validMetaValidationResult1, _validMetaValidationResult2 });
 
@@ -184,7 +184,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _validationRuleCollectorProviderMock.VerifyAllExpectations();
       _validationRuleCollectorMergerMock.VerifyAllExpectations();
-      _metaRuleValidatorMock.VerifyAllExpectations();
+      _propertyMetaValidationRuleValidatorMock.VerifyAllExpectations();
       _memberInformationNameResolverMock.VerifyAllExpectations();
       Assert.That (result, Is.TypeOf (typeof (Validator)));
       var validator = (Validator) result;
@@ -211,7 +211,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _collectorValidatorMock.Expect (mock => mock.CheckValid (_validationRuleCollectorStub2)).Repeat.Once ();
       _collectorValidatorMock.Expect (mock => mock.CheckValid (_validationRuleCollectorStub3)).Repeat.Once ();
 
-      _metaRuleValidatorMock
+      _propertyMetaValidationRuleValidatorMock
           .Expect (mock => mock.Validate (Arg<IAddingPropertyValidationRuleCollector[]>.List.Equal (_fakeAddingPropertyValidationRulesCollectorResult)))
           .Return (new[] { _validMetaValidationResult1, _validMetaValidationResult2 });
 
@@ -219,7 +219,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _validationRuleCollectorProviderMock.VerifyAllExpectations();
       _validationRuleCollectorMergerMock.VerifyAllExpectations();
-      _metaRuleValidatorMock.VerifyAllExpectations();
+      _propertyMetaValidationRuleValidatorMock.VerifyAllExpectations();
       _memberInformationNameResolverMock.VerifyAllExpectations();
       Assert.That (result, Is.TypeOf (typeof (TypedValidatorDecorator<SpecialCustomer1>)));
     }
@@ -233,7 +233,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _collectorValidatorMock.Expect (mock => mock.CheckValid (_validationRuleCollectorStub2)).Repeat.Once ();
       _collectorValidatorMock.Expect (mock => mock.CheckValid (_validationRuleCollectorStub3)).Repeat.Once ();
 
-      _metaRuleValidatorMock
+      _propertyMetaValidationRuleValidatorMock
           .Expect (mock => mock.Validate (_fakeAddingPropertyValidationRulesCollectorResult))
           .Return (new[] { _validMetaValidationResult1, _invalidMetaValidationResult1, _validMetaValidationResult2, _invalidMetaValidationResult2 });
 
@@ -259,13 +259,13 @@ namespace Remotion.Validation.UnitTests.Implementation
                           c.SelectMany (g => g).ElementAt (2).Equals (_validationRuleCollectorInfo2))))
           .Return (_fakeValidationCollectorMergeResult);
 
-      _metaRulesValidatorFactoryStub
+      _propertyMetaValidationRuleValidatorFactoryStub
           .Stub (
               stub =>
-                  stub.CreateMetaRuleValidator (
+                  stub.CreatePropertyMetaValidationRuleValidator (
                       Arg<IPropertyMetaValidationRuleCollector[]>.List.Equal (
                           new[] { _metaValidationRule1Stub, _metaValidationRule2Stub, _metaValidationRule3Stub })))
-          .Return (_metaRuleValidatorMock);
+          .Return (_propertyMetaValidationRuleValidatorMock);
     }
   }
 }

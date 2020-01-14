@@ -418,8 +418,8 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       var result = _propertyWithNullableStringPropertyAttributeReflector.GetMetaValidationRules().ToArray();
 
       Assert.That (result.Count(), Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (RemotionMaxLengthMetaValidationRule)));
-      Assert.That (((RemotionMaxLengthMetaValidationRule) result[0]).MaxLength, Is.EqualTo (10));
+      Assert.That (result[0], Is.TypeOf (typeof (RemotionMaxLengthPropertyMetaValidationRule)));
+      Assert.That (((RemotionMaxLengthPropertyMetaValidationRule) result[0]).MaxLength, Is.EqualTo (10));
     }
 
     [Test]

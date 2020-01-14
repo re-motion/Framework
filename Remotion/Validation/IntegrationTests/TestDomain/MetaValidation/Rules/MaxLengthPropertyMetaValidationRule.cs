@@ -22,7 +22,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.Rules
 {
-  public class MaxLengthMetaValidationRule : MetaValidationRuleBase<LengthValidator>
+  public class MaxLengthPropertyMetaValidationRule : PropertyMetaValidationRuleBase<LengthValidator>
   {
     public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<LengthValidator> validationRules)
     {

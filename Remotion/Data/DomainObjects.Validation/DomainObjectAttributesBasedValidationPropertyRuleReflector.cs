@@ -179,11 +179,11 @@ namespace Remotion.Data.DomainObjects.Validation
       return Enumerable.Empty<ValidatorRegistration>();
     }
 
-    public IEnumerable<IMetaValidationRule> GetMetaValidationRules ()
+    public IEnumerable<IPropertyMetaValidationRule> GetMetaValidationRules ()
     {
       var maxLength = _domainModelConstraintProvider.GetMaxLength (_implementationPropertyInformation);
       if (maxLength.HasValue)
-        yield return new RemotionMaxLengthMetaValidationRule (_implementationProperty, maxLength.Value);
+        yield return new RemotionMaxLengthPropertyMetaValidationRule (_implementationProperty, maxLength.Value);
     }
 
     [NotNull]

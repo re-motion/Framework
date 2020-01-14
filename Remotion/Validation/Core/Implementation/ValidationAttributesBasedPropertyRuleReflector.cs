@@ -95,7 +95,7 @@ namespace Remotion.Validation.Implementation
       return removingValidationAttributes.Select (a => new ValidatorRegistration (a.ValidatorType, a.CollectorTypeToRemoveFrom));
     }
 
-    public IEnumerable<IMetaValidationRule> GetMetaValidationRules ()
+    public IEnumerable<IPropertyMetaValidationRule> GetMetaValidationRules ()
     {
       var metaValidationAttributes = _property.GetCustomAttributes<AddingMetaValidationRuleAttributeBase> (false);
       return metaValidationAttributes.Select (mvr => mvr.GetMetaValidationRule (_propertyInfo));

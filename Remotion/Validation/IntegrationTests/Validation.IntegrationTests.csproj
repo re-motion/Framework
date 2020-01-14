@@ -101,7 +101,7 @@
     <Compile Include="TestDomain\MetaValidation\MetaValidationRuleTestClassCollector2.cs" />
     <Compile Include="TestDomain\MetaValidation\MetaValidationRuleTestClassCollector4.cs" />
     <Compile Include="TestDomain\MetaValidation\MetaValidationRuleTestClassCollector5.cs" />
-    <Compile Include="TestDomain\MetaValidation\Rules\MaxLengthMetaValidationRule.cs" />
+    <Compile Include="TestDomain\MetaValidation\Rules\MaxLengthPropertyMetaValidationRule.cs" />
     <Compile Include="TestDomain\MetaValidation\Rules\MaxValidatorCountRule.cs" />
     <Compile Include="TestDomain\Validators\RealPersonValidator.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />

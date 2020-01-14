@@ -44,10 +44,10 @@ namespace Remotion.Validation.RuleBuilders
     IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> CanBeRemoved ();
 
     /// <summary>
-    /// Registers an <see cref="IMetaValidationRule"/> for the given validators.
+    /// Registers an <see cref="IPropertyMetaValidationRule"/> for the given validators.
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
-    IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule (IMetaValidationRule metaValidationRule);
+    IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule (IPropertyMetaValidationRule propertyMetaValidationRule);
 
     /// <summary>
     /// Registers a delegate which will be used for performing consistency checks on the given validators.

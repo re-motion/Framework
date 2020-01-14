@@ -31,11 +31,11 @@ using Rhino.Mocks;
 namespace Remotion.Validation.UnitTests.MetaValidation
 {
   [TestFixture]
-  public class MetaRulesValidatorTest
+  public class PropertyMetaValidationRuleValidatorTest
   {
     private IValidationRuleCollector _collectorStub1;
     private IValidationRuleCollector _collectorStub2;
-    private MetaRulesValidator _validator;
+    private PropertyMetaValidationRuleValidator _validator;
     private IPropertyMetaValidationRuleCollector _propertyMetaValidationRuleCollectorStub1;
     private IPropertyMetaValidationRuleCollector _propertyMetaValidationRuleCollectorStub2;
     private IPropertyMetaValidationRuleCollector _propertyMetaValidationRuleCollectorStub3;
@@ -44,8 +44,8 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     private IPropertyValidator _propertyValidatorStub3;
     private IPropertyValidator _propertyValidatorStub4;
     private IPropertyValidator _propertyValidatorStub5;
-    private ISystemMetaValidationRulesProvider _systemMetaRulesProviderStub;
-    private ISystemMetaValidationRulesProviderFactory _systemMetaRulesProviderFactoryStub;
+    private ISystemPropertyMetaValidationRuleProvider _systemPropertyMetaValidationRuleProviderStub;
+    private ISystemPropertyMetaValidationRuleProviderFactory _systemPropertyMetaRuleProviderFactoryStub;
 
     [SetUp]
     public void SetUp ()
@@ -67,13 +67,13 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       _propertyValidatorStub4 = MockRepository.GenerateStub<IPropertyValidator>();
       _propertyValidatorStub5 = MockRepository.GenerateStub<IPropertyValidator>();
 
-      _systemMetaRulesProviderFactoryStub = MockRepository.GenerateStub<ISystemMetaValidationRulesProviderFactory> ();
-      _systemMetaRulesProviderStub = MockRepository.GenerateStub<ISystemMetaValidationRulesProvider>();
+      _systemPropertyMetaRuleProviderFactoryStub = MockRepository.GenerateStub<ISystemPropertyMetaValidationRuleProviderFactory> ();
+      _systemPropertyMetaValidationRuleProviderStub = MockRepository.GenerateStub<ISystemPropertyMetaValidationRuleProvider>();
 
       _validator =
-          new MetaRulesValidator (
+          new PropertyMetaValidationRuleValidator (
               new[] { _propertyMetaValidationRuleCollectorStub1, _propertyMetaValidationRuleCollectorStub2, _propertyMetaValidationRuleCollectorStub3 },
-              _systemMetaRulesProviderFactoryStub);
+              _systemPropertyMetaRuleProviderFactoryStub);
     }
 
     [Test]
@@ -93,16 +93,16 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       propertyRule2.RegisterValidator (_ => _propertyValidatorStub4);
       propertyRule3.RegisterValidator (_ => _propertyValidatorStub5);
 
-      var systemMetaValidationRuleMock1 = MockRepository.GenerateStrictMock<IMetaValidationRule>();
-      var systemMetaValidationRuleMock2 = MockRepository.GenerateStrictMock<IMetaValidationRule>();
+      var systemMetaValidationRuleMock1 = MockRepository.GenerateStrictMock<IPropertyMetaValidationRule>();
+      var systemMetaValidationRuleMock2 = MockRepository.GenerateStrictMock<IPropertyMetaValidationRule>();
 
-      _systemMetaRulesProviderFactoryStub.Stub (stub => stub.Create (Arg<IPropertyInformation>.Is.Anything)).Return (_systemMetaRulesProviderStub);
-      _systemMetaRulesProviderStub.Stub (stub => stub.GetSystemMetaValidationRules())
+      _systemPropertyMetaRuleProviderFactoryStub.Stub (stub => stub.Create (Arg<IPropertyInformation>.Is.Anything)).Return (_systemPropertyMetaValidationRuleProviderStub);
+      _systemPropertyMetaValidationRuleProviderStub.Stub (stub => stub.GetSystemPropertyMetaValidationRules())
           .Return (new[] { systemMetaValidationRuleMock1, systemMetaValidationRuleMock2 });
 
-      var metaValidationRuleMock1 = MockRepository.GenerateStrictMock<IMetaValidationRule>();
-      var metaValidationRuleMock2 = MockRepository.GenerateStrictMock<IMetaValidationRule>();
-      var metaValidationRuleMock3 = MockRepository.GenerateStrictMock<IMetaValidationRule>();
+      var metaValidationRuleMock1 = MockRepository.GenerateStrictMock<IPropertyMetaValidationRule>();
+      var metaValidationRuleMock2 = MockRepository.GenerateStrictMock<IPropertyMetaValidationRule>();
+      var metaValidationRuleMock3 = MockRepository.GenerateStrictMock<IPropertyMetaValidationRule>();
 
       _propertyMetaValidationRuleCollectorStub1.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty (userNameExpression)));
       _propertyMetaValidationRuleCollectorStub1.Stub (stub => stub.MetaValidationRules).Return (new[] { metaValidationRuleMock1, metaValidationRuleMock2 });
@@ -111,7 +111,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       _propertyMetaValidationRuleCollectorStub2.Stub (stub => stub.MetaValidationRules).Return (new[] { metaValidationRuleMock3 });
 
       _propertyMetaValidationRuleCollectorStub3.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty (lastNameExpression)));
-      _propertyMetaValidationRuleCollectorStub3.Stub (stub => stub.MetaValidationRules).Return (new IMetaValidationRule[0]);
+      _propertyMetaValidationRuleCollectorStub3.Stub (stub => stub.MetaValidationRules).Return (new IPropertyMetaValidationRule[0]);
 
       systemMetaValidationRuleMock1
           .Expect (

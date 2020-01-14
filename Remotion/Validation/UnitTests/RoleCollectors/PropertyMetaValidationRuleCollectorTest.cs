@@ -65,8 +65,8 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [Test]
     public void RegisterMetaValidationRule ()
     {
-      var metaValidationRuleStub1 = MockRepository.GenerateStub<IMetaValidationRule>();
-      var metaValidationRuleStub2 = MockRepository.GenerateStub<IMetaValidationRule>();
+      var metaValidationRuleStub1 = MockRepository.GenerateStub<IPropertyMetaValidationRule>();
+      var metaValidationRuleStub2 = MockRepository.GenerateStub<IPropertyMetaValidationRule>();
       Assert.That (_ruleCollector.MetaValidationRules.Count(), Is.EqualTo (0));
 
       _ruleCollector.RegisterMetaValidationRule (metaValidationRuleStub1);

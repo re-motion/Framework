@@ -15,12 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Reflection;
+using System.Collections.Generic;
+using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.MetaValidation
 {
-  public interface ISystemMetaValidationRulesProviderFactory
+  /// <summary>
+  /// Defines a API for instantiating an implementation of the <see cref="IPropertyMetaValidationRuleValidator"/> interface based on a set of 
+  /// <see cref="IPropertyMetaValidationRuleCollector"/>s.
+  /// </summary>
+  /// <seealso cref="PropertyMetaValidationRuleValidatorFactory"/>
+  public interface IPropertyMetaValidationRuleValidatorFactory
   {
-    ISystemMetaValidationRulesProvider Create (IPropertyInformation propertyInformation);
+    IPropertyMetaValidationRuleValidator CreatePropertyMetaValidationRuleValidator (
+        IEnumerable<IPropertyMetaValidationRuleCollector> propertyMetaValidationRuleCollectors);
   }
 }
