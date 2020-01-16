@@ -17,7 +17,9 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Windows.Automation;
+using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 
@@ -60,13 +62,42 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       return result;
     }
 
-    private static AutomationElement GetFirefoxContentElement (AutomationElement firefoxWindow)
+    /// <summary>
+    /// Despite the browser being ready, the automation tree used to query Firefox' content location and bounds
+    /// sometimes yields outdated/not ready results, which leads to <see cref="AutomationElement.FindFirst"/>
+    /// returning <see langword="null"/>, or throwing an <see cref="ElementNotAvailableException"/>. Therefore
+    /// retries are performed.
+    /// </summary>
+    [NotNull]
+    private AutomationElement GetFirefoxContentElement (AutomationElement firefoxWindow)
+    {
+      for (var i = 0; i < 11; i++)
+      {
+        try
+        {
+          var result = GetFirefoxDocumentControl (firefoxWindow);
+
+          if (result != null)
+            return result;
+        }
+        catch (ElementNotAvailableException)
+        {
+        }
+
+        Thread.Sleep (TimeSpan.FromMilliseconds (200));
+      }
+
+      throw new InvalidOperationException ("The Firefox content window could not be found within a timeout of 2 seconds.");
+    }
+
+    [CanBeNull]
+    private AutomationElement GetFirefoxDocumentControl (AutomationElement firefoxWindow)
     {
       return firefoxWindow.FindFirst (
           TreeScope.Subtree,
           new PropertyCondition (
-              AutomationElement.LocalizedControlTypeProperty,
-              "document"));
+              AutomationElement.ControlTypeProperty,
+              ControlType.Document));
     }
 
     private Tuple<int, AutomationElement> RateAutomationElement (AutomationElement window, IWebDriver driver)
