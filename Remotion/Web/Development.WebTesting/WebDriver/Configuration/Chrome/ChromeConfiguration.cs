@@ -115,6 +115,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       chromeOptions.AddArgument ($"user-data-dir={userDirectory}");
 
       chromeOptions.AddArgument ("no-first-run");
+      chromeOptions.AddArgument ("force-device-scale-factor=1");
 
       chromeOptions.AddUserProfilePreference ("safebrowsing.enabled", true);
       chromeOptions.AddUserProfilePreference ("download.default_directory", DownloadDirectory);

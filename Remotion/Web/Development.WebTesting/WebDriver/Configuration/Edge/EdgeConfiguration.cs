@@ -111,6 +111,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
       edgeOptions.AddArgument ($"user-data-dir={userDirectory}");
 
       edgeOptions.AddArgument ("no-first-run");
+      edgeOptions.AddArgument ("force-device-scale-factor=1");
 
       edgeOptions.AddUserProfilePreference ("safebrowsing.enabled", true);
       edgeOptions.AddUserProfilePreference ("download.default_directory", DownloadDirectory);
