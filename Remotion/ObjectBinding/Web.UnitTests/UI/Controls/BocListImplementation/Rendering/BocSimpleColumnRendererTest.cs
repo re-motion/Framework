@@ -15,10 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using System.Web.UI;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
@@ -75,6 +74,40 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var textWrapper = Html.GetAssertedChildElement (span, "span", 0);
       Html.AssertTextNode (textWrapper, "referencedObject1", 0);
+    }
+
+    [Test]
+    public void TestDiagnosticMetadataRenderingWithEmptyDisplayName ()
+    {
+      var businessObject = TypeWithReference.Create ("");
+      EventArgs = new BocListDataRowRenderEventArgs (10, (IBusinessObject) businessObject, false, true);
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+
+      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+
+      var document = Html.GetResultDocument();
+      var td = Html.GetAssertedChildElement (document, "td", 0);
+      var span = Html.GetAssertedChildElement (td, "span", 0);
+      var textWrapper = Html.GetAssertedChildElement (span, "span", 0);
+      Html.AssertAttribute (textWrapper, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, string.Empty);
+    }
+
+    [Test]
+    public void TestDiagnosticMetadataRenderingWithNullValue ()
+    {
+      var businessObject = TypeWithReference.Create();
+      EventArgs = new BocListDataRowRenderEventArgs (10, (IBusinessObject) businessObject, false, true);
+      Column.PropertyPathIdentifier = "ReferenceValue";
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+
+      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+
+      Assert.That (businessObject.ReferenceValue, Is.Null);
+      var document = Html.GetResultDocument();
+      var td = Html.GetAssertedChildElement (document, "td", 0);
+      var span = Html.GetAssertedChildElement (td, "span", 0);
+      var textWrapper = Html.GetAssertedChildElement (span, "span", 0);
+      Html.AssertAttribute (textWrapper, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, string.Empty);
     }
 
     [Test]
@@ -170,6 +203,38 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var clickSpan = Html.GetAssertedChildElement (span, "span", 0);
       Html.AssertAttribute (clickSpan, "onclick", "BocList_OnCommandClick();");
+
+      editableRow.AssertWasCalled (
+          mock => mock.RenderSimpleColumnCellEditModeControl (
+              Html.Writer,
+              Column,
+              firstObject,
+              0,
+              List.ClientID + "_0_Title"));
+    }
+
+    [Test]
+    public void TestDiagnosticMetadataRenderingWithEditModeControl ()
+    {
+      var firstObject = (IBusinessObject) ((TypeWithReference) BusinessObject).FirstValue;
+
+      IEditableRow editableRow = MockRepository.GenerateMock<IEditableRow>();
+      editableRow.Stub (mock => mock.HasEditControl (0)).IgnoreArguments().Return (true);
+      editableRow.Stub (mock => mock.GetEditControl (0)).IgnoreArguments().Return (MockRepository.GenerateStub<IBocTextValue>());
+
+      List.EditModeController.Stub (mock => mock.GetEditableRow (EventArgs.ListIndex)).Return (editableRow);
+
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+
+      var document = Html.GetResultDocument();
+
+      var td = Html.GetAssertedChildElement (document, "td", 0);
+      Html.AssertAttribute (td, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, "1");
+      var span = Html.GetAssertedChildElement (td, "span", 0);
+      var clickSpan = Html.GetAssertedChildElement (span, "span", 0);
+      Html.AssertAttribute (clickSpan, "onclick", "BocList_OnCommandClick();");
+      Html.AssertAttribute (clickSpan, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, "referencedObject1");
 
       editableRow.AssertWasCalled (
           mock => mock.RenderSimpleColumnCellEditModeControl (

@@ -36,6 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Creates a string representation of the data displayed in this column. </summary>
     /// <param name="obj"> The <see cref="IBusinessObject"/> to be displayed in this column. </param>
     /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
+    [NotNull]
     public abstract string GetStringValue (IBusinessObject obj);
     
     /// <summary>

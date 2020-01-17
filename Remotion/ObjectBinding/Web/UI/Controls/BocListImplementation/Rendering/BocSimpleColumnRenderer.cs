@@ -129,6 +129,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       if (renderingContext.Control.HasClientScript)
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+
+      if (_renderingFeatures.EnableDiagnosticMetadata)
+      {
+        var contentString = renderingContext.ColumnDefinition.GetStringValue (businessObject);
+        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, contentString);
+      }
+
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin span
 
       editableRow.RenderSimpleColumnCellEditModeControl (

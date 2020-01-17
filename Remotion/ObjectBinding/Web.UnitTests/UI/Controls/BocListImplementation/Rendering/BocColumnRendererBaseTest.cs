@@ -206,7 +206,37 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (th, DiagnosticMetadataAttributes.ItemID, Column.ItemID);
       Html.AssertAttribute (th, DiagnosticMetadataAttributes.Content, Column.ColumnTitleDisplayValue);
       Html.AssertAttribute (th, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, 7.ToString());
-      Html.AssertAttribute (th, DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasDiagnosticMetadata, "true");
+      Html.AssertAttribute (th, DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasContentAttribute, "true");
+    }
+
+    [Test]
+    public void TestDiagnosticMetadataRenderingWithTitleIsEmpty ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+      Column.ColumnTitle = "";
+      var renderingContext = CreateRenderingContext();
+
+      renderer.RenderTitleCell (renderingContext, SortingDirection.None, 0);
+
+      var document = Html.GetResultDocument();
+      var th = Html.GetAssertedChildElement (document, "th", 0);
+      Assert.That (Column.ColumnTitleDisplayValue, Is.Empty);
+      Html.AssertAttribute (th, DiagnosticMetadataAttributes.Content, string.Empty);
+    }
+
+    [Test]
+    public void TestDiagnosticMetadataRenderingInTitleWithTitleIsNull ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+      Column.ColumnTitle = null;
+      var renderingContext = CreateRenderingContext();
+
+      renderer.RenderTitleCell (renderingContext, SortingDirection.None, 0);
+
+      var document = Html.GetResultDocument();
+      var th = Html.GetAssertedChildElement (document, "th", 0);
+      Assert.That (Column.ColumnTitleDisplayValue, Is.Empty);
+      Html.AssertAttribute (th, DiagnosticMetadataAttributes.Content, string.Empty);
     }
 
     private void RenderTitleCell (

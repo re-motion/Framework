@@ -16,14 +16,12 @@
 // 
 using System;
 using System.Web.UI;
-using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Security;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -55,23 +53,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         icon.Render (renderingContext.Writer, renderingContext.Control);
         renderingContext.Writer.Write (c_whiteSpace);
       }
-    }
-
-    protected void RenderValueColumnCellText (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, string contents)
-    {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-
-      renderingContext.Writer.AddAttribute ("class", CssClasses.CommandText);
-      if (RenderingFeatures.EnableDiagnosticMetadata && contents != null)
-        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, contents);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-
-      if (string.IsNullOrWhiteSpace (contents))
-        renderingContext.Writer.Write ("&nbsp;");
-      else
-        renderingContext.Writer.WriteEncodedLines (StringUtility.ParseNewLineSeparatedString (contents));
-
-      renderingContext.Writer.RenderEndTag();
     }
 
     protected bool RenderBeginTagDataCellCommand (

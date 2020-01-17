@@ -17,11 +17,12 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.Utilities;
 using Remotion.Web;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
+using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -95,6 +96,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
     }
 
+    protected void RenderValueColumnCellText (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, string contents)
+    {
+      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull ("contents", contents);
+
+      renderingContext.Writer.AddAttribute ("class", CssClasses.CommandText);
+      if (RenderingFeatures.EnableDiagnosticMetadata)
+        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, contents);
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
+      if (string.IsNullOrWhiteSpace (contents))
+        renderingContext.Writer.Write ("&nbsp;");
+      else
+        renderingContext.Writer.WriteEncodedLines (StringUtility.ParseNewLineSeparatedString (contents));
+
+      renderingContext.Writer.RenderEndTag();
+    }
+
     /// <summary>
     /// If the column width must be enforced, this method renders a &lt;span&gt; block container that crops any overflowing content.
     /// </summary>
@@ -159,7 +178,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>
     /// <see cref="BocValueColumnRendererBase{TBocColumnDefinition}"/> renders diagnostic metadata.
     /// </summary>
-    protected override bool HasDiagnoticMetadata
+    protected override bool HasContentAttribute
     {
       get { return true; }
     }

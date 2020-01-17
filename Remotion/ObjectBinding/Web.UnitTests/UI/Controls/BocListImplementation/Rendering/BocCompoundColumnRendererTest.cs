@@ -18,6 +18,7 @@ using System;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
@@ -92,6 +93,41 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var textWrapper = Html.GetAssertedChildElement (span, "span", 0);
       Html.AssertTextNode (textWrapper, "referencedObject1", 0);
+    }
+
+    [Test]
+    public void RenderCell_WithEmptyDisplayName ()
+    {
+      var businessObject = TypeWithReference.Create ("");
+      EventArgs = new BocListDataRowRenderEventArgs (10, (IBusinessObject) businessObject, false, true);
+      IBocColumnRenderer renderer = new BocCompoundColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+
+      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+
+      var document = Html.GetResultDocument();
+      var td = Html.GetAssertedChildElement (document, "td", 0);
+      var span = Html.GetAssertedChildElement (td, "span", 0);
+      var textWrapper = Html.GetAssertedChildElement (span, "span", 0);
+      Html.AssertAttribute (textWrapper, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, string.Empty);
+    }
+
+    [Test]
+    public void RenderCell_WithNullAsContent ()
+    {
+      var businessObject = TypeWithReference.Create();
+      EventArgs = new BocListDataRowRenderEventArgs (10, (IBusinessObject) businessObject, false, true);
+      Column.PropertyPathBindings.Clear();
+      Column.PropertyPathBindings.Add (new PropertyPathBinding ("ReferenceValue"));
+      IBocColumnRenderer renderer = new BocCompoundColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+
+      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+
+      Assert.That (businessObject.ReferenceValue, Is.Null);
+      var document = Html.GetResultDocument();
+      var td = Html.GetAssertedChildElement (document, "td", 0);
+      var span = Html.GetAssertedChildElement (td, "span", 0);
+      var textWrapper = Html.GetAssertedChildElement (span, "span", 0);
+      Html.AssertAttribute (textWrapper, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, string.Empty);
     }
 
     [Test]

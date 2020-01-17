@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata
 
     public static readonly string BocListCellContents = "data-boclist-cell-contents";
     public static readonly string BocListCellIndex = "data-boclist-cell-index";
-    public static readonly string BocListColumnHasDiagnosticMetadata = "data-boclist-column-has-dma";
+    public static readonly string BocListColumnHasContentAttribute = "data-boclist-column-has-content-attribute";
     // Note: do not change value without chaning usages in JavaScript files.
     public static readonly string BocListHasFakeTableHead = "data-boclist-has-fake-table-head";
     // Note: do not change value without chaning usages in JavaScript files.
