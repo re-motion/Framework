@@ -81,8 +81,8 @@ namespace Remotion.Validation.RuleBuilders
     {
       ArgumentUtility.CheckNotNull ("rule", rule);
 
-      //var metaValidationRule = new DelegateMetaValidationRule<IObjectValidator> (rule);
-      //_objectMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);
+      var metaValidationRule = new DelegateObjectMetaValidationRule<IObjectValidator> (rule);
+      _objectMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);
       return this;
     }
 
@@ -92,24 +92,23 @@ namespace Remotion.Validation.RuleBuilders
     {
       ArgumentUtility.CheckNotNull ("metaValidationRuleExpression", metaValidationRuleExpression);
 
-      //var metaValidationRuleExecutor = metaValidationRuleExpression.Compile();
+      var metaValidationRuleExecutor = metaValidationRuleExpression.Compile ();
 
-      //var metaValidationRule = new DelegateMetaValidationRule<TValidator> (
-      //    validationRules =>
-      //    {
-      //      var isValid = metaValidationRuleExecutor (validationRules);
-      //      if (isValid)
-      //        return MetaValidationRuleValidationResult.CreateValidResult();
+      var metaValidationRule = new DelegateObjectMetaValidationRule<TValidator> (
+          validationRules =>
+          {
+            var isValid = metaValidationRuleExecutor (validationRules);
+            if (isValid)
+              return MetaValidationRuleValidationResult.CreateValidResult ();
 
-      //      return MetaValidationRuleValidationResult.CreateInvalidResult (
-      //          "Meta validation rule '{0}' failed for validator '{1}' on Object '{2}.{3}'.",
-      //          metaValidationRuleExpression,
-      //          typeof (TValidator).FullName,
-      //          _addingObjectValidationRuleCollector.Object.DeclaringType.FullName,
-      //          _addingObjectValidationRuleCollector.Object.Name);
-      //    });
+            return MetaValidationRuleValidationResult.CreateInvalidResult (
+                "Meta validation rule '{0}' failed for validator '{1}' on type '{2}'.",
+                metaValidationRuleExpression,
+                typeof (TValidator).FullName,
+                _addingObjectValidationRuleCollector.ValidatedType.FullName);
+          });
 
-      //_objectMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);
+      _objectMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);
       return this;
     }
 

@@ -89,7 +89,13 @@
     <Compile Include="Merging\IObjectValidatorExtractorFactory.cs" />
     <Compile Include="Merging\ObjectValidatorExtractor.cs" />
     <Compile Include="Merging\ObjectValidatorExtractorFactory.cs" />
+    <Compile Include="MetaValidation\DelegateObjectMetaValidationRule.cs" />
     <Compile Include="MetaValidation\IObjectMetaValidationRule.cs" />
+    <Compile Include="MetaValidation\IObjectMetaValidationRuleValidator.cs" />
+    <Compile Include="MetaValidation\IObjectMetaValidationRuleValidatorFactory.cs" />
+    <Compile Include="MetaValidation\ObjectMetaValidationRuleBase.cs" />
+    <Compile Include="MetaValidation\ObjectMetaValidationRuleValidator.cs" />
+    <Compile Include="MetaValidation\ObjectMetaValidationRuleValidatorFactory.cs" />
     <Compile Include="RuleBuilders\AddingObjectValidationRuleBuilder.cs" />
     <Compile Include="RuleBuilders\IAddingObjectValidationRuleBuilder.cs" />
     <Compile Include="RuleBuilders\IConditionalAddingObjectValidationRuleBuilder.cs" />

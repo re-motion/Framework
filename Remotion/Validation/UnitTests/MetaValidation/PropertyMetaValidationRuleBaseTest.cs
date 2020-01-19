@@ -15,18 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using Remotion.Validation.RuleCollectors;
+using NUnit.Framework;
 
-namespace Remotion.Validation.MetaValidation
+namespace Remotion.Validation.UnitTests.MetaValidation
 {
-  /// <summary>
-  /// Implementations of the <see cref="IPropertyMetaValidationRuleValidator"/> interface can be used to validate the consistency of a 
-  /// set of <see cref="IAddingPropertyValidationRuleCollector"/>s.
-  /// </summary>
-  /// <seealso cref="PropertyMetaValidationRuleValidator"/>
-  public interface IPropertyMetaValidationRuleValidator
+  [TestFixture]
+  public class PropertyMetaValidationRuleBaseTest
   {
-    IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingPropertyValidationRuleCollector[] addingPropertyValidationRulesCollectors);
+    [Test]
+    [Ignore ("RM-5906")]
+    public void Validate ()
+    {
+    }
   }
 }

@@ -56,13 +56,22 @@ namespace Remotion.Validation.UnitTests.Implementation
     private ValidationRuleCollectorInfo _validationRuleCollectorInfo3;
     private IPropertyMetaValidationRuleValidatorFactory _propertyMetaValidationRuleValidatorFactoryStub;
     private IPropertyMetaValidationRuleValidator _propertyMetaValidationRuleValidatorMock;
+    private IObjectMetaValidationRuleValidatorFactory _objectMetaValidationRuleValidatorFactoryStub;
+    private IObjectMetaValidationRuleValidator _objectMetaValidationRuleValidatorMock;
     private MetaValidationRuleValidationResult _validMetaValidationResult1;
     private MetaValidationRuleValidationResult _validMetaValidationResult2;
+    private MetaValidationRuleValidationResult _validMetaValidationResult3;
+    private MetaValidationRuleValidationResult _validMetaValidationResult4;
     private MetaValidationRuleValidationResult _invalidMetaValidationResult1;
     private MetaValidationRuleValidationResult _invalidMetaValidationResult2;
-    private IPropertyMetaValidationRuleCollector _metaValidationRule1Stub;
-    private IPropertyMetaValidationRuleCollector _metaValidationRule2Stub;
-    private IPropertyMetaValidationRuleCollector _metaValidationRule3Stub;
+    private MetaValidationRuleValidationResult _invalidMetaValidationResult3;
+    private MetaValidationRuleValidationResult _invalidMetaValidationResult4;
+    private IPropertyMetaValidationRuleCollector _propertyMetaValidationRuleCollector1Stub;
+    private IPropertyMetaValidationRuleCollector _propertyMetaValidationRuleCollector2Stub;
+    private IPropertyMetaValidationRuleCollector _propertyMetaValidationRuleCollector3Stub;
+    private IObjectMetaValidationRuleCollector _objectMetaValidationRuleCollector1Stub;
+    private IObjectMetaValidationRuleCollector _objectMetaValidationRuleCollector2Stub;
+    private IObjectMetaValidationRuleCollector _objectMetaValidationRuleCollector3Stub;
     private IMemberInformationNameResolver _memberInformationNameResolverMock;
     private IValidationRuleCollectorValidator _collectorValidatorMock;
     private ValidationCollectorMergeResult _fakeValidationCollectorMergeResult;
@@ -75,22 +84,33 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validationRuleCollectorMergerMock = MockRepository.GenerateStrictMock<IValidationRuleCollectorMerger>();
       _propertyMetaValidationRuleValidatorFactoryStub = MockRepository.GenerateStub<IPropertyMetaValidationRuleValidatorFactory>();
       _propertyMetaValidationRuleValidatorMock = MockRepository.GenerateStrictMock<IPropertyMetaValidationRuleValidator>();
+      _objectMetaValidationRuleValidatorFactoryStub = MockRepository.GenerateStub<IObjectMetaValidationRuleValidatorFactory>();
+      _objectMetaValidationRuleValidatorMock = MockRepository.GenerateStrictMock<IObjectMetaValidationRuleValidator>();
       _memberInformationNameResolverMock = MockRepository.GenerateStrictMock<IMemberInformationNameResolver>();
       _collectorValidatorMock = MockRepository.GenerateStrictMock<IValidationRuleCollectorValidator> ();
       _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
 
-      _metaValidationRule1Stub = MockRepository.GenerateStub<IPropertyMetaValidationRuleCollector>();
-      _metaValidationRule2Stub = MockRepository.GenerateStub<IPropertyMetaValidationRuleCollector>();
-      _metaValidationRule3Stub = MockRepository.GenerateStub<IPropertyMetaValidationRuleCollector>();
+      _propertyMetaValidationRuleCollector1Stub = MockRepository.GenerateStub<IPropertyMetaValidationRuleCollector>();
+      _propertyMetaValidationRuleCollector2Stub = MockRepository.GenerateStub<IPropertyMetaValidationRuleCollector>();
+      _propertyMetaValidationRuleCollector3Stub = MockRepository.GenerateStub<IPropertyMetaValidationRuleCollector>();
+
+      _objectMetaValidationRuleCollector1Stub = MockRepository.GenerateStub<IObjectMetaValidationRuleCollector>();
+      _objectMetaValidationRuleCollector2Stub = MockRepository.GenerateStub<IObjectMetaValidationRuleCollector>();
+      _objectMetaValidationRuleCollector3Stub = MockRepository.GenerateStub<IObjectMetaValidationRuleCollector>();
 
       _validationRuleCollectorStub1 = MockRepository.GenerateStub<IValidationRuleCollector>();
-      _validationRuleCollectorStub1.Stub (stub => stub.PropertyMetaValidationRules).Return (new[] { _metaValidationRule1Stub });
+      _validationRuleCollectorStub1.Stub (stub => stub.PropertyMetaValidationRules).Return (new[] { _propertyMetaValidationRuleCollector1Stub });
+      _validationRuleCollectorStub1.Stub (stub => stub.ObjectMetaValidationRules).Return (new[] { _objectMetaValidationRuleCollector1Stub });
       _validationRuleCollectorStub2 = MockRepository.GenerateStub<IValidationRuleCollector>();
-      _validationRuleCollectorStub2.Stub (stub => stub.PropertyMetaValidationRules)
-          .Return (new[] { _metaValidationRule2Stub, _metaValidationRule3Stub });
+      _validationRuleCollectorStub2
+          .Stub (stub => stub.PropertyMetaValidationRules)
+          .Return (new[] { _propertyMetaValidationRuleCollector2Stub, _propertyMetaValidationRuleCollector3Stub });
+      _validationRuleCollectorStub2
+          .Stub (stub => stub.ObjectMetaValidationRules)
+          .Return (new[] { _objectMetaValidationRuleCollector2Stub, _objectMetaValidationRuleCollector3Stub });
       _validationRuleCollectorStub3 = MockRepository.GenerateStub<IValidationRuleCollector>();
-      _validationRuleCollectorStub3.Stub (stub => stub.PropertyMetaValidationRules)
-          .Return (new IPropertyMetaValidationRuleCollector[0]);
+      _validationRuleCollectorStub3.Stub (stub => stub.PropertyMetaValidationRules).Return (new IPropertyMetaValidationRuleCollector[0]);
+      _validationRuleCollectorStub3.Stub (stub => stub.ObjectMetaValidationRules).Return (new IObjectMetaValidationRuleCollector[0]);
 
       _validationRuleCollectorInfo1 = new ValidationRuleCollectorInfo (
           _validationRuleCollectorStub1,
@@ -141,14 +161,19 @@ namespace Remotion.Validation.UnitTests.Implementation
           _validationRuleCollectorProviderMock,
           _validationRuleCollectorMergerMock,
           _propertyMetaValidationRuleValidatorFactoryStub,
+          _objectMetaValidationRuleValidatorFactoryStub,
           _validationMessageFactoryStub,
           _memberInformationNameResolverMock,
           _collectorValidatorMock);
 
       _validMetaValidationResult1 = MetaValidationRuleValidationResult.CreateValidResult();
       _validMetaValidationResult2 = MetaValidationRuleValidationResult.CreateValidResult();
+      _validMetaValidationResult3 = MetaValidationRuleValidationResult.CreateValidResult();
+      _validMetaValidationResult4 = MetaValidationRuleValidationResult.CreateValidResult();
       _invalidMetaValidationResult1 = MetaValidationRuleValidationResult.CreateInvalidResult ("Error1");
       _invalidMetaValidationResult2 = MetaValidationRuleValidationResult.CreateInvalidResult ("Error2");
+      _invalidMetaValidationResult3 = MetaValidationRuleValidationResult.CreateInvalidResult ("Error3");
+      _invalidMetaValidationResult4 = MetaValidationRuleValidationResult.CreateInvalidResult ("Error4");
     }
 
     [Test]
@@ -171,6 +196,10 @@ namespace Remotion.Validation.UnitTests.Implementation
           .Expect (mock => mock.Validate (Arg<IAddingPropertyValidationRuleCollector[]>.List.Equal (_fakeAddingPropertyValidationRulesCollectorResult)))
           .Return (new[] { _validMetaValidationResult1, _validMetaValidationResult2 });
 
+      _objectMetaValidationRuleValidatorMock
+          .Expect (mock => mock.Validate (Arg<IAddingObjectValidationRuleCollector[]>.List.Equal (_fakeAddingObjectValidationRulesCollectorResult)))
+          .Return (new[] { _validMetaValidationResult3, _validMetaValidationResult4 });
+
       var validationRuleStub1 = MockRepository.GenerateStub<IValidationRule>();
       var validationRuleStub2 = MockRepository.GenerateStub<IValidationRule>();
       var validationRuleStub4 = MockRepository.GenerateStub<IValidationRule>();
@@ -185,6 +214,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validationRuleCollectorProviderMock.VerifyAllExpectations();
       _validationRuleCollectorMergerMock.VerifyAllExpectations();
       _propertyMetaValidationRuleValidatorMock.VerifyAllExpectations();
+      _objectMetaValidationRuleValidatorMock.VerifyAllExpectations();
       _memberInformationNameResolverMock.VerifyAllExpectations();
       Assert.That (result, Is.TypeOf (typeof (Validator)));
       var validator = (Validator) result;
@@ -215,11 +245,16 @@ namespace Remotion.Validation.UnitTests.Implementation
           .Expect (mock => mock.Validate (Arg<IAddingPropertyValidationRuleCollector[]>.List.Equal (_fakeAddingPropertyValidationRulesCollectorResult)))
           .Return (new[] { _validMetaValidationResult1, _validMetaValidationResult2 });
 
+      _objectMetaValidationRuleValidatorMock
+          .Expect (mock => mock.Validate (Arg<IAddingObjectValidationRuleCollector[]>.List.Equal (_fakeAddingObjectValidationRulesCollectorResult)))
+          .Return (new[] { _validMetaValidationResult3, _validMetaValidationResult4 });
+
       var result = _validatorBuilder.BuildValidator<SpecialCustomer1>();
 
       _validationRuleCollectorProviderMock.VerifyAllExpectations();
       _validationRuleCollectorMergerMock.VerifyAllExpectations();
       _propertyMetaValidationRuleValidatorMock.VerifyAllExpectations();
+      _objectMetaValidationRuleValidatorMock.VerifyAllExpectations();
       _memberInformationNameResolverMock.VerifyAllExpectations();
       Assert.That (result, Is.TypeOf (typeof (TypedValidatorDecorator<SpecialCustomer1>)));
     }
@@ -237,9 +272,14 @@ namespace Remotion.Validation.UnitTests.Implementation
           .Expect (mock => mock.Validate (_fakeAddingPropertyValidationRulesCollectorResult))
           .Return (new[] { _validMetaValidationResult1, _invalidMetaValidationResult1, _validMetaValidationResult2, _invalidMetaValidationResult2 });
 
+      _objectMetaValidationRuleValidatorMock
+          .Expect (mock => mock.Validate (_fakeAddingObjectValidationRulesCollectorResult))
+          .Return (new[] { _validMetaValidationResult3, _invalidMetaValidationResult3, _validMetaValidationResult4, _invalidMetaValidationResult4 });
+
       Assert.That (
           () => _validatorBuilder.BuildValidator<SpecialCustomer1>(),
-          Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo ("Error1\r\n----------\r\nError2"));
+          Throws.TypeOf<ValidationConfigurationException>()
+              .And.Message.EqualTo ("Error1\r\n----------\r\nError2\r\n----------\r\nError3\r\n----------\r\nError4"));
     }
 
     private void ExpectMocks ()
@@ -261,11 +301,25 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _propertyMetaValidationRuleValidatorFactoryStub
           .Stub (
-              stub =>
-                  stub.CreatePropertyMetaValidationRuleValidator (
-                      Arg<IPropertyMetaValidationRuleCollector[]>.List.Equal (
-                          new[] { _metaValidationRule1Stub, _metaValidationRule2Stub, _metaValidationRule3Stub })))
+              stub => stub.CreatePropertyMetaValidationRuleValidator (
+                  Arg<IPropertyMetaValidationRuleCollector[]>.List.Equal (
+                      new[]
+                      {
+                          _propertyMetaValidationRuleCollector1Stub, _propertyMetaValidationRuleCollector2Stub,
+                          _propertyMetaValidationRuleCollector3Stub
+                      })))
           .Return (_propertyMetaValidationRuleValidatorMock);
+
+      _objectMetaValidationRuleValidatorFactoryStub
+          .Stub (
+              stub => stub.CreateObjectMetaValidationRuleValidator (
+                  Arg<IObjectMetaValidationRuleCollector[]>.List.Equal (
+                      new[]
+                      {
+                          _objectMetaValidationRuleCollector1Stub, _objectMetaValidationRuleCollector2Stub,
+                          _objectMetaValidationRuleCollector3Stub
+                      })))
+          .Return (_objectMetaValidationRuleValidatorMock);
     }
   }
 }

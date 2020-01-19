@@ -33,7 +33,7 @@ namespace Remotion.Validation.IntegrationTests
     }
 
     [Test]
-    public void BuildValidator_MaxLengthMetaValidationRule ()
+    public void BuildValidator_MaxLengthPropertyMetaValidationRule ()
     {
       Assert.That (
           () => ValidationBuilder.BuildValidator<MetaValidationTestClass1>(),
@@ -50,7 +50,7 @@ namespace Remotion.Validation.IntegrationTests
     }
 
     [Test]
-    public void BuildValidator_MaxLengthMetaValidationRule_SupportsConditionalRules ()
+    public void BuildValidator_MaxLengthPropertyMetaValidationRule_SupportsConditionalRules ()
     {
       Assert.That (
           () => ValidationBuilder.BuildValidator<MetaValidationTestClass3>(),
@@ -58,7 +58,7 @@ namespace Remotion.Validation.IntegrationTests
     }
 
     [Test]
-    public void BuildValidator_FuncMetaValidationRule ()
+    public void BuildValidator_FuncPropertyMetaValidationRule ()
     {
       Assert.That(() => ValidationBuilder.BuildValidator<MetaValidationTestClass4>(), Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo(
         "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass4.Property1'.\r\n"
@@ -68,7 +68,7 @@ namespace Remotion.Validation.IntegrationTests
     }
 
     [Test]
-    public void BuildValidator_ExpressionMetaValidationRule ()
+    public void BuildValidator_ExpressionPropertyMetaValidationRule ()
     {
       Assert.That(() => ValidationBuilder.BuildValidator<MetaValidationTestClass5>(), Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo(
         "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass5.Property1'.\r\n"
@@ -111,6 +111,23 @@ namespace Remotion.Validation.IntegrationTests
               "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property3'.\r\n"
               + "----------\r\n"
               + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property4'."));
+    }
+
+    [Test]
+    public void BuildValidator_ExpressionObjectMetaValidationRule ()
+    {
+      Assert.That (
+          () => ValidationBuilder.BuildValidator<MetaValidationTestClass6>(),
+          Throws.TypeOf<ValidationConfigurationException>()
+              .And.Message.EqualTo (
+                  "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IObjectValidator' on type 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass6'."));
+    }
+
+    [Test]
+    [Ignore ("TODO RM-5906")]
+    public void BuildValidator_WithObjectValidationRule ()
+    {
+      //possibly integrate with existing tests.
     }
   }
 }

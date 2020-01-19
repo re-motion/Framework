@@ -119,10 +119,16 @@
     <Compile Include="Implementation\PropertyValidatorRegistrationWithContextTest.cs" />
     <Compile Include="MetaValidation\DefaultSystemPropertyMetaValidationRuleProviderFactoryTest.cs" />
     <Compile Include="MetaValidation\DefaultSystemPropertyMetaValidationRuleProviderTest.cs" />
+    <Compile Include="MetaValidation\DelegateObjectMetaValidationRuleTest.cs" />
     <Compile Include="MetaValidation\DelegatePropertyMetaValidationRuleTest.cs" />
     <Compile Include="MetaValidation\IPropertyMetaValidationRuleValidatorFactoryTest.cs" />
+    <Compile Include="MetaValidation\IObjectMetaValidationRuleValidatorFactoryTest.cs" />
     <Compile Include="MetaValidation\ISystemPropertyMetaValidationRuleProviderFactoryTest.cs" />
+    <Compile Include="MetaValidation\ObjectMetaValidationRuleBaseTest.cs" />
+    <Compile Include="MetaValidation\PropertyMetaValidationRuleBaseTest.cs" />
+    <Compile Include="MetaValidation\ObjectMetaValidationRuleValidatorFactoryTest.cs" />
     <Compile Include="MetaValidation\PropertyMetaValidationRuleValidatorFactoryTest.cs" />
+    <Compile Include="MetaValidation\ObjectMetaValidationRuleValidatorTest.cs" />
     <Compile Include="MetaValidation\PropertyMetaValidationRuleValidatorTest.cs" />
     <Compile Include="MetaValidation\Rules\Custom\AnyRuleAppliedMetaValidationRuleTest.cs" />
     <Compile Include="MetaValidation\Rules\Custom\RemotionMaxLengthPropertyMetaValidationRuleTest.cs" />
@@ -139,6 +145,8 @@
     <Compile Include="RoleCollectors\ObjectMetaValidationRuleCollectorTest.cs" />
     <Compile Include="RoleCollectors\PropertyMetaValidationRuleCollectorTest.cs" />
     <Compile Include="RoleCollectors\RemovingObjectValidationRuleCollectorTest.cs" />
+    <Compile Include="RuleBuilders\AddingObjectValidationRuleBuilderTest.cs" />
+    <Compile Include="RuleBuilders\RemovingObjectValidationRuleBuilderTest.cs" />
     <Compile Include="Rules\ObjectValidationRuleTest.cs" />
     <Compile Include="Rules\PropertyValidationRuleTest.cs" />
     <Compile Include="TestDomain\Address.cs" />

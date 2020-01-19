@@ -28,31 +28,33 @@ namespace Remotion.Validation.MetaValidation
   /// </summary>
   public class PropertyMetaValidationRuleValidator : IPropertyMetaValidationRuleValidator
   {
-    private readonly IPropertyMetaValidationRuleCollector[] _addedPropertyMetaValidationRuleCollector;
+    private readonly IPropertyMetaValidationRuleCollector[] _addedPropertyMetaValidationRuleCollectors;
     private readonly ISystemPropertyMetaValidationRuleProviderFactory _systemPropertyMetaValidationRuleProviderFactory;
 
     public PropertyMetaValidationRuleValidator (
-        IPropertyMetaValidationRuleCollector[] propertyMetaValidationRuleCollector,
+        IPropertyMetaValidationRuleCollector[] propertyMetaValidationRuleCollectors,
         ISystemPropertyMetaValidationRuleProviderFactory systemPropertyMetaValidationRuleProviderFactory)
     {
-      ArgumentUtility.CheckNotNull ("propertyMetaValidationRuleCollector", propertyMetaValidationRuleCollector);
+      ArgumentUtility.CheckNotNull ("propertyMetaValidationRuleCollectors", propertyMetaValidationRuleCollectors);
       ArgumentUtility.CheckNotNull ("systemPropertyMetaValidationRuleProviderFactory", systemPropertyMetaValidationRuleProviderFactory);
 
-      _addedPropertyMetaValidationRuleCollector = propertyMetaValidationRuleCollector;
+      _addedPropertyMetaValidationRuleCollectors = propertyMetaValidationRuleCollectors;
       _systemPropertyMetaValidationRuleProviderFactory = systemPropertyMetaValidationRuleProviderFactory;
     }
 
-    public IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingPropertyValidationRuleCollector[] addingPropertyValidationRulesCollector)
+    public IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingPropertyValidationRuleCollector[] addingPropertyValidationRulesCollectors)
     {
-      ArgumentUtility.CheckNotNull ("addingPropertyValidationRulesCollector", addingPropertyValidationRulesCollector);
+      ArgumentUtility.CheckNotNull ("addingPropertyValidationRulesCollectors", addingPropertyValidationRulesCollectors);
 
-      var propertyRulesByMemberInfo = addingPropertyValidationRulesCollector.ToLookup (pr => pr.Property, pr => pr.Validators);
+      var propertyRulesByValidatedProperty = addingPropertyValidationRulesCollectors.ToLookup (c => c.Property, c => c.Validators);
 
-      return from propertyRuleGroup in _addedPropertyMetaValidationRuleCollector.ToLookup (pr => pr.Property)
-             let metaValidationRules = GetAllMetaValidationRules (propertyRuleGroup)
-             from metaValidationRule in metaValidationRules
-                 .SelectMany (mvr => mvr.Validate (propertyRulesByMemberInfo[propertyRuleGroup.Key].SelectMany (v => v)))
-             select metaValidationRule;
+      var lookup = _addedPropertyMetaValidationRuleCollectors.ToLookup (c => c.Property);
+      return from propertyRuleGroup in lookup
+          let validatedProperty = propertyRuleGroup.Key
+          let metaValidationRules = GetAllMetaValidationRules (propertyRuleGroup)
+          from metaValidationRule in metaValidationRules
+              .SelectMany (mvr => mvr.Validate (propertyRulesByValidatedProperty[validatedProperty].SelectMany (v => v)))
+          select metaValidationRule;
     }
 
     private IEnumerable<IPropertyMetaValidationRule> GetAllMetaValidationRules (

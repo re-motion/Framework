@@ -15,18 +15,23 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
+using NUnit.Framework;
+using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleCollectors;
 
-namespace Remotion.Validation.MetaValidation
+namespace Remotion.Validation.UnitTests.MetaValidation
 {
-  /// <summary>
-  /// Implementations of the <see cref="IPropertyMetaValidationRuleValidator"/> interface can be used to validate the consistency of a 
-  /// set of <see cref="IAddingPropertyValidationRuleCollector"/>s.
-  /// </summary>
-  /// <seealso cref="PropertyMetaValidationRuleValidator"/>
-  public interface IPropertyMetaValidationRuleValidator
+  [TestFixture]
+  public class ObjectMetaValidationRuleValidatorFactoryTest
   {
-    IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingPropertyValidationRuleCollector[] addingPropertyValidationRulesCollectors);
+    [Test]
+    public void CreateObjectMetaValidationRuleValidator ()
+    {
+      var factory = new ObjectMetaValidationRuleValidatorFactory();
+
+      var result = factory.CreateObjectMetaValidationRuleValidator (new IObjectMetaValidationRuleCollector[0]);
+
+      Assert.That (result, Is.TypeOf (typeof (ObjectMetaValidationRuleValidator)));
+    }
   }
 }

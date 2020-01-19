@@ -16,17 +16,29 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.MetaValidation
 {
   /// <summary>
-  /// Implementations of the <see cref="IPropertyMetaValidationRuleValidator"/> interface can be used to validate the consistency of a 
-  /// set of <see cref="IAddingPropertyValidationRuleCollector"/>s.
+  /// Default implementation of the <see cref="IObjectMetaValidationRuleValidatorFactory"/> interface.
   /// </summary>
-  /// <seealso cref="PropertyMetaValidationRuleValidator"/>
-  public interface IPropertyMetaValidationRuleValidator
+  [ImplementationFor (typeof (IObjectMetaValidationRuleValidatorFactory), Lifetime = LifetimeKind.Singleton)]
+  public class ObjectMetaValidationRuleValidatorFactory : IObjectMetaValidationRuleValidatorFactory
   {
-    IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingPropertyValidationRuleCollector[] addingPropertyValidationRulesCollectors);
+    public ObjectMetaValidationRuleValidatorFactory ()
+    {
+    }
+
+    public IObjectMetaValidationRuleValidator CreateObjectMetaValidationRuleValidator (
+        IEnumerable<IObjectMetaValidationRuleCollector> objectMetaValidationRuleCollectors)
+    {
+      ArgumentUtility.CheckNotNull ("objectMetaValidationRuleCollectors", objectMetaValidationRuleCollectors);
+
+      return new ObjectMetaValidationRuleValidator (objectMetaValidationRuleCollectors.ToArray());
+    }
   }
 }

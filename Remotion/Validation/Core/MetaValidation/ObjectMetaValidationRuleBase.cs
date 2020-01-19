@@ -16,17 +16,26 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Validation.RuleCollectors;
+using System.Linq;
+using Remotion.Utilities;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.MetaValidation
 {
   /// <summary>
-  /// Implementations of the <see cref="IPropertyMetaValidationRuleValidator"/> interface can be used to validate the consistency of a 
-  /// set of <see cref="IAddingPropertyValidationRuleCollector"/>s.
+  /// Base class for implementations of the <see cref="IObjectMetaValidationRule"/> interface which are constrained to a specific <see cref="IObjectValidator"/> type.
   /// </summary>
-  /// <seealso cref="PropertyMetaValidationRuleValidator"/>
-  public interface IPropertyMetaValidationRuleValidator
+  /// <typeparam name="TValidator">The type of the <see cref="IObjectValidator"/> validated by this meta validator.</typeparam>
+  public abstract class ObjectMetaValidationRuleBase<TValidator> : IObjectMetaValidationRule
+      where TValidator: IObjectValidator
   {
-    IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingPropertyValidationRuleCollector[] addingPropertyValidationRulesCollectors);
+    public abstract IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<TValidator> validationRules);
+
+    IEnumerable<MetaValidationRuleValidationResult> IObjectMetaValidationRule.Validate (IEnumerable<IObjectValidator> validationRules)
+    {
+      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
+
+      return Validate (validationRules.OfType<TValidator>());
+    }
   }
 }
