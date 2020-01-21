@@ -30,5 +30,5 @@ using Remotion.Validation.Mixins;
 [assembly: EnsureGlobalizationSupportForMixins]
 [assembly: EnsureValidationSupportForDomainObjects]
 [assembly: EnsureValidationSupportForMixins]
-[assembly: EnsureValidationSupportForGlobalization]
+[assembly: EnsureGlobalizationSupportForValidation]
 [assembly: EnsureSecuritySupportForObjectBinding]

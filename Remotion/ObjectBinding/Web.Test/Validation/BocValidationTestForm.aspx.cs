@@ -24,6 +24,7 @@ using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Collections;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.Validation.UI.Controls;
 using Remotion.ServiceLocation;
@@ -46,7 +47,7 @@ namespace OBWTest.Validation
     protected Button PostBackButton;
     protected Button SaveButton;
     protected BindableObjectDataSourceControl CurrentObject;
-    protected BocDataSourceValidationFailureDisptachingValidator DataSourceValidationFailureDisptachingValidator;
+    protected BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceControlValidationResultDispatchingValidator;
     protected FormGridManager FormGridManager;
     protected BocTextValue LastNameField;
     protected BocTextValue FirstNameField;
@@ -124,7 +125,7 @@ namespace OBWTest.Validation
         
         if (person.Partner != null)
           validationResultPartner = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Partner);
-        var validationResultFahter = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Father);
+        var validationResultFather = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Father);
 
         var jobValidator = ValidationBuilder.BuildValidator (typeof (Job));
         bool areJobsValid = true;
@@ -136,16 +137,21 @@ namespace OBWTest.Validation
           jobFailures.AddRange (result.Errors);
         }
 
-        var errors = validationResult.Errors.Concat (validationResultPartner.Errors).Concat (jobFailures).Concat (validationResultFahter.Errors);
+        var combinedValidationResult = new ValidationResult (
+            validationResult.Errors
+                .Concat (validationResultPartner.Errors)
+                .Concat (jobFailures)
+                .Concat (validationResultFather.Errors));
 
-        if (validationResult.IsValid && validationResultPartner.IsValid && areJobsValid && validationResultFahter.IsValid)
+        if (combinedValidationResult.IsValid && validationResultPartner.IsValid && areJobsValid && validationResultFather.IsValid)
         {
           person.SaveObject ();
         }
         else
         {
-          DataSourceValidationFailureDisptachingValidator.DispatchValidationFailures (errors);
-          DataSourceValidationFailureDisptachingValidator.Validate();
+          var businessObjectValidationResult = BusinessObjectValidationResult.Create (combinedValidationResult);
+          DataSourceControlValidationResultDispatchingValidator.DispatchValidationFailures (businessObjectValidationResult);
+          DataSourceControlValidationResultDispatchingValidator.Validate();
         }
       }
 

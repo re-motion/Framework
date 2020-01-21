@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using System.Resources;
 using Remotion.Globalization;
+using Remotion.Validation.Globalization;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -48,3 +49,4 @@ using Remotion.Globalization;
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: AvailableResourcesLanguages ("", "de", "de-AT")]
 
+[assembly: EnsureGlobalizationSupportForValidation]

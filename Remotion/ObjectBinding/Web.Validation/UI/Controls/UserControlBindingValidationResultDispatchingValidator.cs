@@ -15,49 +15,40 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
-using Remotion.Validation.Results;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
-  public sealed class UserControlBindingValidationFailureDisptacher : BaseValidator, IBusinessObjectBoundEditableWebControlValidationFailureDispatcher
+  public sealed class UserControlBindingValidationResultDispatchingValidator
+      : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher
   {
-    public UserControlBindingValidationFailureDisptacher ()
+    public UserControlBindingValidationResultDispatchingValidator ()
     {
     }
 
-    public IEnumerable<ValidationFailure> DispatchValidationFailures (IEnumerable<ValidationFailure> failures)
+    public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull ("failures", failures);
+      ArgumentUtility.CheckNotNull ("validationResult", validationResult);
 
-      var control = NamingContainer.FindControl (ControlToValidate);
-      var userControlBinding = control as UserControlBinding;
-      if (userControlBinding == null)
-        throw new InvalidOperationException ("UserControlBindingValidationFailureDisptacher may only be applied to controls of type UserControlBinding");
+      var control = GetControlToValidate();
 
-      var namingContainer = userControlBinding.UserControl.DataSource.NamingContainer;
-      var validator =
-          EnumerableUtility.SelectRecursiveDepthFirst (
+      var namingContainer = control.UserControl.DataSource.NamingContainer;
+      var validator = EnumerableUtility.SelectRecursiveDepthFirst (
               namingContainer,
               child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer)))
-              .OfType<BocDataSourceValidationFailureDisptachingValidator>()
-              .SingleOrDefault (
-                  c => c.ControlToValidate == userControlBinding.UserControl.DataSource.ID,
-                  () => new InvalidOperationException ("Only zero or one BocDataSourceValidationFailureDisptachingValidator is allowed per UserControlBinding."));
+          .OfType<BindableObjectDataSourceControlValidationResultDispatchingValidator>()
+          .SingleOrDefault (
+              c => c.ControlToValidate == control.UserControl.DataSource.ID,
+              () => new InvalidOperationException (
+                  $"Only one '{nameof (UserControlBindingValidationResultDispatchingValidator)}' is allowed per '{nameof (UserControlBinding)}'."));
 
-      List<ValidationFailure> unhandledFailures;
-      if (validator != null)
-        unhandledFailures = validator.DispatchValidationFailures (failures).ToList();
-      else
-        unhandledFailures = failures.ToList();
-
-      return unhandledFailures;
+      validator?.DispatchValidationFailures (validationResult);
     }
 
     protected override bool EvaluateIsValid ()
@@ -70,10 +61,22 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
     {
       string controlToValidate = ControlToValidate;
       if (string.IsNullOrEmpty (controlToValidate))
-        return base.ControlPropertiesValid ();
+        return base.ControlPropertiesValid();
       else
         return NamingContainer.FindControl (controlToValidate) != null;
     }
-     
+
+    private UserControlBinding GetControlToValidate ()
+    {
+      var control = NamingContainer.FindControl (ControlToValidate);
+      var userControlBinding = control as UserControlBinding;
+      if (userControlBinding == null)
+      {
+        throw new InvalidOperationException (
+            $"'{nameof (UserControlBindingValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof (UserControlBinding)}'.");
+      }
+
+      return userControlBinding;
+    }
   }
 }

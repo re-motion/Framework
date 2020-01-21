@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       if (isReadOnly)
         Assert.That (validators, Is.Empty);
       else
-        Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (new[] { typeof (BocListValidator) }));
+        Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (new[] { typeof (BocListValidationResultDispatchingValidator) }));
     }
   }
 }

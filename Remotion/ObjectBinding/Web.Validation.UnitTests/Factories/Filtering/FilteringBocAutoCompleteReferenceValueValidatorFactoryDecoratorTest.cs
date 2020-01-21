@@ -31,10 +31,10 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
   public class FilteringBocAutoCompleteReferenceValueValidatorFactoryDecoratorTest : FilteringValidatorFactoryDecoraterBaseTest
   {
     [Test]
-    [TestCase (true, true, new[] { typeof (RequiredFieldValidator), typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocAutoCompleteReferenceValueInvalidDisplayNameValidator) })]
-    [TestCase (true, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocAutoCompleteReferenceValueInvalidDisplayNameValidator) })]
-    [TestCase (false, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocAutoCompleteReferenceValueInvalidDisplayNameValidator) })]
-    [TestCase (false, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocAutoCompleteReferenceValueInvalidDisplayNameValidator) })]
+    [TestCase (true, true, new[] { typeof (RequiredFieldValidator), typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator), typeof (BocAutoCompleteReferenceValueInvalidDisplayNameValidator) })]
+    [TestCase (true, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator), typeof (BocAutoCompleteReferenceValueInvalidDisplayNameValidator) })]
+    [TestCase (false, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator), typeof (BocAutoCompleteReferenceValueInvalidDisplayNameValidator) })]
+    [TestCase (false, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator), typeof (BocAutoCompleteReferenceValueInvalidDisplayNameValidator) })]
     public void CreateValidators (bool required, bool isValueType, Type[] expectedValidatorTypes)
     {
       var compoundFactory =

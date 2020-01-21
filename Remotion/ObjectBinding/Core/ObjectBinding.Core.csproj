@@ -350,6 +350,9 @@
     <Compile Include="BusinessObjectPropertyPaths\Results\NullBusinessObjectPropertyPathResult.cs" />
     <Compile Include="BusinessObjectPropertyPaths\StaticBusinessObjectPropertyPath.cs" />
     <Compile Include="UndefinedEnumValueAttribute.cs" />
+    <Compile Include="Validation\BusinessObjectValidationFailure.cs" />
+    <Compile Include="Validation\IBusinessObjectValidationResult.cs" />
+    <Compile Include="Validation\UnhandledBusinessObjectValidationFailure.cs" />
     <None Include="..\..\Build\NuSpec\TemplateShared.nuspec">
       <Link>TemplateShared.nuspec</Link>
     </None>

@@ -15,66 +15,43 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
-using Remotion.Validation.Results;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
-  public sealed class BocListValidator : BaseValidator, IBusinessObjectBoundEditableWebControlValidationFailureDispatcher
+  public sealed class BocListValidationResultDispatchingValidator : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher
   {
-    private List<ValidationFailure> _validationFailures = new List<ValidationFailure>();
-
-    public BocListValidator ()
+    public BocListValidationResultDispatchingValidator ()
     {
     }
 
-    public IEnumerable<ValidationFailure> DispatchValidationFailures (IEnumerable<ValidationFailure> failures)
+    public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull ("failures", failures);
+      ArgumentUtility.CheckNotNull ("validationResult", validationResult);
 
       var bocListControl = GetControlToValidate();
-      if (bocListControl == null)
-        throw new InvalidOperationException ("BocListValidator may only be applied to controls of type BocList");
 
-    //  var namingContainer = bocListControl.NamingContainer;
-      var validator =
-          EnumerableUtility.SelectRecursiveDepthFirst (
+      var validatorsMatchingToControls = EnumerableUtility.SelectRecursiveDepthFirst (
               bocListControl as Control,
               child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer)))
-              .OfType<IBusinessObjectBoundEditableWebControlValidationFailureDispatcher> ();
+          .OfType<IBusinessObjectBoundEditableWebControlValidationResultDispatcher>();
 
-      
-      _validationFailures = new List<ValidationFailure>();
-      foreach (var failure in failures)
-      {
-        if (BusinessObjectBoundEditableWebControlValidationUtility.IsMatchingControl (bocListControl, failure))
-          _validationFailures.Add (failure);
-        else
-          yield return failure;
-      }
-
-      if (_validationFailures.Any())
-        Validate();
-
-      ErrorMessage = string.Join ("\r\n", _validationFailures.Select (f => f.ErrorMessage));
+      foreach (var validator in validatorsMatchingToControls)
+        validator.DispatchValidationFailures (validationResult);
     }
 
 
     protected override bool EvaluateIsValid ()
     {
-      return !_validationFailures.Any();
-    }
-
-    private BocList GetControlToValidate()
-    {
-      var control = NamingContainer.FindControl (ControlToValidate);
-      return control as BocList;
+      // TODO RM-6056: Shows a validation error if IBusinessObjectValidationResult returned messages for this control.
+      return true;
     }
 
     protected override bool ControlPropertiesValid ()
@@ -84,6 +61,20 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
         return base.ControlPropertiesValid();
       else
         return NamingContainer.FindControl (controlToValidate) != null;
+    }
+
+    [NotNull]
+    private BocList GetControlToValidate ()
+    {
+      var control = NamingContainer.FindControl (ControlToValidate);
+      var bocListControl = control as BocList;
+      if (bocListControl == null)
+      {
+        throw new InvalidOperationException (
+            $"'{nameof (BocListValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof (BocList)}'.");
+      }
+
+      return bocListControl;
     }
   }
 }

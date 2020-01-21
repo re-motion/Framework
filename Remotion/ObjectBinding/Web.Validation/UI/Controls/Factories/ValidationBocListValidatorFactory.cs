@@ -17,17 +17,17 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Validation.Results;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 {
   /// <summary>
-  /// Implements various <see cref="IBocListValidatorFactory"/> intefaces and creates validators 
-  /// that can apply the fluent validation <see cref="ValidationFailure"/> results to the respective control.
+  /// Implements various <see cref="IBocListValidatorFactory"/> interfaces and creates validators 
+  /// that can apply the <see cref="IBusinessObjectValidationResult"/> object to the respective control.
   /// </summary>
   /// <seealso cref="IBocListValidatorFactory"/>
   [ImplementationFor (typeof (IBocListValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 
     private BaseValidator CreateBocListValidator (IBocList control)
     {
-      var bocValidator = new BocListValidator();
+      var bocValidator = new BocListValidationResultDispatchingValidator();
       bocValidator.ControlToValidate = control.ID;
       bocValidator.ID = control.ID + "_BocListValidator";
       return bocValidator;

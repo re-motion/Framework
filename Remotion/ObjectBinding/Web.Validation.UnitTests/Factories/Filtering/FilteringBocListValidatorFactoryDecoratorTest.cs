@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
       var validators = factory.CreateValidators (control, false);
       Assert.That (
           validators.Select (v => v.GetType()),
-          Is.EquivalentTo (new[] { typeof (BocListValidator), typeof (EditModeValidator) }));
+          Is.EquivalentTo (new[] { typeof (BocListValidationResultDispatchingValidator), typeof (EditModeValidator) }));
     }
   }
 }

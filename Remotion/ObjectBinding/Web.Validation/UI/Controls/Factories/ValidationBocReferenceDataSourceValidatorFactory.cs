@@ -17,16 +17,16 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Validation.Results;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 {
   /// <summary>
-  /// Implements various <see cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/> intefaces and creates validators 
-  /// that can apply the fluent validation <see cref="ValidationFailure"/> results to the respective control.
+  /// Implements various <see cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/> interfaces and creates validators 
+  /// that can apply the <see cref="IBusinessObjectValidationResult"/> object to the respective control.
   /// </summary>
   /// <seealso cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/>
   [ImplementationFor (typeof (IBusinessObjectReferenceDataSourceControlValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
@@ -48,9 +48,9 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
       yield return CreateBocReferenceDataSourceValidator (control);
     }
 
-    private BocReferenceDataSourceValidationFailureDisptachingValidator CreateBocReferenceDataSourceValidator (BusinessObjectReferenceDataSourceControl control)
+    private BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator CreateBocReferenceDataSourceValidator (BusinessObjectReferenceDataSourceControl control)
     {
-      var bocValidator = new BocReferenceDataSourceValidationFailureDisptachingValidator();
+      var bocValidator = new BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator();
       bocValidator.ControlToValidate = control.ID;
       bocValidator.ID = control.ID + "_BocReferenceDataSourceValidator";
       return bocValidator;

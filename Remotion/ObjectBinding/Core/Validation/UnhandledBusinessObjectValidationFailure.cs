@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,17 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
-using System.Resources;
-using System.Web.UI;
-using Remotion.Globalization;
+using JetBrains.Annotations;
+using Remotion.Utilities;
 
-[assembly: TagPrefix ("Remotion.ObjectBinding.Web.Validation.UI.Controls", "remotion")]
+namespace Remotion.ObjectBinding.Validation
+{
+  public class UnhandledBusinessObjectValidationFailure
+  {
+    [NotNull]
+    string ErrorMessage { get; }
 
-[assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
+    [CanBeNull]
+    IBusinessObjectProperty ValidatedProperty { get; }
 
-[assembly: AssemblyTitle ("re-motion Validation Support for ObjectBinding Web Controls")]
-[assembly: AssemblyDescription ("Internal: Integrates Remotion.Validation and Remotion.ObjectBinding.Web assemblies.")]
-[assembly: AssemblyCulture("")]		
-[assembly: CLSCompliant(true)]
+    public UnhandledBusinessObjectValidationFailure ([NotNull] string errorMessage, [CanBeNull] IBusinessObjectProperty validatedProperty)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("errorMessage", errorMessage);
+
+      ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
+
+      ErrorMessage = errorMessage;
+      ValidatedProperty = validatedProperty;
+    }
+  }
+}

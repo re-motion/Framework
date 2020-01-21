@@ -175,7 +175,7 @@
         <p>
             <remotion:formgridmanager id=FormGridManager runat="server"  visible="true"></remotion:formgridmanager>
             <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
-            <remotion:BocDataSourceValidationFailureDisptachingValidator ID="DataSourceValidationFailureDisptachingValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BocDataSourceValidationFailureDisptachingValidator>
+            <remotion:BindableObjectDataSourceControlValidationResultDispatchingValidator ID="DataSourceControlValidationResultDispatchingValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BindableObjectDataSourceControlValidationResultDispatchingValidator>
             
            
         </p>

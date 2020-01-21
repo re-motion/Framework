@@ -40,9 +40,6 @@
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation">
-      <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -66,7 +63,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="BusinessObjectBoundEditableWebControlValidationUtilityTest.cs" />
+    <Compile Include="BusinessObjectValidationResultExtensionsTest.cs" />
     <Compile Include="Factories\ValidationBocListValidatorFactoryTest.cs" />
     <Compile Include="Factories\ValidationBusinessObjectBoundEditableWebControlValidatorFactoryTest.cs" />
     <Compile Include="Factories\ValidationBocReferenceDataSourceValidatorFactoryTest.cs" />
@@ -112,10 +109,6 @@
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
       <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
       <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj">
-      <Project>{d057d6f3-2015-4eb0-b6bd-77be8ed1571a}</Project>
-      <Name>Validation.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>

@@ -15,13 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using Remotion.Validation.Results;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
+namespace Remotion.Validation.Globalization
 {
-  public interface IBusinessObjectBoundEditableWebControlValidationFailureDispatcher
+  /// <summary>
+  /// Apply this <see cref="Attribute"/> to an assembly to force the inclusing of the globalization-extension for validation.
+  /// </summary>
+  [AttributeUsage (AttributeTargets.Assembly)]
+  public class EnsureGlobalizationSupportForValidationAttribute : Attribute
   {
-    IEnumerable<ValidationFailure> DispatchValidationFailures (IEnumerable<ValidationFailure> failures);
   }
 }

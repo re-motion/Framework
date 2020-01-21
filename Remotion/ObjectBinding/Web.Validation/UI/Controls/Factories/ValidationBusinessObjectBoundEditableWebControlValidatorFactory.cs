@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
@@ -30,13 +31,12 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Validation.Results;
 
 namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
 {
   /// <summary>
-  /// Implements various <see cref="IBocValidatorFactory{T}"/> intefaces and creates validators 
-  /// that can apply the fluent validation <see cref="ValidationFailure"/> results to the respective control.
+  /// Implements various <see cref="IBocValidatorFactory{T}"/> interfaces and creates validators 
+  /// that can apply the <see cref="IBusinessObjectValidationResult"/> object to the respective control.
   /// </summary>
   /// <seealso cref="IBocTextValueValidatorFactory"/>
   /// <seealso cref="IBocReferenceValueValidatorFactory"/>
@@ -133,12 +133,12 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
       return CreateBocValidator (control.ID, isReadOnly);
     }
 
-    private IEnumerable<BusinessObjectBoundEditableWebControlValidator> CreateBocValidator (string id, bool isReadonly)
+    private IEnumerable<BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator> CreateBocValidator (string id, bool isReadonly)
     {
       if (isReadonly)
         yield break;
 
-      var bocValidator = new BusinessObjectBoundEditableWebControlValidator();
+      var bocValidator = new BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator();
       bocValidator.ControlToValidate = id;
       bocValidator.ID = id + "_BocValidator";
       yield return bocValidator;

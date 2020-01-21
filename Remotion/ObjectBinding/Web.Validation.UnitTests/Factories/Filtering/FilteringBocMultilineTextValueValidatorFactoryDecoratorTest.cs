@@ -33,10 +33,10 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
   public class FilteringBocMultilineTextValueValidatorFactoryDecoratorTest : FilteringValidatorFactoryDecoraterBaseTest
   {
     [Test]
-    [TestCase (true, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (RequiredFieldValidator) })]
-    [TestCase (true, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidator) })]
-    [TestCase (false, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidator) })]
-    [TestCase (false, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidator) })]
+    [TestCase (true, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator), typeof (RequiredFieldValidator) })]
+    [TestCase (true, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator) })]
+    [TestCase (false, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator) })]
+    [TestCase (false, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator) })]
     public void CreateValidators (bool required, bool isValueType, Type[] expectedValidatorTypes)
     {
       var compoundFactory =

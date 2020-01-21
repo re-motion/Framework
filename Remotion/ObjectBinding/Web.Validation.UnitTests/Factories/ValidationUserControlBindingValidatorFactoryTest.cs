@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       if (isReadOnly)
         Assert.That (validators, Is.Empty);
       else
-        Assert.That (validators.Select (v => v.GetType ()), Is.EquivalentTo (new[] { typeof (UserControlBindingValidationFailureDisptacher) }));
+        Assert.That (validators.Select (v => v.GetType ()), Is.EquivalentTo (new[] { typeof (UserControlBindingValidationResultDispatchingValidator) }));
     }
   }
 }

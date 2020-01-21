@@ -31,10 +31,10 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
   public class FilteringBocDateTimeValueValidatorFactoryDecoratorTest : FilteringValidatorFactoryDecoraterBaseTest
   {
     [Test]
-    [TestCase (true, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocDateTimeRequiredValidator), typeof (BocDateTimeFormatValidator) })]
-    [TestCase (true, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocDateTimeFormatValidator) })]
-    [TestCase (false, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocDateTimeFormatValidator) })]
-    [TestCase (false, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidator), typeof (BocDateTimeFormatValidator) })]
+    [TestCase (true, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator), typeof (BocDateTimeRequiredValidator), typeof (BocDateTimeFormatValidator) })]
+    [TestCase (true, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator), typeof (BocDateTimeFormatValidator) })]
+    [TestCase (false, true, new[] { typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator), typeof (BocDateTimeFormatValidator) })]
+    [TestCase (false, false, new[] { typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator), typeof (BocDateTimeFormatValidator) })]
     public void CreateValidators (bool required, bool isValueType, Type[] expectedValidatorTypes)
     {
       var compoundFactory =

@@ -192,6 +192,10 @@
       <Project>{5F1B88F7-FAFB-45C2-A357-333245870A6B}</Project>
       <Name>ObjectBinding.Sample</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Validation\ObjectBinding.Validation.csproj">
+      <Project>{A00DD42F-48B0-4E49-B79A-9CD7F401A9F1}</Project>
+      <Name>ObjectBinding.Validation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Web.Validation\ObjectBinding.Web.Validation.csproj">
       <Project>{1abecbff-e3bc-4d02-af23-52094cee41de}</Project>
       <Name>ObjectBinding.Web.Validation</Name>

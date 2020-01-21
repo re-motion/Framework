@@ -48,7 +48,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="EnsureValidationSupportForGlobalizationAttribute.cs" />
+    <Compile Include="EnsureGlobalizationSupportForValidationAttribute.cs" />
     <Compile Include="ResourceManagerBasedValidationMessage.cs" />
     <Compile Include="TypeBasedValidationMessageFactory.cs" />
     <Compile Include="LocalizedValidationMessageFactory.cs" />

@@ -33,7 +33,7 @@
   </tr>
 </table>
 
-<remotion:BocDataSourceValidationFailureDisptachingValidator ID="DataSourceValidationFailureDisptachingValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BocDataSourceValidationFailureDisptachingValidator>
+<remotion:BindableObjectDataSourceControlValidationResultDispatchingValidator ID="DataSourceValidationResultDispatchingValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BindableObjectDataSourceControlValidationResultDispatchingValidator>
 <remotion:FormGridManager ID="FormGridManager" runat="server" Visible="true"></remotion:FormGridManager>
 <remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
 <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></remotion:BusinessObjectReferenceDataSourceControl>

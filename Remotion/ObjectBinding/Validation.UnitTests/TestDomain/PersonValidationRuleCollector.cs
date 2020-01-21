@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,18 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Reflection;
-using System.Resources;
-using System.Web.UI;
-using Remotion.Globalization;
+using Remotion.Validation;
 
-[assembly: TagPrefix ("Remotion.ObjectBinding.Web.Validation.UI.Controls", "remotion")]
-
-[assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
-
-[assembly: AssemblyTitle ("re-motion Validation Support for ObjectBinding Web Controls")]
-[assembly: AssemblyDescription ("Internal: Integrates Remotion.Validation and Remotion.ObjectBinding.Web assemblies.")]
-[assembly: AssemblyCulture("")]		
-[assembly: CLSCompliant(true)]
+namespace Remotion.ObjectBinding.Validation.UnitTests.TestDomain
+{
+  public class PersonValidationRuleCollector : ValidationRuleCollectorBase<Person>
+  {
+    public PersonValidationRuleCollector ()
+    {
+      AddRule (_ => _.LastName).NotNull().NotEmpty();
+      AddRule (_ => _.FirstName).NotNull().NotEmpty();
+    }
+  }
+}

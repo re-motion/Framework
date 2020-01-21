@@ -15,14 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Validation;
 
-namespace Remotion.Validation.Globalization
+namespace Remotion.ObjectBinding.Validation.UnitTests.TestDomain
 {
-  /// <summary>
-  /// Apply this <see cref="Attribute"/> to an assembly to force the inclusing of the globalization-extension for validation.
-  /// </summary>
-  [AttributeUsage (AttributeTargets.Assembly)]
-  public class EnsureValidationSupportForGlobalizationAttribute : Attribute
+  public class ICustomerValidationRuleCollector : ValidationRuleCollectorBase<ICustomer>
   {
+    public ICustomerValidationRuleCollector ()
+    {
+      AddRule (_ => _.PhoneNumber).NotNull().NotEmpty();
+      AddRule (_ => _.CustomerNumber).NotNull().NotEmpty();
+    }
   }
 }
