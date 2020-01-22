@@ -46,7 +46,7 @@
               <remotion:NavigationCommand Type="Event"/>
             </PersistedCommand>
           </remotion:SubMenuTab>
-          <remotion:SubMenuTab ItemID="SubMenuTab2" Text="SubMenuTab2Title">
+          <remotion:SubMenuTab ItemID="SubMenuTab2" Text="SubMenuTab2Title" IsDisabled="True">
             <PersistedCommand>
               <remotion:NavigationCommand Type="Event"/>
             </PersistedCommand>

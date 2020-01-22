@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -203,11 +202,36 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       tabbedMenu.SubMenu.SelectItem().WithHtmlID ("body_MyTabbedMenu_SubMenuTabStrip_SubMenuTab1");
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("SubMenuTab1|Event"));
 
-      tabbedMenu.SubMenu.SelectItem().WithDisplayText ("SubMenuTab2Title");
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("SubMenuTab2|Event"));
+      tabbedMenu.SubMenu.SelectItem().WithDisplayText ("SubMenuTab3Title");
+      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
 
       tabbedMenu.SubMenu.SelectItem().WithDisplayTextContains ("nuTab1");
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("SubMenuTab1|Event"));
+    }
+
+    [Test]
+    public void TestSelectItem_DisabledSubMenuItem_ThrowsWebException ()
+    {
+      var home = Start();
+
+      var tabbedMenu = home.TabbedMenus().Single();
+      tabbedMenu.SelectItem ("TabWithSubMenu");
+
+      Assert.That (
+          () => tabbedMenu.SubMenu.SelectItem ("SubMenuTab2"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
+      Assert.That (
+          () => tabbedMenu.SubMenu.SelectItem().WithIndex (2),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
+      Assert.That (
+          () => tabbedMenu.SubMenu.SelectItem().WithHtmlID ("body_MyTabbedMenu_SubMenuTabStrip_SubMenuTab2"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
+      Assert.That (
+          () => tabbedMenu.SubMenu.SelectItem().WithDisplayText ("SubMenuTab2Title"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
+      Assert.That (
+          () => tabbedMenu.SubMenu.SelectItem().WithDisplayTextContains ("nuTab2"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
     }
 
     private WxePageObject Start ()
