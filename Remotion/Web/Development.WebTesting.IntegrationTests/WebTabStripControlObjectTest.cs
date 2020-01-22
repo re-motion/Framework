@@ -48,7 +48,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var control = home.WebTabStrips().GetByLocalID ("MyTabStrip1");
 
-      Assert.That (() => control.SwitchTo().WithIndex (3), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
+      Assert.That (() => control.SwitchTo ("Tab3"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
+      Assert.That (
+          () => control.SwitchTo().WithHtmlID ("body_MyTabStrip1_Tab3"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
+      Assert.That (
+          () => control.SwitchTo().WithIndex (3),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
+      Assert.That (
+          () => control.SwitchTo().WithItemID ("Tab3"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
+      Assert.That (
+          () => control.SwitchTo().WithDisplayText ("Tab3 disabled"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
+      Assert.That (
+          () => control.SwitchTo().WithDisplayTextContains ("Tab3"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Command").Message));
     }
 
     [Test]
