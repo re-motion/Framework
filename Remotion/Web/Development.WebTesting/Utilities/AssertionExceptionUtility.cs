@@ -73,5 +73,15 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
       return new WebTestException ($"Multiple elements were found: {exceptionDetails}");
     }
+
+    [NotNull]
+    [MustUseReturnValue]
+    [StringFormatMethod ("message")]
+    public static WebTestException CreateExpectationException ([NotNull] string message, params object[] args)
+    {
+      ArgumentUtility.CheckNotEmpty ("message", message);
+
+      return new WebTestException (string.Format (message, args));
+    }
   }
 }
