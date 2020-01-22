@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -70,11 +69,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.ReferenceValues().GetByLocalID ("PartnerField_Disabled");
 
       Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.ExecuteCommand(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => control.SelectOption().WithDisplayText ("D, A"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => control.SelectOption().WithIndex (1), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => control.SelectOption().WithItemID (baValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => control.SelectOption (baValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (
+          () => control.ExecuteCommand(),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("ExecuteCommand").Message));
+      Assert.That (
+          () => control.SelectOption().WithDisplayText ("D, A"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithDisplayText").Message));
+      Assert.That (
+          () => control.SelectOption().WithIndex (1),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithIndex").Message));
+      Assert.That (
+          () => control.SelectOption().WithItemID (baValue),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithItemID").Message));
+      Assert.That (
+          () => control.SelectOption (baValue),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption(itemID)").Message));
     }
 
     [Test]

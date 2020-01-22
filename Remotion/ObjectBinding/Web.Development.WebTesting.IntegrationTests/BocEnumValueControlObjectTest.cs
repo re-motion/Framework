@@ -109,24 +109,48 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var dropDownControl = home.EnumValues().GetByLocalID ("DataEditControl_MarriageStatusField_DropDownListDisabled");
       Assert.That (dropDownControl.IsDisabled(), Is.True);
-      Assert.That (() => dropDownControl.SelectOption().WithDisplayText ("Married"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => dropDownControl.SelectOption().WithIndex (1), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => dropDownControl.SelectOption().WithItemID ("Married"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => dropDownControl.SelectOption ("Married"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (
+          () => dropDownControl.SelectOption().WithDisplayText ("Married"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithDisplayText").Message));
+      Assert.That (
+          () => dropDownControl.SelectOption().WithIndex (1),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithIndex").Message));
+      Assert.That (
+          () => dropDownControl.SelectOption().WithItemID ("Married"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithItemID").Message));
+      Assert.That (
+          () => dropDownControl.SelectOption ("Married"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption(itemID)").Message));
 
       var listBoxControl = home.EnumValues().GetByLocalID ("DataEditControl_MarriageStatusField_ListBoxDisabled");
       Assert.That (listBoxControl.IsDisabled(), Is.True);
-      Assert.That (() => listBoxControl.SelectOption().WithDisplayText ("Married"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => listBoxControl.SelectOption().WithIndex (1), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => listBoxControl.SelectOption().WithItemID ("Married"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => listBoxControl.SelectOption ("Married"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (
+          () => listBoxControl.SelectOption().WithDisplayText ("Married"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithDisplayText").Message));
+      Assert.That (
+          () => listBoxControl.SelectOption().WithIndex (1),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithIndex").Message));
+      Assert.That (
+          () => listBoxControl.SelectOption().WithItemID ("Married"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithItemID").Message));
+      Assert.That (
+          () => listBoxControl.SelectOption ("Married"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption(itemID)").Message));
 
       var radioButton = home.EnumValues().GetByLocalID ("DataEditControl_MarriageStatusField_RadioButtonListDisabled");
       Assert.That (radioButton.IsDisabled(), Is.True);
-      Assert.That (() => radioButton.SelectOption().WithDisplayText ("Married"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => radioButton.SelectOption().WithIndex (1), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => radioButton.SelectOption().WithItemID ("Married"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => radioButton.SelectOption ("Married"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (
+          () => radioButton.SelectOption().WithDisplayText ("Married"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithDisplayText").Message));
+      Assert.That (
+          () => radioButton.SelectOption().WithIndex (1),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithIndex").Message));
+      Assert.That (
+          () => radioButton.SelectOption().WithItemID ("Married"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithItemID").Message));
+      Assert.That (
+          () => radioButton.SelectOption ("Married"),
+          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption(itemID)").Message));
     }
 
     [Test]

@@ -64,7 +64,13 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
-      return SelectItem().WithItemID (itemID, actionOptions);
+      var menuItemScope = GetMainMenuScope().FindTagWithAttribute ("span", DiagnosticMetadataAttributes.ItemID, itemID);
+      var menuItemCommand = FindMenuItemCommand (menuItemScope);
+
+      if (menuItemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SelectItem(itemID)");
+
+      return SelectMenuItem (menuItemCommand, actionOptions);
     }
 
     /// <summary>
@@ -81,14 +87,24 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
       var menuItemScope = GetMainMenuScope().FindTagWithAttribute ("span", DiagnosticMetadataAttributes.ItemID, itemID);
-      return SelectMenuItem (Context, menuItemScope, actionOptions);
+      var menuItemCommand = FindMenuItemCommand (menuItemScope);
+
+      if (menuItemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SelectItem.WithItemID");
+
+      return SelectMenuItem (menuItemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
       var menuItemScope = GetMainMenuScope().FindXPath (string.Format ("(.//li/span/span[2])[{0}]", oneBasedIndex));
-      return SelectMenuItem (Context, menuItemScope, actionOptions);
+      var menuItemCommand = FindMenuItemCommand (menuItemScope);
+
+      if (menuItemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SelectItem.WithIndex");
+
+      return SelectMenuItem (menuItemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -97,7 +113,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
 
       var menuItemScope = Scope.FindId (htmlID);
-      return SelectMenuItem (Context, menuItemScope, actionOptions);
+      var menuItemCommand = FindMenuItemCommand (menuItemScope);
+
+      if (menuItemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SelectItem.WithHtmlID");
+
+      return SelectMenuItem (menuItemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -106,7 +127,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
 
       var menuItemScope = GetMainMenuScope().FindTagWithAttribute ("span", DiagnosticMetadataAttributes.Content, displayText);
-      return SelectMenuItem (Context, menuItemScope, actionOptions);
+      var menuItemCommand = FindMenuItemCommand (menuItemScope);
+
+      if (menuItemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SelectItem.WithDisplayText");
+
+      return SelectMenuItem (menuItemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -118,7 +144,13 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
       var menuItemScope = GetMainMenuScope()
           .FindTagWithAttributeUsingOperator ("span", CssComparisonOperator.SubstringMatch, DiagnosticMetadataAttributes.Content, containsDisplayText);
-      return SelectMenuItem (Context, menuItemScope, actionOptions);
+
+      var menuItemCommand = FindMenuItemCommand (menuItemScope);
+
+      if (menuItemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SelectItem.WithDisplayTextContains");
+
+      return SelectMenuItem (menuItemCommand, actionOptions);
     }
 
     private static IReadOnlyList<ItemDefinition> GetMenuItemOrSubMenuItemDefinitions (ElementScope scope)
@@ -137,22 +169,24 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                       .ToList());
     }
 
-    private UnspecifiedPageObject SelectMenuItem (
-        ControlObjectContext context,
-        ElementScope menuItemScope,
-        IWebTestActionOptions actionOptions)
+    private UnspecifiedPageObject SelectMenuItem (CommandControlObject itemCommand, IWebTestActionOptions actionOptions)
     {
-      var menuItemCommandScope = menuItemScope.FindLink();
-      var menuItemCommand = new CommandControlObject (context.CloneForControl (menuItemCommandScope));
       try
       {
-        ((IControlObjectNotifier) menuItemCommand).ActionExecute += OnActionExecute;
-        return menuItemCommand.Click (actionOptions);
+        ((IControlObjectNotifier) itemCommand).ActionExecute += OnActionExecute;
+        return itemCommand.Click (actionOptions);
       }
       finally
       {
-        ((IControlObjectNotifier) menuItemCommand).ActionExecute -= OnActionExecute;
+        ((IControlObjectNotifier) itemCommand).ActionExecute -= OnActionExecute;
       }
+    }
+
+    private CommandControlObject FindMenuItemCommand (ElementScope menuItemScope)
+    {
+      var menuItemCommandScope = menuItemScope.FindLink();
+
+      return new CommandControlObject (Context.CloneForControl (menuItemCommandScope));
     }
 
     private ElementScope GetMainMenuScope ()
@@ -182,7 +216,13 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       {
         ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
-        return SelectItem().WithItemID (itemID, actionOptions);
+        var menuItemScope = GetSubMenuScope().FindTagWithAttribute ("span", DiagnosticMetadataAttributes.ItemID, itemID);
+        var itemCommand = FindItemCommand (menuItemScope);
+
+        if (itemCommand.IsDisabled())
+          throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SelectItem(itemID)");
+
+        return SelectMenuItem (itemCommand, actionOptions);
       }
 
       UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions actionOptions)
@@ -190,13 +230,23 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
         var menuItemScope = GetSubMenuScope().FindTagWithAttribute ("span", DiagnosticMetadataAttributes.ItemID, itemID);
-        return SelectMenuItem (Context, menuItemScope, actionOptions);
+        var itemCommand = FindItemCommand (menuItemScope);
+
+        if (itemCommand.IsDisabled())
+          throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SelectItem.WithItemID");
+
+        return SelectMenuItem (itemCommand, actionOptions);
       }
 
       UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
       {
         var menuItemScope = GetSubMenuScope().FindXPath (string.Format ("(.//li/span/span[2])[{0}]", oneBasedIndex));
-        return SelectMenuItem (Context, menuItemScope, actionOptions);
+        var itemCommand = FindItemCommand (menuItemScope);
+
+        if (itemCommand.IsDisabled())
+          throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SelectItem.WithIndex");
+
+        return SelectMenuItem (itemCommand, actionOptions);
       }
 
       UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions actionOptions)
@@ -204,7 +254,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
 
         var menuItemScope = Scope.FindId (htmlID);
-        return SelectMenuItem (Context, menuItemScope, actionOptions);
+        var itemCommand = FindItemCommand (menuItemScope);
+
+        if (itemCommand.IsDisabled())
+          throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SelectItem.WithHtmlID");
+
+        return SelectMenuItem (itemCommand, actionOptions);
       }
 
       UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
@@ -212,7 +267,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
 
         var menuItemScope = GetSubMenuScope().FindTagWithAttribute ("span", DiagnosticMetadataAttributes.Content, displayText);
-        return SelectMenuItem (Context, menuItemScope, actionOptions);
+        var itemCommand = FindItemCommand (menuItemScope);
+
+        if (itemCommand.IsDisabled())
+          throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SelectItem.WithDisplayText");
+
+        return SelectMenuItem (itemCommand, actionOptions);
       }
 
       UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayTextContains (
@@ -227,25 +287,34 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                 CssComparisonOperator.SubstringMatch,
                 DiagnosticMetadataAttributes.Content,
                 containsDisplayText);
-        return SelectMenuItem (Context, menuItemScope, actionOptions);
+        var itemCommand = FindItemCommand (menuItemScope);
+
+        if (itemCommand.IsDisabled())
+          throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SelectItem.WithDisplayTextContains");
+
+        return SelectMenuItem (itemCommand, actionOptions);
       }
 
       private UnspecifiedPageObject SelectMenuItem (
-          ControlObjectContext context,
-          ElementScope menuItemScope,
+          CommandControlObject itemCommand,
           IWebTestActionOptions actionOptions)
       {
-        var menuItemCommandScope = menuItemScope.FindLink();
-        var menuItemCommand = new CommandControlObject (context.CloneForControl (menuItemCommandScope));
         try
         {
-          ((IControlObjectNotifier) menuItemCommand).ActionExecute += OnActionExecute;
-          return menuItemCommand.Click (actionOptions);
+          ((IControlObjectNotifier) itemCommand).ActionExecute += OnActionExecute;
+          return itemCommand.Click (actionOptions);
         }
         finally
         {
-          ((IControlObjectNotifier) menuItemCommand).ActionExecute -= OnActionExecute;
+          ((IControlObjectNotifier) itemCommand).ActionExecute -= OnActionExecute;
         }
+      }
+
+      private CommandControlObject FindItemCommand (ElementScope itemScope)
+      {
+        var menuItemCommandScope = itemScope.FindLink();
+        var menuItemCommand = new CommandControlObject (Context.CloneForControl (menuItemCommandScope));
+        return menuItemCommand;
       }
 
       private ElementScope GetSubMenuScope ()

@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var control = home.ImageButtons().GetByLocalID ("ImageButtonDisabled");
 
       Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.Click(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That (() => control.Click(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Click").Message));
     }
 
     [Test]

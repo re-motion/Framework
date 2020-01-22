@@ -74,7 +74,13 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
-      return SwitchTo().WithItemID (itemID, actionOptions);
+      var itemScope = Scope.FindTagWithAttribute ("span.tabStripTab", DiagnosticMetadataAttributes.ItemID, itemID);
+      var itemCommand = FindItemCommand (itemScope);
+
+      if (itemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SwitchTo(itemID)");
+
+      return SwitchTo (itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -83,7 +89,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
       var itemScope = Scope.FindTagWithAttribute ("span.tabStripTab", DiagnosticMetadataAttributes.ItemID, itemID);
-      return SwitchTo (itemScope, actionOptions);
+      var itemCommand = FindItemCommand (itemScope);
+
+      if (itemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SwitchTo.WithItemID");
+
+      return SwitchTo (itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -94,7 +105,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
           DomSelectorUtility.CreateHasOneOfClassesCheckForXPath (new[] { "tabStripTab", "tabStripTabSelected" }),
           oneBasedIndex);
       var itemScope = Scope.FindXPath (xPathSelector);
-      return SwitchTo (itemScope, actionOptions);
+      var itemCommand = FindItemCommand (itemScope);
+
+      if (itemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SwitchTo.WithIndex");
+
+      return SwitchTo (itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -103,7 +119,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
 
       var itemScope = Scope.FindId (htmlID);
-      return SwitchTo (itemScope, actionOptions);
+      var itemCommand = FindItemCommand (itemScope);
+
+      if (itemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SwitchTo.WithHtmlID");
+
+      return SwitchTo (itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -112,7 +133,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
 
       var itemScope = Scope.FindTagWithAttribute ("span.tabStripTab", DiagnosticMetadataAttributes.Content, displayText);
-      return SwitchTo (itemScope, actionOptions);
+      var itemCommand = FindItemCommand (itemScope);
+
+      if (itemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SwitchTo.WithDisplayText");
+
+      return SwitchTo (itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -125,14 +151,24 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
           CssComparisonOperator.SubstringMatch,
           DiagnosticMetadataAttributes.Content,
           containsDisplayText);
-      return SwitchTo (itemScope, actionOptions);
+      var itemCommand = FindItemCommand (itemScope);
+
+      if (itemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SwitchTo.WithDisplayTextContains");
+
+      return SwitchTo (itemCommand, actionOptions);
     }
 
-    private UnspecifiedPageObject SwitchTo (ElementScope tabScope, IWebTestActionOptions actionOptions)
+    private UnspecifiedPageObject SwitchTo (CommandControlObject itemCommand, IWebTestActionOptions actionOptions)
     {
-      var tabCommandScope = tabScope.FindLink();
-      var tabCommand = new CommandControlObject (Context.CloneForControl (tabCommandScope));
-      return tabCommand.Click (actionOptions);
+      return itemCommand.Click (actionOptions);
+    }
+
+    private CommandControlObject FindItemCommand (ElementScope itemScope)
+    {
+      var itemCommandScope = itemScope.FindLink();
+
+      return new CommandControlObject (Context.CloneForControl (itemCommandScope));
     }
   }
 }

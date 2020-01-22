@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 
@@ -27,19 +28,20 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   {
     [NotNull]
     [MustUseReturnValue]
-    public static WebTestException CreateControlDisabledException ()
+    public static WebTestException CreateControlDisabledException ([CallerMemberName] string operationName = "")
     {
-      return new WebTestException ("The control is currently in a disabled state. Therefore, the operation is not possible.");
+      ArgumentUtility.CheckNotNullOrEmpty ("operationName", operationName);
+
+      return new WebTestException (string.Format ("The control is currently in a disabled state. Therefore, the '{0}' operation is not possible.", operationName));
     }
 
     [NotNull]
     [MustUseReturnValue]
-    public static WebTestException CreateControlDisabledException ([NotNull] string controlName)
+    public static WebTestException CreateCommandDisabledException ([CallerMemberName] string operationName = "")
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("controlName", controlName);
+      ArgumentUtility.CheckNotNullOrEmpty ("operationName", operationName);
 
-      return new WebTestException (
-          string.Format ("The '{0}' is currently in a disabled state. Therefore, the operation is not possible.", controlName));
+      return new WebTestException (string.Format ("The command is currently in a disabled state. Therefore, the '{0}' operation is not possible.", operationName));
     }
 
     [NotNull]
