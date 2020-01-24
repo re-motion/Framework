@@ -63,21 +63,21 @@ namespace Remotion.Validation.Globalization
           LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
-    public ValidationMessage CreateValidationMessageForPropertyValidator (Type validatorType, IPropertyInformation validatedProperty)
+    public ValidationMessage CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("validatorType", validatorType, typeof (IPropertyValidator));
+      ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
 
-      var resourceIdentifier = GetResourceIdentifierOrNull (validatorType);
+      var resourceIdentifier = GetResourceIdentifierOrNull (validator.GetType());
       if (!resourceIdentifier.HasValue)
         return null;
 
       return new ResourceManagerBasedValidationMessage (_resourceManager.Value, resourceIdentifier);
     }
 
-    public ValidationMessage CreateValidationMessageForObjectValidator (Type validatorType, ITypeInformation validatedType)
+    public ValidationMessage CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("validatorType", validatorType, typeof (IObjectValidator));
+      ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
 
       return null;

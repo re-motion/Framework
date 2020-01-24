@@ -41,14 +41,10 @@ namespace Remotion.Validation.Attributes.Validation
       NotEmptyValidator validator;
       if (string.IsNullOrEmpty (ErrorMessage))
       {
-        var validatorType = typeof (NotEmptyValidator);
-        var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator (validatorType, property);
-        if (validationMessage == null)
-        {
-          throw new InvalidOperationException (
-              $"The {nameof (IValidationMessageFactory)} did not return a result for {validatorType.Name} applied to property '{property.Name}' on type '{property.GetOriginalDeclaringType().FullName}'.");
-        }
-        validator = new NotEmptyValidator (validationMessage);
+        validator = PropertyValidatorFactory.Create (
+            property,
+            parameters => new NotEmptyValidator (parameters.ValidationMessage),
+            validationMessageFactory);
       }
       else
       {

@@ -110,6 +110,7 @@
     <Compile Include="RuleCollectors\ObjectMetaValidationRuleCollector.cs" />
     <Compile Include="RuleCollectors\RemovingObjectValidationRuleCollector.cs" />
     <Compile Include="Rules\ObjectValidationRuleInitializationParameters.cs" />
+    <Compile Include="Validators\ObjectValidatorFactory.cs" />
     <Compile Include="Validators\ObjectValidatorContext.cs" />
     <Compile Include="Results\ObjectValidationFailure.cs" />
     <Compile Include="Results\PropertyValidationFailure.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="MetaValidation\DefaultSystemPropertyMetaValidationRuleProviderFactory.cs" />
     <Compile Include="MetaValidation\ISystemPropertyMetaValidationRuleProviderFactory.cs" />
     <Compile Include="MetaValidation\Rules\Custom\AnyRuleAppliedPropertyMetaValidationRule.cs" />
+    <Compile Include="Validators\PropertyValidatorFactory.cs" />
     <Compile Include="Validators\PropertyValidatorContext.cs" />
     <Compile Include="Providers\ValidationAttributesBasedValidationRuleCollectorProvider.cs" />
     <Compile Include="RuleCollectors\PropertyMetaValidationRuleCollector.cs" />

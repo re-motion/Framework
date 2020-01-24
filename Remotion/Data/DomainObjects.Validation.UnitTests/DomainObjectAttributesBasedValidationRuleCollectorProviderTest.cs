@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
 using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests
@@ -37,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     {
       _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
       _validationMessageFactoryStub
-          .Stub (_ => _.CreateValidationMessageForPropertyValidator (Arg<Type>.Is.NotNull, Arg<IPropertyInformation>.Is.NotNull))
+          .Stub (_ => _.CreateValidationMessageForPropertyValidator (Arg<IPropertyValidator>.Is.NotNull, Arg<IPropertyInformation>.Is.NotNull))
           .Return (new InvariantValidationMessage ("Fake Message"));
 
       _provider = new DomainObjectAttributesBasedValidationRuleCollectorProvider(new DomainModelConstraintProvider(), _validationMessageFactoryStub);

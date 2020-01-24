@@ -113,15 +113,16 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _validationMessageFactoryStub
           .Stub (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  typeof (NotNullValidator),
-                  PropertyInfoAdapter.Create (_propertyWithMandatoryAttribute)))
+                  Arg<NotNullValidator>.Is.TypeOf,
+                  Arg.Is (PropertyInfoAdapter.Create (_propertyWithMandatoryAttribute))))
           .Return (validationMessageStub);
 
       var result = _propertyWithMandatoryAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
 
+      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
       Assert.That (result.Length, Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
-      Assert.That (((NotNullValidator) result[0]).ValidationMessage, Is.SameAs (validationMessageStub));
+      Assert.That (((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
     }
 
     [Test]
@@ -137,16 +138,17 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _validationMessageFactoryStub
           .Stub (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  typeof (MaximumLengthValidator),
-                  PropertyInfoAdapter.Create (_propertyWithNullableStringPropertyAttribute)))
+                  Arg<MaximumLengthValidator>.Is.TypeOf,
+                  Arg.Is (PropertyInfoAdapter.Create (_propertyWithNullableStringPropertyAttribute))))
           .Return (validationMessageStub);
 
       var result = _propertyWithNullableStringPropertyAttributeReflector.GetRemovablePropertyValidators().ToArray();
 
+      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
       Assert.That (result.Length, Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (MaximumLengthValidator)));
       Assert.That (((MaximumLengthValidator) result[0]).Max, Is.EqualTo (10));
-      Assert.That (((MaximumLengthValidator) result[0]).ValidationMessage, Is.SameAs (validationMessageStub));
+      Assert.That (((MaximumLengthValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
     }
 
     [Test]
@@ -160,25 +162,31 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var lengthValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
-          .Stub (_ => _.CreateValidationMessageForPropertyValidator (typeof (MaximumLengthValidator),
-              PropertyInfoAdapter.Create (_propertyWithMandatoryStringPropertyAttribute)))
+          .Stub (
+              _ => _.CreateValidationMessageForPropertyValidator (
+                  Arg<MaximumLengthValidator>.Is.TypeOf,
+                  Arg.Is (PropertyInfoAdapter.Create (_propertyWithMandatoryStringPropertyAttribute))))
           .Return (lengthValidationMessageStub);
 
       var notEmptyValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
-          .Stub (_ => _.CreateValidationMessageForPropertyValidator (typeof (NotEmptyValidator),
-              PropertyInfoAdapter.Create (_propertyWithMandatoryStringPropertyAttribute)))
+          .Stub (
+              _ => _.CreateValidationMessageForPropertyValidator (
+                  Arg<NotEmptyValidator>.Is.TypeOf,
+                  Arg.Is (PropertyInfoAdapter.Create (_propertyWithMandatoryStringPropertyAttribute))))
           .Return (notEmptyValidationMessageStub);
 
       var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetRemovablePropertyValidators().ToArray();
 
+      lengthValidationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message for Length");
       Assert.That (result.Length, Is.EqualTo (2));
       Assert.That (result[0], Is.TypeOf (typeof (MaximumLengthValidator)));
       Assert.That (((MaximumLengthValidator) result[0]).Max, Is.EqualTo (20));
-      Assert.That (((MaximumLengthValidator) result[0]).ValidationMessage, Is.SameAs (lengthValidationMessageStub));
+      Assert.That (((MaximumLengthValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message for Length"));
 
+      notEmptyValidationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message for NotEmpty");
       Assert.That (result[1], Is.TypeOf (typeof (NotEmptyValidator)));
-      Assert.That (((NotEmptyValidator) result[1]).ValidationMessage, Is.SameAs (notEmptyValidationMessageStub));
+      Assert.That (((NotEmptyValidator) result[1]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message for NotEmpty"));
     }
 
     [Test]
@@ -194,15 +202,16 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _validationMessageFactoryStub
           .Stub (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  typeof (NotEmptyValidator),
-                  PropertyInfoAdapter.Create (_binaryProperty)))
+                  Arg<NotEmptyValidator>.Is.TypeOf,
+                  Arg.Is (PropertyInfoAdapter.Create (_binaryProperty))))
           .Return (validationMessageStub);
 
       var result = _binaryPropertyReflector.GetRemovablePropertyValidators().ToArray();
 
+      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
       Assert.That (result.Length, Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (NotEmptyValidator)));
-      Assert.That (((NotEmptyValidator) result[0]).ValidationMessage, Is.SameAs (validationMessageStub));
+      Assert.That (((NotEmptyValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
     }
 
     [Test]
@@ -218,25 +227,28 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _validationMessageFactoryStub
           .Stub (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  typeof (NotNullValidator),
-                  PropertyInfoAdapter.Create (_collectionProperty)))
+                  Arg<NotNullValidator>.Is.TypeOf,
+                  Arg.Is (PropertyInfoAdapter.Create (_collectionProperty))))
           .Return (notNullValidationMessageStub);
 
       var notEmptyValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
           .Stub (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  typeof (NotEmptyValidator),
-                  PropertyInfoAdapter.Create (_collectionProperty)))
+                  Arg<NotEmptyValidator>.Is.TypeOf,
+                  Arg.Is (PropertyInfoAdapter.Create (_collectionProperty))))
           .Return (notEmptyValidationMessageStub);
 
       var result = _collectionPropertyReflector.GetNonRemovablePropertyValidators ().ToArray ();
 
+      notNullValidationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message for NotNull");
       Assert.That (result.Count (), Is.EqualTo (2));
       Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
-      Assert.That (((NotNullValidator) result[0]).ValidationMessage, Is.SameAs (notNullValidationMessageStub));
+      Assert.That (((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message for NotNull"));
+
+      notEmptyValidationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message for NotEmpty");
       Assert.That (result[1], Is.TypeOf (typeof (NotEmptyValidator)));
-      Assert.That (((NotEmptyValidator) result[1]).ValidationMessage, Is.SameAs (notEmptyValidationMessageStub));
+      Assert.That (((NotEmptyValidator) result[1]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message for NotEmpty"));
 
       Assert.That (_collectionPropertyReflector.GetRemovablePropertyValidators().ToArray(), Is.Empty);
     }
@@ -262,15 +274,16 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _validationMessageFactoryStub
           .Stub (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  typeof (NotNullValidator),
-                  PropertyInfoAdapter.Create (_propertyWithMandatoryStringPropertyAttribute)))
+                  Arg<NotNullValidator>.Is.TypeOf,
+                  Arg.Is (PropertyInfoAdapter.Create (_propertyWithMandatoryStringPropertyAttribute))))
           .Return (validationMessageStub);
 
       var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
 
+      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
       Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
-      Assert.That (((NotNullValidator) result[0]).ValidationMessage, Is.SameAs (validationMessageStub));
+      Assert.That (((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
     }
 
     [Test]

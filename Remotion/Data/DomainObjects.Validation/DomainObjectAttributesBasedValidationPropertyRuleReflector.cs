@@ -85,10 +85,11 @@ namespace Remotion.Data.DomainObjects.Validation
       _implementationPropertyInformation = PropertyInfoAdapter.Create (_implementationProperty);
     }
 
-    public IPropertyInformation ValidatedProperty
-    {
-      get { return _interfacePropertyInformation; }
-    }
+    public IPropertyInformation ImplementationPropertyInformation => _implementationPropertyInformation;
+
+    public IPropertyInformation InterfacePropertyInformation => _interfacePropertyInformation;
+
+    IPropertyInformation IAttributesBasedValidationPropertyRuleReflector.ValidatedProperty => _interfacePropertyInformation;
 
     public Func<object, object> GetValidatedPropertyFunc (Type validatedType)
     {
@@ -146,16 +147,20 @@ namespace Remotion.Data.DomainObjects.Validation
       var maxLength = _domainModelConstraintProvider.GetMaxLength (_implementationPropertyInformation);
       if (maxLength.HasValue)
       {
-        var validationMessage = CreateValidationMessageForPropertyValidator (typeof (MaximumLengthValidator), _implementationPropertyInformation);
-        yield return new MaximumLengthValidator (maxLength.Value, validationMessage);
+        yield return PropertyValidatorFactory.Create (
+            _implementationPropertyInformation,
+            parameters => new MaximumLengthValidator (maxLength.Value, parameters.ValidationMessage),
+            _validationMessageFactory);
       }
 
       if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation) 
           && typeof (IEnumerable).IsAssignableFrom (_implementationProperty.PropertyType)
           && !ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
       {
-        var validationMessage = CreateValidationMessageForPropertyValidator (typeof (NotEmptyValidator),_implementationPropertyInformation);
-        yield return new NotEmptyValidator (validationMessage);
+        yield return PropertyValidatorFactory.Create (
+            _implementationPropertyInformation,
+            parameters => new NotEmptyValidator (parameters.ValidationMessage),
+            _validationMessageFactory);
       }
     }
 
@@ -163,13 +168,17 @@ namespace Remotion.Data.DomainObjects.Validation
     {
       if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation))
       {
-        var notNullValidationMessage = CreateValidationMessageForPropertyValidator (typeof (NotNullValidator), _implementationPropertyInformation);
-        yield return new NotNullValidator (notNullValidationMessage);
+        yield return PropertyValidatorFactory.Create (
+            _implementationPropertyInformation,
+            parameters => new NotNullValidator (parameters.ValidationMessage),
+            _validationMessageFactory);
 
         if (ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
         {
-          var notEmptyValidationMessage = CreateValidationMessageForPropertyValidator (typeof (NotEmptyValidator), _implementationPropertyInformation);
-          yield return new NotEmptyValidator (notEmptyValidationMessage);
+          yield return PropertyValidatorFactory.Create (
+              _implementationPropertyInformation,
+              parameters => new NotEmptyValidator (parameters.ValidationMessage),
+              _validationMessageFactory);
         }
       }
     }
@@ -184,19 +193,6 @@ namespace Remotion.Data.DomainObjects.Validation
       var maxLength = _domainModelConstraintProvider.GetMaxLength (_implementationPropertyInformation);
       if (maxLength.HasValue)
         yield return new RemotionMaxLengthPropertyMetaValidationRule (_implementationProperty, maxLength.Value);
-    }
-
-    [NotNull]
-    private ValidationMessage CreateValidationMessageForPropertyValidator (Type validatorType, IPropertyInformation property)
-    {
-      var validationMessage = _validationMessageFactory.CreateValidationMessageForPropertyValidator (validatorType, property);
-      if (validationMessage == null)
-      {
-        throw new InvalidOperationException (
-            $"The {nameof (IValidationMessageFactory)} did not return a result for {validatorType.Name} applied to property '{property.Name}' on type '{property.GetOriginalDeclaringType().FullName}'.");
-      }
-
-      return validationMessage;
     }
   }
 }

@@ -62,14 +62,10 @@ namespace Remotion.Validation.Attributes.Validation
       LengthValidator validator;
       if (string.IsNullOrEmpty (ErrorMessage))
       {
-        var validatorType = typeof (LengthValidator);
-        var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator (validatorType, property);
-        if (validationMessage == null)
-        {
-          throw new InvalidOperationException (
-              $"The {nameof (IValidationMessageFactory)} did not return a result for {validatorType.Name} applied to property '{property.Name}' on type '{property.GetOriginalDeclaringType().FullName}'.");
-        }
-        validator = new LengthValidator (MinLength, MaxLength, validationMessage);
+        validator = PropertyValidatorFactory.Create (
+            property,
+            parameters => new LengthValidator (MinLength, MaxLength, parameters.ValidationMessage),
+            validationMessageFactory);
       }
       else
       {

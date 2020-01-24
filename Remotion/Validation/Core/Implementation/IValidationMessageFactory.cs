@@ -26,25 +26,25 @@ namespace Remotion.Validation.Implementation
     /// <summary>
     /// Returns the <see cref="ValidationMessage"/> for a given <see cref="Type"/> that implements the <see cref="IPropertyValidator"/> interface.
     /// </summary>
-    /// <param name="validatorType">The <see cref="Type"/> of the <see cref="IPropertyValidator"/> to get the <see cref="ValidationMessage"/> for.</param>
+    /// <param name="validator">The <see cref="IPropertyValidator"/> to get the <see cref="ValidationMessage"/> for.</param>
     /// <param name="validatedProperty">The <see cref="IPropertyInformation"/> for which the <see cref="ValidationMessage"/> is created.</param>
     /// <returns>
     /// The <see cref="ValidationMessage"/> for the <see cref="IPropertyValidator"/>.
-    /// Please note that the method can return <see langword="null"/> if no <see cref="ValidationMessage"/> is defined for the <paramref name="validatorType"/>.
+    /// Please note that the method can return <see langword="null"/> if no <see cref="ValidationMessage"/> is defined for the <paramref name="validator"/>.
     /// </returns>
     [CanBeNull]
-    ValidationMessage CreateValidationMessageForPropertyValidator ([NotNull] Type validatorType, [NotNull] IPropertyInformation validatedProperty);
+    ValidationMessage CreateValidationMessageForPropertyValidator ([NotNull] IPropertyValidator validator, [NotNull] IPropertyInformation validatedProperty);
 
     /// <summary>
     /// Returns the <see cref="ValidationMessage"/> for a given <see cref="Type"/> that implements the <see cref="IObjectValidator"/> interface.
     /// </summary>
-    /// <param name="validatorType">The <see cref="Type"/> of the <see cref="IObjectValidator"/> to get the <see cref="ValidationMessage"/> for.</param>
+    /// <param name="validator">The <see cref="IObjectValidator"/> to get the <see cref="ValidationMessage"/> for.</param>
     /// <param name="validatedType">The <see cref="ITypeInformation"/> for which the <see cref="ValidationMessage"/> is created.</param>
     /// <returns>
     /// The <see cref="ValidationMessage"/> for the <see cref="IObjectValidator"/>.
-    /// Please note that the method can return <see langword="null"/> if no <see cref="ValidationMessage"/> is defined for the <paramref name="validatorType"/>.
+    /// Please note that the method can return <see langword="null"/> if no <see cref="ValidationMessage"/> is defined for the <paramref name="validator"/>.
     /// </returns>
     [CanBeNull]
-    ValidationMessage CreateValidationMessageForObjectValidator ([NotNull] Type validatorType, [NotNull] ITypeInformation validatedType);
+    ValidationMessage CreateValidationMessageForObjectValidator ([NotNull] IObjectValidator validator, [NotNull] ITypeInformation validatedType);
   }
 }

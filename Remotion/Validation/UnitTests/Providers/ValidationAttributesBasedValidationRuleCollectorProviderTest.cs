@@ -49,13 +49,13 @@ namespace Remotion.Validation.UnitTests.Providers
     [Test]
     public void GetValidationRuleCollectors_SetValidationMessageFromFactory ()
     {
-      var validationMessage = new InvariantValidationMessage ("Fake Message");
+      var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
           .Stub (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  Arg<Type>.Is.NotNull,
+                  Arg<IPropertyValidator>.Is.NotNull,
                   Arg<IPropertyInformation>.Is.NotNull))
-          .Return (validationMessage);
+          .Return (validationMessageStub);
 
       var collectors = _provider.GetValidationRuleCollectors (new[] { typeof (Customer) });
       Assert.That (collectors, Is.Not.Empty);
@@ -66,11 +66,12 @@ namespace Remotion.Validation.UnitTests.Providers
       Assert.That (addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, Address>>(), Is.Empty);
       Assert.That (addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, ICollection<Address>>>(), Is.Empty);
 
+      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
       var validators = addingComponentPropertyRules.SelectMany (r => r.Validators).ToArray();
       Assert.That (validators, Is.Not.Empty);
       Assert.That (validators, Is.All.InstanceOf<IPropertyValidator>());
-      Assert.That (validators.OfType<LengthValidator>().First().ValidationMessage, Is.SameAs (validationMessage));
-      Assert.That (validators.OfType<NotNullValidator>().First().ValidationMessage, Is.SameAs (validationMessage));
+      Assert.That (validators.OfType<LengthValidator>().First().ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
+      Assert.That (validators.OfType<NotNullValidator>().First().ValidationMessage.ToString, Is.EqualTo ("Stub Message"));
     }
 
     [Test]

@@ -55,14 +55,10 @@ namespace Remotion.Validation.Attributes.Validation
       NotEqualValidator validator;
       if (string.IsNullOrEmpty (ErrorMessage))
       {
-        var validatorType = typeof (NotEqualValidator);
-        var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator (validatorType, property);
-        if (validationMessage == null)
-        {
-          throw new InvalidOperationException (
-              $"The {nameof (IValidationMessageFactory)} did not return a result for {validatorType.Name} applied to property '{property.Name}' on type '{property.GetOriginalDeclaringType().FullName}'.");
-        }
-        validator = new NotEqualValidator (Value, validationMessage);
+        validator = PropertyValidatorFactory.Create (
+            property,
+            parameters => new NotEqualValidator (Value, parameters.ValidationMessage),
+            validationMessageFactory);
       }
       else
       {

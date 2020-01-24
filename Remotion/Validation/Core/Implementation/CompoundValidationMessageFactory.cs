@@ -20,6 +20,7 @@ using System.Linq;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
 {
@@ -39,22 +40,23 @@ namespace Remotion.Validation.Implementation
       ValidationMessageFactories = validationMessageFactories.ToList().AsReadOnly();
     }
 
-    public ValidationMessage CreateValidationMessageForPropertyValidator (Type validatorType, IPropertyInformation validatedProperty)
+    public ValidationMessage CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
-      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
+      ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
 
       return ValidationMessageFactories
-          .Select (f => f.CreateValidationMessageForPropertyValidator (validatorType, validatedProperty))
+          .Select (f => f.CreateValidationMessageForPropertyValidator (validator, validatedProperty))
           .FirstOrDefault (m => m != null);
     }
-    public ValidationMessage CreateValidationMessageForObjectValidator (Type validatorType, ITypeInformation validatedType)
+
+    public ValidationMessage CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
-      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
+      ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
 
       return ValidationMessageFactories
-          .Select (f => f.CreateValidationMessageForObjectValidator (validatorType, validatedType))
+          .Select (f => f.CreateValidationMessageForObjectValidator (validator, validatedType))
           .FirstOrDefault (m => m != null);
     }
   }

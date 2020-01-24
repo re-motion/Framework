@@ -18,6 +18,7 @@ using System;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
 {
@@ -30,20 +31,20 @@ namespace Remotion.Validation.Implementation
     {
     }
 
-    public ValidationMessage CreateValidationMessageForPropertyValidator (Type validatorType, IPropertyInformation validatedProperty)
+    public ValidationMessage CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
-      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
+      ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
 
-      return new InvariantValidationMessage ($"{validatorType.Name}: Validation error.");
+      return new InvariantValidationMessage ($"{validator.GetType().Name}: Validation error.");
     }
 
-    public ValidationMessage CreateValidationMessageForObjectValidator (Type validatorType, ITypeInformation validatedType)
+    public ValidationMessage CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
-      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
+      ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
 
-      return new InvariantValidationMessage ($"{validatorType.Name}: Validation error.");
+      return new InvariantValidationMessage ($"{validator.GetType().Name}: Validation error.");
     }
   }
 }

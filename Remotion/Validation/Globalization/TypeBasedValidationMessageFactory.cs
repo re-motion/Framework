@@ -38,13 +38,13 @@ namespace Remotion.Validation.Globalization
       _memberInformationGlobalizationService = memberInformationGlobalizationService;
     }
 
-    public ValidationMessage CreateValidationMessageForPropertyValidator (Type validatorType, IPropertyInformation validatedProperty)
+    public ValidationMessage CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("validatorType", validatorType, typeof (IPropertyValidator));
+      ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
 
-      var typeInformation = TypeAdapter.Create (validatorType);
-      var typeInformationForResourceResolution = TypeAdapter.Create (validatorType);
+      var typeInformation = TypeAdapter.Create (validator.GetType());
+      var typeInformationForResourceResolution = typeInformation;
 
       if (!_memberInformationGlobalizationService.ContainsTypeDisplayName (typeInformation, typeInformationForResourceResolution))
         return null;
@@ -53,13 +53,13 @@ namespace Remotion.Validation.Globalization
           () => _memberInformationGlobalizationService.GetTypeDisplayName (typeInformation, typeInformationForResourceResolution));
     }
 
-    public ValidationMessage CreateValidationMessageForObjectValidator (Type validatorType, ITypeInformation validatedType)
+    public ValidationMessage CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("validatorType", validatorType, typeof (IObjectValidator));
+      ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
 
-      var typeInformation = TypeAdapter.Create (validatorType);
-      var typeInformationForResourceResolution = TypeAdapter.Create (validatorType);
+      var typeInformation = TypeAdapter.Create (validator.GetType());
+      var typeInformationForResourceResolution = typeInformation;
 
       if (!_memberInformationGlobalizationService.ContainsTypeDisplayName (typeInformation, typeInformationForResourceResolution))
         return null;

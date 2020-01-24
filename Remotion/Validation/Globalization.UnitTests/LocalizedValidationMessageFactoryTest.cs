@@ -1,7 +1,9 @@
-﻿using NUnit.Framework;
+﻿using System.Text.RegularExpressions;
+using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
@@ -12,24 +14,21 @@ namespace Remotion.Validation.Globalization.UnitTests
   {
     private LocalizedValidationMessageFactory _factory;
     private IPropertyInformation _propertyStub;
+    private ValidationMessage _validationMessageStub;
 
     [SetUp]
     public void SetUp ()
     {
       _factory = new LocalizedValidationMessageFactory (SafeServiceLocator.Current.GetInstance<IGlobalizationService>());
       _propertyStub = MockRepository.GenerateStub<IPropertyInformation>();
-    }
-
-    [Test]
-    [Ignore ("TODO RM-5906")]
-    public void CreateValidationMessageForPropertyValidator_WithTypeNotIPropertyValidator_ThrowsArgumentException ()
-    {
+      _validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
     }
 
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithEqualValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (EqualValidator), _propertyStub);
+      var validator = new EqualValidator (new object(), _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -42,7 +41,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithExactLengthValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (ExactLengthValidator), _propertyStub);
+      var validator = new ExactLengthValidator (5, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -53,7 +53,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithExclusiveRangeValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (ExclusiveRangeValidator), _propertyStub);
+      var validator = new ExclusiveRangeValidator (5, 10, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -64,7 +65,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithGreaterThanOrEqualValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (GreaterThanOrEqualValidator), _propertyStub);
+      var validator = new GreaterThanOrEqualValidator (5, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -75,7 +77,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithGreaterThanValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (GreaterThanValidator), _propertyStub);
+      var validator = new GreaterThanValidator (5, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -86,7 +89,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithInclusiveRangeValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (InclusiveRangeValidator), _propertyStub);
+      var validator = new InclusiveRangeValidator (5, 10, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -97,7 +101,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithLengthValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (LengthValidator), _propertyStub);
+      var validator = new LengthValidator (5, 10, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -108,7 +113,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithLessThanOrEqualValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (LessThanOrEqualValidator), _propertyStub);
+      var validator = new LessThanOrEqualValidator (5, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -119,7 +125,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithLessThanValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (LessThanValidator), _propertyStub);
+      var validator = new LessThanValidator (5, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -130,7 +137,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithMaximumLengthValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (MaximumLengthValidator), _propertyStub);
+      var validator = new MaximumLengthValidator (5, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -141,7 +149,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithMinimumLengthValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (MinimumLengthValidator), _propertyStub);
+      var validator = new MinimumLengthValidator (5, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -152,7 +161,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithNotEmptyValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (NotEmptyValidator), _propertyStub);
+      var validator = new NotEmptyValidator (_validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -163,7 +173,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithNotEqualValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (NotEqualValidator), _propertyStub);
+      var validator = new NotEqualValidator (5, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -174,7 +185,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithNotNullValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (NotNullValidator), _propertyStub);
+      var validator = new NotNullValidator (_validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -185,7 +197,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithPredicateValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (PredicateValidator), _propertyStub);
+      var validator = new PredicateValidator ((validatedInstance, validatedValue, context) => true, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -196,7 +209,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithRegularExpressionValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (RegularExpressionValidator), _propertyStub);
+      var validator = new RegularExpressionValidator (new Regex (".*"), _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
@@ -208,7 +222,8 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void CreateValidationMessageForPropertyValidator_WithScalePrecisionValidator_ReturnsLocalizedValidationMessage ()
     {
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (typeof (ScalePrecisionValidator), _propertyStub);
+      var validator = new ScalePrecisionValidator (5, 10, _validationMessageStub);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());

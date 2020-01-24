@@ -50,18 +50,22 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     public void GetPropertyValidator ()
     {
       var propertyInformation = PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("LastName"));
-      var invariantValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
+      var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
-          .Stub (_ => _.CreateValidationMessageForPropertyValidator (typeof (LengthValidator), propertyInformation))
-          .Return (invariantValidationMessageStub);
+          .Stub (_ => _.CreateValidationMessageForPropertyValidator (Arg<LengthValidator>.Is.TypeOf, Arg.Is (propertyInformation)))
+          .Return (validationMessageStub);
 
       var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub).ToArray();
 
       Assert.That (result.Length, Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (LengthValidator)));
-      Assert.That (((LengthValidator) result[0]).ValidationMessage, Is.SameAs (invariantValidationMessageStub));
       Assert.That (((LengthValidator) result[0]).Min, Is.EqualTo (10));
       Assert.That (((LengthValidator) result[0]).Max, Is.EqualTo (20));
+      Assert.That (((LengthValidator) result[0]).ValidationMessage, Is.Not.Null);
+
+      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
+      Assert.That (((LengthValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
+
     }
 
     [Test]

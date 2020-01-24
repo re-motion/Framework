@@ -7,12 +7,6 @@ namespace Remotion.Validation.Globalization.UnitTests
   {
     [Test]
     [Ignore ("TODO RM-5906")]
-    public void CreateValidationMessageForPropertyValidator_WithTypeNotIPropertyValidator_ThrowsArgumentException ()
-    {
-    }
-
-    [Test]
-    [Ignore ("TODO RM-5906")]
     public void CreateValidationMessageForPropertyValidator_WithTypeNotHavingLocalizations_ReturnsNull ()
     {
     }
@@ -20,12 +14,6 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     [Ignore ("TODO RM-5906")]
     public void CreateValidationMessageForPropertyValidator_WithLocalizedType_ReturnsLocalizedValidationMessage ()
-    {
-    }
-
-    [Test]
-    [Ignore ("TODO RM-5906")]
-    public void CreateValidationMessageForObjectValidator_WithTypeNotIObjectValidator_ThrowsArgumentException ()
     {
     }
 

@@ -128,12 +128,10 @@ namespace OBWTest.Validation
         var validationResultFather = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Father);
 
         var jobValidator = ValidationBuilder.BuildValidator (typeof (Job));
-        bool areJobsValid = true;
         List<ValidationFailure> jobFailures = new List<ValidationFailure>();
         foreach (var job in person.Jobs)
         {
           var result = jobValidator.Validate (job);
-          areJobsValid &= result.IsValid;
           jobFailures.AddRange (result.Errors);
         }
 
@@ -143,7 +141,7 @@ namespace OBWTest.Validation
                 .Concat (jobFailures)
                 .Concat (validationResultFather.Errors));
 
-        if (combinedValidationResult.IsValid && validationResultPartner.IsValid && areJobsValid && validationResultFather.IsValid)
+        if (combinedValidationResult.IsValid)
         {
           person.SaveObject ();
         }

@@ -69,11 +69,13 @@
     <Compile Include="DefaultValidatorExtensionsTest.cs" />
     <Compile Include="Implementation\AttributeBasedValidationRuleCollectorTest.cs" />
     <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecoratorTest.cs" />
+    <Compile Include="Implementation\CompoundValidationMessageFactoryTest.cs" />
     <Compile Include="Implementation\CompoundValidationRuleCollectorValidatorTest.cs" />
     <Compile Include="Implementation\CompoundValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\CompoundValidatorTest.cs" />
     <Compile Include="Implementation\CompoundValidatorBuilderTest.cs" />
     <Compile Include="Implementation\DelegateBasedValidationMessageTest.cs" />
+    <Compile Include="Implementation\FallbackValidationMessageFactoryTest.cs" />
     <Compile Include="Implementation\IValidationRuleCollectorValidatorTest.cs" />
     <Compile Include="Implementation\InvariantValidationMessageTest.cs" />
     <Compile Include="Implementation\IValidatedTypeResolverTest.cs" />
@@ -85,7 +87,9 @@
     <Compile Include="Implementation\GenericTypeAwareValidatedTypeResolverDecoratorTest.cs" />
     <Compile Include="Implementation\IValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\IInvolvedTypeProviderTest.cs" />
+    <Compile Include="Implementation\ObjectValidatorFactoryTest.cs" />
     <Compile Include="Implementation\ObjectValidatorLogContextInfoTest.cs" />
+    <Compile Include="Implementation\PropertyValidatorFactoryTest.cs" />
     <Compile Include="Implementation\TypedValidatorDecoratorTest.cs" />
     <Compile Include="Implementation\DefaultLogContextTest.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatterTest.cs" />

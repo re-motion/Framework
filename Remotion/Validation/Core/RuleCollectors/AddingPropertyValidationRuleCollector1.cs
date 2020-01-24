@@ -64,13 +64,17 @@ namespace Remotion.Validation.RuleCollectors
 
       foreach (var tuple in _uninitializedValidationMessages)
       {
-        var validatorType = tuple.Validator.GetType();
-        var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator (validatorType, Property);
-        if (validationMessage == null)
-        {
-          throw new InvalidOperationException (
-              $"The {nameof (IValidationMessageFactory)} did not return a result for {validatorType.Name} applied to property '{Property.Name}' on type '{Property.GetOriginalDeclaringType().FullName}'.");
-        }
+        var validator = tuple.Validator;
+        var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator (validator, Property);
+        Assertion.IsNotNull (
+            validationMessage,
+            string.Format (
+                "The {0} did not return a result for {1} applied to property '{2}' on type '{3}'.",
+                nameof (IValidationMessageFactory),
+                validator.GetType().Name,
+                Property.Name,
+                Property.GetOriginalDeclaringType().FullName));
+
         tuple.ValidationMessage.Initialize (validationMessage);
       }
 
