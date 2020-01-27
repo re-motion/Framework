@@ -50,6 +50,8 @@ namespace Remotion.Validation.Validators
           validator.GetType().Name,
           validatedType.FullName);
 
+      deferredInitializationValidationMessage.Initialize (validationMessage);
+
       return validator;
     }
   }
