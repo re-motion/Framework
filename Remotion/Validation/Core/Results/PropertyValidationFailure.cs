@@ -27,7 +27,7 @@ namespace Remotion.Validation.Results
     public IPropertyInformation ValidatedProperty { get; }
 
     [CanBeNull]
-    object ValidatedPropertyValue { get; }
+    public object ValidatedPropertyValue { get; }
 
     public PropertyValidationFailure (
         [NotNull] object validatedObject,
