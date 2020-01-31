@@ -44,6 +44,10 @@
       <HintPath>..\..\..\packages\Coypu.3.1.1\lib\net45\Coypu.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a">
+      <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
@@ -68,8 +72,18 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Accessibility\AccessibilityConfigurationJsonSerializerTest.cs" />
     <Compile Include="Configuration\TestInfrastructureConfigurationTest.cs" />
     <Compile Include="Configuration\WebTestConfigurationSectionTest.cs" />
+    <Compile Include="Accessibility\AccessibilityAnalyzerTest.cs" />
+    <Compile Include="Accessibility\AccessibilityConfigurationTest.cs" />
+    <Compile Include="Accessibility\AccessibilityConformanceLevelConverterTest.cs" />
+    <Compile Include="Accessibility\AccessibilityResultMapperTest.cs" />
+    <Compile Include="Accessibility\AccessibilityResultViolationExtensionTest.cs" />
+    <Compile Include="Accessibility\AccessibilityCheckIDConverterTest.cs" />
+    <Compile Include="Accessibility\AccessibilityRuleIDConverterTest.cs" />
+    <Compile Include="Accessibility\AxeResultParserTest.cs" />
+    <Compile Include="Accessibility\AxeSourceProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ScreenshotRecorderPathUtilityTest.cs" />
     <Compile Include="Utilities\DomSelectorUtilityTest.cs" />

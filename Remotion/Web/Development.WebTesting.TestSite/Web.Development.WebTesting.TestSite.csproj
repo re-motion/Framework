@@ -71,6 +71,15 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
+    <Content Include="Accessibility\ButtonWithoutInnerHTML.html" />
+    <Content Include="Accessibility\Contrast.html" />
+    <Content Include="Accessibility\ViolationsWithDifferentConformanceLevels.html" />
+    <Content Include="Accessibility\MultipleFormElementsWithoutLabels.html" />
+    <Content Include="Accessibility\FormElementWithoutLabelAndDoubleIDAndWithoutDocumentTitle.html" />
+    <Content Include="Accessibility\FormElementWithoutLabel.html" />
+    <Content Include="Accessibility\IFrame.html" />
+    <Content Include="Accessibility\ImageWithoutAlt.html" />
+    <Content Include="Accessibility\IncludeExclude.html" />
     <Content Include="CompletionDetectionStrategyTest.aspx" />
     <Content Include="AspNetRequestErrorDetectionParserStaticPages\InvalidErrorPageWithMessageMissing.html" />
     <Content Include="AspNetRequestErrorDetectionParserStaticPages\InvalidErrorPageWithStacktraceMissing.html" />
@@ -99,8 +108,6 @@
     <Content Include="FrameTestFrame.aspx" />
     <Content Include="ScreenshotTestFrame.aspx" />
     <Content Include="ScrollTest.aspx" />
-    <Content Include="TestPage.html" />
-    <Content Include="TestPageIFrame.html" />
     <Content Include="TreeViewTest.aspx" />
     <Content Include="BrowserSessionTest.aspx" />
     <Content Include="WebTreeViewTest.aspx" />

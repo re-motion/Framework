@@ -90,6 +90,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (tabbedMultiView.GetSelectedTab().ItemID, Is.EqualTo ("Tab2"));
       Assert.That (tabbedMultiView.GetSelectedTab().Index, Is.EqualTo (-1));
       Assert.That (tabbedMultiView.GetSelectedTab().Title, Is.EqualTo ("Tab2Title"));
+
+      tabbedMultiView.SwitchTo ("Tab3");
+      Assert.That (tabbedMultiView.GetSelectedTab().ItemID, Is.EqualTo ("Tab3"));
+      Assert.That (tabbedMultiView.GetSelectedTab().Index, Is.EqualTo (-1));
+      Assert.That (tabbedMultiView.GetSelectedTab().Title, Is.EqualTo ("Tab3Title"));
     }
 
     [Test]
@@ -99,10 +104,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var tabbedMultiView = home.TabbedMultiViews().First();
       var tabs = tabbedMultiView.GetTabDefinitions();
-      Assert.That (tabs.Count, Is.EqualTo (2));
+      Assert.That (tabs.Count, Is.EqualTo (3));
       Assert.That (tabs[1].ItemID, Is.EqualTo ("Tab2"));
       Assert.That (tabs[1].Index, Is.EqualTo (2));
       Assert.That (tabs[1].Title, Is.EqualTo ("Tab2Title"));
+      Assert.That (tabs[2].ItemID, Is.EqualTo ("Tab3"));
+      Assert.That (tabs[2].Index, Is.EqualTo (3));
+      Assert.That (tabs[2].Title, Is.EqualTo ("Tab3Title"));
     }
 
     [Test]

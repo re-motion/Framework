@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{963B16B7-01CE-4AF0-940E-B8D7B086856F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.ObjectBinding.Web.IntegrationTests</RootNamespace>
+    <AssemblyName>Remotion.ObjectBinding.Web.IntegrationTests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BocAutoCompleteReferenceValue\AccessibilityBocAutoCompleteReferenceValueTest.cs" />
+    <Compile Include="BocBooleanValue\AccessibilityBocBooleanValueTest.cs" />
+    <Compile Include="BocCheckBox\AccessibilityBocCheckBoxTest.cs" />
+    <Compile Include="BocDateTimeValue\AccessibilityBocDateTimeValueTest.cs" />
+    <Compile Include="BocEnumValue\AccessibilityBocEnumValueTest.cs" />
+    <Compile Include="BocListAsGrid\AccessibilityBocListAsGridTest.cs" />
+    <Compile Include="BocList\AccessibilityBocListTest.cs" />
+    <Compile Include="BocMultilineTextValue\AccessibilityBocMultilineTextValueTest.cs" />
+    <Compile Include="BocReferenceValue\AccessibilityBocReferenceValueTest.cs" />
+    <Compile Include="BocTextValue\AccessibilityBocTextValueTest.cs" />
+    <Compile Include="BocTreeView\AccessibilityBocTreeViewTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SetUpFixture.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj">
+      <Project>{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2}</Project>
+      <Name>Web.Development.WebTesting.ControlObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj">
+      <Project>{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}</Project>
+      <Name>Web.Development.WebTesting.ExecutionEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Development.WebTesting.IntegrationTests.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj">
+      <Project>{1B8F7A8A-F95C-4497-8029-9CF32B271134}</Project>
+      <Name>Web.Development.WebTesting.IntegrationTests.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj">
+      <Project>{5B5EC73A-B796-4D2D-A781-E889EE9EC4DF}</Project>
+      <Name>Web.Development.WebTesting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj">
+      <Project>{6FE3C047-655C-4C26-92BC-E3C0D293D1A7}</Project>
+      <Name>ObjectBinding.Web.Development.WebTesting.IntegrationTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Development.WebTesting\ObjectBinding.Web.Development.WebTesting.csproj">
+      <Project>{78086B10-9951-4680-A060-2395E1990F8A}</Project>
+      <Name>ObjectBinding.Web.Development.WebTesting</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -87,12 +87,49 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Accessibility\Implementation\AccessibilityConfigurationJsonSerializer.cs" />
+    <Compile Include="Accessibility\AxeJsonResultDtos\AxeResult.cs" />
+    <Compile Include="Accessibility\AxeJsonResultDtos\AxeRuleResult.cs" />
+    <Compile Include="Accessibility\AxeJsonResultDtos\AxeHtmlElementResult.cs" />
+    <Compile Include="Accessibility\AxeJsonResultDtos\AxeRuleCheckResult.cs" />
+    <Compile Include="Accessibility\AxeJsonResultDtos\AxeRelatedHtmlElement.cs" />
+    <Compile Include="Accessibility\AxeJsonResultDtos\AxeTestEngine.cs" />
+    <Compile Include="Accessibility\AxeJsonResultDtos\AxeTestEnvironment.cs" />
+    <Compile Include="Accessibility\AxeJsonResultDtos\AxeTestRunner.cs" />
+    <Compile Include="Accessibility\AxeJsonResultDtos\AxeToolOptions.cs" />
+    <Compile Include="Accessibility\AxeJsonResultDtos\AxeExecutionConstraint.cs" />
     <Compile Include="Configuration\ChromiumConfigurationElement.cs" />
     <Compile Include="Configuration\DriverConfiguration.cs" />
     <Compile Include="DriverConfigurationOverride.cs" />
     <Compile Include="BrowserSession\BrowserLogEntry.cs" />
     <Compile Include="BrowserSession\Edge\EdgeBrowserSession.cs" />
     <Compile Include="BrowserSession\Firefox\FirefoxBrowserSession.cs" />
+    <Compile Include="AccessibilityTestTarget.cs" />
+    <Compile Include="Accessibility\AccessibilityAnalyzer.cs" />
+    <Compile Include="Accessibility\AccessibilityRequirement.cs" />
+    <Compile Include="Accessibility\AccessibilityRequirementID.cs" />
+    <Compile Include="Accessibility\AccessibilityConfiguration.cs" />
+    <Compile Include="Accessibility\AccessibilityResultFilter.cs" />
+    <Compile Include="Accessibility\AccessibilityResultViolationsExtensions.cs" />
+    <Compile Include="Accessibility\AccessibilityRule.cs" />
+    <Compile Include="Accessibility\AccessibilityRuleID.cs" />
+    <Compile Include="Accessibility\Implementation\AccessibilityCheckIDConverter.cs" />
+    <Compile Include="Accessibility\Implementation\AccessibilityConformanceLevelConverter.cs" />
+    <Compile Include="Accessibility\Implementation\AccessibilityRuleIDConverter.cs" />
+    <Compile Include="Accessibility\AccessibilityResult.cs" />
+    <Compile Include="Accessibility\Implementation\AccessibilityResultMapper.cs" />
+    <Compile Include="Accessibility\AccessibilityRuleResult.cs" />
+    <Compile Include="Accessibility\AccessibilityTestImpact.cs" />
+    <Compile Include="Accessibility\AccessibilityTestSuccessCriteria.cs" />
+    <Compile Include="Accessibility\Implementation\AxeResultParser.cs" />
+    <Compile Include="Accessibility\Implementation\AxeSourceProvider.cs" />
+    <Compile Include="Accessibility\ControlObjectExtensions.cs" />
+    <Compile Include="Accessibility\IAccessibilityConfiguration.cs" />
+    <Compile Include="Accessibility\Implementation\IAccessibilityResultMapper.cs" />
+    <Compile Include="Accessibility\Implementation\IAxeResultParser.cs" />
+    <Compile Include="Accessibility\IAxeSourceProvider.cs" />
+    <Compile Include="Accessibility\AccessibilityPageObjectExtensions.cs" />
+    <Compile Include="Accessibility\AccessibilityConformanceLevel.cs" />
     <Compile Include="ControlSelection\IControlExistsCommand.cs" />
     <Compile Include="ControlSelection\IControlOptionalSelectionCommand.cs" />
     <Compile Include="DownloadInfrastructure\Default\DefaultNamedExpectedFileNameFinderStrategy.cs" />
@@ -383,6 +420,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ScreenshotCreation\Resolvers\WebElementResolverScript.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Accessibility\axe.min.js" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

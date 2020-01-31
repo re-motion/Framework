@@ -22,8 +22,11 @@ using Coypu;
 using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Accessibility;
+using Remotion.Web.Development.WebTesting.Accessibility.Implementation;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies;
@@ -115,6 +118,7 @@ namespace Remotion.Web.Development.WebTesting
     private readonly ITestInfrastructureConfiguration _testInfrastructureConfiguration;
     private readonly List<IBrowserSession> _browserSessions = new List<IBrowserSession>();
     private IBrowserSession _mainBrowserSession;
+    private readonly IAccessibilityConfiguration _accessibilityConfiguration;
 
     /// <summary>
     /// Name of the current web test.
@@ -129,6 +133,7 @@ namespace Remotion.Web.Development.WebTesting
       _browserConfiguration = webTestConfigurationFactory.CreateBrowserConfiguration();
       _driverConfiguration = webTestConfigurationFactory.CreateDriverConfiguration();
       _testInfrastructureConfiguration = webTestConfigurationFactory.CreateTestInfrastructureConfiguration();
+      _accessibilityConfiguration = webTestConfigurationFactory.CreateAccessibilityConfiguration();
     }
 
     public IBrowserConfiguration BrowserConfiguration
@@ -354,6 +359,30 @@ namespace Remotion.Web.Development.WebTesting
           configurationOverride.CommandTimeout ?? configuration.CommandTimeout,
           configurationOverride.SearchTimeout ?? configuration.SearchTimeout,
           configurationOverride.RetryInterval ?? configuration.RetryInterval);
+    }
+	  
+    /// <summary>
+    /// Returns an instance of AccessibilityAnalyzer.
+    /// </summary>
+    /// <returns>Initialized instance of AccessibilityAnalyzer</returns>
+    public AccessibilityAnalyzer CreateAccessibilityAnalyzer ([NotNull] IBrowserSession browserSession)
+    {
+      return AccessibilityAnalyzer.CreateForRemoteWebDriver (
+          (RemoteWebDriver) browserSession.Driver.Native,
+          new AxeResultParser(),
+          _accessibilityConfiguration,
+          new AxeSourceProvider(),
+          new AccessibilityResultMapper(),
+          LogManager.GetLogger (typeof (AccessibilityAnalyzer)));
+    }
+
+    /// <summary>
+    /// Returns an instance of AccessibilityAnalyzer.
+    /// </summary>
+    /// <returns>Initialized instance of AccessibilityAnalyzer</returns>
+    public AccessibilityAnalyzer CreateAccessibilityAnalyzer ()
+    {
+      return CreateAccessibilityAnalyzer (_mainBrowserSession);
     }
   }
 }

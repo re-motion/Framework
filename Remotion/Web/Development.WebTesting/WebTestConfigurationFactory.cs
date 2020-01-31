@@ -20,6 +20,7 @@ using JetBrains.Annotations;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.HostingStrategies.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
@@ -198,6 +199,14 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("configSettings", configSettings);
       
       return new HostingConfiguration (configSettings);
+    }
+
+    /// <summary>
+    /// Creates an instance of <see cref="AccessibilityConfiguration"/> with default values.
+    /// </summary>
+    public virtual IAccessibilityConfiguration CreateAccessibilityConfiguration ()
+    {
+      return new AccessibilityConfiguration();
     }
   }
 }
