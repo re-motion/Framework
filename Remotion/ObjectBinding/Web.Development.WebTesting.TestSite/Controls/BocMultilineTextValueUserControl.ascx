@@ -82,4 +82,21 @@
     </td>
     <td>(no auto postback)</td>
   </tr>
+    <tr>
+      <td></td>
+      <td>
+        <remotion:BocMultilineTextValue ID="CVField_Normal_Required"
+                                        DataSourceControl="CurrentObject"
+                                        PropertyIdentifier="CV"
+                                        ValueType="String"
+    
+                                        Enabled="true"
+                                        ReadOnly="false"
+                                        TextBoxStyle-AutoPostBack="true"
+                                        Required="true"
+
+                                        runat="server"/>
+      </td>
+      <td>(normal, required)</td>
+    </tr>
 </table>

@@ -123,4 +123,24 @@
     </td>
     <td>&nbsp; (empty)</td>
   </tr>
+
+    <tr>
+      <td></td>
+      <td>
+        <testsite:TestBocListWithRowMenuItems
+          ID="JobList_AlwaysInvalid"
+          ReadOnly="False"
+          DataSourceControl="CurrentObject"
+          PropertyIdentifier="Jobs"
+          EmptyListMessage="A wonderful empty list."
+          ShowAllProperties="True"
+          ShowEmptyListMessage="True"
+          Width="100%"
+          Height="10em"
+          runat="server">
+        </testsite:TestBocListWithRowMenuItems>
+        <asp:CustomValidator ID="AlwaysInvalidValidator" ErrorMessage = "Always Invalid" runat="server"/>
+      </td>
+      <td>&nbsp; (always invalid)</td>
+    </tr>
 </table>

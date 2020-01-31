@@ -333,4 +333,41 @@
   </td>
   <td>&nbsp; (Nested PropertyPathIdentifier)</td>
 </tr>
+  <tr>
+    <td></td>
+    <td>
+      <testsite:TestBocListWithRowMenuItems
+        ID="JobList_Empty_WithoutPlaceholder"
+        ReadOnly="False"
+        DataSourceControl="EmptyObject"
+        PropertyIdentifier="Jobs"
+
+        ShowAllProperties="True"
+        ShowEmptyListMessage="False"
+
+        Width="100%"
+        Height="10em"
+        runat="server">
+      </testsite:TestBocListWithRowMenuItems>
+    </td>
+    <td>&nbsp; (empty without placeholder)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <testsite:TestBocListWithRowMenuItems
+        ID="JobList_AlwaysInvalid"
+        ReadOnly="False"
+        DataSourceControl="CurrentObject"
+        PropertyIdentifier="Jobs"
+        ShowAllProperties="True"
+        ShowEmptyListMessage="true"
+        Width="100%"
+        Height="10em"
+        runat="server">
+      </testsite:TestBocListWithRowMenuItems>
+      <asp:CustomValidator ID="AlwaysInvalidValidator" ErrorMessage="Always Invalid" runat="server"/>
+    </td>
+    <td>&nbsp; (always invalid)</td>
+  </tr>
 </table>

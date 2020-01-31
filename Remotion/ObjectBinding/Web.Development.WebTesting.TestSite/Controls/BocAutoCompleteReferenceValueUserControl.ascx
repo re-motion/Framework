@@ -15,6 +15,7 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BocAutoCompleteReferenceValueUserControl.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.BocAutoCompleteReferenceValueUserControl" %>
+<%@ Import Namespace="System" %>
 <remotion:FormGridManager ID="FormGridManager" runat="server" />
 <remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
 <table id="FormGrid" runat="server">
@@ -257,4 +258,59 @@
     </td>
     <td>(no command & no menu)</td>
   </tr>
+<tr>
+  <td></td>
+  <td>
+      <remotion:BocAutoCompleteReferenceValue ID="PartnerField_NoCommandNoMenu_ReadOnly"
+                                              TextBoxStyle-AutoPostBack="false"
+                                              ReadOnly="True"
+                                              DataSourceControl="CurrentObject"
+                                              PropertyIdentifier="Partner"
+                                              CompletionSetCount="5"
+                                              ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
+
+                                              runat="server">
+      </remotion:BocAutoCompleteReferenceValue>
+  </td>
+    <td>(read-only, no command & no menu)</td>
+</tr>
+<tr>
+  <td></td>
+  <td>
+    <remotion:BocAutoCompleteReferenceValue ID="PartnerField_Normal_Required"
+                                            TextBoxStyle-AutoPostBack="true"
+                                            ReadOnly="False"
+                                            DataSourceControl="CurrentObject"
+                                            PropertyIdentifier="Partner"
+                                            CompletionSetCount="5"
+                                            ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
+                                            
+                                            Required="true"
+                                            runat="server">
+    
+        <PersistedCommand>
+            <remotion:BocCommand Type="Event"></remotion:BocCommand>
+        </PersistedCommand>
+
+        <OptionsMenuItems>
+            <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
+                <PersistedCommand>
+                    <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
+                </PersistedCommand>
+            </remotion:BocMenuItem>
+            <remotion:BocMenuItem ItemID="OptCmd2" Text="My menu command 2">
+                <PersistedCommand>
+                    <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
+                </PersistedCommand>
+            </remotion:BocMenuItem>
+            <remotion:BocMenuItem ItemID="OptCmd3" Text="My menu command 3" RequiredSelection="ExactlyOne">
+                <PersistedCommand>
+                    <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
+                </PersistedCommand>
+            </remotion:BocMenuItem>
+        </OptionsMenuItems>
+    </remotion:BocAutoCompleteReferenceValue>
+  </td>
+    <td>(normal, required)</td>
+</tr>
 </table>

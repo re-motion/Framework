@@ -291,4 +291,19 @@
     </td>
     <td>(without selected value)</td>
   </tr>
+<tr>
+  <td></td>
+  <td>
+    <remotion:BocReferenceValue ID="PartnerField_WithoutSelectedValue_Required"
+                                DropDownListStyle-AutoPostBack="true"
+                                ReadOnly="False"
+                                DataSourceControl="NoObject"
+                                PropertyIdentifier="Partner"
+                                
+                                Required="true"
+                                runat="server">
+    </remotion:BocReferenceValue>
+  </td>
+  <td>(without selected value, required)</td>
+</tr>
 </table>

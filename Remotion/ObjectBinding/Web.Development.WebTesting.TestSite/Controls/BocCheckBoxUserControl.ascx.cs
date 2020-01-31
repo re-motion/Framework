@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
@@ -24,6 +25,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }
+    }
+
+    protected override void OnInit (EventArgs e)
+    {
+      base.OnInit (e);
+      AlwaysInvalidValidator.ServerValidate += (source, args) => args.IsValid = false;
     }
 
     protected override void OnPreRender (EventArgs e)

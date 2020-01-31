@@ -86,4 +86,40 @@
     </td>
     <td>(no auto postback)</td>
   </tr> 
+    <tr>
+      <td></td>
+      <td>
+        <remotion:BocCheckBox ID="DeceasedField_Disabled_Description"
+                              DataSourceControl="CurrentObject"
+                              FalseDescription="Is_So_False"
+                              PropertyIdentifier="Deceased"
+                              TrueDescription="Is_So_True"
+                              ShowDescription="true"
+
+                              AutoPostBack="false"
+                              Enabled="false"
+                              ReadOnly="false"
+    
+                              runat="server"/>
+      </td>
+      <td>(disabled, description)</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <remotion:BocCheckBox ID="DeceasedField_AlwaysInvalid"
+                              DataSourceControl="CurrentObject"
+                              FalseDescription="Is_So_False"
+                              PropertyIdentifier="Deceased"
+                              TrueDescription="Is_So_True"
+
+                              AutoPostBack="true"
+                              Enabled="true"
+                              ReadOnly="false"
+
+                              runat="server"/>
+        <asp:CustomValidator ID="AlwaysInvalidValidator" runat="server" ErrorMessage="Always Invalid" ControlToValidate="DeceasedField_AlwaysInvalid"/>
+      </td>
+      <td>(always invalid)</td>
+    </tr>
 </table>

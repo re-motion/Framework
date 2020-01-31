@@ -180,6 +180,10 @@
       <IsWebTest>True</IsWebTest>
       <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
     </IntegrationTestProjectFiles>
+    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.IntegrationTests\ObjectBinding.Web.IntegrationTests.csproj">
+      <IsWebTest>True</IsWebTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
+    </IntegrationTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\Core\Security.Core.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\Metadata.Extractor\Security.Metadata.Extractor.csproj"/>
@@ -208,6 +212,11 @@
 
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj">
       <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <IsWebTest>True</IsWebTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
+    </IntegrationTestProjectFiles>
+
+    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\IntegrationTests\Web.IntegrationTests.csproj">
       <IsWebTest>True</IsWebTest>
       <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
     </IntegrationTestProjectFiles>

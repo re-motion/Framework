@@ -17,7 +17,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.FormGridManager FormGridManager;
         
@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         
@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl EmptyObject;
         
@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable FormGrid;
         
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_Normal;
         
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_WithRadioButtons;
         
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_ReadOnly;
         
@@ -80,7 +80,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_Special;
         
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_Empty;
         
@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_NoFakeTableHeader;
         
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_ColumnsWithoutDiagnosticMetadata;
         
@@ -116,8 +116,35 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems NestedPropertyPathIdentifier;
+        
+        /// <summary>
+        /// JobList_Empty_WithoutPlaceholder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_Empty_WithoutPlaceholder;
+        
+        /// <summary>
+        /// JobList_AlwaysInvalid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_AlwaysInvalid;
+        
+        /// <summary>
+        /// AlwaysInvalidValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator AlwaysInvalidValidator;
     }
 }
