@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
@@ -35,20 +36,23 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IValidatorBuilder>();
+      var validatorBuilder = _serviceLocator.GetInstance<IValidatorBuilder>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (ValidatorBuilderSerializationDecorator)));
-      Assert.That (((ValidatorBuilderSerializationDecorator) factory).InnerValidatorBuilder, Is.TypeOf (typeof (ValidationRuleCollectorBasedValidatorBuilder)));
+      Assert.That (validatorBuilder, Is.Not.Null);
+      Assert.That (validatorBuilder, Is.TypeOf (typeof (ValidatorBuilderSerializationDecorator)));
+      var validatorBuilderSerializationDecorator = ((ValidatorBuilderSerializationDecorator) validatorBuilder).InnerValidatorBuilder;
+      Assert.That (validatorBuilderSerializationDecorator, Is.TypeOf (typeof (CompoundValidatorBuilder)));
+      var validatorBuilders = ((CompoundValidatorBuilder) validatorBuilderSerializationDecorator).Builders;
+      Assert.That (validatorBuilders.Select (b => b.GetType()), Is.EqualTo (new[] { typeof (ValidationRuleCollectorBasedValidatorBuilder) }));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
-      var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
+      var instance1 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
+      var instance2 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That (instance1, Is.SameAs (instance2));
     }
   }
 }

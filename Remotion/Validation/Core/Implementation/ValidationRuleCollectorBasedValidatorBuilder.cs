@@ -31,7 +31,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Collector-based validator builder.  
   /// </summary>
-  [ImplementationFor (typeof (IValidatorBuilder), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor (typeof (IValidatorBuilder), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class ValidationRuleCollectorBasedValidatorBuilder : IValidatorBuilder
   {
     public IValidationRuleCollectorProvider ValidationRuleCollectorProvider { get; }
