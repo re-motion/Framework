@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Threading;
 using Remotion.Globalization;
 using Remotion.Reflection;
@@ -35,20 +36,34 @@ namespace Remotion.Validation.Globalization
     public enum ResourceIdentifier
     {
       ValueMustBeEqualValidationMessage,
-      ValueMustHaveExactLengthValidationMessage,
-      ValueMustMatchExclusiveRangeValidationMessage,
       ValueMustBeGreaterThanOrEqualValidationMessage,
       ValueMustBeGreaterThanValidationMessage,
-      ValueMustMatchInclusiveRangeValidationMessage,
-      ValueMustMatchMinAndMaxLengthValidationMessage,
       ValueMustBeLessThanOrEqualValidationMessage,
       ValueMustBeLessThanValidationMessage,
-      ValueMustNotBeEmptyValidationMessage,
-      ValueMustNotBeEqualValidationMessage,
-      ValueMustNotBeNullValidationMessage,
+      ValueMustHaveExactLengthOfOneValidationMessage,
+      ValueMustHaveExactLengthValidationMessage,
+      ValueMustHaveMaximumLengthOfOneValidationMessage,
+      ValueMustHaveMaximumLengthValidationMessage,
+      ValueMustHaveMinimumLengthOfOneValidationMessage,
+      ValueMustHaveMinimumLengthValidationMessage,
+      ValueMustMatchExclusiveRangeValidationMessage,
+      ValueMustMatchInclusiveRangeValidationMessage,
+      ValueMustMatchMinAndMaxLengthValidationMessage,
       ValueMustMatchPredicateValidationMessage,
       ValueMustMatchRegularExpressionValidationMessage,
-      ValueMustNotExceedScaleAndPrecisionValidationMessage
+      ValueMustNotBeEmptyCollectionValidationMessage,
+      ValueMustNotBeEmptyStringValidationMessage,
+      ValueMustNotBeEqualValidationMessage,
+      ValueMustNotBeNullCollectionValidationMessage,
+      ValueMustNotBeNullBooleanValidationMessage,
+      ValueMustNotBeNullDateTimeValidationMessage,
+      ValueMustNotBeNullDateValidationMessage,
+      ValueMustNotBeNullDecimalValidationMessage,
+      ValueMustNotBeNullEnumValidationMessage,
+      ValueMustNotBeNullIntegerValidationMessage,
+      ValueMustNotBeNullReferenceValidationMessage,
+      ValueMustNotBeNullStringValidationMessage,
+      ValueMustNotExceedScaleAndPrecisionValidationMessage,
     }
 
     private readonly Lazy<IResourceManager> _resourceManager;
@@ -68,7 +83,7 @@ namespace Remotion.Validation.Globalization
       ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
 
-      var resourceIdentifier = GetResourceIdentifierOrNull (validator.GetType());
+      var resourceIdentifier = GetResourceIdentifierOrNull (validator, validatedProperty);
       if (!resourceIdentifier.HasValue)
         return null;
 
@@ -83,42 +98,138 @@ namespace Remotion.Validation.Globalization
       return null;
     }
 
-    private ResourceIdentifier? GetResourceIdentifierOrNull (Type validatorType)
+    private ResourceIdentifier? GetResourceIdentifierOrNull (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
-      if (validatorType == typeof (EqualValidator))
+      var propertyType = validatedProperty.PropertyType;
+      var dataType = NullableTypeUtility.GetBasicType (propertyType);
+
+      if (validator is EqualValidator)
         return ResourceIdentifier.ValueMustBeEqualValidationMessage;
-      if (validatorType == typeof (ExactLengthValidator))
-        return ResourceIdentifier.ValueMustHaveExactLengthValidationMessage;
-      if (validatorType == typeof (ExclusiveRangeValidator))
+
+      if (validator is ExclusiveRangeValidator)
         return ResourceIdentifier.ValueMustMatchExclusiveRangeValidationMessage;
-      if (validatorType == typeof (GreaterThanOrEqualValidator))
+
+      if (validator is GreaterThanOrEqualValidator)
         return ResourceIdentifier.ValueMustBeGreaterThanOrEqualValidationMessage;
-      if (validatorType == typeof (GreaterThanValidator))
+
+      if (validator is GreaterThanValidator)
         return ResourceIdentifier.ValueMustBeGreaterThanValidationMessage;
-      if (validatorType == typeof (InclusiveRangeValidator))
+
+      if (validator is InclusiveRangeValidator)
         return ResourceIdentifier.ValueMustMatchInclusiveRangeValidationMessage;
-      if (validatorType == typeof (LengthValidator))
-        return ResourceIdentifier.ValueMustMatchMinAndMaxLengthValidationMessage;
-      if (validatorType == typeof (LessThanOrEqualValidator))
+
+      if (validator is LessThanOrEqualValidator)
         return ResourceIdentifier.ValueMustBeLessThanOrEqualValidationMessage;
-      if (validatorType == typeof (LessThanValidator))
+
+      if (validator is LessThanValidator)
         return ResourceIdentifier.ValueMustBeLessThanValidationMessage;
-      if (validatorType == typeof (MaximumLengthValidator))
-        return ResourceIdentifier.ValueMustMatchMinAndMaxLengthValidationMessage;
-      if (validatorType == typeof (MinimumLengthValidator))
-        return ResourceIdentifier.ValueMustMatchMinAndMaxLengthValidationMessage;
-      if (validatorType == typeof (NotEmptyValidator))
-        return ResourceIdentifier.ValueMustNotBeEmptyValidationMessage;
-      if (validatorType == typeof (NotEqualValidator))
+
+      if (validator is LengthValidator lengthValidator)
+        return GetResourceIdentifierForLengthValidator (lengthValidator);
+
+      if (validator is NotEmptyValidator)
+        return GetResourceIdentifierForNotEmptyValidator (dataType);
+
+      if (validator is NotEqualValidator)
         return ResourceIdentifier.ValueMustNotBeEqualValidationMessage;
-      if (validatorType == typeof (NotNullValidator))
-        return ResourceIdentifier.ValueMustNotBeNullValidationMessage;
-      if (validatorType == typeof (PredicateValidator))
+
+      if (validator is NotNullValidator)
+        return GetResourceIdentifierForNotNullValidator (dataType);
+
+      if (validator is PredicateValidator)
         return ResourceIdentifier.ValueMustMatchPredicateValidationMessage;
-      if (validatorType == typeof (RegularExpressionValidator))
+
+      if (validator is RegularExpressionValidator)
         return ResourceIdentifier.ValueMustMatchRegularExpressionValidationMessage;
-      if (validatorType == typeof (ScalePrecisionValidator))
+
+      if (validator is ScalePrecisionValidator)
         return ResourceIdentifier.ValueMustNotExceedScaleAndPrecisionValidationMessage;
+
+      return null;
+    }
+
+    private ResourceIdentifier GetResourceIdentifierForLengthValidator (LengthValidator validator)
+    {
+      if (validator.Min == validator.Max)
+      {
+        if (validator.Min == 1)
+          return ResourceIdentifier.ValueMustHaveExactLengthOfOneValidationMessage;
+
+        return ResourceIdentifier.ValueMustHaveExactLengthValidationMessage;
+      }
+
+      if (validator.Max == null)
+      {
+        if (validator.Min == 1)
+          return ResourceIdentifier.ValueMustHaveMinimumLengthOfOneValidationMessage;
+
+        return ResourceIdentifier.ValueMustHaveMinimumLengthValidationMessage;
+      }
+
+      if (validator.Min == 0)
+      {
+        if (validator.Max == 1)
+          return ResourceIdentifier.ValueMustHaveMaximumLengthOfOneValidationMessage;
+
+        return ResourceIdentifier.ValueMustHaveMaximumLengthValidationMessage;
+      }
+
+      return ResourceIdentifier.ValueMustMatchMinAndMaxLengthValidationMessage;
+    }
+
+    private ResourceIdentifier GetResourceIdentifierForNotNullValidator (Type dataType)
+    {
+      if (dataType.IsEnum)
+        return ResourceIdentifier.ValueMustNotBeNullEnumValidationMessage;
+
+      var typeCode = Type.GetTypeCode (dataType);
+      switch (typeCode)
+      {
+        case TypeCode.Boolean:
+          return ResourceIdentifier.ValueMustNotBeNullBooleanValidationMessage;
+
+        case TypeCode.SByte:
+        case TypeCode.Byte:
+        case TypeCode.Int16:
+        case TypeCode.UInt16:
+        case TypeCode.Int32:
+        case TypeCode.UInt32:
+        case TypeCode.Int64:
+        case TypeCode.UInt64:
+          return ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage;
+
+        case TypeCode.Single:
+        case TypeCode.Double:
+        case TypeCode.Decimal:
+          return ResourceIdentifier.ValueMustNotBeNullDecimalValidationMessage;
+
+        case TypeCode.DateTime:
+          return ResourceIdentifier.ValueMustNotBeNullDateTimeValidationMessage;
+
+        case TypeCode.String:
+          return ResourceIdentifier.ValueMustNotBeNullStringValidationMessage;
+
+        default:
+          break;
+      }
+
+      if (dataType == typeof (Guid))
+        return ResourceIdentifier.ValueMustNotBeNullStringValidationMessage;
+
+      if (typeof (IEnumerable).IsAssignableFrom (dataType))
+        return ResourceIdentifier.ValueMustNotBeNullCollectionValidationMessage;
+
+      return ResourceIdentifier.ValueMustNotBeNullReferenceValidationMessage;
+    }
+
+    private ResourceIdentifier? GetResourceIdentifierForNotEmptyValidator (Type dataType)
+    {
+      if (dataType == typeof (String))
+        return ResourceIdentifier.ValueMustNotBeEmptyStringValidationMessage;
+
+      if (typeof (IEnumerable).IsAssignableFrom (dataType))
+        return ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage;
+
       return null;
     }
   }

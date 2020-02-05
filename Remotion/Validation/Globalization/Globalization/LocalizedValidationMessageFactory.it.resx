@@ -159,17 +159,64 @@
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchRegularExpressionValidationMessage" xml:space="preserve">
     <value>Immetti un valore nel formato corretto.</value>
   </data>
-  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyValidationMessage" xml:space="preserve">
-    <value>Immetti un valore.</value>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyStringValidationMessage" xml:space="preserve">
+    <value>Immettere un valore.</value>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEqualValidationMessage" xml:space="preserve">
     <value>Immetti un valore valido.</value>
   </data>
-  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullValidationMessage" xml:space="preserve">
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullGuidValidationMessage" xml:space="preserve">
     <value>Immetti un valore.</value>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotExceedScaleAndPrecisionValidationMessage" xml:space="preserve">
     <value>Immetti un numero decimale con massimo {0} caratteri. Il numero può avere {1} posizioni decimali.</value>
     <comment>{0} = maximum precision; {1} = maximum scale</comment>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullDateTimeValidationMessage" xml:space="preserve">
+    <value>Immettere una data e un'ora.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullDateValidationMessage" xml:space="preserve">
+    <value>Immettere una data.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullDecimalValidationMessage" xml:space="preserve">
+    <value>Immettere un numero.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullEnumValidationMessage" xml:space="preserve">
+    <value>Selezionare una voce.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullIntegerValidationMessage" xml:space="preserve">
+    <value>Immettere un numero intero.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullReferenceValidationMessage" xml:space="preserve">
+    <value>Selezionare una voce.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullStringValidationMessage" xml:space="preserve">
+    <value>Immettere un valore.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveExactLengthOfOneValidationMessage" xml:space="preserve">
+    <value>Immetti 1 valore.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMaximumLengthOfOneValidationMessage" xml:space="preserve">
+    <value>Non immettere più di 1 carattere.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMaximumLengthValidationMessage" xml:space="preserve">
+    <value>Non immettere più di {0} caratteri.</value>
+    <comment>{0} = expected length</comment>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMinimumLengthOfOneValidationMessage" xml:space="preserve">
+    <value>Immetti almeno 1 carattere.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMinimumLengthValidationMessage" xml:space="preserve">
+    <value>Immetti almeno {0} caratteri.</value>
+    <comment>{0} = expected length</comment>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyCollectionValidationMessage" xml:space="preserve">
+    <value>Aggiungi una voce.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullCollectionValidationMessage" xml:space="preserve">
+    <value>Aggiungi una voce.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullBooleanValidationMessage" xml:space="preserve">
+    <value>Selezionare una voce.</value>
   </data>
 </root>

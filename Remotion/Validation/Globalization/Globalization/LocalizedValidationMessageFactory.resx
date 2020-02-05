@@ -138,7 +138,7 @@
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchInclusiveRangeValidationMessage" xml:space="preserve">
-    <value>Enter a value between "{0}" and "{1}".</value>
+    <value>Enter a value from "{0}" to "{1}".</value>
     <comment>{0} = from value; {1} = to value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchMinAndMaxLengthValidationMessage" xml:space="preserve">
@@ -153,13 +153,13 @@
     <value>Enter a value less than "{0}".</value>
     <comment>{0} = comparison value</comment>
   </data>
-  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyValidationMessage" xml:space="preserve">
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyStringValidationMessage" xml:space="preserve">
     <value>Enter a value.</value>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEqualValidationMessage" xml:space="preserve">
     <value>Enter a valid value.</value>
   </data>
-  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullValidationMessage" xml:space="preserve">
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullGuidValidationMessage" xml:space="preserve">
     <value>Enter a value.</value>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchPredicateValidationMessage" xml:space="preserve">
@@ -171,5 +171,52 @@
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotExceedScaleAndPrecisionValidationMessage" xml:space="preserve">
     <value>Enter a decimal number with no more than {0} digits. The number can have {1} decimal places.</value>
     <comment>{0} = maximum precision; {1} = maximum scale</comment>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMaximumLengthValidationMessage" xml:space="preserve">
+    <value>Enter no more than {0} characters.</value>
+    <comment>{0} = expected length</comment>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveExactLengthOfOneValidationMessage" xml:space="preserve">
+    <value>Enter 1 character.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMinimumLengthOfOneValidationMessage" xml:space="preserve">
+    <value>Enter at least 1 character.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMinimumLengthValidationMessage" xml:space="preserve">
+    <value>Enter at least {0} characters.</value>
+    <comment>{0} = expected length</comment>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMaximumLengthOfOneValidationMessage" xml:space="preserve">
+    <value>Enter no more than 1 character.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyCollectionValidationMessage" xml:space="preserve">
+    <value>Add an entry.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullStringValidationMessage" xml:space="preserve">
+    <value>Enter a value.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullIntegerValidationMessage" xml:space="preserve">
+    <value>Enter an integer.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullDecimalValidationMessage" xml:space="preserve">
+    <value>Enter a number.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullDateTimeValidationMessage" xml:space="preserve">
+    <value>Enter a date and time.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullDateValidationMessage" xml:space="preserve">
+    <value>Enter a date.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullEnumValidationMessage" xml:space="preserve">
+    <value>Select an entry.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullReferenceValidationMessage" xml:space="preserve">
+    <value>Select an entry.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullCollectionValidationMessage" xml:space="preserve">
+    <value>Add an entry.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullBooleanValidationMessage" xml:space="preserve">
+    <value>Select an entry.</value>
   </data>
 </root>
