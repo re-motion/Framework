@@ -77,6 +77,19 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     }
 
     [Test]
+    public void CreatePropertyRuleReflectorForDomainObject_PropertiesAreOverridden ()
+    {
+      var result =
+          _provider.GetValidationRuleCollectors (new[] { typeof (DerivedTypeWithDomainObjectAttributes) })
+              .SelectMany (c => c)
+              .SingleOrDefault();
+
+      Assert.That (result, Is.Not.Null);
+      Assert.That (result.Collector.ValidatedType, Is.EqualTo (typeof (DerivedTypeWithDomainObjectAttributes)));
+      Assert.That (result.Collector.AddedPropertyRules.Select (r => r.Property.Name).Distinct(), Is.EquivalentTo (new[] { "PropertyInDerivedType" }));
+    }
+
+    [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
         "Annotated properties of mixin 'MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesNotPartOfInterface' have to be part of an interface.")]
     public void CreatePropertyRuleReflectorForDomainObjectMixin_AnnotatedPropertiesNotPartOfAnInterface_ExceptionIsThrown ()
@@ -95,6 +108,23 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
       Assert.That (result, Is.Not.Null);
       Assert.That (result.Collector.ValidatedType, Is.EqualTo (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)));
       Assert.That (result.Collector.AddedPropertyRules.Count, Is.EqualTo (10));
+    }
+
+    [Test]
+    public void CreatePropertyRuleReflectorForDomainObjectMixin_PropertiesAreOverridden ()
+    {
+      var result =
+          _provider.GetValidationRuleCollectors (new[] { typeof (DerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) })
+              .SelectMany (c => c)
+              .SingleOrDefault();
+
+      Assert.That (result, Is.Not.Null);
+      Assert.That (
+          result.Collector.ValidatedType,
+          Is.EqualTo (typeof (IDerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)));
+      Assert.That (
+          result.Collector.AddedPropertyRules.Select (r => r.Property.Name).Distinct(),
+          Is.EquivalentTo (new[] { "PropertyInDerivedType" }));
     }
 
     [Test]

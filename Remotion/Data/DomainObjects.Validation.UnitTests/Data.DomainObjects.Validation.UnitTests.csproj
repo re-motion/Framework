@@ -75,6 +75,8 @@
     <Compile Include="IValidationRuleCollectorProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetupFixture.cs" />
+    <Compile Include="Testdomain\DerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface.cs" />
+    <Compile Include="Testdomain\DerivedTypeWithDomainObjectAttributes.cs" />
     <Compile Include="Testdomain\MixinTarget_AnnotatedPropertiesNotPartOfMixin.cs" />
     <Compile Include="Testdomain\NoDomainObject.cs" />
     <Compile Include="Testdomain\MixinTarget_AnnotatedPropertiesPartOfInterface.cs" />

@@ -85,6 +85,24 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     }
 
     [Test]
+    [Ignore ("TODO RM-5906")]
+    public void BuildValidator_ValidationAttributesAppliedOnDerivedDomainObject ()
+    {
+      // Test validation declared via validation attribute on property in derived type
+      // Test validation declared via validation attribute on overridden property in derived type
+      // Test validation declared via validation attribute on property in base type
+    }
+
+    [Test]
+    [Ignore ("TODO RM-5906")]
+    public void BuildValidator_ValidationAttributesAppliedOnDerivedDomainObjectMixin ()
+    {
+      // Test validation declared via validation attribute on property in derived mixin type
+      // Test validation declared via validation attribute on overridden property in derived mixin type
+      // Test validation declared via validation attribute on property in base mixin type
+    }
+
+    [Test]
     public void BuildValidator_StringPropertyReStoreAttributeIsReplaced_MaxLengthMetaValidationRuleFails ()
     {
       Assert.That (

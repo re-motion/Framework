@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -65,14 +64,28 @@ namespace Remotion.Data.DomainObjects.Validation
       ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
       ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
 
-      if (Mixins.Utilities.ReflectionUtility.IsMixinType (implementationProperty.DeclaringType) && !interfaceProperty.DeclaringType.IsInterface)
+      var interfacePropertyInformation = PropertyInfoAdapter.Create (interfaceProperty);
+      var implementationPropertyInformation = PropertyInfoAdapter.Create (implementationProperty);
+      var isMixinProperty = Mixins.Utilities.ReflectionUtility.IsMixinType (implementationProperty.DeclaringType);
+
+      if (isMixinProperty && !interfacePropertyInformation.DeclaringType.IsInterface)
       {
         throw new ArgumentException (
             string.Format (
                 "The property '{0}' was declared on type '{1}' but only interface declarations are supported when using mixin properties.",
-                interfaceProperty.Name,
-                interfaceProperty.DeclaringType.Name),
+                interfacePropertyInformation.Name,
+                interfacePropertyInformation.DeclaringType.FullName),
             "interfaceProperty");
+      }
+
+      if (!implementationPropertyInformation.IsOriginalDeclaration())
+      {
+        throw new ArgumentException (
+            string.Format (
+                "The property '{0}' was used from the overridden declaration on type '{1}' but only original declarations are supported.",
+                implementationPropertyInformation.Name,
+                implementationPropertyInformation.DeclaringType.FullName),
+            "implementationProperty");
       }
 
       // TODO RM-5906: Replace with IPropertyInformation and propagate to call and callee-site
@@ -81,8 +94,8 @@ namespace Remotion.Data.DomainObjects.Validation
       _implementationProperty = implementationProperty;
       _domainModelConstraintProvider = domainModelConstraintProvider;
       _validationMessageFactory = validationMessageFactory;
-      _interfacePropertyInformation = PropertyInfoAdapter.Create (_interfaceProperty);
-      _implementationPropertyInformation = PropertyInfoAdapter.Create (_implementationProperty);
+      _interfacePropertyInformation = interfacePropertyInformation;
+      _implementationPropertyInformation = implementationPropertyInformation;
     }
 
     public IPropertyInformation ImplementationPropertyInformation => _implementationPropertyInformation;

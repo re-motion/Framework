@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     private PropertyInfo _collectionProperty;
     private DomainObjectAttributesBasedValidationPropertyRuleReflector _collectionPropertyReflector;
     private IValidationMessageFactory _validationMessageFactoryStub;
-
+    private DomainModelConstraintProvider _domainModelConstraintProvider;
 
     [SetUp]
     public void SetUp ()
@@ -60,40 +60,40 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _binaryProperty = typeof (TypeWithDomainObjectAttributes).GetProperty ("BinaryProperty");
       _collectionProperty = typeof (TypeWithDomainObjectAttributes).GetProperty ("CollectionProperty");
 
-      var domainModelConstraintProvider = new DomainModelConstraintProvider();
+      _domainModelConstraintProvider = new DomainModelConstraintProvider();
       _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
 
       _propertyWithoutAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _propertyWithoutAttribute,
           _propertyWithoutAttribute,
-          domainModelConstraintProvider,
+          _domainModelConstraintProvider,
           _validationMessageFactoryStub);
       _propertyWithMandatoryAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _propertyWithMandatoryAttribute,
           _propertyWithMandatoryAttribute,
-          domainModelConstraintProvider,
+          _domainModelConstraintProvider,
           _validationMessageFactoryStub);
       _propertyWithNullableStringPropertyAttributeReflector =
           new DomainObjectAttributesBasedValidationPropertyRuleReflector (
               _propertyWithNullableStringPropertyAttribute,
               _propertyWithNullableStringPropertyAttribute,
-              domainModelConstraintProvider,
+              _domainModelConstraintProvider,
               _validationMessageFactoryStub);
       _propertyWithMandatoryStringPropertyAttributeReflector =
           new DomainObjectAttributesBasedValidationPropertyRuleReflector (
               _propertyWithMandatoryStringPropertyAttribute,
               _propertyWithMandatoryStringPropertyAttribute,
-              domainModelConstraintProvider,
+              _domainModelConstraintProvider,
               _validationMessageFactoryStub);
       _binaryPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _binaryProperty,
           _binaryProperty,
-          domainModelConstraintProvider,
+          _domainModelConstraintProvider,
           _validationMessageFactoryStub);
       _collectionPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _collectionProperty,
           _collectionProperty,
-          domainModelConstraintProvider,
+          _domainModelConstraintProvider,
           _validationMessageFactoryStub); 
     }
 
@@ -310,6 +310,23 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (RemotionMaxLengthPropertyMetaValidationRule)));
       Assert.That (((RemotionMaxLengthPropertyMetaValidationRule) result[0]).MaxLength, Is.EqualTo (10));
+    }
+
+    [Test]
+    public void Initialize_WithDerivedImplementationProperty_ThrowsArgumentException ()
+    {
+      var overriddenProperty = typeof (DerivedTypeWithDomainObjectAttributes).GetProperty ("PropertyWithNullableStringPropertyAttribute");
+
+      Assert.That (
+          () => new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+              interfaceProperty: _propertyWithNullableStringPropertyAttribute,
+              implementationProperty: overriddenProperty,
+              domainModelConstraintProvider: _domainModelConstraintProvider,
+              validationMessageFactory: _validationMessageFactoryStub),
+          Throws.ArgumentException.With.Message.EqualTo (
+              "The property 'PropertyWithNullableStringPropertyAttribute' was used from the overridden declaration on type "
+              + "'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.DerivedTypeWithDomainObjectAttributes' "
+              + "but only original declarations are supported.\r\nParameter name: implementationProperty"));
     }
   }
 }

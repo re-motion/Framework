@@ -18,25 +18,16 @@ using System;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
-  [DBTable]
-  public class TypeWithDomainObjectAttributes : DomainObject
+  [Serializable]
+  public class DerivedTypeWithDomainObjectAttributes : TypeWithDomainObjectAttributes
   {
-    public virtual string PropertyWithoutAttribute { get; set; }
-
-    [Mandatory]
-    public virtual TestDomainObject PropertyWithMandatoryAttribute { get; set; }
-
-    [StringProperty (IsNullable = true, MaximumLength = 10)]
-    public virtual string PropertyWithNullableStringPropertyAttribute { get; set; }
+    public override string PropertyWithNullableStringPropertyAttribute
+    {
+      get => base.PropertyWithNullableStringPropertyAttribute;
+      set => base.PropertyWithNullableStringPropertyAttribute = value;
+    }
 
     [StringProperty (IsNullable = false, MaximumLength = 20)]
-    public virtual string PropertyWithMandatoryStringPropertyAttribute { get; set; }
-
-    [BinaryProperty (IsNullable = false)]
-    public virtual byte[] BinaryProperty { get; set; }
-
-    [StorageClassNone]
-    [Mandatory]
-    public virtual ObjectList<TestDomainObject> CollectionProperty { get; set; }
+    public virtual string PropertyInDerivedType { get; set; }
   }
 }

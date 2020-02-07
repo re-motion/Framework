@@ -40,14 +40,14 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
   {
     private static readonly Type s_type = typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface);
 
-    public string PropertyWithoutAttribute
+    public virtual string PropertyWithoutAttribute
     {
       get { return Properties[s_type, "PropertyWithoutAttribute"].GetValue<string>(); }
       set { Properties[s_type, "PropertyWithoutAttribute"].SetValue (value); }
     }
 
     [Mandatory]
-    public TestDomainObject PropertyWithMandatoryAttribute
+    public virtual TestDomainObject PropertyWithMandatoryAttribute
     {
       get { return Properties[s_type, "PropertyWithMandatoryAttribute"].GetValue<TestDomainObject>(); }
       set { Properties[s_type, "PropertyWithMandatoryAttribute"].SetValue (value); }
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 
     [DBBidirectionalRelation ("OppositeRequiredObject")]
     [Mandatory]
-    public TestDomainObject BidirectionalPropertyWithMandatoryAttribute
+    public virtual TestDomainObject BidirectionalPropertyWithMandatoryAttribute
     {
       get { return Properties[s_type, "BidirectionalPropertyWithMandatoryAttribute"].GetValue<TestDomainObject> (); }
       set { Properties[s_type, "BidirectionalPropertyWithMandatoryAttribute"].SetValue (value); }
@@ -70,20 +70,20 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
     }
 
     [StringProperty (IsNullable = true, MaximumLength = 10)]
-    public string PropertyWithNullableStringPropertyAttribute
+    public virtual string PropertyWithNullableStringPropertyAttribute
     {
       get { return Properties[s_type, "PropertyWithNullableStringPropertyAttribute"].GetValue<string>(); }
       set { Properties[s_type, "PropertyWithNullableStringPropertyAttribute"].SetValue (value); }
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 20)]
-    public string PropertyWithMandatoryStringPropertyAttribute
+    public virtual string PropertyWithMandatoryStringPropertyAttribute
     {
       get { return Properties[s_type, "PropertyWithMandatoryStringPropertyAttribute"].GetValue<string>(); }
       set { Properties[s_type, "PropertyWithMandatoryStringPropertyAttribute"].SetValue (value); }
     }
 
-    public int IntProperty
+    public virtual int IntProperty
     {
       get { return Properties[s_type, "IntProperty"].GetValue<int> (); }
       set { Properties[s_type, "IntProperty"].SetValue (value); }

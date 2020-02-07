@@ -56,6 +56,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     private IAttributesBasedValidationPropertyRuleReflector _bidirectionalRelationReflector;
     private IAttributesBasedValidationPropertyRuleReflector _bidirectionalMultipleRelationReflector;
     private IValidationMessageFactory _validationMessageFactoryStub;
+    private DomainModelConstraintProvider _domainModelConstraintProvider;
 
     [SetUp]
     public void SetUp ()
@@ -95,48 +96,48 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _interfaceIntProperty =
           typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("IntProperty");
 
-      var domainModelConstraintProvider = new DomainModelConstraintProvider();
+      _domainModelConstraintProvider = new DomainModelConstraintProvider();
       _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
 
       _propertyWithoutAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _interfacePropertyWithoutAttribute,
           _mixinPropertyWithoutAttribute,
-          domainModelConstraintProvider,
+          _domainModelConstraintProvider,
           _validationMessageFactoryStub);
       _propertyWithMandatoryAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _interfacePropertyWithMandatoryAttribute,
           _mixinPropertyWithMandatoryAttribute,
-          domainModelConstraintProvider,
+          _domainModelConstraintProvider,
           _validationMessageFactoryStub);
       _propertyWithNullableStringPropertyAttributeReflector =
           new DomainObjectAttributesBasedValidationPropertyRuleReflector (
               _interfacePropertyWithNullableStringPropertyAttribute,
               _mixinPropertyWithNullableStringPropertyAttribute,
-              domainModelConstraintProvider,
+              _domainModelConstraintProvider,
               _validationMessageFactoryStub);
       _propertyWithMandatoryStringPropertyAttributeReflector =
           new DomainObjectAttributesBasedValidationPropertyRuleReflector (
               _interfacePropertyWithMandatoryStringPropertyAttribute,
               _mixinPropertyWithMandatoryStringPropertyAttribute,
-              domainModelConstraintProvider,
+              _domainModelConstraintProvider,
               _validationMessageFactoryStub);
 
       _intPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _interfaceIntProperty,
           _mixinIntProperty,
-          domainModelConstraintProvider,
+          _domainModelConstraintProvider,
           _validationMessageFactoryStub);
 
       _bidirectionalRelationReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _interfaceBidirectionalRelationProperty,
           _mixinBidirectionalRelationProperty, 
-          domainModelConstraintProvider,
+          _domainModelConstraintProvider,
           _validationMessageFactoryStub);
 
       _bidirectionalMultipleRelationReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _interfaceBidirectionalMultipleRelationProperty,
           _mixinBidirectionalMultipleRelationProperty,
-          domainModelConstraintProvider,
+          _domainModelConstraintProvider,
           _validationMessageFactoryStub);
     }
 
@@ -429,16 +430,33 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     [Test]
     public void Initialize_WithMixinPropertyAsInterfaceProperty_ThrowsArgumentException ()
     {
-      var domainModelConstraintProvider = new DomainModelConstraintProvider();
       Assert.That (
           () => new DomainObjectAttributesBasedValidationPropertyRuleReflector (
               _mixinPropertyWithMandatoryAttribute,
               _mixinPropertyWithMandatoryAttribute,
-              domainModelConstraintProvider,
+              _domainModelConstraintProvider,
               _validationMessageFactoryStub),
           Throws.ArgumentException.And.Message.EqualTo (
-              "The property 'PropertyWithMandatoryAttribute' was declared on type 'MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface' "
+              "The property 'PropertyWithMandatoryAttribute' was declared on type "
+              + "'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface' "
               + "but only interface declarations are supported when using mixin properties.\r\nParameter name: interfaceProperty"));
+    }
+
+    [Test]
+    public void Initialize_WithDerivedImplementationProperty_ThrowsArgumentException ()
+    {
+      var overriddenProperty = typeof (DerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("PropertyWithNullableStringPropertyAttribute");
+
+      Assert.That (
+          () => new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+              interfaceProperty: _interfacePropertyWithNullableStringPropertyAttribute,
+              implementationProperty: overriddenProperty,
+              domainModelConstraintProvider: _domainModelConstraintProvider,
+              validationMessageFactory: _validationMessageFactoryStub),
+          Throws.ArgumentException.With.Message.EqualTo (
+              "The property 'PropertyWithNullableStringPropertyAttribute' was used from the overridden declaration on type "
+              + "'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.DerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface' "
+              + "but only original declarations are supported.\r\nParameter name: implementationProperty"));
     }
   }
 }

@@ -76,11 +76,17 @@ namespace Remotion.Data.DomainObjects.Validation
       if (ReflectionUtility.IsDomainObject (annotatedType))
       {
         return annotatedType.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
-            .Where (HasValidationRulesOnProperty)
+            .Select (PropertyInfoAdapter.Create)
+            .Where (p => p.IsOriginalDeclaration())
+            .Where (p => HasValidationRulesOnProperty (p.AsRuntimePropertyInfo()))
             .Select (
                 p => new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector> (
                     annotatedType,
-                    new DomainObjectAttributesBasedValidationPropertyRuleReflector (p, p, _domainModelConstraintProvider, _validationMessageFactory)));
+                    new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+                        p.AsRuntimePropertyInfo(),
+                        p.AsRuntimePropertyInfo(),
+                        _domainModelConstraintProvider,
+                        _validationMessageFactory)));
       }
 
       if (typeof (IDomainObjectMixin).IsAssignableFrom (annotatedType) && !annotatedType.IsInterface)
@@ -92,8 +98,9 @@ namespace Remotion.Data.DomainObjects.Validation
           return t.GetProperties();
         }).Select (PropertyInfoAdapter.Create).ToList();
         var annotatedProperties = annotatedType.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
-            .Where (HasValidationRulesOnProperty)
             .Select (PropertyInfoAdapter.Create)
+            .Where (p => p.IsOriginalDeclaration())
+            .Where (p => HasValidationRulesOnProperty (p.AsRuntimePropertyInfo()))
             .ToDictionary (p => (IPropertyInformation) p);
 
         var propertyMapping = interfaceProperties
