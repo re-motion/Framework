@@ -90,11 +90,52 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Annotated properties of mixin 'MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesNotPartOfInterface' have to be part of an interface.")]
-    public void CreatePropertyRuleReflectorForDomainObjectMixin_AnnotatedPropertiesNotPartOfAnInterface_ExceptionIsThrown ()
+    public void CreatePropertyRuleReflectorForDomainObjectMixin_PropertiesArePartOfDifferentInterfaces ()
     {
-      _provider.GetValidationRuleCollectors (new[] { typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesNotPartOfInterface) });
+      var results =
+          _provider.GetValidationRuleCollectors (new[] { typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces) })
+              .SelectMany (c => c)
+              .ToArray();
+
+      Assert.That (results, Is.Not.Empty);
+      Assert.That (
+          results.Select (r => r.Collector.ValidatedType),
+          Is.EquivalentTo (
+              new[]
+              {
+                  typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces1),
+                  typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces2)
+              }));
+      Assert.That (
+          results.SelectMany (r => r.Collector.AddedPropertyRules.Select (c => c.Property.Name).Distinct()),
+          Is.EquivalentTo (new[] { "PropertyWithMandatoryAttribute", "PropertyWithMandatoryStringPropertyAttribute" }));
+    }
+
+    [Test]
+    public void CreatePropertyRuleReflectorForDomainObjectMixin_WithoutInterface_ExceptionIsThrown ()
+    {
+      Assert.That (
+          () => _provider.GetValidationRuleCollectors (new[] { typeof (MixinTypeWithDomainObjectAttributes_WithoutInterface) }),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Annotated properties of mixin 'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.MixinTypeWithDomainObjectAttributes_WithoutInterface' have to be part of an interface."));
+    }
+
+    [Test]
+    public void CreatePropertyRuleReflectorForDomainObjectMixin_SomeAnnotatedPropertiesNotPartOfAnInterface_ExceptionIsThrown ()
+    {
+      Assert.That (
+          () => _provider.GetValidationRuleCollectors (new[] { typeof (MixinTypeWithDomainObjectAttributes_SomeAnnotatedPropertiesNotPartOfInterface) }),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Annotated properties of mixin 'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.MixinTypeWithDomainObjectAttributes_SomeAnnotatedPropertiesNotPartOfInterface' have to be part of an interface."));
+    }
+
+    [Test]
+    public void CreatePropertyRuleReflectorForDomainObjectMixin_AllAnnotatedPropertiesNotPartOfAnInterface_ExceptionIsThrown ()
+    {
+      Assert.That (
+          () => _provider.GetValidationRuleCollectors (new[] { typeof (MixinTypeWithDomainObjectAttributes_AllAnnotatedPropertiesNotPartOfInterface) }),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Annotated properties of mixin 'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.MixinTypeWithDomainObjectAttributes_AllAnnotatedPropertiesNotPartOfInterface' have to be part of an interface."));
     }
 
     [Test]

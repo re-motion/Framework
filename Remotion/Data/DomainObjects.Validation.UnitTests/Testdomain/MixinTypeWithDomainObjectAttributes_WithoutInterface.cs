@@ -15,18 +15,23 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
-  [Serializable]
-  [DBTable]
-  [Uses (typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesNotPartOfInterface))]
-  public class MixinTarget_AnnotatedPropertiesNotPartOfInterface : DomainObject
+  public class MixinTypeWithDomainObjectAttributes_WithoutInterface : DomainObjectMixin<MixinTarget_WithoutInterface>
   {
-    public static MixinTarget_AnnotatedPropertiesNotPartOfInterface NewObject ()
-    {
-      return NewObject<MixinTarget_AnnotatedPropertiesNotPartOfInterface> ();
-    }
+    public string PropertyWithoutAttribute { get; set; }
+
+    [Mandatory]
+    public TestDomainObject PropertyWithMandatoryAttribute { get; set; }
+
+    [StringProperty (IsNullable = true, MaximumLength = 10)]
+    public string PropertyWithNullableStringPropertyAttribute { get; set; }
+
+    [StringProperty (IsNullable = false, MaximumLength = 20)]
+    public string PropertyWithMandatoryStringPropertyAttribute { get; set; }
+
+    [StringProperty (IsNullable = false, MaximumLength = 20)]
+    public string PropertyWithMandatoryStringPropertyAttributePartOfInterface { get; set; }
   }
 }

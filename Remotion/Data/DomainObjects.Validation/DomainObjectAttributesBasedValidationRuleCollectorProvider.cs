@@ -91,30 +91,36 @@ namespace Remotion.Data.DomainObjects.Validation
 
       if (typeof (IDomainObjectMixin).IsAssignableFrom (annotatedType) && !annotatedType.IsInterface)
       {
-        var implementedInterfaces = interfaceTypes.Where (i => i.IsAssignableFrom (annotatedType)).ToList();
-        var interfaceProperties = implementedInterfaces.SelectMany (t =>
-        {
-          Assertion.IsTrue (t.IsInterface);
-          return t.GetProperties();
-        }).Select (PropertyInfoAdapter.Create).ToList();
-        var annotatedProperties = annotatedType.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
-            .Select (PropertyInfoAdapter.Create)
-            .Where (p => p.IsOriginalDeclaration())
-            .Where (p => HasValidationRulesOnProperty (p.AsRuntimePropertyInfo()))
-            .ToDictionary (p => (IPropertyInformation) p);
+        var implementedInterfaces = interfaceTypes.Where (i => i.IsAssignableFrom (annotatedType));
 
-        var propertyMapping = interfaceProperties
-            .Select (p => new { InterfaceProperty = p, ImplementationProperty = p.FindInterfaceImplementation (annotatedType) })
-            .Where (mapping => annotatedProperties.ContainsKey (mapping.ImplementationProperty))
+        var interfacePropertyMappings = implementedInterfaces
+            .SelectMany (
+                t =>
+                {
+                  Assertion.IsTrue (t.IsInterface);
+                  return t.GetProperties();
+                })
+            .Select (p => (IPropertyInformation) PropertyInfoAdapter.Create (p))
+            .Select (p => new { InterfaceProperty = p, ImplementationProperty = Assertion.IsNotNull (p.FindInterfaceImplementation (annotatedType)) })
             .ToList();
 
-        if (annotatedProperties.Any() && !propertyMapping.Any())
+        var annotatedProperties = annotatedType.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
+            .Select (p => (IPropertyInformation) PropertyInfoAdapter.Create (p))
+            .Where (p => p.IsOriginalDeclaration())
+            .Where (p => HasValidationRulesOnProperty (p.AsRuntimePropertyInfo()));
+        var annotatedPropertiesSet = new HashSet<IPropertyInformation> (annotatedProperties);
+
+        var interfaceImplementations = new HashSet<IPropertyInformation> (interfacePropertyMappings.Select (m=>m.ImplementationProperty));
+        if (annotatedPropertiesSet.Any (p => !interfaceImplementations.Contains (p)))
         {
           throw new InvalidOperationException (
-              string.Format ("Annotated properties of mixin '{0}' have to be part of an interface.", annotatedType.Name));
+              string.Format ("Annotated properties of mixin '{0}' have to be part of an interface.", annotatedType.FullName));
         }
 
-        return propertyMapping.Select (
+        var interfacePropertyMappingsForAnnotatedProperties = interfacePropertyMappings
+            .Where (mapping => annotatedPropertiesSet.Contains (mapping.ImplementationProperty));
+
+        return interfacePropertyMappingsForAnnotatedProperties.Select (
             mapping => new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector> (
                 mapping.InterfaceProperty.DeclaringType.AsRuntimeType(),
                 new DomainObjectAttributesBasedValidationPropertyRuleReflector (
