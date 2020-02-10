@@ -32,7 +32,11 @@ namespace Remotion.Validation.UnitTests.Validators
       using (CultureScope.CreateInvariantCultureScope())
       {
         Assert.That (
-            () => new ScalePrecisionValidator (-1, 2, new InvariantValidationMessage ("Fake Message")),
+            () => new ScalePrecisionValidator (
+                scale: -1,
+                precision: 2,
+                ignoreTrailingZeros: false,
+                validationMessage: new InvariantValidationMessage ("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
                 .With.Message.EqualTo ($"Scale must not be negative.\r\nParameter name: scale\r\nActual value was -1."));
       }
@@ -44,7 +48,11 @@ namespace Remotion.Validation.UnitTests.Validators
       using (CultureScope.CreateInvariantCultureScope())
       {
         Assert.That (
-            () => new ScalePrecisionValidator (2, 0, new InvariantValidationMessage ("Fake Message")),
+            () => new ScalePrecisionValidator (
+                scale: 2,
+                precision: 0,
+                ignoreTrailingZeros: false,
+                validationMessage: new InvariantValidationMessage ("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
                 .With.Message.EqualTo ($"Precision must not be zero or negative.\r\nParameter name: precision\r\nActual value was 0."));
       }
@@ -56,9 +64,13 @@ namespace Remotion.Validation.UnitTests.Validators
       using (CultureScope.CreateInvariantCultureScope())
       {
         Assert.That (
-            () => new ScalePrecisionValidator (3, 2, new InvariantValidationMessage ("Fake Message")),
+            () => new ScalePrecisionValidator (
+                scale: 3,
+                precision: 2,
+                ignoreTrailingZeros: false,
+                validationMessage: new InvariantValidationMessage ("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
-                .With.Message.EqualTo ($"Scale must be greater than precision.\r\nParameter name: scale\r\nActual value was 3."));
+                .With.Message.EqualTo ($"Precision must not be less than scale.\r\nParameter name: precision\r\nActual value was 2."));
       }
     }
 
@@ -66,7 +78,11 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithValidPropertyValueNull_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext (null);
-      var validator = new ScalePrecisionValidator (2, 2, new InvariantValidationMessage ("Fake Message"));
+      var validator = new ScalePrecisionValidator (
+          2,
+          2,
+          ignoreTrailingZeros: false,
+          validationMessage: new InvariantValidationMessage ("Fake Message"));
 
       var validationFailures = validator.Validate (propertyValidatorContext);
 
@@ -77,7 +93,26 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithValidPropertyValueAndPrecisionMatchingScale_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext (10m);
-      var validator = new ScalePrecisionValidator (2, 2, new InvariantValidationMessage ("Fake Message"));
+      var validator = new ScalePrecisionValidator (
+          scale: 2,
+          precision: 2,
+          ignoreTrailingZeros: false,
+          validationMessage: new InvariantValidationMessage ("Fake Message"));
+
+      var validationFailures = validator.Validate (propertyValidatorContext);
+
+      Assert.That (validationFailures, Is.Empty);
+    }
+
+    [Test]
+    public void Validate_WithValidPropertyValueAndPrecisionGreaterThanScale_ReturnsNoValidationFailures ()
+    {
+      var propertyValidatorContext = CreatePropertyValidatorContext (10m);
+      var validator = new ScalePrecisionValidator (
+          scale: 1,
+          precision: 2,
+          ignoreTrailingZeros: false,
+          validationMessage: new InvariantValidationMessage ("Fake Message"));
 
       var validationFailures = validator.Validate (propertyValidatorContext);
 
@@ -88,11 +123,51 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithValidPropertyValue_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext (10.12m);
-      var validator = new ScalePrecisionValidator (2, 4, new InvariantValidationMessage ("Fake Message"));
+      var validator = new ScalePrecisionValidator (
+          scale: 2,
+          precision: 4,
+          ignoreTrailingZeros: false,
+          validationMessage: new InvariantValidationMessage ("Fake Message"));
 
       var validationFailures = validator.Validate (propertyValidatorContext);
 
       Assert.That (validationFailures, Is.Empty);
+    }
+
+    [Test]
+    public void Validate_WithValidPropertyValueAndTrailingZerosIgnored_ReturnsNoValidationFailures ()
+    {
+      var propertyValidatorContext = CreatePropertyValidatorContext (10.120m);
+      var validator = new ScalePrecisionValidator (
+          scale: 2,
+          precision: 4,
+          ignoreTrailingZeros: true,
+          validationMessage: new InvariantValidationMessage ("Fake Message"));
+
+      var validationFailures = validator.Validate (propertyValidatorContext);
+
+      Assert.That (validationFailures, Is.Empty);
+    }
+
+    [Test]
+    public void Validate_WithPropertyValueScaleGreaterThanValidatorValueAndTrailingZerosRelevant_ReturnsSingleValidationFailure ()
+    {
+      var propertyValidatorContext = CreatePropertyValidatorContext (10.120m);
+      var validator = new ScalePrecisionValidator (
+          scale: 2,
+          precision: 5,
+          ignoreTrailingZeros: false,
+          validationMessage: new InvariantValidationMessage ("Custom validation message: '{0}', '{1}'."));
+          
+
+      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+
+      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      Assert.That (
+          validationFailures[0].ErrorMessage,
+          Is.EqualTo ("The value must not have more than 5 digits in total, with allowance for 2 decimals."));
+      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '5', '2'."));
     }
 
     [Test]
@@ -102,6 +177,7 @@ namespace Remotion.Validation.UnitTests.Validators
       var validator = new ScalePrecisionValidator (
           2,
           5,
+          false,
           new InvariantValidationMessage ("Custom validation message: '{0}', '{1}'."));
           
 
@@ -122,6 +198,7 @@ namespace Remotion.Validation.UnitTests.Validators
       var validator = new ScalePrecisionValidator (
           3,
           4,
+          false,
           new InvariantValidationMessage ("Custom validation message: '{0}', '{1}'."));
 
       var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
@@ -138,7 +215,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValuePrecisionGreaterThanValidatorValueAndNonDecimal_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext (10.123d);
-      var validator = new ScalePrecisionValidator (3, 4, new InvariantValidationMessage ("Fake Message"));
+      var validator = new ScalePrecisionValidator (3, 4, false, new InvariantValidationMessage ("Fake Message"));
 
       var validationFailures = validator.Validate (propertyValidatorContext);
 
@@ -149,7 +226,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValuePrecisionLessThanValidatorValue_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext (10.123m);
-      var validator = new ScalePrecisionValidator (3, 6, new InvariantValidationMessage ("Fake Message"));
+      var validator = new ScalePrecisionValidator (3, 6, false, new InvariantValidationMessage ("Fake Message"));
 
       var validationFailures = validator.Validate (propertyValidatorContext);
 

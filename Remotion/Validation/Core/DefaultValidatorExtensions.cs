@@ -134,10 +134,11 @@ namespace Remotion.Validation
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> ScalePrecisionValidator<TValidatedType, TProperty> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> ruleBuilder,
         int scale,
-        int precision)
+        int precision,
+        bool ignoreTrailingZeros = false)
         where TProperty : IComparable<TProperty>, IComparable
     {
-      return ruleBuilder.SetValidator (p => new ScalePrecisionValidator (scale, precision, p.ValidationMessage));
+      return ruleBuilder.SetValidator (p => new ScalePrecisionValidator (scale, precision, ignoreTrailingZeros, p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> Matches<TValidatedType> (

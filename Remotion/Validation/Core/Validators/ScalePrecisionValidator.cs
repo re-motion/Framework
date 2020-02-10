@@ -26,27 +26,24 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  /// <summary>
-  /// Allows a decimal to be validated for scale and precision.
-  /// Scale would be the number of digits to the right of the decimal point.
-  /// Precision would be the number of digits.
-  /// 
-  /// It can be configured to use the effective scale and precision
-  /// (i.e. ignore trailing zeros) if required.
-  /// 
-  /// 123.4500 has an scale of 4 and a precision of 7, but an effective scale
-  /// and precision of 2 and 5 respectively.
-  /// </summary>
   public class ScalePrecisionValidator : IPropertyValidator
   {
+    /// <summary>
+    /// Gets the number of digits ro the right of the decimal point of the decimal value.
+    /// </summary>
     public int Scale { get; }
 
+    /// <summary>
+    /// Gets the total number of digits allowed for the decimal value.
+    /// </summary>
     public int Precision { get; }
+
+    public bool IgnoreTrailingZeros { get; }
 
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
 
-    public ScalePrecisionValidator (int scale, int precision, [NotNull] ValidationMessage validationMessage)
+    public ScalePrecisionValidator (int scale, int precision, bool ignoreTrailingZeros, [NotNull] ValidationMessage validationMessage)
     {
       ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
 
@@ -59,10 +56,11 @@ namespace Remotion.Validation.Validators
         throw new ArgumentOutOfRangeException ("precision", precision, $"Precision must not be zero or negative.");
 
       if (precision < scale)
-        throw new ArgumentOutOfRangeException ("scale", scale, $"Scale must be greater than precision.");
+        throw new ArgumentOutOfRangeException ("precision", precision, $"Precision must not be less than scale.");
 
       Scale = scale;
       Precision = precision;
+      IgnoreTrailingZeros = ignoreTrailingZeros;
       ErrorMessage = $"The value must not have more than {precision} digits in total, with allowance for {scale} decimals.";
       ValidationMessage = validationMessage;
     }
@@ -86,7 +84,7 @@ namespace Remotion.Validation.Validators
       var characteristic = splitDecimalString[0];
       var mantissa = splitDecimalString.Length == 1 ? "" : splitDecimalString[1];
 
-      var scale = mantissa.Length;
+      var scale = IgnoreTrailingZeros ? mantissa.Trim ('0').Length : mantissa.Length;
       var precision = characteristic.Length + scale;
 
       return scale <= Scale && precision <= Precision;
