@@ -28,16 +28,14 @@ namespace Remotion.Validation.Validators
 {
   public class ScalePrecisionValidator : IPropertyValidator
   {
-    /// <summary>
-    /// Gets the number of digits ro the right of the decimal point of the decimal value.
-    /// </summary>
+    /// <summary> Gets the number of digits ro the right of the decimal point of the decimal value. </summary>
     public int Scale { get; }
 
-    /// <summary>
-    /// Gets the total number of digits allowed for the decimal value.
-    /// </summary>
+    /// <summary> Gets the total number of digits allowed for the decimal value. </summary>
     public int Precision { get; }
 
+    /// <summary> Gets a flag that indicates if <see cref="Scale"/> and <see cref="Precision"/> should consider trailing zeros to the of the decimal point. </summary>
+    /// <remarks> .NET <see cref="Decimal"/> supports trailing zeros when handling the scale of the value. </remarks>
     public bool IgnoreTrailingZeros { get; }
 
     public string ErrorMessage { get; }
@@ -61,7 +59,9 @@ namespace Remotion.Validation.Validators
       Scale = scale;
       Precision = precision;
       IgnoreTrailingZeros = ignoreTrailingZeros;
-      ErrorMessage = $"The value must not have more than {precision} digits in total, with allowance for {scale} decimals.";
+      ErrorMessage = ignoreTrailingZeros
+          ? $"The value must not have more than {precision} digits in total, with allowance for {scale} decimals."
+          : $"The value must not have more than {precision} digits in total, with allowance for {scale} decimals including trailing zeros.";
       ValidationMessage = validationMessage;
     }
 

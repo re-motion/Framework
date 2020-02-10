@@ -166,7 +166,7 @@ namespace Remotion.Validation.UnitTests.Validators
       //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
       Assert.That (
           validationFailures[0].ErrorMessage,
-          Is.EqualTo ("The value must not have more than 5 digits in total, with allowance for 2 decimals."));
+          Is.EqualTo ("The value must not have more than 5 digits in total, with allowance for 2 decimals including trailing zeros."));
       Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '5', '2'."));
     }
 
@@ -177,7 +177,7 @@ namespace Remotion.Validation.UnitTests.Validators
       var validator = new ScalePrecisionValidator (
           2,
           5,
-          false,
+          true,
           new InvariantValidationMessage ("Custom validation message: '{0}', '{1}'."));
           
 
@@ -198,7 +198,7 @@ namespace Remotion.Validation.UnitTests.Validators
       var validator = new ScalePrecisionValidator (
           3,
           4,
-          false,
+          true,
           new InvariantValidationMessage ("Custom validation message: '{0}', '{1}'."));
 
       var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
@@ -208,6 +208,26 @@ namespace Remotion.Validation.UnitTests.Validators
       Assert.That (
           validationFailures[0].ErrorMessage,
           Is.EqualTo ("The value must not have more than 4 digits in total, with allowance for 3 decimals."));
+      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '4', '3'."));
+    }
+
+    [Test]
+    public void Validate_WithPropertyValuePrecisionGreaterThanValidatorValueAndTrailingZerosRelevant_ReturnsSingleValidationFailure ()
+    {
+      var propertyValidatorContext = CreatePropertyValidatorContext (123.10m);
+      var validator = new ScalePrecisionValidator (
+          scale: 3,
+          precision: 4,
+          ignoreTrailingZeros: false,
+          validationMessage: new InvariantValidationMessage ("Custom validation message: '{0}', '{1}'."));
+
+      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+
+      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      Assert.That (
+          validationFailures[0].ErrorMessage,
+          Is.EqualTo ("The value must not have more than 4 digits in total, with allowance for 3 decimals including trailing zeros."));
       Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '4', '3'."));
     }
 
