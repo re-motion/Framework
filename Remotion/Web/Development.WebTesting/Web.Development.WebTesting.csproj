@@ -166,6 +166,7 @@
     <Compile Include="ScreenshotCreation\Annotations\ScreenshotTooltipAnnotation.cs" />
     <Compile Include="ScreenshotCreation\Annotations\ScreenshotTooltipStyle.cs" />
     <Compile Include="ScreenshotCreation\Annotations\TooltipPositioning.cs" />
+    <Compile Include="ScreenshotCreation\BrowserContentLocators\EdgeBrowserContentLocator.cs" />
     <Compile Include="ScreenshotCreation\BrowserContentLocators\FirefoxBrowserContentLocator.cs" />
     <Compile Include="ScreenshotCreation\CoordinateSystem.cs" />
     <Compile Include="ScreenshotCreation\CursorInformation.cs" />
@@ -218,7 +219,7 @@
     <Compile Include="ScreenshotCreation\WebPadding.cs" />
     <Compile Include="Utilities\AssertionExceptionUtility.cs" />
     <Compile Include="Utilities\BrowserAnnotateHelper.cs" />
-    <Compile Include="ScreenshotCreation\BrowserContentLocators\ChromiumBrowserContentLocator.cs" />
+    <Compile Include="ScreenshotCreation\BrowserContentLocators\ChromeBrowserContentLocator.cs" />
     <Compile Include="ScreenshotCreation\BrowserContentLocators\InternetExplorerBrowserContentLocator.cs" />
     <Compile Include="Utilities\DomSelectorUtility.cs" />
     <Compile Include="Utilities\DataContractJsonSerializationUtility.cs" />

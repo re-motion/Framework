@@ -27,9 +27,9 @@ using Remotion.Web.Development.WebTesting.Utilities;
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators
 {
   /// <summary>
-  /// Locates the browser content area for Chromium browsers.
+  /// Locates the browser content area for Chrome.
   /// </summary>
-  public class ChromiumBrowserContentLocator : IBrowserContentLocator
+  public class ChromeBrowserContentLocator : IBrowserContentLocator
   {
     private const string c_setWindowTitle = "var w = window; while (w.frameElement) w = w.frameElement.ownerDocument.defaultView; var t = w.document.title; w.document.title = arguments[0]; return t;";
 
@@ -39,14 +39,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     [DllImport ("user32.dll", SetLastError = true)]
     static extern uint GetWindowThreadProcessId (IntPtr handle, out uint processID);
 
-    public ChromiumBrowserContentLocator ()
+    public ChromeBrowserContentLocator ()
     {
     }
 
     /// <inheritdoc />
     public Rectangle GetBrowserContentBounds (IWebDriver driver)
     {
-      // Chromium browsers do not support getting the content area from JS
+      // Chrome does not support getting the content area from JS
       // which is why we need to search the Automation tree for the
       // correct browser window in order to retrieve the content area
 
@@ -70,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
         return ResolveBoundsFromWindow (windows[0].Value);
       
       if (windows.Length == 0)
-        throw new InvalidOperationException ("Could not find a Chromium window in order to resolve the bounds of the content area.");
+        throw new InvalidOperationException ("Could not find a Chrome window in order to resolve the bounds of the content area.");
 
       var highestRating = windows.Max (w => w.Key);
       var results = windows.Where (w => w.Key == highestRating).Take (2).ToArray();
@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
         automationElement = ResolveByChangingWindowTitle (driver);
 
       if (highestRating == 0 || results.Length == 2 && automationElement == null)
-        throw new InvalidOperationException ("Could not find a Chromium window in order to resolve the bounds of the content area.");
+        throw new InvalidOperationException ("Could not find a Chrome window in order to resolve the bounds of the content area.");
 
       return ResolveBoundsFromWindow (automationElement ?? results[0].Value);
     }
@@ -120,7 +120,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       }
 
       if (element == null)
-        throw new InvalidOperationException ("Can not find the content window of the found Chromium browser window.");
+        throw new InvalidOperationException ("Could not find the content window of the found Chrome browser window.");
 
       var rawBounds = element.Current.BoundingRectangle;
       return new Rectangle (

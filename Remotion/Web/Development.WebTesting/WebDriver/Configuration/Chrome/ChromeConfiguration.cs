@@ -56,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
     public override string BrowserExecutableName { get; } = "chrome";
     public override string WebDriverExecutableName { get; } = "chromedriver";
-    public override IBrowserContentLocator Locator { get; } = new ChromiumBrowserContentLocator();
+    public override IBrowserContentLocator Locator { get; } = new ChromeBrowserContentLocator();
     public override ScreenshotTooltipStyle TooltipStyle { get; } = ScreenshotTooltipStyle.Chrome;
     public override IDownloadHelper DownloadHelper { get; }
 

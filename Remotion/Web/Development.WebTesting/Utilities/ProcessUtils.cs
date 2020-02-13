@@ -114,11 +114,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </item>
     /// </list>
     /// </remarks>
-    public static void GracefulProcessShutdown ([NotNull] Process process, int timeout)
+    public static void GracefulProcessShutdown ([NotNull] Process process, TimeSpan timeout)
     {
       ArgumentUtility.CheckNotNull ("process", process);
 
-      if (timeout < 0)
+      var timeoutInMilliseconds = (int) timeout.TotalMilliseconds;
+      if (timeoutInMilliseconds < 0)
         throw new ArgumentOutOfRangeException ("timeout", "Timeout can not be smaller that zero.");
 
       try
@@ -137,14 +138,14 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       // Try to gracefully close the process
       if (process.CloseMainWindow())
       {
-        if (process.WaitForExit (timeout))
+        if (process.WaitForExit (timeoutInMilliseconds))
           return;
       }
 
       // Force closing the process
       process.Kill();
 
-      if (process.WaitForExit (timeout))
+      if (process.WaitForExit (timeoutInMilliseconds))
         return;
 
       throw new InvalidOperationException (string.Format ("Process '{0}' (id: '{1}') did not exit in the expected amount of time.", process.ProcessName, process.Id));

@@ -33,9 +33,9 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
   public abstract class BrowserSessionBase<T> : IBrowserSession
       where T : IBrowserConfiguration
   {
-    private const int c_driverShutdownWaitTime = 250;
-    private const int c_browserShutdownWaitTime = 500;
-    private const int c_browserSubProcessShutdownWaitTime = 100;
+    private TimeSpan _driverShutdownWaitTime = TimeSpan.FromMilliseconds (250);
+    private TimeSpan _browserShutdownWaitTime = TimeSpan.FromMilliseconds (500);
+    private TimeSpan _browserSubProcessShutdownWaitTime = TimeSpan.FromMilliseconds (250);
 
     private readonly T _browserConfiguration;
     private readonly Coypu.BrowserSession _value;
@@ -121,13 +121,13 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       // Check driver and main browser for null
       if (driverProcess != null)
       {
-        ProcessUtils.GracefulProcessShutdown (driverProcess, c_driverShutdownWaitTime);
+        ProcessUtils.GracefulProcessShutdown (driverProcess, _driverShutdownWaitTime);
         driverProcess.WaitForExit (60000);
       }
 
       if (browserProcess != null)
       {
-        ProcessUtils.GracefulProcessShutdown (browserProcess, c_browserShutdownWaitTime);
+        ProcessUtils.GracefulProcessShutdown (browserProcess, _browserShutdownWaitTime);
         CheckForSubProcessesExited (browserSubProcesses, browserProcess);
       }
     }
@@ -137,7 +137,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       // Wait for every sub process of the browser process to be closed
       for (int i = 0; i < 5; i++)
       {
-        if (WaitForSubProcessExit (browserSubProcesses, c_browserSubProcessShutdownWaitTime))
+        if (WaitForSubProcessExit (browserSubProcesses, _browserSubProcessShutdownWaitTime))
           return;
       }
 
@@ -186,11 +186,11 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     /// WaitForExit for <paramref name="browserSubProcesses"/>.
     /// Returns false if any process failed to exit in the specified <paramref name="timeout"/>.
     /// </summary>
-    private bool WaitForSubProcessExit (IEnumerable<Process> browserSubProcesses, int timeout)
+    private bool WaitForSubProcessExit (IEnumerable<Process> browserSubProcesses, TimeSpan timeout)
     {
       foreach (var browserSubProcess in browserSubProcesses)
       {
-        if (!browserSubProcess.WaitForExit (timeout))
+        if (!browserSubProcess.WaitForExit ((int) timeout.TotalMilliseconds))
         {
           // There is still a minimum of 1 sub process running --> Try again
           return false;
