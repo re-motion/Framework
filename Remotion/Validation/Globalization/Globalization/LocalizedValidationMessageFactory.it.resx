@@ -168,9 +168,9 @@
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullGuidValidationMessage" xml:space="preserve">
     <value>Immetti un valore.</value>
   </data>
-  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotExceedScaleAndPrecisionValidationMessage" xml:space="preserve">
-    <value>Immetti un numero decimale con massimo {0} caratteri. Il numero può avere {1} posizioni decimali.</value>
-    <comment>{0} = maximum precision; {1} = maximum scale</comment>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotExceedDecimalConstraintsValidationMessage" xml:space="preserve">
+    <value>Immetti un numero con non più di {0} cifre intere e {1} posizioni decimali.</value>
+    <comment>{0} = maximum number of integer digits; {1} = maximum number of decimal places</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullDateTimeValidationMessage" xml:space="preserve">
     <value>Immettere una data e un'ora.</value>

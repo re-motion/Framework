@@ -188,6 +188,7 @@
     <Compile Include="Implementation\ValidationRuleCollectorBasedValidatorBuilderTest.cs" />
     <Compile Include="Utilities\TopologySortLinqExtensionsTest.cs" />
     <Compile Include="Implementation\ValidatorTest.cs" />
+    <Compile Include="Validators\DecimalValidatorTest.cs" />
     <Compile Include="Validators\EqualValidatorTest.cs" />
     <Compile Include="Validators\ExactLengthValidatorTest.cs" />
     <Compile Include="Validators\ExclusiveRangeValidatorTest.cs" />
@@ -204,7 +205,6 @@
     <Compile Include="Validators\NotNullValidatorTest.cs" />
     <Compile Include="Validators\PredicateValidatorTest.cs" />
     <Compile Include="Validators\RegularExpressionValidatorTest.cs" />
-    <Compile Include="Validators\ScalePrecisionValidatorTest.cs" />
     <Compile Include="Validators\ValidatorTestBase.cs" />
   </ItemGroup>
   <ItemGroup>

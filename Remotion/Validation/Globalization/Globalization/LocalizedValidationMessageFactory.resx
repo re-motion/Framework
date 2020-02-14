@@ -168,9 +168,9 @@
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchRegularExpressionValidationMessage" xml:space="preserve">
     <value>Enter a value in the correct format.</value>
   </data>
-  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotExceedScaleAndPrecisionValidationMessage" xml:space="preserve">
-    <value>Enter a decimal number with no more than {0} digits. The number can have {1} decimal places.</value>
-    <comment>{0} = maximum precision; {1} = maximum scale</comment>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotExceedDecimalConstraintsValidationMessage" xml:space="preserve">
+    <value>Enter a number with no more than {0} integer digits and {1} decimal places.</value>
+    <comment>{0} = maximum number of integer digits; {1} = maximum number of decimal places</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMaximumLengthValidationMessage" xml:space="preserve">
     <value>Enter no more than {0} characters.</value>

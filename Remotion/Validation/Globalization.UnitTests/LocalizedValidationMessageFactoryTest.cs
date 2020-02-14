@@ -693,16 +693,16 @@ namespace Remotion.Validation.Globalization.UnitTests
     }
 
     [Test]
-    public void CreateValidationMessageForPropertyValidator_WithScalePrecisionValidator_ReturnsLocalizedValidationMessage ()
+    public void CreateValidationMessageForPropertyValidator_WithDecimalValidator_ReturnsLocalizedValidationMessage ()
     {
       _propertyStub.Stub (_ => _.PropertyType).Return (typeof (Decimal));
-      var validator = new ScalePrecisionValidator (5, 10, true, _validationMessageStub);
+      var validator = new DecimalValidator (5, 10, true, _validationMessageStub);
       var validationMessage = _factory.CreateValidationMessageForPropertyValidator (validator, _propertyStub);
 
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      Assert.That (validationMessage.ToString(), Is.StringStarting ("Enter a decimal number"));
+      Assert.That (validationMessage.ToString(), Is.StringStarting ("Enter a number with no more than {0} integer digits and {1} decimal places."));
     }
 
     [Test]

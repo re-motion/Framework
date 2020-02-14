@@ -52,60 +52,62 @@ namespace Remotion.Validation.Implementation
       var validatorType = validator.GetType();
       var typeName = typeNameFormatter (validatorType);
 
-      if (typeof (INotNullValidator).IsAssignableFrom (validatorType) || typeof (INotEmptyValidator).IsAssignableFrom (validatorType))
-        return typeName;
+      switch (validator)
+      {
+        case INotNullValidator _:
+          return typeName;
 
-      if (typeof (ILengthValidator).IsAssignableFrom (validatorType))
-        return FormatLengthValidator (validator, typeName);
+        case INotEmptyValidator _:
+          return typeName;
 
-      if (typeof (IRangeValidator).IsAssignableFrom (validatorType))
-        return FormatRangeValidator (validator, typeName);
+        case ILengthValidator lengthValidator:
+          return FormatLengthValidator (lengthValidator, typeName);
 
-      if (typeof (IValueComparisonValidator).IsAssignableFrom (validatorType))
-        return FormatComparisonValidator (validator, typeNameFormatter, typeName);
+        case IRangeValidator rangeValidator:
+          return FormatRangeValidator (rangeValidator, typeName);
 
-      if (typeof (IRegularExpressionValidator).IsAssignableFrom (validatorType))
-        return FormatRegularExpressionValidator (validator, typeName);
+        case IValueComparisonValidator valueComparisonValidator:
+          return FormatComparisonValidator (valueComparisonValidator, typeNameFormatter, typeName);
 
-      var precisionValidator = validator as ScalePrecisionValidator;
-      if (precisionValidator != null)
-        return FormatScalePrecisionValidator (precisionValidator, typeName);
+        case IRegularExpressionValidator regularExpressionValidator:
+          return FormatRegularExpressionValidator (regularExpressionValidator, typeName);
 
-      return _fallBackValidatorFormatter.Format (validator, typeNameFormatter);
+        case DecimalValidator decimalValidator:
+          return FormatDecimalValidator (decimalValidator, typeName);
+
+        default:
+          return _fallBackValidatorFormatter.Format (validator, typeNameFormatter);
+      }
     }
 
-    private string FormatLengthValidator (IPropertyValidator validator, string typeName)
+    private string FormatLengthValidator (ILengthValidator validator, string typeName)
     {
-      var lengthValidator = (ILengthValidator) validator;
-      return string.Format ("{0} {{ MinLength = '{1}', MaxLength = '{2}' }}", typeName, lengthValidator.Min, lengthValidator.Max);
+      return string.Format ("{0} {{ MinLength = '{1}', MaxLength = '{2}' }}", typeName, validator.Min, validator.Max);
     }
 
-    private string FormatRangeValidator (IPropertyValidator validator, string typeName)
+    private string FormatRangeValidator (IRangeValidator validator, string typeName)
     {
-      var betweenValidator = (IRangeValidator) validator;
-      return string.Format ("{0} {{ From = '{1}', To = '{2}' }}", typeName, betweenValidator.From, betweenValidator.To);
+      return string.Format ("{0} {{ From = '{1}', To = '{2}' }}", typeName, validator.From, validator.To);
     }
 
-    private string FormatComparisonValidator (IPropertyValidator validator, Func<Type, string> typeNameFormatter, string typeName)
+    private string FormatComparisonValidator (IValueComparisonValidator validator, Func<Type, string> typeNameFormatter, string typeName)
     {
-      var comparisonValidator = (IValueComparisonValidator) validator;
-      return string.Format ("{0} {{ ValueToCompare = '{1}' }}", typeName, comparisonValidator.ValueToCompare);
+      return string.Format ("{0} {{ ValueToCompare = '{1}' }}", typeName, validator.ValueToCompare);
     }
 
-    private string FormatRegularExpressionValidator (IPropertyValidator validator, string typeName)
+    private string FormatRegularExpressionValidator (IRegularExpressionValidator validator, string typeName)
     {
-      var regularExpressionValidator = (IRegularExpressionValidator) validator;
-      return string.Format ("{0} {{ Expression = '{1}' }}", typeName, regularExpressionValidator.Regex);
+      return string.Format ("{0} {{ Expression = '{1}' }}", typeName, validator.Regex);
     }
 
-    private string FormatScalePrecisionValidator (ScalePrecisionValidator precisionValidator, string typeName)
+    private string FormatDecimalValidator (DecimalValidator validator, string typeName)
     {
-      var scalePrecisionValidator = precisionValidator;
       return string.Format (
-          "{0} {{ Scale = '{1}', Precision = '{2}' }}",
+          "{0} {{ MaxIntegerPlaces = '{1}', MaxDecimalPlaces = '{2}', IgnoreTrailingZeros = {3} }}",
           typeName,
-          scalePrecisionValidator.Scale,
-          scalePrecisionValidator.Precision);
+          validator.MaxIntegerPlaces,
+          validator.MaxDecimalPlaces,
+          validator.IgnoreTrailingZeros);
     }
 
     private string FormatMemberInfo (MemberInfo memberInfo, Func<Type, string> typeNameFormatter)

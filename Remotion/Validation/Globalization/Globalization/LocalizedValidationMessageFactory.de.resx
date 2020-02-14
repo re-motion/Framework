@@ -168,9 +168,9 @@
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullGuidValidationMessage" xml:space="preserve">
     <value>Geben Sie einen Wert ein.</value>
   </data>
-  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotExceedScaleAndPrecisionValidationMessage" xml:space="preserve">
-    <value>Geben Sie eine Dezimalzahl mit maximal {0} Ziffern ein. Die Zahl kann {1} Nachkommastellen enthalten.</value>
-    <comment>{0} = maximum precision; {1} = maximum scale</comment>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotExceedDecimalConstraintsValidationMessage" xml:space="preserve">
+    <value>Geben Sie eine Zahl mit nicht mehr als {0} Vorkommastellen und {1} Nachkommastellen ein.</value>
+    <comment>{0} = maximum number of integer digits; {1} = maximum number of decimal places</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullDateTimeValidationMessage" xml:space="preserve">
     <value>Geben Sie ein Datum und eine Uhrzeit ein.</value>

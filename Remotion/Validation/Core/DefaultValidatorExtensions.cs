@@ -131,14 +131,14 @@ namespace Remotion.Validation
       return ruleBuilder.SetValidator (p => new InclusiveRangeValidator (from, to, p.ValidationMessage));
     }
 
-    public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> ScalePrecisionValidator<TValidatedType, TProperty> (
+    public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> DecimalValidator<TValidatedType, TProperty> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> ruleBuilder,
-        int scale,
-        int precision,
+        int maxIntegerPlaces,
+        int maxDecimalPlaces,
         bool ignoreTrailingZeros = false)
         where TProperty : IComparable<TProperty>, IComparable
     {
-      return ruleBuilder.SetValidator (p => new ScalePrecisionValidator (scale, precision, ignoreTrailingZeros, p.ValidationMessage));
+      return ruleBuilder.SetValidator (p => new DecimalValidator (maxIntegerPlaces, maxDecimalPlaces, ignoreTrailingZeros, p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> Matches<TValidatedType> (

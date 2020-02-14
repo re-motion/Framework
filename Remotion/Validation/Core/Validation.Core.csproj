@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -110,6 +111,7 @@
     <Compile Include="RuleCollectors\ObjectMetaValidationRuleCollector.cs" />
     <Compile Include="RuleCollectors\RemovingObjectValidationRuleCollector.cs" />
     <Compile Include="Rules\ObjectValidationRuleInitializationParameters.cs" />
+    <Compile Include="Validators\DecimalValidator.cs" />
     <Compile Include="Validators\ObjectValidatorFactory.cs" />
     <Compile Include="Validators\ObjectValidatorContext.cs" />
     <Compile Include="Results\ObjectValidationFailure.cs" />
@@ -229,7 +231,6 @@
     <Compile Include="Validators\PredicateValidator.cs" />
     <Compile Include="Validators\NotNullValidator.cs" />
     <Compile Include="Validators\RegularExpressionValidator.cs" />
-    <Compile Include="Validators\ScalePrecisionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

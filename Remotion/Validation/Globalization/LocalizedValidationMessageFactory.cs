@@ -63,7 +63,7 @@ namespace Remotion.Validation.Globalization
       ValueMustNotBeNullIntegerValidationMessage,
       ValueMustNotBeNullReferenceValidationMessage,
       ValueMustNotBeNullStringValidationMessage,
-      ValueMustNotExceedScaleAndPrecisionValidationMessage,
+      ValueMustNotExceedDecimalConstraintsValidationMessage,
     }
 
     private readonly Lazy<IResourceManager> _resourceManager;
@@ -142,8 +142,8 @@ namespace Remotion.Validation.Globalization
       if (validator is RegularExpressionValidator)
         return ResourceIdentifier.ValueMustMatchRegularExpressionValidationMessage;
 
-      if (validator is ScalePrecisionValidator)
-        return ResourceIdentifier.ValueMustNotExceedScaleAndPrecisionValidationMessage;
+      if (validator is DecimalValidator)
+        return ResourceIdentifier.ValueMustNotExceedDecimalConstraintsValidationMessage;
 
       return null;
     }
