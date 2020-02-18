@@ -120,7 +120,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       }
 
       if (element == null)
-        throw new InvalidOperationException ("Can not find the content window of the found chrome browser window.");
+        throw new InvalidOperationException ("Could not find the content window of the found Chrome browser window.");
 
       var rawBounds = element.Current.BoundingRectangle;
       return new Rectangle (
