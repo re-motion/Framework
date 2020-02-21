@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:c="http://www.re-motion.org/WebTesting/Configuration/1.0"
-    targetNamespace="http://www.re-motion.org/WebTesting/Configuration/1.0"
+    xmlns:c="http://www.re-motion.org/WebTesting/Configuration/2.0"
+    targetNamespace="http://www.re-motion.org/WebTesting/Configuration/2.0"
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">
 
@@ -14,6 +14,24 @@
             <xs:attribute name="name" type="c:RequiredStringType" use="required" />
             <xs:attribute name="type" type="c:HostingStrategyType" use="required" />
             <xs:anyAttribute processContents="skip" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="testSiteLayout" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="resources" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="add">
+                      <xs:complexType>
+                        <xs:attribute name="path" type="c:RequiredStringType" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:all>
+            <xs:attribute name="rootPath" type="c:RequiredStringType" use="required" />
           </xs:complexType>
         </xs:element>
         <xs:element name="chrome" type="c:ChromiumConfigurationElement" minOccurs="0" maxOccurs="1" />

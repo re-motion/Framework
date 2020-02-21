@@ -197,8 +197,10 @@ namespace Remotion.Web.Development.WebTesting
     protected virtual IHostingConfiguration CreateHostingConfiguration ([NotNull] WebTestConfigurationSection configSettings)
     {
       ArgumentUtility.CheckNotNull ("configSettings", configSettings);
-      
-      return new HostingConfiguration (configSettings);
+
+      var testSiteLayoutConfiguration = CreateTestSiteLayoutConfiguration();
+
+      return new HostingConfiguration (configSettings, testSiteLayoutConfiguration);
     }
 
     /// <summary>
@@ -207,6 +209,13 @@ namespace Remotion.Web.Development.WebTesting
     public virtual IAccessibilityConfiguration CreateAccessibilityConfiguration ()
     {
       return new AccessibilityConfiguration();
+    }
+
+    private ITestSiteLayoutConfiguration CreateTestSiteLayoutConfiguration ()
+    {
+      var configSettings = WebTestConfigurationSection.Current;
+
+      return new TestSiteLayoutConfiguration (configSettings);
     }
   }
 }

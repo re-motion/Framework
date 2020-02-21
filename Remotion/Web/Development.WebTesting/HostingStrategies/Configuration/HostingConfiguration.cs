@@ -33,6 +33,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
   /// </remarks>
   public class HostingConfiguration : IHostingConfiguration
   {
+    private readonly ITestSiteLayoutConfiguration _testSiteLayoutConfiguration;
+
     private static readonly Dictionary<string, Type> s_wellKnownHostingStrategyTypes =
         new Dictionary<string, Type>
         {
@@ -42,12 +44,14 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
     private readonly ProviderSettings _hostingProviderSettings;
     private TimeSpan _verifyWebApplicationStartedTimeout;
 
-    public HostingConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
+    public HostingConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection, [NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
+      ArgumentUtility.CheckNotNull ("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
 
       _hostingProviderSettings = webTestConfigurationSection.HostingProviderSettings;
       _verifyWebApplicationStartedTimeout = webTestConfigurationSection.VerifyWebApplicationStartedTimeout;
+      _testSiteLayoutConfiguration = testSiteLayoutConfiguration;
     }
 
     public TimeSpan VerifyWebApplicationStartedTimeout => _verifyWebApplicationStartedTimeout;
@@ -61,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
       var hostingStrategyType = GetHostingStrategyType (hostingStrategyTypeName);
       Assertion.IsNotNull (hostingStrategyType, string.Format ("Hosting strategy '{0}' could not be loaded.", hostingStrategyTypeName));
 
-      var hostingStrategy = (IHostingStrategy) Activator.CreateInstance (hostingStrategyType, new object[] { _hostingProviderSettings.Parameters });
+      var hostingStrategy = (IHostingStrategy) Activator.CreateInstance (hostingStrategyType, new object[] { _testSiteLayoutConfiguration, _hostingProviderSettings.Parameters });
       return hostingStrategy;
     }
 

@@ -60,9 +60,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <_namespaces Include="www.re-motion.org/WebTesting/Configuration/1.0">
+      <_namespaces Include="www.re-motion.org/WebTesting/Configuration/2.0">
         <Prefix>rwt</Prefix>
-        <Uri>http://www.re-motion.org/WebTesting/Configuration/1.0</Uri>
+        <Uri>http://www.re-motion.org/WebTesting/Configuration/2.0</Uri>
       </_namespaces>
     </ItemGroup>
     

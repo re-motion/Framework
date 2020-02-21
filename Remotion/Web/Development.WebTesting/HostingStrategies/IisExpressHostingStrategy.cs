@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Collections.Specialized;
-using System.IO;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.HostingStrategies.Configuration;
 
 namespace Remotion.Web.Development.WebTesting.HostingStrategies
 {
@@ -30,25 +30,23 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
   {
     private readonly IisExpressProcessWrapper _iisExpressInstance;
 
-    /// <param name="webApplicationPath">Absolute or relative path to the web application source.</param>
+    /// <param name="testSiteLayoutConfiguration">The configuration of the layout of the used test site.</param>
     /// <param name="port">Port to be used.</param>
-    public IisExpressHostingStrategy ([NotNull] string webApplicationPath, int port)
+    public IisExpressHostingStrategy ([NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration, int port)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("webApplicationPath", webApplicationPath);
+      ArgumentUtility.CheckNotNull ("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
 
-      var absoluteWebApplicationPath = Path.GetFullPath (webApplicationPath);
-      _iisExpressInstance = new IisExpressProcessWrapper (absoluteWebApplicationPath, port);
+      _iisExpressInstance = new IisExpressProcessWrapper (testSiteLayoutConfiguration.RootPath, port);
     }
 
     /// <summary>
     /// Constructor required for direct usage in <see cref="WebTestConfigurationSection"/>.
     /// </summary>
+    /// <param name="testSiteLayoutConfiguration">The configuration of the layout of the used test site.</param>
     /// <param name="properties">The configuration properties.</param>
     [UsedImplicitly]
-    public IisExpressHostingStrategy ([NotNull] NameValueCollection properties)
-        : this (
-            ArgumentUtility.CheckNotNull ("properties", properties)["path"],
-            int.Parse (ArgumentUtility.CheckNotNull ("properties", properties)["port"]))
+    public IisExpressHostingStrategy ([NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] NameValueCollection properties)
+        : this (testSiteLayoutConfiguration, int.Parse (ArgumentUtility.CheckNotNull ("properties", properties)["port"]))
     {
     }
 

@@ -46,6 +46,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _hostingProperty;
     private readonly ConfigurationProperty _chrome;
     private readonly ConfigurationProperty _edge;
+    private readonly ConfigurationProperty _testSiteLayoutProperty;
 
     static WebTestConfigurationSection ()
     {
@@ -87,6 +88,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _cleanUpUnmatchedDownloadedFiles = new ConfigurationProperty ("cleanUpUnmatchedDownloadedFiles", typeof (bool), false);
       _requestErrorDetectionStrategyProperty = new ConfigurationProperty ("requestErrorDetectionStrategy", typeof (string), "None");
       _hostingProperty = new ConfigurationProperty ("hosting", typeof (ProviderSettings));
+      _testSiteLayoutProperty = new ConfigurationProperty ("testSiteLayout", typeof (TestSiteLayoutConfigurationElement));
       _chrome = new ConfigurationProperty ("chrome", typeof (ChromiumConfigurationElement));
       _edge = new ConfigurationProperty ("edge", typeof (ChromiumConfigurationElement));
 
@@ -107,6 +109,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _cleanUpUnmatchedDownloadedFiles,
                         _requestErrorDetectionStrategyProperty,
                         _hostingProperty,
+                        _testSiteLayoutProperty,
                         _chrome,
                         _edge
                     };
@@ -247,6 +250,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public ProviderSettings HostingProviderSettings
     {
       get { return (ProviderSettings) this [_hostingProperty]; }
+    }
+
+    /// <summary>
+    /// Gets the test site layout configuration.
+    /// </summary>
+    public TestSiteLayoutConfigurationElement TestSiteLayoutConfiguration
+    {
+      get { return (TestSiteLayoutConfigurationElement) this [_testSiteLayoutProperty]; }
     }
 
     /// <summary>
