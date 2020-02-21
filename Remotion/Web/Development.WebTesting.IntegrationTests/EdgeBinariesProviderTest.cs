@@ -26,7 +26,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   {
     private const string c_guidRegex = @"(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}";
 
-    [Explicit ("RM-7270: Edge is not released yet.")]
     [Test]
     public void GetInstalledExecutable ()
     {
@@ -34,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var result = provider.GetInstalledExecutable();
 
-      Assert.That (result.BrowserBinaryPath, Is.EqualTo (@"C:\Program Files (x86)\Microsoft\Edge Beta\Application\msedge.exe"));
+      Assert.That (result.BrowserBinaryPath, Is.EqualTo (@"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"));
       Assert.That (
           result.DriverBinaryPath,
           Is.StringMatching (
