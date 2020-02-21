@@ -53,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 
     private string GetInstalledEdgePath ()
     {
-      var defaultBetaEdgePath = Path.Combine (Get32BitProgramFilesPath(), "Microsoft", "Edge Beta", "Application", c_edgeExecutableName);
+      var defaultBetaEdgePath = Path.Combine (Get32BitProgramFilesPath(), "Microsoft", "Edge", "Application", c_edgeExecutableName);
 
       if (File.Exists (defaultBetaEdgePath))
         return defaultBetaEdgePath;
