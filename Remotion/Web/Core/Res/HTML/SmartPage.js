@@ -66,6 +66,10 @@ function SmartPage_Context(
   var _isCached = false;
   // Special flag to support the OnBeforeUnload part
   var _isAbortingBeforeUnload = false;
+  // Special flag to support conditional logic during OnBeforeUnload
+  var _isOnBeforeUnloadExecuting = false;
+  // Special flag to support conditional logic during OnUnload
+  var _isOnUnloadExecuting = false;
 
   // The name of the function used to evaluate whether to submit the form.
   // null if no external logic should be incorporated.
@@ -478,65 +482,80 @@ function SmartPage_Context(
   // OnUnload()
   this.OnBeforeUnload = function ()
   {
-    _isAbortingBeforeUnload = false;
-    var displayAbortConfirmation = false;
+    _isOnBeforeUnloadExecuting = true;
+    try
+    {
+      _isAbortingBeforeUnload = false;
+      var displayAbortConfirmation = false;
 
-    if (!_hasUnloaded
+      if (!_hasUnloaded
         && !_isCached
         && !_isSubmittingBeforeUnload
         && !_isAborting && _isAbortConfirmationEnabled)
-    {
-      var submitterElement = GetSubmitterOrActiveElement();
-      var isJavaScriptAnchor = IsJavaScriptAnchor(submitterElement);
-      var isAbortConfirmationRequired = !isJavaScriptAnchor
-                                        && (!_isDirtyStateTrackingEnabled || _isDirty);
-
-      if (isAbortConfirmationRequired)
       {
-        _isAbortingBeforeUnload = true;
-        displayAbortConfirmation = true;
+        var submitterElement = GetSubmitterOrActiveElement();
+        var isJavaScriptAnchor = IsJavaScriptAnchor(submitterElement);
+        var isAbortConfirmationRequired = !isJavaScriptAnchor
+          && (!_isDirtyStateTrackingEnabled || _isDirty);
+
+        if (isAbortConfirmationRequired)
+        {
+          _isAbortingBeforeUnload = true;
+          displayAbortConfirmation = true;
+        }
+      }
+      else if (_isSubmittingBeforeUnload)
+      {
+        _isSubmittingBeforeUnload = false;
+      }
+
+      ExecuteEventHandlers(_eventHandlers['onbeforeunload']);
+      if (displayAbortConfirmation)
+      {
+        // IE alternate/official version: window.event.returnValue = SmartPage_Context.Instance.AbortMessage
+        return _abortMessage;
       }
     }
-    else if (_isSubmittingBeforeUnload)
+    finally
     {
-      _isSubmittingBeforeUnload = false;
-    }
-
-    ExecuteEventHandlers(_eventHandlers['onbeforeunload']);
-    if (displayAbortConfirmation)
-    {
-      // IE alternate/official version: window.event.returnValue = SmartPage_Context.Instance.AbortMessage
-      return _abortMessage;
+      _isOnBeforeUnloadExecuting = false;
     }
   };
 
   // Event handler for window.OnUnload.
   this.OnUnload = function ()
   {
-    if ((!this.IsSubmitting() || _isAbortingBeforeUnload)
-        && !_isAborting)
+    _isOnUnloadExecuting = true;
+    try
     {
-      _isAborting = true;
-      ExecuteEventHandlers(_eventHandlers['onabort'], _hasSubmitted, _isCached);
-      _isAbortingBeforeUnload = false;
+      if ((!this.IsSubmitting() || _isAbortingBeforeUnload) && !_isAborting)
+      {
+        _isAborting = true;
+        ExecuteEventHandlers (_eventHandlers['onabort'], _hasSubmitted, _isCached);
+        _isAbortingBeforeUnload = false;
+      }
+      ExecuteEventHandlers (_eventHandlers['onunload']);
+      _hasUnloaded = true;
+      this.ClearIsSubmitting (false);
+      _isAborting = false;
+
+      _theForm = null;
+      _activeElement = null;
+
+      _loadHandler = null;
+      _beforeUnloadHandler = null;
+      _unloadHandler = null;
+      _scrollHandler = null;
+      _resizeHandler = null;
+      _formSubmitHandler = null;
+      _formClickHandler = null;
+      _doPostBackHandler = null;
+      _valueChangedHandler = null;
     }
-    ExecuteEventHandlers(_eventHandlers['onunload']);
-    _hasUnloaded = true;
-    this.ClearIsSubmitting(false);
-    _isAborting = false;
-
-    _theForm = null;
-    _activeElement = null;
-
-    _loadHandler = null;
-    _beforeUnloadHandler = null;
-    _unloadHandler = null;
-    _scrollHandler = null;
-    _resizeHandler = null;
-    _formSubmitHandler = null;
-    _formClickHandler = null;
-    _doPostBackHandler = null;
-    _valueChangedHandler = null;
+    finally
+    {
+      _isOnUnloadExecuting = false;
+    }
   };
 
   // Override for the ASP.NET __doPostBack method.
@@ -723,34 +742,51 @@ function SmartPage_Context(
   };
 
   // Sends an AJAX request to the server.
-  // successHandler: function (args { Status }), called when the reqest succeeds
-  // errorHandler: function (args { Status }), called when the reqest fails
+  // successHandler: function (args { Status }), called when the request succeeds
+  // errorHandler: function (args { Status }), called when the request fails
   this.SendOutOfBandRequest = function (url, successHandler, errorHandler)
   {
     ArgumentUtility.CheckNotNullAndTypeIsString('url', url);
     ArgumentUtility.CheckNotNullAndTypeIsFunction('successHandler', successHandler);
     ArgumentUtility.CheckNotNullAndTypeIsFunction('errorHandler', errorHandler);
 
-    var xhr = new XMLHttpRequest();
-
-    var readStateDone = 4;
-    var httpStatusSuccess = 299;
-    var method = 'GET';
-    var isAsyncCall = true;
-
-    xhr.open(method, url, isAsyncCall);
-    xhr.onreadystatechange = function ()
+    if ((_isOnBeforeUnloadExecuting || _isOnUnloadExecuting) && navigator.sendBeacon)
     {
-      if (this.readyState === readStateDone)
+      var result = navigator.sendBeacon (url, null);
+      if (result)
       {
-        var args = { Status : this.status };
-        if (this.status > 0 && this.status <= httpStatusSuccess)
-          successHandler (args);
-        else
-          errorHandler (args);
+        let args = { Status : 200 };
+        successHandler (args);
       }
-    };
-    xhr.send();
+      else
+      {
+        let args = { Status: 400 };
+        errorHandler (args);
+      }
+    }
+    else
+    {
+      var xhr = new XMLHttpRequest();
+
+      var readStateDone = 4;
+      var httpStatusSuccess = 299;
+      var method = 'GET';
+      var isAsyncCall = true;
+
+      xhr.open (method, url, isAsyncCall);
+      xhr.onreadystatechange = function ()
+      {
+        if (this.readyState === readStateDone)
+        {
+          var args = { Status : this.status };
+          if (this.status > 0 && this.status <= httpStatusSuccess)
+            successHandler (args);
+          else
+            errorHandler (args);
+        }
+      };
+      xhr.send();
+    }
   };
 
   function AddEventHandler(object, eventType, handler)
