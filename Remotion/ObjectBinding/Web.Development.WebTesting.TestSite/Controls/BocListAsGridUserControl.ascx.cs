@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.UI.Controls;
@@ -49,6 +50,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
       JobList_Normal.EditableRowChangesCanceled += EditableRowChangesCanceledHandler;
       JobList_Normal.ListItemCommandClick += ListItemCommandClickHandler;
       JobList_Normal.CustomCellClick += CustomCellClickHandler;
+
+      AlwaysInvalidValidator.ServerValidate += (source, args) => args.IsValid = false;
+      JobList_AlwaysInvalid.RegisterValidator (AlwaysInvalidValidator);
     }
 
     protected override void OnLoad (EventArgs e)

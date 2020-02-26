@@ -26,6 +26,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
       get { return CurrentObject; }
     }
 
+    public override bool Validate ()
+    {
+      var noObjectIsValid = NoObject.Validate();
+      var baseObjectIsValid = base.Validate();
+
+      return noObjectIsValid && baseObjectIsValid;
+    }
+
     protected override void OnPreRender (EventArgs e)
     {
       base.OnPreRender (e);

@@ -100,4 +100,18 @@
     </td>
     <td>(password, no render)</td>
   </tr>
+    <tr>
+      <td></td>
+      <td>
+        <remotion:BocTextValue
+            ID="LastNameField_Normal_Required"
+            DataSourceControl="CurrentObject"
+            PropertyIdentifier="LastName"
+            TextBoxStyle-AutoPostBack="true"
+            ValueType="String"
+            Required="true"
+            runat="server"/>
+      </td>
+      <td>(normal, required)</td>
+    </tr>
 </table>

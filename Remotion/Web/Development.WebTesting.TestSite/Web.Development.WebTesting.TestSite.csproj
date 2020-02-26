@@ -71,6 +71,15 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
+    <Content Include="Accessibility\ButtonWithoutInnerHTML.html" />
+    <Content Include="Accessibility\Contrast.html" />
+    <Content Include="Accessibility\ViolationsWithDifferentConformanceLevels.html" />
+    <Content Include="Accessibility\MultipleFormElementsWithoutLabels.html" />
+    <Content Include="Accessibility\FormElementWithoutLabelAndDoubleIDAndWithoutDocumentTitle.html" />
+    <Content Include="Accessibility\FormElementWithoutLabel.html" />
+    <Content Include="Accessibility\IFrame.html" />
+    <Content Include="Accessibility\ImageWithoutAlt.html" />
+    <Content Include="Accessibility\IncludeExclude.html" />
     <Content Include="AspNetRequestErrorDetectionParserStaticPages\InvalidErrorPageWithMessageMissing.html" />
     <Content Include="AspNetRequestErrorDetectionParserStaticPages\InvalidErrorPageWithStacktraceMissing.html" />
     <Content Include="DropDownMenuWebService.asmx" />

@@ -132,4 +132,24 @@
     </td>
     <td>(not required, tri-state)</td>
   </tr>
+    <tr>
+      <td></td>
+      <td>
+        <remotion:BocBooleanValue ID="DeceasedField_Normal_NoDescription"
+                                  DataSourceControl="CurrentObject"
+                                  FalseDescription="Is_So_False"
+                                  NullDescription="Is_So_Null"
+                                  PropertyIdentifier="Deceased"
+                                  TrueDescription="Is_So_True"
+                                  ShowDescription="false"
+
+                                  AutoPostBack="true"
+                                  Enabled="true"
+                                  ReadOnly="false"
+                                  Required="true"
+    
+                                  runat="server"/>
+      </td>
+      <td>(normal, required)</td>
+    </tr>
 </table>

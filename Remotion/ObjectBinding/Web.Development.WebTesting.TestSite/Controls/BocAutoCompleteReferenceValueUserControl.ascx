@@ -264,4 +264,60 @@
     </td>
     <td>(no command & no menu)</td>
   </tr>
+<tr>
+  <td></td>
+  <td>
+      <remotion:BocAutoCompleteReferenceValue ID="PartnerField_NoCommandNoMenu_ReadOnly"
+                                              SearchServicePath="AutoCompleteService.asmx"
+                                              TextBoxStyle-AutoPostBack="false"
+                                              ReadOnly="True"
+                                              DataSourceControl="CurrentObject"
+                                              PropertyIdentifier="Partner"
+                                              CompletionSetCount="5"
+                                              IconServicePath="IconService.asmx"
+
+                                              runat="server">
+      </remotion:BocAutoCompleteReferenceValue>
+  </td>
+    <td>(read-only, no command & no menu)</td>
+</tr>
+<tr>
+  <td></td>
+  <td>
+    <remotion:BocAutoCompleteReferenceValue ID="PartnerField_Normal_Required"
+                                            SearchServicePath="AutoCompleteService.asmx"
+                                            TextBoxStyle-AutoPostBack="true"
+                                            ReadOnly="False"
+                                            DataSourceControl="CurrentObject"
+                                            PropertyIdentifier="Partner"
+                                            CompletionSetCount="5"
+                                            IconServicePath="IconService.asmx"
+                                            Required="true"
+                                            runat="server">
+    
+        <PersistedCommand>
+            <remotion:BocCommand Type="Event"></remotion:BocCommand>
+        </PersistedCommand>
+
+        <OptionsMenuItems>
+            <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
+                <PersistedCommand>
+                    <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
+                </PersistedCommand>
+            </remotion:BocMenuItem>
+            <remotion:BocMenuItem ItemID="OptCmd2" Text="My menu command 2">
+                <PersistedCommand>
+                    <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
+                </PersistedCommand>
+            </remotion:BocMenuItem>
+            <remotion:BocMenuItem ItemID="OptCmd3" Text="My menu command 3" RequiredSelection="ExactlyOne">
+                <PersistedCommand>
+                    <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
+                </PersistedCommand>
+            </remotion:BocMenuItem>
+        </OptionsMenuItems>
+    </remotion:BocAutoCompleteReferenceValue>
+  </td>
+    <td>(normal, required)</td>
+</tr>
 </table>
