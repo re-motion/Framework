@@ -35,7 +35,7 @@ namespace Remotion.Web.UI.Controls
       where TControl : IStyledControl, IControlWithDiagnosticMetadata
   {
     private readonly ICache<Tuple<Type, IResourceManager>, IResourceManager> _resourceManagerCache =
-        CacheFactory.Create<Tuple<Type, IResourceManager>, IResourceManager>();
+        CacheFactory.CreateWithLazyLocking<Tuple<Type, IResourceManager>, IResourceManager>();
 
     private readonly IResourceUrlFactory _resourceUrlFactory;
     private readonly IGlobalizationService _globalizationService;
