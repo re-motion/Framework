@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Text;
+using System.Threading;
 using System.Web.UI;
-using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -34,8 +34,8 @@ namespace Remotion.Web.UI.Controls
   public abstract class RendererBase<TControl>
       where TControl : IStyledControl, IControlWithDiagnosticMetadata
   {
-    private readonly Dictionary<Tuple<Type, IResourceManager>, IResourceManager> _resourceManagerCache =
-        new Dictionary<Tuple<Type, IResourceManager>, IResourceManager>();
+    private readonly ConcurrentDictionary<Tuple<Type, IResourceManager>, Lazy<IResourceManager>> _resourceManagerCache =
+        new ConcurrentDictionary<Tuple<Type, IResourceManager>, Lazy<IResourceManager>>();
 
     private readonly IResourceUrlFactory _resourceUrlFactory;
     private readonly IGlobalizationService _globalizationService;
@@ -144,9 +144,13 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
       ArgumentUtility.CheckNotNull ("controlResourceManager", controlResourceManager);
 
-      return _resourceManagerCache.GetOrCreateValue (
+      var cachedResourceManager = _resourceManagerCache.GetOrAdd (
           Tuple.Create (localResourcesType, controlResourceManager),
-          key => ResourceManagerSet.Create (key.Item2, _globalizationService.GetResourceManager (key.Item1)));
+          key => new Lazy<IResourceManager> (
+              () => ResourceManagerSet.Create (key.Item2, _globalizationService.GetResourceManager (key.Item1)),
+              LazyThreadSafetyMode.ExecutionAndPublication));
+
+      return cachedResourceManager.Value;
     }
   }
 }
