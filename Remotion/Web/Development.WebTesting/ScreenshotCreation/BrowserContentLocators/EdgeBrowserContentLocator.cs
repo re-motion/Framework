@@ -104,20 +104,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
     private Rectangle ResolveBoundsFromWindow (AutomationElement window)
     {
-      var element = RetryUntilValueChanges (
-          () => window.FindFirst (
-              TreeScope.Subtree,
-              new AndCondition (
-                  new PropertyCondition (AutomationElement.ControlTypeProperty, ControlType.Document),
-                  new PropertyCondition (AutomationElement.FrameworkIdProperty, c_edgeFrameworkID))),
+      var contentElement = RetryUntilValueChanges (
+          () => GetContentElement (window),
           null,
           5,
           TimeSpan.Zero);
 
-      if (element == null)
+      if (contentElement == null)
         throw new InvalidOperationException ("Could not find the content window of the found Edge browser window.");
 
-      var rawBounds = RetryUntilValueChanges (() => element.Current.BoundingRectangle, Rect.Empty, 3, TimeSpan.FromMilliseconds (100));
+      // The content element must always be fetched anew. If the content element from the first query is reused, this yields wrong coordinates in some cases.
+      var rawBounds = RetryUntilValueChanges (() => GetContentElement (window).Current.BoundingRectangle, Rect.Empty, 3, TimeSpan.FromMilliseconds (100));
 
       if (rawBounds == Rect.Empty)
         throw new InvalidOperationException ("Could not resolve the bounds of the Edge browser window.");
@@ -127,6 +124,15 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
           (int) Math.Round (rawBounds.Y),
           (int) Math.Round (rawBounds.Width),
           (int) Math.Round (rawBounds.Height));
+    }
+
+    private AutomationElement GetContentElement (AutomationElement window)
+    {
+      return window.FindFirst (
+          TreeScope.Subtree,
+          new AndCondition (
+              new PropertyCondition (AutomationElement.ControlTypeProperty, ControlType.Document),
+              new PropertyCondition (AutomationElement.FrameworkIdProperty, c_edgeFrameworkID)));
     }
 
     private TResult RetryUntilValueChanges<TResult> (Func<TResult> func, TResult value, int retries, TimeSpan interval)
