@@ -18,11 +18,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Collections;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -449,7 +451,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     {
       foreach (IEditableControl control in _trackedControls.Values)
       {
-        if (control.Page != null && control.Visible)
+        if (control.Parent?.CreateSequence (c => c.Parent).OfType<Page>().SingleOrDefault() != null && control.Visible)
         {
           string[] trackedIDs = control.GetTrackedClientIDs();
           for (int i = 0; i < trackedIDs.Length; i++)
