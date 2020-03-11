@@ -100,10 +100,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       Computer computer = Computer.NewObject ();
       DataContainer dataContainer = computer.InternalDataContainer;
       computer.Delete ();
-      Assert.That (dataContainer.IsDiscarded, Is.True);
+      Assert.That (dataContainer.State.IsDiscarded, Is.True);
 
       DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize (dataContainer);
-      Assert.That (deserializedDataContainer.IsDiscarded, Is.True);
       Assert.That (deserializedDataContainer.State.IsDiscarded, Is.True);
     }
   }

@@ -29,6 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     private readonly DomainObject _domainObject;
     private readonly ClientTransaction _associatedTransaction;
 
+    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
     public DomainObjectTransactionContext (DomainObject domainObject, ClientTransaction associatedTransaction)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -52,11 +53,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public DomainObjectState State
     {
       get { return ClientTransaction.DataManager.GetState (DomainObject.ID); }
-    }
-
-    public bool IsInvalid
-    {
-      get { return ClientTransaction.IsInvalid (DomainObject.ID); }
     }
 
     public object Timestamp

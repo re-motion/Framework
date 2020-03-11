@@ -962,11 +962,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void Discard_SetsDiscardedFlag ()
     {
-      Assert.That (_newDataContainer.IsDiscarded, Is.False);
+      Assert.That (_newDataContainer.State.IsDiscarded, Is.False);
 
       _newDataContainer.Discard ();
 
-      Assert.That (_newDataContainer.IsDiscarded, Is.True);
+      Assert.That (_newDataContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]
@@ -1129,7 +1129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetIDEvenPossibleWhenDiscarded ()
     {
-      Assert.That (_discardedDataContainer.IsDiscarded, Is.True);
+      Assert.That (_discardedDataContainer.State.IsDiscarded, Is.True);
       Assert.That (_discardedDataContainer.ID, Is.EqualTo (_invalidObjectID));
     }
 
@@ -1140,7 +1140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var dataContainerWithObject = domainObject.InternalDataContainer;
       dataContainerWithObject.Discard ();
 
-      Assert.That (dataContainerWithObject.IsDiscarded, Is.True);
+      Assert.That (dataContainerWithObject.State.IsDiscarded, Is.True);
       Assert.That (dataContainerWithObject.DomainObject, Is.SameAs (domainObject));
     }
 

@@ -1,5 +1,6 @@
 using System;
 using JetBrains.Annotations;
+using Remotion.Data.DomainObjects.DataManagement;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -98,6 +99,9 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// The <see cref="DomainObject"/> reference is no longer or not yet valid for use in this transaction.
     /// </summary>
+    /// <remarks>
+    /// For more information why and when an object becomes invalid see <see cref="ObjectInvalidException"/>.
+    /// </remarks>
     public bool IsInvalid => (_flags & Flags.Invalid) != 0;
 
     /// <summary>

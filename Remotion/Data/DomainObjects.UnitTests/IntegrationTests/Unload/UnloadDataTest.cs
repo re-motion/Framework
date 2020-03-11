@@ -548,7 +548,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       EnsureTransactionThrowsOnLoad ();
 
       Dev.Null = order1.ID;
-      Dev.Null = order1.IsInvalid;
       Dev.Null = order1.State;
       Dev.Null = order1.RootTransaction;
 

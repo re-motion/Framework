@@ -88,6 +88,7 @@ namespace Remotion.Data.DomainObjects
     /// Gets the current state of the <paramref name="domainObject"/> in the <see cref="ClientTransaction.ActiveTransaction"/>.
     /// </summary>
     /// <param name="domainObject">The <see cref="IDomainObject"/> to get the <see cref="DomainObjectState"/> for. Must not be <see langword="null" />.</param>
+    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
     public static DomainObjectState GetState ([NotNull] this IDomainObject domainObject)
     {
       ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);

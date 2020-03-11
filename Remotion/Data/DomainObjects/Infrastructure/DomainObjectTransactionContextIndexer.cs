@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
@@ -34,6 +35,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _isInitializedEventExecuting = isInitializedEventExecuting;
     }
 
+    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
     public IDomainObjectTransactionContext this[ClientTransaction clientTransaction]
     {
       get

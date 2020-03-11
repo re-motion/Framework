@@ -266,7 +266,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       _dataManager.Discard (dataContainer);
 
-      Assert.That (dataContainer.IsDiscarded, Is.True);
+      Assert.That (dataContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]
@@ -403,7 +403,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       _dataManager.Commit ();
 
-      Assert.That (dataContainer.IsDiscarded, Is.True);
+      Assert.That (dataContainer.State.IsDiscarded, Is.True);
       Assert.That (_dataManager.DataContainers[dataContainer.ID], Is.Null);
     }
 
@@ -432,11 +432,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       dataContainer.Delete ();
 
       Assert.That (dataContainer.State.IsDeleted, Is.True);
-      Assert.That (dataContainer.IsDiscarded, Is.False);
+      Assert.That (dataContainer.State.IsDiscarded, Is.False);
 
       _dataManager.Commit ();
 
-      Assert.That (dataContainer.IsDiscarded, Is.True);
+      Assert.That (dataContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]
@@ -513,11 +513,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
       ClientTransactionTestHelper.RegisterDataContainer (_dataManager.ClientTransaction, dataContainer);
 
-      Assert.That (dataContainer.IsDiscarded, Is.False);
+      Assert.That (dataContainer.State.IsDiscarded, Is.False);
 
       _dataManager.Rollback ();
 
-      Assert.That (dataContainer.IsDiscarded, Is.True);
+      Assert.That (dataContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]

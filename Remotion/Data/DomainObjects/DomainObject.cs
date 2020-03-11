@@ -312,13 +312,13 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets a value indicating whther the object is invalid in the default transaction, ie. in its binding transaction or - if
+    /// Gets a value indicating whether the object is invalid in the default transaction, ie. in its binding transaction or - if
     /// none - <see cref="DomainObjects.ClientTransaction.Current"/>.
     /// </summary>
     /// <remarks>
     /// For more information why and when an object becomes invalid see <see cref="ObjectInvalidException"/>.
     /// </remarks>
-    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
+    [Obsolete ("Use State.IsInvalid instead. (Version: 1.21.8)", false)]
     public bool IsInvalid
     {
       get { return State.IsInvalid; }
@@ -329,7 +329,6 @@ namespace Remotion.Data.DomainObjects
     /// its binding transaction or - if none - <see cref="DomainObjects.ClientTransaction.Current"/>.
     /// </summary>
     /// <value>The timestamp of the object.</value>
-    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the current transaction.</exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the transaction.</exception>
     public object Timestamp
     {

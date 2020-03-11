@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 
       Assert.That (_dataContainerMap, Is.Empty);
       _endPointManagerMock.VerifyAllExpectations ();
-      Assert.That (_existingDataContainer.IsDiscarded, Is.True);
+      Assert.That (_existingDataContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       _unloadCommand.Perform ();
 
       _invalidDomainObjectManagerMock.VerifyAllExpectations ();
-      Assert.That (_newDataContainer.IsDiscarded, Is.True);
+      Assert.That (_newDataContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]

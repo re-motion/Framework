@@ -1058,7 +1058,7 @@
     </Compile>
     <Compile Include="Schemas\TypesSchemaLoader.cs" />
     <Compile Include="Schemas\SchemaLoader.cs" />
-    <Compile Include="StateType.cs">
+    <Compile Include="StateType.obsolete.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Infrastructure\ObjectPersistence\SubPersistenceStrategy.cs" />

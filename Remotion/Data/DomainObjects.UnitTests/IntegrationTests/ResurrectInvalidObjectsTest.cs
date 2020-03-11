@@ -272,7 +272,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         Func<DomainObjectState, bool> expectedStatePredicate)
     {
       Assert.That (clientTransaction.IsInvalid (domainObject.ID), Is.False);
-      Assert.That (domainObject.TransactionContext[clientTransaction].IsInvalid, Is.False);
       var domainObjectState = domainObject.TransactionContext[clientTransaction].State;
       Assert.That (domainObjectState.IsInvalid, Is.False);
       Assert.That (expectedStatePredicate (domainObjectState), Is.True);
@@ -281,7 +280,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     private void CheckStateIsInvalid (DomainObject domainObject, ClientTransaction clientTransaction)
     {
       Assert.That (clientTransaction.IsInvalid (domainObject.ID), Is.True);
-      Assert.That (domainObject.TransactionContext[clientTransaction].IsInvalid, Is.True);
       Assert.That (domainObject.TransactionContext[clientTransaction].State.IsInvalid, Is.True);
     }
   }

@@ -38,15 +38,6 @@ namespace Remotion.Data.DomainObjects
     DomainObjectState State { get; }
 
     /// <summary>
-    /// Gets a value indicating the invalid status of the object in the associated <see cref="ClientTransaction"/>.
-    /// </summary>
-    /// <remarks>
-    /// For more information why and when an object becomes invalid see <see cref="ObjectInvalidException"/>.
-    /// </remarks>
-    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the associated transaction.</exception>
-    bool IsInvalid { get; }
-
-    /// <summary>
     /// Gets the timestamp used for optimistic locking when the object is committed to the database.
     /// </summary>
     /// <value>The timestamp of the object.</value>

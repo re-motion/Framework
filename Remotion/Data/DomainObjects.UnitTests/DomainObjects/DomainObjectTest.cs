@@ -349,24 +349,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       ClassWithAllDataTypes loadedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
       DataContainer loadedObjectDataContainer = newObject.InternalDataContainer;
 
-      Assert.That (newObject.IsInvalid, Is.False);
+      Assert.That (newObject.State.IsInvalid, Is.False);
       Assert.That (newObject.State.IsNew, Is.True);
-      Assert.That (loadedObject.IsInvalid, Is.False);
+      Assert.That (loadedObject.State.IsInvalid, Is.False);
       Assert.That (loadedObject.State.IsUnchanged, Is.True);
 
       newObject.Delete ();
 
-      Assert.That (newObject.IsInvalid, Is.True);
       Assert.That (newObject.State.IsInvalid, Is.True);
-      Assert.That (newObjectDataContainer.IsDiscarded, Is.True);
       Assert.That (newObjectDataContainer.State.IsDiscarded, Is.True);
 
       loadedObject.Delete ();
       TestableClientTransaction.Commit ();
 
-      Assert.That (loadedObject.IsInvalid, Is.True);
       Assert.That (loadedObject.State.IsInvalid, Is.True);
-      Assert.That (loadedObjectDataContainer.IsDiscarded, Is.True);
       Assert.That (loadedObjectDataContainer.State.IsDiscarded, Is.True);
     }
 

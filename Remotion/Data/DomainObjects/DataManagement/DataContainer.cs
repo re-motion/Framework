@@ -433,6 +433,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <remarks>
     /// For more information why and when a <see cref="DataContainer"/> is discarded see <see cref="ObjectInvalidException"/>.
     /// </remarks>
+    [Obsolete ("Use State.IsDiscarded instead. (Version: 1.21.8)", false)]
     public bool IsDiscarded
     {
       get { return _isDiscarded; }

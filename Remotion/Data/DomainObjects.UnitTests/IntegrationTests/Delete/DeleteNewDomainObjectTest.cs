@@ -231,11 +231,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     public void DataContainerIsDiscarded ()
     {
       DataContainer newDataContainer = _newOrder.InternalDataContainer;
-      Assert.That (newDataContainer.IsDiscarded, Is.False);
+      Assert.That (newDataContainer.State.IsDiscarded, Is.False);
 
       _newOrder.Delete ();
 
-      Assert.That (newDataContainer.IsDiscarded, Is.True);
+      Assert.That (newDataContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]

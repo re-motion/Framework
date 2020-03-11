@@ -71,36 +71,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    public void IsInvalid_False()
+    public void State_IsInvalid_False()
     {
-      Assert.That (_newOrderContext.IsInvalid, Is.False);
+      Assert.That (_newOrderContext.State.IsInvalid, Is.False);
     }
 
     [Test]
-    public void IsInvalid_False_InvalidInCurrentTransaction ()
+    public void State_IsInvalid_False_InvalidInCurrentTransaction ()
     {
       using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope())
       {
-        Assert.That (_loadedOrder1.IsInvalid, Is.False);
-        Assert.That (_loadedOrder1Context.IsInvalid, Is.False);
+        Assert.That (_loadedOrder1.State.IsInvalid, Is.False);
+        Assert.That (_loadedOrder1Context.State.IsInvalid, Is.False);
 
         DeleteOrder(_loadedOrder1);
         ClientTransaction.Current.Commit ();
 
-        Assert.That (_loadedOrder1.IsInvalid, Is.True);
-        Assert.That (_loadedOrder1Context.IsInvalid, Is.False);
+        Assert.That (_loadedOrder1.State.IsInvalid, Is.True);
+        Assert.That (_loadedOrder1Context.State.IsInvalid, Is.False);
       }
     }
 
     [Test]
-    public void IsInvalid_True ()
-    {
-      _newOrder.Delete ();
-      Assert.That (_newOrderContext.IsInvalid, Is.True);
-    }
-
-    [Test]
-    public void State_IsInvalid ()
+    public void State_IsInvalid_True ()
     {
       _newOrder.Delete ();
       Assert.That (_newOrderContext.State.IsInvalid, Is.True);

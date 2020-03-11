@@ -49,12 +49,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
     }
 
     [StorageClassNone]
-    public new bool IsInvalid
-    {
-      get { return base.IsInvalid; }
-    }
-
-    [StorageClassNone]
     public new PropertyIndexer Properties
     {
       get { return base.Properties; }
