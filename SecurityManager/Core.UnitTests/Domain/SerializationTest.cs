@@ -43,8 +43,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       CheckDomainObjectSerializability (delegate { return AccessTypeDefinition.NewObject (); });
       CheckDomainObjectSerializability (delegate { return AccessTypeReference.NewObject (); });
       CheckDomainObjectSerializability (delegate { return Culture.NewObject ("DE-DE"); });
-      CheckDomainObjectSerializability (delegate { return LocalizedName.NewObject ("foo", Culture.NewObject ("DE-DE"), SecurableClassDefinition.NewObject ()); });
       CheckDomainObjectSerializability (delegate { return SecurableClassDefinition.NewObject (); });
+      CheckDomainObjectSerializability (delegate { return LocalizedName.NewObject ("foo", Culture.NewObject ("DE-DE"), SecurableClassDefinition.NewObject ()); });
       CheckDomainObjectSerializability (delegate { return StateDefinition.NewObject (); });
       CheckDomainObjectSerializability (delegate { return StatePropertyDefinition.NewObject (); });
       CheckDomainObjectSerializability (delegate { return StatePropertyReference.NewObject (); });
