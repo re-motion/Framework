@@ -47,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _orderTicket.Delete ();
 
-      Assert.That (_orderTicket.State, Is.EqualTo (StateType.Deleted));
-      Assert.That (_orderTicket.InternalDataContainer.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (_orderTicket.State.IsDeleted, Is.True);
+      Assert.That (_orderTicket.InternalDataContainer.State.IsDeleted, Is.True);
     }
 
     [Test]
@@ -111,9 +111,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       DomainObject deletedSubordinate4 = DomainObjectIDs.Employee4.GetObject<Employee> (includeDeleted: true);
       DomainObject deletedSubordinate5 = DomainObjectIDs.Employee5.GetObject<Employee> (includeDeleted: true);
 
-      Assert.That (supervisor.State, Is.EqualTo (StateType.Deleted));
-      Assert.That (deletedSubordinate4.State, Is.EqualTo (StateType.Deleted));
-      Assert.That (deletedSubordinate5.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (supervisor.State.IsDeleted, Is.True);
+      Assert.That (deletedSubordinate4.State.IsDeleted, Is.True);
+      Assert.That (deletedSubordinate5.State.IsDeleted, Is.True);
 
       TestableClientTransaction.Commit ();
       ReInitializeTransaction ();
@@ -142,9 +142,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       //Expectation: no exception
 
-      Assert.That (newOrder.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (newOrderTicket.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (newOrderItem.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (newOrder.State.IsInvalid, Is.True);
+      Assert.That (newOrderTicket.State.IsInvalid, Is.True);
+      Assert.That (newOrderItem.State.IsInvalid, Is.True);
     }
   }
 }

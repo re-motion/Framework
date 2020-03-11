@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       _deleteOrder1Command.Perform ();
 
-      _transaction.ExecuteInScope (() => Assert.That (_order1.State, Is.EqualTo (StateType.Deleted)));
+      _transaction.ExecuteInScope (() => Assert.That (_order1.State.IsDeleted, Is.True));
     }
 
     [Test]

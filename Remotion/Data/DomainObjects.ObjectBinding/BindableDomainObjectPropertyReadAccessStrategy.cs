@@ -45,20 +45,21 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       if (domainObject == null)
         return true;
 
-      switch (domainObject.State)
-      {
-        case StateType.Unchanged:
-        case StateType.Changed:
-        case StateType.New:
-          return true;
-        case StateType.Deleted:
-        case StateType.Invalid:
-          return false;
-        case StateType.NotLoadedYet:
-          return domainObject.TryEnsureDataAvailable();
-        default:
-          throw new NotSupportedException(string.Format ("The StateType '{0}' is not supported.", domainObject.State));
-      }
+      var domainObjectState = domainObject.State;
+      if (domainObjectState.IsUnchanged)
+        return true;
+      else if (domainObjectState.IsChanged)
+        return true;
+      else if (domainObjectState.IsNew)
+        return true;
+      else if (domainObjectState.IsDeleted)
+        return false;
+      else if (domainObjectState.IsInvalid)
+        return false;
+      else if (domainObjectState.IsNotLoadedYet)
+        return domainObject.TryEnsureDataAvailable();
+      else
+        throw new NotSupportedException (string.Format ("The {0} is not supported.", domainObjectState));
     }
 
     public bool IsPropertyAccessException (

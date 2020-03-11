@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
           _parentInvalidDomainObjectManager.InvalidObjectIDs.Select (id => _parentInvalidDomainObjectManager.GetInvalidObjectReference (id));
 
       var parentDataManager = _parentTransaction.DataManager;
-      var deletedObjects = parentDataManager.DataContainers.Where (dc => dc.State == StateType.Deleted).Select (dc => dc.DomainObject);
+      var deletedObjects = parentDataManager.DataContainers.Where (dc => dc.State.IsDeleted).Select (dc => dc.DomainObject);
 
       return new InvalidDomainObjectManager (eventSink, invalidObjects.Concat (deletedObjects));
     }

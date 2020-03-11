@@ -83,12 +83,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void GetState ()
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
-      Assert.That (_dataManager.GetState (order1.ID), Is.EqualTo (StateType.Unchanged));
+      Assert.That (_dataManager.GetState (order1.ID).IsUnchanged, Is.True);
 
       var propertyName = GetPropertyDefinition (typeof (Order), "OrderNumber");
       _dataManager.DataContainers[order1.ID].SetValue (propertyName, 100);
 
-      Assert.That (_dataManager.GetState (order1.ID), Is.EqualTo (StateType.Changed));
+      Assert.That (_dataManager.GetState (order1.ID).IsChanged, Is.True);
     }
 
     [Test]
@@ -99,9 +99,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var newInstance = DomainObjectMother.GetNewObject();
       var deletedInstance = DomainObjectMother.GetDeletedObject(TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var unchangedObjects = _dataManager.GetLoadedDataByObjectState (StateType.Unchanged);
-      var changedOrNewObjects = _dataManager.GetLoadedDataByObjectState (StateType.Changed, StateType.New);
-      var deletedOrUnchangedObjects = _dataManager.GetLoadedDataByObjectState (StateType.Deleted, StateType.Unchanged);
+      var unchangedObjects = _dataManager.GetLoadedDataByObjectState (state => state.IsUnchanged);
+      var changedOrNewObjects = _dataManager.GetLoadedDataByObjectState (state => state.IsChanged || state.IsNew);
+      var deletedOrUnchangedObjects = _dataManager.GetLoadedDataByObjectState (state => state.IsDeleted || state.IsUnchanged);
 
       CheckPersistableDataSequence (new[] { CreatePersistableData (unchangedInstance) }, unchangedObjects);
       CheckPersistableDataSequence (new[] { CreatePersistableData (changedInstance), CreatePersistableData (newInstance) }, changedOrNewObjects);
@@ -383,11 +383,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
       ClientTransactionTestHelper.RegisterDataContainer (_dataManager.ClientTransaction, dataContainer);
 
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.New));
+      Assert.That (dataContainer.State.IsNew, Is.True);
       
       _dataManager.Commit ();
 
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (dataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -398,7 +398,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       dataContainer.Delete ();
 
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (dataContainer.State.IsDeleted, Is.True);
       Assert.That (_dataManager.DataContainers[dataContainer.ID], Is.Not.Null);
 
       _dataManager.Commit ();
@@ -431,7 +431,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       dataContainer.Delete ();
 
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (dataContainer.State.IsDeleted, Is.True);
       Assert.That (dataContainer.IsDiscarded, Is.False);
 
       _dataManager.Commit ();
@@ -473,11 +473,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       dataContainer.Delete ();
 
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (dataContainer.State.IsDeleted, Is.True);
 
       _dataManager.Rollback ();
 
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (dataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -486,7 +486,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
       ClientTransactionTestHelper.RegisterDataContainer (_dataManager.ClientTransaction, dataContainer);
 
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.New));
+      Assert.That (dataContainer.State.IsNew, Is.True);
 
       _dataManager.Rollback ();
 
@@ -561,7 +561,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var deletedObject = DomainObjectIDs.Order1.GetObject<Order> ();
       deletedObject.Delete ();
-      Assert.That (deletedObject.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (deletedObject.State.IsDeleted, Is.True);
 
       var command = _dataManager.CreateDeleteCommand (deletedObject);
       Assert.That (command, Is.InstanceOf (typeof (NopCommand)));
@@ -573,7 +573,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var invalidObject = Order.NewObject ();
       invalidObject.Delete ();
-      Assert.That (invalidObject.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (invalidObject.State.IsInvalid, Is.True);
 
       _dataManager.CreateDeleteCommand (invalidObject);
     }
@@ -647,9 +647,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var exceptionCommand = (ExceptionCommand) result;
       Assert.That (exceptionCommand.Exception.Message, Is.EqualTo (
           "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-          + "'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' (Changed), "
-          + "'Order|3c0fb6ed-de1c-4e70-8d80-218e0bf58df3|System.Guid' (Deleted), "
-          + "'Order|90e26c86-611f-4735-8d1b-e1d0918515c2|System.Guid' (Invalid)."));
+          + "'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' (DataContainerState (Changed)), "
+          + "'Order|3c0fb6ed-de1c-4e70-8d80-218e0bf58df3|System.Guid' (DataContainerState (Deleted)), "
+          + "'Order|90e26c86-611f-4735-8d1b-e1d0918515c2|System.Guid' (DataContainerState (Discarded))."));
     }
 
     [Test]

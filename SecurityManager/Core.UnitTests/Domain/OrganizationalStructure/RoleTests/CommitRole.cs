@@ -100,7 +100,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       _substitution.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That (GetDataContainer ((DomainObject) sender).State, Is.EqualTo (StateType.Deleted));
+        Assert.That (GetDataContainer ((DomainObject) sender).State.IsDeleted, Is.True);
       };
       _role.Delete();
       ClientTransaction.Current.Commit();

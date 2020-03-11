@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
       var property = GetProperty (instance);
       var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy ();
-      Assert.That (instance.State, Is.Not.EqualTo (StateType.New));
+      Assert.That (instance.State.IsNew, Is.False);
       
       var result = strategy.IsDefaultValue (instance, property);
 
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var property = GetProperty (instance);
       var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy ();
       instance.Name = instance.Name;
-      Assert.That (instance.State, Is.EqualTo (StateType.New));
+      Assert.That (instance.State.IsNew, Is.True);
       
       var result = strategy.IsDefaultValue (instance, property);
 
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
       var property = GetProperty (instance);
       var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy ();
-      Assert.That (instance.State, Is.EqualTo (StateType.New));
+      Assert.That (instance.State.IsNew, Is.True);
 
       var result = strategy.IsDefaultValue (instance, property);
 

@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       Assert.That (deserializedDataContainer.Timestamp, Is.EqualTo (dataContainer.Timestamp));
       Assert.That (deserializedDataContainer.DomainObject, Is.Not.Null);
       Assert.That (deserializedDataContainer.DomainObject.ID, Is.EqualTo (dataContainer.DomainObject.ID));
-      Assert.That (deserializedDataContainer.State, Is.EqualTo (StateType.Changed));
+      Assert.That (deserializedDataContainer.State.IsChanged, Is.True);
       Assert.That (GetPropertyValue (deserializedDataContainer, typeof (Computer), "SerialNumber"), Is.EqualTo ("abc"));
       Assert.That (GetPropertyValue (deserializedDataContainer, typeof (Computer), "Employee"), Is.EqualTo (employee.ID));
     }
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       Assert.That (deserializedDataContainer.ID, Is.EqualTo (dataContainer.ID));
       Assert.That (deserializedDataContainer.HasBeenMarkedChanged, Is.True);
-      Assert.That (deserializedDataContainer.State, Is.EqualTo (StateType.Changed));
+      Assert.That (deserializedDataContainer.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize (dataContainer);
       Assert.That (deserializedDataContainer.IsDiscarded, Is.True);
-      Assert.That (deserializedDataContainer.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (deserializedDataContainer.State.IsDiscarded, Is.True);
     }
   }
 }

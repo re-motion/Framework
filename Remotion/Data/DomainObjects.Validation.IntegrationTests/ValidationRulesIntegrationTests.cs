@@ -163,10 +163,10 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         {
           productReference1.EnsureDataAvailable();
           Assert.That (productReference1.OrderItem, Is.Null);
-          Assert.That (product1.State, Is.EqualTo (StateType.NotLoadedYet));
+          Assert.That (product1.State.IsNotLoadedYet, Is.True);
 
           productReference2.EnsureDataAvailable();
-          Assert.That (product2.State, Is.EqualTo (StateType.NotLoadedYet));
+          Assert.That (product2.State.IsNotLoadedYet, Is.True);
 
           var validator = ValidationBuilder.BuildValidator<ProductReference>();
 
@@ -176,11 +176,11 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
           Assert.That (result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
           Assert.That (result1.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("OrderItem"));
           Assert.That (result1.Errors.First().ErrorMessage, Is.EqualTo ("The value must not be null."));
-          Assert.That (product1.State, Is.EqualTo (StateType.NotLoadedYet));
+          Assert.That (product1.State.IsNotLoadedYet, Is.True);
 
           var result2 = validator.Validate (productReference2);
           Assert.That (result2.IsValid, Is.True);
-          Assert.That (product2.State, Is.EqualTo (StateType.NotLoadedYet));
+          Assert.That (product2.State.IsNotLoadedYet, Is.True);
         }
       }
     }

@@ -166,7 +166,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull ("data", data);
 
       // Filter out those items whose state is only Changed due to relation changes - we don't persist those
-      var dataContainers = data.Select (item => item.DataContainer).Where (dc => dc.State != StateType.Unchanged);
+      var dataContainers = data.Select (item => item.DataContainer).Where (dc => !dc.State.IsUnchanged);
       var collection = new DataContainerCollection (dataContainers, false);
 
       if (collection.Count > 0)

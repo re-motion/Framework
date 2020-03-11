@@ -49,9 +49,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (orderItem1, "Order", false);
       CheckEndPointExists (orderItem2, "Order", false);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItem1.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (orderItem2.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order.State.IsUnchanged, Is.True);
+      Assert.That (orderItem1.State.IsNotLoadedYet, Is.True);
+      Assert.That (orderItem2.State.IsNotLoadedYet, Is.True);
 
       Assert.That (orderItems.IsDataComplete, Is.False);
     }
@@ -69,21 +69,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, orderItems.AssociatedEndPointID);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItem1.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (orderItem2.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order.State.IsUnchanged, Is.True);
+      Assert.That (orderItem1.State.IsNotLoadedYet, Is.True);
+      Assert.That (orderItem2.State.IsNotLoadedYet, Is.True);
       Assert.That (orderItems.IsDataComplete, Is.False);
 
       orderItem1.EnsureDataAvailable ();
 
-      Assert.That (orderItem1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItem2.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (orderItem1.State.IsUnchanged, Is.True);
+      Assert.That (orderItem2.State.IsNotLoadedYet, Is.True);
       Assert.That (orderItems.IsDataComplete, Is.False);
 
       orderItems.EnsureDataComplete ();
 
-      Assert.That (orderItem1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItem2.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderItem1.State.IsUnchanged, Is.True);
+      Assert.That (orderItem2.State.IsUnchanged, Is.True);
       Assert.That (orderItems.IsDataComplete, Is.True);
       Assert.That (orderItems, Is.EquivalentTo (new[] { orderItem1, orderItem2 }));
     }
@@ -144,8 +144,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
               Assert.That (orderItemA.OnUnloadedCalled, Is.False, "items unloaded after this method is called");
               Assert.That (orderItemB.OnUnloadedCalled, Is.False, "items unloaded after this method is called");
 
-              Assert.That (orderItemA.State, Is.EqualTo (StateType.Unchanged));
-              Assert.That (orderItemB.State, Is.EqualTo (StateType.Unchanged));
+              Assert.That (orderItemA.State.IsUnchanged, Is.True);
+              Assert.That (orderItemB.State.IsUnchanged, Is.True);
             });
         listenerMock
             .Expect (mock => mock.ObjectsUnloaded (
@@ -159,8 +159,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
               Assert.That (orderItemA.OnUnloadedCalled, Is.True, "items unloaded before this method is called");
               Assert.That (orderItemB.OnUnloadedCalled, Is.True, "items unloaded before this method is called");
 
-              Assert.That (orderItemA.State, Is.EqualTo (StateType.NotLoadedYet));
-              Assert.That (orderItemB.State, Is.EqualTo (StateType.NotLoadedYet));
+              Assert.That (orderItemA.State.IsNotLoadedYet, Is.True);
+              Assert.That (orderItemB.State.IsNotLoadedYet, Is.True);
             });
       }
 
@@ -176,12 +176,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
         listenerMock.BackToRecord (); // For Discarding
       }
 
-      Assert.That (orderItemA.UnloadingState, Is.EqualTo (StateType.Unchanged), "OnUnloading before state change");
-      Assert.That (orderItemB.UnloadingState, Is.EqualTo (StateType.Unchanged), "OnUnloading before state change");
+      Assert.That (orderItemA.UnloadingState.IsUnchanged, Is.True, "OnUnloading before state change");
+      Assert.That (orderItemB.UnloadingState.IsUnchanged, Is.True, "OnUnloading before state change");
       Assert.That (orderItemA.OnUnloadingDateTime, Is.LessThan (orderItemB.OnUnloadingDateTime), "orderItemA.OnUnloading before orderItemB.OnUnloading");
 
-      Assert.That (orderItemA.UnloadedState, Is.EqualTo (StateType.NotLoadedYet), "OnUnloaded after state change");
-      Assert.That (orderItemB.UnloadedState, Is.EqualTo (StateType.NotLoadedYet), "OnUnloaded after state change");
+      Assert.That (orderItemA.UnloadedState.IsNotLoadedYet, Is.True, "OnUnloaded after state change");
+      Assert.That (orderItemB.UnloadedState.IsNotLoadedYet, Is.True, "OnUnloaded after state change");
       Assert.That (orderItemA.OnUnloadedDateTime, Is.GreaterThan (orderItemB.OnUnloadedDateTime), "orderItemA.OnUnloaded after orderItemB.OnUnloaded");
     }
 
@@ -196,8 +196,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       // Change a single OrderItem - this must cause nothing to be unloaded
       orderItemB.Product = "Changed";
 
-      Assert.That (orderItemA.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItemB.State, Is.EqualTo (StateType.Changed));
+      Assert.That (orderItemA.State.IsUnchanged, Is.True);
+      Assert.That (orderItemB.State.IsChanged, Is.True);
       Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID).HasChanged, Is.False);
       Assert.That (order1.OrderItems.IsDataComplete, Is.True);
 
@@ -217,8 +217,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckDataContainerExists (orderItemB, true);
       CheckVirtualEndPointExistsAndComplete (endPointID, true, true);
 
-      Assert.That (orderItemA.State, Is.Not.EqualTo (StateType.NotLoadedYet));
-      Assert.That (orderItemB.State, Is.Not.EqualTo (StateType.NotLoadedYet));
+      Assert.That (orderItemA.State.IsNotLoadedYet, Is.False);
+      Assert.That (orderItemB.State.IsNotLoadedYet, Is.False);
       Assert.That (order1.OrderItems.IsDataComplete, Is.True);
     }
 
@@ -238,8 +238,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
         order1.OrderItems.Add (orderItemB);
         order1.OrderItems.Add (orderItemA);
 
-        Assert.That (orderItemA.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (orderItemB.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (orderItemA.State.IsUnchanged, Is.True);
+        Assert.That (orderItemB.State.IsUnchanged, Is.True);
         Assert.That (DataManagementService.GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (endPointID).HasChanged, Is.True);
         Assert.That (order1.OrderItems.IsDataComplete, Is.True);
 
@@ -259,8 +259,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
         CheckDataContainerExists (orderItemB, true);
         CheckVirtualEndPointExistsAndComplete (endPointID, true, true);
 
-        Assert.That (orderItemA.State, Is.Not.EqualTo (StateType.NotLoadedYet));
-        Assert.That (orderItemB.State, Is.Not.EqualTo (StateType.NotLoadedYet));
+        Assert.That (orderItemA.State.IsNotLoadedYet, Is.False);
+        Assert.That (orderItemB.State.IsNotLoadedYet, Is.False);
         Assert.That (order1.OrderItems.IsDataComplete, Is.True);
       }
     }

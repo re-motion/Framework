@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       ModifyDatabase (() => DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ().Delete());
 
       var imported = DomainObjectTransporterTestHelper.ImportObjects (binaryData);
-      Assert.That (imported[0].State, Is.EqualTo (StateType.New));
+      Assert.That (imported[0].State.IsNew, Is.True);
     }
 
     [Test]
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       ModifyDatabase (() => DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ().Delete());
 
       var imported = DomainObjectTransporterTestHelper.ImportObjects (binaryData);
-      Assert.That (imported[0].State, Is.EqualTo (StateType.New));
+      Assert.That (imported[0].State.IsNew, Is.True);
       Assert.That (((ClassWithAllDataTypes) imported[0]).Int32Property, Is.EqualTo (12));
     }
 
@@ -127,7 +127,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       var imported = DomainObjectTransporterTestHelper.ImportObjects (binaryData);
 
-      Assert.That (imported[0].State, Is.EqualTo (StateType.New));
+      Assert.That (imported[0].State.IsNew, Is.True);
       Assert.That (imported[0].ID, Is.EqualTo (outerComputer.ID));
     }
 
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       byte[] binaryData = DomainObjectTransporterTestHelper.GetBinaryDataFor (DomainObjectIDs.Order1);
       var imported = DomainObjectTransporterTestHelper.ImportObjects (binaryData);
 
-      Assert.That (imported[0].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (imported[0].State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -148,8 +148,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       var imported = DomainObjectTransporterTestHelper.ImportObjects (binaryData);
 
-      Assert.That (imported[0].State, Is.EqualTo (StateType.Changed));
-      Assert.That (imported[1].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (imported[0].State.IsChanged, Is.True);
+      Assert.That (imported[1].State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -162,7 +162,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       var imported = DomainObjectTransporterTestHelper.ImportObjects (binaryData);
 
-      Assert.That (imported[0].State, Is.EqualTo (StateType.Changed));
+      Assert.That (imported[0].State.IsChanged, Is.True);
       Assert.That (((ClassWithAllDataTypes) imported[0]).Int32Property, Is.EqualTo (12));
     }
 
@@ -242,7 +242,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       var imported = DomainObjectTransporterTestHelper.ImportObjects (binaryData);
 
-      Assert.That (imported[0].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (imported[0].State.IsUnchanged, Is.True);
     }
 
     [Test]

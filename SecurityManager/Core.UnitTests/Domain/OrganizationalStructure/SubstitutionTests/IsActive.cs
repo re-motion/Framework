@@ -17,7 +17,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.SubstitutionTests
@@ -37,7 +36,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     [Test]
     public void EvaluatesFalse_BeforeCommit ()
     {
-      Assert.That (_substitution.State, Is.Not.EqualTo (StateType.Unchanged));
+      Assert.That (_substitution.State.IsUnchanged, Is.False);
       Assert.That (_substitution.IsActive, Is.False);
     }
 

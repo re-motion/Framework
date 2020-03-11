@@ -361,7 +361,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         s_log.DebugFormat ("{0} DataContainerMapUnregistering: {1}", clientTransaction.ID, container.ID);
     }
 
-    public void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, StateType newDataContainerState)
+    public void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, DataContainerState newDataContainerState)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("{0} DataContainerStateUpdated: {1} {2}", clientTransaction.ID, container.ID, newDataContainerState);

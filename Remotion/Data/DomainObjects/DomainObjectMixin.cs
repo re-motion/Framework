@@ -85,11 +85,11 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets the <see cref="StateType"/> returned by this mixin's target object's <see cref="DomainObject.State"/> property.
+    /// Gets the <see cref="DomainObjectState"/> returned by this mixin's target object's <see cref="DomainObject.State"/> property.
     /// </summary>
     /// <value>The state of this mixin's target object.</value>
     [StorageClassNone]
-    protected StateType State
+    protected DomainObjectState State
     {
       get { return Target.GetState(); }
     }
@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects
     [StorageClassNone]
     protected bool IsInvalid
     {
-      get { return State == StateType.Invalid; }
+      get { return State.IsInvalid; }
     }
 
     /// <summary>

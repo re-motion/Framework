@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         base.RelationChanging (clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
     }
 
-    public override void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, StateType newDataContainerState)
+    public override void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, DataContainerState newDataContainerState)
     {
       if (IsInLoadMode && _currentlyLoadingObjectIDs.Contains (container.ID))
       {

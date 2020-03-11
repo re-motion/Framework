@@ -496,16 +496,17 @@ public class ClientTransaction
 
   /// <summary>
   /// Ensures that the data of the <see cref="DomainObject"/> with the given <see cref="ObjectID"/> has been loaded into this 
-  /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the object's data. If the object's data can't be found, an exception is thrown
-  /// and the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
+  /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the object's data. If the object's data can't be found, an exception is thrown,
+  /// the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag is set, and the object becomes <b>invalid</b>
+  /// in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectID">The domain object whose data must be loaded.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="objectID"/> parameter is <see langword="null" />.</exception>
   /// <exception cref="ObjectInvalidException">The given <paramref name="objectID"/> is invalid in this transaction.</exception>
   /// <exception cref="ObjectsNotFoundException">
-  /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
-  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> sets the not found object's
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag, so calling this API again with the same <see cref="ObjectID"/>
+  /// results in a <see cref="ObjectInvalidException"/> being thrown.
   /// </exception>
   public void EnsureDataAvailable (ObjectID objectID)
   {
@@ -517,8 +518,8 @@ public class ClientTransaction
   /// <summary>
   /// Ensures that the data for the <see cref="DomainObject"/>s with the given <see cref="ObjectID"/> values has been loaded into this 
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the objects' data, performing a bulk load operation.
-  /// If an object's data can't be found, an exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the 
-  /// <see cref="ClientTransaction"/>.
+  /// If an object's data can't be found, an exception is thrown, the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+  /// flag is set, and the object becomes <b>invalid</b> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectIDs">The <see cref="ObjectID"/> values whose data must be loaded.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null" />.</exception>
@@ -526,9 +527,9 @@ public class ClientTransaction
   /// <see cref="ClientTransaction"/>.</exception>
   /// <exception cref="ObjectInvalidException">One of the given <paramref name="objectIDs"/> is invalid in this transaction.</exception>
   /// <exception cref="ObjectsNotFoundException">
-  /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
-  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> sets the not found objects'
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag, so calling this API again with the same <see cref="ObjectID"/>s
+  /// results in a <see cref="ObjectInvalidException"/> being thrown.
   /// </exception>
   public void EnsureDataAvailable (IEnumerable<ObjectID> objectIDs)
   {
@@ -540,8 +541,8 @@ public class ClientTransaction
   /// <summary>
   /// Ensures that the data of the <see cref="DomainObject"/> with the given <see cref="ObjectID"/> has been loaded into this
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the object's data. The method returns a value indicating whether the
-  /// object's data was found. If an object's data can't be found, the object is marked <see cref="StateType.Invalid"/> in the 
-  /// <see cref="ClientTransaction"/>.
+  /// object's data was found. If the object's data can't be found, the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+  /// flag is set, and the object becomes <b>invalid</b> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectID">The domain object whose data must be loaded.</param>
   /// <returns><see langword="true" /> if the object's data is now available in the <see cref="ClientTransaction"/>, <see langword="false" /> if the 
@@ -560,7 +561,8 @@ public class ClientTransaction
   /// Ensures that the data for the <see cref="DomainObject"/>s with the given <see cref="ObjectID"/> values has been loaded into this 
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the objects' data, performing a bulk load operation.
   /// The method returns a value indicating whether the data of all the objects was found.
-  /// If an object's data can't be found, the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
+  /// If an object's data can't be found, the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+  /// flag is set, and the object becomes <b>invalid</b> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectIDs">The <see cref="ObjectID"/> values whose data must be loaded.</param>
   /// <returns><see langword="true" /> if the data is now available in the <see cref="ClientTransaction"/> for all objects, <see langword="false" /> 
@@ -665,11 +667,12 @@ public class ClientTransaction
   /// Committing a <see cref="ClientTransaction"/> raises a number of events:
   /// <list type="number">
   /// <item><description>
-  /// First, a chain of Commtting events is raised. Each Committing event can cancel the <see cref="Commit"/> operation by throwing an exception 
+  /// First, a chain of Committing events is raised. Each Committing event can cancel the <see cref="Commit"/> operation by throwing an exception 
   /// (which, after canceling the operation, will be propagated to the caller). Committing event handlers can also modify each 
   /// <see cref="DomainObject"/> being committed, and they can add or remove objects to or from the commit set. For example, if a Committing event
-  /// handler modifies a changed object so that it becomes <see cref="StateType.Unchanged"/>, that object will be removed from the commit set.
-  /// Or, if a handler modifies an unchanged object so that it becomes <see cref="StateType.Changed"/>, it will become part of the commit set.
+  /// handler modifies a changed object so that the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> flag is set,
+  /// that object will be removed from the commit set. Or, if a handler modifies an unchanged object so that it's
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/> flag is set, it will become part of the commit set.
   /// When a set of objects (a, b) is committed, the Committing event chain consists of the following events, raised in order:
   /// <list type="number">
   /// <item><description>
@@ -724,8 +727,9 @@ public class ClientTransaction
   /// First, a chain of RollingBack events is raised. Each RollingBack event can cancel the <see cref="Rollback"/> operation by throwing an exception 
   /// (which, after canceling the operation, will be propagated to the caller). RollingBack event handlers can also modify each 
   /// <see cref="DomainObject"/> being rolled back, and they can add or remove objects to or from the rollback set. For example, if a RollingBack event
-  /// handler modifies a changed object so that it becomes <see cref="StateType.Unchanged"/>, that object will no longer need to be rolled back.
-  /// Or, if a handler modifies an unchanged object so that it becomes <see cref="StateType.Changed"/>, it will become part of the rollback set.
+  /// handler modifies a changed object so that it's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> flag is set,
+  /// that object will no longer need to be rolled back. Or, if a handler modifies an unchanged object so that it's
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/> flag is set, it will become part of the rollback set.
   /// When a set of objects (a, b) is rolled back, the RollingBack event chain consists of the following events, raised in order:
   /// <list type="number">
   /// <item><description>
@@ -762,16 +766,17 @@ public class ClientTransaction
 
   /// <summary>
   /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the data source. If the object's data can't be found, an 
-  /// exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
+  /// exception is thrown, the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag is set, and the object becomes
+  /// <b>invalid</b> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
   /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
   /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
   /// <exception cref="ObjectsNotFoundException">
-  /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
-  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> sets the not found object's
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag, so calling this API again with the same <see cref="ObjectID"/>
+  /// results in a <see cref="ObjectInvalidException"/> being thrown.
   /// </exception>
   /// <exception cref="ObjectInvalidException">The object is invalid in this transaction.</exception>
   /// <exception cref="Persistence.StorageProviderException">
@@ -789,8 +794,9 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Gets an object that is already loaded (even if its marked <see cref="StateType.Invalid"/>) or attempts to load them from the data source. 
-  /// If an object cannot be found, it will be marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
+  /// Gets an object that is already loaded (even if its <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag is set)
+  /// or attempts to load them from the data source. If an object cannot be found, it's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+  /// flag is set, and the object becomes <b>invalid</b> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectID">The ID of the object to be retrieved.</param>
   /// <returns>
@@ -815,15 +821,18 @@ public class ClientTransaction
   /// object with the given <see cref="ObjectID"/> actually exists in the data source, and it will also return invalid or deleted objects.
   /// </summary>
   /// <param name="objectID">The <see cref="ObjectID"/> to get an object reference for.</param>
-  /// <returns>An object with the given <see cref="ObjectID"/>, possibly in <see cref="StateType.NotLoadedYet"/>, <see cref="StateType.Deleted"/>,
-  /// or <see cref="StateType.Invalid"/> state.</returns>
+  /// <returns>
+  /// An object with the given <see cref="ObjectID"/>, possibly with the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/>,
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsDeleted"/>, or <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+  /// flags set.
+  /// </returns>
   /// <remarks>
   /// <para>
   /// When an object with the given <paramref name="objectID"/> has already been enlisted in the transaction, that object is returned. Otherwise,
-  /// an object in <see cref="StateType.NotLoadedYet"/> state is created and enlisted without loading its data from the data source. In such a case,
-  /// the object's data is loaded when it's first needed; e.g., when one of its properties is accessed or when 
-  /// <see cref="EnsureDataAvailable(Remotion.Data.DomainObjects.ObjectID)"/> is called for its <see cref="ObjectID"/>. At that point, an
-  /// <see cref="ObjectsNotFoundException"/> may be triggered when the object's data cannot be found.
+  /// an object with the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/> flag set is created and enlisted
+  /// without loading its data from the data source. In such a case, the object's data is loaded when it's first needed; e.g., when one of its
+  /// properties is accessed or when <see cref="EnsureDataAvailable(Remotion.Data.DomainObjects.ObjectID)"/> is called for its <see cref="ObjectID"/>.
+  /// At that point, an <see cref="ObjectsNotFoundException"/> may be triggered when the object's data cannot be found.
   /// </para>
   /// </remarks>
   /// <exception cref="ArgumentNullException">The <paramref name="objectID"/> parameter is <see langword="null" />.</exception>
@@ -834,12 +843,16 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Gets a reference to a <see cref="DomainObject"/> that is currently in <see cref="StateType.Invalid"/> state. If the object is not actually
-  /// invalid (check with <see cref="IsInvalid"/>), an exception is throws.
+  /// Gets a reference to a <see cref="DomainObject"/> that has <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag set at this time.
+  /// If the object is not actually invalid (check with <see cref="ClientTransaction"/>.<see cref="IsInvalid"/>), an exception is throws.
   /// </summary>
   /// <param name="objectID">The object ID to get the <see cref="DomainObject"/> reference for.</param>
-  /// <returns>An object with the given <see cref="ObjectID"/> in <see cref="StateType.Invalid"/> state.</returns>
-  /// <exception cref="InvalidOperationException">The object is not currently in <see cref="StateType.Invalid"/> state.</exception>
+  /// <returns>
+  /// An object with the given <see cref="ObjectID"/> that has <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag set.
+  /// </returns>
+  /// <exception cref="InvalidOperationException">
+  /// The object does not have the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag set at this time.
+  /// </exception>
   protected internal virtual DomainObject GetInvalidObjectReference (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -870,8 +883,8 @@ public class ClientTransaction
 
   /// <summary>
   /// Gets a number of objects that are already loaded or attempts to load them from the data source.
-  /// If an object's data can't be found, an exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the 
-  /// <see cref="ClientTransaction"/>.
+  /// If an object's data can't be found, an exception is thrown, the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+  /// flag is set, and the object becomes <b>invalid</b> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <typeparam name="T">The type of objects expected to be returned. Specify <see cref="DomainObject"/> if no specific type is expected.</typeparam>
   /// <param name="objectIDs">The IDs of the objects to be retrieved.</param>
@@ -881,9 +894,9 @@ public class ClientTransaction
   /// <exception cref="InvalidCastException">One of the retrieved objects doesn't fit the expected type <typeparamref name="T"/>.</exception>
   /// <exception cref="ObjectInvalidException">One of the retrieved objects is invalid in this transaction.</exception>
   /// <exception cref="ObjectsNotFoundException">
-  /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
-  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> sets the not found objects'
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag, so calling this API again with the same <see cref="ObjectID"/>
+  /// results in a <see cref="ObjectInvalidException"/> being thrown.
   /// </exception>
   protected internal T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs)
       where T : DomainObject
@@ -894,8 +907,9 @@ public class ClientTransaction
 
   /// <summary>
   /// Gets a number of objects that are already loaded (including invalid objects) or attempts to load them from the data source. 
-  /// If an object cannot be found, it will be marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>, and the result array will 
-  /// contain a <see langword="null" /> reference in its place.
+  /// If an object cannot be found, the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag is set,
+  /// the object becomes <b>invalid</b> in the <see cref="ClientTransaction"/>, and the result array will contain a <see langword="null" />
+  /// reference in its place.
   /// </summary>
   /// <typeparam name="T">The type of objects expected to be returned. Specify <see cref="DomainObject"/> if no specific type is expected.</typeparam>
   /// <param name="objectIDs">The IDs of the objects to be retrieved.</param>

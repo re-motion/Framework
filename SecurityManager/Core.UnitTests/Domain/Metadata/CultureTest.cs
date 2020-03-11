@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       Culture foundCulture = Culture.Find ("de");
 
       Assert.That (foundCulture, Is.Not.Null);
-      Assert.That (foundCulture.State, Is.Not.EqualTo (StateType.New));
+      Assert.That (foundCulture.State.IsNew, Is.False);
       Assert.That (foundCulture.CultureName, Is.EqualTo ("de"));
     }
 

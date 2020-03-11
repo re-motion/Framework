@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       // After the object has been marked invalid
       Assert.That (() => instance = _nonExistingObjectID.TryGetObject<TestDomainBase> (), Throws.Nothing);
       Assert.That (instance, Is.Not.Null);
-      Assert.That (instance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (instance.State.IsInvalid, Is.True);
     }
 
     [Test]
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         Assert.That (() => instance = _nonExistingObjectIDForSubtransaction.TryGetObject<TestDomainBase> (), Throws.Nothing);
 
         Assert.That (instance, Is.Not.Null);
-        Assert.That (instance.State, Is.EqualTo (StateType.Invalid));
+        Assert.That (instance.State.IsInvalid, Is.True);
 
         Assert.That (() => instance = _nonExistingObjectID.TryGetObject<TestDomainBase> (), Throws.Nothing);
 
@@ -128,14 +128,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void GetObjectReference_ShouldGiveNotLoadedYetObject ()
     {
       var instance = LifetimeService.GetObjectReference (TestableClientTransaction, _nonExistingObjectID);
-      Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (instance.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
     public void EnsureDataAvailable_ShouldThrow_AndMarkObjectNotFound ()
     {
       var instance = LifetimeService.GetObjectReference (TestableClientTransaction, _nonExistingObjectID);
-      Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (instance.State.IsNotLoadedYet, Is.True);
 
       Assert.That (() => instance.EnsureDataAvailable(), ThrowsObjectNotFoundException (_nonExistingObjectID));
 
@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void TryEnsureDataAvailable_ShouldReturnFalse_AndMarkObjectNotFound ()
     {
       var instance = LifetimeService.GetObjectReference (TestableClientTransaction, _nonExistingObjectID);
-      Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (instance.State.IsNotLoadedYet, Is.True);
 
       var result = instance.TryEnsureDataAvailable ();
 
@@ -272,7 +272,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void PropertyAccess_ShouldThrow_ValueProperty ()
     {
       var instance = (Order) LifetimeService.GetObjectReference (TestableClientTransaction, _nonExistingObjectID);
-      Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (instance.State.IsNotLoadedYet, Is.True);
       Assert.That (() => instance.OrderNumber, ThrowsObjectNotFoundException (_nonExistingObjectID));
       CheckObjectIsMarkedInvalid (instance.ID);
 
@@ -284,7 +284,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void PropertyAccess_ShouldThrow_VirtualRelationProperty ()
     {
       var instance = (Order) LifetimeService.GetObjectReference (TestableClientTransaction, _nonExistingObjectID);
-      Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (instance.State.IsNotLoadedYet, Is.True);
       Assert.That (() => instance.OrderTicket, ThrowsObjectNotFoundException (_nonExistingObjectID));
       CheckObjectIsMarkedInvalid (instance.ID);
 
@@ -296,7 +296,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void PropertyAccess_ShouldThrow_ForeignKeyRelationProperty ()
     {
       var instance = (Order) LifetimeService.GetObjectReference (TestableClientTransaction, _nonExistingObjectID);
-      Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (instance.State.IsNotLoadedYet, Is.True);
       Assert.That (() => instance.Customer, ThrowsObjectNotFoundException (_nonExistingObjectID));
       CheckObjectIsMarkedInvalid (instance.ID);
 
@@ -308,7 +308,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void PropertyAccess_ShouldThrow_CollectionRelationProperty ()
     {
       var instance = (Order) LifetimeService.GetObjectReference (TestableClientTransaction, _nonExistingObjectID);
-      Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (instance.State.IsNotLoadedYet, Is.True);
       Assert.That (() => instance.OrderItems, ThrowsObjectNotFoundException (_nonExistingObjectID));
       CheckObjectIsMarkedInvalid (instance.ID);
 
@@ -351,7 +351,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         var client = clientID.GetObject<Client> ();
         Client instance = null;
         Assert.That (() => instance = client.ParentClient, Throws.Nothing);
-        Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
+        Assert.That (instance.State.IsNotLoadedYet, Is.True);
 
         Assert.That (() => instance.EnsureDataAvailable(), Throws.TypeOf<ObjectsNotFoundException>());
         CheckObjectIsMarkedInvalid (instance.ID);
@@ -394,7 +394,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       
       Assert.That (() => instance = objectWithInvalidRelation.ClassWithGuidKey, Throws.Nothing);
 
-      Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (instance.State.IsNotLoadedYet, Is.True);
 
       Assert.That (() => instance.EnsureDataAvailable(), Throws.TypeOf<ObjectsNotFoundException>());
       CheckObjectIsMarkedInvalid (instance.ID);
@@ -413,7 +413,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         var objectWithInvalidRelation = (ClassWithInvalidRelation) id.GetObject<TestDomainBase> ();
 
         Assert.That (() => instance = objectWithInvalidRelation.ClassWithGuidKey, Throws.Nothing);
-        Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
+        Assert.That (instance.State.IsNotLoadedYet, Is.True);
 
         Assert.That (() => instance.EnsureDataAvailable (), Throws.TypeOf<ObjectsNotFoundException> ());
         CheckObjectIsMarkedInvalid (instance.ID);
@@ -480,13 +480,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     private void CheckObjectIsMarkedInvalid (ObjectID objectID)
     {
       var instance = LifetimeService.GetObjectReference (ClientTransaction.Current, objectID);
-      Assert.That (instance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (instance.State.IsInvalid, Is.True);
     }
 
     private void CheckObjectIsNotMarkedInvalid (ObjectID objectID)
     {
       var instance = LifetimeService.GetObjectReference (ClientTransaction.Current, objectID);
-      Assert.That (instance.State, Is.Not.EqualTo (StateType.Invalid));
+      Assert.That (instance.State.IsInvalid, Is.False);
     }
 
     private IResolveConstraint ThrowsObjectNotFoundException (ObjectID objectID)
@@ -511,7 +511,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         newClient.ParentClient = DomainObjectIDs.Client3.GetObject<Client> ();
         newClient.ParentClient.Delete ();
         ClientTransaction.Current.Commit ();
-        Assert.That (newClient.ParentClient.State, Is.EqualTo (StateType.Invalid));
+        Assert.That (newClient.ParentClient.State.IsInvalid, Is.True);
       }
       return newClientID;
     }

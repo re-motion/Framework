@@ -98,21 +98,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
     protected virtual bool ShouldCreateInsertCommand (DataContainer dataContainer)
     {
-      return dataContainer.State == StateType.New;
+      return dataContainer.State.IsNew;
     }
 
     protected virtual bool ShouldCreateDeleteCommand (DataContainer dataContainer)
     {
-      return dataContainer.State == StateType.Deleted;
+      return dataContainer.State.IsDeleted;
     }
 
     protected virtual IEnumerable<ColumnValue> GetComparedColumnValuesForUpdate (DataContainer dataContainer, TableDefinition tableDefinition)
     {
       var objectIDColumnValues = tableDefinition.ObjectIDProperty.SplitValueForComparison (dataContainer.ID);
-      if (dataContainer.State != StateType.New)
-        return objectIDColumnValues.Concat (tableDefinition.TimestampProperty.SplitValueForComparison (dataContainer.Timestamp));
-      else
+      if (dataContainer.State.IsNew)
         return objectIDColumnValues;
+      else
+        return objectIDColumnValues.Concat (tableDefinition.TimestampProperty.SplitValueForComparison (dataContainer.Timestamp));
     }
 
     protected virtual IEnumerable<ColumnValue> GetComparedColumnValuesForDelete (DataContainer dataContainer, TableDefinition tableDefinition)
@@ -158,9 +158,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
     protected virtual Func<PropertyDefinition, bool> GetUpdatedPropertyFilter (DataContainer dataContainer)
     {
-      if (dataContainer.State == StateType.New || dataContainer.State == StateType.Deleted)
+      if (dataContainer.State.IsNew || dataContainer.State.IsDeleted)
         return pd => pd.IsObjectID;
-      else if (dataContainer.State == StateType.Changed)
+      else if (dataContainer.State.IsChanged)
         return dataContainer.HasValueChanged;
       else
         return pd => false;

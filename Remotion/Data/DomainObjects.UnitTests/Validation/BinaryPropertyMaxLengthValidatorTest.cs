@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      var dataContainer = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
       dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "BinaryProperty"), new byte[10]);
 
       Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      var dataContainer = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
       dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), new byte[1000000]);
 
       Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      var dataContainer = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
       dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), null);
 
       Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      var dataContainer = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
       dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), new byte [10]);
       var eventListenerStub = MockRepository.GenerateStub<IDataContainerEventListener>();
       dataContainer.SetEventListener (eventListenerStub);
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      var dataContainer = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
       dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), new byte [1000001]);
 
       Assert.That (
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      var dataContainer = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
       dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "TransactionOnlyBinaryProperty"), new byte[1000001]);
 
       Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataItem = CreatePersistableData (StateType.New, domainObject);
+      var dataItem = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, domainObject);
       dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "TransactionOnlyBinaryProperty"), new byte[1000001]);
 
       Assert.That (
@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataItem = CreatePersistableData (StateType.Deleted, domainObject);
+      var dataItem = CreatePersistableData (new DomainObjectState.Builder().SetDeleted().Value, domainObject);
       dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), new byte [1000001]);
 
       Assert.That (() => _validator.Validate (ClientTransaction.CreateRootTransaction(), dataItem), Throws.Nothing);
@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       }
     }
 
-    private PersistableData CreatePersistableData (StateType domainObjectState, DomainObject domainObject)
+    private PersistableData CreatePersistableData (DomainObjectState domainObjectState, DomainObject domainObject)
     {
       var dataContainer = DataContainer.CreateNew (domainObject.ID);
       return new PersistableData (domainObject, domainObjectState, dataContainer, Enumerable.Empty<IRelationEndPoint>());

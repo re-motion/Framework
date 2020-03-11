@@ -289,7 +289,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       _transaction.ExecuteInScope (order.Delete);
 
       Assert.That (_transaction.IsEnlisted (order), Is.False);
-      Assert.That (order.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (order.State.IsInvalid, Is.True);
     }
 
     [Test]
@@ -351,9 +351,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Customer customer = _transaction.ExecuteInScope (() => DomainObjectIDs.Customer1.GetObject<Customer> ());
 
-      _transaction.ExecuteInScope (() => Assert.That (customer.State, Is.EqualTo (StateType.Unchanged)));
+      _transaction.ExecuteInScope (() => Assert.That (customer.State.IsUnchanged, Is.True));
       _transaction.ExecuteInScope (() => customer.Name = "New name");
-      _transaction.ExecuteInScope (() => Assert.That (customer.State, Is.EqualTo (StateType.Changed)));
+      _transaction.ExecuteInScope (() => Assert.That (customer.State.IsChanged, Is.True));
     }
 
     [Test]
@@ -411,7 +411,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       _transaction.ExecuteInScope (order.Delete);
 
       _transaction.ExecuteInScope (() => Assert.That (DomainObjectIDs.Order1.GetObject<Order> (includeDeleted: true), Is.SameAs (order)));
-      _transaction.ExecuteInScope (() => Assert.That (order.State, Is.EqualTo (StateType.Deleted)));
+      _transaction.ExecuteInScope (() => Assert.That (order.State.IsDeleted, Is.True));
     }
 
     [Test]
@@ -423,7 +423,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       Assert.That (order.ID, Is.EqualTo (DomainObjectIDs.Order1));
       Assert.That (_transaction.DataManager.DataContainers[DomainObjectIDs.Order1], Is.Not.Null);
-      Assert.That (order.TransactionContext[_transaction].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order.TransactionContext[_transaction].State.IsUnchanged, Is.True);
     }
 
     [Test]

@@ -42,57 +42,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void DeleteInReadOnlyRootTransaction_IsForbidden_Loaded ()
     {
-      CheckState (ReadOnlyRootTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
-      CheckState (ReadOnlyMiddleTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
-      CheckState (WriteableSubTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
+      CheckState (ReadOnlyRootTransaction, _loadedClassWithAllDataTypes, state => state.IsUnchanged);
+      CheckState (ReadOnlyMiddleTransaction, _loadedClassWithAllDataTypes, state => state.IsUnchanged);
+      CheckState (WriteableSubTransaction, _loadedClassWithAllDataTypes, state => state.IsUnchanged);
 
       CheckForbidden (() => ExecuteInReadOnlyRootTransaction (() => _loadedClassWithAllDataTypes.Delete()), "ObjectDeleting");
 
-      CheckState (ReadOnlyRootTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
-      CheckState (ReadOnlyMiddleTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
-      CheckState (WriteableSubTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
+      CheckState (ReadOnlyRootTransaction, _loadedClassWithAllDataTypes, state => state.IsUnchanged);
+      CheckState (ReadOnlyMiddleTransaction, _loadedClassWithAllDataTypes, state => state.IsUnchanged);
+      CheckState (WriteableSubTransaction, _loadedClassWithAllDataTypes, state => state.IsUnchanged);
     }
 
     [Test]
     public void DeleteInReadOnlyMiddleTransaction_IsForbidden_Loaded ()
     {
-      CheckState (ReadOnlyRootTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
-      CheckState (ReadOnlyMiddleTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
-      CheckState (WriteableSubTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
+      CheckState (ReadOnlyRootTransaction, _loadedClassWithAllDataTypes, state => state.IsUnchanged);
+      CheckState (ReadOnlyMiddleTransaction, _loadedClassWithAllDataTypes, state => state.IsUnchanged);
+      CheckState (WriteableSubTransaction, _loadedClassWithAllDataTypes, state => state.IsUnchanged);
 
       CheckForbidden (() => ExecuteInReadOnlyMiddleTransaction (() => _loadedClassWithAllDataTypes.Delete()), "ObjectDeleting");
 
-      CheckState (ReadOnlyRootTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
-      CheckState (ReadOnlyMiddleTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
-      CheckState (WriteableSubTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
+      CheckState (ReadOnlyRootTransaction, _loadedClassWithAllDataTypes, state => state.IsUnchanged);
+      CheckState (ReadOnlyMiddleTransaction, _loadedClassWithAllDataTypes, state => state.IsUnchanged);
+      CheckState (WriteableSubTransaction, _loadedClassWithAllDataTypes, state => state.IsUnchanged);
     }
 
     [Test]
     public void DeleteInReadOnlyRootTransaction_IsForbidden_New ()
     {
-      CheckState (ReadOnlyRootTransaction, _orderNewInRootTransaction, StateType.New);
-      CheckState (ReadOnlyMiddleTransaction, _orderNewInRootTransaction, StateType.NotLoadedYet);
-      CheckState (WriteableSubTransaction, _orderNewInRootTransaction, StateType.NotLoadedYet);
+      CheckState (ReadOnlyRootTransaction, _orderNewInRootTransaction, state => state.IsNew);
+      CheckState (ReadOnlyMiddleTransaction, _orderNewInRootTransaction, state => state.IsNotLoadedYet);
+      CheckState (WriteableSubTransaction, _orderNewInRootTransaction, state => state.IsNotLoadedYet);
 
       CheckForbidden (() => ExecuteInReadOnlyRootTransaction (() => _orderNewInRootTransaction.Delete()), "ObjectDeleting");
 
-      CheckState (ReadOnlyRootTransaction, _orderNewInRootTransaction, StateType.New);
-      CheckState (ReadOnlyMiddleTransaction, _orderNewInRootTransaction, StateType.NotLoadedYet);
-      CheckState (WriteableSubTransaction, _orderNewInRootTransaction, StateType.NotLoadedYet);
+      CheckState (ReadOnlyRootTransaction, _orderNewInRootTransaction, state => state.IsNew);
+      CheckState (ReadOnlyMiddleTransaction, _orderNewInRootTransaction, state => state.IsNotLoadedYet);
+      CheckState (WriteableSubTransaction, _orderNewInRootTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
     public void DeleteInReadOnlyMiddleTransaction_IsForbidden_New ()
     {
-      CheckState (ReadOnlyRootTransaction, _orderNewInRootTransaction, StateType.New);
-      CheckState (ReadOnlyMiddleTransaction, _orderNewInRootTransaction, StateType.NotLoadedYet);
-      CheckState (WriteableSubTransaction, _orderNewInRootTransaction, StateType.NotLoadedYet);
+      CheckState (ReadOnlyRootTransaction, _orderNewInRootTransaction, state => state.IsNew);
+      CheckState (ReadOnlyMiddleTransaction, _orderNewInRootTransaction, state => state.IsNotLoadedYet);
+      CheckState (WriteableSubTransaction, _orderNewInRootTransaction, state => state.IsNotLoadedYet);
 
       CheckForbidden (() => ExecuteInReadOnlyMiddleTransaction (() => _orderNewInRootTransaction.Delete()), "ObjectDeleting");
 
-      CheckState (ReadOnlyRootTransaction, _orderNewInRootTransaction, StateType.New);
-      CheckState (ReadOnlyMiddleTransaction, _orderNewInRootTransaction, StateType.Unchanged);
-      CheckState (WriteableSubTransaction, _orderNewInRootTransaction, StateType.NotLoadedYet);
+      CheckState (ReadOnlyRootTransaction, _orderNewInRootTransaction, state => state.IsNew);
+      CheckState (ReadOnlyMiddleTransaction, _orderNewInRootTransaction, state => state.IsUnchanged);
+      CheckState (WriteableSubTransaction, _orderNewInRootTransaction, state => state.IsNotLoadedYet);
     }
   }
 }

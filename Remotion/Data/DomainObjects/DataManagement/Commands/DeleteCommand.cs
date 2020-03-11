@@ -46,8 +46,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       _transactionEventSink = transactionEventSink;
 
       _dataContainer = _clientTransaction.DataManager.GetDataContainerWithLazyLoad (_deletedObject.ID, throwOnNotFound: true);
-      Assertion.IsFalse (_dataContainer.State == StateType.Deleted);
-      Assertion.IsFalse (_dataContainer.State == StateType.Invalid);
+      Assertion.IsFalse (_dataContainer.State.IsDeleted);
+      Assertion.IsFalse (_dataContainer.State.IsDiscarded);
 
       _endPoints = (from endPointID in _dataContainer.AssociatedRelationEndPointIDs
                     let endPoint = _clientTransaction.DataManager.GetRelationEndPointWithLazyLoad (endPointID)
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
     {
       _endPointDeleteCommands.Perform ();
 
-      if (_dataContainer.State == StateType.New)
+      if (_dataContainer.State.IsNew)
         _clientTransaction.DataManager.Discard (_dataContainer);
       else
         _dataContainer.Delete();

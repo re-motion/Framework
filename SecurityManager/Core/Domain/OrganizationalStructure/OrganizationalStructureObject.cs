@@ -72,17 +72,17 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     bool IDomainObjectSecurityContextFactory.IsInvalid
     {
-      get { return State == StateType.Invalid; }
+      get { return State.IsInvalid; }
     }
 
     bool IDomainObjectSecurityContextFactory.IsNew
     {
-      get { return State == StateType.New; }
+      get { return State.IsNew; }
     }
 
     bool IDomainObjectSecurityContextFactory.IsDeleted
     {
-      get { return State == StateType.Deleted; }
+      get { return State.IsDeleted; }
     }
 
     IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()

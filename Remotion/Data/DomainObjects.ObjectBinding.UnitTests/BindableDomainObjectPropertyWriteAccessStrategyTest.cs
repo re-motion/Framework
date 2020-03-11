@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
@@ -34,10 +35,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void SupportedStateTypes ()
     {
       Assert.That (
-          Enum.GetValues (typeof (StateType)).Length,
+          typeof (DomainObjectState).GetProperties (BindingFlags.Instance | BindingFlags.Public).Length,
           Is.EqualTo (6),
-          "StateType enum has changed. BindableDomainObjectPropertyWriteAccessStrategy implementation must be updated accordingly.");
+          "DomainObjectState enum has changed. BindableDomainObjectPropertyWriteAccessStrategy implementation must be updated accordingly.");
     }
+
     [Test]
     public void CanWrite_NewObject_ReturnsTrue ()
     {
@@ -45,7 +47,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var property = GetProperty (instance);
       var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
 
-      Assert.That (instance.State, Is.EqualTo (StateType.New));
+      Assert.That (instance.State.IsNew, Is.True);
 
       var result = strategy.CanWrite (instance, property);
 
@@ -62,7 +64,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         instance.EnsureDataAvailable();
-        Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (instance.State.IsUnchanged, Is.True);
         var result = strategy.CanWrite (instance, property);
 
         Assert.That (result, Is.True);
@@ -79,7 +81,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         instance.Name = "new value";
-        Assert.That (instance.State, Is.EqualTo (StateType.Changed));
+        Assert.That (instance.State.IsChanged, Is.True);
         var result = strategy.CanWrite (instance, property);
 
         Assert.That (result, Is.True);
@@ -94,7 +96,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
 
       LifetimeService.DeleteObject (instance.DefaultTransactionContext.ClientTransaction, instance);
-      Assert.That (instance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (instance.State.IsInvalid, Is.True);
 
       var result = strategy.CanWrite (instance, property);
 
@@ -111,7 +113,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         LifetimeService.DeleteObject (instance.DefaultTransactionContext.ClientTransaction, instance);
-        Assert.That (instance.State, Is.EqualTo (StateType.Deleted));
+        Assert.That (instance.State.IsDeleted, Is.True);
 
         var result = strategy.CanWrite (instance, property);
 
@@ -128,12 +130,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
+        Assert.That (instance.State.IsNotLoadedYet, Is.True);
 
         var result = strategy.CanWrite (instance, property);
 
         Assert.That (result, Is.True);
-        Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (instance.State.IsUnchanged, Is.True);
       }
     }
 
@@ -147,12 +149,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var property = GetProperty (instance);
       var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
 
-      Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (instance.State.IsNotLoadedYet, Is.True);
 
       var result = strategy.CanWrite (instance, property);
 
       Assert.That (result, Is.False);
-      Assert.That (instance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (instance.State.IsInvalid, Is.True);
     }
 
     [Test]

@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var order = orderTicket1.Order;
       order.EnsureDataAvailable ();
 
-      Assert.That (orderTicket1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket1.State.IsUnchanged, Is.True);
+      Assert.That (order.State.IsUnchanged, Is.True);
 
       UnloadService.UnloadData (TestableClientTransaction, orderTicket1.ID);
 
@@ -46,8 +46,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (orderTicket1, "Order", false);
       CheckEndPointExists (order, "OrderTicket", false);
 
-      Assert.That (orderTicket1.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket1.State.IsNotLoadedYet, Is.True);
+      Assert.That (order.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -57,8 +57,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var order = orderTicket1.Order;
       order.EnsureDataAvailable ();
 
-      Assert.That (orderTicket1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket1.State.IsUnchanged, Is.True);
+      Assert.That (order.State.IsUnchanged, Is.True);
 
       UnloadService.UnloadData (TestableClientTransaction, orderTicket1.ID);
 
@@ -82,8 +82,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var order = orderTicket1.Order;
       order.EnsureDataAvailable ();
 
-      Assert.That (orderTicket1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket1.State.IsUnchanged, Is.True);
+      Assert.That (order.State.IsUnchanged, Is.True);
 
       UnloadService.UnloadData (TestableClientTransaction, orderTicket1.ID);
 
@@ -105,8 +105,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var order = orderTicket1.Order;
       order.EnsureDataAvailable ();
 
-      Assert.That (orderTicket1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket1.State.IsUnchanged, Is.True);
+      Assert.That (order.State.IsUnchanged, Is.True);
 
       UnloadService.UnloadData (TestableClientTransaction, orderTicket1.ID);
 
@@ -134,9 +134,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<Computer, Employee> (employee.ID, (ot, o) => ot.Employee = o);
       var unsynchronizedComputer = unsynchronizedComputerID.GetObject<Computer> ();
 
-      Assert.That (computer1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (unsynchronizedComputer.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (employee.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (computer1.State.IsUnchanged, Is.True);
+      Assert.That (unsynchronizedComputer.State.IsUnchanged, Is.True);
+      Assert.That (employee.State.IsUnchanged, Is.True);
 
       CheckEndPointExists (computer1, "Employee", true);
       CheckEndPointExists (unsynchronizedComputer, "Employee", true);
@@ -152,9 +152,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (unsynchronizedComputer, "Employee", true);
       CheckVirtualEndPointExistsAndComplete (employee, "Computer", true, false);
 
-      Assert.That (computer1.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (unsynchronizedComputer.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (employee.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (computer1.State.IsNotLoadedYet, Is.True);
+      Assert.That (unsynchronizedComputer.State.IsUnchanged, Is.True);
+      Assert.That (employee.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -171,12 +171,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       customer.EnsureDataAvailable ();
 
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order1.State.IsUnchanged, Is.True);
       Assert.That (orderItems.IsDataComplete, Is.True);
-      Assert.That (orderItemA.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItemB.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (customer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderItemA.State.IsUnchanged, Is.True);
+      Assert.That (orderItemB.State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.State.IsUnchanged, Is.True);
+      Assert.That (customer.State.IsUnchanged, Is.True);
       Assert.That (customerOrders.IsDataComplete, Is.True);
 
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
@@ -195,12 +195,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (order1, "Customer", false);
       CheckVirtualEndPointExistsAndComplete (customer, "Orders", true, false);
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
       Assert.That (orderItems.IsDataComplete, Is.True);
-      Assert.That (orderItemA.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItemB.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (customer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderItemA.State.IsUnchanged, Is.True);
+      Assert.That (orderItemB.State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.State.IsUnchanged, Is.True);
+      Assert.That (customer.State.IsUnchanged, Is.True);
       Assert.That (customerOrders.IsDataComplete, Is.False);
     }
 
@@ -269,10 +269,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var orderItemA = order1.OrderItems[0];
       var orderItemB = order1.OrderItems[1];
 
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order1.State.IsUnchanged, Is.True);
       Assert.That (orderItems.IsDataComplete, Is.True);
-      Assert.That (orderItemA.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItemB.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderItemA.State.IsUnchanged, Is.True);
+      Assert.That (orderItemB.State.IsUnchanged, Is.True);
 
       UnloadService.UnloadData (TestableClientTransaction, orderItemA.ID);
 
@@ -284,10 +284,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (orderItemB, "Order", true);
       CheckVirtualEndPointExistsAndComplete (order1, "OrderItems", true, false);
 
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order1.State.IsUnchanged, Is.True);
       Assert.That (orderItems.IsDataComplete, Is.False);
-      Assert.That (orderItemA.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (orderItemB.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderItemA.State.IsNotLoadedYet, Is.True);
+      Assert.That (orderItemB.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -303,11 +303,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       TestableClientTransaction.Commit();
 
       Assert.That (newOrderItem.Order, Is.SameAs (order1));
-      Assert.That (newOrderItem.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (newOrderItem.State.IsUnchanged, Is.True);
 
       UnloadService.UnloadData (TestableClientTransaction, newOrderItem.ID);
 
-      Assert.That (newOrderItem.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (newOrderItem.State.IsNotLoadedYet, Is.True);
       Assert.That (orderItems.IsDataComplete, Is.False);
     }
 
@@ -414,21 +414,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
       Assert.That (TestableClientTransaction.GetEnlistedDomainObject (DomainObjectIDs.Order1), Is.SameAs (order1));
 
       ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents (TestableClientTransaction);
 
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
     public void UnloadData_New ()
     {
       var orderNew = (Order) LifetimeService.NewObject (TestableClientTransaction, typeof (Order), ParamList.Empty);
-      Assert.That (orderNew.State, Is.EqualTo (StateType.New));
+      Assert.That (orderNew.State.IsNew, Is.True);
       Assert.That (TestableClientTransaction.GetEnlistedDomainObject (DomainObjectIDs.Order1), Is.Null);
 
       ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents (TestableClientTransaction);
@@ -437,9 +437,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           () => UnloadService.UnloadData (TestableClientTransaction, orderNew.ID),
           Throws.InvalidOperationException.With.Message.EqualTo (
               "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-              + string.Format ("'Order|{0}|System.Guid' (New).", orderNew.ID.Value)));
+              + string.Format ("'Order|{0}|System.Guid' (DataContainerState (New)).", orderNew.ID.Value)));
 
-      Assert.That (orderNew.State, Is.EqualTo (StateType.New));
+      Assert.That (orderNew.State.IsNew, Is.True);
     }
 
     [Test]
@@ -461,7 +461,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           () => UnloadService.UnloadData (TestableClientTransaction, DomainObjectIDs.Order1),
           Throws.InvalidOperationException.With.Message.EqualTo (
               "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-              + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (Changed)."));
+              + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (DataContainerState (Changed))."));
 
     }
 
@@ -475,7 +475,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       UnloadService.UnloadData (TestableClientTransaction, domainObject.ID);
 
-      Assert.That (domainObject.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (domainObject.State.IsNotLoadedYet, Is.True);
       Assert.That (domainObject.OrderTicket, Is.SameAs (newTicket));
     }
 
@@ -488,7 +488,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       
       UnloadService.UnloadData (TestableClientTransaction, domainObject.ID);
 
-      Assert.That (domainObject.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (domainObject.State.IsNotLoadedYet, Is.True);
       Assert.That (domainObject.Computer, Is.Null);
     }
 
@@ -501,7 +501,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     public void UnloadData_ChangedCollection ()
     {
       DomainObjectIDs.OrderItem1.GetObject<OrderItem>().Order.OrderItems.Add (OrderItem.NewObject ());
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.OrderItem1].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.OrderItem1].State.IsUnchanged, Is.True);
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
       Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID).HasChanged, Is.True);
 
@@ -513,14 +513,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
 
       Dev.Null = order1.OrderNumber;
 
       AssertObjectWasLoaded(listenerMock, order1);
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order1.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -528,14 +528,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
 
       order1.OrderNumber = 4711;
 
       AssertObjectWasLoaded (listenerMock, order1);
-      Assert.That (order1.State, Is.EqualTo (StateType.Changed));
+      Assert.That (order1.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -543,7 +543,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       EnsureTransactionThrowsOnLoad ();
 
@@ -552,7 +552,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Dev.Null = order1.State;
       Dev.Null = order1.RootTransaction;
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -560,14 +560,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
 
       Dev.Null = order1.Timestamp;
 
       AssertObjectWasLoaded (listenerMock, order1);
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order1.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -575,14 +575,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
 
       order1.RegisterForCommit();
 
       AssertObjectWasLoaded (listenerMock, order1);
-      Assert.That (order1.State, Is.EqualTo (StateType.Changed));
+      Assert.That (order1.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -590,14 +590,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
 
       order1.EnsureDataAvailable ();
 
       AssertObjectWasLoaded (listenerMock, order1);
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order1.State.IsUnchanged, Is.True);
     }
     
     [Test]
@@ -605,7 +605,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       EnsureTransactionThrowsOnLoad ();
 
@@ -615,7 +615,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       Dev.Null = order1.Properties;
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -623,14 +623,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       EnsureTransactionThrowsOnLoad ();
 
       Dev.Null = order1.DefaultTransactionContext;
       Dev.Null = order1.TransactionContext;
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -645,12 +645,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       EnsureTransactionThrowsOnLoad ();
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
       Assert.That (customerOrders.IsDataComplete, Is.False);
 
       Assert.That (customer.Orders, Is.SameAs (customerOrders)); // does not reload the object or the relation
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
       Assert.That (customerOrders.IsDataComplete, Is.False);
     }
 
@@ -663,7 +663,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
       Assert.That (customerOrders.IsDataComplete, Is.False);
 
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
@@ -672,7 +672,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       AssertObjectWasLoadedAmongOthers(listenerMock, order1);
       
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order1.State.IsUnchanged, Is.True);
       Assert.That (customerOrders.IsDataComplete, Is.True);
     }
 
@@ -690,7 +690,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       EnsureTransactionThrowsOnLoad ();
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       Assert.That (order1.OrderTicket, Is.SameAs (orderTicket)); // does not reload the object
       Assert.That (orderTicket.Order, Is.SameAs (order1)); // does not reload the object
@@ -699,7 +699,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That (orderItemA.Order, Is.SameAs (order1)); // does not reload the object
       Assert.That (orderItemB.Order, Is.SameAs (order1)); // does not reload the object
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -715,7 +715,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       EnsureTransactionThrowsOnLoad ();
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       Assert.That (order1.Properties.Find ("OrderTicket").GetOriginalValueWithoutTypeCheck(), Is.SameAs (orderTicket)); // does not reload the object
       Assert.That (orderTicket.Properties.Find ("Order").GetOriginalValueWithoutTypeCheck (), Is.SameAs (order1)); // does not reload the object
@@ -723,7 +723,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That (orderItemA.Properties.Find ("Order").GetOriginalValueWithoutTypeCheck (), Is.SameAs (order1)); // does not reload the object
       Assert.That (orderItemB.Properties.Find ("Order").GetOriginalValueWithoutTypeCheck (), Is.SameAs (order1)); // does not reload the object
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -739,7 +739,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       EnsureTransactionThrowsOnLoad ();
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       order1.OrderTicket = OrderTicket.NewObject(); // does not reload the object
       Assert.That (orderTicket.Order, Is.Null);
@@ -749,7 +749,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That (orderItemA.Order, Is.SameAs (order1));
       Assert.That (orderItemB.Order, Is.Null);
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -765,10 +765,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       EnsureTransactionThrowsOnLoad ();
 
       orderTicket.Order = Order.NewObject ();
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       orderItemA.Order = Order.NewObject ();
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -779,13 +779,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       Assert.That (order1.Customer, Is.SameAs (customer)); // reloads the object because the foreign key is stored in order1
 
       AssertObjectWasLoaded (listenerMock, order1);
 
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order1.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -795,12 +795,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       order1.Customer = Customer.NewObject (); // reloads the object because the foreign key is stored in order1
 
       AssertObjectWasLoaded (listenerMock, order1);
-      Assert.That (order1.State, Is.EqualTo (StateType.Changed));
+      Assert.That (order1.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -811,7 +811,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       Assert.That (customer.Orders, Has.Member (order1)); // enumerating reloads the relation contents because the foreign key is stored in order1
 
@@ -827,14 +827,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Console.WriteLine (customer.State);
 
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
 
       Console.WriteLine (customer.State);
       EnsureTransactionThrowsOnLoad ();
       
       customer.Orders.Add (Order.NewObject()); // does not reload order1 because that object's foreign key is not involved
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
     }
     
     [Test]
@@ -844,14 +844,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var order3 = DomainObjectIDs.Order3.GetObject<Order> ();
 
       UnloadService.UnloadData (TestableClientTransaction, order3.ID);
-      Assert.That (order3.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order3.State.IsNotLoadedYet, Is.True);
 
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
 
       customer.Orders.Add (order3); // reloads order3 because order3's foreign key is changed
 
       AssertObjectWasLoaded (listenerMock, order3);
-      Assert.That (order3.State, Is.EqualTo (StateType.Changed));
+      Assert.That (order3.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -862,14 +862,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
       Assert.That (customerOrders.IsDataComplete, Is.False);
 
       EnsureTransactionThrowsOnLoad();
 
       TestableClientTransaction.Commit();
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
       Assert.That (customerOrders.IsDataComplete, Is.False);
     }
 
@@ -881,14 +881,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       UnloadService.UnloadData (TestableClientTransaction, order1.ID);
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
       Assert.That (customerOrders.IsDataComplete, Is.False);
 
       EnsureTransactionThrowsOnLoad ();
 
       TestableClientTransaction.Rollback();
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
       Assert.That (customerOrders.IsDataComplete, Is.False);
     }
   }

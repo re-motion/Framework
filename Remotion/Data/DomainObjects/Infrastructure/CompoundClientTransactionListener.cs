@@ -268,7 +268,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         listener.DataContainerMapUnregistering (clientTransaction, container);
     }
 
-    public virtual void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, StateType newDataContainerState)
+    public virtual void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, DataContainerState newDataContainerState)
     {
       foreach (var listener in _listeners)
         listener.DataContainerStateUpdated (clientTransaction, container, newDataContainerState);

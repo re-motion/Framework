@@ -187,7 +187,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
       {
         acl.EnsureDataAvailable ();
-        Assert.That (acl.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (acl.State.IsUnchanged, Is.True);
 
         AccessControlEntry entry = acl.CreateAccessControlEntry();
 
@@ -197,7 +197,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         Assert.That ((entry.GetPermissions()[0]).AccessControlEntry, Is.SameAs (entry));
         Assert.That ((entry.GetPermissions()[1]).AccessType, Is.SameAs (deleteAccessType));
         Assert.That ((entry.GetPermissions()[1]).AccessControlEntry, Is.SameAs (entry));
-        Assert.That (acl.State, Is.EqualTo (StateType.Changed));
+        Assert.That (acl.State.IsChanged, Is.True);
       }
     }
 
@@ -209,7 +209,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
       {
         acl.EnsureDataAvailable ();
-        Assert.That (acl.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (acl.State.IsUnchanged, Is.True);
 
         AccessControlEntry ace0 = acl.CreateAccessControlEntry();
         AccessControlEntry acel = acl.CreateAccessControlEntry();
@@ -219,7 +219,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         Assert.That (ace0.Index, Is.EqualTo (0));
         Assert.That (acl.AccessControlEntries[1], Is.SameAs (acel));
         Assert.That (acel.Index, Is.EqualTo (1));
-        Assert.That (acl.State, Is.EqualTo (StateType.Changed));
+        Assert.That (acl.State.IsChanged, Is.True);
       }
     }
 
@@ -228,7 +228,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlList acl = _testHelper.CreateStatefulAcl (_testHelper.CreateOrderClassDefinitionWithProperties());
 
-      Assert.That (acl.State, Is.EqualTo (StateType.New));
+      Assert.That (acl.State.IsNew, Is.True);
     }
 
     [Test]

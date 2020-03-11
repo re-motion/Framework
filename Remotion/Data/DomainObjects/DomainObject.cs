@@ -306,7 +306,7 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Gets the current state of the <see cref="DomainObject"/> in the <see cref="ClientTransactionScope.CurrentTransaction"/>.
     /// </summary>
-    public StateType State
+    public DomainObjectState State
     {
       get { return this.GetState(); }
     }
@@ -321,7 +321,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
     public bool IsInvalid
     {
-      get { return State == StateType.Invalid; }
+      get { return State.IsInvalid; }
     }
 
     /// <summary>
@@ -726,8 +726,8 @@ namespace Remotion.Data.DomainObjects
 
     /// <summary>
     /// Ensures that the <see cref="DomainObject"/> is included in the commit set of its <see cref="ClientTransaction.ActiveTransaction"/>. 
-    /// The object may not be in state <see cref="StateType.Deleted"/>, and if its state is <see cref="StateType.NotLoadedYet"/>, 
-    /// this method loads the object's data.
+    /// The object's <see cref="State"/>.<see cref="DomainObjectState.IsInvalid"/> must not be set,
+    /// and if <see cref="State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/> flag is set, this method loads the object's data.
     /// </summary>
     /// <remarks>This method is only provided for compatibility, i.e. to make it easier to call the actual implementation.</remarks>
     /// <seealso cref="DomainObjectExtensions.RegisterForCommit"/>
@@ -738,7 +738,7 @@ namespace Remotion.Data.DomainObjects
 
     /// <summary>
     /// Ensures that the <see cref="DomainObject"/>'s data has been loaded into the its <see cref="ClientTransaction.ActiveTransaction"/>.
-    /// If it hasn't, this method causes the objec's data to be loaded. If the object's data can't be found, an exception is thrown.
+    /// If it hasn't, this method causes the object's data to be loaded. If the object's data can't be found, an exception is thrown.
     /// </summary>
     /// <remarks>This method is only provided for compatibility, i.e. to make it easier to call the actual implementation.</remarks>
     /// <seealso cref="DomainObjectExtensions.EnsureDataAvailable"/>

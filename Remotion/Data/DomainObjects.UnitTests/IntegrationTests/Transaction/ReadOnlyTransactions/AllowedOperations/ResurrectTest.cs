@@ -37,29 +37,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void ResurrectInReadOnlyRootTransaction_IsAllowed ()
     {
-      CheckState (ReadOnlyRootTransaction, _invalidOrder, StateType.Invalid);
-      CheckState (ReadOnlyMiddleTransaction, _invalidOrder, StateType.Invalid);
-      CheckState (WriteableSubTransaction, _invalidOrder, StateType.Invalid);
+      CheckState (ReadOnlyRootTransaction, _invalidOrder, state => state.IsInvalid);
+      CheckState (ReadOnlyMiddleTransaction, _invalidOrder, state => state.IsInvalid);
+      CheckState (WriteableSubTransaction, _invalidOrder, state => state.IsInvalid);
 
       ResurrectionService.ResurrectInvalidObject (ReadOnlyRootTransaction, _invalidOrder.ID);
 
-      CheckState (ReadOnlyRootTransaction, _invalidOrder, StateType.NotLoadedYet);
-      CheckState (ReadOnlyMiddleTransaction, _invalidOrder, StateType.NotLoadedYet);
-      CheckState (WriteableSubTransaction, _invalidOrder, StateType.NotLoadedYet);
+      CheckState (ReadOnlyRootTransaction, _invalidOrder, state => state.IsNotLoadedYet);
+      CheckState (ReadOnlyMiddleTransaction, _invalidOrder, state => state.IsNotLoadedYet);
+      CheckState (WriteableSubTransaction, _invalidOrder, state => state.IsNotLoadedYet);
     }
 
     [Test]
     public void UnloadDataInReadOnlyMiddleTransaction_IsAllowed ()
     {
-      CheckState (ReadOnlyRootTransaction, _invalidOrder, StateType.Invalid);
-      CheckState (ReadOnlyMiddleTransaction, _invalidOrder, StateType.Invalid);
-      CheckState (WriteableSubTransaction, _invalidOrder, StateType.Invalid);
+      CheckState (ReadOnlyRootTransaction, _invalidOrder, state => state.IsInvalid);
+      CheckState (ReadOnlyMiddleTransaction, _invalidOrder, state => state.IsInvalid);
+      CheckState (WriteableSubTransaction, _invalidOrder, state => state.IsInvalid);
 
       ResurrectionService.ResurrectInvalidObject (ReadOnlyMiddleTransaction, _invalidOrder.ID);
 
-      CheckState (ReadOnlyRootTransaction, _invalidOrder, StateType.NotLoadedYet);
-      CheckState (ReadOnlyMiddleTransaction, _invalidOrder, StateType.NotLoadedYet);
-      CheckState (WriteableSubTransaction, _invalidOrder, StateType.NotLoadedYet);
+      CheckState (ReadOnlyRootTransaction, _invalidOrder, state => state.IsNotLoadedYet);
+      CheckState (ReadOnlyMiddleTransaction, _invalidOrder, state => state.IsNotLoadedYet);
+      CheckState (WriteableSubTransaction, _invalidOrder, state => state.IsNotLoadedYet);
     }
   }
 }

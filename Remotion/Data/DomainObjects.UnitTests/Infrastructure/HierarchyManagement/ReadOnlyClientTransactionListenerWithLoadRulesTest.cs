@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -305,7 +306,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       var someDataContainer = DataContainerObjectMother.Create (DomainObjectIDs.Client2);
 
       Assert.That (
-          () => _listener.DataContainerStateUpdated (_transaction, someDataContainer, StateType.Changed),
+          () => _listener.DataContainerStateUpdated (_transaction, someDataContainer, new DataContainerState.Builder().SetChanged().Value),
           Throws.TypeOf<ClientTransactionReadOnlyException>());
     }
 
@@ -319,7 +320,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
 
       var someDataContainer = DataContainerObjectMother.Create (DomainObjectIDs.Client1);
 
-      Assert.That (() => _listener.DataContainerStateUpdated (_transaction, someDataContainer, StateType.Changed), Throws.Nothing);
+      Assert.That (
+          () => _listener.DataContainerStateUpdated (_transaction, someDataContainer, new DataContainerState.Builder().SetChanged().Value),
+          Throws.Nothing);
     }
 
     [Test]
@@ -328,7 +331,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       Assert.That (_listener.IsInLoadMode, Is.False);
       var someDataContainer = DataContainerObjectMother.Create (DomainObjectIDs.Client1);
 
-      Assert.That (() => _listener.DataContainerStateUpdated (_transaction, someDataContainer, StateType.Changed), Throws.Nothing);
+      Assert.That (
+          () => _listener.DataContainerStateUpdated (_transaction, someDataContainer, new DataContainerState.Builder().SetChanged().Value),
+          Throws.Nothing);
     }
 
     [Test]
@@ -339,7 +344,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       var someDataContainer = DataContainerObjectMother.Create (DomainObjectIDs.Client1);
 
       Assert.That (
-          () => _listener.DataContainerStateUpdated (_transaction, someDataContainer, StateType.Changed), 
+          () => _listener.DataContainerStateUpdated (_transaction, someDataContainer, new DataContainerState.Builder().SetChanged().Value), 
           Throws.TypeOf<ClientTransactionReadOnlyException> ());
     }
 

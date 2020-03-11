@@ -30,11 +30,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Customer customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
       customer.Name = "Arthur Dent";
 
-      Assert.That (customer.State, Is.EqualTo (StateType.Changed));
+      Assert.That (customer.State.IsChanged, Is.True);
 
       TestableClientTransaction.Rollback ();
 
-      Assert.That (customer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (customer.State.IsUnchanged, Is.True);
       Assert.That (customer.Name, Is.EqualTo ("Kunde 1"));
     }
 
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       Computer computerAfterRollback = DomainObjectIDs.Computer4.GetObject<Computer> ();
       Assert.That (computerAfterRollback, Is.SameAs (computer));
-      Assert.That (computer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (computer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -162,7 +162,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       TestableClientTransaction.Rollback ();
 
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order1.State.IsUnchanged, Is.True);
       Assert.That (order1.OrderTicket, Is.SameAs (orderTicket1));
       Assert.That (customer.Orders.Contains (newOrderID), Is.False);
       Assert.That (orderItem1.Order, Is.SameAs (order1));

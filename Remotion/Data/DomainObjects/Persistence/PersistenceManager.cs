@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Persistence
           foreach (var group in groupedDataContainers)
           {
             group.Provider.Save (group.DataContainers);
-            group.Provider.UpdateTimestamps (group.DataContainers.Where (dc => dc.State != StateType.Deleted));
+            group.Provider.UpdateTimestamps (group.DataContainers.Where (dc => !dc.State.IsDeleted));
           }
 
           CommitTransaction (providers, saveContext);

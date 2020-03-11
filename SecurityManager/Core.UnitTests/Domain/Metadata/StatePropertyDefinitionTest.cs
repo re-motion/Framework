@@ -237,13 +237,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       stateProperty.RemoveState (state2);
 
-      Assert.That (acl1.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (acl1.State.IsInvalid, Is.True);
 
-      Assert.That (acl2.State, Is.EqualTo (StateType.New));
+      Assert.That (acl2.State.IsNew, Is.True);
       Assert.That (acl2.StateCombinations.Count, Is.EqualTo (1));
       Assert.That (acl2.StateCombinations[0].GetStates(), Is.Empty);
 
-      Assert.That (acl3.State, Is.EqualTo (StateType.New));
+      Assert.That (acl3.State.IsNew, Is.True);
       Assert.That (acl3.StateCombinations, Is.Empty);
     }
 

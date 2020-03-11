@@ -354,7 +354,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
         AccessControlEntryValidationResult result = ace.Validate ();
 
         Assert.That (result.IsValid, Is.True);
-        Assert.That (ace.State, Is.EqualTo (StateType.Deleted));
+        Assert.That (ace.State.IsDeleted, Is.True);
       }
     }
 
@@ -371,7 +371,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
         AccessControlEntryValidationResult result = ace.Validate ();
 
         Assert.That (result.IsValid, Is.True);
-        Assert.That (ace.State, Is.EqualTo (StateType.Deleted));
+        Assert.That (ace.State.IsDeleted, Is.True);
       }
     }
 
@@ -389,7 +389,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
         AccessControlEntryValidationResult result = ace.Validate ();
 
         Assert.That (result.IsValid, Is.True);
-        Assert.That (ace.State, Is.EqualTo (StateType.Deleted));
+        Assert.That (ace.State.IsDeleted, Is.True);
       }
     }
 

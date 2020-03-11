@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       get { throw new NotImplementedException(); }
     }
 
-    public StateType GetState (ObjectID objectID)
+    public DomainObjectState GetState (ObjectID objectID)
     {
       throw new NotImplementedException();
     }
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public IEnumerable<PersistableData> GetLoadedDataByObjectState (params StateType[] domainObjectStates)
+    public IEnumerable<PersistableData> GetLoadedDataByObjectState (Func<DomainObjectState, bool> predicate)
     {
       throw new NotImplementedException();
     }

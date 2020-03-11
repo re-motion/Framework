@@ -51,15 +51,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
-      var stateSet = new StateValueSet (StateType.New, StateType.Changed, StateType.Deleted);
-
       foreach (var domainObject in domainObjects)
       {
         var state = domainObject.TransactionContext[_clientTransaction].State;
-        if (!stateSet.Matches (state))
+
+        // Place tests in order of probability to reduce number of checks required until a match for a typical usage scenario
+        var isPersistenceRelevantDomainObject = state.IsChanged || state.IsNew || state.IsDeleted;
+
+        if (!isPersistenceRelevantDomainObject)
         {
           var message = string.Format (
-              "The given DomainObject '{0}' cannot be registered due to its state ({1}). Only objects that are part of the commit set can be "
+              "The given DomainObject '{0}' cannot be registered due to its {1}. Only objects that are part of the commit set can be "
               + "registered. Use RegisterForCommit to add an unchanged object to the commit set.",
               domainObject.ID,
               state);

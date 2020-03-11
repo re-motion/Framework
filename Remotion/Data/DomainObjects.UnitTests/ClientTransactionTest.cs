@@ -434,7 +434,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var invalidObject = DomainObjectMother.CreateObjectInTransaction<Order> (_transaction);
       _transaction.ExecuteInScope (invalidObject.Delete);
 
-      Assert.That (invalidObject.TransactionContext[_transaction].State, Is.EqualTo (StateType.Invalid));
+      Assert.That (invalidObject.TransactionContext[_transaction].State.IsInvalid, Is.True);
 
       var invalidObjectReference = ClientTransactionTestHelper.CallGetInvalidObjectReference (_transaction, invalidObject.ID);
 
@@ -866,7 +866,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       ClientTransactionTestHelper.CallGetRelatedObject (_transaction, endPointID);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -881,7 +881,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var result = ClientTransactionTestHelper.CallGetRelatedObject (_transaction, endPointID);
 
       Assert.That (result, Is.SameAs (client));
-      Assert.That (_transaction.ExecuteInScope (() => result.State), Is.EqualTo (StateType.Deleted));
+      Assert.That (_transaction.ExecuteInScope (() => result.State).IsDeleted, Is.True);
     }
 
     [Test]
@@ -895,7 +895,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var endPointID = RelationEndPointID.Create (location.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
       var result = ClientTransactionTestHelper.CallGetRelatedObject (_transaction, endPointID);
       Assert.That (result, Is.SameAs (newClient));
-      Assert.That (_transaction.ExecuteInScope (() => result.State), Is.EqualTo (StateType.Invalid));
+      Assert.That (_transaction.ExecuteInScope (() => result.State).IsInvalid, Is.True);
     }
 
     [Test]
@@ -932,7 +932,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       ClientTransactionTestHelper.CallGetOriginalRelatedObject (_transaction, endPointID);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -978,7 +978,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       ClientTransactionTestHelper.CallGetRelatedObjects (_transaction, endPointID);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -1022,7 +1022,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       ClientTransactionTestHelper.CallGetOriginalRelatedObjects (_transaction, endPointID);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order.State.IsUnchanged, Is.True);
     }
 
     [Test]

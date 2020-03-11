@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     public static T[] PrepareLocalObjects<T> (int numberOfObjects, Func<T> factory) where T : DomainObject
     {
       var objects = ClientTransaction.Current.GetEnlistedDomainObjects().OfType<T>()
-          .Where (obj => obj.State != StateType.NotLoadedYet).Take (numberOfObjects)
+          .Where (obj => !obj.State.IsNotLoadedYet).Take (numberOfObjects)
           .ToList ();
 
       var remaining = numberOfObjects - objects.Count;

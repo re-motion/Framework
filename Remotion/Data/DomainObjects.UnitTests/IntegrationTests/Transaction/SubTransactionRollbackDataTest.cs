@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         ClientTransactionScope.CurrentTransaction.Rollback ();
 
-        Assert.That (loadedOrder.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (newOrder.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (loadedOrder.State.IsUnchanged, Is.True);
+        Assert.That (newOrder.State.IsUnchanged, Is.True);
 
         Assert.That (loadedOrder.OrderNumber, Is.EqualTo (5));
         Assert.That (newOrder.OrderNumber, Is.EqualTo (7));
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         ClientTransactionScope.CurrentTransaction.Rollback ();
 
-        Assert.That (newOrder.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (newOrder.State.IsUnchanged, Is.True);
 
         Assert.That (newOrder.OrderItems.Count, Is.EqualTo (1));
         Assert.That (newOrder.OrderItems.ContainsObject (orderItem), Is.True);
@@ -98,10 +98,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         ClientTransactionScope.CurrentTransaction.Rollback ();
 
-        Assert.That (computer.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (employee.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (location.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (client.State, Is.EqualTo (StateType.NotLoadedYet));
+        Assert.That (computer.State.IsUnchanged, Is.True);
+        Assert.That (employee.State.IsUnchanged, Is.True);
+        Assert.That (location.State.IsUnchanged, Is.True);
+        Assert.That (client.State.IsNotLoadedYet, Is.True);
 
         Assert.That (computer.Employee, Is.SameAs (employee));
         Assert.That (employee.Computer, Is.SameAs (computer));

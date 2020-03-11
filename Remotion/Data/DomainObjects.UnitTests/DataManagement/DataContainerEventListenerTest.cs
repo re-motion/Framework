@@ -119,10 +119,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void StateUpdated ()
     {
-      EventSinkWithMock.Expect (mock => mock.RaiseDataContainerStateUpdatedEvent ( _dataContainer, StateType.New));
+      var state = new DataContainerState.Builder().SetChanged().Value;
+      EventSinkWithMock.Expect (mock => mock.RaiseDataContainerStateUpdatedEvent ( _dataContainer, state));
       EventSinkWithMock.Replay();
 
-      EventListener.StateUpdated (_dataContainer, StateType.New);
+      EventListener.StateUpdated (_dataContainer, state);
 
       EventSinkWithMock.VerifyAllExpectations();
     }

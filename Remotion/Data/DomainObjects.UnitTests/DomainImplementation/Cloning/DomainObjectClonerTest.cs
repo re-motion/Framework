@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       DomainObject clone = _cloner.CreateCloneHull (_classWithAllDataTypes);
       Assert.That (clone, Is.Not.SameAs (_classWithAllDataTypes));
       Assert.That (clone.ID, Is.Not.EqualTo (_classWithAllDataTypes));
-      Assert.That (clone.State, Is.EqualTo (StateType.New));
+      Assert.That (clone.State.IsNew, Is.True);
     }
 
     [Test]

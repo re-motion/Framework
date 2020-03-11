@@ -37,7 +37,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var relationEndPointID = RelationEndPointID.Create (objectID, typeof (Order), "OrderTicket");
       var virtualEndPoint = MockRepository.GenerateStub<IVirtualEndPoint>();
       var domainObject = DomainObjectMother.CreateFakeObject<Order>();
-      var persistableData = new PersistableData (domainObject, StateType.Unchanged, dataContainer, new IRelationEndPoint[0]);
+      var persistableData = new PersistableData (
+          domainObject,
+          new DomainObjectState.Builder().SetUnchanged().Value,
+          dataContainer,
+          new IRelationEndPoint[0]);
       var dataManagementCommand = MockRepository.GenerateStub<IDataManagementCommand> ();
       var randomBoolean = BooleanObjectMother.GetRandomBoolean ();
 
@@ -49,10 +53,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       CheckDelegation (dm => dm.Discard (dataContainer));
       CheckDelegation (dm => dm.DataContainers, MockRepository.GenerateStub<IDataContainerMapReadOnlyView> ());
       CheckDelegation (dm => dm.RelationEndPoints, MockRepository.GenerateStub<IRelationEndPointMapReadOnlyView> ());
-      CheckDelegation (dm => dm.GetState (objectID), StateType.Deleted);
+      CheckDelegation (dm => dm.GetState (objectID), new DomainObjectState.Builder().SetDeleted().Value);
       CheckDelegation (dm => dm.GetDataContainerWithLazyLoad (objectID, randomBoolean), dataContainer);
       CheckDelegation (dm => dm.GetDataContainersWithLazyLoad (new[] { objectID }, true), new[] { dataContainer });
-      CheckDelegation (dm => dm.GetLoadedDataByObjectState (StateType.Unchanged), new[] { persistableData });
+      CheckDelegation (dm => dm.GetLoadedDataByObjectState (state => state.IsUnchanged), new[] { persistableData });
       CheckDelegation (dm => dm.MarkInvalid (domainObject));
       CheckDelegation (dm => dm.MarkNotInvalid (objectID));
       CheckDelegation (dm => dm.Commit ());

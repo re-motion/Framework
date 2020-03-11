@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     }
 
-    public void RaiseDataContainerStateUpdatedEvent (DataContainer container, StateType newDataContainerState)
+    public void RaiseDataContainerStateUpdatedEvent (DataContainer container, DataContainerState newDataContainerState)
     {
 
     }

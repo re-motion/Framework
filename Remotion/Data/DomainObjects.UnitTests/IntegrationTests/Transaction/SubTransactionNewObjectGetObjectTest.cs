@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       Order order = Order.NewObject ();
       ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction ();
-      Assert.That (order.TransactionContext[subTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order.TransactionContext[subTransaction].State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -94,8 +94,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (subTransaction.EnterDiscardingScope ())
       {
         Order order = Order.NewObject ();
-        Assert.That (order.TransactionContext[subTransaction].State, Is.EqualTo (StateType.New));
-        Assert.That (order.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.Invalid));
+        Assert.That (order.TransactionContext[subTransaction].State.IsNew, Is.True);
+        Assert.That (order.TransactionContext[TestableClientTransaction].State.IsInvalid, Is.True);
       }
     }
 
@@ -106,10 +106,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (subTransaction.EnterDiscardingScope ())
       {
         var instance = ClassWithAllDataTypes.NewObject ();
-        Assert.That (instance.TransactionContext[subTransaction].State, Is.EqualTo (StateType.New));
-        Assert.That (instance.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.Invalid));
+        Assert.That (instance.TransactionContext[subTransaction].State.IsNew, Is.True);
+        Assert.That (instance.TransactionContext[TestableClientTransaction].State.IsInvalid, Is.True);
         subTransaction.Commit ();
-        Assert.That (instance.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.New));
+        Assert.That (instance.TransactionContext[TestableClientTransaction].State.IsNew, Is.True);
       }
     }
 
@@ -127,7 +127,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order> ();
       ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction ();
-      Assert.That (order.TransactionContext[subTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order.TransactionContext[subTransaction].State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -247,7 +247,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         var objectReference = LifetimeService.GetObjectReference (subTransaction, order1.ID);
         Assert.That (objectReference, Is.SameAs (order1));
-        Assert.That (objectReference.State, Is.EqualTo (StateType.Invalid));
+        Assert.That (objectReference.State.IsInvalid, Is.True);
       }
     }
 
@@ -529,8 +529,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         var result = LifetimeService.TryGetObjects<Order> (subTransaction, order1.ID, order3.ID, order4.ID);
         Assert.That (result, Is.EqualTo(new[] { order1, order3, order4}));
-        Assert.That (result[1].State, Is.EqualTo (StateType.Invalid));
-        Assert.That (result[2].State, Is.EqualTo (StateType.Invalid));
+        Assert.That (result[1].State.IsInvalid, Is.True);
+        Assert.That (result[2].State.IsInvalid, Is.True);
       }
     }
 

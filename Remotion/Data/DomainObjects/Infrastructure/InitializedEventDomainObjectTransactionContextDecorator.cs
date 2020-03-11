@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get { return _actualContext.ClientTransaction; }
     }
 
-    public StateType State
+    public DomainObjectState State
     {
       get
       {

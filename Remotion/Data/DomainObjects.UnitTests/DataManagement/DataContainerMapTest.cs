@@ -41,11 +41,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
       _map.Register (dataContainer);
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.New));
+      Assert.That (dataContainer.State.IsNew, Is.True);
 
       _map.CommitAllDataContainers();
 
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (dataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -54,11 +54,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var dataContainer = DataContainer.CreateForExisting (DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
       dataContainer.Delete();
       _map.Register (dataContainer);
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (dataContainer.State.IsDeleted, Is.True);
 
       _map.RollbackAllDataContainers();
 
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (dataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]

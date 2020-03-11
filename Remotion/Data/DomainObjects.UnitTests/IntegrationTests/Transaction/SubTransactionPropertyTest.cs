@@ -28,15 +28,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       Order newOrder = Order.NewObject ();
 
-      Assert.That (newOrder.State, Is.EqualTo (StateType.New));
+      Assert.That (newOrder.State.IsNew, Is.True);
 
       using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        Assert.That (newOrder.State, Is.EqualTo (StateType.NotLoadedYet));
+        Assert.That (newOrder.State.IsNotLoadedYet, Is.True);
 
         newOrder.OrderNumber = 7;
 
-        Assert.That (newOrder.State, Is.EqualTo (StateType.Changed));
+        Assert.That (newOrder.State.IsChanged, Is.True);
         Assert.That (
             newOrder.Properties[typeof (Order) + ".OrderNumber"].GetOriginalValue<int> (),
             Is.Not.EqualTo (

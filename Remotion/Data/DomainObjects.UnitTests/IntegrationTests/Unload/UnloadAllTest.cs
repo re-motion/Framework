@@ -127,21 +127,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var invalidObject = Order.NewObject ();
       invalidObject.Delete ();
 
-      Assert.That (unchangedObject.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (changedObjectDueToDataState.State, Is.EqualTo (StateType.Changed));
-      Assert.That (changedObjectDueToVirtualRelationState.State, Is.EqualTo (StateType.Changed));
-      Assert.That (deletedObject.State, Is.EqualTo (StateType.Deleted));
-      Assert.That (newObject.State, Is.EqualTo (StateType.New));
-      Assert.That (invalidObject.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (unchangedObject.State.IsUnchanged, Is.True);
+      Assert.That (changedObjectDueToDataState.State.IsChanged, Is.True);
+      Assert.That (changedObjectDueToVirtualRelationState.State.IsChanged, Is.True);
+      Assert.That (deletedObject.State.IsDeleted, Is.True);
+      Assert.That (newObject.State.IsNew, Is.True);
+      Assert.That (invalidObject.State.IsInvalid, Is.True);
 
       UnloadService.UnloadAll (TestableClientTransaction);
 
-      Assert.That (unchangedObject.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (changedObjectDueToDataState.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (changedObjectDueToVirtualRelationState.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (deletedObject.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (newObject.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (invalidObject.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (unchangedObject.State.IsNotLoadedYet, Is.True);
+      Assert.That (changedObjectDueToDataState.State.IsNotLoadedYet, Is.True);
+      Assert.That (changedObjectDueToVirtualRelationState.State.IsNotLoadedYet, Is.True);
+      Assert.That (deletedObject.State.IsNotLoadedYet, Is.True);
+      Assert.That (newObject.State.IsInvalid, Is.True);
+      Assert.That (invalidObject.State.IsInvalid, Is.True);
     }
 
     [Test]
@@ -273,17 +273,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
           using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
           {
-            Assert.That (newObject.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.Invalid));
-            Assert.That (newObject.TransactionContext[middleTopTransaction].State, Is.EqualTo (StateType.New));
-            Assert.That (newObject.TransactionContext[middleBottomTransaction].State, Is.EqualTo (StateType.Unchanged));
-            Assert.That (newObject.TransactionContext[ClientTransaction.Current].State, Is.EqualTo (StateType.NotLoadedYet));
+            Assert.That (newObject.TransactionContext[TestableClientTransaction].State.IsInvalid, Is.True);
+            Assert.That (newObject.TransactionContext[middleTopTransaction].State.IsNew, Is.True);
+            Assert.That (newObject.TransactionContext[middleBottomTransaction].State.IsUnchanged, Is.True);
+            Assert.That (newObject.TransactionContext[ClientTransaction.Current].State.IsNotLoadedYet, Is.True);
 
             UnloadService.UnloadAll (ClientTransaction.Current);
 
-            Assert.That (newObject.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.Invalid));
-            Assert.That (newObject.TransactionContext[middleTopTransaction].State, Is.EqualTo (StateType.Invalid));
-            Assert.That (newObject.TransactionContext[middleBottomTransaction].State, Is.EqualTo (StateType.Invalid));
-            Assert.That (newObject.TransactionContext[ClientTransaction.Current].State, Is.EqualTo (StateType.Invalid));
+            Assert.That (newObject.TransactionContext[TestableClientTransaction].State.IsInvalid, Is.True);
+            Assert.That (newObject.TransactionContext[middleTopTransaction].State.IsInvalid, Is.True);
+            Assert.That (newObject.TransactionContext[middleBottomTransaction].State.IsInvalid, Is.True);
+            Assert.That (newObject.TransactionContext[ClientTransaction.Current].State.IsInvalid, Is.True);
           }
         }
       }
@@ -441,10 +441,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           {
             var subSubTransaction = ClientTransaction.Current;
 
-            Assert.That (newObject.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.Invalid));
-            Assert.That (newObject.TransactionContext[middleTopTransaction].State, Is.EqualTo (StateType.New));
-            Assert.That (newObject.TransactionContext[middleBottomTransaction].State, Is.EqualTo (StateType.Unchanged));
-            Assert.That (newObject.TransactionContext[subSubTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+            Assert.That (newObject.TransactionContext[TestableClientTransaction].State.IsInvalid, Is.True);
+            Assert.That (newObject.TransactionContext[middleTopTransaction].State.IsNew, Is.True);
+            Assert.That (newObject.TransactionContext[middleBottomTransaction].State.IsUnchanged, Is.True);
+            Assert.That (newObject.TransactionContext[subSubTransaction].State.IsNotLoadedYet, Is.True);
 
             var clientTransactionListener = MockRepository.GenerateMock<IClientTransactionListener>();
             TestableClientTransaction.AddListener (clientTransactionListener);

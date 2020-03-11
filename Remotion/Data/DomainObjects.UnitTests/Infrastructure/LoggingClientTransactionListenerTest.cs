@@ -484,7 +484,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void DataContainerStateUpdated ()
     {
-      var newDataContainerState = new StateType();
+      var newDataContainerState = new DataContainerState.Builder().SetDeleted().Value;
       CheckLoggingMethod (
           () => _listener.DataContainerStateUpdated (_clientTransaction, _dataContainer, newDataContainerState),
           string.Format (

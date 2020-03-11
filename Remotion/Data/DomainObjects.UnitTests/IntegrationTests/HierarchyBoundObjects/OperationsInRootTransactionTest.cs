@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     [Test]
     public void AccessingPropertiesAndState_AffectsAssociatedRootTransaction ()
     {
-      Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order1LoadedInRootTransaction.State.IsUnchanged, Is.True);
       Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (1));
       Assert.That (_order1LoadedInRootTransaction.OrderItems, Has.Count.EqualTo (2));
       
@@ -59,24 +59,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
       _order1LoadedInRootTransaction.OrderNumber = 2;
       _order1LoadedInRootTransaction.OrderItems.Clear ();
 
-      Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_order1LoadedInRootTransaction.State.IsChanged, Is.True);
       Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (2));
       Assert.That (_order1LoadedInRootTransaction.OrderItems, Is.Empty);
 
       Assert.That (_rootTransaction.HasChanged(), Is.True);
-      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction), Is.EqualTo (StateType.Changed));
+      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction).IsChanged, Is.True);
     }
 
     [Test]
     public void PropertyIndexer_AffectsAssociatedRootTransaction ()
     {
       Assert.That (_order1LoadedInRootTransaction.Properties[typeof (Order), "OrderNumber"].GetValue<int>(), Is.EqualTo (1));
-      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction), Is.EqualTo (StateType.Unchanged));
+      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction).IsUnchanged, Is.True);
 
       _order1LoadedInRootTransaction.Properties[typeof (Order), "OrderNumber"].SetValue (2);
 
       Assert.That (_order1LoadedInRootTransaction.Properties[typeof (Order), "OrderNumber"].GetValue<int> (), Is.EqualTo (2));
-      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction), Is.EqualTo (StateType.Changed));
+      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction).IsChanged, Is.True);
     }
 
     [Test]
@@ -134,31 +134,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     [Test]
     public void EnsureDataAvailable_AffectsAssociatedRootTransaction ()
     {
-      Assert.That (GetStateFromTransaction (_objectReferenceFromRootTransaction, _rootTransaction), Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (GetStateFromTransaction (_objectReferenceFromRootTransaction, _rootTransaction).IsNotLoadedYet, Is.True);
 
       _objectReferenceFromRootTransaction.EnsureDataAvailable();
 
-      Assert.That (GetStateFromTransaction (_objectReferenceFromRootTransaction, _rootTransaction), Is.EqualTo (StateType.Unchanged));
+      Assert.That (GetStateFromTransaction (_objectReferenceFromRootTransaction, _rootTransaction).IsUnchanged, Is.True);
     }
 
     [Test]
     public void TryEnsureDataAvailable_AffectsAssociatedRootTransaction ()
     {
-      Assert.That (GetStateFromTransaction (_objectReferenceFromRootTransaction, _rootTransaction), Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (GetStateFromTransaction (_objectReferenceFromRootTransaction, _rootTransaction).IsNotLoadedYet, Is.True);
 
       _objectReferenceFromRootTransaction.TryEnsureDataAvailable ();
 
-      Assert.That (GetStateFromTransaction (_objectReferenceFromRootTransaction, _rootTransaction), Is.EqualTo (StateType.Unchanged));
+      Assert.That (GetStateFromTransaction (_objectReferenceFromRootTransaction, _rootTransaction).IsUnchanged, Is.True);
     }
 
     [Test]
     public void Delete_AffectsAssociatedRootTransaction ()
     {
-      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction), Is.EqualTo (StateType.Unchanged));
+      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction).IsUnchanged, Is.True);
 
       _order1LoadedInRootTransaction.Delete();
 
-      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction), Is.EqualTo (StateType.Deleted));
+      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction).IsDeleted, Is.True);
     }
 
     [Test]
@@ -166,23 +166,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       var order = (Order) LifetimeService.NewObject (_rootTransaction, typeof (Order), ParamList.Empty);
       
-      Assert.That (GetStateFromTransaction (order, _rootTransaction), Is.EqualTo (StateType.New));
-      Assert.That (order.State, Is.Not.EqualTo (StateType.Invalid));
+      Assert.That (GetStateFromTransaction (order, _rootTransaction).IsNew, Is.True);
+      Assert.That (order.State.IsInvalid, Is.False);
 
       order.Delete();
 
-      Assert.That (GetStateFromTransaction (order, _rootTransaction), Is.EqualTo (StateType.Invalid));
-      Assert.That (order.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (GetStateFromTransaction (order, _rootTransaction).IsInvalid, Is.True);
+      Assert.That (order.State.IsInvalid, Is.True);
     }
 
     [Test]
     public void RegisterForCommit_AffectsAssociatedRootTransaction ()
     {
-      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction), Is.EqualTo (StateType.Unchanged));
+      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction).IsUnchanged, Is.True);
 
       _order1LoadedInRootTransaction.RegisterForCommit();
 
-      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction), Is.EqualTo (StateType.Changed));
+      Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction).IsChanged, Is.True);
     }
   }
 }

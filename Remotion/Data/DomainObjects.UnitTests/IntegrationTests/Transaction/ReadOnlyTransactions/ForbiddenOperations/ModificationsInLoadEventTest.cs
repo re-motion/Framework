@@ -197,9 +197,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
         _loadEventReceiverMock.VerifyAllExpectations ();
 
-        CheckState (ReadOnlyRootTransaction, _client1, StateType.Unchanged);
-        CheckState (ReadOnlyMiddleTransaction, _client1, StateType.Unchanged);
-        CheckState (WriteableSubTransaction, _client1, StateType.Unchanged);
+        CheckState (ReadOnlyRootTransaction, _client1, state => state.IsUnchanged);
+        CheckState (ReadOnlyMiddleTransaction, _client1, state => state.IsUnchanged);
+        CheckState (WriteableSubTransaction, _client1, state => state.IsUnchanged);
       }
     }
 
@@ -225,9 +225,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
         _loadEventReceiverMock.VerifyAllExpectations ();
 
-        CheckState (ReadOnlyRootTransaction, _order, StateType.Unchanged);
-        CheckState (ReadOnlyMiddleTransaction, _order, StateType.NotLoadedYet);
-        CheckState (WriteableSubTransaction, _order, StateType.NotLoadedYet);
+        CheckState (ReadOnlyRootTransaction, _order, state => state.IsUnchanged);
+        CheckState (ReadOnlyMiddleTransaction, _order, state => state.IsNotLoadedYet);
+        CheckState (WriteableSubTransaction, _order, state => state.IsNotLoadedYet);
       }
     }
 
@@ -273,9 +273,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
         _loadEventReceiverMock.VerifyAllExpectations ();
 
-        CheckState (ReadOnlyRootTransaction, _order, StateType.Unchanged);
-        CheckState (ReadOnlyMiddleTransaction, _order, StateType.Unchanged);
-        CheckState (WriteableSubTransaction, _order, StateType.Unchanged);
+        CheckState (ReadOnlyRootTransaction, _order, state => state.IsUnchanged);
+        CheckState (ReadOnlyMiddleTransaction, _order, state => state.IsUnchanged);
+        CheckState (WriteableSubTransaction, _order, state => state.IsUnchanged);
       }
     }
 

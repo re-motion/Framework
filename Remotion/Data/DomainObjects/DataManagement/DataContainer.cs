@@ -16,7 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
@@ -47,7 +49,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <see cref="ClientTransaction"/> and its <see cref="DomainObject"/> must <see cref="SetDomainObject">be set</see> before it can be used.
     /// </summary>
     /// <remarks>
-    /// The new <see cref="DataContainer"/> has a <see cref="State"/> of <see cref="StateType.New"/>. All <see cref="PropertyValue"/>s for the class specified by <see cref="ObjectID.ClassID"/> are created.
+    /// The new <see cref="DataContainer"/> has the <see cref="DataContainerState.IsNew"/> flag set for <see cref="State"/>.
+    /// All <see cref="PropertyValue"/>s for the class specified by <see cref="ObjectID.ClassID"/> are created.
     /// </remarks>
     /// <param name="id">The <see cref="ObjectID"/> of the new <see cref="DataContainer"/> to create. Must not be <see langword="null"/>.</param>
     /// <returns>The new <see cref="DataContainer"/>.</returns>
@@ -68,8 +71,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// and <see cref="SetDomainObject"/> must be called before it can be used.
     /// </summary>
     /// <remarks>
-    /// The new <see cref="DataContainer"/> has a <see cref="State"/> of <see cref="StateType.Unchanged"/>. All <see cref="PropertyValue"/>s for the 
-    /// class specified by <see cref="ObjectID.ClassID"/> are created.
+    /// The new <see cref="DataContainer"/> has the <see cref="DataContainerState.IsUnchanged"/> flag set for <see cref="State"/>.
+    /// All <see cref="PropertyValue"/>s for the  class specified by <see cref="ObjectID.ClassID"/> are created.
     /// </remarks>
     /// <param name="id">The <see cref="ObjectID"/> of the new <see cref="DataContainer"/> to create. Must not be <see langword="null"/>.</param>
     /// <param name="timestamp">The timestamp value of the existing object in the data source.</param>
@@ -164,7 +167,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       else
         _hasBeenChanged = null;
 
-      RaiseStateUpdatedNotification (State);
+      RaiseStateUpdatedNotification();
       RaisePropertyValueChangedNotification(propertyDefinition, oldValue, value);
     }
 
@@ -364,19 +367,19 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <summary>
     /// Gets the state of the <see cref="DataContainer"/>.
     /// </summary>
-    public StateType State
+    public DataContainerState State
     {
       get
       {
         if (_isDiscarded)
-          return StateType.Invalid;
+          return new DataContainerState.Builder().SetDiscarded().Value;
         
         switch (_state)
         {
           case DataContainerStateType.New:
-            return StateType.New;
+            return new DataContainerState.Builder().SetNew().Value;
           case DataContainerStateType.Deleted:
-            return StateType.Deleted;
+            return new DataContainerState.Builder().SetDeleted().Value;
           default:
             Assertion.IsTrue (_state == DataContainerStateType.Existing);
 
@@ -384,16 +387,16 @@ namespace Remotion.Data.DomainObjects.DataManagement
               _hasBeenChanged = CalculatePropertyValueChangeState();
 
             if (_hasBeenMarkedChanged || _hasBeenChanged.Value)
-              return StateType.Changed;
+              return new DataContainerState.Builder().SetChanged().Value;
             else
-              return StateType.Unchanged;
+              return new DataContainerState.Builder().SetUnchanged().Value;
         }
       }
     }
 
     /// <summary>
-    /// Marks an existing <see cref="DataContainer"/> as changed. <see cref="State"/> will return <see cref="StateType.Changed"/> after this method
-    /// has been called.
+    /// Marks an existing <see cref="DataContainer"/> as changed.
+    /// <see cref="State"/> will have the <see cref="DataContainerState.IsChanged"/> flag set after this method has been called.
     /// </summary>
     /// <exception cref="InvalidOperationException">This <see cref="DataContainer"/> is not in state <see cref="DataContainerStateType.Existing"/>.
     /// New or deleted objects cannot be marked as changed.</exception>
@@ -407,7 +410,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       _hasBeenMarkedChanged = true;
 
-      RaiseStateUpdatedNotification (StateType.Changed);
+      RaiseStateUpdatedNotification();
     }
 
     /// <summary>
@@ -464,7 +467,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _hasBeenMarkedChanged = false;
       _hasBeenChanged = false;
       _state = DataContainerStateType.Existing;
-      RaiseStateUpdatedNotification (StateType.Unchanged);
+      RaiseStateUpdatedNotification();
     }
 
     public void RollbackState ()
@@ -480,7 +483,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _hasBeenMarkedChanged = false;
       _hasBeenChanged = false;
       _state = DataContainerStateType.Existing;
-      RaiseStateUpdatedNotification (StateType.Unchanged);
+      RaiseStateUpdatedNotification();
     }
 
     public void Delete ()
@@ -491,15 +494,22 @@ namespace Remotion.Data.DomainObjects.DataManagement
         throw new InvalidOperationException ("New data containers cannot be deleted, they have to be discarded.");
 
       _state = DataContainerStateType.Deleted;
-      RaiseStateUpdatedNotification (StateType.Deleted);
+      RaiseStateUpdatedNotification();
     }
 
+    /// <summary>Discards the <see cref="DataContainer"/>.</summary>
+    /// <remarks>
+    /// The <see cref="Discard"/> method may only be called by infrastructure operations such as <see cref="DataManager"/>.<see cref="DataManager.Discard"/>
+    /// or <see cref="UnloadAllCommand"/>. Otherwise, the <see cref="DataContainer"/> will not be properly removed from the <see cref="DataManager"/>,
+    /// resulting in runtime errors, e.g. when accessing <see cref="DomainObject"/>.<see cref="DomainObjects.DomainObject.State"/>.
+    /// </remarks>
+    [EditorBrowsable (EditorBrowsableState.Never)]
     public void Discard ()
     {
       CheckNotDiscarded ();
 
       _isDiscarded = true;
-      RaiseStateUpdatedNotification (StateType.Invalid);
+      RaiseStateUpdatedNotification();
 
       _clientTransaction = null;
       _eventListener = null;
@@ -520,7 +530,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       }
 
       _hasBeenChanged = null;
-      RaiseStateUpdatedNotification (State);
+      RaiseStateUpdatedNotification();
     }
 
     public void SetDomainObject (DomainObject domainObject)
@@ -625,12 +635,10 @@ namespace Remotion.Data.DomainObjects.DataManagement
         _eventListener.PropertyValueChanged (this, propertyDefinition, oldValue, newValue);
     }
 
-    private void RaiseStateUpdatedNotification (StateType state)
+    private void RaiseStateUpdatedNotification ()
     {
-      Assertion.DebugAssert (State == state);
-
       if (_eventListener != null)
-        _eventListener.StateUpdated (this, state);
+        _eventListener.StateUpdated (this, State);
     }
 
     private void CheckSourceForSetDataFromSubTransaction (DataContainer source)

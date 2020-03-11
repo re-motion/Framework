@@ -263,7 +263,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
           || clientTransaction.SubTransaction.DataManager.DataContainers[container.ID] == null);
     }
 
-    public virtual void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, StateType newDataContainerState)
+    public virtual void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, DataContainerState newDataContainerState)
     {
       EnsureWriteable (clientTransaction, "DataContainerStateUpdated");
     }

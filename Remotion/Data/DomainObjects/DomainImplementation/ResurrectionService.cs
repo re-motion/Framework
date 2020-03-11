@@ -24,7 +24,8 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DomainImplementation
 {
   /// <summary>
-  /// Provides functionality for resurrecting objects marked as <see cref="StateType.Invalid"/> within a <see cref="ClientTransaction"/> hierarchy.
+  /// Provides functionality for resurrecting objects that have the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag set
+  /// within a <see cref="ClientTransaction"/> hierarchy.
   /// </summary>
   /// <remarks>
   /// <para>
@@ -147,8 +148,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
       if (!tx.IsInvalid (objectID))
       {
         var message = string.Format (
-            "Cannot resurrect object '{0}' because it is not invalid within the whole transaction hierarchy. In transaction '{1}', the object has "
-            + "state '{2}'.",
+            "Cannot resurrect object '{0}' because it is not invalid within the whole transaction hierarchy. In transaction '{1}', the object has {2}.",
             objectID,
             tx,
             tx.GetObjectReference (objectID).TransactionContext[tx].State);

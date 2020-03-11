@@ -40,8 +40,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       CheckEndPointExists (order, "OrderTicket", false);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order.State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckDataContainerExists (employee, true);
       CheckEndPointExists (employee, "Computer", false);
 
-      Assert.That (employee.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (employee.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
               Assert.That (orderTicket.OnUnloadingCalled, Is.False, "items unloaded after this method is called");
               Assert.That (orderTicket.OnUnloadedCalled, Is.False, "items unloaded after this method is called");
 
-              Assert.That (orderTicket.State, Is.EqualTo (StateType.Unchanged));
+              Assert.That (orderTicket.State.IsUnchanged, Is.True);
             });
         listenerMock
             .Expect (mock => mock.ObjectsUnloaded (
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
               Assert.That (orderTicket.OnUnloadingCalled, Is.True, "items unloaded before this method is called");
               Assert.That (orderTicket.OnUnloadedCalled, Is.True, "items unloaded before this method is called");
 
-              Assert.That (orderTicket.State, Is.EqualTo (StateType.NotLoadedYet));
+              Assert.That (orderTicket.State.IsNotLoadedYet, Is.True);
             });
       }
 
@@ -136,8 +136,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
         listenerMock.BackToRecord (); // For Discarding
       }
 
-      Assert.That (orderTicket.UnloadingState, Is.EqualTo (StateType.Unchanged), "OnUnloading before state change");
-      Assert.That (orderTicket.UnloadedState, Is.EqualTo (StateType.NotLoadedYet), "OnUnloaded after state change");
+      Assert.That (orderTicket.UnloadingState.IsUnchanged, Is.True, "OnUnloading before state change");
+      Assert.That (orderTicket.UnloadedState.IsNotLoadedYet, Is.True, "OnUnloaded after state change");
     }
   }
 }

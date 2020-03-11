@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     }
 
     [StorageClassNone]
-    public new StateType State
+    public new DomainObjectState State
     {
       get { return base.State; }
     }

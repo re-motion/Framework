@@ -99,19 +99,17 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get { return _relationEndPointManager.RelationEndPoints; }
     }
 
-    public IEnumerable<PersistableData> GetLoadedDataByObjectState (params StateType[] domainObjectStates)
+    public IEnumerable<PersistableData> GetLoadedDataByObjectState (Func<DomainObjectState, bool> predicate)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("domainObjectStates", domainObjectStates);
-
-      var stateSet = new StateValueSet (domainObjectStates);
+      ArgumentUtility.CheckNotNull ("predicate", predicate);
 
       var matchingObjects = from dataContainer in DataContainers
-                            let domainObject = dataContainer.DomainObject
-                            let state = domainObject.TransactionContext[_clientTransaction].State
-                            where stateSet.Matches (state)
-                            let associatedEndPointSequence = 
-                                dataContainer.AssociatedRelationEndPointIDs.Select (GetRelationEndPointWithoutLoading).Where (ep => ep != null)
-                            select new PersistableData (domainObject, state, dataContainer, associatedEndPointSequence);
+          let domainObject = dataContainer.DomainObject
+          let state = domainObject.TransactionContext[_clientTransaction].State
+          where predicate (state)
+          let associatedEndPointSequence = 
+              dataContainer.AssociatedRelationEndPointIDs.Select (GetRelationEndPointWithoutLoading).Where (ep => ep != null)
+          select new PersistableData (domainObject, state, dataContainer, associatedEndPointSequence);
       return matchingObjects;
     }
 
@@ -191,7 +189,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void Commit ()
     {
-      var deletedDataContainers = _dataContainerMap.Where (dc => dc.State == StateType.Deleted).ToList();
+      var deletedDataContainers = _dataContainerMap.Where (dc => dc.State.IsDeleted).ToList();
 
       _relationEndPointManager.CommitAllEndPoints();
 
@@ -203,7 +201,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void Rollback ()
     {
-      var newDataContainers = _dataContainerMap.Where (dc => dc.State == StateType.New).ToList();
+      var newDataContainers = _dataContainerMap.Where (dc => dc.State.IsNew).ToList();
 
       // roll back end point state before discarding data containers because Discard checks that no dangling end points are created
       _relationEndPointManager.RollbackAllEndPoints();
@@ -225,7 +223,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return DataContainers[objectID];
     }
 
-    public StateType GetState (ObjectID objectID)
+    public DomainObjectState GetState (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -345,7 +343,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       DomainObjectCheckUtility.EnsureNotInvalid (deletedObject, ClientTransaction);
 
-      if (deletedObject.TransactionContext[_clientTransaction].State == StateType.Deleted)
+      if (deletedObject.TransactionContext[_clientTransaction].State.IsDeleted)
         return new NopCommand();
 
       return new DeleteCommand (_clientTransaction, deletedObject, _transactionEventSink);
@@ -356,14 +354,15 @@ namespace Remotion.Data.DomainObjects.DataManagement
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
       var domainObjects = new List<DomainObject>();
-      var problematicDataContainers = new List<KeyValuePair<ObjectID, StateType>>();
+      var problematicDataContainers = new List<KeyValuePair<ObjectID, DataContainerState>>();
       var commands = new List<IDataManagementCommand>();
+      var dataContainerStateDiscarded = new DataContainerState.Builder().SetDiscarded().Value;
 
       foreach (var objectID in objectIDs)
       {
         if (_invalidDomainObjectManager.IsInvalid (objectID))
         {
-          problematicDataContainers.Add (new KeyValuePair<ObjectID, StateType> (objectID, StateType.Invalid));
+          problematicDataContainers.Add (new KeyValuePair<ObjectID, DataContainerState> (objectID, dataContainerStateDiscarded));
         }
         else
         {
@@ -372,14 +371,14 @@ namespace Remotion.Data.DomainObjects.DataManagement
           {
             domainObjects.Add (dataContainer.DomainObject);
 
-            if (dataContainer.State != StateType.Unchanged)
-            {
-              problematicDataContainers.Add (new KeyValuePair<ObjectID, StateType> (dataContainer.ID, dataContainer.State));
-            }
-            else
+            if (dataContainer.State.IsUnchanged)
             {
               commands.Add (CreateUnregisterDataContainerCommand (objectID));
               commands.Add (_relationEndPointManager.CreateUnregisterCommandForDataContainer (dataContainer));
+            }
+            else
+            {
+              problematicDataContainers.Add (new KeyValuePair<ObjectID, DataContainerState> (dataContainer.ID, dataContainer.State));
             }
           }
         }
@@ -412,7 +411,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       var endPointsOfNewOrDeletedObjects = (from endPointID in endPointIDs
                                             let owningDataContainer = GetDataContainerWithoutLoading (endPointID.ObjectID)
-                                            where owningDataContainer != null && (owningDataContainer.State == StateType.Deleted || owningDataContainer.State == StateType.New)
+                                            where owningDataContainer != null && (owningDataContainer.State.IsDeleted || owningDataContainer.State.IsNew)
                                             select endPointID).ConvertToCollection();
       if (endPointsOfNewOrDeletedObjects.Count > 0)
       {

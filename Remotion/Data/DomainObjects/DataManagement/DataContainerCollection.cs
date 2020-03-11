@@ -64,21 +64,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     // methods and properties
 
-    public DataContainerCollection GetByState (StateType state)
-    {
-      ArgumentUtility.CheckValidEnumValue ("state", state);
-
-      DataContainerCollection collection = new DataContainerCollection();
-
-      foreach (DataContainer dataContainer in this)
-      {
-        if (dataContainer.State == state)
-          collection.Add (dataContainer);
-      }
-
-      return collection;
-    }
-
     public DataContainerCollection GetDifference (DataContainerCollection dataContainers)
     {
       ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);

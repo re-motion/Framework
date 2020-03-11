@@ -98,9 +98,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        Assert.That (location.Client.State, Is.EqualTo (StateType.Invalid));
+        Assert.That (location.Client.State.IsInvalid, Is.True);
         location.Client = Client.NewObject ();
-        Assert.That (location.Client.State, Is.EqualTo (StateType.New));
+        Assert.That (location.Client.State.IsNew, Is.True);
       }
     }
 
@@ -113,9 +113,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        Assert.That (location.Client.State, Is.EqualTo (StateType.Invalid));
+        Assert.That (location.Client.State.IsInvalid, Is.True);
         location.Client = Client.NewObject ();
-        Assert.That (location.Client.State, Is.EqualTo (StateType.New));
+        Assert.That (location.Client.State.IsNew, Is.True);
       }
     }
 
@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         OrderItem orderItem1 = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
         orderItem1.Delete ();
         ClientTransactionScope.CurrentTransaction.Commit ();
-        Assert.That (orderItem1.State, Is.EqualTo (StateType.Invalid));
+        Assert.That (orderItem1.State.IsInvalid, Is.True);
 
         ObjectList<OrderItem> orderItems = loadedOrder.OrderItems;
         Assert.That (orderItems.Count, Is.EqualTo (1));

@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void GetObject_ObjectInvalid()
     {
       _instance.Delete();
-      Assert.That (_instance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (_instance.State.IsInvalid, Is.True);
 
       Assert.That (_service.GetObject (_businessObjectClass, _id), Is.Null);
     }
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         _instance.Delete();
-        Assert.That (_instance.State, Is.EqualTo (StateType.Deleted));
+        Assert.That (_instance.State.IsDeleted, Is.True);
 
         Assert.That (_service.GetObject (_businessObjectClass, _id), Is.Null);
       }

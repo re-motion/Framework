@@ -130,8 +130,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       Assert.That (_order.OrderItems.Count, Is.EqualTo (numberOfOrderItemsBeforeDelete - 1));
       Assert.That (_order.OrderItems.Contains (_orderItem.ID), Is.False);
       Assert.That (_orderItem.Properties[typeof (OrderItem), "Order"].GetRelatedObjectID (), Is.Null);
-      Assert.That (_order.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_order.InternalDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order.State.IsChanged, Is.True);
+      Assert.That (_order.InternalDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
         _eventReceiver.Check (expectedStates);
       }
 
-      Assert.That (_order.State, Is.Not.EqualTo (StateType.Deleted));
+      Assert.That (_order.State.IsDeleted, Is.False);
       Assert.That (_order.OrderItems, Is.Not.Empty);
     }
 
@@ -246,7 +246,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
         _eventReceiver.Check (expectedStates);
       }
 
-      Assert.That (_order.State, Is.Not.EqualTo (StateType.Deleted));
+      Assert.That (_order.State.IsDeleted, Is.False);
       Assert.That (_order.OrderItems, Is.Not.Empty);
     }
 

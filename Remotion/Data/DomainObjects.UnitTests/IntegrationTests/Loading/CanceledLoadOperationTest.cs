@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Loading
 
       abortedDomainObject.EnsureDataAvailable();
 
-      Assert.That (abortedDomainObject.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (abortedDomainObject.State.IsUnchanged, Is.True);
     }
 
   }

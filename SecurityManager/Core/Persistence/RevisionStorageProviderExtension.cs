@@ -224,7 +224,7 @@ namespace Remotion.SecurityManager.Persistence
 
     private TResult GetValue<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
-      var valueAccess = dataContainer.State != StateType.Deleted ? ValueAccess.Current : ValueAccess.Original;
+      var valueAccess = dataContainer.State.IsDeleted ? ValueAccess.Original : ValueAccess.Current;
       return (TResult) dataContainer.GetValueWithoutEvents (propertyDefinition, valueAccess);
     }
 
@@ -233,7 +233,7 @@ namespace Remotion.SecurityManager.Persistence
       if (!dataContainer.HasValueChanged (propertyDefinition))
         return default(TResult);
 
-      if (dataContainer.State != StateType.Changed)
+      if (!dataContainer.State.IsChanged)
         return default(TResult);
 
       return (TResult) dataContainer.GetValueWithoutEvents (propertyDefinition, ValueAccess.Original);

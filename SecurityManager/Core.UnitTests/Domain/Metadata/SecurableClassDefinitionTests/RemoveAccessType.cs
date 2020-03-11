@@ -101,11 +101,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         securableClassDefinition.EnsureDataAvailable();
-        Assert.That (securableClassDefinition.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (securableClassDefinition.State.IsUnchanged, Is.True);
 
         securableClassDefinition.RemoveAccessType (accessType);
 
-        Assert.That (securableClassDefinition.State, Is.EqualTo (StateType.Changed));
+        Assert.That (securableClassDefinition.State.IsChanged, Is.True);
       }
     }
 

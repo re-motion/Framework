@@ -773,7 +773,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void RaiseDataContainerStateUpdatedEvent ()
     {
       var dataContainer = DataContainerObjectMother.Create (Order.NewObject());
-      var newDataContainerState = StateType.New;
+      var newDataContainerState = new DataContainerState.Builder().SetNew().Value;
       CheckEventWithListenersOnly (
           s => s.RaiseDataContainerStateUpdatedEvent (dataContainer, newDataContainerState),
           l => l.DataContainerStateUpdated (_clientTransaction, dataContainer, newDataContainerState));

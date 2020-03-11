@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var objectID = DomainObjectIDs.Order1;
       var parentObject = DomainObjectMother.CreateFakeObject<Order> (objectID);
       var parentDataContainer = CreateChangedDataContainer (objectID, 4711, _orderNumberPropertyDefinition, 17);
-      CheckDataContainer (parentDataContainer, objectID, 4711, StateType.Changed, _orderNumberPropertyDefinition, 17, 0, true);
+      CheckDataContainer (parentDataContainer, objectID, 4711, state => state.IsChanged, _orderNumberPropertyDefinition, 17, 0, true);
 
       var parentEventListenerMock = MockRepository.GenerateStrictMock<IDataContainerEventListener>();
       parentDataContainer.SetEventListener (parentEventListenerMock);
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That (result, Is.TypeOf<FreshlyLoadedObjectData> ());
       Assert.That (result.ObjectID, Is.EqualTo (objectID));
       var dataContainer = ((FreshlyLoadedObjectData) result).FreshlyLoadedDataContainer;
-      CheckDataContainer (dataContainer, objectID, 4711, StateType.Unchanged, _orderNumberPropertyDefinition, 17, 17, false);
+      CheckDataContainer (dataContainer, objectID, 4711, state => state.IsUnchanged, _orderNumberPropertyDefinition, 17, 17, false);
     }
 
     [Test]
@@ -184,7 +184,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var parentObject1 = DomainObjectMother.CreateFakeObject<Order> (objectID1);
       var parentDataContainer1 = CreateChangedDataContainer (objectID1, 4711, _orderNumberPropertyDefinition, 17);
-      CheckDataContainer (parentDataContainer1, objectID1, 4711, StateType.Changed, _orderNumberPropertyDefinition, 17, 0, true);
+      CheckDataContainer (parentDataContainer1, objectID1, 4711, state => state.IsChanged, _orderNumberPropertyDefinition, 17, 0, true);
 
       var parentObject3 = DomainObjectMother.CreateFakeObject<Order> (objectID3);
       var parentDataContainer3 = DataContainerObjectMother.CreateExisting (objectID3);
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       Assert.That (result[0], Is.TypeOf<FreshlyLoadedObjectData> ());
       Assert.That (result[0].ObjectID, Is.EqualTo (objectID1));
-      CheckDataContainer (((FreshlyLoadedObjectData) result[0]).FreshlyLoadedDataContainer, objectID1, 4711, StateType.Unchanged, _orderNumberPropertyDefinition, 17, 17, false);
+      CheckDataContainer (((FreshlyLoadedObjectData) result[0]).FreshlyLoadedDataContainer, objectID1, 4711, state => state.IsUnchanged, _orderNumberPropertyDefinition, 17, 17, false);
 
       Assert.That (result[1], Is.TypeOf<NotFoundLoadedObjectData> ());
       Assert.That (result[1].ObjectID, Is.EqualTo (objectID2));
@@ -311,7 +311,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Return (null);
 
       var parentDataContainer = CreateChangedDataContainer (parentObject.ID, 4711, _fileNamePropertyDefinition, "Hugo");
-      CheckDataContainer (parentDataContainer, parentObject.ID, 4711, StateType.Changed, _fileNamePropertyDefinition, "Hugo", "", true);
+      CheckDataContainer (parentDataContainer, parentObject.ID, 4711, state => state.IsChanged, _fileNamePropertyDefinition, "Hugo", "", true);
       _parentTransactionContextMock
           .Expect (mock => mock.GetDataContainerWithLazyLoad (parentObject.ID, true))
           .Return (parentDataContainer);
@@ -324,7 +324,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That (result.ObjectID, Is.EqualTo (parentObject.ID));
       
       var dataContainer = ((FreshlyLoadedObjectData) result).FreshlyLoadedDataContainer;
-      CheckDataContainer (dataContainer, parentObject.ID, 4711, StateType.Unchanged, _fileNamePropertyDefinition, "Hugo", "Hugo", false);
+      CheckDataContainer (dataContainer, parentObject.ID, 4711, state => state.IsUnchanged, _fileNamePropertyDefinition, "Hugo", "Hugo", false);
     }
 
     [Test]
@@ -375,7 +375,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Return (null);
 
       var parentDataContainer = CreateChangedDataContainer (parentObjects[1].ID, 4711, _productPropertyDefinition, "Keyboard");
-      CheckDataContainer (parentDataContainer, parentObjects[1].ID, 4711, StateType.Changed, _productPropertyDefinition, "Keyboard", "", true);
+      CheckDataContainer (parentDataContainer, parentObjects[1].ID, 4711, state => state.IsChanged, _productPropertyDefinition, "Keyboard", "", true);
       _parentTransactionContextMock
           .Expect (mock => mock.GetDataContainerWithLazyLoad (parentObjects[1].ID, true))
           .Return (parentDataContainer);
@@ -387,7 +387,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That (result[0], Is.SameAs (alreadyLoadedObjectData));
       Assert.That (result[1], Is.TypeOf<FreshlyLoadedObjectData> ());
       var dataContainer = ((FreshlyLoadedObjectData) result[1]).FreshlyLoadedDataContainer;
-      CheckDataContainer (dataContainer, parentDataContainer.ID, 4711, StateType.Unchanged, _productPropertyDefinition, "Keyboard", "Keyboard", false);
+      CheckDataContainer (dataContainer, parentDataContainer.ID, 4711, state => state.IsUnchanged, _productPropertyDefinition, "Keyboard", "Keyboard", false);
     }
 
     [Test]
@@ -437,7 +437,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     public void PersistData_UnchangedDataContainer ()
     {
       var persistableData = CreatePersistableDataForExistingOrder ();
-      Assert.That (persistableData.DataContainer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (persistableData.DataContainer.State.IsUnchanged, Is.True);
 
       _parentTransactionContextMock.Expect (mock => mock.UnlockParentTransaction ()).Return (_unlockedParentTransactionContextMock);
       _unlockedParentTransactionContextMock.Expect (mock => mock.Dispose ());
@@ -454,13 +454,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var persistableData = CreatePersistableDataForExistingOrder ();
       persistableData.DataContainer.SetTimestamp (1676);
       SetPropertyValue (persistableData.DataContainer, typeof (Order), "OrderNumber", 12);
-      Assert.That (persistableData.DataContainer.State, Is.EqualTo (StateType.Changed));
+      Assert.That (persistableData.DataContainer.State.IsChanged, Is.True);
 
       _parentTransactionContextMock.Expect (mock => mock.UnlockParentTransaction ()).Return (_unlockedParentTransactionContextMock);
 
       var parentDataContainer = DataContainerObjectMother.CreateExisting (persistableData.DomainObject);
       parentDataContainer.SetTimestamp (4711);
-      Assert.That (parentDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (parentDataContainer.State.IsUnchanged, Is.True);
       _parentTransactionContextMock
           .Expect (mock => mock.GetDataContainerWithoutLoading (persistableData.DomainObject.ID))
           .Return (parentDataContainer);
@@ -471,7 +471,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           {
             Assert.That (parentDataContainer.Timestamp, Is.EqualTo (1676), "ParentDataContainer must be changed prior to Dispose.");
             Assert.That (GetPropertyValue (parentDataContainer, typeof (Order), "OrderNumber"), Is.EqualTo (12));
-            Assert.That (parentDataContainer.State, Is.EqualTo (StateType.Changed));
+            Assert.That (parentDataContainer.State.IsChanged, Is.True);
             Assert.That (parentDataContainer.HasBeenMarkedChanged, Is.False); 
           });
 
@@ -533,7 +533,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var persistedEndPoint3 = RelationEndPointObjectMother.CreateStub ();
       persistedEndPoint3.Stub (stub => stub.HasChanged).Return (true);
       var persistableData = new PersistableData (
-          domainObject, StateType.Changed, persistedDataContainer, new[] { persistedEndPoint1, persistedEndPoint2, persistedEndPoint3 });
+          domainObject,
+          new DomainObjectState.Builder().SetChanged().Value,
+          persistedDataContainer,
+          new[] { persistedEndPoint1, persistedEndPoint2, persistedEndPoint3 });
 
       var counter = new OrderedExpectationCounter ();
 
@@ -573,7 +576,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       SetPropertyValue (persistedDataContainer, typeof (Order), "OrderNumber", 12);
       var persistedEndPoint = RelationEndPointObjectMother.CreateStub();
       persistedEndPoint.Stub (stub => stub.HasChanged).Return (true);
-      var persistableData = new PersistableData (domainObject, StateType.New, persistedDataContainer, new[] { persistedEndPoint });
+      var persistableData = new PersistableData (
+          domainObject,
+          new DomainObjectState.Builder().SetNew().Value,
+          persistedDataContainer,
+          new[] { persistedEndPoint });
 
       var counter = new OrderedExpectationCounter ();
 
@@ -588,7 +595,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Expect (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything))
           .WhenCalledOrdered (
               counter,
-              mi => CheckDataContainer ((DataContainer) mi.Arguments[0], domainObject, null, StateType.New, _orderNumberPropertyDefinition, 12, 0, true),
+              mi => CheckDataContainer ((DataContainer) mi.Arguments[0], domainObject, null, state => state.IsNew, _orderNumberPropertyDefinition, 12, 0, true),
               "New DataContainers must be registered before the parent relation end-points are retrieved for persistence (and prior to Dispose)."
           );
 
@@ -617,7 +624,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var persistedDataContainer = DataContainerObjectMother.CreateDeleted (domainObject);
       var persistedEndPoint = RelationEndPointObjectMother.CreateStub ();
       persistedEndPoint.Stub (stub => stub.HasChanged).Return (true);
-      var persistableData = new PersistableData (domainObject, StateType.Deleted, persistedDataContainer, new[] { persistedEndPoint });
+      var persistableData = new PersistableData (
+          domainObject,
+          new DomainObjectState.Builder().SetDeleted().Value,
+          persistedDataContainer,
+          new[] { persistedEndPoint });
 
       var counter = new OrderedExpectationCounter ();
 
@@ -660,7 +671,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var persistedDataContainer = DataContainerObjectMother.CreateDeleted (domainObject);
       var persistedEndPoint = RelationEndPointObjectMother.CreateStub ();
       persistedEndPoint.Stub (stub => stub.HasChanged).Return (true);
-      var persistableData = new PersistableData (domainObject, StateType.Deleted, persistedDataContainer, new[] { persistedEndPoint });
+      var persistableData = new PersistableData (
+          domainObject,
+          new DomainObjectState.Builder().SetDeleted().Value,
+          persistedDataContainer,
+          new[] { persistedEndPoint });
 
       _parentTransactionContextMock.Expect (mock => mock.UnlockParentTransaction ()).Return (_unlockedParentTransactionContextMock);
 
@@ -685,8 +700,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .WhenCalledOrdered (
               counter,
               mi => Assert.That (
-                  parentDataContainer.State, 
-                  Is.EqualTo (StateType.Deleted), 
+                  parentDataContainer.State.IsDeleted,
+                  Is.True,
                   "Parent DataContainer must be deleted before parent transaction is locked again."),
               "Dispose should come at the end.");
 
@@ -701,7 +716,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
         DataContainer dataContainer,
         DomainObject expectedDomainObject,
         object expectedTimestamp,
-        StateType expectedState,
+        Func<DataContainerState, bool> expectedStatePredicate,
         PropertyDefinition propertyDefinition,
         object expectedCurrentPropertyValue,
         object expectedOriginalPropertyValue, 
@@ -714,7 +729,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           dataContainer,
           expectedDomainObject.ID,
           expectedTimestamp,
-          expectedState,
+          expectedStatePredicate,
           propertyDefinition,
           expectedCurrentPropertyValue,
           expectedOriginalPropertyValue,
@@ -725,7 +740,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
         DataContainer dataContainer,
         ObjectID expectedID,
         object expectedTimestamp,
-        StateType expectedState,
+        Func<DataContainerState, bool> expectedStatePredicate,
         PropertyDefinition propertyDefinition,
         object expectedCurrentPropertyValue,
         object expectedOriginalPropertyValue,
@@ -733,7 +748,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     {
       Assert.That (dataContainer.ID, Is.EqualTo (expectedID));
       Assert.That (dataContainer.Timestamp, Is.EqualTo (expectedTimestamp));
-      Assert.That (dataContainer.State, Is.EqualTo (expectedState));
+      Assert.That (expectedStatePredicate (dataContainer.State), Is.True);
       Assert.That (dataContainer.GetValue (propertyDefinition, ValueAccess.Current), Is.EqualTo (expectedCurrentPropertyValue));
       Assert.That (dataContainer.GetValue (propertyDefinition, ValueAccess.Original), Is.EqualTo (expectedOriginalPropertyValue));
       Assert.That (dataContainer.HasValueBeenTouched (propertyDefinition), Is.EqualTo (expectedHasPropertyValueBeenTouched));
@@ -753,7 +768,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var domainObject = DomainObjectMother.CreateFakeObject<Order> ();
       var dataContainer = DataContainerObjectMother.CreateExisting (domainObject.ID);
       dataContainer.SetDomainObject (domainObject);
-      return new PersistableData (domainObject, StateType.Changed, dataContainer, new IRelationEndPoint[0]);
+      return new PersistableData (
+          domainObject,
+          new DomainObjectState.Builder().SetChanged().Value,
+          dataContainer,
+          new IRelationEndPoint[0]);
     }
 
     private PersistableData CreateMarkAsChangedPersistableDataForOrder ()

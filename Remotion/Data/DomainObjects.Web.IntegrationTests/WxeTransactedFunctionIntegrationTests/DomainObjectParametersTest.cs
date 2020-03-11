@@ -272,10 +272,10 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
                 WxeTransactionMode<ClientTransactionFactory>.CreateChildIfParent,
                 (ctx, f) =>
                 {
-                  Assert.That (f.InParameter.State, Is.EqualTo (StateType.Invalid));
+                  Assert.That (f.InParameter.State.IsInvalid, Is.True);
                   Assert.That (() => f.InParameter.EnsureDataAvailable (), Throws.TypeOf<ObjectInvalidException> ());
 
-                  Assert.That (f.InParameterArray[0].State, Is.EqualTo (StateType.Invalid));
+                  Assert.That (f.InParameterArray[0].State.IsInvalid, Is.True);
                   Assert.That (() => f.InParameterArray[0].EnsureDataAvailable (), Throws.TypeOf<ObjectInvalidException> ());
                 },
                 inParameter,
@@ -308,11 +308,11 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
 
             var parentTransaction = parentF.Transaction.GetNativeTransaction<ClientTransaction>();
             Assert.That (parentTransaction.IsEnlisted (subFunction.OutParameter), Is.True);
-            Assert.That (subFunction.OutParameter.State, Is.EqualTo (StateType.Invalid));
+            Assert.That (subFunction.OutParameter.State.IsInvalid, Is.True);
             Assert.That (() => subFunction.OutParameter.EnsureDataAvailable(), Throws.TypeOf<ObjectInvalidException>());
 
             Assert.That (parentTransaction.IsEnlisted (subFunction.OutParameterArray[0]), Is.True);
-            Assert.That (subFunction.OutParameterArray[0].State, Is.EqualTo (StateType.Invalid));
+            Assert.That (subFunction.OutParameterArray[0].State.IsInvalid, Is.True);
             Assert.That (() => subFunction.OutParameterArray[0].EnsureDataAvailable(), Throws.TypeOf<ObjectInvalidException>());
           });
     }

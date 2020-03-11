@@ -55,9 +55,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         instance.EnsureDataAvailable();
-        Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (instance.State.IsUnchanged, Is.True);
         instance.StructuralEquatableValue = Tuple.Create ("Value", 50);
-        Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (instance.State.IsUnchanged, Is.True);
       }
     }
 
@@ -74,16 +74,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
           instance.EnsureDataAvailable();
-          Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+          Assert.That (instance.State.IsUnchanged, Is.True);
           instance.StructuralEquatableValue = Tuple.Create ("Other", 100);
-          Assert.That (instance.State, Is.EqualTo (StateType.Changed));
+          Assert.That (instance.State.IsChanged, Is.True);
 
           ClientTransaction.Current.Commit();
-          Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+          Assert.That (instance.State.IsUnchanged, Is.True);
         }
 
         Assert.That(instance.StructuralEquatableValue, Is.EqualTo(Tuple.Create ("Other", 100)));
-        Assert.That (instance.State, Is.EqualTo (StateType.Changed));
+        Assert.That (instance.State.IsChanged, Is.True);
       }
     }
 
@@ -100,17 +100,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
           instance.EnsureDataAvailable();
-          Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+          Assert.That (instance.State.IsUnchanged, Is.True);
           instance.StructuralEquatableValue = Tuple.Create ("Other", 100);
-          Assert.That (instance.State, Is.EqualTo (StateType.Changed));
+          Assert.That (instance.State.IsChanged, Is.True);
 
           ClientTransaction.Current.Rollback();
           Assert.That(instance.StructuralEquatableValue, Is.EqualTo(Tuple.Create ("Value", 50)));
-          Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+          Assert.That (instance.State.IsUnchanged, Is.True);
         }
 
         Assert.That(instance.StructuralEquatableValue, Is.EqualTo(Tuple.Create ("Value", 50)));
-        Assert.That (instance.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (instance.State.IsUnchanged, Is.True);
       }
     }
   }

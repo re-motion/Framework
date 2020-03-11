@@ -153,7 +153,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                           () => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (UnchangedObject),
                           Throws.ArgumentException.With.Message.EqualTo (
                               string.Format (
-                                  "The given DomainObject '{0}' cannot be registered due to its state (Unchanged). "
+                                  "The given DomainObject '{0}' cannot be registered due to its DomainObjectState (Unchanged). "
                                   + "Only objects that are part of the commit set can be registered. Use RegisterForCommit to add an unchanged "
                                   + "object to the commit set.\r\nParameter name: domainObjects",
                                   UnchangedObject.ID)));

@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
-      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      var dataContainer = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
       dataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), "Not Null");
       dataContainer.SetValue (GetPropertyDefinition (typeof (Person), "AssociatedCustomerCompany"), null);
 
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
-      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      var dataContainer = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
       dataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), "Not Null");
       dataContainer.SetValue (GetPropertyDefinition (typeof (Person), "AssociatedCustomerCompany"), null);
       var eventListenerStub = MockRepository.GenerateStub<IDataContainerEventListener>();
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
-      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      var dataContainer = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
       dataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), null);
       dataContainer.SetValue (GetPropertyDefinition (typeof (Person), "AssociatedCustomerCompany"), DomainObjectIDs.Customer1);
 
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      var dataContainer = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
       dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "TransactionOnlyStringProperty"), null);
 
       Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataItem = CreatePersistableData (StateType.New, domainObject);
+      var dataItem = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, domainObject);
       dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "TransactionOnlyStringProperty"), null);
 
       Assert.That (
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
-      var dataItem = CreatePersistableData (StateType.Deleted, domainObject);
+      var dataItem = CreatePersistableData (new DomainObjectState.Builder().SetDeleted().Value, domainObject);
       dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), null);
 
       Assert.That (() => _validator.Validate (ClientTransaction.CreateRootTransaction(), dataItem), Throws.Nothing);
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       }
     }
 
-    private PersistableData CreatePersistableData (StateType domainObjectState, DomainObject domainObject)
+    private PersistableData CreatePersistableData (DomainObjectState domainObjectState, DomainObject domainObject)
     {
       var dataContainer = DataContainer.CreateNew (domainObject.ID);
       return new PersistableData (domainObject, domainObjectState, dataContainer, Enumerable.Empty<IRelationEndPoint>());

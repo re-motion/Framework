@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get { return _associatedTransaction; }
     }
 
-    public StateType State
+    public DomainObjectState State
     {
       get { return ClientTransaction.DataManager.GetState (DomainObject.ID); }
     }
@@ -67,10 +67,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public void RegisterForCommit ()
     {
       var dataContainer = ClientTransaction.DataManager.GetDataContainerWithLazyLoad (DomainObject.ID, throwOnNotFound: true);
-      if (dataContainer.State == StateType.Deleted)
+      if (dataContainer.State.IsDeleted)
         return;
 
-      if (dataContainer.State == StateType.New)
+      if (dataContainer.State.IsNew)
         return;
 
       dataContainer.MarkAsChanged();

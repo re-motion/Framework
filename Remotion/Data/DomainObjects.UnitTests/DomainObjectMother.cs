@@ -75,15 +75,15 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var changedInstance = LifetimeService.GetObject (transaction, objectID, false);
       changedInstance.RegisterForCommit();
-      Assert.That (changedInstance.State, Is.EqualTo (StateType.Changed));
-      Assert.That (ClientTransactionTestHelper.GetDataManager (transaction).DataContainers[objectID].State, Is.EqualTo (StateType.Changed));
+      Assert.That (changedInstance.State.IsChanged, Is.True);
+      Assert.That (ClientTransactionTestHelper.GetDataManager (transaction).DataContainers[objectID].State.IsChanged, Is.True);
       return changedInstance;
     }
 
     public static DomainObject GetUnchangedObject (ClientTransaction transaction, ObjectID objectID)
     {
       var unchangedInstance = LifetimeService.GetObject (transaction, objectID, false);
-      Assert.That (unchangedInstance.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (unchangedInstance.State.IsUnchanged, Is.True);
       return unchangedInstance;
     }
 
@@ -91,21 +91,21 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var invalidInstance = LifetimeService.NewObject (transaction, typeof (Order), ParamList.Empty);
       LifetimeService.DeleteObject (transaction, invalidInstance);
-      Assert.That (invalidInstance.TransactionContext[transaction].State, Is.EqualTo (StateType.Invalid));
+      Assert.That (invalidInstance.TransactionContext[transaction].State.IsInvalid, Is.True);
       return invalidInstance;
     }
 
     public static DomainObject GetNotLoadedObject (ClientTransaction transaction, ObjectID objectID)
     {
       var notLoadedInstance = LifetimeService.GetObjectReference (transaction, objectID);
-      Assert.That (notLoadedInstance.TransactionContext[transaction].State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (notLoadedInstance.TransactionContext[transaction].State.IsNotLoadedYet, Is.True);
       return notLoadedInstance;
     }
 
     public static DomainObject GetNewObject ()
     {
       var newInstance = ClassWithAllDataTypes.NewObject ();
-      Assert.That (newInstance.State, Is.EqualTo (StateType.New));
+      Assert.That (newInstance.State.IsNew, Is.True);
       return newInstance;
     }
 
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var deletedInstance = LifetimeService.GetObjectReference (transaction, objectID);
       LifetimeService.DeleteObject (transaction, deletedInstance);
-      Assert.That (deletedInstance.TransactionContext[transaction].State, Is.EqualTo (StateType.Deleted));
+      Assert.That (deletedInstance.TransactionContext[transaction].State.IsDeleted, Is.True);
       return deletedInstance;
     }
   }

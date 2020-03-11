@@ -29,6 +29,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
     void PropertyValueChanging (DataContainer dataContainer, PropertyDefinition propertyDefinition, object oldValue, object newValue);
     void PropertyValueChanged (DataContainer dataContainer, PropertyDefinition propertyDefinition, object oldValue, object newValue);
 
-    void StateUpdated (DataContainer dataContainer, StateType state);
+    void StateUpdated (DataContainer dataContainer, DataContainerState state);
   }
 }

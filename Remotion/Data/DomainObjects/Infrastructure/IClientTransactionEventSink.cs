@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     void RaiseDataContainerMapUnregisteringEvent (DataContainer container);
 
     // Infrastructure event
-    void RaiseDataContainerStateUpdatedEvent (DataContainer container, StateType newDataContainerState);
+    void RaiseDataContainerStateUpdatedEvent (DataContainer container, DataContainerState newDataContainerState);
     // Infrastructure event
     void RaiseVirtualRelationEndPointStateUpdatedEvent (RelationEndPointID endPointID, bool? newEndPointChangeState);
   }
