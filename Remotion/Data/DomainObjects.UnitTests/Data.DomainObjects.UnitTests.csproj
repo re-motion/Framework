@@ -213,6 +213,7 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="ClientTransactionTestHelperWithMocks.cs" />
+    <Compile Include="DataManagement\DataContainerStateTest.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableClientTransactionHierarchyFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableFetchEnabledPersistenceStrategyFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableLoadedObjectDataProviderFake.cs" />

@@ -177,6 +177,7 @@
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IPropertyMetadataProvider.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyMetadataReflector.cs" />
     <Compile Include="DomainObjectHandleConverter.cs" />
+    <Compile Include="DataManagement\DataContainerState.cs" />
     <Compile Include="DomainObjectState.cs" />
     <Compile Include="IDomainObject.cs" />
     <Compile Include="Linq\FluentFetchRequest.cs" />
