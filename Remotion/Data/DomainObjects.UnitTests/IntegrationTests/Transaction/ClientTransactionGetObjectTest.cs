@@ -155,7 +155,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       domainObject = LifetimeService.TryGetObject (TestableClientTransaction, notFoundID);
       Assert.That (domainObject, Is.Not.Null);
-      Assert.That (domainObject.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (domainObject.State.IsInvalid, Is.True);
     }
 
     [Test]
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var domainObject = ClassWithAllDataTypes.NewObject ();
       domainObject.Delete ();
-      Assert.That (domainObject.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (domainObject.State.IsInvalid, Is.True);
 
       Assert.That (LifetimeService.TryGetObject (TestableClientTransaction, domainObject.ID), Is.SameAs (domainObject));
     }
@@ -361,7 +361,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         order.Delete ();
 
         order = DomainObjectIDs.Order1.GetObject<Order> (includeDeleted: true);
-        Assert.That (order.State, Is.EqualTo (StateType.Deleted));
+        Assert.That (order.State.IsDeleted, Is.True);
         Assert.That (order.InternalDataContainer.ClientTransaction, Is.SameAs (clientTransaction));
         Assert.That (clientTransaction.IsEnlisted (order), Is.True);
       }
@@ -388,7 +388,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var order = Order.NewObject ();
       order.Delete ();
-      Assert.That (order.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (order.State.IsInvalid, Is.True);
 
       Assert.That (() => LifetimeService.GetObjects<Order> (TestableClientTransaction, order.ID), Throws.TypeOf<ObjectInvalidException> ());
     }
@@ -398,7 +398,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var order = Order.NewObject ();
       order.Delete ();
-      Assert.That (order.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (order.State.IsInvalid, Is.True);
 
       Assert.That (LifetimeService.TryGetObjects<Order> (TestableClientTransaction, order.ID), Is.EqualTo (new[] { order }));
     }

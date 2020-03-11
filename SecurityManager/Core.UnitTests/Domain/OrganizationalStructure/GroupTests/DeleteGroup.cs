@@ -42,7 +42,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
 
         ClientTransaction.Current.Commit ();
 
-        Assert.That (ace.State, Is.EqualTo (StateType.Invalid));
+        Assert.That (ace.State.IsInvalid, Is.True);
       }
     }
 
@@ -61,7 +61,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
 
         roleGroup.Delete();
 
-        Assert.That (role.State, Is.EqualTo (StateType.Invalid));
+        Assert.That (role.State.IsInvalid, Is.True);
       }
     }
   }

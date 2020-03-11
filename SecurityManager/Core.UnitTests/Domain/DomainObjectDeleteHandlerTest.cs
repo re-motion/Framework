@@ -39,8 +39,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       deleteHandler.Delete();
 
       Assert.That (deleteHandler.IsDeleted);
-      Assert.That (list[0].State, Is.EqualTo (StateType.Deleted));
-      Assert.That (list[1].State, Is.EqualTo (StateType.Deleted));
+      Assert.That (list[0].State.IsDeleted, Is.True);
+      Assert.That (list[1].State.IsDeleted, Is.True);
     }
 
     [Test]
@@ -57,10 +57,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       deleteHandler.Delete ();
 
       Assert.That (deleteHandler.IsDeleted);
-      Assert.That (list1[0].State, Is.EqualTo (StateType.Deleted));
-      Assert.That (list1[1].State, Is.EqualTo (StateType.Deleted));
-      Assert.That (list2[0].State, Is.EqualTo (StateType.Deleted));
-      Assert.That (list2[1].State, Is.EqualTo (StateType.Deleted));
+      Assert.That (list1[0].State.IsDeleted, Is.True);
+      Assert.That (list1[1].State.IsDeleted, Is.True);
+      Assert.That (list2[0].State.IsDeleted, Is.True);
+      Assert.That (list2[1].State.IsDeleted, Is.True);
     }
 
     [Test]
@@ -105,7 +105,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       deleteHandler.Delete ();
 
       Assert.That (deleteHandler.IsDeleted);
-      Assert.That (list[0].State, Is.EqualTo (StateType.Deleted));
+      Assert.That (list[0].State.IsDeleted, Is.True);
     }
 
     [Test]
@@ -120,7 +120,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       deleteHandler.Delete ();
 
       Assert.That (deleteHandler.IsDeleted);
-      Assert.That (list[0].State, Is.EqualTo (StateType.Invalid));
+      Assert.That (list[0].State.IsInvalid, Is.True);
     }
 
     [Test]

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -216,32 +217,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void GetByOriginalState ()
-    {
-      _collection.Add (_dataContainer);
-      DataContainerCollection originalContainers = _collection.GetByState (StateType.Unchanged);
-
-      Assert.That (originalContainers, Is.Not.Null);
-      Assert.That (originalContainers.Count, Is.EqualTo (1));
-      Assert.That (originalContainers[0], Is.SameAs (_dataContainer));
-    }
-
-    [Test]
-    public void GetByChangedState ()
-    {
-      _collection.Add (_dataContainer);
-      _collection.Add (TestDataContainerObjectMother.CreateCustomer1DataContainer ());
-
-      SetPropertyValue (_dataContainer, typeof (Order), "OrderNumber", 10);
-
-      DataContainerCollection changedContainers = _collection.GetByState (StateType.Changed);
-
-      Assert.That (changedContainers, Is.Not.Null);
-      Assert.That (changedContainers.Count, Is.EqualTo (1));
-      Assert.That (changedContainers[0], Is.SameAs (_dataContainer));
-    }
-
-    [Test]
     public void RemoveByID ()
     {
       _collection.Add (_dataContainer);
@@ -323,13 +298,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       _collection.Clear ();
       Assert.That (_collection.Count, Is.EqualTo (0));
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
-    public void GetByInvalidState ()
-    {
-      _collection.GetByState ((StateType) 1000);
     }
 
     [Test]

@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That (orderItem.Properties.Find ("Order").GetRelatedObjectID (), Is.EqualTo (newOrder.ID));
 
       Assert.That (newOrder.OrderItems.ContainsObject (orderItem));
-      Assert.That (originalOrder.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (originalOrder.State.IsDeleted, Is.True);
       Assert.That (originalOrder.OrderItems, Is.Empty);
       Assert.That (originalOrder.OrderTicket, Is.Null);
       Assert.That (originalOrder.Official, Is.Null);
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That (orderTicket.Properties.Find ("Order").GetRelatedObjectID (), Is.EqualTo (newOrder.ID));
 
       Assert.That (newOrder.OrderTicket, Is.SameAs (orderTicket));
-      Assert.That (originalOrder.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (originalOrder.State.IsDeleted, Is.True);
       Assert.That (originalOrder.OrderItems, Is.Empty);
       Assert.That (originalOrder.OrderTicket, Is.Null);
       Assert.That (originalOrder.Official, Is.Null);
@@ -185,8 +185,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         ClientTransactionScope.CurrentTransaction.Commit ();
 
-        Assert.That (loadedOrder.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (newClassWithAllDataTypes.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (loadedOrder.State.IsUnchanged, Is.True);
+        Assert.That (newClassWithAllDataTypes.State.IsUnchanged, Is.True);
 
         Assert.That (loadedOrder.OrderNumber, Is.EqualTo (13));
         Assert.That (newClassWithAllDataTypes.Int16Property, Is.EqualTo (47));
@@ -195,8 +195,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That (loadedOrder.OrderNumber, Is.EqualTo (13));
       Assert.That (newClassWithAllDataTypes.Int16Property, Is.EqualTo (47));
 
-      Assert.That (loadedOrder.State, Is.EqualTo (StateType.Changed));
-      Assert.That (newClassWithAllDataTypes.State, Is.EqualTo (StateType.New));
+      Assert.That (loadedOrder.State.IsChanged, Is.True);
+      Assert.That (newClassWithAllDataTypes.State.IsNew, Is.True);
     }
 
     [Test]
@@ -238,7 +238,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         ClientTransactionScope.CurrentTransaction.Commit ();
 
-        Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (order.State.IsUnchanged, Is.True);
 
         Assert.That (order.Official, Is.SameAs (official));
         Assert.That (order.OrderItems.Count, Is.EqualTo (2));
@@ -724,8 +724,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         ClientTransaction.Current.Commit ();
       }
 
-      Assert.That (order.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (order.State.IsInvalid, Is.True);
+      Assert.That (orderTicket.State.IsInvalid, Is.True);
 
       Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
       Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);

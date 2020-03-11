@@ -209,7 +209,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
 
-      Assert.That (ace.State, Is.EqualTo (StateType.New));
+      Assert.That (ace.State.IsNew, Is.True);
     }
 
     [Test]

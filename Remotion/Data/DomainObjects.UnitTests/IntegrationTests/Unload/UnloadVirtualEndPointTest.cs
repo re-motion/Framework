@@ -47,9 +47,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (orderItem2, "Order", true);
       CheckVirtualEndPointExistsAndComplete (order, "OrderItems", true, false);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItem1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItem2.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order.State.IsUnchanged, Is.True);
+      Assert.That (orderItem1.State.IsUnchanged, Is.True);
+      Assert.That (orderItem2.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -182,8 +182,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (orderTicket, "Order", true);
       CheckVirtualEndPointExistsAndComplete (order, "OrderTicket", true, false);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order.State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.State.IsUnchanged, Is.True);
     }
 
     [Test]

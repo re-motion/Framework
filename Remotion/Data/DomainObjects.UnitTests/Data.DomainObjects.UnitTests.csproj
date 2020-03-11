@@ -213,10 +213,12 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="ClientTransactionTestHelperWithMocks.cs" />
+    <Compile Include="DataManagement\DataContainerStateTest.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableClientTransactionHierarchyFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableFetchEnabledPersistenceStrategyFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableLoadedObjectDataProviderFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableLoadedObjectDataRegistrationAgentFake.cs" />
+    <Compile Include="DomainObjectStateTest.cs" />
     <Compile Include="IClientTransactionExtensionFactoryTest.cs" />
     <Compile Include="IDomainModelConstraintProviderTest.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionExtensionFactoryTest.cs" />
@@ -794,7 +796,6 @@
     <Compile Include="Infrastructure\InvalidObjects\InvalidDomainObjectManagerTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RelationEndPointTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RelationEndPointTestHelper.cs" />
-    <Compile Include="DataManagement\StateValueSetTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualObjectEndPointTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\DomainObjectCollectionFactoryTest.cs" />
     <Compile Include="DataManagement\CollectionData\ModificationCheckingCollectionDataDecoratorTest.cs" />

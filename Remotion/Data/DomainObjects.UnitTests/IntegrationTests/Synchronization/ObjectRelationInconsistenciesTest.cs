@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
       CheckActionWorks (() => computer.Employee = null);
       computer.Employee = employee2;
-      Assert.That (computer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (computer.State.IsUnchanged, Is.True);
 
       BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (employee, e => e.Computer));
 
@@ -266,7 +266,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Assert.That (computer.Employee, Is.SameAs (employee2));
       Assert.That (employee2.Computer, Is.SameAs (newComputer));
       Assert.That (employee2.Properties[typeof (Employee), "Computer"].GetOriginalValue<Computer>(), Is.SameAs (computer));
-      Assert.That (employee2.State, Is.EqualTo (StateType.Changed));
+      Assert.That (employee2.State.IsChanged, Is.True);
     }
 
     [Test]

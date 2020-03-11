@@ -322,7 +322,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void GetObject ()
     {
-      Assert.That (_dataContainer1.State, Is.Not.EqualTo (StateType.Deleted));
+      Assert.That (_dataContainer1.State.IsDeleted, Is.False);
 
       _dataManagerMock.Expect (mock => mock.GetDataContainerWithLazyLoad (_objectID1, true)).Return (_dataContainer1);
 
@@ -336,7 +336,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     public void GetObject_DeletedObject_IncludeDeletedTrue ()
     {
       var dataContainer = DataContainerObjectMother.CreateDeleted (_domainObject1);
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (dataContainer.State.IsDeleted, Is.True);
 
       _dataManagerMock.Stub (stub => stub.GetDataContainerWithLazyLoad (_objectID1, true)).Return (dataContainer);
 
@@ -349,7 +349,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     public void GetObject_DeletedObject_IncludeDeletedFalse ()
     {
       var dataContainer = DataContainerObjectMother.CreateDeleted (_domainObject1);
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (dataContainer.State.IsDeleted, Is.True);
 
       _dataManagerMock.Stub (stub => stub.GetDataContainerWithLazyLoad (_objectID1, true)).Return (dataContainer);
 

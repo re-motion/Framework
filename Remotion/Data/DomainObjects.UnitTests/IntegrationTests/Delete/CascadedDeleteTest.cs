@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       order.Delete ();
 
-      Assert.That (order.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (order.State.IsInvalid, Is.True);
+      Assert.That (orderTicket.State.IsInvalid, Is.True);
       Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
       Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       order.Delete ();
 
-      Assert.That (order.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (order.State.IsInvalid, Is.True);
+      Assert.That (orderTicket.State.IsInvalid, Is.True);
       Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
       Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
@@ -77,8 +77,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
         ClientTransaction.Current.Commit ();
       }
 
-      Assert.That (order.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (order.State.IsInvalid, Is.True);
+      Assert.That (orderTicket.State.IsInvalid, Is.True);
       Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
       Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
@@ -101,8 +101,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
         ClientTransaction.Current.Commit ();
       }
 
-      Assert.That (order.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (order.State.IsInvalid, Is.True);
+      Assert.That (orderTicket.State.IsInvalid, Is.True);
       Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
       Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }

@@ -188,7 +188,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       }
 
       Assert.That (oppositeObject, Is.SameAs (LifetimeService.GetObjectReference (TestableClientTransaction, DomainObjectIDs.Order1)));
-      Assert.That (oppositeObject.State, Is.EqualTo (StateType.NotLoadedYet), "Data has not been loaded");
+      Assert.That (oppositeObject.State.IsNotLoadedYet, Is.True, "Data has not been loaded");
     }
 
     [Test]
@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       order1.Delete ();
-      Assert.That (order1.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (order1.State.IsDeleted, Is.True);
 
       RealObjectEndPointTestHelper.SetOppositeObjectID (_endPoint, order1.ID);
 
@@ -218,7 +218,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var oppositeObject = Order.NewObject ();
 
       oppositeObject.Delete ();
-      Assert.That (oppositeObject.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (oppositeObject.State.IsInvalid, Is.True);
 
       RealObjectEndPointTestHelper.SetOppositeObjectID (_endPoint, oppositeObject.ID);
 
@@ -233,13 +233,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var oppositeObject = _endPoint.GetOppositeObject ();
       Assert.That (oppositeObject.ID, Is.EqualTo (objectID));
-      Assert.That (oppositeObject.State, Is.EqualTo (StateType.NotLoadedYet), "Data has not been loaded");
+      Assert.That (oppositeObject.State.IsNotLoadedYet, Is.True, "Data has not been loaded");
 
       Assert.That (() => oppositeObject.EnsureDataAvailable(), Throws.TypeOf<ObjectsNotFoundException>());
 
       var oppositeObject2 = _endPoint.GetOppositeObject ();
       Assert.That (oppositeObject2.ID, Is.EqualTo (objectID));
-      Assert.That (oppositeObject2.State, Is.EqualTo (StateType.Invalid), "Data has not been found");
+      Assert.That (oppositeObject2.State.IsInvalid, Is.True, "Data has not been found");
     }
 
     [Test]
@@ -251,7 +251,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var originalOppositeObject = _endPoint.GetOriginalOppositeObject();
 
       Assert.That (originalOppositeObject, Is.SameAs (DomainObjectIDs.Order1.GetObjectReference<Order> ()));
-      Assert.That (originalOppositeObject.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (originalOppositeObject.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -270,7 +270,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var originalOppositeObject = (Order) _endPoint.GetOppositeObject ();
       originalOppositeObject.Delete ();
 
-      Assert.That (originalOppositeObject.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (originalOppositeObject.State.IsDeleted, Is.True);
       Assert.That (_endPoint.GetOriginalOppositeObject (), Is.SameAs (originalOppositeObject));
     }
 

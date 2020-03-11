@@ -115,12 +115,11 @@ namespace Remotion.Data.DomainObjects.Validation
 
       foreach (var item in domainObjectsToValidate)
       {
-        if (item.DomainObjectState == StateType.Deleted)
+        if (item.DomainObjectState.IsDeleted)
           continue;
 
-        Assertion.IsTrue (
-            item.DomainObjectState != StateType.NotLoadedYet && item.DomainObjectState != StateType.Invalid,
-            "No unloaded or invalid objects get this far.");
+        Assertion.IsFalse (item.DomainObjectState.IsNotLoadedYet, "No unloaded objects get this far.");
+        Assertion.IsFalse (item.DomainObjectState.IsInvalid, "No invalid objects get this far.");
 
         var validator = validatorCache.GetOrCreateValue (item.DomainObject.GetPublicDomainObjectType(), _validatorBuilderFunc);
         

@@ -327,16 +327,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        Assert.That (customer.State, Is.EqualTo (StateType.NotLoadedYet));
+        Assert.That (customer.State.IsNotLoadedYet, Is.True);
 
         customer.EnsureDataAvailable ();
 
-        Assert.That (customer.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (customer.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.Changed));
+        Assert.That (customer.State.IsUnchanged, Is.True);
+        Assert.That (customer.TransactionContext[TestableClientTransaction].State.IsChanged, Is.True);
 
         using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
         {
-          Assert.That (customer.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.Changed)); // must not throw a ClientTransactionDiffersException
+          Assert.That (customer.TransactionContext[TestableClientTransaction].State.IsChanged, Is.True); // must not throw a ClientTransactionDiffersException
         }
       }
     }
@@ -349,25 +349,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       ClassWithAllDataTypes loadedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
       DataContainer loadedObjectDataContainer = newObject.InternalDataContainer;
 
-      Assert.That (newObject.IsInvalid, Is.False);
-      Assert.That (newObject.State, Is.EqualTo (StateType.New));
-      Assert.That (loadedObject.IsInvalid, Is.False);
-      Assert.That (loadedObject.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (newObject.State.IsInvalid, Is.False);
+      Assert.That (newObject.State.IsNew, Is.True);
+      Assert.That (loadedObject.State.IsInvalid, Is.False);
+      Assert.That (loadedObject.State.IsUnchanged, Is.True);
 
       newObject.Delete ();
 
-      Assert.That (newObject.IsInvalid, Is.True);
-      Assert.That (newObject.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (newObjectDataContainer.IsDiscarded, Is.True);
-      Assert.That (newObjectDataContainer.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (newObject.State.IsInvalid, Is.True);
+      Assert.That (newObjectDataContainer.State.IsDiscarded, Is.True);
 
       loadedObject.Delete ();
       TestableClientTransaction.Commit ();
 
-      Assert.That (loadedObject.IsInvalid, Is.True);
-      Assert.That (loadedObject.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (loadedObjectDataContainer.IsDiscarded, Is.True);
-      Assert.That (loadedObjectDataContainer.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (loadedObject.State.IsInvalid, Is.True);
+      Assert.That (loadedObjectDataContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]
@@ -378,16 +374,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        Assert.That (customer.State, Is.EqualTo (StateType.NotLoadedYet));
+        Assert.That (customer.State.IsNotLoadedYet, Is.True);
 
         customer.EnsureDataAvailable ();
 
-        Assert.That (customer.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (customer.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.Changed));
+        Assert.That (customer.State.IsUnchanged, Is.True);
+        Assert.That (customer.TransactionContext[TestableClientTransaction].State.IsChanged, Is.True);
 
         using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
         {
-          Assert.That (customer.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.Changed)); // must not throw a ClientTransactionDiffersException
+          Assert.That (customer.TransactionContext[TestableClientTransaction].State.IsChanged, Is.True); // must not throw a ClientTransactionDiffersException
         }
       }
     }
@@ -401,11 +397,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       discardedObject.Delete ();
       TestableClientTransaction.Commit ();
       
-      Assert.That (discardedObject.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (nonDiscardedObject.State, Is.Not.EqualTo (StateType.Invalid));
+      Assert.That (discardedObject.State.IsInvalid, Is.True);
+      Assert.That (nonDiscardedObject.State.IsInvalid, Is.False);
 
-      Assert.That (discardedObject.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.Invalid));
-      Assert.That (nonDiscardedObject.TransactionContext[TestableClientTransaction].State, Is.Not.EqualTo (StateType.Invalid));
+      Assert.That (discardedObject.TransactionContext[TestableClientTransaction].State.IsInvalid, Is.True);
+      Assert.That (nonDiscardedObject.TransactionContext[TestableClientTransaction].State.IsInvalid, Is.False);
     }
 
     [Test]

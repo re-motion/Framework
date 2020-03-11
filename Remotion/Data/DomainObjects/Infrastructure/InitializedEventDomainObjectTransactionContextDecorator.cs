@@ -40,17 +40,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get { return _actualContext.ClientTransaction; }
     }
 
-    public StateType State
+    public DomainObjectState State
     {
-      get
-      {
-        throw CreateInvalidOperationException();
-      }
-    }
-
-    public bool IsInvalid
-    {
-      get { return _actualContext.IsInvalid; }
+      get { throw CreateInvalidOperationException(); }
     }
 
     public object Timestamp

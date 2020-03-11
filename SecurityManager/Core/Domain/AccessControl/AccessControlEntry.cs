@@ -247,7 +247,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       var result = new AccessControlEntryValidationResult();
 
-      if (State != StateType.Deleted)
+      if (!State.IsDeleted)
       {
         if (TenantCondition == TenantCondition.OwningTenant && TenantHierarchyCondition == TenantHierarchyCondition.Undefined)
           result.SetError (AccessControlEntryValidationError.IsTenantHierarchyConditionMissing);
@@ -307,7 +307,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       if (!result.IsValid)
         throw new ConstraintViolationException (result.GetErrorMessage());
 
-      if (State != StateType.Deleted)
+      if (!State.IsDeleted)
       {
         if (TenantCondition != TenantCondition.SpecificTenant)
           SpecificTenant = null;

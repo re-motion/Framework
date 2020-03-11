@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public class DomainObjectStateCache
   {
     private readonly ClientTransaction _clientTransaction;
-    private readonly Dictionary<ObjectID, StateType> _stateCache = new Dictionary<ObjectID, StateType> ();
+    private readonly Dictionary<ObjectID, DomainObjectState> _stateCache = new Dictionary<ObjectID, DomainObjectState> ();
 
     [Serializable]
     private class StateUpdateListener : ClientTransactionListenerBase
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         _cache = cache;
       }
 
-      public override void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer dataContainer, StateType newDataContainerState)
+      public override void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer dataContainer, DataContainerState newDataContainerState)
       {
         _cache.HandleStateUpdate (dataContainer.ID);
       }
@@ -81,17 +81,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     }
 
     /// <summary>
-    /// Gets the <see cref="StateType"/> value for the <see cref="DomainObject"/> with the given <see cref="ObjectID"/> from the cache; recalculating 
-    /// it if the cache does not have an up-to-date <see cref="StateType"/> value.
+    /// Gets the <see cref="DomainObjectState"/> for the <see cref="DomainObject"/> with the given <see cref="ObjectID"/> from the cache; recalculating 
+    /// it if the cache does not have an up-to-date <see cref="DomainObjectState"/> value.
     /// </summary>
     /// <param name="objectID">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> whose state to get.</param>
-    /// <returns>The state of the <see cref="DomainObject"/> with the given <see cref="ObjectID"/>. If no such object has been loaded, 
-    /// <see cref="StateType.NotLoadedYet"/> is returned.</returns>
-    public StateType GetState (ObjectID objectID)
+    /// <returns>
+    /// The state of the <see cref="DomainObject"/> with the given <see cref="ObjectID"/>. If no such object has been loaded, 
+    /// the <see cref="DomainObjectState.IsNotLoadedYet"/> flag is set on the returned <see cref="DomainObjectState"/>.
+    /// </returns>
+    public DomainObjectState GetState (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
-      
-      StateType state;
+
+      DomainObjectState state;
       if (_stateCache.TryGetValue (objectID, out state))
         return state;
 
@@ -105,19 +107,38 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _stateCache.Remove (objectID);
     }
 
-    private StateType CalculateState (ObjectID objectID)
+    private DomainObjectState CalculateState (ObjectID objectID)
     {
+      var stateBuilder = new DomainObjectState.Builder();
+
       if (_clientTransaction.IsInvalid (objectID))
-        return StateType.Invalid;
+        return stateBuilder.SetInvalid().Value;
 
       var dataContainer = _clientTransaction.DataManager.DataContainers[objectID];
       if (dataContainer == null)
-        return StateType.NotLoadedYet;
+        return stateBuilder.SetNotLoadedYet().Value;
 
-      if (dataContainer.State == StateType.Unchanged)
-        return HasRelationChanged (dataContainer) ? StateType.Changed : StateType.Unchanged;
+      var dataContainerState = dataContainer.State;
 
-      return dataContainer.State;
+      if (dataContainerState.IsUnchanged)
+        return HasRelationChanged (dataContainer) ? stateBuilder.SetChanged().Value : stateBuilder.SetUnchanged().Value;
+
+      if (dataContainerState.IsChanged)
+        return stateBuilder.SetChanged().Value;
+
+      if (dataContainerState.IsNew)
+        return stateBuilder.SetNew().Value;
+
+      if (dataContainerState.IsDeleted)
+        return stateBuilder.SetDeleted().Value;
+
+      if (dataContainerState.IsDiscarded)
+      {
+        throw new InvalidOperationException (
+            $"DataContainer for object '{objectID}' has been discarded without removing the instance from the DataManager.");
+      }
+
+      throw new InvalidOperationException ($"DomainObjectState for '{objectID}' cannot be calculated.");
     }
 
     private bool HasRelationChanged (DataContainer dataContainer)

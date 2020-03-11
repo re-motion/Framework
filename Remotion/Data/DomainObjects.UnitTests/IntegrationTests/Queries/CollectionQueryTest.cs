@@ -204,8 +204,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
 
       Assert.That (result.Count, Is.EqualTo (2));
       Assert.That (result.ToArray (), Is.EqualTo (new[] { order1, order3 }));
-      Assert.That (order1.State, Is.EqualTo (StateType.Deleted));
-      Assert.That (order3.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order1.State.IsDeleted, Is.True);
+      Assert.That (order3.State.IsUnchanged, Is.True);
     }
 
     [Test]

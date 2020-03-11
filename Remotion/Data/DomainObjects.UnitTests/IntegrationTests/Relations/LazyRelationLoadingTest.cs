@@ -37,23 +37,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void AccessingRelatedObject_ForeignKeySide_ReturnsNonloadedReference_ButLoadsObjectCOntainingForeignKey ()
     {
-      Assert.That (_order.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (_order.State.IsNotLoadedYet, Is.True);
 
       var customer = _order.Customer;
 
       Assert.That (customer.ID, Is.EqualTo (DomainObjectIDs.Customer1));
-      Assert.That (customer.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (_order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (customer.State.IsNotLoadedYet, Is.True);
+      Assert.That (_order.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void AccessingRelatedObject_ForeignKeySide_ReturnsNonloadedReference_DataIsLoadedOnDemand ()
     {
-      Assert.That (_order.Customer.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (_order.Customer.State.IsNotLoadedYet, Is.True);
 
       Assert.That (_order.Customer.Name, Is.EqualTo ("Kunde 1"));
 
-      Assert.That (_order.Customer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order.Customer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -62,11 +62,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       bool propertyChanged = false;
       _order.Customer.PropertyChanged += delegate { propertyChanged = true; };
 
-      Assert.That (_order.Customer.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (_order.Customer.State.IsNotLoadedYet, Is.True);
 
       _order.Customer.EnsureDataAvailable();
 
-      Assert.That (_order.Customer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order.Customer.State.IsUnchanged, Is.True);
       Assert.That (propertyChanged, Is.False);
 
       _order.Customer.Name = "John Doe";
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       var id = new ObjectID (typeof (ClassWithInvalidRelation), new Guid ("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
       var objectWithInvalidRelation = (ClassWithInvalidRelation) id.GetObject<TestDomainBase> ();
 
-      Assert.That (objectWithInvalidRelation.ClassWithGuidKey.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (objectWithInvalidRelation.ClassWithGuidKey.State.IsNotLoadedYet, Is.True);
 
       Assert.That (() => objectWithInvalidRelation.ClassWithGuidKey.EnsureDataAvailable(), Throws.TypeOf<ObjectsNotFoundException> ());
     }
@@ -104,50 +104,50 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       DomainObjectIDs.Customer1.GetObject<Customer>();
 
       Assert.That (_order.Customer.ID, Is.EqualTo (DomainObjectIDs.Customer1));
-      Assert.That (_order.Customer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order.Customer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void AccessingOriginalRelatedObject_ForeignKeySide_OriginalObjectIsAlsoNotLoadedOnAccess ()
     {
       Assert.That (_order.Properties[typeof (Order), "Customer"].GetOriginalValue<Customer>().ID, Is.EqualTo (DomainObjectIDs.Customer1));
-      Assert.That (_order.Properties[typeof (Order), "Customer"].GetOriginalValue<Customer> ().State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (_order.Properties[typeof (Order), "Customer"].GetOriginalValue<Customer> ().State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
     public void AccessingRelatedObject_VirtualSide_ReturnsLoadedObject_AndAlsoLoadsOriginatingObject ()
     {
-      Assert.That (_order.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (_order.State.IsNotLoadedYet, Is.True);
 
       var orderTicket = _order.OrderTicket;
 
       Assert.That (orderTicket.ID, Is.EqualTo (DomainObjectIDs.OrderTicket1));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket.State.IsUnchanged, Is.True);
+      Assert.That (_order.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void AccessingOriginalRelatedObject_VirtualSide_ReturnsLoadedObject_AndAlsoLoadsOriginatingObject ()
     {
-      Assert.That (_order.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (_order.State.IsNotLoadedYet, Is.True);
 
       var orderTicket = _order.Properties[typeof (Order), "OrderTicket"].GetOriginalValue<OrderTicket>();
 
       Assert.That (orderTicket.ID, Is.EqualTo (DomainObjectIDs.OrderTicket1));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket.State.IsUnchanged, Is.True);
+      Assert.That (_order.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void AccessingRelatedCollection_ReturnsCollectionWithIncompleteContents_AndAlsoLoadsOriginatingObject ()
     {
-      Assert.That (_order.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (_order.State.IsNotLoadedYet, Is.True);
 
       var orderItems = _order.OrderItems;
 
       Assert.That (orderItems.AssociatedEndPointID, Is.EqualTo (RelationEndPointID.Resolve (_order, o => o.OrderItems)));
       Assert.That (orderItems.IsDataComplete, Is.False);
-      Assert.That (_order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -212,13 +212,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
       Assert.That (_order.OrderItems.IsDataComplete, Is.False);
       Assert.That (order2.OrderItems.IsDataComplete, Is.False);
-      Assert.That (orderItem1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (orderItem1.State.IsNotLoadedYet, Is.True);
 
       orderItem1.Order = order2;
 
       Assert.That (_order.OrderItems.IsDataComplete, Is.True);
       Assert.That (order2.OrderItems.IsDataComplete, Is.True);
-      Assert.That (orderItem1.State, Is.EqualTo (StateType.Changed));
+      Assert.That (orderItem1.State.IsChanged, Is.True);
     }
   }
 }

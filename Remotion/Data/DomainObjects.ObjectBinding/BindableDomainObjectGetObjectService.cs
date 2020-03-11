@@ -33,9 +33,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       var domainObjectOrNull = LifetimeService.TryGetObject (ClientTransaction.Current, objectID);
       if (domainObjectOrNull == null)
         return null;
-      if (domainObjectOrNull.State == StateType.Invalid)
+      if (domainObjectOrNull.State.IsInvalid)
         return null;
-      if (domainObjectOrNull.State == StateType.Deleted)
+      if (domainObjectOrNull.State.IsDeleted)
         return null;
       return (IBusinessObjectWithIdentity) domainObjectOrNull;
     }

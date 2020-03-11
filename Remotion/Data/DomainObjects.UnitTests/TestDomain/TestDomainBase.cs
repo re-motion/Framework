@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [NonSerialized]
     public DateTime OnUnloadingDateTime;
     [NonSerialized]
-    public StateType UnloadingState;
+    public DomainObjectState UnloadingState;
 
     [NonSerialized]
     public bool OnUnloadedCalled;
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [NonSerialized]
     public DateTime OnUnloadedDateTime;
     [NonSerialized]
-    public StateType UnloadedState;
+    public DomainObjectState UnloadedState;
 
     protected TestDomainBase()
     {

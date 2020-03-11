@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var order = subTransaction.ExecuteInScope (() => Order.NewObject ());
 
       Assert.That (order.RootTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (order.TransactionContext[_rootTransaction].State, Is.EqualTo (StateType.Invalid));
+      Assert.That (order.TransactionContext[_rootTransaction].State.IsInvalid, Is.True);
     }
 
     [Test]

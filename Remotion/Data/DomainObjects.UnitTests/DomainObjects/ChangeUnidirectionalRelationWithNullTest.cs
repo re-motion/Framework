@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.That (location.Client, Is.Null);
       Assert.That (location.Properties[typeof (Location), "Client"].GetRelatedObjectID(), Is.Null);
-      Assert.That (location.State, Is.EqualTo (StateType.Changed));
-      Assert.That (oldClient.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (location.State.IsChanged, Is.True);
+      Assert.That (oldClient.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -49,8 +49,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.That (client.ParentClient, Is.SameAs (newClient));
       Assert.That (client.Properties[typeof (Client), "ParentClient"].GetRelatedObjectID (), Is.EqualTo (newClient.ID));
-      Assert.That (client.State, Is.EqualTo (StateType.Changed));
-      Assert.That (newClient.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (client.State.IsChanged, Is.True);
+      Assert.That (newClient.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       eventReceiver.Check (new ChangeState[0]);
       Assert.That (client.ParentClient, Is.Null);
       Assert.That (client.Properties[typeof (Client), "ParentClient"].GetRelatedObjectID (), Is.Null);
-      Assert.That (client.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (client.State.IsUnchanged, Is.True);
     }
   }
 }

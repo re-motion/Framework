@@ -58,17 +58,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     private IDataContainerEndPointsRegistrationAgent ChooseAgent (DataContainer dataContainer)
     {
-      switch (dataContainer.State)
-      {
-        case StateType.Changed:
-        case StateType.Unchanged:
-          return _existingDataContainerRegistrationAgent;
-        case StateType.New:
-        case StateType.Deleted:
-          return _nonExistingDataContainerRegistrationAgent;
-        default:
-          throw new NotSupportedException ("Cannot register end-points for a DataContainer with state '" + dataContainer.State + "'.");
-      }
+      var dataContainerState = dataContainer.State;
+      if (dataContainerState.IsChanged)
+        return _existingDataContainerRegistrationAgent;
+      else if (dataContainerState.IsUnchanged)
+        return _existingDataContainerRegistrationAgent;
+      else if (dataContainerState.IsNew)
+        return _nonExistingDataContainerRegistrationAgent;
+      else if (dataContainerState.IsDeleted)
+        return _nonExistingDataContainerRegistrationAgent;
+      else if (dataContainerState.IsDiscarded)
+        throw new NotSupportedException ("Cannot register end-points for a discarded DataContainer.");
+      else
+        throw new NotSupportedException ("DataContainer '" + dataContainer.ID + "' has an unsupported state: " + dataContainerState);
     }
 
   }

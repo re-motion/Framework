@@ -379,8 +379,8 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public void ValidateUniqueStateCombinations (SecurableClassValidationResult result)
     {
-      Assertion.IsTrue (
-          State != StateType.Deleted || StateCombinations.Count == 0, "StateCombinations of object '{0}' are not empty but the object is deleted.", ID);
+      Assertion.IsFalse (
+          State.IsDeleted && StateCombinations.Count != 0, "StateCombinations of object '{0}' are not empty but the object is deleted.", ID);
 
       var duplicateStateCombinations = StateCombinations
           .GroupBy (sc => sc, new StateCombinationComparer())
@@ -393,8 +393,8 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public void ValidateStateCombinationsAgainstStateProperties (SecurableClassValidationResult result)
     {
-      Assertion.IsTrue (
-          State != StateType.Deleted || StateCombinations.Count == 0, "StateCombinations of object '{0}' are not empty but the object is deleted.", ID);
+      Assertion.IsFalse (
+          State.IsDeleted && StateCombinations.Count != 0, "StateCombinations of object '{0}' are not empty but the object is deleted.", ID);
 
       foreach (var stateCombination in StateCombinations.Where (sc => sc.GetStates().Length != StateProperties.Count))
         result.AddInvalidStateCombination (stateCombination);

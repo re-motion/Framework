@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         _eventSink.RaisePropertyValueChangedEvent (dataContainer.DomainObject, propertyDefinition, oldValue, newValue);
     }
 
-    public void StateUpdated (DataContainer dataContainer, StateType state)
+    public void StateUpdated (DataContainer dataContainer, DataContainerState state)
     {
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       _eventSink.RaiseDataContainerStateUpdatedEvent (dataContainer, state);

@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       var order = (Order) LifetimeService.GetObject (TestableClientTransaction, DomainObjectIDs.Order1, true);
       Assert.That (order, Is.Not.Null);
       Assert.That (order.ID, Is.EqualTo (DomainObjectIDs.Order1));
-      Assert.That (order.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (order.State.IsDeleted, Is.True);
     }
 
     [Test]
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     {
       var instance = Order.NewObject ();
       instance.Delete ();
-      Assert.That (instance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (instance.State.IsInvalid, Is.True);
 
       Assert.That (() => LifetimeService.GetObject (TestableClientTransaction, instance.ID, false), Throws.TypeOf<ObjectInvalidException> ());
       Assert.That (() => LifetimeService.GetObject (TestableClientTransaction, instance.ID, true), Throws.TypeOf<ObjectInvalidException> ());
@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     {
       var instance = Order.NewObject ();
       instance.Delete ();
-      Assert.That (instance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (instance.State.IsInvalid, Is.True);
 
       var instanceAgain = LifetimeService.TryGetObject (TestableClientTransaction, instance.ID);
 
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 
       Assert.That (result, Is.InstanceOf (typeof (Order)));
       Assert.That (result.ID, Is.EqualTo (DomainObjectIDs.Order1));
-      Assert.That (result.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (result.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     {
       var instance = Order.NewObject ();
       instance.Delete();
-      Assert.That (instance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (instance.State.IsInvalid, Is.True);
 
       var result = LifetimeService.GetObjectReference (TestableClientTransaction, instance.ID);
 
@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     {
       var instance = Order.NewObject ();
       instance.Delete ();
-      Assert.That (instance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (instance.State.IsInvalid, Is.True);
 
       Assert.That (() => LifetimeService.GetObjects<Order> (TestableClientTransaction, instance.ID, instance.ID), Throws.TypeOf<ObjectInvalidException> ());
     }
@@ -208,7 +208,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 
       var invalidInstance = Order.NewObject ();
       invalidInstance.Delete ();
-      Assert.That (invalidInstance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (invalidInstance.State.IsInvalid, Is.True);
 
       Order[] orders = LifetimeService.TryGetObjects<Order> (
           TestableClientTransaction, DomainObjectIDs.Order1, notFoundObjectID, deletedObjectID, invalidInstance.ID);
@@ -220,9 +220,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     public void DeleteObject ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order> ();
-      Assert.That (order.State, Is.Not.EqualTo (StateType.Deleted));
+      Assert.That (order.State.IsDeleted, Is.False);
       LifetimeService.DeleteObject (TestableClientTransaction, order);
-      Assert.That (order.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (order.State.IsDeleted, Is.True);
     }
 
     [Test]

@@ -35,16 +35,7 @@ namespace Remotion.Data.DomainObjects
     /// Gets the current state of the <see cref="DomainObject"/> in the associated <see cref="ClientTransaction"/>.
     /// </summary>
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
-    StateType State { get; }
-
-    /// <summary>
-    /// Gets a value indicating the invalid status of the object in the associated <see cref="ClientTransaction"/>.
-    /// </summary>
-    /// <remarks>
-    /// For more information why and when an object becomes invalid see <see cref="ObjectInvalidException"/>.
-    /// </remarks>
-    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the associated transaction.</exception>
-    bool IsInvalid { get; }
+    DomainObjectState State { get; }
 
     /// <summary>
     /// Gets the timestamp used for optimistic locking when the object is committed to the database.
@@ -56,8 +47,8 @@ namespace Remotion.Data.DomainObjects
 
     /// <summary>
     /// Ensures that the <see cref="DomainObject"/> is included in the commit set of the <see cref="ClientTransaction"/>. 
-    /// The object may not be in state <see cref="StateType.Deleted"/>, and if
-    /// its state is <see cref="StateType.NotLoadedYet"/>, this method loads the object's data.
+    /// The object may not have the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsDeleted"/> flag is set, and if
+    /// its <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/> flag is set, this method loads the object's data.
     /// </summary>
     /// <exception cref="ObjectDeletedException">The object has already been deleted.</exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the transaction.</exception>
@@ -67,32 +58,36 @@ namespace Remotion.Data.DomainObjects
     /// This operation affects the <see cref="DomainObject"/> as follows (in the default transaction):
     /// <list type="table">
     /// <item>
-    /// <term><see cref="StateType.NotLoadedYet"/></term>
+    /// <term><see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/> flag is set</term>
     /// <description>The object is loaded and then handled according to its new state, see below.</description>
     /// </item>
     /// <item>
-    /// <term><see cref="StateType.Unchanged"/></term>
-    /// <description>The object's state is modified to be <see cref="StateType.Changed"/>, even though no property value is actually changed. The 
-    /// object will then behave like any <see cref="StateType.Changed"/> object. On commit (of a root transaction), it is checked for concurrency 
-    /// violations, and its timestamp is updated.</description>
-    /// </item>
-    /// <item>
-    /// <term><see cref="StateType.Changed"/></term>
-    /// <description>The object's state is modified so that even when all changed properties are reset to their original values (so that it would
-    /// usually become <see cref="StateType.Unchanged"/> again), it still remains <see cref="StateType.Changed"/>. In that case, the object will 
-    /// behave like in the <see cref="StateType.Unchanged"/> case above.
+    /// <term><see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> flag is set</term>
+    /// <description>
+    /// The object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/> flag will be set, even though no property value is
+    /// actually changed. The object will then behave like any object with the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/>
+    /// flag set. On commit (of a root transaction), it is checked for concurrency violations, and its timestamp is updated.
     /// </description>
     /// </item>
     /// <item>
-    /// <term><see cref="StateType.New"/></term>
+    /// <term><see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/> flag is set</term>
+    /// <description>
+    /// The object's state is modified so that even when all changed properties are reset to their original values (so that it would
+    /// usually have its <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/> flag cleared), the flag remains set.
+    /// In that case, the object will behave as if the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> had been set
+    /// prior to calling <see cref="RegisterForCommit"/> (see above).
+    /// </description>
+    /// </item>
+    /// <item>
+    /// <term><see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNew"/> flag is set</term>
     /// <description>The method has no effect.</description>
     /// </item>
     /// <item>
-    /// <term><see cref="StateType.Deleted"/></term>
+    /// <term><see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsDeleted"/> flag is set</term>
     /// <description>An <see cref="ObjectDeletedException"/> is thrown.</description>
     /// </item>
     /// <item>
-    /// <term><see cref="StateType.Invalid"/></term>
+    /// <term><see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag is set</term>
     /// <description>An <see cref="ObjectInvalidException"/> is thrown.</description>
     /// </item>
     /// </list>

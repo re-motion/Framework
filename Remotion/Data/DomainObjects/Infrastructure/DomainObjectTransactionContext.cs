@@ -29,6 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     private readonly DomainObject _domainObject;
     private readonly ClientTransaction _associatedTransaction;
 
+    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
     public DomainObjectTransactionContext (DomainObject domainObject, ClientTransaction associatedTransaction)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -49,14 +50,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get { return _associatedTransaction; }
     }
 
-    public StateType State
+    public DomainObjectState State
     {
       get { return ClientTransaction.DataManager.GetState (DomainObject.ID); }
-    }
-
-    public bool IsInvalid
-    {
-      get { return ClientTransaction.IsInvalid (DomainObject.ID); }
     }
 
     public object Timestamp
@@ -67,10 +63,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public void RegisterForCommit ()
     {
       var dataContainer = ClientTransaction.DataManager.GetDataContainerWithLazyLoad (DomainObject.ID, throwOnNotFound: true);
-      if (dataContainer.State == StateType.Deleted)
+      if (dataContainer.State.IsDeleted)
         return;
 
-      if (dataContainer.State == StateType.New)
+      if (dataContainer.State.IsNew)
         return;
 
       dataContainer.MarkAsChanged();

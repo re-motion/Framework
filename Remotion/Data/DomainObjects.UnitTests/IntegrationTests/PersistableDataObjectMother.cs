@@ -29,7 +29,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public static PersistableData Create ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Order>();
-      return new PersistableData (domainObject, StateType.New, DataContainer.CreateNew (domainObject.ID), new IRelationEndPoint[0]);
+      return new PersistableData (
+          domainObject,
+          new DomainObjectState.Builder().SetNew().Value,
+          DataContainer.CreateNew (domainObject.ID),
+          new IRelationEndPoint[0]);
     }
 
     public static PersistableData Create (ClientTransaction clientTransaction, DomainObject domainObject)

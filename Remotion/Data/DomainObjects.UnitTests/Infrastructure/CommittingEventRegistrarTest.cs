@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           () => _registrar.RegisterForAdditionalCommittingEvents (_invalidObject), 
           Throws.ArgumentException.With.Message.EqualTo (
               string.Format (
-                  "The given DomainObject '{0}' cannot be registered due to its state (Invalid). Only objects that are part of the commit "
+                  "The given DomainObject '{0}' cannot be registered due to its DomainObjectState (Invalid). Only objects that are part of the commit "
                   + "set can be registered. Use RegisterForCommit to add an unchanged object to the commit set.\r\nParameter name: domainObjects",
                   _invalidObject.ID)));
 
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           () => _registrar.RegisterForAdditionalCommittingEvents (_unchangedObject),
           Throws.ArgumentException.With.Message.EqualTo (
             string.Format (
-                  "The given DomainObject '{0}' cannot be registered due to its state (Unchanged). Only objects that are part of the commit "
+                  "The given DomainObject '{0}' cannot be registered due to its DomainObjectState (Unchanged). Only objects that are part of the commit "
                   + "set can be registered. Use RegisterForCommit to add an unchanged object to the commit set.\r\nParameter name: domainObjects", 
                   _unchangedObject.ID)));
 
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           () => _registrar.RegisterForAdditionalCommittingEvents (_notLoadedYetObject),
           Throws.ArgumentException.With.Message.EqualTo (
             string.Format (
-                  "The given DomainObject '{0}' cannot be registered due to its state (NotLoadedYet). Only objects that are part of the commit "
+                  "The given DomainObject '{0}' cannot be registered due to its DomainObjectState (NotLoadedYet). Only objects that are part of the commit "
                   + "set can be registered. Use RegisterForCommit to add an unchanged object to the commit set.\r\nParameter name: domainObjects", 
                   _notLoadedYetObject.ID)));
     }

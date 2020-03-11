@@ -56,7 +56,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       {
         var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
         var dataContainer = DataContainer.CreateNew (domainObject.ID);
-        var persistableData = new PersistableData (domainObject, StateType.Changed, dataContainer, Enumerable.Empty<IRelationEndPoint>());
+        var persistableData = new PersistableData (
+            domainObject,
+            new DomainObjectState.Builder().SetChanged().Value,
+            dataContainer,
+            Enumerable.Empty<IRelationEndPoint>());
         var compoundValidator = new CompoundPersistableDataValidator (validators);
 
         compoundValidator.Validate (ClientTransaction.Current, persistableData);

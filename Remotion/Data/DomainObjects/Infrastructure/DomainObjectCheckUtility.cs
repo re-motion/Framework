@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
       ArgumentUtility.DebugCheckNotNull ("clientTransaction", clientTransaction);
 
-      if (domainObject.TransactionContext[clientTransaction].IsInvalid)
+      if (domainObject.TransactionContext[clientTransaction].State.IsInvalid)
         throw new ObjectInvalidException (domainObject.ID);
     }
 
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
       ArgumentUtility.DebugCheckNotNull ("clientTransaction", clientTransaction);
 
-      if (domainObject.TransactionContext[clientTransaction].State == StateType.Deleted)
+      if (domainObject.TransactionContext[clientTransaction].State.IsDeleted)
         throw new ObjectDeletedException (domainObject.ID);
     }
 

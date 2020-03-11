@@ -80,17 +80,17 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
 
         var persistableData1 = new PersistableData (
             domainObject1,
-            StateType.New,
+            new DomainObjectState.Builder().SetNew().Value,
             DataContainerObjectMother.Create (domainObject1),
             new IRelationEndPoint[0]);
         var persistableData2 = new PersistableData (
             domainObject2,
-            StateType.Changed,
+            new DomainObjectState.Builder().SetChanged().Value,
             DataContainerObjectMother.Create (domainObject2),
             new IRelationEndPoint[0]);
         var persistableData3 = new PersistableData (
             domainObject3,
-            StateType.Deleted,
+            new DomainObjectState.Builder().SetDeleted().Value,
             DataContainerObjectMother.Create (domainObject3),
             new IRelationEndPoint[0]);
 
@@ -123,17 +123,17 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
 
         var persistableData1 = new PersistableData (
             domainObject1,
-            StateType.New,
+            new DomainObjectState.Builder().SetNew().Value,
             DataContainerObjectMother.Create (domainObject1),
             new IRelationEndPoint[0]);
         var persistableData2 = new PersistableData (
             domainObject2,
-            StateType.Changed,
+            new DomainObjectState.Builder().SetChanged().Value,
             DataContainerObjectMother.Create (domainObject2),
             new IRelationEndPoint[0]);
         var persistableData3 = new PersistableData (
             domainObject3,
-            StateType.Deleted,
+            new DomainObjectState.Builder().SetDeleted().Value,
             DataContainerObjectMother.Create (domainObject3),
             new IRelationEndPoint[0]);
 
@@ -204,7 +204,7 @@ Object 'TestDomainObject' with ID '.*':
 
         var persistableData1 = new PersistableData (
             domainObject1,
-            StateType.New,
+            new DomainObjectState.Builder().SetNew().Value,
             DataContainerObjectMother.Create (domainObject1),
             new IRelationEndPoint[0]);
 

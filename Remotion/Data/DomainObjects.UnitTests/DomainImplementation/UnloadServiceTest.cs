@@ -330,25 +330,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       TestableClientTransaction.EnsureDataAvailable (DomainObjectIDs.Order1);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1], Is.Not.Null);
       TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1].MarkAsChanged ();
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1].State, Is.EqualTo (StateType.Changed));
+      Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1].State.IsChanged, Is.True);
 
       var result = UnloadService.TryUnloadData (TestableClientTransaction, DomainObjectIDs.Order1);
 
       Assert.That (result, Is.False);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1], Is.Not.Null);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1].State, Is.EqualTo (StateType.Changed));
+      Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1].State.IsChanged, Is.True);
     }
 
     [Test]
     public void TryUnloadData_FailureWithNewObject ()
     {
       var orderNew = LifetimeService.NewObject (TestableClientTransaction, typeof (Order), ParamList.Empty);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+      Assert.That (TestableClientTransaction.DataManager.DataContainers[orderNew.ID].State.IsNew, Is.True);
 
       var result = UnloadService.TryUnloadData (TestableClientTransaction, orderNew.ID);
 
       Assert.That (result, Is.False);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+      Assert.That (TestableClientTransaction.DataManager.DataContainers[orderNew.ID].State.IsNew, Is.True);
     }
 
     [Test]
@@ -385,23 +385,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (subDataManager.DataContainers[DomainObjectIDs.Order1], Is.Not.Null);
       Assert.That (parentDataManager.DataContainers[DomainObjectIDs.Order1], Is.Not.Null);
 
-      Assert.That (subDataManager.DataContainers[DomainObjectIDs.Order1].State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (parentDataManager.DataContainers[DomainObjectIDs.Order1].State, Is.EqualTo (StateType.Changed));
+      Assert.That (subDataManager.DataContainers[DomainObjectIDs.Order1].State.IsUnchanged, Is.True);
+      Assert.That (parentDataManager.DataContainers[DomainObjectIDs.Order1].State.IsChanged, Is.True);
       
       var result = UnloadService.TryUnloadData (subTransaction, DomainObjectIDs.Order1);
 
       Assert.That (result, Is.False);
       Assert.That (subDataManager.DataContainers[DomainObjectIDs.Order1], Is.Not.Null);
-      Assert.That (subDataManager.DataContainers[DomainObjectIDs.Order1].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (subDataManager.DataContainers[DomainObjectIDs.Order1].State.IsUnchanged, Is.True);
       Assert.That (parentDataManager.DataContainers[DomainObjectIDs.Order1], Is.Not.Null);
-      Assert.That (parentDataManager.DataContainers[DomainObjectIDs.Order1].State, Is.EqualTo (StateType.Changed));
+      Assert.That (parentDataManager.DataContainers[DomainObjectIDs.Order1].State.IsChanged, Is.True);
     }
 
     [Test]
     public void TryUnloadData_FailureBecauseOfNewObject_InHigherTransaction ()
     {
       var orderNew = LifetimeService.NewObject (TestableClientTransaction, typeof (Order), ParamList.Empty);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+      Assert.That (TestableClientTransaction.DataManager.DataContainers[orderNew.ID].State.IsNew, Is.True);
 
       var subTransaction = TestableClientTransaction.CreateSubTransaction();
       var subDataManager = ClientTransactionTestHelper.GetDataManager (subTransaction);
@@ -412,16 +412,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (subDataManager.DataContainers[orderNew.ID], Is.Not.Null);
       Assert.That (parentDataManager.DataContainers[orderNew.ID], Is.Not.Null);
 
-      Assert.That (subDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (parentDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+      Assert.That (subDataManager.DataContainers[orderNew.ID].State.IsUnchanged, Is.True);
+      Assert.That (parentDataManager.DataContainers[orderNew.ID].State.IsNew, Is.True);
 
       var result = UnloadService.TryUnloadData (subTransaction, orderNew.ID);
 
       Assert.That (result, Is.False);
       Assert.That (subDataManager.DataContainers[orderNew.ID], Is.Not.Null);
-      Assert.That (subDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (subDataManager.DataContainers[orderNew.ID].State.IsUnchanged, Is.True);
       Assert.That (parentDataManager.DataContainers[orderNew.ID], Is.Not.Null);
-      Assert.That (parentDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+      Assert.That (parentDataManager.DataContainers[orderNew.ID].State.IsNew, Is.True);
     }
 
     [Test]
@@ -432,22 +432,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       var parentDataManager = TestableClientTransaction.DataManager;
 
       var orderNew = (Order) LifetimeService.NewObject (subTransaction, typeof (Order), ParamList.Empty);
-      Assert.That (subDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+      Assert.That (subDataManager.DataContainers[orderNew.ID].State.IsNew, Is.True);
 
 
       Assert.That (subDataManager.DataContainers[orderNew.ID], Is.Not.Null);
       Assert.That (parentDataManager.DataContainers[orderNew.ID], Is.Null);
 
-      Assert.That (subDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
-      Assert.That (parentDataManager.GetState (orderNew.ID), Is.EqualTo (StateType.Invalid));
+      Assert.That (subDataManager.DataContainers[orderNew.ID].State.IsNew, Is.True);
+      Assert.That (parentDataManager.GetState (orderNew.ID).IsInvalid, Is.True);
 
       var result = UnloadService.TryUnloadData (subTransaction, orderNew.ID);
 
       Assert.That (result, Is.False);
       Assert.That (subDataManager.DataContainers[orderNew.ID], Is.Not.Null);
-      Assert.That (subDataManager.DataContainers[orderNew.ID].State, Is.EqualTo (StateType.New));
+      Assert.That (subDataManager.DataContainers[orderNew.ID].State.IsNew, Is.True);
       Assert.That (parentDataManager.DataContainers[orderNew.ID], Is.Null);
-      Assert.That (parentDataManager.GetState (orderNew.ID), Is.EqualTo (StateType.Invalid));
+      Assert.That (parentDataManager.GetState (orderNew.ID).IsInvalid, Is.True);
     }
 
     [Test]
@@ -463,9 +463,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, orderItemsEndPoint.ID);
 
       Assert.That (orderItemsEndPoint.IsDataComplete, Is.False);
-      Assert.That (orderItem1.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (orderItem2.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderItem1.State.IsNotLoadedYet, Is.True);
+      Assert.That (orderItem2.State.IsNotLoadedYet, Is.True);
+      Assert.That (order.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -480,7 +480,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, ordersEndPoint.ID);
 
       Assert.That (ordersEndPoint.IsDataComplete, Is.False);
-      Assert.That (customer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (customer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -496,8 +496,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, endPointID);
 
       Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID), Is.Null);
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket.State.IsNotLoadedYet, Is.True);
+      Assert.That (order.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -512,7 +512,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, endPointID);
 
       Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID), Is.Null);
-      Assert.That (employee.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (employee.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -581,13 +581,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       // this will cause the orderB to be rejected for unload; orderA won't be unloaded either although it comes before orderB
       ++orderB.OrderNumber;
       
-      Assert.That (orderA.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderB.State, Is.EqualTo (StateType.Changed));
+      Assert.That (orderA.State.IsUnchanged, Is.True);
+      Assert.That (orderB.State.IsChanged, Is.True);
 
       Assert.That (() => UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, ordersEndPoint.ID), Throws.InvalidOperationException);
 
-      Assert.That (orderA.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderB.State, Is.EqualTo (StateType.Changed));
+      Assert.That (orderA.State.IsUnchanged, Is.True);
+      Assert.That (orderB.State.IsChanged, Is.True);
       Assert.That (ordersEndPoint.IsDataComplete, Is.True);
     }
 
@@ -610,8 +610,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (subOrderItemsEndPoint.IsDataComplete, Is.False);
       Assert.That (parentOrderItemsEndPoint.IsDataComplete, Is.False);
 
-      Assert.That (orderItem1.TransactionContext[subTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (orderItem1.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (orderItem1.TransactionContext[subTransaction].State.IsNotLoadedYet, Is.True);
+      Assert.That (orderItem1.TransactionContext[TestableClientTransaction].State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -633,8 +633,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (subOrderItemsEndPoint.IsDataComplete, Is.False);
       Assert.That (parentOrderItemsEndPoint.IsDataComplete, Is.False);
 
-      Assert.That (orderItem1.TransactionContext[subTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (orderItem1.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (orderItem1.TransactionContext[subTransaction].State.IsNotLoadedYet, Is.True);
+      Assert.That (orderItem1.TransactionContext[TestableClientTransaction].State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -652,9 +652,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (result, Is.True);
 
       Assert.That (orderItemsEndPoint.IsDataComplete, Is.False);
-      Assert.That (orderItem1.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (orderItem2.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderItem1.State.IsNotLoadedYet, Is.True);
+      Assert.That (orderItem2.State.IsNotLoadedYet, Is.True);
+      Assert.That (order.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -670,7 +670,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 
       Assert.That (result, Is.True);
       Assert.That (ordersEndPoint.IsDataComplete, Is.False);
-      Assert.That (customer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (customer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -688,8 +688,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (result, Is.True);
 
       Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID), Is.Null);
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderTicket.State.IsNotLoadedYet, Is.True);
+      Assert.That (order.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -706,7 +706,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (result, Is.True);
 
       Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID), Is.Null);
-      Assert.That (employee.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (employee.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -762,12 +762,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 
       var ordersEndPoint = DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint (customer.Orders);
       Assert.That (ordersEndPoint.HasChanged, Is.True);
-      Assert.That (orderA.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderA.State.IsUnchanged, Is.True);
       
       var result = UnloadService.TryUnloadVirtualEndPointAndItemData (TestableClientTransaction, ordersEndPoint.ID);
 
       Assert.That (result, Is.False);
-      Assert.That (orderA.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderA.State.IsUnchanged, Is.True);
       Assert.That (ordersEndPoint.IsDataComplete, Is.True);
     }
 
@@ -783,14 +783,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       // this will cause the orderB to be rejected for unload; orderA won't be unloaded either although it comes before orderB
       ++orderB.OrderNumber;
 
-      Assert.That (orderA.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderB.State, Is.EqualTo (StateType.Changed));
+      Assert.That (orderA.State.IsUnchanged, Is.True);
+      Assert.That (orderB.State.IsChanged, Is.True);
 
       var result = UnloadService.TryUnloadVirtualEndPointAndItemData (TestableClientTransaction, ordersEndPoint.ID);
 
       Assert.That (result, Is.False);
-      Assert.That (orderA.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderB.State, Is.EqualTo (StateType.Changed));
+      Assert.That (orderA.State.IsUnchanged, Is.True);
+      Assert.That (orderB.State.IsChanged, Is.True);
       Assert.That (ordersEndPoint.IsDataComplete, Is.True);
     }
 
@@ -814,8 +814,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (subOrderItemsEndPoint.IsDataComplete, Is.False);
       Assert.That (parentOrderItemsEndPoint.IsDataComplete, Is.False);
 
-      Assert.That (orderItem1.TransactionContext[subTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (orderItem1.TransactionContext[TestableClientTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (orderItem1.TransactionContext[subTransaction].State.IsNotLoadedYet, Is.True);
+      Assert.That (orderItem1.TransactionContext[TestableClientTransaction].State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -827,14 +827,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 
       customer.Orders[0].RegisterForCommit();
 
-      Assert.That (parentOrdersEndPoint.Collection[0].State, Is.EqualTo (StateType.Changed));
+      Assert.That (parentOrdersEndPoint.Collection[0].State.IsChanged, Is.True);
 
       var subTransaction = TestableClientTransaction.CreateSubTransaction ();
       var subOrdersEndPoint = (ICollectionEndPoint) ClientTransactionTestHelper.GetDataManager (subTransaction).GetRelationEndPointWithLazyLoad (
           parentOrdersEndPoint.ID);
       EnsureEndPointLoadedAndComplete (ClientTransactionTestHelper.GetDataManager (subTransaction), subOrdersEndPoint.ID);
 
-      Assert.That (subOrdersEndPoint.Collection[0].TransactionContext[subTransaction].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (subOrdersEndPoint.Collection[0].TransactionContext[subTransaction].State.IsUnchanged, Is.True);
 
       var result = UnloadService.TryUnloadVirtualEndPointAndItemData (subTransaction, parentOrdersEndPoint.ID);
 

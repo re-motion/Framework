@@ -28,13 +28,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   public class PersistableData
   {
     private readonly DomainObject _domainObject;
-    private readonly StateType _domainObjectState;
+    private readonly DomainObjectState _domainObjectState;
     private readonly DataContainer _dataContainer;
     private readonly IEnumerable<IRelationEndPoint> _associatedEndPointSequence;
 
     public PersistableData (
         DomainObject domainObject, 
-        StateType domainObjectState, 
+        DomainObjectState domainObjectState, 
         DataContainer dataContainer, 
         IEnumerable<IRelationEndPoint> associatedEndPointSequence)
     {
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _domainObject; }
     }
 
-    public StateType DomainObjectState
+    public DomainObjectState DomainObjectState
     {
       get { return _domainObjectState; }
     }

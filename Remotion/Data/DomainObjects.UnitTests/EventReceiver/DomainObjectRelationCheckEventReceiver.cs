@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -29,11 +30,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     // static members and constants
 
     // member fields
-    private IDictionary changingRelatedObjects;
-    private IDictionary changedRelatedObjects;
-    private StateType changingObjectState;
-    private StateType changedObjectState;
-    
+    private IDictionary _changingRelatedObjects;
+    private IDictionary _changedRelatedObjects;
+
     // construction and disposing
 
     public DomainObjectRelationCheckEventReceiver (DomainObject domainObject)
@@ -44,39 +43,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     public DomainObjectRelationCheckEventReceiver (DomainObject domainObject, bool cancel)
       : base (domainObject, cancel)
     {
-      changingRelatedObjects = new Dictionary<string, DomainObject> ();
-      changedRelatedObjects = new Dictionary<string, DomainObject> ();
+      _changingRelatedObjects = new Dictionary<string, DomainObject> ();
+      _changedRelatedObjects = new Dictionary<string, DomainObject> ();
     }
 
     // methods and properties
 
     public DomainObject GetChangingRelatedDomainObject (string propertyName)
     {
-      return (DomainObject) changingRelatedObjects[propertyName];
+      return (DomainObject) _changingRelatedObjects[propertyName];
     }
 
     public DomainObject GetChangedRelatedDomainObject (string propertyName)
     {
-      return (DomainObject) changedRelatedObjects[propertyName];
+      return (DomainObject) _changedRelatedObjects[propertyName];
     }
 
     protected override void DomainObject_RelationChanging (object sender, RelationChangingEventArgs args)
     {
       TestDomainBase domainObject = (TestDomainBase) sender;
 
-      changingObjectState = domainObject.State;
+      Dev.Null = domainObject.State;
 
       string changedProperty = args.RelationEndPointDefinition.PropertyName;
 
       if (CardinalityType.One == domainObject.InternalDataContainer.ClassDefinition.GetRelationEndPointDefinition (changedProperty).Cardinality)
       {
         DomainObject relatedDomainObject = domainObject.GetRelatedObject (changedProperty);
-        changingRelatedObjects.Add (changedProperty, relatedDomainObject);
+        _changingRelatedObjects.Add (changedProperty, relatedDomainObject);
       }
       else
       {
         DomainObjectCollection relatedDomainObjectCollection = domainObject.GetRelatedObjects (changedProperty);
-        changingRelatedObjects.Add (changedProperty, relatedDomainObjectCollection.Clone (true));
+        _changingRelatedObjects.Add (changedProperty, relatedDomainObjectCollection.Clone (true));
       }
 
       base.DomainObject_RelationChanging (sender, args);
@@ -86,19 +85,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     {
       TestDomainBase domainObject = (TestDomainBase) sender;
 
-      changedObjectState = domainObject.State;
+      Dev.Null = domainObject.State;
 
       string changedProperty = args.RelationEndPointDefinition.PropertyName;
 
       if (CardinalityType.One == domainObject.InternalDataContainer.ClassDefinition.GetRelationEndPointDefinition (changedProperty).Cardinality)
       {
         DomainObject relatedDomainObject = domainObject.GetRelatedObject (changedProperty);
-        changedRelatedObjects.Add (changedProperty, relatedDomainObject);
+        _changedRelatedObjects.Add (changedProperty, relatedDomainObject);
       }
       else
       {
         DomainObjectCollection relatedDomainObjectCollection = domainObject.GetRelatedObjects (changedProperty);
-        changedRelatedObjects.Add (changedProperty, relatedDomainObjectCollection.Clone (true));
+        _changedRelatedObjects.Add (changedProperty, relatedDomainObjectCollection.Clone (true));
       }
 
       base.DomainObject_RelationChanged (sender, args);

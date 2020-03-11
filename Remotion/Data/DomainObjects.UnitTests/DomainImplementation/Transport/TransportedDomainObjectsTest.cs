@@ -177,7 +177,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       transportedObjects.FinishTransport (transportedObject => 
           { 
-            Assert.That (transportedObject.State == StateType.New); 
+            Assert.That (transportedObject.State.IsNew); 
             return ((ClassWithAllDataTypes) transportedObject).Int32Property < 0; 
           });
 
@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       transportedObjects.FinishTransport (transportedObject =>
       {
-        Assert.That (transportedObject.State == StateType.Changed);
+        Assert.That (transportedObject.State.IsChanged);
         return ((ClassWithAllDataTypes) transportedObject).BooleanProperty;
       });
 

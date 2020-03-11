@@ -193,7 +193,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
       {
         orderClass.EnsureDataAvailable();
-        Assert.That (orderClass.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (orderClass.State.IsUnchanged, Is.True);
 
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
@@ -203,19 +203,19 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
           using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
           {
             orderClass.EnsureDataAvailable();
-            Assert.That (orderClass.State, Is.EqualTo (StateType.Unchanged));
+            Assert.That (orderClass.State.IsUnchanged, Is.True);
 
             combination.AccessControlList.Delete();
             Assert.That (combination.Class, Is.Null);
 
-            Assert.That (orderClass.State, Is.EqualTo (StateType.Changed));
+            Assert.That (orderClass.State.IsChanged, Is.True);
             ClientTransaction.Current.Commit();
           }
 
           ClientTransaction.Current.Commit();
         }
 
-        Assert.That (orderClass.State, Is.EqualTo (StateType.Changed));
+        Assert.That (orderClass.State.IsChanged, Is.True);
       }
     }
 

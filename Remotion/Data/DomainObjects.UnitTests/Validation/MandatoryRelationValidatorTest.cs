@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void Validate_ChecksComplete_AndMandatoryRelationEndPoints ()
     {
-      var dataItem = CreatePersistableData(StateType.New, new[] { _endPointMock });
+      var dataItem = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock });
 
       _endPointMock.Stub (stub => stub.Definition).Return (_mandatoryEndPointDefinition);
       _endPointMock.Stub (stub => stub.IsDataComplete).Return (true);
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void Validate_IgnoresIncompleteEndPoints ()
     {
-      var dataItem = CreatePersistableData (StateType.New, new[] { _endPointMock });
+      var dataItem = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock });
 
       _endPointMock.Stub (stub => stub.Definition).Return (_mandatoryEndPointDefinition);
       _endPointMock.Stub (stub => stub.IsDataComplete).Return (false);
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void Validate_IgnoresNonMandatoryEndPoints ()
     {
-      var dataItem = CreatePersistableData (StateType.New, new[] { _endPointMock });
+      var dataItem = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock });
 
       _endPointMock.Stub (stub => stub.Definition).Return (_nonMandatoryEndPointDefinition);
       _endPointMock.Stub (stub => stub.IsDataComplete).Return (true);
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void Validate_IgnoresDeletedObjects ()
     {
-      var dataItem = CreatePersistableData (StateType.Deleted, new[] { _endPointMock });
+      var dataItem = CreatePersistableData (new DomainObjectState.Builder().SetDeleted().Value, new[] { _endPointMock });
 
       _endPointMock.Stub (stub => stub.Definition).Return (_mandatoryEndPointDefinition);
       _endPointMock.Stub (stub => stub.IsDataComplete).Return (true);
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       }
     }
 
-    private PersistableData CreatePersistableData (StateType domainObjectState, IRelationEndPoint[] associatedEndPointSequence)
+    private PersistableData CreatePersistableData (DomainObjectState domainObjectState, IRelationEndPoint[] associatedEndPointSequence)
     {
       var domainObject = DomainObjectMother.CreateFakeObject<OrderItem> (DomainObjectIDs.OrderItem1);
 

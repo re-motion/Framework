@@ -66,7 +66,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (ace.State, Is.EqualTo (StateType.Invalid));
+        Assert.That (ace.State.IsInvalid, Is.True);
       }
     }
 
@@ -84,7 +84,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
         ClientTransaction.Current.Commit ();
 
-        Assert.That (role.State, Is.EqualTo (StateType.Invalid));
+        Assert.That (role.State.IsInvalid, Is.True);
       }
     }
 
@@ -100,7 +100,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
         position.Delete();
 
-        Assert.That (concretePosition.State, Is.EqualTo (StateType.Invalid));
+        Assert.That (concretePosition.State.IsInvalid, Is.True);
       }
     }
 

@@ -271,13 +271,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
           classDefinition.EnsureDataAvailable ();
-          Assert.That (classDefinition.State, Is.EqualTo (StateType.Unchanged));
+          Assert.That (classDefinition.State.IsUnchanged, Is.True);
 
           StatelessAccessControlList accessControlList = classDefinition.CreateStatelessAccessControlList ();
 
           Assert.That (accessControlList.Class, Is.SameAs (classDefinition));
           Assert.IsNotEmpty (accessControlList.AccessControlEntries);
-          Assert.That (classDefinition.State, Is.EqualTo (StateType.Changed));
+          Assert.That (classDefinition.State.IsChanged, Is.True);
         }
       }
     }
@@ -293,7 +293,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
           classDefinition.EnsureDataAvailable ();
-          Assert.That (classDefinition.State, Is.EqualTo (StateType.Unchanged));
+          Assert.That (classDefinition.State.IsUnchanged, Is.True);
 
           classDefinition.CreateStatelessAccessControlList ();
           classDefinition.CreateStatelessAccessControlList ();
@@ -310,14 +310,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
           classDefinition.EnsureDataAvailable ();
-          Assert.That (classDefinition.State, Is.EqualTo (StateType.Unchanged));
+          Assert.That (classDefinition.State.IsUnchanged, Is.True);
 
           StatefulAccessControlList accessControlList = classDefinition.CreateStatefulAccessControlList ();
 
           Assert.That (accessControlList.Class, Is.SameAs (classDefinition));
           Assert.IsNotEmpty (accessControlList.AccessControlEntries);
           Assert.IsNotEmpty (accessControlList.StateCombinations);
-          Assert.That (classDefinition.State, Is.EqualTo (StateType.Changed));
+          Assert.That (classDefinition.State.IsChanged, Is.True);
         }
       }
     }
@@ -331,7 +331,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
           classDefinition.EnsureDataAvailable ();
-          Assert.That (classDefinition.State, Is.EqualTo (StateType.Unchanged));
+          Assert.That (classDefinition.State.IsUnchanged, Is.True);
 
           StatefulAccessControlList acccessControlList0 = classDefinition.CreateStatefulAccessControlList ();
           StatefulAccessControlList acccessControlListl = classDefinition.CreateStatefulAccessControlList ();
@@ -341,7 +341,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
           Assert.That (acccessControlList0.Index, Is.EqualTo (0));
           Assert.That (classDefinition.StatefulAccessControlLists[1], Is.SameAs (acccessControlListl));
           Assert.That (acccessControlListl.Index, Is.EqualTo (1));
-          Assert.That (classDefinition.State, Is.EqualTo (StateType.Changed));
+          Assert.That (classDefinition.State.IsChanged, Is.True);
         }
       }
     }
@@ -399,10 +399,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       {
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
 
-        Assert.That (classDefinition.State, Is.EqualTo (StateType.New));
+        Assert.That (classDefinition.State.IsNew, Is.True);
 
         Assert.That (() => classDefinition.RegisterForCommit(), Throws.Nothing);
-        Assert.That (classDefinition.State, Is.EqualTo (StateType.New));
+        Assert.That (classDefinition.State.IsNew, Is.True);
       }
     }
 
@@ -414,10 +414,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject ();
         using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
-          Assert.That (classDefinition.State, Is.EqualTo (StateType.NotLoadedYet));
+          Assert.That (classDefinition.State.IsNotLoadedYet, Is.True);
 
           Assert.That (() => classDefinition.RegisterForCommit(), Throws.Nothing);
-          Assert.That (classDefinition.State, Is.EqualTo (StateType.Changed));
+          Assert.That (classDefinition.State.IsChanged, Is.True);
         }
       }
     }
@@ -431,13 +431,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
-          Assert.That (classDefinition.State, Is.EqualTo (StateType.NotLoadedYet));
+          Assert.That (classDefinition.State.IsNotLoadedYet, Is.True);
 
           classDefinition.Delete();
-          Assert.That (classDefinition.State, Is.EqualTo (StateType.Deleted));
+          Assert.That (classDefinition.State.IsDeleted, Is.True);
 
           Assert.That (() => classDefinition.RegisterForCommit(), Throws.Nothing);
-          Assert.That (classDefinition.State, Is.EqualTo (StateType.Deleted));
+          Assert.That (classDefinition.State.IsDeleted, Is.True);
         }
       }
     }
@@ -451,7 +451,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
         classDefinition.Delete();
 
-        Assert.That (classDefinition.State, Is.EqualTo (StateType.Invalid));
+        Assert.That (classDefinition.State.IsInvalid, Is.True);
 
         Assert.That (() => classDefinition.RegisterForCommit(), Throws.TypeOf<ObjectInvalidException>());
       }
@@ -593,7 +593,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
           orderClass.ValidateUniqueStateCombinations (result);
 
           Assert.That (result.IsValid, Is.True);
-          Assert.That (orderClass.State, Is.EqualTo (StateType.Deleted));
+          Assert.That (orderClass.State.IsDeleted, Is.True);
         }
       }
     }

@@ -35,8 +35,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("data", data);
 
-      if (data.DomainObjectState == StateType.Deleted)
+      if (data.DomainObjectState.IsDeleted)
         return;
+
+      Assertion.IsFalse (data.DomainObjectState.IsNotLoadedYet, "No unloaded objects get this far.");
+      Assertion.IsFalse (data.DomainObjectState.IsInvalid, "No invalid objects get this far.");
 
       foreach (var propertyDefinition in data.DataContainer.ID.ClassDefinition.GetPropertyDefinitions())
         ValidatePropertyDefinition (data.DomainObject, data.DataContainer, propertyDefinition);

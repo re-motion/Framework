@@ -73,8 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     public void DomainObjectState ()
     {
       _newOrder.Delete ();
-      StateType state = _newOrder.State;
-      Assert.That (state, Is.EqualTo (StateType.Invalid));
+      Assert.That (_newOrder.State.IsInvalid, Is.True);
     }
 
     [Test]
@@ -136,11 +135,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     [Test]
     public void DomainObjectIsInvalid ()
     {
-      Assert.That (_newOrder.State, Is.Not.EqualTo (StateType.Invalid));
+      Assert.That (_newOrder.State.IsInvalid, Is.False);
 
       _newOrder.Delete ();
 
-      Assert.That (_newOrder.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (_newOrder.State.IsInvalid, Is.True);
     }
 
     [Test]
@@ -209,8 +208,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     public void DataContainerState ()
     {
       _newOrder.Delete ();
-      StateType state = _newOrderContainer.State;
-      Assert.That (state, Is.EqualTo (StateType.Invalid));
+      Assert.That (_newOrderContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]
@@ -233,11 +231,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     public void DataContainerIsDiscarded ()
     {
       DataContainer newDataContainer = _newOrder.InternalDataContainer;
-      Assert.That (newDataContainer.IsDiscarded, Is.False);
+      Assert.That (newDataContainer.State.IsDiscarded, Is.False);
 
       _newOrder.Delete ();
 
-      Assert.That (newDataContainer.IsDiscarded, Is.True);
+      Assert.That (newDataContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]

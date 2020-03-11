@@ -117,11 +117,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var transaction = new TestableClientTransaction();
       Order order = transaction.ExecuteInScope (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      transaction.ExecuteInScope (() => Assert.That (order.State, Is.EqualTo (StateType.Unchanged)));
+      transaction.ExecuteInScope (() => Assert.That (order.State.IsUnchanged, Is.True));
 
       transaction.ExecuteInScope (order.RegisterForCommit);
 
-      transaction.ExecuteInScope (() => Assert.That (order.State, Is.EqualTo (StateType.Changed)));
+      transaction.ExecuteInScope (() => Assert.That (order.State.IsChanged, Is.True));
     }
 
     [Test]

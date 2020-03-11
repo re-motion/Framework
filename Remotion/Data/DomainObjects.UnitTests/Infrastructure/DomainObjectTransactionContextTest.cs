@@ -71,56 +71,49 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    public void IsInvalid_False()
+    public void State_IsInvalid_False()
     {
-      Assert.That (_newOrderContext.IsInvalid, Is.False);
+      Assert.That (_newOrderContext.State.IsInvalid, Is.False);
     }
 
     [Test]
-    public void IsInvalid_False_InvalidInCurrentTransaction ()
+    public void State_IsInvalid_False_InvalidInCurrentTransaction ()
     {
       using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope())
       {
-        Assert.That (_loadedOrder1.IsInvalid, Is.False);
-        Assert.That (_loadedOrder1Context.IsInvalid, Is.False);
+        Assert.That (_loadedOrder1.State.IsInvalid, Is.False);
+        Assert.That (_loadedOrder1Context.State.IsInvalid, Is.False);
 
         DeleteOrder(_loadedOrder1);
         ClientTransaction.Current.Commit ();
 
-        Assert.That (_loadedOrder1.IsInvalid, Is.True);
-        Assert.That (_loadedOrder1Context.IsInvalid, Is.False);
+        Assert.That (_loadedOrder1.State.IsInvalid, Is.True);
+        Assert.That (_loadedOrder1Context.State.IsInvalid, Is.False);
       }
     }
 
     [Test]
-    public void IsInvalid_True ()
+    public void State_IsInvalid_True ()
     {
       _newOrder.Delete ();
-      Assert.That (_newOrderContext.IsInvalid, Is.True);
-    }
-
-    [Test]
-    public void State_IsInvalid ()
-    {
-      _newOrder.Delete ();
-      Assert.That (_newOrderContext.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (_newOrderContext.State.IsInvalid, Is.True);
     }
 
     [Test]
     public void State_NotYetLoaded ()
     {
-      Assert.That (_notYetLoadedOrder2Context.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (_notYetLoadedOrder2Context.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
     public void State_FromDataContainer ()
     {
-      Assert.That (_newOrderContext.State, Is.EqualTo (StateType.New));
-      Assert.That (_loadedOrder1Context.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_newOrderContext.State.IsNew, Is.True);
+      Assert.That (_loadedOrder1Context.State.IsUnchanged, Is.True);
 
       _loadedOrder1.OrderNumber = 2;
 
-      Assert.That (_loadedOrder1Context.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -128,15 +121,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       _loadedOrder1.OrderItems.Clear();
 
-      Assert.That (_loadedOrder1Context.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
     }
 
     [Test]
     public void RegisterForCommit_Unchanged ()
     {
-      Assert.That (_loadedOrder1Context.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_loadedOrder1Context.State.IsUnchanged, Is.True);
       _loadedOrder1Context.RegisterForCommit ();
-      Assert.That (_loadedOrder1Context.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
       Assert.That (GetDataContainer (_loadedOrder1Context).HasBeenMarkedChanged, Is.True);
     }
 
@@ -145,23 +138,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       _loadedOrder1.OrderNumber = 2;
 
-      Assert.That (_loadedOrder1Context.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
       _loadedOrder1Context.RegisterForCommit ();
-      Assert.That (_loadedOrder1Context.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
       Assert.That (GetDataContainer (_loadedOrder1Context).HasBeenMarkedChanged, Is.True);
 
       _loadedOrder1.OrderNumber = _loadedOrder1.Properties[typeof (Order), "OrderNumber"].GetOriginalValue<int>();
 
-      Assert.That (_loadedOrder1Context.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
     }
 
     [Test]
     public void RegisterForCommit_New ()
     {
-      Assert.That (_newOrderContext.State, Is.EqualTo (StateType.New));
+      Assert.That (_newOrderContext.State.IsNew, Is.True);
       _newOrderContext.RegisterForCommit ();
 
-      Assert.That (_newOrderContext.State, Is.EqualTo (StateType.New));
+      Assert.That (_newOrderContext.State.IsNew, Is.True);
       Assert.That (GetDataContainer (_newOrderContext).HasBeenMarkedChanged, Is.False);
     }
 
@@ -169,11 +162,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void RegisterForCommit_Deleted ()
     {
       DeleteOrder (_loadedOrder1);
-      Assert.That (_loadedOrder1Context.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (_loadedOrder1Context.State.IsDeleted, Is.True);
 
       Assert.That (() => _loadedOrder1Context.RegisterForCommit(), Throws.Nothing);
 
-      Assert.That (_loadedOrder1Context.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (_loadedOrder1Context.State.IsDeleted, Is.True);
       Assert.That (GetDataContainer (_loadedOrder1Context).HasBeenMarkedChanged, Is.False);
     }
 
@@ -185,18 +178,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       Assert.That (
           () => _newOrderContext.RegisterForCommit(), 
           Throws.TypeOf<ObjectInvalidException>().With.Message.StringContaining (_newOrder.ID.ToString()));
-      Assert.That (_newOrderContext.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (_newOrderContext.State.IsInvalid, Is.True);
     }
 
     [Test]
     public void RegisterForCommit_NotLoadedYet ()
     {
       UnloadService.UnloadData (_loadedOrder1Context.ClientTransaction, _loadedOrder1.ID);
-      Assert.That (_loadedOrder1Context.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (_loadedOrder1Context.State.IsNotLoadedYet, Is.True);
 
       _loadedOrder1Context.RegisterForCommit();
 
-      Assert.That (_loadedOrder1Context.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
       var dataContainer = GetDataContainer (_loadedOrder1Context);
       Assert.That (dataContainer, Is.Not.Null);
       Assert.That (dataContainer.HasBeenMarkedChanged, Is.True);

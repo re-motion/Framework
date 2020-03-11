@@ -32,6 +32,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   [Serializable]
   public class SubPersistenceStrategy : IPersistenceStrategy
   {
+    private enum PeristenceStateType
+    {
+      IgnoredForPersistence,
+      New,
+      Changed,
+      Deleted
+    }
+
     private readonly IParentTransactionContext _parentTransactionContext;
 
     public SubPersistenceStrategy (IParentTransactionContext parentTransactionContext)
@@ -143,7 +151,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       var dataAsCollection = data.ConvertToCollection();
 
-      var dataContainersByState = dataAsCollection.Select (item => item.DataContainer).ToLookup (dc => dc.State);
+      var dataContainersByState = dataAsCollection.Select (item => item.DataContainer).ToLookup (
+          dc =>
+          {
+            if (dc.State.IsNew) return PeristenceStateType.New;
+            else if (dc.State.IsDeleted) return PeristenceStateType.Deleted;
+            else if (dc.State.IsChanged) return PeristenceStateType.Changed;
+            else return PeristenceStateType.IgnoredForPersistence;
+          });
 
       // only handle changed end-points; end-points of new and deleted objects will implicitly be handled by PersistDataContainers
       var endPoints = dataAsCollection.SelectMany (item => item.GetAssociatedEndPoints ()).Where (ep => ep.HasChanged);
@@ -152,14 +167,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       using (var unlockedParentTransactionContext = _parentTransactionContext.UnlockParentTransaction ())
       {
         // Handle new DataContainers _before_ end-point changes - that way we can be sure that all new end-points have already been registered
-        PersistDataContainers (dataContainersByState[StateType.New], unlockedParentTransactionContext);
-        PersistDataContainers (dataContainersByState[StateType.Changed], unlockedParentTransactionContext);
+        PersistDataContainers (dataContainersByState[PeristenceStateType.New], unlockedParentTransactionContext);
+        PersistDataContainers (dataContainersByState[PeristenceStateType.Changed], unlockedParentTransactionContext);
 
         PersistRelationEndPoints (endPoints);
 
         // Handle deleted DataContainers _after_ end-point changes - that way we can be sure that all end-points have already been decoupled 
         // (i.e., been set to empty)
-        PersistDataContainers (dataContainersByState[StateType.Deleted], unlockedParentTransactionContext);
+        PersistDataContainers (dataContainersByState[PeristenceStateType.Deleted], unlockedParentTransactionContext);
       }
     }
 
@@ -194,7 +209,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     private DataContainer TransferParentContainer (DataContainer parentDataContainer)
     {
-      if (parentDataContainer.State == StateType.Deleted)
+      if (parentDataContainer.State.IsDeleted)
       {
         var message = string.Format ("Object '{0}' is already deleted in the parent transaction.", parentDataContainer.ID);
         throw new ObjectDeletedException (message, parentDataContainer.ID);
@@ -205,7 +220,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
           parentDataContainer.Timestamp,
           pd => parentDataContainer.GetValueWithoutEvents (pd, ValueAccess.Current));
 
-      Assertion.IsTrue (thisDataContainer.State == StateType.Unchanged);
+      Assertion.IsTrue (thisDataContainer.State.IsUnchanged);
       return thisDataContainer;
     }
 
@@ -213,29 +228,22 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       foreach (var dataContainer in dataContainers)
       {
+        var dataContainerState = dataContainer.State;
         Assertion.IsFalse (
-            dataContainer.IsDiscarded,
+            dataContainerState.IsDiscarded,
             "dataContainers cannot contain discarded DataContainers, because its items come"
             + "from DataManager.DataContainerMap, which does not contain discarded containers");
-        Assertion.IsTrue (dataContainer.State != StateType.Unchanged, "dataContainers cannot contain an unchanged container");
-        Assertion.IsTrue (dataContainer.State != StateType.NotLoadedYet, "dataContainers cannot contain an unloaded container");
+        Assertion.IsFalse (dataContainerState.IsUnchanged, "dataContainers cannot contain an unchanged container");
         Assertion.IsTrue (
-            dataContainer.State == StateType.New || dataContainer.State == StateType.Changed
-            || dataContainer.State == StateType.Deleted,
-            "Invalid dataContainer.State: " + dataContainer.State);
+            dataContainerState.IsNew || dataContainerState.IsChanged || dataContainerState.IsDeleted,
+            "Invalid dataContainer.State: " + dataContainerState);
 
-        switch (dataContainer.State)
-        {
-          case StateType.New:
-            PersistNewDataContainer (dataContainer, unlockedParentTransactionContext);
-            break;
-          case StateType.Changed:
-            PersistChangedDataContainer (dataContainer);
-            break;
-          case StateType.Deleted:
-            PersistDeletedDataContainer (dataContainer, unlockedParentTransactionContext);
-            break;
-        }
+        if (dataContainerState.IsNew)
+          PersistNewDataContainer (dataContainer, unlockedParentTransactionContext);
+        else if (dataContainerState.IsChanged)
+          PersistChangedDataContainer (dataContainer);
+        else if (dataContainerState.IsDeleted)
+          PersistDeletedDataContainer (dataContainer, unlockedParentTransactionContext);
       }
     }
 
@@ -247,7 +255,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       Assertion.IsNull (
           _parentTransactionContext.GetDataContainerWithoutLoading (dataContainer.ID), 
           "a new data container cannot be known to the parent");
-      Assertion.IsFalse (dataContainer.IsDiscarded);
+      Assertion.IsFalse (dataContainer.State.IsDiscarded);
 
       var parentDataContainer = DataContainer.CreateNew (dataContainer.ID);
       parentDataContainer.SetDomainObject (dataContainer.DomainObject);
@@ -267,14 +275,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
           parentDataContainer,
           "a changed DataContainer must have been loaded through ParentTransaction, so the "
           + "ParentTransaction must know it");
-      Assertion.IsFalse (parentDataContainer.IsDiscarded, "a changed DataContainer cannot be discarded in the ParentTransaction");
-      Assertion.IsTrue (parentDataContainer.State != StateType.Deleted, "a changed DataContainer cannot be deleted in the ParentTransaction");
+      Assertion.IsFalse (parentDataContainer.State.IsDiscarded, "a changed DataContainer cannot be discarded in the ParentTransaction");
+      Assertion.IsFalse (parentDataContainer.State.IsDeleted, "a changed DataContainer cannot be deleted in the ParentTransaction");
       Assertion.IsTrue (parentDataContainer.DomainObject == dataContainer.DomainObject, "invariant");
 
       parentDataContainer.SetTimestamp (dataContainer.Timestamp);
       parentDataContainer.SetPropertyDataFromSubTransaction (dataContainer);
 
-      if (dataContainer.HasBeenMarkedChanged && (parentDataContainer.State == StateType.Unchanged || parentDataContainer.State == StateType.Changed))
+      if (dataContainer.HasBeenMarkedChanged && (parentDataContainer.State.IsUnchanged || parentDataContainer.State.IsChanged))
         parentDataContainer.MarkAsChanged ();
     }
 
@@ -285,12 +293,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
           parentDataContainer,
           "a deleted DataContainer must have been loaded through ParentTransaction, so the ParentTransaction must know it");
 
-      Assertion.IsTrue (
-          parentDataContainer.State != StateType.Invalid && parentDataContainer.State != StateType.Deleted,
-          "deleted DataContainers cannot be discarded or deleted in the ParentTransaction");
+      Assertion.IsFalse (parentDataContainer.State.IsDiscarded, "a deleted DataContainer cannot be discarded in the ParentTransaction");
+      Assertion.IsFalse (parentDataContainer.State.IsDeleted, "a deleted DataContainer cannot be deleted in the ParentTransaction");
       Assertion.IsTrue (parentDataContainer.DomainObject == dataContainer.DomainObject, "invariant");
 
-      if (parentDataContainer.State == StateType.New)
+      if (parentDataContainer.State.IsNew)
         unlockedParentTransactionContext.Discard (parentDataContainer);
       else
         parentDataContainer.Delete();

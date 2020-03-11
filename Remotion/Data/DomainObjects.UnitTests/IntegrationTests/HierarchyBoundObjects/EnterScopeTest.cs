@@ -128,21 +128,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
 
         Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
         Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (2));
-        Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Changed));
+        Assert.That (_order1LoadedInRootTransaction.State.IsChanged, Is.True);
       }
 
       using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
       {
         Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
         Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (2));
-        Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Changed));
+        Assert.That (_order1LoadedInRootTransaction.State.IsChanged, Is.True);
       }
 
       using (ClientTransaction.CreateRootTransaction ().EnterScope (AutoRollbackBehavior.Rollback))
       {
         Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
         Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (2));
-        Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Changed));
+        Assert.That (_order1LoadedInRootTransaction.State.IsChanged, Is.True);
       }
     }
 
@@ -168,12 +168,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
         Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (subTransaction));
 
         Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (1));
-        Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_order1LoadedInRootTransaction.State.IsUnchanged, Is.True);
 
         _order1LoadedInRootTransaction.OrderNumber = 3;
 
         Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (3));
-        Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Changed));
+        Assert.That (_order1LoadedInRootTransaction.State.IsChanged, Is.True);
       }
 
       Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));

@@ -411,44 +411,62 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void PropertyChange_StateUpdate ()
     {
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var state1 = _existingDataContainer.State;
+      Assert.That (state1.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state1), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsUnchanged, Is.True);
 
       _existingDataContainer.SetValue (_orderNumberProperty, 5);
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Changed));
+      var state2 = _existingDataContainer.State;
+      Assert.That (state2.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state2), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsChanged, Is.True);
 
       _existingDataContainer.SetValue (_orderNumberProperty, 0);
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var state3 = _existingDataContainer.State;
+      Assert.That (state3.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state3), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void PropertyChange_StateUpdate_WithNewDataContainer ()
     {
-      Assert.That (_newDataContainer.State, Is.EqualTo (StateType.New));
+      var state1 = _newDataContainer.State;
+      Assert.That (state1.IsNew, Is.True);
+      Assert.That (_newDataContainer.State.IsNew, Is.True);
+      Assert.That (GetNumberOfSetFlags (state1), Is.EqualTo (1));
       Assert.That (_newDataContainer.GetValue (_orderNumberProperty), Is.Not.EqualTo (17));
 
       _newDataContainer.SetValue (_orderNumberProperty, 17);
 
-      Assert.That (_newDataContainer.State, Is.EqualTo (StateType.New));
+      var state2 = _newDataContainer.State;
+      Assert.That (state2.IsNew, Is.True);
+      Assert.That (GetNumberOfSetFlags (state2), Is.EqualTo (1));
+      Assert.That (_newDataContainer.State.IsNew, Is.True);
 
       _newDataContainer.SetValue (_orderNumberProperty, 0);
 
-      Assert.That (_newDataContainer.State, Is.EqualTo (StateType.New));
+      var state3 = _newDataContainer.State;
+      Assert.That (state3.IsNew, Is.True);
+      Assert.That (GetNumberOfSetFlags (state3), Is.EqualTo (1));
+      Assert.That (_newDataContainer.State.IsNew, Is.True);
     }
 
     [Test]
     public void PropertyChange_RaisesStateUpdated ()
     {
-      CheckStateNotification (_existingDataContainer, dc => dc.SetValue (_orderNumberProperty, 5), StateType.Changed);
-      CheckStateNotification (_newDataContainer, dc => dc.SetValue (_orderNumberProperty, 5), StateType.New);
+      CheckStateNotification (_existingDataContainer, dc => dc.SetValue (_orderNumberProperty, 5), new DataContainerState.Builder().SetChanged().Value);
+      CheckStateNotification (_newDataContainer, dc => dc.SetValue (_orderNumberProperty, 5), new DataContainerState.Builder().SetNew().Value);
     }
 
     [Test]
     public void PropertyChange_ChangeBack_RaisesStateUpdated ()
     {
       _existingDataContainer.SetValue (_orderNumberProperty, 5);
-      CheckStateNotification (_existingDataContainer, dc => dc.SetValue (_orderNumberProperty, 0), StateType.Unchanged);
+      CheckStateNotification (_existingDataContainer, dc => dc.SetValue (_orderNumberProperty, 0), new DataContainerState.Builder().SetUnchanged().Value);
     }
 
     [Test]
@@ -465,7 +483,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (_existingDataContainer.GetValue (_deliveryDateProperty, ValueAccess.Original), Is.EqualTo (new DateTime()));
       Assert.That (_existingDataContainer.GetValue (_deliveryDateProperty), Is.EqualTo (new DateTime (2012, 05, 13)));
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Changed));
+      var state1 = _existingDataContainer.State;
+      Assert.That (state1.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state1), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsChanged, Is.True);
 
       _existingDataContainer.CommitValue (_orderNumberProperty);
 
@@ -477,11 +498,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (_existingDataContainer.GetValue (_deliveryDateProperty, ValueAccess.Original), Is.EqualTo (new DateTime ()));
       Assert.That (_existingDataContainer.GetValue (_deliveryDateProperty), Is.EqualTo (new DateTime (2012, 05, 13)));
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Changed));
+      var state2 = _existingDataContainer.State;
+      Assert.That (state2.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state2), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsChanged, Is.True);
 
       _existingDataContainer.CommitValue (_deliveryDateProperty);
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var state3 = _existingDataContainer.State;
+      Assert.That (state3.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state3), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -514,7 +541,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (_existingDataContainer.GetValue (_deliveryDateProperty, ValueAccess.Original), Is.EqualTo (new DateTime ()));
       Assert.That (_existingDataContainer.GetValue (_deliveryDateProperty), Is.EqualTo (new DateTime (2012, 05, 13)));
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Changed));
+      var state1 = _existingDataContainer.State;
+      Assert.That (state1.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state1), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsChanged, Is.True);
 
       _existingDataContainer.RollbackValue (_orderNumberProperty);
 
@@ -526,11 +556,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (_existingDataContainer.GetValue (_deliveryDateProperty, ValueAccess.Original), Is.EqualTo (new DateTime ()));
       Assert.That (_existingDataContainer.GetValue (_deliveryDateProperty), Is.EqualTo (new DateTime (2012, 05, 13)));
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Changed));
+      var state2 = _existingDataContainer.State;
+      Assert.That (state2.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state2), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsChanged, Is.True);
 
       _existingDataContainer.RollbackValue (_deliveryDateProperty);
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var state3 = _existingDataContainer.State;
+      Assert.That (state3.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state3), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -558,13 +594,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       Assert.That (_existingDataContainer.GetValue (_orderNumberProperty), Is.EqualTo (0));
       Assert.That (_existingDataContainer.GetValue (_deliveryDateProperty), Is.EqualTo (new DateTime()));
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var stateBeforeChange = _existingDataContainer.State;
+      Assert.That (stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsUnchanged, Is.True);
 
       _existingDataContainer.SetValueDataFromSubTransaction (_orderNumberProperty, sourceDataContainer);
 
       Assert.That (_existingDataContainer.GetValue (_orderNumberProperty), Is.EqualTo (17));
       Assert.That (_existingDataContainer.GetValue (_deliveryDateProperty), Is.EqualTo (new DateTime ()));
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Changed));
+      var stateAfterChange = _existingDataContainer.State;
+      Assert.That (stateAfterChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -629,16 +671,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void Clone_CopiesState ()
     {
       var originalNew = _newDataContainer;
-      Assert.That (originalNew.State, Is.EqualTo (StateType.New));
+      Assert.That (originalNew.State.IsNew, Is.True);
+      Assert.That (originalNew.State.IsNew, Is.True);
 
       var originalExisting = _existingDataContainer;
-      Assert.That (originalExisting.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (originalExisting.State.IsUnchanged, Is.True);
+      Assert.That (originalExisting.State.IsUnchanged, Is.True);
 
       var clonedNew = originalNew.Clone (DomainObjectIDs.Order4);
-      Assert.That (clonedNew.State, Is.EqualTo (StateType.New));
+      Assert.That (clonedNew.State.IsNew, Is.True);
+      Assert.That (clonedNew.State.IsNew, Is.True);
 
       var clonedExisting = originalExisting.Clone (DomainObjectIDs.Order5);
-      Assert.That (clonedExisting.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (clonedExisting.State.IsUnchanged, Is.True);
+      Assert.That (clonedExisting.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -682,10 +728,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var original = _existingDataContainer;
       original.SetValue (_orderNumberProperty, 10);
-      Assert.That (original.State, Is.EqualTo (StateType.Changed));
+      var state1 = original.State;
+      Assert.That (state1.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state1), Is.EqualTo (1));
+      Assert.That (original.State.IsChanged, Is.True);
 
       var clone = original.Clone (DomainObjectIDs.Order3);
-      Assert.That (clone.State, Is.EqualTo (StateType.Changed));
+      var state2 = clone.State;
+      Assert.That (state2.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state1), Is.EqualTo (1));
+      Assert.That (clone.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -726,13 +778,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       _newDataContainer.CommitState ();
 
-      Assert.That (_newDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var state = _newDataContainer.State;
+      Assert.That (state.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state), Is.EqualTo (1));
+      Assert.That (_newDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void CommitState_RaisesStateUpdated ()
     {
-      CheckStateNotification (_newDataContainer, dc => dc.CommitState (), StateType.Unchanged);
+      CheckStateNotification (_newDataContainer, dc => dc.CommitState (), new DataContainerState.Builder().SetUnchanged().Value);
     }
 
     [Test]
@@ -756,11 +811,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       _existingDataContainer.SetValue (_orderNumberProperty, 10);
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Changed));
+      var stateBeforeChange = _existingDataContainer.State;
+      Assert.That (stateBeforeChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsChanged, Is.True);
 
       _existingDataContainer.CommitState ();
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var stateAfterChange = _existingDataContainer.State;
+      Assert.That (stateAfterChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -794,13 +855,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       _deletedDataContainer.RollbackState ();
 
-      Assert.That (_deletedDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var state = _deletedDataContainer.State;
+      Assert.That (state.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state), Is.EqualTo (1));
+      Assert.That (_deletedDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void RollbackState_RaisesStateUpdated ()
     {
-      CheckStateNotification (_existingDataContainer, dc => dc.RollbackState (), StateType.Unchanged);
+      CheckStateNotification (_existingDataContainer, dc => dc.RollbackState (), new DataContainerState.Builder().SetUnchanged().Value);
     }
 
     [Test]
@@ -824,11 +888,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       _existingDataContainer.SetValue (_orderNumberProperty, 10);
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Changed));
+      var stateBeforeChange = _existingDataContainer.State;
+      Assert.That (stateBeforeChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsChanged, Is.True);
 
       _existingDataContainer.RollbackState ();
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var stateAfterChange = _existingDataContainer.State;
+      Assert.That (stateAfterChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -862,13 +932,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       _existingDataContainer.Delete ();
 
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Deleted));
+      var state = _existingDataContainer.State;
+      Assert.That (state.IsDeleted, Is.True);
+      Assert.That (GetNumberOfSetFlags (state), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsDeleted, Is.True);
     }
 
      [Test]
     public void Delete_RaisesStateUpdated ()
     {
-      CheckStateNotification (_existingDataContainer, dc => dc.Delete(), StateType.Deleted);
+      CheckStateNotification (_existingDataContainer, dc => dc.Delete(), new DataContainerState.Builder().SetDeleted().Value);
     }
 
     [Test]
@@ -889,17 +962,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void Discard_SetsDiscardedFlag ()
     {
-      Assert.That (_newDataContainer.IsDiscarded, Is.False);
+      Assert.That (_newDataContainer.State.IsDiscarded, Is.False);
 
       _newDataContainer.Discard ();
 
-      Assert.That (_newDataContainer.IsDiscarded, Is.True);
+      Assert.That (_newDataContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]
     public void Discard_RaisesStateUpdated ()
     {
-      CheckStateNotification (_newDataContainer, dc => dc.Discard (), StateType.Invalid);
+      CheckStateNotification (_newDataContainer, dc => dc.Discard (), new DataContainerState.Builder().SetDiscarded().Value);
     }
 
     [Test]
@@ -943,11 +1016,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order> ().InternalDataContainer;
       var existingDataContainer = DomainObjectIDs.Order3.GetObject<Order> ().InternalDataContainer;
-      Assert.That (existingDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var stateBeforeChange = existingDataContainer.State;
+      Assert.That (stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+      Assert.That (existingDataContainer.State.IsUnchanged, Is.True);
 
       existingDataContainer.SetPropertyDataFromSubTransaction (sourceDataContainer);
 
-      Assert.That (existingDataContainer.State, Is.EqualTo (StateType.Changed));
+      var stateAfterChange = existingDataContainer.State;
+      Assert.That (stateAfterChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
+      Assert.That (existingDataContainer.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -956,11 +1035,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order> ().InternalDataContainer;
       var targetDataContainer = sourceDataContainer.Clone (DomainObjectIDs.Order1);
       targetDataContainer.SetValue (_orderNumberProperty, 10);
-      Assert.That (targetDataContainer.State, Is.EqualTo (StateType.Changed));
+      var stateBeforeChange = targetDataContainer.State;
+      Assert.That (stateBeforeChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+      Assert.That (targetDataContainer.State.IsChanged, Is.True);
 
       targetDataContainer.SetPropertyDataFromSubTransaction (sourceDataContainer);
 
-      Assert.That (targetDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var stateAfterChange = targetDataContainer.State;
+      Assert.That (stateAfterChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
+      Assert.That (targetDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -970,9 +1055,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       sourceDataContainer.SetValue (_orderNumberProperty, 12);
 
       var targetDataContainer = DataContainer.CreateForExisting (DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
-      Assert.That (targetDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var state = targetDataContainer.State;
+      Assert.That (state.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state), Is.EqualTo (1));
+      Assert.That (targetDataContainer.State.IsUnchanged, Is.True);
 
-      CheckStateNotification (targetDataContainer, dc => dc.SetPropertyDataFromSubTransaction (sourceDataContainer), StateType.Changed);
+      CheckStateNotification (
+          targetDataContainer,
+          dc => dc.SetPropertyDataFromSubTransaction (sourceDataContainer),
+          new DataContainerState.Builder().SetChanged().Value);
     }
 
     [Test]
@@ -981,9 +1072,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order> ().InternalDataContainer;
       var targetDataContainer = sourceDataContainer.Clone (DomainObjectIDs.Order3);
       targetDataContainer.SetValue (_orderNumberProperty, 10);
-      Assert.That (targetDataContainer.State, Is.EqualTo (StateType.Changed));
+      var state = targetDataContainer.State;
+      Assert.That (state.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state), Is.EqualTo (1));
+      Assert.That (targetDataContainer.State.IsChanged, Is.True);
 
-      CheckStateNotification (targetDataContainer, dc => dc.SetPropertyDataFromSubTransaction (sourceDataContainer), StateType.Unchanged);
+      CheckStateNotification (
+          targetDataContainer,
+          dc => dc.SetPropertyDataFromSubTransaction (sourceDataContainer),
+          new DataContainerState.Builder().SetUnchanged().Value);
     }
 
     [Test]
@@ -992,9 +1089,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order> ().InternalDataContainer;
       var targetDataContainer = sourceDataContainer.Clone (DomainObjectIDs.Order3);
       targetDataContainer.Delete ();
-      Assert.That (targetDataContainer.State, Is.EqualTo (StateType.Deleted));
+      var state = targetDataContainer.State;
+      Assert.That (state.IsDeleted, Is.True);
+      Assert.That (GetNumberOfSetFlags (state), Is.EqualTo (1));
+      Assert.That (targetDataContainer.State.IsDeleted, Is.True);
 
-      CheckStateNotification (targetDataContainer, dc => dc.SetPropertyDataFromSubTransaction (sourceDataContainer), StateType.Deleted);
+      CheckStateNotification (
+          targetDataContainer,
+          dc => dc.SetPropertyDataFromSubTransaction (sourceDataContainer),
+          new DataContainerState.Builder().SetDeleted().Value);
     }
 
     [Test]
@@ -1026,7 +1129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetIDEvenPossibleWhenDiscarded ()
     {
-      Assert.That (_discardedDataContainer.IsDiscarded, Is.True);
+      Assert.That (_discardedDataContainer.State.IsDiscarded, Is.True);
       Assert.That (_discardedDataContainer.ID, Is.EqualTo (_invalidObjectID));
     }
 
@@ -1037,7 +1140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var dataContainerWithObject = domainObject.InternalDataContainer;
       dataContainerWithObject.Discard ();
 
-      Assert.That (dataContainerWithObject.IsDiscarded, Is.True);
+      Assert.That (dataContainerWithObject.State.IsDiscarded, Is.True);
       Assert.That (dataContainerWithObject.DomainObject, Is.SameAs (domainObject));
     }
 
@@ -1046,43 +1149,75 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order> ();
       DataContainer dataContainer = order.InternalDataContainer;
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var state1 = dataContainer.State;
+      Assert.That (state1.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state1), Is.EqualTo (1));
+      Assert.That (dataContainer.State.IsUnchanged, Is.True);
       dataContainer.MarkAsChanged();
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Changed));
+      var state2 = dataContainer.State;
+      Assert.That (state2.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state2), Is.EqualTo (1));
+      Assert.That (dataContainer.State.IsChanged, Is.True);
 
       TestableClientTransaction.Rollback();
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var state3 = dataContainer.State;
+      Assert.That (state3.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state3), Is.EqualTo (1));
+      Assert.That (dataContainer.State.IsUnchanged, Is.True);
 
       SetDatabaseModifyable();
 
       dataContainer.MarkAsChanged();
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Changed));
+      var state4 = dataContainer.State;
+      Assert.That (state4.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state4), Is.EqualTo (1));
+      Assert.That (dataContainer.State.IsChanged, Is.True);
 
       TestableClientTransaction.Commit();
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var state5 = dataContainer.State;
+      Assert.That (state5.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state5), Is.EqualTo (1));
+      Assert.That (dataContainer.State.IsUnchanged, Is.True);
 
       DataContainer clone = dataContainer.Clone (DomainObjectIDs.Order1);
-      Assert.That (clone.State, Is.EqualTo (StateType.Unchanged));
+      var state6 = clone.State;
+      Assert.That (state6.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state6), Is.EqualTo (1));
+      Assert.That (clone.State.IsUnchanged, Is.True);
 
       dataContainer.MarkAsChanged();
-      Assert.That (dataContainer.State, Is.EqualTo (StateType.Changed));
+      var state7 = dataContainer.State;
+      Assert.That (state7.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state7), Is.EqualTo (1));
+      Assert.That (dataContainer.State.IsChanged, Is.True);
 
       clone = dataContainer.Clone (DomainObjectIDs.Order1);
-      Assert.That (clone.State, Is.EqualTo (StateType.Changed));
+      var state8 = clone.State;
+      Assert.That (state8.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (state8), Is.EqualTo (1));
+      Assert.That (clone.State.IsChanged, Is.True);
     }
 
     [Test]
     public void MarkAsChanged_WithoutClientTransaction ()
     {
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      var stateBeforeChange = _existingDataContainer.State;
+      Assert.That (stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsUnchanged, Is.True);
+
       _existingDataContainer.MarkAsChanged ();
-      Assert.That (_existingDataContainer.State, Is.EqualTo (StateType.Changed));
+
+      var stateAfterChange = _existingDataContainer.State;
+      Assert.That (stateAfterChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
+      Assert.That (_existingDataContainer.State.IsChanged, Is.True);
     }
 
     [Test]
     public void MarkAsChanged_RaisesStateUpdated ()
     {
-      CheckStateNotification (_existingDataContainer, dc => dc.MarkAsChanged(), StateType.Changed);
+      CheckStateNotification (_existingDataContainer, dc => dc.MarkAsChanged(), new DataContainerState.Builder().SetChanged().Value);
     }
 
     [Test]
@@ -1203,13 +1338,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       DataContainerTestHelper.SetClientTransaction (dc, TestableClientTransaction);
     }
 
-    private void CheckStateNotification (DataContainer dataContainer, Action<DataContainer> action, StateType expectedState)
+    private void CheckStateNotification (DataContainer dataContainer, Action<DataContainer> action, DataContainerState expectedState)
     {
       dataContainer.SetEventListener (_eventListenerMock);
 
       action (dataContainer);
 
       _eventListenerMock.AssertWasCalled (mock => mock.StateUpdated (dataContainer, expectedState));
+    }
+
+    private int GetNumberOfSetFlags (DataContainerState dataContainerState)
+    {
+      int count = 0;
+      if (dataContainerState.IsNew)
+        count++;
+      if (dataContainerState.IsChanged)
+        count++;
+      if (dataContainerState.IsDeleted)
+        count++;
+      if (dataContainerState.IsDiscarded)
+        count++;
+      if (dataContainerState.IsUnchanged)
+        count++;
+
+      return count;
     }
   }
 }

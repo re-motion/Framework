@@ -196,7 +196,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       if (domainObject != null)
       {
         // we can rely on the fact that this object is not deleted, otherwise we wouldn't have got it
-        Assertion.IsTrue (domainObject.TransactionContext[GetAssociatedEndPoint().ClientTransaction].State != StateType.Deleted);
+        Assertion.IsFalse (domainObject.TransactionContext[GetAssociatedEndPoint().ClientTransaction].State.IsDeleted);
 
         CreateAndExecuteRemoveCommand (domainObject);
       }
@@ -243,7 +243,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         var removedObject = GetObject (i);
 
         // we can rely on the fact that this object is not deleted, otherwise we wouldn't have got it
-        Assertion.IsTrue (removedObject.TransactionContext[GetAssociatedEndPoint().ClientTransaction].State != StateType.Deleted);
+        Assertion.IsFalse (removedObject.TransactionContext[GetAssociatedEndPoint().ClientTransaction].State.IsDeleted);
         removeCommands.Add (GetAssociatedEndPoint().CreateRemoveCommand (removedObject).ExpandToAllRelatedObjects ());
       }
 

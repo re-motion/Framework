@@ -82,19 +82,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
     protected void CheckLoaded (DomainObject domainObject)
     {
-      Assert.That (domainObject.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (domainObject.State.IsUnchanged, Is.True);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[domainObject.ID], Is.Not.Null);
     }
 
     protected void CheckNotLoaded (DomainObject domainObject)
     {
-      Assert.That (domainObject.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (domainObject.State.IsNotLoadedYet, Is.True);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[domainObject.ID], Is.Null);
     }
 
     protected void CheckInvalid (DomainObject domainObject)
     {
-      Assert.That (domainObject.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (domainObject.State.IsInvalid, Is.True);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[domainObject.ID], Is.Null);
     }
   }

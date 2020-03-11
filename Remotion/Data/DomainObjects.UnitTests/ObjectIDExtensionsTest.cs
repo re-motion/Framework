@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var result = _orderID1.GetObject<Order> (_clientTransaction);
 
-      CheckDomainObject (result, _clientTransaction, expectedID: _orderID1, expectedState: StateType.Unchanged);
+      CheckDomainObject (result, _clientTransaction, expectedID: _orderID1, expectedStatePredicate: state => state.IsUnchanged);
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var result = _orderID1.GetObject<Order> (_clientTransaction, includeDeleted: true);
 
       Assert.That (result, Is.Not.Null);
-      CheckDomainObject (result, _clientTransaction, expectedState: StateType.Deleted);
+      CheckDomainObject (result, _clientTransaction, expectedStatePredicate: state => state.IsDeleted);
     }
 
     [Test]
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void TryGetObject_LoadsObjectIntoGivenTransaction ()
     {
       var result = _orderID1.TryGetObject<Order> (_clientTransaction);
-      CheckDomainObject (result, _clientTransaction, expectedID: _orderID1, expectedState: StateType.Unchanged);
+      CheckDomainObject (result, _clientTransaction, expectedID: _orderID1, expectedStatePredicate: state => state.IsUnchanged);
     }
 
     [Test]
@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetObjectReference_ReturnsReferenceFromGivenTransaction ()
     {
       var result = _orderID1.GetObjectReference<Order> (_clientTransaction);
-      CheckDomainObject (result, _clientTransaction, expectedID: _orderID1, expectedState: StateType.NotLoadedYet);
+      CheckDomainObject (result, _clientTransaction, expectedID: _orderID1, expectedStatePredicate: state => state.IsNotLoadedYet);
     }
 
     [Test]
@@ -208,8 +208,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var results = new[] { _orderID1, _objectID2 }.GetObjects<Order> (_clientTransaction);
 
       Assert.That (results, Has.Length.EqualTo (2));
-      CheckDomainObject (results[0], _clientTransaction, expectedID: _orderID1, expectedState: StateType.Unchanged);
-      CheckDomainObject (results[1], _clientTransaction, expectedID: _objectID2, expectedState: StateType.Unchanged);
+      CheckDomainObject (results[0], _clientTransaction, expectedID: _orderID1, expectedStatePredicate: state => state.IsUnchanged);
+      CheckDomainObject (results[1], _clientTransaction, expectedID: _objectID2, expectedStatePredicate: state => state.IsUnchanged);
     }
 
     [Test]
@@ -261,8 +261,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var results = new[] { _orderID1, _objectID2 }.TryGetObjects<Order> (_clientTransaction);
 
       Assert.That (results, Has.Length.EqualTo (2));
-      CheckDomainObject (results[0], _clientTransaction, expectedID: _orderID1, expectedState: StateType.Unchanged);
-      CheckDomainObject (results[1], _clientTransaction, expectedID: _objectID2, expectedState: StateType.Unchanged);
+      CheckDomainObject (results[0], _clientTransaction, expectedID: _orderID1, expectedStatePredicate: state => state.IsUnchanged);
+      CheckDomainObject (results[1], _clientTransaction, expectedID: _objectID2, expectedStatePredicate: state => state.IsUnchanged);
     }
 
     [Test]
@@ -312,13 +312,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
         DomainObject result,
         ClientTransaction expectedClientTransaction,
         ObjectID expectedID = null,
-        StateType? expectedState = null)
+        Func<DomainObjectState, bool> expectedStatePredicate = null)
     {
       Assert.That (expectedClientTransaction.IsEnlisted (result), Is.True);
       if (expectedID != null)
         Assert.That (result.ID, Is.EqualTo (expectedID));
-      if (expectedState != null)
-        Assert.That (expectedClientTransaction.ExecuteInScope (() => result.State), Is.EqualTo (expectedState));
+      if (expectedStatePredicate != null)
+        Assert.That (expectedStatePredicate (expectedClientTransaction.ExecuteInScope (() => result.State)), Is.True);
     }
   }
 }

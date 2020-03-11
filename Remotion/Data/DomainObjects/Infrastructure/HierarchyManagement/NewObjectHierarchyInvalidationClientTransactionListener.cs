@@ -22,7 +22,8 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 {
   /// <summary>
-  /// Propagates <see cref="StateType.Invalid"/> state for New objects over the <see cref="ClientTransaction"/> hierarchy.
+  /// Propagates the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag for <b>New</b> objects over the
+  /// <see cref="ClientTransaction"/> hierarchy.
   /// </summary>
   /// <remarks>
   /// <para>
@@ -41,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     {
       ArgumentUtility.CheckNotNull ("container", container);
 
-      if (container.State == StateType.New)
+      if (container.State.IsNew)
       {
         foreach (var ancestor in clientTransaction.ParentTransaction.CreateSequence (tx => tx.ParentTransaction))
         {
@@ -59,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("container", container);
 
-      if (container.State == StateType.New)
+      if (container.State.IsNew)
       {
         foreach (var descendant in clientTransaction.SubTransaction.CreateSequence (tx => tx.SubTransaction))
         {

@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.NewObject ();
 
       Assert.That (order.ID, Is.Not.Null);
-      Assert.That (order.State, Is.EqualTo (StateType.New));
+      Assert.That (order.State.IsNew, Is.True);
       Assert.That (order.InternalDataContainer.DomainObject, Is.SameAs (order));
     }
 
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.That (customer.Name, Is.EqualTo ("Arthur Dent"));
       Assert.That (customer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].GetOriginalValue<string>(), Is.EqualTo (string.Empty));
-      Assert.That (customer.State, Is.EqualTo (StateType.New));
+      Assert.That (customer.State.IsNew, Is.True);
     }
 
     [Test]
@@ -114,8 +114,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       partner.Ceo = ceo;
 
-      Assert.That (partner.State, Is.EqualTo (StateType.New));
-      Assert.That (ceo.State, Is.EqualTo (StateType.New));
+      Assert.That (partner.State.IsNew, Is.True);
+      Assert.That (ceo.State.IsNew, Is.True);
     }
 
     [Test]
@@ -126,8 +126,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       order.OrderItems.Add (orderItem);
 
-      Assert.That (order.State, Is.EqualTo (StateType.New));
-      Assert.That (orderItem.State, Is.EqualTo (StateType.New));
+      Assert.That (order.State.IsNew, Is.True);
+      Assert.That (orderItem.State.IsNew, Is.True);
     }
 
     [Test]
@@ -342,7 +342,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       TestableClientTransaction.Commit ();
 
-      Assert.That (computer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (computer.State.IsUnchanged, Is.True);
     }
 
     [Test]

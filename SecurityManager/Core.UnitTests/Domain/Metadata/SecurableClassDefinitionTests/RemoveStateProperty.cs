@@ -91,16 +91,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
       securableClassDefinition.RemoveStateProperty (stateProperty);
 
-      Assert.That (acl1.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (acl1.State.IsInvalid, Is.True);
 
-      Assert.That (acl2.State, Is.EqualTo (StateType.New));
+      Assert.That (acl2.State.IsNew, Is.True);
       Assert.That (acl2.StateCombinations.Count, Is.EqualTo (1));
       Assert.That (acl2.StateCombinations[0].GetStates(), Is.Empty);
 
-      Assert.That (acl3.State, Is.EqualTo (StateType.New));
+      Assert.That (acl3.State.IsNew, Is.True);
       Assert.That (acl3.StateCombinations, Is.Empty);
 
-      Assert.That (acl4.State, Is.EqualTo (StateType.New));
+      Assert.That (acl4.State.IsNew, Is.True);
       Assert.That (acl4.StateCombinations.Count, Is.EqualTo (1));
       Assert.That (acl4.StateCombinations[0].GetStates(), Is.EqualTo (new[] { state2 }));
     }
@@ -115,11 +115,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         securableClassDefinition.EnsureDataAvailable();
-        Assert.That (securableClassDefinition.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (securableClassDefinition.State.IsUnchanged, Is.True);
 
         securableClassDefinition.RemoveStateProperty (stateProperty);
 
-        Assert.That (securableClassDefinition.State, Is.EqualTo (StateType.Changed));
+        Assert.That (securableClassDefinition.State.IsChanged, Is.True);
       }
     }
 

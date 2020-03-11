@@ -62,14 +62,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       using (_testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ())
       {
         acl.EnsureDataAvailable ();
-        Assert.That (acl.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (acl.State.IsUnchanged, Is.True);
 
         StateCombination stateCombination = acl.CreateStateCombination ();
 
         Assert.That (stateCombination.AccessControlList, Is.SameAs (acl));
         Assert.That (stateCombination.Class, Is.EqualTo (acl.Class));
         Assert.That (stateCombination.GetStates(), Is.Empty);
-        Assert.That (acl.State, Is.EqualTo (StateType.Changed));
+        Assert.That (acl.State.IsChanged, Is.True);
       }
     }
 
@@ -80,11 +80,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       using (_testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ())
       {
         acl.EnsureDataAvailable ();
-        Assert.That (acl.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (acl.State.IsUnchanged, Is.True);
 
         acl.CreateStateCombination();
 
-        Assert.That (acl.State, Is.EqualTo (StateType.Changed));
+        Assert.That (acl.State.IsChanged, Is.True);
       }
     }
 
@@ -97,7 +97,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       using (_testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ())
       {
         acl.EnsureDataAvailable ();
-        Assert.That (acl.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (acl.State.IsUnchanged, Is.True);
 
         StateCombination stateCombination0 = acl.CreateStateCombination ();
         StateCombination stateCombination1 = acl.CreateStateCombination ();
@@ -107,7 +107,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         Assert.That (stateCombination0.Index, Is.EqualTo (0));
         Assert.That (acl.StateCombinations[1], Is.SameAs (stateCombination1));
         Assert.That (stateCombination1.Index, Is.EqualTo (1));
-        Assert.That (acl.State, Is.EqualTo (StateType.Changed));
+        Assert.That (acl.State.IsChanged, Is.True);
       }
     }
 

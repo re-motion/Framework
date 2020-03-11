@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
         var dataContainerState = dataContainer.State;
         dataContainer.Discard();
-        if (dataContainerState == StateType.New)
+        if (dataContainerState.IsNew)
           _invalidDomainObjectManager.MarkInvalid (dataContainer.DomainObject);
       }
 

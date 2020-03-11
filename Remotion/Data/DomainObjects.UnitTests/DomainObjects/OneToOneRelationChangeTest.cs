@@ -96,15 +96,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (_oldOrderOfNewOrderTicketEventReceiver.ChangedOldRelatedObject, Is.SameAs (_newOrderTicket));
       Assert.That (_oldOrderOfNewOrderTicketEventReceiver.ChangedNewRelatedObject, Is.Null);
 
-      Assert.That (_order.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_newOrderTicket.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_oldOrderTicket.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_oldOrderOfNewOrderTicket.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_order.State.IsChanged, Is.True);
+      Assert.That (_newOrderTicket.State.IsChanged, Is.True);
+      Assert.That (_oldOrderTicket.State.IsChanged, Is.True);
+      Assert.That (_oldOrderOfNewOrderTicket.State.IsChanged, Is.True);
 
-      Assert.That (_order.InternalDataContainer.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_newOrderTicket.InternalDataContainer.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_oldOrderTicket.InternalDataContainer.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_oldOrderOfNewOrderTicket.InternalDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That (_newOrderTicket.InternalDataContainer.State.IsChanged, Is.True);
+      Assert.That (_oldOrderTicket.InternalDataContainer.State.IsChanged, Is.True);
+      Assert.That (_oldOrderOfNewOrderTicket.InternalDataContainer.State.IsUnchanged, Is.True);
 
       Assert.That (_order.OrderTicket, Is.SameAs (_newOrderTicket));
       Assert.That (_newOrderTicket.Order, Is.SameAs (_order));
@@ -155,10 +155,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
         Assert.That (_oldOrderOfNewOrderTicketEventReceiver.ChangingOldRelatedObject, Is.Null);
         Assert.That (_oldOrderOfNewOrderTicketEventReceiver.ChangingNewRelatedObject, Is.Null);
 
-        Assert.That (_order.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_newOrderTicket.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldOrderTicket.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldOrderOfNewOrderTicket.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_order.State.IsUnchanged, Is.True);
+        Assert.That (_newOrderTicket.State.IsUnchanged, Is.True);
+        Assert.That (_oldOrderTicket.State.IsUnchanged, Is.True);
+        Assert.That (_oldOrderOfNewOrderTicket.State.IsUnchanged, Is.True);
 
         Assert.That (_order.OrderTicket, Is.SameAs (_oldOrderTicket));
         Assert.That (_newOrderTicket.Order, Is.SameAs (_oldOrderOfNewOrderTicket));
@@ -210,10 +210,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
         Assert.That (_oldOrderOfNewOrderTicketEventReceiver.ChangingOldRelatedObject, Is.Null);
         Assert.That (_oldOrderOfNewOrderTicketEventReceiver.ChangingNewRelatedObject, Is.Null);
 
-        Assert.That (_order.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_newOrderTicket.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldOrderTicket.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldOrderOfNewOrderTicket.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_order.State.IsUnchanged, Is.True);
+        Assert.That (_newOrderTicket.State.IsUnchanged, Is.True);
+        Assert.That (_oldOrderTicket.State.IsUnchanged, Is.True);
+        Assert.That (_oldOrderOfNewOrderTicket.State.IsUnchanged, Is.True);
 
         Assert.That (_order.OrderTicket, Is.SameAs (_oldOrderTicket));
         Assert.That (_newOrderTicket.Order, Is.SameAs (_oldOrderOfNewOrderTicket));
@@ -265,10 +265,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
         Assert.That (_oldOrderOfNewOrderTicketEventReceiver.ChangingOldRelatedObject, Is.Null);
         Assert.That (_oldOrderOfNewOrderTicketEventReceiver.ChangingNewRelatedObject, Is.Null);
 
-        Assert.That (_order.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_newOrderTicket.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldOrderTicket.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldOrderOfNewOrderTicket.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_order.State.IsUnchanged, Is.True);
+        Assert.That (_newOrderTicket.State.IsUnchanged, Is.True);
+        Assert.That (_oldOrderTicket.State.IsUnchanged, Is.True);
+        Assert.That (_oldOrderOfNewOrderTicket.State.IsUnchanged, Is.True);
 
         Assert.That (_order.OrderTicket, Is.SameAs (_oldOrderTicket));
         Assert.That (_newOrderTicket.Order, Is.SameAs (_oldOrderOfNewOrderTicket));
@@ -320,10 +320,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
         Assert.That (_oldOrderOfNewOrderTicketEventReceiver.ChangingOldRelatedObject, Is.SameAs (_newOrderTicket));
         Assert.That (_oldOrderOfNewOrderTicketEventReceiver.ChangingNewRelatedObject, Is.Null);
 
-        Assert.That (_order.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_newOrderTicket.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldOrderTicket.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldOrderOfNewOrderTicket.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_order.State.IsUnchanged, Is.True);
+        Assert.That (_newOrderTicket.State.IsUnchanged, Is.True);
+        Assert.That (_oldOrderTicket.State.IsUnchanged, Is.True);
+        Assert.That (_oldOrderOfNewOrderTicket.State.IsUnchanged, Is.True);
 
         Assert.That (_order.OrderTicket, Is.SameAs (_oldOrderTicket));
         Assert.That (_newOrderTicket.Order, Is.SameAs (_oldOrderOfNewOrderTicket));
@@ -335,29 +335,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void StateTracking ()
     {
-      Assert.That (_order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_newOrderTicket.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_oldOrderTicket.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_oldOrderOfNewOrderTicket.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order.State.IsUnchanged, Is.True);
+      Assert.That (_newOrderTicket.State.IsUnchanged, Is.True);
+      Assert.That (_oldOrderTicket.State.IsUnchanged, Is.True);
+      Assert.That (_oldOrderOfNewOrderTicket.State.IsUnchanged, Is.True);
 
       _order.OrderTicket = _newOrderTicket;
 
-      Assert.That (_order.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_newOrderTicket.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_oldOrderTicket.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_oldOrderOfNewOrderTicket.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_order.State.IsChanged, Is.True);
+      Assert.That (_newOrderTicket.State.IsChanged, Is.True);
+      Assert.That (_oldOrderTicket.State.IsChanged, Is.True);
+      Assert.That (_oldOrderOfNewOrderTicket.State.IsChanged, Is.True);
     }
 
     [Test]
     public void OldObjectAndNewObjectAreSame ()
     {
-      Assert.That (_order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_oldOrderTicket.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order.State.IsUnchanged, Is.True);
+      Assert.That (_oldOrderTicket.State.IsUnchanged, Is.True);
 
       _order.OrderTicket = _oldOrderTicket;
 
-      Assert.That (_order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_oldOrderTicket.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order.State.IsUnchanged, Is.True);
+      Assert.That (_oldOrderTicket.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -404,10 +404,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void ChangeRelationBackToOriginalValue ()
     {
       _order.OrderTicket = _newOrderTicket;
-      Assert.That (_order.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_order.State.IsChanged, Is.True);
 
       _order.OrderTicket = _oldOrderTicket;
-      Assert.That (_order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -491,13 +491,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
           new DomainObject[] { customer, ceo },
           new DomainObjectCollection[0]);
 
-      Assert.That (customer.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (ceo.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (customer.State.IsUnchanged, Is.True);
+      Assert.That (ceo.State.IsUnchanged, Is.True);
 
       customer.Ceo = ceo;
 
-      Assert.That (customer.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (ceo.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (customer.State.IsUnchanged, Is.True);
+      Assert.That (ceo.State.IsUnchanged, Is.True);
 
       ChangeState[] expectedStates = new ChangeState[0];
 

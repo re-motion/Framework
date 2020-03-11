@@ -38,15 +38,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       customer2.Orders.Add (order);
 
-      Assert.That (customer1.State, Is.EqualTo (StateType.Changed));
-      Assert.That (customer2.State, Is.EqualTo (StateType.Changed));
-      Assert.That (order.State, Is.EqualTo (StateType.Changed));
+      Assert.That (customer1.State.IsChanged, Is.True);
+      Assert.That (customer2.State.IsChanged, Is.True);
+      Assert.That (order.State.IsChanged, Is.True);
 
       TestableClientTransaction.Commit ();
 
-      Assert.That (customer1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (customer2.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (customer1.State.IsUnchanged, Is.True);
+      Assert.That (customer2.State.IsUnchanged, Is.True);
+      Assert.That (order.State.IsUnchanged, Is.True);
     }
 
     [Test]

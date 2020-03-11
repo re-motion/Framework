@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       Order invalid = Order.NewObject ();
       invalid.Delete ();
-      Assert.That (invalid.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (invalid.State.IsInvalid, Is.True);
       return invalid;
     }
 
@@ -112,29 +112,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Location unidirectionalWithDeletedNew = GetUnidirectionalWithDeletedNew ();
       Order invalid = GetInvalid();
 
-      Assert.That (unchanged.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (unchanged.State.IsUnchanged, Is.True);
 
-      Assert.That (changedThroughPropertyValue.State, Is.EqualTo (StateType.Changed));
+      Assert.That (changedThroughPropertyValue.State.IsChanged, Is.True);
       Assert.That (changedThroughPropertyValue.Properties[typeof (Order) + ".OrderNumber"].GetOriginalValue<int>(), Is.Not.EqualTo (changedThroughPropertyValue.OrderNumber));
 
-      Assert.That (changedThroughRelatedObjects.State, Is.EqualTo (StateType.Changed));
+      Assert.That (changedThroughRelatedObjects.State.IsChanged, Is.True);
       Assert.That (changedThroughRelatedObjects.Properties[typeof (Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>> ().Count, Is.Not.EqualTo (changedThroughRelatedObjects.OrderItems.Count));
 
-      Assert.That (changedThroughRelatedObjectRealSide.State, Is.EqualTo (StateType.Changed));
+      Assert.That (changedThroughRelatedObjectRealSide.State.IsChanged, Is.True);
       Assert.That (changedThroughRelatedObjectRealSide.Properties[typeof (Computer) + ".Employee"].GetOriginalValue<Employee> (), Is.Not.EqualTo (changedThroughRelatedObjectRealSide.Employee));
 
-      Assert.That (changedThroughRelatedObjectVirtualSide.State, Is.EqualTo (StateType.Changed));
+      Assert.That (changedThroughRelatedObjectVirtualSide.State.IsChanged, Is.True);
       Assert.That (changedThroughRelatedObjectVirtualSide.Properties[typeof (Employee) + ".Computer"].GetOriginalValue<Computer> (), Is.Not.EqualTo (changedThroughRelatedObjectVirtualSide.Computer));
 
-      Assert.That (newUnchanged.State, Is.EqualTo (StateType.New));
-      Assert.That (newChanged.State, Is.EqualTo (StateType.New));
+      Assert.That (newUnchanged.State.IsNew, Is.True);
+      Assert.That (newChanged.State.IsNew, Is.True);
 
-      Assert.That (deleted.State, Is.EqualTo (StateType.Deleted));
+      Assert.That (deleted.State.IsDeleted, Is.True);
 
-      Assert.That (unidirectionalWithDeleted.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (unidirectionalWithDeletedNew.State, Is.EqualTo (StateType.Changed));
+      Assert.That (unidirectionalWithDeleted.State.IsUnchanged, Is.True);
+      Assert.That (unidirectionalWithDeletedNew.State.IsChanged, Is.True);
 
-      Assert.That (invalid.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (invalid.State.IsInvalid, Is.True);
     }
 
     protected void FullyDeleteOrder (Order order)

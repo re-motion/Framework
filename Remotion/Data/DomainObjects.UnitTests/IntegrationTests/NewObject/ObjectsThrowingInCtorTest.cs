@@ -99,12 +99,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NewObject
               .And.Property ("CleanupException").SameAs (_deleteException));
       }
 
-      Assert.That (throwingInstance.State, Is.EqualTo (StateType.New));
+      Assert.That (throwingInstance.State.IsNew, Is.True);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[throwingInstance.ID], Is.Not.Null);
 
       TestableClientTransaction.Rollback();
 
-      Assert.That (throwingInstance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (throwingInstance.State.IsInvalid, Is.True);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[throwingInstance.ID], Is.Null);
     }
 
@@ -122,14 +122,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NewObject
 
       Assert.That (() => OrderItem.NewObject (), Throws.TypeOf<ObjectCleanupException> ());
 
-      Assert.That (throwingInstance.State, Is.EqualTo (StateType.New));
+      Assert.That (throwingInstance.State.IsNew, Is.True);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[throwingInstance.ID], Is.Not.Null);
       Assert.That (throwingInstance.Order, Is.SameAs (order));
       Assert.That (order.OrderItems, Has.Member (throwingInstance));
 
       TestableClientTransaction.Rollback ();
 
-      Assert.That (throwingInstance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (throwingInstance.State.IsInvalid, Is.True);
       Assert.That (TestableClientTransaction.DataManager.DataContainers[throwingInstance.ID], Is.Null);
       Assert.That (order.OrderItems, Has.No.Member (throwingInstance));
     }

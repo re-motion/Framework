@@ -158,7 +158,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (_mockRepository.Ordered ())
       {
           _strictListenerMock.Expect (mock => mock.ObjectDeleting (TestableClientTransaction, cwadt));
-          _strictListenerMock.Expect (mock => mock.DataContainerStateUpdated (TestableClientTransaction, cwadt.InternalDataContainer, StateType.Deleted));
+          _strictListenerMock.Expect (
+              mock => mock.DataContainerStateUpdated (
+                  TestableClientTransaction,
+                  cwadt.InternalDataContainer,
+                  new DataContainerState.Builder().SetDeleted().Value));
           _strictListenerMock.Expect (mock => mock.ObjectDeleted (TestableClientTransaction, cwadt));
       }
 
@@ -216,7 +220,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                 orderNumberPropertyDefinition,
                 orderNumber,
                 43));
-        _strictListenerMock.Expect (mock => mock.DataContainerStateUpdated (TestableClientTransaction, order.InternalDataContainer, StateType.Changed));
+        _strictListenerMock.Expect (
+            mock => mock.DataContainerStateUpdated (
+                TestableClientTransaction,
+                order.InternalDataContainer,
+                new DataContainerState.Builder().SetChanged().Value));
         _strictListenerMock.Expect (
             mock => mock.PropertyValueChanged (
                 TestableClientTransaction,
@@ -308,7 +316,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             oldCustomerEndPointID.Definition,
             order, 
             null));
-        _strictListenerMock.Expect (mock => mock.DataContainerStateUpdated (TestableClientTransaction, order.InternalDataContainer, StateType.Changed));
+        _strictListenerMock.Expect (
+            mock => mock.DataContainerStateUpdated (
+                TestableClientTransaction,
+                order.InternalDataContainer,
+                new DataContainerState.Builder().SetChanged().Value));
         _strictListenerMock.Expect (mock => mock.VirtualRelationEndPointStateUpdated (TestableClientTransaction, newCustomerEndPointID, null));
         _strictListenerMock.Expect (mock => mock.VirtualRelationEndPointStateUpdated (TestableClientTransaction, oldCustomerEndPointID, null));
         _strictListenerMock.Expect (mock => mock.RelationChanged (
@@ -393,7 +405,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _strictListenerMock.Expect (mock => mock.TransactionCommitValidate (
             Arg.Is (TestableClientTransaction),
             Arg<ReadOnlyCollection<PersistableData>>.Matches (c => c.Select (d => d.DomainObject).SetEquals (new[] { order }))));
-        _strictListenerMock.Expect (mock => mock.DataContainerStateUpdated (TestableClientTransaction, order.InternalDataContainer, StateType.Unchanged));
+        _strictListenerMock.Expect (
+            mock => mock.DataContainerStateUpdated (
+                TestableClientTransaction,
+                order.InternalDataContainer,
+                new DataContainerState.Builder().SetUnchanged().Value));
         _strictListenerMock.Expect (mock => mock.TransactionCommitted (
             Arg.Is (TestableClientTransaction), 
             Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new[] { order })));
@@ -419,7 +435,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _strictListenerMock.Expect (mock => mock.TransactionRollingBack (
             Arg.Is (TestableClientTransaction), 
             Arg<ReadOnlyCollection<DomainObject>>.Matches (doc => doc.Count == 1)));
-        _strictListenerMock.Expect (mock => mock.DataContainerStateUpdated (TestableClientTransaction, order.InternalDataContainer, StateType.Unchanged));
+        _strictListenerMock.Expect (
+            mock => mock.DataContainerStateUpdated (
+                TestableClientTransaction,
+                order.InternalDataContainer,
+                new DataContainerState.Builder().SetUnchanged().Value));
         _strictListenerMock.Expect (mock => mock.TransactionRolledBack (
             Arg.Is (TestableClientTransaction), 
             Arg<ReadOnlyCollection<DomainObject>>.Matches (doc => doc.Count == 1)));
@@ -488,7 +508,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             .Repeat.Times (4); // four related objects/object collections in Order
 
         _strictListenerMock.Expect (mock => mock.DataContainerMapUnregistering (TestableClientTransaction, order.InternalDataContainer));
-        _strictListenerMock.Expect (mock => mock.DataContainerStateUpdated (TestableClientTransaction, order.InternalDataContainer, StateType.Invalid));
+        _strictListenerMock.Expect (
+            mock => mock.DataContainerStateUpdated (
+                TestableClientTransaction,
+                order.InternalDataContainer,
+                new DataContainerState.Builder().SetDiscarded().Value));
         _strictListenerMock.Expect (mock => mock.ObjectMarkedInvalid (TestableClientTransaction, order));
         _strictListenerMock.Expect (mock => mock.ObjectDeleted (TestableClientTransaction, order));
       }
@@ -604,7 +628,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             .Expect (mock => mock.ObjectsUnloading (
                 Arg.Is (TestableClientTransaction), 
                 Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { orderTicket1 })))
-            .WhenCalled (mi => Assert.That (orderTicket1.State, Is.EqualTo (StateType.Unchanged)));
+            .WhenCalled (mi => Assert.That (orderTicket1.State.IsUnchanged, Is.True));
         using (_mockRepository.Unordered ())
         {
           _strictListenerMock
@@ -620,7 +644,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             .Expect (mock => mock.ObjectsUnloaded (
                 Arg.Is (TestableClientTransaction), 
                 Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { orderTicket1 })))
-            .WhenCalled (mi => Assert.That (orderTicket1.State, Is.EqualTo (StateType.NotLoadedYet)));
+            .WhenCalled (mi => Assert.That (orderTicket1.State.IsNotLoadedYet, Is.True));
       }
 
       _mockRepository.ReplayAll ();

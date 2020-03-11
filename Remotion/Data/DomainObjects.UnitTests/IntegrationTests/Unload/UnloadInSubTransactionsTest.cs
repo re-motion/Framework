@@ -79,13 +79,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (_subTransaction.ParentTransaction, orderItem2, "Order", true);
       CheckVirtualEndPoint (_subTransaction.ParentTransaction, order, "OrderItems", false);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItem1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItem2.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order.State.IsUnchanged, Is.True);
+      Assert.That (orderItem1.State.IsUnchanged, Is.True);
+      Assert.That (orderItem2.State.IsUnchanged, Is.True);
 
-      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItem1.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItem2.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State.IsUnchanged, Is.True);
+      Assert.That (orderItem1.TransactionContext[_subTransaction.ParentTransaction].State.IsUnchanged, Is.True);
+      Assert.That (orderItem2.TransactionContext[_subTransaction.ParentTransaction].State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -120,8 +120,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That (orderItems.Count, Is.EqualTo (3));
       _subTransaction.Commit();
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Changed));
+      Assert.That (order.State.IsUnchanged, Is.True);
+      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State.IsChanged, Is.True);
 
       try
       {
@@ -192,11 +192,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (_subTransaction.ParentTransaction, orderTicket, "Order", true);
       CheckVirtualEndPoint (_subTransaction.ParentTransaction, order, "OrderTicket", false);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order.State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.State.IsUnchanged, Is.True);
 
-      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.TransactionContext[_subTransaction.ParentTransaction].State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -230,8 +230,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       
       _subTransaction.Commit ();
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Changed));
+      Assert.That (order.State.IsUnchanged, Is.True);
+      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State.IsChanged, Is.True);
 
       try
       {
@@ -289,12 +289,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var customerOrders = customer.Orders;
       customerOrders.EnsureDataComplete ();
 
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order1.State.IsUnchanged, Is.True);
       Assert.That (orderItems.IsDataComplete, Is.True);
-      Assert.That (orderItemA.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItemB.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (customer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderItemA.State.IsUnchanged, Is.True);
+      Assert.That (orderItemB.State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.State.IsUnchanged, Is.True);
+      Assert.That (customer.State.IsUnchanged, Is.True);
       Assert.That (customerOrders.IsDataComplete, Is.True);
 
       UnloadService.UnloadData (_subTransaction, order1.ID);
@@ -327,19 +327,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (_subTransaction.ParentTransaction, order1, "Customer", false);
       CheckVirtualEndPoint (_subTransaction.ParentTransaction, customer, "Orders", false);
 
-      Assert.That (order1.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order1.State.IsNotLoadedYet, Is.True);
       Assert.That (orderItems.IsDataComplete, Is.True);
-      Assert.That (orderItemA.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItemB.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (customer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (orderItemA.State.IsUnchanged, Is.True);
+      Assert.That (orderItemB.State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.State.IsUnchanged, Is.True);
+      Assert.That (customer.State.IsUnchanged, Is.True);
       Assert.That (customerOrders.IsDataComplete, Is.False);
 
-      Assert.That (order1.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (orderItemA.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItemB.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (customer.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (order1.TransactionContext[_subTransaction.ParentTransaction].State.IsNotLoadedYet, Is.True);
+      Assert.That (orderItemA.TransactionContext[_subTransaction.ParentTransaction].State.IsUnchanged, Is.True);
+      Assert.That (orderItemB.TransactionContext[_subTransaction.ParentTransaction].State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.TransactionContext[_subTransaction.ParentTransaction].State.IsUnchanged, Is.True);
+      Assert.That (customer.TransactionContext[_subTransaction.ParentTransaction].State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -391,8 +391,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       order1.OrderNumber = 4711;
       _subTransaction.Commit ();
 
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (order1.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Changed));
+      Assert.That (order1.State.IsUnchanged, Is.True);
+      Assert.That (order1.TransactionContext[_subTransaction.ParentTransaction].State.IsChanged, Is.True);
 
       try
       {
@@ -403,11 +403,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       {
         Assert.That (ex.Message, Is.EqualTo (
             "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-            + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (Changed)."));
+            + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (DataContainerState (Changed))."));
       }
 
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (order1.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Changed));
+      Assert.That (order1.State.IsUnchanged, Is.True);
+      Assert.That (order1.TransactionContext[_subTransaction.ParentTransaction].State.IsChanged, Is.True);
 
       Assert.That (order1.OrderNumber, Is.EqualTo (4711));
     }
@@ -418,8 +418,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var orderNew = (Order) LifetimeService.NewObject (_subTransaction, typeof (Order), ParamList.Empty);
       orderNew.OrderNumber = 4711;
 
-      Assert.That (orderNew.State, Is.EqualTo (StateType.New));
-      Assert.That (orderNew.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Invalid));
+      Assert.That (orderNew.State.IsNew, Is.True);
+      Assert.That (orderNew.TransactionContext[_subTransaction.ParentTransaction].State.IsInvalid, Is.True);
 
       try
       {
@@ -430,11 +430,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       {
         Assert.That (ex.Message, Is.EqualTo (
             "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-            + string.Format ("'Order|{0}|System.Guid' (New).", orderNew.ID.Value)));
+            + string.Format ("'Order|{0}|System.Guid' (DataContainerState (New)).", orderNew.ID.Value)));
       }
 
-      Assert.That (orderNew.State, Is.EqualTo (StateType.New));
-      Assert.That (orderNew.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Invalid));
+      Assert.That (orderNew.State.IsNew, Is.True);
+      Assert.That (orderNew.TransactionContext[_subTransaction.ParentTransaction].State.IsInvalid, Is.True);
 
       Assert.That (orderNew.OrderNumber, Is.EqualTo (4711));
     }
@@ -468,13 +468,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (_subTransaction.ParentTransaction, orderItem1, "Order", false);
       CheckEndPointExists (_subTransaction.ParentTransaction, orderItem2, "Order", false);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItem1.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (orderItem2.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order.State.IsUnchanged, Is.True);
+      Assert.That (orderItem1.State.IsNotLoadedYet, Is.True);
+      Assert.That (orderItem2.State.IsNotLoadedYet, Is.True);
 
-      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderItem1.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (orderItem2.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State.IsUnchanged, Is.True);
+      Assert.That (orderItem1.TransactionContext[_subTransaction.ParentTransaction].State.IsNotLoadedYet, Is.True);
+      Assert.That (orderItem2.TransactionContext[_subTransaction.ParentTransaction].State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -497,11 +497,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (_subTransaction.ParentTransaction, order, "OrderTicket", false);
       CheckEndPointExists (_subTransaction.ParentTransaction, orderTicket, "Order", false);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order.State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.State.IsNotLoadedYet, Is.True);
 
-      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.TransactionContext[_subTransaction.ParentTransaction].State.IsNotLoadedYet, Is.True);
 
       // This check can likely be removed when the above assertions pass
       Assert.That (order.OrderTicket, Is.SameAs (orderTicket));
@@ -530,11 +530,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckEndPointExists (_subTransaction.ParentTransaction, order, "OrderTicket", false);
       CheckEndPointExists (_subTransaction.ParentTransaction, orderTicket, "Order", false);
 
-      Assert.That (order.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order.State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.State.IsNotLoadedYet, Is.True);
 
-      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (orderTicket.TransactionContext[_subTransaction.ParentTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (order.TransactionContext[_subTransaction.ParentTransaction].State.IsUnchanged, Is.True);
+      Assert.That (orderTicket.TransactionContext[_subTransaction.ParentTransaction].State.IsNotLoadedYet, Is.True);
 
       // This check can likely be removed when the above assertions pass
       Assert.That (order.OrderTicket, Is.SameAs (orderTicket));
@@ -612,11 +612,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
               .WhenCalled (
                   mi =>
                   {
-                    Assert.That (orderItemA.TransactionContext[_subTransaction].State, Is.EqualTo (StateType.Unchanged));
-                    Assert.That (orderItemB.TransactionContext[_subTransaction].State, Is.EqualTo (StateType.Unchanged));
+                    Assert.That (orderItemA.TransactionContext[_subTransaction].State.IsUnchanged, Is.True);
+                    Assert.That (orderItemB.TransactionContext[_subTransaction].State.IsUnchanged, Is.True);
 
-                    Assert.That (orderItemA.TransactionContext[rootTransaction].State, Is.EqualTo (StateType.Unchanged));
-                    Assert.That (orderItemB.TransactionContext[rootTransaction].State, Is.EqualTo (StateType.Unchanged));
+                    Assert.That (orderItemA.TransactionContext[rootTransaction].State.IsUnchanged, Is.True);
+                    Assert.That (orderItemB.TransactionContext[rootTransaction].State.IsUnchanged, Is.True);
 
                     Assert.That (rootTransaction.IsWriteable, Is.False);
                   });
@@ -643,11 +643,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
               .WhenCalled (
                   mi =>
                   {
-                    Assert.That (orderItemA.TransactionContext[rootTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
-                    Assert.That (orderItemB.TransactionContext[rootTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+                    Assert.That (orderItemA.TransactionContext[rootTransaction].State.IsNotLoadedYet, Is.True);
+                    Assert.That (orderItemB.TransactionContext[rootTransaction].State.IsNotLoadedYet, Is.True);
 
-                    Assert.That (orderItemA.TransactionContext[_subTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
-                    Assert.That (orderItemB.TransactionContext[_subTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
+                    Assert.That (orderItemA.TransactionContext[_subTransaction].State.IsNotLoadedYet, Is.True);
+                    Assert.That (orderItemB.TransactionContext[_subTransaction].State.IsNotLoadedYet, Is.True);
 
                     Assert.That (rootTransaction.IsWriteable, Is.False);
                   });

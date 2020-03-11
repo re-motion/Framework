@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       var domainObject = ArgumentUtility.CheckNotNullAndType<IDomainObject> ("obj", obj);
       ArgumentUtility.CheckNotNull ("property", property);
       
-      if (domainObject.GetState() != StateType.New)
+      if (!domainObject.GetState().IsNew)
         return false;
 
       var propertyDefinition = domainObject.ID.ClassDefinition.ResolveProperty (property.PropertyInfo);

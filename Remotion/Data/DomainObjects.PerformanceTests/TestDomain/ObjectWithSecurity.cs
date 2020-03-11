@@ -180,12 +180,12 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
 
     bool IDomainObjectSecurityContextFactory.IsNew
     {
-      get { return State == StateType.New; }
+      get { return State.IsNew; }
     }
 
     bool IDomainObjectSecurityContextFactory.IsDeleted
     {
-      get { return State == StateType.Deleted; }
+      get { return State.IsDeleted; }
     }
   }
 }

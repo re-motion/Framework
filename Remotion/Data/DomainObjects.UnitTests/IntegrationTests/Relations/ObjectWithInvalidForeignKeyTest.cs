@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       var id = new ObjectID(typeof (ClassWithInvalidRelation), new Guid ("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
       var objectWithInvalidRelation = (ClassWithInvalidRelation) id.GetObject<TestDomainBase> ();
 
-      Assert.That (objectWithInvalidRelation.ClassWithGuidKey.State, Is.Not.EqualTo (StateType.Invalid));
+      Assert.That (objectWithInvalidRelation.ClassWithGuidKey.State.IsInvalid, Is.False);
 
       Assert.That (() => objectWithInvalidRelation.ClassWithGuidKey.EnsureDataAvailable(), Throws.TypeOf<ObjectsNotFoundException>());
 
-      Assert.That (objectWithInvalidRelation.ClassWithGuidKey.State, Is.EqualTo (StateType.Invalid));
+      Assert.That (objectWithInvalidRelation.ClassWithGuidKey.State.IsInvalid, Is.True);
 
       // Overwriting the invalid ID is possible!
       var classWithGuidKey = ClassWithGuidKey.NewObject ();
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       {
         var reloadedObject = (ClassWithInvalidRelation) id.GetObject<TestDomainBase> ();
         reloadedObject.ClassWithGuidKey.EnsureDataAvailable ();
-        Assert.That (reloadedObject.ClassWithGuidKey.State, Is.Not.EqualTo (StateType.Invalid));
+        Assert.That (reloadedObject.ClassWithGuidKey.State.IsInvalid, Is.False);
       }
 
       // Note: See also NotFoundObjectsTest

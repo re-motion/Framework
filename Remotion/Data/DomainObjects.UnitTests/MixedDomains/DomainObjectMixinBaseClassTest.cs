@@ -93,17 +93,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     }
 
     [Test]
-    public void IsInvalid()
-    {
-      Assert.That (_loadedClassWithAllDataTypesMixin.IsInvalid, Is.EqualTo (_loadedClassWithAllDataTypes.IsInvalid));
-      Assert.That (_newClassWithAllDataTypesMixin.IsInvalid, Is.EqualTo (_newClassWithAllDataTypes.IsInvalid));
-
-      _newClassWithAllDataTypes.Delete ();
-
-      Assert.That (_newClassWithAllDataTypesMixin.IsInvalid, Is.EqualTo (_newClassWithAllDataTypes.IsInvalid));
-    }
-
-    [Test]
     public void Properties ()
     {
       Assert.That (

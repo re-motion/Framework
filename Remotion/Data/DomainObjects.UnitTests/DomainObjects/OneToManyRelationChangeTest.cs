@@ -69,17 +69,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       eventReceiver.Check (expectedChangeStates);
 
-      Assert.That (_order1.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_oldCustomer.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_newCustomer.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_order1.State.IsChanged, Is.True);
+      Assert.That (_oldCustomer.State.IsChanged, Is.True);
+      Assert.That (_newCustomer.State.IsChanged, Is.True);
 
       Assert.That (_order1.Customer, Is.SameAs (_newCustomer));
       Assert.That (_oldCustomer.Orders[_order1.ID], Is.Null);
       Assert.That (_newCustomer.Orders[_order1.ID], Is.SameAs (_order1));
 
-      Assert.That (_order1.InternalDataContainer.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_oldCustomer.InternalDataContainer.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_newCustomer.InternalDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order1.InternalDataContainer.State.IsChanged, Is.True);
+      Assert.That (_oldCustomer.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That (_newCustomer.InternalDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -101,9 +101,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
         eventReceiver.Check (expectedChangeStates);
 
-        Assert.That (_order1.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldCustomer.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_newCustomer.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_order1.State.IsUnchanged, Is.True);
+        Assert.That (_oldCustomer.State.IsUnchanged, Is.True);
+        Assert.That (_newCustomer.State.IsUnchanged, Is.True);
 
         Assert.That (_order1.Customer, Is.SameAs (_oldCustomer));
         Assert.That (_oldCustomer.Orders[_order1.ID], Is.SameAs (_order1));
@@ -137,9 +137,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
         eventReceiver.Check (expectedChangeStates);
 
-        Assert.That (_order1.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldCustomer.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_newCustomer.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_order1.State.IsUnchanged, Is.True);
+        Assert.That (_oldCustomer.State.IsUnchanged, Is.True);
+        Assert.That (_newCustomer.State.IsUnchanged, Is.True);
 
         Assert.That (_order1.Customer, Is.SameAs (_oldCustomer));
         Assert.That (_oldCustomer.Orders[_order1.ID], Is.SameAs (_order1));
@@ -174,9 +174,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
         eventReceiver.Check (expectedChangeStates);
 
-        Assert.That (_order1.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldCustomer.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_newCustomer.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_order1.State.IsUnchanged, Is.True);
+        Assert.That (_oldCustomer.State.IsUnchanged, Is.True);
+        Assert.That (_newCustomer.State.IsUnchanged, Is.True);
 
         Assert.That (_order1.Customer, Is.SameAs (_oldCustomer));
         Assert.That (_oldCustomer.Orders[_order1.ID], Is.SameAs (_order1));
@@ -212,9 +212,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
         eventReceiver.Check (expectedChangeStates);
 
-        Assert.That (_order1.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldCustomer.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_newCustomer.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_order1.State.IsUnchanged, Is.True);
+        Assert.That (_oldCustomer.State.IsUnchanged, Is.True);
+        Assert.That (_newCustomer.State.IsUnchanged, Is.True);
 
         Assert.That (_order1.Customer, Is.SameAs (_oldCustomer));
         Assert.That (_oldCustomer.Orders[_order1.ID], Is.SameAs (_order1));
@@ -251,9 +251,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
         eventReceiver.Check (expectedChangeStates);
 
-        Assert.That (_order1.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_oldCustomer.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_newCustomer.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_order1.State.IsUnchanged, Is.True);
+        Assert.That (_oldCustomer.State.IsUnchanged, Is.True);
+        Assert.That (_newCustomer.State.IsUnchanged, Is.True);
 
         Assert.That (_order1.Customer, Is.SameAs (_oldCustomer));
         Assert.That (_oldCustomer.Orders[_order1.ID], Is.SameAs (_order1));
@@ -266,9 +266,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _newCustomer.Orders.Add (_order1);
 
-      Assert.That (_order1.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_oldCustomer.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_newCustomer.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_order1.State.IsChanged, Is.True);
+      Assert.That (_oldCustomer.State.IsChanged, Is.True);
+      Assert.That (_newCustomer.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -291,42 +291,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _order1.Customer = _newCustomer;
 
-      Assert.That (_order1.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_oldCustomer.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_newCustomer.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_order1.State.IsChanged, Is.True);
+      Assert.That (_oldCustomer.State.IsChanged, Is.True);
+      Assert.That (_newCustomer.State.IsChanged, Is.True);
 
       Assert.That (_order1.Customer, Is.SameAs (_newCustomer));
       Assert.That (_oldCustomer.Orders[_order1.ID], Is.Null);
       Assert.That (_newCustomer.Orders[_order1.ID], Is.SameAs (_order1));
 
-      Assert.That (_order1.InternalDataContainer.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_newCustomer.InternalDataContainer.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_oldCustomer.InternalDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order1.InternalDataContainer.State.IsChanged, Is.True);
+      Assert.That (_newCustomer.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That (_oldCustomer.InternalDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void ChangeRelationBackToOriginalValue ()
     {
       _order1.Customer = _newCustomer;
-      Assert.That (_order1.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_oldCustomer.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_newCustomer.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_order1.State.IsChanged, Is.True);
+      Assert.That (_oldCustomer.State.IsChanged, Is.True);
+      Assert.That (_newCustomer.State.IsChanged, Is.True);
 
       _order1.Customer = _oldCustomer;
-      Assert.That (_order1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_oldCustomer.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_newCustomer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order1.State.IsUnchanged, Is.True);
+      Assert.That (_oldCustomer.State.IsUnchanged, Is.True);
+      Assert.That (_newCustomer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void SetOriginalValue ()
     {
       _order1.Customer = _order1.Customer;
-      Assert.That (_order1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_order1.Customer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order1.State.IsUnchanged, Is.True);
+      Assert.That (_order1.Customer.State.IsUnchanged, Is.True);
 
-      Assert.That (_order1.InternalDataContainer.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_order1.Customer.InternalDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order1.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That (_order1.Customer.InternalDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]

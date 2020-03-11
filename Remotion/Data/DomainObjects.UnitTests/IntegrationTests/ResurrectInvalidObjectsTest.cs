@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
       ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, notFoundID);
 
-      CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, StateType.NotLoadedYet);
+      CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, notFoundID);
 
       Assert.That (result, Is.True);
-      CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, StateType.NotLoadedYet);
+      CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
       ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, newObject.ID);
 
-      CheckStateIsNotInvalid (newObject, TestableClientTransaction, StateType.NotLoadedYet);
+      CheckStateIsNotInvalid (newObject, TestableClientTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, newObject.ID);
 
       Assert.That (result, Is.True);
-      CheckStateIsNotInvalid (newObject, TestableClientTransaction, StateType.NotLoadedYet);
+      CheckStateIsNotInvalid (newObject, TestableClientTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
       ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, deletedObject.ID);
 
-      CheckStateIsNotInvalid (deletedObject, TestableClientTransaction, StateType.NotLoadedYet);
+      CheckStateIsNotInvalid (deletedObject, TestableClientTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, deletedObject.ID);
 
       Assert.That (result, Is.True);
-      CheckStateIsNotInvalid (deletedObject, TestableClientTransaction, StateType.NotLoadedYet);
+      CheckStateIsNotInvalid (deletedObject, TestableClientTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
@@ -122,13 +122,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         var newObject = Order.NewObject();
 
         CheckStateIsInvalid (newObject, TestableClientTransaction);
-        CheckStateIsNotInvalid (newObject, subTransaction, StateType.New);
+        CheckStateIsNotInvalid (newObject, subTransaction, state => state.IsNew);
 
         Assert.That (
             () => ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, newObject.ID),
             Throws.InvalidOperationException.With.Message.EqualTo (
                 "Cannot resurrect object '" + newObject.ID + "' because it is not invalid within the whole transaction hierarchy. "
-                + "In transaction '" + subTransaction + "', the object has state 'New'."));
+                + "In transaction '" + subTransaction + "', the object has DomainObjectState (New)."));
 
         var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, newObject.ID);
         Assert.That (result, Is.False);
@@ -145,13 +145,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       using (subTransaction.EnterDiscardingScope ())
       {
         CheckStateIsInvalid (deletedObject, subTransaction);
-        CheckStateIsNotInvalid (deletedObject, TestableClientTransaction, StateType.Deleted);
+        CheckStateIsNotInvalid (deletedObject, TestableClientTransaction, state => state.IsDeleted);
 
         Assert.That (
             () => ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, deletedObject.ID),
             Throws.InvalidOperationException.With.Message.EqualTo (
                 "Cannot resurrect object '" + deletedObject.ID + "' because it is not invalid within the whole transaction hierarchy. "
-                + "In transaction '" + TestableClientTransaction + "', the object has state 'Deleted'."));
+                + "In transaction '" + TestableClientTransaction + "', the object has DomainObjectState (Deleted)."));
 
         var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, deletedObject.ID);
         Assert.That (result, Is.False);
@@ -166,14 +166,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var subTransaction = TestableClientTransaction.CreateSubTransaction ();
       using (subTransaction.EnterDiscardingScope ())
       {
-        CheckStateIsNotInvalid (notInvalidObject, TestableClientTransaction, StateType.Unchanged);
-        CheckStateIsNotInvalid (notInvalidObject, subTransaction, StateType.NotLoadedYet);
+        CheckStateIsNotInvalid (notInvalidObject, TestableClientTransaction, state => state.IsUnchanged);
+        CheckStateIsNotInvalid (notInvalidObject, subTransaction, state => state.IsNotLoadedYet);
 
         Assert.That (
             () => ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, notInvalidObject.ID),
             Throws.InvalidOperationException.With.Message.EqualTo (
                 "Cannot resurrect object '" + notInvalidObject.ID + "' because it is not invalid within the whole transaction hierarchy. "
-                + "In transaction '" + subTransaction + "', the object has state 'NotLoadedYet'."));
+                + "In transaction '" + subTransaction + "', the object has DomainObjectState (NotLoadedYet)."));
 
         var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, notInvalidObject.ID);
         Assert.That (result, Is.False);
@@ -196,8 +196,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
         ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, notFoundID);
 
-        CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, StateType.NotLoadedYet);
-        CheckStateIsNotInvalid (notFoundObject, subTransaction, StateType.NotLoadedYet);
+        CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+        CheckStateIsNotInvalid (notFoundObject, subTransaction, state => state.IsNotLoadedYet);
       }
     }
 
@@ -217,8 +217,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
         ResurrectionService.ResurrectInvalidObject (subTransaction, notFoundID);
 
-        CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, StateType.NotLoadedYet);
-        CheckStateIsNotInvalid (notFoundObject, subTransaction, StateType.NotLoadedYet);
+        CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+        CheckStateIsNotInvalid (notFoundObject, subTransaction, state => state.IsNotLoadedYet);
       }
     }
 
@@ -239,8 +239,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, notFoundID);
 
         Assert.That (result, Is.True);
-        CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, StateType.NotLoadedYet);
-        CheckStateIsNotInvalid (notFoundObject, subTransaction, StateType.NotLoadedYet);
+        CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+        CheckStateIsNotInvalid (notFoundObject, subTransaction, state => state.IsNotLoadedYet);
       }
     }
 
@@ -261,23 +261,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         var result = ResurrectionService.TryResurrectInvalidObject (subTransaction, notFoundID);
 
         Assert.That (result, Is.True);
-        CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, StateType.NotLoadedYet);
-        CheckStateIsNotInvalid (notFoundObject, subTransaction, StateType.NotLoadedYet);
+        CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+        CheckStateIsNotInvalid (notFoundObject, subTransaction, state => state.IsNotLoadedYet);
       }
     }
 
-    private void CheckStateIsNotInvalid (DomainObject domainObject, ClientTransaction clientTransaction, StateType expectedState)
+    private void CheckStateIsNotInvalid (
+        DomainObject domainObject,
+        ClientTransaction clientTransaction,
+        Func<DomainObjectState, bool> expectedStatePredicate)
     {
       Assert.That (clientTransaction.IsInvalid (domainObject.ID), Is.False);
-      Assert.That (domainObject.TransactionContext[clientTransaction].IsInvalid, Is.False);
-      Assert.That (domainObject.TransactionContext[clientTransaction].State, Is.EqualTo (expectedState));
+      var domainObjectState = domainObject.TransactionContext[clientTransaction].State;
+      Assert.That (domainObjectState.IsInvalid, Is.False);
+      Assert.That (expectedStatePredicate (domainObjectState), Is.True);
     }
 
     private void CheckStateIsInvalid (DomainObject domainObject, ClientTransaction clientTransaction)
     {
       Assert.That (clientTransaction.IsInvalid (domainObject.ID), Is.True);
-      Assert.That (domainObject.TransactionContext[clientTransaction].IsInvalid, Is.True);
-      Assert.That (domainObject.TransactionContext[clientTransaction].State, Is.EqualTo (StateType.Invalid));
+      Assert.That (domainObject.TransactionContext[clientTransaction].State.IsInvalid, Is.True);
     }
   }
 }

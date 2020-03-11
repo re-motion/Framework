@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, StateType newDataContainerState)
+    public void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, DataContainerState newDataContainerState)
     {
       throw CreateException ();
     }

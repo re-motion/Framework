@@ -177,6 +177,8 @@
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IPropertyMetadataProvider.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyMetadataReflector.cs" />
     <Compile Include="DomainObjectHandleConverter.cs" />
+    <Compile Include="DataManagement\DataContainerState.cs" />
+    <Compile Include="DomainObjectState.cs" />
     <Compile Include="IDomainObject.cs" />
     <Compile Include="Linq\FluentFetchRequest.cs" />
     <Compile Include="Mapping\DefaultStorageClass.cs" />
@@ -593,7 +595,6 @@
     <Compile Include="DataManagement\RelationEndPoints\IObjectEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RelationEndPointExtensions.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RealObjectEndPoint.cs" />
-    <Compile Include="DataManagement\StateValueSet.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualObjectEndPoint.cs" />
     <Compile Include="DomainObjectCollection.EventRaiser.cs" />
     <Compile Include="DataManagement\RelationEndPoints\ICollectionEndPointChangeDetectionStrategy.cs" />
@@ -1057,7 +1058,7 @@
     </Compile>
     <Compile Include="Schemas\TypesSchemaLoader.cs" />
     <Compile Include="Schemas\SchemaLoader.cs" />
-    <Compile Include="StateType.cs">
+    <Compile Include="StateType.obsolete.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Infrastructure\ObjectPersistence\SubPersistenceStrategy.cs" />

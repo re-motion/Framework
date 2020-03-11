@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       // GetDataContainerWithLazyLoad throws on invalid objectID
       var dataContainer = _dataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound: true);
 
-      if (dataContainer.State == StateType.Deleted && !includeDeleted)
+      if (dataContainer.State.IsDeleted && !includeDeleted)
         throw new ObjectDeletedException (objectID);
 
       return dataContainer.DomainObject;

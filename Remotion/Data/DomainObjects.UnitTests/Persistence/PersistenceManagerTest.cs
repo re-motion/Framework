@@ -672,7 +672,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       DataContainer container = CreateDataContainer (orderClass);
 
       Assert.That (container, Is.Not.Null);
-      Assert.That (container.State, Is.EqualTo (StateType.New));
+      Assert.That (container.State.IsNew, Is.True);
       Assert.That (container.ID, Is.Not.Null);
     }
 

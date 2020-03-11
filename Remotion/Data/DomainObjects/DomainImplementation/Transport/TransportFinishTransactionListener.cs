@@ -54,11 +54,11 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       // is discarded after transport anyway.
 
       var dataContainer = clientTransaction.DataManager.GetDataContainerWithLazyLoad (domainObject.ID, throwOnNotFound: true);
-      if (dataContainer.State == StateType.New)
+      if (dataContainer.State.IsNew)
       {
         var deleteCommand = clientTransaction.DataManager.CreateDeleteCommand (domainObject);
         deleteCommand.Perform(); // no events, no bidirectional changes
-        Assertion.IsTrue (dataContainer.IsDiscarded);
+        Assertion.IsTrue (dataContainer.State.IsDiscarded);
       }
       else
       {

@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.Security
       if (SecurityFreeSection.IsActive)
         return;
 
-      if (domainObject.TransactionContext[clientTransaction].State == StateType.New)
+      if (domainObject.TransactionContext[clientTransaction].State.IsNew)
         return;
 
       var securableObject = domainObject as ISecurableObject;

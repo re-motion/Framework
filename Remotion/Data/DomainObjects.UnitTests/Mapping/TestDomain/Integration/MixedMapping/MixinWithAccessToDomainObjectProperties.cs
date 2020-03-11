@@ -43,15 +43,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
     }
 
     [StorageClassNone]
-    public new StateType State
+    public new DomainObjectState State
     {
       get { return base.State; }
-    }
-
-    [StorageClassNone]
-    public new bool IsInvalid
-    {
-      get { return base.IsInvalid; }
     }
 
     [StorageClassNone]

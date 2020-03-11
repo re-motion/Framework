@@ -215,8 +215,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         var loadedObjects = finalResult.ToArray ();
 
         Assert.That (loadedObjects.Length, Is.EqualTo (2));
-        Assert.That (loadedObjects[0].State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (loadedObjects[1].State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (loadedObjects[0].State.IsUnchanged, Is.True);
+        Assert.That (loadedObjects[1].State.IsUnchanged, Is.True);
       }
     }
 
@@ -228,16 +228,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       var result = ClientTransaction.Current.QueryManager.GetCollection (query).ToArray(); // preload query result in parent transaction
       Assert.That (result.Length, Is.EqualTo (2));
-      Assert.That (result[0].State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (result[1].State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (result[0].State.IsUnchanged, Is.True);
+      Assert.That (result[1].State.IsUnchanged, Is.True);
 
       using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
         var finalResult = ClientTransaction.Current.QueryManager.GetCollection (query);
         var loadedObjects = finalResult.ToArray ();
 
-        Assert.That (loadedObjects[0].State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (loadedObjects[1].State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (loadedObjects[0].State.IsUnchanged, Is.True);
+        Assert.That (loadedObjects[1].State.IsUnchanged, Is.True);
       }
     }
 
@@ -251,7 +251,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That (outerResult.Length, Is.EqualTo (1));
 
       outerResult[0].Delete();
-      Assert.That (outerResult[0].State, Is.EqualTo (StateType.Deleted));
+      Assert.That (outerResult[0].State.IsDeleted, Is.True);
 
       using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
@@ -259,7 +259,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         var loadedObjects = finalResult.ToArray ();
 
         Assert.That (loadedObjects[0], Is.SameAs (outerResult[0]));
-        Assert.That (loadedObjects[0].State, Is.EqualTo (StateType.Invalid));
+        Assert.That (loadedObjects[0].State.IsInvalid, Is.True);
       }
     }
 
@@ -273,11 +273,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That (outerResult.Length, Is.EqualTo (1));
 
       outerResult[0].Delete ();
-      Assert.That (outerResult[0].State, Is.EqualTo (StateType.Deleted));
+      Assert.That (outerResult[0].State.IsDeleted, Is.True);
 
       using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        Assert.That (outerResult[0].State, Is.EqualTo (StateType.Invalid));
+        Assert.That (outerResult[0].State.IsInvalid, Is.True);
 
         using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
@@ -285,7 +285,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           var loadedObjects = finalResult.ToArray ();
 
           Assert.That (loadedObjects[0], Is.SameAs (outerResult[0]));
-          Assert.That (loadedObjects[0].State, Is.EqualTo (StateType.Invalid));
+          Assert.That (loadedObjects[0].State.IsInvalid, Is.True);
         }
       }
     }

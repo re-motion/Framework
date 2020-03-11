@@ -58,12 +58,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       {
         _newIndustrialSector.EnsureDataAvailable ();
 
-        Assert.That (_newIndustrialSector.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_newIndustrialSector.State.IsUnchanged, Is.True);
         var newCompanies = new ObjectList<Company> ();
         _newIndustrialSector.Companies = newCompanies;
-        Assert.That (_newIndustrialSector.State, Is.EqualTo (StateType.Changed));
+        Assert.That (_newIndustrialSector.State.IsChanged, Is.True);
         _newIndustrialSector.Companies.Add (_newCompany1);
-        Assert.That (_newIndustrialSector.State, Is.EqualTo (StateType.Changed));
+        Assert.That (_newIndustrialSector.State.IsChanged, Is.True);
       }
     }
 
@@ -77,10 +77,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
         _newIndustrialSector.Companies = newCompanies;
         _newIndustrialSector.Companies.Add (_newCompany1);
         _newIndustrialSector.Companies.Add (_newCompany2);
-        Assert.That (_newIndustrialSector.State, Is.EqualTo (StateType.Changed));
+        Assert.That (_newIndustrialSector.State.IsChanged, Is.True);
         ClientTransaction.Current.Commit ();
 
-        Assert.That (_newIndustrialSector.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_newIndustrialSector.State.IsUnchanged, Is.True);
         Assert.That (newCompanies, Is.EquivalentTo (new[] { _newCompany1, _newCompany2 }));
         Assert.That (oldCompanies, Is.Empty);
       }
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       {
         _newIndustrialSector.EnsureDataAvailable ();
 
-        Assert.That (_newIndustrialSector.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_newIndustrialSector.State.IsUnchanged, Is.True);
         var oldCompanies = _newIndustrialSector.Companies;
         var newCompanies = new ObjectList<Company> ();
         _newIndustrialSector.Companies = newCompanies;
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
         _newIndustrialSector.Companies.Add (_newCompany2);
         ClientTransaction.Current.Rollback();
         
-        Assert.That (_newIndustrialSector.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_newIndustrialSector.State.IsUnchanged, Is.True);
         Assert.That (_newIndustrialSector.Companies, Is.Empty);
         Assert.That (_newIndustrialSector.Companies, Is.SameAs (oldCompanies));
         Assert.That (newCompanies, Is.EquivalentTo (new[] { _newCompany1, _newCompany2 }), "list is detached during commit, but keeps its values");

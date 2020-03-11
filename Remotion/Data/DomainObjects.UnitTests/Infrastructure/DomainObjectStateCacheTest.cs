@@ -52,39 +52,54 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void GetState_IsInvalid ()
     {
       LifetimeService.DeleteObject (_transaction, _newOrder);
-      Assert.That (_cachingListener.GetState (_newOrder.ID), Is.EqualTo (StateType.Invalid));
+
+      var domainObjectState = _cachingListener.GetState (_newOrder.ID);
+      Assert.That (domainObjectState.IsInvalid, Is.True);
+      Assert.That (GetNumberOfSetFlags (domainObjectState), Is.EqualTo (1));
     }
 
     [Test]
     public void GetState_NotYetLoaded ()
     {
-      Assert.That (_cachingListener.GetState (_notYetLoadedOrder.ID), Is.EqualTo (StateType.NotLoadedYet));
+      var domainObjectState = _cachingListener.GetState (_notYetLoadedOrder.ID);
+      Assert.That (domainObjectState.IsNotLoadedYet, Is.True);
+      Assert.That (GetNumberOfSetFlags (domainObjectState), Is.EqualTo (1));
     }
 
     [Test]
     public void GetState_FromDataContainer_New ()
     {
-      Assert.That (_cachingListener.GetState (_newOrder.ID), Is.EqualTo (StateType.New));
+      var domainObjectState = _cachingListener.GetState (_newOrder.ID);
+      Assert.That (domainObjectState.IsNew, Is.True);
+      Assert.That (GetNumberOfSetFlags (domainObjectState), Is.EqualTo (1));
     }
 
     [Test]
     public void GetState_FromDataContainer_Unchanged ()
     {
-      Assert.That (_cachingListener.GetState (_existingOrder.ID), Is.EqualTo (StateType.Unchanged));
+      var domainObjectState = _cachingListener.GetState (_existingOrder.ID);
+      Assert.That (domainObjectState.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (domainObjectState), Is.EqualTo (1));
     }
 
     [Test]
     public void GetState_FromDataContainer_Changed ()
     {
       _transaction.ExecuteInScope (() => _existingOrder.OrderNumber++);
-      Assert.That (_cachingListener.GetState (_existingOrder.ID), Is.EqualTo (StateType.Changed));
+
+      var domainObjectState = _cachingListener.GetState (_existingOrder.ID);
+      Assert.That (domainObjectState.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (domainObjectState), Is.EqualTo (1));
     }
 
     [Test]
     public void GetState_FromDataContainer_ChangedRelation ()
     {
-      _transaction.ExecuteInScope (() => _existingOrder.OrderItems.Clear ());
-      Assert.That (_cachingListener.GetState (_existingOrder.ID), Is.EqualTo (StateType.Changed));
+      _transaction.ExecuteInScope (() => _existingOrder.OrderItems.Clear());
+
+      var domainObjectState = _cachingListener.GetState (_existingOrder.ID);
+      Assert.That (domainObjectState.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (domainObjectState), Is.EqualTo (1));
     }
 
     [Test]
@@ -102,17 +117,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void GetState_IDWithoutDomainObject ()
     {
       Assert.That (_transaction.GetEnlistedDomainObject (DomainObjectIDs.Order4), Is.Null);
-      Assert.That (_cachingListener.GetState (DomainObjectIDs.Order4), Is.EqualTo (StateType.NotLoadedYet));
+
+      var domainObjectState = _cachingListener.GetState (DomainObjectIDs.Order4);
+      Assert.That (domainObjectState.IsNotLoadedYet, Is.True);
+      Assert.That (GetNumberOfSetFlags (domainObjectState), Is.EqualTo (1));
     }
-    
+
     [Test]
     public void GetState_Twice ()
     {
       var existingState1 = _cachingListener.GetState (_existingOrder.ID);
       var existingState2 = _cachingListener.GetState (_existingOrder.ID);
 
-      Assert.That (existingState1, Is.EqualTo (StateType.Unchanged));
-      Assert.That (existingState2, Is.EqualTo (StateType.Unchanged));
+      Assert.That (existingState1.IsUnchanged, Is.True);
+      Assert.That (existingState2.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -123,8 +141,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _transaction.ExecuteInScope (() => _existingOrder.OrderNumber++);
       var stateAfterChange = _cachingListener.GetState (_existingOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.Unchanged));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.Changed));
+      Assert.That (stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
     }
 
     [Test]
@@ -135,8 +156,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _transaction.ExecuteInScope (() => _existingOrder.Customer = null);
       var stateAfterChange = _cachingListener.GetState (_existingOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.Unchanged));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.Changed));
+      Assert.That (stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
     }
 
     [Test]
@@ -147,8 +171,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _transaction.ExecuteInScope (() => _existingOrder.OrderTicket = null);
       var stateAfterChange = _cachingListener.GetState (_existingOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.Unchanged));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.Changed));
+      Assert.That (stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
     }
 
     [Test]
@@ -159,8 +186,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _transaction.ExecuteInScope (() => _existingOrder.OrderItems.RemoveAt (0));
       var stateAfterChange = _cachingListener.GetState (_existingOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.Unchanged));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.Changed));
+      Assert.That (stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
     }
 
     [Test]
@@ -171,8 +201,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       UnloadService.UnloadData (_transaction, _existingOrder.ID);
       var stateAfterChange = _cachingListener.GetState (_existingOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.Unchanged));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsNotLoadedYet, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
     }
 
     [Test]
@@ -184,8 +217,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _transaction.EnsureDataAvailable (_existingOrder.ID);
       var stateAfterChange = _cachingListener.GetState (_existingOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.Unchanged));
+      Assert.That (stateBeforeChange.IsNotLoadedYet, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
     }
 
     [Test]
@@ -196,8 +232,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       LifetimeService.DeleteObject (_transaction, _existingOrder);
       var stateAfterChange = _cachingListener.GetState (_existingOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.Unchanged));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.Deleted));
+      Assert.That (stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsDeleted, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
     }
 
     [Test]
@@ -208,8 +247,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       LifetimeService.DeleteObject (_transaction, _newOrder);
       var stateAfterChange = _cachingListener.GetState (_newOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.New));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.Invalid));
+      Assert.That (stateBeforeChange.IsNew, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsInvalid, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
     }
 
     [Test]
@@ -222,8 +264,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _transaction.Rollback ();
       var stateAfterChange = _cachingListener.GetState (_existingOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.Changed));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.Unchanged));
+      Assert.That (stateBeforeChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
     }
 
     [Test]
@@ -239,8 +284,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       subTransaction.Commit ();
       var stateAfterChange = cachingListener.GetState (_existingOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.Changed));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.Unchanged));
+      Assert.That (stateBeforeChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
     }
 
     [Test]
@@ -255,8 +303,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       subTransaction.Commit ();
       var stateAfterChange = _cachingListener.GetState (_existingOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.Unchanged));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.Changed));
+      Assert.That (stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
     }
 
     [Test]
@@ -267,8 +318,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _transaction.ExecuteInScope (() => DataManagementService.GetDataManager (_transaction).MarkInvalid (_notYetLoadedOrder));
       var stateAfterChange = _cachingListener.GetState (_notYetLoadedOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.Invalid));
+      Assert.That (stateBeforeChange.IsNotLoadedYet, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsInvalid, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
     }
 
     [Test]
@@ -280,8 +334,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _transaction.ExecuteInScope (() => DataManagementService.GetDataManager (_transaction).MarkNotInvalid (_newOrder.ID));
       var stateAfterChange = _cachingListener.GetState (_newOrder.ID);
 
-      Assert.That (stateBeforeChange, Is.EqualTo (StateType.Invalid));
-      Assert.That (stateAfterChange, Is.EqualTo (StateType.NotLoadedYet));
+      Assert.That (stateBeforeChange.IsInvalid, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsNotLoadedYet, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void GetState_DataContainerDiscardedWhileRegisteredWithDataManager_ThrowsInvalidOperationException ()
+    {
+      _transaction.ExecuteInScope (() => DataManagementService.GetDataManager (_transaction).DataContainers[_newOrder.ID].Discard());
+      Assert.That (
+          () => _cachingListener.GetState (_newOrder.ID),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              $"DataContainer for object '{_newOrder.ID}' has been discarded without removing the instance from the DataManager."));
     }
 
     [Test]
@@ -293,9 +360,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var deserializedTx = deserializedTuple.Item2;
       var deserializedDomainObject = deserializedTuple.Item3;
 
-      Assert.That (deserializedCache.GetState (deserializedDomainObject.ID), Is.EqualTo (StateType.Unchanged));
+      var stateBeforeChange = deserializedCache.GetState (deserializedDomainObject.ID);
       deserializedTx.ExecuteInScope (() => deserializedDomainObject.OrderNumber++);
-      Assert.That (deserializedCache.GetState (deserializedDomainObject.ID), Is.EqualTo (StateType.Changed));
+      var stateAfterChange = deserializedCache.GetState (deserializedDomainObject.ID);
+
+      Assert.That (stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateBeforeChange), Is.EqualTo (1));
+
+      Assert.That (stateAfterChange.IsChanged, Is.True);
+      Assert.That (GetNumberOfSetFlags (stateAfterChange), Is.EqualTo (1));
+    }
+
+    private int GetNumberOfSetFlags (DomainObjectState domainObjectState)
+    {
+      int count = 0;
+      if (domainObjectState.IsNew)
+        count++;
+      if (domainObjectState.IsChanged)
+        count++;
+      if (domainObjectState.IsDeleted)
+        count++;
+      if (domainObjectState.IsInvalid)
+        count++;
+      if (domainObjectState.IsNotLoadedYet)
+        count++;
+      if (domainObjectState.IsUnchanged)
+        count++;
+
+      return count;
     }
   }
 }

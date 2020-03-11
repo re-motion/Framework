@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _dataManager.Commit ();
 
       var changedButNotDeletedDomainObjects = persistableDataItems
-          .Where (item => item.DomainObjectState != StateType.Deleted)
+          .Where (item => !item.DomainObjectState.IsDeleted)
           .Select (item => item.DomainObject)
           .ToList ()
           .AsReadOnly ();
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _dataManager.Rollback ();
 
       var changedButNotNewItems =
-          persistableDataItems.Where (item => item.DomainObjectState != StateType.New)
+          persistableDataItems.Where (item => !item.DomainObjectState.IsNew)
               .Select (item => item.DomainObject)
               .ToList()
               .AsReadOnly();
@@ -187,7 +187,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     private IEnumerable<PersistableData> GetNewChangedDeletedData ()
     {
-      return _dataManager.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New);
+      // Place tests in order of probability to reduce number of checks required until a match for a typical usage scenario
+      return _dataManager.GetLoadedDataByObjectState (state => state.IsChanged || state.IsNew || state.IsDeleted);
     }
 
   }

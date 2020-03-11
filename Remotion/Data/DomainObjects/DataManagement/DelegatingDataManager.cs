@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get { return SafeInnerDataManager.RelationEndPoints; }
     }
 
-    public StateType GetState (ObjectID objectID)
+    public DomainObjectState GetState (ObjectID objectID)
     {
       return SafeInnerDataManager.GetState (objectID);
     }
@@ -91,9 +91,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return SafeInnerDataManager.GetDataContainersWithLazyLoad (objectIDs, throwOnNotFound);
     }
 
-    public IEnumerable<PersistableData> GetLoadedDataByObjectState (params StateType[] domainObjectStates)
+    public IEnumerable<PersistableData> GetLoadedDataByObjectState (Func<DomainObjectState, bool> predicate)
     {
-      return SafeInnerDataManager.GetLoadedDataByObjectState (domainObjectStates);
+      return SafeInnerDataManager.GetLoadedDataByObjectState (predicate);
     }
 
     public void MarkInvalid (DomainObject domainObject)

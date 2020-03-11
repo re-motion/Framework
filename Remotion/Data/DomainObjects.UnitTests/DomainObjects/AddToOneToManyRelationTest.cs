@@ -75,8 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (_supervisorEventReceiver.ChangedOldRelatedObject, Is.Null);
       Assert.That (_supervisorEventReceiver.ChangedNewRelatedObject, Is.SameAs (_subordinate));
 
-      Assert.That (_subordinate.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_supervisor.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_subordinate.State.IsChanged, Is.True);
+      Assert.That (_supervisor.State.IsChanged, Is.True);
       Assert.That (_supervisor.Subordinates[_subordinate.ID], Is.Not.Null);
       Assert.That (_supervisor.Subordinates.IndexOf (_subordinate), Is.EqualTo (_supervisor.Subordinates.Count - 1));
       Assert.That (_subordinate.Supervisor, Is.SameAs (_supervisor));
@@ -116,8 +116,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
         Assert.That (_supervisorEventReceiver.ChangingOldRelatedObject, Is.Null);
         Assert.That (_supervisorEventReceiver.ChangingNewRelatedObject, Is.Null);
 
-        Assert.That (_subordinate.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_supervisor.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_subordinate.State.IsUnchanged, Is.True);
+        Assert.That (_supervisor.State.IsUnchanged, Is.True);
         Assert.That (_supervisor.Subordinates.Count, Is.EqualTo (2));
         Assert.That (_subordinate.Supervisor, Is.Null);
       }
@@ -157,8 +157,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
         Assert.That (_supervisorEventReceiver.ChangingOldRelatedObject, Is.Null);
         Assert.That (_supervisorEventReceiver.ChangingNewRelatedObject, Is.Null);
 
-        Assert.That (_subordinate.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_supervisor.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_subordinate.State.IsUnchanged, Is.True);
+        Assert.That (_supervisor.State.IsUnchanged, Is.True);
         Assert.That (_supervisor.Subordinates.Count, Is.EqualTo (2));
         Assert.That (_subordinate.Supervisor, Is.Null);
       }
@@ -197,8 +197,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
         Assert.That (_supervisorEventReceiver.ChangingOldRelatedObject, Is.Null);
         Assert.That (_supervisorEventReceiver.ChangingNewRelatedObject, Is.SameAs (_subordinate));
 
-        Assert.That (_subordinate.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (_supervisor.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That (_subordinate.State.IsUnchanged, Is.True);
+        Assert.That (_supervisor.State.IsUnchanged, Is.True);
         Assert.That (_supervisor.Subordinates.Count, Is.EqualTo (2));
         Assert.That (_subordinate.Supervisor, Is.Null);
       }
@@ -207,13 +207,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void StateTracking ()
     {
-      Assert.That (_supervisor.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (_subordinate.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_supervisor.State.IsUnchanged, Is.True);
+      Assert.That (_subordinate.State.IsUnchanged, Is.True);
 
       _supervisor.Subordinates.Add (_subordinate);
 
-      Assert.That (_supervisor.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_subordinate.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_supervisor.State.IsChanged, Is.True);
+      Assert.That (_subordinate.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -248,8 +248,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Employee employeeWithSupervisor = _supervisor.Subordinates[DomainObjectIDs.Employee4];
       employeeWithSupervisor.Supervisor = _supervisor;
 
-      Assert.That (_supervisor.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (employeeWithSupervisor.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_supervisor.State.IsUnchanged, Is.True);
+      Assert.That (employeeWithSupervisor.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -293,8 +293,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (_supervisorEventReceiver.ChangedOldRelatedObject, Is.Null);
       Assert.That (_supervisorEventReceiver.ChangedNewRelatedObject, Is.SameAs (_subordinate));
 
-      Assert.That (_subordinate.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_supervisor.State, Is.EqualTo (StateType.Changed));
+      Assert.That (_subordinate.State.IsChanged, Is.True);
+      Assert.That (_supervisor.State.IsChanged, Is.True);
       Assert.That (_supervisor.Subordinates[_subordinate.ID], Is.Not.Null);
       Assert.That (_subordinate.Supervisor, Is.SameAs (_supervisor));
     }
@@ -375,9 +375,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (_supervisorEventReceiver.ChangedOldRelatedObject, Is.Null);
       Assert.That (_supervisorEventReceiver.ChangedNewRelatedObject, Is.SameAs (subordinate));
 
-      Assert.That (subordinate.State, Is.EqualTo (StateType.Changed));
-      Assert.That (_supervisor.State, Is.EqualTo (StateType.Changed));
-      Assert.That (oldSupervisorOfSubordinate.State, Is.EqualTo (StateType.Changed));
+      Assert.That (subordinate.State.IsChanged, Is.True);
+      Assert.That (_supervisor.State.IsChanged, Is.True);
+      Assert.That (oldSupervisorOfSubordinate.State.IsChanged, Is.True);
 
       Assert.That (_supervisor.Subordinates[subordinate.ID], Is.Not.Null);
       Assert.That (_supervisor.Subordinates.IndexOf (subordinate), Is.EqualTo (_supervisor.Subordinates.Count - 1));

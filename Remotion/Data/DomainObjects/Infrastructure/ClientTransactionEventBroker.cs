@@ -351,7 +351,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         for (int i = 0; i < domainObjects.Count; i++)
         {
           var domainObject = domainObjects[i];
-          if (domainObject.State != StateType.Invalid)
+          if (!domainObject.State.IsInvalid)
             domainObject.OnCommitting (new DomainObjectCommittingEventArgs (eventRegistrar));
         }
         // ReSharper restore ForCanBeConvertedToForeach
@@ -395,7 +395,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         for (int i = 0; i < domainObjects.Count; i++)
         {
           var domainObject = domainObjects[i];
-          if (domainObject.State != StateType.Invalid)
+          if (!domainObject.State.IsInvalid)
             domainObject.OnRollingBack (EventArgs.Empty);
         }
         // ReSharper restore ForCanBeConvertedToForeach
@@ -452,7 +452,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _listenerCollection.DataContainerMapUnregistering (_clientTransaction, container);
     }
 
-    public void RaiseDataContainerStateUpdatedEvent (DataContainer container, StateType newDataContainerState)
+    public void RaiseDataContainerStateUpdatedEvent (DataContainer container, DataContainerState newDataContainerState)
     {
       _listenerCollection.DataContainerStateUpdated (_clientTransaction, container, newDataContainerState);
     }

@@ -70,8 +70,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     public abstract bool IsEnabled { get; set; }
 
     /// <summary>
-    /// The <see cref="Substitution"/> is only active when the object is <see cref="StateType.Unchanged"/>, the <see cref="IsEnabled"/> flag is set
-    /// and the present date is within the range defined by <see cref="BeginDate"/> and <see cref="EndDate"/>.
+    /// The <see cref="Substitution"/> is only active when the object is unchanged (<see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> is <see langword="true" />),
+    /// the <see cref="IsEnabled"/> flag is set, and the present date is within the range defined by <see cref="BeginDate"/> and <see cref="EndDate"/>.
     /// </summary>
     [StorageClassNone]
     public bool IsActive
@@ -79,7 +79,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       get
       {
         EnsureDataAvailable ();
-        if (State != StateType.Unchanged)
+        if (!State.IsUnchanged)
           return false;
 
         if (!IsEnabled)
