@@ -32,6 +32,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public BrowserHelper (IBrowserConfiguration browserConfiguration)
     {
+      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
+
       BrowserConfiguration = browserConfiguration;
     }
 

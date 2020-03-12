@@ -223,6 +223,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public ControlSelectionContext CloneForControlSelection (PageObject pageObject)
     {
+      ArgumentUtility.CheckNotNull ("pageObject", pageObject);
+
       // No error page detection. See remarks documentation on this method.
 
       return new ControlSelectionContext (pageObject, Scope);

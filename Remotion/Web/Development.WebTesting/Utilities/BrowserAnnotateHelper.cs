@@ -40,6 +40,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public BrowserAnnotateHelper (IBrowserConfiguration configuration)
     {
+      ArgumentUtility.CheckNotNull ("configuration", configuration);
+
       BrowserConfiguration = configuration;
     }
 
@@ -57,6 +59,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         Size? maximumSize = null)
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
+      ArgumentUtility.CheckNotNull ("browserSession", browserSession);
       ArgumentUtility.CheckNotNull ("content", content);
 
       var seleniumDriver = (IWebDriver) browserSession.Driver.Native;

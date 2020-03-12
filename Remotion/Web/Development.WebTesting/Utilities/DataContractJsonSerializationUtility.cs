@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Deserializes the specified JSON string into the specified data contract type.
     /// </summary>
-    public static T Deserialize<T> (string serializedData)
+    public static T Deserialize<T> ([CanBeNull] string serializedData)
         where T : class
     {
       if (string.IsNullOrEmpty (serializedData))

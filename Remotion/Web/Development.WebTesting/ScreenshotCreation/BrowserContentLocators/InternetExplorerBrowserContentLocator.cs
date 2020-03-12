@@ -19,6 +19,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using OpenQA.Selenium;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators
 {
@@ -37,6 +38,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     /// <inheritdoc />
     public Rectangle GetBrowserContentBounds (IWebDriver driver)
     {
+      ArgumentUtility.CheckNotNull ("driver", driver);
+
       var jsExecutor = (IJavaScriptExecutor) driver;
       var data = ((ReadOnlyCollection<object>) jsExecutor.ExecuteScript (c_getWindowRectangleJs)).Select (e => (int) (long) e).ToArray();
       if (data.Length != 4)

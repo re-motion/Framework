@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
 {
@@ -26,12 +27,15 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     /// <inheritdoc/>
     public object PrepareWaitForCompletion (PageObjectContext context)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+
       return null;
     }
 
     /// <inheritdoc/>
     public void WaitForCompletion (PageObjectContext context, object state)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
     }
   }
 }

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Drawing;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -33,6 +34,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         IScreenshotTransformation<T> transformation,
         IBrowserContentLocator locator)
     {
+      ArgumentUtility.CheckNotNull ("graphics", graphics);
+      ArgumentUtility.CheckNotNull ("resolver", resolver);
+      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull ("transformation", transformation);
+      ArgumentUtility.CheckNotNull ("locator", locator);
+
       var resolvedElement = Resolve (resolver, target, locator, coordinateSystem);
       var context = new ScreenshotTransformationContext<T> (manipulation, graphics, resolver, target, resolvedElement);
 

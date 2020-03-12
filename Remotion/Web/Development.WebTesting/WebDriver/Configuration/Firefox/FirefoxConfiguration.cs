@@ -19,6 +19,7 @@ using System.IO;
 using System.Threading;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Firefox;
+using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default;
@@ -62,6 +63,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
         [NotNull] FirefoxExecutable firefoxExecutable)
         : base (webTestConfigurationSection)
     {
+      ArgumentUtility.CheckNotNull ("firefoxExecutable", firefoxExecutable);
+
       BrowserBinaryPath = firefoxExecutable.BrowserBinaryPath;
       DriverBinaryPath = firefoxExecutable.DriverBinaryPath;
 

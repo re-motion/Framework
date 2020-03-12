@@ -16,6 +16,7 @@
 // 
 using System;
 using OpenQA.Selenium;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -27,17 +28,17 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Finish promptly after entering the text.
     /// </summary>
-    public static readonly FinishInputWithAction Promptly = s => { };
+    public static readonly FinishInputWithAction Promptly = scope => { ArgumentUtility.CheckNotNull ("scope", scope); };
 
     /// <summary>
     /// Finish entering the text by switching focus using the Tab key. Triggers the ASP.NET postback.
     /// </summary>
-    public static readonly FinishInputWithAction WithTab = s => s.SendKeys (Keys.Tab);
+    public static readonly FinishInputWithAction WithTab = scope => ArgumentUtility.CheckNotNull ("scope", scope).SendKeys (Keys.Tab);
 
     /// <summary>
     /// Finish entering the text by pressing the Enter key. Triggers the ASP.NET postback in many situations.
     /// </summary>
     // Todo RM-6337: Why does PressEnter not trigger an auto postback in IE? Is this a bug? See BocListCO.GoToSpecificPage().
-    public static readonly FinishInputWithAction WithEnter = s => s.SendKeys (Keys.Enter);
+    public static readonly FinishInputWithAction WithEnter = scope => ArgumentUtility.CheckNotNull ("scope", scope).SendKeys (Keys.Enter);
   }
 }

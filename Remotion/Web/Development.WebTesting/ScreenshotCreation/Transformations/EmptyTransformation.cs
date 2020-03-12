@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
 {
@@ -38,12 +39,15 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
     /// <inheritdoc />
     public ScreenshotTransformationContext<T> BeginApply (ScreenshotTransformationContext<T> context)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+
       return context;
     }
 
     /// <inheritdoc />
     public void EndApply (ScreenshotTransformationContext<T> context)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
     }
   }
 }

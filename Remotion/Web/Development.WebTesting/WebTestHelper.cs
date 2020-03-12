@@ -367,6 +367,8 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>Initialized instance of AccessibilityAnalyzer</returns>
     public AccessibilityAnalyzer CreateAccessibilityAnalyzer ([NotNull] IBrowserSession browserSession)
     {
+      ArgumentUtility.CheckNotNull ("browserSession", browserSession);
+
       return AccessibilityAnalyzer.CreateForRemoteWebDriver (
           (RemoteWebDriver) browserSession.Driver.Native,
           new AxeResultParser(),

@@ -15,9 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -51,6 +53,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public ActionsWithWaitSupport (IWebDriver driver)
         : base (driver)
     {
+      ArgumentUtility.CheckNotNull ("driver", driver);
+
       _driver = driver;
     }
 
@@ -64,8 +68,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <exception cref="WebDriverException">Depending on the predicate, a variety of <see cref="WebDriverException"/>s may be thrown.
     /// <see cref="StaleElementReferenceException"/> may only appear after the timeout has been reached, before the timeout, it is ignored and the
     /// check of the condition is retried.</exception>
-    public ActionsWithWaitSupport WaitFor (IWebElement webElement, Func<IWebElement, bool> predicate, TimeSpan timeout)
+    public ActionsWithWaitSupport WaitFor ([NotNull] IWebElement webElement, [NotNull] Func<IWebElement, bool> predicate, TimeSpan timeout)
     {
+      ArgumentUtility.CheckNotNull ("webElement", webElement);
+      ArgumentUtility.CheckNotNull ("predicate", predicate);
+
       AddAction (
           new ActionAdapter (
               () =>

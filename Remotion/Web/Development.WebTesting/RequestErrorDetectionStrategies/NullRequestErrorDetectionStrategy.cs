@@ -16,6 +16,7 @@
 // 
 using System;
 using Coypu;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
 {
@@ -25,12 +26,12 @@ namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
   public sealed class NullRequestErrorDetectionStrategy : IRequestErrorDetectionStrategy
   {
     public NullRequestErrorDetectionStrategy ()
-    { 
+    {
     }
 
     public void CheckPageForError (ElementScope scope)
     {
-      
+      ArgumentUtility.CheckNotNull ("scope", scope);
     }
   }
 }

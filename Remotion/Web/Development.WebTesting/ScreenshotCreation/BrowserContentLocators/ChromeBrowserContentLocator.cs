@@ -22,6 +22,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Automation;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
+using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators
@@ -46,6 +47,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     /// <inheritdoc />
     public Rectangle GetBrowserContentBounds (IWebDriver driver)
     {
+      ArgumentUtility.CheckNotNull ("driver", driver);
+
       // Chrome does not support getting the content area from JS
       // which is why we need to search the Automation tree for the
       // correct browser window in order to retrieve the content area

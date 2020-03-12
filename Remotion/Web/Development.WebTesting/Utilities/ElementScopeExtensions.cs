@@ -78,6 +78,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         ContentAlignment? alignment = null,
         WebPadding? padding = null)
     {
+      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull ("target", target);
+
       var elementBounds = ElementScopeResolver.Instance.ResolveBrowserCoordinates (element).ElementBounds;
       var targetBounds = ElementScopeResolver.Instance.ResolveBrowserCoordinates (target).ElementBounds;
 

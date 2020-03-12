@@ -23,6 +23,7 @@ using System.Windows;
 using System.Windows.Automation;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
+using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators
@@ -52,6 +53,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     /// <inheritdoc />
     public Rectangle GetBrowserContentBounds (IWebDriver driver)
     {
+      ArgumentUtility.CheckNotNull ("driver", driver);
+
       var windows = AutomationElement.RootElement.FindAll (
               TreeScope.Children,
               new AndCondition (

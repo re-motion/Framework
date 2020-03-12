@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using log4net;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
 {
@@ -27,6 +28,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
 
     public static string CreateLogFile (string logsDirectory, string browserName)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("logsDirectory", logsDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty ("browserName", browserName);
+
       var finalLogsDirectory = Path.Combine (logsDirectory, SubDirectoryName);
 
       EnsureLogsDirectoryExists (finalLogsDirectory);

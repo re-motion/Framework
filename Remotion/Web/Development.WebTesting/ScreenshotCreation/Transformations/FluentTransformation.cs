@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 
@@ -42,12 +43,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
     public ScreenshotTransformationContext<IFluentScreenshotElement<T>> BeginApply (
         ScreenshotTransformationContext<IFluentScreenshotElement<T>> context)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+
       return ConvertContextBack (_transformations.BeginApply (ConvertContext (context)), context.Target);
     }
 
     /// <inheritdoc />
     public void EndApply (ScreenshotTransformationContext<IFluentScreenshotElement<T>> context)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+
       _transformations.EndApply (ConvertContext (context));
     }
 

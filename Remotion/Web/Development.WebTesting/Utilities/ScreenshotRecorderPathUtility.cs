@@ -16,6 +16,8 @@
 // 
 using System;
 using System.IO;
+using JetBrains.Annotations;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -33,8 +35,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <exception cref="PathTooLongException">
     /// If the resulting file path would be longer than 259 characters (despite shortening of the <paramref name="baseFileName"/>).
     /// </exception>
-    public static string GetFullScreenshotFilePath (string screenshotDirectory, string baseFileName, string suffix, string extension)
+    public static string GetFullScreenshotFilePath ([NotNull] string screenshotDirectory, [NotNull] string baseFileName, [NotNull] string suffix, [NotNull] string extension)
     {
+      ArgumentUtility.CheckNotNull ("screenshotDirectory", screenshotDirectory);
+      ArgumentUtility.CheckNotNull ("baseFileName", baseFileName);
+      ArgumentUtility.CheckNotNull ("suffix", suffix);
+      ArgumentUtility.CheckNotNull ("extension", extension);
+
       var sanitizedBaseFileName = SanitizeFileName (baseFileName);
       var filePath = GetFullScreenshotFilePathInternal (screenshotDirectory, sanitizedBaseFileName, suffix, extension);
       if (filePath.Length > 259)

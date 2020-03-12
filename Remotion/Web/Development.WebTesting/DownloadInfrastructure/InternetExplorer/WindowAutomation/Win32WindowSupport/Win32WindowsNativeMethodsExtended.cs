@@ -17,6 +17,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using Remotion.Utilities;
 using Remotion.WindowFinder.Windows;
 
 namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer.WindowAutomation.Win32WindowSupport
@@ -51,11 +52,17 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
 
     bool IWin32WindowsNativeMethods.EnumWindows (EnumWindowsProc enumWindowsCallback, WindowFinderEnumWindowsProcContext context)
     {
+      ArgumentUtility.CheckNotNull ("enumWindowsCallback", enumWindowsCallback);
+      ArgumentUtility.CheckNotNull ("context", context);
+
       return _nativeMethods.EnumWindows (enumWindowsCallback, context);
     }
 
     void IWin32WindowsNativeMethods.EnumChildWindows (IntPtr parentWindowHandle, EnumChildWindowsProc enumWindowsCallback, WindowFinderEnumChildWindowsProcContext context)
     {
+      ArgumentUtility.CheckNotNull ("enumWindowsCallback", enumWindowsCallback);
+      ArgumentUtility.CheckNotNull ("context", context);
+
       _nativeMethods.EnumChildWindows (parentWindowHandle, enumWindowsCallback, context);
     }
 
@@ -66,11 +73,15 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
 
     int IWin32WindowsNativeMethods.GetClassName (IntPtr windowHandle, StringBuilder className, int classNameMaxLength)
     {
+      ArgumentUtility.CheckNotNull ("className", className);
+
       return _nativeMethods.GetClassName (windowHandle, className, classNameMaxLength);
     }
 
     int IWin32WindowsNativeMethods.GetWindowText (IntPtr windowHandle, StringBuilder windowText, int windowTextMaxLength)
     {
+      ArgumentUtility.CheckNotNull ("windowText", windowText);
+
       return _nativeMethods.GetWindowText (windowHandle, windowText, windowTextMaxLength);
     }
 

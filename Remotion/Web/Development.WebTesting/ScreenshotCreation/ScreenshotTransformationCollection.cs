@@ -142,6 +142,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public void CopyTo (IScreenshotTransformation<T>[] array, int arrayIndex)
     {
+      ArgumentUtility.CheckNotNull ("array", array);
+
       _transformations.Select (i => i.Value).ToArray().CopyTo (array, arrayIndex);
     }
 

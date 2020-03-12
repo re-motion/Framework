@@ -133,6 +133,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <inheritdoc />
     public void Draw (Graphics graphics, ResolvedScreenshotElement resolvedScreenshotElement)
     {
+      ArgumentUtility.CheckNotNull ("graphics", graphics);
+      ArgumentUtility.CheckNotNull ("resolvedScreenshotElement", resolvedScreenshotElement);
+
       var elementBounds = resolvedScreenshotElement.ElementBounds;
       var centerPoint = new Point (
           elementBounds.X + elementBounds.Width / 2 + _translation.Width,

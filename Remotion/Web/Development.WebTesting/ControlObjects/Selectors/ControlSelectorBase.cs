@@ -114,6 +114,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// </summary>
     protected TControlObject CreateControlObject ([NotNull] ControlSelectionContext context, [NotNull] ElementScope scope)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("scope", scope);
+
       var newControlObjectContext = context.CloneForControl (context.PageObject, scope);
       return CreateControlObject (newControlObjectContext, context);
     }
