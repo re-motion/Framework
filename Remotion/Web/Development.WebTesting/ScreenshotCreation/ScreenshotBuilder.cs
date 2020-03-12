@@ -20,6 +20,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using JetBrains.Annotations;
+using log4net;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations;
 
@@ -30,6 +31,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
   /// </summary>
   public class ScreenshotBuilder
   {
+    private static readonly ILog s_log = LogManager.GetLogger (typeof (ScreenshotBuilder));
+
     private class TransformationHelper<T> : IDisposable
     {
       private readonly ScreenshotTransformationContext<T> _context;
@@ -226,8 +229,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       if (_drawMouseCursor && _screenshot.CursorInformation.IsVisible)
         _screenshot.CursorInformation.Draw (_graphics);
 
-      if (!@override && File.Exists (path))
+      var isFileExisting = File.Exists (path);
+
+      if (!@override && isFileExisting)
         throw new InvalidOperationException (string.Format ("A screenshot with the file name '{0}' does already exist.", path));
+
+      if (isFileExisting)
+        s_log.InfoFormat ("Overwriting existing screenshot with file name '{0}'.", path);
 
       var directory = Path.GetDirectoryName (path);
       if (Directory.Exists (directory))
