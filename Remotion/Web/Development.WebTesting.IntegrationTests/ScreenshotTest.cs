@@ -378,14 +378,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void ResolveBorderElementB ()
     {
-      var home = Start();
+      // TODO: Remove when RM-7187 is resolved, use the RetryAttribute provided by NUnit instead.
+      RetryTest (
+          () =>
+          {
+            var home = Start();
 
-      ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
-          (builder, target) => { builder.Crop (target, new WebPadding (1)); };
+            ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
+                (builder, target) => { builder.Crop (target, new WebPadding (1)); };
 
-      var element = home.Scope.FindId ("borderElementB").ForElementScopeScreenshot();
+            var element = home.Scope.FindId ("borderElementB").ForElementScopeScreenshot();
 
-      Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
+            Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
+          },
+          2);
     }
 
     [Category ("Screenshot")]
