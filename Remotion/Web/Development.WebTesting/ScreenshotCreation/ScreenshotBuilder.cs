@@ -19,6 +19,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using JetBrains.Annotations;
+using log4net;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
@@ -28,6 +29,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
   /// </summary>
   public class ScreenshotBuilder : IDisposable
   {
+    private static readonly ILog s_log = LogManager.GetLogger (typeof (ScreenshotBuilder));
+
     /// <summary>
     /// Returns <see langword="true" /> if the mouse cursor should be drawn onto the screenshot, otherwise <see langword="false" />.
     /// </summary>
@@ -130,8 +133,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       ArgumentUtility.CheckNotNullOrEmpty ("path", path);
 
-      if (!@override && File.Exists (path))
+      var isFileExisting = File.Exists (path);
+
+      if (!@override && isFileExisting)
         throw new InvalidOperationException (string.Format ("A screenshot with the file name '{0}' does already exist.", path));
+
+      if (isFileExisting)
+        s_log.InfoFormat ("Overwriting existing screenshot with file name '{0}'.", path);
 
       var directory = Path.GetDirectoryName (path);
       Directory.CreateDirectory (directory);

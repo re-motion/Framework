@@ -174,8 +174,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
       var screenshotPath = string.Join (".", path, "png");
       var annotationPath = string.Join (".", path, "AnnotationsOnly", "png");
 
-      diagnosticScreenshotBuilder.Save (screenshotPath);
-      diagnosticScreenshotBuilder.SaveAnnotation (annotationPath);
+      diagnosticScreenshotBuilder.Save (screenshotPath, true);
+      diagnosticScreenshotBuilder.SaveAnnotation (annotationPath, true);
 
       // Try to find the resource which belongs to the current test
       var resourcePrefixes = GenerateResourcePrefixes (typeName, testAssemblyName, helper.BrowserConfiguration.BrowserName, testPrefix, testName);
