@@ -30,10 +30,24 @@
     <Error Text="The property 'AppConfigFile' is not set." Condition="'$(AppConfigFile)' == ''" />
     <Error Text="The property 'Browser' is not set." Condition="'$(Browser)' == ''" />
 
+    <PropertyGroup>
+      <_dockerEnabled>False</_dockerEnabled>
+      <_dockerEnabled Condition="'$(DisableDocker)' == 'False'">True</_dockerEnabled>
+      <_dockerImageName>mcr.microsoft.com/dotnet/framework/aspnet:4.6.2</_dockerImageName>
+      <!-- Hostname cannot be longer than 63 characters-->
+      <_dockerHostName>RemotionWebTestContainer</_dockerHostName>
+      <_dockerPortNumber>60402</_dockerPortNumber>
+      <_dockerWebApplicationRoot>http://$(_dockerHostName):$(_dockerPortNumber)/</_dockerWebApplicationRoot>
+      <_dockerPullTimeout>00:15:00</_dockerPullTimeout>
+      <_dockerVerifyWebApplicationStartedTimeout>00:01:00</_dockerVerifyWebApplicationStartedTimeout>
+    </PropertyGroup>
+
     <Message Text="Selected Browser: '$(Browser)'" />
     <Message Text="The property 'ChromeVersionArchive' is set to '$(ChromeVersionArchive)'." />
     <Message Text="The property 'EdgeVersionArchive' is set to '$(EdgeVersionArchive)'." />
     <Message Text="The property 'FirefoxVersionArchive' is set to '$(FirefoxVersionArchive)'." />
+    <Message Text="Docker enabled: '$(_dockerEnabled)'" />
+    <Message Text="Using Docker image '$(_dockerImageName)' to host the test site." Condition="'$(_dockerEnabled)' == 'True'" />
 
     <MSBuild.ExtensionPack.Xml.XmlFile
         TaskAction="ReadAttribute"
@@ -106,7 +120,42 @@
       </_appConfigAttributes>
     </ItemGroup>
 
-    <MSBuild.ExtensionPack.Xml.XmlFile TaskAction="UpdateAttribute"
+    <ItemGroup Condition="$(_dockerEnabled)">
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting">
+        <Key>webApplicationRoot</Key>
+        <Value>$(_dockerWebApplicationRoot)</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting">
+        <Key>verifyWebApplicationStartedTimeout</Key>
+        <Value>$(_dockerVerifyWebApplicationStartedTimeout)</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting/rwt:hosting">
+        <Key>name</Key>
+        <Value>Docker</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting/rwt:hosting">
+        <Key>type</Key>
+        <Value>Docker</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting/rwt:hosting">
+        <Key>port</Key>
+        <Value>$(_dockerPortNumber)</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting/rwt:hosting">
+        <Key>dockerImageName</Key>
+        <Value>$(_dockerImageName)</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting/rwt:hosting">
+        <Key>dockerPullTimeout</Key>
+        <Value>$(_dockerPullTimeout)</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting/rwt:hosting">
+        <Key>hostname</Key>
+        <Value>$(_dockerHostName)</Value>
+      </_appConfigAttributes>
+    </ItemGroup>
+    
+    <MSBuild.ExtensionPack.Xml.XmlFile TaskAction="AddAttribute"
                                        File="$(AppConfigFile)"
                                        Namespaces="@(_namespaces)"
                                        XPath="%(_appConfigAttributes.Identity)"

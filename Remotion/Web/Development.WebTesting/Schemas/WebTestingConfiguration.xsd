@@ -94,6 +94,7 @@
       <xs:simpleType>
         <xs:restriction base="xs:string">
           <xs:enumeration value="IisExpress" />
+          <xs:enumeration value="Docker" />
         </xs:restriction>
       </xs:simpleType>
       <xs:simpleType>

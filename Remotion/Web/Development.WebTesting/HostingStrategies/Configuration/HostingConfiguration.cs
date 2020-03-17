@@ -28,8 +28,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
   /// </summary>
   /// <remarks>
   /// <see cref="WebTestConfigurationSection"/> <see cref="WebTestConfigurationSection.HostingProviderSettings"/> 
-  /// provides the hosting strategy type, use <c>IisExpress</c> for hosting the application in an auto-configured IIS Express.
-  /// Leave <see cref="WebTestConfigurationSection.HostingProviderSettings"/> empty if the web application is already hosted, eg. in IIS.
+  /// provides the hosting strategy type, use <c>IisExpress</c> for hosting the application in an auto-configured IIS Express or <c>Docker</c>
+  /// for hosting the application in a Docker container. Leave <see cref="WebTestConfigurationSection.HostingProviderSettings"/> empty if the
+  /// web application is already hosted, eg. in IIS.
   /// </remarks>
   public class HostingConfiguration : IHostingConfiguration
   {
@@ -38,7 +39,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
     private static readonly Dictionary<string, Type> s_wellKnownHostingStrategyTypes =
         new Dictionary<string, Type>
         {
-            { "IisExpress", typeof (IisExpressHostingStrategy) }
+            { "IisExpress", typeof (IisExpressHostingStrategy) },
+            { "Docker", typeof (DockerHostingStrategy) },
         };
 
     private readonly ProviderSettings _hostingProviderSettings;

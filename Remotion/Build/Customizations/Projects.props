@@ -7,7 +7,7 @@
 
   <PropertyGroup>
     <TestingSetupBuildFileForDatabase>$(SolutionDirectory)Build\TestingSetupForDatabase.targets</TestingSetupBuildFileForDatabase>
-    <TestingSetupBuildFileForBrowser>$(SolutionDirectory)Build\TestingSetupForBrowser.targets</TestingSetupBuildFileForBrowser>
+    <TestingSetupBuildFileForWebTest>$(SolutionDirectory)Build\TestingSetupForWebTest.targets</TestingSetupBuildFileForWebTest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -178,11 +178,12 @@
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj">
       <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
       <IsWebTest>True</IsWebTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForWebTest)</TestingSetupBuildFile>
     </IntegrationTestProjectFiles>
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.IntegrationTests\ObjectBinding.Web.IntegrationTests.csproj">
+      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
       <IsWebTest>True</IsWebTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForWebTest)</TestingSetupBuildFile>
     </IntegrationTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\Core\Security.Core.csproj"/>
@@ -213,12 +214,13 @@
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj">
       <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
       <IsWebTest>True</IsWebTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForWebTest)</TestingSetupBuildFile>
     </IntegrationTestProjectFiles>
 
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\IntegrationTests\Web.IntegrationTests.csproj">
+      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
       <IsWebTest>True</IsWebTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForWebTest)</TestingSetupBuildFile>
     </IntegrationTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\Core\Scripting.Core.csproj"/>
