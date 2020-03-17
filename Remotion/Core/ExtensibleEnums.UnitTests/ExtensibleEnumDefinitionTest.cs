@@ -179,12 +179,10 @@ namespace Remotion.ExtensibleEnums.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidExtensibleEnumDefinitionException), ExpectedMessage =
-        "Extensible enum 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' does not define any values.")]
-    public void GetValueInfos_NoValues ()
+    public void GetValueInfos_NoValues_ReturnsEmptySet ()
     {
       var definition = CreateDefinition<Color>();
-      definition.GetValueInfos();
+      Assert.That (definition.GetValueInfos(), Is.Empty);
     }
 
     [Test]
