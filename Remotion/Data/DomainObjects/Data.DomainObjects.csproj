@@ -183,6 +183,8 @@
     <Compile Include="Linq\FluentFetchRequest.cs" />
     <Compile Include="Mapping\DefaultStorageClass.cs" />
     <Compile Include="Mapping\Validation\Logical\CheckForClassIDIsValidValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\MandatoryNetEnumTypeHasValuesDefinedValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\MandatoryExtensibleEnumTypeHasValuesDefinedValidationRule.cs" />
     <Compile Include="Persistence\NonPersistent\Validation\RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule.cs" />
     <Compile Include="Obsolete\IDomainObjectNextCallRequirements.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionExtensionFactory.cs" />

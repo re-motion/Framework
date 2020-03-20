@@ -250,6 +250,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           maxColorIDLength,
           typeof (Color),
           Is.TypeOf (typeof (ExtensibleEnumConverter)).With.Property ("ExtensibleEnumType").EqualTo (typeof (Color)));
+      CheckGetStorageType_ForProperty (
+          typeof (ExtensibleEnumNotDefiningAnyValues),
+          null,
+          false,
+          true,
+          typeof (string),
+          "varchar (max)",
+          DbType.AnsiString,
+          true,
+          null,
+          typeof (ExtensibleEnumNotDefiningAnyValues),
+          Is.TypeOf (typeof (ExtensibleEnumConverter)).With.Property ("ExtensibleEnumType").EqualTo (typeof (ExtensibleEnumNotDefiningAnyValues)));
     }
 
     [Test]

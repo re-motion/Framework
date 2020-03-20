@@ -166,7 +166,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
           new MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule (_nameResolver, _propertyMetadataProvider),
           new MappingAttributesAreSupportedForPropertyTypeValidationRule(),
           new StorageClassIsSupportedValidationRule(),
-          new PropertyTypeIsSupportedValidationRule());
+          new PropertyTypeIsSupportedValidationRule(),
+          new MandatoryNetEnumTypeHasValuesDefinedValidationRule(),
+          new MandatoryExtensibleEnumTypeHasValuesDefinedValidationRule());
     }
 
     public IRelationDefinitionValidator CreateRelationDefinitionValidator ()

@@ -107,10 +107,32 @@ namespace Remotion.Data.DomainObjects.Mapping
           return string.Empty;
 
         if (_propertyType.IsEnum)
-          return EnumUtility.GetEnumMetadata (_propertyType).OrderedValues[0];
+        {
+          var firstValueOrNull = EnumUtility.GetEnumMetadata (_propertyType).OrderedValues.FirstOrDefault();
+          if (firstValueOrNull == null)
+          {
+            throw new InvalidOperationException (
+                string.Format (
+                    ".NET enum type '{0}' does not define any values. Properties based on this type must be declared as nullable.",
+                    _propertyType.FullName));
+          }
+
+          return firstValueOrNull;
+        }
 
         if (ExtensibleEnumUtility.IsExtensibleEnumType (_propertyType))
-          return ExtensibleEnumUtility.GetDefinition (_propertyType).GetValueInfos().First().Value;
+        {
+          var firstValueOrNull = ExtensibleEnumUtility.GetDefinition (_propertyType).GetValueInfos().FirstOrDefault();
+          if (firstValueOrNull == null)
+          {
+            throw new InvalidOperationException (
+                string.Format (
+                    "Extensible enum type '{0}' does not define any values. Properties based on this type must be declared as nullable.",
+                    _propertyType.FullName));
+          }
+
+          return firstValueOrNull.Value;
+        }
 
         return Activator.CreateInstance (_propertyType, new object[0]);
       }

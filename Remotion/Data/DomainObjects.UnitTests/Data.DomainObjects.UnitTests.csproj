@@ -300,6 +300,8 @@
     <Compile Include="Mapping\MappingReflectionIntegrationTests\IgnoredTypes\OnlyBaseClassNotInMapping\When_ASingleClassIsExcludedFromTheMapping.cs" />
     <Compile Include="Mapping\PropertyMetadataReflectorTest.cs" />
     <Compile Include="Mapping\PropertyReflectorTests\DomainObjectWithNonDefaultStorageClass.cs" />
+    <Compile Include="Mapping\TestDomain\Integration\EnumNotDefiningAnyValues.cs" />
+    <Compile Include="Mapping\TestDomain\Integration\ExtensibleEnumNotDefiningAnyValues.cs" />
     <Compile Include="Mapping\TestDomain\Integration\NonPersistentTestDomainAttribute.cs" />
     <Compile Include="Mapping\TestDomain\Integration\OrderViewModel.cs" />
     <Compile Include="Mapping\TestDomain\Integration\ReflectionBasedMappingSample\BaseClassWithoutStorageGroupAttribute.cs" />
@@ -317,10 +319,18 @@
     <Compile Include="Mapping\TestDomain\Integration\ReflectionBasedMappingSample\DerivedClassInMappingDerivedFromClassNotInMapping.cs" />
     <Compile Include="Mapping\TestDomain\Integration\ReflectionBasedMappingSample\NonDefaultStorageClassStorageGroupAttribute.cs" />
     <Compile Include="Mapping\TestDomain\Integration\TestDomainWithStorageClassTransactionAttribute.cs" />
+    <Compile Include="Mapping\TestDomain\Validation\EnumTypeValidationDomainObjectClass.cs" />
+    <Compile Include="Mapping\TestDomain\Validation\EnumTypeValidationDomainObjectClassExtensibleEnumTypeWithValuesExtensions.cs" />
     <Compile Include="Mapping\TestDomain\Validation\Integration\NotSupportedPersistenceMapping\PropertyWithUnsupportedStorageClass\NonPersistentDomainObjectWithPersistentProperty.cs" />
     <Compile Include="Mapping\TestDomain\Validation\Integration\NotSupportedPersistenceMapping\PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject\NonPersistentRelationClass.cs" />
     <Compile Include="Mapping\TestDomain\Validation\Integration\NotSupportedPersistenceMapping\PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject\PersistentRelationClass.cs" />
+    <Compile Include="Mapping\TestDomain\Validation\Integration\NotSupportedPropertyTypes\PropertyTypeOfNetEnum_WithoutValues_Mandatory\ClassWithInvalidPropertyType.cs" />
+    <Compile Include="Mapping\TestDomain\Validation\Integration\NotSupportedPropertyTypes\PropertyTypeOfNetEnum_WithoutValues_Mandatory\NetEnumNotDefiningAnyValues.cs" />
+    <Compile Include="Mapping\TestDomain\Validation\Integration\NotSupportedPropertyTypes\PropertyTypeOfExtensibleEnum_WithoutValues_Mandatory\ClassWithInvalidPropertyType.cs" />
+    <Compile Include="Mapping\TestDomain\Validation\Integration\NotSupportedPropertyTypes\PropertyTypeOfExtensibleEnum_WithoutValues_Mandatory\ExtensibleEnumNotDefiningAnyValues.cs" />
     <Compile Include="Mapping\Validation\Logical\CheckForClassIDIsValidValidationRuleTest.cs" />
+    <Compile Include="Mapping\Validation\Logical\MandatoryNetEnumTypeHasValuesDefinedValidationRuleTest.cs" />
+    <Compile Include="Mapping\Validation\Logical\MandatoryExtensibleEnumTypeHasValuesDefinedValidationRuleTest.cs" />
     <Compile Include="Persistence\NonPersistent\Model\Validation\RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRuleTest.cs" />
     <Compile Include="Persistence\ConcurrencyViolationExceptionTest.cs" />
     <Compile Include="Persistence\NonPersistent\Model\NonPersistentPersistenceModelLoaderTestDomain\BaseClass.cs" />
@@ -387,6 +397,7 @@
     <Compile Include="Infrastructure\TypePipe\MutableTypeObjectMother.cs" />
     <Compile Include="IntegrationTests\RegisterForCommitTest.cs" />
     <Compile Include="TestDomain\ClassWithPropertyTypeImplementingIStructuralEquatable.cs" />
+    <Compile Include="TestDomain\ExtensibleEnumNotDefiningAnyValues.cs" />
     <Compile Include="TestDomain\NonPersistentTestDomainAttribute.cs" />
     <Compile Include="TestDomain\OrderViewModel.cs" />
     <Compile Include="TestDomain\SpecialCustomer.cs" />

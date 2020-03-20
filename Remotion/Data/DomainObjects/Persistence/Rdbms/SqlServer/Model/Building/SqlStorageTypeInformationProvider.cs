@@ -262,9 +262,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       return string.Format ("{0} ({1})", varType, maxLength.HasValue ? maxLength.ToString() : "max");
     }
 
-    private int GetColumnWidthForExtensibleEnum (Type extensibleEnumType)
+    private int? GetColumnWidthForExtensibleEnum (Type extensibleEnumType)
     {
-      return ExtensibleEnumUtility.GetDefinition (extensibleEnumType).GetValueInfos().Max (info => info.Value.ID.Length);
+      var extensibleEnumInfos = ExtensibleEnumUtility.GetDefinition (extensibleEnumType).GetValueInfos();
+      if (extensibleEnumInfos.Count == 0)
+        return null;
+      return extensibleEnumInfos.Max (info => info.Value.ID.Length);
     }
 
     private bool IsNullSupported (Type dotNetType)

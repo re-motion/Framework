@@ -140,11 +140,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var validator = (PropertyDefinitionValidator) _mappingReflector.CreatePropertyDefinitionValidator();
 
-      Assert.That (validator.ValidationRules.Count, Is.EqualTo (4));
+      Assert.That (validator.ValidationRules.Count, Is.EqualTo (6));
       Assert.That (validator.ValidationRules[0], Is.TypeOf (typeof (MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule)));
       Assert.That (validator.ValidationRules[1], Is.TypeOf (typeof (MappingAttributesAreSupportedForPropertyTypeValidationRule)));
       Assert.That (validator.ValidationRules[2], Is.TypeOf (typeof (StorageClassIsSupportedValidationRule)));
       Assert.That (validator.ValidationRules[3], Is.TypeOf (typeof (PropertyTypeIsSupportedValidationRule)));
+      Assert.That (validator.ValidationRules[4], Is.TypeOf (typeof (MandatoryNetEnumTypeHasValuesDefinedValidationRule)));
+      Assert.That (validator.ValidationRules[5], Is.TypeOf (typeof (MandatoryExtensibleEnumTypeHasValuesDefinedValidationRule)));
     }
 
     [Test]
