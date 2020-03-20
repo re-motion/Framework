@@ -222,12 +222,48 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
+    public void DefaultValue_NotNullable_EnumWithoutValues ()
+    {
+      _propertyInformationStub.Stub (stub => stub.PropertyType).Return (typeof (EnumNotDefiningAnyValues));
+      var nullableValueProperty = new PropertyDefinition (
+          _classDefinition,
+          _propertyInformationStub,
+          "Test",
+          false,
+          false,
+          null,
+          StorageClass.Persistent);
+      Assert.That (
+          () => nullableValueProperty.DefaultValue,
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              ".NET enum type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.EnumNotDefiningAnyValues' does not define any values. Properties based on this type must be declared as nullable."));
+    }
+
+    [Test]
     public void DefaultValue_NotNullable_ExtensibleEnum ()
     {
       _propertyInformationStub.Stub (stub => stub.PropertyType).Return (typeof (Color));
       var nullableValueProperty = new PropertyDefinition (
           _classDefinition, _propertyInformationStub, "Test", false, false, null, StorageClass.Persistent);
       Assert.That (nullableValueProperty.DefaultValue, Is.EqualTo (Color.Values.Blue()));
+    }
+
+    [Test]
+    public void DefaultValue_NotNullable_ExtensibleEnumWithoutValues ()
+    {
+      _propertyInformationStub.Stub (stub => stub.PropertyType).Return (typeof (ExtensibleEnumNotDefiningAnyValues));
+      var nullableValueProperty = new PropertyDefinition (
+          _classDefinition,
+          _propertyInformationStub,
+          "Test",
+          false,
+          false,
+          null,
+          StorageClass.Persistent);
+      Assert.That (
+          () => nullableValueProperty.DefaultValue,
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Extensible enum type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ExtensibleEnumNotDefiningAnyValues' does not define any values. Properties based on this type must be declared as nullable."));
     }
 
     [Test]

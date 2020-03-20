@@ -106,5 +106,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
     {
       ValidateMapping ("NotSupportedPropertyTypes.PropertyTypeOfObjectList_DerivedDomainObject_Unidirectional");
     }
+
+    //MandatoryExtensibleEnumTypeHasValuesDefinedValidationRule
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Extensible enum type 'ExtensibleEnumNotDefiningAnyValues' cannot be used for property 'InvalidProperty' on type 'ClassWithInvalidPropertyType' "
+        +"because the property is mandatory but there are not values defined for the enum type.\r\n\r\n"
+        +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes."
+        +"PropertyTypeOfExtensibleEnum_WithoutValues_Mandatory.ClassWithInvalidPropertyType\r\n"
+        +"Property: InvalidProperty")]
+    public void PropertyTypeOfExtensibleEnum_WithoutValues_Mandatory ()
+    {
+      ValidateMapping ("NotSupportedPropertyTypes.PropertyTypeOfExtensibleEnum_WithoutValues_Mandatory");
+    }
+
+    //MandatoryNetEnumTypeHasValuesDefinedValidationRule
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Enum type 'NetEnumNotDefiningAnyValues' cannot be used for property 'InvalidProperty' on type 'ClassWithInvalidPropertyType' "
+        +"because the property is mandatory but there are not values defined for the enum type.\r\n\r\n"
+        +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes."
+        +"PropertyTypeOfNetEnum_WithoutValues_Mandatory.ClassWithInvalidPropertyType\r\n"
+        +"Property: InvalidProperty")]
+    public void PropertyTypeOfNetEnum_WithoutValues_Mandatory ()
+    {
+      ValidateMapping ("NotSupportedPropertyTypes.PropertyTypeOfNetEnum_WithoutValues_Mandatory");
+    }
   }
 }
