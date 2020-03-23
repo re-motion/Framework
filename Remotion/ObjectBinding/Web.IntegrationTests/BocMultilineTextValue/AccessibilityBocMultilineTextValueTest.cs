@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocMultilineTextValue
     {
       var home = Start();
       var bocMultilineTextValue = home.MultilineTextValues().GetByLocalID ("CVField_Normal_Required");
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       bocMultilineTextValue.FillWith ("");
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();

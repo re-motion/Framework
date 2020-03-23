@@ -279,7 +279,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocEnumValue
     {
       var home = Start();
       var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListRequiredWithoutSelectedValue");
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 

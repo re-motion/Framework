@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocListAsGrid
       var home = Start();
       var bocList = home.Lists().GetByLocalID ("JobList_AlwaysInvalid");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       validateButton.Click();
       var result = bocList.Analyze (analyzer);
 

@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocAutoCompleteReferenceVa
       var home = Start();
       var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
       bocAutoComplete.FillWith ("InvalidInput");
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 

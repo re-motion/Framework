@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocTextValue
       var home = Start();
       var bocTextValue = home.TextValues().GetByLocalID ("LastNameField_Normal_Required");
       bocTextValue.FillWith ("");
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 

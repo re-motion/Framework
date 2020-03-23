@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocDateTimeValue
       var home = Start();
       var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
       bocDateTimeValue.SetDate ("InvDate");
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 

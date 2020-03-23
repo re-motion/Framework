@@ -85,6 +85,7 @@
     <Compile Include="GenericTestPageParameters\ValidationErrorTestPageParameters.cs" />
     <Compile Include="IntegrationTest.cs" />
     <Compile Include="ObjectBindingTestConstants.cs" />
+    <Compile Include="PageObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetUpFixture.cs" />
     <Compile Include="TestCaseFactories\LabelTestCaseFactory.cs" />

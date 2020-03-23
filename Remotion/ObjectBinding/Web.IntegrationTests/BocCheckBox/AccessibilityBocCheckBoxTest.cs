@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocCheckBox
     {
       var home = Start();
       var bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_AlwaysInvalid");
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 

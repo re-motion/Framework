@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocBooleanValue
     {
       var home = Start();
       var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_NormalAndUnitialized");
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
