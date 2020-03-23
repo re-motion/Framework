@@ -38,25 +38,25 @@ span.bocMultilineTextValue .content
   position: static;
 }
 
-.bocMultilineTextValue.readOnly .content span
+.bocMultilineTextValue.readOnly .content span[tabindex]
 {
   /* Ensures that the outline is rendered as a block and outside of the space reserved for diacritic marks. */
   display: inline-block;
 }
 
-.bocMultilineTextValue.readOnly .content span:first-child
+.bocMultilineTextValue.readOnly .content span[tabindex]:first-child
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
-  padding-top: 0.2em; 
+  padding-top: 0.2em;
 }
 
-.bocMultilineTextValue.readOnly .content span:last-child
+.bocMultilineTextValue.readOnly .content span[tabindex]:last-child
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
   padding-bottom: 0.2em;
 }
 
-.bocMultilineTextValue.readOnly .content span:empty
+.bocMultilineTextValue.readOnly .content span[tabindex]:empty
 {
   /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
   width: 100%;
