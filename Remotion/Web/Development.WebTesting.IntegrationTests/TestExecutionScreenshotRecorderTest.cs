@@ -177,6 +177,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesNotThrowWhenAlertWindowIsOpen ()
     {
+      if (Helper.BrowserConfiguration.IsEdge())
+        Assert.Ignore ("Edge v79 does not find an alert dialog. (RM-7387)");
+
       if (Helper.BrowserConfiguration.IsFirefox())
         Assert.Ignore ("Firefox does not show an alert dialog.");
 
