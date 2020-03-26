@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
@@ -174,17 +175,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         startDownloadLambda();
 
-        Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName (downloadStartedTimout, downloadUpdatedTimeout),
-          Throws.InstanceOf<DownloadResultNotFoundException>()
-              .With.Message.StartsWith (
-                string.Format (
-                  "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
-                  downloadUpdatedTimeout)));
+        var restartBrowserTask = RestartBrowserToCancelDownloadsAfterDelayAsync (downloadUpdatedTimeout + TimeSpan.FromSeconds (3));
 
-
-        //The browser continues writing in the download file, therefore we have to wait a little bit so that it does not interfere with the next test.
-        Thread.Sleep (TimeSpan.FromSeconds (3));
+        try
+        {
+          Assert.That (
+              () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName (downloadStartedTimout, downloadUpdatedTimeout),
+              Throws.InstanceOf<DownloadResultNotFoundException>()
+                  .With.Message.StartsWith (
+                      string.Format (
+                          "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
+                          downloadUpdatedTimeout)));
+        }
+        finally
+        {
+          restartBrowserTask.GetAwaiter().GetResult();
+        }
       }
     }
 
@@ -236,21 +242,27 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       else if (Helper.BrowserConfiguration.IsChrome())
       {
         startDownloadLambda();
-        
-        Assert.That (
-          () =>
-            Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
-              c_sampleTxtFileName,
-              downloadStartedTimeout,
-              downloadUpdatedTimeout),
-          Throws.InstanceOf<DownloadResultNotFoundException>()
-              .With.Message.StartsWith (
-                string.Format (
-                  "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
-                  downloadUpdatedTimeout)));
 
-        //The browser continues writing in the download file, therefore we have to wait a little bit so that does not interfere with the next test.
-        Thread.Sleep (TimeSpan.FromSeconds (3));
+        var restartBrowserTask = RestartBrowserToCancelDownloadsAfterDelayAsync (downloadUpdatedTimeout + TimeSpan.FromSeconds (3));
+
+        try
+        {
+          Assert.That (
+              () =>
+                  Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
+                      c_sampleTxtFileName,
+                      downloadStartedTimeout,
+                      downloadUpdatedTimeout),
+              Throws.InstanceOf<DownloadResultNotFoundException>()
+                  .With.Message.StartsWith (
+                      string.Format (
+                          "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
+                          downloadUpdatedTimeout)));
+        }
+        finally
+        {
+          restartBrowserTask.GetAwaiter().GetResult();
+        }
       }
     }
 
@@ -455,6 +467,13 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       {
         File.Delete (file.FullPath);
       }
+    }
+
+    private Task RestartBrowserToCancelDownloadsAfterDelayAsync (TimeSpan delay)
+    {
+      return Task.Delay (delay)
+          .ContinueWith (_ => Helper.OnFixtureTearDown())
+          .ContinueWith (_ => Helper.OnFixtureSetUp());
     }
   }
 }
