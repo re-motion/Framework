@@ -29,9 +29,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     private DatabaseFixtures _dbFixtures;
     private ObjectID _expectedTenantID;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
 
       _dbFixtures = new DatabaseFixtures();
       Tenant tenant = _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.CreateRootTransaction());

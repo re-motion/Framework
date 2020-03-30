@@ -27,9 +27,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     private FileGenerator _fileGenerator;
     private Script _script;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp ();
+      base.OneTimeSetUp ();
 
       if (Directory.Exists ("TestOutputPath"))
         Directory.Delete ("TestOutputPath", true);

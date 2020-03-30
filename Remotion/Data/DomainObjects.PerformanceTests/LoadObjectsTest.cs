@@ -41,9 +41,9 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
     // methods and properties
 
-    public override void TestFixtureSetUp()
+    public override void OneTimeSetUp()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
 
       _clientID = new ObjectID("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
       _fileID = new ObjectID("File", Guid.NewGuid());

@@ -36,9 +36,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     private ISearchAvailableObjectsService _searchServiceStub;
     private ISearchAvailableObjectsArguments _searchServiceArgsStub;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
 
       _searchServiceStub = MockRepository.GenerateStub<ISearchAvailableObjectsService>();
       _searchServiceArgsStub = MockRepository.GenerateStub<ISearchAvailableObjectsArguments>();

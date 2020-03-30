@@ -32,9 +32,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
     private RolePropertiesSearchService _searchService;
     private IBusinessObjectReferenceProperty _positionProperty;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())

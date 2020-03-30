@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
   public class DatabaseTest
   {
     [OneTimeSetUp]
-    public virtual void TestFixtureSetUp()
+    public virtual void OneTimeSetUp()
     {
     }
 

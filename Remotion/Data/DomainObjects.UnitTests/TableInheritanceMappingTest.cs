@@ -46,9 +46,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
 
-    public override void TestFixtureSetUp()
+    public override void OneTimeSetUp()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
       DomainObjectsConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent (StandardConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent (null);

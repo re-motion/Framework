@@ -37,9 +37,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
     private ClientTransactionEventReceiver _eventReceiver;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp ();
+      base.OneTimeSetUp ();
       SetDatabaseModifyable ();
     }
 

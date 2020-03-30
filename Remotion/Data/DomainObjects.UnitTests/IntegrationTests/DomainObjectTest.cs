@@ -35,9 +35,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
   {
     private PropertyDefinition _orderDeliveryDateProperty;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
       SetDatabaseModifyable();
     }
 

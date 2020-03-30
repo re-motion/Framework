@@ -27,9 +27,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
   {
     private Customer _customer;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
       SetDatabaseModifyable();
     }
 

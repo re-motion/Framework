@@ -28,9 +28,9 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
   [TestFixture]
   public class SerializationTest : DatabaseTest
   {
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp ();
+      base.OneTimeSetUp ();
       WriteHeadings ();
     }
 

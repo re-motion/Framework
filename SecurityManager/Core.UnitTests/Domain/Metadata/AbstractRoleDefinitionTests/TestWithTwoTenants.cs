@@ -29,9 +29,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefinit
   {
     private DatabaseFixtures _dbFixtures;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp ();
+      base.OneTimeSetUp ();
     
       _dbFixtures = new DatabaseFixtures ();
       _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.CreateRootTransaction());

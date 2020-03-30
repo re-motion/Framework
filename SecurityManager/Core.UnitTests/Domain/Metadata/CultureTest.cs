@@ -25,9 +25,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
   [TestFixture]
   public class CultureTest : DomainTest
   {
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp ();
+      base.OneTimeSetUp ();
     
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateAndCommitSecurableClassDefinitionWithLocalizedNames (ClientTransaction.CreateRootTransaction());

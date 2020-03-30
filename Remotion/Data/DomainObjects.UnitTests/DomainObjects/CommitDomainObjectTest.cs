@@ -23,9 +23,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class CommitDomainObjectTest : ClientTransactionBaseTest
   {
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp ();
+      base.OneTimeSetUp ();
       SetDatabaseModifyable ();
     }
 

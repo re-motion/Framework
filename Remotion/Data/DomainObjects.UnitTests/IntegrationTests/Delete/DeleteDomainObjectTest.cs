@@ -28,9 +28,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     Order _order;
     OrderTicket _orderTicket;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp ();
+      base.OneTimeSetUp ();
       SetDatabaseModifyable ();
     }
 

@@ -26,9 +26,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
   [TestFixture]
   public class SerializationTest : SerializationBaseTest
   {
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
       SetDatabaseModifyable();
     }
 

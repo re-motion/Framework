@@ -38,7 +38,7 @@ namespace Remotion.Tools.UnitTests
     private AppDomain _appDomain;
 
     [OneTimeSetUp]
-    public void TestFixtureSetUp ()
+    public void OneTimeSetUp ()
     {
       _testDllPath = CreateAssembly ("TestDll", "TestDll" + "." + "dll");
       _testExePath = CreateAssembly ("TestExe", "TestExe" + "." + "exe");

@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [OneTimeSetUp]
-    public void IntegrationTestTestFixtureSetUp ()
+    public void IntegrationTestOneTimeSetUp ()
     {
       _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 

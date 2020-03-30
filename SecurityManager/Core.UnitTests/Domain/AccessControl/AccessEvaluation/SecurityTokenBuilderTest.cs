@@ -39,9 +39,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     private SecurityPrincipalRepository _securityPrincipalRepository;
     private ClientTransactionScope _clientTransactionScope;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.CreateRootTransaction());

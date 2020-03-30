@@ -25,9 +25,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
   [TestFixture]
   public class FindTest : DomainTest
   {
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp ();
+      base.OneTimeSetUp ();
       
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateAndCommitSecurableClassDefinitionWithStates (ClientTransaction.CreateRootTransaction());

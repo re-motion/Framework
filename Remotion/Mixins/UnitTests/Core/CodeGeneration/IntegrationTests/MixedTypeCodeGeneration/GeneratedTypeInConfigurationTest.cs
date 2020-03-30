@@ -28,7 +28,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     private Type _generatedType;
 
     [OneTimeSetUp]
-    public void TestFixtureSetUp ()
+    public void OneTimeSetUp ()
     {
       var generator = new AdHocCodeGenerator("MixedTypeCodeGeneration.GeneratedTypeInConfigurationTest");
       var typeBuilder = generator.CreateType ("GeneratedType");

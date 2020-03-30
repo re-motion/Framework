@@ -29,9 +29,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
     private DatabaseFixtures _dbFixtures;
     private IDomainObjectHandle<Tenant> _expectedTenantHandle;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
 
       _dbFixtures = new DatabaseFixtures();
       Tenant tenant = _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.CreateRootTransaction());

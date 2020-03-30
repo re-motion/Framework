@@ -30,7 +30,7 @@ namespace Remotion.SecurityManager.UnitTests
     }
 
     [OneTimeSetUp]
-    public virtual void TestFixtureSetUp ()
+    public virtual void OneTimeSetUp ()
     {
     }
 

@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       try
       {
-        // This does not set the current configuration properties, SchemaGenerationTestBase.TestFixtureSetUp does this
+        // This does not set the current configuration properties, SchemaGenerationTestBase.OneTimeSetUp does this
         SchemaGenerationConfiguration.Initialize ();
       }
       catch (Exception ex)

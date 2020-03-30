@@ -24,9 +24,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
   [TestFixture]
   public class TableInheritanceDomainObjectTest : TableInheritanceMappingTest
   {
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp ();
+      base.OneTimeSetUp ();
       SetDatabaseModifyable ();
     }
 
@@ -148,10 +148,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
       expectedCustomer.CustomerSince = DateTime.Now;
 
       TIAddress expectedAddress = TIAddress.NewObject();
-      expectedAddress.Street = "Linzer Straße 1";
+      expectedAddress.Street = "Linzer StraÃŸe 1";
       expectedAddress.Zip = "3100";
-      expectedAddress.City = "St. Pölten";
-      expectedAddress.Country = "Österreich";
+      expectedAddress.City = "St. PÃ¶lten";
+      expectedAddress.Country = "Ã–sterreich";
       expectedAddress.Person = expectedCustomer;
 
       ClientTransactionScope.CurrentTransaction.Commit ();

@@ -51,7 +51,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     private string _markedExeAssemblyInDynamicDirectoryPath;
 
     [OneTimeSetUp]
-    public void TestFixtureSetUp ()
+    public void OneTimeSetUp ()
     {
       var searchPathForDlls = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dlls");
       var searchPathForExes = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Exes");

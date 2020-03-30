@@ -44,9 +44,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       return new CustomDataTypeStorageObjectFactory();
     }
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<IPersistableDataValidator> (() => new SimpleDataTypePropertyMaxLengthValidator());
       serviceLocator.RegisterSingle<IDataContainerValidator> (() => new SimpleDataTypePropertyMaxLengthValidator());

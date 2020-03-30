@@ -31,9 +31,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
   [TestFixture]
   public class FulltextIntegrationTests : IntegrationTestBase
   {
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp ();
+      base.OneTimeSetUp ();
 
       SetDatabaseModifyable ();
       DatabaseAgent.ExecuteBatchFile ("DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());

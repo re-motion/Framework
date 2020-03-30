@@ -53,9 +53,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     private MockRepository _mockRepository;
     private IClientTransactionExtension _extensionMock;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
       SetDatabaseModifyable();
     }
 
