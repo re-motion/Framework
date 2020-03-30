@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -180,7 +180,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     private void AssertPostBackSequenceNumber (LabelControlObject label, int expectedPostBackSequenceNumber)
     {
-      Assert.That (label.GetText(), Is.StringContaining (string.Format ("| {0} |", expectedPostBackSequenceNumber)));
+      Assert.That (label.GetText(), Does.Contain (string.Format ("| {0} |", expectedPostBackSequenceNumber)));
     }
 
     private MultiWindowTestPageObject Start ()

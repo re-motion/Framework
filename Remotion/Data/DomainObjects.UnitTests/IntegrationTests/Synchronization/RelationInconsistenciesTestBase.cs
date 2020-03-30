@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
         var expectedMessage = String.Format (expectedMessageFormatString, formatArgs);
         Assert.That (
             ex.Message, 
-            Is.StringContaining(expectedMessage), 
+            Does.Contain(expectedMessage), 
             "Expected: " + expectedMessage + Environment.NewLine + "Was: " + ex.Message);
       }
 

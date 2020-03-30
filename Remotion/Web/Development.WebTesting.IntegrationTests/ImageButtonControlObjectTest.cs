@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var imageButton = home.ImageButtons().GetByLocalID ("MyImageButton");
-      Assert.That (imageButton.GetImageSourceUrl(), Is.StringEnding ("/Images/SampleIcon.gif"));
+      Assert.That (imageButton.GetImageSourceUrl(), Does.EndWith ("/Images/SampleIcon.gif"));
     }
 
     [Test]

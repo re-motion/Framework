@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 //
 // The re-motion Core Framework is free software; you can redistribute it
@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (result.BrowserBinaryPath, Is.EqualTo (@"C:\Program Files\Mozilla Firefox\firefox.exe"));
       Assert.That (
           result.DriverBinaryPath,
-          Is.StringMatching (
+          Does.Match (
               Regex.Escape (Path.GetTempPath()) + @"Remotion.Web.Development.WebTesting.WebDriver\\geckodriver\\geckodriver_v\d+\.\d+\.\d+\\geckodriver.exe"));
     }
   }

@@ -50,7 +50,7 @@ namespace Remotion.Scripting.UnitTests
       Assert.That (scriptingHost, Is.Not.Null);
       Assert.That (scriptingHost.GetScriptRuntime (), Is.Not.Null);
       Assert.That (scriptingHost.GetScriptRuntime ().Setup.LanguageSetups.Count, Is.EqualTo (1));
-      Assert.That (scriptingHost.GetScriptRuntime ().Setup.LanguageSetups[0].TypeName, Is.StringStarting("IronPython.Runtime.PythonContext"));
+      Assert.That (scriptingHost.GetScriptRuntime ().Setup.LanguageSetups[0].TypeName, Does.StartWith("IronPython.Runtime.PythonContext"));
     }
 
     [Test]

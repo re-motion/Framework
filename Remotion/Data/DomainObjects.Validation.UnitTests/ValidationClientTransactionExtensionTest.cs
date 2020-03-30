@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -178,7 +178,7 @@ Object 'TestDomainObject' with ID '.*':
  -- PropertyStub4: Error4
  -- Error3
 ";
-        Assert.That (exception.Message, Is.StringMatching (expectedMessage));
+        Assert.That (exception.Message, Does.Match (expectedMessage));
 
         Assert.That (
             exception.AffectedObjects,
@@ -242,7 +242,7 @@ Object 'DomainObjectWithoutAnnotatedProperties' with ID '.*':
  -- Name: The value must not be null.
 ";
 
-          Assert.That (exception.Message, Is.StringMatching (expectedMessage));
+          Assert.That (exception.Message, Does.Match (expectedMessage));
 
           Assert.That (exception.AffectedObjects.Length, Is.EqualTo (1));
           Assert.That (exception.AffectedObjects[0], Is.EqualTo (domainObject1));

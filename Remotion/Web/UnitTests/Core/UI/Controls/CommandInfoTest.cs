@@ -150,11 +150,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.StringContaining ("title=\"TheTitle\""));
-      Assert.That (result, Is.StringContaining ("accesskey=\"A\""));
-      Assert.That (result, Is.StringContaining ("onclick=\"ClickHandler\""));
-      Assert.That (result, Is.StringContaining ("href=\"Url\""));
-      Assert.That (result, Is.StringContaining ("target=\"TheTarget\""));
+      Assert.That (result, Does.Contain ("title=\"TheTitle\""));
+      Assert.That (result, Does.Contain ("accesskey=\"A\""));
+      Assert.That (result, Does.Contain ("onclick=\"ClickHandler\""));
+      Assert.That (result, Does.Contain ("href=\"Url\""));
+      Assert.That (result, Does.Contain ("target=\"TheTarget\""));
     }
 
     [Test]
@@ -172,11 +172,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.Not.StringContaining ("title="));
-      Assert.That (result, Is.Not.StringContaining ("accesskey="));
-      Assert.That (result, Is.Not.StringContaining ("onclick="));
-      Assert.That (result, Is.StringContaining ("href=\"Url\""));
-      Assert.That (result, Is.Not.StringContaining ("target="));
+      Assert.That (result, Does.Not.Contains ("title="));
+      Assert.That (result, Does.Not.Contains ("accesskey="));
+      Assert.That (result, Does.Not.Contains ("onclick="));
+      Assert.That (result, Does.Contain ("href=\"Url\""));
+      Assert.That (result, Does.Not.Contains ("target="));
     }
 
     [Test]
@@ -194,11 +194,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.Not.StringContaining ("title="));
-      Assert.That (result, Is.Not.StringContaining ("accesskey="));
-      Assert.That (result, Is.StringContaining ("onclick=\"ClickHandler\""));
-      Assert.That (result, Is.StringContaining ("href=\"#\""));
-      Assert.That (result, Is.Not.StringContaining ("target="));
+      Assert.That (result, Does.Not.Contains ("title="));
+      Assert.That (result, Does.Not.Contains ("accesskey="));
+      Assert.That (result, Does.Contain ("onclick=\"ClickHandler\""));
+      Assert.That (result, Does.Contain ("href=\"#\""));
+      Assert.That (result, Does.Not.Contains ("target="));
     }
 
     [Test]
@@ -216,7 +216,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.StringContaining ("title=\"TheTitle&quot;Space&#39;\""));
+      Assert.That (result, Does.Contain ("title=\"TheTitle&quot;Space&#39;\""));
     }
 
     [Test]
@@ -234,7 +234,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.StringContaining ("accesskey=\"&#39;"));
+      Assert.That (result, Does.Contain ("accesskey=\"&#39;"));
     }
 
     [Test]
@@ -252,7 +252,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.StringContaining ("onclick=\"ClickHandler&quot;Space&#39;\""));
+      Assert.That (result, Does.Contain ("onclick=\"ClickHandler&quot;Space&#39;\""));
     }
 
     [Test]
@@ -270,7 +270,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.StringContaining ("href=\"Url&quot;Space&#39;\""));
+      Assert.That (result, Does.Contain ("href=\"Url&quot;Space&#39;\""));
     }
 
     [Test]
@@ -288,7 +288,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.StringContaining ("target=\"TheTarget\"Space'\""));
+      Assert.That (result, Does.Contain ("target=\"TheTarget\"Space'\""));
     }
 
     [Test]
@@ -305,9 +305,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersPostBack + "=\"false\""));
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersNavigation + "=\"true\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.TriggersPostBack + "=\"false\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.TriggersNavigation + "=\"true\""));
     }
 
     [Test]
@@ -324,9 +324,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
     }
 
     [Test]
@@ -343,9 +343,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersPostBack + "=\"false\""));
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.TriggersPostBack + "=\"false\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
     }
 
     [Test]
@@ -362,9 +362,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
     }
 
     [Test]
@@ -381,9 +381,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersPostBack + "=\"false\""));
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.TriggersPostBack + "=\"false\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
     }
 
     [Test]
@@ -400,10 +400,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var result = stringWriter.ToString();
 
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
-      Assert.That (result, Is.StringContaining (DiagnosticMetadataAttributes.IsDisabled + "=\"true\""));
-      Assert.That (result, Is.Not.StringContaining (DiagnosticMetadataAttributes.TriggersPostBack));
-      Assert.That (result, Is.Not.StringContaining (DiagnosticMetadataAttributes.TriggersNavigation));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
+      Assert.That (result, Does.Contain (DiagnosticMetadataAttributes.IsDisabled + "=\"true\""));
+      Assert.That (result, Does.Not.Contains (DiagnosticMetadataAttributes.TriggersPostBack));
+      Assert.That (result, Does.Not.Contains (DiagnosticMetadataAttributes.TriggersNavigation));
     }
   }
 }

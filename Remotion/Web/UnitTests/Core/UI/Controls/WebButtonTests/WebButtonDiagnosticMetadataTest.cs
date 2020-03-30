@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Web.UI;
 using NUnit.Framework;
@@ -38,11 +38,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 
       var renderedText = RenderControl (webButton);
 
-      Assert.That (renderedText, Is.StringContaining (DiagnosticMetadataAttributes.ControlType + "=\"WebButton\""));
-      Assert.That (renderedText, Is.StringContaining (DiagnosticMetadataAttributes.ItemID + "=\"" + webButton.ID + "\""));
-      Assert.That (renderedText, Is.StringContaining (DiagnosticMetadataAttributes.Content + "=\"" + webButton.Text + "\""));
-      Assert.That (renderedText, Is.Not.StringContaining (DiagnosticMetadataAttributes.CommandName));
-      Assert.That (renderedText, Is.StringContaining (DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
+      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.ControlType + "=\"WebButton\""));
+      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.ItemID + "=\"" + webButton.ID + "\""));
+      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.Content + "=\"" + webButton.Text + "\""));
+      Assert.That (renderedText, Does.Not.Contains (DiagnosticMetadataAttributes.CommandName));
+      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
     }
 
     [Test]
@@ -52,9 +52,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 
       var renderedText = RenderControl (webButton);
 
-      Assert.That (renderedText, Is.StringContaining (DiagnosticMetadataAttributes.ControlType + "=\"WebButton\""));
-      Assert.That (renderedText, Is.StringContaining (DiagnosticMetadataAttributes.CommandName + "=\"MyCommand\""));
-      Assert.That (renderedText, Is.StringContaining (DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
+      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.ControlType + "=\"WebButton\""));
+      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.CommandName + "=\"MyCommand\""));
+      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
     }
 
     private string RenderControl (Control control)

@@ -1,4 +1,4 @@
-ï»¿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (result.HasError, Is.EqualTo (true));
       Assert.That (result.Message, Is.EqualTo ("SyncPostbackError"));
-      Assert.That (result.Stacktrace, Is.StringStarting ("\r\n[Exception: SyncPostbackError]\r\n"));
+      Assert.That (result.Stacktrace, Does.StartWith ("\r\n[Exception: SyncPostbackError]\r\n"));
     }
 
     [Test]
@@ -49,8 +49,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var result = aspNetRequestErrorDetectionParser.Parse (home.Scope);
       
       Assert.That (result.HasError, Is.EqualTo (true));
-      Assert.That (result.Message, Is.EqualTo ("Ã¤&<\r\n'\""));
-      Assert.That (result.Stacktrace, Is.StringStarting ("\r\n[Exception: Ã¤&<\r\n'\"]\r\n"));
+      Assert.That (result.Message, Is.EqualTo ("ä&<\r\n'\""));
+      Assert.That (result.Stacktrace, Does.StartWith ("\r\n[Exception: ä&<\r\n'\"]\r\n"));
     }
 
     [Test]
@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       
       Assert.That (result.HasError, Is.EqualTo (true));
       Assert.That (result.Message, Is.EqualTo ("AsyncPostbackError"));
-      Assert.That (result.Stacktrace, Is.StringStarting ("\r\n[Exception: AsyncPostbackError]\r\n"));
+      Assert.That (result.Stacktrace, Does.StartWith ("\r\n[Exception: AsyncPostbackError]\r\n"));
     }
 
     [Test]

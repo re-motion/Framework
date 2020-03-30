@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var image = home.Images().GetByLocalID ("MyImage");
-      Assert.That (image.GetSourceUrl(), Is.StringEnding ("/Images/SampleIcon.gif"));
+      Assert.That (image.GetSourceUrl(), Does.EndWith ("/Images/SampleIcon.gif"));
 
       var image3 = home.Images().GetByLocalID ("MyImage3");
       Assert.That (image3.GetSourceUrl(), Is.Null);
@@ -56,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var image = home.Images().GetByLocalID ("MyImage");
-      Assert.That (image.GetAltText(), Is.StringEnding ("My alternative text"));
+      Assert.That (image.GetAltText(), Does.EndWith ("My alternative text"));
 
       var image2 = home.Images().GetByLocalID ("MyImage2");
       Assert.That (image2.GetAltText(), Is.Empty);

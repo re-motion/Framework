@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -51,13 +51,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (
           wrappedErrorLogEntry.Timestamp,
           Is.InRange (DateTime.UtcNow.Subtract (maxExpectedTestRunTime), DateTime.UtcNow.Add (maxExpectedTestRunTime)));
-      Assert.That (wrappedErrorLogEntry.Message, Is.StringMatching ($@"^console-api \d+:\d+ ""{errorMessage}""$"));
+      Assert.That (wrappedErrorLogEntry.Message, Does.Match ($@"^console-api \d+:\d+ ""{errorMessage}""$"));
 
       var logAsStringPattern = $@"^\[\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ\] \[Severe\] console-api \d+:\d+ ""{errorMessage}""$";
 
       Assert.That (
           wrappedErrorLogEntry.ToString(),
-          Is.StringMatching (logAsStringPattern));
+          Does.Match (logAsStringPattern));
     }
 
     private WxePageObject Start ()

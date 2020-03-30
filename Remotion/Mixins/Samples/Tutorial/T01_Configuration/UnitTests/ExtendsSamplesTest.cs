@@ -31,9 +31,9 @@ namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration.UnitTests
       var numberedCarFile = (INumberedFile) ObjectFactory.Create<CarFile> (ParamList.Empty);
       var numberedPersonFile = (INumberedFile) ObjectFactory.Create<PersonFile> (ParamList.Empty);
 
-      Assert.That (numberedFile.GetFileNumber(), Is.StringMatching("........-....-....-....-............"));
-      Assert.That (numberedCarFile.GetFileNumber(), Is.StringMatching("........-....-....-....-............"));
-      Assert.That (numberedPersonFile.GetFileNumber(), Is.StringMatching("........-....-....-....-............"));
+      Assert.That (numberedFile.GetFileNumber(), Does.Match("........-....-....-....-............"));
+      Assert.That (numberedCarFile.GetFileNumber(), Does.Match("........-....-....-....-............"));
+      Assert.That (numberedPersonFile.GetFileNumber(), Does.Match("........-....-....-....-............"));
     }
   }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -702,7 +702,7 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That (validationMessage, Is.Not.Null);
       Assert.That (validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      Assert.That (validationMessage.ToString(), Is.StringStarting ("Enter a number with no more than {0} integer digits and {1} decimal places."));
+      Assert.That (validationMessage.ToString(), Does.StartWith ("Enter a number with no more than {0} integer digits and {1} decimal places."));
     }
 
     [Test]

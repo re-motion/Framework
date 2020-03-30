@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -70,8 +70,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       Assert.That (registeredStyleSheetBlock, Is.Not.Null);
 
       Assert.That (registeredStyleSheetBlock.StyleSheetElements.Count, Is.EqualTo (2));
-      Assert.That (((StyleSheetImportRule) registeredStyleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.StringEnding ("TabStrip.css"));
-      Assert.That (((StyleSheetImportRule) registeredStyleSheetBlock.StyleSheetElements[1]).ResourceUrl.GetUrl(), Is.StringEnding ("TabbedMultiView.css"));
+      Assert.That (((StyleSheetImportRule) registeredStyleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Does.EndWith ("TabStrip.css"));
+      Assert.That (((StyleSheetImportRule) registeredStyleSheetBlock.StyleSheetElements[1]).ResourceUrl.GetUrl(), Does.EndWith ("TabbedMultiView.css"));
     }
   }
 }

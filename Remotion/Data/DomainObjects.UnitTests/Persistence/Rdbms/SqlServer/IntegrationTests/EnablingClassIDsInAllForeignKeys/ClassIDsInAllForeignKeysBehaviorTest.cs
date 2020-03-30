@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   [RelationWithoutInheritanceHierarchyIDClassID] varchar (100) NULL,
   [RelationWithInheritanceHierarchyID] uniqueidentifier NULL,
   [RelationWithInheritanceHierarchyIDClassID] varchar (100) NULL,";
-      Assert.That (script.SetUpScript, Is.StringContaining (expectedSetUpScriptFragment));
+      Assert.That (script.SetUpScript, Does.Contain (expectedSetUpScriptFragment));
     }
   }
 }

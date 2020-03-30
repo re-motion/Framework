@@ -387,12 +387,12 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 
     private void CheckLog (string fullLog, string expectedLogMessage)
     {
-      Assert.That (fullLog, Is.StringContaining(expectedLogMessage));
+      Assert.That (fullLog, Does.Contain(expectedLogMessage));
     }
 
     private void CheckLogRegEx (string fullLog, string expectedLogRegEx)
     {
-      Assert.That (fullLog, Is.StringMatching (expectedLogRegEx));
+      Assert.That (fullLog, Does.Match (expectedLogRegEx));
     }
   }
 }

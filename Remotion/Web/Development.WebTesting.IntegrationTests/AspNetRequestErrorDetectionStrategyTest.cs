@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (exception.Message, Is.EqualTo ("Request has failed due to a server error"));
       Assert.That (exception.InnerException, Is.TypeOf (typeof (ServerErrorException)));
       Assert.That (exception.InnerException.Message, Is.EqualTo ("SyncPostbackError"));
-      Assert.That (exception.InnerException.StackTrace, Is.StringStarting ("\r\n[Exception: SyncPostbackError]\r\n"));
+      Assert.That (exception.InnerException.StackTrace, Does.StartWith ("\r\n[Exception: SyncPostbackError]\r\n"));
     }
 
     [Test]

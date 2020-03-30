@@ -54,7 +54,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure
       var actual = searchService.Search (null, _property, CreateSecurityManagerSearchArguments (1)).ToArray();
 
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (((User) actual[0]).LastName, Is.StringContaining ("user"));
+      Assert.That (((User) actual[0]).LastName, Does.Contain ("user"));
     }
 
     private SecurityManagerSearchArguments CreateSecurityManagerSearchArguments (int? resultSize)

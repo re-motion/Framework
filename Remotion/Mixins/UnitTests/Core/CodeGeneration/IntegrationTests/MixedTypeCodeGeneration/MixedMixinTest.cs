@@ -53,7 +53,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
           .EnterScope())
       {
         var instance = ObjectFactory.Create<ClassOverridingSingleMixinMethod>(ParamList.Empty);
-        Assert.That (Mixin.Get<MixinWithOverridableMember> (instance).ToString(), Is.StringStarting("Overridden: "));
+        Assert.That (Mixin.Get<MixinWithOverridableMember> (instance).ToString(), Does.StartWith("Overridden: "));
       }
     }
 

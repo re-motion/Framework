@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -41,10 +41,10 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
       Assert.That (() => handler.HandleError (new ApplicationException ("The error")), Throws.TypeOf<AsyncUnhandledException>());
 
       var message = contextStub.Items[ControlHelper.AsyncPostBackErrorMessageKey];
-      Assert.That (message, Is.StringStarting (@"
+      Assert.That (message, Does.StartWith (@"
 
             <span><H1>"));
-      Assert.That (message, Is.StringContaining ("[ApplicationException: The error]"));
+      Assert.That (message, Does.Contain ("[ApplicationException: The error]"));
       
       //The first value is the error page on a system without .Net 4.8 installed.
       //The second value is the error page on a system with .Net 4.8 installed.
@@ -75,12 +75,12 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
       Assert.That (() => handler.HandleError (new ApplicationException (exceptionMessage)), Throws.TypeOf<AsyncUnhandledException>());
 
       var message = contextStub.Items[ControlHelper.AsyncPostBackErrorMessageKey];
-      Assert.That (message, Is.StringStarting (@"
+      Assert.That (message, Does.StartWith (@"
 
             <span><h1>"));
-      Assert.That (message, Is.Not.StringContaining (exceptionMessage));
-      Assert.That (message, Is.StringContaining ("Application/Path"));
-      Assert.That (message, Is.StringEnding (@"<br/>
+      Assert.That (message, Does.Not.Contains (exceptionMessage));
+      Assert.That (message, Does.Contain ("Application/Path"));
+      Assert.That (message, Does.EndWith (@"<br/>
 
             </div>
 

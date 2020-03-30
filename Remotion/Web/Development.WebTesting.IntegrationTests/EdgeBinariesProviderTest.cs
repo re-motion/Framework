@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -36,11 +36,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (result.BrowserBinaryPath, Is.EqualTo (@"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"));
       Assert.That (
           result.DriverBinaryPath,
-          Is.StringMatching (
+          Does.Match (
               Regex.Escape (Path.GetTempPath()) + @"Remotion.Web.Development.WebTesting.WebDriver\\msedgedriver\\msedgedriver_v\d+\.\d+\.\d+\.\d+\\msedgedriver.exe"));
       Assert.That (
           result.UserDirectory,
-          Is.StringMatching (Regex.Escape (Path.GetTempPath()) + c_guidRegex));
+          Does.Match (Regex.Escape (Path.GetTempPath()) + c_guidRegex));
     }
   }
 }

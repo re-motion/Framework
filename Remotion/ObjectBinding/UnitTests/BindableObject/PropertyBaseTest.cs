@@ -219,7 +219,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 #if DEBUG
       Assert.That (
           originalException.StackTrace,
-          Is.StringStarting ("   at Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithReferenceType`1.get_ThrowingProperty()"));
+          Does.StartWith ("   at Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithReferenceType`1.get_ThrowingProperty()"));
 #endif
     }
 
@@ -355,7 +355,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 #if DEBUG
       Assert.That (
           originalException.StackTrace,
-          Is.StringStarting ("   at Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithReferenceType`1.set_ThrowingProperty(T value)"));
+          Does.StartWith ("   at Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithReferenceType`1.set_ThrowingProperty(T value)"));
 #endif
     }
    

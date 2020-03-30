@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -40,12 +40,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
+      Assert.That (home.Scope.Text, Does.Contain ("DoNotFindMe"));
 
       var scope = home.Scopes().GetByID ("body_MyScope");
       Assert.That (scope.GetHtmlID(), Is.EqualTo ("body_MyScope"));
-      Assert.That (scope.Scope.Text, Is.StringContaining ("Content"));
-      Assert.That (scope.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
+      Assert.That (scope.Scope.Text, Does.Contain ("Content"));
+      Assert.That (scope.Scope.Text, Does.Not.Contains ("DoNotFindMe"));
     }
 
     [Test]
@@ -53,12 +53,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      Assert.That (home.Scope.Text, Is.StringContaining ("DoNotFindMe"));
+      Assert.That (home.Scope.Text, Does.Contain ("DoNotFindMe"));
 
       var scope = home.Scopes().GetByLocalID ("MyScope");
       Assert.That (scope.GetHtmlID(), Is.EqualTo ("body_MyScope"));
-      Assert.That (scope.Scope.Text, Is.StringContaining ("Content"));
-      Assert.That (scope.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
+      Assert.That (scope.Scope.Text, Does.Contain ("Content"));
+      Assert.That (scope.Scope.Text, Does.Not.Contains ("DoNotFindMe"));
     }
 
     private WebFormsTestPageObject Start ()

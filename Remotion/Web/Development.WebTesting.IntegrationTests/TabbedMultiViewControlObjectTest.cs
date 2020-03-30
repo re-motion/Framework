@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -47,8 +47,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var tabbedMultiView = home.TabbedMultiViews().Single();
 
       var topControls = tabbedMultiView.GetTopControls();
-      Assert.That (topControls.Scope.Text, Is.StringContaining ("TopControls"));
-      Assert.That (topControls.Scope.Text, Is.Not.StringContaining ("Content1"));
+      Assert.That (topControls.Scope.Text, Does.Contain ("TopControls"));
+      Assert.That (topControls.Scope.Text, Does.Not.Contains ("Content1"));
     }
 
     [Test]
@@ -59,9 +59,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var tabbedMultiView = home.TabbedMultiViews().Single();
 
       var view = tabbedMultiView.GetActiveView();
-      Assert.That (view.Scope.Text, Is.StringContaining ("Content1"));
-      Assert.That (view.Scope.Text, Is.Not.StringContaining ("TopControls"));
-      Assert.That (view.Scope.Text, Is.Not.StringContaining ("BottomControls"));
+      Assert.That (view.Scope.Text, Does.Contain ("Content1"));
+      Assert.That (view.Scope.Text, Does.Not.Contains ("TopControls"));
+      Assert.That (view.Scope.Text, Does.Not.Contains ("BottomControls"));
     }
 
     [Test]
@@ -72,8 +72,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var tabbedMultiView = home.TabbedMultiViews().Single();
 
       var bottomControls = tabbedMultiView.GetBottomControls();
-      Assert.That (bottomControls.Scope.Text, Is.StringContaining ("BottomControls"));
-      Assert.That (bottomControls.Scope.Text, Is.Not.StringContaining ("Content1"));
+      Assert.That (bottomControls.Scope.Text, Does.Contain ("BottomControls"));
+      Assert.That (bottomControls.Scope.Text, Does.Not.Contains ("Content1"));
     }
 
     [Test]
@@ -122,28 +122,28 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       home = tabbedMultiView.SwitchTo ("Tab2").Expect<WxePageObject>();
       tabbedMultiView = home.TabbedMultiViews().Single();
-      Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content2"));
-      Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content1"));
+      Assert.That (tabbedMultiView.Scope.Text, Does.Contain ("Content2"));
+      Assert.That (tabbedMultiView.Scope.Text, Does.Not.Contains ("Content1"));
 
       home = tabbedMultiView.SwitchTo().WithDisplayText ("Tab1Title").Expect<WxePageObject>();
       tabbedMultiView = home.TabbedMultiViews().Single();
-      Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content1"));
-      Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content2"));
+      Assert.That (tabbedMultiView.Scope.Text, Does.Contain ("Content1"));
+      Assert.That (tabbedMultiView.Scope.Text, Does.Not.Contains ("Content2"));
 
       home = tabbedMultiView.SwitchTo().WithDisplayTextContains ("b2T").Expect<WxePageObject>();
       tabbedMultiView = home.TabbedMultiViews().Single();
-      Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content2"));
-      Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content1"));
+      Assert.That (tabbedMultiView.Scope.Text, Does.Contain ("Content2"));
+      Assert.That (tabbedMultiView.Scope.Text, Does.Not.Contains ("Content1"));
 
       home = tabbedMultiView.SwitchTo().WithIndex (1).Expect<WxePageObject>();
       tabbedMultiView = home.TabbedMultiViews().Single();
-      Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content1"));
-      Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content2"));
+      Assert.That (tabbedMultiView.Scope.Text, Does.Contain ("Content1"));
+      Assert.That (tabbedMultiView.Scope.Text, Does.Not.Contains ("Content2"));
 
       home = tabbedMultiView.SwitchTo().WithHtmlID ("body_MyTabbedMultiView_TabStrip_Tab2_Tab").Expect<WxePageObject>();
       tabbedMultiView = home.TabbedMultiViews().Single();
-      Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content2"));
-      Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content1"));
+      Assert.That (tabbedMultiView.Scope.Text, Does.Contain ("Content2"));
+      Assert.That (tabbedMultiView.Scope.Text, Does.Not.Contains ("Content1"));
     }
 
     private WxePageObject Start ()

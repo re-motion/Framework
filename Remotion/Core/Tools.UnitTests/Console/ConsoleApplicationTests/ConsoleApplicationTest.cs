@@ -46,12 +46,12 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
       var outResult = stringWriterOut.ToString();
       var errorResult = stringWriterError.ToString();
 
-      Assert.That (outResult, Is.StringContaining("Application Usage:"));
-      Assert.That (outResult, Is.StringContaining ("[/stringArg:string_arg_sample] [/flagArg] [{/?}]"));
-      Assert.That (outResult, Is.StringContaining ("/stringArg  stringArg description."));
-      Assert.That (outResult, Is.StringContaining ("/flagArg    flagArg description."));
-      Assert.That (outResult, Is.StringContaining ("/?          Show usage"));
-      Assert.That (outResult, Is.StringContaining (Path.GetFileName (Process.GetCurrentProcess ().MainModule.FileName)));
+      Assert.That (outResult, Does.Contain("Application Usage:"));
+      Assert.That (outResult, Does.Contain ("[/stringArg:string_arg_sample] [/flagArg] [{/?}]"));
+      Assert.That (outResult, Does.Contain ("/stringArg  stringArg description."));
+      Assert.That (outResult, Does.Contain ("/flagArg    flagArg description."));
+      Assert.That (outResult, Does.Contain ("/?          Show usage"));
+      Assert.That (outResult, Does.Contain (Path.GetFileName (Process.GetCurrentProcess ().MainModule.FileName)));
 
       Assert.That (errorResult, Is.EqualTo (""));
     }
@@ -98,7 +98,7 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
       consoleApplication.Main (args);
 
       var errorResult = stringWriterError.ToString();
-      Assert.That (errorResult, Is.StringContaining(@"An error occured: Argument /UNKNOWN_ARGUMENT: invalid argument name"));
+      Assert.That (errorResult, Does.Contain(@"An error occured: Argument /UNKNOWN_ARGUMENT: invalid argument name"));
     }
 
     [Test]
@@ -203,7 +203,7 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
       consoleApplicationMock.VerifyAllExpectations();
 
       var result = stringWriterError.ToString();
-      Assert.That (result, Is.StringStarting("Execution aborted. Exception stack:\r\nSystem.Exception: The valve just came loose..."));
+      Assert.That (result, Does.StartWith("Execution aborted. Exception stack:\r\nSystem.Exception: The valve just came loose..."));
     }
   }
 }

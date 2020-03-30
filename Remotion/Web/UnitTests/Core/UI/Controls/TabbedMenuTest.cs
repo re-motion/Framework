@@ -229,8 +229,8 @@ public class TabbedMenuTest: WebControlTest
     Assert.That (registeredStyleSheetBlock, Is.Not.Null);
 
     Assert.That (registeredStyleSheetBlock.StyleSheetElements.Count, Is.EqualTo (2));
-    Assert.That (((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.StringEnding ("TabStrip.css"));
-    Assert.That (((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[1]).ResourceUrl.GetUrl(), Is.StringEnding ("TabbedMenu.css"));
+    Assert.That (((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Does.EndWith ("TabStrip.css"));
+    Assert.That (((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[1]).ResourceUrl.GetUrl(), Does.EndWith ("TabbedMenu.css"));
   }
 }
 

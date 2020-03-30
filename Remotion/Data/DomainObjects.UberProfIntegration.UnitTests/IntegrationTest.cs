@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 
       Assert.That (
           _tracingLinqToSqlAppender.TraceLog,
-          Is.StringMatching (
+          Does.Match (
               @"^ConnectionStarted \((?<connectionid>[^,]+)\)" + Environment.NewLine
               + @"StatementExecuted \(\k<connectionid>, (?<statementid>[^,]+), "
               + @"SELECT \[ID\], \[ClassID\], \[Timestamp\], \[SampleProperty\] "

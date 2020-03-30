@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -53,7 +53,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
       Assert.That (result[7], Is.EqualTo (typeof (IIntroducedFromMixinForBaseType)));
       Assert.That (result[8], Is.EqualTo (typeof (IIntroducedFromMixinForDerivedType1)));
       Assert.That (result[9], Is.EqualTo (typeof (IIntroducedFromMixinForDerivedType2)));
-      Assert.That (result[10].Name, Is.StringStarting ("DerivedConcreteTypeForMixin_AssembledTypeProxy_"));
+      Assert.That (result[10].Name, Does.StartWith ("DerivedConcreteTypeForMixin_AssembledTypeProxy_"));
       Assert.That (result[11], Is.EqualTo (typeof (BaseMixinForDerivedType)));
       Assert.That (result[12], Is.EqualTo (typeof (MixinForBaseType)));
       Assert.That (result[13], Is.EqualTo (typeof (MixinForDerivedType1)));

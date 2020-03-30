@@ -106,7 +106,7 @@ namespace Remotion.ObjectBinding.UnitTests
 
       string actual = businessObjectStub.GetAccessibleDisplayName();
 
-      Assert.That (actual, Is.StringStarting ("The DisplayName"));
+      Assert.That (actual, Does.StartWith ("The DisplayName"));
     }
 
     [Test]
