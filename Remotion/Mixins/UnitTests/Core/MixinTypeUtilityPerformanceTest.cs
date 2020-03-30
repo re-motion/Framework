@@ -31,7 +31,7 @@ namespace Remotion.Mixins.UnitTests.Core
     private Type _targetType;
     private Type _concreteType;
 
-    [TestFixtureSetUp]
+    [OneTimeSetUp]
     public void TestFixtureSetUp ()
     {
       Console.WriteLine (

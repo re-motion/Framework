@@ -39,7 +39,7 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     private ILog _log;
     private EventLog _testEventLog;
 
-    [TestFixtureSetUp]
+    [OneTimeSetUp]
     public void SetUpFixture ()
     {
       try
@@ -57,7 +57,7 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
       _testEventLog = Array.Find (EventLog.GetEventLogs(), delegate (EventLog current) { return current.Log == s_eventLogName; });
     }
 
-    [TestFixtureTearDown]
+    [OneTimeTearDown]
     public void TearDownFixture ()
     {
       if (_skipFixtureTearDown)

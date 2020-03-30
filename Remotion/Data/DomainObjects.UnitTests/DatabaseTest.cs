@@ -67,12 +67,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
       }
     }
 
-    [TestFixtureSetUp]
+    [OneTimeSetUp]
     public virtual void TestFixtureSetUp ()
     {
     }
 
-    [TestFixtureTearDown]
+    [OneTimeTearDown]
     public virtual void TestFixtureTearDown ()
     {
       if (_isDatabaseModifyable)

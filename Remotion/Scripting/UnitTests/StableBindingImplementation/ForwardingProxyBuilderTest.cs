@@ -32,7 +32,7 @@ namespace Remotion.Scripting.UnitTests.StableBindingImplementation
     private const BindingFlags _nonPublicInstanceFlags = BindingFlags.Instance | BindingFlags.NonPublic;
 
 
-    [TestFixtureTearDown]
+    [OneTimeTearDown]
     public void TestFixtureTearDown ()
     {
       if (_moduleScope != null)

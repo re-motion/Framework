@@ -31,14 +31,14 @@ namespace Remotion.UnitTests.ServiceLocation
     private ServiceLocatorProvider _serviceLocatorProviderBackup;
     private IServiceLocationConfiguration _previousConfiguration;
 
-    [TestFixtureSetUp]
+    [OneTimeSetUp]
     public void TestFixtureSetUp ()
     {
       _serviceLocatorProviderBackup = (ServiceLocatorProvider) PrivateInvoke.GetNonPublicStaticField (typeof (ServiceLocator), "currentProvider");
       PrivateInvoke.SetNonPublicStaticField (typeof (ServiceLocator), "currentProvider", null);
     }
 
-    [TestFixtureTearDown]
+    [OneTimeTearDown]
     public void TestFixtureTearDown ()
     {
       PrivateInvoke.SetNonPublicStaticField (typeof (ServiceLocator), "currentProvider", _serviceLocatorProviderBackup);

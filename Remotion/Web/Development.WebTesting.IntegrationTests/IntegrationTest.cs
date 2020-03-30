@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       get { return _webTestHelper; }
     }
 
-    [TestFixtureSetUp]
+    [OneTimeSetUp]
     public void IntegrationTestTestFixtureSetUp ()
     {
       _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
@@ -70,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       _aspNetRequestErrorDetectionScope.Dispose();
     }
 
-    [TestFixtureTearDown]
+    [OneTimeTearDown]
     public void IntegrationTestTestFixtureTearDown ()
     {
       _webTestHelper.OnFixtureTearDown();

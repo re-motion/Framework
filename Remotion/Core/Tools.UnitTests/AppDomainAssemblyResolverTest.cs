@@ -37,7 +37,7 @@ namespace Remotion.Tools.UnitTests
     private string _domainBase;
     private AppDomain _appDomain;
 
-    [TestFixtureSetUp]
+    [OneTimeSetUp]
     public void TestFixtureSetUp ()
     {
       _testDllPath = CreateAssembly ("TestDll", "TestDll" + "." + "dll");
@@ -45,7 +45,7 @@ namespace Remotion.Tools.UnitTests
       _testInvalidDllPath = CreateAssembly ("TestDllWhatever", "TestDllInvalid" + "." + "dll");
     }
 
-    [TestFixtureTearDown]
+    [OneTimeTearDown]
     public void TestFixtureTearDown ()
     {
       FileUtility.DeleteAndWaitForCompletion (_testDllPath);
