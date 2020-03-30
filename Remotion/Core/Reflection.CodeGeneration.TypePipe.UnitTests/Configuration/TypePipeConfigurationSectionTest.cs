@@ -73,11 +73,13 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), ExpectedMessage = "Example configuration:", MatchType = MessageMatch.Contains)]
     public void InvalidSection ()
     {
       var xmlFragment = "<remotion.reflection.codeGeneration.typePipe {xmlns}><invalid /></remotion.reflection.codeGeneration.typePipe>";
-      DeserializeSection (xmlFragment);
+      Assert.That (
+          () => DeserializeSection (xmlFragment),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.Contains ("Example configuration:"));
     }
 
     private void DeserializeSection (string xmlFragment)

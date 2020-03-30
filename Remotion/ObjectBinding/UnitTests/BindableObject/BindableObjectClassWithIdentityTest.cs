@@ -101,11 +101,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage =
-            "The 'Remotion.ObjectBinding.BindableObject.IGetObjectService' required for loading objectes of type "
-            + "'Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithIdentity' is not registered with the "
-            + "'Remotion.ObjectBinding.BusinessObjectProvider' associated with this type.")]
     public void GetObject_WithoutService ()
     {
       var bindableObjectClass = new BindableObjectClassWithIdentity (
@@ -113,8 +108,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           _bindableObjectProvider,
           _bindableObjectGlobalizationService,
           new PropertyBase[0]);
-
-      bindableObjectClass.GetObject ("TheUniqueIdentifier");
+      Assert.That (
+          () => bindableObjectClass.GetObject ("TheUniqueIdentifier"),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The 'Remotion.ObjectBinding.BindableObject.IGetObjectService' required for loading objectes of type "
+                  + "'Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithIdentity' is not registered with the "
+                  + "'Remotion.ObjectBinding.BusinessObjectProvider' associated with this type."));
     }
   }
 }

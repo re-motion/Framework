@@ -288,14 +288,14 @@ namespace Remotion.Web.UnitTests.Core.UI
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "RegisterHeadElement must not be called after SetAppended has been called.")]
     public void RegisterHeadElement_AfterHasAppended ()
     {
       _htmlHeadAppender.SetAppended();
       var userControlElement = MockRepository.GenerateStub<HtmlHeadElement>();
-
-      _htmlHeadAppender.RegisterHeadElement ("userControl", userControlElement, HtmlHeadAppender.Priority.UserControl);
+      Assert.That (
+          () => _htmlHeadAppender.RegisterHeadElement ("userControl", userControlElement, HtmlHeadAppender.Priority.UserControl),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("RegisterHeadElement must not be called after SetAppended has been called."));
     }
   }
 }

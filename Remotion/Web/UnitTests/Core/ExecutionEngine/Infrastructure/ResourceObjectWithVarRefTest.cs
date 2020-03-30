@@ -69,24 +69,24 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The variable 'InvalidIdentifier' could not be found in the list of variables.")]
     public void GetResourcePath_WithInvalidReference ()
     {
       var resourceObject = new ResourceObjectWithVarRef (new WxeVariableReference ("InvalidIdentifier"));
-
-      resourceObject.GetResourcePath (_variables);
+      Assert.That (
+          () => resourceObject.GetResourcePath (_variables),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The variable 'InvalidIdentifier' could not be found in the list of variables."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidCastException), ExpectedMessage =
-        "The variable 'InvalidType' was of type 'System.Int32'. Expected type is 'System.String'.")]
     public void GetResourcePath_WithInvalidTypeInVariable ()
     {
       _variables.Add ("InvalidType", 1);
       var resourceObject = new ResourceObjectWithVarRef (new WxeVariableReference ("InvalidType"));
-
-      resourceObject.GetResourcePath (_variables);
+      Assert.That (
+          () => resourceObject.GetResourcePath (_variables),
+          Throws.InstanceOf<InvalidCastException>()
+              .With.Message.EqualTo ("The variable 'InvalidType' was of type 'System.Int32'. Expected type is 'System.String'."));
     }
   }
 }

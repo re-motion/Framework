@@ -238,27 +238,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The storage entity definition of class 'Derived2Class' does not implement interface 'IRdbmsStorageEntityDefinition'.")]
     public void ApplyPersistenceModelToHierarchy_Throws_WhenExistingEntityDefinitionDoesNotImplementIEntityDefinition ()
     {
       var invalidStorageEntityDefinition = MockRepository.GenerateStub<IStorageEntityDefinition>();
       _testModel.DerivedClassDefinition2.SetStorageEntity (invalidStorageEntityDefinition);
       _testModel.DerivedDerivedPropertyDefinition.SetStorageProperty (_fakeColumnDefinition7);
-
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy (_testModel.DerivedDerivedClassDefinition);
+      Assert.That (
+          () => _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy (_testModel.DerivedDerivedClassDefinition),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The storage entity definition of class 'Derived2Class' does not implement interface 'IRdbmsStorageEntityDefinition'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The property definition 'DerivedDerivedProperty' of class 'DerivedDerivedClass' does not implement interface 'IRdbmsStoragePropertyDefinition'."
-        )]
     public void ApplyPersistenceModelToHierarchy_Throws_WhenExistingPropertyDefinitionDoesNotImplementIColumnDefinition ()
     {
       _testModel.DerivedClassDefinition2.SetStorageEntity (_fakeEntityDefinitionDerived2);
       _testModel.DerivedDerivedPropertyDefinition.SetStorageProperty (new FakeStoragePropertyDefinition ("Fake"));
-
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy (_testModel.DerivedDerivedClassDefinition);
+      Assert.That (
+          () => _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy (_testModel.DerivedDerivedClassDefinition),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The property definition 'DerivedDerivedProperty' of class 'DerivedDerivedClass' does not implement interface 'IRdbmsStoragePropertyDefinition'."
+));
     }
   }
 }

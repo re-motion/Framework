@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -55,10 +55,13 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The validated type 'Address' is not supported by the passed validator.\r\nParameter name: validator")]
     public void Initialization_InvalidType ()
     {
-      new TypedValidatorDecorator<Address> (_validator);
+      Assert.That (
+          () => new TypedValidatorDecorator<Address> (_validator),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The validated type 'Address' is not supported by the passed validator.\r\nParameter name: validator"));
     }
 
     [Test]

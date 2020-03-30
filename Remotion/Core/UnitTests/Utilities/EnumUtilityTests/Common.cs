@@ -51,46 +51,56 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Argument was a type representing 'System.Int32' but only enum-types are supported.\r\nParameter name: enumType")]
     public void IsFlagsEnum_WithOtherType ()
     {
-      EnumUtility.IsFlagsEnumType (typeof (int));
+      Assert.That (
+          () => EnumUtility.IsFlagsEnumType (typeof (int)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Argument was a type representing 'System.Int32' but only enum-types are supported.\r\nParameter name: enumType"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Object must be the same type as the enum. The type passed in was 'Remotion.UnitTests.Utilities.EnumUtilityTests.Int16Enum+TestEnum'; "
-        + "the enum type was 'Remotion.UnitTests.Utilities.EnumUtilityTests.Common+TestFlags'."
-        + "\r\nParameter name: value")]
     public void IsValidEnumValue_WithValueNotMatchingType ()
     {
-      EnumUtility.IsValidEnumValue (typeof (TestFlags), (Int16Enum.TestEnum) (short) 1);
+      Assert.That (
+          () => EnumUtility.IsValidEnumValue (typeof (TestFlags), (Int16Enum.TestEnum) (short) 1),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Object must be the same type as the enum. The type passed in was 'Remotion.UnitTests.Utilities.EnumUtilityTests.Int16Enum+TestEnum'; "
+                  + "the enum type was 'Remotion.UnitTests.Utilities.EnumUtilityTests.Common+TestFlags'."
+                  + "\r\nParameter name: value"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Enum underlying type and the object must be same type. The type passed in was 'System.Int16'; the enum underlying type was 'System.Int32'."
-        + "\r\nParameter name: value")]
     public void IsValidEnumValue_WithValueNotMatchingUnderlyingType ()
     {
-      EnumUtility.IsValidEnumValue (typeof (TestFlags), (short) 1);
+      Assert.That (
+          () => EnumUtility.IsValidEnumValue (typeof (TestFlags), (short) 1),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Enum underlying type and the object must be same type. The type passed in was 'System.Int16'; the enum underlying type was 'System.Int32'."
+                  + "\r\nParameter name: value"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Argument was of type 'System.Int16' but only enum-types are supported with this overload.\r\nParameter name: enumValue")]
     public void IsValidEnumValue_WithValueOfOtherType ()
     {
-      EnumUtility.IsValidEnumValue ((short) 1);
+      Assert.That (
+          () => EnumUtility.IsValidEnumValue ((short) 1),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Argument was of type 'System.Int16' but only enum-types are supported with this overload.\r\nParameter name: enumValue"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Argument was a type representing 'System.Int32' but only enum-types are supported.\r\nParameter name: enumType")]
     public void IsValidEnumValue_WithOtherType ()
     {
-      EnumUtility.IsValidEnumValue (typeof (Int32), (short) 1);
+      Assert.That (
+          () => EnumUtility.IsValidEnumValue (typeof (Int32), (short) 1),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Argument was a type representing 'System.Int32' but only enum-types are supported.\r\nParameter name: enumType"));
     }
 
     [Test]

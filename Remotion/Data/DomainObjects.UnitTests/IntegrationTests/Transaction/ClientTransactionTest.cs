@@ -347,12 +347,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The transaction can no longer be used because it has been discarded.")]
     public void DiscardRendersTransactionUnusable ()
     {
       TestableClientTransaction.Discard ();
       Assert.That (TestableClientTransaction.IsDiscarded, Is.True);
-      TestableClientTransaction.GetObject (DomainObjectIDs.Order1, false);
+      Assert.That (
+          () => TestableClientTransaction.GetObject (DomainObjectIDs.Order1, false),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The transaction can no longer be used because it has been discarded."));
     }
 
     [Test]

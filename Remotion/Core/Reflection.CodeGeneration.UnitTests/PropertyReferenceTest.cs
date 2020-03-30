@@ -73,8 +73,6 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "The property .*.Property cannot be loaded, it has no getter.", MatchType = MessageMatch.Regex)]
     public void LoadPropertyWithoutGetterThrows ()
     {
       CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty ("Property", PropertyKind.Instance, typeof (string));
@@ -86,13 +84,13 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       methodEmitter.AddStatement (new AssignStatement (oldValueLocal, propertyWithSelfOwner.ToExpression ()));
       methodEmitter.AddStatement (new ReturnStatement (oldValueLocal));
-
-      GetUnsavedBuiltType ();
+      Assert.That (
+          () => GetUnsavedBuiltType (),
+          Throws.InvalidOperationException
+              .With.Message.Matches ("The property .*.Property cannot be loaded, it has no getter."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "The property .*.Property cannot be stored, it has no setter.", MatchType = MessageMatch.Regex)]
     public void SavePropertyWithoutSetterThrows ()
     {
       CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty ("Property", PropertyKind.Instance, typeof (string));
@@ -103,12 +101,13 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       methodEmitter.AddStatement (new AssignStatement (propertyWithSelfOwner, NullExpression.Instance));
       methodEmitter.AddStatement (new ReturnStatement (NullExpression.Instance));
-
-      GetUnsavedBuiltType ();
+      Assert.That (
+          () => GetUnsavedBuiltType (),
+          Throws.InvalidOperationException
+              .With.Message.Matches ("The property .*.Property cannot be stored, it has no setter."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "A property's address cannot be loaded.")]
     public void LoadPropertyAddressThrows ()
     {
       CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty ("Property", PropertyKind.Instance, typeof (string));
@@ -120,8 +119,10 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       methodEmitter.AddStatement (new AssignStatement (valueAddress, propertyWithSelfOwner.ToAddressOfExpression()));
       methodEmitter.AddStatement (new ReturnStatement (NullExpression.Instance));
-
-      GetUnsavedBuiltType ();
+      Assert.That (
+          () => GetUnsavedBuiltType (),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("A property's address cannot be loaded."));
     }
   }
 }

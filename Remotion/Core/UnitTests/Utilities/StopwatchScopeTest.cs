@@ -81,12 +81,13 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDisposedException))]
     public void Checkpoint_AfterDispose ()
     {
       var scope = StopwatchScope.CreateScope ((context, s) => { });
       scope.Dispose ();
-      scope.Checkpoint ("");
+      Assert.That (
+          () => scope.Checkpoint (""),
+          Throws.InstanceOf<ObjectDisposedException>());
     }
 
     [Test]
@@ -126,12 +127,13 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDisposedException))]
     public void Pause_AfterDispose ()
     {
       var scope = StopwatchScope.CreateScope ((context, s) => { });
       scope.Dispose ();
-      scope.Pause ();
+      Assert.That (
+          () => scope.Pause (),
+          Throws.InstanceOf<ObjectDisposedException>());
     }
 
     [Test]
@@ -150,12 +152,13 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDisposedException))]
     public void Resume_AfterDispose ()
     {
       var scope = StopwatchScope.CreateScope ((context, s) => { });
       scope.Dispose ();
-      scope.Resume ();
+      Assert.That (
+          () => scope.Resume (),
+          Throws.InstanceOf<ObjectDisposedException>());
     }
 
     [Test]

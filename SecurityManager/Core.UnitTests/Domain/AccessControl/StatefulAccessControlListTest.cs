@@ -129,12 +129,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "Cannot create StateCombination if no SecurableClassDefinition is assigned to this StatefulAccessControlList.")]
     public void CreateStateCombination_BeforeClassIsSet ()
     {
       StatefulAccessControlList acl = StatefulAccessControlList.NewObject ();
-      acl.CreateStateCombination ();
+      Assert.That (
+          () => acl.CreateStateCombination (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot create StateCombination if no SecurableClassDefinition is assigned to this StatefulAccessControlList."));
     }
 
     [Test]

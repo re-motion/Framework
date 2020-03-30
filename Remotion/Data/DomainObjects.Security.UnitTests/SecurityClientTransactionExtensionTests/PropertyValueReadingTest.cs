@@ -72,15 +72,15 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_ThrowsPermissionDeniedException ()
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject ();
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_getMethodInformation, TestAccessTypes.First);
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, false);
       _testHelper.ReplayAll ();
-
-      _extension.PropertyValueReading (_testHelper.Transaction, securableObject, _stringPropertyDefinition, ValueAccess.Current);
+      Assert.That (
+          () => _extension.PropertyValueReading (_testHelper.Transaction, securableObject, _stringPropertyDefinition, ValueAccess.Current),
+          Throws.InstanceOf<PermissionDeniedException>());
     }
 
     [Test]
@@ -104,7 +104,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_WithNonPublicAccessor_ThrowsPermissionDeniedException ()
     {
       var propertyInfo =
@@ -114,12 +113,13 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (getMethodInformation, TestAccessTypes.First);
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, false);
       _testHelper.ReplayAll();
-
-      _extension.PropertyValueReading (
+      Assert.That (
+          () => _extension.PropertyValueReading (
           _testHelper.Transaction,
           securableObject,
           PropertyDefinitionObjectMother.CreatePropertyDefinition (propertyInfo),
-          ValueAccess.Current);
+          ValueAccess.Current),
+          Throws.InstanceOf<PermissionDeniedException>());
     }
 
     [Test]
@@ -141,7 +141,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_WithMissingAccessor_ThrowsPermissionDeniedException ()
     {
       var propertyInfo = typeof (SecurableObject).GetProperty ("PropertyWithMissingGetAccessor");
@@ -149,12 +148,13 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (new NullMethodInformation());
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessTypes.Read, false);
       _testHelper.ReplayAll();
-
-      _extension.PropertyValueReading (
+      Assert.That (
+          () => _extension.PropertyValueReading (
           _testHelper.Transaction,
           securableObject,
           PropertyDefinitionObjectMother.CreatePropertyDefinition (propertyInfo),
-          ValueAccess.Current);
+          ValueAccess.Current),
+          Throws.InstanceOf<PermissionDeniedException>());
     }
 
     [Test]

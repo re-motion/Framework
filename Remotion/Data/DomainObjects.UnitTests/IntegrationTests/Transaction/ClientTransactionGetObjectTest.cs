@@ -281,12 +281,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectsNotFoundException), ExpectedMessage = 
-        "Object(s) could not be found: 'Order|33333333-3333-3333-3333-333333333333|System.Guid'.")]
     public void GetObjects_NotFound ()
     {
       var guid = new Guid ("33333333333333333333333333333333");
-      LifetimeService.GetObjects<DomainObject> (TestableClientTransaction, new ObjectID (typeof (Order), guid));
+      Assert.That (
+          () => LifetimeService.GetObjects<DomainObject> (TestableClientTransaction, new ObjectID (typeof (Order), guid)),
+          Throws.InstanceOf<ObjectsNotFoundException>()
+              .With.Message.EqualTo ("Object(s) could not be found: 'Order|33333333-3333-3333-3333-333333333333|System.Guid'."));
     }
 
     [Test]
@@ -309,10 +310,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidCastException))]
     public void GetObjects_InvalidType ()
     {
-      LifetimeService.GetObjects<OrderItem> (TestableClientTransaction, DomainObjectIDs.Order1);
+      Assert.That (
+          () => LifetimeService.GetObjects<OrderItem> (TestableClientTransaction, DomainObjectIDs.Order1),
+          Throws.InstanceOf<InvalidCastException>());
     }
 
     [Test]
@@ -327,14 +329,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException),
-        ExpectedMessage = "Object 'ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid' is invalid in this transaction.")]
     public void GetObjects_Discarded ()
     {
       SetDatabaseModifyable ();
       DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ().Delete ();
       TestableClientTransaction.Commit ();
-      LifetimeService.GetObjects<ClassWithAllDataTypes> (TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1);
+      Assert.That (
+          () => LifetimeService.GetObjects<ClassWithAllDataTypes> (TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1),
+          Throws.InstanceOf<ObjectInvalidException>()
+              .With.Message.EqualTo (
+                  "Object 'ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid' is invalid in this transaction."));
     }
 
     [Test]

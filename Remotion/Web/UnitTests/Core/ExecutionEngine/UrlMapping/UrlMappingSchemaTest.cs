@@ -38,38 +38,43 @@ public class UrlMappingSchemaTest
   }
 
   [Test]
-  [ExpectedException (typeof (XmlSchemaValidationException))]
   public void LoadMappingWithMissingPath()
   {
-    UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingPath.xml");
+    Assert.That (
+        () => UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingPath.xml"),
+        Throws.InstanceOf<XmlSchemaValidationException>());
   }
 
   [Test]
-  [ExpectedException (typeof (XmlSchemaValidationException))]
   public void LoadMappingWithEmptyPath()
   {
-    UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyPath.xml");
+    Assert.That (
+        () => UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyPath.xml"),
+        Throws.InstanceOf<XmlSchemaValidationException>());
   }
 
   [Test]
-  [ExpectedException (typeof (XmlSchemaValidationException))]
   public void LoadMappingWithMissingFunctionType()
   {
-    UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingFunctionType.xml");
+    Assert.That (
+        () => UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingFunctionType.xml"),
+        Throws.InstanceOf<XmlSchemaValidationException>());
   }
 
   [Test]
-  [ExpectedException (typeof (XmlSchemaValidationException))]
   public void LoadMappingWithEmptyFunctionType()
   {
-    UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyFunctionType.xml");
+    Assert.That (
+        () => UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyFunctionType.xml"),
+        Throws.InstanceOf<XmlSchemaValidationException>());
   }
 
   [Test]
-  [ExpectedException (typeof (XmlException))]
   public void LoadMappingWithFunctionTypeHavingNoAssembly()
   {
-    UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml");
+    Assert.That (
+        () => UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml"),
+        Throws.InstanceOf<XmlException>());
   }
 
   [Test]

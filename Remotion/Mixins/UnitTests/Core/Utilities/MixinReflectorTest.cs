@@ -78,10 +78,12 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "not a mixin target", MatchType = MessageMatch.Contains)]
     public void GetMixinNextCallProxyTypeThrowsIfWrongType1 ()
     {
-      MixinReflector.GetNextCallProxyType (new object ());
+      Assert.That (
+          () => MixinReflector.GetNextCallProxyType (new object ()),
+          Throws.ArgumentException
+              .With.Message.Contains ("not a mixin target"));
     }
 
     [Test]

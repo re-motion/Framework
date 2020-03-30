@@ -62,28 +62,33 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Base type must not be an interface (System.IConvertible).",
-        MatchType = MessageMatch.Contains)]
     public void ThrowsWhenInterfaceAsBaseClass ()
     {
-      new CustomClassEmitter (Scope, "ThrowsWhenInterfaceAsBaseClass", typeof (IConvertible));
+      Assert.That (
+          () => new CustomClassEmitter (Scope, "ThrowsWhenInterfaceAsBaseClass", typeof (IConvertible)),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "Base type must not be an interface (System.IConvertible)."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Base type must not be sealed (System.Int32).",
-        MatchType = MessageMatch.Contains)]
     public void ThrowsWhenSealedTypeAsBaseClass ()
     {
-      new CustomClassEmitter (Scope, "ThrowsWhenSealedTypeAsBaseClass", typeof (int));
+      Assert.That (
+          () => new CustomClassEmitter (Scope, "ThrowsWhenSealedTypeAsBaseClass", typeof (int)),
+          Throws.ArgumentException
+              .With.Message.Contains ("Base type must not be sealed (System.Int32)."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Interface type must not be a class or value type (System.Object).",
-        MatchType = MessageMatch.Contains)]
     public void ThrowsWhenNonInterfaceAsInterface ()
     {
-      new CustomClassEmitter (Scope, "ThrowsWhenNonInterfaceAsInterface", typeof (object), new[] { typeof (object) },
-          TypeAttributes.Public | TypeAttributes.Class, false);
+      Assert.That (
+          () => new CustomClassEmitter (Scope, "ThrowsWhenNonInterfaceAsInterface", typeof (object), new[] { typeof (object) },
+          TypeAttributes.Public | TypeAttributes.Class, false),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "Interface type must not be a class or value type (System.Object)."));
     }
 
     [Test]

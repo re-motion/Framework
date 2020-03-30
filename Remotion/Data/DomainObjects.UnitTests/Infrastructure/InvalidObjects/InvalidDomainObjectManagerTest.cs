@@ -105,9 +105,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.InvalidObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Cannot mark the given object invalid, another object with the same ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has already "
-        + "been marked.")]
     public void MarkInvalid_OtherObjectAlreadyInvalid ()
     {
       _transactionEventSinkWithMock.Expect (mock => mock.RaiseObjectMarkedInvalidEvent ( _order1)).Repeat.Once ();
@@ -116,8 +113,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.InvalidObjects
       _manager.MarkInvalid (_order1);
       var otherOrder1 = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order1);
       _manager.MarkInvalid (otherOrder1);
-
-      _transactionEventSinkWithMock.AssertWasNotCalled (mock => mock.RaiseObjectMarkedInvalidEvent ( Arg.Is (otherOrder1)));
+      Assert.That (
+          () => _transactionEventSinkWithMock.AssertWasNotCalled (mock => mock.RaiseObjectMarkedInvalidEvent ( Arg.Is (otherOrder1))),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot mark the given object invalid, another object with the same ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has already "
+                  + "been marked."));
     }
 
     [Test]
@@ -163,11 +164,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.InvalidObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has not been marked invalid.\r\nParameter name: id")]
     public void GetInvalidObjectReference_NotInvalid ()
     {
-      _manager.GetInvalidObjectReference (_order1.ID);
+      Assert.That (
+          () => _manager.GetInvalidObjectReference (_order1.ID),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has not been marked invalid.\r\nParameter name: id"));
     }
 
     [Test]

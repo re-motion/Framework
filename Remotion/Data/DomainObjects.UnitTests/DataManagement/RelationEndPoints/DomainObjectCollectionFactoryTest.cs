@@ -72,20 +72,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = 
-        "Cannot create an instance of 'Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain.CollectionWithMissingDataCtor' because "
-        + "that type does not provide a constructor taking an IDomainObjectCollectionData object.", 
-        MatchType = MessageMatch.Contains)]
     public void CreateCollection_ThrowsIfNoSupportedCtor ()
     {
-      _factory.CreateCollection (typeof (CollectionWithMissingDataCtor), _data);
+      Assert.That (
+          () => _factory.CreateCollection (typeof (CollectionWithMissingDataCtor), _data),
+          Throws.InstanceOf<MissingMethodException>()
+              .With.Message.Contains (
+                  "Cannot create an instance of 'Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain.CollectionWithMissingDataCtor' because "
+                  + "that type does not provide a constructor taking an IDomainObjectCollectionData object."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidCastException))]
     public void CreateCollection_ThrowsIfNonCollectionType ()
     {
-      _factory.CreateCollection (typeof (CollectionNotDerivedFromDomainObjectCollection), _data);
+      Assert.That (
+          () => _factory.CreateCollection (typeof (CollectionNotDerivedFromDomainObjectCollection), _data),
+          Throws.InstanceOf<InvalidCastException>());
     }
 
     [Test]

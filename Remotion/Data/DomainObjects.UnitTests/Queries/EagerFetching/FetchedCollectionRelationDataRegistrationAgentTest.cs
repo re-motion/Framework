@@ -128,20 +128,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The fetched mandatory collection property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' on object "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' contains no items.")]
     public void GroupAndRegisterRelatedObjects_MandatoryEndPointWithoutRelatedObjects_Throws ()
     {
       var orderItemsEndPointDefinition = GetEndPointDefinition (typeof (Order), "OrderItems");
       Assert.That (orderItemsEndPointDefinition.IsMandatory, Is.True);
 
       var originatingOrderData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (DomainObjectIDs.Order1);
-
-      _agent.GroupAndRegisterRelatedObjects (
+      Assert.That (
+          () => _agent.GroupAndRegisterRelatedObjects (
           orderItemsEndPointDefinition,
           new[] { originatingOrderData },
-          new LoadedObjectDataWithDataSourceData[0]);
+          new LoadedObjectDataWithDataSourceData[0]),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The fetched mandatory collection property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' on object "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' contains no items."));
     }
 
     [Test]
@@ -306,38 +307,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Cannot register relation end-point "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' for domain object "
-        + "'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid'. The end-point belongs to an object of class 'Customer' but the domain object "
-        + "has class 'OrderItem'.")]
     public void GroupAndRegisterRelatedObjects_OriginatingObjectOfInvalidType ()
     {
       var endPointDefinition = GetEndPointDefinition (typeof (Customer), "Orders");
 
       _virtualEndPointProviderMock.Replay();
-
-      _agent.GroupAndRegisterRelatedObjects (
+      Assert.That (
+          () => _agent.GroupAndRegisterRelatedObjects (
           endPointDefinition,
           new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (DomainObjectIDs.OrderItem1) },
-          new LoadedObjectDataWithDataSourceData[0]);
+          new LoadedObjectDataWithDataSourceData[0]),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot register relation end-point "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' for domain object "
+                  + "'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid'. The end-point belongs to an object of class 'Customer' but the domain object "
+                  + "has class 'OrderItem'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Cannot associate object 'OrderItem|ad620a11-4bc4-4791-bcf4-a0770a08c5b0|System.Guid' with the relation end-point "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders'. An object of type "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' was expected.")]
     public void GroupAndRegisterRelatedObjects_RelatedObjectOfInvalidType ()
     {
       var endPointDefinition = GetEndPointDefinition (typeof (Customer), "Orders");
 
       _virtualEndPointProviderMock.Replay();
-
-      _agent.GroupAndRegisterRelatedObjects (
+      Assert.That (
+          () => _agent.GroupAndRegisterRelatedObjects (
           endPointDefinition,
           new[] { _originatingCustomerData1 }, 
-          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (DomainObjectIDs.OrderItem2) });
+          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (DomainObjectIDs.OrderItem2) }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot associate object 'OrderItem|ad620a11-4bc4-4791-bcf4-a0770a08c5b0|System.Guid' with the relation end-point "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders'. An object of type "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' was expected."));
     }
 
     [Test]

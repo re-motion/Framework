@@ -48,23 +48,27 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
-        + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IDerivedInterface' was expected.\r\n"
-        + "Parameter name: type")]
     public void BaseType ()
     {
-      TypeExtensions.GetAscribedGenericArguments (typeof (BaseType), typeof (IDerivedInterface));
+      Assert.That (
+          () => TypeExtensions.GetAscribedGenericArguments (typeof (BaseType), typeof (IDerivedInterface)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
+                  + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IDerivedInterface' was expected.\r\n"
+                  + "Parameter name: type"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IBaseInterface' "
-        + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IDerivedInterface' was expected.\r\n"
-        + "Parameter name: type")]
     public void BaseInterface ()
     {
-      TypeExtensions.GetAscribedGenericArguments (typeof (IBaseInterface), typeof (IDerivedInterface));
+      Assert.That (
+          () => TypeExtensions.GetAscribedGenericArguments (typeof (IBaseInterface), typeof (IDerivedInterface)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IBaseInterface' "
+                  + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IDerivedInterface' was expected.\r\n"
+                  + "Parameter name: type"));
     }
   }
 }

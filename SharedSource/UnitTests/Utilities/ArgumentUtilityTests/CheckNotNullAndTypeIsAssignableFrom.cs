@@ -34,11 +34,13 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'arg' is a 'System.Object', which cannot be assigned to type 'System.String'.\r\nParameter name: arg")]
     public void Fail_Type ()
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", typeof (object), typeof (string));
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", typeof (object), typeof (string)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'arg' is a 'System.Object', which cannot be assigned to type 'System.String'.\r\nParameter name: arg"));
     }
 
     [Test]

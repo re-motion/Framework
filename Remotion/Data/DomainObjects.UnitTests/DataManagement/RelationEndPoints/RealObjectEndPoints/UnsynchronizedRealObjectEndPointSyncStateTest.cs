@@ -64,29 +64,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-      "The domain object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be deleted because its "
-      + "relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' is "
-      + "out of sync with the opposite property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'. To make this change, "
-      + "synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
-      + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' property.")]
     public void CreateDeleteCommand ()
     {
-      _state.CreateDeleteCommand(_endPointStub, () => { });
+      Assert.That (
+          () => _state.CreateDeleteCommand(_endPointStub, () => { }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be deleted because its "
+                  + "relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' is "
+                  + "out of sync with the opposite property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'. To make this change, "
+                  + "synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' property."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-      "The relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' of object "
-      + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be changed because it is "
-      + "out of sync with the opposite property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'. To make this change, "
-      + "synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
-      + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' property.")]
     public void CreateSetCommand ()
     {
       var relatedObject = DomainObjectMother.CreateFakeObject<OrderTicket> ();
-
-      _state.CreateSetCommand (_endPointStub, relatedObject, domainObject => { });
+      Assert.That (
+          () => _state.CreateSetCommand (_endPointStub, relatedObject, domainObject => { }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' of object "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be changed because it is "
+                  + "out of sync with the opposite property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'. To make this change, "
+                  + "synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' property."));
     }
 
     [Test]

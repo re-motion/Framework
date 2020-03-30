@@ -55,13 +55,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Modified end point is null, a NullEndPointModificationCommand is needed.\r\n"
-                                                                      + "Parameter name: modifiedEndPoint")]
     public void Initialization_FromNullEndPoint ()
     {
       var endPoint = new NullCollectionEndPoint (Transaction, RelationEndPointID.Definition);
-      Dev.Null = new CollectionEndPointReplaceCommand (
-          endPoint, _replacedRelatedObject, 12, _replacementRelatedObject, CollectionDataMock, TransactionEventSinkMock);
+      Assert.That (
+          () => Dev.Null = new CollectionEndPointReplaceCommand (
+          endPoint, _replacedRelatedObject, 12, _replacementRelatedObject, CollectionDataMock, TransactionEventSinkMock),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Modified end point is null, a NullEndPointModificationCommand is needed.\r\n"
+                  + "Parameter name: modifiedEndPoint"));
     }
 
     [Test]

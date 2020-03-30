@@ -86,51 +86,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectDelete ()
     {
       _newOrder.Delete ();
-      _newOrder.Delete ();
+      Assert.That (
+          () => _newOrder.Delete (),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectGetRelatedObject ()
     {
       _newOrder.Delete ();
-      _newOrder.GetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      Assert.That (
+          () => _newOrder.GetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectGetRelatedObjects ()
     {
       _newOrder.Delete ();
-      _newOrder.GetRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      Assert.That (
+          () => _newOrder.GetRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectGetOriginalRelatedObject ()
     {
       _newOrder.Delete ();
-      _newOrder.GetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      Assert.That (
+          () => _newOrder.GetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectGetOriginalRelatedObjects ()
     {
       _newOrder.Delete ();
-      _newOrder.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      Assert.That (
+          () => _newOrder.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectSetRelatedObject ()
     {
       _newOrder.Delete ();
-      _newOrder.SetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _newOrderTicket);
+      Assert.That (
+          () => _newOrder.SetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _newOrderTicket),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
@@ -144,35 +150,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectGetPropertyValue ()
     {
       _newOrder.Delete ();
-      Dev.Null = _newOrder.Properties[typeof (Order), "OrderNumber"].GetValueWithoutTypeCheck();
+      Assert.That (
+          () => Dev.Null = _newOrder.Properties[typeof (Order), "OrderNumber"].GetValueWithoutTypeCheck(),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectSetPropertyValue ()
     {
       _newOrder.Delete ();
-      _newOrder.Properties[typeof (Order), "OrderNumber"].SetValueWithoutTypeCheck (10);
+      Assert.That (
+          () => _newOrder.Properties[typeof (Order), "OrderNumber"].SetValueWithoutTypeCheck (10),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DataContainerGetValue ()
     {
       _newOrder.Delete ();
-      _newOrderContainer.GetValue (GetPropertyDefinition (typeof (Order), "OrderNumber"));
+      Assert.That (
+          () => _newOrderContainer.GetValue (GetPropertyDefinition (typeof (Order), "OrderNumber")),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DataContainerSetValue ()
     {
       _newOrder.Delete ();
-      _newOrderContainer.SetValue (GetPropertyDefinition (typeof (Order), "OrderNumber"), 10);
+      Assert.That (
+          () => _newOrderContainer.SetValue (GetPropertyDefinition (typeof (Order), "OrderNumber"), 10),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
@@ -244,30 +254,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void PropertyValueGetValue ()
     {
       _newOrder.Delete ();
-
-      Dev.Null = _newOrderContainer.GetValue (_orderNumberProperty);
+      Assert.That (
+          () => Dev.Null = _newOrderContainer.GetValue (_orderNumberProperty),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void PropertyValueSetValue ()
     {
       _newOrder.Delete ();
-
-      _newOrderContainer.SetValue (_orderNumberProperty, 10);
+      Assert.That (
+          () => _newOrderContainer.SetValue (_orderNumberProperty, 10),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void PropertyValueOriginalValue ()
     {
       _newOrder.Delete ();
-
-      Dev.Null = _newOrderContainer.GetValue (_orderNumberProperty, ValueAccess.Original);
+      Assert.That (
+          () => Dev.Null = _newOrderContainer.GetValue (_orderNumberProperty, ValueAccess.Original),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]

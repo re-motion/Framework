@@ -26,10 +26,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
   public class PropertyAccessorDataTest : StandardMappingTest
   {
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "does not have a mapping property named", MatchType = MessageMatch.Contains)]
     public void ConstructorThrows_OnWrongIdentifier ()
     {
-      CreateAccessorData (typeof (IndustrialSector), "FooBarFredBaz");
+      Assert.That (
+          () => CreateAccessorData (typeof (IndustrialSector), "FooBarFredBaz"),
+          Throws.ArgumentException
+              .With.Message.Contains ("does not have a mapping property named"));
     }
 
     [Test]
@@ -94,21 +96,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "does not have a mapping property named", MatchType = MessageMatch.Contains)]
     public void GetPropertyObjects_ThrowsOnInvalidPropertyID1 ()
     {
-      PropertyAccessorData.GetPropertyDefinitionObjects (
+      Assert.That (
+          () => PropertyAccessorData.GetPropertyDefinitionObjects (
           MappingConfiguration.Current.GetTypeDefinition (typeof (IndustrialSector)),
-          "Bla");
+          "Bla"),
+          Throws.ArgumentException
+              .With.Message.Contains ("does not have a mapping property named"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "does not have a mapping property named", MatchType = MessageMatch.Contains)]
     public void GetPropertyObjects_ThrowsOnInvalidPropertyID2 ()
     {
-      PropertyAccessorData.GetPropertyDefinitionObjects (
+      Assert.That (
+          () => PropertyAccessorData.GetPropertyDefinitionObjects (
           MappingConfiguration.Current.GetTypeDefinition (typeof (Company)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies");
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"),
+          Throws.ArgumentException
+              .With.Message.Contains ("does not have a mapping property named"));
     }
 
     [Test]

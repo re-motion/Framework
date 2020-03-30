@@ -84,19 +84,22 @@ namespace Remotion.ExtensibleEnums.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (KeyNotFoundException), ExpectedMessage = 
-        "The extensible enum type 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' does not define a value called '?'.")]
     public void ConvertFrom_String_WrongID ()
     {
-      _converter.ConvertFrom (null, null, "?");
+      Assert.That (
+          () => _converter.ConvertFrom (null, null, "?"),
+          Throws.InstanceOf<KeyNotFoundException>()
+              .With.Message.EqualTo (
+                  "The extensible enum type 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' does not define a value called '?'."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Cannot convert value from type 'System.Int32' to type 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color'.")]
     public void ConvertFrom_WrongType ()
     {
-      _converter.ConvertFrom (null, null, 1);
+      Assert.That (
+          () => _converter.ConvertFrom (null, null, 1),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Cannot convert value from type 'System.Int32' to type 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color'."));
     }
 
     [Test]
@@ -114,20 +117,24 @@ namespace Remotion.ExtensibleEnums.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = 
-        "Cannot convert values of type 'System.Int32' to type 'System.String'. This converter only supports values of type "
-        + "'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color'.")]
     public void ConvertTo_String_InvalidValue ()
     {
-      _converter.ConvertTo (null, null, 12, typeof (string));
+      Assert.That (
+          () => _converter.ConvertTo (null, null, 12, typeof (string)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot convert values of type 'System.Int32' to type 'System.String'. This converter only supports values of type "
+                  + "'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color'."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), 
-        ExpectedMessage = "Cannot convert values to type 'System.Int32'. This converter only supports converting to type 'System.String'.")]
     public void ConvertTo_InvalidType ()
     {
-      _converter.ConvertTo (null, null, Color.Values.Red(), typeof (int));
+      Assert.That (
+          () => _converter.ConvertTo (null, null, Color.Values.Red(), typeof (int)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot convert values to type 'System.Int32'. This converter only supports converting to type 'System.String'."));
     }
   }
 }

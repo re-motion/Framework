@@ -73,34 +73,43 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Expected an array with 3 elements.\r\nParameter name: values")]
     public void Deserializer_InvalidArray()
     {
-      Dev.Null = new AttributeClassContextDeserializer (new[] { "x" });
+      Assert.That (
+          () => Dev.Null = new AttributeClassContextDeserializer (new[] { "x" }),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Expected an array with 3 elements.\r\nParameter name: values"));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException),
-        ExpectedMessage = "Expected value of type 'System.Type' at index 0 in the values array, but found 'System.Int32'.")]
     public void GetClassType_Invalid()
     {
-      _invalidDeserializer.GetClassType ();
+      Assert.That (
+          () => _invalidDeserializer.GetClassType (),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Expected value of type 'System.Type' at index 0 in the values array, but found 'System.Int32'."));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException),
-        ExpectedMessage = "Expected value of type 'System.Object[]' at index 1 in the values array, but found 'System.Int32'.")]
     public void GetMixins_Invalid ()
     {
-      _invalidDeserializer.GetMixins ();
+      Assert.That (
+          () => _invalidDeserializer.GetMixins (),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Expected value of type 'System.Object[]' at index 1 in the values array, but found 'System.Int32'."));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException),
-        ExpectedMessage = "Expected value of type 'System.Type[]' at index 2 in the values array, but found 'System.Int32'.")]
     public void GetComposedInterfaces_Invalid ()
     {
-      _invalidDeserializer.GetComposedInterfaces();
+      Assert.That (
+          () => _invalidDeserializer.GetComposedInterfaces(),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Expected value of type 'System.Type[]' at index 2 in the values array, but found 'System.Int32'."));
     }
   }
 }

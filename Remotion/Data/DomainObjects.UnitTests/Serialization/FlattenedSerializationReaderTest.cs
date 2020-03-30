@@ -52,14 +52,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no more data in the serialization stream at position 3.")]
     public void ReadValue_TooOften ()
     {
       FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int> (new int[] { 1, 2, 3 });
       Assert.That (reader.ReadValue (), Is.EqualTo (1));
       Assert.That (reader.ReadValue (), Is.EqualTo (2));
       Assert.That (reader.ReadValue (), Is.EqualTo (3));
-      reader.ReadValue ();
+      Assert.That (
+          () => reader.ReadValue (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "There is no more data in the serialization stream at position 3."));
     }
 
     [Test]

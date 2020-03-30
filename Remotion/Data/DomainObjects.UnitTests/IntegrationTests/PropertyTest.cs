@@ -32,11 +32,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidEnumValueException))]
     public void SetInvalidEnumValue ()
     {
       var instance = ClassWithAllDataTypes.NewObject();
-      instance.EnumProperty = (ClassWithAllDataTypes.EnumType) (-1);
+      Assert.That (
+          () => instance.EnumProperty = (ClassWithAllDataTypes.EnumType) (-1),
+          Throws.InstanceOf<InvalidEnumValueException>());
     }
 
     [Test]

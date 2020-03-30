@@ -87,50 +87,63 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Expected an array with 5 elements.\r\nParameter name: values")]
     public void Deserializer_InvalidArray()
     {
-      Dev.Null = new AttributeMixinContextDeserializer (new[] { "x" });
+      Assert.That (
+          () => Dev.Null = new AttributeMixinContextDeserializer (new[] { "x" }),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Expected an array with 5 elements.\r\nParameter name: values"));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException),
-        ExpectedMessage = "Expected value of type 'System.Type' at index 0 in the values array, but found 'System.Int32'.")]
     public void GetMixinType_Invalid()
     {
-      _invalidDeserializer.GetMixinType ();
+      Assert.That (
+          () => _invalidDeserializer.GetMixinType (),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Expected value of type 'System.Type' at index 0 in the values array, but found 'System.Int32'."));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException),
-        ExpectedMessage = "Expected value of type 'Remotion.Mixins.MixinKind' at index 1 in the values array, but found 'System.Int32'.")]
     public void GetMixinKind_Invalid ()
     {
-      _invalidDeserializer.GetMixinKind ();
+      Assert.That (
+          () => _invalidDeserializer.GetMixinKind (),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Expected value of type 'Remotion.Mixins.MixinKind' at index 1 in the values array, but found 'System.Int32'."));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException),
-        ExpectedMessage = "Expected value of type 'Remotion.Mixins.MemberVisibility' at index 2 in the values array, but found 'System.Int32'.")]
     public void GetIntroducedMemberVisibility_Invalid ()
     {
-      _invalidDeserializer.GetIntroducedMemberVisibility();
+      Assert.That (
+          () => _invalidDeserializer.GetIntroducedMemberVisibility(),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Expected value of type 'Remotion.Mixins.MemberVisibility' at index 2 in the values array, but found 'System.Int32'."));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException),
-        ExpectedMessage = "Expected value of type 'System.Type[]' at index 3 in the values array, but found 'System.Int32'.")]
     public void GetExplicitDependencies_Invalid ()
     {
-      _invalidDeserializer.GetExplicitDependencies ();
+      Assert.That (
+          () => _invalidDeserializer.GetExplicitDependencies (),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Expected value of type 'System.Type[]' at index 3 in the values array, but found 'System.Int32'."));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException),
-        ExpectedMessage = "Expected value of type 'System.Object[]' at index 4 in the values array, but found 'System.Int32'.")]
     public void GetOrigin_Invalid ()
     {
-      _invalidDeserializer.GetOrigin ();
+      Assert.That (
+          () => _invalidDeserializer.GetOrigin (),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Expected value of type 'System.Object[]' at index 4 in the values array, but found 'System.Int32'."));
     }
   }
 }

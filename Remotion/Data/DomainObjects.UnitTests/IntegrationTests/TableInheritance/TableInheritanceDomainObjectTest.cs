@@ -45,14 +45,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException), ExpectedMessage =
-        "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance.TIHistoryEntry.Owner' of the loaded DataContainer "
-        + "'TI_HistoryEntry|2c7fb7b3-eb16-43f9-bdde-b8b3f23a93d2|System.Guid' refers to ClassID 'TI_OrganizationalUnit', "
-        + "but the actual ClassID is 'TI_Person'.")]
     public void SameIDInDifferentConcreteTables ()
     {
       TIPerson person = new ObjectID(typeof (TIPerson), new Guid ("{B969AFCB-2CDA-45ff-8490-EB52A86D5464}")).GetObject<TIPerson> ();
-      person.HistoryEntries.EnsureDataComplete();
+      Assert.That (
+          () => person.HistoryEntries.EnsureDataComplete(),
+          Throws.InstanceOf<PersistenceException>()
+              .With.Message.EqualTo (
+                  "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance.TIHistoryEntry.Owner' of the loaded DataContainer "
+                  + "'TI_HistoryEntry|2c7fb7b3-eb16-43f9-bdde-b8b3f23a93d2|System.Guid' refers to ClassID 'TI_OrganizationalUnit', "
+                  + "but the actual ClassID is 'TI_Person'."));
     }
 
     [Test]

@@ -153,13 +153,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionReadOnlyException), ExpectedMessage =
-        "The operation cannot be executed because the ClientTransaction is read-only, probably because it has an open subtransaction. "
-        + "Offending transaction modification: SubTransactionCreating.")]
     public void NoTwoSubTransactionsAtSameTime ()
     {
       TestableClientTransaction.CreateSubTransaction();
-      TestableClientTransaction.CreateSubTransaction();
+      Assert.That (
+          () => TestableClientTransaction.CreateSubTransaction(),
+          Throws.InstanceOf<ClientTransactionReadOnlyException>()
+              .With.Message.EqualTo (
+                  "The operation cannot be executed because the ClientTransaction is read-only, probably because it has an open subtransaction. "
+                  + "Offending transaction modification: SubTransactionCreating."));
     }
 
    [Test]

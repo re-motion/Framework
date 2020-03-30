@@ -199,23 +199,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The property-definitions for class 'DomainBase' have already been set."
-        )]
     public void SetPropertyDefinitions_Twice_ThrowsException ()
     {
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (_domainBaseClass);
 
       _domainBaseClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, false));
-      _domainBaseClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, false));
+      Assert.That (
+          () => _domainBaseClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, false)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The property-definitions for class 'DomainBase' have already been set."
+));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Class 'DomainBase' is read-only.")]
     public void SetPropertyDefinitions_ClassIsReadOnly ()
     {
       _domainBaseClass.SetReadOnly();
-
-      _domainBaseClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new PropertyDefinition[0], true));
+      Assert.That (
+          () => _domainBaseClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new PropertyDefinition[0], true)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Class 'DomainBase' is read-only."));
     }
 
     [Test]
@@ -232,20 +236,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Relation end point for property 'Test' cannot be added to class 'DomainBase', because it was initialized for class 'Distributor'.")]
     public void SetRelationEndPointDefinitions_DifferentClassDefinition_ThrowsException ()
     {
       var endPointDefinition = new VirtualRelationEndPointDefinition (
           _distributorClass, "Test", false, CardinalityType.One, null, MockRepository.GenerateStub<IPropertyInformation>());
-
-      _domainBaseClass.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new[] { endPointDefinition }, false));
+      Assert.That (
+          () => _domainBaseClass.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new[] { endPointDefinition }, false)),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "Relation end point for property 'Test' cannot be added to class 'DomainBase', because it was initialized for class 'Distributor'."));
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Relation end point for property 'Test' cannot be added to class 'Person', because base class 'DomainBase' already defines a relation end point "
-        + "with the same property name.")]
     public void SetRelationEndPointDefinitions_EndPointWithSamePropertyNameWasAlreadyAdded_ThrowsException ()
     {
       var baseEndPointDefinition = new VirtualRelationEndPointDefinition (
@@ -254,28 +256,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           _personClass, "Test", false, CardinalityType.One, null, MockRepository.GenerateStub<IPropertyInformation>());
 
       _domainBaseClass.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new[] { baseEndPointDefinition }, true));
-      _personClass.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new[] { derivedEndPointDefinition }, true));
+      Assert.That (
+          () => _personClass.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new[] { derivedEndPointDefinition }, true)),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "Relation end point for property 'Test' cannot be added to class 'Person', because base class 'DomainBase' already defines a relation end point "
+                  + "with the same property name."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The relation end point definitions for class 'DomainBase' have already been set.")]
     public void SetRelationEndPointDefinitions_Twice_ThrowsException ()
     {
       var endPointDefinition = new VirtualRelationEndPointDefinition (
           _domainBaseClass, "Test", false, CardinalityType.One, null, MockRepository.GenerateStub<IPropertyInformation>());
 
       _domainBaseClass.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new[] { endPointDefinition }, false));
-      _domainBaseClass.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new[] { endPointDefinition }, false));
+      Assert.That (
+          () => _domainBaseClass.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new[] { endPointDefinition }, false)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The relation end point definitions for class 'DomainBase' have already been set."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Class 'DomainBase' is read-only.")]
     public void SetRelationEndPointDefinitions_ClassIsReadonly ()
     {
       _domainBaseClass.SetReadOnly();
-
-      _domainBaseClass.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new IRelationEndPointDefinition[0], true));
+      Assert.That (
+          () => _domainBaseClass.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new IRelationEndPointDefinition[0], true)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Class 'DomainBase' is read-only."));
     }
 
     [Test]
@@ -288,35 +297,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The derived-classes for class 'Person' have already been set.")]
     public void SetDerivedClasses_Twice_ThrowsException ()
     {
       _personClass.SetDerivedClasses (new[] { _customerClass });
-      _personClass.SetDerivedClasses (new[] { _customerClass });
+      Assert.That (
+          () => _personClass.SetDerivedClasses (new[] { _customerClass }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The derived-classes for class 'Person' have already been set."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Class 'Person' is read-only.")]
     public void SetDerivedClasses_ClasssIsReadOnly ()
     {
       _personClass.SetReadOnly();
-      _personClass.SetDerivedClasses (new[] { _orderClass });
+      Assert.That (
+          () => _personClass.SetDerivedClasses (new[] { _orderClass }),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Class 'Person' is read-only."));
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Derived class 'Order' cannot be added to class 'Person', because it has no base class definition defined.")]
     public void SetDerivedClasses_DerivedClassHasNoBaseClassDefined ()
     {
-      _personClass.SetDerivedClasses (new[] { _orderClass });
+      Assert.That (
+          () => _personClass.SetDerivedClasses (new[] { _orderClass }),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo ("Derived class 'Order' cannot be added to class 'Person', because it has no base class definition defined."));
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Derived class 'Person' cannot be added to class 'Customer', because it has class 'DomainBase' as its base class definition defined.")]
     public void SetDerivedClasses_DerivedClassHasWrongBaseClassDefined ()
     {
-      _customerClass.SetDerivedClasses (new[] { _personClass });
+      Assert.That (
+          () => _customerClass.SetDerivedClasses (new[] { _personClass }),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "Derived class 'Person' cannot be added to class 'Customer', because it has class 'DomainBase' as its base class definition defined."));
     }
 
     [Test]
@@ -370,10 +387,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter 'propertyName' cannot be empty.\r\nParameter name: propertyName")]
     public void GetRelationEndPointDefinitionFromEmptyPropertyName ()
     {
-      _orderClass.GetRelationEndPointDefinition (string.Empty);
+      Assert.That (
+          () => _orderClass.GetRelationEndPointDefinition (string.Empty),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'propertyName' cannot be empty.\r\nParameter name: propertyName"));
     }
 
     [Test]
@@ -407,10 +427,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void IsRelationEndPointWithNull ()
     {
-      _orderClass.IsRelationEndPoint (null);
+      Assert.That (
+          () => _orderClass.IsRelationEndPoint (null),
+          Throws.ArgumentNullException);
     }
 
     [Test]
@@ -439,18 +460,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No property definitions have been set for class 'Order'.")]
     public void GetPropertyDefinition_NoPropertyDefinitionsHaveBeenSet_ThrowsException ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("Order");
-      classDefinition.GetPropertyDefinition ("dummy");
+      Assert.That (
+          () => classDefinition.GetPropertyDefinition ("dummy"),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "No property definitions have been set for class 'Order'."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter 'propertyName' cannot be empty.\r\nParameter name: propertyName")]
     public void GetEmptyPropertyDefinition ()
     {
-      _orderClass.GetPropertyDefinition (string.Empty);
+      Assert.That (
+          () => _orderClass.GetPropertyDefinition (string.Empty),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'propertyName' cannot be empty.\r\nParameter name: propertyName"));
     }
 
     [Test]
@@ -476,11 +503,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No property definitions have been set for class 'Order'.")]
     public void GetAllPropertyDefinitions_ThrowsWhenPropertiesNotSet ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("Order");
-      classDefinition.GetPropertyDefinitions();
+      Assert.That (
+          () => classDefinition.GetPropertyDefinitions(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "No property definitions have been set for class 'Order'."));
     }
 
     [Test]
@@ -512,20 +542,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Property 'Name' cannot be added to class 'Order', because it was initialized for class 'Company'.")]
     public void AddPropertyToOtherClass ()
     {
       var companyClass = ClassDefinitionObjectMother.CreateClassDefinition ("Company");
       var orderClass = ClassDefinitionObjectMother.CreateClassDefinition ("Order");
 
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (companyClass, "Name");
-      orderClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, true));
+      Assert.That (
+          () => orderClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, true)),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo ("Property 'Name' cannot be added to class 'Order', because it was initialized for class 'Company'."));
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Property 'Name' cannot be added to class 'Customer', because base class 'Company' already defines a property with the same name.")]
     public void AddDuplicatePropertyBaseClass ()
     {
       var companyClass = ClassDefinitionObjectMother.CreateClassDefinition ("Company");
@@ -534,12 +563,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var customerClass = ClassDefinitionObjectMother.CreateClassDefinition (id: "Customer", baseClass: companyClass);
       var customerPropertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (customerClass, "Name");
-      customerClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { customerPropertyDefinition }, true));
+      Assert.That (
+          () => customerClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { customerPropertyDefinition }, true)),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "Property 'Name' cannot be added to class 'Customer', because base class 'Company' already defines a property with the same name."));
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Property 'Name' cannot be added to class 'Supplier', because base class 'Company' already defines a property with the same name.")]
     public void AddDuplicatePropertyBaseOfBaseClass ()
     {
       var companyClass = ClassDefinitionObjectMother.CreateClassDefinition ("Company");
@@ -551,7 +582,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var supplierClass = ClassDefinitionObjectMother.CreateClassDefinition (id: "Supplier", baseClass: partnerClass);
       var supplierPropertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (supplierClass, "Name");
-      supplierClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { supplierPropertyDefinition }, true));
+      Assert.That (
+          () => supplierClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { supplierPropertyDefinition }, true)),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "Property 'Name' cannot be added to class 'Supplier', because base class 'Company' already defines a property with the same name."));
     }
 
     [Test]
@@ -574,10 +609,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "No relation found for class 'Order' and property 'UndefinedProperty'.")]
     public void GetMandatoryRelationEndPointDefinitionForUndefinedProperty ()
     {
-      _orderClass.GetMandatoryRelationEndPointDefinition ("UndefinedProperty");
+      Assert.That (
+          () => _orderClass.GetMandatoryRelationEndPointDefinition ("UndefinedProperty"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "No relation found for class 'Order' and property 'UndefinedProperty'."));
     }
 
     [Test]
@@ -596,11 +634,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No relation end point definitions have been set for class 'Order'.")]
     public void GetAllRelationEndPointDefinitions_ThrowsWhenRelationsNotSet ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("Order");
-      classDefinition.GetRelationEndPointDefinitions();
+      Assert.That (
+          () => classDefinition.GetRelationEndPointDefinitions(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "No relation end point definitions have been set for class 'Order'."));
     }
 
     [Test]
@@ -737,12 +778,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No property definitions have been set for class 'Order'.")]
     public void MyPropertyDefinitions_NoPropertiesSet_ThrowsException ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("Order");
-
-      classDefinition.MyPropertyDefinitions.ForceEnumeration();
+      Assert.That (
+          () => classDefinition.MyPropertyDefinitions.ForceEnumeration(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "No property definitions have been set for class 'Order'."));
     }
 
     [Test]
@@ -760,12 +803,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No relation end point definitions have been set for class 'Order'.")]
     public void MyRelationEndPointDefinitions_NoRelationEndPointDefinitionsSet_ThrowsException ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("Order");
-
-      classDefinition.MyRelationEndPointDefinitions.ForceEnumeration();
+      Assert.That (
+          () => classDefinition.MyRelationEndPointDefinitions.ForceEnumeration(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "No relation end point definitions have been set for class 'Order'."));
     }
 
     [Test]
@@ -887,10 +932,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Order' does not contain the property 'InvalidProperty'.")]
     public void GetMandatoryPropertyDefinitionWithInvalidPropertName ()
     {
-      _orderClass.GetMandatoryPropertyDefinition ("InvalidProperty");
+      Assert.That (
+          () => _orderClass.GetMandatoryPropertyDefinition ("InvalidProperty"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "Class 'Order' does not contain the property 'InvalidProperty'."));
     }
 
     [Test]

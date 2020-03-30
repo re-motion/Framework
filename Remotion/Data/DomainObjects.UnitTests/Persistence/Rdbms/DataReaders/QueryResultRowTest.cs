@@ -91,28 +91,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     }
 
     [Test]
-    [ExpectedException(typeof(NotSupportedException), ExpectedMessage = "Type not supported.")]
     public void GetConvertedValue_ThrowsNotSupportedException_TypeNotObjectID ()
     {
       _storageTypeInformationProviderStub
         .Stub (stub => stub.GetStorageType (typeof (int)))
         .Throw(new NotSupportedException("Type not supported."));
-
-      _queryResultRow.GetConvertedValue (1, typeof (int));
+      Assert.That (
+          () => _queryResultRow.GetConvertedValue (1, typeof (int)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Type not supported."));
     }
 
     [Test]
-    [ExpectedException(typeof(NotSupportedException), ExpectedMessage = 
-      "Type 'ObjectID' ist not supported by this storage provider.\r\n"
-      + "Please select the ID and ClassID values separately, then create an ObjectID with it in memory "
-      + "(e.g., 'select new ObjectID (o.ID.ClassID, o.ID.Value)').")]
     public void GetConvertedValue_ThrowsNotSupportedException_TypeObjectID ()
     {
       _storageTypeInformationProviderStub
         .Stub (stub => stub.GetStorageType (typeof (ObjectID)))
         .Throw (new NotSupportedException ("Type not supported."));
-
-      _queryResultRow.GetConvertedValue (1, typeof (ObjectID));
+      Assert.That (
+          () => _queryResultRow.GetConvertedValue (1, typeof (ObjectID)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Type 'ObjectID' ist not supported by this storage provider.\r\n"
+                  + "Please select the ID and ClassID values separately, then create an ObjectID with it in memory "
+                  + "(e.g., 'select new ObjectID (o.ID.ClassID, o.ID.Value)')."));
     }
 
     [Test]

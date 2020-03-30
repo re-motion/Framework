@@ -268,14 +268,17 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This property already has a getter method.")]
     public void CreateGetMethodThrowsOnDuplicateMethod ()
     {
       CustomPropertyEmitter property = _classEmitter.CreateProperty ("CreateGetMethodThrowsOnDuplicateGetMethod", PropertyKind.Instance,
           typeof (string));
 
       property.CreateGetMethod ();
-      property.CreateGetMethod ();
+      Assert.That (
+          () => property.CreateGetMethod (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "This property already has a getter method."));
     }
 
     [Test]
@@ -307,14 +310,17 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This property already has a setter method.")]
     public void CreateSetMethodThrowsOnDuplicateMethod ()
     {
       CustomPropertyEmitter property = _classEmitter.CreateProperty ("CreateSetMethodThrowsOnDuplicateMethod", PropertyKind.Instance,
           typeof (string));
 
       property.CreateSetMethod ();
-      property.CreateSetMethod ();
+      Assert.That (
+          () => property.CreateSetMethod (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "This property already has a setter method."));
     }
 
     [Test]

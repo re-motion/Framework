@@ -58,15 +58,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The given data strategy must have a required item type of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' in order to be used "
-        + "with this collection type.\r\nParameter name: dataStrategy")]
     public void Initialization_WithData_InvalidRequiredItemType ()
     {
       var dataStub = MockRepository.GenerateStub<IDomainObjectCollectionData> ();
       dataStub.Stub (stub => stub.RequiredItemType).Return (null);
-
-      new ObjectList<Customer> (dataStub);
+      Assert.That (
+          () => new ObjectList<Customer> (dataStub),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The given data strategy must have a required item type of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' in order to be used "
+                  + "with this collection type.\r\nParameter name: dataStrategy"));
     }
 
     [Test]
@@ -141,21 +142,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot insert an item into a read-only collection.")]
     public void IList_InsertThrowsIfReadOnly ()
     {
       IList<OrderItem> readOnlyList = new ObjectList<OrderItem> ().Clone (true);
-      readOnlyList.Insert (0, _orderItem2);
+      Assert.That (
+          () => readOnlyList.Insert (0, _orderItem2),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot insert an item into a read-only collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException),
-        ExpectedMessage = "Index is out of range. Must be non-negative and less than or equal to the size of the collection.",
-        MatchType = MessageMatch.Contains)]
     public void IList_InsertThrowsOnWrongIndex ()
     {
       IList<OrderItem> list = new ObjectList<OrderItem> ();
-      list.Insert (1, _orderItem2);
+      Assert.That (
+          () => list.Insert (1, _orderItem2),
+          Throws.InstanceOf<ArgumentOutOfRangeException>()
+              .With.Message.Contains (
+                  "Index is out of range. Must be non-negative and less than or equal to the size of the collection."));
     }
 
     [Test]
@@ -172,29 +177,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException),
-        ExpectedMessage = "Index was out of range. Must be non-negative and less than the size of the collection.",
-        MatchType = MessageMatch.Contains)]
     public void IList_ItemGetThrowsOnWrongIndex ()
     {
-      Dev.Null = _orderItemListAsIList[2];
+      Assert.That (
+          () => Dev.Null = _orderItemListAsIList[2],
+          Throws.InstanceOf<ArgumentOutOfRangeException>()
+              .With.Message.Contains ("Index was out of range. Must be non-negative and less than the size of the collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException),
-        ExpectedMessage = "Index was out of range. Must be non-negative and less than the size of the collection.",
-        MatchType = MessageMatch.Contains)]
     public void IList_ItemSetThrowsOnWrongIndex ()
     {
-      _orderItemListAsIList[-1] = null;
+      Assert.That (
+          () => _orderItemListAsIList[-1] = null,
+          Throws.InstanceOf<ArgumentOutOfRangeException>()
+              .With.Message.Contains ("Index was out of range. Must be non-negative and less than the size of the collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot modify a read-only collection.")]
     public void IList_ItemSetThrowsOnReadOnlyList ()
     {
       IList<OrderItem> readOnlyList = ((ObjectList<OrderItem>)_orderItemListAsIList).Clone (true);
-      readOnlyList[0] = null;
+      Assert.That (
+          () => readOnlyList[0] = null,
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Cannot modify a read-only collection."));
     }
 
     [Test]
@@ -209,11 +216,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot add an item to a read-only collection.")]
     public void IList_AddThrowsOnReadOnlyList ()
     {
       IList<OrderItem> readOnlyList = new ObjectList<OrderItem> ().Clone (true);
-      readOnlyList.Add (_orderItem1);
+      Assert.That (
+          () => readOnlyList.Add (_orderItem1),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot add an item to a read-only collection."));
     }
 
     [Test]
@@ -245,31 +255,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException),
-        ExpectedMessage = "Number was less than the array's lower bound in the first dimension.", MatchType = MessageMatch.Contains)]
     public void IList_CopyToNegativeIndex ()
     {
       var destination = new OrderItem[5];
-      _orderItemListAsIList.CopyTo (destination, -1);
+      Assert.That (
+          () => _orderItemListAsIList.CopyTo (destination, -1),
+          Throws.InstanceOf<ArgumentOutOfRangeException>()
+              .With.Message.Contains ("Number was less than the array's lower bound in the first dimension."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Destination array was not long enough. Check destIndex and length, and the array's lower bounds.",
-        MatchType = MessageMatch.Contains)]
     public void IList_CopyToGreatIndex ()
     {
       var destination = new OrderItem[5];
-      _orderItemListAsIList.CopyTo (destination, 5);
+      Assert.That (
+          () => _orderItemListAsIList.CopyTo (destination, 5),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "Destination array was not long enough. Check destIndex and length, and the array's lower bounds."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Destination array was not long enough. Check destIndex and length, and the array's lower bounds.",
-        MatchType = MessageMatch.Contains)]
     public void IList_CopyToTooLittleSpace ()
     {
       var destination = new OrderItem[5];
-      _orderItemListAsIList.CopyTo (destination, 4);
+      Assert.That (
+          () => _orderItemListAsIList.CopyTo (destination, 4),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "Destination array was not long enough. Check destIndex and length, and the array's lower bounds."));
     }
 
     [Test]
@@ -283,19 +297,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot remove an item from a read-only collection.")]
     public void IList_RemoveThrowsOnReadOnlyList ()
     {
       IList<OrderItem> readOnlyList = new ObjectList<OrderItem> ().Clone (true);
-      readOnlyList.Remove (_orderItem1);
+      Assert.That (
+          () => readOnlyList.Remove (_orderItem1),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot remove an item from a read-only collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot remove an item from a read-only collection.")]
     public void IList_RemoveInexistentThrowsOnReadOnlyList ()
     {
       IList<OrderItem> readOnlyList = new ObjectList<OrderItem> ().Clone (true);
-      readOnlyList.Remove (_orderItem3);
+      Assert.That (
+          () => readOnlyList.Remove (_orderItem3),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot remove an item from a read-only collection."));
     }
 
     [Test]

@@ -45,12 +45,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'TTransaction' is a 'Remotion.Data.DomainObjects.DomainObject', "
-        + "which cannot be assigned to type 'Remotion.Data.DomainObjects.ClientTransaction'.\r\nParameter name: TTransaction")]
     public void To_InvalidType ()
     {
-      _transaction.To<DomainObject>();
+      Assert.That (
+          () => _transaction.To<DomainObject>(),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'TTransaction' is a 'Remotion.Data.DomainObjects.DomainObject', "
+                  + "which cannot be assigned to type 'Remotion.Data.DomainObjects.ClientTransaction'.\r\nParameter name: TTransaction"));
     }
 
     [Test]

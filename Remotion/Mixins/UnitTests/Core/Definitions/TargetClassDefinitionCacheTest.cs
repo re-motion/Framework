@@ -35,11 +35,12 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     }
 
     [Test]
-    [ExpectedException (typeof (ValidationException))]
     public void CreateTargetClassDefinition_ValidatesWhenGeneratingDefinition ()
     {
       var cc = ClassContextObjectMother.Create(typeof (DateTime));
-      TargetClassDefinitionFactory.CreateAndValidate (cc);
+      Assert.That (
+          () => TargetClassDefinitionFactory.CreateAndValidate (cc),
+          Throws.InstanceOf<ValidationException>());
     }
   }
 }

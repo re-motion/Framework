@@ -124,7 +124,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The Delete operation my only be performed once.")]
     public void Delete_Twice ()
     {
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
@@ -136,8 +135,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain
 
       deleteHandler.Delete ();
       Assert.That (deleteHandler.IsDeleted);
-      
-      deleteHandler.Delete ();
+      Assert.That (
+          () => deleteHandler.Delete (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The Delete operation my only be performed once."));
     }
 
   }

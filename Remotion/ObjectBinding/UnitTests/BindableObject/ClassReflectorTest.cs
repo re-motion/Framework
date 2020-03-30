@@ -187,8 +187,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Type 'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleReferenceType' does not implement the required IBusinessObject interface.")]
     public void GetMetadata_ForTypeWithoutBusinessObjectInterface ()
     {
       var classReflector = new ClassReflector (
@@ -196,12 +194,14 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           _businessObjectProvider,
           _metadataFactory,
           _bindableObjectGlobalizationService);
-      classReflector.GetMetadata();
+      Assert.That (
+          () => classReflector.GetMetadata(),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Type 'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleReferenceType' does not implement the required IBusinessObject interface."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Type '.*ClassWithMixedPropertyOfSameName' has two properties called "
-        + "'MixedProperty', this is currently not supported.", MatchType = MessageMatch.Regex)]
     public void GetMetadata_ForMixedPropertyWithSameName ()
     {
       var classReflector = new ClassReflector (
@@ -209,7 +209,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           _businessObjectProvider,
           _metadataFactory,
           _bindableObjectGlobalizationService);
-      classReflector.GetMetadata ();
+      Assert.That (
+          () => classReflector.GetMetadata (),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.Matches (
+                  "Type '.*ClassWithMixedPropertyOfSameName' has two properties called "
+                  + "'MixedProperty', this is currently not supported."));
     }
 
     [Test]

@@ -307,11 +307,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (MandatoryRelationNotSetException))]
     public void ValidateMandatoryRelation ()
     {
       OrderItem orderItem = OrderItem.NewObject ();
-      TestableClientTransaction.Commit ();
+      Assert.That (
+          () => TestableClientTransaction.Commit (),
+          Throws.InstanceOf<MandatoryRelationNotSetException>());
     }
 
     [Test]

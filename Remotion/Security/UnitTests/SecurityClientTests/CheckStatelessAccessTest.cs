@@ -69,15 +69,15 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_ShouldThrowPermissionDeniedException ()
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, false);
       _testHelper.ReplayAll();
 
       _securityClient.CheckStatelessAccess (typeof (SecurableObject), (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
-
-      _testHelper.VerifyAll();
+      Assert.That (
+          () => _testHelper.VerifyAll(),
+          Throws.InstanceOf<PermissionDeniedException>());
     }
 
     [Test]

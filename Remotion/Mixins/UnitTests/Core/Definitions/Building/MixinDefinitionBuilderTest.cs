@@ -90,17 +90,19 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException))]
     public void ThrowsOnMixinMethodOverridedWrongSig()
     {
-      DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethodWrongSig), typeof (MixinWithAbstractMembers));
+      Assert.That (
+          () => DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethodWrongSig), typeof (MixinWithAbstractMembers)),
+          Throws.InstanceOf<ConfigurationException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException))]
     public void ThrowsOnMixinOverrideWithoutMixin()
     {
-      DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMembers));
+      Assert.That (
+          () => DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMembers)),
+          Throws.InstanceOf<ConfigurationException>());
     }
 
     [Test]

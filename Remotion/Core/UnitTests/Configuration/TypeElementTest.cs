@@ -88,15 +88,15 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException))]
     public void Deserialize_WithInvalidType()
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
       string xmlFragment = @"<theElement type=""System.Object, mscorlib"" />";
       ConfigurationHelper.DeserializeElement (typeElement, xmlFragment);
-
-      Dev.Null = typeElement.Type;
+      Assert.That (
+          () => Dev.Null = typeElement.Type,
+          Throws.InstanceOf<ConfigurationErrorsException>());
     }
   }
 }

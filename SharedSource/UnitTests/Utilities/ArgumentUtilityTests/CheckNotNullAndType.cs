@@ -113,27 +113,30 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg")]
     public void Fail_String_Int ()
     {
-      ArgumentUtility.CheckNotNullAndType<string> ("arg", 1);
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndType<string> ("arg", 1),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'arg' has type 'System.Int32' when type 'System.Int64' was expected.\r\nParameter name: arg")]
     public void Fail_Long_Int ()
     {
-      ArgumentUtility.CheckNotNullAndType<long> ("arg", 1);
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndType<long> ("arg", 1),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Parameter 'arg' has type 'System.Int32' when type 'System.Int64' was expected.\r\nParameter name: arg"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'arg' has type 'System.String' when type 'System.Int32' was expected.\r\nParameter name: arg")]
     public void Fail_Int_String ()
     {
-      ArgumentUtility.CheckNotNullAndType<int> ("arg", "test");
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndType<int> ("arg", "test"),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Parameter 'arg' has type 'System.String' when type 'System.Int32' was expected.\r\nParameter name: arg"));
     }
 
     [Test]
@@ -145,11 +148,12 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg")]
     public void Fail_Type_String_NonGeneric ()
     {
-      ArgumentUtility.CheckNotNullAndType ("arg", 13, typeof (string));
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndType ("arg", 13, typeof (string)),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg"));
     }
 
 
@@ -162,11 +166,12 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'arg' has type 'System.Double' when type 'System.Int32' was expected.\r\nParameter name: arg")]
     public void Fail_Type_Int_NonGeneric ()
     {
-      ArgumentUtility.CheckNotNullAndType ("arg", 13.0, typeof (int));
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndType ("arg", 13.0, typeof (int)),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Parameter 'arg' has type 'System.Double' when type 'System.Int32' was expected.\r\nParameter name: arg"));
     }
 
     [Test]

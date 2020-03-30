@@ -120,9 +120,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     }
 
     [Test]
-    [ExpectedException(typeof(RdbmsProviderException), ExpectedMessage =
-      "Error while reading property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.FileName' of object "
-      + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid': TestException")]
     public void Read_DataReaderReadTrue_ThrowsException ()
     {
       _dataReaderStrictMock.Expect (mock => mock.Read ()).Return (true);
@@ -139,8 +136,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       _persistenceModelProviderStub
         .Stub (stub => stub.GetStoragePropertyDefinition (propertyDefinition))
         .Throw (new InvalidOperationException ("TestException"));
-      
-      _dataContainerReader.Read (_dataReaderStrictMock);
+      Assert.That (
+          () => _dataContainerReader.Read (_dataReaderStrictMock),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo (
+                  "Error while reading property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.FileName' of object "
+                  + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid': TestException"));
     }
 
     [Test]

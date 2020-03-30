@@ -97,8 +97,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     }
 
     [Test]
-    [ExpectedException (typeof (TypeImportException), ExpectedMessage = "The given type 'System.Object' has a concrete mixin type identifier, but no "
-        + "IOverriddenMethods interface.")]
     public void GetMetadataForMixinType_NoOverrideInterface ()
     {
       var importerMock = new MockRepository ().PartialMock<AttributeBasedMetadataImporter> ();
@@ -106,8 +104,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
       importerMock.Expect (mock => mock.GetIdentifierForMixinType (typeof (object))).Return (expectedIdentifier);
       importerMock.Replay ();
-
-      importerMock.GetMetadataForMixinType (typeof (object));
+      Assert.That (
+          () => importerMock.GetMetadataForMixinType (typeof (object)),
+          Throws.InstanceOf<TypeImportException>()
+              .With.Message.EqualTo (
+                  "The given type 'System.Object' has a concrete mixin type identifier, but no "
+                  + "IOverriddenMethods interface."));
     }
 
     [Test]

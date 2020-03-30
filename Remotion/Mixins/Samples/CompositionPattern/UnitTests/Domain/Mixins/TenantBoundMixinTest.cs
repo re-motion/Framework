@@ -34,23 +34,23 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
-        "Cannot commit tenant-bound object 00000000-0000-0000-0000-000000000000 without a tenant.")]
     public void TargetCommitting_ThrowsOnNullTenant ()
     {
       Assert.That (_mixin.Tenant, Is.Null);
-
-      _mixin.TargetEvents.OnCommitting ();
+      Assert.That (
+          () => _mixin.TargetEvents.OnCommitting (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Cannot commit tenant-bound object 00000000-0000-0000-0000-000000000000 without a tenant."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Cannot commit tenant-bound object 00000000-0000-0000-0000-000000000000 without a tenant.")]
     public void TargetCommitting_ThrowsOnEmptyTenant ()
     {
       _mixin.Tenant = "";
-
-      _mixin.TargetEvents.OnCommitting ();
+      Assert.That (
+          () => _mixin.TargetEvents.OnCommitting (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Cannot commit tenant-bound object 00000000-0000-0000-0000-000000000000 without a tenant."));
     }
 
     [Test]

@@ -71,38 +71,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void OriginalCollection ()
     {
-      Dev.Null = _nullEndPoint.OriginalCollection;
+      Assert.That (
+          () => Dev.Null = _nullEndPoint.OriginalCollection,
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void GetData ()
     {
-      Dev.Null = _nullEndPoint.GetData ();
+      Assert.That (
+          () => Dev.Null = _nullEndPoint.GetData (),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void GetOriginalData ()
     {
-      Dev.Null = _nullEndPoint.GetOriginalData ();
+      Assert.That (
+          () => Dev.Null = _nullEndPoint.GetOriginalData (),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void GetCollectionEventRaiser ()
     {
-      Dev.Null = _nullEndPoint.GetCollectionEventRaiser();
+      Assert.That (
+          () => Dev.Null = _nullEndPoint.GetCollectionEventRaiser(),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void GetCollectionWithOriginalData ()
     {
-      Dev.Null = _nullEndPoint.GetCollectionWithOriginalData ();
+      Assert.That (
+          () => Dev.Null = _nullEndPoint.GetCollectionWithOriginalData (),
+          Throws.InvalidOperationException);
     }
 
     [Test]
@@ -166,10 +171,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void MarkDataIncomplete ()
     {
-      _nullEndPoint.MarkDataIncomplete ();
+      Assert.That (
+          () => _nullEndPoint.MarkDataIncomplete (),
+          Throws.InvalidOperationException);
     }
 
     [Test]
@@ -217,10 +223,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void SortCurrentData ()
     {
-      _nullEndPoint.SortCurrentData ((one, two) => 0);
+      Assert.That (
+          () => _nullEndPoint.SortCurrentData ((one, two) => 0),
+          Throws.InvalidOperationException);
     }
 
     [Test]
@@ -266,31 +273,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void Synchronize ()
     {
-      _nullEndPoint.Synchronize();
+      Assert.That (
+          () => _nullEndPoint.Synchronize(),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void SynchronizeOppositeEndPoint ()
     {
-      _nullEndPoint.SynchronizeOppositeEndPoint (_relatedEndPointStub);
+      Assert.That (
+          () => _nullEndPoint.SynchronizeOppositeEndPoint (_relatedEndPointStub),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void ValidateMandatory ()
     {
-      _nullEndPoint.ValidateMandatory ();
+      Assert.That (
+          () => _nullEndPoint.ValidateMandatory (),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void GetOppositeRelationEndPointIDs ()
     {
-      _nullEndPoint.GetOppositeRelationEndPointIDs ();
+      Assert.That (
+          () => _nullEndPoint.GetOppositeRelationEndPointIDs (),
+          Throws.InvalidOperationException);
     }
 
     [Test]
@@ -302,31 +313,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void SetDataFromSubTransaction ()
     {
-      _nullEndPoint.SetDataFromSubTransaction (MockRepository.GenerateStub<IRelationEndPoint> ());
+      Assert.That (
+          () => _nullEndPoint.SetDataFromSubTransaction (MockRepository.GenerateStub<IRelationEndPoint> ()),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void Commit ()
     {
-      _nullEndPoint.Commit ();
+      Assert.That (
+          () => _nullEndPoint.Commit (),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void Rollback ()
     {
-      _nullEndPoint.Commit ();
+      Assert.That (
+          () => _nullEndPoint.Commit (),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void SerializeIntoFlatStructure ()
     {
-      _nullEndPoint.SerializeIntoFlatStructure (new FlattenedSerializationInfo ());
+      Assert.That (
+          () => _nullEndPoint.SerializeIntoFlatStructure (new FlattenedSerializationInfo ()),
+          Throws.InvalidOperationException);
     }
   }
 }

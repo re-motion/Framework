@@ -42,7 +42,6 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
       
     [Test]
-    [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = @"StateCombinations not defined for StatelessAccessControlList. Test for ""is StatefulAccessControlList"" in calling code.") ]
     public void StateCombinationsForStatelessAclThrowsTest ()
     {
       SecurableClassDefinition classDefinition = TestHelper.CreateOrderClassDefinition ();
@@ -50,7 +49,11 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
       var accessConditions = new AclExpansionAccessConditions ();
       var aclExpansionEntry = new AclExpansionEntry (User, Role, statlessAcl, accessConditions, AccessTypeDefinitions, AccessTypeDefinitions2);
-      Dev.Null = aclExpansionEntry.GetStateCombinations(); 
+      Assert.That (
+          () => Dev.Null = aclExpansionEntry.GetStateCombinations(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  @"StateCombinations not defined for StatelessAccessControlList. Test for ""is StatefulAccessControlList"" in calling code."));
     }
 
 

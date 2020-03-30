@@ -49,12 +49,14 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'attributeOwner' is a 'System.String', which cannot be assigned to type 'System.Reflection.ICustomAttributeProvider'."
-        + "\r\nParameter name: attributeOwner")]
     public void CustomAttributeExpressionThrowsOnWrongReferenceType ()
     {
-      new CustomAttributeExpression (new LocalReference (typeof (string)), typeof (SimpleAttribute), 0, true);
+      Assert.That (
+          () => new CustomAttributeExpression (new LocalReference (typeof (string)), typeof (SimpleAttribute), 0, true),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'attributeOwner' is a 'System.String', which cannot be assigned to type 'System.Reflection.ICustomAttributeProvider'."
+                  + "\r\nParameter name: attributeOwner"));
     }
   }
 }

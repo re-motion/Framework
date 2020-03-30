@@ -110,10 +110,13 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Null cannot be converted to type 'System.Int32'.")]
     public void ConvertFrom_ValueIsNullAndNoNullableType ()
     {
-      _converterForInt.ConvertFrom (_typeDescriptorContext, CultureInfo.CurrentCulture, null);
+      Assert.That (
+          () => _converterForInt.ConvertFrom (_typeDescriptorContext, CultureInfo.CurrentCulture, null),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Null cannot be converted to type 'System.Int32'."));
     }
 
     [Test]
@@ -133,10 +136,13 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Value of type 'System.Object' cannot be connverted to type 'System.String'.")]
     public void ConvertFrom_ValueIsNotNullAndCannotConvertFromType ()
     {
-      _converterForString.ConvertFrom (_typeDescriptorContext, CultureInfo.CurrentCulture, new object());
+      Assert.That (
+          () => _converterForString.ConvertFrom (_typeDescriptorContext, CultureInfo.CurrentCulture, new object()),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Value of type 'System.Object' cannot be connverted to type 'System.String'."));
     }
 
     [Test]
@@ -156,11 +162,12 @@ namespace Remotion.UnitTests.Utilities
     }
     
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = 
-      "The given value '' cannot be converted by this TypeConverter for type 'System.Int32'.")]
     public void ConvertTo_ValueIsNullAndNotValid ()
     {
-      _converterForInt.ConvertTo (_typeDescriptorContext, CultureInfo.CurrentCulture, null, typeof (int));
+      Assert.That (
+          () => _converterForInt.ConvertTo (_typeDescriptorContext, CultureInfo.CurrentCulture, null, typeof (int)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("The given value '' cannot be converted by this TypeConverter for type 'System.Int32'."));
     }
 
     [Test]
@@ -180,18 +187,22 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = 
-      "The given value '5' cannot be converted by this TypeConverter for type 'System.String'.")]
     public void ConvertTo_ValueIsNotNullAndNotValid ()
     {
-      _converterForString.ConvertTo (_typeDescriptorContext, CultureInfo.CurrentCulture, 5, typeof (string));
+      Assert.That (
+          () => _converterForString.ConvertTo (_typeDescriptorContext, CultureInfo.CurrentCulture, 5, typeof (string)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("The given value '5' cannot be converted by this TypeConverter for type 'System.String'."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This TypeConverter cannot convert to type 'System.Object'.")]
     public void ConvertTo_ValueIsNotNullAndCannotConvertToDestinationType ()
     {
-      _converterForString.ConvertTo (_typeDescriptorContext, CultureInfo.CurrentCulture, "test", typeof (object));
+      Assert.That (
+          () => _converterForString.ConvertTo (_typeDescriptorContext, CultureInfo.CurrentCulture, "test", typeof (object)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "This TypeConverter cannot convert to type 'System.Object'."));
     }
 
     [Test]

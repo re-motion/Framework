@@ -108,14 +108,16 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Ignore ("Skipped unless DEBUG build")]
 #endif
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The securableObject did not return an IObjectSecurityStrategy.")]
     public void Test_WithSecurityStrategyIsNull ()
     {
       _testHelper.ReplayAll();
 
       _securityClient.HasAccess (new SecurableObject (null), (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
-
-      _testHelper.VerifyAll();
+      Assert.That (
+          () => _testHelper.VerifyAll(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The securableObject did not return an IObjectSecurityStrategy."));
     }
   }
 }

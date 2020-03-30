@@ -38,14 +38,16 @@ namespace Remotion.Security.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Enumerated Type 'Remotion.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as an abstract role. "
-                          + "Valid abstract roles must have the Remotion.Security.AbstractRoleAttribute applied.\r\nParameter name: abstractRoles")]
     public void CreateSecurityContextWithInvalidAbstractRole ()
     {
       // SimpleEnum does not have AbstractRoleAttribute
       Enum[] abstractRoles = new Enum[] { SimpleEnum.First };
-      CreateTestSecurityContextWithAbstractRoles (abstractRoles);
+      Assert.That (
+          () => CreateTestSecurityContextWithAbstractRoles (abstractRoles),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Enumerated Type 'Remotion.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as an abstract role. "
+                  + "Valid abstract roles must have the Remotion.Security.AbstractRoleAttribute applied.\r\nParameter name: abstractRoles"));
     }
 
     [Test]
@@ -69,27 +71,30 @@ namespace Remotion.Security.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Enumerated Type 'Remotion.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as a security state. "
-                          + "Valid security states must have the Remotion.Security.SecurityStateAttribute applied.\r\nParameter name: states")]
     public void CreateSecurityContextWithInvalidState ()
     {
       // SimpleEnum does not have SecurityStateAttribute
       Dictionary<string, Enum> testStates = new Dictionary<string, Enum>();
       testStates.Add ("Confidentiality", TestSecurityState.Public);
       testStates.Add ("State", SimpleEnum.Second);
-
-      CreateTestSecurityContextWithStates (testStates);
+      Assert.That (
+          () => CreateTestSecurityContextWithStates (testStates),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Enumerated Type 'Remotion.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as a security state. "
+                  + "Valid security states must have the Remotion.Security.SecurityStateAttribute applied.\r\nParameter name: states"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'type' is a 'Remotion.Security.UnitTests.SampleDomain.SimpleType', "
-        + "which cannot be assigned to type 'Remotion.Security.ISecurableObject'."
-        + "\r\nParameter name: type")]
     public void CreateSecurityContextWithInvalidType ()
     {
-      CreateTestSecurityContextForType (typeof (SimpleType));
+      Assert.That (
+          () => CreateTestSecurityContextForType (typeof (SimpleType)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'type' is a 'Remotion.Security.UnitTests.SampleDomain.SimpleType', "
+                  + "which cannot be assigned to type 'Remotion.Security.ISecurableObject'."
+                  + "\r\nParameter name: type"));
     }
 
     [Test]

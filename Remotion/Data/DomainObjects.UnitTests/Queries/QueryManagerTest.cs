@@ -87,10 +87,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
     public void GetScalar_WithCollectionQuery ()
     {
-      _queryManager.GetScalar (_collectionQuery);
+      Assert.That (
+          () => _queryManager.GetScalar (_collectionQuery),
+          Throws.ArgumentException);
     }
 
     [Test]
@@ -178,10 +179,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
     public void GetCollection_WithScalarQuery ()
     {
-      _queryManager.GetCollection (_scalarQuery);
+      Assert.That (
+          () => _queryManager.GetCollection (_scalarQuery),
+          Throws.ArgumentException);
     }
 
     [Test]
@@ -210,22 +212,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "A collection or scalar query cannot be used with GetCustom.\r\nParameter name: query")]
     public void GetCustom_WithNonCustomQuery ()
     {
-      _queryManager.GetCustom (_collectionQuery, _rowConversion);
+      Assert.That (
+          () => _queryManager.GetCustom (_collectionQuery, _rowConversion),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("A collection or scalar query cannot be used with GetCustom.\r\nParameter name: query"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "A custom query cannot have eager fetch queries defined.\r\nParameter name: query")]
     public void GetCustom_WithEagerFetchQueries ()
     {
       var relationEndPointDefinitionStub = MockRepository.GenerateStub<IRelationEndPointDefinition>();
       _customQuery.EagerFetchQueries.Add (relationEndPointDefinitionStub, _scalarQuery);
-
-      _queryManager.GetCustom (_customQuery, _rowConversion);
+      Assert.That (
+          () => _queryManager.GetCustom (_customQuery, _rowConversion),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("A custom query cannot have eager fetch queries defined.\r\nParameter name: query"));
     }
 
     [Test]

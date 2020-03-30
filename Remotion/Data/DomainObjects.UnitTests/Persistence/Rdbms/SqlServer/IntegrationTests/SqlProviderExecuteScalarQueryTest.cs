@@ -38,12 +38,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException))]
     public void InvalidScalarQuery ()
     {
       QueryDefinition definition = new QueryDefinition ("InvalidQuery", TestDomainStorageProviderDefinition, "This is not T-SQL", QueryType.Scalar);
-
-      Provider.ExecuteScalarQuery (QueryFactory.CreateQuery (definition));
+      Assert.That (
+          () => Provider.ExecuteScalarQuery (QueryFactory.CreateQuery (definition)),
+          Throws.InstanceOf<RdbmsProviderException>());
     }
 
     [Test]
@@ -65,10 +65,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Expected query type is 'Scalar', but was 'Collection'.\r\nParameter name: query")]
     public void CollectionQuery ()
     {
-      Provider.ExecuteScalarQuery (QueryFactory.CreateQueryFromConfiguration ("OrderQuery"));
+      Assert.That (
+          () => Provider.ExecuteScalarQuery (QueryFactory.CreateQueryFromConfiguration ("OrderQuery")),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Expected query type is 'Scalar', but was 'Collection'.\r\nParameter name: query"));
     }
 
     [Test]
@@ -81,7 +84,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
     public void DifferentStorageProviderID ()
     {
       QueryDefinition definition = new QueryDefinition (
@@ -89,8 +91,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           UnitTestStorageProviderDefinition,
           "select 42",
           QueryType.Scalar);
-
-      Provider.ExecuteScalarQuery (QueryFactory.CreateQuery (definition));
+      Assert.That (
+          () => Provider.ExecuteScalarQuery (QueryFactory.CreateQuery (definition)),
+          Throws.ArgumentException);
     }
   }
 }

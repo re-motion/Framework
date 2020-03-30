@@ -40,17 +40,19 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 	public class CheckValidEnumValue
 	{
 		[Test]
-		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_UndefinedValue ()
 		{
-      ArgumentUtility.CheckValidEnumValue ("arg", (TestEnum) 4);
+		  Assert.That (
+		      () => ArgumentUtility.CheckValidEnumValue ("arg", (TestEnum) 4),
+		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
 		[Test]
-		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_PartiallyUndefinedFlags ()
 		{
-      ArgumentUtility.CheckValidEnumValue ("arg", (TestFlags) (1 | 8));
+		  Assert.That (
+		      () => ArgumentUtility.CheckValidEnumValue ("arg", (TestFlags) (1 | 8)),
+		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
     [Test]
@@ -80,26 +82,30 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 		}
     
     [Test]
-		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_UndefinedValue ()
 		{
-      ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum> ("arg", (TestEnum) 4);
+		  Assert.That (
+		      () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum> ("arg", (TestEnum) 4),
+		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
 		[Test]
-		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_PartiallyUndefinedFlags ()
 		{
-      ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags> ("arg", (TestFlags) (1 | 8));
+		  Assert.That (
+		      () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags> ("arg", (TestFlags) (1 | 8)),
+		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
 	  [Test]
-	  [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-	      "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
-	      + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.\r\nParameter name: arg")]
 	  public void Fail_WrongType ()
 	  {
-	    ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags> ("arg", TestEnum.Value1);
+	    Assert.That (
+	        () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags> ("arg", TestEnum.Value1),
+	        Throws.ArgumentException
+	            .With.Message.EqualTo (
+	                "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
+	                + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.\r\nParameter name: arg"));
 	  }
 
 	  [Test]
@@ -127,26 +133,30 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 		}
     
     [Test]
-		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_UndefinedValue ()
 		{
-      ArgumentUtility.CheckValidEnumValueAndType<TestEnum> ("arg", (TestEnum) 4);
+		  Assert.That (
+		      () => ArgumentUtility.CheckValidEnumValueAndType<TestEnum> ("arg", (TestEnum) 4),
+		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
 		[Test]
-		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_PartiallyUndefinedFlags ()
 		{
-      ArgumentUtility.CheckValidEnumValueAndType<TestFlags> ("arg", (TestFlags) (1 | 8));
+		  Assert.That (
+		      () => ArgumentUtility.CheckValidEnumValueAndType<TestFlags> ("arg", (TestFlags) (1 | 8)),
+		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
 	  [Test]
-	  [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-	      "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
-	      + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.\r\nParameter name: arg")]
 	  public void Fail_WrongType ()
 	  {
-	    ArgumentUtility.CheckValidEnumValueAndType<TestFlags> ("arg", TestEnum.Value1);
+	    Assert.That (
+	        () => ArgumentUtility.CheckValidEnumValueAndType<TestFlags> ("arg", TestEnum.Value1),
+	        Throws.ArgumentException
+	            .With.Message.EqualTo (
+	                "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
+	                + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.\r\nParameter name: arg"));
 	  }
 
 	  [Test]

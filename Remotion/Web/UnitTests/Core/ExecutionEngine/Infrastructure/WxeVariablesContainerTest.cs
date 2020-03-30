@@ -142,7 +142,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     }
 
     [Test]
-    [ExpectedException (typeof (ApplicationException))]
     public void InitializeParameters_WitInt32BeingEmpty ()
     {
       NameValueCollection parameters = new NameValueCollection();
@@ -151,7 +150,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       parameters.Add ("IntValue", "");
 
       TestFunctionWithSerializableParameters function = new TestFunctionWithSerializableParameters();
-      function.VariablesContainer.InitializeParameters (parameters);
+      Assert.That (
+          () => function.VariablesContainer.InitializeParameters (parameters),
+          Throws.InstanceOf<ApplicationException>());
     }
   }
 }

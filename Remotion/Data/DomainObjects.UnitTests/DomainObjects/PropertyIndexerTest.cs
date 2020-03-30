@@ -114,12 +114,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = 
-        "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector' does not have a mapping property named 'Bla'.")]
     public void Item_ThrowsForNonExistingProperty ()
     {
       var indexer = new PropertyIndexer (_industrialSector);
-      Dev.Null = indexer["Bla"];
+      Assert.That (
+          () => Dev.Null = indexer["Bla"],
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector' does not have a mapping property named 'Bla'."));
     }
 
     [Test]
@@ -183,12 +185,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), MatchType = MessageMatch.Contains,
-        ExpectedMessage = "cannot be used in the given transaction ")]
     public void AsEnumerable_InvalidTransaction ()
     {
-      (from propertyAccessor in _order.Properties.AsEnumerable (ClientTransaction.CreateRootTransaction ())
-       select propertyAccessor.ClientTransaction).ToArray ();
+      Assert.That (
+          () => (from propertyAccessor in _order.Properties.AsEnumerable (ClientTransaction.CreateRootTransaction ())
+       select propertyAccessor.ClientTransaction).ToArray (),
+          Throws.InstanceOf<ClientTransactionsDifferException>()
+              .With.Message.Contains ("cannot be used in the given transaction "));
     }
 
     [Test]
@@ -260,13 +263,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Distributor' does not have or inherit a mapping property with the "
-        + "short name 'Frobbers'.", MatchType = MessageMatch.Contains)]
     public void Find_NonExistingProperty ()
     {
       Distributor distributor = _transaction.ExecuteInScope (() => Distributor.NewObject ());
-      distributor.Properties.Find (typeof (Distributor), "Frobbers");
+      Assert.That (
+          () => distributor.Properties.Find (typeof (Distributor), "Frobbers"),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Distributor' does not have or inherit a mapping property with the "
+                  + "short name 'Frobbers'."));
     }
 
     [Test]

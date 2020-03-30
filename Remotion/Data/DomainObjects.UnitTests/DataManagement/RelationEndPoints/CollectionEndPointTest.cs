@@ -109,33 +109,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "End point ID must refer to an end point with cardinality 'Many'.\r\nParameter name: id")]
     public void Initialize_WithNonManyEndPointID_Throws ()
     {
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
-      new CollectionEndPoint (
+      Assert.That (
+          () => new CollectionEndPoint (
           TestableClientTransaction,
           endPointID,
           _collectionManagerMock,
           _lazyLoaderMock,
           _endPointProviderStub,
           _transactionEventSinkStub,
-          _dataManagerFactoryStub);
+          _dataManagerFactoryStub),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "End point ID must refer to an end point with cardinality 'Many'.\r\nParameter name: id"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "End point ID must not refer to an anonymous end point.\r\nParameter name: id")]
     public void Initialize_WithAnonymousEndPointID_Throws ()
     {
       var endPointID = RelationEndPointObjectMother.CreateAnonymousEndPointID ();
-      new CollectionEndPoint (
+      Assert.That (
+          () => new CollectionEndPoint (
           TestableClientTransaction,
           endPointID,
           _collectionManagerMock,
           _lazyLoaderMock,
           _endPointProviderStub,
           _transactionEventSinkStub,
-          _dataManagerFactoryStub);
+          _dataManagerFactoryStub),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "End point ID must not refer to an anonymous end point.\r\nParameter name: id"));
     }
 
     [Test]
@@ -538,9 +544,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (MandatoryRelationNotSetException), ExpectedMessage =
-        "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of domain object "
-        + "'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' contains no items.")]
     public void ValidateMandatory_WithNoItems_Throws ()
     {
       var domainObjectCollectionData = new DomainObjectCollectionData ();
@@ -548,8 +551,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           .Stub (stub => stub.GetData (_endPoint))
           .Return (new ReadOnlyCollectionDataDecorator (domainObjectCollectionData));
       _loadStateMock.Replay ();
-
-      _endPoint.ValidateMandatory ();
+      Assert.That (
+          () => _endPoint.ValidateMandatory (),
+          Throws.InstanceOf<MandatoryRelationNotSetException>()
+              .With.Message.EqualTo (
+                  "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of domain object "
+                  + "'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' contains no items."));
     }
 
     [Test]
@@ -842,16 +849,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Cannot set this end point's value from "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems'; the end points "
-        + "do not have the same end point definition.\r\nParameter name: source")]
     public void SetDataFromSubTransaction_InvalidDefinition ()
     {
       var otherID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
       var source = RelationEndPointObjectMother.CreateCollectionEndPoint (otherID, new DomainObject[0]);
-
-      _endPoint.SetDataFromSubTransaction (source);
+      Assert.That (
+          () => _endPoint.SetDataFromSubTransaction (source),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Cannot set this end point's value from "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems'; the end points "
+                  + "do not have the same end point definition.\r\nParameter name: source"));
     }
 
     [Test]

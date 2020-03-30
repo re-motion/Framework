@@ -44,15 +44,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Cannot sort by property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty' - its property type "
-        + "('Byte[]') does not implement IComparable.")]
     public void Initialization_NoIComparableType ()
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes));
       var propertyDefinition = classDefinition.GetPropertyDefinition (typeof (ClassWithAllDataTypes).FullName + ".BinaryProperty");
-
-      new SortedPropertySpecification (propertyDefinition, SortOrder.Ascending);
+      Assert.That (
+          () => new SortedPropertySpecification (propertyDefinition, SortOrder.Ascending),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "Cannot sort by property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty' - its property type "
+                  + "('Byte[]') does not implement IComparable."));
     }
 
     [Test]

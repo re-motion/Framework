@@ -124,32 +124,34 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException))]
     public void InheritedDerivedMixin_Throws ()
     {
       ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin<DerivedNullTarget>().WithDependency<int>().BuildClassContext();
-
-      new ClassContextBuilder (typeof (double)).AddMixin<NullTarget>().WithDependency<decimal>().BuildClassContext().InheritFrom (new[] { baseContext });
+      Assert.That (
+          () => new ClassContextBuilder (typeof (double)).AddMixin<NullTarget>().WithDependency<decimal>().BuildClassContext().InheritFrom (new[] { baseContext }),
+          Throws.InstanceOf<ConfigurationException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException))]
     public void InheritedSpecializedDerivedGenericMixin_Throws ()
     {
       ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin<DerivedGenericMixin<object>>().WithDependency<int>().BuildClassContext();
-
-      new ClassContextBuilder (typeof (double)).AddMixin (typeof (GenericMixinWithVirtualMethod<>)).WithDependency<decimal>().BuildClassContext().InheritFrom (new[] { baseContext });
+      Assert.That (
+          () => new ClassContextBuilder (typeof (double)).AddMixin (typeof (GenericMixinWithVirtualMethod<>)).WithDependency<decimal>().BuildClassContext().InheritFrom (new[] { baseContext }),
+          Throws.InstanceOf<ConfigurationException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The class System.Double inherits the mixin "
-                                                                           + ".*DerivedGenericMixin\\`1 from class System.String, but it is explicitly configured for the less "
-                                                                           + "specific mixin .*GenericMixinWithVirtualMethod\\`1\\[T\\].", MatchType = MessageMatch.Regex)]
     public void InheritedUnspecializedDerivedGenericMixin_Throws ()
     {
       ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin (typeof (DerivedGenericMixin<>)).WithDependency<int>().BuildClassContext();
-
-      new ClassContextBuilder (typeof (double)).AddMixin (typeof (GenericMixinWithVirtualMethod<>)).WithDependency<decimal>().BuildClassContext().InheritFrom (new[] { baseContext });
+      Assert.That (
+          () => new ClassContextBuilder (typeof (double)).AddMixin (typeof (GenericMixinWithVirtualMethod<>)).WithDependency<decimal>().BuildClassContext().InheritFrom (new[] { baseContext }),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Matches (
+                  "The class System.Double inherits the mixin "
+                  + ".*DerivedGenericMixin\\`1 from class System.String, but it is explicitly configured for the less "
+                  + "specific mixin .*GenericMixinWithVirtualMethod\\`1\\[T\\]."));
     }
 
     [Test]

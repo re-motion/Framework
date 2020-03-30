@@ -34,12 +34,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void EnsureNotInvalid_Discarded ()
     {
       var order = Order.NewObject ();
       order.Delete ();
-      DomainObjectCheckUtility.EnsureNotInvalid (order, ClientTransaction.Current);
+      Assert.That (
+          () => DomainObjectCheckUtility.EnsureNotInvalid (order, ClientTransaction.Current),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
@@ -92,13 +93,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void EnsureNotDeleted_Deleted ()
     {
       var relatedObject = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
       relatedObject.Delete ();
-
-      DomainObjectCheckUtility.EnsureNotDeleted (relatedObject, TestableClientTransaction);
+      Assert.That (
+          () => DomainObjectCheckUtility.EnsureNotDeleted (relatedObject, TestableClientTransaction),
+          Throws.InstanceOf<ObjectDeletedException>());
     }
   }
 }

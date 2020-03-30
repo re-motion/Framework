@@ -41,14 +41,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     }
 
     [Test]
-    [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = "Class type of 'Test' is not resolved.")]
     public void ClassDefinitionWithUnresolvedClassType ()
     {
       var type = typeof (BaseMappingAttributesClass);
       var classDefinition = new ClassDefinitionWithUnresolvedClassType (
           "Test", type, true, null, MockRepository.GenerateStub<IPersistentMixinFinder>(), MockRepository.GenerateStub<IDomainObjectCreator>());
-
-      _validationRule.Validate (classDefinition);
+      Assert.That (
+          () => _validationRule.Validate (classDefinition),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Class type of 'Test' is not resolved."));
     }
 
     [Test]

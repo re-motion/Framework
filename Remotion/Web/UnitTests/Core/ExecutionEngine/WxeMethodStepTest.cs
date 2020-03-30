@@ -40,39 +40,43 @@ public class WxeMethodStepTest: WxeTest
   }
 
   [Test]
-  [ExpectedException (typeof (WxeException))]
   public void CheckCtorArgumentNotInstanceMember()
   {
     Type functionType = typeof (TestFunctionWithInvalidSteps);
     MethodInfo step1 = functionType.GetMethod ("InvalidStep1", BindingFlags.Static | BindingFlags.NonPublic);
-    new WxeMethodStep (_functionWithInvalidSteps, step1);
+    Assert.That (
+        () => new WxeMethodStep (_functionWithInvalidSteps, step1),
+        Throws.InstanceOf<WxeException>());
   }
 
   [Test]
-  [ExpectedException (typeof (WxeException))]
   public void CheckCtorArgumentWrongParameterType()
   {
     Type functionType = typeof (TestFunctionWithInvalidSteps);
     MethodInfo step2 = functionType.GetMethod ("InvalidStep2", BindingFlags.Instance | BindingFlags.NonPublic);
-    new WxeMethodStep (_functionWithInvalidSteps, step2);
+    Assert.That (
+        () => new WxeMethodStep (_functionWithInvalidSteps, step2),
+        Throws.InstanceOf<WxeException>());
   }
 
   [Test]
-  [ExpectedException (typeof (WxeException))]
   public void CheckCtorArgumentTooManyParameters()
   {
     Type functionType = typeof (TestFunctionWithInvalidSteps);
     MethodInfo step3 = functionType.GetMethod ("InvalidStep3", BindingFlags.Instance | BindingFlags.NonPublic);
-    new WxeMethodStep (_functionWithInvalidSteps, step3);
+    Assert.That (
+        () => new WxeMethodStep (_functionWithInvalidSteps, step3),
+        Throws.InstanceOf<WxeException>());
   }
 
   [Test]
-  [ExpectedException (typeof (WxeException))]
   public void CheckCtorArgumentWrongStepListInstance()
   {
     Type functionType = typeof (TestFunction);
     MethodInfo step1 = functionType.GetMethod ("Step1", BindingFlags.Instance | BindingFlags.NonPublic);
-    new WxeMethodStep (_functionWithInvalidSteps, step1);
+    Assert.That (
+        () => new WxeMethodStep (_functionWithInvalidSteps, step1),
+        Throws.InstanceOf<WxeException>());
   }
 
   [Test]
@@ -102,34 +106,40 @@ public class WxeMethodStepTest: WxeTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The delegate must contain a single method.", MatchType = MessageMatch.Contains)]
   public void MethodStepWithDelegateThrowsOnMultiDelegate ()
   {
     Action multiDelegate = _function.PublicStepMethod;
     multiDelegate += _function.PublicStepMethod;
-    new WxeMethodStep (multiDelegate);
+    Assert.That (
+        () => new WxeMethodStep (multiDelegate),
+        Throws.ArgumentException
+            .With.Message.Contains ("The delegate must contain a single method."));
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-      "The delegate's target must be a non-null WxeStepList, but it was 'Remotion.Web.UnitTests.Core.ExecutionEngine.WxeMethodStepTest'. When used " 
-      + "within a WxeFunction, the delegate should be a method of the surrounding WxeFunction, and it must not be a closure.\r\nParameter name: method")]
   public void MethodStepWithDelegateThrowsOnInvalidTarget ()
   {
     Action action = InstanceMethodNotDeclaredOnWxeFunction;
     Assert.That (action.Target, Is.Not.Null.And.Not.AssignableTo<WxeStepList>());
-    new WxeMethodStep (action);
+    Assert.That (
+        () => new WxeMethodStep (action),
+        Throws.ArgumentException
+            .With.Message.EqualTo (
+                "The delegate's target must be a non-null WxeStepList, but it was 'Remotion.Web.UnitTests.Core.ExecutionEngine.WxeMethodStepTest'. When used " 
+                + "within a WxeFunction, the delegate should be a method of the surrounding WxeFunction, and it must not be a closure.\r\nParameter name: method"));
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-      "The delegate's target must be a non-null WxeStepList, but it was 'null'. When used "
-      + "within a WxeFunction, the delegate should be a method of the surrounding WxeFunction, and it must not be a closure.\r\nParameter name: method")]
   public void MethodStepWithDelegateThrowsOnNullTarget ()
   {
     Action action = StaticMethodNotDeclaredOnWxeFunction;
     Assert.That (action.Target, Is.Null);
-    new WxeMethodStep (action);
+    Assert.That (
+        () => new WxeMethodStep (action),
+        Throws.ArgumentException
+            .With.Message.EqualTo (
+                "The delegate's target must be a non-null WxeStepList, but it was 'null'. When used "
+                + "within a WxeFunction, the delegate should be a method of the surrounding WxeFunction, and it must not be a closure.\r\nParameter name: method"));
   }
 
   [Test]

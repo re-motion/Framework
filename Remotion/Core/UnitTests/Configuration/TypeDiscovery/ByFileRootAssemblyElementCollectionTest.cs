@@ -78,17 +78,15 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
     }
 
     [Test]
-    [ExpectedException (
-        typeof (ConfigurationErrorsException), 
-        ExpectedMessage = "Unrecognized attribute 'includeReferencedAssemblies'.", 
-        MatchType = MessageMatch.Contains)]
     public void IncludeReferencedAssemblies_NotValidWithExclude ()
     {
       const string xmlFragment = @"<byFile>
               <exclude filePattern=""Remotion.*.Utilities.dll"" includeReferencedAssemblies=""true""/>
             </byFile>";
-
-      DeserializeFromXmlFragment (xmlFragment);
+      Assert.That (
+          () => DeserializeFromXmlFragment (xmlFragment),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.Contains ("Unrecognized attribute 'includeReferencedAssemblies'."));
     }
 
     [Test]

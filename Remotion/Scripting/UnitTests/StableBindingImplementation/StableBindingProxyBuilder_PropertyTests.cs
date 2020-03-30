@@ -249,11 +249,14 @@ namespace Remotion.Scripting.UnitTests.StableBindingImplementation
 
 
     [Test]
-    [ExpectedException (typeof (MissingMemberException), ExpectedMessage = "'ProxiedChild' object has no attribute 'PropertyAmbigous'")]
     public void AmbigousExplicitInterfaceProperties_Without_Proxy ()
     {
       var proxied = new ProxiedChild ("PC");
-      ExecuteScriptAccessPropertyAmbigous(proxied);
+      Assert.That (
+          () => ExecuteScriptAccessPropertyAmbigous(proxied),
+          Throws.InstanceOf<MissingMemberException>()
+              .With.Message.EqualTo (
+                  "'ProxiedChild' object has no attribute 'PropertyAmbigous'"));
     }
 
     private void ExecuteScriptAccessPropertyAmbigous (Object obj)

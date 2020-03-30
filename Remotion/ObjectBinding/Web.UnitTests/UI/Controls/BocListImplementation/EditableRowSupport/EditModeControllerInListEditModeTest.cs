@@ -67,13 +67,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), 
-        ExpectedMessage = "Cannot initialize list edit mode: The BocList 'BocList' does not have a Value.")]
     public void SwitchListIntoEditModeWithValueNull ()
     {
       Invoker.InitRecursive();
       EditModeHost.Value = null;
-      Controller.SwitchListIntoEditMode (Columns);
+      Assert.That (
+          () => Controller.SwitchListIntoEditMode (Columns),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Cannot initialize list edit mode: The BocList 'BocList' does not have a Value."));
     }
 
     [Test]
@@ -502,16 +503,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), 
-        ExpectedMessage = "Cannot restore edit mode: The BocList 'BocList' does not have a Value.")]
     public void EnsureEditModeRestoredWithValueNull_ThrowsInvalidOperationException ()
     {
       Assert.That (Controller.IsListEditModeActive, Is.False);
       ControllerInvoker.LoadControlState (CreateControlState (null, EditMode.ListEditMode, new List<string> { "0", "1", "2", "3", "4" }, false));
       Assert.That (Controller.IsListEditModeActive, Is.True);
       EditModeHost.Value = null;
-
-      Controller.EnsureEditModeRestored (Columns);
+      Assert.That (
+          () => Controller.EnsureEditModeRestored (Columns),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Cannot restore edit mode: The BocList 'BocList' does not have a Value."));
     }
 
 

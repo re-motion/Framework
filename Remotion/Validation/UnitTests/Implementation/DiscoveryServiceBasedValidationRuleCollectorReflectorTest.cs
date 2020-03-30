@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -168,8 +168,6 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "No validated type could be resolved for collector 'Remotion.Validation.UnitTests.TestDomain.Collectors.CustomerValidationRuleCollector1'.")]
     public void GetValidationRuleCollectors_NoValidatedTypeFound_ExceptionIsThrown ()
     {
       _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IValidationRuleCollector), true))
@@ -179,8 +177,11 @@ namespace Remotion.Validation.UnitTests.Implementation
       validatedTypeResolverStub.Stub (stub => stub.GetValidatedType (typeof (CustomerValidationRuleCollector1))).Return (null);
 
       var typeCollectorProvider = DiscoveryServiceBasedValidationRuleCollectorReflector.Create (_typeDiscoveryServiceStub, validatedTypeResolverStub);
-
-      typeCollectorProvider.GetCollectorsForType (typeof (Customer));
+      Assert.That (
+          () => typeCollectorProvider.GetCollectorsForType (typeof (Customer)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "No validated type could be resolved for collector 'Remotion.Validation.UnitTests.TestDomain.Collectors.CustomerValidationRuleCollector1'."));
     }
   }
 }

@@ -82,14 +82,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The type 'Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass' is not a bindable object implementation. "
-        + "It must either have a mixin derived from BindableObjectMixinBase<T> applied "
-        + "or implement the IBusinessObject interface and apply the BindableObjectBaseClassAttribute.\r\nParameter name: type")]
     public void GetBusinessObjectClass_WithTypeNotUsingBindableObjectMixin ()
     {
       _dataSource.Type = typeof (StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass);
-      Dev.Null = _dataSource.BusinessObjectClass;
+      Assert.That (
+          () => Dev.Null = _dataSource.BusinessObjectClass,
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The type 'Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass' is not a bindable object implementation. "
+                  + "It must either have a mixin derived from BindableObjectMixinBase<T> applied "
+                  + "or implement the IBusinessObject interface and apply the BindableObjectBaseClassAttribute.\r\nParameter name: type"));
     }
   }
 }

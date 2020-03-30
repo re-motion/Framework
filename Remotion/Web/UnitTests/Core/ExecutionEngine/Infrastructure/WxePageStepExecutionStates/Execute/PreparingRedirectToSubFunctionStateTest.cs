@@ -137,13 +137,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The 'PreparingRedirectToSubFunctionState' type only supports WxePermaUrlOptions with the UsePermaUrl-flag set to true.\r\n"
-        + "Parameter name: parameters",
-        MatchType = MessageMatch.Contains)]
     public void Initialize_WithoutPermaUrl ()
     {
-      CreateExecutionState (WxePermaUrlOptions.Null);
+      Assert.That (
+          () => CreateExecutionState (WxePermaUrlOptions.Null),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "The 'PreparingRedirectToSubFunctionState' type only supports WxePermaUrlOptions with the UsePermaUrl-flag set to true.\r\n"
+                  + "Parameter name: parameters"));
     }
 
     private PreparingRedirectToSubFunctionState CreateExecutionState (WxePermaUrlOptions permaUrlOptions)

@@ -62,13 +62,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
-        "The column 'other column' is not included in the query result and is not expected for this operation. The included and expected columns are: "
-        + "Testcolumn 2, Testcolumn 1.")]
     public void GetOrdinal_IndexOutOfRange_ThrowsException ()
     {
       var otherColumn = ColumnDefinitionObjectMother.CreateColumn ("other column");
-      _dictionaryBasedColumnOrdinalProvider.GetOrdinal (otherColumn, _dataReaderStub);
+      Assert.That (
+          () => _dictionaryBasedColumnOrdinalProvider.GetOrdinal (otherColumn, _dataReaderStub),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo (
+                  "The column 'other column' is not included in the query result and is not expected for this operation. The included and expected columns are: "
+                  + "Testcolumn 2, Testcolumn 1."));
     }
   }
 }

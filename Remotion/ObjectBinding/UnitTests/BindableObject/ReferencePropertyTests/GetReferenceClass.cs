@@ -120,28 +120,31 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The 'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassFromOtherBusinessObjectImplementation' "
-        + "type does not use the 'Remotion.ObjectBinding.BindableObject' implementation of 'Remotion.ObjectBinding.IBusinessObject' and there is no "
-        + "'Remotion.ObjectBinding.IBusinessObjectClassService' registered with the 'Remotion.ObjectBinding.BusinessObjectProvider' associated with this type.")]
     public void UseBusinessObjectClassService_WithoutService ()
     {
       IBusinessObjectReferenceProperty property = CreateProperty ("Scalar", typeof (ClassFromOtherBusinessObjectImplementation));
-
-      Dev.Null = property.ReferenceClass;
+      Assert.That (
+          () => Dev.Null = property.ReferenceClass,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The 'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassFromOtherBusinessObjectImplementation' "
+                  + "type does not use the 'Remotion.ObjectBinding.BindableObject' implementation of 'Remotion.ObjectBinding.IBusinessObject' and there is no "
+                  + "'Remotion.ObjectBinding.IBusinessObjectClassService' registered with the 'Remotion.ObjectBinding.BusinessObjectProvider' associated with this type."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The GetBusinessObjectClass method of 'Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectClassService', registered "
-        + "with the 'Remotion.ObjectBinding.BindableObject.BindableObjectProvider', failed to return an 'Remotion.ObjectBinding.IBusinessObjectClass' "
-        + "for type 'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassFromOtherBusinessObjectImplementation'.")]
     public void UseBusinessObjectClassService_WithServiceReturningNull ()
     {
       IBusinessObjectReferenceProperty property = CreateProperty ("Scalar", typeof (ClassFromOtherBusinessObjectImplementation));
 
       _bindableObjectProvider.AddService (typeof (IBusinessObjectClassService), new StubBusinessObjectClassService());
-      Dev.Null = property.ReferenceClass;
+      Assert.That (
+          () => Dev.Null = property.ReferenceClass,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The GetBusinessObjectClass method of 'Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectClassService', registered "
+                  + "with the 'Remotion.ObjectBinding.BindableObject.BindableObjectProvider', failed to return an 'Remotion.ObjectBinding.IBusinessObjectClass' "
+                  + "for type 'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassFromOtherBusinessObjectImplementation'."));
     }
 
     private ReferenceProperty CreateProperty (string propertyName, Type propertyType)

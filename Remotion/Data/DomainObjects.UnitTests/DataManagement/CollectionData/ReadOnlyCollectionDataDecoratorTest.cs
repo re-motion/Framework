@@ -130,45 +130,61 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot clear a read-only collection.")]
     public void Clear_Throws ()
     {
-      _readOnlyDecorator.Clear();
+      Assert.That (
+          () => _readOnlyDecorator.Clear(),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Cannot clear a read-only collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot insert an item into a read-only collection.")]
     public void Insert_Throws ()
     {
-      _readOnlyDecorator.Insert (0, _order5);
+      Assert.That (
+          () => _readOnlyDecorator.Insert (0, _order5),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot insert an item into a read-only collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot remove an item from a read-only collection.")]
     public void Remove_Throws ()
     {
-      _readOnlyDecorator.Remove (_order1);
+      Assert.That (
+          () => _readOnlyDecorator.Remove (_order1),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot remove an item from a read-only collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot remove an item from a read-only collection.")]
     public void Remove_ID_Throws ()
     {
-      _readOnlyDecorator.Remove (_order1.ID);
+      Assert.That (
+          () => _readOnlyDecorator.Remove (_order1.ID),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot remove an item from a read-only collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot replace an item in a read-only collection.")]
     public void Replace_Throws ()
     {
-      _readOnlyDecorator.Replace (1, _order1);
+      Assert.That (
+          () => _readOnlyDecorator.Replace (1, _order1),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot replace an item in a read-only collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot sort a read-only collection.")]
     public void Sort_Throws ()
     {
-      _readOnlyDecorator.Sort ((one, two) => 0);
+      Assert.That (
+          () => _readOnlyDecorator.Sort ((one, two) => 0),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Cannot sort a read-only collection."));
     }
 
     [Test]

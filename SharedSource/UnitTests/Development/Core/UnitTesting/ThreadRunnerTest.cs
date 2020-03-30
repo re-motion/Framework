@@ -155,11 +155,13 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "xy")]
     public void Run_WithException ()
     {
       var exception = new InvalidOperationException ("xy");
-      ThreadRunner.Run (() => { throw exception; });
+      Assert.That (
+          () => ThreadRunner.Run (() => { throw exception; }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("xy"));
     }
 
     [Test]

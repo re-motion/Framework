@@ -73,7 +73,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Redirect to '/resumeUrl.wxe' failed.")]
     public void ExecuteSubFunction_WithFailedRedirect ()
     {
       using (MockRepository.Ordered())
@@ -82,8 +81,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       }
 
       MockRepository.ReplayAll();
-
-      _executionState.ExecuteSubFunction (WxeContext);
+      Assert.That (
+          () => _executionState.ExecuteSubFunction (WxeContext),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Redirect to '/resumeUrl.wxe' failed."));
     }
   }
 }

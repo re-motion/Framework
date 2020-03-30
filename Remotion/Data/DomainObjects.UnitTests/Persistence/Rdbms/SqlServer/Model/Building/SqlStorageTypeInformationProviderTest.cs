@@ -555,12 +555,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Type 'System.Char' is not supported by this storage provider.")]
     public void GetStorageType_PropertyDefinition_WithNotSupportedType ()
     {
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("Name", typeof (Char));
-
-      _storageTypeInformationProvider.GetStorageType (propertyDefinition, false);
+      Assert.That (
+          () => _storageTypeInformationProvider.GetStorageType (propertyDefinition, false),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Type 'System.Char' is not supported by this storage provider."));
     }
 
     [Test]
@@ -596,27 +598,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Type 'System.Char' is not supported by this storage provider.")]
     public void GetStorageType_Type_UnsupportedType_NotNullable ()
     {
-      _storageTypeInformationProvider.GetStorageType (typeof (Char));
+      Assert.That (
+          () => _storageTypeInformationProvider.GetStorageType (typeof (Char)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Type 'System.Char' is not supported by this storage provider."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Type 'System.Nullable`1[System.Char]' is not supported by this storage provider.")]
     public void GetStorageType_Type_UnsupportedType_Nullable ()
     {
-      _storageTypeInformationProvider.GetStorageType (typeof (Char?));
+      Assert.That (
+          () => _storageTypeInformationProvider.GetStorageType (typeof (Char?)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Type 'System.Nullable`1[System.Char]' is not supported by this storage provider."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Type 'Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Model.Building.SqlStorageTypeInformationProviderTest+UnsupportedEnum' "
-        + "is not supported by this storage provider.")]
     public void GetStorageType_Type_UnsupportedType_EnumWithUnsupportedUnderlyingType ()
     {
-      _storageTypeInformationProvider.GetStorageType (typeof (UnsupportedEnum));
+      Assert.That (
+          () => _storageTypeInformationProvider.GetStorageType (typeof (UnsupportedEnum)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Type 'Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Model.Building.SqlStorageTypeInformationProviderTest+UnsupportedEnum' "
+                  + "is not supported by this storage provider."));
     }
 
     [Test]

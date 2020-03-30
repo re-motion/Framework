@@ -197,12 +197,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void SetRelatedObjectOfDeletedObject ()
     {
       _orderTicket.Delete ();
-
-      _orderTicket.Order = _order;
+      Assert.That (
+          () => _orderTicket.Order = _order,
+          Throws.InstanceOf<ObjectDeletedException>());
     }
 
     [Test]
@@ -217,12 +217,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void ReassignDeletedObject ()
     {
       _orderTicket.Delete ();
-
-      _order.OrderTicket = _orderTicket;
+      Assert.That (
+          () => _order.OrderTicket = _orderTicket,
+          Throws.InstanceOf<ObjectDeletedException>());
     }
 
     private SequenceEventReceiver CreateEventReceiver ()

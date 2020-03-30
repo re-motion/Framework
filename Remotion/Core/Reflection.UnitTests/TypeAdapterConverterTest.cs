@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -76,11 +76,12 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Cannot convert value from type 'System.String' to type 'Remotion.Reflection.TypeAdapter'.")]
     public void ConvertFrom_InvalidType ()
     {
-      _converter.ConvertFrom (null, null, "string");
+      Assert.That (
+          () => _converter.ConvertFrom (null, null, "string"),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Cannot convert value from type 'System.String' to type 'Remotion.Reflection.TypeAdapter'."));
     }
 
     [Test]
@@ -98,20 +99,23 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Cannot convert values to type 'System.String'. This converter only supports converting to type 'System.Type'.")]
     public void ConvertTo_InvalidType ()
     {
-      _converter.ConvertTo (null, null, null, typeof (string));
+      Assert.That (
+          () => _converter.ConvertTo (null, null, null, typeof (string)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Cannot convert values to type 'System.String'. This converter only supports converting to type 'System.Type'."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Cannot convert values of type 'System.String' to type 'System.Type'. "
-        + "This converter only supports values of type 'Remotion.Reflection.TypeAdapter'.")]
     public void ConvertTo_InvalidValue ()
     {
-      _converter.ConvertTo (null, null, "string", typeof (Type));
+      Assert.That (
+          () => _converter.ConvertTo (null, null, "string", typeof (Type)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot convert values of type 'System.String' to type 'System.Type'. "
+                  + "This converter only supports values of type 'Remotion.Reflection.TypeAdapter'."));
     }
   }
 }

@@ -231,15 +231,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = 
-        "Multi-ID lookups can only be performed for ObjectIDs from this storage provider.")]
     public void CreateForSortedMultiIDLookup_DifferentStorageProvider ()
     {
       _objectReaderFactoryStrictMock
           .Stub (mock => mock.CreateDataContainerReader (Arg<IRdbmsStorageEntityDefinition>.Is.Anything, Arg<IEnumerable<ColumnDefinition>>.Is.Anything))
           .Return (_dataContainerReader1Stub);
-
-      _factory.CreateForSortedMultiIDLookup (new[] { DomainObjectIDs.Official1 });
+      Assert.That (
+          () => _factory.CreateForSortedMultiIDLookup (new[] { DomainObjectIDs.Official1 }),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Multi-ID lookups can only be performed for ObjectIDs from this storage provider."));
     }
 
     [Test]
@@ -319,15 +319,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-            "Multi-ID lookups can only be performed for ObjectIDs from this storage provider.")]
     public void CreateForMultiTimestampLookup_DifferentStorageProvider ()
     {
       _objectReaderFactoryStrictMock
           .Stub (mock => mock.CreateTimestampReader (Arg<IRdbmsStorageEntityDefinition>.Is.Anything, Arg<IEnumerable<ColumnDefinition>>.Is.Anything))
           .Return (_timestampReader1Stub);
-      
-      _factory.CreateForMultiTimestampLookup (new[] { DomainObjectIDs.Official1 });
+      Assert.That (
+          () => _factory.CreateForMultiTimestampLookup (new[] { DomainObjectIDs.Official1 }),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Multi-ID lookups can only be performed for ObjectIDs from this storage provider."));
     }
 
     private ObjectID CreateObjectID (IStorageEntityDefinition entityDefinition)

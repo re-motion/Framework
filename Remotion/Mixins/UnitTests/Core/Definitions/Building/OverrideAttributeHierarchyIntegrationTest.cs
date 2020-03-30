@@ -70,10 +70,12 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Mixin .* overrides method .* twice", MatchType = MessageMatch.Regex)]
     public void DerivedWithNewAdditionalOverrides ()
     {
-      DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing), typeof (DerivedNewWithAdditionalOverrideAttributes));
+      Assert.That (
+          () => DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing), typeof (DerivedNewWithAdditionalOverrideAttributes)),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Matches ("Mixin .* overrides method .* twice"));
     }
 
     [Test]

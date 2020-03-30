@@ -542,8 +542,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "GetRelationEndPointWithLazyLoad cannot be called for anonymous end points.\r\nParameter name: endPointID")]
     public void GetRelationEndPointWithLazyLoad_DoesNotSupportAnonymousEndPoints ()
     {
       var client = DomainObjectIDs.Client2.GetObject<Client> ();
@@ -555,7 +553,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (parentClient, Is.Not.Null);
 
       var anonymousEndPointDefinition = unidirectionalEndPoint.Definition.GetOppositeEndPointDefinition ();
-      _relationEndPointManager.GetRelationEndPointWithLazyLoad (RelationEndPointID.Create (parentClient.ID, anonymousEndPointDefinition));
+      Assert.That (
+          () => _relationEndPointManager.GetRelationEndPointWithLazyLoad (RelationEndPointID.Create (parentClient.ID, anonymousEndPointDefinition)),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("GetRelationEndPointWithLazyLoad cannot be called for anonymous end points.\r\nParameter name: endPointID"));
     }
 
     [Test]
@@ -716,8 +717,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "GetOrCreateVirtualEndPoint cannot be called for anonymous end points.\r\nParameter name: endPointID")]
     public void GetOrCreateVirtualEndPoint_DoesNotSupportAnonymousEndPoints ()
     {
       var client = DomainObjectIDs.Client2.GetObject<Client> ();
@@ -729,16 +728,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (parentClient, Is.Not.Null);
 
       var anonymousEndPointDefinition = unidirectionalEndPoint.Definition.GetOppositeEndPointDefinition ();
-      _relationEndPointManager.GetOrCreateVirtualEndPoint (RelationEndPointID.Create (parentClient.ID, anonymousEndPointDefinition));
+      Assert.That (
+          () => _relationEndPointManager.GetOrCreateVirtualEndPoint (RelationEndPointID.Create (parentClient.ID, anonymousEndPointDefinition)),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("GetOrCreateVirtualEndPoint cannot be called for anonymous end points.\r\nParameter name: endPointID"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "GetOrCreateVirtualEndPoint cannot be called for non-virtual end points.\r\nParameter name: endPointID")]
     public void GetOrCreateVirtualEndPoint_NonVirtualEndPoint ()
     {
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.OrderItem1, typeof (OrderItem), "Order");
-      _relationEndPointManager.GetOrCreateVirtualEndPoint (endPointID);
+      Assert.That (
+          () => _relationEndPointManager.GetOrCreateVirtualEndPoint (endPointID),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("GetOrCreateVirtualEndPoint cannot be called for non-virtual end points.\r\nParameter name: endPointID"));
     }
 
     [Test]

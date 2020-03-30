@@ -26,14 +26,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
   public class Common : TenantTestBase
   {
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException))]
     public void UniqueIdentifier_SameIdentifierTwice ()
     {
       string tenantUniqueIdentifier = Guid.NewGuid ().ToString ();
       TestHelper.CreateTenant ("TestTenant1", tenantUniqueIdentifier);
       TestHelper.CreateTenant ("TestTenant2", tenantUniqueIdentifier);
-
-      ClientTransactionScope.CurrentTransaction.Commit();
+      Assert.That (
+          () => ClientTransactionScope.CurrentTransaction.Commit(),
+          Throws.InstanceOf<RdbmsProviderException>());
     }
   }
 }

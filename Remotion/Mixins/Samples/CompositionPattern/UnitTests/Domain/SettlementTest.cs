@@ -83,14 +83,15 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot commit tenant-bound object .* without a tenant.", 
-        MatchType = MessageMatch.Regex)]
     public void Commit_WithoutTenant ()
     {
       var instance = Settlement.NewObject ();
       Assert.That (instance.Tenant, Is.Null);
-
-      Commit (instance);
+      Assert.That (
+          () => Commit (instance),
+          Throws.InvalidOperationException
+              .With.Message.Matches (
+                  "Cannot commit tenant-bound object .* without a tenant."));
     }
 
     [Test]

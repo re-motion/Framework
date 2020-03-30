@@ -101,17 +101,19 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     }
 
     [Test]
-    [ExpectedException (typeof (AmbiguousMatchException))]
     public void TestPublicInvokeAmbiguous()
     {
-      PrivateInvoke.InvokePublicMethod (_twm, "f", null);
+      Assert.That (
+          () => PrivateInvoke.InvokePublicMethod (_twm, "f", null),
+          Throws.InstanceOf<AmbiguousMatchException>());
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException))]
     public void TestPublicInvokeMethodNotFound()
     {
-      PrivateInvoke.InvokePublicMethod (_twm, "f", 1.0);
+      Assert.That (
+          () => PrivateInvoke.InvokePublicMethod (_twm, "f", 1.0),
+          Throws.InstanceOf<MissingMethodException>());
     }
 	}
 }

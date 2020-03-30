@@ -149,7 +149,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Compound-column properties are not supported by this LINQ provider.")]
     public void ResolveProperty_CompoundColumn ()
     {
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo();
@@ -161,8 +160,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _rdbmsStoragePropertyDefinitionStub
           .Stub (stub => stub.GetColumns())
           .Return (new[] { ColumnDefinitionObjectMother.IDColumn, ColumnDefinitionObjectMother.ClassIDColumn });
-
-      _storageSpecificExpressionResolver.ResolveProperty (entityExpression, propertyDefinition);
+      Assert.That (
+          () => _storageSpecificExpressionResolver.ResolveProperty (entityExpression, propertyDefinition),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Compound-column properties are not supported by this LINQ provider."));
     }
 
     [Test]

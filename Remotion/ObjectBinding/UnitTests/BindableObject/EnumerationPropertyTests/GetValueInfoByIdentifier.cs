@@ -78,12 +78,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     }
 
     [Test]
-    [ExpectedException (typeof (ParseException))]
     public void InvalidIdentifier ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
-
-      property.GetValueInfoByIdentifier ("Invalid", null);
+      Assert.That (
+          () => property.GetValueInfoByIdentifier ("Invalid", null),
+          Throws.InstanceOf<ParseException>());
     }
 
     [Test]

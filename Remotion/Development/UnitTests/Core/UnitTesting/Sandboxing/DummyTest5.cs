@@ -37,11 +37,11 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
     {
       Assert.That (1, Is.EqualTo (0));
     }
-
-    [ExpectedException(typeof(TestFailedException))]
     public void TestExpectedExceptionSucceeded ()
     {
-      throw new TestFailedException (typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException ());
+      Assert.That (
+          () => { throw new TestFailedException (typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException ()); },
+          Throws.InstanceOf<TestFailedException>());
     }
 
     [ExpectedException(typeof(TestFailedException))]

@@ -26,23 +26,27 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
   public class Common : TestBase
   {
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "The combination of the flags in the 'NumberStyle' property is invalid.")]
     public void Validate_WithInvalidNumberStyle ()
     {
       Validator.DataType = NumericValidationDataType.Double;
       Validator.NumberStyle = NumberStyles.HexNumber;
       TextBox.Text = "1";
-      Validator.Validate();
+      Assert.That (
+          () => Validator.Validate(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The combination of the flags in the 'NumberStyle' property is invalid."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The value '-1' of the 'DataType' property is not a valid value.")]
     public void Validate_WithInvalidDataType ()
     {
       PrivateInvoke.SetNonPublicField (Validator, "_dataType", -1);
       TextBox.Text = "a";
-      Validator.Validate ();
+      Assert.That (
+          () => Validator.Validate (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The value '-1' of the 'DataType' property is not a valid value."));
     }
   }
 }

@@ -131,11 +131,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The data is already complete.")]
     public void MarkDataComplete_ThrowsException ()
     {
       var items = new DomainObject[] { _relatedObject };
-      _loadState.MarkDataComplete (_collectionEndPointMock, items, dataManager => Assert.Fail ("Must not be called"));
+      Assert.That (
+          () => _loadState.MarkDataComplete (_collectionEndPointMock, items, dataManager => Assert.Fail ("Must not be called")),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The data is already complete."));
     }
 
     [Test]
@@ -245,35 +247,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The collection of relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of domain object "
-        + "'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' cannot be replaced because the opposite object property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' of domain object "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is out of sync. To make this change, synchronize the two properties by calling the "
-        + "'BidirectionalRelationSyncService.Synchronize' method on the 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property.")]
     public void CreateSetCollectionCommand_WithUnsyncedOpposites ()
     {
       AddUnsynchronizedOppositeEndPoint (_loadState, _relatedEndPointStub);
 
       var newCollection = new OrderCollection ();
-
-      _loadState.CreateSetCollectionCommand (_collectionEndPointMock, newCollection, _collectionManagerStub);
+      Assert.That (
+          () => _loadState.CreateSetCollectionCommand (_collectionEndPointMock, newCollection, _collectionManagerStub),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The collection of relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of domain object "
+                  + "'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' cannot be replaced because the opposite object property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' of domain object "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is out of sync. To make this change, synchronize the two properties by calling the "
+                  + "'BidirectionalRelationSyncService.Synchronize' method on the 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The collection of relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of domain object "
-        + "'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' cannot be replaced because the relation property is out of sync with the "
-        + "opposite object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' of domain object "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'. To make this change, synchronize the two properties by calling the "
-        + "'BidirectionalRelationSyncService.Synchronize' method on the 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property.")]
     public void CreateSetCollectionCommand_WithItemsWithoutEndPoints ()
     {
       _dataManagerMock.Stub (stub => stub.OriginalItemsWithoutEndPoints).Return (new[] { _relatedObject });
 
       var newCollection = new OrderCollection ();
-
-      _loadState.CreateSetCollectionCommand (_collectionEndPointMock, newCollection, _collectionManagerStub);
+      Assert.That (
+          () => _loadState.CreateSetCollectionCommand (_collectionEndPointMock, newCollection, _collectionManagerStub),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The collection of relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of domain object "
+                  + "'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' cannot be replaced because the relation property is out of sync with the "
+                  + "opposite object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' of domain object "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'. To make this change, synchronize the two properties by calling the "
+                  + "'BidirectionalRelationSyncService.Synchronize' method on the 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property."));
     }
 
     [Test]
@@ -301,31 +305,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be replaced or removed from collection property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
-        + "because its object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is out of sync with the collection property. "
-        + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property.")]
     public void CreateRemoveCommand_RemoveItemWithUnsyncedOpposite ()
     {
       AddUnsynchronizedOppositeEndPoint (_loadState, _relatedEndPointStub);
-
-      _loadState.CreateRemoveCommand (_collectionEndPointMock, _relatedObject);
+      Assert.That (
+          () => _loadState.CreateRemoveCommand (_collectionEndPointMock, _relatedObject),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be replaced or removed from collection property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
+                  + "because its object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is out of sync with the collection property. "
+                  + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be replaced or removed from collection property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
-        + "because the property is out of sync with the opposite object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer'. "
-        + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property.")]
     public void CreateRemoveCommand_RemoveItemWithoutEndPoint ()
     {
       _dataManagerMock.Stub (stub => stub.ContainsOriginalItemWithoutEndPoint (_relatedObject)).Return (true);
-
-      _loadState.CreateRemoveCommand (_collectionEndPointMock, _relatedObject);
+      Assert.That (
+          () => _loadState.CreateRemoveCommand (_collectionEndPointMock, _relatedObject),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be replaced or removed from collection property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
+                  + "because the property is out of sync with the opposite object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer'. "
+                  + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property."));
     }
 
     [Test]
@@ -350,31 +356,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' cannot be deleted because the opposite object property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' of domain object "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is out of sync with the collection property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders'. To make this change, synchronize the two properties by calling the "
-        + "'BidirectionalRelationSyncService.Synchronize' method on the 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property.")]
     public void CreateDeleteCommand_WithUnsyncedOpposites ()
     {
       AddUnsynchronizedOppositeEndPoint (_loadState, _relatedEndPointStub);
-
-      _loadState.CreateDeleteCommand (_collectionEndPointMock);
+      Assert.That (
+          () => _loadState.CreateDeleteCommand (_collectionEndPointMock),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' cannot be deleted because the opposite object property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' of domain object "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is out of sync with the collection property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders'. To make this change, synchronize the two properties by calling the "
+                  + "'BidirectionalRelationSyncService.Synchronize' method on the 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' cannot be deleted because its collection property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' is out of sync with the opposite object property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' of domain object "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'. To make this change, synchronize the two properties by calling the "
-        + "'BidirectionalRelationSyncService.Synchronize' method on the 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property.")]
     public void CreateDeleteCommand_WithItemsWithoutEndPoints ()
     {
       _dataManagerMock.Stub (stub => stub.OriginalItemsWithoutEndPoints).Return (new[] { _relatedObject });
-
-      _loadState.CreateDeleteCommand (_collectionEndPointMock);
+      Assert.That (
+          () => _loadState.CreateDeleteCommand (_collectionEndPointMock),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' cannot be deleted because its collection property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' is out of sync with the opposite object property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' of domain object "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'. To make this change, synchronize the two properties by calling the "
+                  + "'BidirectionalRelationSyncService.Synchronize' method on the 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property."));
     }
 
     [Test]
@@ -403,31 +411,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be added to collection property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
-        + "because its object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is out of sync with the collection property. "
-        + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property.")]
     public void CreateInsertCommand_ItemWithUnsyncedOpposite ()
     {
       AddUnsynchronizedOppositeEndPoint (_loadState, _relatedEndPointStub);
-
-      _loadState.CreateInsertCommand (_collectionEndPointMock, _relatedObject, 0);
+      Assert.That (
+          () => _loadState.CreateInsertCommand (_collectionEndPointMock, _relatedObject, 0),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be added to collection property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
+                  + "because its object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is out of sync with the collection property. "
+                  + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be added to collection property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
-        + "because the property is out of sync with the opposite object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer'. "
-        + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property.")]
     public void CreateInsertCommand_ItemWithoutEndPoint ()
     {
       _dataManagerMock.Stub (stub => stub.ContainsOriginalItemWithoutEndPoint (_relatedObject)).Return (true);
-
-      _loadState.CreateInsertCommand (_collectionEndPointMock, _relatedObject, 0);
+      Assert.That (
+          () => _loadState.CreateInsertCommand (_collectionEndPointMock, _relatedObject, 0),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be added to collection property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
+                  + "because the property is out of sync with the opposite object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer'. "
+                  + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property."));
     }
 
     [Test]
@@ -455,32 +465,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be added to collection property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
-        + "because its object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is out of sync with the collection property. "
-        + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property.")]
     public void CreateAddCommand_ItemWithUnsyncedOpposite ()
     {
       AddUnsynchronizedOppositeEndPoint (_loadState, _relatedEndPointStub);
       _dataManagerMock.Stub (stub => stub.CollectionData).Return (new DomainObjectCollectionData ());
-      _loadState.CreateAddCommand (_collectionEndPointMock, _relatedObject);
+      Assert.That (
+          () => _loadState.CreateAddCommand (_collectionEndPointMock, _relatedObject),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be added to collection property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
+                  + "because its object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is out of sync with the collection property. "
+                  + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be added to collection property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
-        + "because the property is out of sync with the opposite object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer'. "
-        + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property.")]
     public void CreateAddCommand_ItemWithoutEndPoint ()
     {
       _dataManagerMock.Stub (stub => stub.ContainsOriginalItemWithoutEndPoint (_relatedObject)).Return (true);
 
       _dataManagerMock.Stub (stub => stub.CollectionData).Return (new DomainObjectCollectionData ());
-      _loadState.CreateAddCommand (_collectionEndPointMock, _relatedObject);
+      Assert.That (
+          () => _loadState.CreateAddCommand (_collectionEndPointMock, _relatedObject),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be added to collection property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
+                  + "because the property is out of sync with the opposite object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer'. "
+                  + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property."));
     }
 
     [Test]
@@ -529,12 +543,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be replaced or removed from collection property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
-        + "because its object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is out of sync with the collection property. "
-        + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property.")]
     public void CreateReplaceCommand_ItemWithUnsyncedOpposite ()
     {
       AddUnsynchronizedOppositeEndPoint (_loadState, _relatedEndPointStub);
@@ -544,17 +552,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManagerMock
         .Stub (stub => stub.CollectionData)
         .Return (new DomainObjectCollectionData (new[] { _relatedObject }));
-
-      _loadState.CreateReplaceCommand (_collectionEndPointMock, 0, newRelatedObject);
+      Assert.That (
+          () => _loadState.CreateReplaceCommand (_collectionEndPointMock, 0, newRelatedObject),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be replaced or removed from collection property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
+                  + "because its object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is out of sync with the collection property. "
+                  + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be replaced or removed from collection property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
-        + "because the property is out of sync with the opposite object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer'. "
-        + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property.")]
     public void CreateReplaceCommand_ItemWithoutEndPoint ()
     {
       var newRelatedObject = DomainObjectMother.CreateFakeObject<Order> ();
@@ -563,17 +572,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManagerMock
         .Stub (stub => stub.CollectionData)
         .Return (new DomainObjectCollectionData (new[] { _relatedObject }));
-
-      _loadState.CreateReplaceCommand (_collectionEndPointMock, 0, newRelatedObject);
+      Assert.That (
+          () => _loadState.CreateReplaceCommand (_collectionEndPointMock, 0, newRelatedObject),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be replaced or removed from collection property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
+                  + "because the property is out of sync with the opposite object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer'. "
+                  + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be added to collection property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
-        + "because its object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is out of sync with the collection property. "
-        + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property.")]
     public void CreateReplaceCommand_WithItemWithUnsyncedOpposite ()
     {
       AddUnsynchronizedOppositeEndPoint (_loadState, _relatedEndPointStub);
@@ -581,16 +591,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManagerMock
         .Stub (stub => stub.CollectionData)
         .Return (new DomainObjectCollectionData (new[] { DomainObjectMother.CreateFakeObject<Order> () }));
-      _loadState.CreateReplaceCommand (_collectionEndPointMock, 0, _relatedObject);
+      Assert.That (
+          () => _loadState.CreateReplaceCommand (_collectionEndPointMock, 0, _relatedObject),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be added to collection property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
+                  + "because its object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is out of sync with the collection property. "
+                  + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property."));
     }
     
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be added to collection property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
-        + "because the property is out of sync with the opposite object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer'. "
-        + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property.")]
     public void CreateReplaceCommand_WithItemWithoutEndPoint ()
     {
       _dataManagerMock.Stub (stub => stub.ContainsOriginalItemWithoutEndPoint (_relatedObject)).Return (true);
@@ -598,7 +610,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManagerMock
         .Stub (stub => stub.CollectionData)
         .Return (new DomainObjectCollectionData (new[] { DomainObjectMother.CreateFakeObject<Order> () }));
-      _loadState.CreateReplaceCommand (_collectionEndPointMock, 0, _relatedObject);
+      Assert.That (
+          () => _loadState.CreateReplaceCommand (_collectionEndPointMock, 0, _relatedObject),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be added to collection property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' "
+                  + "because the property is out of sync with the opposite object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer'. "
+                  + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' property."));
     }
 
     [Test]

@@ -25,102 +25,118 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
   {
     //ColumnNamesAreUniqueWithinInheritanceTreeValidationRule
     [Test]
-    [ExpectedException(typeof(MappingException), ExpectedMessage =
-      "Property 'DuplicatedPropertyInTree' of class 'DerivedDerivedClass' must not define storage specific name 'DuplicatedPropertyInTree', "
-      +"because class 'BaseClass' in same inheritance hierarchy already defines property 'DuplicatedPropertyInTree' with the same storage "
-      +"specific name.\r\n\r\n"
-      + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
-      + "SamePropertyNameInInheritanceHierarchy.BaseClass\r\n"
-      + "Property: DuplicatedPropertyInTree")]
     public void SamePropertyNameInInheritanceHierarchy ()
     {
-      ValidateMapping ("NotSupportedPersistenceMapping.SamePropertyNameInInheritanceHierarchy");
+      Assert.That (
+          () => ValidateMapping ("NotSupportedPersistenceMapping.SamePropertyNameInInheritanceHierarchy"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "Property 'DuplicatedPropertyInTree' of class 'DerivedDerivedClass' must not define storage specific name 'DuplicatedPropertyInTree', "
+                  +"because class 'BaseClass' in same inheritance hierarchy already defines property 'DuplicatedPropertyInTree' with the same storage "
+                  +"specific name.\r\n\r\n"
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
+                  + "SamePropertyNameInInheritanceHierarchy.BaseClass\r\n"
+                  + "Property: DuplicatedPropertyInTree"));
     }
 
     //Exception is thrown in ClassDefinitionCollection
     [Test]
-    [ExpectedException (typeof (MappingException), 
-      ExpectedMessage = @"Class 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
-      +@"NotSupportedPersistenceMapping.SameClassNameInInheritanceHierarchy.BaseClass' and 'Remotion.Data.DomainObjects.UnitTests.Mapping."
-      +@"TestDomain.Validation.Integration.NotSupportedPersistenceMapping.SameClassNameInInheritanceHierarchy.DerivedDerivedClass' both have "
-      +@"the same class ID 'SameClassNameInInheritanceHierarchy_DuplicatedClassName'\. Use the ClassIDAttribute to define unique IDs for these classes\. "
-      +@"The assemblies involved are 'Remotion.Data.DomainObjects.UnitTests, Version=.*, Culture=.*, PublicKeyToken=.*' and "
-      +@"'Remotion.Data.DomainObjects.UnitTests, Version=.*, Culture=.*, PublicKeyToken=.*'\.", MatchType = MessageMatch.Regex)]
     public void SameClassNameInInheritanceHierarchy ()
     {
-      ValidateMapping ("NotSupportedPersistenceMapping.SameClassNameInInheritanceHierarchy");
+      Assert.That (
+          () => ValidateMapping ("NotSupportedPersistenceMapping.SameClassNameInInheritanceHierarchy"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.Matches (
+                  @"Class 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
+                  +@"NotSupportedPersistenceMapping.SameClassNameInInheritanceHierarchy.BaseClass' and 'Remotion.Data.DomainObjects.UnitTests.Mapping."
+                  +@"TestDomain.Validation.Integration.NotSupportedPersistenceMapping.SameClassNameInInheritanceHierarchy.DerivedDerivedClass' both have "
+                  +@"the same class ID 'SameClassNameInInheritanceHierarchy_DuplicatedClassName'\. Use the ClassIDAttribute to define unique IDs for these classes\. "
+                  +@"The assemblies involved are 'Remotion.Data.DomainObjects.UnitTests, Version=.*, Culture=.*, PublicKeyToken=.*' and "
+                  +@"'Remotion.Data.DomainObjects.UnitTests, Version=.*, Culture=.*, PublicKeyToken=.*'\."));
     }
 
     //StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule
     [Test]
-    [ExpectedException (typeof (MappingException), 
-      ExpectedMessage = "The domain object type cannot redefine the 'StorageGroupAttribute' already defined on base type 'BaseClass'.\r\n\r\n"
-      + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
-      +"DuplicatedStorageGroupAttributeInInheritanceHierarchy.DerivedDerivedClass")]
     public void DuplicatedStorageGroupAttributeInInheritanceHierarchy ()
     {
-      ValidateMapping ("NotSupportedPersistenceMapping.DuplicatedStorageGroupAttributeInInheritanceHierarchy");
+      Assert.That (
+          () => ValidateMapping ("NotSupportedPersistenceMapping.DuplicatedStorageGroupAttributeInInheritanceHierarchy"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "The domain object type cannot redefine the 'StorageGroupAttribute' already defined on base type 'BaseClass'.\r\n\r\n"
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
+                  +"DuplicatedStorageGroupAttributeInInheritanceHierarchy.DerivedDerivedClass"));
     }
 
     //ClassAboveTableIsAbstractValidationRule
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-      "Neither class 'ClassAboveInheritanceRoot' nor its base classes are mapped to a table. Make class 'ClassAboveInheritanceRoot' abstract or define "
-      +"a table for it or one of its base classes.\r\n\r\n"
-      +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
-      +"ConcreteClassAboveInheritanceRoot.ClassAboveInheritanceRoot")]
     public void ConcreteClassAboveInheritanceRoot ()
     {
-      ValidateMapping ("NotSupportedPersistenceMapping.ConcreteClassAboveInheritanceRoot");
+      Assert.That (
+          () => ValidateMapping ("NotSupportedPersistenceMapping.ConcreteClassAboveInheritanceRoot"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "Neither class 'ClassAboveInheritanceRoot' nor its base classes are mapped to a table. Make class 'ClassAboveInheritanceRoot' abstract or define "
+                  +"a table for it or one of its base classes.\r\n\r\n"
+                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
+                  +"ConcreteClassAboveInheritanceRoot.ClassAboveInheritanceRoot"));
     }
 
     //MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule
     [Test]
-    [ExpectedException (typeof (MappingException), 
-      ExpectedMessage = "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"
-      + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
-      +"MappingAttributeAppliedOnOverriddenProperty.DerivedClass\r\nProperty: Property")]
     public void MappingAttributeAppliedOnOverriddenProperty ()
     {
-      ValidateMapping ("NotSupportedPersistenceMapping.MappingAttributeAppliedOnOverriddenProperty");
+      Assert.That (
+          () => ValidateMapping ("NotSupportedPersistenceMapping.MappingAttributeAppliedOnOverriddenProperty"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
+                  +"MappingAttributeAppliedOnOverriddenProperty.DerivedClass\r\nProperty: Property"));
     }
 
     //OnlyOneTablePerHierarchyValidationRule
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-      "Class 'DerivedClass' must not define a table when its base class 'BaseClass' also defines one.\r\n\r\n"
-      +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
-      +"SameEntityNamesInInheritanceHierarchy.DerivedClass")]
     public void SameEntityNamesInInheritanceHierarchy ()
     {
-      ValidateMapping ("NotSupportedPersistenceMapping.SameEntityNamesInInheritanceHierarchy");
+      Assert.That (
+          () => ValidateMapping ("NotSupportedPersistenceMapping.SameEntityNamesInInheritanceHierarchy"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "Class 'DerivedClass' must not define a table when its base class 'BaseClass' also defines one.\r\n\r\n"
+                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
+                  +"SameEntityNamesInInheritanceHierarchy.DerivedClass"));
     }
 
     //PropertyStorageClassIsSupportedByStorageProviderValidationRule
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "StorageClass.Persistent is not supported for properties of classes that belong to the 'NonPersistentProviderDefinition'.\r\n\r\n"
-        +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
-        +"PropertyWithUnsupportedStorageClass.NonPersistentDomainObjectWithPersistentProperty\r\n"
-        +"Property: PersistentProperty")]
     public void PropertyWithStorageClassPersistentOnNonPersistentDomainObject ()
     {
-      ValidateMapping ("NotSupportedPersistenceMapping.PropertyWithUnsupportedStorageClass");
+      Assert.That (
+          () => ValidateMapping ("NotSupportedPersistenceMapping.PropertyWithUnsupportedStorageClass"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "StorageClass.Persistent is not supported for properties of classes that belong to the 'NonPersistentProviderDefinition'.\r\n\r\n"
+                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
+                  +"PropertyWithUnsupportedStorageClass.NonPersistentDomainObjectWithPersistentProperty\r\n"
+                  +"Property: PersistentProperty"));
     }
 
     // RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The relation property is defined as persistent but the referenced type "
-        + "'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
-        + "PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject.NonPersistentRelationClass' is non-persistent. "
-        + "Persistent relation properties may only reference persistent types.\r\n\r\n"
-        +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
-        +"PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject.PersistentRelationClass\r\n"
-        +"Property: PersistentRelationProperty")]
     public void PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject ()
     {
-      ValidateMapping ("NotSupportedPersistenceMapping.PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject");
+      Assert.That (
+          () => ValidateMapping ("NotSupportedPersistenceMapping.PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "The relation property is defined as persistent but the referenced type "
+                  + "'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
+                  + "PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject.NonPersistentRelationClass' is non-persistent. "
+                  + "Persistent relation properties may only reference persistent types.\r\n\r\n"
+                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping."
+                  +"PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject.PersistentRelationClass\r\n"
+                  +"Property: PersistentRelationProperty"));
     }
   }
 }

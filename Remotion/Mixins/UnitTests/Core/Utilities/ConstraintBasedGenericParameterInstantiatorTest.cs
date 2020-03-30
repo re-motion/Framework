@@ -34,18 +34,24 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Type must be a generic parameter.\r\nParameter name: typeParameter")]
     public void Instantiate_NoGenericParameter ()
     {
-      _instantiator.Instantiate (typeof (object));
+      Assert.That (
+          () => _instantiator.Instantiate (typeof (object)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Type must be a generic parameter.\r\nParameter name: typeParameter"));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The generic type parameter has a "
-        + "constraint 'T' which itself contains generic parameters.")]
     public void Instantiate_InferFromGenericParameterConstraints_ConstraintIsGenericParameter ()
     {
-      _instantiator.Instantiate (typeof (GenericClassWithOneConstraint<>.GenericClassWithDependentConstraint<>).GetGenericArguments()[1]);
+      Assert.That (
+          () => _instantiator.Instantiate (typeof (GenericClassWithOneConstraint<>.GenericClassWithDependentConstraint<>).GetGenericArguments()[1]),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "The generic type parameter has a "
+                  + "constraint 'T' which itself contains generic parameters."));
     }
 
     [Test]
@@ -77,19 +83,25 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The generic type parameter has incompatible constraints "
-        + "'System.Collections.Generic.List`1[System.Int32]' and 'System.IServiceProvider'.")]
     public void Instantiate_InferFromGenericParameterConstraints_ConflictingConstraints ()
     {
-      _instantiator.Instantiate (typeof (GenericClassWithConflictingConstraints<>).GetGenericArguments ()[0]);
+      Assert.That (
+          () => _instantiator.Instantiate (typeof (GenericClassWithConflictingConstraints<>).GetGenericArguments ()[0]),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "The generic type parameter has incompatible constraints "
+                  + "'System.Collections.Generic.List`1[System.Int32]' and 'System.IServiceProvider'."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The generic type parameter has inconclusive constraints "
-        + "'System.Collections.IEnumerable' and 'System.IServiceProvider', which cannot be unified into a single type.")]
     public void Instantiate_InferFromGenericParameterConstraints_InconclusiveConstraints ()
     {
-      _instantiator.Instantiate (typeof (GenericClassWithInconclusiveConstraints<>).GetGenericArguments ()[0]);
+      Assert.That (
+          () => _instantiator.Instantiate (typeof (GenericClassWithInconclusiveConstraints<>).GetGenericArguments ()[0]),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "The generic type parameter has inconclusive constraints "
+                  + "'System.Collections.IEnumerable' and 'System.IServiceProvider', which cannot be unified into a single type."));
     }
 
     [Test]
@@ -100,11 +112,14 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The generic type parameter has inconclusive constraints 'System.ValueType' "
-        + "and 'System.ICloneable', which cannot be unified into a single type.")]
     public void Instantiate_StructConstraintAndInterfaceConstraint ()
     {
-      _instantiator.Instantiate (typeof (GenericClassWithStructAndInterfaceConstraint<>).GetGenericArguments ()[0]);
+      Assert.That (
+          () => _instantiator.Instantiate (typeof (GenericClassWithStructAndInterfaceConstraint<>).GetGenericArguments ()[0]),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "The generic type parameter has inconclusive constraints 'System.ValueType' "
+                  + "and 'System.ICloneable', which cannot be unified into a single type."));
     }
   }
 }

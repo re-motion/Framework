@@ -449,30 +449,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "The member 'CtorCalled' is a 'Field', which cannot be fetched by this LINQ provider. Only properties can be fetched.")]
     public void CreateSequenceQuery_EntityQuery_WithInvalidFetchRequest_MemberIsNoPropertyInfo ()
     {
       var fakeSqlQuery = CreateSqlQueryGeneratorResult (selectedEntityType: typeof (Order));
       _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQuery);
 
       var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder ((Customer o) => o.CtorCalled);
-
-      _generator.CreateSequenceQuery<Order> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
+      Assert.That (
+          () => _generator.CreateSequenceQuery<Order> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder }),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "The member 'CtorCalled' is a 'Field', which cannot be fetched by this LINQ provider. Only properties can be fetched."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name' is not a relation end point. "
-        + "Fetching it is not supported by this LINQ provider.")]
     public void CreateSequenceQuery_EntityQuery_WithInvalidFetchRequest_MemberIsNoRelationProperty ()
     {
       var fakeSqlQuery = CreateSqlQueryGeneratorResult (selectedEntityType: typeof (Order));
       _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQuery);
 
       var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder ((Customer o) => o.Name);
-
-      _generator.CreateSequenceQuery<Order> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
+      Assert.That (
+          () => _generator.CreateSequenceQuery<Order> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder }),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name' is not a relation end point. "
+                  + "Fetching it is not supported by this LINQ provider."));
     }
 
     [Test]
@@ -528,14 +530,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Only queries returning DomainObjects can perform eager fetching.")]
     public void CreateSequenceQuery_NonEntityQuery_WithFetchRequests ()
     {
       var fakeSqlQueryResult = CreateSqlQueryGeneratorResult (selectedEntityType: null);
       _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQueryResult);
 
       var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder ((Customer o) => o.Ceo);
-      _generator.CreateSequenceQuery<int> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
+      Assert.That (
+          () => _generator.CreateSequenceQuery<int> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder }),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Only queries returning DomainObjects can perform eager fetching."));
     }
     
     private SqlQueryGeneratorResult CreateSqlQueryGeneratorResult (

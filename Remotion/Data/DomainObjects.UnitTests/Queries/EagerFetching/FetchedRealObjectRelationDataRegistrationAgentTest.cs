@@ -134,33 +134,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Cannot register relation end-point 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' for domain object "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'. The end-point belongs to an object of class 'OrderTicket' but the domain object "
-        + "has class 'Order'.")]
     public void GroupAndRegisterRelatedObjects_InvalidOriginalObject ()
     {
       var endPointDefinition = GetEndPointDefinition (typeof (OrderTicket), "Order");
-
-      _agent.GroupAndRegisterRelatedObjects (
+      Assert.That (
+          () => _agent.GroupAndRegisterRelatedObjects (
           endPointDefinition,
           new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (DomainObjectIDs.Order1) },
-          new LoadedObjectDataWithDataSourceData[0]);
+          new LoadedObjectDataWithDataSourceData[0]),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot register relation end-point 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' for domain object "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'. The end-point belongs to an object of class 'OrderTicket' but the domain object "
+                  + "has class 'Order'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Cannot associate object 'OrderTicket|0005bdf4-4ccc-4a41-b9b5-baab3eb95237|System.Guid' with the relation end-point " 
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'. An object of type "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' was expected.")]
     public void GroupAndRegisterRelatedObjects_InvalidRelatedObject ()
     {
       var endPointDefinition = GetEndPointDefinition (typeof (OrderTicket), "Order");
-
-      _agent.GroupAndRegisterRelatedObjects (
+      Assert.That (
+          () => _agent.GroupAndRegisterRelatedObjects (
           endPointDefinition,
           new[] { _originatingOrderTicketData1 }, 
-          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (DomainObjectIDs.OrderTicket2) });
+          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (DomainObjectIDs.OrderTicket2) }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot associate object 'OrderTicket|0005bdf4-4ccc-4a41-b9b5-baab3eb95237|System.Guid' with the relation end-point " 
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'. An object of type "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' was expected."));
     }
 
     [Test]

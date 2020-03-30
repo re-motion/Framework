@@ -36,12 +36,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = 
-        "Type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RelationEndPointManager' in Assembly "
-        + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
     public void RelationEndPointManagerIsNotSerializable ()
     {
-      Serializer.SerializeAndDeserialize (_relationEndPointManager);
+      Assert.That (
+          () => Serializer.SerializeAndDeserialize (_relationEndPointManager),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.Matches (
+                  "Type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RelationEndPointManager' in Assembly "
+                  + ".* is not marked as serializable."));
     }
 
     [Test]

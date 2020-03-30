@@ -68,22 +68,25 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The metadata ID 'Hello|42' is invalid.\r\nParameter name: metadataID")]
     public void Find_InvalidMetadataItemID ()
     {
       string metadataObjectID = "Hello|42";
-
-      _queryBuilder.CreateQuery (metadataObjectID);
+      Assert.That (
+          () => _queryBuilder.CreateQuery (metadataObjectID),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The metadata ID 'Hello|42' is invalid.\r\nParameter name: metadataID"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The metadata ID '9e689c4c-3758-436e-ac86-23171289fa5e|Hello' is invalid.\r\nParameter name: metadataID")]
     public void Find_InvalidStateValue ()
     {
       string metadataObjectID = "9e689c4c-3758-436e-ac86-23171289fa5e|Hello";
-
-      _queryBuilder.CreateQuery (metadataObjectID);
+      Assert.That (
+          () => _queryBuilder.CreateQuery (metadataObjectID),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The metadata ID '9e689c4c-3758-436e-ac86-23171289fa5e|Hello' is invalid.\r\nParameter name: metadataID"));
     }
   }
 }

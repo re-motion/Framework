@@ -274,10 +274,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void GetCollectionWithOriginalData_IsReadOnly ()
     {
-      _customerEndPoint.GetCollectionWithOriginalData().Remove (_order1.ID);
+      Assert.That (
+          () => _customerEndPoint.GetCollectionWithOriginalData().Remove (_order1.ID),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]

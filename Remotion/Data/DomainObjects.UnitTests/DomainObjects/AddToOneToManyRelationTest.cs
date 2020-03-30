@@ -300,23 +300,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The collection already contains an object with ID 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'.\r\n"
-        + "Parameter name: domainObject")]
     public void AddObjectAlreadyInCollection ()
     {
       _supervisor.Subordinates.Add (_subordinate);
-      _supervisor.Subordinates.Add (_subordinate);
+      Assert.That (
+          () => _supervisor.Subordinates.Add (_subordinate),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The collection already contains an object with ID 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'.\r\n"
+                  + "Parameter name: domainObject"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The collection already contains an object with ID 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'.\r\n"
-        + "Parameter name: domainObject")]
     public void InsertObjectAlreadyInCollection ()
     {
       _supervisor.Subordinates.Insert (0, _subordinate);
-      _supervisor.Subordinates.Insert (0, _subordinate);
+      Assert.That (
+          () => _supervisor.Subordinates.Insert (0, _subordinate),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The collection already contains an object with ID 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'.\r\n"
+                  + "Parameter name: domainObject"));
     }
 
     [Test]

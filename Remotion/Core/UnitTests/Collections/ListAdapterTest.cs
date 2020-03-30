@@ -184,20 +184,24 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException), ExpectedMessage = "Index must not be negative.\r\nParameter name: arrayIndex")]
     public void CopyTo_IndexLessThanZero ()
     {
       var destArray = new[] { "x", "x", "x", "x", "x", "x" };
-      _adapter.CopyTo (destArray, -1);
+      Assert.That (
+          () => _adapter.CopyTo (destArray, -1),
+          Throws.InstanceOf<ArgumentOutOfRangeException>()
+              .With.Message.EqualTo (
+                  "Index must not be negative.\r\nParameter name: arrayIndex"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "Index must be less than the length of the array.\r\nParameter name: arrayIndex")]
     public void CopyTo_ArrayIndexTooHigh ()
     {
       var destArray = new[] { "x", "x", "x", "x", "x", "x" };
-      _adapter.CopyTo (destArray, 6);
+      Assert.That (
+          () => _adapter.CopyTo (destArray, 6),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Index must be less than the length of the array.\r\nParameter name: arrayIndex"));
     }
 
     [Test]
@@ -211,12 +215,14 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "There must be enough space to copy all items into the destination array starting at the given index.\r\nParameter name: arrayIndex")]
     public void CopyTo_NotEnoughSpace ()
     {
       var destArray = new[] { "x", "x", "x", "x", "x", "x" };
-      _adapter.CopyTo (destArray, 4);
+      Assert.That (
+          () => _adapter.CopyTo (destArray, 4),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "There must be enough space to copy all items into the destination array starting at the given index.\r\nParameter name: arrayIndex"));
     }
 
     [Test]
@@ -240,12 +246,14 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This list does not support setting of 'String' values.")]
     public void AdaptOneWay_ReverseNotSupported ()
     {
       var adapter = ListAdapter.AdaptOneWay (_innerList, i => i.ToString ());
-
-      adapter[1] = "1";
+      Assert.That (
+          () => adapter[1] = "1",
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "This list does not support setting of 'String' values."));
     }
 
     [Test]

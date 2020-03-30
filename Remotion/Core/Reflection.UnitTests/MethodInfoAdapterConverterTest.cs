@@ -77,11 +77,12 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Cannot convert value from type 'System.String' to type 'Remotion.Reflection.MethodInfoAdapter'.")]
     public void ConvertFrom_InvalidType ()
     {
-      _converter.ConvertFrom (null, null, "string");
+      Assert.That (
+          () => _converter.ConvertFrom (null, null, "string"),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Cannot convert value from type 'System.String' to type 'Remotion.Reflection.MethodInfoAdapter'."));
     }
 
     [Test]
@@ -99,20 +100,24 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Cannot convert values to type 'System.String'. This converter only supports converting to type 'System.Reflection.MethodInfo'.")]
     public void ConvertTo_InvalidType ()
     {
-      _converter.ConvertTo (null, null, null, typeof (string));
+      Assert.That (
+          () => _converter.ConvertTo (null, null, null, typeof (string)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot convert values to type 'System.String'. This converter only supports converting to type 'System.Reflection.MethodInfo'."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Cannot convert values of type 'System.String' to type 'System.Reflection.MethodInfo'. "
-        + "This converter only supports values of type 'Remotion.Reflection.MethodInfoAdapter'.")]
     public void ConvertTo_InvalidValue ()
     {
-      _converter.ConvertTo (null, null, "string", typeof (MethodInfo));
+      Assert.That (
+          () => _converter.ConvertTo (null, null, "string", typeof (MethodInfo)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot convert values of type 'System.String' to type 'System.Reflection.MethodInfo'. "
+                  + "This converter only supports values of type 'Remotion.Reflection.MethodInfoAdapter'."));
     }
   }
 }

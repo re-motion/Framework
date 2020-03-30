@@ -369,19 +369,25 @@ namespace Remotion.Scripting.UnitTests.StableBindingImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Method 'ProxiedChild.VirtualMethodNotInBaseType' not found.")]
     public void BuildProxyType_VirtualMethodNotInBaseType_IsNotKnown_ProxiedChild ()
     {
-      AssertBuildProxyType_MethodOverridden (
-        typeof (Proxied), typeof (ProxiedChild), "VirtualMethodNotInBaseType", true);
+      Assert.That (
+          () => AssertBuildProxyType_MethodOverridden (
+        typeof (Proxied), typeof (ProxiedChild), "VirtualMethodNotInBaseType", true),
+          Throws.InstanceOf<MissingMethodException>()
+              .With.Message.EqualTo (
+                  "Method 'ProxiedChild.VirtualMethodNotInBaseType' not found."));
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Method 'ProxiedChildChildChild.VirtualMethodNotInBaseType' not found.")]
     public void BuildProxyType_VirtualMethodNotInBaseType_IsNotKnown_ProxiedChildChildChild ()
     {
-      AssertBuildProxyType_MethodOverridden (
-        typeof (Proxied), typeof (ProxiedChildChildChild), "VirtualMethodNotInBaseType", true);
+      Assert.That (
+          () => AssertBuildProxyType_MethodOverridden (
+        typeof (Proxied), typeof (ProxiedChildChildChild), "VirtualMethodNotInBaseType", true),
+          Throws.InstanceOf<MissingMethodException>()
+              .With.Message.EqualTo (
+                  "Method 'ProxiedChildChildChild.VirtualMethodNotInBaseType' not found."));
     }
 
 

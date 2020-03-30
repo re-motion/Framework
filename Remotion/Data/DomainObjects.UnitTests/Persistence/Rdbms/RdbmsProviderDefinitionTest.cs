@@ -73,29 +73,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), ExpectedMessage = 
-        "The factory type for the storage provider defined by 'Provider' must implement the 'IRdbmsStorageObjectFactory' interface. "
-        + "'InvalidRdbmsStorageObjectFactory' does not implement that interface.")]
     public void Initialize_FromConfig_InvalidFactoryType ()
     {
       NameValueCollection config = new NameValueCollection ();
       config.Add ("description", "The Description");
       config.Add ("factoryType", typeof (InvalidRdbmsStorageObjectFactory).AssemblyQualifiedName);
       config.Add ("connectionString", "SqlProvider");
-
-      new RdbmsProviderDefinition ("Provider", config);
+      Assert.That (
+          () => new RdbmsProviderDefinition ("Provider", config),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo (
+                  "The factory type for the storage provider defined by 'Provider' must implement the 'IRdbmsStorageObjectFactory' interface. "
+                  + "'InvalidRdbmsStorageObjectFactory' does not implement that interface."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "The attribute 'factoryType' is missing in the configuration of the 'Provider' provider.")]
     public void Initialize_FromConfig_WithMissingFactoryType ()
     {
       NameValueCollection config = new NameValueCollection ();
       config.Add ("description", "The Description");
       config.Add ("connectionString", "SqlProvider");
-      
-      Dev.Null = new RdbmsProviderDefinition ("Provider", config);
+      Assert.That (
+          () => Dev.Null = new RdbmsProviderDefinition ("Provider", config),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo ("The attribute 'factoryType' is missing in the configuration of the 'Provider' provider."));
     }
 
     [Test]
@@ -125,11 +126,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (IdentityTypeNotSupportedException), ExpectedMessage = 
-        "The storage provider defined by 'RdbmsProviderDefinition' does not support identity values of type 'System.String'.")]
     public void CheckInvalidIdentityType()
     {
-      _definition.CheckIdentityType (typeof (string));
+      Assert.That (
+          () => _definition.CheckIdentityType (typeof (string)),
+          Throws.InstanceOf<IdentityTypeNotSupportedException>()
+              .With.Message.EqualTo (
+                  "The storage provider defined by 'RdbmsProviderDefinition' does not support identity values of type 'System.String'."));
     }
 
     [Test]

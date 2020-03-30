@@ -88,10 +88,13 @@ namespace Remotion.Security.UnitTests.Metadata.MemberResolverTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The method 'Sve' could not be found.\r\nParameter name: methodName")]
     public void Test_NotExistingMethod ()
     {
-      _resolver.GetMethodInformation (typeof (SecurableObject), "Sve", MemberAffiliation.Static);
+      Assert.That (
+          () => _resolver.GetMethodInformation (typeof (SecurableObject), "Sve", MemberAffiliation.Static),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The method 'Sve' could not be found.\r\nParameter name: methodName"));
     }
   }
 }

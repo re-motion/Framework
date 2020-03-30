@@ -38,13 +38,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "Only collection queries can be used to load data containers.\r\nParameter name: query")]
     public void Initialization_QueryTypeNotCollection ()
     {
       _queryStub.Stub (stub => stub.QueryType).Return (QueryType.Scalar);
-
-      new DomainObjectSequenceQueryAdapter<string> (_queryStub);
+      Assert.That (
+          () => new DomainObjectSequenceQueryAdapter<string> (_queryStub),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Only collection queries can be used to load data containers.\r\nParameter name: query"));
     }
 
     [Test]

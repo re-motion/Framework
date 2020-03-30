@@ -126,7 +126,6 @@ public class WxeContextTest
   }
 
   [Test]
-  [ExpectedException (typeof (WxePermanentUrlTooLongException))]
   public void GetStaticPermanentUrlWithQueryStringExceedingMaxLength()
   {
     string parameterName = "Param";
@@ -134,17 +133,19 @@ public class WxeContextTest
 
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add (parameterName, parameterValue);
-
-    WxeContext.GetPermanentUrl (new HttpContextWrapper (_currentHttpContext), _functionType, queryString);
+    Assert.That (
+        () => WxeContext.GetPermanentUrl (new HttpContextWrapper (_currentHttpContext), _functionType, queryString),
+        Throws.InstanceOf<WxePermanentUrlTooLongException>());
   }
 
   [Test]
-  [ExpectedException (typeof (WxeException))]
   public void GetStaticPermanentUrlWithoutWxeHandler()
   {
     WebConfigurationMock.Current = null;
     Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
-    WxeContext.GetPermanentUrl (new HttpContextWrapper (_currentHttpContext), _functionType, new NameValueCollection ());
+    Assert.That (
+        () => WxeContext.GetPermanentUrl (new HttpContextWrapper (_currentHttpContext), _functionType, new NameValueCollection ()),
+        Throws.InstanceOf<WxeException>());
   }
 
   [Test]
@@ -177,7 +178,6 @@ public class WxeContextTest
   }
 
   [Test]
-  [ExpectedException (typeof (WxePermanentUrlTooLongException))]
   public void GetPermanentUrlWithQueryStringExceedingMaxLength()
   {
     string parameterName = "Param";
@@ -185,8 +185,9 @@ public class WxeContextTest
 
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add (parameterName, parameterValue);
-
-    _currentWxeContext.GetPermanentUrl (_functionType, queryString, false);
+    Assert.That (
+        () => _currentWxeContext.GetPermanentUrl (_functionType, queryString, false),
+        Throws.InstanceOf<WxePermanentUrlTooLongException>());
   }
 
   [Test]
@@ -262,7 +263,6 @@ public class WxeContextTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException))]
   public void GetPermanentUrlWithExistingReturnUrl()
   {
     string parameterName = "Param";
@@ -271,8 +271,9 @@ public class WxeContextTest
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add (parameterName, parameterValue);
     queryString.Add (WxeHandler.Parameters.ReturnUrl, "");
-    
-    _currentWxeContext.GetPermanentUrl (_functionType, queryString, true);
+    Assert.That (
+        () => _currentWxeContext.GetPermanentUrl (_functionType, queryString, true),
+        Throws.ArgumentException);
   }
 }
 

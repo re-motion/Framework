@@ -57,13 +57,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (
-        typeof (ObjectInvalidException),
-        ExpectedMessage = @"Object '.*\|.*\|.*' is invalid in this transaction\.",
-        MatchType = MessageMatch.Regex)]
     public void EnsureDataAvailable_Invalid ()
     {
-      TestableClientTransaction.EnsureDataAvailable (InvalidObject.ID);
+      Assert.That (
+          () => TestableClientTransaction.EnsureDataAvailable (InvalidObject.ID),
+          Throws.InstanceOf<ObjectInvalidException>()
+              .With.Message.Matches (@"Object '.*\|.*\|.*' is invalid in this transaction\."));
     }
 
     [Test]
@@ -128,13 +127,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (
-        typeof (ObjectInvalidException), 
-        ExpectedMessage = @"Object '.*\|.*\|.*' is invalid in this transaction\.",
-        MatchType = MessageMatch.Regex)]
     public void EnsureDataAvailable_Many_Invalid ()
     {
-      TestableClientTransaction.EnsureDataAvailable (new[] { InvalidObject.ID });
+      Assert.That (
+          () => TestableClientTransaction.EnsureDataAvailable (new[] { InvalidObject.ID }),
+          Throws.InstanceOf<ObjectInvalidException>()
+              .With.Message.Matches (@"Object '.*\|.*\|.*' is invalid in this transaction\."));
     }
 
     [Test]

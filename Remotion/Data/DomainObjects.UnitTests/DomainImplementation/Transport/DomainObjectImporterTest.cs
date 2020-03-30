@@ -67,11 +67,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     }
 
     [Test]
-    [ExpectedException (typeof (TransportationException),
-        ExpectedMessage = "Invalid data specified: End of Stream encountered before parsing was completed.")]
     public void InvalidData ()
     {
-      DomainObjectTransporterTestHelper.Import (new byte[] { 1, 2, 3 });
+      Assert.That (
+          () => DomainObjectTransporterTestHelper.Import (new byte[] { 1, 2, 3 }),
+          Throws.InstanceOf<TransportationException>()
+              .With.Message.EqualTo ("Invalid data specified: End of Stream encountered before parsing was completed."));
     }
 
     [Test]

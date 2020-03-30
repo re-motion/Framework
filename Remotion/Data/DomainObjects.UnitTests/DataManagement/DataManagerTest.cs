@@ -179,12 +179,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The DomainObject of a DataContainer must be set before it can be registered with a transaction.")]
     public void RegisterDataContainer_ContainerHasNoDomainObject ()
     {
       var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      _dataManager.RegisterDataContainer (dataContainer);
+      Assert.That (
+          () => _dataManager.RegisterDataContainer (dataContainer),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The DomainObject of a DataContainer must be set before it can be registered with a transaction."));
     }
 
     [Test]
@@ -280,12 +281,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Cannot discard data for object 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid': The relations of object "
-        + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid' cannot be unloaded.\r\n"
-        + "Relation end-point "
-        + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' would "
-        + "leave a dangling reference.")]
     public void Discard_ThrowsOnDanglingReferences ()
     {
       var dataContainer = DataContainer.CreateNew (DomainObjectIDs.OrderTicket1);
@@ -294,8 +289,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var endPointID = RelationEndPointID.Create (dataContainer.ID, typeof (OrderTicket).FullName + ".Order");
       var endPoint = (RealObjectEndPoint) _dataManager.GetRelationEndPointWithoutLoading (endPointID);
       RealObjectEndPointTestHelper.SetOppositeObjectID (endPoint, DomainObjectIDs.Order1);
-
-      _dataManager.Discard (dataContainer);
+      Assert.That (
+          () => _dataManager.Discard (dataContainer),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot discard data for object 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid': The relations of object "
+                  + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid' cannot be unloaded.\r\n"
+                  + "Relation end-point "
+                  + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' would "
+                  + "leave a dangling reference."));
     }
     
     [Test]
@@ -547,13 +549,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException),
-       ExpectedMessage = "Cannot delete DomainObject '.*', because it belongs to a different ClientTransaction.",
-       MatchType = MessageMatch.Regex)]
     public void CreateDeleteCommand_OtherClientTransaction ()
     {
       var order1 = DomainObjectMother.CreateObjectInOtherTransaction<Order> ();
-      _dataManager.CreateDeleteCommand (order1);
+      Assert.That (
+          () => _dataManager.CreateDeleteCommand (order1),
+          Throws.InstanceOf<ClientTransactionsDifferException>()
+              .With.Message.Matches ("Cannot delete DomainObject '.*', because it belongs to a different ClientTransaction."));
     }
 
     [Test]
@@ -568,14 +570,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void CreateDeleteCommand_InvalidObject ()
     {
       var invalidObject = Order.NewObject ();
       invalidObject.Delete ();
       Assert.That (invalidObject.State.IsInvalid, Is.True);
-
-      _dataManager.CreateDeleteCommand (invalidObject);
+      Assert.That (
+          () => _dataManager.CreateDeleteCommand (invalidObject),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
@@ -761,12 +763,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void GetDataContainerWithoutLoading_Invalid ()
     {
       _invalidDomainObjectManagerMock.Stub (stub => stub.IsInvalid (DomainObjectIDs.Order1)).Return (true);
-
-      _dataManagerWithMocks.GetDataContainerWithoutLoading (DomainObjectIDs.Order1);
+      Assert.That (
+          () => _dataManagerWithMocks.GetDataContainerWithoutLoading (DomainObjectIDs.Order1),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
@@ -821,12 +823,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void GetDataContainerWithLazyLoad_Invalid ()
     {
       _invalidDomainObjectManagerMock.Stub (stub => stub.IsInvalid (DomainObjectIDs.Order1)).Return (true);
-
-      _dataManagerWithMocks.GetDataContainerWithLazyLoad (DomainObjectIDs.Order1, BooleanObjectMother.GetRandomBoolean());
+      Assert.That (
+          () => _dataManagerWithMocks.GetDataContainerWithLazyLoad (DomainObjectIDs.Order1, BooleanObjectMother.GetRandomBoolean()),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
@@ -953,30 +955,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The given ID does not identify an ICollectionEndPoint managed by this DataManager.\r\nParameter name: endPointID")]
     public void LoadLazyCollectionEndPoint_NotRegistered ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
       _endPointManagerMock.Stub (stub => stub.GetRelationEndPointWithoutLoading (endPointID)).Return (null);
-
-      _dataManagerWithMocks.LoadLazyCollectionEndPoint (endPointID);
+      Assert.That (
+          () => _dataManagerWithMocks.LoadLazyCollectionEndPoint (endPointID),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The given ID does not identify an ICollectionEndPoint managed by this DataManager.\r\nParameter name: endPointID"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The given ID does not identify an ICollectionEndPoint managed by this DataManager.\r\nParameter name: endPointID")]
     public void LoadLazyCollectionEndPoint_NotICollectionEndPoint ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
       var endPointStub = MockRepository.GenerateStub<IVirtualObjectEndPoint> ();
       _endPointManagerMock.Stub (stub => stub.GetRelationEndPointWithoutLoading (endPointID)).Return (endPointStub);
-
-      _dataManagerWithMocks.LoadLazyCollectionEndPoint (endPointID);
+      Assert.That (
+          () => _dataManagerWithMocks.LoadLazyCollectionEndPoint (endPointID),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The given ID does not identify an ICollectionEndPoint managed by this DataManager.\r\nParameter name: endPointID"));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The given end-point cannot be loaded, its data is already complete.")]
     public void LoadLazyCollectionEndPoint_AlreadyLoaded ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
@@ -985,9 +988,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       endPointStub.Stub (stub => stub.IsDataComplete).Return (true);
 
       _endPointManagerMock.Stub (stub => stub.GetRelationEndPointWithoutLoading (endPointID)).Return (endPointStub);
-      
-
-      _dataManagerWithMocks.LoadLazyCollectionEndPoint (endPointID);
+      Assert.That (
+          () => _dataManagerWithMocks.LoadLazyCollectionEndPoint (endPointID),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The given end-point cannot be loaded, its data is already complete."));
     }
 
     [Test]
@@ -1051,37 +1056,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The given ID does not identify an IVirtualObjectEndPoint managed by this DataManager.\r\nParameter name: endPointID")]
     public void LoadLazyVirtualObjectEndPoint_NotRegistered ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
       _endPointManagerMock.Stub (stub => stub.GetRelationEndPointWithoutLoading (endPointID)).Return (null);
-
-      _dataManagerWithMocks.LoadLazyVirtualObjectEndPoint (endPointID);
+      Assert.That (
+          () => _dataManagerWithMocks.LoadLazyVirtualObjectEndPoint (endPointID),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The given ID does not identify an IVirtualObjectEndPoint managed by this DataManager.\r\nParameter name: endPointID"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The given ID does not identify an IVirtualObjectEndPoint managed by this DataManager.\r\nParameter name: endPointID")]
     public void LoadLazyVirtualObjectEndPoint_NotIVirtualObjectEndPoint ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
       var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint> ();
       _endPointManagerMock.Stub (stub => stub.GetRelationEndPointWithoutLoading (endPointID)).Return (endPointStub);
-
-      _dataManagerWithMocks.LoadLazyVirtualObjectEndPoint (endPointID);
+      Assert.That (
+          () => _dataManagerWithMocks.LoadLazyVirtualObjectEndPoint (endPointID),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The given ID does not identify an IVirtualObjectEndPoint managed by this DataManager.\r\nParameter name: endPointID"));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The given end-point cannot be loaded, its data is already complete.")]
     public void LoadLazyVirtualObjectEndPoint_AlreadyLoaded ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
       var endPoint = (IVirtualObjectEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (endPointID);
       endPoint.EnsureDataComplete();
-
-      _dataManager.LoadLazyVirtualObjectEndPoint (endPointID);
+      Assert.That (
+          () => _dataManager.LoadLazyVirtualObjectEndPoint (endPointID),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The given end-point cannot be loaded, its data is already complete."));
     }
 
     [Test]

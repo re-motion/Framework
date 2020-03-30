@@ -160,10 +160,11 @@ namespace Remotion.Extensions.UnitTests.Reflection
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void NoThisArgument()
     {
-      MethodCaller.CallFunc<string> ("GetString").With();
+      Assert.That (
+          () => MethodCaller.CallFunc<string> ("GetString").With(),
+          Throws.InvalidOperationException);
     }
   }
 }

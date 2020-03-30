@@ -59,7 +59,6 @@ namespace Remotion.Scripting.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMemberException), ExpectedMessage = "'str' object has no attribute 'Substring'")]
     public void NotImportClr ()
     {
       var scriptEnvironment = ScriptEnvironment.Create ();
@@ -70,7 +69,10 @@ namespace Remotion.Scripting.UnitTests
               ScriptLanguageType.Python,
               scriptText,
               scriptEnvironment);
-      expressionScript.Execute ();
+      Assert.That (
+          () => expressionScript.Execute (),
+          Throws.InstanceOf<MissingMemberException>()
+              .With.Message.EqualTo ("'str' object has no attribute 'Substring'"));
     }
 
     [Test]
@@ -135,7 +137,6 @@ namespace Remotion.Scripting.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (UnboundNameException), ExpectedMessage = "name 'NonExistingSymbol' is not defined")]
     public void ImportIifHelperFunctions_IIfIsNotLazy ()
     {
       var scriptEnvironment = ScriptEnvironment.Create ();
@@ -145,7 +146,10 @@ namespace Remotion.Scripting.UnitTests
       var expressionScript =
           new ExpressionScript<string> (ScriptContextObjectMother.CreateTestScriptContext ("ImportIifHelperFunctions"), ScriptLanguageType.Python,
             scriptText, scriptEnvironment);
-      expressionScript.Execute();
+      Assert.That (
+          () => expressionScript.Execute(),
+          Throws.InstanceOf<UnboundNameException>()
+              .With.Message.EqualTo ("name 'NonExistingSymbol' is not defined"));
     }
 
 

@@ -82,12 +82,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "SQL Server cannot represent NULL values in an XML data type.")]
     public void AddParameters_NullValue ()
     {
       _specification = new SqlXmlSetComparedColumnSpecification (_columnDefinition, new[] { _objectValue1, null, _objectValue3 });
-
-      _specification.AddParameters (_commandStub, _sqlDialectStub);
+      Assert.That (
+          () => _specification.AddParameters (_commandStub, _sqlDialectStub),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "SQL Server cannot represent NULL values in an XML data type."));
     }
 
     [Test]

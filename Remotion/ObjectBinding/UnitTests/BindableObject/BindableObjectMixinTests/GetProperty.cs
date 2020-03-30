@@ -57,13 +57,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     }
 
     [Test]
-    [ExpectedException (typeof (KeyNotFoundException), ExpectedMessage = "The property 'StringWithoutGetter' was not found on business object class "
-        + "'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'.")]
     [Ignore ("TODO: discuss desired behavior")]
     public void WithoutGetter ()
     {
       IBusinessObject businessObject = Mixin.Get<BindableObjectMixin> (ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty));
-      businessObject.GetProperty ("StringWithoutGetter");
+      Assert.That (
+          () => businessObject.GetProperty ("StringWithoutGetter"),
+          Throws.InstanceOf<KeyNotFoundException>()
+              .With.Message.EqualTo (
+                  "The property 'StringWithoutGetter' was not found on business object class "
+                  + "'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'."));
     }
   }
 }

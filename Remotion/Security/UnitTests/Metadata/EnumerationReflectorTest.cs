@@ -95,10 +95,13 @@ namespace Remotion.Security.UnitTests.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type 'System.String' is not an enumerated type.\r\nParameter name: type")]
     public void GetMetadataWithInvalidType ()
     {
-      new EnumerationReflector ().GetValues (typeof (string), _cache);
+      Assert.That (
+          () => new EnumerationReflector ().GetValues (typeof (string), _cache),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The type 'System.String' is not an enumerated type.\r\nParameter name: type"));
     }
   }
 }

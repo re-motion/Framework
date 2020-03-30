@@ -518,24 +518,26 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The user 'notexisting.user' could not be found.")]
     public void Create_WithInvalidPrincipal_InvalidUserName ()
     {
       SecurityContext context = CreateContext();
       ISecurityPrincipal principal = CreatePrincipal ("notexisting.user");
-
-
-      _securityTokenBuilder.CreateToken (principal, context);
+      Assert.That (
+          () => _securityTokenBuilder.CreateToken (principal, context),
+          Throws.InstanceOf<AccessControlException>()
+              .With.Message.EqualTo (
+                  "The user 'notexisting.user' could not be found."));
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "No principal was provided.")]
     public void Create_WithInvalidPrincipal_EmptyUserName ()
     {
       SecurityContext context = CreateContext();
       ISecurityPrincipal principal = CreatePrincipal ("");
-
-      _securityTokenBuilder.CreateToken (principal, context);
+      Assert.That (
+          () => _securityTokenBuilder.CreateToken (principal, context),
+          Throws.InstanceOf<AccessControlException>()
+              .With.Message.EqualTo ("No principal was provided."));
     }
 
     [Test]
@@ -573,14 +575,15 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), ExpectedMessage =
-        "The abstract role 'Undefined|Remotion.SecurityManager.UnitTests.TestDomain.UndefinedAbstractRoles, Remotion.SecurityManager.UnitTests' could not be found."
-        )]
     public void Create_WithNotExistingAbstractRole ()
     {
       SecurityContext context = CreateContext (ProjectRoles.Developer, UndefinedAbstractRoles.Undefined, ProjectRoles.QualityManager);
-
-      _securityTokenBuilder.CreateToken (CreateTestPrincipal(), context);
+      Assert.That (
+          () => _securityTokenBuilder.CreateToken (CreateTestPrincipal(), context),
+          Throws.InstanceOf<AccessControlException>()
+              .With.Message.EqualTo (
+                  "The abstract role 'Undefined|Remotion.SecurityManager.UnitTests.TestDomain.UndefinedAbstractRoles, Remotion.SecurityManager.UnitTests' could not be found."
+));
     }
 
     [Test]
@@ -608,13 +611,15 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The tenant 'UID: NotExistingTenant' could not be found.")]
     public void Create_WithNotExistingOwningTenant ()
     {
       SecurityContext context = CreateContextWithNotExistingOwningTenant();
       ISecurityPrincipal user = CreateTestPrincipal();
-
-      _securityTokenBuilder.CreateToken (user, context);
+      Assert.That (
+          () => _securityTokenBuilder.CreateToken (user, context),
+          Throws.InstanceOf<AccessControlException>()
+              .With.Message.EqualTo (
+                  "The tenant 'UID: NotExistingTenant' could not be found."));
     }
 
     [Test]
@@ -642,13 +647,15 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The group 'UID: NotExistingGroup' could not be found.")]
     public void Create_WithNotExistingOwningGroup ()
     {
       SecurityContext context = CreateContextWithNotExistingOwningGroup();
       ISecurityPrincipal user = CreateTestPrincipal();
-
-      _securityTokenBuilder.CreateToken (user, context);
+      Assert.That (
+          () => _securityTokenBuilder.CreateToken (user, context),
+          Throws.InstanceOf<AccessControlException>()
+              .With.Message.EqualTo (
+                  "The group 'UID: NotExistingGroup' could not be found."));
     }
 
     [Test]
@@ -677,13 +684,15 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The user 'notExistingUser' could not be found.")]
     public void Create_WithNotExistingOwningUser ()
     {
       SecurityContext context = CreateContextWithNotExistingOwningUser();
       ISecurityPrincipal user = CreateTestPrincipal();
-
-      _securityTokenBuilder.CreateToken (user, context);
+      Assert.That (
+          () => _securityTokenBuilder.CreateToken (user, context),
+          Throws.InstanceOf<AccessControlException>()
+              .With.Message.EqualTo (
+                  "The user 'notExistingUser' could not be found."));
     }
 
     [Test]

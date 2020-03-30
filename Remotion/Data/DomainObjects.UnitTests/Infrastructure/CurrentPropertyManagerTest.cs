@@ -64,10 +64,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no property to finish.")]
     public void PropertyAccessFinished_NoCurrentProperty ()
     {
-      CurrentPropertyManager.PropertyAccessFinished ();
+      Assert.That (
+          () => CurrentPropertyManager.PropertyAccessFinished (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("There is no property to finish."));
     }
 
     [Test]
@@ -96,11 +98,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?")]
     public void GetAndCheckCurrentPropertyName_NoCurrentProperty ()
     {
-      CurrentPropertyManager.GetAndCheckCurrentPropertyName ();
+      Assert.That (
+          () => CurrentPropertyManager.GetAndCheckCurrentPropertyName (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?"));
     }
   }
 }

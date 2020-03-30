@@ -181,13 +181,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The identifier '?' does not identify a defined value for type " 
-        + "'Remotion.ObjectBinding.UnitTests.TestDomain.ExtensibleEnumWithResources'.\r\nParameter name: identifier")]
     public void GetValueInfoByIdentifier_InvalidID ()
     {
       var property = CreateProperty (typeof (ExtensibleEnumWithResources));
-      property.GetValueInfoByIdentifier ("?", null);
+      Assert.That (
+          () => property.GetValueInfoByIdentifier ("?", null),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The identifier '?' does not identify a defined value for type " 
+                  + "'Remotion.ObjectBinding.UnitTests.TestDomain.ExtensibleEnumWithResources'.\r\nParameter name: identifier"));
     }
 
     [Test]

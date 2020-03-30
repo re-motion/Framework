@@ -57,13 +57,13 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_ThrowsPermissionDeniedException ()
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessTypes.Create, false);
       _testHelper.ReplayAll ();
-
-      _extension.NewObjectCreating (_testHelper.Transaction, typeof (SecurableObject));
+      Assert.That (
+          () => _extension.NewObjectCreating (_testHelper.Transaction, typeof (SecurableObject)),
+          Throws.InstanceOf<PermissionDeniedException>());
     }
 
     [Test]

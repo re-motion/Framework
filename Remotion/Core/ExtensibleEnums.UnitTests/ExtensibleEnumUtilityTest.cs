@@ -71,11 +71,13 @@ namespace Remotion.ExtensibleEnums.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "Type 'System.Object' is not an extensible enum type derived from ExtensibleEnum<T>.\r\nParameter name: extensibleEnumType")]
     public void GetDefinition_InvalidType ()
     {
-      ExtensibleEnumUtility.GetDefinition (typeof (object));
+      Assert.That (
+          () => ExtensibleEnumUtility.GetDefinition (typeof (object)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Type 'System.Object' is not an extensible enum type derived from ExtensibleEnum<T>.\r\nParameter name: extensibleEnumType"));
     }
   }
 }

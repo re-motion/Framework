@@ -54,12 +54,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The referencing and referenced column sets must have the same number of items.\r\nParameter name: referencingColumns")]
     public void Initialization_InvalidColumns ()
     {
-      new ForeignKeyConstraintDefinition (
-          "Test", new EntityNameDefinition (null, _referencedTableName), new[] { _referencingColumn }, new ColumnDefinition[0]);
+      Assert.That (
+          () => new ForeignKeyConstraintDefinition (
+          "Test", new EntityNameDefinition (null, _referencedTableName), new[] { _referencingColumn }, new ColumnDefinition[0]),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The referencing and referenced column sets must have the same number of items.\r\nParameter name: referencingColumns"));
     }
 
     [Test]

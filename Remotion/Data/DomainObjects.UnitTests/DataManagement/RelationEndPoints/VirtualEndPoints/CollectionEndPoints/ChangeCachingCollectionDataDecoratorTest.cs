@@ -369,8 +369,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        @"The original collection already contains a domain object with ID 'Order\|.*'\.", MatchType = MessageMatch.Regex)]
     public void RegisterOriginalItem_ItemAlreadyExists_InOriginal ()
     {
       var underlyingOriginalData = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectCollectionData> (
@@ -381,8 +379,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (_decoratorWithRealData.GetObject (domainObject.ID), Is.Null);
       Assert.That (_decoratorWithRealData.OriginalData.GetObject (domainObject.ID), Is.Not.Null);
-
-      _decoratorWithRealData.RegisterOriginalItem (domainObject);
+      Assert.That (
+          () => _decoratorWithRealData.RegisterOriginalItem (domainObject),
+          Throws.InvalidOperationException
+              .With.Message.Matches (@"The original collection already contains a domain object with ID 'Order\|.*'\."));
     }
 
     [Test]
@@ -470,8 +470,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        @"The original collection does not contain a domain object with ID 'Order\|.*'\.", MatchType = MessageMatch.Regex)]
     public void UnregisterOriginalItem_ItemNotExists_InOriginal ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Order> ();
@@ -479,8 +477,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (_decoratorWithRealData.GetObject (domainObject.ID), Is.Not.Null);
       Assert.That (_decoratorWithRealData.OriginalData.GetObject (domainObject.ID), Is.Null);
-
-      _decoratorWithRealData.UnregisterOriginalItem (domainObject.ID);
+      Assert.That (
+          () => _decoratorWithRealData.UnregisterOriginalItem (domainObject.ID),
+          Throws.InvalidOperationException
+              .With.Message.Matches (@"The original collection does not contain a domain object with ID 'Order\|.*'\."));
     }
 
     [Test]

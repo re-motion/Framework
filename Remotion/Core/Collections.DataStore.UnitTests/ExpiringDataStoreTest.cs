@@ -220,30 +220,35 @@ namespace Remotion.Collections.DataStore.UnitTests
     }
 
     [Test]
-    [ExpectedException(typeof(KeyNotFoundException), ExpectedMessage = "Key not found.")]
     public void GetValue_Expired ()
     {
       PrepareItem ("Test", _fakeValue, _fakeExpirationInfo);
       StubShouldScanForExpiredItems_True (_initialScanInfo);
       _expirationPolicyMock.Stub (stub => stub.IsExpired (_fakeValue, _fakeExpirationInfo)).Return (true);
       _expirationPolicyMock.Replay ();
-
-      Dev.Null =_dataStore["Test"];
+      Assert.That (
+          () => Dev.Null =_dataStore["Test"],
+          Throws.InstanceOf<KeyNotFoundException>()
+              .With.Message.EqualTo ("Key not found."));
     }
 
     [Test]
-    [ExpectedException (typeof (KeyNotFoundException), ExpectedMessage = "Key not found.")]
     public void GetValue_ShouldScanForExpiredItems_True ()
     {
-      CheckScansForExpiredItems_WithShouldScanTrue (store => { Dev.Null = store["Test"]; });
+      Assert.That (
+          () => CheckScansForExpiredItems_WithShouldScanTrue (store => { Dev.Null = store["Test"]; }),
+          Throws.InstanceOf<KeyNotFoundException>()
+              .With.Message.EqualTo ("Key not found."));
     }
 
     [Test]
-    [ExpectedException (typeof (KeyNotFoundException), ExpectedMessage = "Key not found.")]
     public void GetValue_ShouldScanForExpiredItems_False ()
     {
       _expirationPolicyMock.Stub (stub => stub.IsExpired (_fakeValue, _fakeExpirationInfo)).Return (false);
-      CheckScansForExpiredItems_WithShouldScanFalse (store => { Dev.Null = store["Test"]; });
+      Assert.That (
+          () => CheckScansForExpiredItems_WithShouldScanFalse (store => { Dev.Null = store["Test"]; }),
+          Throws.InstanceOf<KeyNotFoundException>()
+              .With.Message.EqualTo ("Key not found."));
     }
 
     [Test]

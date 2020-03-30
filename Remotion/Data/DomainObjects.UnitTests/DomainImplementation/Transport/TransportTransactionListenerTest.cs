@@ -43,12 +43,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot use the transported transaction for changing properties after " 
-        + "it has been deserialized.")]
     public void Serialization_AndMethodCalled ()
     {
       TransportTransactionListener listener = Serializer.SerializeAndDeserialize (_listener);
-      listener.PropertyValueChanging (TestableClientTransaction, null, null, null, null);
+      Assert.That (
+          () => listener.PropertyValueChanging (TestableClientTransaction, null, null, null, null),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot use the transported transaction for changing properties after " 
+                  + "it has been deserialized."));
     }
 
     [Test]
@@ -61,29 +64,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Object 'Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid' " 
-        + "cannot be modified for transportation because it hasn't been loaded yet. Load it before manipulating it.")]
     public void ModifyingProperty_NotLoaded ()
     {
       _transporter.Load (DomainObjectIDs.Computer2);
 
       var transportTransaction = _transporter.GetTransportedObject (DomainObjectIDs.Computer2).RootTransaction;
       var source = LifetimeService.GetObject (transportTransaction, DomainObjectIDs.Computer1, false);
-      _listener.PropertyValueChanging (TestableClientTransaction, source, GetPropertyDefinition (typeof (Computer), "SerialNumber"), null, null);
+      Assert.That (
+          () => _listener.PropertyValueChanging (TestableClientTransaction, source, GetPropertyDefinition (typeof (Computer), "SerialNumber"), null, null),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Object 'Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid' " 
+                  + "cannot be modified for transportation because it hasn't been loaded yet. Load it before manipulating it."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The transport transaction cannot be committed.")]
     public void CommitingTransaction ()
     {
-      _transporter.Load (DomainObjectIDs.Computer2).RootTransaction.Commit ();
+      Assert.That (
+          () => _transporter.Load (DomainObjectIDs.Computer2).RootTransaction.Commit (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The transport transaction cannot be committed."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The transport transaction cannot be rolled back.")]
     public void RollingBackTransaction ()
     {
-      _transporter.Load (DomainObjectIDs.Computer2).RootTransaction.Rollback ();
+      Assert.That (
+          () => _transporter.Load (DomainObjectIDs.Computer2).RootTransaction.Rollback (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The transport transaction cannot be rolled back."));
     }
   }
 }

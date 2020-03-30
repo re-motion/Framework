@@ -36,8 +36,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The value 'Undefined' is not a valid value for matching the 'GroupHierarchyCondition'.")]
     public void GroupHierarchyCondition_UndefinedValue ()
     {
       User user = CreateUser (_companyHelper.CompanyTenant, null);
@@ -50,13 +48,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       ace.GroupHierarchyCondition = GroupHierarchyCondition.Undefined;
 
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (ace);
-
-      matcher.MatchesToken (token);
+      Assert.That (
+          () => matcher.MatchesToken (token),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The value 'Undefined' is not a valid value for matching the 'GroupHierarchyCondition'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The value 'Parent' is not a valid value for matching the 'GroupHierarchyCondition'.")]
     public void GroupHierarchyCondition_Parent ()
     {
       User user = CreateUser (_companyHelper.CompanyTenant, null);
@@ -69,13 +67,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       ace.GroupHierarchyCondition = GroupHierarchyCondition.Parent;
 
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (ace);
-
-      matcher.MatchesToken (token);
+      Assert.That (
+          () => matcher.MatchesToken (token),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The value 'Parent' is not a valid value for matching the 'GroupHierarchyCondition'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The value 'Children' is not a valid value for matching the 'GroupHierarchyCondition'.")]
     public void GroupHierarchyCondition_Children ()
     {
       User user = CreateUser (_companyHelper.CompanyTenant, null);
@@ -88,13 +86,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       ace.GroupHierarchyCondition = GroupHierarchyCondition.Children;
 
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (ace);
-
-      matcher.MatchesToken (token);
+      Assert.That (
+          () => matcher.MatchesToken (token),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The value 'Children' is not a valid value for matching the 'GroupHierarchyCondition'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The value 'Undefined' is not a valid value for matching the 'TenantHierarchyCondition'.")]
     public void TenantHierarchyCondition_UndefinedValue ()
     {
       User user = CreateUser (_companyHelper.CompanyTenant, null);
@@ -106,13 +104,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       ace.TenantHierarchyCondition = TenantHierarchyCondition.Undefined;
 
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (ace);
-
-      matcher.MatchesToken (token);
+      Assert.That (
+          () => matcher.MatchesToken (token),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The value 'Undefined' is not a valid value for matching the 'TenantHierarchyCondition'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The value 'Parent' is not a valid value for matching the 'TenantHierarchyCondition'.")]
     public void TenantHierarchyCondition_Parent ()
     {
       User user = CreateUser (_companyHelper.CompanyTenant, null);
@@ -124,8 +122,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       ace.TenantHierarchyCondition = TenantHierarchyCondition.Parent;
 
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (ace);
-
-      matcher.MatchesToken (token);
+      Assert.That (
+          () => matcher.MatchesToken (token),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The value 'Parent' is not a valid value for matching the 'TenantHierarchyCondition'."));
     }
   }
 }

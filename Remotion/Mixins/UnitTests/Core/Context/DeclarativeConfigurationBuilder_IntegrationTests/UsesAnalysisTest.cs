@@ -285,11 +285,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*NullMixin are configured for target type "
-        + ".*DerivedWithDuplicateUses.", MatchType = MessageMatch.Regex)]
     public void ThrowsOnUsesDuplicateOnSameClass ()
     {
-      new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithDuplicateUses)).BuildConfiguration ();
+      Assert.That (
+          () => new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithDuplicateUses)).BuildConfiguration (),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Matches (
+                  "Two instances of mixin .*NullMixin are configured for target type "
+                  + ".*DerivedWithDuplicateUses."));
     }
 
     [Uses (typeof (BaseGenericMixin<,>))]
@@ -314,27 +317,36 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*BaseGenericMixin`2 are configured for target "
-        + "type .*DuplicateWithGenerics1.", MatchType = MessageMatch.Regex)]
     public void DuplicateDetectionAlsoWorksForGenerics1 ()
     {
-      new DeclarativeConfigurationBuilder (null).AddType (typeof (DuplicateWithGenerics1)).BuildConfiguration ();
+      Assert.That (
+          () => new DeclarativeConfigurationBuilder (null).AddType (typeof (DuplicateWithGenerics1)).BuildConfiguration (),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Matches (
+                  "Two instances of mixin .*BaseGenericMixin`2 are configured for target "
+                  + "type .*DuplicateWithGenerics1."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*BaseGenericMixin`2 are configured for target "
-        + "type .*DuplicateWithGenerics2.", MatchType = MessageMatch.Regex)]
     public void DuplicateDetectionAlsoWorksForGenerics2 ()
     {
-      new DeclarativeConfigurationBuilder (null).AddType (typeof (DuplicateWithGenerics2)).BuildConfiguration ();
+      Assert.That (
+          () => new DeclarativeConfigurationBuilder (null).AddType (typeof (DuplicateWithGenerics2)).BuildConfiguration (),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Matches (
+                  "Two instances of mixin .*BaseGenericMixin`2 are configured for target "
+                  + "type .*DuplicateWithGenerics2."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*BaseGenericMixin`2 are configured for target "
-        + "type .*DuplicateWithGenerics3.", MatchType = MessageMatch.Regex)]
     public void DuplicateDetectionAlsoWorksForGenerics3 ()
     {
-      new DeclarativeConfigurationBuilder (null).AddType (typeof (DuplicateWithGenerics3)).BuildConfiguration ();
+      Assert.That (
+          () => new DeclarativeConfigurationBuilder (null).AddType (typeof (DuplicateWithGenerics3)).BuildConfiguration (),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Matches (
+                  "Two instances of mixin .*BaseGenericMixin`2 are configured for target "
+                  + "type .*DuplicateWithGenerics3."));
     }
   }
 }

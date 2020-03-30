@@ -41,30 +41,36 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The property 'NullableScalar' defined on type 'Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithValueType`1[Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue]'"
-        + " must not be nullable since the property's type already defines a 'Remotion.ObjectBinding.UndefinedEnumValueAttribute'.")]
     public void Initialize_NullableWithUndefinedValue ()
     {
-      CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "NullableScalar");
+      Assert.That (
+          () => CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "NullableScalar"),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The property 'NullableScalar' defined on type 'Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithValueType`1[Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue]'"
+                  + " must not be nullable since the property's type already defines a 'Remotion.ObjectBinding.UndefinedEnumValueAttribute'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The property 'Scalar' defined on type 'Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithValueType`1[Remotion.ObjectBinding.UnitTests.TestDomain.TestFlags]'"
-        + " is a flags-enum, which is not supported.")]
     public void Initialize_FlagsEnum ()
     {
-      CreateProperty (typeof (ClassWithValueType<TestFlags>), "Scalar");
+      Assert.That (
+          () => CreateProperty (typeof (ClassWithValueType<TestFlags>), "Scalar"),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The property 'Scalar' defined on type 'Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithValueType`1[Remotion.ObjectBinding.UnitTests.TestDomain.TestFlags]'"
+                  + " is a flags-enum, which is not supported."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The enum type 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValueFromOtherType' "
-        + "defines a 'Remotion.ObjectBinding.UndefinedEnumValueAttribute' with an enum value that belongs to a different enum type.")]
     public void Initialize_WithUndefinedEnumValueFromOtherType ()
     {
-      CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValueFromOtherType>), "Scalar");
+      Assert.That (
+          () => CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValueFromOtherType>), "Scalar"),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The enum type 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValueFromOtherType' "
+                  + "defines a 'Remotion.ObjectBinding.UndefinedEnumValueAttribute' with an enum value that belongs to a different enum type."));
     }
 
     private EnumerationProperty CreateProperty (Type type, string propertyName)

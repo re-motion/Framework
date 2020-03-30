@@ -116,12 +116,14 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     }
 
     [Test]
-    [ExpectedException (typeof (AmbiguousMatchException), ExpectedMessage = 
-      "The type Remotion.UnitTests.Reflection.TypeExtensionsTests.IDoubleInheritingGenericInterface implements "
-      + "the given interface type Remotion.UnitTests.Reflection.TypeExtensionsTests.IGenericInterface`1 more than once.")]
     public void TwoSetsOfArguments ()
     {
-      TypeExtensions.GetAscribedGenericArguments (typeof (IDoubleInheritingGenericInterface), typeof (IGenericInterface<>));
+      Assert.That (
+          () => TypeExtensions.GetAscribedGenericArguments (typeof (IDoubleInheritingGenericInterface), typeof (IGenericInterface<>)),
+          Throws.InstanceOf<AmbiguousMatchException>()
+              .With.Message.EqualTo (
+                  "The type Remotion.UnitTests.Reflection.TypeExtensionsTests.IDoubleInheritingGenericInterface implements "
+                  + "the given interface type Remotion.UnitTests.Reflection.TypeExtensionsTests.IGenericInterface`1 more than once."));
     }
 
     [Test]
@@ -143,13 +145,15 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.TypeWithBaseInterface' "
-        + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IGenericInterface`1[T]' was expected."
-        + "\r\nParameter name: type")]
     public void BaseType ()
     {
-      TypeExtensions.GetAscribedGenericArguments (typeof (TypeWithBaseInterface), typeof (IGenericInterface<>));
+      Assert.That (
+          () => TypeExtensions.GetAscribedGenericArguments (typeof (TypeWithBaseInterface), typeof (IGenericInterface<>)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.TypeWithBaseInterface' "
+                  + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IGenericInterface`1[T]' was expected."
+                  + "\r\nParameter name: type"));
     }
   }
 }

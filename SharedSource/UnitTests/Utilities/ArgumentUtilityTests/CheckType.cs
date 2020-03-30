@@ -26,11 +26,12 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
   public class CheckType
   {
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg")]
     public void Fail_Type ()
     {
-      ArgumentUtility.CheckType<string> ("arg", 13);
+      Assert.That (
+          () => ArgumentUtility.CheckType<string> ("arg", 13),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg"));
     }
 
     [Test]

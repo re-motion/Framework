@@ -51,14 +51,14 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException),
-         ExpectedMessage = "The attribute 'Name' is missing in the configuration of the 'Provider' provider.")]
     public void GetAndRemoveNonEmptyStringAttribute_WithMissingAttributeAndRequired ()
     {
       StubExtendedProvider provider = new StubExtendedProvider ("Provider", new NameValueCollection ());
       NameValueCollection config = new NameValueCollection ();
-
-      provider.GetAndRemoveNonEmptyStringAttribute (config, "Name", "Provider", true);
+      Assert.That (
+          () => provider.GetAndRemoveNonEmptyStringAttribute (config, "Name", "Provider", true),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo ("The attribute 'Name' is missing in the configuration of the 'Provider' provider."));
     }
 
     [Test]
@@ -85,15 +85,15 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException),
-         ExpectedMessage = "The attribute 'Name' is missing in the configuration of the 'Provider' provider.")]
     public void GetAndRemoveNonEmptyStringAttribute_WithEmptyAttributeAndNotRequired ()
     {
       StubExtendedProvider provider = new StubExtendedProvider ("Provider", new NameValueCollection ());
       NameValueCollection config = new NameValueCollection ();
       config.Add ("Name", string.Empty);
-
-      provider.GetAndRemoveNonEmptyStringAttribute (config, "Name", "Provider", false);
+      Assert.That (
+          () => provider.GetAndRemoveNonEmptyStringAttribute (config, "Name", "Provider", false),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo ("The attribute 'Name' is missing in the configuration of the 'Provider' provider."));
     }
   }
 }

@@ -52,14 +52,15 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Metadat
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The type of the property 'AccessControlList', declared on "
-        + "'Remotion.SecurityManager.Domain.AccessControl.AccessControlEntry, Remotion.SecurityManager', is not supported by the "
-        + "'Remotion.SecurityManager.Domain.SearchInfrastructure.Metadata.AbstractRoleDefinitionPropertyTypeSearchService' type.",
-        MatchType = MessageMatch.Contains)]
     public void Search_WithInvalidProperty ()
     {
-      _searchService.Search (null, _property, null);
+      Assert.That (
+          () => _searchService.Search (null, _property, null),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "The type of the property 'AccessControlList', declared on "
+                  + "'Remotion.SecurityManager.Domain.AccessControl.AccessControlEntry, Remotion.SecurityManager', is not supported by the "
+                  + "'Remotion.SecurityManager.Domain.SearchInfrastructure.Metadata.AbstractRoleDefinitionPropertyTypeSearchService' type."));
     }
   }
 }

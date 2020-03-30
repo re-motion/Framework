@@ -65,29 +65,32 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), 
-        ExpectedMessage = "Cannot initialize row edit mode: The BocList 'BocList' does not have a Value.")]
     public void SwitchRowIntoEditModeWithValueNull ()
     {
       Invoker.InitRecursive();
       EditModeHost.Value = null;
-      Controller.SwitchRowIntoEditMode (0, Columns);
+      Assert.That (
+          () => Controller.SwitchRowIntoEditMode (0, Columns),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Cannot initialize row edit mode: The BocList 'BocList' does not have a Value."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void SwitchRowIntoEditModeWithIndexToHigh ()
     {
       Invoker.InitRecursive();
-      Controller.SwitchRowIntoEditMode (5, Columns);
+      Assert.That (
+          () => Controller.SwitchRowIntoEditMode (5, Columns),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void SwitchRowIntoEditModeWithIndexToLow ()
     {
       Invoker.InitRecursive();
-      Controller.SwitchRowIntoEditMode (-1, Columns);
+      Assert.That (
+          () => Controller.SwitchRowIntoEditMode (-1, Columns),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
@@ -654,28 +657,29 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
-        "Cannot create edit mode controls for the row with ID '6'. The BocList 'BocList' does not contain the row in its Value collection.")]
     public void EnsureEditModeRestoredWithMissingRow_ThrowsInvalidOperationException ()
     {
       Assert.That (Controller.IsRowEditModeActive, Is.False);
       ControllerInvoker.LoadControlState (CreateControlState (null, EditMode.RowEditMode, new List<string> { "6" }, false));
       Assert.That (Controller.IsRowEditModeActive, Is.True);
-
-      Controller.EnsureEditModeRestored (Columns);
+      Assert.That (
+          () => Controller.EnsureEditModeRestored (Columns),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot create edit mode controls for the row with ID '6'. The BocList 'BocList' does not contain the row in its Value collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), 
-        ExpectedMessage = "Cannot restore edit mode: The BocList 'BocList' does not have a Value.")]
     public void EnsureEditModeRestoredWithValueNull_ThrowsInvalidOperationException ()
     {
       Assert.That (Controller.IsRowEditModeActive, Is.False);
       ControllerInvoker.LoadControlState (CreateControlState (null, EditMode.RowEditMode, new List<string> { "6" }, false));
       Assert.That (Controller.IsRowEditModeActive, Is.True);
       EditModeHost.Value = null;
-
-      Controller.EnsureEditModeRestored (Columns);
+      Assert.That (
+          () => Controller.EnsureEditModeRestored (Columns),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Cannot restore edit mode: The BocList 'BocList' does not have a Value."));
     }
 
     [Test]
@@ -740,8 +744,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "Cannot remove rows while the BocList 'BocList' is in row edit mode. Call EndEditMode() before removing the rows.")]
     public void RemoveRows ()
     {
       Invoker.InitRecursive();
@@ -750,13 +752,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That (Controller.IsRowEditModeActive, Is.True);
       Assert.That (Controller.GetEditedRow().Index, Is.EqualTo (2));
       Assert.That (EditModeHost.Value.Count, Is.EqualTo (5));
-
-      Controller.RemoveRows (new IBusinessObject[] {Values[2]});
+      Assert.That (
+          () => Controller.RemoveRows (new IBusinessObject[] {Values[2]}),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot remove rows while the BocList 'BocList' is in row edit mode. Call EndEditMode() before removing the rows."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "Cannot remove rows while the BocList 'BocList' is in row edit mode. Call EndEditMode() before removing the rows.")]
     public void RemoveRow ()
     {
       Invoker.InitRecursive();
@@ -765,8 +768,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That (Controller.IsRowEditModeActive, Is.True);
       Assert.That (Controller.GetEditedRow().Index, Is.EqualTo (2));
       Assert.That (EditModeHost.Value.Count, Is.EqualTo (5));
-
-      Controller.RemoveRow (Values[2]);
+      Assert.That (
+          () => Controller.RemoveRow (Values[2]),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot remove rows while the BocList 'BocList' is in row edit mode. Call EndEditMode() before removing the rows."));
     }
 
     [Test]

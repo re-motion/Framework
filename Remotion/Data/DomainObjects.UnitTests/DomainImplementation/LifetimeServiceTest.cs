@@ -30,10 +30,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
   public class LifetimeServiceTest : ClientTransactionBaseTest
   {
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Mapping does not contain class 'System.Object'.")]
     public void NewObject_InvalidType ()
     {
-      LifetimeService.NewObject (TestableClientTransaction, typeof (object), ParamList.Empty);
+      Assert.That (
+          () => LifetimeService.NewObject (TestableClientTransaction, typeof (object), ParamList.Empty),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo ("Mapping does not contain class 'System.Object'."));
     }
 
     [Test]
@@ -54,11 +56,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage =
-      "Type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem' does not contain a constructor with the following signature: (Decimal).")]
     public void NewObject_WrongCtorArgs ()
     {
-      LifetimeService.NewObject (TestableClientTransaction, typeof (OrderItem), ParamList.Create (0m));
+      Assert.That (
+          () => LifetimeService.NewObject (TestableClientTransaction, typeof (OrderItem), ParamList.Create (0m)),
+          Throws.InstanceOf<MissingMethodException>()
+              .With.Message.EqualTo (
+                  "Type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem' does not contain a constructor with the following signature: (Decimal)."));
     }
 
     [Test]
@@ -81,11 +85,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void GetObject_IncludeDeleted_False ()
     {
       DomainObjectIDs.Order1.GetObject<Order> ().Delete();
-      LifetimeService.GetObject (TestableClientTransaction, DomainObjectIDs.Order1, false);
+      Assert.That (
+          () => LifetimeService.GetObject (TestableClientTransaction, DomainObjectIDs.Order1, false),
+          Throws.InstanceOf<ObjectDeletedException>());
     }
 
     [Test]

@@ -44,21 +44,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Missing default storage provider.", MatchType = MessageMatch.Contains)]
     public void GetStorageProviderDefinition_ClassWithoutStorageGroupType_NoDefaultStorageProviderDefinitionDefined ()
     {
       var finder = new StorageGroupBasedStorageProviderDefinitionFinder (_storageConfigurationWithoutDefaultProvider);
-
-      finder.GetStorageProviderDefinition ((Type) null, null);
+      Assert.That (
+          () => finder.GetStorageProviderDefinition ((Type) null, null),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Contains ("Missing default storage provider."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Missing default storage provider. Test", MatchType = MessageMatch.Contains)]
     public void GetStorageProviderDefinition_ClassWithoutStorageGroupType_NoDefaultStorageProviderDefinitionDefined_WithContext ()
     {
       var finder = new StorageGroupBasedStorageProviderDefinitionFinder (_storageConfigurationWithoutDefaultProvider);
-
-      finder.GetStorageProviderDefinition ((Type) null, "Test");
+      Assert.That (
+          () => finder.GetStorageProviderDefinition ((Type) null, "Test"),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Contains ("Missing default storage provider. Test"));
     }
 
     [Test]
@@ -71,22 +73,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Missing default storage provider.", MatchType = MessageMatch.Contains)]
     public void GetStorageProviderDefinition_ClassWithStorageGroupType_StorageGroupNotDefined_NoDefaultStorageProviderDefinitionDefined ()
     {
       var finder = new StorageGroupBasedStorageProviderDefinitionFinder (_storageConfigurationWithoutDefaultProvider);
-
-      finder.GetStorageProviderDefinition (typeof (StubStorageGroup1Attribute), null);
+      Assert.That (
+          () => finder.GetStorageProviderDefinition (typeof (StubStorageGroup1Attribute), null),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Contains ("Missing default storage provider."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = 
-        "Missing default storage provider. Test", MatchType = MessageMatch.Contains)]
     public void GetStorageProviderDefinition_ClassWithStorageGroupType_StorageGroupNotDefined_NoDefaultStorageProviderDefinitionDefined_WithContext ()
     {
       var finder = new StorageGroupBasedStorageProviderDefinitionFinder (_storageConfigurationWithoutDefaultProvider);
-
-      finder.GetStorageProviderDefinition (typeof (StubStorageGroup1Attribute), "Test");
+      Assert.That (
+          () => finder.GetStorageProviderDefinition (typeof (StubStorageGroup1Attribute), "Test"),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Contains ("Missing default storage provider. Test"));
     }
 
     [Test]

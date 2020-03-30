@@ -32,10 +32,13 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Assertion failed: Expression evaluates to false.")]
     public void TestIsTrueFails ()
     {
-      Assertion.IsTrue (false);
+      Assert.That (
+          () => Assertion.IsTrue (false),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Assertion failed: Expression evaluates to false."));
     }
 
     [Test]
@@ -45,10 +48,13 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Assertion failed: Expression evaluates to true.")]
     public void TestIsFalseFails ()
     {
-      Assertion.IsFalse (true);
+      Assert.That (
+          () => Assertion.IsFalse (true),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Assertion failed: Expression evaluates to true."));
     }
 
     [Test]
@@ -58,10 +64,13 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Assertion failed: Expression does not evaluate to a null reference.")]
     public void IsNull_False ()
     {
-      Assertion.IsNull ("x");
+      Assert.That (
+          () => Assertion.IsNull ("x"),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Assertion failed: Expression does not evaluate to a null reference."));
     }
 
     [Test]
@@ -72,11 +81,14 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Assertion failed: Expression does not evaluate to a null reference.")]
     public void IsNull_ValueType_False ()
     {
       int? value = 5;
-      Assertion.IsNull (value);
+      Assert.That (
+          () => Assertion.IsNull (value),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Assertion failed: Expression does not evaluate to a null reference."));
     }
 
     [Test]
@@ -86,10 +98,12 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "a")]
     public void IsNull_Message_False ()
     {
-      Assertion.IsNull ("x", "a");
+      Assert.That (
+          () => Assertion.IsNull ("x", "a"),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("a"));
     }
 
     [Test]
@@ -99,10 +113,12 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "a5b")]
     public void IsNull_Message_Args_False ()
     {
-      Assertion.IsNull ("x", "a{0}b", 5);
+      Assert.That (
+          () => Assertion.IsNull ("x", "a{0}b", 5),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("a5b"));
     }
 
     [Test]
@@ -116,10 +132,13 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Assertion failed: Expression evaluates to a null reference.")]
     public void IsNotNull_False ()
     {
-      Assertion.IsNotNull<object> (null);
+      Assert.That (
+          () => Assertion.IsNotNull<object> (null),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Assertion failed: Expression evaluates to a null reference."));
     }
 
     [Test]
@@ -131,11 +150,14 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Assertion failed: Expression evaluates to a null reference.")]
     public void IsNotNull_ValueType_False ()
     {
       int? value = null;
-      Assertion.IsNotNull (value);
+      Assert.That (
+          () => Assertion.IsNotNull (value),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Assertion failed: Expression evaluates to a null reference."));
     }
 
     [Test]
@@ -149,10 +171,12 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "a")]
     public void IsNotNull_Message_False ()
     {
-      Assertion.IsNotNull<object> (null, "a");
+      Assert.That (
+          () => Assertion.IsNotNull<object> (null, "a"),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("a"));
     }
 
 #if !DEBUG
@@ -170,10 +194,12 @@ namespace Remotion.UnitTests.Utilities
   [Ignore ("Skipped unless DEBUG build")]
 #endif
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "a")]
     public void DebugIsNotNull_Message_False ()
     {
-      Assertion.DebugIsNotNull<object> (null, "a");
+      Assert.That (
+          () => Assertion.DebugIsNotNull<object> (null, "a"),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("a"));
     }
 
     [Test]
@@ -187,10 +213,12 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "a5b")]
     public void IsNotNull_Message_Args_False ()
     {
-      Assertion.IsNotNull<object> (null, "a{0}b", 5);
+      Assert.That (
+          () => Assertion.IsNotNull<object> (null, "a{0}b", 5),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("a5b"));
     }
   }
 }

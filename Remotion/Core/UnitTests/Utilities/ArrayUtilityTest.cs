@@ -71,12 +71,13 @@ public class ArrayUtilityTest
     string[] res = ArrayUtility.Insert (s1, 4, "X");
     Assert.That (string.Concat (res), Is.EqualTo ("abcdX"));
   }
-  [ExpectedException (typeof (IndexOutOfRangeException))]
   [Test]
   public void TestInsertPastEnd()
   {
     string[] s1 = { "a", "b", "c", "d" };
-    ArrayUtility.Insert (s1, 5, "X");
+    Assert.That (
+        () => ArrayUtility.Insert (s1, 5, "X"),
+        Throws.InstanceOf<IndexOutOfRangeException>());
   }
 
   [Test]
@@ -88,10 +89,11 @@ public class ArrayUtilityTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentOutOfRangeException))]
   public void TestSkipFail ()
   {
-    ArrayUtility.Skip (new int[3], 4);
+    Assert.That (
+        () => ArrayUtility.Skip (new int[3], 4),
+        Throws.InstanceOf<ArgumentOutOfRangeException>());
   }
 }
 

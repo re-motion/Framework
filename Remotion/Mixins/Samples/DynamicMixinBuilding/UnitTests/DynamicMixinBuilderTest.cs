@@ -149,11 +149,14 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The declaring type of the method must be the "
-        + "target type.\r\nParameter name: method")]
     public void BuildMixinType_OverrideMethod_FromWrongType ()
     {
-      _builder.OverrideMethod (typeof (object).GetMethod ("ToString"));
+      Assert.That (
+          () => _builder.OverrideMethod (typeof (object).GetMethod ("ToString")),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The declaring type of the method must be the "
+                  + "target type.\r\nParameter name: method"));
     }
 
     [Test]

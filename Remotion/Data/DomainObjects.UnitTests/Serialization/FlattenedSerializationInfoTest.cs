@@ -50,8 +50,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: The serialization stream contains an object of type "
-        + "System.DateTime at position 0, but an object of type System.String was expected.")]
     public void InvalidDeserializedType ()
     {
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
@@ -59,12 +57,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       object[] data = serializationInfo.GetData ();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
-      deserializationInfo.GetValue<string> ();
+      Assert.That (
+          () => deserializationInfo.GetValue<string> (),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Object stream: The serialization stream contains an object of type "
+                  + "System.DateTime at position 0, but an object of type System.String was expected."));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: There is no more data in the serialization stream at "
-        + "position 0.")]
     public void InvalidDeserializedType_DifferentStream ()
     {
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
@@ -72,12 +73,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       object[] data = serializationInfo.GetData ();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
-      deserializationInfo.GetValue<string> ();
+      Assert.That (
+          () => deserializationInfo.GetValue<string> (),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Object stream: There is no more data in the serialization stream at "
+                  + "position 0."));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: The serialization stream contains a null value at "
-       + "position 0, but an object of type System.DateTime was expected.")]
     public void InvalidDeserializedType_WithNullAndValueType ()
     {
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
@@ -85,19 +89,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       object[] data = serializationInfo.GetData ();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
-      deserializationInfo.GetValue<DateTime> ();
+      Assert.That (
+          () => deserializationInfo.GetValue<DateTime> (),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Object stream: The serialization stream contains a null value at "
+                  + "position 0, but an object of type System.DateTime was expected."));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: There is no more data in the serialization stream at "
-        + "position 0.")]
     public void InvalidNumberOfDeserializedItems ()
     {
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
       object[] data = serializationInfo.GetData ();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
-      deserializationInfo.GetValue<string> ();
+      Assert.That (
+          () => deserializationInfo.GetValue<string> (),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Object stream: There is no more data in the serialization stream at "
+                  + "position 0."));
     }
 
     [Test]
@@ -117,8 +129,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: The serialization stream contains an object of type "
-        + "System.String at position 0, but an object of type System.Int32 was expected.")]
     public void InvalidArrayType ()
     {
       object[] array1 = new object[] { "Foo", 1, 3.0 };
@@ -128,7 +138,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       object[] data = serializationInfo.GetData ();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
-      deserializationInfo.GetArray<int> ();
+      Assert.That (
+          () => deserializationInfo.GetArray<int> (),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Object stream: The serialization stream contains an object of type "
+                  + "System.String at position 0, but an object of type System.Int32 was expected."));
     }
 
     [Test]
@@ -154,8 +169,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: The serialization stream contains an object of type "
-        + "System.String at position 0, but an object of type System.Int32 was expected.")]
     public void InvalidCollectionType ()
     {
       List<object> list = new List<object> (new object[] { "Foo", 1, 3.0 });
@@ -166,13 +179,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       List<int> deserializedList1 = new List<int> ();
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
-      deserializationInfo.FillCollection (deserializedList1);
+      Assert.That (
+          () => deserializationInfo.FillCollection (deserializedList1),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Object stream: The serialization stream contains an object of type "
+                  + "System.String at position 0, but an object of type System.Int32 was expected."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Type 'Remotion.Data.DomainObjects.UnitTests.Serialization.FlattenedSerializableWithoutCtorStub' "
-        + "does not contain a public or non-public constructor accepting a FlattenedDeserializationInfo as its sole argument.")]
     public void MissingDeserializationCtor ()
     {
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo();
@@ -180,7 +195,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       object[] data = serializationInfo.GetData();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
-      deserializationInfo.GetValue<FlattenedSerializableWithoutCtorStub>();
+      Assert.That (
+          () => deserializationInfo.GetValue<FlattenedSerializableWithoutCtorStub>(),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Type 'Remotion.Data.DomainObjects.UnitTests.Serialization.FlattenedSerializableWithoutCtorStub' "
+                  + "does not contain a public or non-public constructor accepting a FlattenedDeserializationInfo as its sole argument."));
     }
 
     [Test]
@@ -236,8 +256,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: The serialization stream contains an object of type "
-        + "System.DateTime at position 1, but an object of type System.String was expected.")]
     public void HandlesWithInvalidType ()
     {
       DateTime dt1 = DateTime.MinValue;
@@ -250,7 +268,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
       deserializationInfo.GetValueForHandle<DateTime> ();
-      deserializationInfo.GetValueForHandle<string> ();
+      Assert.That (
+          () => deserializationInfo.GetValueForHandle<string> (),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Object stream: The serialization stream contains an object of type "
+                  + "System.DateTime at position 1, but an object of type System.String was expected."));
     }
 
     [Test]
@@ -328,7 +351,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The serialized data contains a cycle, this is not supported.")]
     public void FlattenedSerializableHandles_RecursiveHandles ()
     {
       FlattenedSerializableStub stub1 = new FlattenedSerializableStub ("begone, foul fiend", 123);
@@ -341,7 +363,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       object[] data = serializationInfo.GetData ();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
-      deserializationInfo.GetValueForHandle<FlattenedSerializableStub> ();
+      Assert.That (
+          () => deserializationInfo.GetValueForHandle<FlattenedSerializableStub> (),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "The serialized data contains a cycle, this is not supported."));
       // The following would be expected if this worked
       //FlattenedSerializableStub deserializedStub1 = deserializationInfo.GetValueForHandle<FlattenedSerializableStub> ();
       //FlattenedSerializableStub deserializedStub2 = deserializedStub1.Data3;
@@ -427,39 +453,48 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot signal DeserializationFinished when there is still integer data"
-        + " left to deserialize.")]
     public void SignalDeserializationFinished_BeforeIntStreamFinished ()
     {
       var serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddIntValue (1);
 
       var deserializationInfo = new FlattenedDeserializationInfo (serializationInfo.GetData ());
-      deserializationInfo.SignalDeserializationFinished ();
+      Assert.That (
+          () => deserializationInfo.SignalDeserializationFinished (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot signal DeserializationFinished when there is still integer data"
+                  + " left to deserialize."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot signal DeserializationFinished when there is still boolean data"
-        + " left to deserialize.")]
     public void SignalDeserializationFinished_BeforeBoolStreamFinished ()
     {
       var serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddBoolValue (true);
 
       var deserializationInfo = new FlattenedDeserializationInfo (serializationInfo.GetData ());
-      deserializationInfo.SignalDeserializationFinished ();
+      Assert.That (
+          () => deserializationInfo.SignalDeserializationFinished (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot signal DeserializationFinished when there is still boolean data"
+                  + " left to deserialize."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot signal DeserializationFinished when there is still object data"
-        + " left to deserialize.")]
     public void SignalDeserializationFinished_BeforeObjectStreamFinished ()
     {
       var serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddValue (DateTime.Now);
 
       var deserializationInfo = new FlattenedDeserializationInfo (serializationInfo.GetData ());
-      deserializationInfo.SignalDeserializationFinished ();
+      Assert.That (
+          () => deserializationInfo.SignalDeserializationFinished (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot signal DeserializationFinished when there is still object data"
+                  + " left to deserialize."));
     }
   }
 }

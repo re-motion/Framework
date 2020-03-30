@@ -81,12 +81,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (UnmappedItemException))]
     public void ResolveSimpleTableInfo_NoDomainObject_ThrowsException ()
     {
       var simpleTableInfo = new ResolvedSimpleTableInfo(typeof (Student), "StudentTable", "StudentTableAlias");
-
-      _resolver.ResolveSimpleTableInfo (simpleTableInfo, _generator);
+      Assert.That (
+          () => _resolver.ResolveSimpleTableInfo (simpleTableInfo, _generator),
+          Throws.InstanceOf<UnmappedItemException>());
     }
 
     [Test]
@@ -103,12 +103,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (UnmappedItemException))]
     public void ResolveTableInfo_NoDomainObject_ThrowsException ()
     {
       var unresolvedTableInfo = new UnresolvedTableInfo (typeof (Student));
-
-      _resolver.ResolveTableInfo (unresolvedTableInfo, _generator);
+      Assert.That (
+          () => _resolver.ResolveTableInfo (unresolvedTableInfo, _generator),
+          Throws.InstanceOf<UnmappedItemException>());
     }
 
     [Test]
@@ -163,36 +163,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (UnmappedItemException), ExpectedMessage = 
-        "The type 'Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.IMixinAddingPersistentProperties' "
-        + "does not identify a queryable table.")]
     public void ResolveJoinInfo_UnknownType ()
     {
       var entityExpression = CreateFakeEntityExpression (typeof (IMixinAddingPersistentProperties));
       var memberInfo = typeof (IMixinAddingPersistentProperties).GetProperty ("RelationProperty");
       var unresolvedJoinInfo = new UnresolvedJoinInfo (entityExpression, memberInfo, JoinCardinality.One);
-
-      _resolver.ResolveJoinInfo (unresolvedJoinInfo, _generator);
+      Assert.That (
+          () => _resolver.ResolveJoinInfo (unresolvedJoinInfo, _generator),
+          Throws.InstanceOf<UnmappedItemException>()
+              .With.Message.EqualTo (
+                  "The type 'Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.IMixinAddingPersistentProperties' "
+                  + "does not identify a queryable table."));
     }
 
     [Test]
-    [ExpectedException (typeof (UnmappedItemException), ExpectedMessage = "The member 'Order.OrderNumber' does not identify a relation.")]
     public void ResolveJoinInfo_NoRelation_CardinalityOne_ThrowsException ()
     {
       var entityExpression = CreateFakeEntityExpression (typeof (Order));
       var unresolvedJoinInfo = new UnresolvedJoinInfo (entityExpression, typeof (Order).GetProperty ("OrderNumber"), JoinCardinality.One);
-
-      _resolver.ResolveJoinInfo (unresolvedJoinInfo, _generator);
+      Assert.That (
+          () => _resolver.ResolveJoinInfo (unresolvedJoinInfo, _generator),
+          Throws.InstanceOf<UnmappedItemException>()
+              .With.Message.EqualTo (
+                  "The member 'Order.OrderNumber' does not identify a relation."));
     }
 
     [Test]
-    [ExpectedException (typeof (UnmappedItemException), ExpectedMessage = "The member 'Student.Scores' does not identify a relation.")]
     public void ResolveJoinInfo_NoRelation_CardinalityMany_ThrowsExcpetion ()
     {
       var entityExpression = CreateFakeEntityExpression (typeof (Order));
       var unresolvedJoinInfo = new UnresolvedJoinInfo (entityExpression, typeof (Student).GetProperty ("Scores"), JoinCardinality.Many);
-
-      _resolver.ResolveJoinInfo (unresolvedJoinInfo, _generator);
+      Assert.That (
+          () => _resolver.ResolveJoinInfo (unresolvedJoinInfo, _generator),
+          Throws.InstanceOf<UnmappedItemException>()
+              .With.Message.EqualTo (
+                  "The member 'Student.Scores' does not identify a relation."));
     }
 
     [Test]
@@ -338,46 +343,48 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (UnmappedItemException),
-        ExpectedMessage = "The type 'Remotion.Data.DomainObjects.DomainObject' does not identify a queryable table.")]
     public void ResolveMemberExpression_UnmappedDeclaringType_ThrowsUnmappedItemException ()
     {
       var property = typeof (Student).GetProperty ("First");
       var entityExpression = CreateFakeEntityExpression (typeof (DomainObject));
-
-      _resolver.ResolveMemberExpression (entityExpression, property);
+      Assert.That (
+          () => _resolver.ResolveMemberExpression (entityExpression, property),
+          Throws.InstanceOf<UnmappedItemException>()
+              .With.Message.EqualTo ("The type 'Remotion.Data.DomainObjects.DomainObject' does not identify a queryable table."));
     }
 
     [Test]
-    [ExpectedException (typeof (UnmappedItemException),
-        ExpectedMessage = "The member 'Order.NotInMapping' does not have a queryable database mapping.")]
     public void ResolveMemberExpression_UnmappedProperty_ThrowsUnmappedItemException ()
     {
       var property = typeof (Order).GetProperty ("NotInMapping");
       var entityExpression = CreateFakeEntityExpression (typeof (Order));
-
-      _resolver.ResolveMemberExpression (entityExpression, property);
+      Assert.That (
+          () => _resolver.ResolveMemberExpression (entityExpression, property),
+          Throws.InstanceOf<UnmappedItemException>()
+              .With.Message.EqualTo ("The member 'Order.NotInMapping' does not have a queryable database mapping."));
     }
 
     [Test]
-    [ExpectedException (typeof (UnmappedItemException),
-        ExpectedMessage = "The member 'Order.OriginalCustomer' does not have a queryable database mapping.")]
     public void ResolveMemberExpression_UnmappedRelationMember ()
     {
       var property = typeof (Order).GetProperty ("OriginalCustomer");
       var entityExpression = CreateFakeEntityExpression (typeof (Order));
-
-      _resolver.ResolveMemberExpression (entityExpression, property);
+      Assert.That (
+          () => _resolver.ResolveMemberExpression (entityExpression, property),
+          Throws.InstanceOf<UnmappedItemException>()
+              .With.Message.EqualTo ("The member 'Order.OriginalCustomer' does not have a queryable database mapping."));
     }
 
     [Test]
-    [ExpectedException (typeof (UnmappedItemException), ExpectedMessage = "The member 'Order.NotInMapping' does not identify a mapped property.")]
     public void ResolveMemberExpression_OnColumn_WithUnmappedProperty ()
     {
       var property = typeof (Order).GetProperty ("NotInMapping");
       var columnExpression = new SqlColumnDefinitionExpression (typeof (string), "o", "Name", false);
-
-      _resolver.ResolveMemberExpression (columnExpression, property);
+      Assert.That (
+          () => _resolver.ResolveMemberExpression (columnExpression, property),
+          Throws.InstanceOf<UnmappedItemException>()
+              .With.Message.EqualTo (
+                  "The member 'Order.NotInMapping' does not identify a mapped property."));
     }
 
     [Test]
@@ -400,11 +407,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (UnmappedItemException))]
     public void ResolveTypeCheck_NoDomainTypeWithDifferentDesiredType ()
     {
       var sqlEntityExpression = CreateFakeEntityExpression (typeof (object));
-      _resolver.ResolveTypeCheck (sqlEntityExpression, typeof (Student));
+      Assert.That (
+          () => _resolver.ResolveTypeCheck (sqlEntityExpression, typeof (Student)),
+          Throws.InstanceOf<UnmappedItemException>());
     }
 
     [Test]

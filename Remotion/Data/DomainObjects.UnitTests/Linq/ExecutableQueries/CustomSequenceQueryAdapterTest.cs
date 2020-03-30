@@ -37,13 +37,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Only custom queries can be used to load custom results.\r\nParameter name: query")]
     public void Initialization_QueryTypeNotCustom ()
     {
       _queryStub.Stub (stub => stub.QueryType).Return (QueryType.Collection);
-
-      new CustomSequenceQueryAdapter<string> (_queryStub, _resultConversion);
+      Assert.That (
+          () => new CustomSequenceQueryAdapter<string> (_queryStub, _resultConversion),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Only custom queries can be used to load custom results.\r\nParameter name: query"));
     }
 
     [Test]

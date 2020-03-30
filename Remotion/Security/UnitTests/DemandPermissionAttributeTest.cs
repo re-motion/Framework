@@ -31,21 +31,25 @@ namespace Remotion.Security.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Enumerated Type 'Remotion.Security.UnitTests.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
-        + "Valid access types must have the Remotion.Security.AccessTypeAttribute applied.\r\nParameter name: accessType")]
     public void RejectAccessTypeWithoutAccessTypeAttribute ()
     {
-      new DemandPermissionAttribute (TestAccessTypesWithoutAccessTypeAttribute.First);
+      Assert.That (
+          () => new DemandPermissionAttribute (TestAccessTypesWithoutAccessTypeAttribute.First),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Enumerated Type 'Remotion.Security.UnitTests.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
+                  + "Valid access types must have the Remotion.Security.AccessTypeAttribute applied.\r\nParameter name: accessType"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Item 0 of parameter 'accessTypes' has the type 'Remotion.Security.UnitTests.SampleDomain.SimpleType' instead of 'System.Enum'."
-        + "\r\nParameter name: accessTypes")]
     public void RejectOtherObjectTypes ()
     {
-      new DemandPermissionAttribute (new SimpleType());
+      Assert.That (
+          () => new DemandPermissionAttribute (new SimpleType()),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Item 0 of parameter 'accessTypes' has the type 'Remotion.Security.UnitTests.SampleDomain.SimpleType' instead of 'System.Enum'."
+                  + "\r\nParameter name: accessTypes"));
     }
 
     [Test]

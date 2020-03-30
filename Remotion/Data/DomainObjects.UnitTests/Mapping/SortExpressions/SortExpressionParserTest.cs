@@ -87,29 +87,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "SortExpression 'OrderTicket' cannot be parsed: The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' is a "
-        + "virtual relation end point. SortExpressions can only contain relation end points if the object to be sorted contains the foreign key.")]
     public void Parse_WithVirtualRelationEndPoint ()
     {
       var orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Order));
       var parser = new SortExpressionParser (orderClassDefinition);
 
       var sortExpression = "OrderTicket";
-
-      parser.Parse (sortExpression);
+      Assert.That (
+          () => parser.Parse (sortExpression),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "SortExpression 'OrderTicket' cannot be parsed: The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' is a "
+                  + "virtual relation end point. SortExpressions can only contain relation end points if the object to be sorted contains the foreign key."));
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "SortExpression 'UnknownProduct' cannot be parsed: 'UnknownProduct' is not a valid mapped property name. Expected the .NET property name of "
-        + "a property declared by the 'OrderItem' class or its base classes. Alternatively, to resolve ambiguities or to use a property declared by a "
-        + "mixin or a derived class of 'OrderItem', the full unique re-store property identifier can be specified.")]
     public void Parse_WithUnknownPropertyName ()
     {
       var sortExpression = "UnknownProduct";
-
-      _parser.Parse (sortExpression);
+      Assert.That (
+          () => _parser.Parse (sortExpression),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "SortExpression 'UnknownProduct' cannot be parsed: 'UnknownProduct' is not a valid mapped property name. Expected the .NET property name of "
+                  + "a property declared by the 'OrderItem' class or its base classes. Alternatively, to resolve ambiguities or to use a property declared by a "
+                  + "mixin or a derived class of 'OrderItem', the full unique re-store property identifier can be specified."));
     }
 
     [Test]
@@ -173,24 +175,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = 
-        "SortExpression 'Product unknown' cannot be parsed: 'unknown' is not a valid sort order. Expected 'asc' or 'desc'.")]
     public void Parse_WithOrderSpecification_Unknown ()
     {
       var sortExpression = "Product unknown";
-
-      _parser.Parse (sortExpression);
+      Assert.That (
+          () => _parser.Parse (sortExpression),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "SortExpression 'Product unknown' cannot be parsed: 'unknown' is not a valid sort order. Expected 'asc' or 'desc'."));
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = 
-        "SortExpression 'Product asc asc' cannot be parsed: Expected one or two parts (a property name and an optional identifier), found 3 parts "
-        + "instead.")]
     public void Parse_WithTooManyWords ()
     {
       var sortExpression = "Product asc asc";
-
-      _parser.Parse (sortExpression);
+      Assert.That (
+          () => _parser.Parse (sortExpression),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "SortExpression 'Product asc asc' cannot be parsed: Expected one or two parts (a property name and an optional identifier), found 3 parts "
+                  + "instead."));
     }
 
     [Test]

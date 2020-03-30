@@ -493,19 +493,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The relations of object 'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid' cannot be unloaded.\r\n"
-        + "The opposite relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of relation end-point "
-        + "'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' has "
-        + "changed. Non-virtual end-points that are part of changed relations cannot be unloaded.")]
     public void UnloadData_ChangedCollection ()
     {
       DomainObjectIDs.OrderItem1.GetObject<OrderItem>().Order.OrderItems.Add (OrderItem.NewObject ());
       Assert.That (TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.OrderItem1].State.IsUnchanged, Is.True);
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
       Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID).HasChanged, Is.True);
-
-      UnloadService.UnloadData (TestableClientTransaction, DomainObjectIDs.OrderItem1);
+      Assert.That (
+          () => UnloadService.UnloadData (TestableClientTransaction, DomainObjectIDs.OrderItem1),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The relations of object 'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid' cannot be unloaded.\r\n"
+                  + "The opposite relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of relation end-point "
+                  + "'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' has "
+                  + "changed. Non-virtual end-points that are part of changed relations cannot be unloaded."));
     }
 
     [Test]

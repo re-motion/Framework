@@ -221,7 +221,6 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Supper?")]
     public void Apply_InvalidOperation ()
     {
       MixAttribute attribute = new MixAttribute (typeof (object), typeof (float));
@@ -241,7 +240,10 @@ namespace Remotion.Mixins.UnitTests.Core
           .Throw (new InvalidOperationException ("Supper?"));
 
       _mockRepository.ReplayAll ();
-      attribute.Apply (_configurationBuilderMock, _assembly);
+      Assert.That (
+          () => attribute.Apply (_configurationBuilderMock, _assembly),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo ("Supper?"));
     }
     
     [Test]

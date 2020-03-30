@@ -46,24 +46,27 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void Commit ()
     {
-      _strategy.Commit();
+      Assert.That (
+          () => _strategy.Commit(),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void Rollback ()
     {
-      _strategy.Rollback();
+      Assert.That (
+          () => _strategy.Rollback(),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void Reset ()
     {
-      _strategy.Reset();
+      Assert.That (
+          () => _strategy.Reset(),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]

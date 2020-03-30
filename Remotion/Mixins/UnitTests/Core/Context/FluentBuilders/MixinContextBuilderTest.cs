@@ -79,11 +79,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin Remotion.Mixins.UnitTests.Core.TestDomain.BT2Mixin1 already has a "
-        + "dependency on type Remotion.Mixins.UnitTests.Core.TestDomain.BT1Mixin1.", MatchType = MessageMatch.Contains)]
     public void WithDependency_Twice ()
     {
-      _mixinBuilder.WithDependency (typeof (BT1Mixin1)).WithDependency (typeof (BT1Mixin1));
+      Assert.That (
+          () => _mixinBuilder.WithDependency (typeof (BT1Mixin1)).WithDependency (typeof (BT1Mixin1)),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "The mixin Remotion.Mixins.UnitTests.Core.TestDomain.BT2Mixin1 already has a "
+                  + "dependency on type Remotion.Mixins.UnitTests.Core.TestDomain.BT1Mixin1."));
     }
 
     [Test]
@@ -208,21 +211,27 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Mixin type 'Remotion.Mixins.UnitTests.Core.TestDomain.BT2Mixin1' applied "
-        + "to target class 'System.Object' suppresses itself.")]
     public void ReplaceMixin_SelfSuppressor ()
     {
-      _mixinBuilder.ReplaceMixin (_mixinBuilder.MixinType);
+      Assert.That (
+          () => _mixinBuilder.ReplaceMixin (_mixinBuilder.MixinType),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Mixin type 'Remotion.Mixins.UnitTests.Core.TestDomain.BT2Mixin1' applied "
+                  + "to target class 'System.Object' suppresses itself."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Mixin type "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixin`1[System.Object]' applied "
-        + "to target class 'System.Object' suppresses itself.")]
     public void ReplaceMixin_SelfSuppressor_GenericDefinition ()
     {
       var mixinBuilder = new MixinContextBuilder (_parentBuilderMock, typeof (GenericMixin<object>), _origin);
-      mixinBuilder.ReplaceMixin (typeof (GenericMixin<>));
+      Assert.That (
+          () => mixinBuilder.ReplaceMixin (typeof (GenericMixin<>)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Mixin type "
+                  + "'Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixin`1[System.Object]' applied "
+                  + "to target class 'System.Object' suppresses itself."));
     }
 
     [Test]

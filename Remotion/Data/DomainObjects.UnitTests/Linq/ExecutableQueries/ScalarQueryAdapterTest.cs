@@ -37,13 +37,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Only scalar queries can be used to load scalar results.\r\nParameter name: query")]
     public void Initialization_QueryTypeNotScalar ()
     {
       _queryStub.Stub (stub => stub.QueryType).Return (QueryType.Collection);
-
-      new ScalarQueryAdapter<string> (_queryStub, _resultConversion);
+      Assert.That (
+          () => new ScalarQueryAdapter<string> (_queryStub, _resultConversion),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Only scalar queries can be used to load scalar results.\r\nParameter name: query"));
     }
 
     [Test]

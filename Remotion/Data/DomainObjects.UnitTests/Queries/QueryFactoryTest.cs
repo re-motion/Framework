@@ -176,15 +176,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The given queryable must stem from an instance of DomainObjectQueryable. Instead, "
-                          +
-                          "it is of type 'EnumerableQuery`1', with a query provider of type 'EnumerableQuery`1'. Be sure to use QueryFactory.CreateLinqQuery to "
-                          + "create the queryable instance, and only use standard query methods on it.\r\nParameter name: queryable")]
     public void CreateQuery_FromLinqQuery_InvalidQueryable ()
     {
       var queryable = new int[0].AsQueryable();
-      QueryFactory.CreateQuery<int> ("<dynamic query>", queryable);
+      Assert.That (
+          () => QueryFactory.CreateQuery<int> ("<dynamic query>", queryable),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The given queryable must stem from an instance of DomainObjectQueryable. Instead, "
+                  +
+                  "it is of type 'EnumerableQuery`1', with a query provider of type 'EnumerableQuery`1'. Be sure to use QueryFactory.CreateLinqQuery to "
+                  + "create the queryable instance, and only use standard query methods on it.\r\nParameter name: queryable"));
     }
 
     [Test]

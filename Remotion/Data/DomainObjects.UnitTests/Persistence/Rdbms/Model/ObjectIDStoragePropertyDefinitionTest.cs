@@ -210,25 +210,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage =
-      "Incorrect database value encountered. The value read from 'Column2' must contain null.")]
     public void CombineValue_ValueIsNullAndClassIDIsNotNull_ThrowsException ()
     {
       _classIDPropertyStub.Stub (stub => stub.GetColumns ()).Return (new[] { _classIDColumnDefinition });
       _classIDPropertyStub.Stub (stub => stub.CombineValue (_columnValueProviderStub)).Return ("Order");
-
-      _objectIDStoragePropertyDefinition.CombineValue (_columnValueProviderStub);
+      Assert.That (
+          () => _objectIDStoragePropertyDefinition.CombineValue (_columnValueProviderStub),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo ("Incorrect database value encountered. The value read from 'Column2' must contain null."));
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage =
-      "Incorrect database value encountered. The value read from 'Column2' must not contain null.")]
     public void CombineValue_ValueIsNotNullAndClassIDIsNull_ThrowsException ()
     {
       _classIDPropertyStub.Stub (stub => stub.GetColumns ()).Return (new[] { _classIDColumnDefinition });
       _valuePropertyStub.Stub (stub => stub.CombineValue (_columnValueProviderStub)).Return (DomainObjectIDs.Order1.Value);
-
-      _objectIDStoragePropertyDefinition.CombineValue (_columnValueProviderStub);
+      Assert.That (
+          () => _objectIDStoragePropertyDefinition.CombineValue (_columnValueProviderStub),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo ("Incorrect database value encountered. The value read from 'Column2' must not contain null."));
     }
 
     [Test]

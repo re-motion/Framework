@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -48,13 +48,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = 
-        "Queries selecting collections are not supported because SQL is not well-suited to returning collections.", 
-        MatchType = MessageMatch.Contains)]
     public void GenerateSql_Collection ()
     {
       var expression = Expression.Constant (new Order[] { });
-      ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql (expression, _commandBuilder, _stageMock, _someSetOperationsMode);
+      Assert.That (
+          () => ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql (expression, _commandBuilder, _stageMock, _someSetOperationsMode),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.Contains ("Queries selecting collections are not supported because SQL is not well-suited to returning collections."));
     }
 
     [Test]

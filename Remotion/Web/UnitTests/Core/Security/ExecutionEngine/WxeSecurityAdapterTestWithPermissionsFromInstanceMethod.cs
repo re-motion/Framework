@@ -99,7 +99,6 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
     public void CheckAccess_AccessDenied ()
     {
       ExpectObjectSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Read, false);
@@ -107,8 +106,9 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (thisObject);
       function.ThisObject = thisObject; // Required because in this test the WxeFunction has not started executing.
       _mocks.ReplayAll ();
-
-      _securityAdapter.CheckAccess (function);
+      Assert.That (
+          () => _securityAdapter.CheckAccess (function),
+          Throws.InstanceOf<PermissionDeniedException>());
     }
 
     [Test]

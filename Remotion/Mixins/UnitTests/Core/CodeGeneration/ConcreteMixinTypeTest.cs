@@ -60,11 +60,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     }
 
     [Test]
-    [ExpectedException (typeof (KeyNotFoundException), ExpectedMessage = "No public wrapper was generated for method 'System.Object.MemberwiseClone'.")]
     public void GetPubliclyCallableMixinMethod_NotFound ()
     {
       var method = typeof (StringBuilder).GetMethod ("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
-      _concreteMixinType.GetPubliclyCallableMixinMethod (method);
+      Assert.That (
+          () => _concreteMixinType.GetPubliclyCallableMixinMethod (method),
+          Throws.InstanceOf<KeyNotFoundException>()
+              .With.Message.EqualTo (
+                  "No public wrapper was generated for method 'System.Object.MemberwiseClone'."));
     }
 
     [Test]
@@ -74,11 +77,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     }
 
     [Test]
-    [ExpectedException (typeof (KeyNotFoundException), ExpectedMessage = "No override interface method was generated for method 'System.Object.ToString'.")]
     public void GetOverrideInterfaceMethod_NotFound ()
     {
       var method = typeof (object).GetMethod ("ToString");
-      _concreteMixinType.GetOverrideInterfaceMethod (method);
+      Assert.That (
+          () => _concreteMixinType.GetOverrideInterfaceMethod (method),
+          Throws.InstanceOf<KeyNotFoundException>()
+              .With.Message.EqualTo (
+                  "No override interface method was generated for method 'System.Object.ToString'."));
     }
 
   }

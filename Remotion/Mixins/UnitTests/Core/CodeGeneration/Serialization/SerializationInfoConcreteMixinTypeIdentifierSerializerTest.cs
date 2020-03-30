@@ -63,10 +63,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void AddOverriders_ClosedGeneric ()
     {
-      _serializer.AddOverriders (new HashSet<MethodInfo> { _genericMethod.MakeGenericMethod (typeof (int)) });
+      Assert.That (
+          () => _serializer.AddOverriders (new HashSet<MethodInfo> { _genericMethod.MakeGenericMethod (typeof (int)) }),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
@@ -81,10 +82,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void AddOverridden_ClosedGeneric ()
     {
-      _serializer.AddOverridden (new HashSet<MethodInfo> { _genericMethod.MakeGenericMethod (typeof (int)) });
+      Assert.That (
+          () => _serializer.AddOverridden (new HashSet<MethodInfo> { _genericMethod.MakeGenericMethod (typeof (int)) }),
+          Throws.InstanceOf<NotSupportedException>());
     }
   }
 }

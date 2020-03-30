@@ -836,18 +836,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void CommitState_DiscardedDataContainer_Throws ()
     {
-      _discardedDataContainer.CommitState ();
+      Assert.That (
+          () => _discardedDataContainer.CommitState (),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Deleted data containers cannot be committed, they have to be discarded.")]
     public void CommitState_DeletedDataContainer_Throws ()
     {
-      _deletedDataContainer.CommitState ();
+      Assert.That (
+          () => _deletedDataContainer.CommitState (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Deleted data containers cannot be committed, they have to be discarded."));
     }
 
     [Test]
@@ -913,18 +915,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void RollbackState_DiscardedDataContainer_Throws ()
     {
-      _discardedDataContainer.RollbackState ();
+      Assert.That (
+          () => _discardedDataContainer.RollbackState (),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "New data containers cannot be rolled back, they have to be discarded.")]
     public void RollbackState_NewDataContainer_Throws ()
     {
-      _newDataContainer.RollbackState ();
+      Assert.That (
+          () => _newDataContainer.RollbackState (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("New data containers cannot be rolled back, they have to be discarded."));
     }
 
     [Test]
@@ -945,18 +949,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void Delete_DiscardedDataContainer_Throws ()
     {
-      _discardedDataContainer.Delete ();
+      Assert.That (
+          () => _discardedDataContainer.Delete (),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "New data containers cannot be deleted, they have to be discarded.")]
     public void Delete_NewDataContainer_Throws ()
     {
-      _newDataContainer.Delete ();
+      Assert.That (
+          () => _newDataContainer.Delete (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("New data containers cannot be deleted, they have to be discarded."));
     }
 
     [Test]
@@ -1115,15 +1121,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Cannot set this data container's property values from 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'; the data containers do not "
-        + "have the same class definition.\r\nParameter name: source")]
     public void SetDataFromSubTransaction_InvalidDefinition ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order> ().InternalDataContainer;
       var targetDataContainer = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ().InternalDataContainer;
-
-      targetDataContainer.SetPropertyDataFromSubTransaction (sourceDataContainer);
+      Assert.That (
+          () => targetDataContainer.SetPropertyDataFromSubTransaction (sourceDataContainer),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Cannot set this data container's property values from 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'; the data containers do not "
+                  + "have the same class definition.\r\nParameter name: source"));
     }
 
     [Test]
@@ -1221,38 +1228,50 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Only existing DataContainers can be marked as changed.")]
     public void MarkAsChangedThrowsWhenNew ()
     {
       Order order = Order.NewObject();
       DataContainer dataContainer = order.InternalDataContainer;
-      dataContainer.MarkAsChanged();
+      Assert.That (
+          () => dataContainer.MarkAsChanged(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Only existing DataContainers can be marked as changed."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Only existing DataContainers can be marked as changed.")]
     public void MarkAsChangedThrowsWhenDeleted ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order> ();
       order.Delete();
       DataContainer dataContainer = order.InternalDataContainer;
-      dataContainer.MarkAsChanged();
+      Assert.That (
+          () => dataContainer.MarkAsChanged(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Only existing DataContainers can be marked as changed."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "DataContainer has not been registered with a transaction.")]
     public void ErrorWhenNoClientTransaction ()
     {
       DataContainer dc = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      Dev.Null = dc.ClientTransaction;
+      Assert.That (
+          () => Dev.Null = dc.ClientTransaction,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "DataContainer has not been registered with a transaction."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This DataContainer has not been associated with a DomainObject yet.")]
     public void DomainObject_NoneSet ()
     {
       var dc = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      Dev.Null = dc.DomainObject;
+      Assert.That (
+          () => Dev.Null = dc.DomainObject,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "This DataContainer has not been associated with a DomainObject yet."));
     }
 
     [Test]
@@ -1267,18 +1286,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given DomainObject has another ID than this DataContainer.\r\n"
-                                                                      + "Parameter name: domainObject")]
     public void SetDomainObject_InvalidID ()
     {
       var domainObject = DomainObjectIDs.Order3.GetObject<Order> ();
 
       var dc = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      dc.SetDomainObject (domainObject);
+      Assert.That (
+          () => dc.SetDomainObject (domainObject),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The given DomainObject has another ID than this DataContainer.\r\n"
+                  + "Parameter name: domainObject"));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This DataContainer has already been associated with a DomainObject.")]
     public void SetDomainObject_DomainObjectAlreadySet ()
     {
       var domainObject1 = DomainObjectIDs.Order1.GetObject<Order> ();
@@ -1286,7 +1307,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var dc = DataContainer.CreateNew (DomainObjectIDs.Order1);
       dc.SetDomainObject (domainObject1);
-      dc.SetDomainObject (domainObject2);
+      Assert.That (
+          () => dc.SetDomainObject (domainObject2),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "This DataContainer has already been associated with a DomainObject."));
     }
 
     [Test]
@@ -1329,13 +1354,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "This DataContainer has already been registered with a ClientTransaction.")]
     public void SetClientTransaction_Twice ()
     {
       var dc = DataContainer.CreateNew (DomainObjectIDs.Order1);
       DataContainerTestHelper.SetClientTransaction (dc, TestableClientTransaction);
-      DataContainerTestHelper.SetClientTransaction (dc, TestableClientTransaction);
+      Assert.That (
+          () => DataContainerTestHelper.SetClientTransaction (dc, TestableClientTransaction),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("This DataContainer has already been registered with a ClientTransaction."));
     }
 
     private void CheckStateNotification (DataContainer dataContainer, Action<DataContainer> action, DataContainerState expectedState)

@@ -171,7 +171,6 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Text")]
     public void Apply_InvalidOperation ()
     {
       UsesAttribute attribute = new UsesAttribute (typeof (string));
@@ -181,7 +180,10 @@ namespace Remotion.Mixins.UnitTests.Core
           .Throw (new InvalidOperationException ("Text"));
 
       _mockRepository.ReplayAll();
-      attribute.Apply (_configurationBuilderMock, _userType);
+      Assert.That (
+          () => attribute.Apply (_configurationBuilderMock, _userType),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo ("Text"));
     }
 
     private MixinContextOrigin CreateExpectedOrigin (UsesAttribute attribute, Type userType = null)

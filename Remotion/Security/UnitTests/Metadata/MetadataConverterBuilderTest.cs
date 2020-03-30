@@ -134,10 +134,13 @@ namespace Remotion.Security.UnitTests.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "You must specify at least a localization or a metadata converter.")]
     public void Create_ExceptionWithoutLocalizationAndMetadataConverter ()
     {
-      _converterBuilder.Create ();
+      Assert.That (
+          () => _converterBuilder.Create (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "You must specify at least a localization or a metadata converter."));
     }
   }
 }

@@ -391,13 +391,14 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  [ExpectedException (typeof (InvalidOperationException))]
   public void SelectInvisibleTab()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
     _tab1.IsVisible = false;
-    _tab1.IsSelected = true;
+    Assert.That (
+        () => _tab1.IsSelected = true,
+        Throws.InvalidOperationException);
   }
 
   [Test]
@@ -472,13 +473,14 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  [ExpectedException (typeof (InvalidOperationException))]
   public void SelectDisabledTab()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
     _tab1.IsDisabled = true;
-    _tab1.IsSelected = true;
+    Assert.That (
+        () => _tab1.IsSelected = true,
+        Throws.InvalidOperationException);
   }
 
   [Test]

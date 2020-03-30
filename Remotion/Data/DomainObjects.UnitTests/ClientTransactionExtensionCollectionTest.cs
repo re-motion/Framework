@@ -133,27 +133,31 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "An extension with key 'Name1' is already part of the collection.")]
     public void AddWithDuplicateKey ()
     {
       _collection.Add (_extension1);
 
       var extensionWithSameKey = MockRepository.GenerateStub<IClientTransactionExtension>();
       extensionWithSameKey.Stub (stub => stub.Key).Return (_extension1.Key);
-
-      _collection.Add (extensionWithSameKey);
+      Assert.That (
+          () => _collection.Add (extensionWithSameKey),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "An extension with key 'Name1' is already part of the collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "An extension with key 'Name1' is already part of the collection.")]
     public void InsertWithDuplicateName ()
     {
       _collection.Insert (0, _extension1);
 
       var extensionWithSameKey = MockRepository.GenerateStub<IClientTransactionExtension>();
       extensionWithSameKey.Stub (stub => stub.Key).Return (_extension1.Key);
-
-      _collection.Insert (0, extensionWithSameKey);
+      Assert.That (
+          () => _collection.Insert (0, extensionWithSameKey),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "An extension with key 'Name1' is already part of the collection."));
     }
 
     [Test]

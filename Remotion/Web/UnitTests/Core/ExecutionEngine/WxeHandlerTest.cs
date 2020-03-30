@@ -123,10 +123,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (WxeException))]
     public void GetFunctionTypeWithInvalidTypeName ()
     {
-      _wxeHandler.GetTypeByTypeName (_invalidFunctionTypeName);
+      Assert.That (
+          () => _wxeHandler.GetTypeByTypeName (_invalidFunctionTypeName),
+          Throws.InstanceOf<WxeException>());
     }
 
     [Test]
@@ -149,10 +150,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (WxeException))]
     public void GetFunctionTypeByPathWithoutMapping ()
     {
-      _wxeHandler.GetTypeByPath (@"/Test1.wxe");
+      Assert.That (
+          () => _wxeHandler.GetTypeByPath (@"/Test1.wxe"),
+          Throws.InstanceOf<WxeException>());
     }
 
     [Test]
@@ -252,14 +254,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (WxeTimeoutException))]
     public void RetrieveMissingFunctionStateWithNoType ()
     {
       NameValueCollection form = new NameValueCollection();
       form.Set (WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForMissingFunctionState);
       HttpContextHelper.SetForm (CurrentHttpContext, form);
-
-      _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForMissingFunctionState);
+      Assert.That (
+          () => _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForMissingFunctionState),
+          Throws.InstanceOf<WxeTimeoutException>());
     }
 
     [Test]
@@ -292,7 +294,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (WxeTimeoutException))]
     public void RetrieveMissingFunctionStateWithTypeFromMappingAndPostRequest ()
     {
       HttpContext context = HttpContextHelper.CreateHttpContext ("POST", "Test.wxe", null);
@@ -301,8 +302,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       HttpContextHelper.SetForm (context, form);
 
       UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (typeof (TestFunction), "~/Test.wxe"));
-
-      _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
+      Assert.That (
+          () => _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState),
+          Throws.InstanceOf<WxeTimeoutException>());
     }
 
     [Test]
@@ -338,7 +340,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (WxeTimeoutException))]
     public void RetrieveMissingFunctionStateWithTypeFromQueryStringAndPostRequest ()
     {
       HttpContext context = HttpContextHelper.CreateHttpContext ("POST", "Test.wxe", null);
@@ -347,38 +348,41 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       HttpContextHelper.SetQueryString (context, queryString);
 
       UrlMappingConfiguration.SetCurrent (null);
-
-      _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
+      Assert.That (
+          () => _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState),
+          Throws.InstanceOf<WxeTimeoutException>());
     }
 
     [Test]
-    [ExpectedException (typeof (WxeException),
-        ExpectedMessage = "Function missing in WxeFunctionState " + c_functionTokenForFunctionStateWithMissingFunction + ".")]
     public void RetrieveFunctionStateWithMissingFunction ()
     {
-      _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithMissingFunction);
+      Assert.That (
+          () => _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithMissingFunction),
+          Throws.InstanceOf<WxeException>()
+              .With.Message.EqualTo (
+                  "Function missing in WxeFunctionState " + c_functionTokenForFunctionStateWithMissingFunction + "."));
     }
 
     [Test]
-    [ExpectedException (typeof (WxeTimeoutException))]
     public void RetrieveExpiredFunctionState ()
     {
       NameValueCollection form = new NameValueCollection();
       form.Set (WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForExpiredFunctionState);
       HttpContextHelper.SetForm (CurrentHttpContext, form);
-
-      _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForExpiredFunctionState);
+      Assert.That (
+          () => _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForExpiredFunctionState),
+          Throws.InstanceOf<WxeTimeoutException>());
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void RetrieveAbortedFunctionState ()
     {
       NameValueCollection form = new NameValueCollection();
       form.Set (WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForAbortedFunctionState);
       HttpContextHelper.SetForm (CurrentHttpContext, form);
-
-      _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForAbortedFunctionState);
+      Assert.That (
+          () => _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForAbortedFunctionState),
+          Throws.InvalidOperationException);
     }
 
     [Test]
@@ -550,10 +554,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
     public void ExecuteAbortedFunctionState ()
     {
-      _wxeHandler.ExecuteFunctionState (CurrentHttpContext, _functionStateAborted, true);
+      Assert.That (
+          () => _wxeHandler.ExecuteFunctionState (CurrentHttpContext, _functionStateAborted, true),
+          Throws.ArgumentException);
     }
 
     [Test]
@@ -573,11 +578,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
     public void ExecuteAbortedFunction ()
     {
       TestFunction function = (TestFunction) _functionStateAborted.Function;
-      _wxeHandler.ExecuteFunction (function, CurrentWxeContext, true);
+      Assert.That (
+          () => _wxeHandler.ExecuteFunction (function, CurrentWxeContext, true),
+          Throws.ArgumentException);
     }
   }
 }

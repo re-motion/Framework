@@ -124,12 +124,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Item 0 of parameter 'domainObjects' has the type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' "
-        + "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order'.\r\nParameter name: domainObjects")]
     public void Initialization_WithEnumerable_ChecksItems ()
     {
-      new DomainObjectCollection (new[] { _customer1 }, typeof (Order));
+      Assert.That (
+          () => new DomainObjectCollection (new[] { _customer1 }, typeof (Order)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Item 0 of parameter 'domainObjects' has the type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' "
+                  + "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order'.\r\nParameter name: domainObjects"));
     }
 
     [Test]
@@ -303,10 +305,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot modify a read-only collection.")]
     public void Item_Set_ReadOnly_Throws ()
     {
-      _readOnlyCollection[0] = _customer3NotInCollection;
+      Assert.That (
+          () => _readOnlyCollection[0] = _customer3NotInCollection,
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Cannot modify a read-only collection."));
     }
 
     [Test]
@@ -319,10 +323,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot add an item to a read-only collection.")]
     public void Add_ReadOnly_Throws ()
     {
-      _readOnlyCollection.Add (_customer3NotInCollection);
+      Assert.That (
+          () => _readOnlyCollection.Add (_customer3NotInCollection),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot add an item to a read-only collection."));
     }
 
     [Test]
@@ -345,10 +352,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot add items to a read-only collection.")]
     public void AddRange_ReadOnly_Throws ()
     {
-      _readOnlyCollection.AddRange (new[] { _customer3NotInCollection });
+      Assert.That (
+          () => _readOnlyCollection.AddRange (new[] { _customer3NotInCollection }),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Cannot add items to a read-only collection."));
     }
     
     [Test]
@@ -361,10 +370,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot remove an item from a read-only collection.")]
     public void RemoveAt_ReadOnly_Throws ()
     {
-      _readOnlyCollection.RemoveAt (0);
+      Assert.That (
+          () => _readOnlyCollection.RemoveAt (0),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot remove an item from a read-only collection."));
     }
 
     [Test]
@@ -376,10 +388,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot remove an item from a read-only collection.")]
     public void Remove_ID_ReadOnly_Throws ()
     {
-      _readOnlyCollection.Remove (_customer1.ID);
+      Assert.That (
+          () => _readOnlyCollection.Remove (_customer1.ID),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot remove an item from a read-only collection."));
     }
 
     [Test]
@@ -391,10 +406,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot remove an item from a read-only collection.")]
     public void Remove_Object_ReadOnly_Throws ()
     {
-      _readOnlyCollection.Remove (_customer1);
+      Assert.That (
+          () => _readOnlyCollection.Remove (_customer1),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot remove an item from a read-only collection."));
     }
 
     [Test]
@@ -406,10 +424,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void Clear_ReadOnly_Throws ()
     {
-      _readOnlyCollection.Clear ();
+      Assert.That (
+          () => _readOnlyCollection.Clear (),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
@@ -421,10 +440,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot insert an item into a read-only collection.")]
     public void Insert_Object_ReadOnly_Throws ()
     {
-      _readOnlyCollection.Insert (0, _customer3NotInCollection);
+      Assert.That (
+          () => _readOnlyCollection.Insert (0, _customer3NotInCollection),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot insert an item into a read-only collection."));
     }
 
     [Test]
@@ -437,13 +459,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "Destination array was not long enough. Check destIndex and length, and the array's lower bounds.")]
     public void CopyTo_ArraySmallerThanCollection ()
     {
       var array = new DomainObject[_collection.Count - 1];
-
-      _collection.CopyTo (array, 0);
+      Assert.That (
+          () => _collection.CopyTo (array, 0),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Destination array was not long enough. Check destIndex and length, and the array's lower bounds."));
     }
 
     [Test]

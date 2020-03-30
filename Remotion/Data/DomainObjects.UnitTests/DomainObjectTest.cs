@@ -123,30 +123,39 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The object cannot be initialized, it already has an ID.")]
     public void Initialize_ThrowsForNewObject ()
     {
       var orderItem = _transaction.ExecuteInScope (() => OrderItem.NewObject ("Test Toast"));
-      orderItem.Initialize (DomainObjectIDs.OrderItem1, _transaction);
+      Assert.That (
+          () => orderItem.Initialize (DomainObjectIDs.OrderItem1, _transaction),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The object cannot be initialized, it already has an ID."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The object cannot be initialized, it already has an ID.")]
     public void Initialize_ThrowsForLoadedObject ()
     {
       var orderItem = _transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
-      orderItem.Initialize (DomainObjectIDs.OrderItem1, _transaction);
+      Assert.That (
+          () => orderItem.Initialize (DomainObjectIDs.OrderItem1, _transaction),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The object cannot be initialized, it already has an ID."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The object cannot be initialized, it already has an ID.")]
     public void Initialize_ThrowsForDeserializedObject ()
     {
       var orderItem = _transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
 
 
       var deserializedOrderItem = Serializer.SerializeAndDeserialize (orderItem);
-      deserializedOrderItem.Initialize (DomainObjectIDs.OrderItem1, _transaction);
+      Assert.That (
+          () => deserializedOrderItem.Initialize (DomainObjectIDs.OrderItem1, _transaction),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The object cannot be initialized, it already has an ID."));
     }
 
     [Test]
@@ -192,27 +201,30 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
-        "While the OnReferenceInitializing event is executing, this member cannot be used.")]
     public void RaiseReferenceInitializatingEvent_CallsReferenceInitializing_PropertyAccessForbidden ()
     {
-      _transaction.ExecuteInScope (() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject (o => o.OrderNumber));
+      Assert.That (
+          () => _transaction.ExecuteInScope (() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject (o => o.OrderNumber)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("While the OnReferenceInitializing event is executing, this member cannot be used."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
-        "While the OnReferenceInitializing event is executing, this member cannot be used.")]
     public void RaiseReferenceInitializatingEvent_CallsReferenceInitializing_PropertiesForbidden ()
     {
-      _transaction.ExecuteInScope (() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject (o => o.Properties));
+      Assert.That (
+          () => _transaction.ExecuteInScope (() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject (o => o.Properties)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("While the OnReferenceInitializing event is executing, this member cannot be used."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "While the OnReferenceInitializing event is executing, this member cannot be used.")]
     public void RaiseReferenceInitializatingEvent_CallsReferenceInitializing_CurrentPropertyForbidden ()
     {
-      _transaction.ExecuteInScope (() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject (o => o.CurrentProperty));
+      Assert.That (
+          () => _transaction.ExecuteInScope (() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject (o => o.CurrentProperty)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("While the OnReferenceInitializing event is executing, this member cannot be used."));
     }
 
     [Test]
@@ -223,11 +235,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "While the OnReferenceInitializing event is executing, this member cannot be used.")]
     public void RaiseReferenceInitializatingEvent_CallsReferenceInitializing_DeleteForbidden ()
     {
-      _transaction.ExecuteInScope (() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject (o => { o.Delete (); return o; }));
+      Assert.That (
+          () => _transaction.ExecuteInScope (() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject (o => { o.Delete (); return o; })),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("While the OnReferenceInitializing event is executing, this member cannot be used."));
     }
 
     [Test]
@@ -354,10 +367,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread.")]
     public void NewObject_WithoutTransaction ()
     {
-      Order.NewObject ();
+      Assert.That (
+          () => Order.NewObject (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "No ClientTransaction has been associated with the current thread."));
     }
 
     [Test]
@@ -394,10 +410,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread.")]
     public void GetObject_WithoutTransaction ()
     {
-      DomainObjectIDs.Order1.GetObject<Order> ();
+      Assert.That (
+          () => DomainObjectIDs.Order1.GetObject<Order> (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "No ClientTransaction has been associated with the current thread."));
     }
 
     [Test]

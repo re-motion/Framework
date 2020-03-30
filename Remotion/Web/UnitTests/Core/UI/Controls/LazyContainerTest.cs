@@ -320,13 +320,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot ensure LazyContainer 'LazyContainer' before its state has been loaded.")]
     public void Control_PostBack_Init_Add_Ensure ()
     {
       Page.SetRequestValueCollection (new NameValueCollection ());
       NamingContainerInvoker.InitRecursive ();
       _lazyContainer.RealControls.Add (_parent);
-      _lazyContainer.Ensure ();
+      Assert.That (
+          () => _lazyContainer.Ensure (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot ensure LazyContainer 'LazyContainer' before its state has been loaded."));
     }
 
     [Test]
@@ -443,7 +446,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot ensure LazyContainer 'LazyContainer' before its state has been loaded.")]
     public void Control_RestoreChildControlState_EnsureBeforeLoadAllState ()
     {
       Page_Init_Load_Add_Ensure_SaveAllState ("Parent Value", "Child Value", null);
@@ -472,7 +474,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       SetUpPage ();
 
       Page.SetRequestValueCollection (new NameValueCollection ());
-      _lazyContainer.Ensure ();
+      Assert.That (
+          () => _lazyContainer.Ensure (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot ensure LazyContainer 'LazyContainer' before its state has been loaded."));
     }
 
     private void Page_Init_Load_Add_Ensure_SaveAllState (string parentControlState, string childControlState, string childSecondControlState)

@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -109,11 +109,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
-      "FindInterfaceImplementation can only be called on inteface properties.")]
     public void FindInterfaceImplementation ()
     {
-      _propertyInformation.FindInterfaceImplementation (typeof (object));
+      Assert.That (
+          () => _propertyInformation.FindInterfaceImplementation (typeof (object)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("FindInterfaceImplementation can only be called on inteface properties."));
     }
 
     [Test]

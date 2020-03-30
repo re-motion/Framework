@@ -42,23 +42,28 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactor
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Directory must not be null. Set using \"Directory\"-property before calling \"CreateTextWriter\"")]
     public void NewTextWriterWithNullDirectoryThrowsTest ()
     {
       var streamWriterFactory = new StreamWriterFactory ();
       streamWriterFactory.Directory = null;
-      streamWriterFactory.CreateTextWriter ("whatever");
+      Assert.That (
+          () => streamWriterFactory.CreateTextWriter ("whatever"),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Directory must not be null. Set using \"Directory\"-property before calling \"CreateTextWriter\""));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = @"TextWriter with name ""abc"" already exists.")]
     public void NewTextWriterNameAlreadyExistsTest ()
     {
       const string textWriterName = "abc";
       var streamWriterFactory = new StreamWriterFactory ();
       streamWriterFactory.Directory = "xyz";
       streamWriterFactory.CreateTextWriter (textWriterName);
-      streamWriterFactory.CreateTextWriter (textWriterName);
+      Assert.That (
+          () => streamWriterFactory.CreateTextWriter (textWriterName),
+          Throws.ArgumentException
+              .With.Message.EqualTo (@"TextWriter with name ""abc"" already exists."));
     }
 
 

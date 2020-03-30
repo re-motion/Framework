@@ -68,7 +68,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_ThrowsPermissionDeniedException ()
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject ();
@@ -77,8 +76,9 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ReplayAll ();
 
       var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition (typeof (SecurableObject).FullName + ".Parent");
-
-      _extension.RelationChanging (_testHelper.Transaction, securableObject, endPointDefinition, null, null);
+      Assert.That (
+          () => _extension.RelationChanging (_testHelper.Transaction, securableObject, endPointDefinition, null, null),
+          Throws.InstanceOf<PermissionDeniedException>());
     }
 
     [Test]
@@ -100,7 +100,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_WithNonPublicAccessor_ThrowsPermissionDeniedException ()
     {
       var propertyInfo =
@@ -112,8 +111,9 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ReplayAll ();
 
       var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition (typeof (SecurableObject).FullName + ".NonPublicRelationPropertyWithCustomPermission");
-
-      _extension.RelationChanging (_testHelper.Transaction, securableObject, endPointDefinition, null, null);
+      Assert.That (
+          () => _extension.RelationChanging (_testHelper.Transaction, securableObject, endPointDefinition, null, null),
+          Throws.InstanceOf<PermissionDeniedException>());
     }
 
     [Test]
@@ -132,7 +132,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_WithMissingAccessor_ThrowsPermissionDeniedException ()
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
@@ -141,8 +140,9 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ReplayAll();
 
       var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition (typeof (SecurableObject).FullName + ".RelationPropertyWithMissingSetAccessor");
-
-      _extension.RelationChanging (_testHelper.Transaction, securableObject, endPointDefinition, null, null);
+      Assert.That (
+          () => _extension.RelationChanging (_testHelper.Transaction, securableObject, endPointDefinition, null, null),
+          Throws.InstanceOf<PermissionDeniedException>());
     }
 
     [Test]

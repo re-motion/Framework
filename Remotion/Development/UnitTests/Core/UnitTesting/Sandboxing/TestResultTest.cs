@@ -100,30 +100,35 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
     }
 
     [Test]
-    [ExpectedException (typeof (TestFailedException), ExpectedMessage =
-        "Test 'Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing.DummyTest1.Test1' failed. Status: Failed.")]
     public void EnsureNotFailed_Failed ()
     {
       var result = TestResult.CreateFailed (_methodInfo, _exception);
-      result.EnsureNotFailed ();
+      Assert.That (
+          () => result.EnsureNotFailed (),
+          Throws.InstanceOf<TestFailedException>()
+              .With.Message.EqualTo ("Test 'Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing.DummyTest1.Test1' failed. Status: Failed."));
     }
 
     [Test]
-    [ExpectedException (typeof (TestFailedException), ExpectedMessage =
-        "Test 'Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing.DummyTest1.Test1' failed. Status: FailedInSetUp.")]
     public void EnsureNotFailed_FailedInSetUp ()
     {
       var result = TestResult.CreateFailedInSetUp (_methodInfo, _exception);
-      result.EnsureNotFailed ();
+      Assert.That (
+          () => result.EnsureNotFailed (),
+          Throws.InstanceOf<TestFailedException>()
+              .With.Message.EqualTo (
+                  "Test 'Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing.DummyTest1.Test1' failed. Status: FailedInSetUp."));
     }
 
     [Test]
-    [ExpectedException (typeof (TestFailedException), ExpectedMessage =
-        "Test 'Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing.DummyTest1.Test1' failed. Status: FailedInTearDown.")]
     public void EnsureNotFailed_FailedInTearDown ()
     {
       var result = TestResult.CreateFailedInTearDown (_methodInfo, _exception);
-      result.EnsureNotFailed ();
+      Assert.That (
+          () => result.EnsureNotFailed (),
+          Throws.InstanceOf<TestFailedException>()
+              .With.Message.EqualTo (
+                  "Test 'Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing.DummyTest1.Test1' failed. Status: FailedInTearDown."));
     }
   }
 }

@@ -81,16 +81,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        @"The property 'test' \(declared on class 'ClassName'\) is invalid because its values cannot be copied\. "
-        + @"Only value types, strings, the Type type, byte arrays, types implementing IStructualEquatable, and ObjectIDs are currently supported, but the property's type is "
-        + @"'System\.Collections\.Generic\.List`1\[\[System\.Object, mscorlib, Version=*",
-        MatchType = MessageMatch.Regex)]
     public void PropertyValue_WithReferenceType_NotAllowed ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("ClassName");
       PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (classDefinition, "test", typeof (List<object>));
-      new PropertyValue (propertyDefinition, null);
+      Assert.That (
+          () => new PropertyValue (propertyDefinition, null),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.Matches (
+                  @"The property 'test' \(declared on class 'ClassName'\) is invalid because its values cannot be copied\. "
+                  + @"Only value types, strings, the Type type, byte arrays, types implementing IStructualEquatable, and ObjectIDs are currently supported, but the property's type is "
+                  + @"'System\.Collections\.Generic\.List`1\[\[System\.Object, mscorlib, Version=*"));
     }
 
     [Test]

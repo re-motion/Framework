@@ -145,15 +145,15 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "OnExecutionStop may not be invoked unless OnExecutionPlay was called first.")]
     public void Test_WithNullScope ()
     {
       var strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null);
 
       Assert.That (strategy.Scope, Is.Null);
-
-      strategy.OnExecutionStop (Context, ExecutionListenerStub);
+      Assert.That (
+          () => strategy.OnExecutionStop (Context, ExecutionListenerStub),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("OnExecutionStop may not be invoked unless OnExecutionPlay was called first."));
     }
 
     [Test]

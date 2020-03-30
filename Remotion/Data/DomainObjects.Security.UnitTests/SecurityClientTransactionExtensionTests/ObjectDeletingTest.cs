@@ -59,15 +59,15 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_ThrowsPermissionDeniedException ()
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject ();
       _testHelper.Transaction.Commit ();
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessTypes.Delete, false);
       _testHelper.ReplayAll ();
-
-      _extension.ObjectDeleting (_testHelper.Transaction, securableObject);
+      Assert.That (
+          () => _extension.ObjectDeleting (_testHelper.Transaction, securableObject),
+          Throws.InstanceOf<PermissionDeniedException>());
     }
 
     [Test]

@@ -154,13 +154,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "The requested type 'NonSubclassableDomainObject' is derived from DomainObject but cannot be subclassed.")]
     public void HandleNonSubclassableType_UnsubclassableDomainObject ()
     {
       var nonAbstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (isAbstract: false);
       _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (typeof (NonSubclassableDomainObject))).Return (nonAbstractClassDefinition);
-      _participant.HandleNonSubclassableType (typeof (NonSubclassableDomainObject));
+      Assert.That (
+          () => _participant.HandleNonSubclassableType (typeof (NonSubclassableDomainObject)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("The requested type 'NonSubclassableDomainObject' is derived from DomainObject but cannot be subclassed."));
     }
 
     [Test]

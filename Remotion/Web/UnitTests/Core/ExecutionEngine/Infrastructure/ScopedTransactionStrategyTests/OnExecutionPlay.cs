@@ -80,14 +80,15 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage =
-            "OnExecutionPlay may not be invoked twice without calling OnExecutionStop, OnExecutionPause, or OnExecutionFail in-between.")]
     public void Test_WithScope ()
     {
       InvokeOnExecutionPlay (_strategy);
       Assert.That (_strategy.Scope, Is.SameAs (ScopeMock));
-      _strategy.OnExecutionPlay (Context, ExecutionListenerStub);
+      Assert.That (
+          () => _strategy.OnExecutionPlay (Context, ExecutionListenerStub),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "OnExecutionPlay may not be invoked twice without calling OnExecutionStop, OnExecutionPause, or OnExecutionFail in-between."));
     }
 
     [Test]

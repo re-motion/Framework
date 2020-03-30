@@ -86,8 +86,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "The assembly's code base 'http://server/File.ext' is not a local path.")]
     public void GetAssemblyPath_FromNonLocalUri ()
     {
       MockRepository mockRepository = new MockRepository();
@@ -95,8 +93,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       SetupResult.For (assemblyMock.EscapedCodeBase).Return ("http://server/File.ext");
       mockRepository.ReplayAll();
-
-      ReflectionUtility.GetAssemblyDirectory (assemblyMock);
+      Assert.That (
+          () => ReflectionUtility.GetAssemblyDirectory (assemblyMock),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The assembly's code base 'http://server/File.ext' is not a local path."));
     }
 
     [Test]

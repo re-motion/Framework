@@ -65,29 +65,35 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), 
-        ExpectedMessage = "Enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotNestedType ()
     {
-      new WxeDemandTargetMethodPermissionAttribute (MethodNameEnum.Show);
+      Assert.That (
+          () => new WxeDemandTargetMethodPermissionAttribute (MethodNameEnum.Show),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The declaring type of enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.SimpleType+MethodNameEnum' does not implement interface"
-        + " 'Remotion.Security.ISecurableObject'.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotHavingValidDeclaringType ()
     {
-      new WxeDemandTargetMethodPermissionAttribute (SimpleType.MethodNameEnum.Show);
+      Assert.That (
+          () => new WxeDemandTargetMethodPermissionAttribute (SimpleType.MethodNameEnum.Show),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The declaring type of enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.SimpleType+MethodNameEnum' does not implement interface"
+                  + " 'Remotion.Security.ISecurableObject'.\r\nParameter name: methodNameEnum"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Type 'Remotion.Web.UnitTests.Core.Security.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"
-        + " 'Remotion.Web.UnitTests.Core.Security.Domain.SecurableObject+Method'.\r\nParameter name: securableClass")]
     public void TestWithParameterNotOfNotMatchingType ()
     {
-      new WxeDemandTargetMethodPermissionAttribute (SecurableObject.Method.Show, typeof (OtherSecurableObject));
+      Assert.That (
+          () => new WxeDemandTargetMethodPermissionAttribute (SecurableObject.Method.Show, typeof (OtherSecurableObject)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Type 'Remotion.Web.UnitTests.Core.Security.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"
+                  + " 'Remotion.Web.UnitTests.Core.Security.Domain.SecurableObject+Method'.\r\nParameter name: securableClass"));
     }
   }
 }

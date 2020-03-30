@@ -65,10 +65,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     }
 
     [Test]
-    [ExpectedException (typeof (FileNotFoundException))]
     public void LoadMappingFromFileWithInvalidFilename ()
     {
-      UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\InvalidFilename.xml");
+      Assert.That (
+          () => UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\InvalidFilename.xml"),
+          Throws.InstanceOf<FileNotFoundException>());
     }
 
     [Test]

@@ -164,21 +164,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void SetRelatedObjectOfDeletedObject ()
     {
       _orderItem.Delete ();
-
-      _orderItem.Order = _order;
+      Assert.That (
+          () => _orderItem.Order = _order,
+          Throws.InstanceOf<ObjectDeletedException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void ReassignDeletedObject ()
     {
       _orderItem.Delete ();
-
-      _order.OrderItems.Add (_orderItem);
+      Assert.That (
+          () => _order.OrderItems.Add (_orderItem),
+          Throws.InstanceOf<ObjectDeletedException>());
     }
 
     [Test]

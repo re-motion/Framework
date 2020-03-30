@@ -55,10 +55,13 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "LogLevel does not support value 10.\r\nParameter name: logLevel")]
     public void Test_InvalidLevel ()
     {
-      Log4NetLog.Convert ((LogLevel) 10);
+      Assert.That (
+          () => Log4NetLog.Convert ((LogLevel) 10),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "LogLevel does not support value 10.\r\nParameter name: logLevel"));
     }
   }
 }

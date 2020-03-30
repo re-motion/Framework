@@ -238,38 +238,43 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void Convert_FromObject_ToNullableInt32 ()
     {
-      _provider.Convert (_object, _nullableInt32, new object());
+      Assert.That (
+          () => _provider.Convert (_object, _nullableInt32, new object()),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void Convert_FromNullableInt32_ToObject ()
     {
-      _provider.Convert (_nullableInt32, _object, 1);
+      Assert.That (
+          () => _provider.Convert (_nullableInt32, _object, 1),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void Convert_FromInt32_ToObject ()
     {
-      _provider.Convert (_int32, _object, 1);
+      Assert.That (
+          () => _provider.Convert (_int32, _object, 1),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void Convert_FromObject_ToInt32 ()
     {
-      _provider.Convert (_object, _int32, new object());
+      Assert.That (
+          () => _provider.Convert (_object, _int32, new object()),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void Convert_FromInt64_ToInt32 ()
     {
-      _provider.Convert (_object, _int32, 1L);
+      Assert.That (
+          () => _provider.Convert (_object, _int32, 1L),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
@@ -309,26 +314,31 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'value' has type 'System.DBNull' when type 'System.Int32' was expected.\r\nParameter name: value")]
     public void Convert_FromInt32_ToInt32_WithDBNull ()
     {
-      _provider.Convert (_int32, _int32, DBNull.Value);
+      Assert.That (
+          () => _provider.Convert (_int32, _int32, DBNull.Value),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Parameter 'value' has type 'System.DBNull' when type 'System.Int32' was expected.\r\nParameter name: value"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'value' has type 'System.String' when type 'System.Int32' was expected.\r\nParameter name: value")]
     public void Convert_WithInvalidValue ()
     {
-      _provider.Convert (_int32, _nullableInt32, "pwned!");
+      Assert.That (
+          () => _provider.Convert (_int32, _nullableInt32, "pwned!"),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Parameter 'value' has type 'System.String' when type 'System.Int32' was expected.\r\nParameter name: value"));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot convert value 'null' to non-nullable type 'System.Int32'.")]
     public void Convert_WithInvalidNullValue ()
     {
-      _provider.Convert (_int32, _int32, null);
+      Assert.That (
+          () => _provider.Convert (_int32, _int32, null),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Cannot convert value 'null' to non-nullable type 'System.Int32'."));
     }
 
     [Test]
@@ -362,10 +372,11 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (ParseException))]
     public void Convert_FromString_ToInt32_WithEmpty ()
     {
-      _provider.Convert (_string, _int32, string.Empty);
+      Assert.That (
+          () => _provider.Convert (_string, _int32, string.Empty),
+          Throws.InstanceOf<ParseException>());
     }
 
 
@@ -416,17 +427,20 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (FormatException), ExpectedMessage = " is not a valid value for Int32Enum.")]
     public void Convert_FromString_ToInt32Enum_WithEmpty ()
     {
-      _provider.Convert (_string, _int32Enum, string.Empty);
+      Assert.That (
+          () => _provider.Convert (_string, _int32Enum, string.Empty),
+          Throws.InstanceOf<FormatException>()
+              .With.Message.EqualTo (" is not a valid value for Int32Enum."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void Convert_FromInt32_ToInt32Enum_WithNull ()
     {
-      _provider.Convert (_int32, _int32Enum, null);
+      Assert.That (
+          () => _provider.Convert (_int32, _int32Enum, null),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]

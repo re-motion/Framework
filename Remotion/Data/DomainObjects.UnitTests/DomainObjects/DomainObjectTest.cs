@@ -415,13 +415,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidTypeException))]
     public void TypeCheck ()
     {
       Customer customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
 
       const int invalidName = 123;
-      customer.NamePropertyOfInvalidType = invalidName;
+      Assert.That (
+          () => customer.NamePropertyOfInvalidType = invalidName,
+          Throws.InstanceOf<InvalidTypeException>());
     }
 
     [Test]

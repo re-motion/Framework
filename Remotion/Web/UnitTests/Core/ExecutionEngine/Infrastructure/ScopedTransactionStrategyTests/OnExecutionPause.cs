@@ -53,12 +53,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "OnExecutionPause may not be invoked unless OnExecutionPlay was called first.")]
     public void Test_WithNullScope ()
     {
       Assert.That (_strategy.Scope, Is.Null);
-      _strategy.OnExecutionPause (Context, ExecutionListenerStub);
+      Assert.That (
+          () => _strategy.OnExecutionPause (Context, ExecutionListenerStub),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("OnExecutionPause may not be invoked unless OnExecutionPlay was called first."));
     }
 
     [Test]

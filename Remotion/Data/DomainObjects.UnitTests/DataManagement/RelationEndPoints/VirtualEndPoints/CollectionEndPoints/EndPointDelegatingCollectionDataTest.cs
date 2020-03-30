@@ -86,11 +86,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "Associated end-point must be a CollectionEndPoint.\r\nParameter name: endPointID")]
     public void Initialization_ChecksEndPointIDCardinality ()
     {
-      new EndPointDelegatingCollectionData (RelationEndPointID.Resolve (_owningOrder, o => o.Customer), _virtualEndPointProviderStub);
+      Assert.That (
+          () => new EndPointDelegatingCollectionData (RelationEndPointID.Resolve (_owningOrder, o => o.Customer), _virtualEndPointProviderStub),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Associated end-point must be a CollectionEndPoint.\r\nParameter name: endPointID"));
     }
 
     [Test]

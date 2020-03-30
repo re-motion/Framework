@@ -157,13 +157,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void InitializeAfterDeserialization_ChecksMixins ()
     {
       var instance = (IMixinTarget) CreateMixedObject<NullTarget>(typeof(NullMixin));
 
       var mixins = new object[0];
-      CallInitializeMixins (instance, InitializationSemantics.Deserialization, mixinInstances: mixins);
+      Assert.That (
+          () => CallInitializeMixins (instance, InitializationSemantics.Deserialization, mixinInstances: mixins),
+          Throws.InvalidOperationException);
     }
 
     [Test]

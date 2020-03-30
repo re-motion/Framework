@@ -71,19 +71,21 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Indexed properties are not supported.")]
     public void Initialize_IndexedProperty ()
     {
       IPropertyInformation propertyInfo =
           PropertyInfoAdapter.Create (typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) }));
-      new StubPropertyBase (
+      Assert.That (
+          () => new StubPropertyBase (
           CreateParameters (
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
               isRequired: true,
-              isReadOnly: true));
+              isReadOnly: true)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Indexed properties are not supported."));
     }
 
     [Test]
@@ -129,7 +131,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property has no getter.")]
     public void GetValue_NoGetter ()
     {
       var propertyInfo = MockRepository.GenerateStub<IPropertyInformation>();
@@ -146,8 +147,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isReadOnly: true));
 
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
-
-      propertyBase.GetValue (((IBusinessObject) instance));
+      Assert.That (
+          () => propertyBase.GetValue (((IBusinessObject) instance)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Property has no getter."));
     }
 
     [Test]
@@ -263,7 +266,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property has no setter.")]
     public void GetValue_NoSetter ()
     {
       var propertyInfo = MockRepository.GenerateStub<IPropertyInformation>();
@@ -280,8 +282,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isReadOnly: true));
 
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
-
-      propertyBase.SetValue (((IBusinessObject) instance), new object());
+      Assert.That (
+          () => propertyBase.SetValue (((IBusinessObject) instance), new object()),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Property has no setter."));
     }
 
     [Test]
@@ -459,7 +463,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot access ListInfo for non-list properties.\r\nProperty: Scalar")]
     public void GetListInfo_WithNonListProperty ()
     {
       PropertyBase property = new StubPropertyBase (
@@ -472,7 +475,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isReadOnly: false));
 
       Assert.That (property.IsList, Is.False);
-      Dev.Null = property.ListInfo;
+      Assert.That (
+          () => Dev.Null = property.ListInfo,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot access ListInfo for non-list properties.\r\nProperty: Scalar"));
     }
 
 
@@ -509,8 +516,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "The reflected class for the property 'SimpleBusinessObjectClass.String' is not set.")]
     public void GetDisplayName_ReflectedClassNotSet ()
     {
       var propertyInfo = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
@@ -527,8 +532,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
                   MockRepository.GenerateStub<IMemberInformationGlobalizationService>(),
                   MockRepository.GenerateStub<IEnumerationGlobalizationService>(),
                   MockRepository.GenerateStub<IExtensibleEnumGlobalizationService>())));
-
-      Dev.Null = property.DisplayName;
+      Assert.That (
+          () => Dev.Null = property.DisplayName,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The reflected class for the property 'SimpleBusinessObjectClass.String' is not set."));
     }
 
     [Test]
@@ -584,11 +591,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage =
-            "The BusinessObjectProvider of property 'String' does not match the BusinessObjectProvider of class "
-            + "'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'."
-            + "\r\nParameter name: reflectedClass")]
     public void SetReflectedClass_FromDifferentProviders ()
     {
       var provider = new BindableObjectProvider();
@@ -603,16 +605,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               listInfo: null,
               isRequired: false,
               isReadOnly: false));
-
-      property.SetReflectedClass (bindableObjectClass);
+      Assert.That (
+          () => property.SetReflectedClass (bindableObjectClass),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The BusinessObjectProvider of property 'String' does not match the BusinessObjectProvider of class "
+                  + "'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'."
+                  + "\r\nParameter name: reflectedClass"));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage =
-            "The ReflectedClass of a property cannot be changed after it was assigned."
-            + "\r\nClass 'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'"
-            + "\r\nProperty 'String'")]
     public void SetReflectedClass_Twice ()
     {
       BindableObjectClass bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (SimpleBusinessObjectClass));
@@ -627,13 +629,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isReadOnly: false));
 
       property.SetReflectedClass (bindableObjectClass);
-      property.SetReflectedClass (BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithIdentity)));
+      Assert.That (
+          () => property.SetReflectedClass (BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithIdentity))),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The ReflectedClass of a property cannot be changed after it was assigned."
+                  + "\r\nClass 'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'"
+                  + "\r\nProperty 'String'"));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage =
-            "Accessing the ReflectedClass of a property is invalid until the property has been associated with a class.\r\nProperty 'String'")]
     public void GetReflectedClass_WithoutBusinessObjectClass ()
     {
       PropertyBase property = new StubPropertyBase (
@@ -644,8 +649,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               listInfo: null,
               isRequired: false,
               isReadOnly: false));
-
-      Dev.Null = property.ReflectedClass;
+      Assert.That (
+          () => Dev.Null = property.ReflectedClass,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Accessing the ReflectedClass of a property is invalid until the property has been associated with a class.\r\nProperty 'String'"));
     }
 
     private new PropertyBase.Parameters CreateParameters (

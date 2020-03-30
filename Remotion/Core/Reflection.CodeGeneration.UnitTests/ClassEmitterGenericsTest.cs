@@ -228,20 +228,26 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This emitter does not support nested types of non-closed generic types.")]
     public void ClassEmitterThrowsOnNestedGenericBase ()
     {
-      new CustomClassEmitter (Scope, "ClassEmitterThrowsOnNestedGenericBase", typeof (GenericClassWithNested<>.Nested));
+      Assert.That (
+          () => new CustomClassEmitter (Scope, "ClassEmitterThrowsOnNestedGenericBase", typeof (GenericClassWithNested<>.Nested)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "This emitter does not support nested types of non-closed generic types."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This emitter does not support open constructed types as base types. "
-        + "Specify a closed type or a generic type definition.")]
     public void ClassEmitterThrowsOnOpenConstructedBase ()
     {
       Type genericParameter = typeof (ClassWithSimpleGenericMethod).GetMethod ("GenericMethod").GetGenericArguments()[0];
       Type openConstructedType = typeof (GenericClassWithNested<>).MakeGenericType (genericParameter);
-      new CustomClassEmitter (Scope, "ClassEmitterThrowsOnOpenConstructedBase", openConstructedType);
+      Assert.That (
+          () => new CustomClassEmitter (Scope, "ClassEmitterThrowsOnOpenConstructedBase", openConstructedType),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "This emitter does not support open constructed types as base types. "
+                  + "Specify a closed type or a generic type definition."));
     }
   }
 }

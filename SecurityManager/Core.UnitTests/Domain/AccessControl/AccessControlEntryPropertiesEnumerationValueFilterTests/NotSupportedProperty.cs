@@ -25,14 +25,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
   public class NotSupportedProperty : AccessControlEntryPropertiesEnumerationValueFilterTestBase
   {
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The property 'GroupHierarchyCondition' is not supported by the "
-        + "'Remotion.SecurityManager.Domain.AccessControl.AccessControlEntryPropertiesEnumerationValueFilter'.")]
     public void InvalidValue ()
     {
       var ace = CreateAceForStateless();
       var property = GetPropertyDefinition (ace, "GroupHierarchyCondition");
-      Filter.IsEnabled (CreateEnumValueInfo ((GroupHierarchyCondition) 1000), ace, property);
+      Assert.That (
+          () => Filter.IsEnabled (CreateEnumValueInfo ((GroupHierarchyCondition) 1000), ace, property),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The property 'GroupHierarchyCondition' is not supported by the "
+                  + "'Remotion.SecurityManager.Domain.AccessControl.AccessControlEntryPropertiesEnumerationValueFilter'."));
     }
   }
 }

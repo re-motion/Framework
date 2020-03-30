@@ -57,10 +57,12 @@ namespace Remotion.UnitTests.FunctionalProgramming
     }
 
     [Test]
-    [ExpectedException (typeof (ApplicationException), ExpectedMessage = "ExpectedText")]
     public void First_ThrowCustomException_Empty ()
     {
-      _enumerableWithoutValues.First (() => new ApplicationException ("ExpectedText"));
+      Assert.That (
+          () => _enumerableWithoutValues.First (() => new ApplicationException ("ExpectedText")),
+          Throws.InstanceOf<ApplicationException>()
+              .With.Message.EqualTo ("ExpectedText"));
     }
 
     [Test]
@@ -80,17 +82,21 @@ namespace Remotion.UnitTests.FunctionalProgramming
     }
 
     [Test]
-    [ExpectedException (typeof (ApplicationException), ExpectedMessage = "ExpectedText")]
     public void First_WithPredicate_ThrowCustomException_Empty ()
     {
-      _enumerableWithoutValues.First (s => s == "test2", () => new ApplicationException ("ExpectedText"));
+      Assert.That (
+          () => _enumerableWithoutValues.First (s => s == "test2", () => new ApplicationException ("ExpectedText")),
+          Throws.InstanceOf<ApplicationException>()
+              .With.Message.EqualTo ("ExpectedText"));
     }
 
     [Test]
-    [ExpectedException (typeof (ApplicationException), ExpectedMessage = "ExpectedText")]
     public void First_WithPredicate_ThrowCustomException_NoMatch ()
     {
-      _enumerableWithThreeValues.First (s => s == "invalid", () => new ApplicationException ("ExpectedText"));
+      Assert.That (
+          () => _enumerableWithThreeValues.First (s => s == "invalid", () => new ApplicationException ("ExpectedText")),
+          Throws.InstanceOf<ApplicationException>()
+              .With.Message.EqualTo ("ExpectedText"));
     }
 
     [Test]
@@ -102,17 +108,22 @@ namespace Remotion.UnitTests.FunctionalProgramming
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Sequence contains more than one element.")]
     public void Single_ThrowCustomException_WithThreeValues ()
     {
-      _enumerableWithThreeValues.Single (() => new ApplicationException ("ExpectedText"));
+      Assert.That (
+          () => _enumerableWithThreeValues.Single (() => new ApplicationException ("ExpectedText")),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Sequence contains more than one element."));
     }
 
     [Test]
-    [ExpectedException (typeof (ApplicationException), ExpectedMessage = "ExpectedText")]
     public void Single_ThrowCustomException_Empty ()
     {
-      _enumerableWithoutValues.Single (() => new ApplicationException ("ExpectedText"));
+      Assert.That (
+          () => _enumerableWithoutValues.Single (() => new ApplicationException ("ExpectedText")),
+          Throws.InstanceOf<ApplicationException>()
+              .With.Message.EqualTo ("ExpectedText"));
     }
 
     [Test]
@@ -124,24 +135,31 @@ namespace Remotion.UnitTests.FunctionalProgramming
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Sequence contains more than one matching element.")]
     public void Single_WithPredicate_ThrowCustomException_WithThreeValuesAndMultipleMatches ()
     {
-      _enumerableWithThreeValues.Single (s => true, () => new ApplicationException ("ExpectedText"));
+      Assert.That (
+          () => _enumerableWithThreeValues.Single (s => true, () => new ApplicationException ("ExpectedText")),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Sequence contains more than one matching element."));
     }
 
     [Test]
-    [ExpectedException (typeof (ApplicationException), ExpectedMessage = "ExpectedText")]
     public void Single_WithPredicate_ThrowCustomException_Empty ()
     {
-      _enumerableWithoutValues.Single (s => s == "test2", () => new ApplicationException ("ExpectedText"));
+      Assert.That (
+          () => _enumerableWithoutValues.Single (s => s == "test2", () => new ApplicationException ("ExpectedText")),
+          Throws.InstanceOf<ApplicationException>()
+              .With.Message.EqualTo ("ExpectedText"));
     }
 
     [Test]
-    [ExpectedException (typeof (ApplicationException), ExpectedMessage = "ExpectedText")]
     public void Single_WithPredicate_ThrowCustomException_NoMatch ()
     {
-      _enumerableWithThreeValues.Single (s => s == "invalid", () => new ApplicationException ("ExpectedText"));
+      Assert.That (
+          () => _enumerableWithThreeValues.Single (s => s == "invalid", () => new ApplicationException ("ExpectedText")),
+          Throws.InstanceOf<ApplicationException>()
+              .With.Message.EqualTo ("ExpectedText"));
     }
 
     [Test]
@@ -470,12 +488,13 @@ namespace Remotion.UnitTests.FunctionalProgramming
     }
 
     [Test]
-    [ExpectedException (typeof (ApplicationException), ExpectedMessage = "ExpectedText")]
     public void SingleOrDefault_CustomException_MultipleElements ()
     {
       var input = new[] { "a", "b" };
-
-      input.SingleOrDefault (() => new ApplicationException ("ExpectedText"));
+      Assert.That (
+          () => input.SingleOrDefault (() => new ApplicationException ("ExpectedText")),
+          Throws.InstanceOf<ApplicationException>()
+              .With.Message.EqualTo ("ExpectedText"));
     }
 
     [Test]
@@ -499,12 +518,13 @@ namespace Remotion.UnitTests.FunctionalProgramming
     }
 
     [Test]
-    [ExpectedException (typeof (ApplicationException), ExpectedMessage = "ExpectedText")]
     public void SingleOrDefault_WithPredicate_CustomException_MultipleElements ()
     {
       var input = new[] { 2, 1, 2 };
-
-      input.SingleOrDefault (x => x == 2, () => new ApplicationException ("ExpectedText"));
+      Assert.That (
+          () => input.SingleOrDefault (x => x == 2, () => new ApplicationException ("ExpectedText")),
+          Throws.InstanceOf<ApplicationException>()
+              .With.Message.EqualTo ("ExpectedText"));
     }
 
     [Test]

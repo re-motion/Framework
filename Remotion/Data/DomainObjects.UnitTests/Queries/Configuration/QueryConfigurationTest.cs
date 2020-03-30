@@ -53,12 +53,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (QueryConfigurationException),
-        ExpectedMessage = "A scalar query 'OrderSumQuery' must not specify a collectionType.")]
     public void ScalarQueryWithCollectionType ()
     {
       QueryConfigurationLoader loader = new QueryConfigurationLoader (@"ScalarQueryWithCollectionType.xml", _storageProviderDefinitionFinder);
-      loader.GetQueryDefinitions ();
+      Assert.That (
+          () => loader.GetQueryDefinitions (),
+          Throws.InstanceOf<QueryConfigurationException>()
+              .With.Message.EqualTo ("A scalar query 'OrderSumQuery' must not specify a collectionType."));
     }
 
     [Test]
@@ -152,47 +153,53 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "No default query file found. Searched for one of the following files:\nC:\\queries.xml")]
     public void GetDefaultQueryFilePath_ThrowsIfNoQueryFileExists ()
     {
-      AppDomainRunner.Run (@"C:\", delegate
+      Assert.That (
+          () => AppDomainRunner.Run (@"C:\", delegate
       {
         QueryConfiguration configuration = new QueryConfiguration ();
         configuration.GetDefaultQueryFilePath ();
-      });
+      }),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo (
+                  "No default query file found. Searched for one of the following files:\nC:\\queries.xml"));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "No default query file found. Searched for one of the following files:\nC:\\queries.xml\nC:\\Bin\\queries.xml\nC:\\Foo\\queries.xml")]
     public void GetDefaultQueryFilePath_ThrowsIfNoQueryFileExists_WithMultipleRelativeSearchPaths ()
     {
       AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
       setup.ApplicationBase = @"C:\";
       setup.DynamicBase = Path.GetTempPath ();
       setup.PrivateBinPath = @"Bin;Foo";
-
-      new AppDomainRunner (setup, delegate
+      Assert.That (
+          () => new AppDomainRunner (setup, delegate
       {
         QueryConfiguration configuration = new QueryConfiguration ();
         configuration.GetDefaultQueryFilePath ();
-      }).Run ();
+      }).Run (),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo (
+                  "No default query file found. Searched for one of the following files:\nC:\\queries.xml\nC:\\Bin\\queries.xml\nC:\\Foo\\queries.xml"));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = @"Two default query configuration files found", 
-        MatchType = MessageMatch.Contains)]
     public void GetDefaultQueryFilePath_ThrowsIfMultipleQueryFilesExist ()
     {
       AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
       setup.ApplicationBase = AppDomain.CurrentDomain.BaseDirectory;
       setup.DynamicBase = Path.GetTempPath ();
       setup.PrivateBinPath = ".";  // simulate multiple files by searching the same directory twice
-
-      new AppDomainRunner (setup, delegate
+      Assert.That (
+          () => new AppDomainRunner (setup, delegate
       {
         QueryConfiguration configuration = new QueryConfiguration ();
         configuration.GetDefaultQueryFilePath ();
-      }, AppDomain.CurrentDomain.BaseDirectory).Run ();
+      }, AppDomain.CurrentDomain.BaseDirectory).Run (),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Contains (
+                  @"Two default query configuration files found"));
     }
 
     [Test]
@@ -329,13 +336,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = @"File '.*QueriesForLoaderTestDuplicate.xml' defines a duplicate "
-        + @"for query definition 'OrderQueryWithCustomCollectionType'.", MatchType = MessageMatch.Regex)]
     public void DifferentQueryFiles_SpecifyingDuplicates ()
     {
       QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml", "QueriesForLoaderTestDuplicate.xml");
-
-      Dev.Null = configuration.QueryDefinitions;
+      Assert.That (
+          () => Dev.Null = configuration.QueryDefinitions,
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Matches (
+                  @"File '.*QueriesForLoaderTestDuplicate.xml' defines a duplicate "
+                  + @"for query definition 'OrderQueryWithCustomCollectionType'."));
     }
 
     private QueryDefinitionCollection CreateExpectedQueryDefinitions ()

@@ -60,17 +60,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Modified end point is null, a NullEndPointModificationCommand is needed.\r\n"
-                                                                      + "Parameter name: modifiedEndPoint")]
     public void Initialization_FromNullEndPoint ()
     {
       var endPoint = new NullObjectEndPoint (TestableClientTransaction, _endPointID.Definition);
-      new ObjectEndPointSetUnidirectionalCommand (endPoint, _newRelatedObject, OppositeObjectSetter, TransactionEventSinkWithMock);
+      Assert.That (
+          () => new ObjectEndPointSetUnidirectionalCommand (endPoint, _newRelatedObject, OppositeObjectSetter, TransactionEventSinkWithMock),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Modified end point is null, a NullEndPointModificationCommand is needed.\r\n"
+                  + "Parameter name: modifiedEndPoint"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "EndPoint 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' "
-        + "is from a bidirectional relation - use a ObjectEndPointSetOneOneCommand or ObjectEndPointSetOneManyCommand instead.\r\nParameter name: modifiedEndPoint")]
     public void Initialization_Bidirectional_OneMany ()
     {
       var definition = MappingConfiguration.Current.GetTypeDefinition (typeof (OrderItem))
@@ -79,29 +80,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var id = RelationEndPointID.Create(orderItem.ID, definition);
 
       var endPoint = (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (id);
-      new ObjectEndPointSetUnidirectionalCommand (endPoint, Order.NewObject (), mi => { }, TransactionEventSinkWithMock);
+      Assert.That (
+          () => new ObjectEndPointSetUnidirectionalCommand (endPoint, Order.NewObject (), mi => { }, TransactionEventSinkWithMock),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "EndPoint 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' "
+                  + "is from a bidirectional relation - use a ObjectEndPointSetOneOneCommand or ObjectEndPointSetOneManyCommand instead.\r\nParameter name: modifiedEndPoint"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "EndPoint 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' "
-        + "is from a bidirectional relation - use a ObjectEndPointSetOneOneCommand or ObjectEndPointSetOneManyCommand instead.\r\nParameter name: modifiedEndPoint")]
     public void Initialization_Bidirectional_OneOne ()
     {
       var definition = MappingConfiguration.Current.GetTypeDefinition (typeof (OrderTicket))
           .GetMandatoryRelationEndPointDefinition (typeof (OrderTicket).FullName + ".Order");
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ().ID, definition);
       var endPoint = (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
-      new ObjectEndPointSetUnidirectionalCommand (endPoint, Order.NewObject (), mi => { }, TransactionEventSinkWithMock);
+      Assert.That (
+          () => new ObjectEndPointSetUnidirectionalCommand (endPoint, Order.NewObject (), mi => { }, TransactionEventSinkWithMock),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "EndPoint 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' "
+                  + "is from a bidirectional relation - use a ObjectEndPointSetOneOneCommand or ObjectEndPointSetOneManyCommand instead.\r\nParameter name: modifiedEndPoint"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "New related object for EndPoint "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient' is the same as its old value - use a ObjectEndPointSetSameCommand "
-        + "instead.\r\nParameter name: newRelatedObject")]
     public void Initialization_Same ()
     {
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (_endPointID, _oldRelatedObject.ID);
-      new ObjectEndPointSetUnidirectionalCommand (endPoint, _oldRelatedObject, mi => { }, TransactionEventSinkWithMock);
+      Assert.That (
+          () => new ObjectEndPointSetUnidirectionalCommand (endPoint, _oldRelatedObject, mi => { }, TransactionEventSinkWithMock),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "New related object for EndPoint "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient' is the same as its old value - use a ObjectEndPointSetSameCommand "
+                  + "instead.\r\nParameter name: newRelatedObject"));
     }
 
     [Test]

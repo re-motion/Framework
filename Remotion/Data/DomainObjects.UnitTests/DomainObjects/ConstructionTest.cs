@@ -65,11 +65,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "DomainObject constructors must not be called directly. Use " 
-        + "DomainObject.NewObject to create DomainObject instances.")]
     public void ConstructorThrowsIfCalledDirectly ()
     {
-      new DomainObjectWithSpecialConstructor ("string");
+      Assert.That (
+          () => new DomainObjectWithSpecialConstructor ("string"),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "DomainObject constructors must not be called directly. Use " 
+                  + "DomainObject.NewObject to create DomainObject instances."));
     }
 
     [Test]

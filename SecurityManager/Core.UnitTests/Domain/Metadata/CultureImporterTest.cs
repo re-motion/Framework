@@ -87,10 +87,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (ImportException),
-       ExpectedMessage = "The metadata object with the ID 'ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c' "
-       + "('Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain') "
-       + "could not be found.")]
     public void Import_NotExistingMetadataObject ()
     {
       string cultureXml = @"
@@ -100,12 +96,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             </localizedName>
           </localizedNames>
           ";
-
-      _importer.Import (GetXmlDocument (cultureXml));
+      Assert.That (
+          () => _importer.Import (GetXmlDocument (cultureXml)),
+          Throws.InstanceOf<ImportException>()
+              .With.Message.EqualTo (
+                  "The metadata object with the ID 'ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c' "
+                  + "('Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain') "
+                  + "could not be found."));
     }
 
     [Test]
-    [ExpectedException (typeof (ImportException), ExpectedMessage = "The metadata object with the ID 'ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c' could not be found.")]
     public void Import_NotExistingMetadataObjectWithoutComment ()
     {
       string cultureXml = @"
@@ -115,8 +115,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             </localizedName>
           </localizedNames>
           ";
-
-      _importer.Import (GetXmlDocument (cultureXml));
+      Assert.That (
+          () => _importer.Import (GetXmlDocument (cultureXml)),
+          Throws.InstanceOf<ImportException>()
+              .With.Message.EqualTo (
+                  "The metadata object with the ID 'ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c' could not be found."));
     }
 
     [Test]
@@ -151,7 +154,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (XmlSchemaValidationException))]
     public void Import_InvalidXml ()
     {
       string cultureXml = @"
@@ -164,8 +166,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             </localizedName>
           </localizedNames>
           ";
-
-      _importer.Import (GetXmlDocument (cultureXml));
+      Assert.That (
+          () => _importer.Import (GetXmlDocument (cultureXml)),
+          Throws.InstanceOf<XmlSchemaValidationException>());
     }
 
     [Test]

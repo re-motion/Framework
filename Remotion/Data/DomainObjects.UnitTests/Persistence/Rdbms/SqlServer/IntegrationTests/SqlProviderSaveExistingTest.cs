@@ -292,14 +292,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException))]
     public void WrapSqlException ()
     {
       DataContainer orderContainer = LoadDataContainer (DomainObjectIDs.Order1);
 
       SetPropertyValue (orderContainer, typeof (Order), "Customer", new ObjectID(typeof (Customer), Guid.NewGuid()));
-
-      Provider.Save (new[] { orderContainer });
+      Assert.That (
+          () => Provider.Save (new[] { orderContainer }),
+          Throws.InstanceOf<RdbmsProviderException>());
     }
 
     [Test]
@@ -418,15 +418,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "Commit cannot be called without calling BeginTransaction first.")]
     public void CommitWithoutBeginTransaction ()
     {
       DataContainer orderContainer = LoadDataContainer (DomainObjectIDs.Order1);
       SetPropertyValue (orderContainer, typeof (Order), "OrderNumber", 10);
 
       Provider.Save (new[] { orderContainer });
-      Provider.Commit ();
+      Assert.That (
+          () => Provider.Commit (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Commit cannot be called without calling BeginTransaction first."));
     }
 
     [Test]
@@ -446,15 +447,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "Rollback cannot be called without calling BeginTransaction first.")]
     public void RollbackWithoutBeginTransaction ()
     {
       DataContainer orderContainer = LoadDataContainer (DomainObjectIDs.Order1);
       SetPropertyValue (orderContainer, typeof (Order), "OrderNumber", 10);
 
       Provider.Save (new[] { orderContainer });
-      Provider.Rollback ();
+      Assert.That (
+          () => Provider.Rollback (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Rollback cannot be called without calling BeginTransaction first."));
     }
 
     [Test]

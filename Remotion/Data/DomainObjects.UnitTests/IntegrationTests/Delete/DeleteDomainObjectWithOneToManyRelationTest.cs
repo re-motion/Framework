@@ -150,21 +150,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void AddToRelatedObjectsOfDeletedObject ()
     {
       _supervisor.Delete ();
-
-      _supervisor.Subordinates.Add (DomainObjectIDs.Employee3.GetObject<Employee> ());
+      Assert.That (
+          () => _supervisor.Subordinates.Add (DomainObjectIDs.Employee3.GetObject<Employee> ()),
+          Throws.InstanceOf<ObjectDeletedException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void ReassignDeletedObject ()
     {
       _supervisor.Delete ();
-
-      _subordinate1.Supervisor = _supervisor;
+      Assert.That (
+          () => _subordinate1.Supervisor = _supervisor,
+          Throws.InstanceOf<ObjectDeletedException>());
     }
 
     private SequenceEventReceiver CreateEventReceiver ()

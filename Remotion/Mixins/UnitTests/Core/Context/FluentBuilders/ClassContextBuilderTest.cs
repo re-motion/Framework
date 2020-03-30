@@ -128,43 +128,58 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.Core.TestDomain.BT2Mixin1 is already configured as a "
-        + "mixin for type Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddMixin_Twice ()
     {
-      _classBuilder.AddMixin (typeof (BT2Mixin1)).AddMixin (typeof (BT2Mixin1));
+      Assert.That (
+          () => _classBuilder.AddMixin (typeof (BT2Mixin1)).AddMixin (typeof (BT2Mixin1)),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "Remotion.Mixins.UnitTests.Core.TestDomain.BT2Mixin1 is already configured as a "
+                  + "mixin for type Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixinWithVirtualMethod`1 is "
-        + "already configured as a mixin for type Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddMixin_Twice_Generic1 ()
     {
-      _classBuilder.AddMixin (typeof (GenericMixinWithVirtualMethod<>)).AddMixin (typeof (GenericMixinWithVirtualMethod<>));
+      Assert.That (
+          () => _classBuilder.AddMixin (typeof (GenericMixinWithVirtualMethod<>)).AddMixin (typeof (GenericMixinWithVirtualMethod<>)),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixinWithVirtualMethod`1 is "
+                  + "already configured as a mixin for type Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixinWithVirtualMethod`1 is "
-        + "already configured as a mixin for type Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddMixin_Twice_Generic2 ()
     {
-      _classBuilder.AddMixin (typeof (GenericMixinWithVirtualMethod<object>)).AddMixin (typeof (GenericMixinWithVirtualMethod<>));
+      Assert.That (
+          () => _classBuilder.AddMixin (typeof (GenericMixinWithVirtualMethod<object>)).AddMixin (typeof (GenericMixinWithVirtualMethod<>)),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixinWithVirtualMethod`1 is "
+                  + "already configured as a mixin for type Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixinWithVirtualMethod`1 is "
-        + "already configured as a mixin for type Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddMixin_Twice_Generic3 ()
     {
-      _classBuilder.AddMixin (typeof (GenericMixinWithVirtualMethod<>)).AddMixin (typeof (GenericMixinWithVirtualMethod<object>));
+      Assert.That (
+          () => _classBuilder.AddMixin (typeof (GenericMixinWithVirtualMethod<>)).AddMixin (typeof (GenericMixinWithVirtualMethod<object>)),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixinWithVirtualMethod`1 is "
+                  + "already configured as a mixin for type Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixinWithVirtualMethod`1 is "
-        + "already configured as a mixin for type Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddMixin_Twice_Generic4 ()
     {
-      _classBuilder.AddMixin (typeof (GenericMixinWithVirtualMethod<string>)).AddMixin (typeof (GenericMixinWithVirtualMethod<object>));
+      Assert.That (
+          () => _classBuilder.AddMixin (typeof (GenericMixinWithVirtualMethod<string>)).AddMixin (typeof (GenericMixinWithVirtualMethod<object>)),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixinWithVirtualMethod`1 is "
+                  + "already configured as a mixin for type Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2."));
     }
 
     [Test]
@@ -556,11 +571,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.Core.TestDomain.IBT6Mixin1 is already configured as a "
-        + "composed interface for type Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddComposedInterface_Twice ()
     {
-      _classBuilder.AddComposedInterface (typeof (IBT6Mixin1)).AddComposedInterface (typeof (IBT6Mixin1));
+      Assert.That (
+          () => _classBuilder.AddComposedInterface (typeof (IBT6Mixin1)).AddComposedInterface (typeof (IBT6Mixin1)),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "Remotion.Mixins.UnitTests.Core.TestDomain.IBT6Mixin1 is already configured as a "
+                  + "composed interface for type Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2."));
     }
 
     [Test]

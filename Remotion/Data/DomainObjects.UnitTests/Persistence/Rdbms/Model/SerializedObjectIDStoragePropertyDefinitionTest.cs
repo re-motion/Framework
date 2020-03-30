@@ -225,13 +225,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "String-serialized ObjectID values cannot be used as foreign keys.")]
     public void CreateForeignKeyConstraint ()
     {
-      _serializedObjectIDStoragePropertyDefinition.CreateForeignKeyConstraint (
+      Assert.That (
+          () => _serializedObjectIDStoragePropertyDefinition.CreateForeignKeyConstraint (
           cols => { throw new Exception ("Should not be called."); }, 
           new EntityNameDefinition ("entityschema", "entityname"), 
-          ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty);
+          ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "String-serialized ObjectID values cannot be used as foreign keys."));
     }
   }
 }

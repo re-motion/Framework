@@ -77,11 +77,14 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     }
 
     [Test]
-    [ExpectedException (typeof (ExpectationViolationException), ExpectedMessage = "ISerializationEventReceiver.OnDeserialization(any); Expected #1, Actual #0.")]
     public void TestDeserializationCallbacks_ViaBrokenInstance ()
     {
-      new SerializationCallbackTester<BrokenClass> (new RhinoMocksRepositoryAdapter (), new BrokenClass (), BrokenClass.SetReceiver)
-          .Test_DeserializationCallbacks ();
+      Assert.That (
+          () => new SerializationCallbackTester<BrokenClass> (new RhinoMocksRepositoryAdapter (), new BrokenClass (), BrokenClass.SetReceiver)
+          .Test_DeserializationCallbacks (),
+          Throws.InstanceOf<ExpectationViolationException>()
+              .With.Message.EqualTo (
+                  "ISerializationEventReceiver.OnDeserialization(any); Expected #1, Actual #0."));
     }
   }
 }

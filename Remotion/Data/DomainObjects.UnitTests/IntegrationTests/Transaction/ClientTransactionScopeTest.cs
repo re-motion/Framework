@@ -345,12 +345,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The ClientTransactionScope has already been left.")]
     public void LeaveTwiceThrows ()
     {
       ClientTransactionScope scope = ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
       scope.Leave();
-      scope.Leave();
+      Assert.That (
+          () => scope.Leave(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The ClientTransactionScope has already been left."));
     }
 
     [Test]

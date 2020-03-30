@@ -187,23 +187,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "BocList 'BocList': DataSourceFactory has not been set prior to invoking CreateControls().")]
     public void CreateControlsDataSourceFactoryNull ()
     {
       Invoker.InitRecursive();
       _editableRow.ControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
-      _editableRow.CreateControls (_value01, new BocColumnDefinition[0]);
+      Assert.That (
+          () => _editableRow.CreateControls (_value01, new BocColumnDefinition[0]),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("BocList 'BocList': DataSourceFactory has not been set prior to invoking CreateControls()."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "BocList 'BocList': ControlFactory has not been set prior to invoking CreateControls().")]
     public void CreateControlsControlFactoryNull ()
     {
       Invoker.InitRecursive();
       _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
-      _editableRow.CreateControls (_value01, new BocColumnDefinition[0]);
+      Assert.That (
+          () => _editableRow.CreateControls (_value01, new BocColumnDefinition[0]),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("BocList 'BocList': ControlFactory has not been set prior to invoking CreateControls()."));
     }
 
     [Test]
@@ -405,7 +407,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void HasEditControlWithNegativeIndex ()
     {
       Invoker.InitRecursive();
@@ -418,12 +419,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[1] = _commandColumn;
 
       _editableRow.CreateControls (_value01, columns);
-
-      _editableRow.HasEditControl (-1);
+      Assert.That (
+          () => _editableRow.HasEditControl (-1),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void HasEditControlWithIndexOutOfPositiveRange ()
     {
       Invoker.InitRecursive();
@@ -436,8 +437,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[1] = _commandColumn;
 
       _editableRow.CreateControls (_value01, columns);
-
-      _editableRow.HasEditControl (3);
+      Assert.That (
+          () => _editableRow.HasEditControl (3),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
 
@@ -471,7 +473,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void GetEditControlWithNegativeIndex ()
     {
       Invoker.InitRecursive();
@@ -484,12 +485,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[1] = _commandColumn;
 
       _editableRow.CreateControls (_value01, columns);
-
-      _editableRow.HasEditControl (-1);
+      Assert.That (
+          () => _editableRow.HasEditControl (-1),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void GetEditControlWithIndexOutOfPositiveRange ()
     {
       Invoker.InitRecursive();
@@ -502,8 +503,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[1] = _commandColumn;
 
       _editableRow.CreateControls (_value01, columns);
-
-      _editableRow.HasEditControl (3);
+      Assert.That (
+          () => _editableRow.HasEditControl (3),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
 
@@ -572,7 +574,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void HasValidatorsWithNegativeIndex ()
     {
       Invoker.InitRecursive();
@@ -586,12 +587,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _editableRow.CreateControls (_value01, columns);
       _editableRow.EnsureValidatorsRestored();
-
-      _editableRow.HasValidators (-1);
+      Assert.That (
+          () => _editableRow.HasValidators (-1),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void HasValidatorsWithIndexOutOfPositiveRange ()
     {
       Invoker.InitRecursive();
@@ -605,8 +606,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _editableRow.CreateControls (_value01, columns);
       _editableRow.EnsureValidatorsRestored();
-
-      _editableRow.HasValidators (3);
+      Assert.That (
+          () => _editableRow.HasValidators (3),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
 
@@ -669,7 +671,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void GetValidatorsWithNegativeIndex ()
     {
       Invoker.InitRecursive();
@@ -683,12 +684,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _editableRow.CreateControls (_value01, columns);
       _editableRow.EnsureValidatorsRestored();
-
-      _editableRow.GetValidators (-1);
+      Assert.That (
+          () => _editableRow.GetValidators (-1),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void GetValidatorsWithIndexOutOfPositiveRange ()
     {
       Invoker.InitRecursive();
@@ -702,8 +703,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _editableRow.CreateControls (_value01, columns);
       _editableRow.EnsureValidatorsRestored();
-
-      _editableRow.GetValidators (3);
+      Assert.That (
+          () => _editableRow.GetValidators (3),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
 

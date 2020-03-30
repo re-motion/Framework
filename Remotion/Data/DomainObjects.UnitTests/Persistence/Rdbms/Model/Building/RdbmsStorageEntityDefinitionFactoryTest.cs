@@ -164,15 +164,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Table1Class' has no table name defined.")]
     public void CreateTableDefinition_ClassHasNoDBTableAttributeDefined ()
     {
       _storageNameProviderMock
           .Expect (mock => mock.GetTableName (_testModel.TableClassDefinition1))
           .Return (null);
       _storageNameProviderMock.Replay();
-
-      _factory.CreateTableDefinition (_testModel.TableClassDefinition1);
+      Assert.That (
+          () => _factory.CreateTableDefinition (_testModel.TableClassDefinition1),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo ("Class 'Table1Class' has no table name defined."));
     }
 
     [Test]

@@ -49,20 +49,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     }
 
     [Test]
-    [ExpectedException (typeof (TransportationException), ExpectedMessage = "Invalid data specified: Attempting to deserialize an empty stream.")]
     public void Import_ThrowsOnInvalidFormat ()
     {
       var data = new byte[0];
-      Import (data);
+      Assert.That (
+          () => Import (data),
+          Throws.InstanceOf<TransportationException>()
+              .With.Message.EqualTo (
+                  "Invalid data specified: Attempting to deserialize an empty stream."));
     }
 
     [Test]
-    [ExpectedException (typeof (TransportationException), ExpectedMessage = "Invalid data specified: Unable to cast object of type 'System.String' "
-        + "to type 'System.Collections.Generic.KeyValuePair`2[System.String,System.Collections.Generic.Dictionary`2[System.String,System.Object]][]'.")]
     public void Import_ThrowsOnInvalidSerializedData ()
     {
       byte[] data = Serializer.Serialize ("string");
-      Import (data);
+      Assert.That (
+          () => Import (data),
+          Throws.InstanceOf<TransportationException>()
+              .With.Message.EqualTo (
+                  "Invalid data specified: Unable to cast object of type 'System.String' "
+                  + "to type 'System.Collections.Generic.KeyValuePair`2[System.String,System.Collections.Generic.Dictionary`2[System.String,System.Object]][]'."));
     }
 
     [Test]

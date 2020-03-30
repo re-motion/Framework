@@ -55,10 +55,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void CreateWithNegativeIndex ()
     {
-      _factory.Create (_stringValueColumn, -1);
+      Assert.That (
+          () => _factory.Create (_stringValueColumn, -1),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
   }
 }

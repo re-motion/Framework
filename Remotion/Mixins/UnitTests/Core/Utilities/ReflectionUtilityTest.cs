@@ -210,11 +210,14 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Associated methods can only be retrieved for methods, properties, and events.")]
     public void GetAssociatedMethods_InvalidMemberInfoKind ()
     {
       var member = typeof (ClassWithAllKindsOfMembers).GetConstructor (Type.EmptyTypes);
-      ReflectionUtility.GetAssociatedMethods (member);
+      Assert.That (
+          () => ReflectionUtility.GetAssociatedMethods (member),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Associated methods can only be retrieved for methods, properties, and events."));
     }
 
     [Test]

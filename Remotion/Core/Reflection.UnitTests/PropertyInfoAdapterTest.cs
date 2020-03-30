@@ -194,14 +194,15 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (TargetParameterCountException), ExpectedMessage = "Parameter count mismatch.")]
     public void GetValue_WithIndexerProperty_OneParameter_IndexParameterArrayLengthMismatch ()
     {
       var instanceStub = MockRepository.GenerateStub<IInterfaceWithReferenceType<SimpleReferenceType>>();
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-
-      _implicitInterfaceAdapter.GetValue (instanceStub, new object[0]);
+      Assert.That (
+          () => _implicitInterfaceAdapter.GetValue (instanceStub, new object[0]),
+          Throws.InstanceOf<TargetParameterCountException>()
+              .With.Message.EqualTo ("Parameter count mismatch."));
     }
 
     [Test]
@@ -223,7 +224,6 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (TargetParameterCountException), ExpectedMessage = "Parameter count mismatch.")]
     public void GetValue_WithIndexerProperty_TwoParameters_IndexParameterArrayNull ()
     {
       var instanceStub = MockRepository.GenerateStub<IInterfaceWithReferenceType<SimpleReferenceType>>();
@@ -231,12 +231,13 @@ namespace Remotion.Reflection.UnitTests
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
           .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-
-      _implicitInterfaceAdapter.GetValue (instanceStub, null);
+      Assert.That (
+          () => _implicitInterfaceAdapter.GetValue (instanceStub, null),
+          Throws.InstanceOf<TargetParameterCountException>()
+              .With.Message.EqualTo ("Parameter count mismatch."));
     }
 
     [Test]
-    [ExpectedException (typeof (TargetParameterCountException), ExpectedMessage = "Parameter count mismatch.")]
     public void GetValue_WithIndexerProperty_TwoParameters_IndexParameterArrayLengthMismatch ()
     {
       var instanceStub = MockRepository.GenerateStub<IInterfaceWithReferenceType<SimpleReferenceType>>();
@@ -244,8 +245,10 @@ namespace Remotion.Reflection.UnitTests
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
           .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-
-      _implicitInterfaceAdapter.GetValue (instanceStub, new object[1]);
+      Assert.That (
+          () => _implicitInterfaceAdapter.GetValue (instanceStub, new object[1]),
+          Throws.InstanceOf<TargetParameterCountException>()
+              .With.Message.EqualTo ("Parameter count mismatch."));
     }
 
     [Test]
@@ -290,7 +293,6 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (TargetParameterCountException), ExpectedMessage = "Parameter count mismatch.")]
     public void SetValue_WithIndexerProperty_WithOneParameter_IndexParameterArrayNull ()
     {
       var scalar = new SimpleReferenceType();
@@ -298,12 +300,13 @@ namespace Remotion.Reflection.UnitTests
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-
-      _implicitInterfaceAdapter.SetValue (instanceStub, scalar, null);
+      Assert.That (
+          () => _implicitInterfaceAdapter.SetValue (instanceStub, scalar, null),
+          Throws.InstanceOf<TargetParameterCountException>()
+              .With.Message.EqualTo ("Parameter count mismatch."));
     }
 
     [Test]
-    [ExpectedException (typeof (TargetParameterCountException), ExpectedMessage = "Parameter count mismatch.")]
     public void SetValue_WithIndexerProperty_WithOneParameter_IndexParameterArrayLengthMismatch ()
     {
       var scalar = new SimpleReferenceType();
@@ -311,8 +314,10 @@ namespace Remotion.Reflection.UnitTests
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-
-      _implicitInterfaceAdapter.SetValue (instanceStub, scalar, new object[0]);
+      Assert.That (
+          () => _implicitInterfaceAdapter.SetValue (instanceStub, scalar, new object[0]),
+          Throws.InstanceOf<TargetParameterCountException>()
+              .With.Message.EqualTo ("Parameter count mismatch."));
     }
 
     [Test]
@@ -332,7 +337,6 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (TargetParameterCountException), ExpectedMessage = "Parameter count mismatch.")]
     public void SetValue_WithIndexerProperty_WithTwoParameters_IndexParameterArrayNull ()
     {
       var scalar = new SimpleReferenceType();
@@ -341,12 +345,13 @@ namespace Remotion.Reflection.UnitTests
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
           .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-
-      _implicitInterfaceAdapter.SetValue (instanceStub, scalar, null);
+      Assert.That (
+          () => _implicitInterfaceAdapter.SetValue (instanceStub, scalar, null),
+          Throws.InstanceOf<TargetParameterCountException>()
+              .With.Message.EqualTo ("Parameter count mismatch."));
     }
 
     [Test]
-    [ExpectedException (typeof (TargetParameterCountException), ExpectedMessage = "Parameter count mismatch.")]
     public void SetValue_WithIndexerProperty_WithTwoParameters_IndexParameterArrayLengthMismatch ()
     {
       var scalar = new SimpleReferenceType();
@@ -355,8 +360,10 @@ namespace Remotion.Reflection.UnitTests
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
           .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-
-      _implicitInterfaceAdapter.SetValue (instanceStub, scalar, new object[1]);
+      Assert.That (
+          () => _implicitInterfaceAdapter.SetValue (instanceStub, scalar, new object[1]),
+          Throws.InstanceOf<TargetParameterCountException>()
+              .With.Message.EqualTo ("Parameter count mismatch."));
     }
 
     [Test]
@@ -588,22 +595,24 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The implementationType parameter must not be an interface.\r\nParameter name: implementationType")]
     public void FindInterfaceImplementation_InterfaceProperty_ImplementationIsInterface ()
     {
       var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar"));
-
-      adapter.FindInterfaceImplementation (typeof (IInterfaceWithReferenceType<object>));
+      Assert.That (
+          () => adapter.FindInterfaceImplementation (typeof (IInterfaceWithReferenceType<object>)),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("The implementationType parameter must not be an interface.\r\nParameter name: implementationType"));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This property is not an interface property.")]
     public void FindInterfaceImplementation_NonInterfaceProperty ()
     {
       var adapter = PropertyInfoAdapter.Create(typeof (ClassWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar"));
-
-      adapter.FindInterfaceImplementation (typeof (ClassWithReferenceType<object>));
+      Assert.That (
+          () => adapter.FindInterfaceImplementation (typeof (ClassWithReferenceType<object>)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "This property is not an interface property."));
     }
 
     [Test]
@@ -695,13 +704,13 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "This property is itself an interface member, so it cannot have an interface declaration.")]
     public void FindInterfaceDeclarations_InterfaceProperty ()
     {
       var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar"));
-
-      adapter.FindInterfaceDeclarations();
+      Assert.That (
+          () => adapter.FindInterfaceDeclarations(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("This property is itself an interface member, so it cannot have an interface declaration."));
     }
 
     [Test]

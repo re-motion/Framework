@@ -120,7 +120,6 @@ public class CommandLineParserTest
   }
 
   [Test]
-  [ExpectedException (typeof (MissingRequiredCommandLineParameterException))]
   public void TestParsingLeaveOutRequired ()
   {
     CommandLineStringArgument argSourceDir;
@@ -129,37 +128,38 @@ public class CommandLineParserTest
     CommandLineEnumArgument argEnumOption;
     CommandLineParser parser = CreateParser (out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
     argEnumOption.IsOptional = false;
-
-    parser.Parse (new string[] {
-        "source"} );
+    Assert.That (
+        () => parser.Parse (new string[] {
+        "source"} ),
+        Throws.InstanceOf<MissingRequiredCommandLineParameterException>());
   }
 
   [Test]
-  [ExpectedException (typeof (InvalidCommandLineArgumentNameException))]
   public void TestParsingCaseSensitiveFail ()
   {
     CommandLineParser parser = CreateParser ();
     parser.IsCaseSensitive = true;
-
-    parser.Parse (new string[] {
+    Assert.That (
+        () => parser.Parse (new string[] {
         "source", 
         "dest", 
         "/B-",
-        "/Re:y" });
+        "/Re:y" }),
+        Throws.InstanceOf<InvalidCommandLineArgumentNameException>());
   }
 
   [Test]
-  [ExpectedException (typeof (InvalidCommandLineArgumentNameException))]
   public void TestParsingNotIncrementalFail ()
   {
     CommandLineParser parser = CreateParser ();
     parser.IncrementalNameValidation = false;
-
-    parser.Parse (new string[] {
+    Assert.That (
+        () => parser.Parse (new string[] {
         "source", 
         "dest", 
         "/b-",
-        "/re:y" });
+        "/re:y" }),
+        Throws.InstanceOf<InvalidCommandLineArgumentNameException>());
   }
 
   [Test]
@@ -184,16 +184,16 @@ public class CommandLineParserTest
   }
 
   [Test]
-  [ExpectedException (typeof (InvalidNumberOfCommandLineArgumentsException))]
   public void TestParsingTooManyPositionalFail ()
   {
     CommandLineParser parser = CreateParser ();
     parser.IncrementalNameValidation = false;
-
-    parser.Parse (new string[] {
+    Assert.That (
+        () => parser.Parse (new string[] {
         "source", 
         "dest", 
-        "another"} );
+        "another"} ),
+        Throws.InstanceOf<InvalidNumberOfCommandLineArgumentsException>());
   }
 
   [Test]

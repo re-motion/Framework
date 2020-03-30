@@ -155,7 +155,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void Parent_CannotAccessObject_CreatedInSubTransaction ()
     {
       ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction ();
@@ -164,7 +163,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         order = Order.NewObject ();
       }
-      Dev.Null = order.OrderNumber;
+      Assert.That (
+          () => Dev.Null = order.OrderNumber,
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]

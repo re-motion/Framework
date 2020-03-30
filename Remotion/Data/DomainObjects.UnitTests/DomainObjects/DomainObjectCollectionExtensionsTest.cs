@@ -51,11 +51,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Test")]
     public void CheckNotReadOnly_ReadOnly ()
     {
       var readOnlyCollection = _collection.Clone (true);
-      readOnlyCollection.CheckNotReadOnly ("Test");
+      Assert.That (
+          () => readOnlyCollection.CheckNotReadOnly ("Test"),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Test"));
     }
 
     [Test]
@@ -85,24 +87,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Item 0 of parameter 'domainObjects' has the type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' "
-        + "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer'."
-        + "\r\nParameter name: domainObjects")]
     public void UnionWith_ChecksItems ()
     {
       var secondCollection = new DomainObjectCollection();
       secondCollection.Add (DomainObjectIDs.Order1.GetObject<Order>());
-
-      _collection.UnionWith (secondCollection);
+      Assert.That (
+          () => _collection.UnionWith (secondCollection),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Item 0 of parameter 'domainObjects' has the type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' "
+                  + "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer'."
+                  + "\r\nParameter name: domainObjects"));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "A read-only collection cannot be combined with another collection.")]
     public void UnionWith_ChecksNotReadOnly ()
     {
       var readOnlyCollection = _collection.Clone (true);
-      readOnlyCollection.UnionWith (_collection);
+      Assert.That (
+          () => readOnlyCollection.UnionWith (_collection),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "A read-only collection cannot be combined with another collection."));
     }
 
     [Test]

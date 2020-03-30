@@ -39,11 +39,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "A SortExpressionDefinition must contain at least one sorted property.\r\nParameter name: sortedProperties")]
     public void Initialization_Empty ()
     {
-      new SortExpressionDefinition (new SortedPropertySpecification[0]);
+      Assert.That (
+          () => new SortExpressionDefinition (new SortedPropertySpecification[0]),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("A SortExpressionDefinition must contain at least one sorted property.\r\nParameter name: sortedProperties"));
     }
 
     [Test]

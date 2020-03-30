@@ -75,11 +75,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectsNotFoundException), ExpectedMessage = "Object 'Order|.*|System.Guid' could not be found.",
-        MatchType = MessageMatch.Regex)]
     public void Load_Inexistent ()
     {
-      _transporter.Load (new ObjectID(typeof (Order), Guid.NewGuid()));
+      Assert.That (
+          () => _transporter.Load (new ObjectID(typeof (Order), Guid.NewGuid())),
+          Throws.InstanceOf<ObjectsNotFoundException>()
+              .With.Message.Matches (
+                  "Object 'Order|.*|System.Guid' could not be found."));
     }
 
     [Test]
@@ -284,13 +286,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be "
-                                                                      +
-                                                                      "retrieved, it hasn't been loaded yet. Load it first, then retrieve it for editing.\r\nParameter name: loadedObjectID"
-        )]
     public void GetTransportedObject_ThrowsOnUnloadedObject ()
     {
-      _transporter.GetTransportedObject (DomainObjectIDs.Order1);
+      Assert.That (
+          () => _transporter.GetTransportedObject (DomainObjectIDs.Order1),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be "
+                  +
+                  "retrieved, it hasn't been loaded yet. Load it first, then retrieve it for editing.\r\nParameter name: loadedObjectID"
+));
     }
 
     [Test]
@@ -330,15 +335,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Object 'Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid' "
-                                                                              +
-                                                                              "cannot be modified for transportation because it hasn't been loaded yet. Load it before manipulating it."
-        )]
     public void GetTransportedObject_GetSetRelatedObject_VirtualSide_Unloaded ()
     {
       _transporter.Load (DomainObjectIDs.Employee3);
       var employee = (Employee) _transporter.GetTransportedObject (DomainObjectIDs.Employee3);
-      employee.Computer = null;
+      Assert.That (
+          () => employee.Computer = null,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Object 'Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid' "
+                  +
+                  "cannot be modified for transportation because it hasn't been loaded yet. Load it before manipulating it."
+));
     }
 
     private TransportedDomainObjects ExportAndLoadTransportData ()

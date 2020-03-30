@@ -85,19 +85,21 @@ namespace Remotion.Security.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'user' cannot be empty.\r\nParameter name: user")]
     public void Initialize_WithUserEmpty ()
     {
-      new SecurityPrincipal (string.Empty, null, null, null);
+      Assert.That (
+          () => new SecurityPrincipal (string.Empty, null, null, null),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Parameter 'user' cannot be empty.\r\nParameter name: user"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'substitutedUser' cannot be empty.\r\nParameter name: substitutedUser")]
     public void Initialize_WithSubstitutedUserEmpty ()
     {
-      new SecurityPrincipal ("TheUser", null, string.Empty, null);
+      Assert.That (
+          () => new SecurityPrincipal ("TheUser", null, string.Empty, null),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Parameter 'substitutedUser' cannot be empty.\r\nParameter name: substitutedUser"));
     }
 
     [Test]

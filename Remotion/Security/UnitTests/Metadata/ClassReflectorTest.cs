@@ -135,19 +135,24 @@ namespace Remotion.Security.UnitTests.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'type' is a 'Remotion.Security.UnitTests.TestDomain.Role', which cannot be assigned to type 'Remotion.Security.ISecurableObject'."
-        + "\r\nParameter name: type")]
     public void GetMetadataWithInvalidType ()
     {
-      new ClassReflector().GetMetadata (typeof (Role), _cache);
+      Assert.That (
+          () => new ClassReflector().GetMetadata (typeof (Role), _cache),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'type' is a 'Remotion.Security.UnitTests.TestDomain.Role', which cannot be assigned to type 'Remotion.Security.ISecurableObject'."
+                  + "\r\nParameter name: type"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Value types are not supported.\r\nParameter name: type")]
     public void GetMetadataWithInvalidValueType ()
     {
-      new ClassReflector ().GetMetadata (typeof (TestValueType), _cache);
+      Assert.That (
+          () => new ClassReflector ().GetMetadata (typeof (TestValueType), _cache),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Value types are not supported.\r\nParameter name: type"));
     }
   }
 }

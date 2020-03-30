@@ -110,10 +110,13 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "FindInterfaceImplementation can only be called on inteface properties.")]
     public void FindInterfaceImplementation ()
     {
-      _nullPropertyInformation.FindInterfaceImplementation (typeof (object));
+      Assert.That (
+          () => _nullPropertyInformation.FindInterfaceImplementation (typeof (object)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "FindInterfaceImplementation can only be called on inteface properties."));
     }
 
     [Test]

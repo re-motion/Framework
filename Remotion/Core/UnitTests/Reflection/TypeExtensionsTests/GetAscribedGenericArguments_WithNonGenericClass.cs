@@ -36,13 +36,15 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
-        + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.DerivedType' was expected.\r\n"
-        + "Parameter name: type")]
     public void BaseType ()
     {
-      TypeExtensions.GetAscribedGenericArguments (typeof (BaseType), typeof (DerivedType));
+      Assert.That (
+          () => TypeExtensions.GetAscribedGenericArguments (typeof (BaseType), typeof (DerivedType)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
+                  + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.DerivedType' was expected.\r\n"
+                  + "Parameter name: type"));
     }
   }
 }

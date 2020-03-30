@@ -78,15 +78,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
-        "The opposite end point 'null/Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' is of type "
-        + "'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.NullCollectionEndPoint', not of type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.IObjectEndPoint'.")]
     public void GetEndPointWithOppositeDefinition_ID_InvalidType ()
     {
       var id = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (id, null);
-
-      endPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint> ((ObjectID) null);
+      Assert.That (
+          () => endPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint> ((ObjectID) null),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The opposite end point 'null/Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' is of type "
+                  + "'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.NullCollectionEndPoint', not of type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.IObjectEndPoint'."));
     }
   }
 }

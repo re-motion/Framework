@@ -73,10 +73,11 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException(typeof(InvalidOperationException))]
     public void FindInterfaceImplementation ()
     {
-      _nullMethodInformation.FindInterfaceImplementation (typeof (object));
+      Assert.That (
+          () => _nullMethodInformation.FindInterfaceImplementation (typeof (object)),
+          Throws.InvalidOperationException);
     }
 
     [Test]

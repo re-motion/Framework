@@ -63,12 +63,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void GetObject ()
     {
       _orderTicket.Delete ();
-
-      _orderTicket.ID.GetObject<OrderTicket> ();
+      Assert.That (
+          () => _orderTicket.ID.GetObject<OrderTicket> (),
+          Throws.InstanceOf<ObjectDeletedException>());
     }
 
     [Test]
@@ -80,14 +80,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void ModifyDeletedObject ()
     {
       var dataContainer = _order.InternalDataContainer;
 
       _order.Delete ();
-
-      SetPropertyValue (dataContainer, typeof (Order), "OrderNumber", 10);
+      Assert.That (
+          () => SetPropertyValue (dataContainer, typeof (Order), "OrderNumber", 10),
+          Throws.InstanceOf<ObjectDeletedException>());
     }
 
     [Test]

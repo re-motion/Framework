@@ -114,8 +114,6 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "The provider 'Invalid' specified for the defaultProvider does not exist in the providers collection.")]
     public void GetProvider_WithInvalidProviderName ()
     {
       string xmlFragment =
@@ -127,13 +125,14 @@ namespace Remotion.UnitTests.Configuration
           </stubConfigSection>";
 
       ConfigurationHelper.DeserializeSection (_stubConfigurationSection, xmlFragment);
-
-      Dev.Null = _providerHelper.Provider;
+      Assert.That (
+          () => Dev.Null = _providerHelper.Provider,
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo (
+                  "The provider 'Invalid' specified for the defaultProvider does not exist in the providers collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "The name of the entry 'WellKnown' identifies a well known provider and cannot be reused for custom providers.")]
     public void PostDeserialize_DuplicateWellKnownProvider ()
     {
       string xmlFragment =
@@ -143,8 +142,11 @@ namespace Remotion.UnitTests.Configuration
               <add name=""WellKnown"" type=""Remotion.UnitTests::Configuration.FakeProvider"" />
             </providers>
           </stubConfigSection>";
-
-      ConfigurationHelper.DeserializeSection (_stubConfigurationSection, xmlFragment);
+      Assert.That (
+          () => ConfigurationHelper.DeserializeSection (_stubConfigurationSection, xmlFragment),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo (
+                  "The name of the entry 'WellKnown' identifies a well known provider and cannot be reused for custom providers."));
     }
 
     [Test]
@@ -159,16 +161,17 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException),
-        ExpectedMessage =
-            "The current value of property 'defaultProvider' requires that the assembly 'Invalid' is placed within the CLR's probing path for this application."
-        )]
     public void GetType_WithInvalidAssemblyName ()
     {
-      _providerHelper.GetType (
+      Assert.That (
+          () => _providerHelper.GetType (
           _propertyCollection["defaultProvider"],
           new AssemblyName ("Invalid"),
-          "Remotion.UnitTests.Configuration.FakeProvider");
+          "Remotion.UnitTests.Configuration.FakeProvider"),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo (
+                  "The current value of property 'defaultProvider' requires that the assembly 'Invalid' is placed within the CLR's probing path for this application."
+));
     }
 
     [Test]
@@ -183,13 +186,14 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException))]
     public void GetTypeWithMatchingVersionNumber_WithInvalidAssemblyName ()
     {
-      _providerHelper.GetTypeWithMatchingVersionNumber (
+      Assert.That (
+          () => _providerHelper.GetTypeWithMatchingVersionNumber (
           _propertyCollection["defaultProvider"],
           "Invalid",
-          "Remotion.UnitTests.Configuration.FakeProvider");
+          "Remotion.UnitTests.Configuration.FakeProvider"),
+          Throws.InstanceOf<ConfigurationErrorsException>());
     }
 
     [Test]
@@ -227,28 +231,33 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), ExpectedMessage = "Type name must be specified for this provider.")]
     public void InstantiateProvider_WithMissingTypeName ()
     {
-      _providerHelper.InstantiateProvider (new ProviderSettings(), typeof (FakeProviderBase));
+      Assert.That (
+          () => _providerHelper.InstantiateProvider (new ProviderSettings(), typeof (FakeProviderBase)),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo (
+                  "Type name must be specified for this provider."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "Provider must implement the class 'Remotion.UnitTests.Configuration.FakeProviderBase'.")]
     public void InstantiateProvider_WithTypeNotDerivedFromRequiredBaseType ()
     {
       ProviderSettings providerSettings = new ProviderSettings ("Custom", "Remotion.UnitTests::Configuration.FakeOtherProvider");
-      _providerHelper.InstantiateProvider (providerSettings, typeof (FakeProviderBase));
+      Assert.That (
+          () => _providerHelper.InstantiateProvider (providerSettings, typeof (FakeProviderBase)),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo ("Provider must implement the class 'Remotion.UnitTests.Configuration.FakeProviderBase'."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "Provider must implement the interface 'Remotion.UnitTests.Configuration.IFakeProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
     {
       ProviderSettings providerSettings = new ProviderSettings ("Custom", "Remotion.UnitTests::Configuration.FakeProviderBase");
-      _providerHelper.InstantiateProvider (providerSettings, typeof (FakeProviderBase), typeof (IFakeProvider));
+      Assert.That (
+          () => _providerHelper.InstantiateProvider (providerSettings, typeof (FakeProviderBase), typeof (IFakeProvider)),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo ("Provider must implement the interface 'Remotion.UnitTests.Configuration.IFakeProvider'."));
     }
 
     [Test]

@@ -333,10 +333,13 @@ namespace Remotion.UnitTests.Logging
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "LogLevel does not support value 10000.\r\nParameter name: logLevel")]
     public void Test_ConvertInvalid ()
     {
-      Log4NetTraceListener.Convert ((TraceEventType) 10000);
+      Assert.That (
+          () => Log4NetTraceListener.Convert ((TraceEventType) 10000),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "LogLevel does not support value 10000.\r\nParameter name: logLevel"));
     }
   }
 }

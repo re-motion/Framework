@@ -35,11 +35,14 @@ namespace Remotion.Security.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Enumerated type 'Remotion.Security.UnitTests.EnumWrapperTest+TestFlags' "
-        + "cannot be wrapped. Only enumerated types without the System.FlagsAttribute can be wrapped.\r\nParameter name: enumValue")]
     public void Initialization_FromFlags_Fails ()
     {
-      EnumWrapper.Get(TestFlags.One);
+      Assert.That (
+          () => EnumWrapper.Get(TestFlags.One),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Enumerated type 'Remotion.Security.UnitTests.EnumWrapperTest+TestFlags' "
+                  + "cannot be wrapped. Only enumerated types without the System.FlagsAttribute can be wrapped.\r\nParameter name: enumValue"));
     }
 
     [Test]

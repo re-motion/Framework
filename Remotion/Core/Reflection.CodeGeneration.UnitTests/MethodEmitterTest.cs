@@ -220,12 +220,14 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given method System.ICloneable.Clone is abstract.",
-        MatchType = MessageMatch.Contains)]
     public void ImplementByBaseCallThrowsOnAbstractMethod ()
     {
       var method = ClassEmitter.CreateMethod ("NewEquals", MethodAttributes.Public, typeof (bool), new[]{typeof (object)});
-      method.ImplementByBaseCall (typeof (ICloneable).GetMethod ("Clone"));
+      Assert.That (
+          () => method.ImplementByBaseCall (typeof (ICloneable).GetMethod ("Clone")),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "The given method System.ICloneable.Clone is abstract."));
     }
 
     [Test]

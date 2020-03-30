@@ -65,7 +65,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (ConcurrencyViolationException))]
     public void ConcurrentDeleteWithForeignKey ()
     {
       ClientTransaction clientTransaction1 = ClientTransaction.CreateRootTransaction();
@@ -91,11 +90,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       Provider.Connect();
       Provider.Save (new[] { changedDataContainer });
-      Provider.Save (new[] { deletedDataContainer });
+      Assert.That (
+          () => Provider.Save (new[] { deletedDataContainer }),
+          Throws.InstanceOf<ConcurrencyViolationException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ConcurrencyViolationException))]
     public void ConcurrentDeleteWithoutForeignKey ()
     {
       ClientTransaction clientTransaction1 = ClientTransaction.CreateRootTransaction();
@@ -123,7 +123,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       Provider.Connect();
       Provider.Save (new[] { changedDataContainer });
-      Provider.Save (new[] { deletedDataContainer });
+      Assert.That (
+          () => Provider.Save (new[] { deletedDataContainer }),
+          Throws.InstanceOf<ConcurrencyViolationException>());
     }
 
     private DataContainer GetDeletedOrderTicketContainer ()

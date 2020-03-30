@@ -69,14 +69,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage =
-        "A database query returned duplicates of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', which is not allowed.")]
     public void GetCollectionWithDuplicates ()
     {
       var query = QueryFactory.CreateCollectionQuery ("test", DomainObjectIDs.Computer1.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition,
           "SELECT [Order].* FROM [OrderItem] INNER JOIN [Order] ON [OrderItem].[OrderID] = [Order].[ID] WHERE [Order].[OrderNo] = 1",
           new QueryParameterCollection (), typeof (DomainObjectCollection));
-      QueryManager.GetCollection (query);
+      Assert.That (
+          () => QueryManager.GetCollection (query),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo (
+                  "A database query returned duplicates of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', which is not allowed."));
     }
 
     [Test]
@@ -126,15 +128,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     }
 
     [Test]
-    [ExpectedException (typeof (UnexpectedQueryResultException), ExpectedMessage = "The query returned an object of type "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer', but a query result of type "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' was expected.")]
     public void CollectionQuery_WithObjectList_ThrowsWhenInvalidT ()
     {
       var query = QueryFactory.CreateQueryFromConfiguration ("CustomerTypeQuery");
       query.Parameters.Add ("@customerType", Customer.CustomerType.Standard);
-
-      QueryManager.GetCollection<Order> (query);
+      Assert.That (
+          () => QueryManager.GetCollection<Order> (query),
+          Throws.InstanceOf<UnexpectedQueryResultException>()
+              .With.Message.EqualTo (
+                  "The query returned an object of type "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer', but a query result of type "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' was expected."));
     }
 
     [Test]

@@ -81,21 +81,20 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The member 'InstanceMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void Test_WithoutRequiredPermissions_ShouldThrowArgumentException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation);
       _testHelper.ReplayAll ();
 
       _securityClient.HasMethodAccess (_testHelper.SecurableObject, _methodInformation);
-
-      _testHelper.VerifyAll ();
+      Assert.That (
+          () => _testHelper.VerifyAll (),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The member 'InstanceMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The member 'InstanceMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void Test_WithoutRequiredPermissionsAndWithinSecurityFreeSection_ShouldThrowArgumentException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation);
@@ -105,45 +104,51 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       {
         _securityClient.HasMethodAccess (_testHelper.SecurableObject, _methodInformation);
       }
-
-      _testHelper.VerifyAll ();
+      Assert.That (
+          () => _testHelper.VerifyAll (),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The member 'InstanceMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums"));
     }
 
 #if !DEBUG
     [Ignore ("Skipped unless DEBUG build")]
 #endif
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The securableObject did not return an IObjectSecurityStrategy.")]
     public void Test_WithSecurityStrategyIsNull ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, TestAccessTypes.First);
       _testHelper.ReplayAll ();
 
       _securityClient.HasMethodAccess (new SecurableObject (null), _methodInformation);
-
-      _testHelper.VerifyAll ();
+      Assert.That (
+          () => _testHelper.VerifyAll (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The securableObject did not return an IObjectSecurityStrategy."));
     }
     
 #if !DEBUG
     [Ignore ("Skipped unless DEBUG build")]
 #endif
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.")]
     public void Test_WithPermissionProviderReturnedNull_ShouldThrowInvalidOperationException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, (Enum[]) null);
       _testHelper.ReplayAll ();
 
       _securityClient.HasMethodAccess (_testHelper.SecurableObject, _methodInformation);
-
-      _testHelper.VerifyAll ();
+      Assert.That (
+          () => _testHelper.VerifyAll (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
     }
 
 #if !DEBUG
     [Ignore ("Skipped unless DEBUG build")]
 #endif
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.")]
     public void Test_WithPermissionProviderReturnedNullAndWithinSecurityFreeSection_ShouldThrowInvalidOperationException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, (Enum[]) null);
@@ -153,8 +158,11 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       {
         _securityClient.HasMethodAccess (_testHelper.SecurableObject, _methodInformation);
       }
-
-      _testHelper.VerifyAll ();
+      Assert.That (
+          () => _testHelper.VerifyAll (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
     }
 
 

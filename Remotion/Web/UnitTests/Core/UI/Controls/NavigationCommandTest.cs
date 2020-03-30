@@ -212,7 +212,6 @@ public class NavigationCommandTest
   }
 
   [Test]
-  [ExpectedException (typeof (InvalidOperationException))]
   public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeAndInvalidTypeNameMappingIDCombination()
   {
     string mappingID = "Test";
@@ -226,7 +225,9 @@ public class NavigationCommandTest
     command.WxeFunctionCommand.MappingID = mappingID;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
-    command.GetWxeFunctionPermanentUrl ();
+    Assert.That (
+        () => command.GetWxeFunctionPermanentUrl (),
+        Throws.InvalidOperationException);
   }
 
   [Test]
@@ -285,7 +286,6 @@ public class NavigationCommandTest
   }
 
   [Test]
-  [ExpectedException (typeof (WxeException))]
   public void GetWxeFunctionPermanentUrlWithoutDefaultWxeHandler()
   {
     WebConfigurationMock.Current = null;
@@ -295,7 +295,9 @@ public class NavigationCommandTest
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
-    command.GetWxeFunctionPermanentUrl ();
+    Assert.That (
+        () => command.GetWxeFunctionPermanentUrl (),
+        Throws.InstanceOf<WxeException>());
   }
 }
 

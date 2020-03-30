@@ -67,15 +67,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.Enlistment
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "A domain object instance for object "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' already exists in this transaction.")]
     public void EnlistDomainObject_IDAlreadyEnlisted ()
     {
       var orderA = DomainObjectMother.GetObjectInOtherTransaction<Order> (DomainObjectIDs.Order1);
       var orderB = DomainObjectMother.GetObjectInOtherTransaction<Order> (DomainObjectIDs.Order1);
 
       _manager.EnlistDomainObject (orderA);
-      _manager.EnlistDomainObject (orderB);
+      Assert.That (
+          () => _manager.EnlistDomainObject (orderB),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "A domain object instance for object "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' already exists in this transaction."));
     }
 
     [Test]

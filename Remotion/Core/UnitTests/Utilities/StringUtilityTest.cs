@@ -90,8 +90,8 @@ public class StringUtilityTest
     Assert.That (StringUtility.AreEqual ("test1", "test1", true), Is.EqualTo (true));
     Assert.That (StringUtility.AreEqual ("test1", "TEST1", false), Is.EqualTo (false));
     Assert.That (StringUtility.AreEqual ("test1", "TEST1", true), Is.EqualTo (true));
-    Assert.That (StringUtility.AreEqual ("t�st1", "T�ST1", false), Is.EqualTo (false));
-    Assert.That (StringUtility.AreEqual ("t�st1", "T�ST1", true), Is.EqualTo (true));
+    Assert.That (StringUtility.AreEqual ("t?st1", "T?ST1", false), Is.EqualTo (false));
+    Assert.That (StringUtility.AreEqual ("t?st1", "T?ST1", true), Is.EqualTo (true));
   }
 
   [Test]
@@ -166,10 +166,11 @@ public class StringUtilityTest
   }
 
   [Test]
-  [ExpectedException (typeof (ParseException))]
   public void GetParseMethodForObjectWithException()
   {
-    StubStringUtility.GetParseMethod (_object, true);
+    Assert.That (
+        () => StubStringUtility.GetParseMethod (_object, true),
+        Throws.InstanceOf<ParseException>());
   }
 
   [Test]
@@ -200,17 +201,19 @@ public class StringUtilityTest
   }
 
   [Test]
-  [ExpectedException (typeof (ParseException))]
   public void ParseInt32WithEmpty ()
   {
-    StringUtility.Parse (_int32, string.Empty, CultureInfo.InvariantCulture);
+    Assert.That (
+        () => StringUtility.Parse (_int32, string.Empty, CultureInfo.InvariantCulture),
+        Throws.InstanceOf<ParseException>());
   }
 
   [Test]
-  [ExpectedException (typeof (ParseException))]
   public void ParseInt32WithNull ()
   {
-    StringUtility.Parse (_int32, null, CultureInfo.InvariantCulture);
+    Assert.That (
+        () => StringUtility.Parse (_int32, null, CultureInfo.InvariantCulture),
+        Throws.InstanceOf<ParseException>());
   }
 
   [Test]
@@ -244,17 +247,21 @@ public class StringUtilityTest
   }
 
   [Test]
-  [ExpectedException (typeof (ParseException), ExpectedMessage = " is not a valid value for TestEnum.")]
   public void ParseEnumWithEmpty ()
   {
-    StringUtility.Parse (_enum, string.Empty, CultureInfo.InvariantCulture);
+    Assert.That (
+        () => StringUtility.Parse (_enum, string.Empty, CultureInfo.InvariantCulture),
+        Throws.InstanceOf<ParseException>()
+            .With.Message.EqualTo (" is not a valid value for TestEnum."));
   }
 
   [Test]
-  [ExpectedException (typeof (ParseException), ExpectedMessage = " is not a valid value for TestEnum.")]
   public void ParseEnumWithNull ()
   {
-    StringUtility.Parse (_enum, null, CultureInfo.InvariantCulture);
+    Assert.That (
+        () => StringUtility.Parse (_enum, null, CultureInfo.InvariantCulture),
+        Throws.InstanceOf<ParseException>()
+            .With.Message.EqualTo (" is not a valid value for TestEnum."));
   }
 
   [Test]
@@ -299,11 +306,12 @@ public class StringUtilityTest
   }
 
   [Test]
-  [ExpectedException (typeof (ParseException))]
   public void ParseDoubleEnUsWithCultureDeDe()
   {
     Thread.CurrentThread.CurrentCulture = _cultureEnUs;
-    StringUtility.Parse (_double, "4,321.123", _cultureDeDe);
+    Assert.That (
+        () => StringUtility.Parse (_double, "4,321.123", _cultureDeDe),
+        Throws.InstanceOf<ParseException>());
   }
 
   [Test]
@@ -317,11 +325,12 @@ public class StringUtilityTest
   }
 
   [Test]
-  [ExpectedException (typeof (ParseException))]
   public void ParseDoubleDeDeWithCultureEnUs()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeDe;
-    StringUtility.Parse (_double, "4.321,123", _cultureEnUs);
+    Assert.That (
+        () => StringUtility.Parse (_double, "4.321,123", _cultureEnUs),
+        Throws.InstanceOf<ParseException>());
   }
 
   [Test]
@@ -412,10 +421,11 @@ public class StringUtilityTest
   }
 
   [Test]
-  [ExpectedException (typeof (ParseException))]
   public void ParseArrayOfDoubleArrays()
   {
-    StringUtility.Parse (typeof (double[][]), "1,2,3", null);
+    Assert.That (
+        () => StringUtility.Parse (typeof (double[][]), "1,2,3", null),
+        Throws.InstanceOf<ParseException>());
   }
 
   [Test]
@@ -468,10 +478,11 @@ public class StringUtilityTest
   }
 
   [Test]
-  [ExpectedException (typeof (FormatException))]
   public void ParseGuidWithEmpty ()
   {
-    StringUtility.Parse (_guid, string.Empty, CultureInfo.InvariantCulture);
+    Assert.That (
+        () => StringUtility.Parse (_guid, string.Empty, CultureInfo.InvariantCulture),
+        Throws.InstanceOf<FormatException>());
   }
 
   [Test]

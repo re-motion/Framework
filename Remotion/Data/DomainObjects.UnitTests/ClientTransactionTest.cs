@@ -442,11 +442,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has "
-        + "not been marked invalid.\r\nParameter name: id")]
     public void GetInvalidObjectReference_ThrowsWhenNotInvalid ()
     {
-      ClientTransactionTestHelper.CallGetInvalidObjectReference (_transaction, _objectID1);
+      Assert.That (
+          () => ClientTransactionTestHelper.CallGetInvalidObjectReference (_transaction, _objectID1),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has "
+                  + "not been marked invalid.\r\nParameter name: id"));
     }
 
     [Test]
@@ -899,15 +902,16 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The given end-point ID does not denote a related object (cardinality one).\r\nParameter name: relationEndPointID")]
     public void GetRelatedObject_WrongCardinality ()
     {
       Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
-
-      ClientTransactionTestHelper.CallGetRelatedObject (
+      Assert.That (
+          () => ClientTransactionTestHelper.CallGetRelatedObject (
           _transaction, 
-          RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"));
+          RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems")),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The given end-point ID does not denote a related object (cardinality one).\r\nParameter name: relationEndPointID"));
     }
 
     [Test]
@@ -936,15 +940,16 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The given end-point ID does not denote a related object (cardinality one).\r\nParameter name: relationEndPointID")]
     public void GetOriginalRelatedObject_WrongCardinality ()
     {
       Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
-
-      ClientTransactionTestHelper.CallGetOriginalRelatedObject (
+      Assert.That (
+          () => ClientTransactionTestHelper.CallGetOriginalRelatedObject (
           _transaction,
-          RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"));
+          RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems")),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The given end-point ID does not denote a related object (cardinality one).\r\nParameter name: relationEndPointID"));
     }
 
     [Test]
@@ -982,15 +987,16 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The given end-point ID does not denote a related object collection (cardinality many).\r\nParameter name: relationEndPointID")]
     public void GetRelatedObjects_WrongCardinality ()
     {
       Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
-
-      ClientTransactionTestHelper.CallGetRelatedObjects (
+      Assert.That (
+          () => ClientTransactionTestHelper.CallGetRelatedObjects (
           _transaction,
-          RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+          RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket")),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The given end-point ID does not denote a related object collection (cardinality many).\r\nParameter name: relationEndPointID"));
     }
 
     [Test]
@@ -1026,15 +1032,16 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The given end-point ID does not denote a related object collection (cardinality many).\r\nParameter name: relationEndPointID")]
     public void GetOriginalRelatedObjects_WrongCardinality ()
     {
       Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
-
-      ClientTransactionTestHelper.CallGetOriginalRelatedObjects (
+      Assert.That (
+          () => ClientTransactionTestHelper.CallGetOriginalRelatedObjects (
           _transaction,
-          RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+          RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket")),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The given end-point ID does not denote a related object collection (cardinality many).\r\nParameter name: relationEndPointID"));
     }
 
     [Test]

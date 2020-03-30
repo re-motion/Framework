@@ -295,24 +295,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter 'value' cannot be empty.\r\nParameter name: value")]
     public void Initialize_WithEmptyGuid ()
     {
-      new ObjectID (MappingConfiguration.Current.GetClassDefinition ("Order"), Guid.Empty);
+      Assert.That (
+          () => new ObjectID (MappingConfiguration.Current.GetClassDefinition ("Order"), Guid.Empty),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'value' cannot be empty.\r\nParameter name: value"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter 'value' cannot be empty.\r\nParameter name: value")]
     public void Initialize_WithEmptyString ()
     {
-      new ObjectID (MappingConfiguration.Current.GetClassDefinition ("Order"), string.Empty);
+      Assert.That (
+          () => new ObjectID (MappingConfiguration.Current.GetClassDefinition ("Order"), string.Empty),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'value' cannot be empty.\r\nParameter name: value"));
     }
 
     [Test]
-    [ExpectedException (typeof (IdentityTypeNotSupportedException))]
     public void Initialize_WithInvalidIdentityType ()
     {
-      new ObjectID ("Order", 1);
+      Assert.That (
+          () => new ObjectID ("Order", 1),
+          Throws.InstanceOf<IdentityTypeNotSupportedException>());
     }
 
     [Test]
@@ -344,11 +351,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Remotion.Data.DomainObjects.ObjectID does not support values of type 'System.Byte'.\r\nParameter name: value")]
     public void Initialize_WithInvalidType ()
     {
-      new ObjectID ("Official", (byte) 1);
+      Assert.That (
+          () => new ObjectID ("Official", (byte) 1),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Remotion.Data.DomainObjects.ObjectID does not support values of type 'System.Byte'.\r\nParameter name: value"));
     }
 
     [Test]
@@ -386,12 +395,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The argument must be of type ObjectID.\r\nParameter name: obj")]
     public void CompareTo_InvalidArgument ()
     {
       var id = new ObjectID ("Official", "aaa");
-
-      id.CompareTo ("test");
+      Assert.That (
+          () => id.CompareTo ("test"),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The argument must be of type ObjectID.\r\nParameter name: obj"));
     }
   }
 }

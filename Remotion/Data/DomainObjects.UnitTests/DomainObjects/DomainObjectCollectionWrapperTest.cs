@@ -56,14 +56,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "Cannot implement 'IList<Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer>' for a DomainObjectCollection with required item type "
-        + "'Remotion.Data.DomainObjects.DomainObject'. The IList<T>'s item type must be assignable from the required item type.\r\n"
-        + "Parameter name: wrappedCollection")]
     public void Initialization_TypeCannotBeMoreRestricted ()
     {
       var wrappedCollection = new DomainObjectCollection (typeof (DomainObject));
-      new DomainObjectCollectionWrapper<Customer> (wrappedCollection);
+      Assert.That (
+          () => new DomainObjectCollectionWrapper<Customer> (wrappedCollection),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Cannot implement 'IList<Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer>' for a DomainObjectCollection with required item type "
+                  + "'Remotion.Data.DomainObjects.DomainObject'. The IList<T>'s item type must be assignable from the required item type.\r\n"
+                  + "Parameter name: wrappedCollection"));
     }
 
     [Test]
@@ -75,14 +77,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Cannot implement 'IList<Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer>' for a DomainObjectCollection with required item type "
-        + "'Remotion.Data.DomainObjects.DomainObject'. The IList<T>'s item type must be assignable from the required item type.\r\n"
-        + "Parameter name: wrappedCollection")]
     public void Initialization_NoRequiredItemType_DerivedTypeThrows ()
     {
       var wrappedCollection = new DomainObjectCollection ();
-      new DomainObjectCollectionWrapper<Customer> (wrappedCollection);
+      Assert.That (
+          () => new DomainObjectCollectionWrapper<Customer> (wrappedCollection),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Cannot implement 'IList<Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer>' for a DomainObjectCollection with required item type "
+                  + "'Remotion.Data.DomainObjects.DomainObject'. The IList<T>'s item type must be assignable from the required item type.\r\n"
+                  + "Parameter name: wrappedCollection"));
     }
 
     [Test]

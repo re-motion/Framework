@@ -54,17 +54,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (IndexOutOfRangeException), ExpectedMessage = "Only one scalar value is available, column ID 'col: test (4)' is invalid.")]
     public void GetValue_InvalidColumnID ()
     {
-      _queryResultRowAdapter.GetValue<int> (new ColumnID ("test", 4));
+      Assert.That (
+          () => _queryResultRowAdapter.GetValue<int> (new ColumnID ("test", 4)),
+          Throws.InstanceOf<IndexOutOfRangeException>()
+              .With.Message.EqualTo (
+                  "Only one scalar value is available, column ID 'col: test (4)' is invalid."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Scalar queries cannot return entities.")]
     public void GetEntity ()
     {
-      _queryResultRowAdapter.GetEntity<int> ();
+      Assert.That (
+          () => _queryResultRowAdapter.GetEntity<int> (),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Scalar queries cannot return entities."));
     }
   }
 }

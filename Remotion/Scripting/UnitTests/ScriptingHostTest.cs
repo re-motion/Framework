@@ -84,11 +84,14 @@ namespace Remotion.Scripting.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "ScriptEngine for ScriptLanguageType None cannot be supplied. Check App.config <microsoft.scripting>-section.")]
     public void GetEngine_Fails ()
     {
       ScriptingHost scriptingHost = CreateScriptingHost ();
-      scriptingHost.GetEngine (ScriptLanguageType.None);
+      Assert.That (
+          () => scriptingHost.GetEngine (ScriptLanguageType.None),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "ScriptEngine for ScriptLanguageType None cannot be supplied. Check App.config <microsoft.scripting>-section."));
     } 
 
 
@@ -100,10 +103,13 @@ namespace Remotion.Scripting.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "ScriptEngine for ScriptLanguageType None cannot be supplied. Check App.config <microsoft.scripting>-section.")]
     public void GetEngine_Static_Fails ()
     {
-      ScriptingHost.GetScriptEngine (ScriptLanguageType.None);
+      Assert.That (
+          () => ScriptingHost.GetScriptEngine (ScriptLanguageType.None),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "ScriptEngine for ScriptLanguageType None cannot be supplied. Check App.config <microsoft.scripting>-section."));
     }
 
 

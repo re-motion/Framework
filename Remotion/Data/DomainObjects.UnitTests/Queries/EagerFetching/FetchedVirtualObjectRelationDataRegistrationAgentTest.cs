@@ -230,19 +230,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The fetched mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' on object "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' contains no related object.")]
     public void GroupAndRegisterRelatedObjects_WithNullRelatedObject_AndMandatoryRelation ()
     {
       var endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderTicket");
       Assert.That (endPointDefinition.IsMandatory, Is.True);
       var originatingOrderData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (DomainObjectIDs.Order1);
-
-      _agent.GroupAndRegisterRelatedObjects (
+      Assert.That (
+          () => _agent.GroupAndRegisterRelatedObjects (
           endPointDefinition,
           new[] { originatingOrderData },
-          new[] { LoadedObjectDataObjectMother.CreateNullLoadedObjectDataWithDataSourceData () });
+          new[] { LoadedObjectDataObjectMother.CreateNullLoadedObjectDataWithDataSourceData () }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The fetched mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' on object "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' contains no related object."));
     }
 
     [Test]
@@ -322,38 +323,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     }
     
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Cannot register relation end-point "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer' for domain object "
-        + "'Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid'. The end-point belongs to an object of class 'Employee' but the domain object "
-        + "has class 'Computer'.")]
     public void GroupAndRegisterRelatedObjects_OriginatingObjectOfInvalidType ()
     {
       var endPointDefinition = GetEndPointDefinition (typeof (Employee), "Computer");
 
       _virtualEndPointProviderMock.Replay();
-
-      _agent.GroupAndRegisterRelatedObjects (
+      Assert.That (
+          () => _agent.GroupAndRegisterRelatedObjects (
           endPointDefinition, 
           new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (DomainObjectIDs.Computer1) }, 
-          new LoadedObjectDataWithDataSourceData[0]);
+          new LoadedObjectDataWithDataSourceData[0]),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot register relation end-point "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer' for domain object "
+                  + "'Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid'. The end-point belongs to an object of class 'Employee' but the domain object "
+                  + "has class 'Computer'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Cannot associate object 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid' with the relation end-point "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer'. An object of type "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer' was expected.")]
     public void GroupAndRegisterRelatedObjects_InvalidRelatedObject ()
     {
       var endPointDefinition = GetEndPointDefinition (typeof (Employee), "Computer");
 
       _virtualEndPointProviderMock.Replay();
-
-      _agent.GroupAndRegisterRelatedObjects (
+      Assert.That (
+          () => _agent.GroupAndRegisterRelatedObjects (
           endPointDefinition, 
           new[] { _originatingEmployeeData1 },  
-          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (DomainObjectIDs.Employee2) });
+          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (DomainObjectIDs.Employee2) }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot associate object 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid' with the relation end-point "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer'. An object of type "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer' was expected."));
     }
 
     [Test]

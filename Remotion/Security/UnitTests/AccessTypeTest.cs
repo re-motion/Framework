@@ -34,12 +34,14 @@ namespace Remotion.Security.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Enumerated type 'Remotion.Security.UnitTests.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
-        + "Valid access types must have the Remotion.Security.AccessTypeAttribute applied.\r\nParameter name: accessType")]
     public void GetAccessTypeFromEnumWithoutAccessTypeAttribute ()
     {
-      AccessType.Get (TestAccessTypesWithoutAccessTypeAttribute.First);
+      Assert.That (
+          () => AccessType.Get (TestAccessTypesWithoutAccessTypeAttribute.First),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Enumerated type 'Remotion.Security.UnitTests.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
+                  + "Valid access types must have the Remotion.Security.AccessTypeAttribute applied.\r\nParameter name: accessType"));
     }
 
     [Test]

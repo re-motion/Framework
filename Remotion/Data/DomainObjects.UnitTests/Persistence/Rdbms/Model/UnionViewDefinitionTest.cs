@@ -125,9 +125,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Item 0 is of type 'Remotion.Data.DomainObjects.Persistence.Rdbms.Model.FilterViewDefinition', "
-        + "but the unioned entities must either be a TableDefinitions or UnionViewDefinitions.\r\nParameter name: unionedEntities")]
     public void Initialization_WithInvalidUnionedEntity ()
     {
       var filterViewDefinition = new FilterViewDefinition (
@@ -140,7 +137,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           new SimpleStoragePropertyDefinition[0],
           new IIndexDefinition[0],
           new EntityNameDefinition[0]);
-      new UnionViewDefinition (
+      Assert.That (
+          () => new UnionViewDefinition (
           _storageProviderDefinition,
           null,
           new[] { filterViewDefinition },
@@ -148,7 +146,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           _timestampProperty,
           new SimpleStoragePropertyDefinition[0],
           new IIndexDefinition[0],
-          new EntityNameDefinition[0]);
+          new EntityNameDefinition[0]),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Item 0 is of type 'Remotion.Data.DomainObjects.Persistence.Rdbms.Model.FilterViewDefinition', "
+                  + "but the unioned entities must either be a TableDefinitions or UnionViewDefinitions.\r\nParameter name: unionedEntities"));
     }
 
     [Test]

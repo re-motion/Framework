@@ -40,12 +40,14 @@ namespace Remotion.ObjectBinding.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'businessObjectProviderType' is a 'System.Object', which cannot be assigned to type 'Remotion.ObjectBinding.IBusinessObjectProvider'."
-        + "\r\nParameter name: businessObjectProviderType")]
     public void Initialize_WithInvalidType ()
     {
-      new StubBusinessObjectProviderAttribute (typeof (object));
+      Assert.That (
+          () => new StubBusinessObjectProviderAttribute (typeof (object)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'businessObjectProviderType' is a 'System.Object', which cannot be assigned to type 'Remotion.ObjectBinding.IBusinessObjectProvider'."
+                  + "\r\nParameter name: businessObjectProviderType"));
     }
   }
 }

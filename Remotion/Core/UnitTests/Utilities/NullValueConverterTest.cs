@@ -110,24 +110,32 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Value 'test' cannot be converted to null.")]
     public void ConvertFrom_NonNullValue ()
     {
-      _nullValueConverter.ConvertFromString (_typeDescriptorContextStub, CultureInfo.CurrentCulture, "test");
+      Assert.That (
+          () => _nullValueConverter.ConvertFromString (_typeDescriptorContextStub, CultureInfo.CurrentCulture, "test"),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Value 'test' cannot be converted to null."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Null value cannot be converted to type 'System.Int32'.")]
     public void ConvertTo_DestinationTypeNotNullable ()
     {
-      _nullValueConverter.ConvertTo (_typeDescriptorContextStub, CultureInfo.CurrentCulture, null, typeof (int));
+      Assert.That (
+          () => _nullValueConverter.ConvertTo (_typeDescriptorContextStub, CultureInfo.CurrentCulture, null, typeof (int)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Null value cannot be converted to type 'System.Int32'."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Value 'test' is not supported by this converter.")]
     public void ConvertTo_NullableDestinationTypeValueNotNull ()
     {
-      _nullValueConverter.ConvertTo (_typeDescriptorContextStub, CultureInfo.CurrentCulture, "test", typeof (int));
+      Assert.That (
+          () => _nullValueConverter.ConvertTo (_typeDescriptorContextStub, CultureInfo.CurrentCulture, "test", typeof (int)),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Value 'test' is not supported by this converter."));
     }
 
     [Test]

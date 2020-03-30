@@ -42,12 +42,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "QueryDefinition 'OrderQuery' already exists in collection.\r\nParameter name: queryDefinition")]
     public void DuplicateQueryIDs ()
     {
       _collection.Add (_definition);
-      _collection.Add (_definition);
+      Assert.That (
+          () => _collection.Add (_definition),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "QueryDefinition 'OrderQuery' already exists in collection.\r\nParameter name: queryDefinition"));
     }
 
     [Test]
@@ -86,11 +88,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (QueryConfigurationException),
-        ExpectedMessage = "QueryDefinition 'OrderQuery' does not exist.")]
     public void GetMandatoryForNonExisting ()
     {
-      _collection.GetMandatory ("OrderQuery");
+      Assert.That (
+          () => _collection.GetMandatory ("OrderQuery"),
+          Throws.InstanceOf<QueryConfigurationException>()
+              .With.Message.EqualTo ("QueryDefinition 'OrderQuery' does not exist."));
     }
 
     [Test]

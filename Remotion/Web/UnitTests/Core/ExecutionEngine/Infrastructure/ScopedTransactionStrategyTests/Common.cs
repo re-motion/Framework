@@ -148,9 +148,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-      "The transaction strategy already has an active child transaction strategy. "
-      + "This child transaction strategy must first be unregistered before invoking CreateChildTransactionStrategy again.")]
     public void CreateChildTransactionStrategy_TwiceWithoutUnregister ()
     {
       var childTransaction = MockRepository.GenerateStub<ITransaction>();
@@ -162,7 +159,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       MockRepository.ReplayAll();
 
       _strategy.CreateChildTransactionStrategy (true, childExecutionContextStub, Context);
-      _strategy.CreateChildTransactionStrategy (true, childExecutionContextStub, Context);
+      Assert.That (
+          () => _strategy.CreateChildTransactionStrategy (true, childExecutionContextStub, Context),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The transaction strategy already has an active child transaction strategy. "
+                  + "This child transaction strategy must first be unregistered before invoking CreateChildTransactionStrategy again."));
     }
 
     [Test]

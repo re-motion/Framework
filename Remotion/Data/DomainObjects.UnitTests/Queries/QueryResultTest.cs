@@ -147,20 +147,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     }
 
     [Test]
-    [ExpectedException (typeof (UnexpectedQueryResultException), ExpectedMessage =
-        "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' is null.\r\nParameter name: domainObjects")]
     public void ToObjectList_WithNull ()
     {
-      _resultWithNulls.ToObjectList();
+      Assert.That (
+          () => _resultWithNulls.ToObjectList(),
+          Throws.InstanceOf<UnexpectedQueryResultException>()
+              .With.Message.EqualTo (
+                  "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' is null.\r\nParameter name: domainObjects"));
     }
 
     [Test]
-    [ExpectedException (typeof (UnexpectedQueryResultException), ExpectedMessage =
-        "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' "
-        + "is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid').\r\nParameter name: domainObjects")]
     public void ToObjectList_WithDuplicates ()
     {
-      _resultWithDuplicates.ToObjectList();
+      Assert.That (
+          () => _resultWithDuplicates.ToObjectList(),
+          Throws.InstanceOf<UnexpectedQueryResultException>()
+              .With.Message.EqualTo (
+                  "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' "
+                  + "is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid').\r\nParameter name: domainObjects"));
     }
 
     [Test]
@@ -188,23 +192,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     }
 
     [Test]
-    [ExpectedException (typeof (UnexpectedQueryResultException), ExpectedMessage =
-        "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: Item 3 of parameter 'domainObjects' is null."
-        + "\r\nParameter name: domainObjects")]
     public void ToCustomCollection_WithNull ()
     {
-      _resultWithNulls.ToCustomCollection();
+      Assert.That (
+          () => _resultWithNulls.ToCustomCollection(),
+          Throws.InstanceOf<UnexpectedQueryResultException>()
+              .With.Message.EqualTo (
+                  "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: Item 3 of parameter 'domainObjects' is null."
+                  + "\r\nParameter name: domainObjects"));
     }
 
     [Test]
-    [ExpectedException (typeof (UnexpectedQueryResultException), ExpectedMessage =
-        "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: "
-        + "Item 3 of parameter 'domainObjects' is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid')."
-        + "\r\nParameter name: domainObjects")
-    ]
     public void ToCustomCollection_WithDuplicates ()
     {
-      _resultWithDuplicates.ToCustomCollection();
+      Assert.That (
+          () => _resultWithDuplicates.ToCustomCollection(),
+          Throws.InstanceOf<UnexpectedQueryResultException>()
+              .With.Message.EqualTo (
+                  "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: "
+                  + "Item 3 of parameter 'domainObjects' is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid')."
+                  + "\r\nParameter name: domainObjects"));
     }
 
     [Test]

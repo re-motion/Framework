@@ -57,10 +57,13 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (AmbiguousMatchException), ExpectedMessage = "Multiple custom attributes of the same type found.")]
     public void Test_FromOverrideWithAttribute_ExpectAmbigousMatch ()
     {
-      AttributeUtility.GetCustomAttribute (_derivedPropertyWithMultipleAttribute, typeof (MultipleAttribute), true);
+      Assert.That (
+          () => AttributeUtility.GetCustomAttribute (_derivedPropertyWithMultipleAttribute, typeof (MultipleAttribute), true),
+          Throws.InstanceOf<AmbiguousMatchException>()
+              .With.Message.EqualTo (
+                  "Multiple custom attributes of the same type found."));
     }
 
     [Test]
@@ -79,26 +82,31 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (AmbiguousMatchException), ExpectedMessage = "Multiple custom attributes of the same type found.")]
     public void Test_FromOverrideWithInterface_ExpectAmbigousMatch ()
     {
-      AttributeUtility.GetCustomAttribute (_derivedPropertyWithMultipleAttribute, typeof (ICustomAttribute), true);
+      Assert.That (
+          () => AttributeUtility.GetCustomAttribute (_derivedPropertyWithMultipleAttribute, typeof (ICustomAttribute), true),
+          Throws.InstanceOf<AmbiguousMatchException>()
+              .With.Message.EqualTo (
+                  "Multiple custom attributes of the same type found."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: T")]
     public void TestGeneric_FromBaseWithInvalidType ()
     {
-      AttributeUtility.GetCustomAttribute<object> (_basePropertyWithSingleAttribute, true);
+      Assert.That (
+          () => AttributeUtility.GetCustomAttribute<object> (_basePropertyWithSingleAttribute, true),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: T"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: attributeType")]
     public void Test_FromBaseWithInvalidType ()
     {
-      AttributeUtility.GetCustomAttribute (_basePropertyWithSingleAttribute, typeof (object), true);
+      Assert.That (
+          () => AttributeUtility.GetCustomAttribute (_basePropertyWithSingleAttribute, typeof (object), true),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: attributeType"));
     }
 
     [Test]

@@ -68,44 +68,47 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
-        "Error while executing SQL command: Invalid column name 'ClassID'.")]
     public void LoadDataContainerWithoutClassIDColumn ()
     {
       ObjectID id = new ObjectID(typeof (ClassWithoutClassIDColumn), new Guid ("{DDD02092-355B-4820-90B6-7F1540C0547E}"));
-
-      Provider.LoadDataContainer (id);
+      Assert.That (
+          () => Provider.LoadDataContainer (id),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo ("Error while executing SQL command: Invalid column name 'ClassID'."));
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
-        "Error while executing SQL command: Invalid column name 'Timestamp'.")]
     public void LoadDataContainerWithoutTimestampColumn ()
     {
       ObjectID id = new ObjectID(typeof (ClassWithoutTimestampColumn), new Guid ("{027DCBD7-ED68-461d-AE80-B8E145A7B816}"));
-
-      Provider.LoadDataContainer (id);
+      Assert.That (
+          () => Provider.LoadDataContainer (id),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo ("Error while executing SQL command: Invalid column name 'Timestamp'."));
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Mapping does not contain class 'NonExistingClassID'.")]
     public void LoadDataContainerWithNonExistingClassID ()
     {
       ObjectID id = new ObjectID(typeof (ClassWithGuidKey), new Guid ("{C9F16F93-CF42-4357-B87B-7493882AAEAF}"));
-
-      Provider.LoadDataContainer (id);
+      Assert.That (
+          () => Provider.LoadDataContainer (id),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "Mapping does not contain class 'NonExistingClassID'."));
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage =
-        "Error while reading property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' of object "
-        + "'Order|895853eb-06cd-4291-b467-160560ae8ec1|System.Guid': The column 'OrderNo' is not included in the query result and is not expected "
-        + "for this operation. The included and expected columns are: ID, ClassID, Timestamp.")]
     public void LoadDataContainerWithClassIDFromOtherClass ()
     {
       ObjectID id = new ObjectID(typeof (ClassWithGuidKey), new Guid ("{895853EB-06CD-4291-B467-160560AE8EC1}"));
-
-      Provider.LoadDataContainer (id);
+      Assert.That (
+          () => Provider.LoadDataContainer (id),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo (
+                  "Error while reading property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' of object "
+                  + "'Order|895853eb-06cd-4291-b467-160560ae8ec1|System.Guid': The column 'OrderNo' is not included in the query result and is not expected "
+                  + "for this operation. The included and expected columns are: ID, ClassID, Timestamp."));
     }
 
     [Test]
@@ -176,35 +179,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
-        "Error while executing SQL command: Invalid column name 'DistributorIDClassID'.")]
     public void LoadDataContainerWithoutRelatedIDColumn ()
     {
       ObjectID id = new ObjectID(typeof (ClassWithoutRelatedClassIDColumn), new Guid ("{CD3BE83E-FBB7-4251-AAE4-B216485C5638}"));
-
-      Provider.LoadDataContainer (id);
+      Assert.That (
+          () => Provider.LoadDataContainer (id),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo ("Error while executing SQL command: Invalid column name 'DistributorIDClassID'."));
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
-        "Error while executing SQL command: Invalid column name 'CompanyIDClassID'.")]
     public void LoadDataContainerWithoutRelatedIDColumnAndDerivation ()
     {
       ObjectID id = new ObjectID(typeof (ClassWithoutRelatedClassIDColumnAndDerivation),
                            new Guid ("{4821D7F7-B586-4435-B572-8A96A44B113E}"));
-
-      Provider.LoadDataContainer (id);
+      Assert.That (
+          () => Provider.LoadDataContainer (id),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo ("Error while executing SQL command: Invalid column name 'CompanyIDClassID'."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID 'Official|1|System.Int32' does not match with this "
-        + "StorageProvider's ID 'TestDomain'.\r\nParameter name: id")]
     public void LoadDataContainerWithObjectIDWithWrongStorageProviderID ()
     {
       ObjectID invalidID = new ObjectID(DomainObjectIDs.Official1.ClassID, (int) DomainObjectIDs.Official1.Value);
-
-      Provider.LoadDataContainer (invalidID);
+      Assert.That (
+          () => Provider.LoadDataContainer (invalidID),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID 'Official|1|System.Int32' does not match with this "
+                  + "StorageProvider's ID 'TestDomain'.\r\nParameter name: id"));
     }
 
     [Test]
@@ -217,13 +221,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException), ExpectedMessage =
-        "The ObjectID of the loaded DataContainer 'Partner|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid' and the expected ObjectID "
-        + "'Distributor|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid' differ.")]
     public void LoadDataContainer_WithInvalidClassID ()
     {
       ObjectID id = new ObjectID("Distributor", (Guid) DomainObjectIDs.Partner1.Value);
-      Provider.LoadDataContainer (id);
+      Assert.That (
+          () => Provider.LoadDataContainer (id),
+          Throws.InstanceOf<PersistenceException>()
+              .With.Message.EqualTo (
+                  "The ObjectID of the loaded DataContainer 'Partner|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid' and the expected ObjectID "
+                  + "'Distributor|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid' differ."));
     }
   }
 }

@@ -139,11 +139,13 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Cannot instantiate type 'Remotion.Mixins.UnitTests.Core.TestDomain.IBaseType2', it's an interface.\r\nParameter name: targetOrConcreteType")]
     public void InterfaceAsTypeArgument ()
     {
-      ObjectFactory.Create<IBaseType2> (ParamList.Empty);
+      Assert.That (
+          () => ObjectFactory.Create<IBaseType2> (ParamList.Empty),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Cannot instantiate type 'Remotion.Mixins.UnitTests.Core.TestDomain.IBaseType2', it's an interface.\r\nParameter name: targetOrConcreteType"));
     }
 
     [Test]
@@ -358,21 +360,27 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "There is no mixin configuration for type System.Object, so no mixin instances "
-                                                                      + "must be specified.", MatchType = MessageMatch.Regex)]
     public void ThrowsOnMixinInstancesWhenNoGeneration ()
     {
-      ObjectFactory.Create (typeof (object), ParamList.Empty, new object());
+      Assert.That (
+          () => ObjectFactory.Create (typeof (object), ParamList.Empty, new object()),
+          Throws.ArgumentException
+              .With.Message.Matches (
+                  "There is no mixin configuration for type System.Object, so no mixin instances "
+                  + "must be specified."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The supplied mixin of type "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.BT2Mixin1' is not valid for target type 'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType3' in the "
-        + "current configuration.")]
     public void ThrowsOnWrongMixinInstances ()
     {
       var m1 = new BT2Mixin1();
-      ObjectFactory.Create<BaseType3> (ParamList.Empty, m1);
+      Assert.That (
+          () => ObjectFactory.Create<BaseType3> (ParamList.Empty, m1),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The supplied mixin of type "
+                  + "'Remotion.Mixins.UnitTests.Core.TestDomain.BT2Mixin1' is not valid for target type 'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType3' in the "
+                  + "current configuration."));
     }
 
     [Test]

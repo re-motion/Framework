@@ -25,20 +25,22 @@ namespace Remotion.Extensions.UnitTests.Text
 public class IdentifierGeneratorTest
 {
   [Test]
-  [ExpectedException (typeof (InvalidOperationException))]
 	public void TestUseTemplateGenerator()
 	{
     IdentifierGenerator idGen = IdentifierGenerator.CStyle;
-    idGen.GetUniqueIdentifier ("some name");
+	  Assert.That (
+	      () => idGen.GetUniqueIdentifier ("some name"),
+	      Throws.InvalidOperationException);
   }
 
   [Test]
-  [ExpectedException (typeof (InvalidOperationException))]
 	public void TestChangeUseCaseSensitiveNamesAfterGeneratingUniqueIdentifier()
 	{
     IdentifierGenerator idGen = IdentifierGenerator.CStyle.Clone();
     idGen.GetUniqueIdentifier ("some name");
-    idGen.UseCaseSensitiveNames = false;
+	  Assert.That (
+	      () => idGen.UseCaseSensitiveNames = false,
+	      Throws.InvalidOperationException);
   }
 
   [Test]

@@ -264,7 +264,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "FinishTransport can only be called once.")]
     public void FinishTransport_Twice ()
     {
       TransportedDomainObjects transportedObjects = TransportAndDeleteObjects (
@@ -272,7 +271,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
           DomainObjectIDs.ClassWithAllDataTypes2);
 
       transportedObjects.FinishTransport (delegate { return false; });
-      transportedObjects.FinishTransport();
+      Assert.That (
+          () => transportedObjects.FinishTransport(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "FinishTransport can only be called once."));
     }
 
     private TransportedDomainObjects TransportAndDeleteObjects (params ObjectID[] objectsToLoadAndDelete)

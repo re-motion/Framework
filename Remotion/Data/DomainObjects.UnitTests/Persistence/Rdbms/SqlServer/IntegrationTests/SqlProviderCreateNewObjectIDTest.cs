@@ -36,12 +36,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
     
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ClassDefinition does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: classDefinition")]
     public void CreateNewObjectID_ClassDefinitionOfOtherStorageProvider ()
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Official));
-      Provider.CreateNewObjectID (classDefinition);
+      Assert.That (
+          () => Provider.CreateNewObjectID (classDefinition),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ClassDefinition does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: classDefinition"));
     }
   }
 }

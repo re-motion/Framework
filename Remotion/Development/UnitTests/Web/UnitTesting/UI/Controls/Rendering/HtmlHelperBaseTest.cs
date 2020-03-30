@@ -128,28 +128,36 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     }
 
     [Test]
-    [ExpectedException (typeof (Exception), ExpectedMessage = "Unexpected element tag.")]
     public void Fail_GetAssertedElement_WrongTag ()
     {
       var document = _htmlHelper.GetResultDocument();
-      _htmlHelper.GetAssertedChildElement (document, "dummy", 0);
+      Assert.That (
+          () => _htmlHelper.GetAssertedChildElement (document, "dummy", 0),
+          Throws.Exception
+              .With.Message.EqualTo ("Unexpected element tag."));
     }
 
     [Test]
-    [ExpectedException (typeof (Exception), ExpectedMessage = "Node #document has only 1 children - index 2 out of range.")]
     public void Fail_GetAssertedElement_IndexOutOfRange ()
     {
       var document = _htmlHelper.GetResultDocument();
-      _htmlHelper.GetAssertedChildElement (document, "TopLevelElement", 2);
+      Assert.That (
+          () => _htmlHelper.GetAssertedChildElement (document, "TopLevelElement", 2),
+          Throws.Exception
+              .With.Message.EqualTo (
+                  "Node #document has only 1 children - index 2 out of range."));
     }
 
     [Test]
-    [ExpectedException (typeof (Exception), ExpectedMessage = "MidLevelElement.ChildNodes[1].NodeType is Text, not Element.")]
     public void Fail_GetAssertedElement_NoElementIndex ()
     {
       var document = _htmlHelper.GetResultDocument();
       var midLevelElement = document.DocumentElement.ChildNodes[0];
-      _htmlHelper.GetAssertedChildElement (midLevelElement, "Text", 1);
+      Assert.That (
+          () => _htmlHelper.GetAssertedChildElement (midLevelElement, "Text", 1),
+          Throws.Exception
+              .With.Message.EqualTo (
+                  "MidLevelElement.ChildNodes[1].NodeType is Text, not Element."));
     }
 
     [Test]
@@ -167,13 +175,16 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     }
 
     [Test]
-    [ExpectedException (typeof (Exception), ExpectedMessage = "Element 'MidLevelElement' has 2 child elements instead of the expected 3.")]
     public void Fail_AssertChildElementCount ()
     {
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
       var midLevelElement = topLevelElement.ChildNodes[0];
-      _htmlHelper.AssertChildElementCount (midLevelElement, 3);
+      Assert.That (
+          () => _htmlHelper.AssertChildElementCount (midLevelElement, 3),
+          Throws.Exception
+              .With.Message.EqualTo (
+                  "Element 'MidLevelElement' has 2 child elements instead of the expected 3."));
     }
 
     [Test]
@@ -207,7 +218,6 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     }
 
     [Test]
-    [ExpectedException (typeof (Exception), ExpectedMessage = "Attribute MidLevelElement.midLevelAttribute")]
     public void Fail_AssertAttribute_PartialAttributeValueWithDefaultMode ()
     {
       var document = _htmlHelper.GetResultDocument();
@@ -215,26 +225,34 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
       _htmlHelper.AssertAttribute (topLevelElement, "topLevelAttribute", "topLevelAttributeValue");
 
       var midLevelElement = topLevelElement.ChildNodes[0];
-      _htmlHelper.AssertAttribute (midLevelElement, "midLevelAttribute", "midLevelAttributeValue1");
+      Assert.That (
+          () => _htmlHelper.AssertAttribute (midLevelElement, "midLevelAttribute", "midLevelAttributeValue1"),
+          Throws.Exception
+              .With.Message.EqualTo ("Attribute MidLevelElement.midLevelAttribute"));
     }
 
     [Test]
-    [ExpectedException (typeof (Exception), ExpectedMessage = "Attribute TopLevelElement.topLevelAttribute")]
     public void Fail_AssertAttribute_DifferentAttributeValue ()
     {
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
-      _htmlHelper.AssertAttribute (topLevelElement, "topLevelAttribute", "otherAttributeValue");
+      Assert.That (
+          () => _htmlHelper.AssertAttribute (topLevelElement, "topLevelAttribute", "otherAttributeValue"),
+          Throws.Exception
+              .With.Message.EqualTo ("Attribute TopLevelElement.topLevelAttribute"));
     }
 
     [Test]
-    [ExpectedException (typeof (Exception), ExpectedMessage = "Unexpected attribute value in TopLevelElement.topLevelAttribute: " +
-                                                              "should contain otherAttributeValue, but was topLevelAttributeValue")]
     public void Fail_AssertAttribute_NotContainedAttributeValue ()
     {
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
-      _htmlHelper.AssertAttribute (topLevelElement, "topLevelAttribute", "otherAttributeValue", HtmlHelperBase.AttributeValueCompareMode.Contains);
+      Assert.That (
+          () => _htmlHelper.AssertAttribute (topLevelElement, "topLevelAttribute", "otherAttributeValue", HtmlHelperBase.AttributeValueCompareMode.Contains),
+          Throws.Exception
+              .With.Message.EqualTo (
+                  "Unexpected attribute value in TopLevelElement.topLevelAttribute: " +
+                  "should contain otherAttributeValue, but was topLevelAttributeValue"));
     }
 
     [Test]
@@ -246,12 +264,15 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     }
 
     [Test]
-    [ExpectedException (typeof (Exception), ExpectedMessage = "Attribute 'topLevelAttribute' is present although it should not be.")]
     public void Fail_AssertNoAttribute_ExistingAttribute ()
     {
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
-      _htmlHelper.AssertNoAttribute (topLevelElement, "topLevelAttribute");
+      Assert.That (
+          () => _htmlHelper.AssertNoAttribute (topLevelElement, "topLevelAttribute"),
+          Throws.Exception
+              .With.Message.EqualTo (
+                  "Attribute 'topLevelAttribute' is present although it should not be."));
     }
 
     [Test]
@@ -264,25 +285,29 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     }
 
     [Test]
-    [ExpectedException (typeof (Exception),
-        ExpectedMessage = "Attribute InnerElement1.style does not contain 'styleAttribute1:otherStyleAttributeValue;'" +
-                          " - value is 'styleAttribute1:styleAttributeValue1;styleAttribute2:styleAttributeValue2;'.")]
     public void Fail_AssertStyleAttribute_WrongValue ()
     {
       var document = _htmlHelper.GetResultDocument();
       var innerElement1 = document.DocumentElement.ChildNodes[0].ChildNodes[0];
-      _htmlHelper.AssertStyleAttribute (innerElement1, "styleAttribute1", "otherStyleAttributeValue");
+      Assert.That (
+          () => _htmlHelper.AssertStyleAttribute (innerElement1, "styleAttribute1", "otherStyleAttributeValue"),
+          Throws.Exception
+              .With.Message.EqualTo (
+                  "Attribute InnerElement1.style does not contain 'styleAttribute1:otherStyleAttributeValue;'" +
+                  " - value is 'styleAttribute1:styleAttributeValue1;styleAttribute2:styleAttributeValue2;'."));
     }
 
     [Test]
-    [ExpectedException (typeof (Exception),
-        ExpectedMessage = "Attribute InnerElement1.style does not contain 'otherStyleAttribute:dummyValue;'" +
-                          " - value is 'styleAttribute1:styleAttributeValue1;styleAttribute2:styleAttributeValue2;'.")]
     public void Fail_AssertStyleAttribute_NonExistingAttribute ()
     {
       var document = _htmlHelper.GetResultDocument();
       var innerElement1 = document.DocumentElement.ChildNodes[0].ChildNodes[0];
-      _htmlHelper.AssertStyleAttribute (innerElement1, "otherStyleAttribute", "dummyValue");
+      Assert.That (
+          () => _htmlHelper.AssertStyleAttribute (innerElement1, "otherStyleAttribute", "dummyValue"),
+          Throws.Exception
+              .With.Message.EqualTo (
+                  "Attribute InnerElement1.style does not contain 'otherStyleAttribute:dummyValue;'" +
+                  " - value is 'styleAttribute1:styleAttributeValue1;styleAttribute2:styleAttributeValue2;'."));
     }
 
     [Test]
@@ -300,21 +325,26 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     }
 
     [Test]
-    [ExpectedException (typeof (Exception), ExpectedMessage = "MidLevelElement.ChildNodes[0].NodeType is Element, not Text.")]
     public void Fail_AssertTextNode_WrongIndex ()
     {
       var document = _htmlHelper.GetResultDocument ();
       var midLevelElement = document.DocumentElement.ChildNodes[0];
-      _htmlHelper.AssertTextNode (midLevelElement, "MidLevelTextContent", 0);
+      Assert.That (
+          () => _htmlHelper.AssertTextNode (midLevelElement, "MidLevelTextContent", 0),
+          Throws.Exception
+              .With.Message.EqualTo (
+                  "MidLevelElement.ChildNodes[0].NodeType is Element, not Text."));
     }
 
     [Test]
-    [ExpectedException (typeof (Exception), ExpectedMessage = "Unexpected text node content.")]
     public void Fail_AssertTextNode_WrongContent ()
     {
       var document = _htmlHelper.GetResultDocument ();
       var midLevelElement = document.DocumentElement.ChildNodes[0];
-      _htmlHelper.AssertTextNode (midLevelElement, "OtherTextContent", 1);
+      Assert.That (
+          () => _htmlHelper.AssertTextNode (midLevelElement, "OtherTextContent", 1),
+          Throws.Exception
+              .With.Message.EqualTo ("Unexpected text node content."));
     }
   }
 }

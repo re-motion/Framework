@@ -25,25 +25,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
   {
     //DomainObjectTypeIsNotGenericValidationRule
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = 
-      "Generic domain objects are not supported.\r\n\r\n"
-      +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedDomainObjectTypes."
-      +"GenericDomainObject.GenericDomainObject`1[T]")]
     public void GenericDomainObjectType ()
     {
-      ValidateMapping ("NotSupportedDomainObjectTypes.GenericDomainObject");
+      Assert.That (
+          () => ValidateMapping ("NotSupportedDomainObjectTypes.GenericDomainObject"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "Generic domain objects are not supported.\r\n\r\n"
+                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedDomainObjectTypes."
+                  +"GenericDomainObject.GenericDomainObject`1[T]"));
     }
 
     //DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = 
-      "The domain object type has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer argument). "
-      +"The reflection-based mapping does not use this constructor any longer and requires it to be removed.\r\n\r\n"
-      +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedDomainObjectTypes."
-      +"DomainObjectWithLegacyInfrastructureConstructor.DomainObjectWithLegacyConstructor")]
     public void DomainObjectWithLegacyInfrastructureConstructor ()
     {
-      ValidateMapping ("NotSupportedDomainObjectTypes.DomainObjectWithLegacyInfrastructureConstructor");
+      Assert.That (
+          () => ValidateMapping ("NotSupportedDomainObjectTypes.DomainObjectWithLegacyInfrastructureConstructor"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "The domain object type has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer argument). "
+                  +"The reflection-based mapping does not use this constructor any longer and requires it to be removed.\r\n\r\n"
+                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedDomainObjectTypes."
+                  +"DomainObjectWithLegacyInfrastructureConstructor.DomainObjectWithLegacyConstructor"));
     }
   }
 }

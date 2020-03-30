@@ -58,10 +58,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException(typeof (InvalidOperationException))]
     public void GetMaximumLength_FromDefault_WithInvalidOperationException ()
     {
-      Dev.Null = _attribute.MaximumLength;
+      Assert.That (
+          () => Dev.Null = _attribute.MaximumLength,
+          Throws.InvalidOperationException);
     }
   }
 }

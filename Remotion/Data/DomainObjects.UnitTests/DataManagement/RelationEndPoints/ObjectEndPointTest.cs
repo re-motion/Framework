@@ -40,13 +40,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "End point ID must refer to an end point with cardinality 'One'.\r\nParameter name: id")]
     public void Initialize_WithNonOneEndPointID_Throws ()
     {
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderItems");
-      new TestableObjectEndPoint (
+      Assert.That (
+          () => new TestableObjectEndPoint (
           TestableClientTransaction,
-          endPointID);
+          endPointID),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "End point ID must refer to an end point with cardinality 'One'.\r\nParameter name: id"));
     }
 
     [Test]
@@ -138,16 +141,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Cannot set this end point's value from "
-        + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'; "
-        + "the end points do not have the same end point definition.\r\nParameter name: source")]
     public void SetDataFromSubTransaction_InvalidDefinition ()
     {
       var otherID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
       ObjectEndPoint source = RelationEndPointObjectMother.CreateRealObjectEndPoint (otherID);
-
-      _endPointPartialMock.SetDataFromSubTransaction (source);
+      Assert.That (
+          () => _endPointPartialMock.SetDataFromSubTransaction (source),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Cannot set this end point's value from "
+                  + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'; "
+                  + "the end points do not have the same end point definition.\r\nParameter name: source"));
     }
     
     [Test]
@@ -166,16 +170,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
-        "Cannot remove object 'OrderTicket|6768db2b-9c66-4e2f-bba2-89c56718ff2b|System.Guid' from object end point "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' - it currently holds object "
-        + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid'.")]
     public void CreateRemoveCommand_InvalidID ()
     {
       _endPointPartialMock.Stub (mock => mock.OppositeObjectID).Return (DomainObjectIDs.OrderTicket1);
 
       var orderTicket = DomainObjectIDs.OrderTicket4.GetObject<OrderTicket> ();
-      _endPointPartialMock.CreateRemoveCommand (orderTicket);
+      Assert.That (
+          () => _endPointPartialMock.CreateRemoveCommand (orderTicket),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot remove object 'OrderTicket|6768db2b-9c66-4e2f-bba2-89c56718ff2b|System.Guid' from object end point "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' - it currently holds object "
+                  + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid'."));
     }
 
     [Test]

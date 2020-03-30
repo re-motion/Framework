@@ -47,13 +47,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The property 'SubstitutedUser' is not supported by the "
-        + "'Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure.SubstitutionPropertiesSearchService' type.",
-        MatchType = MessageMatch.Contains)]
     public void Search_WithInvalidProperty ()
     {
-      _searchService.Search (null, _otherProperty, null);
+      Assert.That (
+          () => _searchService.Search (null, _otherProperty, null),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "The property 'SubstitutedUser' is not supported by the "
+                  + "'Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure.SubstitutionPropertiesSearchService' type."));
     }
   }
 }

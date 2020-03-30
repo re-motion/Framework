@@ -54,30 +54,35 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Mixin has not been initialized yet.")]
     public void UninitializedMixin_This ()
     {
       var mixin = new BT3Mixin1 ();
-      Dev.Null = mixin.Target;
+      Assert.That (
+          () => Dev.Null = mixin.Target,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Mixin has not been initialized yet."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Mixin has not been initialized yet.")]
     public void UninitializedMixin_Base ()
     {
       var mixin = new BT3Mixin1 ();
-      Dev.Null = mixin.Next;
+      Assert.That (
+          () => Dev.Null = mixin.Next,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Mixin has not been initialized yet."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
-        "The type 'Remotion.Mixins.UnitTests.Core.TestDomain.MixinWithAbstractMembers' cannot be constructed because the assembled type is abstract.")]
     public void CreateMixinWithMockedTarget_AbstractMixin ()
     {
       var thisMock = new ClassOverridingMixinMembers();
       var baseMock = new object();
-
-      MixinTargetMockUtility.CreateMixinWithMockedTarget<MixinWithAbstractMembers, object, object> (thisMock, baseMock);
+      Assert.That (
+          () => MixinTargetMockUtility.CreateMixinWithMockedTarget<MixinWithAbstractMembers, object, object> (thisMock, baseMock),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The type 'Remotion.Mixins.UnitTests.Core.TestDomain.MixinWithAbstractMembers' cannot be constructed because the assembled type is abstract."));
     }
 
     [Test]

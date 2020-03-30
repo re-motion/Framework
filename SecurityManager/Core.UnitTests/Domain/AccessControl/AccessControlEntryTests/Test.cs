@@ -95,14 +95,15 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The access type 'Test' is not assigned to this access control entry.\r\nParameter name: accessType")]
     public void AllowAccess_InvalidAccessType ()
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
       AccessTypeDefinition accessType = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Test", 42);
-
-      ace.AllowAccess (accessType);
+      Assert.That (
+          () => ace.AllowAccess (accessType),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The access type 'Test' is not assigned to this access control entry.\r\nParameter name: accessType"));
     }
 
     [Test]

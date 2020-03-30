@@ -115,21 +115,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "GetOrLoadRelatedObject can only be used with virtual end points.\r\nParameter name: relationEndPointID")]
     public void GetOrLoadRelatedObject_NonVirtualID ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
-      _objectLoader.GetOrLoadRelatedObject (endPointID);
+      Assert.That (
+          () => _objectLoader.GetOrLoadRelatedObject (endPointID),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("GetOrLoadRelatedObject can only be used with virtual end points.\r\nParameter name: relationEndPointID"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "GetOrLoadRelatedObject can only be used with one-valued end points.\r\nParameter name: relationEndPointID")]
     public void GetOrLoadRelatedObject_WrongCardinality ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
-      _objectLoader.GetOrLoadRelatedObject (endPointID);
+      Assert.That (
+          () => _objectLoader.GetOrLoadRelatedObject (endPointID),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("GetOrLoadRelatedObject can only be used with one-valued end points.\r\nParameter name: relationEndPointID"));
     }
 
     [Test]
@@ -156,12 +158,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "GetOrLoadRelatedObjects can only be used with many-valued end points.\r\nParameter name: relationEndPointID")]
     public void GetOrLoadRelatedObjects_WrongCardinality ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
-      _objectLoader.GetOrLoadRelatedObjects (endPointID);
+      Assert.That (
+          () => _objectLoader.GetOrLoadRelatedObjects (endPointID),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("GetOrLoadRelatedObjects can only be used with many-valued end points.\r\nParameter name: relationEndPointID"));
     }
 
     [Test]

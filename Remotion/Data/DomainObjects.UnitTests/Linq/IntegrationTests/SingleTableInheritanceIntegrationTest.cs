@@ -99,12 +99,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void ConcreteObject_OfType_UnrelatedType_ThrowsInvalidOperation ()
     {
       var query = QueryFactory.CreateLinqQuery<Company>().OfType<Order>();
-
-      CheckQueryResult (query);
+      Assert.That (
+          () => CheckQueryResult (query),
+          Throws.InvalidOperationException);
     }
 
     [Test]

@@ -48,12 +48,14 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Object disposed.")]
     public void GetFileNameAfterDispose_Throws()
     {
       TempFile tempFile = new TempFile();
       tempFile.Dispose();
-      Dev.Null = tempFile.FileName;
+      Assert.That (
+          () => Dev.Null = tempFile.FileName,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Object disposed."));
     }
 
     [Test]

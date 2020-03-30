@@ -219,16 +219,19 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The CopyCustomAttributes attribute on "
-                                                                           + ".*MixinWithAmbiguousSource.ToString specifies an ambiguous attribute "
-                                                                           + "source: The source member string Source matches several members on type "
-                                                                           + ".*MixinWithAmbiguousSource.", MatchType = MessageMatch.Regex)]
     public void CopyAttributes_Ambiguous ()
     {
       var builder = new AttributeDefinitionBuilder (DefinitionObjectMother.CreateMixinDefinition (typeof (MixinWithAmbiguousSource)));
       var method = typeof (MixinWithAmbiguousSource).GetMethod ("ToString", BindingFlags.NonPublic | BindingFlags.Instance);
       var data = CustomAttributeData.GetCustomAttributes (method).Select (d => (ICustomAttributeData) new CustomAttributeDataAdapter (d));
-      builder.Apply (method, data, true);
+      Assert.That (
+          () => builder.Apply (method, data, true),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Matches (
+                  "The CopyCustomAttributes attribute on "
+                  + ".*MixinWithAmbiguousSource.ToString specifies an ambiguous attribute "
+                  + "source: The source member string Source matches several members on type "
+                  + ".*MixinWithAmbiguousSource."));
     }
 
     [Test]

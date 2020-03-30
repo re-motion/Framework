@@ -56,15 +56,15 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Non-static LinqCastMethods must have no arguments. Expression: 'null.InvalidInstanceCastMethod(0)'")]
     public void MethodCallTransformer_Transform_InstanceMethod_WrongParameterCount ()
     {
       var instance = Expression.Constant (null, typeof (LinqCastMethodAttributeTest));
       var call = Expression.Call (instance, typeof (LinqCastMethodAttributeTest).GetMethod ("InvalidInstanceCastMethod"), Expression.Constant (0));
       var transformer = new LinqCastMethodAttribute.MethodCallTransformer ();
-
-      transformer.Transform (call);
+      Assert.That (
+          () => transformer.Transform (call),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Non-static LinqCastMethods must have no arguments. Expression: 'null.InvalidInstanceCastMethod(0)'"));
     }
 
     [Test]
@@ -81,14 +81,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = 
-        "Static LinqCastMethods must have exactly one argument. Expression: 'InvalidStaticCastMethod()'")]
     public void MethodCallTransformer_Transform_StaticMethod_WrongParameterCount ()
     {
       var call = Expression.Call (typeof (LinqCastMethodAttributeTest).GetMethod ("InvalidStaticCastMethod"));
       var transformer = new LinqCastMethodAttribute.MethodCallTransformer ();
-
-      transformer.Transform (call);
+      Assert.That (
+          () => transformer.Transform (call),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Static LinqCastMethods must have exactly one argument. Expression: 'InvalidStaticCastMethod()'"));
     }
 
     public IMixinAddingPersistentProperties InvalidInstanceCastMethod (int i)

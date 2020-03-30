@@ -57,13 +57,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     }
 
     [Test]
-    [ExpectedException (typeof (KeyNotFoundException), ExpectedMessage = "The property 'StringWithoutSetter' was not found on business object class "
-        + "'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'.")]
     [Ignore ("TODO: discuss desired behavior")]
     public void WithoutSetter ()
     {
       IBusinessObject businessObject = Mixin.Get<BindableObjectMixin> (ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty));
-      businessObject.SetProperty ("StringWithoutSetter", null);
+      Assert.That (
+          () => businessObject.SetProperty ("StringWithoutSetter", null),
+          Throws.InstanceOf<KeyNotFoundException>()
+              .With.Message.EqualTo (
+                  "The property 'StringWithoutSetter' was not found on business object class "
+                  + "'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'."));
     }
   }
 }

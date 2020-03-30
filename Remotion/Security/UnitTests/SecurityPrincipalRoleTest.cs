@@ -52,17 +52,23 @@ namespace Remotion.Security.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter 'group' cannot be empty.\r\nParameter name: group")]
     public void Initialize_WithGroupEmpty ()
     {
-      new SecurityPrincipalRole (string.Empty, null);
+      Assert.That (
+          () => new SecurityPrincipalRole (string.Empty, null),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'group' cannot be empty.\r\nParameter name: group"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter 'position' cannot be empty.\r\nParameter name: position")]
     public void Initialize_WithPositionEmpty ()
     {
-      new SecurityPrincipalRole ("TheGroup", string.Empty);
+      Assert.That (
+          () => new SecurityPrincipalRole ("TheGroup", string.Empty),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'position' cannot be empty.\r\nParameter name: position"));
     }
 
     [Test]

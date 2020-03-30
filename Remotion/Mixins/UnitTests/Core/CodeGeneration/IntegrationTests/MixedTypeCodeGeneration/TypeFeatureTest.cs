@@ -59,17 +59,21 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "constructor with the following signature", MatchType = MessageMatch.Contains)]
     public void ConstructorsAreReplicated1 ()
     {
-      ObjectFactory.Create<ClassWithCtors> (ParamList.Empty);
+      Assert.That (
+          () => ObjectFactory.Create<ClassWithCtors> (ParamList.Empty),
+          Throws.InstanceOf<MissingMethodException>()
+              .With.Message.Contains ("constructor with the following signature"));
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "constructor with the following signature", MatchType = MessageMatch.Contains)]
     public void ConstructorsAreReplicated2 ()
     {
-      ObjectFactory.Create<ClassWithCtors> (ParamList.Create (2.0));
+      Assert.That (
+          () => ObjectFactory.Create<ClassWithCtors> (ParamList.Create (2.0)),
+          Throws.InstanceOf<MissingMethodException>()
+              .With.Message.Contains ("constructor with the following signature"));
     }
 
     [Test]

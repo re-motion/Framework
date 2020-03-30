@@ -195,25 +195,29 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The ExtendsAttribute for target class System.Object applied to mixin type"
-        + " System.Collections.Generic.List`1 specified 2 generic type argument(s) when 1 argument(s) were expected.")]
     public void Apply_WrongNumberOfGenericArguments ()
     {
       var attribute = new ExtendsAttribute (typeof (object));
       attribute.MixinTypeArguments = new[] { typeof (double), typeof (string) };
-
-      attribute.Apply (_configurationBuilderMock, typeof (List<>));
+      Assert.That (
+          () => attribute.Apply (_configurationBuilderMock, typeof (List<>)),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo (
+                  "The ExtendsAttribute for target class System.Object applied to mixin type"
+                  + " System.Collections.Generic.List`1 specified 2 generic type argument(s) when 1 argument(s) were expected."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The ExtendsAttribute for target class System.Object applied to mixin type"
-        + " System.Object specified 2 generic type argument(s) when 0 argument(s) were expected.")]
     public void Apply_WrongNumberOfGenericArguments_NoneExpected ()
     {
       var attribute = new ExtendsAttribute (typeof (object));
       attribute.MixinTypeArguments = new[] { typeof (double), typeof (string) };
-
-      attribute.Apply (_configurationBuilderMock, typeof (object));
+      Assert.That (
+          () => attribute.Apply (_configurationBuilderMock, typeof (object)),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo (
+                  "The ExtendsAttribute for target class System.Object applied to mixin type"
+                  + " System.Object specified 2 generic type argument(s) when 0 argument(s) were expected."));
     }
 
     [Test]
@@ -239,31 +243,32 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = 
-        "The ExtendsAttribute for target class 'System.Object' applied to mixin type 'System.Nullable`1[T]' specified invalid generic type arguments: "
-        + "GenericArguments[0], 'System.String', on 'System.Nullable`1[T]' violates the constraint of type 'T'.")]
     public void Apply_WrongKindOfGenericArguments ()
     {
       var attribute = new ExtendsAttribute (typeof (object));
       attribute.MixinTypeArguments = new[] { typeof (string) };
-
-      attribute.Apply (_configurationBuilderMock, typeof (Nullable<>));
+      Assert.That (
+          () => attribute.Apply (_configurationBuilderMock, typeof (Nullable<>)),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo (
+                  "The ExtendsAttribute for target class 'System.Object' applied to mixin type 'System.Nullable`1[T]' specified invalid generic type arguments: "
+                  + "GenericArguments[0], 'System.String', on 'System.Nullable`1[T]' violates the constraint of type 'T'."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = 
-        "The ExtendsAttribute for target class 'System.Object' applied to mixin type 'System.Collections.Generic.List`1[System.String]' specified "
-        + "generic type arguments, but the mixin type already has type arguments specified.")]
     public void Apply_GenericArgumentsAlreadyGiven ()
     {
       var attribute = new ExtendsAttribute (typeof (object));
       attribute.MixinTypeArguments = new[] { typeof (string) };
-
-      attribute.Apply (_configurationBuilderMock, typeof (List<string>));
+      Assert.That (
+          () => attribute.Apply (_configurationBuilderMock, typeof (List<string>)),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo (
+                  "The ExtendsAttribute for target class 'System.Object' applied to mixin type 'System.Collections.Generic.List`1[System.String]' specified "
+                  + "generic type arguments, but the mixin type already has type arguments specified."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Foofa.")]
     public void Apply_InvalidOperation ()
     {
       var attribute = new ExtendsAttribute (typeof (object));
@@ -274,7 +279,10 @@ namespace Remotion.Mixins.UnitTests.Core
           .Throw (new InvalidOperationException ("Foofa."));
 
       _mockRepository.ReplayAll ();
-      attribute.Apply (_configurationBuilderMock, _extenderType);
+      Assert.That (
+          () => attribute.Apply (_configurationBuilderMock, _extenderType),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo ("Foofa."));
     }
 
     private MixinContextOrigin CreateExpectedOrigin (ExtendsAttribute attribute, Type extenderType = null)

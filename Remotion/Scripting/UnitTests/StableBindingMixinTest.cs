@@ -41,10 +41,13 @@ namespace Remotion.Scripting.UnitTests
 
 
     [Test]
-    [ExpectedException (typeof (MissingMemberException), ExpectedMessage = "'MixinTest' object has no attribute 'StringTimes'")]
     public void MixinTest_IsAmbigous ()
     {
-      AssertGetCustomMemberFromScript (new MixinTest (), "MixinTest_IsAmbigous");
+      Assert.That (
+          () => AssertGetCustomMemberFromScript (new MixinTest (), "MixinTest_IsAmbigous"),
+          Throws.InstanceOf<MissingMemberException>()
+              .With.Message.EqualTo (
+                  "'MixinTest' object has no attribute 'StringTimes'"));
     }
 
 

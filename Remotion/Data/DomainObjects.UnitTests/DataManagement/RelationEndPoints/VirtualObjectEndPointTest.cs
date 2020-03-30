@@ -98,12 +98,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "End point ID must refer to a virtual end point.\r\nParameter name: id")]
     public void Initialization_NonVirtualDefinition ()
     {
       var id = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
-      new VirtualObjectEndPoint (TestableClientTransaction, id, _lazyLoaderMock, _endPointProviderStub, _transactionEventSinkStub, _dataManagerFactory);
+      Assert.That (
+          () => new VirtualObjectEndPoint (TestableClientTransaction, id, _lazyLoaderMock, _endPointProviderStub, _transactionEventSinkStub, _dataManagerFactory),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("End point ID must refer to a virtual end point.\r\nParameter name: id"));
     }
 
     [Test]

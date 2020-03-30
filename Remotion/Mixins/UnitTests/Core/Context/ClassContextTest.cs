@@ -32,10 +32,12 @@ namespace Remotion.Mixins.UnitTests.Core.Context
   public class ClassContextTest
   {
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Object was tried to be added twice", MatchType = MessageMatch.Contains)]
     public void ConstructorThrowsOnDuplicateMixinContexts ()
     {
-      ClassContextObjectMother.Create(typeof (string), typeof (object), typeof (object));
+      Assert.That (
+          () => ClassContextObjectMother.Create(typeof (string), typeof (object), typeof (object)),
+          Throws.ArgumentException
+              .With.Message.Contains ("Object was tried to be added twice"));
     }
 
     [Test]
@@ -109,11 +111,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin type System.Object was tried to be added twice.\r\n"
-                                                                      + "Parameter name: mixinTypes")]
     public void ConstructorThrows_OnDuplicateMixinTypes ()
     {
-      ClassContextObjectMother.Create(typeof (string), typeof (object), typeof (object));
+      Assert.That (
+          () => ClassContextObjectMother.Create(typeof (string), typeof (object), typeof (object)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The mixin type System.Object was tried to be added twice.\r\n"
+                  + "Parameter name: mixinTypes"));
     }
 
     [Test]

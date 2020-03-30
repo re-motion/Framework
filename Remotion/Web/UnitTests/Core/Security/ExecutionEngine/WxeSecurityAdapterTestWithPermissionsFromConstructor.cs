@@ -92,13 +92,13 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
     public void CheckAccess_AccessDenied ()
     {
       ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, false);
       _mocks.ReplayAll ();
-
-      _securityAdapter.CheckAccess (new TestFunctionWithPermissionsFromConstructor ());
+      Assert.That (
+          () => _securityAdapter.CheckAccess (new TestFunctionWithPermissionsFromConstructor ()),
+          Throws.InstanceOf<PermissionDeniedException>());
     }
 
     [Test]

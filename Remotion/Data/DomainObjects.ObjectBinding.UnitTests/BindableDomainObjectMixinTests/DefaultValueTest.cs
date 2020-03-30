@@ -129,7 +129,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property has no getter.")]
     public void PropertyWithNoGetter ()
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
@@ -138,12 +137,13 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       propertyInformationStub.Stub (stub => stub.GetGetMethod (true)).Return (null);
 
       var booleanProperty = CreateProperty (propertyInformationStub);
-
-      _newBusinessOrder.GetProperty (booleanProperty);
+      Assert.That (
+          () => _newBusinessOrder.GetProperty (booleanProperty),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Property has no getter."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property has no setter.")]
     public void PropertyWithNoSetter ()
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation> ();
@@ -152,8 +152,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       propertyInformationStub.Stub (stub => stub.GetSetMethod (true)).Return (null);
 
       var booleanProperty = CreateProperty (propertyInformationStub);
-
-      _newBusinessOrder.SetProperty (booleanProperty, new object());
+      Assert.That (
+          () => _newBusinessOrder.SetProperty (booleanProperty, new object()),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Property has no setter."));
     }
 
     private BooleanProperty CreateProperty (IPropertyInformation propertyInformation)

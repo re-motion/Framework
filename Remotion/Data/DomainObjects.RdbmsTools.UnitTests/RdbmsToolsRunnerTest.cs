@@ -50,9 +50,6 @@ namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (FileNotFoundException), 
-        ExpectedMessage = "The configuration file supplied by the 'config' parameter was not found.", 
-        MatchType = MessageMatch.Contains)]
     public void CreateAppDomainSetup_WithAbsoluteConfigFilePath_FileNotFound ()
     {
       var parameter = new RdbmsToolsParameters ();
@@ -62,8 +59,10 @@ namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests
 
       Assert.That (Path.IsPathRooted (configPath), configPath);
       Assert.That (File.Exists (configPath), Is.False, configPath);
-
-      RdbmsToolsRunner.CreateAppDomainSetup (parameter);
+      Assert.That (
+          () => RdbmsToolsRunner.CreateAppDomainSetup (parameter),
+          Throws.InstanceOf<FileNotFoundException>()
+              .With.Message.Contains ("The configuration file supplied by the 'config' parameter was not found."));
     }
 
     [Test]
@@ -86,9 +85,6 @@ namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (FileNotFoundException), 
-        ExpectedMessage = "The configuration file supplied by the 'config' parameter was not found.", 
-        MatchType = MessageMatch.Contains)]
     public void CreateAppDomainSetup_WithPathRelativeToCurrentDirectory_FileNotFound ()
     {
       var parameter = new RdbmsToolsParameters ();
@@ -100,8 +96,10 @@ namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests
       Assert.That (Path.IsPathRooted (configPath), configPath);
       Assert.That (Path.IsPathRooted (parameter.ConfigFile), Is.False, parameter.ConfigFile);
       Assert.That (File.Exists (Path.Combine (Environment.CurrentDirectory, parameter.ConfigFile)), Is.False);
-
-      RdbmsToolsRunner.CreateAppDomainSetup (parameter);
+      Assert.That (
+          () => RdbmsToolsRunner.CreateAppDomainSetup (parameter),
+          Throws.InstanceOf<FileNotFoundException>()
+              .With.Message.Contains ("The configuration file supplied by the 'config' parameter was not found."));
     }
 
     private string GetConfigPath (string configFileName)

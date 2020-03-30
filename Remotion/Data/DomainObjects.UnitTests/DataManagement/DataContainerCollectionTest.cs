@@ -95,11 +95,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void Item_Set_Index ()
     {
       _collection.Add (_dataContainer);
-      ((IList<DataContainer>) _collection)[0] = _dataContainer;
+      Assert.That (
+          () => ((IList<DataContainer>) _collection)[0] = _dataContainer,
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
@@ -257,17 +258,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void RemoveNullDataContainer ()
     {
-      _collection.Remove ((DataContainer) null);
+      Assert.That (
+          () => _collection.Remove ((DataContainer) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void RemoveNullObjectID ()
     {
-      _collection.Remove ((ObjectID) null);
+      Assert.That (
+          () => _collection.Remove ((ObjectID) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -289,10 +292,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void ContainsDataContainerNull ()
     {
-      _collection.Contains ((DataContainer) null);
+      Assert.That (
+          () => _collection.Contains ((DataContainer) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

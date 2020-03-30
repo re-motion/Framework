@@ -114,19 +114,22 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "There is no mixin configuration for type System.Object, so no mixin instances must be specified.\r\nParameter name: preparedMixins")]
     public void CreateInstance_WithUnmixedType_AndPreparedMixinInstances_Throws ()
     {
-      _implementation.CreateInstance (BooleanObjectMother.GetRandomBoolean(), typeof (object), ParamList.Empty, new object());
+      Assert.That (
+          () => _implementation.CreateInstance (BooleanObjectMother.GetRandomBoolean(), typeof (object), ParamList.Empty, new object()),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "There is no mixin configuration for type System.Object, so no mixin instances must be specified.\r\nParameter name: preparedMixins"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Cannot instantiate type 'System.IServiceProvider', it's an interface.\r\nParameter name: targetOrConcreteType")]
     public void CreateInstance_WithInterface ()
     {
-      _implementation.CreateInstance (false, typeof (IServiceProvider), ParamList.Empty, false);
+      Assert.That (
+          () => _implementation.CreateInstance (false, typeof (IServiceProvider), ParamList.Empty, false),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("Cannot instantiate type 'System.IServiceProvider', it's an interface.\r\nParameter name: targetOrConcreteType"));
     }
 
     [Test]

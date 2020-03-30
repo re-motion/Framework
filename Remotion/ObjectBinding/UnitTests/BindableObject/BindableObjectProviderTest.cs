@@ -99,21 +99,25 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The type 'Remotion.ObjectBinding.UnitTests.TestDomain.ManualBusinessObject' does not have the "
-        + "'Remotion.ObjectBinding.BusinessObjectProviderAttribute' applied.\r\nParameter name: type")]
     public void GetProviderForBindableObjectType_WithMissingProviderAttribute ()
     {
-      BindableObjectProvider.GetProviderForBindableObjectType (typeof (ManualBusinessObject));
+      Assert.That (
+          () => BindableObjectProvider.GetProviderForBindableObjectType (typeof (ManualBusinessObject)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The type 'Remotion.ObjectBinding.UnitTests.TestDomain.ManualBusinessObject' does not have the "
+                  + "'Remotion.ObjectBinding.BusinessObjectProviderAttribute' applied.\r\nParameter name: type"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The business object provider associated with the type 'Remotion.ObjectBinding.UnitTests.TestDomain.BindableObjectWithStubBusinessObjectProvider' "
-        + "is not of type 'Remotion.ObjectBinding.BindableObject.BindableObjectProvider'.\r\nParameter name: type")]
     public void GetProviderForBindableObjectType_WithInvalidProviderType ()
     {
-      BindableObjectProvider.GetProviderForBindableObjectType (typeof (BindableObjectWithStubBusinessObjectProvider));
+      Assert.That (
+          () => BindableObjectProvider.GetProviderForBindableObjectType (typeof (BindableObjectWithStubBusinessObjectProvider)),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The business object provider associated with the type 'Remotion.ObjectBinding.UnitTests.TestDomain.BindableObjectWithStubBusinessObjectProvider' "
+                  + "is not of type 'Remotion.ObjectBinding.BindableObject.BindableObjectProvider'.\r\nParameter name: type"));
     }
 
     [Test]

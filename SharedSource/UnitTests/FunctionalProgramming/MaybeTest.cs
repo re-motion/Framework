@@ -214,10 +214,12 @@ namespace Remotion.UnitTests.FunctionalProgramming
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Maybe instance does not have a value.")]
     public void Value_Nothing_Throws ()
     {
-      _intNothing.Value ();
+      Assert.That (
+          () => _intNothing.Value (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Maybe instance does not have a value."));
     }
 
     [Test]

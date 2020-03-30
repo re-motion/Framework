@@ -77,19 +77,21 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: T")]
     public void TestGeneric_FromBaseWithInvalidType ()
     {
-      AttributeUtility.IsDefined<object> (_basePropertyWithSingleAttribute, true);
+      Assert.That (
+          () => AttributeUtility.IsDefined<object> (_basePropertyWithSingleAttribute, true),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: T"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: attributeType")]
     public void Test_FromBaseWithInvalidType ()
     {
-      AttributeUtility.IsDefined (_basePropertyWithSingleAttribute, typeof (object), true);
+      Assert.That (
+          () => AttributeUtility.IsDefined (_basePropertyWithSingleAttribute, typeof (object), true),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: attributeType"));
     }
 
     [Test]

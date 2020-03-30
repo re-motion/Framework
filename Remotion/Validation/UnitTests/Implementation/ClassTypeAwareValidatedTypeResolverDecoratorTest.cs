@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -48,16 +48,17 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-      "Invalid 'ApplyWithClassAttribute'-definition for collector 'Remotion.Validation.UnitTests.TestDomain.Collectors.InvalidValidationRuleCollector': "
-      + "type 'Remotion.Validation.UnitTests.TestDomain.Address' is not assignable from 'Remotion.Validation.UnitTests.TestDomain.Customer'.")]
     public void GetValidatedType_CollectorWitApplyWithClassAttribute_ReturnedTypeNotAssignableToGenericType ()
     {
       var collectorTypeWithApplyWithClassAttribute = typeof (InvalidValidationRuleCollector);
 
       _decoratedResolverMock.Expect (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Return (typeof (Customer));
-
-      _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
+      Assert.That (
+          () => _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Invalid 'ApplyWithClassAttribute'-definition for collector 'Remotion.Validation.UnitTests.TestDomain.Collectors.InvalidValidationRuleCollector': "
+                  + "type 'Remotion.Validation.UnitTests.TestDomain.Address' is not assignable from 'Remotion.Validation.UnitTests.TestDomain.Customer'."));
     }
 
     [Test]

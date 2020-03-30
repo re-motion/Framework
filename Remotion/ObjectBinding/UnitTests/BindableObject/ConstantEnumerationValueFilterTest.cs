@@ -45,13 +45,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Item 1 of parameter 'disabledValues' has the type 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue' "
-        + "instead of 'Remotion.ObjectBinding.UnitTests.TestDomain.TestEnum'."
-        + "\r\nParameter name: disabledValues")]
     public void Initialize_WithMismatchedEnumValues ()
     {
-      new ConstantEnumerationValueFilter (new Enum[] { TestEnum.Value1, EnumWithUndefinedValue.Value2 });
+      Assert.That (
+          () => new ConstantEnumerationValueFilter (new Enum[] { TestEnum.Value1, EnumWithUndefinedValue.Value2 }),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Item 1 of parameter 'disabledValues' has the type 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue' "
+                  + "instead of 'Remotion.ObjectBinding.UnitTests.TestDomain.TestEnum'."
+                  + "\r\nParameter name: disabledValues"));
     }
 
     [Test]

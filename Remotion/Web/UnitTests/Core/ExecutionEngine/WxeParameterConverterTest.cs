@@ -144,23 +144,25 @@ public class WxeParameterConverterTest
   }
 
   [Test]
-  [ExpectedException (typeof (WxeException))]
   public void ConvertVarRefToStringRequiredVarRefInParameterWithNoCallerParameters()
   {
     WxeVariableReference varRef = new WxeVariableReference (c_param);
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredInt32InParameter);
-    converter.ConvertVarRefToString (varRef, null);
+    Assert.That (
+        () => converter.ConvertVarRefToString (varRef, null),
+        Throws.InstanceOf<WxeException>());
   }
 
   [Test]
-  [ExpectedException (typeof (WxeException))]
   public void ConvertVarRefToStringRequiredVarRefInParameterWithVarRef()
   {
     WxeVariableReference value = new WxeVariableReference (c_param);
     WxeVariableReference varRef = new WxeVariableReference (c_param);
     _callerParameters.Add (c_param, value);
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredInt32InParameter);
-    converter.ConvertVarRefToString (varRef, _callerParameters);
+    Assert.That (
+        () => converter.ConvertVarRefToString (varRef, _callerParameters),
+        Throws.InstanceOf<WxeException>());
   }
 
   [Test]
@@ -193,11 +195,12 @@ public class WxeParameterConverterTest
 
   
   [Test]
-  [ExpectedException (typeof (WxeException))]
   public void CheckForRequiredOutParameter()
   {
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredOutParameter);
-    converter.CheckForRequiredOutParameter();
+    Assert.That (
+        () => converter.CheckForRequiredOutParameter(),
+        Throws.InstanceOf<WxeException>());
   }
 
 

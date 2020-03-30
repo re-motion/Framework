@@ -76,8 +76,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "Cannot call BeginTransaction when a transaction is already in progress.")]
     public void BeginTransaction_Twice ()
     {
       _connectionCreatorMock.Expect (mock => mock.CreateConnection ()).Return (_connectionStub);
@@ -85,7 +83,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       _mockRepository.ReplayAll ();
 
       _provider.BeginTransaction ();
-      _provider.BeginTransaction ();
+      Assert.That (
+          () => _provider.BeginTransaction (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Cannot call BeginTransaction when a transaction is already in progress."));
     }
 
     [Test]
@@ -126,8 +127,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage =
-        "No timestamp found for object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'.")]
     public void UpdateTimestamps_ObjectIDCannotBeFound ()
     {
       var dataContainer1 = DataContainer.CreateNew (DomainObjectIDs.Order1);
@@ -146,8 +145,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           .Return (new[] { new ObjectLookupResult<object> (DomainObjectIDs.Order3, timestamp2) });
 
       _mockRepository.ReplayAll ();
-
-      _provider.UpdateTimestamps (new DataContainerCollection (new[] { dataContainer1 }, true));
+      Assert.That (
+          () => _provider.UpdateTimestamps (new DataContainerCollection (new[] { dataContainer1 }, true)),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo ("No timestamp found for object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'."));
     }
 
     [Test]
@@ -178,8 +179,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage =
-        "A database query returned duplicates of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', which is not allowed.")]
     public void ExecuteCollectionQuery_DuplicatedIDs ()
     {
       var dataContainer1 = DataContainer.CreateNew (DomainObjectIDs.Order1);
@@ -199,8 +198,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
         commandMock.Expect (mock => mock.Execute (_provider)).Return (new[] { dataContainer1, dataContainer2 });
       }
       _mockRepository.ReplayAll();
-
-      _provider.ExecuteCollectionQuery (queryStub);
+      Assert.That (
+          () => _provider.ExecuteCollectionQuery (queryStub),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo (
+                  "A database query returned duplicates of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', which is not allowed."));
     }
 
     [Test]
@@ -421,7 +423,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = "A relation lookup returned a NULL ID, which is not allowed.")]
     public void LoadDataContainersByRelatedID_NullContainer ()
     {
       var objectID = DomainObjectIDs.Order1;
@@ -441,13 +442,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
         commandMock.Expect (mock => mock.Execute (_provider)).Return (new[] { fakeResult, null });
       }
       _mockRepository.ReplayAll();
-
-      _provider.LoadDataContainersByRelatedID (relationEndPointDefinition, sortExpression, objectID);
+      Assert.That (
+          () => _provider.LoadDataContainersByRelatedID (relationEndPointDefinition, sortExpression, objectID),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo (
+                  "A relation lookup returned a NULL ID, which is not allowed."));
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage =
-        "A relation lookup returned duplicates of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', which is not allowed.")]
     public void LoadDataContainersByRelatedID_Duplicates ()
     {
       var objectID = DomainObjectIDs.Order1;
@@ -464,8 +466,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       commandMock.Expect (mock => mock.Execute (_provider)).Return (new[] { fakeResult, fakeResult });
 
       _mockRepository.ReplayAll();
-
-      _provider.LoadDataContainersByRelatedID (relationEndPointDefinition, sortExpression, objectID);
+      Assert.That (
+          () => _provider.LoadDataContainersByRelatedID (relationEndPointDefinition, sortExpression, objectID),
+          Throws.InstanceOf<RdbmsProviderException>()
+              .With.Message.EqualTo (
+                  "A relation lookup returned duplicates of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', which is not allowed."));
     }
 
     [Test]
@@ -646,11 +651,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDisposedException))]
     public void CreateDbCommand_ChecksDisposed ()
     {
       _provider.Dispose ();
-      _provider.CreateDbCommand ();
+      Assert.That (
+          () => _provider.CreateDbCommand (),
+          Throws.InstanceOf<ObjectDisposedException>());
     }
 
     [Test]
@@ -680,11 +686,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDisposedException))]
     public void ExecuteReader_ChecksDisposed ()
     {
       _provider.Dispose ();
-      _provider.ExecuteReader (_commandMock, CommandBehavior.SequentialAccess | CommandBehavior.KeyInfo);
+      Assert.That (
+          () => _provider.ExecuteReader (_commandMock, CommandBehavior.SequentialAccess | CommandBehavior.KeyInfo),
+          Throws.InstanceOf<ObjectDisposedException>());
     }
 
     [Test]
@@ -714,11 +721,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDisposedException))]
     public void ExecuteScalar_ChecksDisposed ()
     {
       _provider.Dispose ();
-      _provider.ExecuteScalar (_commandMock);
+      Assert.That (
+          () => _provider.ExecuteScalar (_commandMock),
+          Throws.InstanceOf<ObjectDisposedException>());
     }
 
     [Test]
@@ -747,11 +755,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDisposedException))]
     public void ExecuteNonQuery_ChecksDisposed ()
     {
       _provider.Dispose ();
-      _provider.ExecuteNonQuery (_commandMock);
+      Assert.That (
+          () => _provider.ExecuteNonQuery (_commandMock),
+          Throws.InstanceOf<ObjectDisposedException>());
     }
   }
 }

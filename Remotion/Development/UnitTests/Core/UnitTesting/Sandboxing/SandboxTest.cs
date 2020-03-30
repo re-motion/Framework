@@ -69,12 +69,13 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
     }
 
     [Test]
-    [ExpectedException (typeof (AppDomainUnloadedException))]
     public void Dispose ()
     {
       var sandbox = Sandbox.CreateSandbox (_mediumTrustPermissions, new Assembly[0]);
       sandbox.Dispose();
-      sandbox.CreateSandboxedInstance<SampleTestRunner> (_mediumTrustPermissions);
+      Assert.That (
+          () => sandbox.CreateSandboxedInstance<SampleTestRunner> (_mediumTrustPermissions),
+          Throws.InstanceOf<AppDomainUnloadedException>());
     }
 
     [Test]

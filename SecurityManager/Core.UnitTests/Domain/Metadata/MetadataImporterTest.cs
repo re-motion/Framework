@@ -463,20 +463,18 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (XmlSchemaValidationException))]
     public void Import_InvalidXml ()
     {
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes />
           </securityMetadata>";
-
-      _importer.Import (GetXmlDocument (metadataXml));
+      Assert.That (
+          () => _importer.Import (GetXmlDocument (metadataXml)),
+          Throws.InstanceOf<XmlSchemaValidationException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ImportException),
-       ExpectedMessage = "The base class '00000000-0000-0000-0001-000000000000' referenced by the class '00000000-0000-0000-0002-000000000000' could not be found.")]
     public void Import_MissingBaseClass ()
     {
       string metadataXml = @"
@@ -489,13 +487,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             <abstractRoles />
           </securityMetadata>
           ";
-
-      _importer.Import (GetXmlDocument (metadataXml));
+      Assert.That (
+          () => _importer.Import (GetXmlDocument (metadataXml)),
+          Throws.InstanceOf<ImportException>()
+              .With.Message.EqualTo (
+                  "The base class '00000000-0000-0000-0001-000000000000' referenced by the class '00000000-0000-0000-0002-000000000000' could not be found."));
     }
 
     [Test]
-    [ExpectedException (typeof (ImportException),
-       ExpectedMessage = "The state property '00000000-0000-0000-0001-000000000001' referenced by the class '00000000-0000-0000-0001-000000000000' could not be found.")]
     public void Import_MissingStateProperty ()
     {
       string metadataXml = @"
@@ -519,13 +518,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             <abstractRoles />
           </securityMetadata>
           ";
-
-      _importer.Import (GetXmlDocument (metadataXml));
+      Assert.That (
+          () => _importer.Import (GetXmlDocument (metadataXml)),
+          Throws.InstanceOf<ImportException>()
+              .With.Message.EqualTo (
+                  "The state property '00000000-0000-0000-0001-000000000001' referenced by the class '00000000-0000-0000-0001-000000000000' could not be found."));
     }
 
     [Test]
-    [ExpectedException (typeof (ImportException),
-        ExpectedMessage = "The access type '62dfcd92-a480-4d57-95f1-28c0f5996b3a' referenced by the class '00000000-0000-0000-0001-000000000000' could not be found.")]
     public void Import_MissingAccessType ()
     {
       string metadataXml = @"
@@ -553,8 +553,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             <abstractRoles />
           </securityMetadata>
           ";
-
-      _importer.Import (GetXmlDocument (metadataXml));
+      Assert.That (
+          () => _importer.Import (GetXmlDocument (metadataXml)),
+          Throws.InstanceOf<ImportException>()
+              .With.Message.EqualTo (
+                  "The access type '62dfcd92-a480-4d57-95f1-28c0f5996b3a' referenced by the class '00000000-0000-0000-0001-000000000000' could not be found."));
     }
 
     private XmlDocument GetXmlDocument (string metadataXml)

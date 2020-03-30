@@ -69,12 +69,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is already an eager fetch query for relation end point " 
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems'.")]
     public void Add_Twice ()
     {
       _collection.Add (_endPointDefinition1, _query1);
-      _collection.Add (_endPointDefinition1, _query2);
+      Assert.That (
+          () => _collection.Add (_endPointDefinition1, _query2),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "There is already an eager fetch query for relation end point " 
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems'."));
     }
 
     [Test]

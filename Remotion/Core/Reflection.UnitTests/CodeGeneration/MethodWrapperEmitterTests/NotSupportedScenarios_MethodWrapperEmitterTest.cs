@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -36,9 +36,6 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'value' of the wrappedMethod is an out parameter, but out parameters are not supported by the MethodWrapperGenerator.\r\n"
-        + "Parameter name: wrappedMethod")]
     public void EmitMethodBody_OutParameter ()
     {
       Type declaringType = typeof (ClassWithMethods);
@@ -46,13 +43,15 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 
       Type returnType = typeof (void);
       Type[] parameterTypes = new[] { typeof (object), typeof (object).MakeByRefType() };
-      new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType);
+      Assert.That (
+          () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'value' of the wrappedMethod is an out parameter, but out parameters are not supported by the MethodWrapperGenerator.\r\n"
+                  + "Parameter name: wrappedMethod"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'value' of the wrappedMethod is a by-ref parameter, but by-ref parameters are not supported by the MethodWrapperGenerator.\r\n"
-        + "Parameter name: wrappedMethod")]
     public void EmitMethodBody_ByRefParameter ()
     {
       Type declaringType = typeof (ClassWithMethods);
@@ -60,13 +59,15 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 
       Type returnType = typeof (void);
       Type[] parameterTypes = new[] { typeof (object), typeof (object).MakeByRefType() };
-      new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType);
+      Assert.That (
+          () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'value' of the wrappedMethod is a by-ref parameter, but by-ref parameters are not supported by the MethodWrapperGenerator.\r\n"
+                  + "Parameter name: wrappedMethod"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'value' of the wrappedMethod is an optional parameter, but optional parameters are not supported by the MethodWrapperGenerator.\r\n"
-        + "Parameter name: wrappedMethod")]
     public void EmitMethodBody_OptionalParameter ()
     {
       Type declaringType = typeof (ClassWithMethods);
@@ -74,13 +75,15 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 
       Type returnType = typeof (void);
       Type[] parameterTypes = new[] { typeof (object), typeof (object) };
-      new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType);
+      Assert.That (
+          () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'value' of the wrappedMethod is an optional parameter, but optional parameters are not supported by the MethodWrapperGenerator.\r\n"
+                  + "Parameter name: wrappedMethod"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Open generic method definitions are not supported by the MethodWrapperGenerator.\r\n"
-        + "Parameter name: wrappedMethod")]
     public void EmitMethodBody_OpenGeneric ()
     {
       Type declaringType = typeof (ClassWithMethods);
@@ -88,7 +91,12 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 
       Type returnType = typeof (object);
       Type[] parameterTypes = new[] { typeof (object), typeof (object) };
-      new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType);
+      Assert.That (
+          () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Open generic method definitions are not supported by the MethodWrapperGenerator.\r\n"
+                  + "Parameter name: wrappedMethod"));
     }
   }
 }

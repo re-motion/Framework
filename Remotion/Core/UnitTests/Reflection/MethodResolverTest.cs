@@ -66,17 +66,23 @@ namespace Remotion.UnitTests.Reflection
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "The method 'Void Foo()' could not be found on type 'System.Object'.")]
     public void ResolveMethod_NonMatchingName ()
     {
-      MethodResolver.ResolveMethod (typeof (object), "Foo", "Void Foo()");
+      Assert.That (
+          () => MethodResolver.ResolveMethod (typeof (object), "Foo", "Void Foo()"),
+          Throws.InstanceOf<MissingMethodException>()
+              .With.Message.EqualTo (
+                  "The method 'Void Foo()' could not be found on type 'System.Object'."));
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "The method 'Void Foo()' could not be found on type 'System.Console'.")]
     public void ResolveMethod_NonMatchingSignature ()
     {
-      MethodResolver.ResolveMethod (typeof (Console), "WriteLine", "Void Foo()");
+      Assert.That (
+          () => MethodResolver.ResolveMethod (typeof (Console), "WriteLine", "Void Foo()"),
+          Throws.InstanceOf<MissingMethodException>()
+              .With.Message.EqualTo (
+                  "The method 'Void Foo()' could not be found on type 'System.Console'."));
     }
   }
 }

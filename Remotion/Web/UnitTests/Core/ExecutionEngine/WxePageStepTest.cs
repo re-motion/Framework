@@ -122,7 +122,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot execute function while another function executes.")]
     public void ExecuteFunction_IsAlreadyExecutingSubFunction ()
     {
       WxeContextMock.SetCurrent (_wxeContext);
@@ -143,8 +142,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       catch (ApplicationException)
       {
       }
-      _pageStep.ExecuteFunction (
-          new PreProcessingSubFunctionStateParameters (_pageMock, _subFunction, WxePermaUrlOptions.Null), WxeRepostOptions.DoRepost (null));
+      Assert.That (
+          () => _pageStep.ExecuteFunction (
+          new PreProcessingSubFunctionStateParameters (_pageMock, _subFunction, WxePermaUrlOptions.Null), WxeRepostOptions.DoRepost (null)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot execute function while another function executes."));
     }
 
     [Test]
@@ -178,7 +181,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot execute function while another function executes.")]
     public void ExecuteFunctionExternalByRedirect_IsAlreadyExecutingSubFunction ()
     {
       WxeContextMock.SetCurrent (_wxeContext);
@@ -199,8 +201,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       catch (ApplicationException)
       {
       }
-      _pageStep.ExecuteFunctionExternalByRedirect (
-          new PreProcessingSubFunctionStateParameters (_pageMock, _subFunction, WxePermaUrlOptions.Null), WxeReturnOptions.Null);
+      Assert.That (
+          () => _pageStep.ExecuteFunctionExternalByRedirect (
+          new PreProcessingSubFunctionStateParameters (_pageMock, _subFunction, WxePermaUrlOptions.Null), WxeReturnOptions.Null),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot execute function while another function executes."));
     }
 
     [Test]

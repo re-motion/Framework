@@ -105,12 +105,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
     public void Insert_SameItemTwice ()
     {
       Add (_order1);
-
-      _data.Insert (1, _order1);
+      Assert.That (
+          () => _data.Insert (1, _order1),
+          Throws.ArgumentException);
     }
 
     [Test]
@@ -133,12 +133,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void Insert_InvalidIndex ()
     {
       Add (_order1);
-
-      _data.Insert (17, _order2);
+      Assert.That (
+          () => _data.Insert (17, _order2),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
@@ -205,13 +205,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void GetObject_InvalidIndex ()
     {
       Add (_order1);
       Add (_order2);
-
-      _data.GetObject (3);
+      Assert.That (
+          () => _data.GetObject (3),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
@@ -352,10 +352,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void Replace_InvalidIndex ()
     {
-      _data.Replace (1, _order4);
+      Assert.That (
+          () => _data.Replace (1, _order4),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
@@ -381,14 +382,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
     public void Replace_WithDuplicate ()
     {
       Add (_order1);
       Add (_order2);
       Add (_order3);
-
-      _data.Replace (1, _order1);
+      Assert.That (
+          () => _data.Replace (1, _order1),
+          Throws.ArgumentException);
     }
 
     [Test]
@@ -443,7 +444,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Collection was modified during enumeration.")]
     public void Enumeration_ChokesOnVersionChanges ()
     {
       Add (_order1);
@@ -454,8 +454,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       enumerator.MoveNext();
 
       Add (_order4);
-
-      enumerator.MoveNext();
+      Assert.That (
+          () => enumerator.MoveNext(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Collection was modified during enumeration."));
     }
 
     [Test]

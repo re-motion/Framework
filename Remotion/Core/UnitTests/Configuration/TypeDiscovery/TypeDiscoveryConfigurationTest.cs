@@ -133,13 +133,14 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), 
-        ExpectedMessage = "In CustomRootAssemblyFinder mode, a custom root assembly finder must be specified in the type discovery configuration.", 
-        MatchType = MessageMatch.Contains)]
     public void CreateTypeDiscoveryService_CustomRootAssemblyFinder_MissingType ()
     {
       var section = Deserialize (_xmlFragmentWithMissingCustomRootAssemblyFinder);
-      section.CreateTypeDiscoveryService ();
+      Assert.That (
+          () => section.CreateTypeDiscoveryService (),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.Contains (
+                  "In CustomRootAssemblyFinder mode, a custom root assembly finder must be specified in the type discovery configuration."));
     }
 
     [Test]
@@ -180,13 +181,14 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "In CustomTypeDiscoveryService mode, a custom type discovery service must be specified in the type discovery configuration.",
-        MatchType = MessageMatch.Contains)]
     public void CreateTypeDiscoveryService_CustomTypeDiscoveryService_MissingType ()
     {
       var section = Deserialize (_xmlFragmentWithMissingCustomTypeDiscoveryService);
-      section.CreateTypeDiscoveryService ();
+      Assert.That (
+          () => section.CreateTypeDiscoveryService (),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.Contains (
+                  "In CustomTypeDiscoveryService mode, a custom type discovery service must be specified in the type discovery configuration."));
     }
 
     private TypeDiscoveryConfiguration Deserialize (string xmlFragment)

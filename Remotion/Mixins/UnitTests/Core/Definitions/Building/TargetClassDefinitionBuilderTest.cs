@@ -50,10 +50,12 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "contains generic parameters", MatchType = MessageMatch.Contains)]
     public void Build_ThrowsOnGenericTargetClass ()
     {
-      _builder.Build (ClassContextObjectMother.Create(typeof (BT3Mixin3<,>)));
+      Assert.That (
+          () => _builder.Build (ClassContextObjectMother.Create(typeof (BT3Mixin3<,>))),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Contains ("contains generic parameters"));
     }
 
     [Test]

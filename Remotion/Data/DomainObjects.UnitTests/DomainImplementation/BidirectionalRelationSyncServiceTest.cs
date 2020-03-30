@@ -100,21 +100,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.\r\nParameter name: endPointID")]
     public void IsSynchronized_UnidirectionalRelationEndPoint ()
     {
-      BidirectionalRelationSyncService.IsSynchronized (_transaction, RelationEndPointID.Create (DomainObjectIDs.Location1, typeof (Location), "Client"));
+      Assert.That (
+          () => BidirectionalRelationSyncService.IsSynchronized (_transaction, RelationEndPointID.Create (DomainObjectIDs.Location1, typeof (Location), "Client")),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.\r\nParameter name: endPointID"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.\r\nParameter name: endPointID")]
     public void IsSynchronized_AnonymousRelationEndPoint ()
     {
       var locationClientEndPoint = RelationEndPointID.Create (DomainObjectIDs.Location1, typeof (Location), "Client");
       var oppositeEndPoint = RelationEndPointID.Create (DomainObjectIDs.Client1, locationClientEndPoint.Definition.GetOppositeEndPointDefinition());
-      BidirectionalRelationSyncService.IsSynchronized (_transaction, oppositeEndPoint);
+      Assert.That (
+          () => BidirectionalRelationSyncService.IsSynchronized (_transaction, oppositeEndPoint),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.\r\nParameter name: endPointID"));
     }
 
     [Test]
@@ -212,40 +216,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-      "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.\r\nParameter name: endPointID")]
     public void Synchronize_UnidirectionalEndpoint ()
     {
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.Location1, typeof (Location), "Client");
-
-      BidirectionalRelationSyncService.Synchronize (_transaction, endPointID);
+      Assert.That (
+          () => BidirectionalRelationSyncService.Synchronize (_transaction, endPointID),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.\r\nParameter name: endPointID"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.\r\nParameter name: endPointID")]
     public void Synchronize_AnonymousEndPoint ()
     {
       var locationClientEndPoint = RelationEndPointID.Create (DomainObjectIDs.Location1, typeof (Location), "Client");
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.Client1, locationClientEndPoint.Definition.GetOppositeEndPointDefinition ());
-
-      BidirectionalRelationSyncService.Synchronize (_transaction, endPointID);
+      Assert.That (
+          () => BidirectionalRelationSyncService.Synchronize (_transaction, endPointID),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.\r\nParameter name: endPointID"));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' of object "
-        + "'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid' has not yet been fully loaded into the given ClientTransaction.")]
     public void Synchronize_EndPointNotRegistered ()
     {
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.OrderItem1, typeof (OrderItem), "Order");
-      BidirectionalRelationSyncService.Synchronize (_transaction, endPointID);
+      Assert.That (
+          () => BidirectionalRelationSyncService.Synchronize (_transaction, endPointID),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' of object "
+                  + "'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid' has not yet been fully loaded into the given ClientTransaction."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of object "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has not yet been fully loaded into the given ClientTransaction.")]
     public void Synchronize_EndPointIncomplete ()
     {
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderItems");
@@ -254,8 +259,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       endPointStub.Stub (stub => stub.Definition).Return (endPointID.Definition);
       endPointStub.Stub (stub => stub.IsDataComplete).Return (false);
       RelationEndPointManagerTestHelper.AddEndPoint (_relationEndPointManager, endPointStub);
-
-      BidirectionalRelationSyncService.Synchronize (_transaction, endPointID);
+      Assert.That (
+          () => BidirectionalRelationSyncService.Synchronize (_transaction, endPointID),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of object "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has not yet been fully loaded into the given ClientTransaction."));
     }
   }
 }

@@ -188,45 +188,63 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This collection does not support modifications.")]
     public void IList_Item_Set ()
     {
-      _readOnlyAdapterAsIList[0] = _order4;
+      Assert.That (
+          () => _readOnlyAdapterAsIList[0] = _order4,
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "This collection does not support modifications."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This collection does not support modifications.")]
     public void IList_Add ()
     {
-      _readOnlyAdapterAsIList.Add (_order3);
+      Assert.That (
+          () => _readOnlyAdapterAsIList.Add (_order3),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "This collection does not support modifications."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This collection does not support modifications.")]
     public void IList_Clear ()
     {
-      _readOnlyAdapterAsIList.Clear();
+      Assert.That (
+          () => _readOnlyAdapterAsIList.Clear(),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "This collection does not support modifications."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This collection does not support modifications.")]
     public void IList_Remove ()
     {
-      _readOnlyAdapterAsIList.Remove (_order3);
+      Assert.That (
+          () => _readOnlyAdapterAsIList.Remove (_order3),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "This collection does not support modifications."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This collection does not support modifications.")]
     public void IList_Insert ()
     {
-      _readOnlyAdapterAsIList.Insert (0, _order3);
+      Assert.That (
+          () => _readOnlyAdapterAsIList.Insert (0, _order3),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "This collection does not support modifications."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This collection does not support modifications.")]
     public void IList_RemoveAt ()
     {
-      _readOnlyAdapterAsIList.RemoveAt (0);
+      Assert.That (
+          () => _readOnlyAdapterAsIList.RemoveAt (0),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "This collection does not support modifications."));
     }
 
     private void StubInnerData (params DomainObject[] contents)

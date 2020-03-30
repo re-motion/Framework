@@ -250,21 +250,25 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "Cannot create AccessControlEntry if no SecurableClassDefinition is assigned to this AccessControlList.")]
     public void CreateAccessControlEntry_BeforeClassIsSet_WithStatefulAccessControlList ()
     {
       AccessControlList acl = StatefulAccessControlList.NewObject ();
-      acl.CreateAccessControlEntry ();
+      Assert.That (
+          () => acl.CreateAccessControlEntry (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot create AccessControlEntry if no SecurableClassDefinition is assigned to this AccessControlList."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "Cannot create AccessControlEntry if no SecurableClassDefinition is assigned to this AccessControlList.")]
     public void CreateAccessControlEntry_BeforeClassIsSet_WithStatelessAccessControlList ()
     {
       AccessControlList acl = StatelessAccessControlList.NewObject ();
-      acl.CreateAccessControlEntry ();
+      Assert.That (
+          () => acl.CreateAccessControlEntry (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Cannot create AccessControlEntry if no SecurableClassDefinition is assigned to this AccessControlList."));
     }
   }
 }

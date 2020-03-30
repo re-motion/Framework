@@ -108,9 +108,6 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building.RequiredMethodDefi
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage =
-        "The dependency 'IBaseType2' (required by mixin 'System.String' on class 'System.Object') is not fulfilled - public or protected "
-        + "method 'System.String IfcMethod()' could not be found on the target class.")]
     public void CreateRequiredMethodDefinitions_NoMatch ()
     {
       var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition (typeof (object));
@@ -121,22 +118,27 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building.RequiredMethodDefi
       DefinitionObjectMother.AddRequiringDependency (requirement, dependency);
       
       var builder = new DuckTypingRequiredMethodDefinitionCollector (targetClassDefinition);
-
-      builder.CreateRequiredMethodDefinitions (requirement).ToArray ();
+      Assert.That (
+          () => builder.CreateRequiredMethodDefinitions (requirement).ToArray (),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo (
+                  "The dependency 'IBaseType2' (required by mixin 'System.String' on class 'System.Object') is not fulfilled - public or protected "
+                  + "method 'System.String IfcMethod()' could not be found on the target class."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage =
-        "The dependency 'IInterface' (required by <unknown> on class 'System.Object') is not fulfilled - public or protected method "
-        + "'Void Method1()' could not be found on the target class.")]
     public void CreateRequiredMethodDefinitions_NoMatch_NoRequiringMixin ()
     {
       var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition (typeof (object));
 
       var requirement = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition (targetClassDefinition, typeof (IInterface));
       var builder = new DuckTypingRequiredMethodDefinitionCollector (targetClassDefinition);
-
-      builder.CreateRequiredMethodDefinitions (requirement).ToArray ();
+      Assert.That (
+          () => builder.CreateRequiredMethodDefinitions (requirement).ToArray (),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo (
+                  "The dependency 'IInterface' (required by <unknown> on class 'System.Object') is not fulfilled - public or protected method "
+                  + "'Void Method1()' could not be found on the target class."));
     }
 
   }

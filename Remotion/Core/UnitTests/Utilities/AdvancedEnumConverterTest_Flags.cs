@@ -111,17 +111,19 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void ConvertFromString_WithNullAndInt32EnumConverter ()
     {
-      _int32EnumConverter.ConvertFrom (null);
+      Assert.That (
+          () => _int32EnumConverter.ConvertFrom (null),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
-    [ExpectedException (typeof (FormatException))]
     public void ConvertFromString_WithEmptyStringAndInt32EnumConverter ()
     {
-      _int32EnumConverter.ConvertFrom (string.Empty);
+      Assert.That (
+          () => _int32EnumConverter.ConvertFrom (string.Empty),
+          Throws.InstanceOf<FormatException>());
     }
 
     [Test]
@@ -152,18 +154,21 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException), ExpectedMessage =
-        "The value -1 is not supported for enumeration 'Remotion.UnitTests.Utilities.AdvancedEnumConverterTest_Flags+Int32Enum'.")]
     public void ConvertFromInt32_WithUndefinedValue()
     {
-      _int32EnumConverter.ConvertFrom (-1);
+      Assert.That (
+          () => _int32EnumConverter.ConvertFrom (-1),
+          Throws.InstanceOf<ArgumentOutOfRangeException>()
+              .With.Message.EqualTo (
+                  "The value -1 is not supported for enumeration 'Remotion.UnitTests.Utilities.AdvancedEnumConverterTest_Flags+Int32Enum'."));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void ConvertFromInt32_WithInvalidDataType()
     {
-      _int32EnumConverter.ConvertFrom ((short) -1);
+      Assert.That (
+          () => _int32EnumConverter.ConvertFrom ((short) -1),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
@@ -179,10 +184,11 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void ConvertToInt32_WithNullableInt32EnumConverter()
     {
-      _nullableInt32EnumConverter.ConvertTo (Int32Enum.Value1, typeof (Int32));
+      Assert.That (
+          () => _nullableInt32EnumConverter.ConvertTo (Int32Enum.Value1, typeof (Int32)),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
@@ -205,10 +211,11 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void ConvertFromNullableInt32_WithInt32EnumConverter ()
     {
-      _int32EnumConverter.ConvertFrom ((int?) null);
+      Assert.That (
+          () => _int32EnumConverter.ConvertFrom ((int?) null),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]

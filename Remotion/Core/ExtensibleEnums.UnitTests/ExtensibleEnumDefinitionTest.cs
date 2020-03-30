@@ -170,12 +170,13 @@ namespace Remotion.ExtensibleEnums.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidExtensibleEnumDefinitionException), ExpectedMessage =
-        "Extensible enum 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' defines two values with ID 'Red'.")]
     public void GetValueInfos_DuplicateIDs ()
     {
       var definition = CreateDefinition (_red, _red);
-      definition.GetValueInfos();
+      Assert.That (
+          () => definition.GetValueInfos(),
+          Throws.InstanceOf<InvalidExtensibleEnumDefinitionException>()
+              .With.Message.EqualTo ("Extensible enum 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' defines two values with ID 'Red'."));
     }
 
     [Test]
@@ -195,21 +196,24 @@ namespace Remotion.ExtensibleEnums.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (KeyNotFoundException),
-        ExpectedMessage = "The extensible enum type 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' does not define a value called '?'.")]
     public void GetValueInfoByID_WrongIDThrows ()
     {
       var definition = CreateDefinition (_red, _green);
-      definition.GetValueInfoByID ("?");
+      Assert.That (
+          () => definition.GetValueInfoByID ("?"),
+          Throws.InstanceOf<KeyNotFoundException>()
+              .With.Message.EqualTo (
+                  "The extensible enum type 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' does not define a value called '?'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidExtensibleEnumDefinitionException), ExpectedMessage =
-        "Extensible enum 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' defines two values with ID 'Red'.")]
     public void GetValueInfoByID_DuplicateIDs ()
     {
       var definition = CreateDefinition (_red, _red);
-      definition.GetValueInfoByID ("ID");
+      Assert.That (
+          () => definition.GetValueInfoByID ("ID"),
+          Throws.InstanceOf<InvalidExtensibleEnumDefinitionException>()
+              .With.Message.EqualTo ("Extensible enum 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' defines two values with ID 'Red'."));
     }
 
     [Test]

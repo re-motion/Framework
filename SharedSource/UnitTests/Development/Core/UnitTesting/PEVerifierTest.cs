@@ -41,15 +41,17 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     }
 
     [Test]
-    [ExpectedException (typeof (PEVerifyException), ExpectedMessage = "PEVerify for version 'DotNet4' could not be found. Locations searched:\r\nx")]
     public void GetVerifierPath_NotFound ()
     {
       var pathSourceStub = MockRepository.GenerateStub<IPEVerifyPathSource> ();
       pathSourceStub.Stub (stub => stub.GetPEVerifyPath (PEVerifyVersion.DotNet4)).Return (null);
       pathSourceStub.Stub (stub => stub.GetLookupDiagnostics (PEVerifyVersion.DotNet4)).Return ("x");
       var verifier = new PEVerifier (pathSourceStub);
-
-      verifier.GetVerifierPath (PEVerifyVersion.DotNet4);
+      Assert.That (
+          () => verifier.GetVerifierPath (PEVerifyVersion.DotNet4),
+          Throws.InstanceOf<PEVerifyException>()
+              .With.Message.EqualTo (
+                  "PEVerify for version 'DotNet4' could not be found. Locations searched:\r\nx"));
     }
 
     [Test]
@@ -71,11 +73,13 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     }
 
     [Test]
-    [ExpectedException (typeof (PEVerifyException), ExpectedMessage = "PEVerify returned 1.", MatchType = MessageMatch.Contains)]
     public void VerifyPEFile_InvalidPath ()
     {
       var verifier = PEVerifier.CreateDefault ();
-      verifier.VerifyPEFile ("Foobar whatever");
+      Assert.That (
+          () => verifier.VerifyPEFile ("Foobar whatever"),
+          Throws.InstanceOf<PEVerifyException>()
+              .With.Message.Contains ("PEVerify returned 1."));
     }
   }
 }

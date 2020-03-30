@@ -78,10 +78,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void OriginalOppositeObjectID_Get ()
     {
-      Dev.Null = _nullEndPoint.OriginalOppositeObjectID;
+      Assert.That (
+          () => Dev.Null = _nullEndPoint.OriginalOppositeObjectID,
+          Throws.InvalidOperationException);
     }
 
     [Test]
@@ -91,10 +92,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void GetOriginalOppositeObject ()
     {
-      Dev.Null = _nullEndPoint.GetOriginalOppositeObject();
+      Assert.That (
+          () => Dev.Null = _nullEndPoint.GetOriginalOppositeObject(),
+          Throws.InvalidOperationException);
     }
 
     [Test]
@@ -165,24 +167,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void ValidateMandatory ()
     {
-      _nullEndPoint.ValidateMandatory();
+      Assert.That (
+          () => _nullEndPoint.ValidateMandatory(),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void GetOppositeRelationEndPointIDs ()
     {
-      _nullEndPoint.GetOppositeRelationEndPointIDs ();
+      Assert.That (
+          () => _nullEndPoint.GetOppositeRelationEndPointIDs (),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void GetOppositeRelationEndPointID ()
     {
-      _nullEndPoint.GetOppositeRelationEndPointID ();
+      Assert.That (
+          () => _nullEndPoint.GetOppositeRelationEndPointID (),
+          Throws.InvalidOperationException);
     }
 
     [Test]
@@ -194,31 +199,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void Commit ()
     {
-      _nullEndPoint.Commit ();
+      Assert.That (
+          () => _nullEndPoint.Commit (),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void Rollback ()
     {
-      _nullEndPoint.Commit ();
+      Assert.That (
+          () => _nullEndPoint.Commit (),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void SetDataFromSubTransaction ()
     {
-      _nullEndPoint.SetDataFromSubTransaction (MockRepository.GenerateStub<IRelationEndPoint>());
+      Assert.That (
+          () => _nullEndPoint.SetDataFromSubTransaction (MockRepository.GenerateStub<IRelationEndPoint>()),
+          Throws.InvalidOperationException);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void SerializeIntoFlatStructure ()
     {
-      _nullEndPoint.SerializeIntoFlatStructure (new FlattenedSerializationInfo());
+      Assert.That (
+          () => _nullEndPoint.SerializeIntoFlatStructure (new FlattenedSerializationInfo()),
+          Throws.InvalidOperationException);
     }
   }
 }

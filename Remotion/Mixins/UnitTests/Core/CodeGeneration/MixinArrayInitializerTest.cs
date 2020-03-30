@@ -33,47 +33,56 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Invalid mixin instances supplied. Expected the following mixin types "
-        + "(in this order): ('Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin'). The given types were: ('').")]
     public void CheckMixinArray_WrongNumberOfMixins ()
     {
       MixinArrayInitializer initializer = CreateInitializer (typeof (NullTarget), typeof (NullMixin));
-
-      initializer.CheckMixinArray (new object[0]);
+      Assert.That (
+          () => initializer.CheckMixinArray (new object[0]),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Invalid mixin instances supplied. Expected the following mixin types "
+                  + "(in this order): ('Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin'). The given types were: ('')."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Invalid mixin instances supplied. Expected the following mixin types "
-        + "(in this order): ('Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin'). The given types were: "
-        + "('Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin2').")]
     public void CheckMixinArray_NonMatchingMixins ()
     {
       MixinArrayInitializer initializer = CreateInitializer (typeof (NullTarget), typeof (NullMixin));
-
-      initializer.CheckMixinArray (new object[] { new NullMixin2 () });
+      Assert.That (
+          () => initializer.CheckMixinArray (new object[] { new NullMixin2 () }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Invalid mixin instances supplied. Expected the following mixin types "
+                  + "(in this order): ('Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin'). The given types were: "
+                  + "('Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin2')."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Invalid mixin instances supplied. Expected the following mixin types "
-        + "(in this order): ('Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin, Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin2'). The given types "
-        + "were: ('Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin2, Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin').")]
     public void CheckMixinArray_NonMatchingMixins_InvalidOrder ()
     {
       MixinArrayInitializer initializer = CreateInitializer (typeof (NullTarget), typeof (NullMixin), typeof (NullMixin2));
-      initializer.CheckMixinArray (new object[] { new NullMixin2 (), new NullMixin () });
+      Assert.That (
+          () => initializer.CheckMixinArray (new object[] { new NullMixin2 (), new NullMixin () }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Invalid mixin instances supplied. Expected the following mixin types "
+                  + "(in this order): ('Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin, Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin2'). The given types "
+                  + "were: ('Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin2, Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin')."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = @"Invalid mixin instances supplied\. Expected the following mixin types "
-        + @"\(in this order\)\: \('Remotion\.Mixins\.UnitTests\.Core\.TestDomain\.MixinWithVirtualMethod_AdditionalTypeProxy_.*'\)\. The given types "
-        + @"were\: \('Remotion\.Mixins\.UnitTests\.Core\.TestDomain\.MixinWithVirtualMethod'\)\.", 
-        MatchType = MessageMatch.Regex)]
     public void CheckMixinArray_NonMatchingMixins_NeedDerived ()
     {
       Type concreteMixinType = CodeGenerationTypeMother.GetGeneratedMixinType (typeof (ClassOverridingSpecificMixinMember), typeof (MixinWithVirtualMethod));
 
       MixinArrayInitializer initializer = CreateInitializer (typeof (ClassOverridingSpecificMixinMember), concreteMixinType);
-      initializer.CheckMixinArray (new object[] { new MixinWithVirtualMethod () });
+      Assert.That (
+          () => initializer.CheckMixinArray (new object[] { new MixinWithVirtualMethod () }),
+          Throws.InvalidOperationException
+              .With.Message.Matches (
+                  @"Invalid mixin instances supplied\. Expected the following mixin types "
+                  + @"\(in this order\)\: \('Remotion\.Mixins\.UnitTests\.Core\.TestDomain\.MixinWithVirtualMethod_AdditionalTypeProxy_.*'\)\. The given types "
+                  + @"were\: \('Remotion\.Mixins\.UnitTests\.Core\.TestDomain\.MixinWithVirtualMethod'\)\."));
     }
 
     [Test]
@@ -126,13 +135,16 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Cannot instantiate mixin "
-        + "'Remotion.Mixins.CodeGeneration.MixinArrayInitializer' applied to class 'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget', "
-        + "there is no visible default constructor.")]
     public void GetMixinArray_MixinCtorNotFound ()
     {
       MixinArrayInitializer initializer = CreateInitializer (typeof (NullTarget), typeof (MixinArrayInitializer));
-      initializer.CreateMixinArray (null);
+      Assert.That (
+          () => initializer.CreateMixinArray (null),
+          Throws.InstanceOf<MissingMethodException>()
+              .With.Message.EqualTo (
+                  "Cannot instantiate mixin "
+                  + "'Remotion.Mixins.CodeGeneration.MixinArrayInitializer' applied to class 'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget', "
+                  + "there is no visible default constructor."));
     }
 
     [Test]
@@ -189,40 +201,46 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The supplied mixin of type "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin2' is not valid for target type 'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget' in the "
-        + "current configuration.")]
     public void GetMixinArray_WithNonFittingSupplied ()
     {
       var mixin1 = new NullMixin2();
       MixinArrayInitializer initializer = CreateInitializer (typeof (NullTarget), typeof (NullMixin));
-
-      initializer.CreateMixinArray (new object[] { mixin1 });
+      Assert.That (
+          () => initializer.CreateMixinArray (new object[] { mixin1 }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The supplied mixin of type "
+                  + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin2' is not valid for target type 'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget' in the "
+                  + "current configuration."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Two mixins were supplied that would match the expected mixin type "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin' on target class 'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget'.")]
     public void GetMixinArray_WithTwoFittingSupplied ()
     {
       var mixin1 = new NullMixin ();
       MixinArrayInitializer initializer = CreateInitializer (typeof (NullTarget), typeof (NullMixin));
-
-      initializer.CreateMixinArray (new object[] { mixin1, mixin1 });
+      Assert.That (
+          () => initializer.CreateMixinArray (new object[] { mixin1, mixin1 }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Two mixins were supplied that would match the expected mixin type "
+                  + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin' on target class 'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "A mixin was supplied that would match the expected mixin type "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.MixinWithVirtualMethod' on target class "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.ClassOverridingSpecificMixinMember'. However, a derived "
-        + "type must be generated for that mixin type, so the supplied instance cannot be used.")]
     public void GetMixinArray_WithFittingSuppliedForDerivedMixin ()
     {
       var mixin1 = new MixinWithVirtualMethod ();
       var concreteMixinType = CodeGenerationTypeMother.GetGeneratedMixinType (typeof (ClassOverridingSpecificMixinMember), typeof (MixinWithVirtualMethod));
       MixinArrayInitializer initializer = CreateInitializer (typeof (ClassOverridingSpecificMixinMember), concreteMixinType);
-
-      initializer.CreateMixinArray (new object[] { mixin1 });
+      Assert.That (
+          () => initializer.CreateMixinArray (new object[] { mixin1 }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "A mixin was supplied that would match the expected mixin type "
+                  + "'Remotion.Mixins.UnitTests.Core.TestDomain.MixinWithVirtualMethod' on target class "
+                  + "'Remotion.Mixins.UnitTests.Core.TestDomain.ClassOverridingSpecificMixinMember'. However, a derived "
+                  + "type must be generated for that mixin type, so the supplied instance cannot be used."));
     }
 
     [Test]

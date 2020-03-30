@@ -236,19 +236,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The expression must identify a property.\r\nParameter name: propertyAccessExpression")]
     public void GetPropertyAccessorData_InvalidExpression_NoMember ()
     {
-      _orderCache.ResolvePropertyAccessorData ((Order o) => o.OrderNumber + 5);
+      Assert.That (
+          () => _orderCache.ResolvePropertyAccessorData ((Order o) => o.OrderNumber + 5),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("The expression must identify a property.\r\nParameter name: propertyAccessExpression"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The expression must identify a property.\r\nParameter name: propertyAccessExpression")]
     public void GetPropertyAccessorData_InvalidExpression_Field ()
     {
-      _orderCache.ResolvePropertyAccessorData ((Order o) => o.CtorCalled);
+      Assert.That (
+          () => _orderCache.ResolvePropertyAccessorData ((Order o) => o.CtorCalled),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("The expression must identify a property.\r\nParameter name: propertyAccessExpression"));
     }
 
     [Test]
@@ -261,12 +263,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property named "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderSmell'.")]
     public void GetMandatoryPropertyAccessorData_FullPropertyName_Unknown ()
     {
-      _orderCache.GetMandatoryPropertyAccessorData (typeof (Order).FullName + ".OrderSmell");
+      Assert.That (
+          () => _orderCache.GetMandatoryPropertyAccessorData (typeof (Order).FullName + ".OrderSmell"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property named "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderSmell'."));
     }
 
     [Test]
@@ -279,12 +283,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property named "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderSmell'.")]
     public void GetMandatoryPropertyAccessorData_TypeAndShortName_Unknown ()
     {
-      _orderCache.GetMandatoryPropertyAccessorData (typeof (Order), "OrderSmell");
+      Assert.That (
+          () => _orderCache.GetMandatoryPropertyAccessorData (typeof (Order), "OrderSmell"),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property named "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderSmell'."));
     }
 
     [Test]
@@ -328,21 +334,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property identified by expression "
-        + "'o => o.NotInMapping'.")]
     public void ResolveMandatoryPropertyAccessorData_Expression_Unknown ()
     {
-      _orderCache.ResolveMandatoryPropertyAccessorData ((Order o) => o.NotInMapping);
+      Assert.That (
+          () => _orderCache.ResolveMandatoryPropertyAccessorData ((Order o) => o.NotInMapping),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property identified by expression "
+                  + "'o => o.NotInMapping'."));
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property identified by expression "
-        + "'o => Convert(Convert(o)).Product'.")]
     public void ResolveMandatoryPropertyAccessorData_Expression_UnknownOnThisObject ()
     {
-      _orderCache.ResolveMandatoryPropertyAccessorData ((Order o) => ((OrderItem) (object) o).Product);
+      Assert.That (
+          () => _orderCache.ResolveMandatoryPropertyAccessorData ((Order o) => ((OrderItem) (object) o).Product),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo (
+                  "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property identified by expression "
+                  + "'o => Convert(Convert(o)).Product'."));
     }
 
     [Test]

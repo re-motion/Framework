@@ -107,11 +107,12 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
     [Ignore ("TODO 1370: Throw.")]
     public void GetConcreteMixedType_OpenGeneric ()
     {
-      MixinTypeUtility.GetConcreteMixedType (typeof (List<>));
+      Assert.That (
+          () => MixinTypeUtility.GetConcreteMixedType (typeof (List<>)),
+          Throws.ArgumentException);
     }
 
     [Test]
@@ -158,11 +159,12 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
     [Ignore ("TODO 1370: Throw.")]
     public void IsAssignableFromOpenGenericInterface ()
     {
-      MixinTypeUtility.IsAssignableFrom (typeof (object), typeof (List<>));
+      Assert.That (
+          () => MixinTypeUtility.IsAssignableFrom (typeof (object), typeof (List<>)),
+          Throws.ArgumentException);
     }
 
     [Test]

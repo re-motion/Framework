@@ -75,23 +75,27 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = 
-        "The dependency 'IBT3Mixin4' (required by mixin 'Remotion.Mixins.UnitTests.Core.TestDomain.Bt3Mixin7TargetCall' on class "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType3') is not fulfilled - public or protected method 'System.String Foo()' "
-        + "could not be found on the target class.")]
     public void ThrowsIfAggregateTargetCallDependencyIsNotFullyImplemented ()
     {
-      DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (Bt3Mixin7TargetCall));
+      Assert.That (
+          () => DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (Bt3Mixin7TargetCall)),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo (
+                  "The dependency 'IBT3Mixin4' (required by mixin 'Remotion.Mixins.UnitTests.Core.TestDomain.Bt3Mixin7TargetCall' on class "
+                  + "'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType3') is not fulfilled - public or protected method 'System.String Foo()' "
+                  + "could not be found on the target class."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage =
-        "The dependency 'IBT3Mixin4' (required by mixin 'Remotion.Mixins.UnitTests.Core.TestDomain.BT3Mixin7Base' on class "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType3') is not fulfilled - public or protected method 'System.String Foo()' "
-        + "could not be found on the target class.")]
     public void ThrowsIfAggregateNextCallDependencyIsNotFullyImplemented ()
     {
-      DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Base));
+      Assert.That (
+          () => DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Base)),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo (
+                  "The dependency 'IBT3Mixin4' (required by mixin 'Remotion.Mixins.UnitTests.Core.TestDomain.BT3Mixin7Base' on class "
+                  + "'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType3') is not fulfilled - public or protected method 'System.String Foo()' "
+                  + "could not be found on the target class."));
     }
 
     [Test]
@@ -301,19 +305,22 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The dependency .* is not fulfilled",
-        MatchType = MessageMatch.Regex)]
     public void ThrowsIfNextCallDependencyNotFulfilled ()
     {
-      DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Base));
+      Assert.That (
+          () => DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Base)),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Matches ("The dependency .* is not fulfilled"));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Next call dependencies must be interfaces.*MixinWithClassBase",
-        MatchType = MessageMatch.Regex)]
     public void ThrowsIfRequiredBaseIsNotInterface ()
     {
-      DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithClassBase));
+      Assert.That (
+          () => DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithClassBase)),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Matches (
+                  "Next call dependencies must be interfaces.*MixinWithClassBase"));
     }
 
     [Test]

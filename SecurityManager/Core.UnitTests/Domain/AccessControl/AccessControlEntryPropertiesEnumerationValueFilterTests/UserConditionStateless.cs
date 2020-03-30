@@ -101,10 +101,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The value '1000' is not a valid value for 'UserCondition'.")]
     public void InvalidValue ()
     {
-      Filter.IsEnabled (CreateEnumValueInfo ((UserCondition) 1000), _ace, _property);
+      Assert.That (
+          () => Filter.IsEnabled (CreateEnumValueInfo ((UserCondition) 1000), _ace, _property),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The value '1000' is not a valid value for 'UserCondition'."));
     }
   }
 }

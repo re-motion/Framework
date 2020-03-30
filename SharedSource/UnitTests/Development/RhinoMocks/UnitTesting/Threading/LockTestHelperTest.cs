@@ -48,11 +48,12 @@ namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting.Threading
     }
 
     [Test]
-    [ExpectedException (typeof (AssertionException), MatchType = MessageMatch.Contains,
-        ExpectedMessage = "Parallel thread should have been blocked.")]
     public void CheckLockIsHeld_Throws ()
     {
-      LockTestHelper.CheckLockIsHeld (_lockObject);
+      Assert.That (
+          () => LockTestHelper.CheckLockIsHeld (_lockObject),
+          Throws.InstanceOf<AssertionException>()
+              .With.Message.Contains ("Parallel thread should have been blocked."));
     }
 
     [Test]

@@ -26,13 +26,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
   public class Common : UserTestBase
   {
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException))]
     public void UserName_SameNameTwice ()
     {
       CreateUser();
       CreateUser ();
-
-      ClientTransactionScope.CurrentTransaction.Commit();
+      Assert.That (
+          () => ClientTransactionScope.CurrentTransaction.Commit(),
+          Throws.InstanceOf<RdbmsProviderException>());
     }
   }
 }

@@ -148,13 +148,14 @@ namespace Remotion.ObjectBinding.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = 
-        "The provider is not compatible with the provider-type required by the businessObjectProviderAttributeType's instantiation."
-        + "\r\nParameter name: provider")]
     public void SetProvider_WithMismatchedTypes ()
     {
-      BusinessObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), _provider);
+      Assert.That (
+          () => BusinessObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), _provider),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The provider is not compatible with the provider-type required by the businessObjectProviderAttributeType's instantiation."
+                  + "\r\nParameter name: provider"));
     }
 
     [Test]

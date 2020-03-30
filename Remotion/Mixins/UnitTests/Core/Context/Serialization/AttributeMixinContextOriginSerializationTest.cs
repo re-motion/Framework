@@ -64,34 +64,43 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Expected an array with 3 elements.\r\nParameter name: values")]
     public void Deserializer_InvalidArray ()
     {
-      Dev.Null = new AttributeMixinContextOriginDeserializer (new[] { "x" });
+      Assert.That (
+          () => Dev.Null = new AttributeMixinContextOriginDeserializer (new[] { "x" }),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Expected an array with 3 elements.\r\nParameter name: values"));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException),
-        ExpectedMessage = "Expected value of type 'System.String' at index 0 in the values array, but found 'System.Int32'.")]
     public void GetKind_Invalid ()
     {
-      _invalidDeserializer.GetKind();
+      Assert.That (
+          () => _invalidDeserializer.GetKind(),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Expected value of type 'System.String' at index 0 in the values array, but found 'System.Int32'."));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException),
-        ExpectedMessage = "Expected value of type 'System.String' at index 1 in the values array, but found 'System.Int32'.")]
     public void GetAssembly_Invalid ()
     {
-      _invalidDeserializer.GetAssembly();
+      Assert.That (
+          () => _invalidDeserializer.GetAssembly(),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Expected value of type 'System.String' at index 1 in the values array, but found 'System.Int32'."));
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException),
-        ExpectedMessage = "Expected value of type 'System.String' at index 2 in the values array, but found 'System.Int32'.")]
     public void GetLocation_Invalid ()
     {
-      _invalidDeserializer.GetLocation();
+      Assert.That (
+          () => _invalidDeserializer.GetLocation(),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.EqualTo (
+                  "Expected value of type 'System.String' at index 2 in the values array, but found 'System.Int32'."));
     }
   }
 }

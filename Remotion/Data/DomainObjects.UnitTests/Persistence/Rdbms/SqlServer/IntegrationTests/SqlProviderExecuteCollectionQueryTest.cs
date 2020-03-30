@@ -139,14 +139,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Expected query type is 'Collection', but was 'Scalar'.\r\nParameter name: query")]
     public void ScalarQuery ()
     {
-      Provider.ExecuteCollectionQuery (QueryFactory.CreateQueryFromConfiguration ("OrderNoSumByCustomerNameQuery"));
+      Assert.That (
+          () => Provider.ExecuteCollectionQuery (QueryFactory.CreateQueryFromConfiguration ("OrderNoSumByCustomerNameQuery")),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Expected query type is 'Collection', but was 'Scalar'.\r\nParameter name: query"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
     public void DifferentStorageProviderID ()
     {
       var definition = new QueryDefinition (
@@ -154,8 +156,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           UnitTestStorageProviderDefinition,
           "select 42",
           QueryType.Collection);
-
-      Provider.ExecuteCollectionQuery (QueryFactory.CreateQuery (definition));
+      Assert.That (
+          () => Provider.ExecuteCollectionQuery (QueryFactory.CreateQuery (definition)),
+          Throws.ArgumentException);
     }
 
     [Test]

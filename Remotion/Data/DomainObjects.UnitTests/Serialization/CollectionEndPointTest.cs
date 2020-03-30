@@ -45,12 +45,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = 
-        "Type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.CollectionEndPoint' in Assembly "
-        + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
     public void CollectionEndPointIsNotSerializable ()
     {
-      Serializer.SerializeAndDeserialize (_endPoint);
+      Assert.That (
+          () => Serializer.SerializeAndDeserialize (_endPoint),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.Matches (
+                  "Type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.CollectionEndPoint' in Assembly "
+                  + ".* is not marked as serializable."));
     }
 
     [Test]

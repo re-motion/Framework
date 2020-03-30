@@ -71,7 +71,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Collection is read-only.")]
     public void Initialize_WithProviderCollectionAndProvider_Expect ()
     {
       StorageProviderDefinition providerDefinition = new RdbmsProviderDefinition (
@@ -79,7 +78,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
       ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
 
       StorageConfiguration configuration = new StorageConfiguration (providers, providerDefinition);
-      configuration.StorageProviderDefinitions.Add (providerDefinition);
+      Assert.That (
+          () => configuration.StorageProviderDefinitions.Add (providerDefinition),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Collection is read-only."));
     }
 
     [Test]
@@ -124,8 +126,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "The provider 'Invalid' specified for the defaultProviderDefinition does not exist in the providers collection.")]
     public void Test_WithRdbmsProviderDefinitionAndInvalidName ()
     {
       string xmlFragment =
@@ -139,8 +139,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
           </storage>";
 
       ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
-
-      Dev.Null = _configuration.DefaultStorageProviderDefinition;
+      Assert.That (
+          () => Dev.Null = _configuration.DefaultStorageProviderDefinition,
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo (
+                  "The provider 'Invalid' specified for the defaultProviderDefinition does not exist in the providers collection."));
     }
 
     [Test]
@@ -172,9 +175,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "The value of the property 'type' cannot be parsed.",
-        MatchType = MessageMatch.Contains)]
     public void Deserialize_WithStorageGroupHavingInvalidTypeName ()
     {
       string xmlFragment =
@@ -191,8 +191,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
           </storage>";
 
       ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
-
-      Dev.Null = _configuration.StorageGroups;
+      Assert.That (
+          () => Dev.Null = _configuration.StorageGroups,
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.Contains ("The value of the property 'type' cannot be parsed."));
     }
   }
 }

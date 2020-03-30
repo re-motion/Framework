@@ -50,11 +50,13 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (XmlSchemaException), ExpectedMessage = "Schema is invalid:", MatchType = MessageMatch.StartsWith)]
     public void Validate_InvalidSchema ()
     {
       var invalidSchema = @"<xs:invalid xmlns:xs=""http://www.w3.org/2001/XMLSchema"" />";
-      XmlSchemaValidation.Validate ("does not matter", invalidSchema);
+      Assert.That (
+          () => XmlSchemaValidation.Validate ("does not matter", invalidSchema),
+          Throws.InstanceOf<XmlSchemaException>()
+              .With.Message.StartsWith ("Schema is invalid:"));
     }
   }
 }

@@ -90,11 +90,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "Data container 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not part of this map.\r\nParameter name: id")]
     public void Remove_NonExistingDataContainer ()
     {
-      _map.Remove (DomainObjectIDs.Order1);
+      Assert.That (
+          () => _map.Remove (DomainObjectIDs.Order1),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Data container 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not part of this map.\r\nParameter name: id"));
     }
   }
 }

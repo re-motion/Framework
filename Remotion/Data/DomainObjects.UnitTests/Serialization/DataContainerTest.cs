@@ -27,14 +27,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
   public class DataContainerTest : ClientTransactionBaseTest
   {
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Type 'Remotion.Data.DomainObjects.DataManagement.DataContainer' in Assembly "
-        + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
     public void DataContainerIsNotSerializable ()
     {
       var objectID = new ObjectID("Customer", Guid.NewGuid ());
       DataContainer dataContainer = DataContainer.CreateNew (objectID);
-
-      Serializer.SerializeAndDeserialize (dataContainer);
+      Assert.That (
+          () => Serializer.SerializeAndDeserialize (dataContainer),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.Matches (
+                  "Type 'Remotion.Data.DomainObjects.DataManagement.DataContainer' in Assembly "
+                  + ".* is not marked as serializable."));
     }
 
     [Test]

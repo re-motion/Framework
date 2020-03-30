@@ -59,17 +59,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (ApplicationException))]
     public void TestParseEx1 ()
     {
-      WxeVariablesContainer.ParseActualParameters (s_parameters, "a, b\"b, c", CultureInfo.InvariantCulture);
+      Assert.That (
+          () => WxeVariablesContainer.ParseActualParameters (s_parameters, "a, b\"b, c", CultureInfo.InvariantCulture),
+          Throws.InstanceOf<ApplicationException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ApplicationException))]
     public void TestParseEx2 ()
     {
-      WxeVariablesContainer.ParseActualParameters (s_parameters, "a, \"xyz\"", CultureInfo.InvariantCulture);
+      Assert.That (
+          () => WxeVariablesContainer.ParseActualParameters (s_parameters, "a, \"xyz\"", CultureInfo.InvariantCulture),
+          Throws.InstanceOf<ApplicationException>());
     }
 
     public void g ()

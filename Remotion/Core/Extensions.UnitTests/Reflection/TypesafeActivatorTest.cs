@@ -94,12 +94,14 @@ namespace Remotion.Extensions.UnitTests.Reflection
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'type' is a 'Remotion.Extensions.UnitTests.Reflection.TestDomain.Base', "
-        + "which cannot be assigned to type 'Remotion.Extensions.UnitTests.Reflection.TestDomain.Derived'.\r\nParameter name: type")]
     public void TestWithUntypedAndTMinimalThrowsOnIncompatibleTypes ()
     {
-      TypesafeActivator.CreateInstance<Derived> (typeof (Base)).With();
+      Assert.That (
+          () => TypesafeActivator.CreateInstance<Derived> (typeof (Base)).With(),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'type' is a 'Remotion.Extensions.UnitTests.Reflection.TestDomain.Base', "
+                  + "which cannot be assigned to type 'Remotion.Extensions.UnitTests.Reflection.TestDomain.Derived'.\r\nParameter name: type"));
     }
 
     [Test]

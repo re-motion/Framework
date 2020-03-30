@@ -59,10 +59,11 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
     }
 
     [Test]
-    [ExpectedException(typeof(NotImplementedException))]
     public void ExpectedExceptionTest ()
     {
-      throw new NotImplementedException();
+      Assert.That (
+          () => { throw new NotImplementedException(); },
+          Throws.InstanceOf<NotImplementedException>());
     }
 
     //[Test]

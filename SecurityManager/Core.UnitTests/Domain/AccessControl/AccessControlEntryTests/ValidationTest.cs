@@ -394,16 +394,17 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     }
 
     [Test]
-    [ExpectedException (typeof (ConstraintViolationException), ExpectedMessage =
-        "The access control entry is in an invalid state:\r\n"
-        + "  The TenantCondition property is set to SpecificTenant, but no SpecificTenant is assigned.")]
     public void Commit_OneError ()
     {
       Tenant tenant = _testHelper.CreateTenant ("TestTenant");
       AccessControlEntry ace = _testHelper.CreateAceWithSpecificTenant (tenant);
       ace.SpecificTenant = null;
-
-      ClientTransactionScope.CurrentTransaction.Commit ();
+      Assert.That (
+          () => ClientTransactionScope.CurrentTransaction.Commit (),
+          Throws.InstanceOf<ConstraintViolationException>()
+              .With.Message.EqualTo (
+                  "The access control entry is in an invalid state:\r\n"
+                  + "  The TenantCondition property is set to SpecificTenant, but no SpecificTenant is assigned."));
     }
   }
 }

@@ -44,35 +44,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
-        "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'.")]
     public void Item_Set_WithDifferentClientTransaction ()
     {
       _secondCollection.Add (_secondCustomer1);
-
-      _secondCollection[0] = _customer1;
+      Assert.That (
+          () => _secondCollection[0] = _customer1,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'.\r\n"
-        + "Parameter name: domainObject")]
     public void Add_SameObject_WithDifferentClientTransaction ()
     {
       _secondCollection.Add (_secondCustomer1);
-
-      _secondCollection.Add (_customer1);
+      Assert.That (
+          () => _secondCollection.Add (_customer1),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'.\r\n"
+                  + "Parameter name: domainObject"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'.\r\n"
-        + "Parameter name: domainObject")]
     public void Insert_SameObject_WithDifferentClientTransaction ()
     {
       _secondCollection.Add (_secondCustomer1);
-
-      _secondCollection.Insert (0, _customer1);
+      Assert.That (
+          () => _secondCollection.Insert (0, _customer1),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'.\r\n"
+                  + "Parameter name: domainObject"));
     }
 
     [Test]

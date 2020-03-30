@@ -141,11 +141,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public class DoubleExtendingMixin { }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*DoubleExtendingMixin are "
-        + "configured for target type .*ExtendsTargetBase.", MatchType = MessageMatch.Regex)]
     public void ThrowsOnDuplicateExtendsForSameClass ()
     {
-      new DeclarativeConfigurationBuilder (null).AddType (typeof (DoubleExtendingMixin)).BuildConfiguration ();
+      Assert.That (
+          () => new DeclarativeConfigurationBuilder (null).AddType (typeof (DoubleExtendingMixin)).BuildConfiguration (),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Matches (
+                  "Two instances of mixin .*DoubleExtendingMixin are "
+                  + "configured for target type .*ExtendsTargetBase."));
     }
 
     [Extends (typeof (ExtendsTargetBase))]
@@ -190,10 +193,12 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "generic type argument", MatchType = MessageMatch.Contains)]
     public void InvalidTypeParametersThrowConfigurationException ()
     {
-      new DeclarativeConfigurationBuilder (null).AddType (typeof (InvalidGenericMixin<,>)).BuildConfiguration ();
+      Assert.That (
+          () => new DeclarativeConfigurationBuilder (null).AddType (typeof (InvalidGenericMixin<,>)).BuildConfiguration (),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.Contains ("generic type argument"));
     }
 
     [Test]

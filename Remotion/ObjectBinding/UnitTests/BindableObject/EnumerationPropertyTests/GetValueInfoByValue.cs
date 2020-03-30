@@ -92,15 +92,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage =
-            "Object must be the same type as the enum. The type passed in was 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue'; "
-            + "the enum type was 'Remotion.ObjectBinding.UnitTests.TestDomain.TestEnum'.")]
     public void EnumValueFromOtherType ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
-
-      property.GetValueInfoByValue (EnumWithUndefinedValue.Value1, null);
+      Assert.That (
+          () => property.GetValueInfoByValue (EnumWithUndefinedValue.Value1, null),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Object must be the same type as the enum. The type passed in was 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue'; "
+                  + "the enum type was 'Remotion.ObjectBinding.UnitTests.TestDomain.TestEnum'."));
     }
 
     [Test]

@@ -49,11 +49,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     }
 
     [Test]
-    [ExpectedException (typeof (TransportationException), ExpectedMessage = "Invalid data specified: There is an error in XML document (0, 0).")]
     public void Import_ThrowsOnInvalidFormat ()
     {
       var data = new byte[0];
-      Import (data);
+      Assert.That (
+          () => Import (data),
+          Throws.InstanceOf<TransportationException>()
+              .With.Message.EqualTo (
+                  "Invalid data specified: There is an error in XML document (0, 0)."));
     }
 
     [Test]

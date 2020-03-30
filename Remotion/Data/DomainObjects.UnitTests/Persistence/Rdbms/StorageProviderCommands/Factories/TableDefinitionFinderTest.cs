@@ -70,7 +70,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "An ObjectID's EntityDefinition cannot be a UnionViewDefinition.")]
     public void GetTableDefinition_UnionViewDefinition ()
     {
       var unionViewDefinition = UnionViewDefinitionObjectMother.Create (
@@ -78,20 +77,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var objectID = CreateObjectID (unionViewDefinition);
       _rdbmsPersistenceModelProviderStub.Stub (stub => stub.GetEntityDefinition (objectID.ClassDefinition)).Return (unionViewDefinition);
-
-      _finder.GetTableDefinition (objectID);
+      Assert.That (
+          () => _finder.GetTableDefinition (objectID),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "An ObjectID's EntityDefinition cannot be a UnionViewDefinition."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "An ObjectID's EntityDefinition cannot be a EmptyViewDefinition.")]
     public void GetTableDefinition_EmptyViewDefinition()
     {
       var emptyViewDefinition = EmptyViewDefinitionObjectMother.Create (TestDomainStorageProviderDefinition);
 
       var objectID = CreateObjectID (emptyViewDefinition);
       _rdbmsPersistenceModelProviderStub.Stub (stub => stub.GetEntityDefinition (objectID.ClassDefinition)).Return (emptyViewDefinition);
-
-      _finder.GetTableDefinition (objectID);
+      Assert.That (
+          () => _finder.GetTableDefinition (objectID),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "An ObjectID's EntityDefinition cannot be a EmptyViewDefinition."));
     }
 
     private ObjectID CreateObjectID (IStorageEntityDefinition entityDefinition)

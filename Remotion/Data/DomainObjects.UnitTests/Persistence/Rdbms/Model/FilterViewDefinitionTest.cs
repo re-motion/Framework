@@ -98,13 +98,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The base entity must either be a TableDefinition or a FilterViewDefinition.\r\nParameter name: baseEntity")]
     public void Initialization_WithInvalidBaseEntity ()
     {
       var unionViewDefinition = UnionViewDefinitionObjectMother.Create (_storageProviderDefinition);
-
-      new FilterViewDefinition (
+      Assert.That (
+          () => new FilterViewDefinition (
           _storageProviderDefinition,
           new EntityNameDefinition (null, "Test"),
           unionViewDefinition,
@@ -113,7 +111,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           _timestampProperty,
           new SimpleStoragePropertyDefinition[0],
           new IIndexDefinition[0],
-          new EntityNameDefinition[0]);
+          new EntityNameDefinition[0]),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("The base entity must either be a TableDefinition or a FilterViewDefinition.\r\nParameter name: baseEntity"));
     }
 
     [Test]

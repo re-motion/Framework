@@ -86,24 +86,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidTypeException), ExpectedMessage = "Actual type 'System.String' of property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name' does not match expected type 'System.Int32'.")]
     public void GetValue_ThrowsIfWrongType ()
     {
       IndustrialSector sector = IndustrialSector.NewObject ();
-      CreateAccessor (sector, "Name").GetValue<int>();
+      Assert.That (
+          () => CreateAccessor (sector, "Name").GetValue<int>(),
+          Throws.InstanceOf<InvalidTypeException>()
+              .With.Message.EqualTo (
+                  "Actual type 'System.String' of property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name' does not match expected type 'System.Int32'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidTypeException), ExpectedMessage =
-        @"^The property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Order\.Customer' was expected to hold an object of type "
-        + @"'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Customer', but it returned an object of type "
-        + @"'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Company.*'\.$",
-        MatchType = MessageMatch.Regex)]
     public void GetValue_ThrowsIfUnexpectedTypeOfResult ()
     {
       var invalidOrder = DomainObjectIDs.InvalidOrder.GetObject<Order>();
-      CreateAccessor (invalidOrder, "Customer").GetValue<Customer> ();
+      Assert.That (
+          () => CreateAccessor (invalidOrder, "Customer").GetValue<Customer> (),
+          Throws.InstanceOf<InvalidTypeException>()
+              .With.Message.Matches (
+                  @"^The property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Order\.Customer' was expected to hold an object of type "
+                  + @"'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Customer', but it returned an object of type "
+                  + @"'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Company.*'\.$"));
     }
 
     [Test]
@@ -160,15 +164,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The given collection is already associated with an end point.\r\n"
-        + "Parameter name: value")]
     public void SetValue_WithObjectList_NewCollectionAlreadyAssociated ()
     {
       var sector1 = IndustrialSector.NewObject ();
       var sector2 = IndustrialSector.NewObject ();
-
-      CreateAccessor (sector1, "Companies").SetValue (sector2.Companies);
+      Assert.That (
+          () => CreateAccessor (sector1, "Companies").SetValue (sector2.Companies),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The given collection is already associated with an end point.\r\n"
+                  + "Parameter name: value"));
     }
 
     [Test]
@@ -183,36 +188,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The given collection ('Remotion.Data.DomainObjects.ObjectList`1[Remotion.Data.DomainObjects.UnitTests.TestDomain.Order]') is not of the same type "
-        + "as the end point's current opposite collection ('Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection').")]
     public void SetValue_WithObjectList_DifferentCollectionTypes ()
     {
       var customer1 = Customer.NewObject ();
 
       var newCollection = new ObjectList<Order> ();
-      CreateAccessor (customer1, "Orders").SetValueWithoutTypeCheck (newCollection);
+      Assert.That (
+          () => CreateAccessor (customer1, "Orders").SetValueWithoutTypeCheck (newCollection),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The given collection ('Remotion.Data.DomainObjects.ObjectList`1[Remotion.Data.DomainObjects.UnitTests.TestDomain.Order]') is not of the same type "
+                  + "as the end point's current opposite collection ('Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection')."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The given collection has a different item type than the end point's current opposite collection.")]
     public void SetValue_WithObjectList_DifferentRequiredItemType ()
     {
       var customer1 = Customer.NewObject ();
 
       var newCollection = new DomainObjectCollection (typeof (Customer));
-      CreateAccessor (customer1, "Orders").SetValueWithoutTypeCheck (newCollection);
+      Assert.That (
+          () => CreateAccessor (customer1, "Orders").SetValueWithoutTypeCheck (newCollection),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The given collection has a different item type than the end point's current opposite collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void SetValue_WithObjectList_ObjectDeleted ()
     {
       var sector = DomainObjectIDs.IndustrialSector1.GetObject<IndustrialSector> ();
       sector.Delete ();
-
-      CreateAccessor (sector, "Companies").SetValue (new ObjectList<Company> ());
+      Assert.That (
+          () => CreateAccessor (sector, "Companies").SetValue (new ObjectList<Company> ()),
+          Throws.InstanceOf<ObjectDeletedException>());
     }
 
     [Test]
@@ -256,38 +264,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void SetValue_WithRelatedObject_ObjectDeleted ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
       order.Delete();
-
-      CreateAccessor (order, "OrderTicket").SetValue (OrderTicket.NewObject ());
+      Assert.That (
+          () => CreateAccessor (order, "OrderTicket").SetValue (OrderTicket.NewObject ()),
+          Throws.InstanceOf<ObjectDeletedException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void SetValue_WithRelatedObject_NewObjectDeleted ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
       var newTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ();
       newTicket.Delete();
-
-      CreateAccessor (order, "OrderTicket").SetValue (newTicket);
+      Assert.That (
+          () => CreateAccessor (order, "OrderTicket").SetValue (newTicket),
+          Throws.InstanceOf<ObjectDeletedException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "DomainObject 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' cannot be assigned "
-        + "to property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' "
-        + "of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because it is not compatible with the type of the property."
-        + "\r\nParameter name: newRelatedObject")]
     public void SetValue_WithRelatedObject_WithInvalidType ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order>();
       var customer = DomainObjectIDs.Customer1.GetObject<Company>();
-
-      CreateAccessor (order, "OrderTicket").SetValueWithoutTypeCheck (customer);
+      Assert.That (
+          () => CreateAccessor (order, "OrderTicket").SetValueWithoutTypeCheck (customer),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "DomainObject 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' cannot be assigned "
+                  + "to property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' "
+                  + "of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because it is not compatible with the type of the property."
+                  + "\r\nParameter name: newRelatedObject"));
     }
 
     [Test]
@@ -302,39 +311,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "DomainObject 'Company|c4954da8-8870-45c1-b7a3-c7e5e6ad641a|System.Guid' cannot be assigned "
-        + "to property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany' "
-        + "of DomainObject 'Person|2001bf42-2aa4-4c81-ad8e-73e9145411e9|System.Guid', because it is not compatible with the type of the property."
-        + "\r\nParameter name: newRelatedObject")]
     public void SetValue_WithRelatedObject_WithInvalidBaseType ()
     {
       var person = DomainObjectIDs.Person1.GetObject<Person>();
       var company = DomainObjectIDs.Company1.GetObject<Company>();
-
-      CreateAccessor (person, "AssociatedPartnerCompany").SetValueWithoutTypeCheck (company);
+      Assert.That (
+          () => CreateAccessor (person, "AssociatedPartnerCompany").SetValueWithoutTypeCheck (company),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "DomainObject 'Company|c4954da8-8870-45c1-b7a3-c7e5e6ad641a|System.Guid' cannot be assigned "
+                  + "to property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany' "
+                  + "of DomainObject 'Person|2001bf42-2aa4-4c81-ad8e-73e9145411e9|System.Guid', because it is not compatible with the type of the property."
+                  + "\r\nParameter name: newRelatedObject"));
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage =
-        "Property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' of DomainObject "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be set to DomainObject "
-        + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid'. The objects do not belong to the same ClientTransaction.")]
     public void SetValue_WithRelatedObject_WithObjectNotEnlistedInThisTransaction ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
       var orderTicketFromOtherTransaction = DomainObjectMother.GetObjectInOtherTransaction<OrderTicket> (DomainObjectIDs.OrderTicket1);
-
-      CreateAccessor (order, "OrderTicket").SetValueWithoutTypeCheck (orderTicketFromOtherTransaction);
+      Assert.That (
+          () => CreateAccessor (order, "OrderTicket").SetValueWithoutTypeCheck (orderTicketFromOtherTransaction),
+          Throws.InstanceOf<ClientTransactionsDifferException>()
+              .With.Message.EqualTo (
+                  "Property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' of DomainObject "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be set to DomainObject "
+                  + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid'. The objects do not belong to the same ClientTransaction."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidTypeException), ExpectedMessage = "Actual type 'System.String' of property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name' does not match expected type 'System.Int32'.")]
     public void SetValue_ThrowsIfWrongType ()
     {
       IndustrialSector sector = IndustrialSector.NewObject ();
-      CreateAccessor (sector, "Name").SetValue (5);
+      Assert.That (
+          () => CreateAccessor (sector, "Name").SetValue (5),
+          Throws.InstanceOf<InvalidTypeException>()
+              .With.Message.EqualTo (
+                  "Actual type 'System.String' of property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name' does not match expected type 'System.Int32'."));
     }
 
     [Test]
@@ -395,11 +409,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidTypeException), ExpectedMessage =  "Actual type .* of property .* does not match expected type 'System.Int32'",
-        MatchType = MessageMatch.Regex)]
     public void GetOriginalValueThrowsWithWrongType()
     {
-      CreateAccessor (IndustrialSector.NewObject(), "Companies").GetOriginalValue<int>();
+      Assert.That (
+          () => CreateAccessor (IndustrialSector.NewObject(), "Companies").GetOriginalValue<int>(),
+          Throws.InstanceOf<InvalidTypeException>()
+              .With.Message.Matches (
+                  "Actual type .* of property .* does not match expected type 'System.Int32'"));
     }
 
     [Test]
@@ -573,20 +589,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidTypeException), ExpectedMessage = "Actual type 'System.String' of property "
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' does not match expected type 'System.Int32'.")]
     public void SetValueWithoutTypeCheckThrowsOnWrongType ()
     {
       Order newOrder = Order.NewObject ();
-      newOrder.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValueWithoutTypeCheck ("7");
+      Assert.That (
+          () => newOrder.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValueWithoutTypeCheck ("7"),
+          Throws.InstanceOf<InvalidTypeException>()
+              .With.Message.EqualTo (
+                  "Actual type 'System.String' of property "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' does not match expected type 'System.Int32'."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This operation can only be used on related object properties.")]
     public void GetRelatedObjectIDSimple ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
-      order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetRelatedObjectID ();
+      Assert.That (
+          () => order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetRelatedObjectID (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "This operation can only be used on related object properties."));
     }
 
     [Test]
@@ -597,28 +619,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "ObjectIDs only exist on the real side of a relation, not on the virtual side.")]
     public void GetRelatedObjectIDRelatedVirtualEndPoint ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
-      order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetRelatedObjectID ();
+      Assert.That (
+          () => order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetRelatedObjectID (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("ObjectIDs only exist on the real side of a relation, not on the virtual side."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This operation can only be used on related object properties.")]
     public void GetRelatedObjectIDRelatedCollection ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
-      order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetRelatedObjectID ();
+      Assert.That (
+          () => order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetRelatedObjectID (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "This operation can only be used on related object properties."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This operation can only be used on related object properties.")]
     public void GetOriginalRelatedObjectIDSimple ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
-      order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetOriginalRelatedObjectID ();
+      Assert.That (
+          () => order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetOriginalRelatedObjectID (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "This operation can only be used on related object properties."));
     }
 
     [Test]
@@ -632,20 +661,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "ObjectIDs only exist on the real side of a relation, not on the virtual side.")]
     public void GetOriginalRelatedObjectIDRelatedVirtualEndPoint ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
-      order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalRelatedObjectID ();
+      Assert.That (
+          () => order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalRelatedObjectID (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("ObjectIDs only exist on the real side of a relation, not on the virtual side."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This operation can only be used on related object properties.")]
     public void GetOriginalRelatedObjectIDRelatedCollection ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
-      order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetOriginalRelatedObjectID ();
+      Assert.That (
+          () => order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetOriginalRelatedObjectID (),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "This operation can only be used on related object properties."));
     }
 
     [Test]

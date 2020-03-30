@@ -130,14 +130,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The specified ObjectID has an invalid ClassDefinition.\r\nParameter name: value")]
     public void SplitValue_InvalidClassDefinition ()
     {
       var columnValue = new ColumnValue (_valueColumnDefinition, DomainObjectIDs.OrderItem1);
 
       _valuePropertyStub.Stub (stub => stub.SplitValue (DomainObjectIDs.OrderItem1.Value)).Return (new[] { columnValue });
-
-      _objectIDWithoutClassIDStoragePropertyDefinition.SplitValue (DomainObjectIDs.OrderItem1);
+      Assert.That (
+          () => _objectIDWithoutClassIDStoragePropertyDefinition.SplitValue (DomainObjectIDs.OrderItem1),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The specified ObjectID has an invalid ClassDefinition.\r\nParameter name: value"));
     }
 
     [Test]
@@ -163,10 +165,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The specified ObjectID has an invalid ClassDefinition.\r\nParameter name: value")]
     public void SplitValueForComparison_InvalidClassDefinition ()
     {
-      _objectIDWithoutClassIDStoragePropertyDefinition.SplitValueForComparison (DomainObjectIDs.OrderItem2);
+      Assert.That (
+          () => _objectIDWithoutClassIDStoragePropertyDefinition.SplitValueForComparison (DomainObjectIDs.OrderItem2),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The specified ObjectID has an invalid ClassDefinition.\r\nParameter name: value"));
     }
 
     [Test]
@@ -205,7 +210,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The specified ObjectID has an invalid ClassDefinition.\r\nParameter name: values")]
     public void SplitValuesForComparison_InvalidClassDefinition ()
     {
       // Exception is only triggered when somebody actually accesses the arguments
@@ -213,9 +217,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           .Stub (stub => stub.SplitValuesForComparison (Arg<IEnumerable<object>>.Is.Anything))
           .WhenCalled (mi => ((IEnumerable<object>) mi.Arguments[0]).ToArray())
           .Return (new ColumnValueTable());
-
-      _objectIDWithoutClassIDStoragePropertyDefinition.SplitValuesForComparison (new object[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 })
-          .Columns.ToArray();
+      Assert.That (
+          () => _objectIDWithoutClassIDStoragePropertyDefinition.SplitValuesForComparison (new object[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 })
+          .Columns.ToArray(),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The specified ObjectID has an invalid ClassDefinition.\r\nParameter name: values"));
     }
 
     [Test]

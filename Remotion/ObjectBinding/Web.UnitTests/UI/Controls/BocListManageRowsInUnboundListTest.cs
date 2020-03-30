@@ -90,11 +90,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void AddRowWithoutValue ()
     {
       _bocList.LoadUnboundValue (null, false);
-      _bocList.AddRow (_newValues[0]);
+      Assert.That (
+          () => _bocList.AddRow (_newValues[0]),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
@@ -115,11 +116,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void AddRowsWithoutValue ()
     {
       _bocList.LoadUnboundValue (null, false);
-      _bocList.AddRows (_newValues);
+      Assert.That (
+          () => _bocList.AddRows (_newValues),
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
