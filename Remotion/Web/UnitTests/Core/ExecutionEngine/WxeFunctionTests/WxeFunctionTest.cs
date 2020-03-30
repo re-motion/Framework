@@ -64,7 +64,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       TestFunction rootFunction = new TestFunction();
 
       Assert.That (
-          () => Dev.Null = rootFunction.FunctionToken,
+          () => rootFunction.FunctionToken,
           Throws.InvalidOperationException
               .With.Message.EqualTo ("The WxeFunction does not have a RootFunction, i.e. the top-most WxeFunction does not have a FunctionToken."));
     }

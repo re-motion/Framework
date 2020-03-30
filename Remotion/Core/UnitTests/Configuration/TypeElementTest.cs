@@ -95,7 +95,7 @@ namespace Remotion.UnitTests.Configuration
       string xmlFragment = @"<theElement type=""System.Object, mscorlib"" />";
       ConfigurationHelper.DeserializeElement (typeElement, xmlFragment);
       Assert.That (
-          () => Dev.Null = typeElement.Type,
+          () => typeElement.Type,
           Throws.InstanceOf<ConfigurationErrorsException>());
     }
   }

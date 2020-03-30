@@ -73,13 +73,13 @@ namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting.Threading
       Assert.That (() => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Get(), "Abc"), Throws.Nothing);
       Assert.That (
           () => _helperForNonLockingDecorator.ExpectSynchronizedDelegation (d => d.Get(), "Abc"),
-          Throws.TypeOf<AssertionException>().And.Message.StringStarting ("  Parallel thread should have been blocked."));
+          Throws.TypeOf<AssertionException>().And.Message.StartsWith ("  Parallel thread should have been blocked."));
       Assert.That (
           () => _helperForNonDelegatingDecorator.ExpectSynchronizedDelegation (d => d.Get(), "Abc"),
           Throws.TypeOf<ExpectationViolationException>().And.Message.EqualTo ("IMyInterface.Get(); Expected #1, Actual #0."));
       Assert.That (
           () => _helperForFaultyDecorator.ExpectSynchronizedDelegation (d => d.Get(), "Abc"),
-          Throws.TypeOf<AssertionException>().And.Message.StringStarting ("  Expected string length 3 but was 6. Strings differ at index 0."));
+          Throws.TypeOf<AssertionException>().And.Message.StartsWith ("  Expected string length 3 but was 6. Strings differ at index 0."));
     }
 
     [Test]
@@ -106,7 +106,7 @@ namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting.Threading
       Assert.That (() => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Do ("Abc")), Throws.Nothing);
       Assert.That (
           () => _helperForNonLockingDecorator.ExpectSynchronizedDelegation (d => d.Do ("Abc")),
-          Throws.TypeOf<AssertionException>().And.Message.StringStarting ("  Parallel thread should have been blocked."));
+          Throws.TypeOf<AssertionException>().And.Message.StartsWith ("  Parallel thread should have been blocked."));
       Assert.That (
           () => _helperForNonDelegatingDecorator.ExpectSynchronizedDelegation (d => d.Do ("Abc")),
           Throws.TypeOf<ExpectationViolationException>().And.Message.EqualTo ("IMyInterface.Do(\"Abc\"); Expected #1, Actual #0."));

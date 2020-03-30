@@ -78,7 +78,7 @@ namespace Remotion.Collections.Caching.UnitTests
           {
             Assert.That (
                 () => cache.TryGetValue (key, out _),
-                Throws.InvalidOperationException.With.Message.StringStarting (
+                Throws.InvalidOperationException.With.Message.StartsWith (
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
 
             return expected;
@@ -100,7 +100,7 @@ namespace Remotion.Collections.Caching.UnitTests
           {
             Assert.That (
                 () => cache.GetOrCreateValue (key, nestedKey => 13),
-                Throws.InvalidOperationException.With.Message.StringStarting (
+                Throws.InvalidOperationException.With.Message.StartsWith (
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
 
             return expected;

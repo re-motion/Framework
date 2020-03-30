@@ -83,7 +83,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
 
       Assert.That (
           () => ObjectFactory.Create<ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<string>>(),
-          Throws.TypeOf<ConfigurationException>().With.Message.StringContaining ("base call ordering"));
+          Throws.TypeOf<ConfigurationException>().With.Message.Contains ("base call ordering"));
     }
 
     [Test]

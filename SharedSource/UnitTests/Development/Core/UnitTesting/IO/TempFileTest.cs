@@ -53,7 +53,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
       TempFile tempFile = new TempFile();
       tempFile.Dispose();
       Assert.That (
-          () => Dev.Null = tempFile.FileName,
+          () => tempFile.FileName,
           Throws.InvalidOperationException
               .With.Message.EqualTo ("Object disposed."));
     }

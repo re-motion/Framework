@@ -274,7 +274,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Order order = Order.NewObject();
       Assert.That (
-          () => Dev.Null = order.NotInMapping,
+          () => order.NotInMapping,
           NUnit.Framework.Throws.InvalidOperationException
               .With.Message.EqualTo ("There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?"));
     }
@@ -284,7 +284,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Order order = Order.NewObject();
       Assert.That (
-          () => Dev.Null = order.NotInMappingRelated,
+          () => order.NotInMappingRelated,
           NUnit.Framework.Throws.InvalidOperationException
               .With.Message.EqualTo ("There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?"));
     }
@@ -294,7 +294,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Order order = Order.NewObject();
       Assert.That (
-          () => Dev.Null = order.NotInMappingRelatedObjects,
+          () => order.NotInMappingRelatedObjects,
           NUnit.Framework.Throws.InvalidOperationException
               .With.Message.EqualTo ("There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?"));
     }
@@ -362,7 +362,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       Order order = Order.NewObject();
 
       Assert.That (
-          () => Dev.Null = order.CurrentProperty,
+          () => order.CurrentProperty,
           NUnit.Framework.Throws.InvalidOperationException
               .With.Message.EqualTo ("There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?"));
     }
@@ -399,7 +399,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       order.PreparePropertyAccess ("Bla");
 
       Assert.That (
-          () => Dev.Null = order.CurrentProperty,
+          () => order.CurrentProperty,
           NUnit.Framework.Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo (
                   "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property named 'Bla'."));

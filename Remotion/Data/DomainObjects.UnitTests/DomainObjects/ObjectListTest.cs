@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void IList_ItemGetThrowsOnWrongIndex ()
     {
       Assert.That (
-          () => Dev.Null = _orderItemListAsIList[2],
+          () => _orderItemListAsIList[2],
           Throws.InstanceOf<ArgumentOutOfRangeException>()
               .With.Message.Contains ("Index was out of range. Must be non-negative and less than the size of the collection."));
     }

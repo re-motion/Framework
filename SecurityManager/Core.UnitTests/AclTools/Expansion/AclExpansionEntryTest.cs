@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       var accessConditions = new AclExpansionAccessConditions ();
       var aclExpansionEntry = new AclExpansionEntry (User, Role, statlessAcl, accessConditions, AccessTypeDefinitions, AccessTypeDefinitions2);
       Assert.That (
-          () => Dev.Null = aclExpansionEntry.GetStateCombinations(),
+          () => aclExpansionEntry.GetStateCombinations(),
           Throws.InvalidOperationException
               .With.Message.EqualTo (
                   @"StateCombinations not defined for StatelessAccessControlList. Test for ""is StatefulAccessControlList"" in calling code."));

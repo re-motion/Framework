@@ -555,7 +555,7 @@ namespace Remotion.Globalization.UnitTests.Implementation.MultiLingualNameBasedM
 
         Assert.That (
             () => service.TryGetPropertyDisplayName (propertyInformationStub, typeInformationForResourceResolutionStub, out multiLingualName),
-            Throws.TypeOf<InvalidOperationException>().With.Message.StringStarting (
+            Throws.TypeOf<InvalidOperationException>().With.Message.StartsWith (
                 "The property 'TheProperty' declared on type 'The.Full.Type.Name' has no MultiLingualNameAttribute "
                 + "for the assembly's neutral resource language ('en-US') applied."));
       }

@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
 
         Assert.That (
             () => domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, 
-            Throws.TypeOf<ConfigurationErrorsException>().With.Message.StringStarting (
+            Throws.TypeOf<ConfigurationErrorsException>().With.Message.StartsWith (
                 "The factory type 'Remotion.Data.DomainObjects.UnitTests.Configuration.DomainObjectsConfigurationTest+IUnresolvedCustomStorageObjectFactory' "
                 + "specified in the configuration of the 'Test' StorageProvider definition cannot be instantiated because it is abstract. Either "
                 + "register an implementation of 'IUnresolvedCustomStorageObjectFactory' in the configured service locator, or specify a non-abstract "

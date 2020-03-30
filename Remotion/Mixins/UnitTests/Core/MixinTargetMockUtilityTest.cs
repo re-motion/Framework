@@ -58,7 +58,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       var mixin = new BT3Mixin1 ();
       Assert.That (
-          () => Dev.Null = mixin.Target,
+          () => mixin.Target,
           Throws.InvalidOperationException
               .With.Message.EqualTo ("Mixin has not been initialized yet."));
     }
@@ -68,7 +68,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       var mixin = new BT3Mixin1 ();
       Assert.That (
-          () => Dev.Null = mixin.Next,
+          () => mixin.Next,
           Throws.InvalidOperationException
               .With.Message.EqualTo ("Mixin has not been initialized yet."));
     }

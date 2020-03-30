@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         order = Order.NewObject ();
       }
       Assert.That (
-          () => Dev.Null = order.OrderNumber,
+          () => order.OrderNumber,
           Throws.InstanceOf<ObjectInvalidException>());
     }
 

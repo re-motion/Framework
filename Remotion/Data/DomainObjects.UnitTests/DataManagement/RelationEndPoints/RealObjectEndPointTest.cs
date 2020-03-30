@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var id = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
       var foreignKeyDataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
       Assert.That (
-          () => Dev.Null = new RealObjectEndPoint (TestableClientTransaction, id, foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub),
+          () => new RealObjectEndPoint (TestableClientTransaction, id, foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub),
           Throws.ArgumentException
               .With.Message.EqualTo ("End point ID must refer to a non-virtual end point.\r\nParameter name: id"));
     }
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var id = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
       var foreignKeyDataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
       Assert.That (
-          () => Dev.Null = new RealObjectEndPoint (TestableClientTransaction, id, foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub),
+          () => new RealObjectEndPoint (TestableClientTransaction, id, foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub),
           Throws.ArgumentException
               .With.Message.EqualTo (
                   "The foreign key data container must be from the same object as the end point definition.\r\nParameter name: foreignKeyDataContainer"));

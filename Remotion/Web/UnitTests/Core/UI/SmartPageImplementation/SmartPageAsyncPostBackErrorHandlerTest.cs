@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -48,7 +48,7 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
       
       //The first value is the error page on a system without .Net 4.8 installed.
       //The second value is the error page on a system with .Net 4.8 installed.
-      Assert.That (message, Is.StringEnding (@"<br>
+      Assert.That (message, Does.EndWith (@"<br>
 
     ").Or.StringEnding(@"<br>
 

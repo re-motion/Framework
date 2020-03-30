@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       var endPoint = new NullCollectionEndPoint (Transaction, RelationEndPointID.Definition);
       Assert.That (
-          () => Dev.Null = new CollectionEndPointReplaceCommand (
+          () => new CollectionEndPointReplaceCommand (
           endPoint, _replacedRelatedObject, 12, _replacementRelatedObject, CollectionDataMock, TransactionEventSinkMock),
           Throws.ArgumentException
               .With.Message.EqualTo (

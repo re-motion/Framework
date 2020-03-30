@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
 
       ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.That (
-          () => Dev.Null = _configuration.DefaultStorageProviderDefinition,
+          () => _configuration.DefaultStorageProviderDefinition,
           Throws.InstanceOf<ConfigurationErrorsException>()
               .With.Message.EqualTo (
                   "The provider 'Invalid' specified for the defaultProviderDefinition does not exist in the providers collection."));
@@ -194,8 +194,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
           () => ConfigurationHelper.DeserializeSection (_configuration, xmlFragment),
           Throws.InstanceOf<ConfigurationErrorsException>()
               .With.Message.Contains ("The value of the property 'type' cannot be parsed."));
-      
-      Dev.Null = _configuration.StorageGroups;
     }
   }
 }

@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
       Assert.That (
           () => orderWithInvalidCustomer.Customer,
-          Throws.TypeOf<InvalidTypeException>().With.Message.StringStarting (
+          Throws.TypeOf<InvalidTypeException>().With.Message.StartsWith (
               "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' was expected to hold an object of type "
               + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer', but it returned an object of type "
               + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Company"));

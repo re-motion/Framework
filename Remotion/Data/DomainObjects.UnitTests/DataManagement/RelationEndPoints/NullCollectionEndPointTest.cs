@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void OriginalCollection ()
     {
       Assert.That (
-          () => Dev.Null = _nullEndPoint.OriginalCollection,
+          () => _nullEndPoint.OriginalCollection,
           Throws.InvalidOperationException);
     }
 
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetData ()
     {
       Assert.That (
-          () => Dev.Null = _nullEndPoint.GetData (),
+          () => _nullEndPoint.GetData (),
           Throws.InvalidOperationException);
     }
 
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetOriginalData ()
     {
       Assert.That (
-          () => Dev.Null = _nullEndPoint.GetOriginalData (),
+          () => _nullEndPoint.GetOriginalData (),
           Throws.InvalidOperationException);
     }
 
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetCollectionEventRaiser ()
     {
       Assert.That (
-          () => Dev.Null = _nullEndPoint.GetCollectionEventRaiser(),
+          () => _nullEndPoint.GetCollectionEventRaiser(),
           Throws.InvalidOperationException);
     }
 
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetCollectionWithOriginalData ()
     {
       Assert.That (
-          () => Dev.Null = _nullEndPoint.GetCollectionWithOriginalData (),
+          () => _nullEndPoint.GetCollectionWithOriginalData (),
           Throws.InvalidOperationException);
     }
 

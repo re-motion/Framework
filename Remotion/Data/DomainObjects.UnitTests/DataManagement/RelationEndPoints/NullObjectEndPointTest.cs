@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void OriginalOppositeObjectID_Get ()
     {
       Assert.That (
-          () => Dev.Null = _nullEndPoint.OriginalOppositeObjectID,
+          () => _nullEndPoint.OriginalOppositeObjectID,
           Throws.InvalidOperationException);
     }
 
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetOriginalOppositeObject ()
     {
       Assert.That (
-          () => Dev.Null = _nullEndPoint.GetOriginalOppositeObject(),
+          () => _nullEndPoint.GetOriginalOppositeObject(),
           Throws.InvalidOperationException);
     }
 

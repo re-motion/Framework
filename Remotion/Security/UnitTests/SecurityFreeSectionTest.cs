@@ -67,7 +67,7 @@ namespace Remotion.Security.UnitTests
 
       Assert.That (
           () => scope1.Dispose(),
-          Throws.InvalidOperationException.With.Message.StringStarting ("Nested SecurityFreeSection scopes have been exited out-of-sequence."));
+          Throws.InvalidOperationException.With.Message.StartsWith ("Nested SecurityFreeSection scopes have been exited out-of-sequence."));
 
       scope2.Dispose();
       scope1.Dispose();
@@ -83,7 +83,7 @@ namespace Remotion.Security.UnitTests
 
       Assert.That (
           () => scope1.Dispose(),
-          Throws.InvalidOperationException.With.Message.StringStarting (
+          Throws.InvalidOperationException.With.Message.StartsWith (
               "The SecurityFreeSection scope has not been entered by invoking SecurityFreeSection.Create()."));
     }
 

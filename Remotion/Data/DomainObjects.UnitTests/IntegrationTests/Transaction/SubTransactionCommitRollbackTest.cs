@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         Order order = Order.NewObject();
         _subTransaction.Rollback();
         Assert.That (
-            () => Dev.Null = order.OrderNumber,
+            () => order.OrderNumber,
             Throws.InstanceOf<ObjectInvalidException>()
                 .With.Message.Matches ("Object 'Order.*' is invalid in this transaction."));
       }

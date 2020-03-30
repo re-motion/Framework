@@ -232,7 +232,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           {
             Assert.That (
                 () => _store.TryGetValue (key, out _),
-                Throws.InvalidOperationException.With.Message.StringStarting (
+                Throws.InvalidOperationException.With.Message.StartsWith (
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
             return expected;
           });
@@ -254,7 +254,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           {
             Assert.That (
                 () => _store.GetValueOrDefault (key),
-                Throws.InvalidOperationException.With.Message.StringStarting (
+                Throws.InvalidOperationException.With.Message.StartsWith (
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
             return expected;
           });
@@ -276,7 +276,7 @@ namespace Remotion.Collections.DataStore.UnitTests
               {
                 Assert.That (
                     () => _store.GetOrCreateValue (key, nestedKey => "13"),
-                    Throws.InvalidOperationException.With.Message.StringStarting (
+                    Throws.InvalidOperationException.With.Message.StartsWith (
                         "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
 
                 return expected;
@@ -300,7 +300,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           {
             Assert.That (
                 () => _store.Add (key, "13"),
-                Throws.InvalidOperationException.With.Message.StringStarting (
+                Throws.InvalidOperationException.With.Message.StartsWith (
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
             return expected;
           });
@@ -322,7 +322,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           {
             Assert.That (
                 () => _store.ContainsKey (key),
-                Throws.InvalidOperationException.With.Message.StringStarting (
+                Throws.InvalidOperationException.With.Message.StartsWith (
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
             return expected;
           });
@@ -344,7 +344,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           {
             Assert.That (
                 () => _store.Remove (key),
-                Throws.InvalidOperationException.With.Message.StringStarting (
+                Throws.InvalidOperationException.With.Message.StartsWith (
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
             return expected;
           });

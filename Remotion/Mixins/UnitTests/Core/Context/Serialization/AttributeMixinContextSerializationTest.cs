@@ -90,7 +90,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     public void Deserializer_InvalidArray()
     {
       Assert.That (
-          () => Dev.Null = new AttributeMixinContextDeserializer (new[] { "x" }),
+          () => new AttributeMixinContextDeserializer (new[] { "x" }),
           Throws.ArgumentException
               .With.Message.EqualTo (
                   "Expected an array with 5 elements.\r\nParameter name: values"));

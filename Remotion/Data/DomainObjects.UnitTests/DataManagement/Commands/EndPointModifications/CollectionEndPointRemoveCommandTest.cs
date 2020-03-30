@@ -57,8 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       var endPoint = new NullCollectionEndPoint (Transaction, RelationEndPointID.Definition);
       Assert.That (
-          () => Dev.Null = 
-          new CollectionEndPointRemoveCommand (endPoint, _removedRelatedObject, CollectionDataMock, EndPointProviderStub, TransactionEventSinkMock),
+          () => new CollectionEndPointRemoveCommand (endPoint, _removedRelatedObject, CollectionDataMock, EndPointProviderStub, TransactionEventSinkMock),
           Throws.ArgumentException
               .With.Message.EqualTo (
                   "Modified end point is null, a NullEndPointModificationCommand is needed.\r\n"

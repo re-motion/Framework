@@ -447,19 +447,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That (
           () =>
           {
+            try
             {
-
-              try
+              using (ClientTransaction.CreateRootTransaction().EnterScope (AutoRollbackBehavior.Rollback))
               {
-                using (ClientTransaction.CreateRootTransaction().EnterScope (AutoRollbackBehavior.Rollback))
-                {
-                  ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
-                }
+                ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
               }
-              finally
-              {
-                ClientTransactionScope.ResetActiveScope(); // for TearDown
-              }
+            }
+            finally
+            {
+              ClientTransactionScope.ResetActiveScope(); // for TearDown
             }
           },
           Throws.InvalidOperationException

@@ -234,8 +234,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (ClientTransactionScope.EnterNullScope())
       {
         Assert.That (ClientTransactionScope.HasCurrentTransaction, Is.False);
-        Assert.That(
-            () => Dev.Null = ClientTransactionScope.CurrentTransaction,
+        Assert.That (
+            () => ClientTransactionScope.CurrentTransaction,
             Throws.InvalidOperationException
                 .With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
       }

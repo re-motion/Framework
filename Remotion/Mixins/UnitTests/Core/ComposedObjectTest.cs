@@ -39,7 +39,7 @@ namespace Remotion.Mixins.UnitTests.Core
     public void Ctor_ChecksObjectFactoryCreateUsed ()
     {
       Assert.That (
-          () => Dev.Null = new ClassDerivedFromComposedObject(),
+          () => new ClassDerivedFromComposedObject(),
           Throws.InvalidOperationException
               .With.Message.EqualTo (
                   "Type 'Remotion.Mixins.UnitTests.Core.TestDomain.ClassDerivedFromComposedObject' is not associated with the composed interface "

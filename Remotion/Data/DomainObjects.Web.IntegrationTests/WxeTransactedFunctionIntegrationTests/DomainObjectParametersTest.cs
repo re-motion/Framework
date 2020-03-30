@@ -118,11 +118,11 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
         Assert.That (
             () => function.Execute (Context),
             Throws.TypeOf<WxeException>()
-                  .With.Message.StringStarting (
+                  .With.Message.StartsWith (
                       "One or more of the input parameters passed to the WxeFunction are incompatible with the function's transaction. "
                       + "The following objects are incompatible with the target transaction: ")
-                  .And.Message.StringContaining (DomainObjectIDs.ClassWithAllDataTypes1.ToString())
-                  .And.Message.StringContaining (DomainObjectIDs.ClassWithAllDataTypes1.ToString())
+                  .And.Message.Contains (DomainObjectIDs.ClassWithAllDataTypes1.ToString())
+                  .And.Message.Contains (DomainObjectIDs.ClassWithAllDataTypes1.ToString())
                   .And.Message.StringEnding (". Objects of type 'Remotion.Data.DomainObjects.IDomainObjectHandle`1[T]' could be used instead."));
       }
     }
@@ -188,12 +188,12 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       Assert.That (wxeUnhandledException.InnerException.InnerException, Is.Not.Null);
       Assert.That (
           wxeUnhandledException.InnerException.InnerException.Message,
-          Is.StringStarting (
+          Does.StartWith (
               "One or more of the output parameters returned from the WxeFunction are incompatible with the function's parent transaction. "
               + "The following objects are incompatible with the target transaction: ")
-            .And.StringContaining (DomainObjectIDs.ClassWithAllDataTypes1.ToString())
-            .And.StringContaining (DomainObjectIDs.ClassWithAllDataTypes2.ToString())
-            .And.StringEnding (". Objects of type 'Remotion.Data.DomainObjects.IDomainObjectHandle`1[T]' could be used instead."));
+            .And.Contains (DomainObjectIDs.ClassWithAllDataTypes1.ToString())
+            .And.Contains (DomainObjectIDs.ClassWithAllDataTypes2.ToString())
+            .And.EndsWith (". Objects of type 'Remotion.Data.DomainObjects.IDomainObjectHandle`1[T]' could be used instead."));
     }
 
     [Test]

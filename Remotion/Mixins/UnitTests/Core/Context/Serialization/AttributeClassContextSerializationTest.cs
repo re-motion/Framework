@@ -76,7 +76,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     public void Deserializer_InvalidArray()
     {
       Assert.That (
-          () => Dev.Null = new AttributeClassContextDeserializer (new[] { "x" }),
+          () => new AttributeClassContextDeserializer (new[] { "x" }),
           Throws.ArgumentException
               .With.Message.EqualTo (
                   "Expected an array with 3 elements.\r\nParameter name: values"));

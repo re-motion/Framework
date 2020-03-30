@@ -82,7 +82,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       Assert.That (_collection.ContainsKey ("2"), Is.True);
       Assert.That (_collection.ContainsKey ("3"), Is.True);
       Assert.That (_collection.ContainsKey ("4"), Is.False);
-      Assert.That (_collection.ContainsKey ("?"), Is.False);
+      Assert.That (_collection.ContainsKey ("§"), Is.False);
     }
 
     [Test]

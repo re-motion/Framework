@@ -184,7 +184,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       var builder = new DeclarativeConfigurationBuilder(null);
       builder.AddType (typeof (TypeWithDuplicateAttributeNotIgnoringDuplicates));
 
-      Assert.That (() => builder.BuildConfiguration (), Throws.TypeOf<ConfigurationException>().With.Message.StringContaining ("already configured"));
+      Assert.That (() => builder.BuildConfiguration (), Throws.TypeOf<ConfigurationException>().With.Message.Contains ("already configured"));
     }
 
     [Test]

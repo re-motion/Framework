@@ -126,7 +126,7 @@ namespace Remotion.UnitTests.Configuration
 
       ConfigurationHelper.DeserializeSection (_stubConfigurationSection, xmlFragment);
       Assert.That (
-          () => Dev.Null = _providerHelper.Provider,
+          () => _providerHelper.Provider,
           Throws.InstanceOf<ConfigurationErrorsException>()
               .With.Message.EqualTo (
                   "The provider 'Invalid' specified for the defaultProvider does not exist in the providers collection."));

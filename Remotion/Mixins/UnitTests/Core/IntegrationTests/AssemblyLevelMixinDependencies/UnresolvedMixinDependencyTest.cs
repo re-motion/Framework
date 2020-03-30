@@ -30,7 +30,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
 
       Assert.That (
           () => ObjectFactory.Create<C> (), 
-          Throws.TypeOf<ValidationException> ().With.Message.StringContaining (
+          Throws.TypeOf<ValidationException> ().With.Message.Contains (
               "A mixin is configured with a dependency to another mixin, but that dependency is not satisfied."));
     }
 

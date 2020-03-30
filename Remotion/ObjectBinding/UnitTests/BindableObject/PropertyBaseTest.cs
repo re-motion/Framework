@@ -476,7 +476,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       Assert.That (property.IsList, Is.False);
       Assert.That (
-          () => Dev.Null = property.ListInfo,
+          () => property.ListInfo,
           Throws.InvalidOperationException
               .With.Message.EqualTo (
                   "Cannot access ListInfo for non-list properties.\r\nProperty: Scalar"));
@@ -533,7 +533,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
                   MockRepository.GenerateStub<IEnumerationGlobalizationService>(),
                   MockRepository.GenerateStub<IExtensibleEnumGlobalizationService>())));
       Assert.That (
-          () => Dev.Null = property.DisplayName,
+          () => property.DisplayName,
           Throws.InvalidOperationException
               .With.Message.EqualTo ("The reflected class for the property 'SimpleBusinessObjectClass.String' is not set."));
     }
@@ -650,7 +650,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isRequired: false,
               isReadOnly: false));
       Assert.That (
-          () => Dev.Null = property.ReflectedClass,
+          () => property.ReflectedClass,
           Throws.InvalidOperationException
               .With.Message.EqualTo (
                   "Accessing the ReflectedClass of a property is invalid until the property has been associated with a class.\r\nProperty 'String'"));

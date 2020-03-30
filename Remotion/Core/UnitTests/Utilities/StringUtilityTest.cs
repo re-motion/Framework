@@ -90,8 +90,8 @@ public class StringUtilityTest
     Assert.That (StringUtility.AreEqual ("test1", "test1", true), Is.EqualTo (true));
     Assert.That (StringUtility.AreEqual ("test1", "TEST1", false), Is.EqualTo (false));
     Assert.That (StringUtility.AreEqual ("test1", "TEST1", true), Is.EqualTo (true));
-    Assert.That (StringUtility.AreEqual ("t?st1", "T?ST1", false), Is.EqualTo (false));
-    Assert.That (StringUtility.AreEqual ("t?st1", "T?ST1", true), Is.EqualTo (true));
+    Assert.That (StringUtility.AreEqual ("täst1", "TÄST1", false), Is.EqualTo (false));
+    Assert.That (StringUtility.AreEqual ("täst1", "TÄST1", true), Is.EqualTo (true));
   }
 
   [Test]

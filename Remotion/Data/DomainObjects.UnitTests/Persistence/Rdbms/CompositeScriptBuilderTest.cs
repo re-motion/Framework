@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           () => new CompositeScriptBuilder (
               SchemaGenerationFirstStorageProviderDefinition,
               new[] { new CompositeScriptBuilder (SchemaGenerationSecondStorageProviderDefinition, new[] { _builder1Mock }), _builder2Mock }),
-          Throws.ArgumentException.With.Message.StringStarting (
+          Throws.ArgumentException.With.Message.StartsWith (
               "The scriptBuilder sequence contains a CompositeScriptBuilder that references a different RdbmsProviderDefinition "
               + "('SchemaGenerationSecondStorageProvider') than the current CompositeScriptBuilder ('SchemaGenerationFirstStorageProvider')."));
     }

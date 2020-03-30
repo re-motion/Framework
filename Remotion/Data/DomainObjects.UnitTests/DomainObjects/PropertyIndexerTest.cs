@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       var indexer = new PropertyIndexer (_industrialSector);
       Assert.That (
-          () => Dev.Null = indexer["Bla"],
+          () => indexer["Bla"],
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo (
                   "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector' does not have a mapping property named 'Bla'."));

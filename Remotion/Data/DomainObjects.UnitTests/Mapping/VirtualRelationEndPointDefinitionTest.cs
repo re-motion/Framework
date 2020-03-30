@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var endPoint = CreateFullVirtualEndPointAndClassDefinition_WithProductProperty ("Product asc asc");
       Assert.That (
-          () => Dev.Null = endPoint.GetSortExpression(),
+          () => endPoint.GetSortExpression(),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo (
                   "SortExpression 'Product asc asc' cannot be parsed: Expected one or two parts (a property name and an optional identifier), found 3 parts instead.\r\n\r\n"+

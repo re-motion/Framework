@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _newOrder.Delete ();
       Assert.That (
-          () => Dev.Null = _newOrder.Properties[typeof (Order), "OrderNumber"].GetValueWithoutTypeCheck(),
+          () => _newOrder.Properties[typeof (Order), "OrderNumber"].GetValueWithoutTypeCheck(),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 
@@ -258,7 +258,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _newOrder.Delete ();
       Assert.That (
-          () => Dev.Null = _newOrderContainer.GetValue (_orderNumberProperty),
+          () => _newOrderContainer.GetValue (_orderNumberProperty),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 
@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _newOrder.Delete ();
       Assert.That (
-          () => Dev.Null = _newOrderContainer.GetValue (_orderNumberProperty, ValueAccess.Original),
+          () => _newOrderContainer.GetValue (_orderNumberProperty, ValueAccess.Original),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 

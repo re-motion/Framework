@@ -124,7 +124,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       IBusinessObjectReferenceProperty property = CreateProperty ("Scalar", typeof (ClassFromOtherBusinessObjectImplementation));
       Assert.That (
-          () => Dev.Null = property.ReferenceClass,
+          () => property.ReferenceClass,
           Throws.InvalidOperationException
               .With.Message.EqualTo (
                   "The 'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassFromOtherBusinessObjectImplementation' "
@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 
       _bindableObjectProvider.AddService (typeof (IBusinessObjectClassService), new StubBusinessObjectClassService());
       Assert.That (
-          () => Dev.Null = property.ReferenceClass,
+          () => property.ReferenceClass,
           Throws.InvalidOperationException
               .With.Message.EqualTo (
                   "The GetBusinessObjectClass method of 'Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectClassService', registered "

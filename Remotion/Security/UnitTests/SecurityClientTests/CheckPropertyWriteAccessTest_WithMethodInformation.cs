@@ -125,8 +125,8 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       Assert.That (
-          () => _securityClient.CheckPropertyWriteAccess (new SecurableObject (null), _methodInformation),
-      Throws.InvalidOperationException
+          () => _securityClient.CheckPropertyWriteAccess (new SecurableObject (null), _methodInformation), 
+          Throws.InvalidOperationException
               .With.Message.EqualTo ("The securableObject did not return an IObjectSecurityStrategy."));
       _testHelper.VerifyAll();
     }

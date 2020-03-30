@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       config.Add ("description", "The Description");
       config.Add ("connectionString", "SqlProvider");
       Assert.That (
-          () => Dev.Null = new RdbmsProviderDefinition ("Provider", config),
+          () => new RdbmsProviderDefinition ("Provider", config),
           Throws.InstanceOf<ConfigurationErrorsException>()
               .With.Message.EqualTo ("The attribute 'factoryType' is missing in the configuration of the 'Provider' provider."));
     }

@@ -57,7 +57,7 @@ namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting
           Throws.TypeOf<ExpectationViolationException> ().And.Message.EqualTo ("IMyInterface.Get(); Expected #1, Actual #0."));
       Assert.That (
           () => _helperForFaultyDecorator.CheckDelegation (d => d.Get (), "Abc"),
-          Throws.TypeOf<AssertionException> ().And.Message.StringStarting ("  Expected string length 3 but was 6. Strings differ at index 0."));
+          Throws.TypeOf<AssertionException> ().And.Message.StartsWith ("  Expected string length 3 but was 6. Strings differ at index 0."));
     }
 
     [Test]

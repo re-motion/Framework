@@ -340,7 +340,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     {
       QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml", "QueriesForLoaderTestDuplicate.xml");
       Assert.That (
-          () => Dev.Null = configuration.QueryDefinitions,
+          () => configuration.QueryDefinitions,
           Throws.InstanceOf<ConfigurationException>()
               .With.Message.Matches (
                   @"File '.*QueriesForLoaderTestDuplicate.xml' defines a duplicate "

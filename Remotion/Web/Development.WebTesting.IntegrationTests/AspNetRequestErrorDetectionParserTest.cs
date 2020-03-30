@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+ï»¿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -49,8 +49,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var result = aspNetRequestErrorDetectionParser.Parse (home.Scope);
       
       Assert.That (result.HasError, Is.EqualTo (true));
-      Assert.That (result.Message, Is.EqualTo ("ä&<\r\n'\""));
-      Assert.That (result.Stacktrace, Does.StartWith ("\r\n[Exception: ä&<\r\n'\"]\r\n"));
+      Assert.That (result.Message, Is.EqualTo ("Ã¤&<\r\n'\""));
+      Assert.That (result.Stacktrace, Does.StartWith ("\r\n[Exception: Ã¤&<\r\n'\"]\r\n"));
     }
 
     [Test]

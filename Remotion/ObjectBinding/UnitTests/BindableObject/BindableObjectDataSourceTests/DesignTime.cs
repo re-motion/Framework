@@ -156,7 +156,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
       _dataSource.Type = typeof (StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass);
 
       Assert.That (
-          () => Dev.Null = _dataSource.BusinessObjectClass,
+          () => _dataSource.BusinessObjectClass,
           Throws.ArgumentException
               .With.Message.EqualTo (
                   "The type 'Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass' is not a bindable object implementation. "
