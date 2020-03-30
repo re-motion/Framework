@@ -199,15 +199,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _virtualObjectEndPointMock.Stub (mock => mock.IsNull).Return (false);
       _virtualObjectEndPointMock.Replay ();
 
-      var command = (RelationEndPointModificationCommand) _loadState.CreateSetCommand (_virtualObjectEndPointMock, _relatedObject);
-
-      Assert.That (command, Is.TypeOf (typeof (ObjectEndPointSetSameCommand)));
-      Assert.That (command.DomainObject, Is.SameAs (_owningObject));
-      Assert.That (command.ModifiedEndPoint, Is.SameAs (_virtualObjectEndPointMock));
-      Assert.That (command.OldRelatedObject, Is.SameAs (_relatedObject));
-      Assert.That (command.NewRelatedObject, Is.SameAs (_relatedObject));
       Assert.That (
-          () => CheckOppositeObjectIDSetter ((ObjectEndPointSetCommand) command),
+          () => (RelationEndPointModificationCommand) _loadState.CreateSetCommand (_virtualObjectEndPointMock, _relatedObject),
           Throws.InvalidOperationException
               .With.Message.EqualTo (
                   "The virtual property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' of object "

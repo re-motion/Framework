@@ -44,10 +44,10 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
           Throws.InstanceOf<TestFailedException>());
     }
 
-    [ExpectedException(typeof(TestFailedException))]
     public void TestExpectedExceptionFailed ()
     {
       Assert.That (1, Is.EqualTo (1));
+      Assert.That (() => { }, Throws.Exception);
     }
 
     public void TestThrowsException ()

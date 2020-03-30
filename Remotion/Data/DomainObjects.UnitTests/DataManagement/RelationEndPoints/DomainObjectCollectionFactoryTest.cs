@@ -104,12 +104,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateCollection_ForStandaloneCollection_PerformsItemChecks ()
     {
-      DomainObjectCollection collection = _factory.CreateCollection (typeof (ObjectList<Order>), new Order[] { null }, typeof (Order));
-
-      Assert.That (collection, Is.Not.Null);
-      Assert.That (collection.RequiredItemType, Is.EqualTo (typeof (Order)));
       Assert.That (
-          () => DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy (collection, typeof (Order)),
+          () =>  _factory.CreateCollection (typeof (ObjectList<Order>), new Order[] { null }, typeof (Order)),
           Throws.InstanceOf<ArgumentNullException>()
               .With.Message.EqualTo ("Item 0 of parameter 'domainObjects' is null.\r\nParameter name: domainObjects"));
     }

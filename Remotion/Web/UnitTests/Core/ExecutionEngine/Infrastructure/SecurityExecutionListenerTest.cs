@@ -80,10 +80,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
 
       var securityListener = CreateSecurityListener (_securityAdapterMock);
 
-      securityListener.OnExecutionPlay (_wxeContext);
       Assert.That (
-          () => _mockRepository.VerifyAll(),
+          () => securityListener.OnExecutionPlay (_wxeContext),
           Throws.InstanceOf<PermissionDeniedException>());
+      _mockRepository.VerifyAll();
     }
 
     [Test]

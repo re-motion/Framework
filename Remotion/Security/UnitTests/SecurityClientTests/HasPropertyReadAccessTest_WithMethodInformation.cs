@@ -131,12 +131,12 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       
       _testHelper.ReplayAll ();
 
-      _securityClient.HasPropertyReadAccess (new SecurableObject (null), _methodInformation);
       Assert.That (
-          () => _testHelper.VerifyAll (),
+          () => _securityClient.HasPropertyReadAccess (new SecurableObject (null), _methodInformation),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
-                  "The securableObject did not return an IObjectSecurityStrategy."));
+              .With.Message.EqualTo ("The securableObject did not return an IObjectSecurityStrategy."));
+      
+      _testHelper.VerifyAll();
     }
 
 #if !DEBUG
@@ -148,12 +148,11 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, (Enum[]) null);
       _testHelper.ReplayAll ();
 
-      _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
       Assert.That (
-          () => _testHelper.VerifyAll (),
+          () => _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
-                  "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
+              .With.Message.EqualTo ("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
+      _testHelper.VerifyAll();
     }
 
 #if !DEBUG
@@ -167,13 +166,13 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+        Assert.That (
+            () =>  _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation),
+            Throws.InvalidOperationException
+                .With.Message.EqualTo ("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
       }
-      Assert.That (
-          () => _testHelper.VerifyAll (),
-          Throws.InvalidOperationException
-              .With.Message.EqualTo (
-                  "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
+    
+      _testHelper.VerifyAll();
     }
   }
 }

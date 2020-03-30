@@ -165,12 +165,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               + "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderItem.Order->"
               +"Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderItems"];
 
-      IRelationEndPointDefinition wrongEndPointDefinition =
-          orderToOrderItem.GetMandatoryOppositeRelationEndPointDefinition (
-              _customerClass.GetMandatoryRelationEndPointDefinition (
-                  "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders"));
       Assert.That (
-          () => orderToOrderItem.GetMandatoryOppositeRelationEndPointDefinition (wrongEndPointDefinition),
+          () => orderToOrderItem.GetMandatoryOppositeRelationEndPointDefinition (
+              _customerClass.GetMandatoryRelationEndPointDefinition (
+                  "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders")),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo (
                   "Relation 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderItem:"

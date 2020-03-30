@@ -431,7 +431,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       Assert.That (
           () => _orderClass.IsRelationEndPoint (null),
-          Throws.ArgumentNullException);
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

@@ -74,10 +74,11 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, false);
       _testHelper.ReplayAll();
 
-      _securityClient.CheckAccess (_testHelper.SecurableObject, (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
       Assert.That (
-          () => _testHelper.VerifyAll(),
+          () => _securityClient.CheckAccess (_testHelper.SecurableObject, (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) }),
           Throws.InstanceOf<PermissionDeniedException>());
+
+      _testHelper.VerifyAll();
     }
 
     [Test]
@@ -101,12 +102,12 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ReplayAll();
 
-      _securityClient.CheckAccess (new SecurableObject (null), (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
       Assert.That (
-          () => _testHelper.VerifyAll(),
+          () => _securityClient.CheckAccess (new SecurableObject (null), (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) }),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
-                  "The securableObject did not return an IObjectSecurityStrategy."));
+              .With.Message.EqualTo ("The securableObject did not return an IObjectSecurityStrategy."));
+
+      _testHelper.VerifyAll();
     }
   }
 }

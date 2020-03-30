@@ -112,12 +112,12 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ReplayAll();
 
-      _securityClient.HasAccess (new SecurableObject (null), (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
       Assert.That (
-          () => _testHelper.VerifyAll(),
+          () =>  _securityClient.HasAccess (new SecurableObject (null), (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) }),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
-                  "The securableObject did not return an IObjectSecurityStrategy."));
+              .With.Message.EqualTo ("The securableObject did not return an IObjectSecurityStrategy."));
+
+      _testHelper.VerifyAll();
     }
   }
 }

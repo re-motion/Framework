@@ -25,18 +25,20 @@ namespace Remotion.Mixins.Samples.Tutorial.T02_ParamList.UnitTests
   [TestFixture]
   public class CtorCallTest
   {
-    [Test] // looks for a ctor with five string arguments
+    [Test]
     public void Activator_BrokenCalls_ArrayPassed ()
     {
       Assert.That (
+          // looks for a ctor with five string arguments
           () => (TheClass) Activator.CreateInstance (typeof (TheClass), new[] { "my", "home", "is", "my", "castle" }),
           Throws.InstanceOf<MissingMethodException>());
     }
 
-    [Test] // looks for a default ctor
+    [Test]
     public void Activator_BrokenCalls_SingleNullPassed ()
     {
       Assert.That (
+          // looks for a default ctor
           () => (TheClass) Activator.CreateInstance (typeof (TheClass), null),
           Throws.InstanceOf<MissingMethodException>());
     }

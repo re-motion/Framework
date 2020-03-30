@@ -50,10 +50,10 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessTypes.Create, false);
       _testHelper.ReplayAll ();
 
-      _securityClient.CheckConstructorAccess (typeof (SecurableObject));
       Assert.That (
-          () => _testHelper.VerifyAll (),
+          () => _securityClient.CheckConstructorAccess (typeof (SecurableObject)),
           Throws.InstanceOf<PermissionDeniedException>());
+      _testHelper.VerifyAll();
     }
 
     [Test]

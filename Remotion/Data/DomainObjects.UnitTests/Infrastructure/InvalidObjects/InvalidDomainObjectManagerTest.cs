@@ -112,13 +112,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.InvalidObjects
 
       _manager.MarkInvalid (_order1);
       var otherOrder1 = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order1);
-      _manager.MarkInvalid (otherOrder1);
       Assert.That (
-          () => _transactionEventSinkWithMock.AssertWasNotCalled (mock => mock.RaiseObjectMarkedInvalidEvent ( Arg.Is (otherOrder1))),
+          () => _manager.MarkInvalid (otherOrder1),
           Throws.InvalidOperationException
               .With.Message.EqualTo (
                   "Cannot mark the given object invalid, another object with the same ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has already "
                   + "been marked."));
+      _transactionEventSinkWithMock.AssertWasNotCalled (mock => mock.RaiseObjectMarkedInvalidEvent (Arg.Is (otherOrder1)));
     }
 
     [Test]

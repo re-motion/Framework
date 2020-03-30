@@ -190,11 +190,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
             </providerDefinitions>
           </storage>";
 
-      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.That (
-          () => Dev.Null = _configuration.StorageGroups,
+          () => ConfigurationHelper.DeserializeSection (_configuration, xmlFragment),
           Throws.InstanceOf<ConfigurationErrorsException>()
               .With.Message.Contains ("The value of the property 'type' cannot be parsed."));
+      
+      Dev.Null = _configuration.StorageGroups;
     }
   }
 }

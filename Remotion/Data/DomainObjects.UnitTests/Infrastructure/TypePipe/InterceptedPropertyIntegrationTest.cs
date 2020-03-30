@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Assert.That (
           () => NonInstantiableAbstractClass.NewObject(),
-          Throws.InstanceOf<NonInterceptableTypeException>()
+          NUnit.Framework.Throws.InstanceOf<NonInterceptableTypeException>()
               .With.Message.EqualTo (
                   "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClass "
                   + "as its member Foo (on type NonInstantiableAbstractClass) is abstract (and not an "
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Assert.That (
           () => NonInstantiableAbstractClassWithProps.NewObject(),
-          Throws.InstanceOf<NonInterceptableTypeException>()
+          NUnit.Framework.Throws.InstanceOf<NonInterceptableTypeException>()
               .With.Message.EqualTo (
                   "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps "
                   + "as its member get_Foo (on type NonInstantiableAbstractClassWithProps) is abstract (and not an automatic property)."));
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Assert.That (
           () => NonInstantiableClassWithMixinWithPersistentAutoProperties.NewObject (),
-          Throws.InstanceOf<NonInterceptableTypeException>()
+          NUnit.Framework.Throws.InstanceOf<NonInterceptableTypeException>()
               .With.Message.EqualTo (
                   "Cannot instantiate type "
                   + "'Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe.InterceptedPropertyIntegrationTest+NonInstantiableClassWithMixinWithPersistentAutoProperties' "
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Assert.That (
           () => NonInstantiableSealedClass.NewObject(),
-          Throws.InstanceOf<NonInterceptableTypeException>()
+          NUnit.Framework.Throws.InstanceOf<NonInterceptableTypeException>()
               .With.Message.EqualTo (
                   "Cannot instantiate type 'Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe.InterceptedPropertyIntegrationTest+NonInstantiableSealedClass' as it is sealed."));
     }
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Assert.That (
           () => LifetimeService.NewObject (TestableClientTransaction, typeof (Order), ParamList.Create ("foo", "bar", "foobar", (object) null)),
-          Throws.InstanceOf<MissingMethodException>()
+          NUnit.Framework.Throws.InstanceOf<MissingMethodException>()
               .With.Message.EqualTo (
                   "Type 'Remotion.Data.DomainObjects.UnitTests.TestDomain."
                   + "Order' does not contain a constructor with the following signature: (String, String, String, Object)."));
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Assert.That (
           () => Throws.NewObject(),
-          Throws.Exception
+          NUnit.Framework.Throws.Exception
               .With.Message.EqualTo ("Thrown in ThrowException()"));
     }
 
@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Assert.That (
           () => ClassWithWrongConstructor.NewObject(),
-          Throws.InstanceOf<MissingMethodException>()
+          NUnit.Framework.Throws.InstanceOf<MissingMethodException>()
               .With.Message.EqualTo (
                   "Type 'Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe.InterceptedPropertyIntegrationTest+ClassWithWrongConstructor' does not contain a "
                   + "constructor with the following signature: ()."));
@@ -201,7 +201,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Assert.That (
           () => ClassWithWrongConstructor.NewObject (3.0),
-          Throws.InstanceOf<MissingMethodException>()
+          NUnit.Framework.Throws.InstanceOf<MissingMethodException>()
               .With.Message.EqualTo (
                   "Type 'Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe.InterceptedPropertyIntegrationTest+ClassWithWrongConstructor' does not contain a "
                   + "constructor with the following signature: (Double)."));
@@ -275,7 +275,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       Order order = Order.NewObject();
       Assert.That (
           () => Dev.Null = order.NotInMapping,
-          Throws.InvalidOperationException
+          NUnit.Framework.Throws.InvalidOperationException
               .With.Message.EqualTo ("There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?"));
     }
 
@@ -285,7 +285,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       Order order = Order.NewObject();
       Assert.That (
           () => Dev.Null = order.NotInMappingRelated,
-          Throws.InvalidOperationException
+          NUnit.Framework.Throws.InvalidOperationException
               .With.Message.EqualTo ("There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?"));
     }
 
@@ -295,7 +295,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       Order order = Order.NewObject();
       Assert.That (
           () => Dev.Null = order.NotInMappingRelatedObjects,
-          Throws.InvalidOperationException
+          NUnit.Framework.Throws.InvalidOperationException
               .With.Message.EqualTo ("There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?"));
     }
 
@@ -306,7 +306,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       Order order = Order.NewObject();
       Assert.That (
           () => order.NotInMapping = 0,
-          Throws.InvalidOperationException
+          NUnit.Framework.Throws.InvalidOperationException
               .With.Message.EqualTo ("There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?"));
     }
 
@@ -316,7 +316,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       Order order = Order.NewObject();
       Assert.That (
           () => order.NotInMappingRelated = null,
-          Throws.InvalidOperationException
+          NUnit.Framework.Throws.InvalidOperationException
               .With.Message.EqualTo ("There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?"));
     }
 
@@ -339,7 +339,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Assert.That (
           () => AbstractClass.NewObject(),
-          Throws.InvalidOperationException
+          NUnit.Framework.Throws.InvalidOperationException
               .With.Message.EqualTo (
                   "Cannot instantiate type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.AbstractClass' because it is abstract. " 
                   + "For classes with automatic properties, InstantiableAttribute must be used."));
@@ -354,7 +354,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
           () => domainObject.Property = 5,
           NUnit.Framework.Throws.InvalidOperationException
               .With.Message.EqualTo ("There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?"));
-      Assert.That (domainObject.Property, Is.EqualTo (5));
     }
 
     [Test]
