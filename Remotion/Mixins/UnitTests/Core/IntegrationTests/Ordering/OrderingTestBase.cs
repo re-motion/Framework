@@ -66,7 +66,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       return ObjectFactory.Create<T>();
     }
 
-    protected void CheckOrderingException (ActualValueDelegate action, Type targetClass, params Tuple<Type[], string>[] conflictingMixinGroups)
+    protected void CheckOrderingException<T> (ActualValueDelegate<T> action, Type targetClass, params Tuple<Type[], string>[] conflictingMixinGroups)
     {
       var expectedMessage = String.Format (
           "The mixins applied to target class '{0}' cannot be ordered. The following mixin groups require a clear base call ordering, but do not "
@@ -79,7 +79,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       Assert.That (action, Throws.TypeOf<ConfigurationException>().With.Message.EqualTo (expectedMessage));
     }
 
-    protected void CheckCycleException (ActualValueDelegate action, Type targetClass, params Type[] mixinTypes)
+    protected void CheckCycleException<T> (ActualValueDelegate<T> action, Type targetClass, params Type[] mixinTypes)
     {
       var expectedMessage = String.Format (
           "The mixins applied to target class '{0}' cannot be ordered. The following group of mixins contains circular dependencies:{2}{1}.", 
