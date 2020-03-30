@@ -206,10 +206,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void ContainsDomainObject_WithNull ()
     {
-      _collection.ContainsObject (null);
+      Assert.That (
+          () => _collection.ContainsObject (null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -225,10 +226,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Contains_Null ()
     {
-      _collection.Contains (null);
+      Assert.That (
+          () => _collection.Contains (null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -333,12 +335,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = 
-        "Item 1 of parameter 'domainObjects' is null.\r\nParameter name: domainObjects")]
     public void AddRange_ChecksItems ()
     {
       var collection = new DomainObjectCollection();
-      collection.AddRange (new[] { _customer1, null });
+      Assert.That (
+          () => collection.AddRange (new[] { _customer1, null }),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.EqualTo ("Item 1 of parameter 'domainObjects' is null.\r\nParameter name: domainObjects"));
     }
 
     [Test]

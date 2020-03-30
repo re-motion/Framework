@@ -84,12 +84,11 @@ public class TestCreateInstance
   }
 
   [Test]
-  [ExpectedException (typeof (AmbiguousMatchException))]
   public void TestCreateInstanceAmbiguous()
   {
-    PublicClass internalInstance = (PublicClass) PrivateInvoke.CreateInstancePublicCtor (
-        c_assemblyName, c_internalClassName, 
-        null);
+    Assert.That (
+        () => (PublicClass) PrivateInvoke.CreateInstancePublicCtor (c_assemblyName, c_internalClassName, null),
+        Throws.InstanceOf<AmbiguousMatchException>());
   }
 }
 

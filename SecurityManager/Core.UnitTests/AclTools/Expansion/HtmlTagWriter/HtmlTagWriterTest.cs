@@ -117,25 +117,29 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.HtmlTagWriter
 
 
     [Test]
-    [ExpectedException (typeof (XmlException), ExpectedMessage = "Wrong closing tag in HTML: Expected abc but was xyz.")]
     public void NonMatchingEndTagTest ()
     {
       using (var htmlWriter = new SecurityManager.AclTools.Expansion.HtmlTagWriter.HtmlTagWriter (TextWriter.Null, false))
       {
         htmlWriter.Tag("abc");
-        htmlWriter.TagEnd ("xyz");
+        Assert.That (
+            () => htmlWriter.TagEnd("xyz"),
+            Throws.InstanceOf<XmlException>()
+                .With.Message.EqualTo ("Wrong closing tag in HTML: Expected abc but was xyz."));
       }
     }
 
     [Test]
-    [ExpectedException (typeof (XmlException), ExpectedMessage = "Wrong closing tag in HTML: Expected abc but was xyz.")]
     public void ComplexNonMatchingEndTagTest ()
     {
       using (var htmlWriter = new SecurityManager.AclTools.Expansion.HtmlTagWriter.HtmlTagWriter (TextWriter.Null, false))
       {
         htmlWriter.Tag ("abc");
         WriteHtmlPage (htmlWriter);
-        htmlWriter.TagEnd ("xyz");
+        Assert.That (
+            () => htmlWriter.TagEnd ("xyz"),
+            Throws.InstanceOf<XmlException>()
+                .With.Message.EqualTo ("Wrong closing tag in HTML: Expected abc but was xyz."));
       }
     }
 

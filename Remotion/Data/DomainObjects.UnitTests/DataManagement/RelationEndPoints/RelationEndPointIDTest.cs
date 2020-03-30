@@ -72,17 +72,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Create_WithPropertyIdentifier_NullObjectID ()
     {
-      RelationEndPointID.Create (null, _propertyName);
+      Assert.That (
+          () => RelationEndPointID.Create (null, _propertyName),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Create_WithPropertyIdentifier_NullPropertyName ()
     {
-      RelationEndPointID.Create (_objectID, (string) null);
+      Assert.That (
+          () => RelationEndPointID.Create (_objectID, (string) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

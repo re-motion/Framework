@@ -163,14 +163,15 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (TargetException), ExpectedMessage = "Object does not match target type.")]
     public void Invoke_WrongInstanceForMethod_GetExceptionFromReflectionApi ()
     {
       var methodInfo = typeof (ClassWithBaseMember).GetMethod ("BaseMethod");
       var adapter = MethodInfoAdapter.Create(methodInfo);
-      var result = adapter.Invoke ("Test", new object[0]);
 
-      Assert.That (result, Is.Null);
+      Assert.That (
+          () => adapter.Invoke ("Test", new object[0]),
+          Throws.InstanceOf<TargetException>()
+              .With.Message.EqualTo ("Object does not match target type."));
     }
 
     [Test]

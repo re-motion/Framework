@@ -240,8 +240,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "While the OnReferenceInitializing event is executing, this member cannot be used.")]
     public void RaiseReferenceInitializatingEvent_InvokesMixinHook_WhilePropertyAccessForbidden ()
     {
       var mixinInstance = new HookedDomainObjectMixin ();
@@ -249,7 +247,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       using (new MixedObjectInstantiationScope (mixinInstance))
       {
-        _transaction.ExecuteInScope (() => HookedTargetClass.NewObject ()); // indirect call of RaiseReferenceInitializatingEvent
+        Assert.That (
+            () => _transaction.ExecuteInScope (() => HookedTargetClass.NewObject()),  // indirect call of RaiseReferenceInitializatingEvent);
+            Throws.InvalidOperationException
+                .With.Message.EqualTo("While the OnReferenceInitializing event is executing, this member cannot be used."));
       }
     }
 
@@ -317,19 +318,15 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "DomainObject.GetType should not be used.")]
     public void GetType_Throws ()
     {
-      try
-      {
-        Order order = _transaction.ExecuteInScope (() => Order.NewObject ());
-        typeof (DomainObject).GetMethod ("GetType", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Invoke (
-            order, new object[0]);
-      }
-      catch (TargetInvocationException ex)
-      {
-        throw ex.InnerException;
-      }
+      Order order = _transaction.ExecuteInScope (() => Order.NewObject ());
+
+      var targetInvocatioException = Assert.Throws<TargetInvocationException> (
+          () => typeof (DomainObject).GetMethod ("GetType", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+              .Invoke (order, new object[0]));
+      Assert.That (targetInvocatioException.InnerException, Is.InstanceOf<InvalidOperationException>());
+      Assert.That (targetInvocatioException.InnerException?.Message, Is.EqualTo ("DomainObject.GetType should not be used."));
     }
 
     [Test]

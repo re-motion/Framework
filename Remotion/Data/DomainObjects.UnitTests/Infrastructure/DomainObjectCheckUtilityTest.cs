@@ -68,16 +68,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage = "Domain object 'Order|.*|System.Guid' cannot be used in the "
-        + "given transaction as it was loaded or created in another transaction. Enter a scope for the transaction, or call EnlistInTransaction to "
-        + "enlist the object in the transaction. (If no transaction was explicitly given, ClientTransaction.Current was used.)",
-          MatchType = MessageMatch.Regex)]
     public void CheckIfRightTransaction_Fails ()
     {
       var order = Order.NewObject ();
       using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
       {
-        DomainObjectCheckUtility.CheckIfRightTransaction (order, ClientTransaction.Current);
+        Assert.That (
+            () => DomainObjectCheckUtility.CheckIfRightTransaction (order, ClientTransaction.Current),
+            Throws.InstanceOf<ClientTransactionsDifferException>()
+                .With.Message.Matches (
+                    "Domain object 'Order|.*|System.Guid' cannot be used in the "
+                    + "given transaction as it was loaded or created in another transaction. Enter a scope for the transaction, or call EnlistInTransaction to "
+                    + "enlist the object in the transaction. (If no transaction was explicitly given, ClientTransaction.Current was used.)"));
       }
     }
 

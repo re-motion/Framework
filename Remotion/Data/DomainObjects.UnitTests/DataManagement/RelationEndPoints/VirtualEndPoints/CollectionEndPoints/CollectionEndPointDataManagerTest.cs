@@ -292,20 +292,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The original collection already contains a domain object with ID 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid'.")]
     public void RegisterOriginalItemWithoutEndPoint_AlreadyRegisteredWithEndPoint ()
     {
       _dataManager.RegisterOriginalOppositeEndPoint (_domainObjectEndPoint2);
-      try
-      {
-        _dataManager.RegisterOriginalItemWithoutEndPoint (_domainObject2);
-      }
-      catch
-      {
-        Assert.That (_dataManager.OriginalItemsWithoutEndPoints, Has.No.Member(_domainObject2));
-        throw;
-      }
+
+      Assert.That (
+          () => _dataManager.RegisterOriginalItemWithoutEndPoint (_domainObject2),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The original collection already contains a domain object with ID 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid'."));
+
+      Assert.That (_dataManager.OriginalItemsWithoutEndPoints, Has.No.Member(_domainObject2));
+
     }
 
     [Test]
@@ -333,21 +331,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The domain object with ID 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' has not been registered as an item without end-point.")]
     public void UnregisterOriginalItemWithoutEndPoint_RegisteredWithEndPoint ()
     {
       _dataManager.RegisterOriginalOppositeEndPoint (_domainObjectEndPoint2);
 
-      try
-      {
-        _dataManager.UnregisterOriginalItemWithoutEndPoint (_domainObject2);
-      }
-      catch
-      {
-        Assert.That (_dataManager.OriginalCollectionData.ToArray (), Has.Member(_domainObject2));
-        throw;
-      }
+      Assert.That (
+          () => _dataManager.UnregisterOriginalItemWithoutEndPoint (_domainObject2),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The domain object with ID 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' has not been registered as an item without end-point."));
+      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Has.Member(_domainObject2));
     }
 
     [Test]

@@ -181,30 +181,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     }
     
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The mixin configuration for domain object type "
-        +
-        "'Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.StubStorageTargetClassForPersistentMixin' was changed after the mapping "
-        + "information was built.", MatchType = MessageMatch.Contains)]
     public void DynamicChangeInPersistentMixinConfigurationThrowsInNewObject ()
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        StubStorageTargetClassForPersistentMixin.NewObject();
+        Assert.That (
+            () => StubStorageTargetClassForPersistentMixin.NewObject(),
+            Throws.InstanceOf<MappingException>()
+                .With.Message.Contains (
+                    "The mixin configuration for domain object type "
+                    + "'Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.StubStorageTargetClassForPersistentMixin' was changed after the mapping "
+                    + "information was built."));
       }
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The mixin configuration for domain object type "
-        +
-        "'Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.StubStorageTargetClassForPersistentMixin' was changed after the mapping "
-        + "information was built.", MatchType = MessageMatch.Contains)]
     public void DynamicChangeInPersistentMixinConfigurationThrowsInGetObject ()
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        new ObjectID(typeof (StubStorageTargetClassForPersistentMixin), 13).GetObject<StubStorageTargetClassForPersistentMixin> ();
+        Assert.That (
+            () => new ObjectID(typeof (StubStorageTargetClassForPersistentMixin), 13).GetObject<StubStorageTargetClassForPersistentMixin>(),
+            Throws.InstanceOf<MappingException>()
+                .With.Message.Contains (
+                    "The mixin configuration for domain object type "
+                    + "'Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.StubStorageTargetClassForPersistentMixin' was changed after the mapping "
+                    + "information was built."));
       }
     }
 

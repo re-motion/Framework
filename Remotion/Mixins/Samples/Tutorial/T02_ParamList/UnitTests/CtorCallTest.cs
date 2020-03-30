@@ -25,28 +25,28 @@ namespace Remotion.Mixins.Samples.Tutorial.T02_ParamList.UnitTests
   [TestFixture]
   public class CtorCallTest
   {
-    [Test]
-    [ExpectedException (typeof (MissingMethodException))] // looks for a ctor with five string arguments
+    [Test] // looks for a ctor with five string arguments
     public void Activator_BrokenCalls_ArrayPassed ()
     {
-      var theObject1 = (TheClass) Activator.CreateInstance (typeof (TheClass), new[] { "my", "home", "is", "my", "castle" });
-      Assert.That (theObject1.ConstructionInfo, Is.EqualTo ("Many strings: my, home, is, my, castle"));
+      Assert.That (
+          () => (TheClass) Activator.CreateInstance (typeof (TheClass), new[] { "my", "home", "is", "my", "castle" }),
+          Throws.InstanceOf<MissingMethodException>());
     }
 
-    [Test]
-    [ExpectedException (typeof (MissingMethodException))] // looks for a default ctor
+    [Test] // looks for a default ctor
     public void Activator_BrokenCalls_SingleNullPassed ()
     {
-      var theObject1 = (TheClass) Activator.CreateInstance (typeof (TheClass), null);
-      Assert.That (theObject1.ConstructionInfo, Is.EqualTo ("Not even one string."));
+      Assert.That (
+          () => (TheClass) Activator.CreateInstance (typeof (TheClass), null),
+          Throws.InstanceOf<MissingMethodException>());
     }
 
     [Test]
-    [ExpectedException (typeof (AmbiguousMatchException))]
     public void Activator_BrokenCalls_AmbiguousNullPassed ()
     {
-      var theObject1 = (TheClass) Activator.CreateInstance (typeof (TheClass), new object[] { null });
-      Assert.That (theObject1.ConstructionInfo, Is.EqualTo ("One null string"));
+      Assert.That (
+          () => (TheClass) Activator.CreateInstance (typeof (TheClass), new object[] { null }),
+          Throws.InstanceOf<AmbiguousMatchException>());
     }
 
     [Test]

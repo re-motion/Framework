@@ -283,8 +283,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "A SecurableClassDefinition only supports a single StatelessAccessControlList at a time.")]
     public void CreateStatelessAccessControlList_Twice ()
     {
       using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
@@ -296,7 +294,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
           Assert.That (classDefinition.State.IsUnchanged, Is.True);
 
           classDefinition.CreateStatelessAccessControlList ();
-          classDefinition.CreateStatelessAccessControlList ();
+          Assert.That (
+              () => classDefinition.CreateStatelessAccessControlList(),
+              Throws.InvalidOperationException
+                  .With.Message.EqualTo ("A SecurableClassDefinition only supports a single StatelessAccessControlList at a time."));
         }
       }
     }
@@ -549,9 +550,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     }
 
     [Test]
-    [ExpectedException (typeof (ConstraintViolationException), ExpectedMessage =
-        "The securable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination "
-        + "that has been defined twice.")]
     public void Commit_TwoStateCombinations ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
@@ -563,7 +561,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         testHelper.CreateStateCombination (orderClass, paymentProperty[EnumWrapper.Get (PaymentState.Paid).Name]);
         testHelper.CreateStateCombination (orderClass, paymentProperty[EnumWrapper.Get (PaymentState.None).Name]);
 
-        testHelper.Transaction.Commit ();
+        Assert.That (
+            () => testHelper.Transaction.Commit(),
+            Throws.InstanceOf<ConstraintViolationException>()
+                .With.Message.EqualTo (
+                    "The securable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination "
+                    + "that has been defined twice."));
       }
     }
 
@@ -617,9 +620,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     }
 
     [Test]
-    [ExpectedException (typeof (ConstraintViolationException), ExpectedMessage =
-        "The securable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination "
-        + "that does not match the class's properties.")]
     public void Commit_EmptyStateCombinationInClassWithStateProperties ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
@@ -629,7 +629,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         testHelper.CreateOrderStateAndPaymentStateCombinations (orderClass);
         testHelper.CreateStateCombination (orderClass);
 
-        testHelper.Transaction.Commit ();
+        Assert.That (
+            () => testHelper.Transaction.Commit (),
+            Throws.InstanceOf<ConstraintViolationException>()
+                .With.Message.EqualTo (
+                    "The securable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination "
+                    + "that does not match the class's properties."));
       }
     }
 
@@ -651,9 +656,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "A state property with the name 'Invalid' is not defined for the secureable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order'."
-        + "\r\nParameter name: propertyName")]
     public void GetStatePropertyTest_InvalidName ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
@@ -661,7 +663,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
 
-        Assert.That (orderClass.GetStateProperty ("Invalid"), Is.Null);
+        Assert.That (
+            () => orderClass.GetStateProperty ("Invalid"),
+            Throws.ArgumentException
+                .With.Message.EqualTo (
+                    "A state property with the name 'Invalid' is not defined for the secureable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order'."
+                    + "\r\nParameter name: propertyName"));
       }
     }
 

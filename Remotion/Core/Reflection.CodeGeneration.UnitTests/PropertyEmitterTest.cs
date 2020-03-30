@@ -157,23 +157,25 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException),
-        ExpectedMessage = "Due to limitations in Reflection.Emit, property accessors cannot be set to null.", MatchType = MessageMatch.Contains)]
     public void GetMethodCannotBeSetToNull()
     {
       CustomPropertyEmitter property = _classEmitter.CreateProperty ("GetMethodCannotBeSetToNull", PropertyKind.Static, typeof (string));
       property.CreateGetMethod ();
-      property.GetMethod = null;
+      Assert.That (
+          () => property.GetMethod = null,
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.Contains ("Due to limitations in Reflection.Emit, property accessors cannot be set to null."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException),
-        ExpectedMessage = "Due to limitations in Reflection.Emit, property accessors cannot be set to null.", MatchType = MessageMatch.Contains)]
     public void SetMethodCannotBeSetToNull ()
     {
       CustomPropertyEmitter property = _classEmitter.CreateProperty ("SetMethodCannotBeSetToNull", PropertyKind.Static, typeof (string));
       property.CreateSetMethod ();
-      property.SetMethod = null;
+      Assert.That (
+          () => property.SetMethod = null,
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.Contains ("Due to limitations in Reflection.Emit, property accessors cannot be set to null."));
     }
 
     [Test]

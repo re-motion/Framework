@@ -59,10 +59,11 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void RunTestFixtures_ArgumentIsNull_ThrowsException ()
     {
-      _sandboxTestRunner.RunTestFixtures (null);
+      Assert.That (
+          () => _sandboxTestRunner.RunTestFixtures (null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -106,10 +107,11 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void RunTestFixture_ArgumentIsNull_ThrowsException ()
     {
-      _sandboxTestRunner.RunTestFixture (null);
+      Assert.That (
+          () => _sandboxTestRunner.RunTestFixture (null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

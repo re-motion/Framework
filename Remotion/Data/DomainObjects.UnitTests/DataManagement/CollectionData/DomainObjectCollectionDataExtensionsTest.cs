@@ -69,11 +69,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage =
-        "Item 1 of parameter 'domainObjects' is null.\r\nParameter name: domainObjects")]
     public void AddRangeAndCheckItems_NullItem ()
     {
-      _data.AddRangeAndCheckItems (new[] { _order3, null }, typeof (Order));
+      Assert.That (
+          () => _data.AddRangeAndCheckItems (new[] { _order3, null }, typeof (Order)),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.EqualTo ("Item 1 of parameter 'domainObjects' is null.\r\nParameter name: domainObjects"));
     }
 
     [Test]

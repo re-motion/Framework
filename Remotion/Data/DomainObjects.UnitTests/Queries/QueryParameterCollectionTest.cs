@@ -95,17 +95,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void ContainsNullQueryParameter ()
     {
-      _collection.Contains ((QueryParameter) null);
+      Assert.That (
+          () => _collection.Contains ((QueryParameter) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void ContainsNullQueryParameterName ()
     {
-      _collection.Contains ((string) null);
+      Assert.That (
+          () => _collection.Contains ((string) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

@@ -32,21 +32,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The scalar query 'QueryID' must not specify a collectionType.\r\nParameter name: collectionType")]
     public void InitializeScalarQueryWithCollectionType ()
     {
-      QueryDefinition definition = 
-          new QueryDefinition ("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.Scalar, typeof (DomainObjectCollection));
+      Assert.That (
+          () => new QueryDefinition ("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.Scalar, typeof (DomainObjectCollection)),
+          Throws.ArgumentException
+              .With.Message.EqualTo ("The scalar query 'QueryID' must not specify a collectionType.\r\nParameter name: collectionType"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The collectionType of query 'QueryID' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.\r\n"
-        + "Parameter name: collectionType")]
     public void InitializeInvalidCollectionType ()
     {
-      QueryDefinition definition = new QueryDefinition ("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.Collection, this.GetType ());
+      Assert.That (
+          () => new QueryDefinition ("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.Collection, this.GetType ()),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The collectionType of query 'QueryID' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.\r\n"
+                  + "Parameter name: collectionType"));
     }
 
     [Test]

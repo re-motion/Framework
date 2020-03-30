@@ -124,12 +124,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     }
     
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "mixin", MatchType = MessageMatch.Contains)]
     public void CreateObjectReference_ValidatesMixinConfiguration ()
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        _domainObjectCreator.CreateObjectReference (_targetClassForPersistentMixinInitializationContext, _transaction);
+        Assert.That (
+            () => _domainObjectCreator.CreateObjectReference (_targetClassForPersistentMixinInitializationContext, _transaction),
+            Throws.InstanceOf<MappingException>()
+                .With.Message.Contains ("mixin"));
       }
     }
 
@@ -175,12 +177,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "mixin", MatchType = MessageMatch.Contains)]
     public void CreateNewObject_ValidatesMixinConfiguration ()
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        _domainObjectCreator.CreateNewObject (_targetClassForPersistentMixinInitializationContext, ParamList.Empty, _transaction);
+        Assert.That (
+            () => _domainObjectCreator.CreateNewObject (_targetClassForPersistentMixinInitializationContext, ParamList.Empty, _transaction),
+            Throws.InstanceOf<MappingException>()
+                .With.Message.Contains ("mixin"));
       }
     }
 

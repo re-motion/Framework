@@ -30,11 +30,12 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
   public class DebugCheckNotNullOrEmpty
   {
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_NullString ()
     {
       const string value = null;
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value);
+      Assert.That (
+          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

@@ -163,10 +163,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void ContainsNullPropertyDefinition ()
     {
-      _collection.Contains ((PropertyDefinition) null);
+      Assert.That (
+          () => _collection.Contains ((PropertyDefinition) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

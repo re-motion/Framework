@@ -57,14 +57,14 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
     }
 
     [Test]
-    [ExpectedException (typeof (SecurityException), ExpectedMessage = 
-        @"^Request for the permission of type 'System\.Security\.Permissions\.EnvironmentPermission.*' failed\.$",
-        MatchType = MessageMatch.Regex)]
     public void ExecuteCodeWhichIsNotAllowedInMediumTrust ()
     {
       using (var sandbox = Sandbox.CreateSandbox (_mediumTrustPermissions, new Assembly[0]))
       {
-        sandbox.AppDomain.DoCallBack (DangerousMethodRequiringPermission);
+        Assert.That (
+            () => sandbox.AppDomain.DoCallBack (DangerousMethodRequiringPermission),
+            Throws.InstanceOf<SecurityException>()
+                .With.Message.Matches (@"^Request for the permission of type 'System\.Security\.Permissions\.EnvironmentPermission.*' failed\.$"));
       }
     }
 

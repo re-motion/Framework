@@ -526,7 +526,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
 
     [Test]
     [Ignore]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The WrappedControl property can only be accessed after ReplaceAndWrap was invoked.")]
+    // [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The WrappedControl property can only be accessed after ReplaceAndWrap was invoked.")]
     public void GetWrappedControl_BeforeReplaceAndWrap ()
     {
       

@@ -35,26 +35,33 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_NullICollection ()
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("arg", (ICollection) null);
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullOrItemsNull ("arg", (ICollection) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Item 0 of parameter 'arg' is null.\r\nParameter name: arg")]
     public void Fail_zItemNullICollection ()
     {
       ArrayList list = new ArrayList();
       list.Add (null);
-      ArgumentUtility.CheckNotNullOrItemsNull ("arg", list);
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullOrItemsNull ("arg", list),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.EqualTo (
+                  "Item 0 of parameter 'arg' is null.\r\nParameter name: arg"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Item 0 of parameter 'arg' is null.\r\nParameter name: arg")]
     public void Fail_zItemNullIEnumerable ()
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("arg", GetEnumerableWithNullValue());
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullOrItemsNull ("arg", GetEnumerableWithNullValue()),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.EqualTo (
+                  "Item 0 of parameter 'arg' is null.\r\nParameter name: arg"));
     }
 
     private IEnumerable GetEnumerableWithNullValue ()

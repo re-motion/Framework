@@ -27,11 +27,12 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
   public class CheckNotNullOrEmpty
   {
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_NullString ()
     {
       const string value = null;
-      ArgumentUtility.CheckNotNullOrEmpty ("arg", value);
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullOrEmpty ("arg", value),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

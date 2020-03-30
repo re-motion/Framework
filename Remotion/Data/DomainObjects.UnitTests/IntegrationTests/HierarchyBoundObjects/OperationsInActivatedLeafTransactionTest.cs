@@ -129,13 +129,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException))]
     public void SetRelatedObject_FailsWithItemFromOtherHierarchy ()
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
         var orderTicketFromOtherTransaction = ClientTransaction.CreateRootTransaction ().ExecuteInScope (() => OrderTicket.NewObject ());
-        _order1LoadedInMiddleTransaction.OrderTicket = orderTicketFromOtherTransaction;
+        Assert.That (
+            () => _order1LoadedInMiddleTransaction.OrderTicket = orderTicketFromOtherTransaction,
+            Throws.InstanceOf<ClientTransactionsDifferException>());
       }
     }
 
@@ -156,13 +157,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException))]
     public void InsertRelatedObject_FailsWithItemFromOtherHierarchy ()
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
         var orderItemFromOtherHierarchy = ClientTransaction.CreateRootTransaction().ExecuteInScope (() => OrderItem.NewObject());
-        _order1LoadedInMiddleTransaction.OrderItems.Add (orderItemFromOtherHierarchy);
+        Assert.That (
+            () => _order1LoadedInMiddleTransaction.OrderItems.Add (orderItemFromOtherHierarchy),
+            Throws.InstanceOf<ClientTransactionsDifferException>());
       }
     }
 

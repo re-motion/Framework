@@ -49,12 +49,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     }
 
     [Test]
-    [ExpectedException (typeof (ValidationException))]
     public void InvalidMixinConfiguration ()
     {
       using (MixinConfiguration.BuildNew().ForClass (typeof (ClassWithAllDataTypes)).AddMixins (typeof (MixinWithAccessToDomainObjectProperties<Official>)).EnterScope())
       {
-        TypeFactory.GetConcreteType (typeof (ClassWithAllDataTypes));
+        Assert.That (
+            () => TypeFactory.GetConcreteType (typeof (ClassWithAllDataTypes)),
+            Throws.InstanceOf<ValidationException>());
       }
     }
 

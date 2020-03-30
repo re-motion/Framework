@@ -236,21 +236,23 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException),
-        ExpectedMessage = "Event accessors cannot be set to null.", MatchType = MessageMatch.Contains)]
     public void AddMethodCannotBeSetToNull()
     {
       CustomEventEmitter eventEmitter = _classEmitter.CreateEvent ("AddMethodCannotBeSetToNull", EventKind.Static, typeof (string));
-      eventEmitter.AddMethod = null;
+      Assert.That (
+          () => eventEmitter.AddMethod = null,
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.Contains ("Event accessors cannot be set to null."));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException),
-       ExpectedMessage = "Event accessors cannot be set to null.", MatchType = MessageMatch.Contains)]
     public void RemoveMethodCannotBeSetToNull ()
     {
       CustomEventEmitter eventEmitter = _classEmitter.CreateEvent ("RemoveMethodCannotBeSetToNull", EventKind.Static, typeof (string));
-      eventEmitter.RemoveMethod = null;
+      Assert.That (
+          () => eventEmitter.RemoveMethod = null,
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.Contains ("Event accessors cannot be set to null."));
     }
 
     [Test]

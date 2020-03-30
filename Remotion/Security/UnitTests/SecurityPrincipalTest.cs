@@ -75,10 +75,13 @@ namespace Remotion.Security.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Value cannot be null.\r\nParameter name: user")]
     public void Initialize_WithoutGroup ()
     {
-      new SecurityPrincipal (null, null, null, null);
+      Assert.That (
+          () => new SecurityPrincipal (null, null, null, null),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.EqualTo (
+                  "Value cannot be null.\r\nParameter name: user"));
     }
 
     [Test]

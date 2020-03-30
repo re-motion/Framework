@@ -111,10 +111,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void IsIdentityTypeSupportedNull()
     {
-      _definition.IsIdentityTypeSupported (null);
+      Assert.That (
+          () => _definition.IsIdentityTypeSupported (null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

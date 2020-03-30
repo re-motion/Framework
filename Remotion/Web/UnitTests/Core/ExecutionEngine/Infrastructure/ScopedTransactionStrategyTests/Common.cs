@@ -206,21 +206,17 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Unregistering a child transaction strategy that is different from the presently registered strategy is not supported.")]
     public void UnregisterChildTransactionStrategy_TryingToUnregisterDifferentChildThrows ()
     {
       SetChild (_strategy, ChildTransactionStrategyMock);
       Assert.That (_strategy.Child, Is.SameAs (ChildTransactionStrategyMock));
 
-      try
-      {
-        _strategy.UnregisterChildTransactionStrategy (NullTransactionStrategy.Null);
-      }
-      finally
-      {
-        Assert.That (_strategy.Child, Is.SameAs (ChildTransactionStrategyMock));
-      }
+      Assert.That (
+          () => _strategy.UnregisterChildTransactionStrategy (NullTransactionStrategy.Null),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Unregistering a child transaction strategy that is different from the presently registered strategy is not supported."));
+
+      Assert.That (_strategy.Child, Is.SameAs (ChildTransactionStrategyMock));
     }
   }
 }

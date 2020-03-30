@@ -64,24 +64,19 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (XmlSchemaValidationException))]
     public void WithNamespaceAndSchemaSet_HavingInvalidDataTypeInXmlFragment ()
     {
-      try
-      {
-        XmlSerializationUtility.DeserializeUsingSchema (
-            GetReaderForDefaultFragment ("data"),
-            typeof (SampleClass),
-            "http://www.re-motion.org/core/unitTests",
-            GetXmlSchemaSet());
-      }
-      catch (XmlSchemaValidationException e)
-      {
+      Assert.That (
+          () => XmlSerializationUtility.DeserializeUsingSchema (
+              GetReaderForDefaultFragment ("data"),
+              typeof (SampleClass),
+              "http://www.re-motion.org/core/unitTests",
+              GetXmlSchemaSet()),
+          Throws.InstanceOf<XmlSchemaValidationException>()
+              .With.Property(nameof(XmlSchemaValidationException.SourceUri)).EqualTo("test.xml"));
+
         // Assert.AreEqual (2, e.LineNumber);
         // Assert.AreEqual (26, e.LinePosition);
-        Assert.That (e.SourceUri, Is.EqualTo ("test.xml"));
-        throw;
-      }
     }
 
     private XmlSchemaSet GetXmlSchemaSet()

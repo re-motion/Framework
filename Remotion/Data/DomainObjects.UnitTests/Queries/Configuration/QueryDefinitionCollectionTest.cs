@@ -70,10 +70,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void ContainsNullQueryDefinition ()
     {
-      _collection.Contains ((QueryDefinition) null);
+      Assert.That (
+          () => _collection.Contains ((QueryDefinition) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -125,7 +126,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (DuplicateQueryDefinitionException), ExpectedMessage = "The query with ID 'id1' has a duplicate.")]
     public void Merge_ThrowsOnDuplicates ()
     {
       QueryDefinition query1 = new QueryDefinition ("id1", TestDomainStorageProviderDefinition, "bla", QueryType.Collection);
@@ -137,12 +137,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       QueryDefinitionCollection target = new QueryDefinitionCollection ();
       target.Add (query2);
 
-      target.Merge (source);
+      Assert.That (
+          () => target.Merge (source),
+          Throws.InstanceOf<DuplicateQueryDefinitionException>()
+              .With.Message.EqualTo ("The query with ID 'id1' has a duplicate."));
 
       Assert.That (target.Count, Is.EqualTo (1));
       Assert.That (target[0], Is.SameAs (query2));
-
-      Assert.Fail ();
     }
   }
 }

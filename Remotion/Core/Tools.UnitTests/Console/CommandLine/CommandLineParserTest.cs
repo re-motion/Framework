@@ -248,35 +248,25 @@ public class CommandLineParserTest
   }
 
   [Test]
-  [ExpectedException (typeof (InvalidCommandLineArgumentValueException))]
   public void TestEnumAmbiguous ()
   {
-    try
-    {
-      CommandLineEnumArgument enumArg = new CommandLineEnumArgument (false, typeof (IncrementalTestOptions));
-      PrivateInvoke.InvokeNonPublicMethod (enumArg, "SetStringValue", "n");
+    CommandLineEnumArgument enumArg = new CommandLineEnumArgument (false, typeof (IncrementalTestOptions));
+
+    Assert.That (
+        () => PrivateInvoke.InvokeNonPublicMethod (enumArg, "SetStringValue", "n"),
+        Throws.InstanceOf<InvalidCommandLineArgumentValueException>()
+            .With.Message.Contains("Ambiguous"));
     }
-    catch (InvalidCommandLineArgumentValueException e)
-    {
-      Assert.That (e.Message.IndexOf ("Ambiguous") >= 0, Is.True);
-      throw e;
-    }
-  }
 
   [Test]
-  [ExpectedException (typeof (InvalidCommandLineArgumentValueException))]
   public void TestEnumInvalid ()
   {
-    try
-    {
       CommandLineEnumArgument enumArg = new CommandLineEnumArgument (false, typeof (IncrementalTestOptions));
-      PrivateInvoke.InvokeNonPublicMethod (enumArg, "SetStringValue", "invalidvalue");
-    }
-    catch (InvalidCommandLineArgumentValueException e)
-    {
-      Assert.That (e.Message.IndexOf ("Use one of") >= 0, Is.True);
-      throw e;
-    }
+
+      Assert.That (
+       () => PrivateInvoke.InvokeNonPublicMethod (enumArg, "SetStringValue", "invalidvalue"),
+       Throws.InstanceOf<InvalidCommandLineArgumentValueException>()
+           .With.Message.Contains("Use one of"));
   }
 }
 

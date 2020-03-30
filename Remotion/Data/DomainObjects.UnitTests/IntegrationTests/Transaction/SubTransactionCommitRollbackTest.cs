@@ -45,13 +45,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The transaction can no longer be used because it has been discarded.")]
     public void DiscardRendersSubTransactionUnusable ()
     {
       _subTransaction.Discard ();
       using (_subTransaction.EnterNonDiscardingScope())
       {
-        Order.NewObject ();
+        Assert.That (
+            () => Order.NewObject (),
+            Throws.InvalidOperationException
+                .With.Message.EqualTo ("The transaction can no longer be used because it has been discarded."));
       }
     }
 
@@ -80,17 +82,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (
-        typeof (ObjectInvalidException), 
-        ExpectedMessage = "Object 'Order.*' is invalid in this transaction.", 
-        MatchType = MessageMatch.Regex)]
     public void RollbackResetsNewedObjects ()
     {
       using (_subTransaction.EnterDiscardingScope ())
       {
         Order order = Order.NewObject();
         _subTransaction.Rollback();
-        Dev.Null = order.OrderNumber;
+        Assert.That (
+            () => Dev.Null = order.OrderNumber,
+            Throws.InstanceOf<ObjectInvalidException>()
+                .With.Message.Matches ("Object 'Order.*' is invalid in this transaction."));
       }
     }
 

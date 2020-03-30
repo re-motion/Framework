@@ -208,7 +208,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException))]
     public void UniqueIdentifier_SameIdentifierTwice ()
     {
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
@@ -220,7 +219,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
         Position position2 = testHelper.CreatePosition ("Position2");
         position2.UniqueIdentifier = "UID";
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        Assert.That (
+            () => ClientTransactionScope.CurrentTransaction.Commit(),
+            Throws.InstanceOf<RdbmsProviderException>());
       }
     }
 

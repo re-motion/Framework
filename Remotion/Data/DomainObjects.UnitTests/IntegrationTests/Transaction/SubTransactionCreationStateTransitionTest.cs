@@ -127,8 +127,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException),
-        ExpectedMessage = "Object 'Order|90e26c86-611f-4735-8d1b-e1d0918515c2|System.Guid' is invalid in this transaction.")]
     public void RootToSubDeletedThrowsWhenReloadingTheObject ()
     {
       Order obj = GetDeleted ();
@@ -136,7 +134,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.That (obj.State.IsInvalid, Is.True);
-        id.GetObject<Order> ();
+        Assert.That (
+            () => id.GetObject<Order> (),
+            Throws.InstanceOf<ObjectInvalidException>()
+                .With.Message.EqualTo ("Object 'Order|90e26c86-611f-4735-8d1b-e1d0918515c2|System.Guid' is invalid in this transaction."));
       }
     }
 

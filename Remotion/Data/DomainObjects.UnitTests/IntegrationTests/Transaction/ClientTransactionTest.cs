@@ -229,13 +229,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread.")]
     public void NoAutoInitializationOfCurrent ()
     {
       using (ClientTransactionScope.EnterNullScope())
       {
         Assert.That (ClientTransactionScope.HasCurrentTransaction, Is.False);
-        Dev.Null = ClientTransactionScope.CurrentTransaction;
+        Assert.That(
+            () => Dev.Null = ClientTransactionScope.CurrentTransaction,
+            Throws.InvalidOperationException
+                .With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
       }
     }
 

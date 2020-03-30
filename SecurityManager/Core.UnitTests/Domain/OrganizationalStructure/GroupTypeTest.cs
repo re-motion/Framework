@@ -83,8 +83,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The GroupType 'groupType 1' is still assigned to at least one group. Please update or delete the dependent groups before proceeding.")]
     public void DeleteGroupType_WithGroup ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
@@ -94,7 +92,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
         Group group = Group.FindByTenant (tenant.GetHandle()).Where (g => g.Name == "parentGroup0").Single ();
         GroupType groupType = group.GroupType;
 
-        groupType.Delete ();
+        Assert.That (
+            () => groupType.Delete(), 
+            Throws.InvalidOperationException
+                .With.Message.EqualTo (
+                    "The GroupType 'groupType 1' is still assigned to at least one group. Please update or delete the dependent groups before proceeding."));
       }
     }
 

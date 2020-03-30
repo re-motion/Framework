@@ -133,13 +133,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread or "
-         + "the referencing object.")]
     public void SearchAvailableObjects_NoTransaction ()
     {
       using (ClientTransactionScope.EnterNullScope ())
       {
-        _service.Search (null, _property, new DefaultSearchArguments (_stubbedQueryID));
+        Assert.That (
+            () => _service.Search (null, _property, new DefaultSearchArguments (_stubbedQueryID)),
+            Throws.InvalidOperationException
+                .With.Message.EqualTo (
+                    "No ClientTransaction has been associated with the current thread or "
+                    + "the referencing object."));
       }
     }
 

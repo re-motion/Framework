@@ -65,13 +65,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Collection was modified during enumeration.")]
     public void GetEnumerator_Generic_ChecksVersion ()
     {
       _collection.Add (_dataContainer);
 
-      foreach (var dataContainer in _collection)
-        _collection.Remove (dataContainer.ID);
+      Assert.That (
+          () =>
+          {
+            foreach (var dataContainer in _collection)
+              _collection.Remove (dataContainer.ID);
+          },
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Collection was modified during enumeration."));
     }
 
     [Test]

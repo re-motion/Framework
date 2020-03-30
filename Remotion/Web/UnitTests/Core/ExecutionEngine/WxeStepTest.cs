@@ -185,10 +185,11 @@ public class WxeStepTest: WxeTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentNullException))]
   public void SetParentStepNull()
   {
-    _standAloneStep.SetParentStep (null);
+    Assert.That (
+        () => _standAloneStep.SetParentStep (null),
+        Throws.InstanceOf<ArgumentNullException>());
   }
 
   [Test]

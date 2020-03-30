@@ -40,39 +40,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
-        "Error while executing SQL command: Operand type clash: uniqueidentifier is incompatible with datetime")]
     public void LoadDataContainerWithInvalidIDType ()
     {
       ObjectID id = new ObjectID(typeof (ClassWithKeyOfInvalidType), new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
 
-      try
-      {
-        DataContainer container = Provider.LoadDataContainer (id).LocatedObject;
-      }
-      catch (RdbmsProviderException e)
-      {
-        Assert.That (e.InnerException.GetType (), Is.EqualTo (typeof (SqlException)));
-        throw;
-      }
+      var rdbmsProviderException = Assert.Throws<RdbmsProviderException> (
+          () =>
+          {
+            DataContainer container = Provider.LoadDataContainer (id).LocatedObject;
+          });
+      Assert.That(rdbmsProviderException.Message, Is.EqualTo("Error while executing SQL command: Operand type clash: uniqueidentifier is incompatible with datetime"));
+      Assert.That (rdbmsProviderException.InnerException.GetType(), Is.EqualTo (typeof (SqlException)));
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
-        "Error while executing SQL command: Invalid column name 'ID'.\r\nInvalid column name 'ID'.")]
     public void LoadDataContainerWithoutIDColumn ()
     {
       ObjectID id = new ObjectID(typeof (ClassWithoutIDColumn), new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
-
-      try
-      {
-        DataContainer container = Provider.LoadDataContainer (id).LocatedObject;
-      }
-      catch (RdbmsProviderException e)
-      {
-        Assert.That (e.InnerException.GetType (), Is.EqualTo (typeof (SqlException)));
-        throw;
-      }
+      
+      var rdbmsProviderException = Assert.Throws<RdbmsProviderException> (
+          () =>
+          {
+            DataContainer container = Provider.LoadDataContainer (id).LocatedObject;
+          });
+      Assert.That(rdbmsProviderException.Message, Is.EqualTo("Error while executing SQL command: Invalid column name 'ID'.\r\nInvalid column name 'ID'."));
+      Assert.That (rdbmsProviderException.InnerException.GetType (), Is.EqualTo (typeof (SqlException)));
     }
 
     [Test]

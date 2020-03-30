@@ -108,47 +108,38 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     }
 
     [Test]
-    [ExpectedException(typeof (ArgumentOutOfRangeException), ExpectedMessage = "An event id of value 65536 is not supported. Valid event ids must be within a range of 0 and 65535.\r\nParameter name: eventID")]
     public void Log_WithEventIDGreaterThan0xFFFF ()
     {
       _logger.Repository.Threshold = Level.Info;
 
-      try
-      {
-        _log.Log (LogLevel.Info, 0x10000, (object) "The message.", (Exception) null);
-      }
-      catch (Exception)
-      {
-        Assert.That (_testEventLog.Entries.Count, Is.EqualTo (1));
-        EventLogEntry eventLogEntry = _testEventLog.Entries[0];
-        Assert.That (eventLogEntry.EntryType, Is.EqualTo (EventLogEntryType.Error));
-        Assert.That (eventLogEntry.Message, Is.EqualTo ("Failure during logging of message:\r\nThe message.\r\nEvent ID: 65536\r\n\r\n"));
-        Assert.That (eventLogEntry.InstanceId, Is.EqualTo (0xFFFF));
-
-        throw;
-      }
+      Assert.That (
+          () => _log.Log (LogLevel.Info, 0x10000, (object) "The message.", (Exception) null),
+          Throws.InstanceOf<ArgumentOutOfRangeException>()
+              .With.Message.EqualTo (
+                  "An event id of value 65536 is not supported. Valid event ids must be within a range of 0 and 65535.\r\nParameter name: eventID"));
+      Assert.That (_testEventLog.Entries.Count, Is.EqualTo (1));
+      EventLogEntry eventLogEntry = _testEventLog.Entries[0];
+      Assert.That (eventLogEntry.EntryType, Is.EqualTo (EventLogEntryType.Error));
+      Assert.That (eventLogEntry.Message, Is.EqualTo ("Failure during logging of message:\r\nThe message.\r\nEvent ID: 65536\r\n\r\n"));
+      Assert.That (eventLogEntry.InstanceId, Is.EqualTo (0xFFFF));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException), ExpectedMessage = "An event id of value -1 is not supported. Valid event ids must be within a range of 0 and 65535.\r\nParameter name: eventID")]
     public void Log_WithEventIDLessThanZero ()
     {
       _logger.Repository.Threshold = Level.Info;
 
-      try
-      {
-        _log.Log (LogLevel.Info, -1, (object) "The message.", (Exception) null);
-      }
-      catch (Exception)
-      {
-        Assert.That (_testEventLog.Entries.Count, Is.EqualTo (1));
-        EventLogEntry eventLogEntry = _testEventLog.Entries[0];
-        Assert.That (eventLogEntry.EntryType, Is.EqualTo (EventLogEntryType.Error));
-        Assert.That (eventLogEntry.Message, Is.EqualTo ("Failure during logging of message:\r\nThe message.\r\nEvent ID: -1\r\n\r\n"));
-        Assert.That (eventLogEntry.InstanceId, Is.EqualTo (0x0));
+      Assert.That (
+          () => _log.Log (LogLevel.Info, -1, (object) "The message.", (Exception) null),
+          Throws.InstanceOf<ArgumentOutOfRangeException>()
+              .With.Message.EqualTo (
+                  "An event id of value -1 is not supported. Valid event ids must be within a range of 0 and 65535.\r\nParameter name: eventID"));
+      Assert.That (_testEventLog.Entries.Count, Is.EqualTo (1));
+      EventLogEntry eventLogEntry = _testEventLog.Entries[0];
+      Assert.That (eventLogEntry.EntryType, Is.EqualTo (EventLogEntryType.Error));
+      Assert.That (eventLogEntry.Message, Is.EqualTo ("Failure during logging of message:\r\nThe message.\r\nEvent ID: -1\r\n\r\n"));
+      Assert.That (eventLogEntry.InstanceId, Is.EqualTo (0x0));
 
-        throw;
-      }
     }
   }
 }

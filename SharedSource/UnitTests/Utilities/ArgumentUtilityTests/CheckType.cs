@@ -34,10 +34,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_ValueType ()
     {
-      ArgumentUtility.CheckType<int> ("arg", (object) null);
+      Assert.That (
+          () => ArgumentUtility.CheckType<int> ("arg", (object) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

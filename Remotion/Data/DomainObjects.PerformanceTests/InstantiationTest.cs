@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void GetObjectReference ()
     {
-      Console.WriteLine ("Expected average duration of GetObjectReference on reference system: ~15 µs (release build), ~20 µs (debug build)");
+      Console.WriteLine ("Expected average duration of GetObjectReference on reference system: ~15 Âµs (release build), ~20 Âµs (debug build)");
 
       bool found = true;
       var stopwatch = new Stopwatch ();
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       double averageMicroseconds = stopwatch.Elapsed.TotalMilliseconds * 1000.0 / TestRepititions;
       Console.WriteLine (
-          "GetObjectReference (executed {0}x): Average duration: {1} µs",
+          "GetObjectReference (executed {0}x): Average duration: {1} Âµs",
           TestRepititions,
           averageMicroseconds.ToString ("n"));
     }

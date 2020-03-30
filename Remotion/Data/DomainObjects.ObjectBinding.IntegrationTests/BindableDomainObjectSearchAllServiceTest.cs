@@ -160,14 +160,17 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread or " 
-        + "the referencing object.")]
     public void Search_NoCurrentTransaction ()
     {
       using (ClientTransactionScope.EnterNullScope ())
       {
         var property = GetBusinessObjectProperty (typeof (OppositeBidirectionalBindableDomainObject), "OppositeSampleObject");
-        _service.Search (null, property, null);
+        Assert.That (
+            () => _service.Search (null, property, null),
+            Throws.InvalidOperationException
+                .With.Message.EqualTo (
+                    "No ClientTransaction has been associated with the current thread or "
+                    + "the referencing object."));
       }
     }
 

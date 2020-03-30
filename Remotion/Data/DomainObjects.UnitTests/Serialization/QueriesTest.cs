@@ -71,7 +71,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (QueryConfigurationException), ExpectedMessage = "QueryDefinition 'UnknownQuery' does not exist.")]
     public void UnknownQueryDefinitionInQueryConfiguration ()
     {
       QueryDefinition unknownQueryDefinition = new QueryDefinition ("UnknownQuery", TestDomainStorageProviderDefinition, "select 42", QueryType.Scalar);
@@ -84,7 +83,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
             new FakeDomainObjectsConfiguration (
                 DomainObjectsConfiguration.Current.MappingLoader, DomainObjectsConfiguration.Current.Storage, new QueryConfiguration()));
 
-        Deserialize (stream);
+        Assert.That (
+            () => Deserialize (stream),
+            Throws.InstanceOf<QueryConfigurationException>()
+                .With.Message.EqualTo ("QueryDefinition 'UnknownQuery' does not exist."));
       }
     }
 

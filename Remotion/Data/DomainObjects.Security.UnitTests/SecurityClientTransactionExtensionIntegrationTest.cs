@@ -206,8 +206,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException), ExpectedMessage =
-        "Access to method 'get_PropertyWithDefaultPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied.")]
     public void AccessDenied_SubTransaction ()
     {
       _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
@@ -225,7 +223,11 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
           securableObject = CreateSecurableObject (_securityContextFactoryStub, clientTransaction: subTransaction);
         }
 
-        Dev.Null = securableObject.PropertyWithDefaultPermission;
+        Assert.That (
+            () => Dev.Null = securableObject.PropertyWithDefaultPermission,
+            Throws.InstanceOf<PermissionDeniedException>()
+                .With.Message.EqualTo (
+                    "Access to method 'get_PropertyWithDefaultPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied."));
       }
     }
 

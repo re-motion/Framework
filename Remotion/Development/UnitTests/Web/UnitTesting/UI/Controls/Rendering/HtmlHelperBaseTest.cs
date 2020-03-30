@@ -132,7 +132,7 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     public void Fail_GetAssertedElement_WrongTag ()
     {
       var document = _htmlHelper.GetResultDocument();
-      var topLevelElement = _htmlHelper.GetAssertedChildElement (document, "dummy", 0);
+      _htmlHelper.GetAssertedChildElement (document, "dummy", 0);
     }
 
     [Test]
@@ -140,7 +140,7 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     public void Fail_GetAssertedElement_IndexOutOfRange ()
     {
       var document = _htmlHelper.GetResultDocument();
-      var topLevelElement = _htmlHelper.GetAssertedChildElement (document, "TopLevelElement", 2);
+      _htmlHelper.GetAssertedChildElement (document, "TopLevelElement", 2);
     }
 
     [Test]

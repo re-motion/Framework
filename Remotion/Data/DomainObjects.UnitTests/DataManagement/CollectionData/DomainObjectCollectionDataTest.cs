@@ -459,14 +459,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Collection was modified during enumeration.")]
     public void Enumeration_ChokesOnVersionChanges_Remove ()
     {
       Add (_order1);
       Add (_order2);
 
-      foreach (var x in _data)
-        _data.Remove (x);
+      Assert.That (
+          () =>
+          {
+            foreach (var x in _data)
+              _data.Remove (x);
+          },
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("Collection was modified during enumeration."));
     }
 
     [Test]

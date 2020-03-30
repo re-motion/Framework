@@ -175,15 +175,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Class 'DomainBase' is read-only.")]
     public void SetStorageEntityDefinition_ClassIsReadOnly ()
     {
       var tableDefinition = TableDefinitionObjectMother.Create (_storageProviderDefinition, new EntityNameDefinition (null, "Tablename"));
       _domainBaseClass.SetReadOnly();
 
-      _domainBaseClass.SetStorageEntity (tableDefinition);
-
-      Assert.That (_domainBaseClass.StorageEntityDefinition, Is.SameAs (tableDefinition));
+      Assert.That (
+          () => _domainBaseClass.SetStorageEntity (tableDefinition),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo ("Class 'DomainBase' is read-only."));
     }
 
     [Test]
@@ -1153,18 +1153,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The mixin configuration for domain object type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order' "
-        + "was changed after the mapping information was built.\r\n"
-        + "Original configuration: ClassContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order'\r\n"
-        + "  Mixins: \r\n"
-        + "    MixinContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain.MixinA' (Extending,Private,Dependencies=())\r\n"
-        + "  ComposedInterfaces: ().\r\n"
-        + "Active configuration: ClassContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order'\r\n"
-        + "  Mixins: \r\n"
-        + "    MixinContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain.NonDomainObjectMixin' (Extending,Private,Dependencies=())\r\n"
-        + "    MixinContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain.MixinA' (Extending,Private,Dependencies=())\r\n"
-        + "  ComposedInterfaces: ()")]
     public void ValidateCurrentMixinConfiguration_ThrowsWhenAnyChanges_EvenToNonPersistentMixins ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Order), typeof (MixinA));
@@ -1175,29 +1163,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               .AddMixins (typeof (NonDomainObjectMixin), typeof (MixinA))
           .EnterScope())
       {
-        classDefinition.ValidateCurrentMixinConfiguration();
+        Assert.That (
+            () => classDefinition.ValidateCurrentMixinConfiguration(),
+            Throws.InstanceOf<MappingException>()
+                .With.Message.EqualTo (
+                    "The mixin configuration for domain object type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order' "
+                    + "was changed after the mapping information was built.\r\n"
+                    + "Original configuration: ClassContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order'\r\n"
+                    + "  Mixins: \r\n"
+                    + "    MixinContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain.MixinA' (Extending,Private,Dependencies=())\r\n"
+                    + "  ComposedInterfaces: ().\r\n"
+                    + "Active configuration: ClassContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order'\r\n"
+                    + "  Mixins: \r\n"
+                    + "    MixinContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain.NonDomainObjectMixin' (Extending,Private,Dependencies=())\r\n"
+                    + "    MixinContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain.MixinA' (Extending,Private,Dependencies=())\r\n"
+                    + "  ComposedInterfaces: ()"));
       }
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The mixin configuration for domain object type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order' "
-        + "was changed after the mapping information was built.",
-        MatchType = MessageMatch.Contains)]
     public void ValidateCurrentMixinConfiguration_ThrowsWhenPersistentMixinMissing ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Order), typeof (MixinA));
       using (MixinConfiguration.BuildFromActive().ForClass<Order>().Clear().EnterScope())
       {
-        classDefinition.ValidateCurrentMixinConfiguration();
+        Assert.That (
+            () => classDefinition.ValidateCurrentMixinConfiguration(),
+            Throws.InstanceOf<MappingException>()
+                .With.Message.Contains(
+                    "The mixin configuration for domain object type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order' "
+                    + "was changed after the mapping information was built."));
       }
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The mixin configuration for domain object type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order' "
-        + "was changed after the mapping information was built.",
-        MatchType = MessageMatch.Contains)]
     public void ValidateCurrentMixinConfiguration_ThrowsWhenPersistentMixinsAdded ()
     {
       ClassDefinition classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Order), typeof (MixinA));
@@ -1205,15 +1204,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (
               typeof (NonDomainObjectMixin), typeof (MixinA), typeof (MixinB), typeof (MixinC)).EnterScope())
       {
-        classDefinition.ValidateCurrentMixinConfiguration();
+        Assert.That (
+            () => classDefinition.ValidateCurrentMixinConfiguration(),
+            Throws.InstanceOf<MappingException>()
+                .With.Message.Contains(
+                    "The mixin configuration for domain object type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order' "
+                    + "was changed after the mapping information was built."));
       }
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The mixin configuration for domain object type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer' "
-        + "was changed after the mapping information was built.",
-        MatchType = MessageMatch.Contains)]
     public void ValidateCurrentMixinConfiguration_ThrowsWhenPersistentMixinsChangeOnParentClass ()
     {
       ClassDefinition baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Company), typeof (MixinA));
@@ -1222,7 +1222,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           MixinConfiguration.BuildFromActive().ForClass (typeof (Company)).Clear().AddMixins (
               typeof (NonDomainObjectMixin), typeof (MixinA), typeof (MixinB), typeof (MixinC)).EnterScope())
       {
-        classDefinition.ValidateCurrentMixinConfiguration();
+        Assert.That (
+            () => classDefinition.ValidateCurrentMixinConfiguration(),
+            Throws.InstanceOf<MappingException>()
+                .With.Message.Contains(
+                    "The mixin configuration for domain object type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer' "
+                    + "was changed after the mapping information was built."));
       }
     }
   }

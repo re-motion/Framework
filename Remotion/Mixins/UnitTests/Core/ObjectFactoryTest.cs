@@ -118,12 +118,13 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void ExceptionPropagated_WhenMixinOnInitializedThrows ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins (typeof (MixinThrowingInOnInitialized)).EnterScope())
       {
-        ObjectFactory.Create<NullTarget> (ParamList.Empty);
+        Assert.That (
+            () => ObjectFactory.Create<NullTarget> (ParamList.Empty),
+            Throws.InstanceOf<NotSupportedException>());
       }
     }
 
@@ -250,14 +251,17 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type 'Remotion.Mixins.UnitTests.Core.ObjectFactoryTest+"
-       + "TargetClassWithProtectedCtors' contains a constructor with the required signature, but it is not public (and the allowNonPublic flag is "
-       + "not set).")]
     public void ProtectedDefaultConstructor_Mixed ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<TargetClassWithProtectedCtors>().Clear().AddMixins (typeof (NullMixin)).EnterScope())
       {
-        ObjectFactory.Create<TargetClassWithProtectedCtors> (ParamList.Empty);
+        Assert.That (
+            () => ObjectFactory.Create<TargetClassWithProtectedCtors> (ParamList.Empty),
+            Throws.InstanceOf<MissingMethodException>()
+                .With.Message.EqualTo (
+                    "Type 'Remotion.Mixins.UnitTests.Core.ObjectFactoryTest+"
+                    + "TargetClassWithProtectedCtors' contains a constructor with the required signature, but it is not public (and the allowNonPublic flag is "
+                    + "not set)."));
       }
     }
 
@@ -271,14 +275,17 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type 'Remotion.Mixins.UnitTests.Core.ObjectFactoryTest+"
-       + "TargetClassWithProtectedCtors' contains a constructor with the required signature, but it is not public (and the allowNonPublic flag is "
-       + "not set).")]
     public void ProtectedDefaultConstructor_NonMixed ()
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        ObjectFactory.Create<TargetClassWithProtectedCtors> (ParamList.Empty);
+        Assert.That (
+            () => ObjectFactory.Create<TargetClassWithProtectedCtors> (ParamList.Empty),
+            Throws.InstanceOf<MissingMethodException>()
+                .With.Message.EqualTo (
+                    "Type 'Remotion.Mixins.UnitTests.Core.ObjectFactoryTest+"
+                    + "TargetClassWithProtectedCtors' contains a constructor with the required signature, but it is not public (and the allowNonPublic flag is "
+                    + "not set)."));
       }
     }
 
@@ -292,14 +299,17 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type 'Remotion.Mixins.UnitTests.Core.ObjectFactoryTest+"
-       + "TargetClassWithProtectedCtors' contains a constructor with the required signature, but it is not public (and the allowNonPublic flag is "
-       + "not set).")]
     public void ProtectedNonDefaultConstructor_Mixed ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<TargetClassWithProtectedCtors>().Clear().AddMixins (typeof (NullMixin)).EnterScope())
       {
-        ObjectFactory.Create<TargetClassWithProtectedCtors> (ParamList.Create (1));
+        Assert.That (
+            () => ObjectFactory.Create<TargetClassWithProtectedCtors> (ParamList.Create (1)),
+            Throws.InstanceOf<MissingMethodException>()
+                .With.Message.EqualTo (
+                    "Type 'Remotion.Mixins.UnitTests.Core.ObjectFactoryTest+"
+                    + "TargetClassWithProtectedCtors' contains a constructor with the required signature, but it is not public (and the allowNonPublic flag is "
+                    + "not set)."));
       }
     }
 
@@ -313,14 +323,17 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type 'Remotion.Mixins.UnitTests.Core.ObjectFactoryTest+"
-       + "TargetClassWithProtectedCtors' contains a constructor with the required signature, but it is not public (and the allowNonPublic flag is "
-       + "not set).")]
     public void ProtectedNonDefaultConstructor_NonMixed ()
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        ObjectFactory.Create<TargetClassWithProtectedCtors> (ParamList.Create (1));
+        Assert.That(
+            () => ObjectFactory.Create<TargetClassWithProtectedCtors> (ParamList.Create (1)),
+            Throws.InstanceOf<MissingMethodException>()
+                .With.Message.EqualTo (
+                    "Type 'Remotion.Mixins.UnitTests.Core.ObjectFactoryTest+"
+                    + "TargetClassWithProtectedCtors' contains a constructor with the required signature, but it is not public (and the allowNonPublic flag is "
+                    + "not set)."));
       }
     }
 
@@ -334,12 +347,13 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void TargetInvocationExceptionWhenMixinCtorThrows ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins (typeof (MixinThrowingInCtor)).EnterScope())
       {
-        ObjectFactory.Create<NullTarget> (ParamList.Empty);
+        Assert.That (
+            () => ObjectFactory.Create<NullTarget> (ParamList.Empty),
+            Throws.InstanceOf<NotSupportedException>());
       }
     }
 
@@ -362,15 +376,18 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Cannot instantiate mixin "
-       + "'Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain.MixinWithPrivateCtorAndVirtualMethod' applied to class "
-       + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget', there is no visible default constructor.")]
     public void ThrowsWhenMixinWithoutPublicDefaultCtorShouldBeInstantiated ()
     {
       using (
           MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins (typeof (MixinWithPrivateCtorAndVirtualMethod)).EnterScope())
       {
-        ObjectFactory.Create<NullTarget> (ParamList.Empty);
+        Assert.That (
+            () => ObjectFactory.Create<NullTarget> (ParamList.Empty),
+            Throws.InstanceOf<MissingMethodException>()
+                .With.Message.EqualTo (
+                    "Cannot instantiate mixin "
+                    + "'Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain.MixinWithPrivateCtorAndVirtualMethod' applied to class "
+                    + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget', there is no visible default constructor."));
       }
     }
   }

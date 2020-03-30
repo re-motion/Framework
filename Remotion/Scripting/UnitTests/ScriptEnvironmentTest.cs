@@ -145,7 +145,7 @@ namespace Remotion.Scripting.UnitTests
       var expressionScript =
           new ExpressionScript<string> (ScriptContextObjectMother.CreateTestScriptContext ("ImportIifHelperFunctions"), ScriptLanguageType.Python,
             scriptText, scriptEnvironment);
-      Assert.That (expressionScript.Execute (), Is.EqualTo ("big"));
+      expressionScript.Execute();
     }
 
 

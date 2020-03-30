@@ -148,86 +148,88 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage =
-        "The dependency 'IRequirement' (required by mixin "
-        + "'Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.RequiredMethodDefinitionBuilding.MixinRequiringSingleMethod' on class "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget') is not fulfilled - public or protected method 'Void Method()' could not be found "
-        + "on the target class.")]
     public void ThrowsIfMethodRequirementIsNotFulfilled ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinRequiringSingleMethod)).EnterScope())
       {
-        DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (NullTarget));
-        Assert.Fail ();
+        Assert.That (
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (NullTarget)),
+            Throws.InstanceOf<ConfigurationException>()
+                .With.Message.EqualTo (
+                    "The dependency 'IRequirement' (required by mixin "
+                    + "'Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.RequiredMethodDefinitionBuilding.MixinRequiringSingleMethod' on class "
+                    + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget') is not fulfilled - public or protected method 'Void Method()' could not be found "
+                    + "on the target class."));
       }
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage =
-        "The dependency 'IRequirement' (required by mixin "
-        + "'Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.RequiredMethodDefinitionBuilding.MixinRequiringSingleProperty' on class "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget') is not fulfilled - public or protected method 'Int32 get_Property()' could not be "
-        + "found on the target class.")]
     public void ThrowsIfPropertyRequirementIsNotFulfilled ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinRequiringSingleProperty)).EnterScope())
       {
-        DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (NullTarget));
-        Assert.Fail ();
+        Assert.That (
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (NullTarget)),
+            Throws.InstanceOf<ConfigurationException>()
+                .With.Message.EqualTo (
+                    "The dependency 'IRequirement' (required by mixin "
+                    + "'Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.RequiredMethodDefinitionBuilding.MixinRequiringSingleProperty' on class "
+                    + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget') is not fulfilled - public or protected method 'Int32 get_Property()' could not be "
+                    + "found on the target class."));
       }
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = 
-        "The dependency 'IRequirement' (required by mixin "
-        + "'Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.RequiredMethodDefinitionBuilding.MixinRequiringSingleEvent' on class "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget') is not fulfilled - public or protected method "
-        + "'Void add_Event(System.EventHandler)' could not be found on the target class.")]
     public void ThrowsIfEventRequirementIsNotFulfilled ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinRequiringSingleEvent)).EnterScope())
       {
-        DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (NullTarget));
-        Assert.Fail ();
+        Assert.That (
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (NullTarget)),
+            Throws.InstanceOf<ConfigurationException>()
+                .With.Message.EqualTo (
+                    "The dependency 'IRequirement' (required by mixin "
+                    + "'Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.RequiredMethodDefinitionBuilding.MixinRequiringSingleEvent' on class "
+                    + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget') is not fulfilled - public or protected method "
+                    + "'Void add_Event(System.EventHandler)' could not be found on the target class."));
       }
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage =
-        "The dependency 'IMixinRequiringAllMembersRequirements' (required by mixin "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.MixinRequiringAllMembersTargetCall' on class "
-        + "'Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.RequiredMethodDefinitionBuilding.ClassFulfillingPrivately') "
-        + "is not fulfilled - public or protected method 'Void Method()' could not be found on the target class.")]
     public void ThrowsIfRequiredMethodIsPrivate ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingPrivately> ().Clear().AddMixins (typeof (MixinRequiringAllMembersTargetCall)).EnterScope())
       {
-        DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (ClassFulfillingPrivately));
+        Assert.That (
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (ClassFulfillingPrivately)),
+            Throws.InstanceOf<ConfigurationException>()
+                .With.Message.EqualTo (
+                    "The dependency 'IMixinRequiringAllMembersRequirements' (required by mixin "
+                    + "'Remotion.Mixins.UnitTests.Core.TestDomain.MixinRequiringAllMembersTargetCall' on class "
+                    + "'Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.RequiredMethodDefinitionBuilding.ClassFulfillingPrivately') "
+                    + "is not fulfilled - public or protected method 'Void Method()' could not be found on the target class."));
       }
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage =
-        "The dependency 'IMixinRequiringAllMembersRequirements' (required by "
-        + "mixin 'Remotion.Mixins.UnitTests.Core.TestDomain.MixinRequiringAllMembersTargetCall' on class "
-        + "'Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.RequiredMethodDefinitionBuilding.ClassFulfillingInternally') is not fulfilled - "
-        + "public or protected method 'Void Method()' could not be found on the target class.")]
     public void ThrowsIfRequiredMethodIsInternal ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingInternally> ().Clear().AddMixins (typeof (MixinRequiringAllMembersTargetCall)).EnterScope())
       {
-        DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (ClassFulfillingInternally));
+        Assert.That (
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (ClassFulfillingInternally)),
+            Throws.InstanceOf<ConfigurationException>()
+                .With.Message.EqualTo (
+                    "The dependency 'IMixinRequiringAllMembersRequirements' (required by "
+                    + "mixin 'Remotion.Mixins.UnitTests.Core.TestDomain.MixinRequiringAllMembersTargetCall' on class "
+                    + "'Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.RequiredMethodDefinitionBuilding.ClassFulfillingInternally') is not fulfilled - "
+                    + "public or protected method 'Void Method()' could not be found on the target class."));
       }
     }
 
     public interface IDerivedSimpleInterface : ISimpleInterface {}
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage =
-        "The dependency 'ISimpleInterface' (required by composed interface "
-        + "'Remotion.Mixins.UnitTests.Core.Definitions.Building.RequiredMethodDefinitionBuilderTest+IDerivedSimpleInterface' on class "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget') is not fulfilled - public or protected method 'System.String Method()' "
-        + "could not be found on the target class.")]
     public void ThrowsIfDerivedRequiredInterfaceIsNotFullyImplemented ()
     {
       using (MixinConfiguration
@@ -235,7 +237,14 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
           .ForClass<NullTarget> ().Clear ().AddMixin<NullMixin> ().AddComposedInterface<IDerivedSimpleInterface> ()
           .EnterScope ())
       {
-        DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (NullTarget));
+        Assert.That (
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (NullTarget)),
+            Throws.InstanceOf<ConfigurationException>()
+                .With.Message.EqualTo (
+                    "The dependency 'ISimpleInterface' (required by composed interface "
+                    + "'Remotion.Mixins.UnitTests.Core.Definitions.Building.RequiredMethodDefinitionBuilderTest+IDerivedSimpleInterface' on class "
+                    + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget') is not fulfilled - public or protected method 'System.String Method()' "
+                    + "could not be found on the target class."));
       }
     }
     

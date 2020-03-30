@@ -605,8 +605,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isReadOnly: false));
 
       property.SetReflectedClass (bindableObjectClass);
-
-      Assert.That (property.ReflectedClass, Is.SameAs (bindableObjectClass));
     }
 
     [Test]

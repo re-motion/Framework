@@ -68,7 +68,6 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException))]
     public void DeserializeSection_InvalidFactoryType ()
     {
       string xmlFragment =
@@ -77,7 +76,9 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
             <organizationalStructureFactory type=""Invalid"" />
           </remotion.securityManager>";
       _configuration.DeserializeSection (xmlFragment);
-      IOrganizationalStructureFactory factory = _configuration.OrganizationalStructureFactory;
+      Assert.That (
+          () => _configuration.OrganizationalStructureFactory,
+          Throws.InstanceOf<ConfigurationErrorsException>());
     }
 
     [Test]

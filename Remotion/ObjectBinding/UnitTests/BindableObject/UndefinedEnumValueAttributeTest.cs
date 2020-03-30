@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void InitializeWithInvalidValue ()
     {
       TestEnum invalidValue = (TestEnum) (-1);
-      UndefinedEnumValueAttribute undefinedValueAttribute = new UndefinedEnumValueAttribute (invalidValue);
+      new UndefinedEnumValueAttribute (invalidValue);
     }
 
     [Test]
@@ -51,14 +51,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         + "when type 'System.Enum' was expected.\r\nParameter name: value")]
     public void InitializeWithObjectOfInvalidType ()
     {
-      UndefinedEnumValueAttribute undefinedValueAttribute = new UndefinedEnumValueAttribute (this);
+      new UndefinedEnumValueAttribute (this);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void InitializeWithNull ()
     {
-      UndefinedEnumValueAttribute undefinedValueAttribute = new UndefinedEnumValueAttribute (null);
+      Assert.That (
+          () => new UndefinedEnumValueAttribute (null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
   }
 }

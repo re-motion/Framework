@@ -76,8 +76,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The object to be removed has the same ID as an object in this collection, but "
-                                                                      + "is a different object reference.\r\nParameter name: domainObject")]
     public void Remove_ObjectFromOtherTransaction_WhoseIDIsInCollection ()
     {
       var collection = new DomainObjectCollection (typeof (Customer));
@@ -90,7 +88,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
         customerInOtherTx = customer.ID.GetObject<Customer> ();
       }
 
-      collection.Remove (customerInOtherTx);
+      Assert.That (
+          () => collection.Remove (customerInOtherTx),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "The object to be removed has the same ID as an object in this collection, but "
+                  + "is a different object reference.\r\nParameter name: domainObject"));
 
       Assert.That (collection.ContainsObject (customer), Is.True);
     }

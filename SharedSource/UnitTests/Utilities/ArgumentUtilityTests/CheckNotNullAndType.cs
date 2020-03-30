@@ -34,10 +34,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_Int_Null ()
     {
-      ArgumentUtility.CheckNotNullAndType<int> ("arg", null);
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndType<int> ("arg", null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -55,10 +56,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_NullableInt_Null ()
     {
-      ArgumentUtility.CheckNotNullAndType<int?> ("arg", null);
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndType<int?> ("arg", null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -76,10 +78,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_StringNull ()
     {
-      ArgumentUtility.CheckNotNullAndType<string> ("arg", null);
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndType<string> ("arg", null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     private enum TestEnum
@@ -95,10 +98,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_Enum_Null ()
     {
-      ArgumentUtility.CheckNotNullAndType<TestEnum> ("arg", null);
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndType<TestEnum> ("arg", null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -133,10 +137,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_Null_String_NonGeneric ()
     {
-      ArgumentUtility.CheckNotNullAndType ("arg", (object) null, typeof (string));
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndType ("arg", (object) null, typeof (string)),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -149,10 +154,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_Null_Int_NonGeneric ()
     {
-      ArgumentUtility.CheckNotNullAndType ("arg", (object) null, typeof (int));
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndType ("arg", (object) null, typeof (int)),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

@@ -45,7 +45,7 @@ public class WxeMethodStepTest: WxeTest
   {
     Type functionType = typeof (TestFunctionWithInvalidSteps);
     MethodInfo step1 = functionType.GetMethod ("InvalidStep1", BindingFlags.Static | BindingFlags.NonPublic);
-    WxeMethodStep methodStep = new WxeMethodStep (_functionWithInvalidSteps, step1);
+    new WxeMethodStep (_functionWithInvalidSteps, step1);
   }
 
   [Test]
@@ -54,7 +54,7 @@ public class WxeMethodStepTest: WxeTest
   {
     Type functionType = typeof (TestFunctionWithInvalidSteps);
     MethodInfo step2 = functionType.GetMethod ("InvalidStep2", BindingFlags.Instance | BindingFlags.NonPublic);
-    WxeMethodStep methodStep = new WxeMethodStep (_functionWithInvalidSteps, step2);
+    new WxeMethodStep (_functionWithInvalidSteps, step2);
   }
 
   [Test]
@@ -63,7 +63,7 @@ public class WxeMethodStepTest: WxeTest
   {
     Type functionType = typeof (TestFunctionWithInvalidSteps);
     MethodInfo step3 = functionType.GetMethod ("InvalidStep3", BindingFlags.Instance | BindingFlags.NonPublic);
-    WxeMethodStep methodStep = new WxeMethodStep (_functionWithInvalidSteps, step3);
+    new WxeMethodStep (_functionWithInvalidSteps, step3);
   }
 
   [Test]
@@ -72,7 +72,7 @@ public class WxeMethodStepTest: WxeTest
   {
     Type functionType = typeof (TestFunction);
     MethodInfo step1 = functionType.GetMethod ("Step1", BindingFlags.Instance | BindingFlags.NonPublic);
-    WxeMethodStep methodStep = new WxeMethodStep (_functionWithInvalidSteps, step1);
+    new WxeMethodStep (_functionWithInvalidSteps, step1);
   }
 
   [Test]

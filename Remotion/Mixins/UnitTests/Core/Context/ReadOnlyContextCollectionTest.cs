@@ -63,10 +63,13 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Value cannot be null.\r\nParameter name: values[0]")]
     public void NewCollection_NullValue ()
     {
-      new ReadOnlyContextCollection<string, string> ( delegate { return ""; }, new string[] { null });
+      Assert.That (
+          () => new ReadOnlyContextCollection<string, string> ( delegate { return ""; }, new string[] { null }),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.EqualTo (
+                  "Value cannot be null.\r\nParameter name: values[0]"));
     }
 
     [Test]
@@ -76,7 +79,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       Assert.That (_collection.ContainsKey ("2"), Is.True);
       Assert.That (_collection.ContainsKey ("3"), Is.True);
       Assert.That (_collection.ContainsKey ("4"), Is.False);
-      Assert.That (_collection.ContainsKey ("§"), Is.False);
+      Assert.That (_collection.ContainsKey ("ï¿½"), Is.False);
     }
 
     [Test]

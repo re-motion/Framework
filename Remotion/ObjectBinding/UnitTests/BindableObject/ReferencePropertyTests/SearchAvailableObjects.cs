@@ -90,10 +90,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Searching is not supported for reference property 'SearchServiceFromPropertyDeclaration' of business object class "
-        + "'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassWithBusinessObjectProperties, "
-        + "Remotion.ObjectBinding.UnitTests'.")]
     public void Search_WithSearchNotSupported ()
     {
       IBusinessObject businessObject = (IBusinessObject) ObjectFactory.Create<ClassWithBusinessObjectProperties> (ParamList.Empty);
@@ -105,14 +101,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       _mockRepository.ReplayAll();
 
       _bindableObjectProviderForDeclaringType.AddService (mockService);
-      try
-      {
-        property.SearchAvailableObjects (businessObject, searchArgumentsStubb);
-      }
-      finally
-      {
-        _mockRepository.VerifyAll();
-      }
+
+      Assert.That (
+          () => property.SearchAvailableObjects (businessObject, searchArgumentsStubb),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo (
+                  "Searching is not supported for reference property 'SearchServiceFromPropertyDeclaration' of business object class "
+                  + "'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassWithBusinessObjectProperties, "
+                  + "Remotion.ObjectBinding.UnitTests'."));
+
+      _mockRepository.VerifyAll();
     }
 
     private ReferenceProperty CreateProperty (string propertyName)

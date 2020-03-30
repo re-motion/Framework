@@ -69,27 +69,30 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
     }
 
     [Test] 
-    [ExpectedException (typeof (ConflictCommandLineParameterException))]
     public void TestModeArgConfict ()
     {
       CommandLineClassParser parser = new CommandLineClassParser (typeof (Arguments));
-      Arguments arguments = (Arguments) parser.Parse ("/m1 /m2", true);
+      Assert.That (
+          () => (Arguments) parser.Parse ("/m1 /m2", true),
+          Throws.InstanceOf<ConflictCommandLineParameterException>());
     }
 
     [Test] 
-    [ExpectedException (typeof (InvalidCommandLineArgumentValueException))]
     public void TestModeArgInvalidValue ()
     {
       CommandLineClassParser parser = new CommandLineClassParser (typeof (Arguments));
-      Arguments arguments = (Arguments) parser.Parse ("/m1+", true);
+      Assert.That (
+          () => (Arguments) parser.Parse ("/m1+", true),
+          Throws.InstanceOf<InvalidCommandLineArgumentValueException>());
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidCommandLineArgumentNameException))]
     public void TestFlagArgInvalidValue ()
     {
       CommandLineClassParser parser = new CommandLineClassParser (typeof (Arguments));
-      Arguments arguments = (Arguments) parser.Parse ("/b~", true);
+      Assert.That (
+          () => (Arguments) parser.Parse ("/b~", true),
+          Throws.InstanceOf<InvalidCommandLineArgumentNameException>());
     }
     
     [Test] 

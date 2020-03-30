@@ -140,22 +140,21 @@ namespace Remotion.Scripting.UnitTests.StableBindingImplementation
 
     // Added by FS
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot add a forwarding call to method "
-        + "'Remotion.Scripting.UnitTests.TestDomain.IAmbigous1.StringTimes' because it is not public. If the method is an explicit interface implementation, use "
-            + "AddForwardingMethodFromClassOrInterfaceMethodInfoCopy and supply the interface's MethodInfo.", MatchType = MessageMatch.Contains)]
     public void AddForwardingMethod_NonPublicMethod ()
     {
       var proxyBuilder = new ForwardingProxyBuilder ("AddForwardingMethod_NonPublicMethod", ModuleScope, typeof (ProxiedChild), new Type[0]);
       var methodInfo = typeof (ProxiedChild).GetMethod (
           "Remotion.Scripting.UnitTests.TestDomain.IAmbigous1.StringTimes", _nonPublicInstanceFlags);
-      try
-      {
-        proxyBuilder.AddForwardingMethod (methodInfo);
-      }
-      finally
-      {
-        proxyBuilder.BuildProxyType();
-      }
+
+      Assert.That (
+          () => proxyBuilder.AddForwardingMethod (methodInfo),
+          Throws.ArgumentException
+              .With.Message.Contains (
+                  "Cannot add a forwarding call to method "
+                  + "'Remotion.Scripting.UnitTests.TestDomain.IAmbigous1.StringTimes' because it is not public. If the method is an explicit interface implementation, use "
+                  + "AddForwardingMethodFromClassOrInterfaceMethodInfoCopy and supply the interface's MethodInfo."));
+
+      proxyBuilder.BuildProxyType();
     }
 
     [Test]

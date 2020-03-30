@@ -38,9 +38,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (ConstraintViolationException), ExpectedMessage =
-        "The securable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination "
-        + "that has been defined twice.")]
     public void ValidateDuringCommit ()
     {
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
@@ -55,8 +52,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         dupicateStateCombination.AttachState (paidState);
-
-        ClientTransaction.Current.Commit();
+        Assert.That (
+            () => ClientTransaction.Current.Commit(),
+            Throws.InstanceOf<ConstraintViolationException>()
+                .With.Message.EqualTo (
+                    "The securable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination "
+                    + "that has been defined twice."));
       }
     }
 

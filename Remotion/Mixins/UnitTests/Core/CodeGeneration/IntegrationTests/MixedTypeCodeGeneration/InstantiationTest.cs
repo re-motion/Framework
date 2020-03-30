@@ -81,9 +81,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "The supplied mixin of type 'Remotion.Mixins.UnitTests.Core.TestDomain.BT3Mixin1' is not valid for target type "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType1' in the current configuration.")]
     public void ThrowsIfWrongMixinInstancesInScope ()
     {
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
@@ -91,14 +88,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
 
       using (new MixedObjectInstantiationScope (suppliedMixinInstance))
       {
-        try
-        {
-          Activator.CreateInstance (generatedType);
-        }
-        catch (TargetInvocationException ex)
-        {
-          throw ex.InnerException;
-        }
+        var targetInvocationException = Assert.Throws<TargetInvocationException> (() => Activator.CreateInstance (generatedType));
+        Assert.That (targetInvocationException.InnerException, Is.InstanceOf<InvalidOperationException>());
+        Assert.That (
+            targetInvocationException.InnerException?.Message,
+            Is.EqualTo (
+                "The supplied mixin of type 'Remotion.Mixins.UnitTests.Core.TestDomain.BT3Mixin1' is not valid for target type "
+                + "'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType1' in the current configuration."));
       }
     }
 

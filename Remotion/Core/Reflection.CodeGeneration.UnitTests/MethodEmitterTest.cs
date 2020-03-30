@@ -229,20 +229,15 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotFiniteNumberException), ExpectedMessage = "Who would have expected this?")]
     public void ImplementByThrowing ()
     {
       var method = ClassEmitter.CreateMethod ("ThrowingMethod", MethodAttributes.Public, typeof (void), new Type[0])
           .ImplementByThrowing (typeof (NotFiniteNumberException), "Who would have expected this?");
 
-      try
-      {
-        BuildInstanceAndInvokeMethod (method);
-      }
-      catch (TargetInvocationException ex)
-      {
-        throw ex.InnerException;
-      }
+      var targetInvocationException = Assert.Throws<TargetInvocationException> (
+          () => BuildInstanceAndInvokeMethod (method));
+      Assert.That (targetInvocationException.InnerException, Is.InstanceOf<NotFiniteNumberException>());
+      Assert.That (targetInvocationException.InnerException?.Message, Is.EqualTo ("Who would have expected this?"));
     }
 
     [Test]

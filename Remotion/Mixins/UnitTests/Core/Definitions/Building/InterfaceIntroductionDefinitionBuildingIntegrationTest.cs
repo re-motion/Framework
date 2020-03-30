@@ -262,13 +262,14 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two mixins introduce the same interface .* to base class .*",
-        MatchType = MessageMatch.Regex)]
     public void ThrowsOnDoublyIntroducedInterface ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (BT1Mixin1), typeof (BT1Mixin1A)).EnterScope())
       {
-        DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (BaseType1));
+        Assert.That (
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (BaseType1)),
+            Throws.InstanceOf<ConfigurationException>()
+                .With.Message.Matches ("Two mixins introduce the same interface .* to base class .*"));
       }
     }
 

@@ -76,7 +76,7 @@ public class ArrayUtilityTest
   public void TestInsertPastEnd()
   {
     string[] s1 = { "a", "b", "c", "d" };
-    string[] res = ArrayUtility.Insert (s1, 5, "X");
+    ArrayUtility.Insert (s1, 5, "X");
   }
 
   [Test]

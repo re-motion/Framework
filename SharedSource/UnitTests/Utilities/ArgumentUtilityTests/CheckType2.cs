@@ -35,10 +35,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_Int_Null ()
     {
-      ArgumentUtility.CheckType<int> ("arg", null);
+      Assert.That (
+          () => ArgumentUtility.CheckType<int> ("arg", null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -96,10 +97,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_Enum_Null ()
     {
-      ArgumentUtility.CheckType<TestEnum> ("arg", null);
+      Assert.That (
+          () => ArgumentUtility.CheckType<TestEnum> ("arg", null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

@@ -212,12 +212,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread.")]
     public void NullTransaction_ForCloneTransaction ()
     {
       using (ClientTransactionScope.EnterNullScope ())
       {
-        _cloner.CreateValueClone (_boundSource);
+        Assert.That (
+            () => _cloner.CreateValueClone (_boundSource),
+            Throws.InvalidOperationException
+                .With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
       }
     }
 

@@ -27,19 +27,25 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
   public class CheckNotNullOrEmptyOrItemsNull
   {
     [Test]
-    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Value cannot be null.\r\nParameter name: arg")]
     public void Fail_NullICollection ()
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", (ICollection) null);
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", (ICollection) null),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.EqualTo (
+                  "Value cannot be null.\r\nParameter name: arg"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Item 0 of parameter 'arg' is null.\r\nParameter name: arg")]
     public void Fail_zItemNullICollection ()
     {
       ArrayList list = new ArrayList();
       list.Add (null);
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", list);
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", list),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.EqualTo (
+                  "Item 0 of parameter 'arg' is null.\r\nParameter name: arg"));
     }
 
     [Test]

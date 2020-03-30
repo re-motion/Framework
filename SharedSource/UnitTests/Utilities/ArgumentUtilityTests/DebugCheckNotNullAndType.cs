@@ -37,10 +37,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_Int_Null ()
     {
-      ArgumentUtility.DebugCheckNotNullAndType ("arg", null, typeof (int));
+      Assert.That (
+          () => ArgumentUtility.DebugCheckNotNullAndType ("arg", null, typeof (int)),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -56,10 +57,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_NullableInt_Null ()
     {
-      ArgumentUtility.DebugCheckNotNullAndType ("arg", null, typeof (int?));
+      Assert.That (
+          () => ArgumentUtility.DebugCheckNotNullAndType ("arg", null, typeof (int?)),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -75,10 +77,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_StringNull ()
     {
-      ArgumentUtility.DebugCheckNotNullAndType ("arg", null, typeof (string));
+      Assert.That (
+          () => ArgumentUtility.DebugCheckNotNullAndType ("arg", null, typeof (string)),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     private enum TestEnum
@@ -93,10 +96,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_Enum_Null ()
     {
-      ArgumentUtility.DebugCheckNotNullAndType ("arg", null, typeof (TestEnum));
+      Assert.That (
+          () => ArgumentUtility.DebugCheckNotNullAndType ("arg", null, typeof (TestEnum)),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

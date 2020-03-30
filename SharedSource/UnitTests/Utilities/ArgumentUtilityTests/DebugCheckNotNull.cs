@@ -30,10 +30,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
   public class DebugCheckNotNull
   {
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Nullable_Fail ()
     {
-      ArgumentUtility.DebugCheckNotNull ("arg", (int?) null);
+      Assert.That (
+          () => ArgumentUtility.DebugCheckNotNull ("arg", (int?) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
@@ -49,10 +50,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Reference_Fail ()
     {
-      ArgumentUtility.DebugCheckNotNull ("arg", (string) null);
+      Assert.That (
+          () => ArgumentUtility.DebugCheckNotNull ("arg", (string) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
   }
 }

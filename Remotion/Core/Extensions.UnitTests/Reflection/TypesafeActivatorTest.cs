@@ -26,12 +26,12 @@ namespace Remotion.Extensions.UnitTests.Reflection
   public class TypesafeActivatorTest
   {
     [Test]
-    [ExpectedException (typeof (MissingMethodException))]
     public void TestWithObjectNull ()
     {
       object o = null;
-      TestClass testObject = TypesafeActivator.CreateInstance<TestClass> ().With (o);
-      Assert.That (testObject.InvocationType, Is.EqualTo (typeof (object)));
+      Assert.That (
+          () => TypesafeActivator.CreateInstance<TestClass>().With (o),
+          Throws.InstanceOf<MissingMethodException>());
     }
 
     [Test]

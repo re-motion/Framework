@@ -163,10 +163,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void ContainsNullRelationEndPointDefinitions ()
     {
-      _collection.Contains ((IRelationEndPointDefinition) null);
+      Assert.That (
+          () => _collection.Contains ((IRelationEndPointDefinition) null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

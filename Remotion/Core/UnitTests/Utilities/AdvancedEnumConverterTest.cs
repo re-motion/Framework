@@ -178,14 +178,14 @@ namespace Remotion.UnitTests.Utilities
     [ExpectedException (typeof (NotSupportedException))]
     public void ConvertToInt32_WithNullableInt32EnumConverter()
     {
-      Assert.That (_nullableInt32EnumConverter.ConvertTo (Int32Enum.ValueB, typeof (Int32)), Is.EqualTo (1));
+      _nullableInt32EnumConverter.ConvertTo (Int32Enum.ValueB, typeof (Int32));
     }
 
     [Test]
     [ExpectedException (typeof (NotSupportedException))]
     public void ConvertToInt32_WithInt16EnumConverter ()
     {
-      Assert.That (_int16EnumConverter.ConvertTo (Int32Enum.ValueB, typeof (Int32)), Is.EqualTo (1));
+      _int16EnumConverter.ConvertTo (Int32Enum.ValueB, typeof (Int32));
     }
 
     [Test]

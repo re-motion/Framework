@@ -26,10 +26,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
   public class CheckNotNullAndTypeIsAssignableFrom
   {
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_Null ()
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", null, typeof (string));
+      Assert.That (
+          () => ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", null, typeof (string)),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]

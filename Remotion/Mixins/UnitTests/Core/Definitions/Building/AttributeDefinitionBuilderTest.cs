@@ -232,26 +232,32 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The CopyCustomAttributes attribute on "
-                                                                           + ".*MixinWithUnknownSource.ToString specifies an unknown attribute "
-                                                                           + "source .*MixinWithUnknownSource.Source.", MatchType = MessageMatch.Regex)]
     public void CopyAttributes_Unknown ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithUnknownSource)).EnterScope())
       {
-        DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (NullTarget));
+        Assert.That (
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (NullTarget)),
+            Throws.InstanceOf<ConfigurationException>()
+                .With.Message.Matches (
+                    "The CopyCustomAttributes attribute on "
+                    + ".*MixinWithUnknownSource.ToString specifies an unknown attribute "
+                    + "source .*MixinWithUnknownSource.Source."));
       }
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The CopyCustomAttributes attribute on "
-                                                                           + ".*MixinWithInvalidSourceType.ToString specifies an attribute source "
-                                                                           + ".*MixinWithInvalidSourceType of a different member kind.", MatchType = MessageMatch.Regex)]
     public void CopyAttributes_Invalid ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithInvalidSourceType)).EnterScope())
       {
-        DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (NullTarget));
+        Assert.That (
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (NullTarget)),
+            Throws.InstanceOf<ConfigurationException>()
+                .With.Message.Matches (
+                    "The CopyCustomAttributes attribute on "
+                    + ".*MixinWithInvalidSourceType.ToString specifies an attribute source "
+                    + ".*MixinWithInvalidSourceType of a different member kind."));
       }
     }
 

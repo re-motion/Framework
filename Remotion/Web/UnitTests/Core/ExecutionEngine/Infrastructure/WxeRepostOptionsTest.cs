@@ -67,11 +67,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Parameter name: sender", MatchType = MessageMatch.Contains)]
     public void SuppressRepost_NoSender_ThrowsArgumentNullException ()
     {
-      // ReSharper disable AssignNullToNotNullAttribute
-      WxeRepostOptions.SuppressRepost (null, false);
+      Assert.That (
+          () => WxeRepostOptions.SuppressRepost (null, false),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.Message.Contains ("Parameter name: sender"));
       // ReSharper restore AssignNullToNotNullAttribute
     }
 

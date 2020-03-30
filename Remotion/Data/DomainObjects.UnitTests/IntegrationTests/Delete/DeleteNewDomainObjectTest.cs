@@ -77,11 +77,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectDataContainer ()
     {
       _newOrder.Delete ();
-      DataContainer dataContainer = _newOrder.InternalDataContainer;
+      Assert.That (
+          () => _newOrder.InternalDataContainer,
+          Throws.InstanceOf<ObjectInvalidException>()); 
     }
 
     [Test]
@@ -189,19 +190,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DataContainerClassDefinition ()
     {
       _newOrder.Delete ();
-      ClassDefinition definition = _newOrderContainer.ClassDefinition;
+      Assert.That (
+          () => _newOrderContainer.ClassDefinition,
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DataContainerDomainObjectType ()
     {
       _newOrder.Delete ();
-      Type type = _newOrderContainer.DomainObjectType;
+      Assert.That (
+          () => _newOrderContainer.DomainObjectType,
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
@@ -212,19 +215,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DataContainerTimestamp ()
     {
       _newOrder.Delete ();
-      object timestamp = _newOrderContainer.Timestamp;
+      Assert.That (
+          () => _newOrderContainer.Timestamp,
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DataContainerClientTransaction ()
     {
       _newOrder.Delete ();
-      ClientTransaction clientTransaction = _newOrderContainer.ClientTransaction;
+      Assert.That (
+          () => _newOrderContainer.ClientTransaction,
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
@@ -266,21 +271,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void PropertyValueHasChanged ()
     {
       _newOrder.Delete ();
-
-      bool hasChanged = _newOrderContainer.HasValueChanged (_orderNumberProperty);
+      Assert.That (
+          () => _newOrderContainer.HasValueChanged (_orderNumberProperty),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void PropertyValueHasBeenTouched ()
     {
       _newOrder.Delete ();
 
-      bool hasBeenTouched = _newOrderContainer.HasValueBeenTouched (_orderNumberProperty);
+      Assert.That (
+          () => _newOrderContainer.HasValueBeenTouched (_orderNumberProperty),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]

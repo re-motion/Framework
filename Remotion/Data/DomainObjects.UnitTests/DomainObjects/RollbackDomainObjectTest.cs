@@ -135,14 +135,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void RollbackForNewObject ()
     {
       Order newOrder = Order.NewObject ();
 
       TestableClientTransaction.Rollback ();
 
-      int number = newOrder.OrderNumber;
+      Assert.That (
+          () => newOrder.OrderNumber,
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]

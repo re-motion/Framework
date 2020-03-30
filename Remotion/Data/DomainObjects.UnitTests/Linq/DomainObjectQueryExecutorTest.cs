@@ -98,12 +98,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread.")]
     public void ExecuteScalar_NoActiveClientTransaction ()
     {
       using (ClientTransactionScope.EnterNullScope ())
       {
-        _queryExecutor.ExecuteScalar<int> (_someQueryModel);
+        Assert.That (
+            () => _queryExecutor.ExecuteScalar<int> (_someQueryModel),
+            Throws.InvalidOperationException
+                .With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
       }
     }
 
@@ -144,12 +146,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread.")]
     public void ExecuteCollection_NoActiveClientTransaction ()
     {
       using (ClientTransactionScope.EnterNullScope ())
       {
-        _queryExecutor.ExecuteCollection<Order> (_someQueryModel);
+        Assert.That (
+            () => _queryExecutor.ExecuteCollection<Order> (_someQueryModel),
+            Throws.InvalidOperationException
+                .With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
       }
     }
 
@@ -231,12 +235,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread.")]
     public void ExecuteSingle_NoActiveClientTransaction ()
     {
       using (ClientTransactionScope.EnterNullScope ())
       {
-        _queryExecutor.ExecuteSingle<Order> (_someQueryModel, false);
+        Assert.That (
+            () => _queryExecutor.ExecuteSingle<Order> (_someQueryModel, false),
+            Throws.InvalidOperationException
+                .With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
       }
     }
 
