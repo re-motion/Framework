@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       // LogManager.Initialize();
 
       var setUpFixture = new SetUpFixture();
-      setUpFixture.SetUp();
+      setUpFixture.OneTimeSetUp();
 
       // Have all xml files loaded, so if the code is instrumented by a profiler, 
       // the loading does not falsify the method run times during the first call of GetObject.
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       //ClassDefinitionTest();
 
-      setUpFixture.TearDown();
+      setUpFixture.OneTimeTearDown();
 
       Console.WriteLine ("Tests complete");
       //Console.ReadLine();
