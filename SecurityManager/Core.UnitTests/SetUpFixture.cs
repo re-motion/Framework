@@ -53,8 +53,8 @@ namespace Remotion.SecurityManager.UnitTests
       get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=master"); }
     }
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {
@@ -101,8 +101,8 @@ namespace Remotion.SecurityManager.UnitTests
       }
     }
 
-    [TearDown]
-    public void TearDown ()
+    [OneTimeTearDown]
+    public void OneTimeTearDown ()
     {
       SqlConnection.ClearAllPools();
     }

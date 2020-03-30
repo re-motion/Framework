@@ -40,8 +40,8 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
   [SetUpFixture]
   public class SetUpFixture
   {
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {

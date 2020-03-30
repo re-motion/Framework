@@ -27,8 +27,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private readonly WebTestSetUpFixtureHelper _setUpFixtureHelper =
         WebTestSetUpFixtureHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       AppContext.SetSwitch ("Switch.System.Net.DontEnableSchUseStrongCrypto", false);
 
@@ -49,8 +49,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       }
     }
 
-    [TearDown]
-    public void TearDown ()
+    [OneTimeTearDown]
+    public void OneTimeTearDown ()
     {
       try
       {

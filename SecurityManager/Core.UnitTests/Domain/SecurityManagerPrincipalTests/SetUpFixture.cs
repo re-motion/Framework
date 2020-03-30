@@ -29,8 +29,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     private DatabaseFixtures _dbFixtures;
     private OrganizationalStructureTestHelper _testHelper;
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {

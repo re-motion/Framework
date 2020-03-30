@@ -40,8 +40,8 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       }
     }
 
-    [SetUp]
-    public virtual void SetUp ()
+    [OneTimeSetUp]
+    public virtual void OneTimeSetUp ()
     {
       Console.WriteLine ("Setting up MethodWrapperEmitterTests");
 
@@ -57,8 +57,8 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       DeleteIfExists (s_moduleBuilder.FullyQualifiedName);
     }
 
-    [TearDown]
-    public virtual void TearDown ()
+    [OneTimeTearDown]
+    public virtual void OneTimeTearDown ()
     {
       Console.WriteLine ("Tearing down MethodWrapperEmitterTests");
 #if !NO_PEVERIFY

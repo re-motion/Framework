@@ -46,8 +46,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=master"); }
     }
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {
@@ -79,8 +79,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       }
     }
 
-    [TearDown]
-    public virtual void TearDown ()
+    [OneTimeTearDown]
+    public virtual void OneTimeTearDown ()
     {
       SqlConnection.ClearAllPools();
     }

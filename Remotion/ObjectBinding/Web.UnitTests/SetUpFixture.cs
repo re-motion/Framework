@@ -34,8 +34,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests
   {
     private ServiceLocatorScope _serviceLocatorScope;
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       XmlNodeExtensions.Helper = new HtmlHelper();
 
@@ -47,8 +47,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 
-    [TearDown]
-    public void TearDown ()
+    [OneTimeTearDown]
+    public void OneTimeTearDown ()
     {
       _serviceLocatorScope.Dispose();
     }

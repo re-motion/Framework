@@ -28,8 +28,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure
   {
     private DatabaseFixtures _dbFixtures;
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {
@@ -45,8 +45,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure
       }
     }
 
-    [TearDown]
-    public void TearDown ()
+    [OneTimeTearDown]
+    public void OneTimeTearDown ()
     {
       BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
     }

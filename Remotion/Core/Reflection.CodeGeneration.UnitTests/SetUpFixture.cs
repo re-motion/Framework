@@ -50,8 +50,8 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       }
     }
 
-    [SetUp]
-    public virtual void SetUp ()
+    [OneTimeSetUp]
+    public virtual void OneTimeSetUp ()
     {
       Console.WriteLine ("Setting up code generation tests");
       s_scope = new ModuleScope (true, false, "Remotion.Reflection.CodeGeneration.Generated.Signed", "Remotion.Reflection.CodeGeneration.Generated.Signed.dll", "Remotion.Reflection.CodeGeneration.Generated.Unsigned", "Remotion.Reflection.CodeGeneration.Generated.Unsigned.dll");
@@ -60,8 +60,8 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       DeleteIfExists (Path.Combine (s_scope.WeakNamedModuleDirectory ?? Environment.CurrentDirectory, s_scope.WeakNamedModuleName));
     }
 
-    [TearDown]
-    public virtual void TearDown ()
+    [OneTimeTearDown]
+    public virtual void OneTimeTearDown ()
     {
       Console.WriteLine ("Tearing down code generation tests");
 #if !NO_PEVERIFY

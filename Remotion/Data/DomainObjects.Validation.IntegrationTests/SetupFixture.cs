@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
   [SetUpFixture]
   public class SetUpFixture
   {
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {

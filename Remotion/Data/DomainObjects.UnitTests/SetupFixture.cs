@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     private StandardMappingDatabaseAgent _standardMappingDatabaseAgent;
     private DoubleCheckedLockingContainer<IMappingConfiguration> _previousMappingConfigurationContainer;
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {
@@ -83,8 +83,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
       }
     }
 
-    [TearDown]
-    public void TearDown ()
+    [OneTimeTearDown]
+    public void OneTimeTearDown ()
     {
       PrivateInvoke.SetNonPublicStaticField (typeof (MappingConfiguration), "s_mappingConfiguration", _previousMappingConfigurationContainer);
 

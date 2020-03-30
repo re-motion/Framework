@@ -47,8 +47,8 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
       get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=master"); }
     }
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {

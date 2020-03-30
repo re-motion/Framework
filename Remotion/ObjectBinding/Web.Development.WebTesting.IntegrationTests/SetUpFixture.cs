@@ -26,8 +26,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   {
     private readonly WebTestSetUpFixtureHelper _setUpFixtureHelper = WebTestSetUpFixtureHelper.CreateFromConfiguration();
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {
@@ -46,8 +46,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       }
     }
 
-    [TearDown]
-    public void TearDown ()
+    [OneTimeTearDown]
+    public void OneTimeTearDown ()
     {
       try
       {

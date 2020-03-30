@@ -39,8 +39,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools
     public static IDomainObjectHandle<SecurableClassDefinition> OrderClassHandle { get; private set; }
     public static  List<AccessControlList> aclList { get; private set; }
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {

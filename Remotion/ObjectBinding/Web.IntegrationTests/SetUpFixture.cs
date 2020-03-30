@@ -28,8 +28,8 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests
     private readonly WebTestSetUpFixtureHelper _setUpFixtureHelper =
         WebTestSetUpFixtureHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       var screenshotDirectory = _setUpFixtureHelper.ScreenshotDirectory;
 
@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests
       _setUpFixtureHelper.OnSetUp();
     }
 
-    [TearDown]
-    public void TearDown ()
+    [OneTimeTearDown]
+    public void OneTimeTearDown ()
     {
       _setUpFixtureHelper.OnTearDown();
     }

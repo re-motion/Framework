@@ -68,8 +68,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       s_assemblyTrackingCodeManager.AddSavedAssembly (assemblyPath);
     }
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       var assemblyTrackingPipelineFactory = new AssemblyTrackingPipelineFactory();
       var settings = PipelineSettings.New().SetEnableSerializationWithoutAssemblySaving (true).Build();
@@ -86,7 +86,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       s_assemblyTrackingCodeManager = assemblyTrackingPipelineFactory.AssemblyTrackingCodeManager;
     }
 
-    [TearDown]
+    [OneTimeTearDown]
     public void TearDown()
     {
 #if !NO_PEVERIFY

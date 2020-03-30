@@ -22,8 +22,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
   [SetUpFixture]
   public class SetUpFixture
   {
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {

@@ -22,8 +22,8 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
   [SetUpFixture]
   public class SetUpFixture
   {
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {
@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       }
     }
 
-    [TearDown]
-    public void TearDown ()
+    [OneTimeTearDown]
+    public void OneTimeTearDown ()
     {
     }
   }
