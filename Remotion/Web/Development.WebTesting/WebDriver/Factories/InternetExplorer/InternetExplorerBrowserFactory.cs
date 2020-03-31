@@ -50,6 +50,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplor
 
       int driverProcessId;
       var driver = CreateInternetExplorerDriver (out driverProcessId, commandTimeout);
+      driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
 
       var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.InternetExplorer));
 

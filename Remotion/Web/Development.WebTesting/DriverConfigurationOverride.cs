@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.Configuration;
 
 namespace Remotion.Web.Development.WebTesting
@@ -39,6 +40,11 @@ namespace Remotion.Web.Development.WebTesting
     /// after the given <see cref="RetryInterval" /> until the <see cref="SearchTimeout" /> has been reached.
     /// </summary>
     public TimeSpan? RetryInterval { get; set; }
+
+    /// <summary>
+    /// Returns the timeout that Selenium uses to determine how long to wait for asynchronous callbacks when using <see cref="IJavaScriptExecutor.ExecuteAsyncScript" />.
+    /// </summary>
+    public TimeSpan? AsyncJavaScriptTimeout { get; set; }
 
     public DriverConfigurationOverride ()
     {

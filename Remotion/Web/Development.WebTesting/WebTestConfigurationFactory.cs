@@ -99,7 +99,8 @@ namespace Remotion.Web.Development.WebTesting
       return new DriverConfiguration (
           configSettings.CommandTimeout,
           configSettings.SearchTimeout,
-          configSettings.RetryInterval);
+          configSettings.RetryInterval,
+          configSettings.AsyncJavaScriptTimeout);
     }
 
     /// <summary>

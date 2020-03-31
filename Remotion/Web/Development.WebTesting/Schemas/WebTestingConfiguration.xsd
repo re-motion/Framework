@@ -41,6 +41,7 @@
       <xs:attribute name="browser" type="c:BrowserType" use="required" />
       <xs:attribute name="searchTimeout" type="xs:time" use="required" />
       <xs:attribute name="commandTimeout" type="xs:time" default="00:01:00" />
+      <xs:attribute name="asyncJavaScriptTimeout" type="xs:time" default="00:00:10" />
       <xs:attribute name="downloadStartedTimeout" type="xs:time" default="00:00:10" />
       <xs:attribute name="downloadUpdatedTimeout" type="xs:time" default="00:00:10" />
       <xs:attribute name="verifyWebApplicationStartedTimeout" type="xs:time" default="00:01:00" />

@@ -17,6 +17,7 @@
 using System;
 using System.Configuration;
 using System.IO;
+using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 
@@ -33,6 +34,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _browserProperty;
     private readonly ConfigurationProperty _searchTimeoutProperty;
     private readonly ConfigurationProperty _commandTimeoutProperty;
+    private readonly ConfigurationProperty _asyncJavaScriptTimeoutProperty;
     private readonly ConfigurationProperty _downloadStartedTimeoutProperty;
     private readonly ConfigurationProperty _downloadUpdatedTimeoutProperty;
     private readonly ConfigurationProperty _verifyWebApplicationStartedTimeoutProperty;
@@ -71,6 +73,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
           ConfigurationPropertyOptions.IsRequired);
       _searchTimeoutProperty = new ConfigurationProperty ("searchTimeout", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
       _commandTimeoutProperty = new ConfigurationProperty ("commandTimeout", typeof (TimeSpan), TimeSpan.FromMinutes (1));
+      _asyncJavaScriptTimeoutProperty = new ConfigurationProperty ("asyncJavaScriptTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
       _downloadStartedTimeoutProperty = new ConfigurationProperty ("downloadStartedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
       _downloadUpdatedTimeoutProperty = new ConfigurationProperty ("downloadUpdatedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
       _verifyWebApplicationStartedTimeoutProperty = new ConfigurationProperty ("verifyWebApplicationStartedTimeout", typeof (TimeSpan), TimeSpan.FromMinutes (1));
@@ -98,6 +101,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _browserProperty,
                         _searchTimeoutProperty,
                         _commandTimeoutProperty,
+                        _asyncJavaScriptTimeoutProperty,
                         _downloadStartedTimeoutProperty,
                         _downloadUpdatedTimeoutProperty,
                         _verifyWebApplicationStartedTimeoutProperty,
@@ -150,6 +154,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public TimeSpan CommandTimeout
     {
       get { return (TimeSpan) this [_commandTimeoutProperty]; }
+    }
+
+    /// <summary>
+    /// Specifies how long Selenium should maximally wait for asynchronous callbacks after calling <see cref="IJavaScriptExecutor.ExecuteAsyncScript" /> before failing.
+    /// </summary>
+    public TimeSpan AsyncJavaScriptTimeout
+    {
+      get { return (TimeSpan) this [_asyncJavaScriptTimeoutProperty]; }
     }
 
     /// <summary>

@@ -56,6 +56,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
       var commandTimeout = configuration.CommandTimeout;
 
       var driver = CreateEdgeDriver (out var driverProcessID, commandTimeout);
+      driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
 
       var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Edge));
 

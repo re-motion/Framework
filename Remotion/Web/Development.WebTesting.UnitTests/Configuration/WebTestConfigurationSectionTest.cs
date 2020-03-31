@@ -38,6 +38,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     screenshotDirectory="".\SomeScreenshotDirectory""
     downloadStartedTimeout=""00:00:13""
     downloadUpdatedTimeout=""00:00:37""
+    asyncJavaScriptTimeout=""00:42:00""
     logsDirectory="".\SomeLogsDirectory""
     closeBrowserWindowsOnSetUpAndTearDown=""false""
     cleanUpUnmatchedDownloadedFiles=""false""
@@ -79,6 +80,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
       Assert.That (_section.TestSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo (@".\Some\Resource"));
       Assert.That (_section.DownloadStartedTimeout, Is.EqualTo (TimeSpan.FromSeconds (13)));
       Assert.That (_section.DownloadUpdatedTimeout, Is.EqualTo (TimeSpan.FromSeconds (37)));
+      Assert.That (_section.AsyncJavaScriptTimeout, Is.EqualTo (TimeSpan.FromMinutes (42)));
       Assert.That (_section.LogsDirectory, Is.EqualTo (@".\SomeLogsDirectory"));
       Assert.That (_section.CloseBrowserWindowsOnSetUpAndTearDown, Is.EqualTo (false));
       Assert.That (_section.CleanUpUnmatchedDownloadedFiles, Is.EqualTo (false));

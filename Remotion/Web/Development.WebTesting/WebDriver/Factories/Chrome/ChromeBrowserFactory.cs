@@ -56,6 +56,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
       var commandTimeout = configuration.CommandTimeout;
 
       var driver = CreateChromeDriver (out var driverProcessID, commandTimeout);
+      driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
 
       var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Chrome));
 
