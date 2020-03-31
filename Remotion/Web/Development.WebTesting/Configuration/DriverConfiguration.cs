@@ -45,6 +45,13 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public TimeSpan AsyncJavaScriptTimeout { get; }
 
+    public DriverConfiguration (TimeSpan commandTimeout, TimeSpan searchTimeout, TimeSpan retryInterval)
+    {
+      CommandTimeout = commandTimeout;
+      SearchTimeout = searchTimeout;
+      RetryInterval = retryInterval;
+    }
+
     public DriverConfiguration (TimeSpan commandTimeout, TimeSpan searchTimeout, TimeSpan retryInterval, TimeSpan asyncJavaScriptTimeout)
     {
       CommandTimeout = commandTimeout;
