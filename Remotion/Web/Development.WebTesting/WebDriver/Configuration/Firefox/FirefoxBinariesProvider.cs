@@ -130,7 +130,17 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
         // The user-agent header is required for github requests.
         webClient.Headers.Add ("user-agent", "unknown");
 
-        var githubResponseJson = webClient.DownloadString (c_latestDriverReleaseUrl);
+        string githubResponseJson;
+
+        try
+        {
+          githubResponseJson = webClient.DownloadString (c_latestDriverReleaseUrl);
+        }
+        catch (WebException ex)
+        {
+          throw new WebException ($"Could not fetch the latest geckodriver download URL from '{c_latestDriverReleaseUrl}': {ex.Message}", ex.Status);
+        }
+
         var serializer = new DataContractJsonSerializer (typeof (GithubResponse));
         using (var stream = new MemoryStream (Encoding.UTF8.GetBytes (githubResponseJson)))
         {
@@ -150,7 +160,14 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
 
       using (var webClient = new WebClient())
       {
-        webClient.DownloadFile (downloadUrl, fullZipPath);
+        try
+        {
+          webClient.DownloadFile (downloadUrl, fullZipPath);
+        }
+        catch (WebException ex)
+        {
+          throw new WebException ($"Could not download the latest geckodriver from '{downloadUrl}': {ex.Message}", ex.Status);
+        }
       }
 
       ZipFile.ExtractToDirectory (fullZipPath, tempPath);

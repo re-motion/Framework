@@ -157,6 +157,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
             + "This could mean that no corresponding EdgeDriver has been released for the version of Edge you are using.",
             ex);
       }
+      catch (WebException ex)
+      {
+        throw new WebException ($"Could not download the EdgeDriver for Edge v{edgeDriverVersion} from '{url}': {ex.Message}", ex.Status);
+      }
 
       ZipFile.ExtractToDirectory (fullZipPath, tempPath);
 
