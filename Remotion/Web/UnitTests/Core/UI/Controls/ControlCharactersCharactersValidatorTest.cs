@@ -60,6 +60,14 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     }
 
     [Test]
+    public void IsTextValid_WithHorizontalTab_ReturnsTrue ()
+    {
+      var validator = new TestableControlCharactersCharactersValidator();
+
+      Assert.That (validator.EvaluateIsTextValid ("\t"), Is.True);
+    }
+
+    [Test]
     public void IsTextValid_WithLineBreak_AndEnableMultilineTextIsTrue_ReturnsTrue ()
     {
       var validator = new TestableControlCharactersCharactersValidator();
@@ -249,7 +257,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [TestCase ("a\u0006b", TestName = "IsTextValid_WithASCII06_ReturnsFalse")]
     [TestCase ("a\u0007b", TestName = "IsTextValid_WithASCII07_ReturnsFalse")]
     [TestCase ("a\u0008b", TestName = "IsTextValid_WithASCII08_ReturnsFalse")]
-    [TestCase ("a\u0009b", TestName = "IsTextValid_WithASCII09_ReturnsFalse")]
     [TestCase ("a\u000Ab", TestName = "IsTextValid_WithASCII0A_ReturnsFalse")]
     [TestCase ("a\u000Bb", TestName = "IsTextValid_WithASCII0B_ReturnsFalse")]
     [TestCase ("a\u000Cb", TestName = "IsTextValid_WithASCII0C_ReturnsFalse")]
@@ -272,10 +279,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [TestCase ("a\u001Db", TestName = "IsTextValid_WithASCII1D_ReturnsFalse")]
     [TestCase ("a\u001Eb", TestName = "IsTextValid_WithASCII1E_ReturnsFalse")]
     [TestCase ("a\u001Fb", TestName = "IsTextValid_WithASCII1F_ReturnsFalse")]
-    [TestCase ("a\vb", TestName = "IsTextValid_WithVerticalTab_ReturnsFalse")]
-    [TestCase ("a\tb", TestName = "IsTextValid_WithTab_ReturnsFalse")]
     [TestCase ("a\rb", TestName = "IsTextValid_WithCarriageReturn_ReturnsFalse")]
     [TestCase ("a\nb", TestName = "IsTextValid_WithLineFeed_ReturnsFalse")]
+    [TestCase ("a\fb", TestName = "IsTextValid_WithFormFeed_ReturnsFalse")]
+    [TestCase ("a\vb", TestName = "IsTextValid_WithVerticalTab_ReturnsFalse")]
+    [TestCase ("a\u0085b", TestName = "IsTextValid_WithNextLine_ReturnsFalse")]
     public void IsTextValid_WithTextAndControlCharacter_ReturnsFalse (string text)
     {
       var validator = new TestableControlCharactersCharactersValidator();
@@ -287,6 +295,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [Test]
     [TestCase ("a\u00ADb", TestName = "IsTextValid_WithSoftHyphen_ReturnsTrue")]
     [TestCase ("a\u200Bb", TestName = "IsTextValid_WithZeroWidthSpace_ReturnsTrue")]
+    [TestCase ("a\u00A0b", TestName = "IsTextValid_WithNonBreakingWhitespace_ReturnsTrue")]
+    [TestCase ("a\tb", TestName = "IsTextValid_WithHorizontalTab_ReturnsTrue")]
     public void IsTextValid_WithTextAndPrintableCharacter_ReturnsTrue (string text)
     {
       var validator = new TestableControlCharactersCharactersValidator();
