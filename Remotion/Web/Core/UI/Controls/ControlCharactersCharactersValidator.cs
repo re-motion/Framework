@@ -83,6 +83,9 @@ namespace Remotion.Web.UI.Controls
         var c = text[textPosition];
         if (char.IsControl (c))
         {
+          if (c == '\t')
+            continue;
+
           if (EnableMultilineText)
           {
             if (c == '\n')
