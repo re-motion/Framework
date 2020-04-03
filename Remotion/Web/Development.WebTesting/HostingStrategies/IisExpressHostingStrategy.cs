@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Specialized;
 using System.IO;
-using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
@@ -56,8 +55,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// <inheritdoc/>
     public void DeployAndStartWebApplication ()
     {
-      var iisExpressThread = new Thread (() => _iisExpressInstance.Run()) { IsBackground = true };
-      iisExpressThread.Start();
+      _iisExpressInstance.Run();
     }
 
     /// <inheritdoc/>
