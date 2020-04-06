@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocReferenceValue
     {
       var home = Start();
       var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_WithoutSelectedValue_Required");
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 

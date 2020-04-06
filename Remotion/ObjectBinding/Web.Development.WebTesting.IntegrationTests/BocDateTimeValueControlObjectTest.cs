@@ -359,7 +359,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
 
       var dateScope = GetDateScope (bocDateTimeValue.Scope);
@@ -378,7 +378,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
 
       var timeScope = GetTimeScope (bocDateTimeValue.Scope);
@@ -397,7 +397,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
 
       var timeScope = GetTimeScope (bocDateTimeValue.Scope);
@@ -420,7 +420,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var validateButton = home.WebButtons().GetByLocalID ("ValidateButton");
+      var validateButton = home.GetValidateButton();
       var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
 
       var dateScope = GetDateScope (bocDateTimeValue.Scope);
