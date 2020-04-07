@@ -17,6 +17,7 @@
     <SkipSourceLinks>True</SkipSourceLinks>
     <SkipNuGet>True</SkipNuGet>
     <SkipDependDB>True</SkipDependDB>
+    <DisableDocker>True</DisableDocker>
   </PropertyGroup>
   
   <Target Name="TestBuild_Configuration">
