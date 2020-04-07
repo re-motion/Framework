@@ -28,8 +28,8 @@
     <NUnitToolPath Condition="'$(NUnitToolPath)' == ''">$(PackagesDirectory)NUnit.Runners.2.6.3\tools\</NUnitToolPath>
     <NuGetToolPath Condition="'$(NuGetToolPath)' == ''">$(PackagesDirectory)NuGet.CommandLine.3.5.0\tools\</NuGetToolPath>
     <NuGetForMSBuildPath Condition="'$(NuGetForMSBuildPath)' == ''">$(PackagesDirectory)NuGet.for.MSBuild.1.4.3\build\</NuGetForMSBuildPath>
-    <RemotionBuildTasksPath Condition="'$(RemotionBuildTasksPath)' == ''">$(PackagesDirectory)Remotion.BuildTools.MSBuildTasks.1.0.6180.28602\tools\</RemotionBuildTasksPath>
-    <RemotionBuildScriptPath Condition="'$(RemotionBuildScriptPath)' == ''">$(PackagesDirectory)Remotion.BuildScript.2.0.0-alpha018\BuildTargets\</RemotionBuildScriptPath>
+    <RemotionBuildTasksPath Condition="'$(RemotionBuildTasksPath)' == ''">$(PackagesDirectory)Remotion.BuildTools.MSBuildTasks.1.0.6862.28795\tools\</RemotionBuildTasksPath>
+    <RemotionBuildScriptPath Condition="'$(RemotionBuildScriptPath)' == ''">$(PackagesDirectory)Remotion.BuildScript.2.0.0-alpha020\BuildTargets\</RemotionBuildScriptPath>
   </PropertyGroup>
 
   <Import Project="$(RemotionBuildScriptPath)*.targets" />
@@ -47,6 +47,7 @@
     <SkipSourceLinks>False</SkipSourceLinks>
     <SkipNuGet>False</SkipNuGet>
     <SkipDependDB>False</SkipDependDB>
+    <DisableDocker>False</DisableDocker>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -84,6 +85,7 @@
           DatabaseSystems=$(DatabaseSystems);
           Browsers=$(Browsers);
           TestCategoriesToExclude=$(TestCategoriesToExclude);
+          DisableDocker=$(DisableDocker);
       </BuildProperties>
     </PropertyGroup>
 
@@ -156,12 +158,12 @@
              Properties="ConfigurationID=Debug;$(BuildProperties);"/>
   </Target>
 
-  <Target Name="UpdateAssemblyInfosForDevelopment" DependsOnTargets="CheckVersion;PrepareBuildProperties;UpdateVersionProps">
+  <Target Name="UpdateAssemblyInfosForDevelopment" DependsOnTargets="CheckVersion;PrepareBuildProperties;UpdateVersionProps;PrepareVersionWithoutPrerelease">
     <!-- Re-defines the version to append the local build pre-release tag after UpdateVersionProps has been performed. -->
     <MSBuild Projects="$(MSBuildProjectFile)"
              BuildInParallel="false"
              Targets="UpdateAssemblyInfos;CleanAssemblyBackup"
-             Properties="ConfigurationID=Debug;$(BuildProperties);Version=$(Version)-x.9"/>
+             Properties="ConfigurationID=Debug;$(BuildProperties);Version=$(VersionWithoutPrerelease)-x.9"/>
   </Target>
 
   <Target Name="UpdateAssemblyInfosForRelease" DependsOnTargets="CheckVersion;PrepareBuildProperties;UpdateVersionProps">
