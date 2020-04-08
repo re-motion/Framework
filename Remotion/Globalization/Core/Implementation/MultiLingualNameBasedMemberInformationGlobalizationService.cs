@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -88,7 +87,7 @@ namespace Remotion.Globalization.Implementation
       {
         ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
 
-        return Maybe.ForValue (propertyInformation.GetOriginalDeclaringType()).Select (t => t.Assembly).ValueOrDefault();
+        return propertyInformation.GetOriginalDeclaringType()?.Assembly;
       }
 
       protected override string GetContextForExceptionMessage (IPropertyInformation propertyInformation)
@@ -103,7 +102,7 @@ namespace Remotion.Globalization.Implementation
 
       private string GetDeclaringTypeName (IPropertyInformation propertyInformation)
       {
-        return Maybe.ForValue (propertyInformation.DeclaringType).Select (t => t.FullName).ValueOrDefault ("<undefined>");
+        return propertyInformation.DeclaringType?.FullName ?? "<undefined>";
       }
     }
 

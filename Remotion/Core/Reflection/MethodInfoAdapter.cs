@@ -23,7 +23,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using JetBrains.Annotations;
-using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection
@@ -67,7 +66,7 @@ namespace Remotion.Reflection
       _methodInfo = methodInfo;
 
       _cachedDeclaringType = new Lazy<ITypeInformation> (
-          () => Maybe.ForValue (_methodInfo.DeclaringType).Select (TypeAdapter.Create).ValueOrDefault(),
+          () => TypeAdapter.CreateOrNull (_methodInfo.DeclaringType),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
       _cachedOriginalDeclaringType = new Lazy<ITypeInformation> (
@@ -75,7 +74,7 @@ namespace Remotion.Reflection
           LazyThreadSafetyMode.ExecutionAndPublication);
 
       _declaringProperty = new Lazy<IPropertyInformation> (
-          () => Maybe.ForValue ( _methodInfo.FindDeclaringProperty()).Select (PropertyInfoAdapter.Create).ValueOrDefault(),
+          () => PropertyInfoAdapter.CreateOrNull (_methodInfo.FindDeclaringProperty()),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
       _interfaceDeclarations = new Lazy<IReadOnlyCollection<IMethodInformation>> (

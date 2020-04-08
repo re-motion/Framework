@@ -155,9 +155,6 @@
     <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\EnumerableUtilityTest.cs">
       <Link>SharedSource\FunctionalProgramming\EnumerableUtilityTest.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\MaybeTest.cs">
-      <Link>SharedSource\FunctionalProgramming\MaybeTest.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\TestDomain\Element.cs">
       <Link>SharedSource\FunctionalProgramming\TestDomain\Element.cs</Link>
     </Compile>

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using Remotion.ExtensibleEnums;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization.Implementation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -50,7 +49,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
       {
         ArgumentUtility.CheckNotNull ("definingMethod", definingMethod);
 
-        return Maybe.ForValue (definingMethod.DeclaringType).Select (t => t.Assembly).ValueOrDefault();
+        return definingMethod.DeclaringType?.Assembly;
       }
 
       protected override string GetContextForExceptionMessage (MethodInfo definingMethod)

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -60,17 +59,20 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       // (This only affects 1:n relations: for those, the opposite virtual end-point can be changed although the (one of many) real end-point is 
       // unchanged. For 1:1 relations, the real and virtual end-points always have an equal HasChanged flag.)
 
-      var maybeOppositeEndPoint =
-          Maybe
-              .ForValue (endPoint as IRealObjectEndPoint)
-              .Select (ep => RelationEndPointID.CreateOpposite (ep.Definition, ep.OppositeObjectID))
-              .Select (oppositeEndPointID => relationEndPointMap[oppositeEndPointID]);
-      if (maybeOppositeEndPoint.Where (ep => ep.HasChanged).HasValue)
+      var realObjectEndPoint = endPoint as IRealObjectEndPoint;
+
+      if (realObjectEndPoint == null)
+        return null;
+
+      var oppositeEndPointID = RelationEndPointID.CreateOpposite (realObjectEndPoint.Definition, realObjectEndPoint.OppositeObjectID);
+      var oppositeEndPoint = relationEndPointMap[oppositeEndPointID];
+
+      if (oppositeEndPoint?.HasChanged ?? false)
       {
         return string.Format (
             "The opposite relation property '{0}' of relation end-point '{1}' has changed. Non-virtual end-points that are part of changed relations "
             + "cannot be unloaded.",
-            maybeOppositeEndPoint.Value().Definition.PropertyName,
+            oppositeEndPoint.Definition.PropertyName,
             endPoint.ID);
       }
 

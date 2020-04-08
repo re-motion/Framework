@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -132,20 +131,24 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public IMethodInformation GetGetMethod (bool nonPublic)
     {
-      return Maybe
-          .ForValue (_interfaceImplementationPropertyInfo.GetGetMethod (nonPublic))
-          .Select (mi => mi as InterfaceImplementationMethodInformation)
-          .Select (mi => new MixinIntroducedMethodInformation (mi))
-          .ValueOrDefault ();
+      var getMethod = _interfaceImplementationPropertyInfo.GetGetMethod (nonPublic);
+      var interfaceImplementationGetMethod = getMethod as InterfaceImplementationMethodInformation;
+
+      if (interfaceImplementationGetMethod == null)
+        return null;
+
+      return new MixinIntroducedMethodInformation (interfaceImplementationGetMethod);
     }
 
     public IMethodInformation GetSetMethod (bool nonPublic)
     {
-      return Maybe
-          .ForValue (_interfaceImplementationPropertyInfo.GetSetMethod (nonPublic))
-          .Select (mi => mi as InterfaceImplementationMethodInformation)
-          .Select (mi => new MixinIntroducedMethodInformation (mi))
-          .ValueOrDefault ();
+      var setMethod = _interfaceImplementationPropertyInfo.GetSetMethod (nonPublic);
+      var interfaceImplementationGetMethod = setMethod as InterfaceImplementationMethodInformation;
+
+      if (interfaceImplementationGetMethod == null)
+        return null;
+
+      return new MixinIntroducedMethodInformation (interfaceImplementationGetMethod);
     }
 
     public override bool Equals (object obj)

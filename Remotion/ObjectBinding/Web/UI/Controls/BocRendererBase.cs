@@ -20,7 +20,6 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
@@ -110,7 +109,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         var businessObjectClassIdentifier = GetBusinessObjectClassIdentifier (control);
         renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BoundType, businessObjectClassIdentifier);
 
-        var boundProperty = Maybe.ForValue (control.Property).Select (p => p.Identifier).ValueOrDefault ("null");
+        var boundProperty = control.Property?.Identifier ?? "null";
         renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BoundProperty, boundProperty);
       }
     }

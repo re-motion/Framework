@@ -23,7 +23,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using JetBrains.Annotations;
-using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection
@@ -67,26 +66,26 @@ namespace Remotion.Reflection
     private readonly Lazy<ITypeInformation> _cachedOriginalDeclaringType;
     private readonly Lazy<IPropertyInformation> _cachedOriginalDeclaration;
 
-    private readonly Lazy<IReadOnlyCollection<IPropertyInformation>> _interfaceDeclarations; 
+    private readonly Lazy<IReadOnlyCollection<IPropertyInformation>> _interfaceDeclarations;
 
     private PropertyInfoAdapter (PropertyInfo propertyInfo)
     {
       _propertyInfo = propertyInfo;
 
       _publicGetMethod = new Lazy<IMethodInformation> (
-          () => Maybe.ForValue (_propertyInfo.GetGetMethod (false)).Select (MethodInfoAdapter.Create).ValueOrDefault(),
+          () => MethodInfoAdapter.CreateOrNull (_propertyInfo.GetGetMethod (false)),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
       _publicOrNonPublicGetMethod = new Lazy<IMethodInformation> (
-          () => Maybe.ForValue (_propertyInfo.GetGetMethod (true)).Select (MethodInfoAdapter.Create).ValueOrDefault(),
+          () => MethodInfoAdapter.CreateOrNull (_propertyInfo.GetGetMethod (true)),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
       _publicSetMethod = new Lazy<IMethodInformation> (
-          () => Maybe.ForValue (_propertyInfo.GetSetMethod (false)).Select (MethodInfoAdapter.Create).ValueOrDefault(),
+          () => MethodInfoAdapter.CreateOrNull (_propertyInfo.GetSetMethod (false)),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
       _publicOrNonPublicSetMethod = new Lazy<IMethodInformation> (
-          () => Maybe.ForValue (_propertyInfo.GetSetMethod (true)).Select (MethodInfoAdapter.Create).ValueOrDefault(),
+          () => MethodInfoAdapter.CreateOrNull (_propertyInfo.GetSetMethod (true)),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
       _publicAccessors = new Lazy<IReadOnlyCollection<IMethodInformation>> (
@@ -98,7 +97,7 @@ namespace Remotion.Reflection
           LazyThreadSafetyMode.ExecutionAndPublication);
 
       _cachedDeclaringType = new Lazy<ITypeInformation> (
-          () => Maybe.ForValue (_propertyInfo.DeclaringType).Select (TypeAdapter.Create).ValueOrDefault(),
+          () => TypeAdapter.CreateOrNull (_propertyInfo.DeclaringType),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
       _cachedOriginalDeclaringType = new Lazy<ITypeInformation> (

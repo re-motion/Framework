@@ -126,9 +126,6 @@
     <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\EnumerableUtility.cs">
       <Link>SharedSource\FunctionalProgramming\EnumerableUtility.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\Maybe.cs">
-      <Link>SharedSource\FunctionalProgramming\Maybe.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionConditionAttribute.cs">
       <Link>SharedSource\ReSharperAnnotations\AssertionConditionAttribute.cs</Link>
     </Compile>
@@ -225,7 +222,6 @@
     <Compile Include="Context\SafeContextSingleton.cs" />
     <Compile Include="FunctionalProgramming\EnumerableExtensions.Partial.cs" />
     <Compile Include="FunctionalProgramming\EnumerableUtility.Partial.cs" />
-    <Compile Include="FunctionalProgramming\Maybe.Partial.cs" />
     <Compile Include="IHandleAttribute.cs" />
     <Compile Include="Obsolete\Reflection\TypeDiscovery\ContextAwareTypeDiscoveryUtility.cs" />
     <Compile Include="Reflection\MethodInfoExtensions.cs" />

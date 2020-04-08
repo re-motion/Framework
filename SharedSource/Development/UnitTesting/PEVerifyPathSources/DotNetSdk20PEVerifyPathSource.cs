@@ -18,7 +18,6 @@
 using System;
 using System.IO;
 using Microsoft.Win32;
-using Remotion.FunctionalProgramming;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.PEVerifyPathSources
@@ -41,13 +40,14 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
       if (version != PEVerifyVersion.DotNet2)
         return null;
 
-      return Maybe
-          .ForValue (RegistryKey.OpenBaseKey (RegistryHive.LocalMachine, RegistryView.Registry32))
-          .Select (key => key.OpenSubKey (SdkRegistryKey, false))
-          .Select (key => key.GetValue (SdkRegistryValue) as string)
-          .Select (path => Path.Combine (path, "bin"))
-          .Select (path => Path.Combine (path, "PEVerify.exe"))
-          .ValueOrDefault();
+      var sdkPath = RegistryKey.OpenBaseKey (RegistryHive.LocalMachine, RegistryView.Registry32)
+          .OpenSubKey (SdkRegistryKey, false)
+          ?.GetValue (SdkRegistryValue) as string;
+
+      if (sdkPath == null)
+        return null;
+
+      return Path.Combine (sdkPath, "bin", "PEVerify.exe");
     }
   }
 }

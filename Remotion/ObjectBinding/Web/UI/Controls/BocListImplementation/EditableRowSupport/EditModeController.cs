@@ -21,7 +21,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -260,9 +259,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
         var editedRows = _editedRowIDs.Select (
             (editedRowID, index) =>
-                Maybe.ForValue (_editModeHost.RowIDProvider.GetRowFromItemRowID (_editModeHost.Value, editedRowID))
-                    .Select (row => Tuple.Create (row.Index, row.BusinessObject))
-                    .ValueOrDefault (Tuple.Create (-1, _rows[index].GetDataSource().BusinessObject))).ToArray();
+            {
+              var bocListRow = _editModeHost.RowIDProvider.GetRowFromItemRowID (_editModeHost.Value, editedRowID);
+
+              if (bocListRow == null)
+                return Tuple.Create (-1, _rows[index].GetDataSource().BusinessObject);
+
+              return Tuple.Create (bocListRow.Index, bocListRow.BusinessObject);
+            }).ToArray();
 
         if (saveChanges)
         {

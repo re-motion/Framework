@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Threading;
 using JetBrains.Annotations;
-using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -142,8 +141,8 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       _bindablePropertyWriteAccessStrategy = parameters.BindablePropertyWriteAccessStrategy;
       _bindableObjectGlobalizationService = parameters.BindableObjectGlobalizationService;
       _isNullable = GetNullability();
-      _valueGetter = Maybe.ForValue (_propertyInfo.GetGetMethod (true)).Select (mi => mi.GetFastInvoker<Func<object, object>>()).ValueOrDefault();
-      _valueSetter = Maybe.ForValue (_propertyInfo.GetSetMethod (true)).Select (mi => mi.GetFastInvoker<Action<object, object>>()).ValueOrDefault();
+      _valueGetter = _propertyInfo.GetGetMethod (true)?.GetFastInvoker<Func<object, object>>();
+      _valueSetter = _propertyInfo.GetSetMethod (true)?.GetFastInvoker<Action<object, object>>();
     }
 
     /// <summary> Gets a flag indicating whether this property contains multiple values. </summary>
