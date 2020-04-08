@@ -43,6 +43,19 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
+    public void CreateOrNull_WithType_ReturnsSameInstanceAsCreate ()
+    {
+      var type = typeof (ArrayList);
+      Assert.That (TypeAdapter.CreateOrNull (type), Is.SameAs (TypeAdapter.Create (type)));
+    }
+
+    [Test]
+    public void CreateOrNull_WithTypeNull_ReturnsNull ()
+    {
+      Assert.That (TypeAdapter.CreateOrNull (null), Is.Null);
+    }
+
+    [Test]
     public void Type ()
     {
       var _type = typeof (ArrayList);

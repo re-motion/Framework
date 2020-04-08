@@ -61,6 +61,18 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
+    public void CreateOrNull_WithMethodInfo_ReturnsSameInstanceAsCreate ()
+    {
+      Assert.That (MethodInfoAdapter.CreateOrNull (_method), Is.SameAs (MethodInfoAdapter.Create (_method)));
+    }
+
+    [Test]
+    public void CreateOrNull_WithMethodInfoNull_ReturnsNull ()
+    {
+      Assert.That (MethodInfoAdapter.CreateOrNull (null), Is.Null);
+    }
+
+    [Test]
     public void Create_ReturnsSameInstance_ForMethodsReflectedFromDifferentLevelsInHierarchy ()
     {
       var methodViaBase = typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod ("TestMethod");

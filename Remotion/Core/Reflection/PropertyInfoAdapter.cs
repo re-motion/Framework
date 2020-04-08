@@ -22,6 +22,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
@@ -42,6 +43,15 @@ namespace Remotion.Reflection
     public static PropertyInfoAdapter Create (PropertyInfo propertyInfo)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      return s_dataStore.GetOrAdd (propertyInfo, s_ctorFunc);
+    }
+
+    [ContractAnnotation ("null => null; notnull => notnull")]
+    public static PropertyInfoAdapter CreateOrNull (PropertyInfo propertyInfo)
+    {
+      if (propertyInfo == null)
+        return null;
+
       return s_dataStore.GetOrAdd (propertyInfo, s_ctorFunc);
     }
 

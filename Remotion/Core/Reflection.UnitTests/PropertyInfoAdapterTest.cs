@@ -63,6 +63,18 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
+    public void CreateOrNull_WithPropertyInfo_ReturnsSameInstanceAsCreate ()
+    {
+      Assert.That (PropertyInfoAdapter.CreateOrNull (_property), Is.SameAs (PropertyInfoAdapter.Create (_property)));
+    }
+
+    [Test]
+    public void CreateOrNull_WithPropertyInfoNull_ReturnsNull ()
+    {
+      Assert.That (PropertyInfoAdapter.CreateOrNull (null), Is.Null);
+    }
+
+    [Test]
     public void Create_ReturnsSameInstance_ForMethodsReflectedFromDifferentLevelsInHierarchy ()
     {
       var propertyViaBase = typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("NotVisibleAttributeScalar");

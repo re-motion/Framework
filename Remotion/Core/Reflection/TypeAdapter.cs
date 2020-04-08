@@ -22,6 +22,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
@@ -42,6 +43,15 @@ namespace Remotion.Reflection
     public static TypeAdapter Create (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
+
+      return s_dataStore.GetOrAdd (type, s_ctorFunc);
+    }
+
+    [ContractAnnotation ("null => null; notnull => notnull")]
+    public static TypeAdapter CreateOrNull (Type type)
+    {
+      if (type == null)
+        return null;
 
       return s_dataStore.GetOrAdd (type, s_ctorFunc);
     }
