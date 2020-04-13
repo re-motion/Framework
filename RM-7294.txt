@@ -1,0 +1,164 @@
+Löschen von Order mit OrderItems-Collection
+  Default: Beim löschen von einem Order sollen die OrderItems nicht mehr geladen werden. Es bleiben dann GhostPointer über. 
+  AddOn-Eins: Als zusätzlicher Level soll es möglich sein, die Collection beim Löschen vom Order zu laden und die Relations auf NULL zu setzen.
+  AddOn-Zwei: Löschen der Relation über die Datenbank beim Commit
+
+WUNSCH für Design-Session:
+DeleteCommand in Restore soll Batch unterstüzen, um zuerst alle Objekte zu ING-Event aufzurufen / abzubrechen bei Exception und erst dann das ED-Event für alle Objekte.
+  Ruft man während dem Deleting weitere DomainObject.Delete auf, sollen diese in das Deleting eingequeued werden.
+  
+WUNSCH: Sort-Expression via Extensionpoint injectbar im mapping, optimaler Weise nicht mehr auf String-Basis
+
+
+Property Definition:
+* use same collection instance on entire hierarhcy
+* The collection property no longer has a getter
+* The collection must be updated when the values in the transaction change
+
+
+On first relation load: 
+# Execute relation query (without sort expression), 
+# then check all objects in the client transaction 
+# and select those that match the relations type and foreign key. 
+# Perform in-memory sort of the objects.
+
+
+Property access:
+* introduce custom IPropertyAccessorStrategy for lightweight relations (LightweightRelatedObjectCollectionPropertyAccessorStrategy)
+* Property setter is not allowed
+** no setter on properties
+** PropertyAccessor.SetValue must throw an exception. With bidirectional relations, an exception is thrown if the collection types do not match.
+** updating a collection will throw multiple relation changed events since there is no longer a batch-option
+
+
+Review all usages of PropertyKind.RelatedObjectCollection and extend accordingly
+* PropertyIndexer.GetAllRelatedObjects
+
+
+On  relation load of current value:
+* Execute relation query (without sort expressions) if relation as not loaded already.
+* The collection's value set is calculated based on the data in the transaction.
+* Perform in-memory sort of the objects based.
+* The collection cannot, by design, contain objects that have been new in the ClientTransaction (original value is null).
+* The collection can contain deleted objects that have been deleted after the collection has been loaded.
+* The collection can contain invalid objects after a commit has been performed and a previously deleted object is committed and thus becomes invalid.
+* Switching the transaction scope will change the dataset of the collection.
+
+
+On relation load of original value:
+* Bidirectional relation (exisitng behavior):
+** Creates a copy of the collection data upon the first modification (CopyOnWriteDomainObjectCollectionData).
+** Returns a new instance of the collection on each call to GetOriginalValue().
+** Original data is stable within the transaction (CollectionEndPointDataManager).
+** Current data is copied to sub transaction based on load-semantics.
+** Original data is replaced with current data upon commit from current transaction (ChangeCachingCollectionDataDecorator.Commit())
+** Original data can contain unchanged, changed, and deleted data. It cannot contain new or invalid data.
+
+* The original value is defined as the value a property had before it was changed. After a commit/rollback/unload/load, the current value is once again identical to the original value.
+** For lightweight relations, this means that the original value collection is always calculated based on the currently loaded data (original value) in the transaction.
+** The collection implementation can be shared with the current-value implementation.
+** The collection instance remains static across the entire hierarchy and in particular between individual calls (if possible)
+** The cache is reset based on the same logic as the current-value implementation with the option of implementing fewer conditions. Given that the original value is normally not the 
+   primary use case, we might also have the option of using a unified implementation for the cache reset, accepting that there are unnessary cache resets for the original value collection.
+** Original data cannot contain new or invalid objects. 
+** Switching the transaction scope will change the dataset of the collection.
+
+*********************************************************
+Name for infrastructure used with lightweight relations
+* The prefix "lightweight" does not communicate the technical aspect of the new relation concept. We should have a better name.
+
+Implementation of im-memeory sorting strategy:
+* SortExpressionDefinition only supports a list of properties directly implemented by the target type (i.e. part of the DataContainer)
+* Use SortedPropertyComparer.CreateCompoundComparer(...) to create a DomainObject comparer
+* Apply comparer to set of DomainObjects in the relation
+* Support injection of value-access strategy to toggle between current value and original value
+
+TestDomain
+* Product { 1-n ProductReview, name, price }
+* ProductReview { n-1 Product, 1-n Person, comment }
+
+RelationEndPointDefinition
+* new type: CalculatedRelationEndPointDefinition
+  better name? Query*, Calculated*
+  IRelationEndPointDefinition already defines IsAnonymous and IsVirtual
+  Rename VirtualRelationEndPointDefinition to support both types of relations? => no, only want for collection endpoint.
+  Existing VirtualRelationEndPointDefinition supports both cardinality of One and Many
+  Make base-type and 3 derived types for virtual? => no, that's what interfaces are for.
+  existing types:  
+  ** VirtualRelationEndPointDefinition
+  ** AnonymousRelationEndPointDefinition
+  ** RelationEndPointDefinition
+* IsAnonymous = false
+* IsVirtual = true  
+* DomainObjectQueryGenerator
+  does not handle new endpoint type when getting the SortExpression  
+* FetchedCollectionRelationDataRegistrationAgent
+  makes a hard-cast, refactor to support both types of VirtualRelationEndPointDefinition
+* RelationEndPointDefinitionExtensions
+  make typesafe when resolving RelationEndPointDefinition and VirtualRelationEndPointDefinition  
+* PersistenceManager
+  remove strong typing and replace with IsVirtual-test
+  LoadOppositeDataContainers => only do type test for getting the SortExpression with old-style VirtualRelationEndpoingDefinition
+* RdbmsRelationEndPointCombinationIsSupportedValidationRule
+  Tests for VirtualRelationEndPointDefinition to supply more detailed errors (AnonymousRelationEndPointDefintions are also virtual but don't have the metadata)
+* RelationEndPointPropertyTypeIsSupportedValidationRule  
+  Tests for VirtualRelationEndPointDefinition to supply more detailed errors (AnonymousRelationEndPointDefintions are also virtual but don't have the metadata)
+* Consider rewriting the VirtualRelationEndPointDefinition logic to no longer do the SortExpression in the database but instead based on original value when first loading the relation.
+  This can have the following side-effect: if there is an object already loaded in the ClientTransaction that had it's value changed in the database, the sort-order would then match
+  the in-memory value. This would actually be more correct.
+* Namings
+  ** QueryRelationEndPointDefinition (Cardinality can be one or many)
+  ** VirtualCollectionRelationEndPointDefinition (Cardinality is many, defines SortExpression)
+  ** VirtualObjectRelationEndPointDefinition (Cardinality is many, no SortExpression, TODO: internal HasSortExpression-flag for validation purposes)
+  ** ObjectRelationEndPointDefinition (Cardinality is one, no SortExpression, TODO: internal HasSortExpression-flag for validation purposes)
+  ** AnonymousRelationEndPointDefinition (Cardinality is many)
+* Namings v2
+  ** CollectionRelationEndPointDefinition (Cardinality can be one or many, defines SortExpression)
+  ** VirtualRelationEndPointDefinition (Cardinality is one or many, defines SortExpression)
+  ** RelationEndPointDefinition (Cardinality is one, no SortExpression, TODO: internal HasSortExpression-flag for validation purposes)
+  ** AnonymousRelationEndPointDefinition (Cardinality is many)
+* Naming Rest
+  ** CollectionEndPoint -> DomainObjectCollectionEndPoint
+  ** ICollectionEndPoint -> IDomainObjectCollectionEndPoint, possibly introduce base-interface ICollectionEndPoint for shared with IQueryCollectionEndPoint
+  
+Collection implementation
+* EndPointDelegatingCollectionData 
+* ClientTransaction.GetRelatedObjects -> 
+* EventBroker.RaiseRelationReadEvent -> IReadOnlyList<DomainObject> instead of ReadOnlyDomainObjectCollectionAdapter
+* ICollectionEndPoint.OriginalCollection -> Drop
+
+Collection type (follow-up)
+* BocList: IReadOnlyList<T> is default with testing for ICollection to support modifying operations
+
+
+***********************************************************
+//  OUTDATED NOTES
+//  On relation load of original value:  
+//    a) we create a snapshot when retrieving the relation for the first time, or
+//    b) we return a set of original values (sorted based on the original values) when the collection is iterated.   
+//  
+//    Option a) is more in line with the original-value behavior of bidirectional relations. It does, however, require that we cache the value snapshot and reset it 
+//    when the collection is unloaded or the transaction is committed. Then, the value is cached again once the next iteration is performed.
+//  
+//    Option b) is more in line with the current-value behavior of lightweight relations. This implies that we get an always-fresh set of values when iterating the collection, 
+//    e.g. if a value is loaded from the database, it is added to the relation. The original value can therefor change between calls and iterating the value will result in 
+//    a collection-modified exception, same as iterating the current value.
+//  
+//    There is also the additional consideration of making the result disconnected from the transaction. This could be combined with both options and would mean we always get a copy of the 
+//    transaction at the time the collection is accessed. With Option a) the set of values would remain identical until a ommit/rollback/unload is performed. With Option b) the set of values
+//    would reflect the current state of the transaction at the time the property is retrieved. Either way, the disconnected copy used for the original value would behave differently from the 
+//    current value unless the current value design is updated as well.
+//  
+//    From a data-management perspective, Option b) will be easier to implement since we do not require any state tracking of the relation. The value set can still be cached/invalidated
+//    based on the same rules as the current value. This means resetting the cache when an object is loaded/unloaded with a matching original value. In addition, the collection is reset
+//    during a commit/rollback. We can probably forego a more granular cache-invalidation on a by-object base during commit/rollback given the typical, transient usage scenarios for previous-value.
+//  
+//  * Design based on a disconnected collection
+//  ** Execute relation query (without sort expressions) if relation as not loaded already.
+//  ** Possibly return a different implementation of the collection type that is a simple copy of the relation data.
+//  ** Perform in-memory sort of the objects based on the original value.
+//  ** The collection's value set remains unchanged after the relation is accessed. When accessing the relation a second time, an updated set is returned.
+//  ** The collection cannot, by design, contain objects that have been new in the ClientTransaction (original value is null).
+//  ** The collection can contain deleted objects (deleted at time of first access or later) based on their original value.
+//  ** The collection can contain invalid objects after a commit has been performed and a previously deleted object is committed and thus becomes invalid.
+
