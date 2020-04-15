@@ -77,7 +77,11 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
         var hasExited = _iisProcess.WaitForExit (exitTimeout);
 
         if (!hasExited)
-          throw new InvalidOperationException ($"The IIS process with the ID '{_iisProcess.Id}' did not exit within '{exitTimeout:N0}' ms after sending the kill command.");
+          throw new InvalidOperationException (
+              string.Format (
+                  "The IIS process with the ID '{0}' did not exit within '{1:N0}' ms after sending the kill command.",
+                  _iisProcess.Id,
+                  exitTimeout));
 
         _iisProcess.Dispose();
       }
