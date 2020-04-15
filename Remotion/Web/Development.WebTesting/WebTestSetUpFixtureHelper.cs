@@ -86,7 +86,23 @@ namespace Remotion.Web.Development.WebTesting
     public void OnSetUp ()
     {
       SetUpLog4net();
-      HostWebApplication();
+
+      try
+      {
+        HostWebApplication();
+      }
+      catch
+      {
+        try
+        {
+          UnhostWebApplication();
+        }
+        catch
+        {
+        }
+
+        throw;
+      }
     }
 
     /// <summary>

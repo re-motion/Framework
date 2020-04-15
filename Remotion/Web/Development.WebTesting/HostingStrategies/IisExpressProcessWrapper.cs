@@ -62,7 +62,6 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     public void Run ()
     {
       _iisProcess.Start();
-      _iisProcess.WaitForExit();
     }
 
     /// <summary>
@@ -70,9 +69,16 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// </summary>
     public void Dispose ()
     {
+      const int exitTimeout = 10000;
+
       if (_iisProcess != null && !_iisProcess.HasExited)
       {
-        _iisProcess.CloseMainWindow();
+        _iisProcess.Kill();
+        var hasExited = _iisProcess.WaitForExit (exitTimeout);
+
+        if (!hasExited)
+          throw new InvalidOperationException ($"The IIS process with the ID '{_iisProcess.Id}' did not exit within '{exitTimeout:N0}' ms after sending the kill command.");
+
         _iisProcess.Dispose();
       }
     }
