@@ -19,12 +19,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security;
+using NUnit.Framework;
 using Remotion.Utilities;
 
 // Note: This file is originally defined in Remotion.Development.UnitTesting.Sandboxing. It is duplicated by Remotion.Linq.UnitTests.Sandboxing.
 // Note: Changes made to this file must be synchronized with all copies.
 
-namespace Remotion.Development.UnitTesting.Sandboxing
+namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
 {
   /// <summary>
   /// <see cref="SandboxTestRunner"/> executes unit tests for the given types.
@@ -58,27 +59,27 @@ namespace Remotion.Development.UnitTesting.Sandboxing
 
       var testFixtureInstance = Activator.CreateInstance (type);
 
-      var setupMethod = type.GetMethods ().Where (m => IsDefined (m, "NUnit.Framework.SetUpAttribute")).SingleOrDefault ();
-      var tearDownMethod = type.GetMethods ().Where (m => IsDefined (m, "NUnit.Framework.TearDownAttribute")).SingleOrDefault ();
-      var testMethods = type.GetMethods ().Where (m => IsDefined (m, "NUnit.Framework.TestAttribute"));
+      var setupMethod = type.GetMethods().SingleOrDefault (m => IsDefined (m, typeof (SetUpAttribute)));
+      var tearDownMethod = type.GetMethods().SingleOrDefault (m => IsDefined (m, typeof (TearDownAttribute)));
+      var testMethods = type.GetMethods().Where (m => IsDefined (m, typeof (TestAttribute)));
 
       var testResults = testMethods.Select (testMethod => RunTestMethod (testFixtureInstance, testMethod, setupMethod, tearDownMethod)).ToArray();
-      return new TestFixtureResult(type, testResults);
+      return new TestFixtureResult (type, testResults);
     }
 
     public TestResult RunTestMethod (object testFixtureInstance, MethodInfo testMethod, MethodInfo setupMethod, MethodInfo tearDownMethod)
     {
       Exception exception;
-      if (IsDefined (testMethod, "NUnit.Framework.IgnoreAttribute") || IsDefined (testMethod.DeclaringType, "NUnit.Framework.IgnoreAttribute"))
+      if (IsDefined (testMethod, typeof (IgnoreAttribute)) || IsDefined (testMethod.DeclaringType, typeof (IgnoreAttribute)))
         return TestResult.CreateIgnored (testMethod);
 
       if (setupMethod!=null && !(TryInvokeMethod (setupMethod, testFixtureInstance, out exception)))
         return TestResult.CreateFailedInSetUp (setupMethod, exception);
 
       TestResult result;
-      if (IsDefined (testMethod, "NUnit.Framework.ExpectedExceptionAttribute"))
+      if (IsDefined (testMethod, typeof (ExpectedExceptionAttribute)))
       {
-        var exceptionType = (Type) GetAttribute (testMethod, "NUnit.Framework.ExpectedExceptionAttribute").ConstructorArguments[0].Value;
+        var exceptionType = (Type) GetAttribute (testMethod, typeof (ExpectedExceptionAttribute)).ConstructorArguments[0].Value;
         if (!TryInvokeMethod (testMethod, testFixtureInstance, out exception) && exception.GetType() == exceptionType)
           result = TestResult.CreateSucceeded (testMethod);
         else
@@ -112,15 +113,15 @@ namespace Remotion.Development.UnitTesting.Sandboxing
       return exception == null;
     }
 
-    private bool IsDefined (MemberInfo memberInfo, string attributeFullName)
+    private bool IsDefined (MemberInfo memberInfo, Type attributeType)
     {
       var data = CustomAttributeData.GetCustomAttributes (memberInfo);
-      return data.Any (attributeData => attributeData.Constructor.DeclaringType.FullName == attributeFullName);
+      return data.Any (attributeData => attributeData.Constructor.DeclaringType == attributeType);
     }
 
-    private CustomAttributeData GetAttribute (MemberInfo memberInfo, string attributeName)
+    private CustomAttributeData GetAttribute (MemberInfo memberInfo, Type attributeType)
     {
-      return CustomAttributeData.GetCustomAttributes (memberInfo).SingleOrDefault (ad => ad.Constructor.DeclaringType.FullName == attributeName);
+      return CustomAttributeData.GetCustomAttributes (memberInfo).SingleOrDefault (ad => ad.Constructor.DeclaringType == attributeType);
     }
   }
 }

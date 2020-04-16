@@ -20,9 +20,9 @@ using System.Runtime.Remoting;
 using System.Security;
 using System.Security.Permissions;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.Sandboxing;
+using Remotion.Development.Sandboxing.Nunit2.UnitTesting;
 
-namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
+namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
 {
   [TestFixture]
   public class SandboxTest

@@ -17,9 +17,9 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.Sandboxing;
+using Remotion.Development.Sandboxing.Nunit2.UnitTesting;
 
-namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
+namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
 {
   [TestFixture]
   public class TestResultTest
@@ -106,7 +106,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
       Assert.That (
           () => result.EnsureNotFailed (),
           Throws.InstanceOf<TestFailedException>()
-              .With.Message.EqualTo ("Test 'Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing.DummyTest1.Test1' failed. Status: Failed."));
+              .With.Message.EqualTo ("Test 'Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting.DummyTest1.Test1' failed. Status: Failed."));
     }
 
     [Test]
@@ -117,7 +117,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
           () => result.EnsureNotFailed (),
           Throws.InstanceOf<TestFailedException>()
               .With.Message.EqualTo (
-                  "Test 'Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing.DummyTest1.Test1' failed. Status: FailedInSetUp."));
+                  "Test 'Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting.DummyTest1.Test1' failed. Status: FailedInSetUp."));
     }
 
     [Test]
@@ -128,7 +128,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
           () => result.EnsureNotFailed (),
           Throws.InstanceOf<TestFailedException>()
               .With.Message.EqualTo (
-                  "Test 'Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing.DummyTest1.Test1' failed. Status: FailedInTearDown."));
+                  "Test 'Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting.DummyTest1.Test1' failed. Status: FailedInTearDown."));
     }
   }
 }

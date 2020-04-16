@@ -213,16 +213,6 @@
     <Compile Include="Core\UnitTesting\Reflection\TypeDiscovery\FilteringTypeDiscoveryServiceTest.cs" />
     <Compile Include="Core\UnitTesting\Reflection\TypeDiscovery\FixedTypeDiscoveryServiceTest.cs" />
     <Compile Include="Core\UnitTesting\Resources\ResourceUtilityTest.cs" />
-    <Compile Include="Core\UnitTesting\Sandboxing\DummyTestIgnored.cs" />
-    <Compile Include="Core\UnitTesting\Sandboxing\DummyTest1.cs" />
-    <Compile Include="Core\UnitTesting\Sandboxing\DummyTest2.cs" />
-    <Compile Include="Core\UnitTesting\Sandboxing\DummyTest3.cs" />
-    <Compile Include="Core\UnitTesting\Sandboxing\DummyTest4.cs" />
-    <Compile Include="Core\UnitTesting\Sandboxing\DummyTest5.cs" />
-    <Compile Include="Core\UnitTesting\Sandboxing\PermissionSetsTest.cs" />
-    <Compile Include="Core\UnitTesting\Sandboxing\SandboxTestRunnerTest.cs" />
-    <Compile Include="Core\UnitTesting\Sandboxing\SandboxTest.cs" />
-    <Compile Include="Core\UnitTesting\Sandboxing\TestResultTest.cs" />
     <Compile Include="Core\UnitTesting\XmlSerializationHelperTest.cs" />
     <Compile Include="Core\UnitTesting\ServiceLocatorScopeTest.cs" />
     <Compile Include="Data\UnitTesting\DomainObjects\Linq\QueryableComparerTest.cs" />

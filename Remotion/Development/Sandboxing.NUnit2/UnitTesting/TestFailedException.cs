@@ -20,7 +20,7 @@ using System.Runtime.Serialization;
 // Note: This file is originally defined in Remotion.Development.UnitTesting.Sandboxing. It is duplicated by Remotion.Linq.UnitTests.Sandboxing.
 // Note: Changes made to this file must be synchronized with all copies.
 
-namespace Remotion.Development.UnitTesting.Sandboxing
+namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
 {
   /// <summary>
   /// <see cref="TestFailedException"/> is thrown when <see cref="TestResult.EnsureNotFailed"/> is called and the specific test has been failed.

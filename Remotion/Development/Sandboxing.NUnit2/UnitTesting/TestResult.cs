@@ -20,7 +20,7 @@ using System.Reflection;
 // Note: This file is originally defined in Remotion.Development.UnitTesting.Sandboxing. It is duplicated by Remotion.Linq.UnitTests.Sandboxing.
 // Note: Changes made to this file must be synchronized with all copies.
 
-namespace Remotion.Development.UnitTesting.Sandboxing
+namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
 {
   public enum SandboxTestStatus { Succeeded, Ignored, Failed, FailedInSetUp, FailedInTearDown };
 

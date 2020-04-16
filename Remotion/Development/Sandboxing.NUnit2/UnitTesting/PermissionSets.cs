@@ -26,7 +26,7 @@ using System.Web;
 // Note: This file is originally defined in Remotion.Development.UnitTesting.Sandboxing. It is duplicated by Remotion.Linq.UnitTests.Sandboxing.
 // Note: Changes made to this file must be synchronized with all copies.
 
-namespace Remotion.Development.UnitTesting.Sandboxing
+namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
 {
   /// <summary>
   /// <see cref="PermissionSets"/> contains static methods to get the permissions for different security levels.

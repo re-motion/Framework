@@ -68,7 +68,9 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Data\Development.Data.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Mixins\Development.Mixins.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Web\Development.Web.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Sandboxing.NUnit2\Development.Sandboxing.NUnit2.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Development\UnitTests\Development.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Sandboxing.NUnit2.UnitTests\Development.Sandboxing.NUnit2.UnitTests.csproj"/>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\Core\Mixins.Core.csproj">
       <!-- When enabling the package for NuGet.org, the nuspec file must be TemplateSharedForNuGetOrg.nuspec to act as trigger for removing the -rtm tag on the NuGet version. -->

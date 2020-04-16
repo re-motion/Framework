@@ -15,28 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using NUnit.Framework;
 
-// Note: This file is originally defined in Remotion.Development.UnitTesting.Sandboxing. It is duplicated by Remotion.Linq.UnitTests.Sandboxing.
-// Note: Changes made to this file must be synchronized with all copies.
-
-namespace Remotion.Development.UnitTesting.Sandboxing
+namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
 {
-  /// <summary>
-  /// <see cref="TestFixtureResult"/> holds the type of the test class and the result of the test methods.
-  /// </summary>
-  [Serializable]
-  public struct TestFixtureResult
+  [TestFixture]
+  public class DummyTest2
   {
-    public readonly Type Type;
-    public readonly TestResult[] TestResults;
-
-    public TestFixtureResult (Type type, TestResult[] testResults)
+    [Test]
+    public void Test1 ()
     {
-      if (type == null)
-        throw new ArgumentNullException ("type"); // avoid ArgumentUtility, it doesn't support partial trust ATM
-
-      Type = type;
-      TestResults = testResults;
+      var value = Math.Abs (-5);
+      Assert.That (value, Is.EqualTo (5));
     }
   }
 }

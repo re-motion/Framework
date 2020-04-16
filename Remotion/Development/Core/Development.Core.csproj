@@ -247,12 +247,6 @@
     <Compile Include="UnitTesting\Reflection\TypeDiscovery\NullTypeDiscoveryService.cs" />
     <Compile Include="UnitTesting\Resources\ResourceNotFoundException.cs" />
     <Compile Include="UnitTesting\Resources\ResourceUtility.cs" />
-    <Compile Include="UnitTesting\Sandboxing\PermissionSets.cs" />
-    <Compile Include="UnitTesting\Sandboxing\SandboxTestRunner.cs" />
-    <Compile Include="UnitTesting\Sandboxing\Sandbox.cs" />
-    <Compile Include="UnitTesting\Sandboxing\TestFailedException.cs" />
-    <Compile Include="UnitTesting\Sandboxing\TestFixtureResult.cs" />
-    <Compile Include="UnitTesting\Sandboxing\TestResult.cs" />
     <Compile Include="UnitTesting\SerializationCallbackTester.cs" />
     <Compile Include="UnitTesting\Serializer.Partial.cs" />
     <Compile Include="UnitTesting\XmlSerializationHelper.cs">

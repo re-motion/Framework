@@ -16,9 +16,9 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.Sandboxing;
+using Remotion.Development.Sandboxing.Nunit2.UnitTesting;
 
-namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
+namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
 {
   public class DummyTest5
   {
@@ -37,17 +37,17 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
     {
       Assert.That (1, Is.EqualTo (0));
     }
+
+    [ExpectedException (typeof (TestFailedException))]
     public void TestExpectedExceptionSucceeded ()
     {
-      Assert.That (
-          () => { throw new TestFailedException (typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException ()); },
-          Throws.InstanceOf<TestFailedException>());
+      throw new TestFailedException (typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException());
     }
 
+    [ExpectedException (typeof (TestFailedException))]
     public void TestExpectedExceptionFailed ()
     {
       Assert.That (1, Is.EqualTo (1));
-      Assert.That (() => { }, Throws.Exception);
     }
 
     public void TestThrowsException ()

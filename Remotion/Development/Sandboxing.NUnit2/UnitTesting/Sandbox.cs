@@ -25,7 +25,7 @@ using Remotion.Utilities;
 // Note: This file is originally defined in Remotion.Development.UnitTesting.Sandboxing. It is duplicated by Remotion.Linq.UnitTests.Sandboxing.
 // Note: Changes made to this file must be synchronized with all copies.
 
-namespace Remotion.Development.UnitTesting.Sandboxing
+namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
 {
   /// <summary>
   /// Provides functionality to run code in a sandboxed <see cref="AppDomain"/>, ie., an <see cref="AppDomain"/> with restricted permissions.

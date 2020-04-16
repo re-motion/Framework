@@ -16,17 +16,32 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.Sandboxing;
 
-namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
+namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
 {
-  [Ignore]
-  public class DummyTestIgnored
+  [TestFixture]
+  public class DummyTest3
   {
-    [Test]
-    public void TestIgnored ()
+    private int _value;
+
+    [SetUp]
+    public void SetUp ()
     {
-      throw new TestFailedException (typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException ());
+      _value = 10;
+    }
+
+    [Test]
+    public void Test1 ()
+    {
+      Assert.That (_value, Is.EqualTo (10));
+      _value = 100;
+    }
+
+    [Test]
+    public void Test2 ()
+    {
+      Assert.That (_value, Is.EqualTo (10));
+      _value = 200;
     }
   }
 }
