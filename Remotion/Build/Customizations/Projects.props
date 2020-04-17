@@ -2,16 +2,51 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <TestExecutionRuntime>net-4.6.1</TestExecutionRuntime>
+    <TestSetupBuildFileForDatabase>$(SolutionDirectory)Build\TestingSetupForDatabase.targets</TestSetupBuildFileForDatabase>
+    <TestSetupBuildFileForWebTest>$(SolutionDirectory)Build\TestingSetupForWebTest.targets</TestSetupBuildFileForWebTest>
   </PropertyGroup>
 
   <PropertyGroup>
-    <TestingSetupBuildFileForDatabase>$(SolutionDirectory)Build\TestingSetupForDatabase.targets</TestingSetupBuildFileForDatabase>
-    <TestingSetupBuildFileForWebTest>$(SolutionDirectory)Build\TestingSetupForWebTest.targets</TestingSetupBuildFileForWebTest>
+    <WebtestingTestConfiguration Condition="'$(WebtestingTestConfiguration)' == ''">
+      Chrome           + NET462 + Debug   + x86 + NoDB + EnforcedLocalMachine;<!-- Upgrade to NET48 once it is supported -->
+      Firefox          + NET462 + Release + x64 + NoDB + EnforcedLocalMachine;<!-- Upgrade to NET472 once all agents support it -->
+      InternetExplorer + NET462 + Release + x64 + NoDB + EnforcedLocalMachine;<!-- Upgrade to NET48 once it is supported -->
+      Edge             + NET462 + Release + x64 + NoDB + EnforcedLocalMachine;<!-- Upgrade to NET48 once it is supported -->
+    </WebtestingTestConfiguration>
+    <DatabaseTestConfiguration Condition="'$(DatabaseTestConfiguration)' == ''">
+      Win_NET48  + NET48  + NoBrowser + SqlServer2012 + Debug   + x86;
+      Win_NET48  + NET48  + NoBrowser + SqlServer2012 + Release + x86;
+      Win_NET48  + NET48  + NoBrowser + SqlServer2012 + Debug   + x64;
+      Win_NET48  + NET48  + NoBrowser + SqlServer2012 + Release + x64;
+
+      <!-- Local-->
+      LocalMachine  + NET48  + NoBrowser + SqlServerDefault + Debug + x86;
+
+      <!-- Exercise compatibility between installed .NET version, target framework and SQL Server -->
+      Win_NET48  + NET472 + NoBrowser + SqlServer2017 + Release + x64;
+      Win_NET48  + NET472 + NoBrowser + SqlServer2014 + Release + x64;<!-- Change to SqlServer2019 once it exists -->
+      Win_NET472 + NET472 + NoBrowser + SqlServer2016 + Release + x64;
+      Win_NET472 + NET472 + NoBrowser + SqlServer2014 + Release + x64;
+    </DatabaseTestConfiguration>
+    <NormalTestConfiguration Condition="'$(NormalTestConfiguration)' == ''">
+      Win_NET48  + NET48  + NoBrowser + NoDB + Debug   + x86;
+      Win_NET48  + NET48  + NoBrowser + NoDB + Release + x86;
+      Win_NET48  + NET48  + NoBrowser + NoDB + Debug   + x64;
+      Win_NET48  + NET48  + NoBrowser + NoDB + Release + x64;
+
+      <!-- Local-->
+      LocalMachine  + NET48  + NoBrowser + SqlServerDefault + Debug + x86;
+
+      <!-- Compatibility Mode -->
+      Win_NET48  + NET472 + NoBrowser + NoDB + Release + x64;
+      Win_NET472 + NET472 + NoBrowser + NoDB + Release + x64;
+    </NormalTestConfiguration>
   </PropertyGroup>
 
   <ItemGroup>
-    <UnitTestProjectFiles Include="$(SolutionDirectory)\SharedSource\UnitTests\SharedSource.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\SharedSource\UnitTests\SharedSource.UnitTests.csproj">
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
+    </UnitTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Core\Core.Core.csproj">
       <CreateNuGetPackageWithSymbolServerSupport>True</CreateNuGetPackageWithSymbolServerSupport>
@@ -33,34 +68,34 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Tools\Core.Tools.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Xml\Core.Xml.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\UnitTests\Core.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Collections.Caching.UnitTests\Core.Collections.Caching.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Collections.DataStore.UnitTests\Core.Collections.DataStore.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\ExtensibleEnums.UnitTests\Core.ExtensibleEnums.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Extensions.UnitTests\Core.Extensions.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.UnitTests\Core.Reflection.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration.UnitTests\Core.Reflection.CodeGeneration.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration.TypePipe.UnitTests\Core.Reflection.CodeGeneration.TypePipe.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Tools.UnitTests\Core.Tools.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Xml.UnitTests\Core.Xml.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\CodeDom\Development.CodeDom.csproj"/>
@@ -69,8 +104,12 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Mixins\Development.Mixins.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Web\Development.Web.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Sandboxing.NUnit2\Development.Sandboxing.NUnit2.csproj"/>
-    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Development\UnitTests\Development.UnitTests.csproj"/>
-    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Sandboxing.NUnit2.UnitTests\Development.Sandboxing.NUnit2.UnitTests.csproj"/>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Development\UnitTests\Development.UnitTests.csproj">
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
+    </UnitTestProjectFiles>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Sandboxing.NUnit2.UnitTests\Development.Sandboxing.NUnit2.UnitTests.csproj">
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
+    </UnitTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\Core\Mixins.Core.csproj">
       <!-- When enabling the package for NuGet.org, the nuspec file must be TemplateSharedForNuGetOrg.nuspec to act as trigger for removing the -rtm tag on the NuGet version. -->
@@ -78,37 +117,39 @@
     </ReleaseProjectFiles>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\MixerTools\Mixins.MixerTools.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\UnitTests\Mixins.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\Core\Globalization.Core.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\ExtensibleEnums\Globalization.ExtensibleEnums.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\Mixins\Globalization.Mixins.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\UnitTests\Globalization.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\ExtensibleEnums.UnitTests\Globalization.ExtensibleEnums.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\Mixins.UnitTests\Globalization.Mixins.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\Core\Validation.Core.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\Globalization\Validation.Globalization.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\Mixins\Validation.Mixins.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\UnitTests\Validation.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
-    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\IntegrationTests\Validation.IntegrationTests.csproj"/>
+    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\IntegrationTests\Validation.IntegrationTests.csproj">
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
+    </IntegrationTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\Globalization.UnitTests\Validation.Globalization.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\Mixins.UnitTests\Validation.Mixins.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Validation\Mixins.IntegrationTests\Validation.Mixins.IntegrationTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </IntegrationTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Data\Core\Data.Core.csproj"/>
@@ -119,39 +160,35 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.UberProfIntegration\Data.DomainObjects.UberProfIntegration.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Validation\Data.DomainObjects.Validation.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.UnitTests\Data.DomainObjects.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
-      <IsDatabaseTest>True</IsDatabaseTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFileForDatabase)</TestingSetupBuildFile>
+      <TestConfiguration>$(DatabaseTestConfiguration)</TestConfiguration>
+      <TestSetupBuildFile>$(TestSetupBuildFileForDatabase)</TestSetupBuildFile>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.ObjectBinding.UnitTests\Data.DomainObjects.ObjectBinding.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.ObjectBinding.IntegrationTests\Data.DomainObjects.ObjectBinding.IntegrationTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
-      <IsDatabaseTest>True</IsDatabaseTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFileForDatabase)</TestingSetupBuildFile>
+      <TestConfiguration>$(DatabaseTestConfiguration)</TestConfiguration>
+      <TestSetupBuildFile>$(TestSetupBuildFileForDatabase)</TestSetupBuildFile>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.RdbmsTools.UnitTests\Data.DomainObjects.RdbmsTools.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Security.UnitTests\Data.DomainObjects.Security.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.UberProfIntegration.UnitTests\Data.DomainObjects.UberProfIntegration.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
-      <IsDatabaseTest>True</IsDatabaseTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFileForDatabase)</TestingSetupBuildFile>
+      <TestConfiguration>$(DatabaseTestConfiguration)</TestConfiguration>
+      <TestSetupBuildFile>$(TestSetupBuildFileForDatabase)</TestSetupBuildFile>
     </UnitTestProjectFiles>
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Web.IntegrationTests\Data.DomainObjects.Web.IntegrationTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
-      <IsDatabaseTest>True</IsDatabaseTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFileForDatabase)</TestingSetupBuildFile>
+      <TestConfiguration>$(DatabaseTestConfiguration)</TestConfiguration>
+      <TestSetupBuildFile>$(TestSetupBuildFileForDatabase)</TestSetupBuildFile>
     </IntegrationTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Validation.UnitTests\Data.DomainObjects.Validation.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Validation.IntegrationTests\Data.DomainObjects.Validation.IntegrationTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </IntegrationTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj"/>
@@ -163,36 +200,34 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Preview\ObjectBinding.Web.Preview.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Validation\ObjectBinding.Web.Validation.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\UnitTests\ObjectBinding.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Security.UnitTests\ObjectBinding.Security.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Validation.UnitTests\ObjectBinding.Validation.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Validation.UnitTests\ObjectBinding.Web.Validation.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
-      <IsWebTest>True</IsWebTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFileForWebTest)</TestingSetupBuildFile>
+      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
+      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
     </IntegrationTestProjectFiles>
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.IntegrationTests\ObjectBinding.Web.IntegrationTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
-      <IsWebTest>True</IsWebTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFileForWebTest)</TestingSetupBuildFile>
+      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
+      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
     </IntegrationTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\Core\Security.Core.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\Metadata.Extractor\Security.Metadata.Extractor.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\MSBuild.Tasks\Security.MSBuild.Tasks.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Security\UnitTests\Security.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj"/>
@@ -207,27 +242,25 @@
     <!--<ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTest.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj"/>-->
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.UnitTests\Web.Development.WebTesting.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\UnitTests\Web.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
 
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
-      <IsWebTest>True</IsWebTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFileForWebTest)</TestingSetupBuildFile>
+      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
+      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
     </IntegrationTestProjectFiles>
 
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\IntegrationTests\Web.IntegrationTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
-      <IsWebTest>True</IsWebTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFileForWebTest)</TestingSetupBuildFile>
+      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
+      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
     </IntegrationTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\Core\Scripting.Core.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\UnitTests\Scripting.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Integration\Domain\Integration.Domain.csproj"/>

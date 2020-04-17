@@ -2,11 +2,25 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <TestExecutionRuntime>net-4.6.1</TestExecutionRuntime>
+    <TestSetupBuildFileForDatabase>$(SolutionDirectory)Build\TestingSetupForDatabase.targets</TestSetupBuildFileForDatabase>
   </PropertyGroup>
 
   <PropertyGroup>
-    <TestingSetupBuildFile>$(SolutionDirectory)Build\TestingSetupForDatabase.targets</TestingSetupBuildFile>
+    <DatabaseTestConfiguration Condition="'$(DatabaseTestConfiguration)' == ''">
+      Win_NET48 + NET48 + NoBrowser + SqlServer2012 + Debug   + x86;
+      Win_NET48 + NET48 + NoBrowser + SqlServer2012 + Release + x86;
+      Win_NET48 + NET48 + NoBrowser + SqlServer2012 + Debug   + x64;
+      Win_NET48 + NET48 + NoBrowser + SqlServer2012 + Release + x64;
+
+      <!-- Local-->
+      LocalMachine + NET48 + NoBrowser + SqlServerDefault + Debug + x86;
+
+      <!-- Exercise compatibility between installed .NET version, target framework and SQL Server -->
+      Win_NET48  + NET472 + NoBrowser + SqlServer2017 + Release + x64;
+      Win_NET48  + NET472 + NoBrowser + SqlServer2014 + Release + x64;<!-- Change to SqlServer2019 once it exists -->
+      Win_NET472 + NET472 + NoBrowser + SqlServer2016 + Release + x64;
+      Win_NET472 + NET472 + NoBrowser + SqlServer2014 + Release + x64;
+    </DatabaseTestConfiguration>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,9 +32,8 @@
     </ReleaseProjectFiles>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Metadata.Importer\SecurityManager.Metadata.Importer.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\SecurityManager\Core.UnitTests\SecurityManager.Core.UnitTests.csproj">
-      <ExecutionRuntime>$(TestExecutionRuntime)</ExecutionRuntime>
-      <IsDatabaseTest>True</IsDatabaseTest>
-      <TestingSetupBuildFile>$(TestingSetupBuildFile)</TestingSetupBuildFile>
+      <TestSetupBuildFile>$(TestSetupBuildFileForDatabase)</TestSetupBuildFile>
+      <TestConfiguration>$(DatabaseTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
   </ItemGroup>
 </Project>

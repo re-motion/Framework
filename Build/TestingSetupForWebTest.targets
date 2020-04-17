@@ -29,11 +29,14 @@
     <Error Text="The property 'Platform' is not set." Condition="'$(Platform)' == ''" />
     <Error Text="The property 'AppConfigFile' is not set." Condition="'$(AppConfigFile)' == ''" />
     <Error Text="The property 'Browser' is not set." Condition="'$(Browser)' == ''" />
+    <Error Text="The property 'HostTestSitesInDocker' is not set." Condition="'$(HostTestSitesInDocker)' == ''" />
 
     <PropertyGroup>
-      <_dockerEnabled>False</_dockerEnabled>
-      <_dockerEnabled Condition="'$(DisableDocker)' == 'False'">True</_dockerEnabled>
-      <_dockerImageName>mcr.microsoft.com/dotnet/framework/aspnet:4.6.2</_dockerImageName>
+      <_dockerImageTag Condition="'$(Browser)' == 'InternetExplorer'">4.8</_dockerImageTag>
+      <_dockerImageTag Condition="'$(Browser)' == 'Chrome'">4.8</_dockerImageTag>
+      <_dockerImageTag Condition="'$(Browser)' == 'Edge'">4.8</_dockerImageTag>
+      <_dockerImageTag Condition="'$(Browser)' == 'Firefox'">4.7.2</_dockerImageTag>
+      <_dockerImageName>mcr.microsoft.com/dotnet/framework/aspnet:$(_dockerImageTag)</_dockerImageName>
       <!-- Hostname cannot be longer than 63 characters-->
       <_dockerHostName>RemotionWebTestContainer</_dockerHostName>
       <_dockerPortNumber>60402</_dockerPortNumber>
@@ -42,12 +45,13 @@
       <_dockerVerifyWebApplicationStartedTimeout>00:01:00</_dockerVerifyWebApplicationStartedTimeout>
     </PropertyGroup>
 
+    <Error Text="No known browser could be identified." Condition="'$(_dockerImageTag)' == ''" />
     <Message Text="Selected Browser: '$(Browser)'" />
     <Message Text="The property 'ChromeVersionArchive' is set to '$(ChromeVersionArchive)'." />
     <Message Text="The property 'EdgeVersionArchive' is set to '$(EdgeVersionArchive)'." />
     <Message Text="The property 'FirefoxVersionArchive' is set to '$(FirefoxVersionArchive)'." />
-    <Message Text="Docker enabled: '$(_dockerEnabled)'" />
-    <Message Text="Using Docker image '$(_dockerImageName)' to host the test site." Condition="'$(_dockerEnabled)' == 'True'" />
+    <Message Text="Docker enabled: '$(HostTestSitesInDocker)'" />
+    <Message Text="Using Docker image '$(_dockerImageName)' to host the test site." Condition="'$(HostTestSitesInDocker)' == 'True'" />
 
     <MSBuild.ExtensionPack.Xml.XmlFile
         TaskAction="ReadAttribute"
@@ -120,7 +124,7 @@
       </_appConfigAttributes>
     </ItemGroup>
 
-    <ItemGroup Condition="$(_dockerEnabled)">
+    <ItemGroup Condition="'$(HostTestSitesInDocker)' == 'True'">
       <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting">
         <Key>webApplicationRoot</Key>
         <Value>$(_dockerWebApplicationRoot)</Value>

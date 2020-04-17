@@ -50,8 +50,10 @@
   <Target Name="TestBuild_Configuration">
     <PropertyGroup>
       <Platforms>x86</Platforms>
-      <DatabaseSystems>SqlServer2012</DatabaseSystems>
-      <Browsers>Chrome</Browsers>
+      <DatabaseSystems>SqlServer2012+NoDB</DatabaseSystems>
+      <Browsers>Chrome+NoBrowser</Browsers>
+      <ExecutionRuntimes>Win_NET48+EnforcedLocalMachine</ExecutionRuntimes>
+      <TargetRuntimes>NET48+NET462</TargetRuntimes><!-- Remove NET462 once NET48 is installed on build agents -->
       <TestCategoriesToExclude></TestCategoriesToExclude>
     </PropertyGroup>
   </Target>
@@ -59,8 +61,10 @@
   <Target Name="FullBuild_Configuration">
     <PropertyGroup>
       <Platforms>x86+x64</Platforms>
-      <DatabaseSystems>SqlServer2017+SqlServer2012+SqlServer2014+SqlServer2016</DatabaseSystems>
-      <Browsers>Chrome+InternetExplorer+Firefox+Edge</Browsers>
+      <DatabaseSystems>SqlServer2012+SqlServer2014+SqlServer2016+SqlServer2017+NoDB</DatabaseSystems>
+      <Browsers>Chrome+InternetExplorer+Firefox+Edge+NoBrowser</Browsers>
+      <ExecutionRuntimes>Win_NET472+Win_NET48+EnforcedLocalMachine</ExecutionRuntimes>
+      <TargetRuntimes>NET48+NET472+NET462</TargetRuntimes><!-- Remove NET462 once NET48 is installed on build agents -->
       <TestCategoriesToExclude></TestCategoriesToExclude>
     </PropertyGroup>
   </Target>
