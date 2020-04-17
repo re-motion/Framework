@@ -35,22 +35,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocCheckBoxControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource (typeof (DisabledTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource (typeof (LabelTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocCheckBoxSelector, BocCheckBoxControlObject> testAction)
     {
       testAction (Helper, e => e.CheckBoxes(), "checkBox");
     }
 
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocCheckBoxSelector, BocCheckBoxControlObject> testAction)
     {
       testAction (Helper, e => e.CheckBoxes(), "checkBox");

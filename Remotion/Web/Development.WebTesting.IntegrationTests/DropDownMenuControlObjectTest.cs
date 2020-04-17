@@ -34,19 +34,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     // Note: the <see cref="T:DropDownMenu.Mode"/>=<see cref="T:MenuMode.ContextMenu"/> option is tested indirectly by the BocTreeViewControlObjectTest.
 
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource (typeof (DisabledTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
     public void GenericTests (GenericSelectorTestAction<DropDownMenuSelector, DropDownMenuControlObject> testAction)
     {
       testAction (Helper, e => e.DropDownMenus(), "dropDownMenu");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
-    [RemotionTestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<DropDownMenuSelector, DropDownMenuControlObject> testAction)
     {
       testAction (Helper, e => e.DropDownMenus(), "dropDownMenu");

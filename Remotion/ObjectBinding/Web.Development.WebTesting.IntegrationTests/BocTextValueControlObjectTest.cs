@@ -38,23 +38,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocTextValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [TestCaseSource (typeof (DisabledTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [TestCaseSource (typeof (LabelTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocTextValueSelector, BocTextValueControlObject> testAction)
     {
       testAction (Helper, e => e.TextValues(), "textValue");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocTextValueSelector, BocTextValueControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocTextValueSelector, BocTextValueControlObject> testAction)
     {
       testAction (Helper, e => e.TextValues(), "textValue");

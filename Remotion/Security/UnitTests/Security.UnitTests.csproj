@@ -61,9 +61,9 @@
       <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.7.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\NUnit.2.7.1\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks, Version=2.8.7.11026, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -90,6 +90,7 @@
     <Compile Include="IPrincipalProviderTest.cs" />
     <Compile Include="ISecurityProviderTest.cs" />
     <Compile Include="Metadata\CachingPermissionProviderDecoratorTest.cs" />
+    <Compile Include="Metadata\EnumValueInfoListContentsConstraintResult.cs" />
     <Compile Include="Metadata\IMemberResolverTest.cs" />
     <Compile Include="Metadata\IPermissionProviderTest.cs" />
     <Compile Include="Metadata\EnumValueInfoListContentsConstraint.cs" />
@@ -168,6 +169,8 @@
     <Compile Include="SecurityPrincipalRoleTest.cs" />
     <Compile Include="SecurityPrincipalTest.cs" />
     <Compile Include="InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecoratorTest.cs" />
+    <Compile Include="XmlAsserter\XmlDocumentConstraintResult.cs" />
+    <Compile Include="XmlAsserter\XmlElementConstraintResult.cs" />
     <Compile Include="XmlAsserter\XmlDocumentBaseConstraint.cs" />
     <Compile Include="XmlAsserter\XmlDocumentEqualConstraint.cs" />
     <Compile Include="XmlAsserter\XmlDocumentEqualConstraintTest.cs" />

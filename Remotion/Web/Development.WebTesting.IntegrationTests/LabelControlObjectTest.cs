@@ -28,8 +28,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class LabelControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<LabelSelector, LabelControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<LabelSelector, LabelControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<LabelSelector, LabelControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<LabelSelector, LabelControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<LabelSelector, LabelControlObject> testAction)
     {
       testAction (Helper, e => e.Labels(), "label");

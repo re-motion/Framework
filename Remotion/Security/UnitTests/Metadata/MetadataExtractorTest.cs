@@ -143,7 +143,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void OneAssemblyByPathName ()
     {
-      _extractor.AddAssembly ("Remotion.Security.UnitTests.TestDomain");
+      _extractor.AddAssembly (Path.Combine (TestContext.CurrentContext.TestDirectory, "Remotion.Security.UnitTests.TestDomain"));
 
       _extractor.Save (_xmlTempFilename);
 

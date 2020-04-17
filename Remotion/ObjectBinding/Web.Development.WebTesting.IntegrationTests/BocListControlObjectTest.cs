@@ -42,22 +42,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocListControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof (DisabledTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof (LabelTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocListSelector, BocListControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocListSelector, BocListControlObject> testAction)
     {
       testAction (Helper, e => e.Lists(), "list");
     }
 
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocListSelector, BocListControlObject> testAction)
     {
       testAction (Helper, e => e.Lists(), "list");

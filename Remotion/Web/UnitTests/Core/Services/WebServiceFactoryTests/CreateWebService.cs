@@ -117,7 +117,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
 
       Assert.That (
           () => _webServiceFactory.CreateWebService<IInvalidWebServiceWithMissingWebMethodAttribute> ("~/VirtualServicePath"),
-          Throws.ArgumentException.And.Message.ContainsSubstring (
+          Throws.ArgumentException.And.Message.Contains (
               " does not have the 'System.Web.Services.WebMethodAttribute' applied."));
     }
 

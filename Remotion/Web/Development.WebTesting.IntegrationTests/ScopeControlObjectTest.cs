@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -28,8 +28,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ScopeControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<ScopeSelector, ScopeControlObject> testAction)
     {
       testAction (Helper, e => e.Scopes(), "scope");

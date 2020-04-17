@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           .Return (_dataStrategyStub);
 
       Assert.That (() => _provider.GetCollection (endPointID), Throws.TypeOf<MissingMethodException> ()
-          .With.Message.ContainsSubstring ("does not provide a constructor taking an IDomainObjectCollectionData object"));
+          .With.Message.Contains ("does not provide a constructor taking an IDomainObjectCollectionData object"));
     }
 
     [Test]

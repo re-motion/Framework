@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -33,18 +33,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ImageButtonControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource (typeof (DisabledTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     public void GenericTests (GenericSelectorTestAction<ImageButtonSelector, ImageButtonControlObject> testAction)
     {
       testAction (Helper, e => e.ImageButtons(), "imageButton");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<ImageButtonSelector, ImageButtonControlObject> testAction)
     {
       testAction (Helper, e => e.ImageButtons(), "imageButton");

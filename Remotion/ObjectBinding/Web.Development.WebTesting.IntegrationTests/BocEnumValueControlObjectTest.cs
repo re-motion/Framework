@@ -35,68 +35,68 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocEnumValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (LabelTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     public void GenericTests_DropDownList (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "dropDownList");
     }
 
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     public void TestControlSelectors_DropDownList (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "dropDownList");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (LabelTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     public void GenericTests_ListBox (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "listBox");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     public void TestControlSelectors_ListBox (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "listBox");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (DisabledTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (LabelTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     public void GenericTests_RadioButtonList (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "radioButtonList");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocEnumValueSelector, BocEnumValueControlObject>))]
     public void TestControlSelectors_RadioButtonList (GenericSelectorTestAction<BocEnumValueSelector, BocEnumValueControlObject> testAction)
     {
       testAction (Helper, e => e.EnumValues(), "radioButtonList");

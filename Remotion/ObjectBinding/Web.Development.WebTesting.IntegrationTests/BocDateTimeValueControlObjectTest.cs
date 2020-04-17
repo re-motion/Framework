@@ -42,22 +42,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocDateTimeValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource (typeof (DisabledTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource (typeof (LabelTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocDateTimeValueSelector, BocDateTimeValueControlObject> testAction)
     {
       testAction (Helper, e => e.DateTimeValues(), "dateTimeValue");
     }
 
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocDateTimeValueSelector, BocDateTimeValueControlObject> testAction)
     {
       testAction (Helper, e => e.DateTimeValues(), "dateTimeValue");

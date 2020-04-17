@@ -49,7 +49,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       s_assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (
           assemblyName,
           AssemblyBuilderAccess.RunAndSave,
-          Environment.CurrentDirectory);
+          TestContext.CurrentContext.TestDirectory);
 
       var moduleName = assemblyName + ".dll";
       s_moduleBuilder = s_assemblyBuilder.DefineDynamicModule (moduleName, emitSymbolInfo: false);

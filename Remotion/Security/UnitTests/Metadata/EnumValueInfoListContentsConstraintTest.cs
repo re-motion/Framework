@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
+using NUnit.Framework.Constraints;
 using Remotion.Security.Metadata;
 using Rhino.Mocks;
 
@@ -55,25 +55,24 @@ namespace Remotion.Security.UnitTests.Metadata
     public void AssertWithListEmpty ()
     {
       var constraint = new EnumValueInfoListContentsConstraint ("First");
-      Assert.That (constraint.Matches (new List<EnumValueInfo> ()), Is.False);
+      Assert.That (constraint.ApplyTo (new List<EnumValueInfo> ()).IsSuccess, Is.False);
     }
 
     [Test]
     public void AssertWithInvalidValue ()
     {
       var constraint = new EnumValueInfoListContentsConstraint ("Other");
-      Assert.That (constraint.Matches(_list), Is.False);
+      Assert.That (constraint.ApplyTo(_list).IsSuccess, Is.False);
     }
 
     [Test]
     public void GetMessage ()
     {
-      var writerMock = MockRepository.GenerateMock<TextMessageWriter>();
+      var writerMock = MockRepository.GenerateMock<MessageWriter>();
       writerMock.Expect (mock => mock.Write ("Expected: ExpectedName	 but was: First, Second"));
       writerMock.Replay();
 
-      var constraint = new EnumValueInfoListContentsConstraint ("ExpectedName");
-      PrivateInvoke.SetNonPublicField (constraint, "actual", _list);
+      var constraint = new EnumValueInfoListContentsConstraintResult (null, _list, "ExpectedName", false);
       constraint.WriteMessageTo (writerMock);
       
       writerMock.VerifyAllExpectations();

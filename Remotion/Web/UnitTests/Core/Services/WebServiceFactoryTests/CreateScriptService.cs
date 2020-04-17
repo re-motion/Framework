@@ -120,7 +120,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
 
       Assert.That (
           () => _webServiceFactory.CreateScriptService<IInvalidScriptServiceWithMissingScriptMethodAttribute> ("~/VirtualServicePath"),
-          Throws.ArgumentException.And.Message.ContainsSubstring (
+          Throws.ArgumentException.And.Message.Contains (
               " does not have the 'System.Web.Script.Services.ScriptMethodAttribute' applied."));
     }
 

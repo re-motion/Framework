@@ -100,9 +100,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
 
       Assert.That (configuration.QueryFiles.Count, Is.EqualTo (2));
       Assert.That (configuration.QueryFiles[0].FileName, Is.EqualTo (@"..\..\myqueries1.xml"));
-      Assert.That (configuration.QueryFiles[0].RootedFileName, Is.EqualTo (Path.GetFullPath (@"..\..\myqueries1.xml")));
+      Assert.That (configuration.QueryFiles[0].RootedFileName, Is.SamePath (Path.Combine (AppDomain.CurrentDomain.BaseDirectory, @"..\..\myqueries1.xml")));
       Assert.That (configuration.QueryFiles[1].FileName, Is.EqualTo (@"..\..\myqueries2.xml"));
-      Assert.That (configuration.QueryFiles[1].RootedFileName, Is.EqualTo (Path.GetFullPath (@"..\..\myqueries2.xml")));
+      Assert.That (configuration.QueryFiles[1].RootedFileName, Is.SamePath (Path.Combine (AppDomain.CurrentDomain.BaseDirectory, @"..\..\myqueries2.xml")));
     }
 
     [Test]
@@ -269,9 +269,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void GetDefinitions ()
     {
-      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml");
+      QueryConfiguration configuration = new QueryConfiguration (Path.Combine (TestContext.CurrentContext.TestDirectory, "QueriesForLoaderTest.xml"));
 
-      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"QueriesForLoaderTest.xml", _storageProviderDefinitionFinder);
+      QueryConfigurationLoader loader = new QueryConfigurationLoader (
+          Path.Combine (TestContext.CurrentContext.TestDirectory, "QueriesForLoaderTest.xml"),
+          _storageProviderDefinitionFinder);
       QueryDefinitionCollection expectedQueries = loader.GetQueryDefinitions ();
 
       QueryDefinitionChecker checker = new QueryDefinitionChecker ();

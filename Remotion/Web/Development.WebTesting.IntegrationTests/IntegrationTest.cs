@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
@@ -65,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TearDown]
     public void IntegrationTestTearDown ()
     {
-      var hasSucceeded = TestContext.CurrentContext.Result.Status != TestStatus.Failed;
+      var hasSucceeded = TestContext.CurrentContext.Result.Outcome.Status != TestStatus.Failed;
       _webTestHelper.OnTearDown (hasSucceeded);
       _aspNetRequestErrorDetectionScope.Dispose();
     }

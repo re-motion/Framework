@@ -31,9 +31,14 @@ namespace Remotion.Security.UnitTests.Metadata
       _expectedName = expectedName;
     }
 
-    public override bool Matches (object actual)
+    public override ConstraintResult ApplyTo<TActual> (TActual actual)
     {
-      base.actual = actual;
+      var isSuccess = Matches (actual);
+      return new EnumValueInfoListContentsConstraintResult (this, actual, _expectedName, isSuccess);
+    }
+
+    private bool Matches (object actual)
+    {
       var actualAsEnumValueInfoList = actual as List<EnumValueInfo>;
       if (actualAsEnumValueInfoList != null)
       {
@@ -45,35 +50,6 @@ namespace Remotion.Security.UnitTests.Metadata
       }
 
       return false;
-    }
-
-    public override void WriteDescriptionTo (MessageWriter writer)
-    {
-      throw new NotImplementedException();
-    }
-
-    public override void WriteMessageTo (MessageWriter writer)
-    {
-      var message = new StringBuilder();
-      message.Append ("Expected: ");
-      message.Append (_expectedName);
-      message.Append("\t but was: ");
-      message.Append (String.Join(", ", ExtractNames (((IList<EnumValueInfo>) actual)).ToArray()));
-
-      writer.Write (message.ToString());
-    }
-
-    private List<string> ExtractNames (IList<EnumValueInfo> list)
-    {
-      var actualAsEnumValueInfoList = base.actual as IList<EnumValueInfo>;
-      if (actualAsEnumValueInfoList == null)
-        return null;
-
-      List<string> actualNames = new List<string> ();
-      foreach (EnumValueInfo value in list)
-        actualNames.Add (value.Name);
-
-      return actualNames;
     }
   }
 }

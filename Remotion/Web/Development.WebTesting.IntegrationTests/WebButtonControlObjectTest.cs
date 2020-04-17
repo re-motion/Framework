@@ -32,20 +32,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WebButtonControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [TestCaseSource (typeof (DisabledTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
     public void GenericTests (GenericSelectorTestAction<WebButtonSelector, WebButtonControlObject> testAction)
     {
       testAction (Helper, e => e.WebButtons(), "webButton");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (ItemIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [TestCaseSource (typeof (ItemIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [TestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<WebButtonSelector, WebButtonControlObject> testAction)
     {
       testAction (Helper, e => e.WebButtons(), "webButton");

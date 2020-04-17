@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -29,11 +29,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TabbedMultiViewControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<TabbedMultiViewSelector, TabbedMultiViewControlObject> testAction)
     {
       testAction (Helper, e => e.TabbedMultiViews(), "tabbedMultiView");

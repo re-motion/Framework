@@ -23,7 +23,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Generi
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories
 {
   /// <summary>
-  /// Contains tests for <see cref="ILocalIDControlSelector{TControlObject}"/> that are executed via <see cref="RemotionTestCaseSourceAttribute"/>
+  /// Contains tests for <see cref="ILocalIDControlSelector{TControlObject}"/> that are executed via <see cref="TestCaseSourceAttribute"/>
   /// </summary>
   public class LocalIDControlSelectorTestCaseFactory<TControlSelector, TControl>
       : ControlSelectorTestCaseFactoryBase<TControlSelector, TControl, LocalIDGenericTestPageParameter>

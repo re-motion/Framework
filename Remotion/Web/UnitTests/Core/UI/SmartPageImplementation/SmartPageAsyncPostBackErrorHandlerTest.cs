@@ -50,7 +50,7 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
       //The second value is the error page on a system with .Net 4.8 installed.
       Assert.That (message, Does.EndWith (@"<br>
 
-    ").Or.StringEnding(@"<br>
+    ").Or.EndsWith(@"<br>
 
             </font>
 

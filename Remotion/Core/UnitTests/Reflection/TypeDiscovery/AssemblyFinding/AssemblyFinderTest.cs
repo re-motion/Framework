@@ -87,7 +87,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     public void FindAssemblies_FindsReferencedAssemblies_Transitive ()
     {
       const string buildOutputDirectory = "Reflection.AssemblyFinderTest.FindAssemblies_FindsReferencedAssemblies_Transitive";
-      const string sourceDirectoryRoot = @"Reflection\TypeDiscovery\AssemblyFinding\TestAssemblies\AssemblyFinderTest";
+      string sourceDirectoryRoot = Path.Combine (TestContext.CurrentContext.TestDirectory, @"Reflection\TypeDiscovery\AssemblyFinding\TestAssemblies\AssemblyFinderTest");
 
       Action<object[]> testAction = delegate (object[] args)
       {

@@ -25,7 +25,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories
 {
   /// <summary>
-  /// Contains tests for <see cref="IDisplayNameControlSelector{TControlObject}"/> that are executed via <see cref="RemotionTestCaseSourceAttribute"/>
+  /// Contains tests for <see cref="IDisplayNameControlSelector{TControlObject}"/> that are executed via <see cref="TestCaseSourceAttribute"/>
   /// </summary>
   public class DisplayNameControlSelectorTestCaseFactory<TControlSelector, TControl>
       : ControlSelectorTestCaseFactoryBase<TControlSelector, TControl, DisplayNameGenericTestPageParameter>

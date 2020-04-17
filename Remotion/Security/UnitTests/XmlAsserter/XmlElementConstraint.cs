@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Text.RegularExpressions;
 using System.Xml;
 using NUnit.Framework.Constraints;
 
@@ -31,20 +32,20 @@ namespace Remotion.Security.UnitTests.XmlAsserter
       _expectedLocalName = expectedLocalName;
     }
 
-    public override bool Matches (object actual)
+    public override ConstraintResult ApplyTo<TActual> (TActual actual)
     {
-      base.actual = actual;
+      var isSuccess = Matches (actual);
+      return new XmlElementConstraintResult (this, actual, isSuccess);
+    }
+
+    private bool Matches (object actual)
+    {
       var actualAsXmlNode = actual as XmlNode;
       
       return actualAsXmlNode != null
           && actualAsXmlNode.NodeType == XmlNodeType.Element
           && actualAsXmlNode.NamespaceURI.Equals (_expectedNamespace)
           && actualAsXmlNode.LocalName.Equals (_expectedLocalName);
-    }
-
-    public override void WriteDescriptionTo (MessageWriter writer)
-    {
-      writer.Write ("Test");
     }
   }
 }

@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -28,11 +28,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class SingleViewControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<SingleViewSelector, SingleViewControlObject> testAction)
     {
       testAction (Helper, e => e.SingleViews(), "singleView");

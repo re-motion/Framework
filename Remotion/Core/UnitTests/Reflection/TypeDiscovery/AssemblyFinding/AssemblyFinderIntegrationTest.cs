@@ -53,6 +53,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
+      Environment.CurrentDirectory = TestContext.CurrentContext.TestDirectory;
       var searchPathForDlls = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dlls");
       var searchPathForExes = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Exes");
       var dynamicBase = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dynamic");

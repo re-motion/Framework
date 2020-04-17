@@ -35,22 +35,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocBooleanValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [TestCaseSource (typeof (DisabledTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [TestCaseSource (typeof (LabelTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocBooleanValueSelector, BocBooleanValueControlObject> testAction)
     {
       testAction (Helper, e => e.BooleanValues(), "booleanValue");
     }
 
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocBooleanValueSelector, BocBooleanValueControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocBooleanValueSelector, BocBooleanValueControlObject> testAction)
     {
       testAction (Helper, e => e.BooleanValues(), "booleanValue");

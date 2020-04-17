@@ -65,7 +65,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
     public void RunDefault ()
     {
       _parameters.AssemblyOutputDirectory = "MixerRunnerTest";
-      _parameters.BaseDirectory = "MixerRunnerTest_Input";
+      _parameters.BaseDirectory = Path.Combine (TestContext.CurrentContext.TestDirectory, "MixerRunnerTest_Input");
       var assemblyPath = Path.Combine (_parameters.AssemblyOutputDirectory, "Remotion.Mixins.Persistent.1.dll");
       
       Assert.That (Directory.Exists (_parameters.AssemblyOutputDirectory), Is.False);
@@ -78,7 +78,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
         Directory.CreateDirectory (_parameters.BaseDirectory);
 
         var compiler = new AssemblyCompiler (
-            @"Core\MixerTools\SampleAssembly",
+            Path.Combine (TestContext.CurrentContext.TestDirectory, @"Core\MixerTools\SampleAssembly"),
             Path.Combine (_parameters.BaseDirectory, "SampleAssembly.dll"), 
             typeof (Mixin).Assembly.Location);
         compiler.Compile();

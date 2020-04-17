@@ -48,9 +48,9 @@
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.7.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\NUnit.2.7.1\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -100,7 +100,6 @@
     <Compile Include="TestCaseFactories\TextContentControlSelectorTestCaseFactory.cs" />
     <Compile Include="IGenericTestPageParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemotionTestCaseSourceAttribute.cs" />
     <Compile Include="TestCaseFactories\FirstControlSelectorTestCaseFactory.cs" />
     <Compile Include="TestCaseFactories\HtmlIDControlSelectorTestCaseFactory.cs" />
     <Compile Include="TestCaseFactories\IndexControlSelectorTestCaseFactory.cs" />

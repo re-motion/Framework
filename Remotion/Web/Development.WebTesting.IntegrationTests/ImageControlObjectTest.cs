@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -28,11 +28,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ImageControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<ImageSelector, ImageControlObject> testAction)
     {
       testAction (Helper, e => e.Images(), "image");

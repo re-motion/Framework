@@ -121,7 +121,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
 
       Assert.That (
           () => _webServiceFactory.CreateJsonService<IInvalidJsonServiceWithWrongResponseFormat> ("~/VirtualServicePath"),
-          Throws.ArgumentException.And.Message.ContainsSubstring (
+          Throws.ArgumentException.And.Message.Contains (
               " does not have the ResponseFormat property of the ScriptMethodAttribute set to Json."));
     }
 

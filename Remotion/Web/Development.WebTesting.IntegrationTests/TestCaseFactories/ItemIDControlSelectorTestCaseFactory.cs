@@ -25,7 +25,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories
 {
   /// <summary>
-  /// Contains tests for <see cref="IItemIDControlSelector{TControlObject}"/> that are executed via <see cref="RemotionTestCaseSourceAttribute"/>
+  /// Contains tests for <see cref="IItemIDControlSelector{TControlObject}"/> that are executed via <see cref="TestCaseSourceAttribute"/>
   /// </summary>
   public class ItemIDControlSelectorTestCaseFactory<TControlSelector, TControl>
       : ControlSelectorTestCaseFactoryBase<TControlSelector, TControl, ItemIDGenericTestPageParameter>

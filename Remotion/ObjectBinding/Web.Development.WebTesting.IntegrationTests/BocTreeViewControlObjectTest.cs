@@ -38,21 +38,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocTreeViewControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
-    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
+    [TestCaseSource (typeof (DisabledTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
+    [TestCaseSource (typeof (LabelTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocTreeViewSelector, BocTreeViewControlObject> testAction)
     {
       testAction (Helper, e => e.TreeViews(), "treeView");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
-    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
-    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
+    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
+    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
+    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
+    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
+    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
+    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
+    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocTreeViewSelector, BocTreeViewControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocTreeViewSelector, BocTreeViewControlObject> testAction)
     {
       testAction (Helper, e => e.TreeViews(), "treeView");

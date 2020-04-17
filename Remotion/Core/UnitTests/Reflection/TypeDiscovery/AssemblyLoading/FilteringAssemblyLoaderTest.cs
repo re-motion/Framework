@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using log4net;
 using log4net.Appender;
 using log4net.Config;
@@ -163,17 +164,18 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     public void TryLoadAssembly_WithFileLoadException ()
     {
       string program = Compile (
-          "Reflection\\TypeDiscovery\\TestAssemblies\\FileLoadExceptionConsoleApplication",
+          Path.Combine (TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\FileLoadExceptionConsoleApplication"),
           "FileLoadExceptionConsoleApplication.exe",
           true,
           null);
       string programConfig = program + ".config";
-      File.Copy ("Reflection\\TypeDiscovery\\TestAssemblies\\FileLoadExceptionConsoleApplication\\app.config", programConfig);
+      File.Copy (
+          Path.Combine (TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\FileLoadExceptionConsoleApplication\\app.config"), programConfig);
       string delaySignAssembly = Compile (
-          "Reflection\\TypeDiscovery\\TestAssemblies\\DelaySignAssembly",
+          Path.Combine (TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\DelaySignAssembly"),
           "DelaySignAssembly.dll",
           false,
-          "/delaysign+ /keyfile:Reflection\\TypeDiscovery\\TestAssemblies\\DelaySignAssembly\\PublicKey.snk");
+          "/delaysign+ /keyfile:" + Path.Combine (TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\DelaySignAssembly\\PublicKey.snk"));
 
       try
       {
@@ -192,9 +194,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 
         CheckLogRegEx (
           output,
-            @"WARN : The assembly 'DelaySignAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=.*' \(loaded in the context of "
-            + @"'DelaySignAssembly.dll'\) triggered a FileLoadException and will be ignored - maybe the assembly is DelaySigned, but signing has not "
-            + "been completed?");
+            @"WARN : The assembly 'DelaySignAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=.*' \(loaded in the context of '"
+            + Regex.Escape (Path.Combine (TestContext.CurrentContext.TestDirectory, "DelaySignAssembly.dll"))
+            + @"'\) triggered a FileLoadException and will be ignored - maybe the assembly is DelaySigned, but signing has not been completed?");
       }
       finally
       {
@@ -208,8 +210,15 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     public void TryLoadAssembly_WithFileLoadException_AndShadowCopying ()
     {
       string program = Compile (
-          "Reflection\\TypeDiscovery\\TestAssemblies\\FileLoadExceptionConsoleApplication", "FileLoadExceptionConsoleApplication.exe", true, null);
-      string delaySignAssembly = Compile ("Reflection\\TypeDiscovery\\TestAssemblies\\DelaySignAssembly", "DelaySignAssembly.dll", false, "/delaysign+ /keyfile:Reflection\\TypeDiscovery\\TestAssemblies\\DelaySignAssembly\\PublicKey.snk");
+          Path.Combine (TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\FileLoadExceptionConsoleApplication"),
+          "FileLoadExceptionConsoleApplication.exe",
+          true,
+          null);
+      string delaySignAssembly = Compile (
+          Path.Combine (TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\DelaySignAssembly"),
+          "DelaySignAssembly.dll",
+          false,
+          "/delaysign+ /keyfile:" + Path.Combine (TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\DelaySignAssembly\\PublicKey.snk"));
 
       try
       {
@@ -361,9 +370,13 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 
     private string Compile (string sourceDirectory, string outputAssemblyName, bool generateExecutable, string compilerOptions)
     {
+      Assertion.IsTrue (
+          Path.GetDirectoryName (typeof (FilteringAssemblyLoader).Assembly.Location) == Path.GetDirectoryName (typeof (Remotion.Logging.LogManager).Assembly.Location));
+      var targetDirectory = Path.GetDirectoryName (typeof (FilteringAssemblyLoader).Assembly.Location);
+
       var compiler = new AssemblyCompiler (
           sourceDirectory,
-          outputAssemblyName,
+          Path.Combine (targetDirectory, outputAssemblyName),
           typeof (FilteringAssemblyLoader).Assembly.Location,
           typeof (Remotion.Logging.LogManager).Assembly.Location);
 

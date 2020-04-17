@@ -21,6 +21,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using NUnit.Framework;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
@@ -28,11 +29,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain
 {
   public class DatabaseHelper
   {
-    public const string TearDownDBScript = "SecurityManagerTearDownDB.sql";
-    public const string SetupDBScript = "SecurityManagerSetupDB.sql";
-    public const string SetupConstraintsScript = "SecurityManagerSetupConstraints.sql";
-    public const string TearDownDBSpecialTablesScript = "SecurityManagerTearDownDBSpecialTables.sql";
-    public const string SetupDBSpecialTablesScript = "SecurityManagerSetupDBSpecialTables.sql";
+    public readonly string TearDownDBScript = Path.Combine (TestContext.CurrentContext.TestDirectory, "SecurityManagerTearDownDB.sql");
+    public readonly string SetupDBScript = Path.Combine (TestContext.CurrentContext.TestDirectory, "SecurityManagerSetupDB.sql");
+    public readonly string SetupConstraintsScript = Path.Combine (TestContext.CurrentContext.TestDirectory, "SecurityManagerSetupConstraints.sql");
+    public readonly string TearDownDBSpecialTablesScript = Path.Combine (TestContext.CurrentContext.TestDirectory, "SecurityManagerTearDownDBSpecialTables.sql");
+    public readonly string SetupDBSpecialTablesScript = Path.Combine (TestContext.CurrentContext.TestDirectory, "SecurityManagerSetupDBSpecialTables.sql");
 
     public void SetupDB ()
     {

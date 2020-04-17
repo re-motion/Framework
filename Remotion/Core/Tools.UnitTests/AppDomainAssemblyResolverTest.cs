@@ -164,10 +164,11 @@ namespace Remotion.Tools.UnitTests
 
     private string CreateAssembly (string assemblyName, string moduleName)
     {
-      var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.Save);
+      var targetDirectory = AppDomain.CurrentDomain.BaseDirectory;
+      var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.Save, targetDirectory);
       assemblyBuilder.DefineDynamicModule (moduleName);
       assemblyBuilder.Save (moduleName);
-      return Path.Combine (AppDomain.CurrentDomain.BaseDirectory, moduleName);
+      return Path.Combine (targetDirectory, moduleName);
     }
   }
 }

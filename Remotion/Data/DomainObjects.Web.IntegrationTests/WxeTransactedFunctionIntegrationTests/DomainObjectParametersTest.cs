@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
                       + "The following objects are incompatible with the target transaction: ")
                   .And.Message.Contains (DomainObjectIDs.ClassWithAllDataTypes1.ToString())
                   .And.Message.Contains (DomainObjectIDs.ClassWithAllDataTypes1.ToString())
-                  .And.Message.StringEnding (". Objects of type 'Remotion.Data.DomainObjects.IDomainObjectHandle`1[T]' could be used instead."));
+                  .And.Message.EndsWith (". Objects of type 'Remotion.Data.DomainObjects.IDomainObjectHandle`1[T]' could be used instead."));
       }
     }
 
