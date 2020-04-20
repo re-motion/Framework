@@ -1794,29 +1794,6 @@ namespace Remotion.Web.UI.Controls
         FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
         if (formGridRow.IsGenerated)
           UpdateGeneratedRowsVisibility (formGridRow);
-
-  //      if (!formGridRow.CheckVisibility())
-  //      {
-  //        formGridRow.Hide();
-  //      }
-  //      else
-        if (formGridRow.CheckVisibility())
-        {
-          if (formGridRow.Type == FormGridRowType.DataRow)
-          {
-            CreateRequiredMarker (formGridRow);
-            CreateHelpProvider(formGridRow);
-
-            RegisterValidationErrors (formGridRow);
-
-            LoadMarkersIntoCell (formGridRow);
-            if (    ValidatorVisibility == ValidatorVisibility.ValidationMessageInControlsColumn
-                ||  ValidatorVisibility == ValidatorVisibility.ValidationMessageAfterControlsColumn)
-            {
-              LoadValidationMessagesIntoCell (formGridRow);
-            }
-          }
-        }
       }
 
       FormatFormGrid (formGrid);
@@ -2244,8 +2221,25 @@ namespace Remotion.Web.UI.Controls
       AssignCssClassesToInputControls (dataRow);
       AssignCssClassesToValidators (dataRow);
 
-      if (! dataRow.CheckVisibility())
+      var isRowVisible = dataRow.CheckVisibility();
+      if (isRowVisible)
+      {
+        CreateRequiredMarker (dataRow);
+        CreateHelpProvider (dataRow);
+
+        RegisterValidationErrors (dataRow);
+
+        LoadMarkersIntoCell (dataRow);
+        if (ValidatorVisibility == ValidatorVisibility.ValidationMessageInControlsColumn
+            || ValidatorVisibility == ValidatorVisibility.ValidationMessageAfterControlsColumn)
+        {
+          LoadValidationMessagesIntoCell (dataRow);
+        }
+      }
+      else
+      {
         dataRow.Hide();
+      }
 
       AddShowEmptyCellsHack (dataRow);
 
