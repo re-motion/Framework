@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Utilities;
 using Remotion.Validation;
@@ -29,33 +28,29 @@ namespace Remotion.Data.DomainObjects.Validation
 {
   public class ValidationClientTransactionExtension : ClientTransactionExtensionBase
   {
-    private readonly IValidatorBuilder _validatorBuilder;
-    private readonly Func<Type, IValidator> _validatorBuilderFunc;
+    private readonly IValidatorProvider _validatorProvider;
 
     public static string DefaultKey
     {
       get { return typeof (ValidationClientTransactionExtension).FullName; }
     }
 
-    public ValidationClientTransactionExtension (IValidatorBuilder validatorBuilder)
-        : this (DefaultKey, validatorBuilder)
+    public ValidationClientTransactionExtension (IValidatorProvider validatorProvider)
+        : this (DefaultKey, validatorProvider)
     {
     }
 
-    public ValidationClientTransactionExtension (string key, IValidatorBuilder validatorBuilder)
+    public ValidationClientTransactionExtension (string key, IValidatorProvider validatorProvider)
         : base (key)
     {
-      ArgumentUtility.CheckNotNull ("validatorBuilder", validatorBuilder);
+      ArgumentUtility.CheckNotNull ("validatorProvider", validatorProvider);
 
-      _validatorBuilder = validatorBuilder;
-
-      // Optimized for memory allocations
-      _validatorBuilderFunc = _validatorBuilder.BuildValidator;
+      _validatorProvider = validatorProvider;
     }
 
-    public IValidatorBuilder ValidatorBuilder
+    public IValidatorProvider ValidatorProvider
     {
-      get { return _validatorBuilder; }
+      get { return _validatorProvider; }
     }
 
     public override void CommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
@@ -121,7 +116,7 @@ namespace Remotion.Data.DomainObjects.Validation
         Assertion.IsFalse (item.DomainObjectState.IsNotLoadedYet, "No unloaded objects get this far.");
         Assertion.IsFalse (item.DomainObjectState.IsInvalid, "No invalid objects get this far.");
 
-        var validator = validatorCache.GetOrCreateValue (item.DomainObject.GetPublicDomainObjectType(), _validatorBuilderFunc);
+        var validator = _validatorProvider.GetValidator (item.DomainObject.GetPublicDomainObjectType());
         
         var validationResult = validator.Validate (item.DomainObject);
 

@@ -22,7 +22,6 @@ using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.Validation;
-using Remotion.Validation.Globalization;
 using Remotion.Validation.Merging;
 using LogManager = log4net.LogManager;
 
@@ -32,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
   [SetCulture ("")]
   public abstract class IntegrationTestBase
   {
-    protected IValidatorBuilder ValidationBuilder;
+    protected IValidatorProvider ValidationProvider;
     protected MemoryAppender MemoryAppender;
     protected bool ShowLogOutput;
     private ServiceLocatorScope _serviceLocatorScope;
@@ -42,13 +41,13 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     {
       var serviceLocator = DefaultServiceLocator.Create ();
       serviceLocator.RegisterSingle<IClientTransactionExtensionFactory> (
-          () => new ValidationClientTransactionExtensionFactory (serviceLocator.GetInstance<IValidatorBuilder>()));
+          () => new ValidationClientTransactionExtensionFactory (serviceLocator.GetInstance<IValidatorProvider>()));
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
 
       MemoryAppender = new MemoryAppender();
       BasicConfigurator.Configure (MemoryAppender);
 
-      ValidationBuilder = serviceLocator.GetInstance<IValidatorBuilder> ();
+      ValidationProvider = serviceLocator.GetInstance<IValidatorProvider> ();
     }
 
     [TearDown]

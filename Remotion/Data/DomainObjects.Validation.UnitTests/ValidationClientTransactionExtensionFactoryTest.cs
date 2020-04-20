@@ -29,15 +29,15 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     public void CreateClientTransactionExtensions_InRootTransaction_CreatesExtension ()
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction();
-      var validatorBuilderStub = MockRepository.GenerateStub<IValidatorBuilder>();
-      var factory = new ValidationClientTransactionExtensionFactory (validatorBuilderStub);
+      var validatorProviderStub = MockRepository.GenerateStub<IValidatorProvider>();
+      var factory = new ValidationClientTransactionExtensionFactory (validatorProviderStub);
 
       var result = factory.CreateClientTransactionExtensions (clientTransaction).ToArray();
 
       Assert.That (result.Count(), Is.EqualTo (1));
       var clientTransactionExtension = result.First();
       Assert.That (clientTransactionExtension, Is.TypeOf<ValidationClientTransactionExtension>());
-      Assert.That (((ValidationClientTransactionExtension) clientTransactionExtension).ValidatorBuilder, Is.EqualTo (validatorBuilderStub));
+      Assert.That (((ValidationClientTransactionExtension) clientTransactionExtension).ValidatorProvider, Is.EqualTo (validatorProviderStub));
     }
 
     [Test]
@@ -45,8 +45,8 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction();
       var subTransaction = clientTransaction.CreateSubTransaction();
-      var validatorBuilderStub = MockRepository.GenerateStub<IValidatorBuilder>();
-      var factory = new ValidationClientTransactionExtensionFactory (validatorBuilderStub);
+      var validatorProviderStub = MockRepository.GenerateStub<IValidatorProvider>();
+      var factory = new ValidationClientTransactionExtensionFactory (validatorProviderStub);
 
       var result = factory.CreateClientTransactionExtensions (subTransaction).ToArray();
 

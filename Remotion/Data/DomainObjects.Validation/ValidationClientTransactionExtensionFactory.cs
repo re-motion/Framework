@@ -28,13 +28,13 @@ namespace Remotion.Data.DomainObjects.Validation
   {
     public const int Position = CommitValidationClientTransactionExtensionFactory.Position - 113;
 
-    private readonly IValidatorBuilder _validationBuilder;
+    private readonly IValidatorProvider _validationProvider;
 
-    public ValidationClientTransactionExtensionFactory (IValidatorBuilder validatorBuilder)
+    public ValidationClientTransactionExtensionFactory (IValidatorProvider validatorProvider)
     {
-      ArgumentUtility.CheckNotNull ("validatorBuilder", validatorBuilder);
+      ArgumentUtility.CheckNotNull ("validatorProvider", validatorProvider);
 
-      _validationBuilder = validatorBuilder;
+      _validationProvider = validatorProvider;
     }
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Validation
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
       if (clientTransaction.RootTransaction == clientTransaction)
-        yield return new ValidationClientTransactionExtension (_validationBuilder);
+        yield return new ValidationClientTransactionExtension (_validationProvider);
     }
   }
 }

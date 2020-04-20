@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain;
-using Remotion.Validation;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
@@ -47,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         orderItem2.Order = Order.NewObject();
         orderItem2.ProductReference = ProductReference.NewObject();
 
-        var validator = ValidationBuilder.BuildValidator<OrderItem> ();
+        var validator = ValidationProvider.GetValidator (typeof (OrderItem));
 
         var result1 = validator.Validate (orderItem1);
         Assert.That (result1.IsValid, Is.False);
@@ -70,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         var customer2 = Customer.NewObject ();
         ((ICustomerIntroduced) customer2).Address = Address.NewObject();
 
-        var validator = ValidationBuilder.BuildValidator<Customer>();
+        var validator = ValidationProvider.GetValidator (typeof (Customer));
 
         var result1 = validator.Validate (customer1);
         Assert.That (result1.IsValid, Is.False);
@@ -106,7 +105,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     public void BuildValidator_StringPropertyReStoreAttributeIsReplaced_MaxLengthMetaValidationRuleFails ()
     {
       Assert.That (
-          () => ValidationBuilder.BuildValidator<InvalidOrder> (),
+          () => ValidationProvider.GetValidator (typeof (InvalidOrder)),
           Throws.TypeOf<ValidationConfigurationException> ().And.Message.EqualTo (
               "'RemotionMaxLengthPropertyMetaValidationRule' failed for property 'Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.InvalidOrder.Number': "
               + "Max-length validation rule value '15' exceeds meta validation rule max-length value of '10'."));
@@ -129,7 +128,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
           Assert.That (order1.OrderItems.IsDataComplete, Is.True);
           Assert.That (order2.OrderItems.IsDataComplete, Is.False);
 
-          var validator = ValidationBuilder.BuildValidator<Order>();
+          var validator = ValidationProvider.GetValidator (typeof (Order));
 
           var result1 = validator.Validate (order1);
           Assert.That (result1.IsValid, Is.False);
@@ -168,7 +167,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
           productReference2.EnsureDataAvailable();
           Assert.That (product2.State.IsNotLoadedYet, Is.True);
 
-          var validator = ValidationBuilder.BuildValidator<ProductReference>();
+          var validator = ValidationProvider.GetValidator (typeof (ProductReference));
 
           var result1 = validator.Validate (productReference1);
           Assert.That (result1.IsValid, Is.False);

@@ -66,7 +66,9 @@
     <Compile Include="Attributes\Validation\NotEqualValidationAttributeTest.cs" />
     <Compile Include="Attributes\Validation\NotNullValidationAttributeTest.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttributeTest.cs" />
+    <Compile Include="CachingValidatorProviderTest.cs" />
     <Compile Include="DefaultValidatorExtensionsTest.cs" />
+    <Compile Include="IValidatorProviderTest.cs" />
     <Compile Include="Implementation\AttributeBasedValidationRuleCollectorTest.cs" />
     <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecoratorTest.cs" />
     <Compile Include="Implementation\CompoundValidationMessageFactoryTest.cs" />

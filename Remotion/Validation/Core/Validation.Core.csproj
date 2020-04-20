@@ -66,6 +66,7 @@
     <Compile Include="Attributes\Validation\NotNullValidationAttribute.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttribute.cs" />
     <Compile Include="Attributes\Validation\AddingValidationAttributeBase.cs" />
+    <Compile Include="CachingValidatorProvider.cs" />
     <Compile Include="ComponentValidationCollector.obsolete.cs" />
     <Compile Include="DefaultValidatorExtensions.cs" />
     <Compile Include="Implementation\AttributeBasedValidationRuleCollector.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Implementation\ObjectValidatorRegistrationWithContext.cs" />
     <Compile Include="Implementation\ValidationMessage.cs" />
     <Compile Include="Implementation\IValidationMessageFactory.cs" />
+    <Compile Include="IValidatorProvider.cs" />
     <Compile Include="IValidationRuleCollector1.cs" />
     <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecorator.cs" />
     <Compile Include="Implementation\CompoundValidationRuleCollectorValidator.cs" />

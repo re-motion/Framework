@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain;
-using Remotion.Validation;
 using Remotion.Validation.Results;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
@@ -42,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         ((ICustomerIntroduced) customer).Address = Address.NewObject();
         ((ICustomerIntroduced) customer).Title = "Chef1";
 
-        var validator = ValidationBuilder.BuildValidator<Customer>();
+        var validator = ValidationProvider.GetValidator (typeof (Customer));
 
         var result1 = validator.Validate (customer);
         Assert.That (result1.IsValid, Is.False);
@@ -62,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         order.Number = "er";
         order.OrderItems.Add (OrderItem.NewObject());
 
-        var validator = ValidationBuilder.BuildValidator<Order> ();
+        var validator = ValidationProvider.GetValidator (typeof (Order));
 
         var result1 = validator.Validate (order);
         Assert.That (result1.IsValid, Is.False);
