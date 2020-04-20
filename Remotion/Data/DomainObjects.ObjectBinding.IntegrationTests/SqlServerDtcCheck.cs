@@ -47,6 +47,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
         },
         LazyThreadSafetyMode.ExecutionAndPublication);
 
-    public static bool IsDtcServiceAvailable => s_isDtcServiceAvailable.Value;
+    public static bool IsDtcServiceAvailable
+    {
+      get { return s_isDtcServiceAvailable.Value; }
+    }
   }
 }
