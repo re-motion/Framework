@@ -62,6 +62,9 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [Test]
     public void WxeTransactedFunctionCreateNewAutoCommit ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
@@ -78,6 +81,9 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [Test]
     public void WxeTransactedFunctionCreateNewNoAutoCommit ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
@@ -95,6 +101,9 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [Test]
     public void WxeTransactedFunctionNoneNoAutoCommit ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       SetInt32Property (5, ClientTransaction.CreateRootTransaction());
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {

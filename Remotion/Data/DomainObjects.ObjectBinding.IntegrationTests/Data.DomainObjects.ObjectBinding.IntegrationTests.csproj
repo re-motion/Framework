@@ -76,6 +76,7 @@
     <Compile Include="SecurityIntegrationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetUpFixture.cs" />
+    <Compile Include="SqlServerDtcCheck.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="TestDomain\BaseClassWithMixinWithInterface.cs" />
     <Compile Include="TestDomain\Search\BindableDomainObjectWithProperties.cs" />

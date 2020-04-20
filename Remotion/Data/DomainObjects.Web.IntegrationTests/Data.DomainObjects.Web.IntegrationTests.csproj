@@ -72,6 +72,7 @@
     <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetUpFixture.cs" />
+    <Compile Include="SqlServerDtcCheck.cs" />
     <Compile Include="TestDomain\SampleObject.cs" />
     <Compile Include="TestDomain\DomainObjectIDs.cs" />
     <Compile Include="WxeParameterIntegrationTest.cs" />

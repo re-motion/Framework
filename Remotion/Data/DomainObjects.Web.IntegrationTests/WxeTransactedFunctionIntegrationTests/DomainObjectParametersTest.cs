@@ -30,6 +30,9 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [Test]
     public void CreateNoneTransactionMode_FunctionCanUseObjectsFromOuterTransaction ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var outerTransaction = ClientTransaction.Current;
@@ -105,6 +108,9 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [Test]
     public void CreateRootTransactionMode_InParametersOfDomainObjectType_CauseException ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var inParameter = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<SampleObject> ();
@@ -130,6 +136,9 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [Test]
     public void CreateRootTransactionMode_OutParametersOfDomainObjectType_WithoutSurroundingFunction ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         SampleObject outParameter;
@@ -152,6 +161,9 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [Test]
     public void CreateRootTransactionMode_OutParametersOfDomainObjectType_WithSurroundingFunction ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       SampleObject outParameter;
       SampleObject[] outParameterArray;
 
@@ -320,6 +332,9 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [Test]
     public void PassingDomainObjectsAround_BetweenTransactions_WithDomainObjectHandles ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var inParameter = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<SampleObject> ();

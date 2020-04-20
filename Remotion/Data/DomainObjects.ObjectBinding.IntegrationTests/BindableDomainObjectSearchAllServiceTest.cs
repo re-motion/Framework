@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain;
 using Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Search;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
@@ -85,6 +84,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void GetAllObjects_WorksOnBindableDomainObjects ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       var result = _service.GetAllObjects (ClientTransaction.Current, typeof (SampleBindableDomainObject));
       Assert.That (result, Is.EquivalentTo (new[] { _persistedSampleObject1, _persistedSampleObject2 }));
     }
@@ -92,6 +94,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void GetAllObjects_DifferentTransaction ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       var transaction = ClientTransaction.CreateRootTransaction ();
       var result = _service.GetAllObjects (transaction, typeof (SampleBindableDomainObject));
       Assert.That (transaction.IsEnlisted ((DomainObject) result[0]), Is.True);
@@ -115,6 +120,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void Search_SingleProperty ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       var property = GetBusinessObjectProperty (typeof (OppositeBidirectionalBindableDomainObject), "OppositeSampleObject");
       var result = _service.Search (null, property, null);
       Assert.That (result, Is.EquivalentTo (new[] { _persistedSampleObject1, _persistedSampleObject2 }));
@@ -123,6 +131,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void Search_CollectionProperty ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       var property = GetBusinessObjectProperty (typeof (OppositeBidirectionalBindableDomainObject), "OppositeSampleObjects");
       var result = _service.Search (null, property, null);
       Assert.That (result, Is.EquivalentTo (new[] { _persistedSampleObject1, _persistedSampleObject2 }));
@@ -131,6 +142,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void Search_UsesCurrentTransaction_WithNullObject ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       var property = GetBusinessObjectProperty (typeof (OppositeBidirectionalBindableDomainObject), "OppositeSampleObject");
       var result = _service.Search (null, property, null);
       Assert.That (result.Length, Is.EqualTo (2));
@@ -140,6 +154,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void Search_UsesCurrentTransaction_WithNonDomainObject ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       var property = GetBusinessObjectProperty (typeof (BindableNonDomainObjectReferencingDomainObject), "OppositeSampleObject");
       var result = _service.Search (new BindableNonDomainObjectReferencingDomainObject(), property, null);
       Assert.That (result.Length, Is.EqualTo (2));
@@ -149,6 +166,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void Search_UsesAssociatedTransaction_WithDomainObject ()
     {
+      if (!SqlServerDtcCheck.IsDtcServiceAvailable)
+        Assert.Ignore ("Distributed Transaction Manager (MSDTC) is not available or configured properly.");
+
       var otherTransaction = ClientTransaction.CreateRootTransaction();
       var referencingObject = otherTransaction.ExecuteInScope (() => OppositeBidirectionalBindableDomainObject.NewObject ());
 
