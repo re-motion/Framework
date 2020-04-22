@@ -15,7 +15,7 @@
            feature="CommonServiceLocator"
            layer="Core"/>
 
-  <package id="Coypu"
+  <package id="Fork.Coypu"
            feature="Remotion.Web.Testing"
            layer="Core"/>
 

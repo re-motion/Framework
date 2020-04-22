@@ -77,9 +77,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestMultiWindowActions ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("This Test does not work with Firefox. We currently don't know why and will add the issue number here before we merge this branch.");
-
       var home = Start();
 
       var mainLabel = home.Labels().GetByID ("MainLabel");
