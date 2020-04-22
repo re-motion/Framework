@@ -45,7 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Coypu, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Coypu.3.1.1\lib\net45\Coypu.dll</HintPath>
+      <HintPath>..\..\..\packages\Fork.Coypu.3.1.1.2\lib\net45\Coypu.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

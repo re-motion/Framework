@@ -45,7 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Coypu, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Coypu.3.1.1\lib\net45\Coypu.dll</HintPath>
+      <HintPath>..\..\..\packages\Fork.Coypu.3.1.1.2\lib\net45\Coypu.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
