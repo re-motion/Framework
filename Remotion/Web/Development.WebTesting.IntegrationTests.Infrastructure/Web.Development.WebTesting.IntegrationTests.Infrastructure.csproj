@@ -92,6 +92,7 @@
     <Compile Include="GenericTestPageParameters\TextContentGenericTestPageParameter.cs" />
     <Compile Include="GenericTestPageParameters\TitleGenericTestPageParameter.cs" />
     <Compile Include="GenericTestParameterConverter.cs" />
+    <Compile Include="HostnameResolveHelper.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotTesting.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotTestingDelegate.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotTestingExtensions.cs" />

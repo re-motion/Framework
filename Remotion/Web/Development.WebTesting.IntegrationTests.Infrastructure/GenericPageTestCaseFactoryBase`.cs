@@ -22,6 +22,8 @@ using System.Web.Script.Serialization;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
@@ -29,6 +31,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   public abstract class GenericTestPageTestCaseFactoryBase<TParameter> : GenericPageTestCaseFactoryBase
       where TParameter : IGenericTestPageParameter, new()
   {
+    private static Lazy<Uri> s_webApplicationRoot;
+
     /// <summary>
     /// The page type of the generic page.
     /// </summary>
@@ -57,8 +61,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       ArgumentUtility.CheckNotNull ("helper", helper);
       ArgumentUtility.CheckNotNullOrEmpty ("control", control);
 
+      if (s_webApplicationRoot == null)
+      {
+        s_webApplicationRoot = new Lazy<Uri> (
+            () =>
+            {
+              var uri = new Uri (helper.TestInfrastructureConfiguration.WebApplicationRoot);
+
+              // RM-7401: Edge loads pages slower due to repeated hostname resolution.
+              if (helper.BrowserConfiguration.IsEdge())
+                return HostnameResolveHelper.ResolveHostname (uri);
+
+              return uri;
+            });
+      }
+
       var url = string.Concat (
-          helper.TestInfrastructureConfiguration.WebApplicationRoot,
+          s_webApplicationRoot.Value.ToString(),
           string.Format (TestConstants.GenericPageUrlTemplate, control, (int) attribute.PageType));
 
       base.PrepareTest (attribute, helper, url);
