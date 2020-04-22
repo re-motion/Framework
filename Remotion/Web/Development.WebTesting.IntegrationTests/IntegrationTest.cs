@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
@@ -26,6 +27,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   /// </summary>
   public abstract class IntegrationTest
   {
+    private static Lazy<Uri> s_webApplicationRoot;
+
     private WebTestHelper _webTestHelper;
     private IDisposable _aspNetRequestErrorDetectionScope;
 
@@ -44,6 +47,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
       _webTestHelper.OnFixtureSetUp (MaximizeMainBrowserSession);
+      s_webApplicationRoot = new Lazy<Uri> (
+          () =>
+          {
+            var uri = new Uri (_webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot);
+
+            // RM-7401: Edge loads pages slower due to repeated hostname resolution.
+            if (_webTestHelper.BrowserConfiguration.IsEdge())
+              return HostnameResolveHelper.ResolveHostname (uri);
+
+            return uri;
+          });
     }
 
     [SetUp]
@@ -78,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     protected TPageObject Start<TPageObject> (string page)
       where TPageObject : PageObject
     {
-      var url = _webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot + page;
+      var url = s_webApplicationRoot.Value + page;
       _webTestHelper.MainBrowserSession.Window.Visit (url);
 
       return _webTestHelper.CreateInitialPageObject<TPageObject> (_webTestHelper.MainBrowserSession);
