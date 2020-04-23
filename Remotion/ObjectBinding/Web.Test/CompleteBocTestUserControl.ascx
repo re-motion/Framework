@@ -26,15 +26,15 @@
     <td colspan="2"><remotion:boctextvalue id="FirstNameField" runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" ReadOnly="True"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" ReadOnly="True"></remotion:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:BocTextValue id="TextField" runat="server" propertyidentifier="FirstName" datasourcecontrol="CurrentObject"></remotion:BocTextValue></td></tr>
+    <td><remotion:BocTextValue id="TextField" runat="server" propertyidentifier="FirstName" datasourcecontrol="CurrentObject" EnableOptionalValidators="true"></remotion:BocTextValue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:BocMultilineTextValue id="MultilineTextField" runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject">
+    <td><remotion:BocMultilineTextValue id="MultilineTextField" runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" EnableOptionalValidators="true">
 <textboxstyle textmode="MultiLine">
 </textBoxStyle></remotion:BocMultilineTextValue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:BocDateTimeValue id="DateTimeField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="CurrentObject" incompleteerrormessage="Unvollständige Daten" ></remotion:BocDateTimeValue></td></tr>
+    <td><remotion:BocDateTimeValue id="DateTimeField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" incompleteerrormessage="Unvollständige Daten" ></remotion:BocDateTimeValue></td></tr>
   <tr>
     <td style="HEIGHT: 18px"></td>
     <td style="HEIGHT: 18px"><remotion:BocEnumValue id="EnumField" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject">
@@ -42,16 +42,16 @@
 </listControlStyle></remotion:BocEnumValue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:BocReferenceValue id="ReferenceField" runat="server" propertyidentifier="Partner" datasourcecontrol="CurrentObject">
+    <td><remotion:BocReferenceValue id="ReferenceField" runat="server" propertyidentifier="Partner" datasourcecontrol="CurrentObject" EnableOptionalValidators="true">
 </remotion:BocReferenceValue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:BocBooleanValue id="BooleanField" runat="server" propertyidentifier="Deceased" datasourcecontrol="CurrentObject"></remotion:BocBooleanValue></td></tr>
+    <td><remotion:BocBooleanValue id="BooleanField" runat="server" propertyidentifier="Deceased" datasourcecontrol="CurrentObject" EnableOptionalValidators="true"></remotion:BocBooleanValue></td></tr>
   <tr>
     <td></td>
     <td></td></tr>
   <tr>
-    <td colspan="2"><remotion:BocList id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="CurrentObject" showsortingorder="True" alwaysshowpageinfo="True" selection="Multiple">
+    <td colspan="2"><remotion:BocList id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" showsortingorder="True" alwaysshowpageinfo="True" selection="Multiple">
 <fixedcolumns>
 <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Title">
 <persistedcommand>

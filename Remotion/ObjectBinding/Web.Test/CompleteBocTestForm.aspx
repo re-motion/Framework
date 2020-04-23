@@ -25,27 +25,27 @@
     <td colSpan=2><remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" ReadOnly="True"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" ReadOnly="True"></remotion:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:boctextvalue id=TextField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="FirstName" errormessage="Fehler">
+    <td><remotion:boctextvalue id=TextField runat="server" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" propertyidentifier="FirstName" errormessage="Fehler">
 <textboxstyle textmode="SingleLine" autopostback="True">
 </TextBoxStyle></remotion:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:bocmultilinetextvalue id=MultilineTextField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="CV" DESIGNTIMEDRAGDROP="37" errormessage="Fehler">
+    <td><remotion:bocmultilinetextvalue id=MultilineTextField runat="server" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" propertyidentifier="CV" DESIGNTIMEDRAGDROP="37" errormessage="Fehler">
 <textboxstyle textmode="MultiLine" autopostback="True">
 </TextBoxStyle></remotion:bocmultilinetextvalue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:bocdatetimevalue id=DateTimeField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="DateOfBirth" errormessage="Fehler">
+    <td><remotion:bocdatetimevalue id=DateTimeField runat="server" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" propertyidentifier="DateOfBirth" errormessage="Fehler">
 <datetextboxstyle autopostback="True">
 </DateTextBoxStyle></remotion:bocdatetimevalue></td></tr>
   <tr>
     <td style="HEIGHT: 18px"></td>
-    <td style="HEIGHT: 18px"><remotion:bocenumvalue id=EnumField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="MarriageStatus" errormessage="Fehler">
+    <td style="HEIGHT: 18px"><remotion:bocenumvalue id=EnumField runat="server" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" propertyidentifier="MarriageStatus" errormessage="Fehler">
 <listcontrolstyle autopostback="True">
 </ListControlStyle></remotion:bocenumvalue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:bocreferencevalue id=ReferenceField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Partner" NullItemErrorMessage="Fehler">
+    <td><remotion:bocreferencevalue id=ReferenceField runat="server" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" propertyidentifier="Partner" NullItemErrorMessage="Fehler">
 <dropdownliststyle autopostback="True">
 </DropDownListStyle>
 
@@ -54,12 +54,12 @@
 </PersistedCommand></remotion:bocreferencevalue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:bocbooleanvalue id=BooleanField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Deceased" errormessage="Fehler" AutoPostBack="True"></remotion:bocbooleanvalue></td></tr>
+    <td><remotion:bocbooleanvalue id=BooleanField runat="server" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" propertyidentifier="Deceased" errormessage="Fehler" AutoPostBack="True"></remotion:bocbooleanvalue></td></tr>
   <tr>
     <td></td>
     <td></td></tr>
   <tr>
-    <td colSpan=2><remotion:boclist id=ListField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Jobs" showsortingorder="True" alwaysshowpageinfo="True">
+    <td colSpan=2><remotion:boclist id=ListField runat="server" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" propertyidentifier="Jobs" showsortingorder="True" alwaysshowpageinfo="True">
 <fixedcolumns>
 <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Title">
 <persistedcommand>

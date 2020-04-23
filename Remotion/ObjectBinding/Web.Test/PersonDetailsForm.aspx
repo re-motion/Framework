@@ -33,22 +33,22 @@
           <td colSpan=2>Persondetails</td></tr>
         <tr>
           <td></td>
-          <td><remotion:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" Width="100%" required="True">
+          <td><remotion:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" Width="100%" required="True">
 <textboxstyle textmode="SingleLine">
 </textBoxStyle></remotion:boctextvalue></td></tr>
         <tr>
           <td></td>
-          <td><remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" Width="100%" required="True">
+          <td><remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" Width="100%" required="True">
 <textboxstyle textmode="SingleLine">
 </textBoxStyle></remotion:boctextvalue></td></tr>
         <tr>
           <td></td>
-          <td><remotion:bocenumvalue id="GenderField" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Gender" width="100%">
+          <td><remotion:bocenumvalue id="GenderField" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Gender" EnableOptionalValidators="true" width="100%">
 <listcontrolstyle>
 </listControlStyle></remotion:bocenumvalue></td></tr>
         <tr>
           <td style="HEIGHT: 14px"></td>
-          <td style="HEIGHT: 14px"><remotion:bocreferencevalue id="PartnerField" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Partner" width="100%">
+          <td style="HEIGHT: 14px"><remotion:bocreferencevalue id="PartnerField" runat="server" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" propertyidentifier="Partner" width="100%">
 
 <dropdownliststyle autopostback="True">
 </DropDownListStyle>
@@ -58,24 +58,24 @@
 </PersistedCommand></remotion:bocreferencevalue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:BocTextValue id="ParterFirstNameField" runat="server" DataSourceControl="PartnerDataSource" propertyidentifier="FirstName" width="100%">
+    <td><remotion:BocTextValue id="ParterFirstNameField" runat="server" DataSourceControl="PartnerDataSource" EnableOptionalValidators="true" propertyidentifier="FirstName" width="100%">
 <textboxstyle textmode="SingleLine">
 </TextBoxStyle>
 </remotion:BocTextValue></td></tr>
         <tr>
           <td></td>
-          <td><remotion:bocdatetimevalue id="BirthdayField" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="DateOfBirth" width="100%"></remotion:bocdatetimevalue></td></tr>
+          <td><remotion:bocdatetimevalue id="BirthdayField" runat="server" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" propertyidentifier="DateOfBirth" width="100%"></remotion:bocdatetimevalue></td></tr>
         <tr>
           <td></td>
-          <td><remotion:BocBooleanValue id="DeceasedField" runat="server" propertyidentifier="Deceased" datasourcecontrol="CurrentObject" width="100%"></remotion:BocBooleanValue></td></tr>
+          <td><remotion:BocBooleanValue id="DeceasedField" runat="server" propertyidentifier="Deceased" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" width="100%"></remotion:BocBooleanValue></td></tr>
         <tr>
           <td></td>
-          <td><remotion:BocMultilineTextValue id="CVField" runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" width="100%">
+          <td><remotion:BocMultilineTextValue id="CVField" runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" width="100%">
 <textboxstyle textmode="MultiLine">
 </TextBoxStyle></remotion:BocMultilineTextValue></td></tr>
         <tr>
           <td style="HEIGHT: 17px"></td>
-          <td style="HEIGHT: 17px"><remotion:BocList id="JobList" runat="server" PropertyIdentifier="Jobs" DataSourceControl="CurrentObject" ShowAvailableViewsList="false" ShowAllProperties="True">
+          <td style="HEIGHT: 17px"><remotion:BocList id="JobList" runat="server" PropertyIdentifier="Jobs" DataSourceControl="CurrentObject" EnableOptionalValidators="true" ShowAvailableViewsList="false" ShowAllProperties="True">
 </remotion:BocList></td></tr>
           </table>
       <p><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>
