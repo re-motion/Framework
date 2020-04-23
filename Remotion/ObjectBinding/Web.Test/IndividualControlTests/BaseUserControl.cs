@@ -18,7 +18,7 @@ using System;
 using System.ComponentModel;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI.Globalization;
 

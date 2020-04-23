@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
   public static class BusinessObjectValidationResultExtensions
   {

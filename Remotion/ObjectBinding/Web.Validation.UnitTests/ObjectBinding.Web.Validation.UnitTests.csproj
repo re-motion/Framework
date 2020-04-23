@@ -63,11 +63,6 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="BusinessObjectValidationResultExtensionsTest.cs" />
-    <Compile Include="Factories\ValidationBocListValidatorFactoryTest.cs" />
-    <Compile Include="Factories\ValidationBusinessObjectBoundEditableWebControlValidatorFactoryTest.cs" />
-    <Compile Include="Factories\ValidationBocReferenceDataSourceValidatorFactoryTest.cs" />
-    <Compile Include="Factories\ValidationUserControlBindingValidatorFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

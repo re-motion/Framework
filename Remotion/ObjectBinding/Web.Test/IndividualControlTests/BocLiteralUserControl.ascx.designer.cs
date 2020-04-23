@@ -48,7 +48,7 @@ namespace OBWTest.IndividualControlTests
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Remotion.ObjectBinding.Web.Validation.UI.Controls.BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
+    protected global::Remotion.ObjectBinding.Web.UI.Controls.Validation.BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
 
     /// <summary>
     /// FormGrid control.

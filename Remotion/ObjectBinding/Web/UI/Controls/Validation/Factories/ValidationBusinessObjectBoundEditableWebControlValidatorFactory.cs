@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
@@ -32,7 +31,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validati
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
+namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
 {
   /// <summary>
   /// Implements various <see cref="IBocValidatorFactory{T}"/> interfaces and creates validators 

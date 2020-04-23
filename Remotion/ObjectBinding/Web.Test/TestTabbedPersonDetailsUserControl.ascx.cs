@@ -20,7 +20,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Collections;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 

@@ -18,10 +18,10 @@ using System;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Rhino.Mocks;
 
-namespace Remotion.ObjectBinding.Web.Validation.UnitTests
+namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 {
   [TestFixture]
   public class BusinessObjectValidationResultExtensionsTest

@@ -18,7 +18,7 @@ using System;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Validation;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
   public interface IBusinessObjectBoundEditableWebControlValidationResultDispatcher
   {

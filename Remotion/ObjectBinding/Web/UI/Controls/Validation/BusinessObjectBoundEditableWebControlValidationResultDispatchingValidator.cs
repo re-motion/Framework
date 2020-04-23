@@ -15,22 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
-  public sealed class BindableObjectDataSourceControlValidationResultDispatchingValidator
+  public sealed class BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator
       : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher
   {
-    public BindableObjectDataSourceControlValidationResultDispatchingValidator ()
+    private BusinessObjectValidationFailure[] _validationFailures = Array.Empty<BusinessObjectValidationFailure>();
+
+    public BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator ()
     {
     }
-
-    //public bool ShowUnhandledValidationFailures { get; set; }
 
     public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
     {
@@ -38,33 +38,33 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 
       var control = GetControlToValidate();
 
-      BusinessObjectDataSourceValidationResultDispatcher.DispatchValidationResultForBoundControls (control, validationResult);
+      _validationFailures = validationResult.GetValidationFailures (control, markAsHandled: true).ToArray();
+
+      //TODO-RM-5906: this call could be optimized away and replaced by an explicit call to Validate() from an external source. 
+      //              Possibly, we could also tweak this to only track if validate has been called before, and if so, we set the validator invalid.
+      //              If it wasn't called before, we don't do anything, someone will call validate for us anyway.
+      Validate();
     }
 
     protected override bool EvaluateIsValid ()
     {
-      // TODO RM-6056: ShowUnhandledValidationFailures
-      // TODO RM-6056: Shows a validation error if IBusinessObjectValidationResult returned messages for this control.
-      return true;
-    }
+      ErrorMessage = string.Join ("\r\n", _validationFailures.Select (f => f.ErrorMessage));
 
-    protected override bool ControlPropertiesValid ()
-    {
-      return true;
+      return _validationFailures.Length == 0;
     }
 
     [NotNull]
-    private BindableObjectDataSourceControl GetControlToValidate ()
+    private BusinessObjectBoundEditableWebControl GetControlToValidate ()
     {
       var control = NamingContainer.FindControl (ControlToValidate);
-      var dataSourceControl = control as BindableObjectDataSourceControl;
-      if (dataSourceControl == null)
+      var bocControl = control as BusinessObjectBoundEditableWebControl;
+      if (bocControl == null)
       {
         throw new InvalidOperationException (
-            $"'{nameof (BindableObjectDataSourceControlValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof (BindableObjectDataSourceControl)}'.");
+            $"'{nameof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof (BusinessObjectBoundEditableWebControl)}'.");
       }
 
-      return dataSourceControl;
+      return bocControl;
     }
   }
 }

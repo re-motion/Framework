@@ -18,10 +18,9 @@ using System;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
   public sealed class BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator
       : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher

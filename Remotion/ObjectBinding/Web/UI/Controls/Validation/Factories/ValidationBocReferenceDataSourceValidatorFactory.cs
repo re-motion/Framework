@@ -18,42 +18,40 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
+namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
 {
   /// <summary>
-  /// Implements various <see cref="IBocListValidatorFactory"/> interfaces and creates validators 
+  /// Implements various <see cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/> interfaces and creates validators 
   /// that can apply the <see cref="IBusinessObjectValidationResult"/> object to the respective control.
   /// </summary>
-  /// <seealso cref="IBocListValidatorFactory"/>
-  [ImplementationFor (typeof (IBocListValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
-  public class ValidationBocListValidatorFactory : IBocListValidatorFactory
+  /// <seealso cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/>
+  [ImplementationFor (typeof (IBusinessObjectReferenceDataSourceControlValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
+  public class ValidationBocReferenceDataSourceValidatorFactory : IBusinessObjectReferenceDataSourceControlValidatorFactory
   {
-    public const int Position = BocListValidatorFactory.Position + 1;
+    public const int Position = 0;
 
-    public ValidationBocListValidatorFactory ()
+    public ValidationBocReferenceDataSourceValidatorFactory ()
     {
     }
 
-    public IEnumerable<BaseValidator> CreateValidators (IBocList control, bool isReadOnly)
+    public IEnumerable<BaseValidator> CreateValidators (BusinessObjectReferenceDataSourceControl control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull ("control", control);
 
       if (isReadOnly)
         yield break;
 
-      yield return CreateBocListValidator (control);
+      yield return CreateBocReferenceDataSourceValidator (control);
     }
 
-    private BaseValidator CreateBocListValidator (IBocList control)
+    private BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator CreateBocReferenceDataSourceValidator (BusinessObjectReferenceDataSourceControl control)
     {
-      var bocValidator = new BocListValidationResultDispatchingValidator();
+      var bocValidator = new BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator();
       bocValidator.ControlToValidate = control.ID;
-      bocValidator.ID = control.ID + "_BocListValidator";
+      bocValidator.ID = control.ID + "_BocReferenceDataSourceValidator";
       return bocValidator;
     }
   }

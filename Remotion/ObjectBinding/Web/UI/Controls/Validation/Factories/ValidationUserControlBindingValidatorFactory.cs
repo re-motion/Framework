@@ -18,41 +18,40 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
+namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
 {
   /// <summary>
-  /// Implements various <see cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/> interfaces and creates validators 
+  /// Implements various <see cref="IUserControlBindingValidatorFactory"/> interfaces and creates validators 
   /// that can apply the <see cref="IBusinessObjectValidationResult"/> object to the respective control.
   /// </summary>
-  /// <seealso cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/>
-  [ImplementationFor (typeof (IBusinessObjectReferenceDataSourceControlValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
-  public class ValidationBocReferenceDataSourceValidatorFactory : IBusinessObjectReferenceDataSourceControlValidatorFactory
+  /// <seealso cref="IUserControlBindingValidatorFactory"/>
+  [ImplementationFor (typeof (IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
+  public class ValidationUserControlBindingValidatorFactory : IUserControlBindingValidatorFactory
   {
-    public const int Position = 0;
+    public const int Position = Web.UI.Controls.UserControlBindingValidatorFactory.Position + 1;
 
-    public ValidationBocReferenceDataSourceValidatorFactory ()
+    public ValidationUserControlBindingValidatorFactory ()
     {
     }
 
-    public IEnumerable<BaseValidator> CreateValidators (BusinessObjectReferenceDataSourceControl control, bool isReadOnly)
+    public IEnumerable<BaseValidator> CreateValidators (UserControlBinding control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull ("control", control);
 
       if (isReadOnly)
         yield break;
 
-      yield return CreateBocReferenceDataSourceValidator (control);
+      yield return CreateBocListValidator (control);
     }
 
-    private BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator CreateBocReferenceDataSourceValidator (BusinessObjectReferenceDataSourceControl control)
+    private BaseValidator CreateBocListValidator (UserControlBinding control)
     {
-      var bocValidator = new BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator();
+      var bocValidator = new UserControlBindingValidationResultDispatchingValidator();
       bocValidator.ControlToValidate = control.ID;
-      bocValidator.ID = control.ID + "_BocReferenceDataSourceValidator";
+      bocValidator.ID = control.ID + "_BocListValidator";
       return bocValidator;
     }
   }

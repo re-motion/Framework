@@ -19,7 +19,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest.IndividualControlTests

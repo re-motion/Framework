@@ -2,12 +2,12 @@
 using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories;
 using Remotion.ServiceLocation;
 using Rhino.Mocks;
 
-namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
+namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 {
   [TestFixture]
   public class ValidationBocReferenceDataSourceValidatorFactoryTest

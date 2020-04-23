@@ -15,66 +15,55 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
-using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
-  public sealed class BocListValidationResultDispatchingValidator : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher
+  public sealed class BindableObjectDataSourceControlValidationResultDispatchingValidator
+      : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher
   {
-    public BocListValidationResultDispatchingValidator ()
+    public BindableObjectDataSourceControlValidationResultDispatchingValidator ()
     {
     }
+
+    //public bool ShowUnhandledValidationFailures { get; set; }
 
     public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
     {
       ArgumentUtility.CheckNotNull ("validationResult", validationResult);
 
-      var bocListControl = GetControlToValidate();
+      var control = GetControlToValidate();
 
-      var validatorsMatchingToControls = EnumerableUtility.SelectRecursiveDepthFirst (
-              bocListControl as Control,
-              child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer)))
-          .OfType<IBusinessObjectBoundEditableWebControlValidationResultDispatcher>();
-
-      foreach (var validator in validatorsMatchingToControls)
-        validator.DispatchValidationFailures (validationResult);
+      BusinessObjectDataSourceValidationResultDispatcher.DispatchValidationResultForBoundControls (control, validationResult);
     }
-
 
     protected override bool EvaluateIsValid ()
     {
+      // TODO RM-6056: ShowUnhandledValidationFailures
       // TODO RM-6056: Shows a validation error if IBusinessObjectValidationResult returned messages for this control.
       return true;
     }
 
     protected override bool ControlPropertiesValid ()
     {
-      string controlToValidate = ControlToValidate;
-      if (string.IsNullOrEmpty (controlToValidate))
-        return base.ControlPropertiesValid();
-      else
-        return NamingContainer.FindControl (controlToValidate) != null;
+      return true;
     }
 
     [NotNull]
-    private BocList GetControlToValidate ()
+    private BindableObjectDataSourceControl GetControlToValidate ()
     {
       var control = NamingContainer.FindControl (ControlToValidate);
-      var bocListControl = control as BocList;
-      if (bocListControl == null)
+      var dataSourceControl = control as BindableObjectDataSourceControl;
+      if (dataSourceControl == null)
       {
         throw new InvalidOperationException (
-            $"'{nameof (BocListValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof (BocList)}'.");
+            $"'{nameof (BindableObjectDataSourceControlValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof (BindableObjectDataSourceControl)}'.");
       }
 
-      return bocListControl;
+      return dataSourceControl;
     }
   }
 }

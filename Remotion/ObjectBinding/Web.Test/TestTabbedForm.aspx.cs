@@ -24,7 +24,7 @@ using OBWTest.IndividualControlTests;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Text;
 using Remotion.Validation;

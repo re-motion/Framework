@@ -22,7 +22,7 @@ using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 

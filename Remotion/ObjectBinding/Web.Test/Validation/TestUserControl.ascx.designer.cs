@@ -66,7 +66,7 @@ namespace OBWTest.Validation
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Remotion.ObjectBinding.Web.Validation.UI.Controls.BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator;
+    protected global::Remotion.ObjectBinding.Web.UI.Controls.Validation.BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator;
 
     /// <summary>
     /// FormGridManager control.
